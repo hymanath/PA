@@ -205,7 +205,7 @@ function buildCadreInfo(jsObj,results)
 	str += '			</table>';
 	str += '		</td>';
 	str += '		<td width="50%" valign="top">';
-	str += '			<img height="110px" width="130px" src="images/icons/indexPage/human.jpg">';
+	str += '			<img height="120px" width="140px" src="images/cadre_images/'+results.image+'"/>';
 	str += '		</td>';
 	str += '	</tr>';
 	str += '	</table>';
