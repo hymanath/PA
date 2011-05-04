@@ -67,6 +67,7 @@ public class Cadre extends BaseModel{
 	 private String noOfFamilyMembers;
 	 private String noOfVoters;
 	 private String exactDateOfBirth;
+	 private String image;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
 	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
@@ -295,6 +296,15 @@ public class Cadre extends BaseModel{
 
 	public void setEndingDate(Date endingDate) {
 		this.endingDate = endingDate;
+	}
+
+	@Column(name = "image", length = 100)
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Column(name = "father_or_spouse_name", length = 100)

@@ -436,6 +436,7 @@ public class CadreManagementService {
 				}
 			}
 			rs.setResultCode(ResultCodeMapper.SUCCESS);
+			rs.setResultState(cadreObj.getCadreId());
 		}catch(Exception e){
 			log.debug(e);
 			rs.setExceptionEncountered(e);
@@ -677,6 +678,10 @@ public class CadreManagementService {
 				log.debug("Exception Raised while Update And Get Problems Under Pending::",e);
 				e.printStackTrace();
 				}
+				
+				if(IConstants.UPDATE_EXISTING.equals(task))
+					cadre.setImage(cadre.getImage());
+				
 				cadre = cadreDAO.save(cadre);
 					
 					try
@@ -1910,6 +1915,7 @@ public class CadreManagementService {
 		
 		cadreInfo.setState(stateCA.getStateId().toString());
 		cadreInfo.setStateName(stateCA.getStateName());
+		cadreInfo.setImage(cadre.getImage() != null ? cadre.getImage():"human.jpg");
 		if(districtCA != null)
 		{
 			cadreInfo.setDistrict(districtCA.getDistrictId().toString());
@@ -4432,6 +4438,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
 				cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
 				cadreInfo.setMobile(cadre.getMobile()!= null ? cadre.getMobile() :"");
+				cadreInfo.setImage(cadre.getImage() != null ? cadre.getImage() : "human.jpg");
 				
 				if(cadre.getCadreLevelValue() != null)
 					cadreInfo.setStrCadreLevel(getCadreLevelValueStr(cadre.getCadreLevel().getLevel(),cadre.getCadreLevelValue()));
@@ -4515,6 +4522,17 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 		return address;
 		
+	}
+	
+	public String updateCadreImage(Long cadreId,String imageName)
+	{
+		try{
+			int updated = cadreDAO.updateCadreImage(cadreId,imageName);
+			log.debug(updated +" Photo Upadted..");
+			return IConstants.SUCCESS;
+		}catch(Exception e){
+			return null;
+		}
 	}
 
 }
