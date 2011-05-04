@@ -1,10 +1,14 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -114,6 +118,10 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String pBooth;
 	private Long partyCommittee;
 	
+	private File uploadImage;
+    private String uploadImageContentType;
+    private String uploadImageFileName;
+	
 	private String defaultState;
 	private String defaultDist;
 	private String defaultConst;
@@ -121,6 +129,30 @@ public class CadreRegisterAction extends ActionSupport implements
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	
+	public File getUploadImage() {
+		return uploadImage;
+	}
+
+	public void setUploadImage(File uploadImage) {
+		this.uploadImage = uploadImage;
+	}
+
+	public String getUploadImageContentType() {
+		return uploadImageContentType;
+	}
+
+	public void setUploadImageContentType(String uploadImageContentType) {
+		this.uploadImageContentType = uploadImageContentType;
+	}
+
+	public String getUploadImageFileName() {
+		return uploadImageFileName;
+	}
+
+	public void setUploadImageFileName(String uploadImageFileName) {
+		this.uploadImageFileName = uploadImageFileName;
+	}
+
 	public CadreInfo getCadreInfo() {
 		return cadreInfo;
 	}
@@ -847,6 +879,13 @@ public class CadreRegisterAction extends ActionSupport implements
 		
 		if (rs.getExceptionEncountered() == null)
 		{
+			String result = uploadCadreImage(rs.getResultState());
+			
+			if(result != null)
+				cadreManagementService.updateCadreImage(rs.getResultState(),rs.getResultState().toString()+"."+uploadImageContentType.split("/")[1]);
+			else if(windowTask.equalsIgnoreCase(IConstants.NEW))
+				cadreManagementService.updateCadreImage(rs.getResultState(),"human.jpg");
+			
 			cadreInfo = new CadreInfo();
 			
 			if("MLA".equals(regVO.getAccessType()))
@@ -920,7 +959,32 @@ public class CadreRegisterAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-		
+	public String uploadCadreImage(Long cadreId)
+	{
+		try{
+			
+			String filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";	
+			BufferedImage image = ImageIO.read(this.uploadImage);
+			
+			if(image == null)
+				return null;
+			
+			String constiName[] = uploadImageContentType.split("/");
+			String fileName = filePath+cadreId.toString()+"."+constiName[1];
+			//String imageName =  cadreId.toString()+"."+constiName[1];
+			
+			FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+			
+			ImageIO.write(image, constiName[1],filName);
+            filName.close();
+            return SUCCESS;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
+	
 	public void validate() {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
