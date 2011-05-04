@@ -879,4 +879,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		return queryObject.list();
 	}
+	
+	public Integer updateCadreImage(Long cadreId,String imageName)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update Cadre model set model.image = ? where model.cadreId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, imageName);
+		queryObject.setParameter(1, cadreId);	
+		
+		return queryObject.executeUpdate();	
+	}
 }

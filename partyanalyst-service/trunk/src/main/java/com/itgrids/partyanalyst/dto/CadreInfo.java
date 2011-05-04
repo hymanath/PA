@@ -85,6 +85,7 @@ public class CadreInfo implements Serializable{
 	private String phamletName;
 	private String dobOption;
 	private String age;
+	private String image;
 	private String[] language;
 	private List<String> languageOptions_English;
 	private List<String> languageOptions_Hindi;
@@ -744,8 +745,11 @@ public class CadreInfo implements Serializable{
 	public void setCadreRolesStr(List<String> cadreRolesStr) {
 		this.cadreRolesStr = cadreRolesStr;
 	}
-	
-	
-	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	
 }
