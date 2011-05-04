@@ -350,7 +350,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}			
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testFindCadreForSMS()
 	{
 		String s = "and model.currentAddress.state.stateId = 1";
@@ -428,7 +428,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
 		System.out.println(y.get(0).toString());
 		
-	}
+	}*/
  /*	@SuppressWarnings("unchecked")
 	public void testFindNormalCadre()
 	{
@@ -467,6 +467,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result.size());
 	}*/
 	
+	public void testUpdateCadreImage()
+	{
+		int x = cadreDAO.updateCadreImage(2l,"human.jpeg");
+		System.out.println(cadreDAO.get(1l).getImage());
+		System.out.println(x);
+	}
 }
 	
 
