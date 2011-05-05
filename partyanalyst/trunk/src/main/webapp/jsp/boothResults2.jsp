@@ -125,22 +125,44 @@
 	</tr>
 </table>
 <br/><br><br/><br><br><br>
+<table>
+	<tr>
+		<td>
+			<div class="boothResultHeadingDiv" style="margin-left:70px;">Polling Percentage vs Party Votes Percentage</div><br>
+			<div class="yui-skin-sam">
+			<display:table id="boothResultsTableId"
+				 name="${boothResult.perWiseboothResults}"
+				defaultorder="ascending" defaultsort="4"
+				style="width:auto;margin-left:1px;border:1px;">
 
-<div class="boothResultHeadingDiv">Polling Percentage vs Party Votes Percentage: </div><br>
-<div class="yui-skin-sam">
-<display:table id="boothResultsTableId"
-	 name="${boothResult.perWiseboothResults}"
-	defaultorder="ascending" defaultsort="4"
-	style="width:auto;margin-left:30px;border:1px;">
+			<display:column style="text-align:center;" title="Polling % Range"
+					property="location" />
+			<display:column style="text-align:center;" title="Total No of Booths"
+					property="votesEarned"/>
+			<display:column style="text-align:center;" title="Party Votes %"
+					property="percentage" />
+			</display:table>
+			</div>
+		</td>
+		<td>
+			<div class="boothResultHeadingDiv" style="margin-left:80px;">Party Votes Percentage vs Polling Percentage</div><br>
+			<div class="yui-skin-sam">
+			<display:table id="boothResultsTableId"
+				 name="${boothResult.partyPerWiseboothResults}"
+				defaultorder="ascending" defaultsort="4"
+				style="width:auto;margin-left:10px;border:1px;">
 
-<display:column style="text-align:center;" title="Polling % Range"
-		property="location" />
-<display:column style="text-align:center;" title="Total No of Booths"
-		property="votesEarned"/>
-<display:column style="text-align:center;" title="Party Votes %"
-		property="percentage" />
-</display:table>
-</div>
+			<display:column style="text-align:center;" title="Party Votes % Range"
+					property="location" />
+			<display:column style="text-align:center;" title="Total No of Booths"
+					property="votesEarned"/>
+			<display:column style="text-align:center;" title="Polling %"
+					property="percentage" />
+			</display:table>
+			</div>
+		</td>
+	</tr>
+</table>
 
 <div class="boothResultHeadingDiv">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
