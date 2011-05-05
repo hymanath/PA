@@ -195,6 +195,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				else
 					boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
 							votesEarned, totalValidVotes, percentage, "", true,pollPercent);
+				boothResultVO.setTotalBoothVoters(totalVoters);
 				boothResultVOs.add(boothResultVO);
 			}
 			partyBoothPerformanceVO.setBoothResults(boothResultVOs);
@@ -1328,7 +1329,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return sb.toString().substring(1);
 	}
 	
-	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO)
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage)
 	{
 		try
 		{
@@ -1350,7 +1351,11 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				
 				for(BoothResultVO boothResultVO :performanceVO.getBoothResults())
 				{
-					Double percentage = Double.parseDouble(boothResultVO.getPollingPercentage());
+					Double percentage = null;
+					if(isPollingPercentage)
+						percentage = Double.parseDouble(boothResultVO.getPollingPercentage());
+					else
+						percentage = Double.parseDouble(boothResultVO.getPercentage());
 					
 					if(percentage >= 0 && percentage < 5)
 					{
@@ -1455,11 +1460,19 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					List<BoothResultVO> list = entry.getValue();
 					double total = 0.0d;
 					double earned = 0.0d;
-					for(BoothResultVO brVO : list)
-					{
-						total += brVO.getTotalVoters();
-						earned += brVO.getVotesEarned();
-					}
+					
+					if(isPollingPercentage)
+						for(BoothResultVO brVO : list)
+						{
+							total += brVO.getTotalVoters();
+							earned += brVO.getVotesEarned();
+						}
+					else
+						for(BoothResultVO brVO : list)
+						{
+							total += brVO.getTotalBoothVoters();
+							earned += brVO.getTotalVoters();
+						}
 					
 					if(list.size() > 0)
 					resultVO.setPercentage((new BigDecimal((earned*100)/total).setScale(2,BigDecimal.ROUND_HALF_UP)).toString());
@@ -1468,7 +1481,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					
 					perWiseboothResults.add(resultVO);
 				}
-				performanceVO.setPerWiseboothResults(perWiseboothResults);
+				if(isPollingPercentage)
+					performanceVO.setPerWiseboothResults(perWiseboothResults);
+				else
+					performanceVO.setPartyPerWiseboothResults(perWiseboothResults);
 			}
 		}
 		catch(Exception e){
