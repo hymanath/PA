@@ -126,7 +126,8 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 				
 		System.out.println(" values from ajax -------- partyName:"+partyName+" constituencyName:"+constituencyName+" electionYear:"+electionYear);
 		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseResultsForParty(new Long(partyName), new Long(constituencyName), electionYear);
-		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0));
+		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),true);
+		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),false);
 		
 		return SUCCESS;
 	}
