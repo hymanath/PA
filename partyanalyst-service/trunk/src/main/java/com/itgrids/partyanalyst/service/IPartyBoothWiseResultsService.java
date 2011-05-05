@@ -26,5 +26,5 @@ public interface IPartyBoothWiseResultsService {
 	
 	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag);
 	
-	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO);
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage);
 }
