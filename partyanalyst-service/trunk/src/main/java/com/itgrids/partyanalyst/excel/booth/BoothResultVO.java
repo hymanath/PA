@@ -18,6 +18,7 @@ public class BoothResultVO extends ResultStatus{
 	private int oppPartyVotesEarned;
 	private String oppPartyPercentage;
 	private String pollingPercentage;
+	private int totalBoothVoters;
 	
 	public BoothResultVO(){
 		
@@ -137,6 +138,14 @@ public class BoothResultVO extends ResultStatus{
 
 	public void setPollingPercentage(String pollingPercentage) {
 		this.pollingPercentage = pollingPercentage;
+	}
+
+	public int getTotalBoothVoters() {
+		return totalBoothVoters;
+	}
+
+	public void setTotalBoothVoters(int totalBoothVoters) {
+		this.totalBoothVoters = totalBoothVoters;
 	}
 
 	

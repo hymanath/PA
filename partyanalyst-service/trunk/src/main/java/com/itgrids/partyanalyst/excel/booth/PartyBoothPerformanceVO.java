@@ -17,6 +17,7 @@ public class PartyBoothPerformanceVO {
 	private String votingPercentage;
 	private List<BoothResultVO> boothResults = new ArrayList<BoothResultVO>();
 	private List<BoothResultVO> perWiseboothResults = new ArrayList<BoothResultVO>();
+	private List<BoothResultVO> partyPerWiseboothResults = new ArrayList<BoothResultVO>();
 	
 	public PartyBoothPerformanceVO(String partyName, String candidateName,
 			String electionYear, String electionType, int totalValidVotes, int votesGained,
@@ -129,6 +130,14 @@ public class PartyBoothPerformanceVO {
 	public void setVotingPercentage(String votingPercentage) {
 		this.votingPercentage = votingPercentage;
 	}
+	
+	public List<BoothResultVO> getPartyPerWiseboothResults() {
+		return partyPerWiseboothResults;
+	}
 
+	public void setPartyPerWiseboothResults(
+			List<BoothResultVO> partyPerWiseboothResults) {
+		this.partyPerWiseboothResults = partyPerWiseboothResults;
+	}
 
 }
