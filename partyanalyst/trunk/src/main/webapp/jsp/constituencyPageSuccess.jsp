@@ -1600,7 +1600,7 @@ function buildCorpOrMunicipTable(divId, myResults, elecType,showMoreDiv){
 		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' Election Results '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
 		str += '<table><tr>';
 		str += '<td><div id=\"'+elecType+'TableDiv_'+i+'\"></div></td>';
-		str += '<td><div><img src=\"charts\\'+myResults.muncipalityVO[i].chartName+'\"></div></td>';
+		str += '<td><div style="padding-left:130px;"><img src=\"charts/'+myResults.muncipalityVO[i].chartName+'\"></div></td>';
 		str += '</tr></table>';
 	}
 	divId.innerHTML = str;
