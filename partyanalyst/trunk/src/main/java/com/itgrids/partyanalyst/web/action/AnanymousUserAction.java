@@ -11,10 +11,14 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -46,11 +50,20 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
     private RegistrationVO regVO = null;
+    public RegistrationVO getRegVO() {
+		return regVO;
+	}
+	public void setRegVO(RegistrationVO regVO) {
+		this.regVO = regVO;
+	}
+
+	private String email;
     
     private IRegionServiceData regionServiceDataImp;
 	
 	private IAnanymousUserService  ananymousUserService;
 	private IStaticDataService staticDataService;
+	private IMailService mailService;
 	
 	public Long getResult() {
 		return result;
@@ -129,6 +142,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	public Long getLocalBodyId() {
 		return localBodyId;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public void setLocalBodyId(Long localBodyId) {
 		this.localBodyId = localBodyId;
 	}
@@ -146,6 +165,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 	
 	
+	public IMailService getMailService() {
+		return mailService;
+	}
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -185,7 +210,6 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		
 		return Action.SUCCESS;
 	}
-	
 	public String checkForUserNameAvailability(){
 
 		try {
@@ -199,6 +223,42 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		 
 		return SUCCESS;
 	}
+	public String recoverPassword(){
+		
+		regVO = new RegistrationVO();
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("forgotPassword")){
+				
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				if(regVO.getEmail()== null || regVO.getEmail() == " "){
+				return SUCCESS;
+				}
+				else{
+				 email = regVO.getEmail();
+				 System.out.println("email"+email);
+					String requestURL= request.getRequestURL().toString();
+					String requestFrom = "";
+					if(requestURL.contains("www.partyanalyst.com"))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+				 
+				 if(rs.getResultCode() == 1){
+					 regVO = null;
+				 }
+				return SUCCESS;
+			}
+			}
+			System.out.println(jObj);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 	
 	public void prepare() throws Exception {
 		Long registrationId = Long.parseLong(request.getParameter("userId") != null?request.getParameter("userId"):"0");
@@ -206,7 +266,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
         if( registrationId.intValue() == 0) 
         	regVO = new RegistrationVO();
         else 
-        {	
+		{	
         	regVO = ananymousUserService.getDetailsOfUserByUserId(registrationId);
         	this.registrationId = registrationId;
         	prepopulate = true;
