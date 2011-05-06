@@ -50,4 +50,8 @@ public interface IAnanymousUserService {
 	public ResultStatus saveUserProfileImageName(Long userId,String imageName);
 	
 	public String getUserProfileImageByUserId(Long userId);
+	
+	
+	public RegistrationVO getUserDetailsToRecoverPassword(String userName);
+	
 }	
