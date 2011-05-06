@@ -34,6 +34,8 @@
 	</bean>
 	
 	<bean name="mailService" class="com.itgrids.partyanalyst.service.impl.MailService" >
+	<property name="districtDAO" ref="districtDAO" />
+	<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>  
 	
 	
