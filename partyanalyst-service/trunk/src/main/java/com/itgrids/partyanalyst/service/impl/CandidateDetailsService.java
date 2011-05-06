@@ -111,7 +111,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				candidateDetails.setElectionType(election.getElectionScope().getElectionType().getElectionType());
 				candidateDetails.setElectionYear(election.getElectionYear());
 				candidateDetails.setPartyName(party.getLongName());
+				candidateDetails.setShortName(party.getShortName());
+				candidateDetails.setPartyFlag(party.getPartyFlag());
 				candidateDetails.setRank(result.getRank());
+				candidateDetails.setEducation(candidate.getEducation());
 				String votes = result.getVotesEarned().toString();
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateDetails.setVotesEarned(votesEarn[0]);
