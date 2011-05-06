@@ -435,13 +435,14 @@ public interface IConstants {
     
     
     // Fror Mailing
+    public static final String LOCALFROMEMAILID = "partyanalyst04@gmail.com";
     public static final String SERVER = "server";
     public static final String LOCALHOST = "localhost";
     public static final String HOST = "smtp.gmail.com";
     public static final String PORT = "465";
     public static final String FROMEMAILID = "info@partyanalyst.com";
     public static final String TOEMAILID = "info@partyanalyst.com";
-    public static final String PASSWORD="itgrids123";
+    public static final String PASSWORD="partyanalyst";
     public static String SUBJECT = "User Requirements From PartyAnalyst";
     
 
