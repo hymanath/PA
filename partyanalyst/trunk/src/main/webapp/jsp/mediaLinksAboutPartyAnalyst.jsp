@@ -264,7 +264,7 @@
 				 </td>
 				 <td width="70%">
 	                <div id="detailsDiv">
-					   <a href="http://online.wsj.com/article/SB10001424052748704641604576255692445828326.html  ( WSJ Wow!!!  )"
+					   <a href="http://online.wsj.com/article/SB10001424052748704641604576255692445828326.html"
                         target="_blank">Website offers election analysis</a>
 					</div>
 				 </td>
