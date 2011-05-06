@@ -100,7 +100,9 @@
 		<div id="candidatePageLeftContentDiv_head"></div>
 		<div id="candidatePageLeftContentDiv_body" class="yui-skin-sam">
 			<div id="candidatePageLeftContentDiv_Image">
-				<img id="candidateImage" onerror="setDefaultImage(this)" height="245" width="240" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
+				<img id="candidateImage" onerror="setDefaultImage(this)" height="200" width="200" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
+				<div id="candidateProfile" class ="candDetailsStyle">
+				 </div>
 			</div>
 			<div id="candidatePageLeftContentDiv_leftNavLinks"></div>
 		</div>
@@ -111,7 +113,9 @@
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 				<tr>
 					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-					<td><div class="candidatePageHeader_center" style="width:651px;"><span>${candidateVO.candidateName}</span></div></td>
+					<td><div class="candidatePageHeader_center" style="width:651px;"><span>${candidateVO.candidateName}</span>	
+					<span id="candidatePageHeader" style="color:#B40404"></span></div>
+				</td>
 					<td><img src="images/icons/districtPage/header_right.gif"/></td>
 				</tr>
 			</table>			
@@ -178,13 +182,13 @@
 
 				<!-- Videos Info Div-->
 				<div id="candidatePageContent_body_videosMain" class="candidateStaticContentDiv">
-					<table width="100%">
+					<marquee scrolldelay=100 onmouseover="this.stop()" onmouseout="this.start()"><table width="100%">
 						<tr>
-							<td width="20%" align="left" valign="top"><div id="videoBarOne"> </div></td>
-							<td width="60%" align="center" valign="top"><div id="ytVideoPlayer"> </div></td>
-							<td width="20%" align="left" valign="top"><div id="videoBartwo"> </div></td>
+							<td width="50%" ><div id="videoBarOne"> </div></td></marquee>
+							<td width="11%" align="center" valign="top"><div id="ytVideoPlayer"> </div></td>
+						<td width="39%" align="left"><div id="videoBartwo"> </div></td>
 						</tr>
-					</table>
+					</table></marquee>
 					
 					<!--<jsp:include page="<%= videosURL%>" flush="true"/>-->
 				</div>	
@@ -333,6 +337,7 @@
 								electionId:'${candidateElectionResults.electionId}',
 								candidateName:'${candidateElectionResults.candidateName}',
 								partyName:'${candidateElectionResults.partyName}',
+								partyFlag:'${candidateElectionResults.partyFlag}',
 								constituencyName:'${candidateElectionResults.constituencyName}',
 								electionType:'${candidateElectionResults.electionType}',
 								electionYear:'${candidateElectionResults.electionYear}',
@@ -341,6 +346,8 @@
 								votesEarned:'${candidateElectionResults.votesEarned}',
 								votePercentage:'${candidateElectionResults.votesPercentage}',
 								constituencyId:'${candidateElectionResults.constituencyId}',
+								education:'${candidateElectionResults.education}',
+								partyShortName:'${candidateElectionResults.shortName}',	
 								status:'',
 								oppositionCandidates:[]
 							};
@@ -374,10 +381,13 @@
 
 	function setDefaultImage(img)
 	{
-		img.src = "images/candidates/Default_Candidate.JPG"
+		img.src = "images/candidates/human.jpg";
 	}
 
 	initializeCandidatePage();
+    showLeftMenuContent('video');
+	//showLeftMenuContent('News/Events');
+candidateProfileInfo();
 </script>
 
 </body>
