@@ -149,4 +149,9 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return queryObject.list();	
 		
 	}
+	
+	public List getUserDetails(String userName){
+		return getHibernateTemplate().find("select model.email,model.password from AnanymousUser model where model.username= ?",userName);
+	}
+	
 }
