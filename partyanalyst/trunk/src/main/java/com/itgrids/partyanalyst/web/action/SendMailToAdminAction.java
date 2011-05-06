@@ -4,14 +4,16 @@ import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.impl.MailService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class SendMailToAdminAction extends ActionSupport 
+public class SendMailToAdminAction extends ActionSupport implements ServletRequestAware 
  {
 
 	/**
@@ -104,7 +106,11 @@ public class SendMailToAdminAction extends ActionSupport
 		public void setMailService(MailService mailService) {
 			this.mailService = mailService;
 		}
-
+		public void setServletRequest(HttpServletRequest request) {
+			// TODO Auto-generated method stub
+			this.request = request;
+			
+		}
 		public String execute() throws Exception{
 			
 			try {
@@ -114,7 +120,13 @@ public class SendMailToAdminAction extends ActionSupport
 				quickRequestVO.setEmailId(jObj.getString("email"));
 				quickRequestVO.setMobileNumber(jObj.getString("mobile"));
 				quickRequestVO.setUserRequirement(jObj.getString("requirement"));			
-				result = mailService.sendQuickRequestEmailToAdmin(quickRequestVO);
+				String requestURL= request.getRequestURL().toString();
+				String requestFrom = "";
+				if(requestURL.contains("www.partyanalyst.com"))
+					requestFrom = IConstants.SERVER;
+				else
+					requestFrom = IConstants.LOCALHOST;
+				result = mailService.sendQuickRequestEmailToAdmin(quickRequestVO,requestFrom);
 				
 			}
 			catch (ParseException e) {
@@ -124,6 +136,7 @@ public class SendMailToAdminAction extends ActionSupport
 			
 		    return SUCCESS;
 		}
+
 		
 		
 		
