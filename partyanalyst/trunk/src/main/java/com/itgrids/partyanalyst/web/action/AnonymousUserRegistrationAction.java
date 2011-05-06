@@ -18,6 +18,7 @@ import org.jfree.util.Log;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -60,6 +61,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
+	private IMailService mailService;
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(AnonymousUserRegistrationAction.class);
    
@@ -75,6 +77,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private IRegionServiceData regionServiceDataImp;
     
  
+	public IMailService getMailService() {
+		return mailService;
+	}
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -403,8 +411,18 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			}else
 			
 			  savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+            String requestURL= request.getRequestURL().toString();
+			String requestFrom = "";
+			if(requestURL.contains("www.partyanalyst.com"))
+				requestFrom = IConstants.SERVER;
+			else
+				requestFrom = IConstants.LOCALHOST;
+			
+            	// For sending notification after registration
+            mailService.sendRegistrationNotification(regVO,requestFrom);
             
          //    if(regVO.getRegistrationID()!=null){
+            
             
             
             try {
