@@ -135,7 +135,7 @@ function unSetTextColor(elmt)
 {
 	elmt.style.color = "#6C7076";
 }
-
+var candidateObject;
 function buildCandidateElectionProfile()
 {		
 	var electionPrfElmtBody = document.getElementById("candidatePoliticalInfo");	
@@ -144,9 +144,12 @@ function buildCandidateElectionProfile()
 	
 
 	var ebStr='';
+	candidateObject = candidateInfoObject; 
+
 	for(var i in candidateInfoObject.candidateInfoArray)
 	{
 		var data = candidateInfoObject.candidateInfoArray[i];
+	
 		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv"  onclick="showElectionResultsInNewWindow('+i+')" onmouseover="setTextColor(this)" onmouseout="unSetTextColor(this)">';
 		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/indexPage/listIcon.png"/></span>';
 		if(data.status == "Won")
@@ -544,8 +547,8 @@ function buildCandidateVideoGallery()
 	var params = { allowScriptAccess: "always" };	 
 	var atts = { id: "myytplayer" };
 	swfobject.embedSWF(value, "videoBarOne", "300", "200", "8", null, null, params,atts);
-
-	
+	var elmtId = document.getElementById( "videoBarOne");
+  
 }
 
 function LoadVideoBar()
@@ -558,21 +561,26 @@ function LoadVideoBar()
 	
 
 	var options = {
-	  largeResultSet : false
-	}
+	  largeResultSet : false,
+		  horizontal:true
+		  
+			}
 	vbl = new GSvideoBar(
 				document.getElementById("videoBarOne"),
-				document.getElementById("ytVideoPlayer"),				
+				document.getElementById("ytVideoPlayer"),
 				options
 				);
 	
+
 	options = {
       master : vbl,
-      largeResultSet : false
-    }
+      largeResultSet :false ,
+		 horizontal:true
+		}
     vbr = new GSvideoBar(
                 document.getElementById("videoBartwo"),
                 null,
+		
                 options
                 );
 
@@ -591,8 +599,6 @@ function onYouTubePlayerReady(playerId)
 
 function initializeCandidatePage()
 {
-	
-
 	buildCandidatePageLayout();	
 	buildLeftNavLinks();
 	buildCandidateElectionProfile();
@@ -607,3 +613,46 @@ function initializeCandidatePage()
 
 
 }
+function candidateProfileInfo()
+{
+	var elmt = document.getElementById("candidateProfile");
+	var str =' ';
+		str +='	<table>';
+		str +='<tr>';
+		str +='	 <td>Constituency :<b>&nbsp;&nbsp;<a href="constituencyPageAction.action?constituencyId='+candidateObject.candidateInfoArray[0].constituencyId+'">'+candidateObject.candidateInfoArray[0].constituencyName+'</b></a></td>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<td title="'+candidateObject.candidateInfoArray[0].partyName+'">Political Party:<b>&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].partyShortName+'</b> </td>';
+		str +='</tr>';
+		str +='<tr>';
+		str +='<td>Party Flag:&nbsp;&nbsp;';
+		if(candidateObject.candidateInfoArray[0].partyFlag != ""){
+		 str +='<img src="'+candidateInfoObject.contextPath+'/images/party_flags/'+candidateObject.candidateInfoArray[0].partyFlag+'" height="25" width="50"/>';
+		}
+		else{ 
+		 str +='<img src="'+candidateInfoObject.contextPath+'/images/party_flags/no_Image.png" height="25" width="50"/>';
+		}
+		str +='</td>';
+		str +='</tr>';
+		str +='<tr>';
+		if(candidateObject.candidateInfoArray[0].education != ''){
+			str +='<td>Education:<b>&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].education+'</b> </td>';
+		}
+		str +='</tr>';
+		str +='</table>';
+
+		elmt.innerHTML = str;
+
+		var candidatePageHeaderElmt = document.getElementById("candidatePageHeader");
+
+		var str1 ='';
+		if(candidateObject.candidateInfoArray[0].electionType == 'Parliament' && candidateObject.candidateInfoArray[0].status == 'Won'){
+			str1 +='&nbsp;&nbsp;MP';
+		}
+        if(candidateObject.candidateInfoArray[0].electionType == 'Assembly' && candidateObject.candidateInfoArray[0].status == 'Won'){
+		  str1 +='&nbsp;&nbsp;MLA';
+		}
+		str1 +='<span>&nbsp;&nbsp;From&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].constituencyName+'</span>&nbsp;&nbsp; Constituency';
+		candidatePageHeaderElmt.innerHTML = str1;
+}
+
