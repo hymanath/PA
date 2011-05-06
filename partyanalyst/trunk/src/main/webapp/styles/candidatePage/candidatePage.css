@@ -428,5 +428,9 @@ legend
 	margin-right:5px;
 }*/
 
-
+.candDetailsStyle {
+    color: #4B74C6;
+    font-weight: bold;
+    padding-left: 12px;
+}
 
