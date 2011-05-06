@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
-public class CandidateDetailsVO implements Serializable{
+public class CandidateDetailsVO implements Serializable , Comparable<CandidateDetailsVO>{
 
 	/**
 	 * 
@@ -54,10 +54,24 @@ public class CandidateDetailsVO implements Serializable{
 	private String localBodyElectionsConstituencyName;
 	private String reservationZone;
 	private Long totalSearchCount;
+	private String education;
+	private String shortName;
 	//getters and setters
 	
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	public String getShortName() {
+		return shortName;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
 	}
 	public Long getTotalSearchCount() {
 		return totalSearchCount;
@@ -271,5 +285,12 @@ public class CandidateDetailsVO implements Serializable{
 			String localBodyElectionsConstituencyName) {
 		this.localBodyElectionsConstituencyName = localBodyElectionsConstituencyName;
 	}
-	
+	public int compareTo(CandidateDetailsVO obj) {
+		if(obj instanceof CandidateDetailsVO){
+			CandidateDetailsVO vo = (CandidateDetailsVO) obj;
+			return electionYear.compareToIgnoreCase(vo.getElectionYear());
+		}
+		else
+			return 0;
+	}
 }
