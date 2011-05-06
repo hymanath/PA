@@ -27,4 +27,6 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
 	
 	public List getUserProfileImageNameByUserId(Long userId);
+	
+	public List getUserDetails(String userName);
 }
