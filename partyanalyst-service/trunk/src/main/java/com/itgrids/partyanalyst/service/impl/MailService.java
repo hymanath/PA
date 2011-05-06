@@ -122,12 +122,14 @@ public class MailService implements IMailService{
 	            quickRequestVO.setText(text);
 	            quickRequestVO.setToEmailId(IConstants.TOEMAILID);
 	            quickRequestVO.setSubject(subject);
-	            quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+	            
 	            if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+	            	quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
 	            rs=sendMailFromLocalHost(quickRequestVO);
 	            }
 	            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
 	            {
+	            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
 	            	rs = sendMailFromServer(quickRequestVO);
 	            }
 	            
@@ -151,14 +153,16 @@ public class MailService implements IMailService{
 	    	quickRequestVO.setToEmailId(registrationVO.getEmail());
 	    	quickRequestVO.setSubject(subject);
 	    	quickRequestVO.setText(text);
-	    	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+	    	
 	    	 if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
-		            rs=sendMailFromLocalHost(quickRequestVO);
-		            }
-		            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
-		            {
-		            	rs = sendMailFromServer(quickRequestVO);
-		            }
+	            	quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
+	            rs=sendMailFromLocalHost(quickRequestVO);
+	            }
+	            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
+	            {
+	            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+	            	rs = sendMailFromServer(quickRequestVO);
+	            }
 
 	    	return rs;
 	    }
@@ -205,13 +209,16 @@ public class MailService implements IMailService{
 	    	quickRequestVO.setToEmailId(registrationVO.getEmail());
 	    	quickRequestVO.setSubject(subject);
 	    	quickRequestVO.setText(text);
-	    	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+	    	
 	   
 	    	 if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+	    		 quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
 		            rs=sendMailFromLocalHost(quickRequestVO);
+		           	            
 		            }
 		            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
 		            {
+		            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
 		            	rs = sendMailFromServer(quickRequestVO);
 		            }
 
