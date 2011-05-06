@@ -81,6 +81,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ITehsilDAO tehsilDAO;
 	private IBoothDAO boothDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private  MailService mailService;
 	
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
@@ -1695,4 +1696,24 @@ public class AnanymousUserService implements IAnanymousUserService {
 	}
 	
 	
+
+public RegistrationVO getUserDetailsToRecoverPassword(String userName){
+	
+	List detailsList = null;
+	RegistrationVO registrationVO=new RegistrationVO();
+	try{
+		detailsList = ananymousUserDAO.getUserDetails(userName);
+	
+		if(detailsList!=null && detailsList.size()!=0){
+			Object ananymousUserObj[] =(Object[]) detailsList.get(0);
+			registrationVO.setEmail((String)ananymousUserObj[0]);
+			registrationVO.setPassword((String)ananymousUserObj[1]);
+			registrationVO.setUserName(userName);
+			}
+	}catch(Exception e){
+		e.printStackTrace();
+		return null;
+	}
+	return registrationVO;
+}
 }
