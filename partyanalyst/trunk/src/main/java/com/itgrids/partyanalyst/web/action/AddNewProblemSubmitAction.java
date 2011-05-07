@@ -231,7 +231,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return mobile;
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Please Enter Mobile Number in Complained Person Details.", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Please Enter Mobile Number in Complained Person Details.", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
@@ -240,7 +240,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getPhone() {
 		return phone;
 	}
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
