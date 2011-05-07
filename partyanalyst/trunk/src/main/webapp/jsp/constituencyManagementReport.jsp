@@ -304,7 +304,8 @@
 		}
 		
 		function getProblemsByStatusInLocations(status)
-		{			
+		{	
+			
 			var jsObj=
 				{
 						locationId: accessValue,
@@ -758,7 +759,7 @@
 									<div id="differentViewsRadioDiv_influencingPeople" class="differentViewsDivClass"></div>
 									<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
-										<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
+										<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing People" class="linkButton" />
 									</DIV>
 									<div id="influencePeopleChartDiv_main" class="contentDivClass">										
 									</div>	
