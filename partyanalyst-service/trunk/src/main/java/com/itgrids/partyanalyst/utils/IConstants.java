@@ -442,7 +442,7 @@ public interface IConstants {
     public static final String PORT = "465";
     public static final String FROMEMAILID = "info@partyanalyst.com";
     public static final String TOEMAILID = "info@partyanalyst.com";
-    public static final String PASSWORD="partyanalyst";
+    public static final String PASSWORD="ITGRIDS123";
     public static String SUBJECT = "User Requirements From PartyAnalyst";
     
 
