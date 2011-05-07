@@ -50,7 +50,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
     private RegistrationVO regVO = null;
-    public RegistrationVO getRegVO() {
+    private HttpSession session;
+        
+   	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+	public RegistrationVO getRegVO() {
 		return regVO;
 	}
 	public void setRegVO(RegistrationVO regVO) {
@@ -261,7 +266,13 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 	
 	public void prepare() throws Exception {
-		Long registrationId = Long.parseLong(request.getParameter("userId") != null?request.getParameter("userId"):"0");
+		
+		registrationId = 0l;
+		session = request.getSession();
+		regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		if(regVO != null)
+			registrationId = regVO.getRegistrationID();
 		
         if( registrationId.intValue() == 0) 
         	regVO = new RegistrationVO();
