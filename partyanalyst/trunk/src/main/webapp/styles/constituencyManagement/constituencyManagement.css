@@ -139,7 +139,8 @@
 .textBoxStyle
 {
 	font-size: 13px;
-	color: #55FF55;
+	/*color: #55FF55;*/
+	color:#000000;
 	font-weight: bold;	
 }
 .yui-skin-sam .yui-dt caption 
