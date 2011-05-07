@@ -846,7 +846,7 @@ function buildQuickRegionAccessContent()
 	if(!qElmt || !connectCountElmt)
 		return;
 
-	var pStr = '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="freeUserRegistration.action?userId='+loginUserId+'">Edit Profile</a></div>';
+	var pStr = '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="freeUserRegistration.action">Edit Profile</a></div>';
 	pStr += '<div style="margin-right:15px;margin-top:9px;" <a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Edit picture</a></div>';
 	profElmt.innerHTML = pStr;
 
