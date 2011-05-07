@@ -53,7 +53,17 @@
 			font-size:12px;
 			font-weight:bold;
 			padding:5px;
-		}			
+		}
+		
+		.button {
+			background	:none repeat scroll 0 0 #335291;
+			color		:#FFFFFF;
+			margin-bottom:5px;
+			margin-top	:5px;
+			padding		:5px;
+			width		:125px;
+	    }
+
   </style>
  
   <script type="text/javascript">
@@ -378,7 +388,7 @@
 									</select>
 								</td>
 								<td>
-									<input type="button" class="button" value="Manage All User Groups" onclick="getAllEntitlementGroups()"></input>			
+									<input type="button" class="button" style="width:175px;" value="Manage All User Groups" onclick="getAllEntitlementGroups()"></input>			
 								</td>						
 							</tr>		
 						</table>  
@@ -415,14 +425,14 @@
 									 Entitlement Groups		
 								</td>
 								<td>
-									<select id="entitlementGroupId" onchange="showEntitlementsForAEntitlementGroup()">
+									<select id="entitlementGroupId" onchange="showEntitlementsForAEntitlementGroup()" style="width:162px;">
 										<c:forEach var="allUsers" varStatus="stat" items="${allGroups.setOfGroups}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
 									</select>
 								</td>
 								<td>
-									<input type="button" class="button" value="Manage All Entitlement Groups" onclick="getAllEntitlements()"></input>			
+									<input type="button" class="button" style="width:190px;" value="Manage All Entitlement Groups" onclick="getAllEntitlements()"></input>			
 								</td>						
 							</tr>		
 						</table>  
