@@ -429,7 +429,7 @@ public class OpinionPollService implements IOpinionPollService {
 		FeedBack feedBack =  new FeedBack();
 		try {
 			
-		feedBack.setComment(feedbackVO.getComment());
+		feedBack.setComment(feedbackVO.getComment().replace("\n"," "));
 		feedBack.setResponseCategory(feedbackVO.getResponseCategory());
 		
 		feedBack.setFeedBackComment(feedbackCommentDAO.get(feedbackVO.getCommentType()));
