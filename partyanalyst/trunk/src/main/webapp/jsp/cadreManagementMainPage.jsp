@@ -289,14 +289,16 @@
 										alert("Event cannot be created due to some exception");
 									}
 									addCreatedEvent(myResults,jsObj);
+									alert("Important Event created successfully");
 								}
 								else if(jsObj.task=="createImpDateEvent")
 								{
-									if(myResults[0].importantDateId == null)
+									/*if(myResults.importantDateId == null)
 									{
-										alert("Importanr date cannot be created due to some exception");
-									}
-									addCreatedEvent(myResults,jsObj);																		
+										alert("Important date cannot be created due to some exception");
+									}*/
+									addCreatedEvent(myResults,jsObj);			
+									alert("Important Date created successfully");
 								}
 								else if(jsObj.task=="subscribe")
 								{									
@@ -360,16 +362,16 @@
 	
 	function removeDeletedElement(id,jsObj)
 	{
-		var elmt;
+		
 		alert("Event/Date successfully deleted");
 		if(eventDateDialog)
 			eventDateDialog.hide();
 
 		
 		if(jsObj.task=="deleteEvent")		
-			elmt = document.getElementById("ImpEvent_"+myResults);
+		var elmt = document.getElementById("ImpEvent_"+myResults);
 		else if(jsObj.task=="deleteImpDate")		
-			elmt = document.getElementById("ImpDate_"+myResults);
+		var elmt = document.getElementById("ImpDate_"+myResults);
 
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
@@ -950,7 +952,7 @@
 		regionStr+='</select>';	
 
 		
-		regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="true">';
+		regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="false">';
 		if(results.districts != "")
 		{
 			for(var district in results.districts)
@@ -2157,32 +2159,44 @@
 	}
 	function addCreatedEvent(results,jsObj)
 	{	
-		
-		if(jsObj.task == "updateCreateEvent" || jsObj.task == "updateImpDateEvent")
+		//debugger;
+		if(jsObj.task == "updateCreateEvent") 
 		{
 			
 			eventDateDialog.hide();
 			
-			alert("Event/date Updated Successfully");
-
+			alert("Event Updated Successfully");
+			
 			if(jsObj.task == "updateCreateEvent")
-				var elmt = document.getElementById("ImpEvent_"+results.userEventsId);
-			else if(jsObj.task == "updateImpDateEvent")
-				var elmt = document.getElementById("ImpDate_"+results[0].importantDateId);
+			var elmt = document.getElementById("ImpEvent_"+results.userEventsId);
+
 
 
 			var parent = elmt.parentNode;
 			parent.removeChild(elmt);
 		}
+		if(jsObj.task == "updateImpDateEvent")
+		{
+			eventDateDialog.hide();
+			alert("Date Updated Successfully");
+			if(jsObj.task == "updateImpDateEvent")
+			var elmt = document.getElementById("ImpDate_"+results[0].importantDateId);
+			
+			
+			
+			var parent = elmt.parentNode;
+			parent.removeChild(elmt);
+		}
 		
 		var divElmt = document.createElement('div');
-		if(results == "")
+		/*if(results == "")
 		{
 			alert("No dates to display");
 			return;
-		}
+		}*/
 
 		var str='';
+		
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
 		{			
 			str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv">';
@@ -2200,16 +2214,16 @@
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
-			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';
+			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\'impDate\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
 			//str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+results[0].eventType+'\',\'impDate\')">';
 		}
 
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
-				str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
+		str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-				str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
+		str+='<tableonclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
@@ -2240,10 +2254,11 @@
 		str+='</div>';
 		divElmt.innerHTML=str;
 				
+		var elmt;
 		if(jsObj.task == "createEvent"  || jsObj.task == "updateCreateEvent")
-			var elmt = document.getElementById("cadreImpEventsBodyDiv");
+			elmt = document.getElementById("cadreImpEventsBodyDiv");
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-			var elmt = document.getElementById("cadreImpDatesBodyDiv");
+			elmt = document.getElementById("cadreImpDatesBodyDiv");
 
 		if(elmt)
 		{
@@ -2935,13 +2950,13 @@
 	function addCadresToEventPanel(type)
 	{		
 		var cadreArray = new Array();
-
+		var divElmt;
 		if(type == 'Editevent' || type == 'Editaction')
 		{
 			addCadresToEditEventPanel(type);
 		}
 
-		var divElmt;
+		
 		if(type == 'event')
 		{
 			cadreArray = eventCadresArray;
@@ -3063,7 +3078,7 @@
 			divElmt.innerHTML='<span style="color:#CFCFCF">No Organizers For Action Plan</span>';
 		}
 		
-		var elmt = document.getElementById("cadreNameDiv_"+id.substring(id.indexOf('_')+1,id.length));
+	var elmt = document.getElementById("cadreNameDiv_"+id.substring(id.indexOf('_')+1,id.length));
 	
 		if(elmt)
 		elmt.style.display='none';
@@ -3310,7 +3325,7 @@
 		 //validation code
 		 if(eventNameVal == '')
 		{
-		  document.getElementById("errorMsgDiv").innerHTML = "please enter event name";
+		  document.getElementById("errorMsgDiv").innerHTML = "Please Enter Event Name";
 		}
 		else if(descVal == '')
 		{
@@ -3366,6 +3381,8 @@
 	{
 		this.cancel();
 	}	
+
+	
 
 	function buildNewImpDatePopup()
 	{
@@ -3457,7 +3474,7 @@
 
 	function handleImpDateSubmit()
 	{	
-		debugger;
+		
 		var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 		var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
 		var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
@@ -3469,13 +3486,13 @@
 		
 		if(ImpeventNameVal == '')
 		{ 
-			alert(ImpeventNameVal);
-			document.getElementById("errorMesgDIV").innerHTML = "please enter title";
+			//alert(ImpeventNameVal);
+			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Title</font>';
         }
 	 if(ImpDescVal == '')
 		{
-			alert(ImpDescVal);
-          document.getElementById("errorMesgDIV").innerHTML = "please enter description";
+		  //alert(ImpDescVal);
+          document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
 		}
 
 
@@ -3493,8 +3510,7 @@
 		selectedDateObj.isDeleted=repeatFreqVal;
 		selectedDateObj.task="createImpDateEvent";
 	
-		// validation code
-		
+				
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 		callAjax(selectedDateObj,url);
@@ -3519,6 +3535,8 @@
 
 	function showInitialImpEventsAndDates(eventsarr,type,task)
 	{			
+		//debugger;
+		var divElmt;
 		if(type == "impEvents")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
 		else if(type == "impDates")
@@ -3560,7 +3578,7 @@
 				var endTimeMin = eDayobj.minutes;
 			}
 			
-			var divElmt = document.createElement('div');						
+			divElmt = document.createElement('div');						
 
 			if(i%2!=0)
 				divElmt.setAttribute('style','background-color:#EBF5FF;');
@@ -3573,6 +3591,7 @@
 				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';				
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+')"> X </span>';
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
+				/*str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\''+eventsarr[i].eventType+'\',\'\',\'impEvent\')">';*/
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 			}			
 			else if(type == "impDates")
@@ -3585,10 +3604,9 @@
 			}
 
 			if(type == "impEvents")
-				str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
+			str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
 			else if(type == "impDates")
-				str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
-
+			str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 			str+='<td>'+eventsarr[i].title+'</td>';	
