@@ -6,7 +6,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 
@@ -53,7 +53,6 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
-
 
 <!-- JQuery files (End) -->
 
@@ -235,8 +234,8 @@
 		$( "#accordion" ).dialog({
 			autoOpen: true,
 			show: "blind",
-			width: 400,
-			minHeight:500,
+			width: 320,
+			minHeight:460,
 			hide: "explode"
 		});
 
@@ -270,12 +269,11 @@
 		}
 	
 	</script>
-	<style >
 	 <decorator:head/>
 </head>
 
 <body>
-<div id="floatingDiv_relative_main_qv">
+<div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
 				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
@@ -313,7 +311,7 @@
 						</tr>
 						<tr>
 						<td id="searchBox"></td>
-						<tr>
+						</tr>
 					</table>
 				</td>
 			</tr>
