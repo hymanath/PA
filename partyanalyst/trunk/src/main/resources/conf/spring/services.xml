@@ -514,6 +514,11 @@
     	<property name="nominationDAO" ref="nominationDAO" />
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     	<property name="staticDataService" ref="staticDataService" />
+    	<property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
+    	<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
+    	<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+    	<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+    	<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
     </bean>
     
 	<bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
