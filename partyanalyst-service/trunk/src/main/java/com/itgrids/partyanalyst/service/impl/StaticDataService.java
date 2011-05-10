@@ -1046,29 +1046,21 @@ public class StaticDataService implements IStaticDataService {
 					for (int i = 0; i < candidates.size(); i++) {
 						ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
 						Object[] obj = (Object[]) candidates.get(i);
-						constituencyWinnerInfoVO.setConstituencyName(obj[0]
-								.toString());
-						constituencyWinnerInfoVO
-								.setCandidateName(obj[1].toString());
+						constituencyWinnerInfoVO.setConstituencyName(obj[0].toString());
+						constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
 						constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
-						constituencyWinnerInfoVO.setConstituencyId(obj[3]
-								.toString());
-						constituencyWinnerInfoVO.setReservationZone(obj[6]
-								.toString());
-						List list = delimitationConstituencyAssemblyDetailsDAO
-								.findLatestParliamentForAssembly(Long
-										.parseLong(obj[3].toString()));
+						constituencyWinnerInfoVO.setConstituencyId(obj[3].toString());
+						constituencyWinnerInfoVO.setReservationZone(obj[6].toString());
+						
+						List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(Long.parseLong(obj[3].toString()));
+						
 						for (int j = 0; j < list.size(); j++) {
 							Object[] params = (Object[]) list.get(j);
 							Long id = Long.parseLong(params[0].toString());
-							constituencyWinnerInfoVO
-									.setParliamentConstituencyId(id);
-							constituencyWinnerInfoVO
-									.setParliamentConstituencyName(params[1]
-											.toString());
+							constituencyWinnerInfoVO.setParliamentConstituencyId(id);
+							constituencyWinnerInfoVO.setParliamentConstituencyName(params[1].toString());
 							parliamentIDs.append(",").append(params[0].toString());
-							parliamentConstituencies.add(Long.parseLong(params[0]
-									.toString()));
+							parliamentConstituencies.add(Long.parseLong(params[0].toString()));
 						}
 						constituencyWinnerInfoVO.setPartyName(obj[2].toString());
 						if (obj[5] != null) {
@@ -2623,8 +2615,7 @@ public class StaticDataService implements IStaticDataService {
 		List<CandidateDetailsVO> candidateDetailsVo = new ArrayList<CandidateDetailsVO>(
 				0);
 		try {
-			log
-					.info("Making nominationDAO.getParliamentCandidateNPartyInfoForADistrict() DAO call");
+			log.info("Making nominationDAO.getParliamentCandidateNPartyInfoForADistrict() DAO call");
 			Iterator<Long> iterator = parliamentConstituencies.iterator();
 			while (iterator.hasNext()) {
 				List list = nominationDAO.getParliamentCandidateNPartyInfo(Long
