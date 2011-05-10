@@ -54,6 +54,7 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 
+
 <!-- JQuery files (End) -->
 
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
@@ -234,7 +235,7 @@
 		$( "#accordion" ).dialog({
 			autoOpen: true,
 			show: "blind",
-			width: 320,
+			width: 400,
 			minHeight:500,
 			hide: "explode"
 		});
@@ -269,11 +270,12 @@
 		}
 	
 	</script>
+	<style >
 	 <decorator:head/>
 </head>
 
 <body>
-<div id="floatingDiv_relative_main">
+<div id="floatingDiv_relative_main_qv">
 			<div id="floatingDiv_absolute_main">				
 				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
