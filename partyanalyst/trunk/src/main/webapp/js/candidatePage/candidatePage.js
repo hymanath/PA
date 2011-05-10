@@ -625,16 +625,6 @@ function candidateProfileInfo()
 		str +='<td title="'+candidateObject.candidateInfoArray[0].partyName+'">Political Party:<b>&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].partyShortName+'</b> </td>';
 		str +='</tr>';
 		str +='<tr>';
-		str +='<td>Party Flag:&nbsp;&nbsp;';
-		if(candidateObject.candidateInfoArray[0].partyFlag != ""){
-		 str +='<img src="'+candidateInfoObject.contextPath+'/images/party_flags/'+candidateObject.candidateInfoArray[0].partyFlag+'" height="25" width="50"/>';
-		}
-		else{ 
-		 str +='<img src="'+candidateInfoObject.contextPath+'/images/party_flags/no_Image.png" height="25" width="50"/>';
-		}
-		str +='</td>';
-		str +='</tr>';
-		str +='<tr>';
 		if(candidateObject.candidateInfoArray[0].education != ''){
 			str +='<td>Education:<b>&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].education+'</b> </td>';
 		}
@@ -653,6 +643,13 @@ function candidateProfileInfo()
 		  str1 +='&nbsp;&nbsp;MLA';
 		}
 		str1 +='<span>&nbsp;&nbsp;From&nbsp;&nbsp;'+candidateObject.candidateInfoArray[0].constituencyName+'</span>&nbsp;&nbsp; Constituency';
+
+		if(candidateObject.candidateInfoArray[0].partyFlag != ""){
+		 str1 +='<img style="padding-left:190px;" src="'+candidateInfoObject.contextPath+'/images/party_flags/'+candidateObject.candidateInfoArray[0].partyFlag+'" height="20" width="40"/>';
+		}
+		else{ 
+		 str1 +='<img style="padding-left:190px;" src="'+candidateInfoObject.contextPath+'/images/party_flags/no_Image.png" height="20" width="45"/>';
+		}
 		candidatePageHeaderElmt.innerHTML = str1;
 }
 
