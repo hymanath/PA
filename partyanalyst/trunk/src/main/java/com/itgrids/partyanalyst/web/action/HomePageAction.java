@@ -242,6 +242,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		{			
 			constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
 		}
+		if(jObj.getString("task").equalsIgnoreCase("statesListForLocalBodyElection"))
+		{			
+			statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
+			
+			if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
+				statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
+		}
 		return Action.SUCCESS;
 	}
 	
