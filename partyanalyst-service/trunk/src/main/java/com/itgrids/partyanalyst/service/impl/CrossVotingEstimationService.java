@@ -13,7 +13,12 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.CrossVotedBoothVO;
 import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
@@ -35,7 +40,21 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	private INominationDAO nominationDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IStaticDataService staticDataService;
+	private	IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
+	private	IUserStateAccessInfoDAO userStateAccessInfoDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
@@ -44,6 +63,42 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		this.nominationDAO = nominationDAO;
 	}
 	
+	public IUserCountryAccessInfoDAO getUserCountryAccessInfoDAO() {
+		return userCountryAccessInfoDAO;
+	}
+
+	public void setUserCountryAccessInfoDAO(
+			IUserCountryAccessInfoDAO userCountryAccessInfoDAO) {
+		this.userCountryAccessInfoDAO = userCountryAccessInfoDAO;
+	}
+
+	public IUserStateAccessInfoDAO getUserStateAccessInfoDAO() {
+		return userStateAccessInfoDAO;
+	}
+
+	public void setUserStateAccessInfoDAO(
+			IUserStateAccessInfoDAO userStateAccessInfoDAO) {
+		this.userStateAccessInfoDAO = userStateAccessInfoDAO;
+	}
+
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -379,6 +434,124 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		crossVotedMandalVO.setPercentageDifferenceInMandal(percentageDiffInMandal);
 		
 		return crossVotingInfoVOs;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesForElectionYearAndTypeWithUserAccess(Long userId,Long electionYear,Long electionTypeId)
+	{
+		try{
+			
+			List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>(0);
+			
+			List<Object[]> countryList = (List<Object[]>)userCountryAccessInfoDAO.findByUser(userId);
+			List<Object[]> stateList = (List<Object[]>)userStateAccessInfoDAO.findByUser(userId);
+			List<Object[]> districtList = (List<Object[]>)userDistrictAccessInfoDAO.findByUser(userId);
+			List<Object[]> conList = (List<Object[]>)userConstituencyAccessInfoDAO.findByUser(userId);
+			
+			if(countryList != null && countryList.size() > 0 )
+			{
+				Long countryId = (Long)(countryList.get(0)[0]);
+				List<Object[]>constList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInCountry(electionTypeId,countryId, electionYear);
+				
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] param : constList)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)param[0]);
+					selectOptionVO.setName(param[1].toString());
+					constituenciesList.add(selectOptionVO);
+				}
+			}
+			
+			if(stateList != null && stateList.size() > 0)
+			{
+				for(Object[] stList : stateList)
+				{
+					Long stateId = (Long)stList[0];
+					List<Object[]>constList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInState(electionTypeId,stateId, electionYear);
+					SelectOptionVO selectOptionVO = null;
+					for(Object[] param : constList)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)param[0]);
+						selectOptionVO.setName(param[1].toString());
+						constituenciesList.add(selectOptionVO);
+					}
+				}
+			}
+			
+			if(districtList != null && districtList.size() > 0)
+			{
+				for(Object[] disList : districtList)
+				{
+					Long districtId = (Long)disList[0];
+					List<Object[]>constList = null;
+					
+					if(electionTypeId.intValue() == 1)
+						constList = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(districtId, electionYear);
+							
+					else if(electionTypeId.intValue() == 2)
+						constList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInADistrict(electionTypeId,districtId, electionYear);
+									
+					SelectOptionVO selectOptionVO = null;
+					for(Object[] param : constList)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)param[0]);
+						selectOptionVO.setName(param[1].toString());
+						constituenciesList.add(selectOptionVO);
+					}
+				}
+			}
+			
+			if(conList != null && conList.size() > 0)
+			{
+				if(electionTypeId.intValue() == 1)
+				{
+					for(Object[] consList : conList)
+					{
+						Long constuencyId = (Long)consList[0];
+						List<Object[]>constList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYear(electionTypeId,constuencyId,electionYear);
+						
+						SelectOptionVO selectOptionVO = null;
+						for(Object[] param : constList)
+						{
+							selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId((Long)param[0]);
+							selectOptionVO.setName(param[1].toString());
+							constituenciesList.add(selectOptionVO);
+						}
+					}
+				}
+				
+				else if(electionTypeId.intValue() == 2)
+				{
+					for(Object[] consList : conList)
+					{
+						if(consList[2].toString().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+						{
+							Long pcId = (Long)consList[0];
+							List<Object[]> constList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(pcId);
+							SelectOptionVO selectOptionVO = null;
+							for(Object[] param : constList)
+							{
+								selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setId((Long)param[0]);
+								selectOptionVO.setName(param[1].toString());
+								constituenciesList.add(selectOptionVO);
+							}
+						}
+						else if(consList[2].toString().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+							constituenciesList.add(new SelectOptionVO((Long)consList[0],consList[1].toString()));
+						
+					}
+				}
+			}
+						
+			return constituenciesList;
+		}catch(Exception e){
+			return null;
+		}
 	}
 
 }
