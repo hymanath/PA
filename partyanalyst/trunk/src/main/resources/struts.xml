@@ -1488,6 +1488,11 @@
 				<param name="root">constituenciesList</param>				
 			</result>		
 		</action>
+		<action name="getAllStatesHavingLocalBody" class="homePageAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">statesListForLocalBodyElection</param>				
+			</result>		
+		</action>
 		<action name="getPartiesForState" class="electionComparisonAction" method="getPartiesInStateForEC">
 			<result type="json" name="success">
 				<param name="root">partyList</param>				
