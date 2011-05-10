@@ -90,12 +90,18 @@
     text-decoration: underline;
 
 }
+.resultTableDiv{
+	width :100%;
+	margin-bottom:5px;
+}
 
 </style>
 </head>
 <body>
 <div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></div>
 <div id="boothResultsDiv">
+
+<div class="resultTableDiv">
 <div class="boothResultHeadingDiv">Candidate Details : </div>
 <table class="searchresultsTable" style="width: auto; float: left;">
 	<tr>
@@ -124,7 +130,10 @@
 		
 	</tr>
 </table>
-<br/><br><br/><br><br><br>
+</div>
+<BR><BR><BR><BR><BR><BR>
+
+<div>
 <table>
 	<tr>
 		<td>
@@ -163,7 +172,7 @@
 		</td>
 	</tr>
 </table>
-
+</div>
 <div class="boothResultHeadingDiv">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
@@ -188,8 +197,7 @@
 		property="percentage" />
 </display:table>
 </div>
-</div>
-
+</div>>
 <script language="javascript">
 initializeResultsTable();
 </script>
