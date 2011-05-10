@@ -310,15 +310,14 @@
 							</th>
 						</tr>
 						<tr>
-							<td id="searchBox">
-								
-							</td>
-						</tr>
+						<td id="searchBox"></td>
+						<tr>
 					</table>
 				</td>
 			</tr>
 		</table>		
 	</div>	
+	
 	<div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
@@ -664,21 +663,18 @@ function getAllStatesHavingLocalBody(element){
 	var url="getAllStatesHavingLocalBody.action?"+rparam;
 	callQuickViewAjax(jsObj,url);
 }
-function getStatesInQuickView(selectedId, task, module, elementId, addressType, areaType)
+function getStatesInQuickView( task,selId)
 {		
 	
 	var jsObj=
 		{				
-			id: selectedId,
-			task: task,
-			taskType:module,
-			elmtId: elementId ,
-			address: addressType,
-			areaType: areaType
+			electionType :'Assembly',
+			elmtId:selId,
+			task:task	
 		}
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	var url = "getStatesAjaxAction.action?"+rparam;						
 	callQuickViewAjax(jsObj,url);
 }
 function callQuickViewAjax(jsObj, url){
@@ -731,14 +727,14 @@ function callQuickViewAjax(jsObj, url){
 }
 
 		intialize();
-		getStatesInQuickView(1,'statesInCountry','siteSearch','stateList_s','current','null');
-		getStatesInQuickView(1,'statesInCountry','siteSearch','stateLists','current','null');
-		getStatesInQuickView(1,'statesInCountry','siteSearch','stateList2','current','null');
-		getStatesInQuickView(1,'statesInCountry','siteSearch','stateList_c','current','null');
-		getStatesInQuickView(1,'statesInCountry','siteSearch','stateList_l','current','null');
+		getStatesInQuickView('siteSearch','stateList_s');
+		getStatesInQuickView('siteSearch','stateLists');
+		getStatesInQuickView('siteSearch','stateList2');
+		getStatesInQuickView('siteSearch','stateList_c');
+		//getStatesInQuickView('siteSearch','stateList_l');
 		getElectionTypeValue(1);
-		//getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
-		//hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
+		getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
+		hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
 		getAllStatesHavingLocalBody("stateList_l");
 		getLocalBodiesForState(1);
 
