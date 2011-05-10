@@ -56,6 +56,7 @@
 <script type="text/javascript" src="js/statePage/statePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 
+ <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>   
 <!-- JQuery files (Start) -->
 <script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
@@ -512,7 +513,7 @@ var new2="Election Message";
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
-									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYears((this.options[this.selectedIndex].text))" ></select></td></tr>
+									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage((this.options[this.selectedIndex].text))" ></select></td></tr>
 									<tr>
 									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
