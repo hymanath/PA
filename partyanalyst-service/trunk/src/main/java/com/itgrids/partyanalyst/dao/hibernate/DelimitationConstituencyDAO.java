@@ -131,4 +131,40 @@ IDelimitationConstituencyDAO {
 		return getHibernateTemplate().find("select model.constituency.constituencyId from DelimitationConstituency model where " +
 				"model.constituency.district.districtId =? and model.year =? order by model.constituency.name",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituenciesByElectionTypeAndYearInCountry(Long electionTypeId, Long countryId,Long electionYear)
+	{
+		Object[] params = {electionTypeId, countryId, electionYear};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.constituency.electionScope.electionType.electionTypeId = ? and model.constituency.state.country.countryId = ? and model.year = ? " +
+				" order by model.constituency.name", params); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituenciesByElectionTypeAndYearInState(Long electionTypeId, Long stateId,Long electionYear)
+	{
+		Object[] params = {electionTypeId, stateId, electionYear};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.constituency.electionScope.electionType.electionTypeId = ? and model.constituency.state.stateId = ? and model.year = ? " +
+				" order by model.constituency.name", params); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituenciesByElectionTypeAndYearInADistrict(Long electionTypeId, Long districtId,Long electionYear)
+	{
+		Object[] params = {electionTypeId, districtId, electionYear};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.constituency.electionScope.electionType.electionTypeId = ? and model.constituency.district.districtId = ? and model.year = ? " +
+				" order by model.constituency.name", params); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituenciesByElectionTypeAndYear(Long electionTypeId, Long constituencyId,Long electionYear)
+	{
+		Object[] params = {electionTypeId, constituencyId, electionYear};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.constituency.electionScope.electionType.electionTypeId = ? and model.constituency.constituencyId = ? and model.year = ? " +
+				" order by model.constituency.name", params); 
+	}
 }
