@@ -60,34 +60,52 @@
 	{
 		text-color:#707070;
 	}
+	h4.tdstyle{
+
+	color: #5E5A80;
+    font-weight: bold;
+	}
+	a.alinkstyle {
+		color:#168787;
+	}
+	 #headingStyle{
+     background-color: #567AAF;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    height: 25px;
+    margin-top: 11px;
+    text-align: center;
+    width: 172px;
+	}
 	</style>
   </HEAD>
   <BODY class="bodyClass">
-  <h2><u>PartyAnalyst Admin</u></h2>
+  <h2 id ="headingStyle">PartyAnalyst Admin</h2>
 <div id="contentDiv">
 	<table>
 		<tr>
 			<td>
 				<fieldset class="f1">
-					<legend class="l1">Party Analyst Utilities Admin</legend>
-						<table border="0" width="100%">
+					<legend class="l1">PartyAnalyst Utilities Admin</legend>
+					  	<table border="0" width="100%">
 							<tr>
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">User Registration</legend>
-									<h4>Register a new user:<a href="<s:url action="userRegPageAction?registrationType=mainUser"/>">Register</a></h4>
+									<h4 class="tdstyle">Register a new user&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="userRegPageAction?registrationType=mainUser"/>">Register</a></h4>
 									</fieldset>
 								</td>
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Configure Opinion Polls</legend>
-									<h4>Add Opinion Poll:<a href="<s:url action="opinionPollPost"/>"><b>&nbsp;Add Opinion Poll</b></a></h4>
+									<h4 class="tdstyle">Add Opinion Poll&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="opinionPollPost"/>"><b>&nbsp;Add Opinion Poll</b></a></h4>
 									</fieldset>
 								</td>
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Scrutinize Problems</legend>
-									<h4>Accept/Reject recent problems posted:<a href="<s:url action="problemManagementAdminAction"/>"><b>&nbsp;Recent Problems</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject recent problems posted&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemManagementAdminAction"/>"><b>&nbsp;Recent Problems</b></a></h4>
 									</fieldset>
 								</td>
 							</tr>
@@ -95,40 +113,40 @@
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Entitlements</legend>
-									<h4>Organise Entitlements:<a href="<s:url action="userEntitlementAction"/>">organise</a></h4>
+									<h4 class="tdstyle">Organise Entitlements&nbsp;:&nbsp;&nbsp;<a  class="alinkstyle" href="<s:url action="userEntitlementAction"/>">organise</a></h4>
 									</fieldset>
 								</td>	
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Scrutinize Comments</legend>
-									<h4>Accept/Reject recent posted comments on Political Reasons:<a href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject recent posted comments on Political Reasons&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
 									</fieldset>
 								</td>	
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Delimitation Census Upload</legend>
-									<h4>Upload Delimitation Mapping Data For Constituencies :<a href="<s:url action="delimitationMappingsUpload"/>"><b>&nbsp;Start Mapping</b></a></h4>
+									<h4 class="tdstyle">Upload Delimitation Mapping Data For Constituencies &nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="delimitationMappingsUpload"/>"><b>Start Mapping</b></a></h4>
 									</fieldset>
 								</td></tr>
 							<tr>
                                 <td>
                                     <fieldset class="f2">
                                     <legend class="l2">Comments Posted On Problems</legend>
-                                    <h4>Approval/Reject Recently Posted Comments on problems :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
+                                    <h4 class="tdstyle">Approval/Reject Recently Posted Comments on problems &nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
                                     </fieldset>
                                 </td>
 
 								<td>
                                     <fieldset class="f2">
                                     <legend class="l2">Constituency Wise Census Mapping</legend>
-                                    <h4>To Map the Census Details For Constituencies :<a href="<s:url action="constituencyWiseCensusMappingAction"/>"><b>&nbsp;&nbsp;Start Mapping</b></a></h4>
+                                    <h4 class="tdstyle">To Map the Census Details For Constituencies &nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="constituencyWiseCensusMappingAction"/>"><b>&nbsp;Start Mapping</b></a></h4>
                                     </fieldset>
                                 </td>
                                  
-                               <td>
+                               <td style="padding-left:24px;">
                                     <fieldset class="f2">
                                     <legend class="l2">User Feedback Approval Admin</legend>
-                                    <h4>Accept/Reject Recently Posted Feedbacks:<a href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp;Approval</b></a></h4>
+                                    <h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp;Approval</b></a></h4>
                                     </fieldset>
                                 </td>
                                  
@@ -139,7 +157,7 @@
 								<td>
                                     <fieldset class="f2">
                                     <legend class="l2">Add A Question</legend>
-                                    <h4>AddNewQuestion<a href='<s:url action="homePageQuestionsAction"/>'><b>&nbsp;&nbsp;Add Question</b></a></h4>
+                                    <h4 class="tdstyle">AddNewQuestion&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href='<s:url action="homePageQuestionsAction"/>'><b>&nbsp;&nbsp;Add Question</b></a></h4>
                                     </fieldset>
                                 </td>
 							</tr>
@@ -156,21 +174,21 @@
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Election Data Upload</legend>
-									<h4>Upload Assembly/Parliament Elections Data :<a href="<s:url action="electionUpload"/>">Upload</a></h4>
-									<h4>Upload MPTC/ZPTC/Municipal Elections Data :<a href="<s:url action="mptcElectionAction"/>">Upload </a></h4>
+									<h4 class= "tdstyle">Upload Assembly/Parliament Elections Data :<a class="alinkstyle" href="<s:url action="electionUpload"/>">Upload</a></h4>
+									<h4 class= "tdstyle" >Upload MPTC/ZPTC/Municipal Elections Data :<a class="alinkstyle" href="<s:url action="mptcElectionAction"/>">Upload </a></h4>
 									</fieldset>
 								</td>
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Booth Data Upload</legend>
-									<h4>Upload Booth Data :<a href="<s:url action="boothDataUpload"/>"> Upload </a></h4>
-									<h4>Upload Booth Results :<a href="<s:url action="boothResultUpload"/>"> Upload </a></h4>
+									<h4 class= "tdstyle">Upload Booth Data :<a class="alinkstyle"  href="<s:url action="boothDataUpload"/>"> Upload </a></h4>
+									<h4 class= "tdstyle" >Upload Booth Results :<a class="alinkstyle" href="<s:url action="boothResultUpload"/>"> Upload </a></h4>
 									</fieldset>
 								</td>
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Mapping(Upload Files)</legend>
-									<h4>Upload Booth Village Mapping Data<a href="<s:url action="villageBoothMapperUploadAction"/>">Upload</a></h4>
+									<h4 class= "tdstyle">Upload Booth Village Mapping Data<a class="alinkstyle" href="<s:url action="villageBoothMapperUploadAction"/>">Upload</a></h4>
 									</fieldset>
 								</td>								
 							</tr>
@@ -178,21 +196,21 @@
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Mapping(User Interface)</legend>
-									<h4>Map Booths To Revenue Village<a href="<s:url action="hamletBoothMapperAction"/>"> Map </a></h4>
-									<h4>Map Booths To Local Election Body Wards<a href="<s:url action="municipalWardsAssemblyBoothsMapperAction?windowTask=new&constituencyId=0"/>"> Map </a></h4>
-									<h4>Map Villages To Booths <a href="<s:url action="villageBoothMapperAction"/>"> Map </a></h4>
+									<h4 class= "tdstyle" >Map Booths To Revenue Village<a class="alinkstyle" href="<s:url action="hamletBoothMapperAction"/>"> Map </a></h4>
+									<h4 class= "tdstyle" >Map Booths To Local Election Body Wards<a class="alinkstyle" href="<s:url action="municipalWardsAssemblyBoothsMapperAction?windowTask=new&constituencyId=0"/>"> Map </a></h4>
+									<h4 class= "tdstyle" >Map Villages To Booths <a class="alinkstyle" href="<s:url action="villageBoothMapperAction"/>"> Map </a></h4>
 									</fieldset>
 								</td>								
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Voters Data Upload</legend>
-									<h4>To Upload Voter    Data :<a href="<s:url action="voterDataUpload"/>"> Upload </a></h4>
+									<h4 class= "tdstyle" >To Upload Voter    Data :<a class="alinkstyle" href="<s:url action="voterDataUpload"/>"> Upload </a></h4>
 									</fieldset>
 								</td>
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Problems Upload</legend>
-									<h4>To Upload Problems Data :<a href="<s:url action="problemDataUpload"/>"> Upload </a></h4>
+									<h4 class= "tdstyle" >To Upload Problems Data :<a class="alinkstyle" href="<s:url action="problemDataUpload"/>"> Upload </a></h4>
 									</fieldset>
 								</td>
 							</tr>
