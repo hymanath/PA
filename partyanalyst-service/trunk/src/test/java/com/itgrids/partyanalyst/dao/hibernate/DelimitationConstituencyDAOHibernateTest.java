@@ -114,7 +114,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetLatestConstituenciesByElectionTypeInDistrict()
 	{
 		List<Object[]>list =  delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInState(2l,1l);
@@ -141,5 +141,25 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 		System.out.println("==========="+total+"================");
 	}
-	
+	*/
+	/*public void testGetLatestConstituenciesByElectionTypeAndYearInADistrict()
+	{
+		List<Object[]> list = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInADistrict(1l,19l,2009l);
+		
+		if(list != null && list.size() > 0)
+			System.out.println(list.size());
+		}*/
+	public void testGetLatestConstituenciesByElectionTypeAndYearInState()
+	{
+		List<Object[]> list = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInState(1l,1l,2004l);
+		
+		if(list != null && list.size() >0)
+		{
+			for(Object[] param : list)
+			{
+				System.out.println(param[0]);
+				System.out.println(param[1]);
+			}
+		}
+	}
 }
