@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
+
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class PartyBoothResult1Action extends ActionSupport  {
+public class PartyBoothResult1Action extends ActionSupport  implements ServletRequestAware{
 
 	/**
 	 * 
@@ -26,6 +33,8 @@ public class PartyBoothResult1Action extends ActionSupport  {
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List<SelectOptionVO> constituencyVOs;
 	private HttpServletResponse response;
+	private HttpSession session;
+	private HttpServletRequest request;
 
 	public String getPartyName() {
 		return partyName;
@@ -100,10 +109,26 @@ public class PartyBoothResult1Action extends ActionSupport  {
 		this.constituencyName = constituencyName;
 	}
 
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
 	public String execute() throws Exception {
 
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
 		System.out.println("In execute = "+electionType+" ,election year =  "+electionYear);
-		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
+		//constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
+		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),new Long(electionYear), new Long(electionType));
 
 		return Action.SUCCESS;
 	}
@@ -114,6 +139,6 @@ public class PartyBoothResult1Action extends ActionSupport  {
 		constituencyVOs = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(new Long(constituencyName), electionYear);
 		return Action.SUCCESS;
 	}
-	
 
+	
 }
