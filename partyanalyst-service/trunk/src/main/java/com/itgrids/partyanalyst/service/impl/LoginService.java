@@ -303,6 +303,7 @@ public class LoginService implements ILoginService{
 		return regVO;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, final String regionType, Long regionId){
 		
 		if(registrationVO == null)
@@ -316,7 +317,7 @@ public class LoginService implements ILoginService{
 		Constituency constituency = null;
 		SelectOptionVO countrySelect = null;
 		SelectOptionVO stateSelect = null;
-		SelectOptionVO districtSelect = null;
+		List<SelectOptionVO> districtSelect = new ArrayList<SelectOptionVO>(0);
 		SelectOptionVO acSelect = null;
 		SelectOptionVO pcSelect = null;
 		
@@ -337,7 +338,7 @@ public class LoginService implements ILoginService{
 				
 				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
 				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-				districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+				districtSelect.add(new SelectOptionVO(district.getDistrictId(), district.getDistrictName()));
 			}else if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(regionType)){
 				constituency = constituencyDAO.get(regionId);
 				state = constituency.getState();				
@@ -346,7 +347,7 @@ public class LoginService implements ILoginService{
 				if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
 					acSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
 					district = constituency.getDistrict();
-					districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+					districtSelect.add(new SelectOptionVO(district.getDistrictId(), district.getDistrictName()));
 					List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId);
 
 					if(pcs.size() > 0){
@@ -356,7 +357,13 @@ public class LoginService implements ILoginService{
 					}
 					
 				}else
+				{
 					pcSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+					List<Object[]> DisList = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(constituency.getConstituencyId());
+					
+					for(Object[] param : DisList)
+						districtSelect.add(new SelectOptionVO((Long)param[0],param[1].toString()));
+				}
 				
 				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
 				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
@@ -387,7 +394,7 @@ public class LoginService implements ILoginService{
 				
 				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
 				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-				districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+				districtSelect.add(new SelectOptionVO(district.getDistrictId(), district.getDistrictName()));
 				
 			}
 		}catch (Exception e) {
@@ -396,7 +403,7 @@ public class LoginService implements ILoginService{
 		
 		if((countrySelect != null && registrationVO.getCountries().contains(countrySelect))||
 				(stateSelect != null && registrationVO.getStates().contains(stateSelect))||
-				(districtSelect != null && registrationVO.getDistricts().contains(districtSelect))||
+				(districtSelect != null && checkForDistrict(registrationVO.getDistricts(),districtSelect))||
 				(acSelect != null && registrationVO.getAssemblies().contains(acSelect))||
 				(pcSelect != null && registrationVO.getParliaments().contains(pcSelect)))
 			return true;
@@ -404,5 +411,12 @@ public class LoginService implements ILoginService{
 		return false;	
 	}
 
-	
+	public boolean checkForDistrict(Set<SelectOptionVO> distSet, List<SelectOptionVO> distList)
+	{
+		for(SelectOptionVO optionVO :distList)
+			if(distSet.contains(optionVO))
+				return true;
+
+		return false;
+	}
 }
