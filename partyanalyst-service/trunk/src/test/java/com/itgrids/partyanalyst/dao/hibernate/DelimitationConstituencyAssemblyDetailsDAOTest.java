@@ -67,11 +67,24 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(3382l,2004l);
 		Assert.assertEquals(2, list.size());
 	}*/
-	/*
+	
+	@SuppressWarnings("unchecked")
 	public void testFindDistrictsOfParliamentConstituency(){
-		List list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(409l);
-		System.out.println(list.size());
-	}*/
+		List<Object[]> list =  delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(506l);
+		
+		if(list != null && list.size() > 0)
+		{
+			System.out.println(list.size());
+			
+			for(Object[] obj : list)
+			{
+				System.out.println(obj[0].toString());
+				System.out.println(obj[1].toString());
+			}
+		}
+		
+		
+	}
 	
 	/*public void testFindAssemblyConstituenciesOfParliamentConstituency(){
 		List<Long> list = new ArrayList<Long>();
@@ -80,20 +93,29 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		System.out.println(result);
 	}*/
 	
-	/*public void testFindParliamentConstituenciesByDistrictId()
+	/*@SuppressWarnings("unchecked")
+	public void testFindParliamentConstituenciesByDistrictId()
 	{
-		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(19L, IConstants.DELIMITATION_YEAR);
+		List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(19L, IConstants.DELIMITATION_YEAR);
 		
-		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			System.out.println(list.size());
+			for(Object[] param :list)
+			{
+				System.out.println(param[0]);
+				System.out.println(param[1]);
+			}
+		}
 	}*/
 	
-	public void testFindLatestParliamentForAssembly()
+	/*public void testFindLatestParliamentForAssembly()
 	{
 		
 		List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(232L);
 		
 		System.out.println(list.size());
-	}
+	}*/
 	
 	
 }
