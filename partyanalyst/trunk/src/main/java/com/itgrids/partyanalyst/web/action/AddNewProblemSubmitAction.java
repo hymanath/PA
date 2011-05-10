@@ -240,7 +240,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getPhone() {
 		return phone;
 	}
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^[0-9 ]+[0-9]*$", message = "Invalid Telephone Number", shortCircuit = true)
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
