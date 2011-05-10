@@ -455,7 +455,7 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getElectionTypes'){
 								
 								buildElectionTypes(myResults);
-								getElectionYears("Assembly");
+								getElectionYearsInHomePage("Assembly");
 							}
 							
 
@@ -979,6 +979,7 @@ function navigateToConstituencyPage()
 }
 function hideUnhideSelectBox(radioElement, selectElement)
 {
+
 	var tableEl = document.getElementById("constTable");
 	var stateTableEl = document.getElementById("stateTable");
 	var stateSelectEl = document.getElementById("stateList_c");
@@ -1734,7 +1735,7 @@ function buildElectionTypes(statePageObj)
     return a;
   }
 
-  function getElectionYears(electionType){
+  function getElectionYearsInHomePage(electionType){
 	
 	
 	var electionYearElmt = document.getElementById("electionYears");
@@ -1775,7 +1776,3 @@ document.location = "electionDetailsReportAction.action?electionId="+electionId_
 
 
 }
-
-
-
-
