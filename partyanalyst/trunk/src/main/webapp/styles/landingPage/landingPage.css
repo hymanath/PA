@@ -745,7 +745,13 @@ input.input_text
 	left:-25px;
 	z-index:1;
 }
-
+#floatingDiv_relative_main_qv
+{
+	float: right;
+    left: -220px;
+    position: relative;
+    z-index: 1;
+}
 #floatingDiv_absolute_main
 {
 	position:absolute;
