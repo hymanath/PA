@@ -1594,3 +1594,10 @@ background-color:#C7CFD2;
   font-weight:bold;
 
 }
+#floatingDiv_relative_main_qv
+{
+	float:right;
+	position:relative;
+	left:-175px;
+	z-index:1;
+}
