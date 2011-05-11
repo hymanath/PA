@@ -1686,6 +1686,11 @@ elmt.innerHTML = str;
 
 function getElectionTypeValue(stateId) {
 
+var imgElmt = document.getElementById("imgElmt_ER");
+if(imgElmt)
+imgElmt.style.display='block';
+clearOptionsListForSelectElmtId("electionLists");
+clearOptionsListForSelectElmtId("electionYears");
 var jObj = {
 
 				stateId : stateId,
@@ -1748,7 +1753,9 @@ function buildElectionTypes(statePageObj)
 				j++;
 				}
 		}
-
+var imgElmt = document.getElementById("imgElmt_ER");
+if(imgElmt)
+imgElmt.style.display='none';
 }
 
 function viewElectionResults(){
