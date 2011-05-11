@@ -403,7 +403,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	           
 			 
 	      
-            if(registrationId != null){
+            if(registrationId != null && registrationId > 0){
 				loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
 				regVO.setUserProfilePic(imageName);

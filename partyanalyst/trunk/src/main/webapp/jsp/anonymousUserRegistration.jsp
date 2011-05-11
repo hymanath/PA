@@ -364,10 +364,10 @@ function validateEmail()
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data">  
    <br><br>
   <div id="headerDiv" class="headerDiv"> 
-   <c:if test="${empty registrationId}">
+   <c:if test="${registrationId == '0'}">
    	<p>Get a free registration to connect to people and info that you care about</p>
    </c:if>
-   <c:if test="${! empty registrationId}">
+   <c:if test="${registrationId != '0'}">
    	User Profile
    </c:if> 
   </div>
@@ -384,7 +384,8 @@ function validateEmail()
 			</tr>
 		</table>
 		 <br>
-		 <c:if test="${empty registrationId}">
+
+		<c:if test="${registrationId == '0'}">
 	        <FIELDSET id="personalFieldsCollection" class="fieldsCollection">
 
 			    <div class="dotline"></div>
