@@ -273,7 +273,7 @@
 </head>
 
 <body>
-<div id="floatingDiv_relative_main">
+<div id="floatingDiv_relative_main_qv">
 			<div id="floatingDiv_absolute_main">				
 				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
@@ -539,7 +539,7 @@
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>									
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>			<td><div id="imgElmt_ER" ><img src="images/icons/partypositions.gif" alt="PartyAnalystERImg"/></div></td>							
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
