@@ -510,7 +510,7 @@ var new2="Election Message";
 									</tr>
 									<tr>
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>
-										<td><div id="imgElmt_ER" ><img src="images/icons/partypositions.gif" alt="PartyAnalystERImg"/></div></td>			
+										<td><div id="imgElmt_ER" style="display:none;"><img src="images/icons/partypositions.gif" /></div></td>			
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
