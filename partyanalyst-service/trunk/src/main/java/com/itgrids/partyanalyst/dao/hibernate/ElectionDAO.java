@@ -572,6 +572,15 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List findLatestElectionYearHappenedInState(Long stateId,String electionType,String electionSubType) {
+		
+		String isPartial = "0";
+		Object[] params = {stateId,electionType,electionSubType,isPartial};
+		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
+				"model.elecSubtype = ? and model.isPartial is null or model.isPartial = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType)
     {
         Object params[] = {electionType, stateId, subType};

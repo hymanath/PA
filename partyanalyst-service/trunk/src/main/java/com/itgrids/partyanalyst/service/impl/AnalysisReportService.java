@@ -174,7 +174,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				electionMain = electionDAO.get(electionId);
 			
 			if(electionMain != null)
-				allianceParties = staticDataService.getAlliancePartiesAsVO(electionYear,electionMain.getElectionScope().getElectionType().getElectionTypeId(),partyId);
+				allianceParties = staticDataService.getAlliancePartiesAsVO(electionYear,electionMain.getElectionScope().getElectionType().getElectionTypeId(),partyId,stateId);
 				
 			//analysis basic info for main party
 			if(partyId != null && electionId != null && electionType != null && electionYear != null){

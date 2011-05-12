@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -784,6 +785,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 		System.out.println(list);
 	}*/
+	
+	@Test
+	public void testGetParliamentsInDistrict(){
+		
+		List result = nominationDAO.getParliamentCandidateNPartyInfoInElection(501L, IConstants.PARLIAMENT_ELECTION_TYPE, 1L,"2009");
+		
+		if(result != null)
+			System.out.println(" Result :" + result.size());
+	}
+	
 	
 }
 	

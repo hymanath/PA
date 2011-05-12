@@ -359,7 +359,7 @@ public class PartyService implements IPartyService {
 			 }
 		}
 		if(includeAllianceParties){
-			allianceParties = staticDataService.getAllianceParties(year, electionType, selectedParty.getPartyId());
+			allianceParties = staticDataService.getAllianceParties(year, electionType, selectedParty.getPartyId(),stateId);
 			if(allianceParties != null){
 			allianceParties.remove(selectedParty);
 			partyPerformanceReportVO.setAllianceParties(allianceParties);
@@ -966,7 +966,7 @@ public class PartyService implements IPartyService {
 		
 		Long electionID = getElectionID(electionTypeID, 1L, stateID, year);
 		List<ConstituencyElection> constituencyElectionList = null;
-		List<SelectOptionVO> parties = getAlliancePartiesAsVO(year,electionTypeID,partyID,alliances);
+		List<SelectOptionVO> parties = getAlliancePartiesAsVO(year,electionTypeID,partyID,alliances,stateID);
 		
 		if(log.isDebugEnabled())
 			log.debug("ElectionId -->" + electionID);
@@ -1150,14 +1150,14 @@ public class PartyService implements IPartyService {
 		return selectedNomination;		
 	}
 	
-	public List<SelectOptionVO> getAlliancePartiesAsVO(Long year, Long electionTypeID, Long partyID, boolean alliances){
+	public List<SelectOptionVO> getAlliancePartiesAsVO(Long year, Long electionTypeID, Long partyID, boolean alliances,Long stateId){
 
 		List<SelectOptionVO> parties = null;
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered Into getAllianceParties Method .....");
 		if(alliances){
-			parties = staticDataService.getAlliancePartiesAsVO(year.toString(), electionTypeID, partyID);
+			parties = staticDataService.getAlliancePartiesAsVO(year.toString(), electionTypeID, partyID,stateId);
 			if(parties != null){
 				for(SelectOptionVO option:parties)
 					if(log.isDebugEnabled())

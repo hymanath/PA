@@ -111,7 +111,7 @@ public class StaticDataServiceTest {
 		List<ElectionAlliance> list = new ArrayList<ElectionAlliance>(0);
 		EasyMock.expect(electionAllianceDAO.findByElectionYearAndType("2009", new Long(2))).andReturn(list);
 		EasyMock.replay(electionAllianceDAO);
-		List<Party> allianceParties = service.getAllianceParties("2009", new Long(2), new Long(1));
+		List<Party> allianceParties = service.getAllianceParties("2009", new Long(2), new Long(1),1L);
 		Assert.assertEquals(0, allianceParties.size());
 	}
 	

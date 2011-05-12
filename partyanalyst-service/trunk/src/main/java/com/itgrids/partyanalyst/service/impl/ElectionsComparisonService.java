@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.VotesDifferenceComparator;
 
 import common.Logger;
@@ -307,11 +308,11 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
    return null;
    }
 
-   public List<Long> getAlliancePartysAsVO(Long electionTypeId,Long partyId,String year){
+   public List<Long> getAlliancePartysAsVO(Long electionTypeId,Long partyId,String year, Long stateId){
 	   
 	   logger.debug("Entered Into getAlliances method");
 	   
-	   List<SelectOptionVO> allianceParties = staticDataService.getAlliancePartiesAsVO(year, electionTypeId, partyId);
+	   List<SelectOptionVO> allianceParties = staticDataService.getAlliancePartiesAsVO(year, electionTypeId, partyId,stateId);
 	   List<Long> partyIds = null;
 			
 		if(allianceParties != null && allianceParties.size() > 0){
@@ -373,10 +374,16 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	List<Long> partyIdsforYearOne = new ArrayList<Long>();
 	List<Long> partyIdsforYearTwo = new ArrayList<Long>();
 	
+	ElectionScope electionScope = electionScopeDAO.get(electionScopeId);
+	Long stateId = 0L;
+	
+	if(!electionScope.getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		stateId = electionScope.getState().getStateId();
+	
 	if(includeAlliance != null && includeAlliance == true){
 		
-		partyIdsforYearOne = getAlliancePartysAsVO(electionTypeId,partyId,firstYear);
-		partyIdsforYearTwo = getAlliancePartysAsVO(electionTypeId,partyId,secondYear);
+		partyIdsforYearOne = getAlliancePartysAsVO(electionTypeId,partyId,firstYear,stateId);
+		partyIdsforYearTwo = getAlliancePartysAsVO(electionTypeId,partyId,secondYear,stateId);
 	}
 	else if(includeAlliance != null && includeAlliance == false){
 		partyIdsforYearOne.add(partyId);
@@ -682,8 +689,15 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
    public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long electionTypeId,Long partyId,String year,Boolean includeAlliance){
 
 	   List<Long> partyIds = new ArrayList<Long>();
+	   
+	   Long stateId = 0L;
+	   
+	   ElectionScope electionScope = electionScopeDAO.get(electionScopeId);
+	   if(!electionScope.getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		   stateId = electionScope.getState().getStateId();
+	   
 	   if(includeAlliance != null && includeAlliance == true){
-		   partyIds = getAlliancePartysAsVO(electionTypeId,partyId,year);
+		   partyIds = getAlliancePartysAsVO(electionTypeId,partyId,year,stateId);
 	   }
 	   else
 		   partyIds.add(partyId);

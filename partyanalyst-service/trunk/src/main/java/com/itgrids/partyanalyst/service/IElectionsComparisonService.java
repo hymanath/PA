@@ -32,6 +32,6 @@ public interface IElectionsComparisonService {
     
     public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long electionTypeId,Long partyId,String year,Boolean includeAlliance);
     
-    public List<Long> getAlliancePartysAsVO(Long electionTypeId,Long partyId,String year);
+    public List<Long> getAlliancePartysAsVO(Long electionTypeId,Long partyId,String year,Long stateId);
     
 }

@@ -2920,7 +2920,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Map<Long,String> allianceMap = new HashMap<Long,String>();
 		
 		if(electionType != null && electionYear != null && partyId != null){
-			List<SelectOptionVO> alliance = staticDataService.getAlliancePartiesAsVO(electionYear,IConstants.ASSEMBLY_ELECTION_TYPE_ID,partyId);
+			List<SelectOptionVO> alliance = staticDataService.getAlliancePartiesAsVO(electionYear,IConstants.ASSEMBLY_ELECTION_TYPE_ID,partyId,0L);
 			if(alliance != null && alliance.size() > 0){
 				for(SelectOptionVO res:alliance){
 					log.debug(" Parties In Alliance :" + res.getName());
