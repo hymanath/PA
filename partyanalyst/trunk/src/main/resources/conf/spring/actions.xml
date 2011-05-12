@@ -651,6 +651,9 @@
 	<bean id="homePageQuestionsPostAction" class="com.itgrids.partyanalyst.web.action.HomePageQuestionsPostAction" singleton="false">	
 	<property name="homePageQuestionsService" ref="homePageQuestionsService" />
 	</bean>
+	
+	<bean id="staticPagesForElectionResultsAction" class="com.itgrids.partyanalyst.web.action.StaticPagesForElectionResultsAction" singleton="false">	
+	</bean>
 </beans>	
 	
 	
