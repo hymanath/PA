@@ -187,7 +187,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Nomination> acNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, acId, electionYear);
 		List<Nomination> pcNominations;
 		if(includeAliance.equals("true")){
-			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(2), partyId);
+			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(2), partyId,0L);
 			
 			if(alianceParties == null || alianceParties.size() == 0)
 				pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);

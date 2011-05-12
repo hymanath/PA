@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.BoothPanelVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
@@ -71,6 +73,15 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private IConstituencyDAO constituencyDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IStaticDataService staticDataService;
+	private ITehsilDAO tehsilDAO;
+	
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
 	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
 	public INominationDAO getNominationDAO() {
@@ -1142,6 +1153,11 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetails = new ArrayList<MandalAllElectionDetailsVO>();
 		// 0 - election, 1 - totalvoters , 2 - validvotes, 3- rejectedvotes, 4-tenderedvotes
 		List result = boothConstituencyElectionDAO.getAllElectionBoothVotersForMandal(tehsilID);
+		
+		Long stateId = 0L;
+		Tehsil tehsil = tehsilDAO.get(tehsilID);
+		stateId = tehsil.getDistrict().getState().getStateId();
+		
 		if(result.size()==0)
 			return mandalAllElectionDetails;
 		for(int i=0; i<result.size(); i++){
@@ -1168,7 +1184,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			StringBuilder sb = new StringBuilder();
 			if(allianceFlag){
 				List<SelectOptionVO> partyIDs = staticDataService.getAlliancePartiesAsVO(
-						mandalAllElectionDetailsVO.getElectionYear(), mandalAllElectionDetailsVO.getElectionTypeID(), partyID);
+						mandalAllElectionDetailsVO.getElectionYear(), mandalAllElectionDetailsVO.getElectionTypeID(), partyID,stateId);
 				if(partyIDs==null){
 					sb.append(",").append(partyID);
 				}else{	
@@ -1315,7 +1331,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	public String getAlliancePartyIds(String electionYear, Long electionTypeId, Long partyId, boolean hasAlliance){
 		StringBuilder sb = new StringBuilder();
 		if(hasAlliance){
-			List<SelectOptionVO> partyIDs = staticDataService.getAlliancePartiesAsVO(electionYear, electionTypeId, partyId);
+			List<SelectOptionVO> partyIDs = staticDataService.getAlliancePartiesAsVO(electionYear, electionTypeId, partyId,0L);
 			if(partyIDs==null){
 				sb.append(",").append(partyId);
 			}else{	

@@ -24,4 +24,6 @@ public interface IElectionAllianceDAO extends GenericDao<ElectionAlliance, Long>
 	public List getAllAllianceElectionYearsForAParty(Long partyId,String electionSubType,Long stateId);
 	
 	public List<ElectionAlliance> findByElectionId(Long electionId);
+	
+	public List<ElectionAlliance> findByElectionYearAndType(final String electionYear, final Long electionType, Long stateId);
 }

@@ -406,7 +406,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		if(logger.isDebugEnabled())
 			logger.debug("Entered Into getAlliances method");
 		
-		List<SelectOptionVO> allianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, electionType, partyId);
+		List<SelectOptionVO> allianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, electionType, partyId,0L);
 		List<Long> partyIds = null;
 		
 		

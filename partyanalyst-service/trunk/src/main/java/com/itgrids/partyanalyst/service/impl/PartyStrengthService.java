@@ -396,7 +396,9 @@ public class PartyStrengthService implements IPartyStrengthService {
 					String electionYear =  params[0].toString();
 					Long obtainedElectionId = (Long)params[1];
 					Long electionTypeId = (Long)params[2];
-					List<Party> alliance = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
+					
+					Long stateId = 0L;
+					List<Party> alliance = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId,stateId);
 					
 					for(Party eachParty : alliance){
 						if(partyId.intValue()!=eachParty.getPartyId().intValue()){
@@ -1479,7 +1481,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				String electionYear =  params[0].toString();
 				Long elecId = (Long)params[1];
 				Long electionTypeId = (Long)params[2];
-				List<Party> allianceParties = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
+				List<Party> allianceParties = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId,stateId);
 				for(Party eachParty : allianceParties){		
 					if(eachParty.getPartyId().intValue()!=partyId.intValue()){
 						List list = nominationDAO.getAllCandidateDetailsForAConstituency(allConstituencies,eachParty.getPartyId(),IConstants.ELECTION_SUBTYPE_MAIN,elecId,IConstants.WINNER_CANDIDATES);					 				

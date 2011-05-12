@@ -90,7 +90,7 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 			List<SelectOptionVO> alliancePartys = null;
 						
 			if(hasAlliance && selectdPartyId != null)
-			alliancePartys = staticDataService.getAlliancePartiesAsVO(election.getElectionYear(), election.getElectionScope().getElectionType().getElectionTypeId(), selectdPartyId);
+			alliancePartys = staticDataService.getAlliancePartiesAsVO(election.getElectionYear(), election.getElectionScope().getElectionType().getElectionTypeId(), selectdPartyId,stateID);
 			
 			if(alliancePartys != null && alliancePartys.size() > 0){
 				for(int i=0;i<alliancePartys.size();i++){

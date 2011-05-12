@@ -198,13 +198,13 @@ public interface IStaticDataService {
 		
 		public DistrictWisePartyResultVO getAllianceGroupsForElections(Long districtId);
 		
-		public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId);
+		public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId, Long stateId);
 		
 		public AlliancePartyResultsVO getAlliancePartiesByElectionAndParty(Long electionId, Long partyId);
 		
-		public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId);
+		public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId, Long stateId);
 		
-		public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType);
+		public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType,Long stateId);
 		
 		public boolean hasAlliances(String year, Long electionType, Long partyId);
 		

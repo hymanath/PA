@@ -94,7 +94,7 @@ public class PartyServiceTest {
 		EasyMock.replay(constituencyElectionResultDAO);
 				
 		if(hasAlliances) {
-			EasyMock.expect(staticDataService.getAllianceParties(year, new Long(2), new Long(11))).andReturn(allianceParties);
+			EasyMock.expect(staticDataService.getAllianceParties(year, new Long(2), new Long(11),1L)).andReturn(allianceParties);
 			EasyMock.replay(staticDataService);
 			service.setStaticDataService(staticDataService);
 		} 
@@ -337,11 +337,11 @@ public class PartyServiceTest {
 		parties.add(new SelectOptionVO(1L,"INC"));
 		parties.add(new SelectOptionVO(2L,"TRS"));
 		parties.add(new SelectOptionVO(2L,"PRP"));
-		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009", 1L, 1L)).andReturn(parties);
+		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009", 1L, 1L,0L)).andReturn(parties);
 		EasyMock.replay(staticDataService);
 		PartyService service = new PartyService();
 		service.setStaticDataService(staticDataService);
-		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, true);
+		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, true,0L);
 		Assert.assertTrue(actualResult.size()>1);
 	}
 
@@ -353,7 +353,7 @@ public class PartyServiceTest {
 		EasyMock.replay(partyDAO);
 		PartyService service = new PartyService();
 		service.setPartyDAO(partyDAO);
-		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, false);
+		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, false,0L);
 		Assert.assertEquals(1, actualResult.size());
 	}
 
@@ -383,7 +383,7 @@ public class PartyServiceTest {
 		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(1L);obj1.setName("INC");
 		SelectOptionVO obj2 = new SelectOptionVO(); obj2.setId(5L);obj1.setName("MIM");
 		parties.add(obj1);parties.add(obj2);
-		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009",1L,1L)).andReturn(parties);
+		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009",1L,1L,0L)).andReturn(parties);
 		ConstituencyElection ce = MockData.createConstituencyElection();
 		List<ConstituencyElection> ceList = new ArrayList<ConstituencyElection>();
 		ceList.add(ce);

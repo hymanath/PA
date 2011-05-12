@@ -312,7 +312,11 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				constituencyElectionObj.setElection(electionObj);
 				constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
 				
-				constituencyElectionObj.setHasResults(getStringFromAsciiChar(0));
+				if(isResults)
+					constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
+				else
+					constituencyElectionObj.setHasResults(getStringFromAsciiChar(0));
+				
 				constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
 			}
 

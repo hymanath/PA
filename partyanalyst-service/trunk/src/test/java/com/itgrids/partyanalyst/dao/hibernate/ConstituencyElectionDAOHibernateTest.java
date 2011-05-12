@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -208,7 +209,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(params[0] + " \t" + params[1]);	
 			}
 		}
-	}*/
+	}
 	public void testGetConstituenciesHavingMaxSpan()
 	{
 		List<Long> elecIds = new ArrayList<Long>(0);
@@ -231,6 +232,21 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(result.size());			
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+	}*/
+	
+	@Test
+	public void testGetLatestElectionHappenedInConstituency(){
+		
+		
+		List results = constituencyElectionDAO.getLatestResultsElectionYearInAConstituency(478L);
+		
+		if(results != null)
+		{
+			Object res = (Object)results.get(0);
+			
+			String year = (String)res;
+			System.out.println(" Latest Election Year = " + year);
 		}
 	}
 	

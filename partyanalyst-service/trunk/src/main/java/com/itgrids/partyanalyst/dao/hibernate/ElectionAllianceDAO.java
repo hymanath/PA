@@ -78,5 +78,12 @@ IElectionAllianceDAO {
 		return queryObject.list();	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ElectionAlliance> findByElectionYearAndType(final String electionYear, final Long electionType, final Long stateId) {
+		Object[] params = {stateId,electionYear, electionType};
+		return getHibernateTemplate().find("from ElectionAlliance as model where model.election.electionScope.state.stateId = ? and " +
+				"model.election.electionYear=? and model.election.electionScope.electionType.electionTypeId=? ",params); 
+	}
+	
 	
 }
