@@ -451,6 +451,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
 	</bean>
 	<bean name="problemManagementService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementService" >		
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
