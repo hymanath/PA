@@ -273,7 +273,9 @@
 </head>
 
 <body>
-<div id="floatingDiv_relative_main_qv">
+
+<div id="homePageContainer" style="overflow:visible;">
+<div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
 				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
@@ -555,6 +557,7 @@
 						</div>
 						
 						</div>
+					</div>
 						
 					
 
