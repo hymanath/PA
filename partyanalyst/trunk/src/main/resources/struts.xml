@@ -21,7 +21,7 @@
 			For each result that should go to a Tiles page, add a type attribute
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
- 		<default-action-ref name="homePage" />
+	    <default-action-ref name="homePage" />
 		<action name="index" class="indexAction">
 			<result name="success">/jsp/index.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
@@ -99,6 +99,12 @@
 		<action name="delimitationMappingsUpload"><result>/jsp/delimitationUpload.jsp</result></action>
 		<action name="genericModuleDataUpload"><result>/jsp/genericUpload.jsp</result></action>
 		<!-- Data Upload -->
+		
+		<action name="exit_Polls_2011_And_Previous_Election_Reults_For_Tamilnadu_West_Bengal_Assam_Kerala_Pudducherry_Kadapa_2011_Election_Results_Pulivendula_2011_Election_Results" class="staticPagesForElectionResultsAction">
+			<result name="input">/jsp/staticPages.jsp</result>
+			<result name="success">/jsp/staticPages.jsp</result>
+		</action>
+		
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		
