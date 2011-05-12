@@ -2223,7 +2223,7 @@
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
 		str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-		str+='<tableonclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
+		str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
