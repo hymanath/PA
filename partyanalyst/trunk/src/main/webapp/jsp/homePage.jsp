@@ -734,75 +734,6 @@ var new2="Election Message";
 						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
-									<table width="42%" cellpadding="0" cellspacing="0">
-										<tr>
-											<td width="20px" valign="top">
-												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
-											</td>	
-											<td valign="top">
-												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
-												</div>
-											</td>	
-											<td width="20px" valign="top">
-												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="homePageContentWidget_body">
-
-									<div class="homePageContentWidget_readMore">
-										
-									</div>
-									<div id="homePage_Chart_Header_main" style="overflow:hidden;">
-										<div id="homePage_Chart_Header">
-									   
-										</div>
-									</div>
-								</div>
-								<div class="homePageContentWidget_footer">
-									
-								</div>
-							</div>
-						</td>
-						<td width="25%" valign="top">
-							<div class="homePageContentWidget_main">
-								<div class="homePageContentWidget_head">
-									<table width="75%" cellpadding="0" cellspacing="0">
-										<tr>
-											<td width="20px" valign="top">
-												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
-											</td>	
-											<td valign="top">
-												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Quick Search</span>
-												</div>
-											</td>	
-											<td width="20px" valign="top">
-												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="homePageContentWidget_body">
-									<jsp:include page="../jsp/cncSearch.jsp"/>
-								</div>
-								<div class="homePageContentWidget_footer">
-
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			
-			<div id="homePageContent3">
-				<table width="100%">
-					<tr>
-						<td width="75%" valign="top">
-							<div class="homePageContentWidget_main">
-								<div class="homePageContentWidget_head">
 									<table width="30%" cellpadding="0" cellspacing="0">
 										<tr>
 											<td width="20px" valign="top">
@@ -859,6 +790,74 @@ var new2="Election Message";
 								</div>
 								<div class="homePageContentWidget_footer">
 									
+								</div>
+							</div>
+						</td>
+						<td width="25%" valign="top">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="75%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px" valign="top">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td valign="top">
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Quick Search</span>
+												</div>
+											</td>	
+											<td width="20px" valign="top">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+									<jsp:include page="../jsp/cncSearch.jsp"/>
+								</div>
+								<div class="homePageContentWidget_footer">
+
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="homePageContent3">
+				<table width="100%">
+					<tr>
+						<td width="75%" valign="top">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="42%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px" valign="top">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td valign="top">
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
+												</div>
+											</td>	
+											<td width="20px" valign="top">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+
+									<div class="homePageContentWidget_readMore">
+										
+									</div>
+									<div id="homePage_Chart_Header_main" style="overflow:hidden;">
+										<div id="homePage_Chart_Header">
+									   
+										</div>
+									</div>
+								</div>
+								<div class="homePageContentWidget_footer">
 								</div>
 							</div>
 						</td>
