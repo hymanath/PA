@@ -16,6 +16,29 @@
 
 <meta name="email" content="info@itgrids.com">
 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script src="http://www.google.com/uds/api?file=uds.js&v=1.0"
+    type="text/javascript"></script>
+<link href="http://www.google.com/uds/css/gsearch.css"
+    rel="stylesheet" type="text/css"/>
+<script src="http://www.google.com/uds/solutions/videobar/gsvideobar.js"
+    type="text/javascript"></script>
+		
+<link href="http://www.google.com/uds/solutions/videobar/gsvideobar.css"
+    rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+
+
+
+<script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
+<script type="text/javascript" src="js/candidatePage/carousel.js"></script>
+<script type="text/javascript" src="js/SWFObject/swfobject.js" ></script>
+<script type="text/javascript">
+		google.load("elements", "1", {packages : ["newsshow"]});
+
+</script>
+
+
 <title>Exit Polls 2011 And Previous Election Reults For Tamilnadu,West Bengal,Assam,Kerala,Pudducherry,Kadapa 2011 Election Results,Pulivendula 2011 Election Results </title>
 <style>
 #exitPollStyle{
@@ -47,7 +70,73 @@ padding-top: 20px;
 </style>
 <script type="text/javascript">
 
+function buildCandidateNews(stateName)
+{
+	var options = {
+		"format" : "300x250",
+		"queryList" : [
+			  {
+				"title" : stateName+'  Assembly Elections 2011',
+				"q" : stateName+"Assembly Elections 2011, India"
+			  }
+		 ],
+		"linkTarget" : "_blank"
+	  }
+	
+	var content = document.getElementById('newsDiv');
+	content.innerHTML = '';
+	
+	var newsShow = new google.elements.NewsShow(content, options);
+}
+function buildCandidateVideoGallery()
+{
+	
+
+	var value="http://www.youtube.com/v/8jhiIWiCch8?enablejsapi=1&playerapiid=ytplayer&rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
+	var params = { allowScriptAccess: "always" };	 
+	var atts = { id: "myytplayer" };
+	swfobject.embedSWF(value, "videoBarOne", "500", "300", "8", null, null, params,atts);
+	var elmtId = document.getElementById( "videoBarOne");
+  
+}
+
+function LoadVideoBar(stateName)
+{
+	var vbl;
+	var vbr;
+
+	var searchString1 = stateName+'Assembly Election 2011 ';
+		
+
+	var options = {
+	  largeResultSet : false,
+		  horizontal:true
+		  
+			}
+	vbl = new GSvideoBar(
+				document.getElementById("videoBarOne"),
+				document.getElementById("ytVideoPlayer"),
+				options
+				);
+	
+
+	
+	vbl.execute(searchString1);
+	
+}
+
+
+function onYouTubePlayerReady(playerId)
+{
+	var ytplayer = document.getElementById("myytplayer");
+	//ytplayer.cueVideoById(videoId:, startSeconds:Number, suggestedQuality:String):Void
+}
+
+
 function tamilnaduExitPollAnd2006ElectionDetails(){
+
+	LoadVideoBar("Tamilnadu");
+	buildCandidateNews("Tamilnadu");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -131,6 +220,9 @@ function tamilnaduExitPollAnd2006ElectionDetails(){
 }
 
 function westBengalExitPollAnd2006ElectionDetails(){
+
+	LoadVideoBar("West Bengal");
+    buildCandidateNews("West Bengal");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -210,6 +302,9 @@ function westBengalExitPollAnd2006ElectionDetails(){
 }
 
 function assamExitPollAnd2006ElectionDetails(){
+	
+	LoadVideoBar("Assam");
+    buildCandidateNews("Assam");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -308,6 +403,9 @@ function assamExitPollAnd2006ElectionDetails(){
 }
 
 function keralaExitPollAnd2006ElectionDetails(){
+
+	LoadVideoBar("Kerala");
+    buildCandidateNews("Kerala");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -372,6 +470,8 @@ function keralaExitPollAnd2006ElectionDetails(){
 
 function puducherryExitPollAnd2006ElectionDetails(){
 	
+	LoadVideoBar("Puducherry");
+    buildCandidateNews("Puducherry");
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str ='';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>Puducherry  Exit Polls Provided By Different Media</b></div>';
@@ -444,10 +544,38 @@ Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala
 <td><input type="radio" name="stateRadio" onclick="keralaExitPollAnd2006ElectionDetails()">Kerala
 </td>
 <td><input type="radio" name="stateRadio" onclick="puducherryExitPollAnd2006ElectionDetails()">Puducherry</td></tr></table></div>
+<table>
+<tr>
+<td><marquee scrolldelay=100 onmouseover="this.stop()" onmouseout="this.start()"><div id="videoBarOne" ></div></marquee></td></tr></table>
+<table><tr>
+<td><div style="padding:12px;" id="ytVideoPlayer"></div></td>
+<td>
+<div class="productFeatureMain">							
+			 <div class="productFeatureHeader">
+				<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="10px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span id="newsTitle"></span></div></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="newsDiv" class="productFeatureBody"  style="overflow:hidden;width:300px;height:250px;">
+				
+			</div>						
+		</div>
+
+
+
+</tr>
+</table>
+
+
 <div id="TNexitPollsDiv"></div>
 <div id="TNPreviousPollsDiv"></div>
 <script type="text/javascript">
 tamilnaduExitPollAnd2006ElectionDetails();
+
 </script>
 </body>
 </html>
