@@ -55,7 +55,7 @@
 <!-- YUI Dependency files (End) -->
 
 <!-- JQuery files (Start) -->
-<!__<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
@@ -513,7 +513,7 @@
 								<ul class="homePage_new_footer_links">
 									<li><a href="freeUserRegistration.action">Register</a></li>
 									<li><a href="loginInputAction.action">Login</a></li>
-									<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
+									<li><a href="javascript:{}" onclick="contactLinkInHomePage()">Ask for DEMO/TEST Login</a></li>
 									<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a></li>
 									<li><a href="javascript:{}">Articles</a></li>
 									<li><a href="javascript:{}">Blogs</a></li>
