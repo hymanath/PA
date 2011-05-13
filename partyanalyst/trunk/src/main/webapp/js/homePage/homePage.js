@@ -401,8 +401,8 @@ function openAssembly2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<table id="feedbackTable" width="100%">';
 		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
-		str += '		<tr><td width="280px">Y.S Vijayamma</td><td width="160px">104039</td><td>YSRC</td><td>1</td></tr> ';
-		str += '		<tr><td>Y.S Viveka</td><td>28848</td><td>INC</td><td>2</td></tr> ';
+		str += '		<tr><td width="280px">Y.S Vijayamma</td><td width="160px">110102</td><td>YSRC</td><td>1</td></tr> ';
+		str += '		<tr><td>Y.S Vivekananda Reddy</td><td>28729</td><td>INC</td><td>2</td></tr> ';
 		str += '		<tr><td>B.Tech Ravi </td><td>12051</td><td>TDP</td><td>3</td></tr> ';
 		str += '		</table>';
 		str += '	</div>';
@@ -410,7 +410,7 @@ function openAssembly2011Window()
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
-		str += '	<td width="70%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Vijayamma Won with 85191 Majority Votes</font></blink></div></td>';
+		str += '	<td width="70%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Vijayamma Won with 81373 Majority Votes</font></blink></div></td>';
 		str += '	<td width="30%" align="right">';
 		str += '		<input id="cancelButton" type="button" value="Close"></input>';
 		str += '	</td>';
@@ -448,14 +448,14 @@ function openKadapa2011Window()
 		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
 		str += '		<tr><td width="300px">Y.S Jagan Mohan Reddy</td><td width="160px">692250</td><td>YSRC</td><td>1</td></tr> ';
 		str += '		<tr><td>DL Ravindra Reddy </td><td>146579</td><td>INC</td><td>2</td></tr> ';
-		str += '		<tr><td> Mysura Reddy </td><td>127565</td><td>TDP</td><td>3</td></tr> ';
+		str += '		<tr><td> Mysura Reddy </td><td>129565</td><td>TDP</td><td>3</td></tr> ';
 		str += '		</table>';
 		str += '	</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
-		str += '	<td width="90%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Jagan Mohan Reddy Won with 5,45,671 Majority Votes</font></blink></div></td>';
+		str += '	<td width="90%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Jagan Mohan Reddy Won with 5,45,672 Majority Votes</font></blink></div></td>';
 		str += '	<td width="10%" align="right">';
 		str += '		<input id="cancelButton" type="button" value="Close"></input>';
 		str += '	</td>';
