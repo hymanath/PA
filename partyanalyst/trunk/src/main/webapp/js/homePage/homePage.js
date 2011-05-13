@@ -446,16 +446,248 @@ function openKadapa2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<table id="feedbackTable" width="100%">';
 		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
-		str += '		<tr><td width="300px">Y.S Jagan Mohan Reddy</td><td width="160px">655496</td><td>YSRC</td><td>1</td></tr> ';
-		str += '		<tr><td>DL Ravindra Reddy </td><td>134496</td><td>INC</td><td>2</td></tr> ';
-		str += '		<tr><td> Mysura Reddy </td><td>128727</td><td>TDP</td><td>3</td></tr> ';
+		str += '		<tr><td width="300px">Y.S Jagan Mohan Reddy</td><td width="160px">692250</td><td>YSRC</td><td>1</td></tr> ';
+		str += '		<tr><td>DL Ravindra Reddy </td><td>146579</td><td>INC</td><td>2</td></tr> ';
+		str += '		<tr><td> Mysura Reddy </td><td>127565</td><td>TDP</td><td>3</td></tr> ';
 		str += '		</table>';
 		str += '	</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
-		str += '	<td width="90%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Jagan Mohan Reddy Won with 5,21,000 Majority Votes</font></blink></div></td>';
+		str += '	<td width="90%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Jagan Mohan Reddy Won with 5,45,671 Majority Votes</font></blink></div></td>';
+		str += '	<td width="10%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
+function openTN2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width:530,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Tamil Nadu Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<center><table id="feedbackTable" width="100%">';
+		str += '	<tr>';
+		str += '	<td><img src="images/icons/Tamilnadu.PNG"></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '	</center>';	
+		str += '	</div>';
+		str += '</div>';
+
+        str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="90%" align="left"></td>';
+		str += '	<td width="10%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
+function openWB2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width:530,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">West Bengal Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<center><table id="feedbackTable" width="100%">';
+		str += '	<tr>';
+		str += '	<td><img src="images/icons/WB.PNG"></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '	</center>';	
+		str += '	</div>';
+		str += '</div>';
+
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="90%" align="left"></td>';
+		str += '	<td width="10%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
+function openPD2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width:530,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Puducherry Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<center><table id="feedbackTable" width="100%">';
+		str += '	<tr>';
+		str += '	<td><img src="images/icons/PD.PNG"></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '	</center>';	
+		str += '	</div>';
+		str += '</div>';
+
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="90%" align="left"></td>';
+		str += '	<td width="10%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
+function openAssam2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width:530,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Assam Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<center><table id="feedbackTable" width="100%">';
+		str += '	<tr>';
+		str += '	<td><img src="images/icons/Assam.PNG"></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '	</center>';	
+		str += '	</div>';
+		str += '</div>';
+
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="90%" align="left"></td>';
+		str += '	<td width="10%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
+function openKerala2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width:530,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Kerala Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<center><table id="feedbackTable" width="100%">';
+		str += '	<tr>';
+		str += '	<td><img src="images/icons/Kerala.PNG"></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '	</center>';	
+		str += '	</div>';
+		str += '</div>';
+
+        str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="90%" align="left"></td>';
 		str += '	<td width="10%" align="right">';
 		str += '		<input id="cancelButton" type="button" value="Close"></input>';
 		str += '	</td>';
