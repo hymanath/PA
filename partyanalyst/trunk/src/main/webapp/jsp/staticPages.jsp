@@ -67,6 +67,26 @@ font-size: 14px;
 color: navy;
 padding-top: 20px;
 }
+
+.productFeatureBody {
+    background-color: #FFFFFF;
+    border-left: 2px solid #D8D8D8;
+    border-right: 2px solid #D8D8D8;
+	border-top: 2px solid #D8D8D8;
+    border-bottom: 2px solid #D8D8D8;
+    color: #12283A;
+    line-height: 16px;
+    padding: 5px;
+    text-align: justify;
+}
+
+.newsHeader
+{
+	font-weight: bold;
+	font-size: 14px;
+	color: navy;
+	padding-top: 20px;
+}
 </style>
 <script type="text/javascript">
 
@@ -88,6 +108,26 @@ function buildCandidateNews(stateName)
 	
 	var newsShow = new google.elements.NewsShow(content, options);
 }
+
+function buildCandidateNews2(stateName)
+{
+	var options = {
+		"format" : "300x250",
+		"queryList" : [
+			  {
+				"title" : stateName+' News',
+				"q" : stateName+"Elections , India"
+			  }
+		 ],
+		"linkTarget" : "_blank"
+	  }
+	
+	var content = document.getElementById('newsDiv2');
+	content.innerHTML = '';
+	
+	var newsShow = new google.elements.NewsShow(content, options);
+}
+
 function buildCandidateVideoGallery()
 {
 	
@@ -109,7 +149,7 @@ function LoadVideoBar(stateName)
 		
 
 	var options = {
-	  largeResultSet : false,
+	  largeResultSet : true,
 		  horizontal:true
 		  
 			}
@@ -137,6 +177,7 @@ function tamilnaduExitPollAnd2006ElectionDetails(){
 
 	LoadVideoBar("Tamilnadu");
 	buildCandidateNews("Tamilnadu");
+	buildCandidateNews2("Tamilnadu");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -223,6 +264,7 @@ function westBengalExitPollAnd2006ElectionDetails(){
 
 	LoadVideoBar("West Bengal");
     buildCandidateNews("West Bengal");
+	buildCandidateNews2("West Bengal");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -305,6 +347,7 @@ function assamExitPollAnd2006ElectionDetails(){
 	
 	LoadVideoBar("Assam");
     buildCandidateNews("Assam");
+	buildCandidateNews2("Assam");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -406,6 +449,7 @@ function keralaExitPollAnd2006ElectionDetails(){
 
 	LoadVideoBar("Kerala");
     buildCandidateNews("Kerala");
+	buildCandidateNews2("Kerala");
 	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
@@ -472,6 +516,8 @@ function puducherryExitPollAnd2006ElectionDetails(){
 	
 	LoadVideoBar("Puducherry");
     buildCandidateNews("Puducherry");
+    buildCandidateNews2("Puducherry");
+
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str ='';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>Puducherry  Exit Polls Provided By Different Media</b></div>';
@@ -548,21 +594,42 @@ Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala
 <tr>
 <td><marquee scrolldelay=100 onmouseover="this.stop()" onmouseout="this.start()"><div id="videoBarOne" ></div></marquee></td></tr></table>
 <table><tr>
-<td><div style="padding:12px;" id="ytVideoPlayer"></div></td>
+<!--<td><div style="padding:12px;" id="ytVideoPlayer"></div></td>-->
 <td>
 <div class="productFeatureMain">							
-			 <div class="productFeatureHeader">
-				<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+			 <div class="newsHeader"> 
+				<!--<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 						<td width="10px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span id="newsTitle"></span></div></td>
 						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
+                        
+						<td width="10px">
+						  <div style="overflow:hidden;"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></div>
+						</td>
+						<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span id="newsTitle"></span></div></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
-				</table>
+				</table>-->
 			</div>
-			<div id="newsDiv" class="productFeatureBody"  style="overflow:hidden;width:300px;height:250px;">
+
+			<table>
+			<tr>
+			<td>
+			<div id="newsDiv" class="productFeatureBody"  style="overflow:hidden;width:300px;height:206px;">
 				
-			</div>						
+			</div>	
+			</td>
+
+			<td><div style="padding:12px;" id="ytVideoPlayer"></div></td>
+
+			<td>
+			<div id="newsDiv2" class="productFeatureBody"  style="overflow:hidden;width:300px;height:206px;">
+				
+			</div>
+			</td>
+			</tr>
+		  </table>
 		</div>
 
 
