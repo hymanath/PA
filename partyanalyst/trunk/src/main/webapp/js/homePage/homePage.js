@@ -382,6 +382,51 @@ function showFeedBackFormPanel()
 
 }
 
+function openAssembly2011Window()
+{
+	$("#assembly_2011_window").dialog({
+			resizable:false,
+			width: 500,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("assembly_2011_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Pulivendula Bi Election 2011 Results.</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<table id="feedbackTable" width="100%">';
+		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
+		str += '		<tr><td width="280px">Y.S Vijayamma</td><td width="160px">104039</td><td>YSRC</td><td>1</td></tr> ';
+		str += '		<tr><td>Y.S Viveka</td><td>28848</td><td>INC</td><td>2</td></tr> ';
+		str += '		<tr><td>B.Tech Ravi </td><td>12051</td><td>TDP</td><td>3</td></tr> ';
+		str += '		</table>';
+		str += '	</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="70%" align="left"><div><blink><font color="blue" style="font-weight:bold">Y.S Vijayamma Won 85191 Majority Votes</font></blink></div></td>';
+		str += '	<td width="30%" align="right">';
+		str += '		<input id="cancelButton" type="button" value="Close"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton2.on("click",function(){
+			$("#assembly_2011_window").dialog("destroy");
+		});
+		
+}
+
 function postFeedbackAjaxCall()
 {
 	var errorElmt = document.getElementById("feedback_window_errorMsg");
