@@ -243,6 +243,7 @@ var new2="Election Message";
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
 	<div id="feedback_window"><div id="feedback_window_inner"></div></div>
+	<div id="assembly_2011_window"><div id="assembly_2011_window_inner"></div></div>
 	<div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
 	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	<div id="homePageContainer" style="overflow:visible;">
@@ -555,10 +556,16 @@ var new2="Election Message";
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
-											<td width="100%">
+									<!---		<td width="100%">
 											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
 												<font class="scrollDataStyle">
 												<u>New Feature </u>: <font> Now you can view your Leaders Education details, Assets, Liabilities and more details in your Constituency page.</font>
+											   </marquee>
+											</td>   -->
+
+											<td width="100%">
+											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a>
+												
 											   </marquee>
 											</td>
 										</tr>
