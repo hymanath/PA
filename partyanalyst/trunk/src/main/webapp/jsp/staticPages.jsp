@@ -30,6 +30,7 @@
 font-size: 17px;
 padding: 22px;
 color: navy;
+text-decoration: underline;
 }
 #statesCheckBoxes{
 color: green;
@@ -61,28 +62,20 @@ function tamilnaduExitPollAnd2006ElectionDetails(){
 	str +='<th> No of seats expected<br> (Malayalam Manorama) </th>';
 	str +=' </tr> ';
 	str +=' <tr> ';
-	str +=' <th> DMK </th> ';
-	str +=' <td> 100 </td> ';
-	str +=' <td> 30 </td> ';
-	str +=' <td> 67 </td> ';
+	str +=' <th> DMK & Alliances</th> ';
+	str +=' <td> 149 </td> ';
+	str +=' <td> 50 </td> ';
+	str +=' <td> 89 </td> ';
 	str +=' <td> 124 </td> ';
 	str +=' <td> 110-112 </td> ';
 	str +=' </tr> ';
 	str +=' <tr> ';
-	str +=' <th> AIADMK </th> ';
-	str +=' <td> 52 </td> ';
-	str +=' <td> 127 </td> ';
-	str +=' <td> 105 </td> ';
+	str +=' <th> AIADMK & Alliances</th> ';
+	str +=' <td> 64 </td> ';
+	str +=' <td> 171 </td> ';
+	str +=' <td> 137 </td> ';
 	str +=' <td> 110 </td> ';
 	str +=' <td> 120-132 </td> ';
-	str +=' </tr> ';
-	str +=' <tr> ';
-	str +=' <th> INC </th> ';
-	str +=' <td> 48 </td> ';
-	str +=' <td> 11 </td> ';
-	str +=' <td> 15 </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
 	str +=' </tr> ';
 	str +=' <tr> ';
 	str +=' <th> MDMK </th> ';
@@ -93,46 +86,6 @@ function tamilnaduExitPollAnd2006ElectionDetails(){
 	str +=' <td> ---</td> ';
 	str +=' </tr> ';
 	str +=' <tr> ';
-	str +=' <th> CPI </th> ';
-	str +=' <td> 8 </td> ';
-	str +=' <td> 7 </td> ';
-	str +=' <td> 4 </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' </tr> ';
-	str +=' <tr> ';
-	str +=' <th> CPM</th> ';
-	str +=' <td> 4 </td> ';
-	str +=' <td> 6 </td> ';
-	str +=' <td> 11 </td> ';
-	str +=' <td> -- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' </tr> ';
-	str +=' <tr> ';
-	str +=' <th> PMK </th> ';
-	str +=' <td> 1 </td> ';
-	str +=' <td> 9</td> ';
-	str +=' <td> 7 </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' </tr> ';
-	str +=' <tr> ';
-	str +=' <th> DMDK </th> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> 28 </td> ';
-	str +=' <td> 17 </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' </tr> ';
-	str +=' <tr> ';
-	str +=' <th> MNMK </th> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> 3 </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' <td> --- </td> ';
-	str +=' </tr> ';
-		str +=' <tr> ';
 	str +=' <th> PCK </th> ';
 	str +=' <td> 9 </td> ';
 	str +=' <td> --- </td> ';
@@ -481,6 +434,8 @@ function puducherryExitPollAnd2006ElectionDetails(){
 Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala, Puducherry
 <br>
 </div>
+
+<div id="bannerDiv"><img src="<%=request.getContextPath()%>/images/icons/ExitPolls_banner.jpg" /></div>
 <div id="statesCheckBoxes">
 <table cellspacing="9px"><tr>
 <td><input type="radio" name="stateRadio" onclick="tamilnaduExitPollAnd2006ElectionDetails()" checked="true">Tamilnadu</td>

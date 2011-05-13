@@ -734,18 +734,23 @@ var new2="Election Message";
 						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
-									<table width="30%" cellpadding="0" cellspacing="0">
+									<table width="97%" cellpadding="0" cellspacing="0">
 										<tr>
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
 											<td valign="top">
-												<div class="homePageContentWidget_head_center_div">
+												<div style="width:160px;"class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Current Elections</span>
 												</div>
 											</td>	
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+											<td width="100%">
+											    <marquee scrollDelay="180"><font class="scrollDataStyle"><a href="exit_Polls_2011_And_Previous_Election_Reults_For_Tamilnadu_West_Bengal_Assam_Kerala_Pudducherry_Kadapa_2011_Election_Results_Pulivendula_2011_Election_Results.action" class="scrollDataStyle">Exit Polls 2011 And Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala, Pudducherry And Kadapa, Pulidendula 2011 Election Results.</a>
+												</font>
+											   </marquee>
 											</td>
 										</tr>
 									</table>
