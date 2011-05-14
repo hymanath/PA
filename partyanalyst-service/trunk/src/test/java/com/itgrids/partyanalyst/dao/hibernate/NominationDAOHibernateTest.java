@@ -786,13 +786,46 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list);
 	}*/
 	
-	@Test
+	/*@Test
 	public void testGetParliamentsInDistrict(){
 		
 		List result = nominationDAO.getParliamentCandidateNPartyInfoInElection(501L, IConstants.PARLIAMENT_ELECTION_TYPE, 1L,"2009");
 		
 		if(result != null)
 			System.out.println(" Result :" + result.size());
+	}*/
+	
+	/*@SuppressWarnings("unchecked")
+	public void testGetCandidateNPartyInfo()
+	{
+		List<Object[]> result = nominationDAO.getCandidateNPartyInfo("242,243,251,245,244,250,249", IConstants.ASSEMBLY_ELECTION_TYPE, 1l,"MAIN",1l);
+		
+		if(result != null && result.size() > 0)
+			for(Object[] param : result)
+			{   
+				System.out.println();
+				for(Object obj : param)
+				{
+					System.out.print(obj+" --- ");
+				}
+			}
+	}*/
+	
+	public void testGetCandidateAndPartyInfo()
+	{
+		List<Long> list = new ArrayList<Long>(0);
+		list.add(242l);list.add(243l);list.add(251l);list.add(245l);list.add(244l);list.add(250l);list.add(249l);
+		for(Long constituencyId : list)
+		{
+			List<Object[]> result = nominationDAO.getCandidateAndPartyInfo(constituencyId, IConstants.ASSEMBLY_ELECTION_TYPE, 1l);
+			
+			System.out.println();
+			for(Object obj : result.get(0))
+			{
+				System.out.print(obj+" --- ");
+			}
+				
+		}
 	}
 	
 	
