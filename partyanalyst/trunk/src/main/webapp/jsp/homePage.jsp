@@ -264,12 +264,14 @@ var new2="Election Message";
                         </div>
                     </td>
                     
-					<td style="padding-left:10px;"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;background: url('images/icons/homePage_new/fshare.jpeg') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage_new/fshare.jpg"></a>
+                    <td style="padding-left:10px;"></td>
+					<td style="padding-left:125px;padding-top:5px;"></td>
+					<!--<td style="padding-left:10px;"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;background: url('images/icons/homePage_new/fshare.jpeg') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage_new/fshare.jpg"></a>
 					</td>
 					
 					<td style="padding-left:10px;padding-top:5px;">
 						<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/home.php#!/profile.php?id=158042927544491" send="false" layout="button_count" width="0" show_faces="false" font="" title=""></fb:like>
-					</td>
+					</td>-->
                     <td style="vertical-align:top;">
                         <table width="100%" style="width:100%">                           
                             <tr>
@@ -718,7 +720,7 @@ var new2="Election Message";
 											</td>	
 											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Do You Know This ?</span>
+													<span class="homePageContentWidget_head_center_span">Join PartyAnalyst</span>
 												</div>
 											</td>	
 											<td width="20px" valign="top">
@@ -728,6 +730,7 @@ var new2="Election Message";
 									</table>
 								</div>
 								<div id="homePageContentWidget_body_questions" class="homePageContentWidget_body" style="height:400px;">
+								<iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: medium none; overflow: hidden; width: 210px; height: 408px;" src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fapps%2Fapplication.php%3Fid%3D158042927544491&amp;width=210&amp;colorscheme=light&amp;connections=12&amp;stream=false&amp;header=false&amp;height=408"></iframe>
 								</div>
 								<div class="homePageContentWidget_footer">
 
