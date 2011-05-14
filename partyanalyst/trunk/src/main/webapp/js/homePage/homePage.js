@@ -430,7 +430,7 @@ function openKadapa2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:583,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -475,7 +475,7 @@ function openTN2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:583,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -490,7 +490,8 @@ function openTN2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<center><table id="feedbackTable" width="100%">';
 		str += '	<tr>';
-		str += '	<td><img src="images/icons/Tamilnadu.PNG"></td>';
+		str += '	<td><img src="images/icons/TNupdated.png"></td>';
+		str += '     <td><a href="electionDetailsReportAction.action?electionId=10&stateID=24&stateName=Tamil Nadu&electionType=Assembly&electionTypeId=2&year=2006">Analyze Previous Election Years</a></td>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '	</center>';	
@@ -522,7 +523,7 @@ function openWB2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:588,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -532,12 +533,13 @@ function openWB2011Window()
 		var elmt = document.getElementById("assembly_2011_window_inner");
 
 		var str = '';
-		str += '<div id="feedback_window_head">West Bengal Assembly Election 2011 Results.</div>';
+		str += '<div id="feedback_window_head">West Bengal Assembly Election 2011 Results.sdadadad</div>';
 		str += '<div id="feedback_window_body">';
 		str += '	<div id="feedBackForm_div">';
 		str += '		<center><table id="feedbackTable" width="100%">';
 		str += '	<tr>';
-		str += '	<td><img src="images/icons/WB.PNG"></td>';
+		str += '	<td><img src="images/icons/WBupdated.png"></td>';
+		str += '	<TD><a href="electionDetailsReportAction.action?electionId=31&stateID=28&stateName=West Bengal&electionType=Assembly&electionTypeId=2&year=2006">Analyze Previous Elections Years</a></TD>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '	</center>';	
@@ -568,7 +570,7 @@ function openPD2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:583,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -583,7 +585,8 @@ function openPD2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<center><table id="feedbackTable" width="100%">';
 		str += '	<tr>';
-		str += '	<td><img src="images/icons/PD.PNG"></td>';
+		str += '	<td><img src="images/icons/puducherryupdated.png"></td>';
+		str += '	<td><a href="electionDetailsReportAction.action?electionId=33&stateID=35&stateName=Puducherry&electionType=Assembly&electionTypeId=2&year=2006">Analyze Previous Election Years</a></td>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '	</center>';	
@@ -614,7 +617,7 @@ function openAssam2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:583,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -629,7 +632,8 @@ function openAssam2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<center><table id="feedbackTable" width="100%">';
 		str += '	<tr>';
-		str += '	<td><img src="images/icons/Assam.PNG"></td>';
+		str += '	<td><img src="images/icons/Assamupdated.png"></td>';
+		str += '	<td><a href="electionDetailsReportAction.action?electionId=56&stateID=3&stateName=Assam&electionType=Assembly&electionTypeId=2&year=2006">Analyze Previous Election Years</a></td>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '	</center>';	
@@ -661,7 +665,7 @@ function openKerala2011Window()
 {
 	$("#assembly_2011_window").dialog({
 			resizable:false,
-			width:530,
+			width:583,
 			minHeight:110,
 			show:'slide',
 			modal:true
@@ -676,7 +680,8 @@ function openKerala2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<center><table id="feedbackTable" width="100%">';
 		str += '	<tr>';
-		str += '	<td><img src="images/icons/Kerala.PNG"></td>';
+		str += '	<td><img src="images/icons/Keralaupdated.png"></td>';
+		str += '    <td><a href="electionDetailsReportAction.action?electionId=21&stateID=13&stateName=Kerala&electionType=Assembly&electionTypeId=2&year=2006">Analyze Previous Election Years</a></td>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '	</center>';	
