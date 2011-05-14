@@ -859,7 +859,8 @@ function getMandalsComboBoxForAConstituency(value,elmtId)
 
 function getAllConstituenciesInStateByType(electionType, stateId, element)
 {
-
+	clearOptionsListForSelectElmtId(element);
+	showBusyImgWithId(element);
 	var jsObj=
 	{				
 			electionTypeId: electionType,
@@ -903,6 +904,8 @@ function getConstituenciesComboBoxForADistrict(value,elmtId)
 
 function getDistrictsComboBoxForAState(value,elmtId)
 {
+	showBusyImgWithId(elmtId);
+	clearOptionsListForSelectElmtId(elmtId);
 	clearOptionsListForSelectElmtId("districtSelectBox");
 	createSelectOptionsForSelectConstituencyElmtId("districtSelectBox");
 	clearOptionsListForSelectElmtId("constituencySelectBox");
@@ -1337,6 +1340,7 @@ function callAjax(jsObj,url)
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								hideBusyImgWithId(jsObj.elmtId);
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
 							{
@@ -1357,8 +1361,9 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "getConstituencies")
 							{
-								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								//clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								hideBusyImgWithId(jsObj.elmtId);
 							}else if(jsObj.task == "getAllParliamentConstituencies")
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
