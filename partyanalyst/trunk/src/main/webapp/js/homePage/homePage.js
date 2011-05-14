@@ -151,7 +151,7 @@ function initializeHomePage()
 	//buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
-	getHomePageQuestions();
+	//getHomePageQuestions();
 	//buildleadersNews();
 	//buildTopStoriesNews();
 	//buildPartiesNews();
