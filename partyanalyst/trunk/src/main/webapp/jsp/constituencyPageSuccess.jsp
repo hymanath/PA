@@ -233,6 +233,7 @@
 									   buildAssetsAndLiabilities(myResults);
 
 								   }
+								   hideBusyImgWithId("electionYearSelectForAssets");
 								}
 							}catch (e) {   
 							  // 	alert("Invalid JSON result" + e);   
@@ -267,6 +268,7 @@
 				selectedVal = myResults[i].id;
 		}
 		electionYearSelect += '</select>';
+		electionYearSelect += '<td><span id="electionYearSelectForAssets_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span></td>';
 		electionYearSelect += '</th>';
 
 		electionYearSelect += '</table>';
@@ -277,7 +279,9 @@
 	}
 
 	function getcandidateAssetsAndLiabilities(constiELecId)
-	{
+	{	
+		showBusyImgWithId("electionYearSelectForAssets");
+
 		var jsObj=
 		{
 				constiElecId:constiELecId,
@@ -1092,6 +1096,20 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	var browser1 = window.open("constituencyVotingTrendzAction.action?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
 
 	browser1.focus();
+}
+function showBusyImgWithId(elmtId)
+{		
+		
+		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = 'block';
+}
+function hideBusyImgWithId(elmtId)
+{
+	
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
 }
 
 </script>
