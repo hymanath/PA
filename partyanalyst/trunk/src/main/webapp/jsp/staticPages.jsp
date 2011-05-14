@@ -8,7 +8,7 @@
 
 <meta name="description" content="This page gives Exit Polls 2011 Results For Tamilnadu,West Bengal,Assam,Kerala,Pudducherry,Kadapa,Pulivendula Provided by Different Media">
 
-<meta name="keywords" content="Exit Polls 2011,Previous Election Reults,Tamilnadu 2011 results,West Bengal 2011 results,Assam 2011 results,Kerala 2011 results,Pudducherry 2011 results ,Kadapa 2011 Election Results,Pulivendula 2011 Election Results,Indian Elections, Election Analysis,Andhra Pradesh Politics,Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results,Constituency Management, Cadre Management, Party Performance, Election Comparison">
+<meta name="keywords" content="Tamilnadu,Assam,Kerala,Pududcherry,West Bengal Updated and latest Results 2011 , Exit Polls 2011,Previous Election Reults,Tamilnadu 2011 results,West Bengal 2011 results,Assam 2011 results,Kerala 2011 results,Pudducherry 2011 results ,Kadapa 2011 Election Results,Pulivendula 2011 Election Results,Indian Elections, Election Analysis,Andhra Pradesh Politics,Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results,Constituency Management, Cadre Management, Party Performance, Election Comparison">
 
 <meta name="copyright" content="IT Grids (India) Pvt. Ltd.">
 
@@ -27,7 +27,22 @@
 <link href="http://www.google.com/uds/solutions/videobar/gsvideobar.css"
     rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+<link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
+<!-- YUI Skin Sam -->
 
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
+<!-- YUI Dependency files (End) -->
 
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
@@ -178,9 +193,53 @@ function tamilnaduExitPollAnd2006ElectionDetails(){
 	LoadVideoBar("Tamilnadu");
 	buildCandidateNews("Tamilnadu");
 	buildCandidateNews2("Tamilnadu");
-	
+    var str =' ';
+	var cadreGroupsHeadDivElmt = document.getElementById("cadreGroupsHeadDiv");
+	str += '<font size="3px">Tamilnadu Latest Election Results 2011</font>';
+	cadreGroupsHeadDivElmt.innerHTML = str;
+
+	var latestResultsDivElmt =document.getElementById("latestResultsDiv");
+    var str =' ';
+	str +='<table style="width: 94%; text-align: center;">';
+	str +='<tr style="background-color:white;color:Chocolate;font-family:times New Roman;font-size:19px;">';
+	str +='<th>Party</th>';
+	str +='<th>No of seats</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AIADMK</th>';
+	str +='<td>150</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>DMK</th>';
+	str +='<td>23</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>CPM</th>';
+	str +='<td>10</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>Congress</td>';
+	str +='<td>5</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>CPI</th>';
+	str +='<td>9</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>PMK</th>';
+	str +='<td>3</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>AIFB</th>';
+	str +='<td>1</td>';
+	str +='</tr>';
+		str +='<tr>';
+	str +='<th>OTHERS</th>';
+	str +='<td>33</td>';
+	str +='</tr>';
+	latestResultsDivElmt.innerHTML = str;
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
-	var str =' ';
+	str ='';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>TamilNadu Exit Polls Provided By Different Media</b></div>';
 	str +='<div id="exitPollStyle"><table  cellspacing="2" cellpadding="2">';
 	str +=' <tr> ';
@@ -265,7 +324,51 @@ function westBengalExitPollAnd2006ElectionDetails(){
 	LoadVideoBar("West Bengal");
     buildCandidateNews("West Bengal");
 	buildCandidateNews2("West Bengal");
-	
+	var cadreGroupsHeadDivElmt = document.getElementById("cadreGroupsHeadDiv");
+	var str ='';
+	str += '<font size="3px">West Bengal Latest Election Results 2011</font>';
+	cadreGroupsHeadDivElmt.innerHTML = str;
+
+	var latestResultsDivElmt =document.getElementById("latestResultsDiv");
+    var str =' ';
+	str +='<table style="width: 94%; text-align: center;">';
+	str +='<tr style="background-color:white;color:Chocolate;font-family:times New Roman;font-size:19px;">';
+	str +='<th>Party</th>';
+	str +='<th>No of seats</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AITC</th>';
+	str +='<td>184</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>CPM</th>';
+	str +='<td>40</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>Congress</td>';
+	str +='<td>42</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>CPI</th>';
+	str +='<td>2</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AIFB</th>';
+	str +='<td>11</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>RCP</th>';
+	str +='<td>7</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>SP</th>';
+	str +='<td>1</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>OTHERS</th>';
+	str +='<td>7</td>';
+	str +='</tr>';
+	latestResultsDivElmt.innerHTML = str;
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>West Bengal Exit Polls Provided By Different Media</b></div>';
@@ -348,7 +451,47 @@ function assamExitPollAnd2006ElectionDetails(){
 	LoadVideoBar("Assam");
     buildCandidateNews("Assam");
 	buildCandidateNews2("Assam");
-	
+	var cadreGroupsHeadDivElmt = document.getElementById("cadreGroupsHeadDiv");
+	var str = '';
+	str += '<font size="3px">Assam Latest Election Results 2011</font>';
+	cadreGroupsHeadDivElmt.innerHTML = str;
+
+	var latestResultsDivElmt =document.getElementById("latestResultsDiv");
+    var str =' ';
+	str +='<table style="width: 94%; text-align: center;">';
+	str +='<tr style="background-color:white;color:Chocolate;font-family:times New Roman;font-size:19px;">';
+	str +='<th>Party</th>';
+	str +='<th>No of seats</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>Congress</th>';
+	str +='<td>78</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AIUDF</th>';
+	str +='<td>18</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>BDF</td>';
+	str +='<td>12</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AGP</th>';
+	str +='<td>10</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>BJP</th>';
+	str +='<td>5</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>AITC</th>';
+	str +='<td>1</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>OTHERS</th>';
+	str +='<td>2</td>';
+	str +='</tr>';
+	latestResultsDivElmt.innerHTML = str;
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>Assam  Exit Polls Provided By Different Media</b></div>';
@@ -451,6 +594,56 @@ function keralaExitPollAnd2006ElectionDetails(){
     buildCandidateNews("Kerala");
 	buildCandidateNews2("Kerala");
 	
+	var cadreGroupsHeadDivElmt = document.getElementById("cadreGroupsHeadDiv");
+	 var str =' ';
+	str += '<font size="3px">Kerala Latest Election Results 2011</font>';
+	cadreGroupsHeadDivElmt.innerHTML = str;
+
+	var latestResultsDivElmt =document.getElementById("latestResultsDiv");
+    var str =' ';
+	str +='<table style="width: 94%; text-align: center;">';
+	str +='<tr style="background-color:white;color:Chocolate;font-family:times New Roman;font-size:19px;">';
+	str +='<th>Party</th>';
+	str +='<th>No of seats</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>CPI</th>';
+	str +='<td>13</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>CPM</th>';
+	str +='<td>45</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>INC</td>';
+	str +='<td>38</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>NCP</th>';
+	str +='<td>2</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>JD(S)</th>';
+	str +='<td>4</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>KeralaCongress(M)</th>';
+	str +='<td>9</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>MLKSC</th>';
+	str +='<td>20</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>RSP</th>';
+	str +='<td>2</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>OTHERS</th>';
+	str +='<td>7</td>';
+	str +='</tr>';
+	latestResultsDivElmt.innerHTML = str;
+	
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str =' ';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>Kerala Exit Polls Provided By Different Media</b></div>';
@@ -518,6 +711,37 @@ function puducherryExitPollAnd2006ElectionDetails(){
     buildCandidateNews("Puducherry");
     buildCandidateNews2("Puducherry");
 
+	var cadreGroupsHeadDivElmt = document.getElementById("cadreGroupsHeadDiv");
+	 var str =' ';
+	str += '<font size="3px">Puducherry Latest Election Results 2011</font>';
+	cadreGroupsHeadDivElmt.innerHTML = str;
+
+	var latestResultsDivElmt =document.getElementById("latestResultsDiv");
+    var str =' ';
+	str +='<table style="width: 94%; text-align: center;">';
+	str +='<tr style="background-color:white;color:Chocolate;font-family:times New Roman;font-size:19px;">';
+	str +='<th>Party</th>';
+	str +='<th>No of seats</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>ADMK+</th>';
+	str +='<td>20</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>Congress</th>';
+	str +='<td>7</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>DMK</th>';
+	str +='<td>2</td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>OTHERS</th>';
+	str +='<td>1</td>';
+	str +='</tr>';
+	latestResultsDivElmt.innerHTML = str;
+	
+
 	var TNexitPollsDivelmt = document.getElementById("TNexitPollsDiv");
 	var str ='';
 	str +=' <div id="tdStyles" style="margin-top:5px;"><b>Puducherry  Exit Polls Provided By Different Media</b></div>';
@@ -577,7 +801,7 @@ function puducherryExitPollAnd2006ElectionDetails(){
 <body onload="">
 <div id="headerStyle">
 
-Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala, Puducherry
+ Latest Election Results 2011 & Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala, Puducherry
 <br>
 </div>
 
@@ -636,8 +860,9 @@ Exit Polls & Previous Election Results For Tamilnadu, West Bengal, Assam, Kerala
 
 </tr>
 </table>
-
-
+<div id="cadreGroupsMainDiv"  style="width: 50%;" class="yui-skin-sam">
+<div id="cadreGroupsHeadDiv" class=".yui-widget-hd"></div>
+<div id="latestResultsDiv" class=""></div></div>
 <div id="TNexitPollsDiv"></div>
 <div id="TNPreviousPollsDiv"></div>
 <script type="text/javascript">
