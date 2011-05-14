@@ -1127,6 +1127,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		VotersInfoForMandalVO votersInfoInTown = null;
 		List<VotersInfoForMandalVO> votersInfoInTowns = new ArrayList<VotersInfoForMandalVO>();
 		votersWithDelimitationInfoVO.setYear(IConstants.DELIMITATION_YEAR+"");
+		//votersWithDelimitationInfoVO.setYear(year.toString());
 		List beforeDelimLocalBodies = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBody(constituencyId, 
 				year, "'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
 		List beforeDelimGMCs = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(constituencyId, 
@@ -1274,31 +1275,41 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(candidateInfoList.get(0));
 			
 			List assembliesData = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(constituencyId);
-			Constituency assemConsti = null;
+			/*Constituency assemConsti = null;*/
 			
-			if(assembliesData != null && assembliesData.size() > 0){
-			StringBuilder idString = new StringBuilder();
-			for(int j = 0 ; j < assembliesData.size() ; j++)
+			if(assembliesData != null && assembliesData.size() > 0)
 			{
-				Object[] ids = (Object[]) assembliesData.get(j);
-				idString.append(IConstants.COMMA).append((Long)ids[0]);
+				/*StringBuilder idString = new StringBuilder();
+				for(int j = 0 ; j < assembliesData.size() ; j++)
+				{
+					Object[] ids = (Object[]) assembliesData.get(j);
+					idString.append(IConstants.COMMA).append((Long)ids[0]);
+					
+					if(j == 0)
+						assemConsti = constituencyDAO.get((Long)ids[0]);				
+				}	
 				
-				if(j == 0)
-					assemConsti = constituencyDAO.get((Long)ids[0]);				
-			}	
-			
-			if(idString.length() > 0){
-				Long stateId = 0L;
-				if(assemConsti != null)
-				stateId = assemConsti.getElectionScope().getState().getStateId();
-				List result = nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L, IConstants.ELECTION_SUBTYPE_MAIN,stateId);
-				if(result.size()!=0){
-					candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
-				}else{
-					log.error("Parliament candidate data for this constituency is not present");
-					candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(null);
-				}			    
-			}
+				if(idString.length() > 0)
+				{
+					Long stateId = 0L;
+					if(assemConsti != null)
+					stateId = assemConsti.getElectionScope().getState().getStateId();
+					List result = nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L, IConstants.ELECTION_SUBTYPE_MAIN,stateId);*/
+					
+					List<Object[]> result = new ArrayList<Object[]>(0);
+					for(int j = 0 ; j < assembliesData.size() ; j++)
+					{
+						Long constId = (Long)((Object[])assembliesData.get(j))[0];
+						result.add(nominationDAO.getCandidateAndPartyInfo(constId,IConstants.ASSEMBLY_ELECTION_TYPE, 1L).get(0));
+						
+					}
+					if(result.size()!=0){
+						candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
+					}else{
+						log.error("Parliament candidate data for this constituency is not present");
+						candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(null);
+					}			    
+				/*}*/
 			}else{
 				candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(null);
 			}
