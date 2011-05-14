@@ -381,7 +381,6 @@ function showFeedBackFormPanel()
 	
 
 }
-
 function openAssembly2011Window()
 {
 	$("#assembly_2011_window").dialog({
@@ -703,7 +702,6 @@ function openKerala2011Window()
 		});
 		
 }
-
 
 function postFeedbackAjaxCall()
 {
@@ -2070,7 +2068,7 @@ function buildElectionTypes(statePageObj)
 		var j=0;
 		for(var i=0;i<statePageObject.length;i++)
 		{
-				if(statePageObject[i].electionType == electionType){
+				if((statePageObject[i].electionType == electionType)&& (statePageObject[i].electionSubtype == 'MAIN')){
 				electionYearElmt.options[j]=new Option(statePageObject[i].year,i);
 				j++;
 				}
