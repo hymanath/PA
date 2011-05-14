@@ -234,7 +234,7 @@
 		$( "#accordion" ).dialog({
 			autoOpen: true,
 			show: "blind",
-			width: 320,
+			width: 350,
 			minHeight:460,
 			hide: "explode"
 		});
@@ -446,7 +446,9 @@
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList2" list="{}" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateInQuickView(this.options[this.selectedIndex].value,'districtList_d')"/></td>
+										<td style="width:200px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList2" list="{}" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateInQuickView(this.options[this.selectedIndex].value,'districtList_d')"></s:select></td>
+										<td><span id="districtList_d_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
+										</td>
 									</tr>
 									<tr>
 										<td style="color:#004078"><%=distSelect%></td>
@@ -479,6 +481,8 @@
 									</tr>
 									<tr>
 										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="{}" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByTypeInQuickView(2,this.options[this.selectedIndex].value,'constituency')"></s:select></td>
+										<td><span id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
+										</td>
 									</tr>
 								</table>
 									
@@ -541,7 +545,7 @@
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>			<td><div id="imgElmt_ER" style="display:none;"><img src="images/icons/partypositions.gif" /></div></td>							
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>			<td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>							
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
@@ -557,9 +561,7 @@
 						</div>
 						
 						</div>
-					</div>
-						
-					
+				</div>
 
 	<script type="text/javascript">
 		//buildLogoImage();
@@ -609,12 +611,14 @@ function hideUnhideSelectBoxInQuickView(radioElement, selectElement)
 }
 
 function getDistrictsComboBoxForAStateInQuickView(value,elmtId)
-{
-		
-	clearOptionsListForSelectElmtId("districtSelectBox");
-	createSelectOptionsForSelectConstituencyElmtId("districtSelectBox");
-	clearOptionsListForSelectElmtId("constituencySelectBox");
-	createSelectOptionsForSelectConstituencyElmtId("constituencySelectBox");
+{	
+	
+	showBusyImgWithId(elmtId);	
+	
+	clearOptionsListForSelectElmtId(elmtId);
+	//createSelectOptionsForSelectConstituencyElmtId("districtSelectBox");
+	//clearOptionsListForSelectElmtId("constituencySelectBox");
+	//createSelectOptionsForSelectConstituencyElmtId("constituencySelectBox");
 	var jsObj=
 		{				
 				stateId:value,
@@ -629,7 +633,8 @@ function getDistrictsComboBoxForAStateInQuickView(value,elmtId)
 }
 function getAllConstituenciesInStateByTypeInQuickView(electionType, stateId, element)
 {
-	
+	showBusyImgWithId(element);
+	clearOptionsListForSelectElmtId(element);
 	var jsObj=
 	{				
 			electionTypeId: electionType,
@@ -694,11 +699,13 @@ function callQuickViewAjax(jsObj, url){
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								hideBusyImgWithId(jsObj.elmtId)
 							}
 							else if(jsObj.task == "getConstituencies")
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+								hideBusyImgWithId(jsObj.elmtId);
 							}else if(jsObj.task == "getAllParliamentConstituencies")
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
@@ -707,6 +714,17 @@ function callQuickViewAjax(jsObj, url){
 							else if(jsObj.task == "statesListForLocalBodyElection"){
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);	
+							}
+							else if(jsObj.task == "siteSearch"){
+								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);	
+								clearOptionsListForSelectElmtId("stateList_c");
+								createOptionsForSelectElmtId("stateList_c",myResults);	
+								clearOptionsListForSelectElmtId("stateLists");
+								createOptionsForSelectElmtId("stateLists",myResults);	
+								clearOptionsListForSelectElmtId("stateList2");
+								createOptionsForSelectElmtId("stateList2",myResults);
+								
 							}
 							else{
 							clearOptionsListForSelectElmtId(jsObj.elmtId);
@@ -731,9 +749,9 @@ function callQuickViewAjax(jsObj, url){
 
 		intialize();
 		getStatesInQuickView('siteSearch','stateList_s');
-		getStatesInQuickView('siteSearch','stateLists');
-		getStatesInQuickView('siteSearch','stateList2');
-		getStatesInQuickView('siteSearch','stateList_c');
+		//getStatesInQuickView('siteSearch','stateLists');
+		//getStatesInQuickView('siteSearch','stateList2');
+		//getStatesInQuickView('siteSearch','stateList_c');
 		//getStatesInQuickView('siteSearch','stateList_l');
 		getElectionTypeValue(1);
 		getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
