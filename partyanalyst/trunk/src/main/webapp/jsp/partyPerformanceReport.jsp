@@ -1812,10 +1812,14 @@ partyObj.rebelsPerformanceArray.push(rebelPerformanceObj);
 <br>
 </s:if>   
 <div>
-<s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=normal" style="float: left;margin-right:20px;">
+<s:form action="partyPerformanceJasper.action" style="float: left;margin-right:20px;">
+<input type="hidden" name="jasperFile" value="jasper\partyPerformance\partyPerformanceReport.jrxml" />
+<input type="hidden" name="type" value="normal" />
 <input type="submit" value="Generate PDF">
 </s:form>
-<s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=detailed">
+<s:form action="partyPerformanceJasper.action">
+<input type="hidden" name="jasperFile" value="jasper\partyPerformance\partyPerformanceReport.jrxml" />
+<input type="hidden" name="type" value="detailed" />
 <input type="submit" value="Generate Detailed PDF">
 </s:form>
 </div>
