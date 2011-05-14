@@ -704,6 +704,7 @@ function openKerala2011Window()
 		
 }
 
+
 function postFeedbackAjaxCall()
 {
 	var errorElmt = document.getElementById("feedback_window_errorMsg");
@@ -2008,9 +2009,8 @@ elmt.innerHTML = str;
 
 function getElectionTypeValue(stateId) {
 
-var imgElmt = document.getElementById("imgElmt_ER");
-if(imgElmt)
-imgElmt.style.display='block';
+
+showBusyImgWithId("stateLists");
 clearOptionsListForSelectElmtId("electionLists");
 clearOptionsListForSelectElmtId("electionYears");
 var jObj = {
@@ -2075,9 +2075,8 @@ function buildElectionTypes(statePageObj)
 				j++;
 				}
 		}
-var imgElmt = document.getElementById("imgElmt_ER");
-if(imgElmt)
-imgElmt.style.display='none';
+	hideBusyImgWithId("stateLists");
+	
 }
 
 function viewElectionResults(){
@@ -2104,4 +2103,19 @@ for(var i=0; i<statePageObject.length; i++ ){
 document.location = "electionDetailsReportAction.action?electionId="+electionId_ER+"&stateID="+stateId_ER+"&stateName="+stateName_ER+"&electionType="+electionType_ER+"&electionTypeId="+electionTypeId_ER+"&year="+electionYear_ER;
 
 
+}
+
+function showBusyImgWithId(elmtId)
+{		
+		
+		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = 'block';
+}
+function hideBusyImgWithId(elmtId)
+{
+	
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
 }
