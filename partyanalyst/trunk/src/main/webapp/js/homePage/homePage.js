@@ -400,9 +400,9 @@ function openAssembly2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<table id="feedbackTable" width="100%">';
 		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
-		str += '		<tr><td width="280px">Y.S Vijayamma</td><td width="160px">110102</td><td>YSRC</td><td>1</td></tr> ';
-		str += '		<tr><td>Y.S Vivekananda Reddy</td><td>28729</td><td>INC</td><td>2</td></tr> ';
-		str += '		<tr><td>B.Tech Ravi </td><td>12051</td><td>TDP</td><td>3</td></tr> ';
+		str += '		<tr><td width="280px">Y.S Vijayamma</td><td>YSRC</td><td width="160px">110102</td><td>1</td></tr> ';
+		str += '		<tr><td>Y.S Vivekananda Reddy</td><td>INC</td><td>28729</td><td>2</td></tr> ';
+		str += '		<tr><td>B.Tech Ravi </td><td>TDP</td><td>12051</td><td>3</td></tr> ';
 		str += '		</table>';
 		str += '	</div>';
 		str += '</div>';
@@ -445,9 +445,9 @@ function openKadapa2011Window()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<table id="feedbackTable" width="100%">';
 		str += '		<tr><th>Candidate Name</th><th>Party</th><th>Votes Earned</th><th>Rank</th></tr>';
-		str += '		<tr><td width="300px">Y.S Jagan Mohan Reddy</td><td width="160px">692250</td><td>YSRC</td><td>1</td></tr> ';
-		str += '		<tr><td>DL Ravindra Reddy </td><td>146579</td><td>INC</td><td>2</td></tr> ';
-		str += '		<tr><td> Mysura Reddy </td><td>129565</td><td>TDP</td><td>3</td></tr> ';
+		str += '		<tr><td width="300px">Y.S Jagan Mohan Reddy</td><td>YSRC</td><td width="160px">692250</td><td>1</td></tr> ';
+		str += '		<tr><td>DL Ravindra Reddy </td><td>INC</td><td>146579</td><td>2</td></tr> ';
+		str += '		<tr><td> Mysura Reddy </td><td>TDP</td><td>129565</td><td>3</td></tr> ';
 		str += '		</table>';
 		str += '	</div>';
 		str += '</div>';
