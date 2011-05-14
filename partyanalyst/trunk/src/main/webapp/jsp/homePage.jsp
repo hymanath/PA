@@ -419,7 +419,9 @@ var new2="Election Message";
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"/></td>
+										<td width="200px"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select></td>
+										<td><span id="districtList_d_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
+										</td>
 									</tr>
 									<tr>
 										<td style="color:#004078"><%=distSelect%></td>
@@ -451,7 +453,9 @@ var new2="Election Message";
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/></td>
+										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
+										</td>
+										<td><div id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>	
 									</tr>
 								</table>
 									
@@ -510,8 +514,7 @@ var new2="Election Message";
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>
-										<td><div id="imgElmt_ER" style="display:none;"><img src="images/icons/partypositions.gif" /></div></td>			
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
@@ -562,7 +565,7 @@ var new2="Election Message";
 												<u>New Feature </u>: <font> Now you can view your Leaders Education details, Assets, Liabilities and more details in your Constituency page.</font>
 											   </marquee>
 											</td>   -->
-
+											
 											<td width="100%">
 											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
 												</font>
@@ -741,7 +744,7 @@ var new2="Election Message";
 						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
-									<table width="97%" cellpadding="0" cellspacing="0">
+									<table width="97%" cellpadding="0" cellspacing="0">										
 										<tr>
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
@@ -798,8 +801,7 @@ var new2="Election Message";
 												
 											</td>
 										</tr>
-									</table>
-								</div>
+									</table>								</div>
 								<div class="homePageContentWidget_footer">
 									
 								</div>
@@ -842,14 +844,14 @@ var new2="Election Message";
 						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
-									<table width="42%" cellpadding="0" cellspacing="0">
+														<table width="42%" cellpadding="0" cellspacing="0">
 										<tr>
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
 											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
+													<span class="homePageContentWidget_head_center_span">Current Elections</span>
 												</div>
 											</td>	
 											<td width="20px" valign="top">
@@ -868,7 +870,7 @@ var new2="Election Message";
 									   
 										</div>
 									</div>
-								</div>
+							</div>
 								<div class="homePageContentWidget_footer">
 								</div>
 							</div>
