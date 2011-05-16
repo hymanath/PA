@@ -425,11 +425,22 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	@SuppressWarnings("unchecked")
 	public List getLatestResultsElectionYearInAConstituency(Long constituencyId) {
 		
-		String hasResults = "1";
-		Object[] params = {hasResults,constituencyId};
+		Object[] params = {constituencyId};
 		return getHibernateTemplate().find("select max(nModel.election.electionYear) from ConstituencyElection nModel where "+
-			"nModel.hasResults is null or nModel.hasResults = ? and nModel.constituency.constituencyId = ? order by nModel.election.electionYear desc",params);
+			"nModel.hasResults is null and nModel.constituency.constituencyId = ? order by nModel.election.electionYear desc",params);
 	}
+	
+	/*@SuppressWarnings("unchecked")
+	public List getLatestResultsElectionYearInAConstituency(Long constituencyId){
+		
+		Object[] params = {constituencyId};
+		return getHibernateTemplate().find("SELECT model1.election.electionId, model1.election.electionYear "+
+										   "FROM ConstituencyElection model1,Election model2 "+
+										   "where model1.election.electionId = model2.electionId "+
+										   "and model1.hasResults is null "+ 
+										   "and model1.constituency.constituencyId = ? "+ 
+										   "ORDER BY model1.election.electionYear desc",params);
+	}*/
 }
 
 
