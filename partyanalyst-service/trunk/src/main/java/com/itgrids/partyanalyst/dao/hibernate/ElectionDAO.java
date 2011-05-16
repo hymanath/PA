@@ -565,10 +565,9 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType) {
 		
-		String isPartial = "0";
-		Object[] params = {stateId,electionType,isPartial};
+		Object[] params = {stateId,electionType};
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
-				"model.isPartial is null or model.isPartial = ?",params);
+				"model.isPartial is null",params);
 	}
 	
 	@SuppressWarnings("unchecked")

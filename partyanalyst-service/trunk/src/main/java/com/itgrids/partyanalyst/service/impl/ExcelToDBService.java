@@ -300,7 +300,8 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				constituencyElectionObj = constituencyElectionsMap.get(constId);
 				
 				if(constituencyElectionObj.getHasResults().equalsIgnoreCase("0") && isResults)
-					constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
+					constituencyElectionObj.setHasResults(null);
+					//constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
 				
 			}
 			else{
@@ -312,9 +313,10 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				constituencyElectionObj.setElection(electionObj);
 				constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
 				
-				if(isResults)
+				/*if(isResults)
 					constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
-				else
+				else*/
+				if(!isResults)
 					constituencyElectionObj.setHasResults(getStringFromAsciiChar(0));
 				
 				constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
