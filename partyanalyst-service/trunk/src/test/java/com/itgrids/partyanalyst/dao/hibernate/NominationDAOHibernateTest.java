@@ -811,7 +811,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			}
 	}*/
 	
-	public void testGetCandidateAndPartyInfo()
+	/*public void testGetCandidateAndPartyInfo()
 	{
 		List<Long> list = new ArrayList<Long>(0);
 		list.add(242l);list.add(243l);list.add(251l);list.add(245l);list.add(244l);list.add(250l);list.add(249l);
@@ -826,6 +826,15 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			}
 				
 		}
+	}*/
+	
+	@Test
+	public void testGetAllElectionYearsForAConstituency()
+	{
+		List<Object> list = nominationDAO.getAllElectionYearsForAConstituency(251l, IConstants.ASSEMBLY_ELECTION_TYPE);
+		
+		for(Object obj : list)
+			System.out.println(obj);
 	}
 	
 	
