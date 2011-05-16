@@ -2646,6 +2646,7 @@ public class StaticDataService implements IStaticDataService {
 						}
 						candidateDetailsVO.setPartyName(parms[7].toString());
 						candidateDetailsVO.setReservationZone(parms[12].toString());
+						candidateDetailsVO.setElectionYear(latestElecYearInConsti);
 						candidateDetailsVo.add(candidateDetailsVO);
 					}
 				}
@@ -2875,8 +2876,7 @@ public class StaticDataService implements IStaticDataService {
 					// set to main VO
 					constituencyElectionCompleteResults.setConstituencyId(Long
 							.parseLong(parms[0].toString()));
-					constituencyElectionCompleteResults
-							.setConstituencyName(parms[1].toString());
+					constituencyElectionCompleteResults.setConstituencyName(parms[1].toString());
 					constituencyElectionCompleteResults
 							.setElectionInfo(electionInfo);
 					constituencyElectionCompleteResults.setStateId(Long
