@@ -1241,8 +1241,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		    candidateList = nominationDAO.getCandidateNPartyInfoForParliament(constituencyId.toString(), electionType, 1L, IConstants.ELECTION_SUBTYPE_MAIN);
 		else{
-			Long stateID = consti.getElectionScope().getState().getStateId();
-			candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L, IConstants.ELECTION_SUBTYPE_MAIN, stateID);
+			/*Long stateID = consti.getElectionScope().getState().getStateId();
+			candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L, IConstants.ELECTION_SUBTYPE_MAIN, stateID);*/
+			candidateList = nominationDAO.getCandidateAndPartyInfo(constituencyId, electionType,1L);
 		}
 		
 		
