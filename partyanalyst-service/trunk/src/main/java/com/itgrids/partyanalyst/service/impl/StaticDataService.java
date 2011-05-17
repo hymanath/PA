@@ -888,7 +888,7 @@ public class StaticDataService implements IStaticDataService {
 	// Need refactoring the code and unit testing- Ashok
 	public boolean hasAlliances(String electionYear, Long electionType,
 			Long partyId) {
-		if (getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType,0L) != null)
+		if (getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType,1L) != null)
 			return true;
 
 		return false;
