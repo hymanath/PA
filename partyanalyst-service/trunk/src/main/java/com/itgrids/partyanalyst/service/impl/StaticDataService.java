@@ -1049,6 +1049,7 @@ public class StaticDataService implements IStaticDataService {
 						constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
 						constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
 						constituencyWinnerInfoVO.setConstituencyId(obj[3].toString());
+						constituencyWinnerInfoVO.setElectionYear(latestElecYearInConsti);
 						constituencyWinnerInfoVO.setReservationZone(obj[6].toString());
 						
 						List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(Long.parseLong(obj[3].toString()));
