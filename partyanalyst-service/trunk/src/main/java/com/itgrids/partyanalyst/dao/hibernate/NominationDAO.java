@@ -374,6 +374,24 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getCandidateNPartyInfoForParliament(String constituencyIds,String electionType,Long rank)
+	{
+		String hasResults = "1";
+		Object[] params = {rank, electionType,hasResults};
+		
+		
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
+				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +
+				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"from Nomination model where model.constituencyElection.constituency.constituencyId in ("+constituencyIds+") and model.candidateResult.rank = ? and " +
+				"model.constituencyElection.election.electionYear = (select max(nModel.election.electionYear) from ConstituencyElection nModel where nModel.election.electionScope.electionType.electionType = ? "+
+				"and nModel.hasResults is null or nModel.hasResults = ? order by nModel.election.electionYear desc)",params);
+		
+	}
+	
 	/*@SuppressWarnings("unchecked")
 	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype,Long stateId)
 	{
