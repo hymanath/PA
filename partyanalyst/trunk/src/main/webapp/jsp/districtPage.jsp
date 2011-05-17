@@ -1319,7 +1319,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
-						<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</div></span></td>
+						<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</span></div></td>
 						<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 					</tr>
 				</table>
@@ -1431,12 +1431,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
                         </a>
 
 						 </tr>
-						 <tr>
-						</c:if>
+							</c:if>
                  						 
                 </c:forEach>
 				 </tr>	
-			    </table><center>
+			    </table></center>
 				</c:if>
 			</div>
 		</div>
@@ -1650,7 +1649,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 									</span>
 								</td>									
 								<td>
-								<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
+								<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${candidate.electionYear}')">view results</a>
 							</td>
 							</tr>  
 						</c:forEach>
