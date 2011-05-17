@@ -17,7 +17,14 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	private Long parliamentConstituencyId;
 	private String parliamentConstituencyName;
 	private String reservationZone;
+	private String electionYear;
 	
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
 	public String getReservationZone() {
 		return reservationZone;
 	}
