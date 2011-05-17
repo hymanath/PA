@@ -828,15 +828,34 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	@Test
+	/*@Test
 	public void testGetAllElectionYearsForAConstituency()
 	{
 		List<Object> list = nominationDAO.getAllElectionYearsForAConstituency(251l, IConstants.ASSEMBLY_ELECTION_TYPE);
 		
 		for(Object obj : list)
 			System.out.println(obj);
-	}
+	}*/
 	
+	/*@SuppressWarnings("unchecked")
+	public void testGetCandidateNPartyInfoForParliament()
+	{
+		List<Object[]> list = nominationDAO.getCandidateNPartyInfoForParliament("478", IConstants.PARLIAMENT_ELECTION_TYPE, 1l);
+		
+		for(Object param : list.get(0))
+			System.out.println(param);
+		
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetParliamentCandidateNPartyInfo()
+	{
+		List<Object[]> list = nominationDAO.getParliamentCandidateNPartyInfo(478l, IConstants.PARLIAMENT_ELECTION_TYPE,1l);
+		
+		if(list != null && list.size() > 0)
+		for(Object param : list.get(0))
+			System.out.println(param);
+	}
 	
 }
 	
