@@ -1594,7 +1594,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 								<td>	
 									<img src="<%=request.getContextPath()%>/images/party_flags/${mpsDetails.partyFlag}" height="30" width="40"/>
 								</td>
-								<td> <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${mpsDetails.constituencyId}','Parliament','2009')">view results</a>
+								<td> <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${mpsDetails.constituencyId}','Parliament','${mpsDetails.electionYear}')">view results</a>
 								</td>
 							</tr>  
 						</c:forEach>
