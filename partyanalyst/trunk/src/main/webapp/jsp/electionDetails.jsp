@@ -611,7 +611,6 @@ function showDetailedResultsChart(chartName){
 	 var myPanel = new YAHOO.widget.Dialog("detailedResultsPanel", {
                  
                  width : "950px", 
-                 fixedcenter : true, 
                  visible : true,  
                  constraintoviewport : true, 
         		 iframe :true,
@@ -622,6 +621,8 @@ function showDetailedResultsChart(chartName){
 	   myPanel.setHeader("Detailed Election Results Chart");
        myPanel.setBody(contentStr);
        myPanel.render();
+	    myPanel.bringToTop();
+	   myPanel.show();
 }
 
 
@@ -807,17 +808,20 @@ function showPartyResultsWithoutAlliance(chartId)
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
                  width : "820px", 
-                 fixedcenter : true, 
                  visible : true,  
                  constraintoviewport : true, 
         		 iframe :true,
         		 modal :true,
-        		 hideaftersubmit:true,
-        		 close:true
+				 hideaftersubmit:true,
+        		 close:true,
+				
+								  
        });
 	   myPanel.setHeader("Party Results Without Alliance");
        myPanel.setBody(contentStr);
        myPanel.render();
+	   myPanel.bringToTop();
+	   myPanel.show();
 		
 	
 	//interactive chart
@@ -1047,7 +1051,6 @@ function showInteractiveAllianceCharts(index,allianceGroupName)
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
 		 width : "820px", 
-         fixedcenter : true, 
          visible : true,  
          constraintoviewport : true, 
 		  iframe :true,
@@ -1062,6 +1065,8 @@ function showInteractiveAllianceCharts(index,allianceGroupName)
 	myPanel.setHeader(allianceGroupName);	  
 	myPanel.setBody(str);
 	myPanel.render();
+	 myPanel.bringToTop();
+	   myPanel.show();
 
 	//static colors for parties
     var staticColors = setStaticPartyColorsForInteractiveCharts(results);
@@ -1092,7 +1097,6 @@ function showAllianceGraph(chartId, chartName)
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
 		 width : "820px", 
-         fixedcenter : true, 
          visible : true,  
          constraintoviewport : true, 
 		  iframe :true,
@@ -1103,6 +1107,8 @@ function showAllianceGraph(chartId, chartName)
 	   myPanel.setHeader(chartName);	  
        myPanel.setBody(contentStr);
        myPanel.render();
+	    myPanel.bringToTop();
+	   myPanel.show();
 }
 function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 {	
@@ -1426,7 +1432,6 @@ function showDistrictWisePartyResultsWithoutAlliance(chartId,detailedResultsChar
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
                  width : "950px", 
-                 fixedcenter : true, 
                  visible : true,  
                  constraintoviewport : true, 
         		  iframe :true,
@@ -1436,7 +1441,9 @@ function showDistrictWisePartyResultsWithoutAlliance(chartId,detailedResultsChar
        });
 	   myPanel.setHeader("District Wise Party Results Without Alliance");
        myPanel.setBody(contentStr);		
-	   myPanel.render();	
+	   myPanel.render();
+	    myPanel.bringToTop();
+	   myPanel.show();
 	   buildAllDistrictDatatable(electionResultsObj.districtWiseResultsWithoutAllianceArr,"districtWiseWithoutAllianceDiv_Datatable","all","null","null");
 }	
 
@@ -2157,7 +2164,7 @@ callAjax(rparam,jsObj,url);
 	</TABLE>
 </DIV>
 <DIV class="graphBottom"></DIV>
-<DIV class = "yui-skin-sam"><div id="panel"></DIV></DIV>
+<DIV class = "yui-skin-sam"><div id="panel" style="left:69px;top:-180px;"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="detailedResultsPanel"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
 </DIV>
