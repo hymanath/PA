@@ -563,7 +563,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 					candidateDetailsVo.setVotesPercentage("--");
 				}			
 				candidateDetailsVo.setRank(new Long(parms[9].toString()));
-				if(parms[6]!= null){
+				if(parms[5]!= null){
 					candidateDetailsVo.setPartyFlag(parms[5].toString());
 				}else{
 					candidateDetailsVo.setPartyFlag("no_Image.png");
