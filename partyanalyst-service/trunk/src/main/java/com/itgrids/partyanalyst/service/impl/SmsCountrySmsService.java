@@ -117,15 +117,15 @@ public class SmsCountrySmsService implements ISmsService {
 
 			/*post = new PostMethod(propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SERVICE_URL));*/
-			post = new PostMethod("http://www.smscountry.com/SMSCwebservice.asp");
+			post = new PostMethod("http://www.sms.partyanalyst.com/SMSCwebserviceSMS.aspx");
 			// give all in string
 			/*post.addParameter("User", propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER));
 			post.addParameter("passwd", propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));*/
 			
-			post.addParameter("User", "dakavaram");
-			post.addParameter("passwd", "1tGrids");
+			post.addParameter("User", "dakavara");
+			post.addParameter("passwd", "Nlrr76234");
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < phoneNumbers.length; i++) {
 				sb.append("91");
@@ -143,7 +143,7 @@ public class SmsCountrySmsService implements ISmsService {
 			post.addParameter("message", message);/*
 			post.addParameter("sid", propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SID));*/
-			post.addParameter("sid", "SMSCountry");
+			post.addParameter("sid", "PA");
 			post.addParameter("mtype", isEnglish ? "N" : "OL");
 			/*post.addParameter("DR", propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_DR));*/
