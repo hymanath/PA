@@ -854,7 +854,7 @@ var new2="Election Message";
 											</td>	
 											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Current Elections</span>
+													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
 												</div>
 											</td>	
 											<td width="20px" valign="top">
