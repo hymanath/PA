@@ -40,9 +40,16 @@
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 
 
-<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE></c:if>
-<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results Page </TITLE></c:if>
-
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results  ${year}</TITLE></c:if>
+<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
+<style>
+#stateResults{
+ color:Maroon;
+font-family:trebuchet MS;
+font-size:14px;
+ 
+}
+</style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
 var electionType = '${electionType}';
@@ -793,6 +800,19 @@ function showPartywiseDetailsDataTable(results)
 				noteDivEl[k].style.display = '';}
 		}
 	}	
+	var stateResultsElmt = document.getElementById("stateResults");
+	var str =" ";
+	str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>StateWise Election Details</td></tr></table>';
+	
+	str +='<table cellspacing="5px" cellpadding="3px" width=70%><tr style="color: DarkBlue;">';
+	str +='<td><b>TotalSeats</b>&nbsp;&nbsp;&nbsp;&nbsp;				'+results.electionBasicResultsVO.allPartiesResults[0].totalSeatsParticipated+'</td>';
+	str +='<td><b>Total Votes</b> &nbsp;&nbsp;   '+results.electionBasicResultsVO.allPartiesResults[0].totalVotesForState+'</td>';
+	str +='</tr><tr style="color: DarkBlue;"><td ><b>Total Polled Votes  </b>&nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalPolledVotesForState+'</td>';
+	
+	str +='	<td><b>Voting Percentage</b>    &nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalVotingPercentageForState+'%</td>';
+	str +='	</TR>';
+	str +='</table>';
+    stateResultsElmt.innerHTML = str;
 }
 
 function showPartyResultsWithoutAlliance(chartId)
@@ -1915,8 +1935,11 @@ callAjax(rparam,jsObj,url);
 	<div> Loading Election Results Please Wait..</div>
 	<img src="images/icons/barloader.gif"/>
 </div>
+<div id="stateResults">
+</div>
 <DIV id="task1"></DIV>
-<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV>
+ </c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="statewiseGraph">
  <DIV id="stateRegionsDiv"></DIV>
