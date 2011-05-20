@@ -264,15 +264,9 @@ var new2="Election Message";
                         </div>
                     </td>
                     
-                    <td style="padding-left:10px;"></td>
-					<td style="padding-left:125px;padding-top:5px;"></td>
-					<!--<td style="padding-left:10px;"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;background: url('images/icons/homePage_new/fshare.jpeg') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage_new/fshare.jpg"></a>
-					</td>
-					
-					<td style="padding-left:10px;padding-top:5px;">
-						<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/home.php#!/profile.php?id=158042927544491" send="false" layout="button_count" width="0" show_faces="false" font="" title=""></fb:like>
-					</td>-->
-                    <td style="vertical-align:top;">
+                  <td style="padding-left:10px;"></td>
+					  <td style="padding-left:125px;padding-top:5px;"></td>
+				<td style="vertical-align:top;">
                         <table width="100%" style="width:100%">                           
                             <tr>
                                 <th id="searchBox" style="color:#FFFFFF">
@@ -299,7 +293,21 @@ var new2="Election Message";
                         </table>
                     </td>
                 </tr>
-            </table>		
+            </table>
+			<table><tr>
+			<td style="padding-left:10px;"></td>
+					<td style="padding-left:450px;padding-top:150px;padding-right:231px"></td>
+					<td style="padding-left:87px;padding-top:-9px"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;padding-top:3px;height:20px;background: url('images/icons/homePage/facebook.JPG') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage/facebook.JPG"></a>
+					</td>
+					
+					<td style="padding-left:10px;padding-top:5px;">
+				<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none"></a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></td>
+				
+				
+				<td style="padding-left:10px;"><a title="LinkedIn" href="http://www.linkedin.com/shareArticle?mini=true&url=http%3A//partyanalyst.com&title=PartyAnalyst&#45An Election%20Analysis%20Political%20Management%20Platform%20&source=Know%20Analyse%20Act
+" target="_blank"><img class="sociable-hovers" style="padding-right:px;padding-top:3px;height:20px;background: url('images/icons/homePage/LinkedIn.JPG') no-repeat scroll -343px -1px transparent;"align="right" alt="LinkedIn"  title="share this on LinkedIn" src="images/icons/homePage/Linkedin.JPG"></a>
+					</td>
+			</tr></table>
         </div>	
 		
 		<!-- Note Data Div (Start)
@@ -1002,6 +1010,8 @@ var new2="Election Message";
 								<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
 								<li><a href="http://twitter.com/#!/party_analyst" target="_blank">Twitter</a></li>
 								<li><a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank">LinkedIN</a></li>
+								<li><a href="http://www.youtube.com/partyanalyst" target="_blank">YouTube</a></li>
+
 							</ul>
 						</td>
 
