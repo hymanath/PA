@@ -62,9 +62,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private List<SelectOptionVO> partiesList;	
 	private IStateRegionService stateRegionService;	
 	private StateElectionsVO partyResultsInRegionVO; 
+	private PartyPositionsVO partyPositionsVO = new PartyPositionsVO();
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
-	
+	public void setPartyPositionsVO(PartyPositionsVO partyPositionsVO) {
+		this.partyPositionsVO = partyPositionsVO;
+	}
+
+	public PartyPositionsVO getPartyPositionsVO() {
+		return partyPositionsVO;
+	}
 	public IPartyStrengthService getPartyStrengthService() {
 		return partyStrengthService;
 	}
@@ -790,5 +797,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
+
+	
 
 }
