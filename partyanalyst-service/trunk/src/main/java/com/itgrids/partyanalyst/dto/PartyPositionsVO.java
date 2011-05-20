@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PartyPositionsVO implements Serializable{
 
@@ -30,7 +31,43 @@ public class PartyPositionsVO implements Serializable{
 	private Long totalVotesEarned;
 	private Long totalValidVotes;
 	private Long totalConstiValidVotes;
+	private Long totalVotesForState;
+	private Long totalValidVotesForState;
+	private Long totalPolledVotesForState;
+	private Long totalVotingPercentageForState;
+	private Long totalSeatsParticipated;
 	
+	public Long getTotalPolledVotesForState() {
+		return totalPolledVotesForState;
+	}
+	public void setTotalPolledVotesForState(Long totalPolledVotesForState) {
+		this.totalPolledVotesForState = totalPolledVotesForState;
+	}
+	public Long getTotalSeatsParticipated() {
+		return totalSeatsParticipated;
+	}
+	public void setTotalSeatsParticipated(Long totalSeatsParticipated) {
+		this.totalSeatsParticipated = totalSeatsParticipated;
+	}
+	public void setTotalVotingPercentageForState(Long totalVotingPercentageForState) {
+		this.totalVotingPercentageForState = totalVotingPercentageForState;
+	}
+	public Long getTotalVotingPercentageForState() {
+		return totalVotingPercentageForState;
+	}
+	public Long getTotalValidVotesForState() {
+		return  totalValidVotesForState;
+	}
+	public void setTotalValidVotesForState(Long totalValidVotesForState) {
+		this.totalValidVotesForState = totalValidVotesForState;
+	
+	}
+	public Long getTotalVotesForState() {
+		return totalVotesForState;
+	}
+	public void setTotalVotesForState(Long totalVotesForState) {
+		this.totalVotesForState =  totalVotesForState;
+	}
 	
 	public Long getPartyId() {
 		return partyId;
