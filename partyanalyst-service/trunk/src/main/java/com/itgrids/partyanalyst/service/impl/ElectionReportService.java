@@ -19,6 +19,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStateRegionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
@@ -39,6 +41,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
@@ -64,11 +67,19 @@ public class ElectionReportService implements IElectionReportService {
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IStateRegionDAO stateRegionDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	
 	private final static Logger log = Logger.getLogger(ElectionReportService.class);
 	
-	
-	
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
+	}
+
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+	}
+
 	public IStateRegionDAO getStateRegionDAO() {
 		return stateRegionDAO;
 	}
@@ -800,6 +811,7 @@ public class ElectionReportService implements IElectionReportService {
 		if(log.isDebugEnabled())
 		    log.debug("Inside getElectionResultsForAParty() Method ..");
 		PartyPositionsVO partyResults = null;
+			
 		if(partyElectionResult != null){
 			partyResults = new PartyPositionsVO();
 			Party party = partyElectionResult.getParty();
@@ -820,9 +832,45 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setTotalVotesEarned(partyElectionResult.getTotalVotesGained().longValue());
 			partyResults.setTotalValidVotes(partyElectionResult.getTotalValidVotes().longValue());
 			partyResults.setTotalConstiValidVotes(partyElectionResult.getCompleteConstiValidVotes().longValue());
+			List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(partyElectionResult.getElection().getElectionId());
+			for(int i=0;i<totalCount.size();i++)
+			{
+				Object[] params = (Object[])totalCount.get(i);
+				partyResults.setTotalVotesForState(new Double((Double) params[0]).longValue());
+				partyResults.setTotalValidVotesForState(new Double((Double) params[1]).longValue());
+				partyResults.setTotalPolledVotesForState(new Double((Double) params[2]).longValue());
+				partyResults.setTotalVotingPercentageForState(new Double((Double) params[3]).longValue());
+				partyResults.setTotalSeatsParticipated((Long) params[4]);
+			}
+		
 		}
 	 return partyResults;
 	}
+	
+	/*
+	 * Returns sum of totalValidVotes,polledVotes and votingPercentage for statewise  Results ...
+	 */
+	
+	/*public PartyPositionsVO getCompleteStatewiseResults(String electionYear,String electionType,Long stateId){
+		
+		PartyPositionsVO partyResults =null;
+		
+		PartyElectionResult partyElectionResult = null;
+		List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(partyElectionResult.getElection().getElectionId());
+			for(int i=0;i<totalCount.size();i++)
+			{
+				Object[] params = (Object[])totalCount.get(i);
+				partyResults.setTotalVotesForState(new Double((Double) params[0]).longValue());
+				partyResults.setTotalValidVotesForState(new Double((Double) params[1]).longValue());
+				partyResults.setTotalPolledVotesForState(new Double((Double) params[2]).longValue());
+				partyResults.setTotalVotingPercentageForState(new Double((Double) params[3]).longValue());
+				partyResults.setTotalSeatsParticipated(new Double((Double) params[4]).longValue());
+				
+			}
+		
+		
+		return partyResults;
+	}*/
 	
 	/*
 	 * Returns Aggregate Sum Of Allianc Party Results ...
