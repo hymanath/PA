@@ -11,7 +11,7 @@ public interface IConstants {
 	public static final String ELECTION_SUBTYPE_MAIN = "MAIN";
 	public static final String ELECTION_SUBTYPE_BYE = "BYE";
 	public static final Long COUNTRY_INDIA_ID = 1L;
-	public static final String STATIC_PARTIES = "'INC','PRP','TDP','TRS','CPI','CPM','AIMIM','BJP'";
+	public static final String STATIC_PARTIES = "'INC','PRP','TDP','TRS','YSRC','CPI','CPM','AIMIM','BJP'";
 	public static final String STATIC_TAMIL_NADU_PARTIES = "'MDMK','AIADMK','DMK','PMK','INC','CPI','CPM','BJP','DMDK'";
 	public static final String STATIC_KARNATAKA_PARTIES = "'JD(S)','JD(U)','KNDP','AIADMK','INC','CPI','CPM','BJP'";
 	public static final String STATIC_PARTIES_WITHOUT_QUOTES = "INC,PRP,TDP,TRS,CPI,CPM,AIMIM,BJP";
