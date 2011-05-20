@@ -361,5 +361,11 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find("select distinct model from BoothConstituencyElection model where model.booth.constituency.constituencyId = ? " +
 				"and model.booth.year = ? and model.booth.partNo in ("+partNos+")",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getElectionYears()
+	{
+		return getHibernateTemplate().find(" select distinct model.constituencyElection.election.electionYear from BoothConstituencyElection model order by model.constituencyElection.election.electionYear desc");
+	}
 
 }
