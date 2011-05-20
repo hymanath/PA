@@ -145,8 +145,21 @@
 			</tr>-->			
 			<tr>
 				<td width="75%" valign="top">
-					<div id="viewFeaturesWidgets_main">
-						<div id="viewFeatures_head"> View Features </div>
+
+				<div id="viewFeaturesWidgets_main">
+				<div id="viewFeatures_head">PartyAnalyst Product OverView</div>
+				<div><center><table>
+					    <tr><td>
+					<iframe width="200" height="200" src="http://www.youtube.com/embed/3k9vFj0Ca54" frameborder="0" allowfullscreen></iframe>
+					
+					</td><td></td><td></td><td></td><td>
+					<iframe width="200" height="200" src="http://www.youtube.com/embed/mMTRWXNVXCw" frameborder="0" allowfullscreen></iframe>	
+					</td><td></td><td></td><td></td>
+					<td><iframe width="200" height="200" src="http://www.youtube.com/embed/Dgz_evKCbBg" frameborder="0" allowfullscreen></iframe></td>
+					</tr></table></center>
+					</div>					
+
+					<div id="viewFeatures_head" style="padding-top:30px"> View Features </div>
 						<div id="viewFeatures_body">
 							<table width="100%">
 								<tr>
@@ -378,7 +391,8 @@
 						</div>
 					</div>
 				</td>
-				<td width="25%" valign="top">
+				
+				<td width="25%" valign="top" style="padding-top:37px;">
 					<div id="topFeaturesListDiv_main">
 						<div id="topFeaturesListDiv_head">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -408,7 +422,6 @@
 								<li><a href="javascript:{}">Mandal Voting Report</a></li>
 								<li><a href="javascript:{}">Cross Voting Report</a></li>
 								<li><a href="javascript:{}">Constituency Booth Results Report</a></li>
-								<li><a href="javascript:{}">Telangana Bye Elections - 2010</a></li>
 							</ul>
 							</div>
 						</div>
@@ -533,6 +546,8 @@
 									<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
 									<li><a href="http://twitter.com/#!/party_analyst">Twitter</a></li>
 									<li><a href="http://www.linkedin.com/company/it-grids-ltd">LinkedIN</a></li>
+																	<li><a href="http://www.youtube.com/partyanalyst" target="_blank">YouTube</a></li>
+
 								</ul>
 							</td>
 							<td width="30%" valign="top" align="right">
