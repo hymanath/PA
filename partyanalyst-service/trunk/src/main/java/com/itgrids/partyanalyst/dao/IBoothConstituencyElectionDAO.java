@@ -99,5 +99,7 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List getTotalVotersInAnElectionInMandal(Long mandalId,String electionType,String elecYear);
 	
 	public List<BoothConstituencyElection> findByConstituencyIdPartNosAndYear(Long constituencyId, Long year, String partNos);
+	
+	public List getElectionYears();
 
 }
