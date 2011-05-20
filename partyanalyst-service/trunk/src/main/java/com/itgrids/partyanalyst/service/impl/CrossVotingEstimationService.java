@@ -553,5 +553,22 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			return null;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getElectionYearsForBoothResult()
+	{
+		try{
+			List<String> yearList = new ArrayList<String>(0);
+			List<Object> list = boothConstituencyElectionDAO.getElectionYears();
+			
+			for(Object obj : list)
+				yearList.add(obj.toString());
+			
+			return yearList;
+		}catch(Exception e)
+		{
+			return null;
+		}
+	}
 
 }
