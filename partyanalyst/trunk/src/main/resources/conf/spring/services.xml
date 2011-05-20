@@ -626,6 +626,7 @@
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="stateRegionDAO" ref="stateRegionDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
 	
 	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService" >		
