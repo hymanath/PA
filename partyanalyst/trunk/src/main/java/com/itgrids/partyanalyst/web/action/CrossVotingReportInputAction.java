@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -22,7 +23,17 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> parliamentList;
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;	
 	}
@@ -68,11 +79,16 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
 			return ERROR;
 		
-		electionYearList = new ArrayList<SelectOptionVO>();				
-		
-		
+		electionYearList = new ArrayList<SelectOptionVO>();
+		/*
 		electionYearList.add(new SelectOptionVO(2009l, "2009"));
 		electionYearList.add(new SelectOptionVO(2004l, "2004"));
+		*/
+		
+		List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
+		
+		for(String year : years)
+			electionYearList.add(new SelectOptionVO(Long.parseLong(year), year));
 		
 		return Action.SUCCESS;
 	}

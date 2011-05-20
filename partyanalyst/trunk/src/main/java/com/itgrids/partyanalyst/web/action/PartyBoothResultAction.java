@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -22,6 +23,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	private List<String> electionYears;
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	public List<SelectOptionVO> getPartyVOs() {
 		return partyVOs;
 	}
@@ -59,6 +61,15 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		this.entitlementsHelper = entitlementsHelper;
 	}
 
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
 	public String execute()throws Exception{
 		HttpSession session = request.getSession();
 		if(session.getAttribute(IConstants.USER) == null && 
@@ -80,12 +91,14 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		electionTypes.add(electionType2);
 		setElectionTypes(electionTypes);
 		
-		electionYears = new ArrayList<String>();	
+		/*electionYears = new ArrayList<String>();	
 		electionYears.add("2009");
-		/*electionYears.add("2008");
-		electionYears.add("2006");*/
+		electionYears.add("2008");
+		electionYears.add("2006");
 		electionYears.add("2004");
-		setElectionYears(electionYears);
+		setElectionYears(electionYears);*/
+		
+		electionYears = crossVotingEstimationService.getElectionYearsForBoothResult();
 		System.out.println("before success party Booth results action");
 		return SUCCESS;	
 		
