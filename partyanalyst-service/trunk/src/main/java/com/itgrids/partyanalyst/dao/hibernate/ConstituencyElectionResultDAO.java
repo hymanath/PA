@@ -168,4 +168,12 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		return getHibernateTemplate().find("from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ?", electionId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(Long electionId ){
+		
+		return getHibernateTemplate().find(" select sum(model.totalVotes),sum(model.validVotes),sum(model.totalVotesPolled),avg(model.votingPercentage),"+"" +
+				"count(model.totalVotes)"+
+				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? " 
+				, electionId); 
+	}
 }
