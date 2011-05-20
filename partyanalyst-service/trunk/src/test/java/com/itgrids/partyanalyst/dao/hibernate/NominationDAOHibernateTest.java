@@ -847,7 +847,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetParliamentCandidateNPartyInfo()
 	{
 		List<Object[]> list = nominationDAO.getParliamentCandidateNPartyInfo(478l, IConstants.PARLIAMENT_ELECTION_TYPE,1l);
@@ -855,6 +855,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		if(list != null && list.size() > 0)
 		for(Object param : list.get(0))
 			System.out.println(param);
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetCandidateNPartyInfoForParliament()
+	{
+		List<Object[]> list = nominationDAO.getCandidateAndPartyInfoForParliament(501l,IConstants.PARLIAMENT_ELECTION_TYPE,1l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+			for(Object obj : list.get(0))
+				System.out.println(obj);
 	}
 	
 }
