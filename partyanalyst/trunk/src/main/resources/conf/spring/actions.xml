@@ -237,6 +237,7 @@
 
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false">
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	
 	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
@@ -263,6 +264,7 @@
 	
 	<bean id="crossVotingReportInputAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportInputAction" singleton="false">
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	
 	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">		
