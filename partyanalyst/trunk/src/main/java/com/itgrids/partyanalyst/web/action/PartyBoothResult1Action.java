@@ -127,8 +127,8 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		System.out.println("In execute = "+electionType+" ,election year =  "+electionYear);
-		//constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
-		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),new Long(electionYear), new Long(electionType));
+		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
+		//constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),new Long(electionYear), new Long(electionType));
 
 		return Action.SUCCESS;
 	}
