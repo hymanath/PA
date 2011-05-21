@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -857,7 +858,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(param);
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetCandidateNPartyInfoForParliament()
 	{
 		List<Object[]> list = nominationDAO.getCandidateAndPartyInfoForParliament(501l,IConstants.PARLIAMENT_ELECTION_TYPE,1l);
@@ -865,6 +866,17 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		if(list != null && list.size() > 0)
 			for(Object obj : list.get(0))
 				System.out.println(obj);
+	}*/
+	
+	public void testFindConstituencyElectionByElectionIdAndDistrictIdAndPartys()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(53l);ids.add(265l);
+		List<ConstituencyElection> list = nominationDAO.findConstituencyElectionByElectionIdAndDistrictIdAndPartys(107l, 90l,ids);
+		
+		if(list != null && list.size() > 0)
+			for(ConstituencyElection election : list)
+				System.out.println(election.getConstituency().getConstituencyId());
 	}
 	
 }
