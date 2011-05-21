@@ -172,7 +172,7 @@ function validUsername()
 	var resultDIVEle = document.getElementById("resultDIV");
 
 	resultDIVEle.innerHTML = "";
-	if(textEle.value.length < 6)
+	if(textEle.value.length > 0 && textEle.value.length < 6)
 	{
 		resultDIVEle.innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
 		return;
@@ -189,7 +189,7 @@ function validPassword()
 	var textEle = document.getElementById("passwordField");
 	var resultDIVEle = document.getElementById("pwdDiv");
 	resultDIVEle.innerHTML = "";
-	if(textEle.value.length < 6)
+	if(textEle.value.length > 0 &&textEle.value.length < 6)
 		resultDIVEle.innerHTML = "<font color='red'>Password minimum of 6 characters in length.</font>";
 }
 function validRePassword()
@@ -199,14 +199,14 @@ function validRePassword()
 	var resultDIVEle = document.getElementById("pwdDiv");
 	resultDIVEle.innerHTML = "";
 	
-	if(pwd1.value.length < 6)
+	if(pwd1.value.length > 0 && pwd1.value.length < 6)
 	{
 		resultDIVEle.innerHTML = "<font color='red'>Password minimum of 6 characters in length.</font>";
 		return;
 	}
-	if(pwd1.value != pwd2.value)
+	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value)
 		resultDIVEle.innerHTML = "<font color='red'>Passwords do not match.</font>";
-	}
+}
 
 function validNames(id)
 {
