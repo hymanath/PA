@@ -541,7 +541,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndDistrictIdAndPartys(Long electionId,Long districtId,List<Long> partyIds){
-		Query queryObject = getSession().createQuery("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.constituencyElection.constituency.district.districtId =? and model.party.partyId in (:partyIds)");
+		Query queryObject = getSession().createQuery("select distinct(constituencyElection) from Nomination model where model.constituencyElection.election.electionId =? and model.constituencyElection.constituency.district.districtId =? and model.party.partyId in (:partyIds)");
 		queryObject.setParameter(0,electionId);
 		queryObject.setParameter(1,districtId);
 		queryObject.setParameterList("partyIds", partyIds);
