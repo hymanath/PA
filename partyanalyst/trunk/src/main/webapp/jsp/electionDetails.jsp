@@ -104,6 +104,7 @@ function callAjax(param,jsObj,url){
 									if(jsObj.task == "getRegionWisePartyElectionResults")
 									{
 										buildRegionWiseElectionsResultsGraph(jsObj,myResults);
+										hideImg();
 									}
 									else if(jsObj.task == "elctionsBasicInfo")
 									{										
@@ -136,10 +137,12 @@ function callAjax(param,jsObj,url){
 											var elmtDiv = document.getElementById("stateRegionsDiv");
 
 											var str = '';
-
 											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">Overall';
 											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">Region Wise';
-
+											str+='&nbsp;<span id="ajaxImg" style="display:none">';
+											 str+='<img height="" width=""  src="images/icons/search.gif"></img>';
+											 str+='</span>';
+		                                    
 											elmtDiv.innerHTML = str;
 										}
 									  }
@@ -156,6 +159,16 @@ function callAjax(param,jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function showImg(){
+	
+	var ajaxImgElmt = document.getElementById("ajaxImg");
+	  ajaxImgElmt.style.display = "";
+}
+function hideImg(){
+      
+	  var ajaxImgElmt = document.getElementById("ajaxImg");
+	  ajaxImgElmt.style.display = 'none';
 }
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
@@ -257,11 +270,14 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 
 function showOverallResults()
 {
-   getResultsForAnElection(stateID,electionType,year);
+	showImg();
+	getResultsForAnElection(stateID,electionType,year);
+ 
 }
 
 function showRegionWiseResults()
 {
+	showImg();
 	var jsObj = {
 				electionId:electionId,
 				stateID:stateID,
@@ -802,10 +818,10 @@ function showPartywiseDetailsDataTable(results)
 	}	
 	var stateResultsElmt = document.getElementById("stateResults");
 	var str =" ";
-	str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>StateWise Election Details</td></tr></table>';
+	str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>Statewise Election Details</td></tr></table>';
 	
 	str +='<table cellspacing="5px" cellpadding="3px" width=70%><tr style="color: DarkBlue;">';
-	str +='<td><b>TotalSeats</b>&nbsp;&nbsp;&nbsp;&nbsp;				'+results.electionBasicResultsVO.allPartiesResults[0].totalSeatsParticipated+'</td>';
+	str +='<td><b>Total Seats</b>&nbsp;&nbsp;&nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalSeatsParticipated+'</td>';
 	str +='<td><b>Total Votes</b> &nbsp;&nbsp;   '+results.electionBasicResultsVO.allPartiesResults[0].totalVotesForState+'</td>';
 	str +='</tr><tr style="color: DarkBlue;"><td ><b>Total Polled Votes  </b>&nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalPolledVotesForState+'</td>';
 	
@@ -2195,6 +2211,7 @@ callAjax(rparam,jsObj,url);
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
+
 </SCRIPT>
 </BODY>
 </HTML>
