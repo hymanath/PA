@@ -182,18 +182,20 @@
 
 				<!-- Videos Info Div-->
 				<div id="candidatePageContent_body_videosMain" class="candidateStaticContentDiv">
-					<marquee scrolldelay=100 onmouseover="this.stop()" onmouseout="this.start()"><table width="100%">
-						<tr>
-							<td width="50%" ><div id="videoBarOne"> </div></td></marquee>
-							<td width="11%" align="center" valign="top"><div id="ytVideoPlayer"> </div></td>
-						<td width="39%" align="left"><div id="videoBartwo"> </div></td>
-						</tr>
-					</table></marquee>
 					
+				  <marquee scrolldelay="150" onmouseover="this.stop()" onmouseout="this.start()">
+					<table width="100%">
+						 <tr>
+							<td width="50%" ><div id="videoBarOne"> </div></td>
+							<td width="39%" align="left"><div id="videoBartwo"></div></td>
+						</tr>
+					</table>
+				  </marquee>
+					<div id="ytVideoPlayer"> </div>
+				
 					<!--<jsp:include page="<%= videosURL%>" flush="true"/>-->
 				</div>	
-
-				<!-- Contact Info Div-->
+			<!-- Contact Info Div-->
 				<div id="candidatePageContent_body_contactMain" class="candidateStaticContentDiv">
 					<jsp:include page="<%= contactURL%>" flush="true"/>
 				</div>	
