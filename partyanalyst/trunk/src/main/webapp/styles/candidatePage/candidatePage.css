@@ -74,11 +74,10 @@ table.CandidateElectionResultsTable td {
 	background-image:url("../../images/icons/candidatePage/left_links_bg.jpg");
 }
 */
-#candidatePageBottomContentDiv
-{
-	height:225px;	
+#candidatePageBottomContentDiv {
+	height:219px;
+	
 }
-
 #candidatePageContent_header
 {
 	
@@ -433,4 +432,11 @@ legend
     font-weight: bold;
     padding-left: 12px;
 }
-
+.playerInnerBox_gsvb .player_gsvb {
+height:245px;
+width:401px;
+}
+#candidatePageContent_body_videosMain{
+	height:301px;
+	overflow:auto;
+}
