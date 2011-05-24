@@ -291,10 +291,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			Long stateId = new Long(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
+			Long electionId = jObj.getLong("electionId");
 
 			electionCompleteDetailsVO = electionReportService
 					.getBasicResultsForAnElection(electionType, year, stateId,
 							IConstants.VOTES_PERCENT_MARGIN);
+			
+			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getCompleteStatewiseVotersInfoForAnElection(electionId));
 			if (electionCompleteDetailsVO != null) {
 				if (electionCompleteDetailsVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
 					return Action.ERROR;
