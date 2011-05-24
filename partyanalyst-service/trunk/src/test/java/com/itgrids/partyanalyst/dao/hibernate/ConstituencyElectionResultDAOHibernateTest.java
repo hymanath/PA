@@ -92,9 +92,18 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 		setComplete();
 	}*/
 	
-	public void testFindByConstituency(){
+	/*public void testFindByConstituency(){
 		List<ConstituencyElectionResult> list = constituencyElectionResultDAO.findByConstituency(369L);
 		System.out.println(list.size());
+	}*/
+	
+	public void testFindTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage()
+	{
+		List<Object[]> list = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(3l);
+		
+		if(list != null && list.size() > 0)
+		for(Object obj : list.get(0))
+			System.out.println(obj);
 	}
 	
 }
