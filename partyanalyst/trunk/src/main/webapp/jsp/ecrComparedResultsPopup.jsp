@@ -153,6 +153,10 @@
 		width:300px;
 		margin-bottom:10px;
 	}
+	#alertMsg{
+        color:red;
+		font-size:23px;
+	}
 </style>
 </head>
 <script type="text/javascript">
@@ -248,7 +252,9 @@ function callAjax(param,jsObj, url){
 						try {
 							myResults = YAHOO.lang.JSON.parse(o.responseText); 
 							
-							displayComparedResults(jsObj,myResults);							
+							displayComparedResults(jsObj,myResults);
+							var electionPageAjaxImgDiv = document.getElementById("electionPageAjaxImgDiv");
+							electionPageAjaxImgDiv.style.display="none";
 						}catch (e) {   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -263,6 +269,19 @@ function callAjax(param,jsObj, url){
 }
 function displayComparedResults(jsObj,data)
 {
+	var str='';
+	var headerElmt=document.getElementById("header");
+	if(data.positionsYearOne[0]==null){
+	  
+	      str+='<div id="alertMsg">';
+		  str+='<table>'; 
+		  str+='<tr>No data available for '+'  '+data.yearOne+' to compare results.'; 
+		  str+='</tr>'; 
+		  str+='</table>'; 
+		  str+='</div>';
+		headerElmt.innerHTML = str;
+		return;
+	}
 	var elmt = document.getElementById("comparedResults");
 	var titleElmt = document.getElementById("title");
 	var electionPageAjaxImgDiv = document.getElementById("electionPageAjaxImgDiv");
@@ -272,7 +291,6 @@ function displayComparedResults(jsObj,data)
 		return;
 	titleElmt.innerHTML = 'Constituencywise '+electionType+' Results Comparision For '+data.locName+'';
 	
-	var str='';
 	str+='<table>';
 	str+='<tr>';
 	str+='<td valign="top">';
