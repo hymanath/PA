@@ -34,7 +34,7 @@ public class PartyPositionsVO implements Serializable{
 	private Long totalVotesForState;
 	private Long totalValidVotesForState;
 	private Long totalPolledVotesForState;
-	private Long totalVotingPercentageForState;
+	private Double totalVotingPercentageForState;
 	private Long totalSeatsParticipated;
 	
 	public Long getTotalPolledVotesForState() {
@@ -49,10 +49,10 @@ public class PartyPositionsVO implements Serializable{
 	public void setTotalSeatsParticipated(Long totalSeatsParticipated) {
 		this.totalSeatsParticipated = totalSeatsParticipated;
 	}
-	public void setTotalVotingPercentageForState(Long totalVotingPercentageForState) {
+	public void setTotalVotingPercentageForState(Double totalVotingPercentageForState) {
 		this.totalVotingPercentageForState = totalVotingPercentageForState;
 	}
-	public Long getTotalVotingPercentageForState() {
+	public Double getTotalVotingPercentageForState() {
 		return totalVotingPercentageForState;
 	}
 	public Long getTotalValidVotesForState() {

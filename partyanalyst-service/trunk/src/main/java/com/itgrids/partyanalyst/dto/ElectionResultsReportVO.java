@@ -33,6 +33,7 @@ public class ElectionResultsReportVO implements Serializable {
 	private List<SelectOptionVO> partiPartiesList;
 	private ElectionResultsVO electionBasicResultsVO;
 	private ElectionResultsInAllDistrictsVO electionResultsInDistricts;
+	private PartyPositionsVO electionBasicVotersData;
 	
 	//for charts
 	List<SelectOptionVO> partiesDistLevel;
@@ -193,6 +194,14 @@ public class ElectionResultsReportVO implements Serializable {
 
 	public void setHasRegions(Boolean hasRegions) {
 		this.hasRegions = hasRegions;
+	}
+
+	public PartyPositionsVO getElectionBasicVotersData() {
+		return electionBasicVotersData;
+	}
+
+	public void setElectionBasicVotersData(PartyPositionsVO electionBasicVotersData) {
+		this.electionBasicVotersData = electionBasicVotersData;
 	}
 	
 	
