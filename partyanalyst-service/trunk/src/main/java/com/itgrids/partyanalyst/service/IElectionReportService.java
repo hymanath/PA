@@ -8,9 +8,12 @@
 package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 
 public interface IElectionReportService {
 
 	public ElectionResultsReportVO getBasicResultsForAnElection(String electionType,String electionYear,Long stateId,String votesPercentMargin);
+	
+	public PartyPositionsVO getCompleteStatewiseVotersInfoForAnElection(Long electionId);
 	
 }
