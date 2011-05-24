@@ -832,17 +832,7 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setTotalVotesEarned(partyElectionResult.getTotalVotesGained().longValue());
 			partyResults.setTotalValidVotes(partyElectionResult.getTotalValidVotes().longValue());
 			partyResults.setTotalConstiValidVotes(partyElectionResult.getCompleteConstiValidVotes().longValue());
-			List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(partyElectionResult.getElection().getElectionId());
-			for(int i=0;i<totalCount.size();i++)
-			{
-				Object[] params = (Object[])totalCount.get(i);
-				partyResults.setTotalVotesForState(new Double((Double) params[0]).longValue());
-				partyResults.setTotalValidVotesForState(new Double((Double) params[1]).longValue());
-				partyResults.setTotalPolledVotesForState(new Double((Double) params[2]).longValue());
-				partyResults.setTotalVotingPercentageForState(new Double((Double) params[3]).longValue());
-				partyResults.setTotalSeatsParticipated((Long) params[4]);
-			}
-		
+					
 		}
 	 return partyResults;
 	}
@@ -851,26 +841,32 @@ public class ElectionReportService implements IElectionReportService {
 	 * Returns sum of totalValidVotes,polledVotes and votingPercentage for statewise  Results ...
 	 */
 	
-	/*public PartyPositionsVO getCompleteStatewiseResults(String electionYear,String electionType,Long stateId){
-		
+	public PartyPositionsVO getCompleteStatewiseVotersInfoForAnElection(Long electionId)
+	{
+		try
+		{
 		PartyPositionsVO partyResults =null;
 		
-		PartyElectionResult partyElectionResult = null;
-		List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(partyElectionResult.getElection().getElectionId());
-			for(int i=0;i<totalCount.size();i++)
-			{
-				Object[] params = (Object[])totalCount.get(i);
-				partyResults.setTotalVotesForState(new Double((Double) params[0]).longValue());
-				partyResults.setTotalValidVotesForState(new Double((Double) params[1]).longValue());
-				partyResults.setTotalPolledVotesForState(new Double((Double) params[2]).longValue());
-				partyResults.setTotalVotingPercentageForState(new Double((Double) params[3]).longValue());
-				partyResults.setTotalSeatsParticipated(new Double((Double) params[4]).longValue());
-				
-			}
+		List<Object[]> totalCount = constituencyElectionResultDAO.findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(electionId);
 		
+		if(totalCount != null && totalCount.size() > 0)
+		{
+			partyResults = new PartyPositionsVO();
+			
+			Object[] params = totalCount.get(0);
+			partyResults.setTotalVotesForState(new Double((Double)params[0]).longValue());
+			partyResults.setTotalValidVotesForState(new Double((Double)params[1]).longValue());
+			partyResults.setTotalPolledVotesForState(new Double((Double)params[2]).longValue());
+			partyResults.setTotalVotingPercentageForState(new BigDecimal((Double)params[2]*100/(Double)params[0]).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			partyResults.setTotalSeatsParticipated((Long)(Long)params[3]);
+		}
 		
 		return partyResults;
-	}*/
+		}catch(Exception e)
+		{
+			return null;
+		}
+	}
 	
 	/*
 	 * Returns Aggregate Sum Of Allianc Party Results ...
