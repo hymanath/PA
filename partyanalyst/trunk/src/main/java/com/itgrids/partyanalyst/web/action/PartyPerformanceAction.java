@@ -448,17 +448,27 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		String reportLevelLiteral = "";
 		String partyNameLiteral = reportVO.getParty();
+		String reportLoc = "";
 		
 		if(Long.valueOf(electionType).equals(new Long(1)))
 			electionTypeLiteral = "Parliament";
-		else if(Long.valueOf(electionType).equals(new Long(2)))
+		else if(Long.valueOf(electionType).equals(new Long(2))){
 			electionTypeLiteral = "Assembly";
-		if(Long.valueOf(reportLevel).equals(new Long(1)))
+			
+		}
+		if(Long.valueOf(reportLevel).equals(new Long(1))){
 			reportLevelLiteral = "StateLevel";
-		else if(Long.valueOf(reportLevel).equals(new Long(2)))
+			
+			reportLoc = reportVO.getState();
+		}
+		else if(Long.valueOf(reportLevel).equals(new Long(2))){
 			reportLevelLiteral = "DistrictLevel";
-		else if(Long.valueOf(reportLevel).equals(new Long(3)))
+			reportLoc = reportVO.getDistrict();
+		}
+		else if(Long.valueOf(reportLevel).equals(new Long(3))){
 			reportLevelLiteral = "CountryLevel";
+			reportLoc = "India";
+		}
 		if(log.isDebugEnabled()){
 			log.debug("Election Type -->" + electionTypeLiteral);
 			log.debug("Report Level -->" + reportLevelLiteral);
@@ -474,7 +484,9 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		else
 			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + state;*/
 		
-		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year " + year;
+		//reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year " + year;
+		
+		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLoc + ")" + "  Performance Report for the year " + year;
 		
 		if(log.isDebugEnabled())
 			log.debug("Report Title -->" + reportTitle);
