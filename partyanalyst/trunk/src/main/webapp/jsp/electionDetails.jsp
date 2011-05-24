@@ -43,12 +43,25 @@
 <c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results  ${year}</TITLE></c:if>
 <c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
 <style>
+
 #stateResults{
  color:Maroon;
 font-family:trebuchet MS;
 font-size:14px;
  
 }
+
+.searchresultsTable {
+	border-collapse	:collapse;
+	border-color	:#666666;
+	border-width	:1px;
+	color			:#333333;
+	font-family		:verdana,arial,sans-serif;
+	font-size		:11px;
+	margin-top		:10px;
+	width			:500px;
+}
+
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -104,7 +117,6 @@ function callAjax(param,jsObj,url){
 									if(jsObj.task == "getRegionWisePartyElectionResults")
 									{
 										buildRegionWiseElectionsResultsGraph(jsObj,myResults);
-										hideImg();
 									}
 									else if(jsObj.task == "elctionsBasicInfo")
 									{										
@@ -137,12 +149,10 @@ function callAjax(param,jsObj,url){
 											var elmtDiv = document.getElementById("stateRegionsDiv");
 
 											var str = '';
+
 											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">Overall';
 											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">Region Wise';
-											str+='&nbsp;<span id="ajaxImg" style="display:none">';
-											 str+='<img height="" width=""  src="images/icons/search.gif"></img>';
-											 str+='</span>';
-		                                    
+
 											elmtDiv.innerHTML = str;
 										}
 									  }
@@ -159,16 +169,6 @@ function callAjax(param,jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-function showImg(){
-	
-	var ajaxImgElmt = document.getElementById("ajaxImg");
-	  ajaxImgElmt.style.display = "";
-}
-function hideImg(){
-      
-	  var ajaxImgElmt = document.getElementById("ajaxImg");
-	  ajaxImgElmt.style.display = 'none';
 }
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
@@ -270,14 +270,11 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 
 function showOverallResults()
 {
-	showImg();
-	getResultsForAnElection(stateID,electionType,year);
- 
+   getResultsForAnElection(stateID,electionType,year);
 }
 
 function showRegionWiseResults()
 {
-	showImg();
 	var jsObj = {
 				electionId:electionId,
 				stateID:stateID,
@@ -663,6 +660,7 @@ function getResultsForAnElection(stateID,electionType,year)
 {
 	var jsObj= 
 	{
+		electionId : electionId,
 		stateID: stateID,
 		electionType: electionType,
 		year: year,		
@@ -817,18 +815,32 @@ function showPartywiseDetailsDataTable(results)
 		}
 	}	
 	var stateResultsElmt = document.getElementById("stateResults");
-	var str =" ";
-	str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>Statewise Election Details</td></tr></table>';
 	
-	str +='<table cellspacing="5px" cellpadding="3px" width=70%><tr style="color: DarkBlue;">';
-	str +='<td><b>Total Seats</b>&nbsp;&nbsp;&nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalSeatsParticipated+'</td>';
-	str +='<td><b>Total Votes</b> &nbsp;&nbsp;   '+results.electionBasicResultsVO.allPartiesResults[0].totalVotesForState+'</td>';
-	str +='</tr><tr style="color: DarkBlue;"><td ><b>Total Polled Votes  </b>&nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalPolledVotesForState+'</td>';
-	
-	str +='	<td><b>Voting Percentage</b>    &nbsp;&nbsp;'+results.electionBasicResultsVO.allPartiesResults[0].totalVotingPercentageForState+'%</td>';
-	str +='	</TR>';
-	str +='</table>';
-    stateResultsElmt.innerHTML = str;
+	if(results.electionBasicVotersData != null)
+	{
+		var str ='';
+		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>StateWise Election Details</td></tr></table>';
+		
+		str += '<table><tr><td align="left">';
+		str +='<table class="searchresultsTable"> ';
+		str +='	<tr>';
+		str +='		<th style="background-color : #C4DEFF">TotalSeats</th>';
+		str +='     <td>'+results.electionBasicVotersData.totalSeatsParticipated+'</td>';
+		str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
+		str +='		<td>'+results.electionBasicVotersData.totalVotesForState+'</td>';
+		str +='</tr> ';
+
+		str +=' <tr>';
+		str +='		<th style="background-color : #C4DEFF">Total Polled Votes</th> ';
+		str +='		<td>'+results.electionBasicVotersData.totalPolledVotesForState+'</td>';
+		str +='		<th style="background-color : #C4DEFF">Voting Percentage </th> ';
+		str +='		<td>'+results.electionBasicVotersData.totalVotingPercentageForState+'%</td>';
+		str +='	</tr>';
+		str +='</table><BR>';
+
+		str += '</td><td></td><tr></table>';
+		stateResultsElmt.innerHTML = str;
+	}
 }
 
 function showPartyResultsWithoutAlliance(chartId)
@@ -2211,7 +2223,6 @@ callAjax(rparam,jsObj,url);
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
-
 </SCRIPT>
 </BODY>
 </HTML>
