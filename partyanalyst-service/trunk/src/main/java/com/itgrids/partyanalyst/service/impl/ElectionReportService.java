@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
@@ -862,6 +863,48 @@ public class ElectionReportService implements IElectionReportService {
 		}
 		
 		return partyResults;
+		}catch(Exception e)
+		{
+			return null;
+		}
+	}
+	
+	public List<PartyPositionsVO> getVotersDataOfTwoElections(Long electionId)
+	{
+		try
+		{
+			List<PartyPositionsVO> votersList = null;
+			PartyPositionsVO voterData1 = null;
+			PartyPositionsVO voterData2 = null;
+			
+			Election elect = electionDAO.get(electionId);
+			
+			if(elect.getElecSubtype().equalsIgnoreCase(IConstants.ELECTION_SUBTYPE_BYE))
+				return null;
+			voterData1 = getCompleteStatewiseVotersInfoForAnElection(electionId);
+			
+			if(voterData1 != null)
+			{
+				votersList = new ArrayList<PartyPositionsVO>(0);
+				voterData1.setPartyName(elect.getElectionYear());
+				votersList.add(voterData1);
+			}
+			else
+				return null;
+			
+			List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				voterData2 = getCompleteStatewiseVotersInfoForAnElection((Long)list.get(0)[0]);
+				
+				if(voterData2 != null)
+				{
+					voterData2.setPartyName(list.get(0)[1].toString());
+					votersList.add(voterData2);
+				}
+			}
+			return votersList;
 		}catch(Exception e)
 		{
 			return null;
