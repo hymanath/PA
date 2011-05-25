@@ -51,7 +51,7 @@ font-size:14px;
  
 }
 
-.searchresultsTable {
+.resultsTable {
 	border-collapse	:collapse;
 	border-color	:#666666;
 	border-width	:1px;
@@ -59,7 +59,6 @@ font-size:14px;
 	font-family		:verdana,arial,sans-serif;
 	font-size		:11px;
 	margin-top		:10px;
-	width			:500px;
 }
 
 </style>
@@ -816,30 +815,63 @@ function showPartywiseDetailsDataTable(results)
 	}	
 	var stateResultsElmt = document.getElementById("stateResults");
 	
-	if(results.electionBasicVotersData != null)
+	if(results.electionBasicVotersData != null && results.electionBasicVotersData.length > 0 )
 	{
-		var str ='';
-		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>StateWise Election Details</td></tr></table>';
+		var flag = false;
 		
-		str += '<table><tr><td align="left">';
-		str +='<table class="searchresultsTable"> ';
+		if(results.electionBasicVotersData[1] != null)
+			flag = true;
+
+		var str ='';
+		
+		if('${electionType}' == 'Assembly')
+		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>${stateName}  ${electionType} Election Details Overview</td></tr></table>';
+
+		else if('${electionType}' == 'Parliament')
+		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px; "><td>${electionType} Election Details Overview</td></tr></table>';
+		
+		if(flag)
+			str +='<table class="searchresultsTable" style="width:750px"> ';
+		else
+			str +='<table class="searchresultsTable" style="width:600px"> ';
 		str +='	<tr>';
-		str +='		<th style="background-color : #C4DEFF">TotalSeats</th>';
-		str +='     <td>'+results.electionBasicVotersData.totalSeatsParticipated+'</td>';
-		str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
-		str +='		<td>'+results.electionBasicVotersData.totalVotesForState+'</td>';
-		str +='</tr> ';
-
-		str +=' <tr>';
-		str +='		<th style="background-color : #C4DEFF">Total Polled Votes</th> ';
-		str +='		<td>'+results.electionBasicVotersData.totalPolledVotesForState+'</td>';
-		str +='		<th style="background-color : #C4DEFF">Voting Percentage </th> ';
-		str +='		<td>'+results.electionBasicVotersData.totalVotingPercentageForState+'%</td>';
+		str +='		<th style="background-color : #C4DEFF">Year</th>';
+		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
+		if(flag)
+		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
+		str +='		<th style="background-color : #C4DEFF">Year</th>';
+		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
+		if(flag)
+		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
 		str +='	</tr>';
-		str +='</table><BR>';
+		
+		str +='	<tr>';
+		str +='		<th style="background-color : #C4DEFF">Total Seats</th>';
+		str +='     <td>'+results.electionBasicVotersData[0].totalSeatsParticipated+'</td>';
+		if(flag)
+		str +='     <td>'+results.electionBasicVotersData[1].totalSeatsParticipated+'</td>';
+		str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
+		str +='		<td>'+results.electionBasicVotersData[0].totalVotesForState+'</td>';
+		if(flag)
+		str +='		<td>'+results.electionBasicVotersData[1].totalVotesForState+'</td>';
+		str +='	</tr>';
+		
+		str +='	<tr>';
+		str +='		<th style="background-color : #C4DEFF;width:130px;">Total Polled Votes</th> ';
+		str +='		<td>'+results.electionBasicVotersData[0].totalPolledVotesForState+'</td>';
+		if(flag)
+		str +='		<td>'+results.electionBasicVotersData[1].totalPolledVotesForState+'</td>';
+		str +='		<th style="background-color : #C4DEFF;width:130px;">Voting Percentage </th> ';
+		str +='		<td>'+results.electionBasicVotersData[0].totalVotingPercentageForState+'%</td>';
+		if(flag)
+		str +='		<td>'+results.electionBasicVotersData[1].totalVotingPercentageForState+'%</td>';
+		str +='	</tr>';
 
-		str += '</td><td></td><tr></table>';
+		str +='</table><BR>';
 		stateResultsElmt.innerHTML = str;
+
+
+
 	}
 }
 
