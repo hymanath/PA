@@ -266,6 +266,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
+			List<SelectOptionVO> electionYearsOfParty = new ArrayList<SelectOptionVO>();
 			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId);
 			parties = staticDataService.getStaticPartiesListForAState(stateId);
 			parties.add(0, new SelectOptionVO(0l,"Select Party"));
@@ -278,7 +279,9 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 					years = staticDataService.getElectionIdsAndYearsInfo(electionTypeId, stateId);
 					years.add(0, new SelectOptionVO(0l,"Select Year"));
 					partyAnalysisReportVO.setElectionYearsList(years);
-					
+					electionYearsOfParty = staticDataService.getElectionYearByPartyId( stateId, partyId, electionTypeId);
+					electionYearsOfParty.add(0, new SelectOptionVO(0l,"Select Year"));
+					partyAnalysisReportVO.setElectionYearsListForParty(electionYearsOfParty);
 				}catch(Exception e){
 					years = null;
 					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
