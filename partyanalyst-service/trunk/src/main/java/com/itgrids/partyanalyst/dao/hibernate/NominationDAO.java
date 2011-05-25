@@ -3112,4 +3112,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getElectionYearsBasedOnParty(Long stateId,Long partyId,Long electionTypeId)
+	{
+		Object[] param = {stateId,partyId,electionTypeId};
+		return getHibernateTemplate().find("select distinct(model.constituencyElection.election.electionYear) from Nomination model where " +
+				" model.constituencyElection.constituency.state.stateId = ? and model.party.partyId = ? and model.constituencyElection.election.electionScope.electionType.electionTypeId = ?" +
+				" order by model.constituencyElection.election.electionYear desc ",param);
+	}
+	
 }
