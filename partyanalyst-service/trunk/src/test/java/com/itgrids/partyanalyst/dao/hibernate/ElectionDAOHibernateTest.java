@@ -236,7 +236,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetLatestElectionYearForAStateBasedOnElectionType()
 	{
 		List<String> list = electionDAO.getLatestElectionYearForAStateBasedOnElectionType(24l,IConstants.ASSEMBLY_ELECTION_TYPE,"MAIN");
@@ -245,6 +245,14 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println(obj.toString());
 		}
+	}*/
+	
+	public void testGetPreviousElectionId()
+	{
+		List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(81l);
+		
+		System.out.println(list.get(0)[0]);
+		System.out.println(list.get(0)[1]);
 	}
 	
 	
