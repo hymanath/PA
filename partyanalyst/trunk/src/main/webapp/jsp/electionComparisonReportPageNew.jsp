@@ -969,7 +969,7 @@ function overallResultsForYearOne()
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
 	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right">&nbsp;<font color="green">Total Seats Won --'+totalSeatsWonYearOne+'</font><span></span></div></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right">&nbsp;<font color="green">Total Seats Won : '+totalSeatsWonYearOne+'</font><span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
 	
@@ -1044,7 +1044,7 @@ function overallResultsForYearTwo()
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
 	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections <span align="right">&nbsp;&nbsp;<font color="green">Total Seats Won --'+totalSeatsWonYearTwo+'</span></span></div></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections <span align="right">&nbsp;&nbsp;<font color="green">Total Seats Won : '+totalSeatsWonYearTwo+'</span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
 	str+='</table>';
