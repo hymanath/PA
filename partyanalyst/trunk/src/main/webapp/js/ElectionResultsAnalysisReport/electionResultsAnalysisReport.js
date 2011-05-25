@@ -118,6 +118,7 @@ function removeSelectElements(elmt)
 
 function showBasicAnalysisDetails(jsObj,results,tools)
 {	
+
 	stateName = results.stateName;
 	electionId = results.electionId;	
 	electionYear = results.electionYear;
@@ -126,7 +127,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	partyName = results.partyName;
 	partyId = results.partyId;	
 	stateId = jsObj.stateId;
-
+    
 	var basicDetailsDivEl = document.getElementById("basicDetails");
 	var tablerDetailsEl = document.getElementById("tablerDetails");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
@@ -316,11 +317,11 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		toolsDivElContent+='<TR>';	
 		toolsDivElContent+='<TD>Year:</TD>';
 		toolsDivElContent+='<TD><SELECT id="selectYearAnalysisTool" name="selectYearAnalysisTool" style="width: 100px; margin-top: 3px;">';
-		for(var k in results.electionYearsList)
+		for(var k in results.electionYearsListForParty)
 		{	
-			if(electionYear != results.electionYearsList[k].name)
+			if(electionYear != results.electionYearsListForParty[k].name)
 			{	
-				toolsDivElContent+='<OPTION value='+results.electionYearsList[k].id+'>'+results.electionYearsList[k].name+'</OPTION>';
+				toolsDivElContent+='<OPTION value='+results.electionYearsListForParty[k].id+'>'+results.electionYearsListForParty[k].name+'</OPTION>';
 			}
 		}								
 		toolsDivElContent+='</SELECT>';	
