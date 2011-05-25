@@ -294,4 +294,7 @@ public interface IStaticDataService {
 		public List<Long> getStaticPartiesAsList(Long stateId);
 
 		public List<SelectOptionVO> getLatestConstituenciesByStateId(Long stateId);
+		
+		public List<SelectOptionVO> getElectionYearByPartyId(Long stateId,Long partyId,Long electionTypeId);
+		
 }
