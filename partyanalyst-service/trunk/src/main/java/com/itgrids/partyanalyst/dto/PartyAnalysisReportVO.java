@@ -30,9 +30,17 @@ public class PartyAnalysisReportVO implements Serializable {
 	private List<PartyAnalysisBasicVO> alliancPartiesBasicAnalysisVO;
 	private List<SelectOptionVO> partiesList;
 	private List<SelectOptionVO> electionYearsList;
+	private List<SelectOptionVO> electionYearsListForParty;
 	
 	private ResultStatus resultStatus;
 	
+	public void setElectionYearsListForParty(
+			List<SelectOptionVO> electionYearsListForParty) {
+		this.electionYearsListForParty = electionYearsListForParty;
+	}
+	public List<SelectOptionVO> getElectionYearsListForParty() {
+		return electionYearsListForParty;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}
