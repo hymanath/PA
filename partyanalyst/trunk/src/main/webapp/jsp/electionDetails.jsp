@@ -830,47 +830,37 @@ function showPartywiseDetailsDataTable(results)
 		else if('${electionType}' == 'Parliament')
 		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px;font-family:MS Sans-serif;color:activecaption; "><td>${electionType} Election Details Overview</td></tr></table>';
 		
-		if(flag)
-			str +='<table class="searchresultsTable" style="width:750px"> ';
-		else
-			str +='<table class="searchresultsTable" style="width:600px"> ';
+		str +='<table class="searchresultsTable" style="width:600px"> ';
+
 		str +='	<tr>';
 		str +='		<th style="background-color : #C4DEFF">Year</th>';
-		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
-		if(flag)
-		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
-		str +='		<th style="background-color : #C4DEFF">Year</th>';
-		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
-		if(flag)
-		str +='		<th style="background-color : #C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
-		str +='	</tr>';
-		
-		str +='	<tr>';
 		str +='		<th style="background-color : #C4DEFF">Total Seats</th>';
-		str +='     <td>'+results.electionBasicVotersData[0].totalSeatsParticipated+'</td>';
-		if(flag)
-		str +='     <td>'+results.electionBasicVotersData[1].totalSeatsParticipated+'</td>';
 		str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
-		str +='		<td>'+results.electionBasicVotersData[0].totalVotesForState+'</td>';
-		if(flag)
-		str +='		<td>'+results.electionBasicVotersData[1].totalVotesForState+'</td>';
+		str +='		<th style="background-color : #C4DEFF">Total Polled Votes</th> ';
+		str +='		<th style="background-color : #C4DEFF">Voting Percentage </th> ';
 		str +='	</tr>';
 		
 		str +='	<tr>';
-		str +='		<th style="background-color : #C4DEFF;width:130px;">Total Polled Votes</th> ';
-		str +='		<td>'+results.electionBasicVotersData[0].totalPolledVotesForState+'</td>';
-		if(flag)
-		str +='		<td>'+results.electionBasicVotersData[1].totalPolledVotesForState+'</td>';
-		str +='		<th style="background-color : #C4DEFF;width:130px;">Voting Percentage </th> ';
-		str +='		<td>'+results.electionBasicVotersData[0].totalVotingPercentageForState+'%</td>';
-		if(flag)
-		str +='		<td>'+results.electionBasicVotersData[1].totalVotingPercentageForState+'%</td>';
+		str +='		<th style="background-color:#C4DEFF">'+results.electionBasicVotersData[0].partyName+'</th>';
+		str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalSeatsParticipated+'</td>';
+		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalVotesForState+'</td>';
+		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalPolledVotesForState+'</td>';
+		str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[0].totalVotingPercentageForState+'%</td>';
 		str +='	</tr>';
+
+		if(flag)
+		{
+			str +='	<tr>';
+			str +='		<th style="background-color:#C4DEFF">'+results.electionBasicVotersData[1].partyName+'</th>';
+			str +='     <th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalSeatsParticipated+'</td>';
+			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotesForState+'</td>';
+			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalPolledVotesForState+'</td>';
+			str +='		<th style="background-color : #FFFFFF">'+results.electionBasicVotersData[1].totalVotingPercentageForState+'%</td>';
+			str +='	</tr>';
+		}
 
 		str +='</table><BR>';
 		stateResultsElmt.innerHTML = str;
-
-
 
 	}
 }
