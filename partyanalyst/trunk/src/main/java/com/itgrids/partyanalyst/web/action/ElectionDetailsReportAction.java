@@ -297,7 +297,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					.getBasicResultsForAnElection(electionType, year, stateId,
 							IConstants.VOTES_PERCENT_MARGIN);
 			
-			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getCompleteStatewiseVotersInfoForAnElection(electionId));
+			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getVotersDataOfTwoElections(electionId));
 			if (electionCompleteDetailsVO != null) {
 				if (electionCompleteDetailsVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
 					return Action.ERROR;
