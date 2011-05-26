@@ -3565,5 +3565,29 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return localGroups;
 	}
+	
+	public Long getStateIdOfAUser(String accessType,Long accessValue)
+	{
+		try{
+		
+			Long stateId = null;
+		if(accessType.equalsIgnoreCase(IConstants.MLA))
+			stateId = constituencyDAO.get(accessValue).getDistrict().getState().getStateId();
+		
+		else if(accessType.equalsIgnoreCase(IConstants.MP))
+			stateId = 0l;
+		
+		else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+			stateId = districtDAO.get(accessValue).getState().getStateId();
+		
+		else if(accessType.equalsIgnoreCase(IConstants.STATE))
+			stateId = stateDAO.get(accessValue).getStateId();
+				
+			return stateId;
+		}catch(Exception e)
+		{
+			return null;
+		}
+	}
 }
 
