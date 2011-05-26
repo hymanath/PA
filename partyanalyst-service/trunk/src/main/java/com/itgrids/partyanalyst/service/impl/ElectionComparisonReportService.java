@@ -330,6 +330,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		electionComparisonReportVO.setDistrictWisePartyResultsForYearTwo(districts2);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Map<Long, DistrictWisePartyResultVO> getAssembliesDistrictwiseResults(Long partyId, Long stateOrCountryId, 
 			Long electionId, boolean isAssembly, boolean hasAlliance){
 		List result = null;
@@ -410,7 +411,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				}
 			}
 		}
-
+		
+			
 		for (Object[] values : (List<Object[]>)result) {
 			districtWisePartyResultVO = new DistrictWisePartyResultVO();
 			districtWisePartyResultVO.setDistrictId(new Long(values[0].toString()));
@@ -421,6 +423,24 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			districtWisePartyResultVO.setTotalPercentage(new Double(values[5].toString()));
 			districtWisePartyResultVO.setConstiCount(constiCountInSateOrDist.get(new Long(values[0].toString())));
 			districtsResultMap.put(new Long(values[0].toString()), districtWisePartyResultVO);
+		}
+		
+		for(Object[] values : (List<Object[]>)constiCountList)
+		{
+			if(districtsResultMap.get((Long)values[0]) != null)
+				continue;
+			else
+			{
+				districtWisePartyResultVO = new DistrictWisePartyResultVO();
+				districtWisePartyResultVO.setDistrictId((Long)values[0]);
+				districtWisePartyResultVO.setDistrictName(((List<Object[]>)districtDAO.getDistrictNameByDistrictId((Long)values[0])).get(0)[0].toString());
+				districtWisePartyResultVO.setConstiParticipated(0l);
+				districtWisePartyResultVO.setSeatsWon(0l);
+				districtWisePartyResultVO.setVotesPercent(0d);
+				districtWisePartyResultVO.setTotalPercentage(0d);
+				districtWisePartyResultVO.setConstiCount((Long)values[1]);
+				districtsResultMap.put((Long)values[0], districtWisePartyResultVO);
+			}
 		}
 		
 		return districtsResultMap;
