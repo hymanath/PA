@@ -323,7 +323,9 @@
 	<bean id="sendMailToAdminAction" class="com.itgrids.partyanalyst.web.action.SendMailToAdminAction" singleton="false">	
 		<property name="mailService" ref="mailService"></property>	
 	</bean>
-	
+	<bean id="postArticleAction" class="com.itgrids.partyanalyst.web.action.PostArticleAction" singleton="false">	
+		<property name="mailService" ref="mailService"></property>	
+	</bean>
 	
 	<bean id="initailConstituencyManagementAction" class="com.itgrids.partyanalyst.web.action.InitailConstituencyManagementAction" singleton="false">				
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
