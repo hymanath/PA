@@ -286,9 +286,17 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		
 		session = request.getSession();
 		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO==null)
+			return ERROR;
+		String accessType =regVO.getAccessType();
+		Long accessValue= new Long(regVO.getAccessValue());
+		
 		positionsList = influencingPeopleService.getAllInfluencePeoplePositions();
 		positionSize =  positionsList.size();
-		staticParties = staticDataService.getStaticParties();
+		//staticParties = staticDataService.getStaticParties();
+		Long userStateId = influencingPeopleService.getStateIdOfAUser(accessType,accessValue);
+		staticParties = staticDataService.getStaticPartiesListForAState(userStateId != null ? userStateId : 0l);
 		staticParties.add(0,new SelectOptionVO(0l,"Select Party"));
 		
 		occupationsList = staticDataService.getAllOccupations();
@@ -309,11 +317,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			gender.add("Female");
 		}
 		
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(regVO==null)
-			return ERROR;
-		String accessType =regVO.getAccessType();
-		Long accessValue= new Long(regVO.getAccessValue());
 		
 		if("MLA".equals(accessType))
 		{
