@@ -75,7 +75,7 @@ function callAjax(param,jsObj,url){
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
-									populateElectionYearDropdown(myResults);
+									populateElectionYearDropdown(myResults,jsObj.from);
 								}
 								else if(jsObj.task == "getStaticParties")
 								{										
@@ -168,7 +168,7 @@ function getEletionTypesInState(id)
 	var url = "<%=request.getContextPath()%>/electionTypesAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function getEletionYears(party,partyId)
+function getEletionYears(party,partyId,from)
 {
 
 	var elmt = document.getElementById("errorsDiv");
@@ -179,8 +179,11 @@ function getEletionYears(party,partyId)
 		var str='';
 		str='Invalid Selection ..';
 		elmt.innerHTML=str;
-
-        clearOptionsListForSelectElmtId("electionYearSelectEl");
+		
+		if(from == 'ERAR')
+			clearOptionsListForSelectElmtId("electionYearSelectEl");
+		else if(from == 'PPR')
+			clearOptionsListForSelectElmtId("selectYearPPR");
 		return;
 	}
 
@@ -189,15 +192,33 @@ function getEletionYears(party,partyId)
 		return;
     var stateId =stateSelectEl.value;
 	
-	clearOptionsListForSelectElmtId("electionYearSelectEl");
+	if(from == 'ERAR')
+	{
+		clearOptionsListForSelectElmtId("electionYearSelectEl");
+		var elmt = document.getElementById("electionPageAjaxImgDiv");
+		if(elmt.style.display == 'none')
+		elmt.style.display = 'block';
+	}
 
-	var elmt = document.getElementById("electionPageAjaxImgDiv");
-	if(elmt.style.display == 'none')
-	elmt.style.display = 'block';
-	var electionYearsEl = document.getElementById("electionYearSelectEl");
+	else if(from == 'PPR')
+		clearOptionsListForSelectElmtId("selectYearPPR");
+	
+	var electionYearsEl = null;
+	var partySelectEl = null;
+	
+	if(from == 'ERAR')
+	{
+		electionYearsEl = document.getElementById("electionYearSelectEl");
+		partySelectEl = document.getElementById("partySelectEl");
+	}
+	
+	else if(from == 'PPR')
+	{
+		electionYearsEl = document.getElementById("selectYearPPR");
+		partySelectEl = document.getElementById("selectPartyPPR");
+	}
+
 	var noOfElectionYearsElOptions = electionYearsEl.options;
-	var partySelectEl = document.getElementById("partySelectEl");
-
     var electionTypeSelectEl = document.getElementById("electionTypeSelectEl");
     var electionType = electionTypeSelectEl.options[electionTypeSelectEl.selectedIndex].text;
 
@@ -211,7 +232,8 @@ function getEletionYears(party,partyId)
 	{
 		elecTypeId:electionType,
 		partyId:partyId,
-		stateId:stateId,			
+		stateId:stateId,	
+		from   : from,
 		task:"getElectionsYears"		
 	}
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -589,7 +611,7 @@ function openPartyPerformanceWindow(electionTypeId)
 						
 						<TH >Party</TH>
 						<TD>
-						<s:select id="partySelectEl" theme="simple" name="partySelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)" />								
+						<s:select id="partySelectEl" theme="simple" name="partySelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,'ERAR')" />								
 						</TD>
 
 						<TH>Year</TH>
