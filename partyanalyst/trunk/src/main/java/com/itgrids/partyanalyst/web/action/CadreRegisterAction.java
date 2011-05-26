@@ -962,8 +962,14 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String uploadCadreImage(Long cadreId)
 	{
 		try{
+			String pathSeperator = System.getProperty("file.separator");
+			String filePath = null;
 			
-			String filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";	
+			if(request.getRequestURL().toString().contains("www.partyanalyst.com"))
+				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator +"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
+			else
+				filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";
+			
 			BufferedImage image = ImageIO.read(this.uploadImage);
 			
 			if(image == null)
