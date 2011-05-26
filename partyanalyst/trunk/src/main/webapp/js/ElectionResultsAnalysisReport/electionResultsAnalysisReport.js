@@ -64,9 +64,15 @@ function populateElectionTypeDropdown(results)
 			}
 	}
 }
-function populateElectionYearDropdown(results)
+function populateElectionYearDropdown(results,from)
 {
-	var electionYearsEl = document.getElementById("electionYearSelectEl");
+	var electionYearsEl = null;
+
+	if(from == 'ERAR')
+		electionYearsEl = document.getElementById("electionYearSelectEl");
+	else if(from == 'PPR')
+		electionYearsEl = document.getElementById("selectYearPPR");
+
 	removeSelectElements(electionYearsEl);
 	for(var i in results)
 	{
@@ -446,7 +452,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 			toolsDivElContent+='<TR>';
 			toolsDivElContent+='<TD>Party Name:</TD>';
 			toolsDivElContent+='<TD>';
-			toolsDivElContent+='<select id="selectPartyPPR" name="selectParty">';
+			toolsDivElContent+='<select id="selectPartyPPR" name="selectParty" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,\'PPR\')">';
 			for(var l in results.partiesList)
 			{		
 				 toolsDivElContent+='<OPTION value='+results.partiesList[l].id+'>'+results.partiesList[l].name+'</OPTION>';			
