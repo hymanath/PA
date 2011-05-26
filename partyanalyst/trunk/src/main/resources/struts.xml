@@ -309,6 +309,10 @@
         </action>
  		
 		<!-- End Party Performance Actions -->
+		<action name="postArticleAction" class="postArticleAction">
+		<result name="input">/jsp/articlePost.jsp</result>
+		<result name="success">/jsp/articlePost.jsp</result>
+		</action>
 		
         <action name="uploadCSV" class="uploadCSVAction">
            <result name="success">/jsp/csvUpload.jsp</result>
@@ -2346,6 +2350,9 @@
             <result name="termsOfUse">/jsp/termsOfUse.jsp</result>
             <result name="privacy">/jsp/privacyPolicy.jsp</result>
             <result name="disclaimer">/jsp/disclaimer.jsp</result>
+            <result name="articles">/jsp/articlePost.jsp</result>
+            <result name="guidelines">/jsp/guideLines.jsp</result>
+            
         </action>
 		
 		<action name="getLatestElectionYearsAction" class="censusReportAction" method="AjaxHandler">
