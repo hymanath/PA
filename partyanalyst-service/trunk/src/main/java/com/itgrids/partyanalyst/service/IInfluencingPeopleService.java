@@ -76,5 +76,7 @@ public interface IInfluencingPeopleService {
 	
 	public UserGroupMembersVO saveUserGroupMemberDetails(UserGroupMembersVO userGroupMemberVO);
     public Integer deleteLocalUserGroup(Long groupId);
+    
+    public Long getStateIdOfAUser(String accessType,Long accessValue);
 	
 }
