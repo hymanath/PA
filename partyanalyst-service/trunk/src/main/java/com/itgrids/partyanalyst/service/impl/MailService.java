@@ -1,13 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.Date;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 
@@ -256,6 +263,56 @@ public class MailService implements IMailService{
 	    	return rs;
 		}
 		
+		 public  ResultStatus sendArticleToAdmin(QuickRequestVO quickRequestVO,String requestFrom){
+		        
+			    	 ResultStatus rs = new  ResultStatus();
+			    	
+			    		String subject;
+			    		String text;
+			    		subject = "";
+			    		subject= "User Interesting to Post Articles to PartyAnalyst"; 
+			           
+			           
+			            text = "";
+			            text += "<table><tr><td>Name :</td><td>" + quickRequestVO.getUserName()+"</td></tr>";
+			            text += "<tr><td>EmailId :</td><td> " + quickRequestVO.getEmailId()+"</td></tr>";
+			            text += "<tr><td>MobileNO :</td><td> " + quickRequestVO.getMobileNumber()+"</td></tr>";
+			            text += "<tr><td>Comment : </td><td>"+ quickRequestVO.getUserRequirement()+"</td></tr>";
+			            text+="</table>";
+			            quickRequestVO.setText(text);
+			            quickRequestVO.setToEmailId(IConstants.TOEMAILID);
+			            quickRequestVO.setSubject(subject);
+			            if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+			            	quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
+			            rs=sendMailFromLocalHost(quickRequestVO);
+			            }
+			            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
+			            {
+			            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+			            	rs = sendMailFromServer(quickRequestVO);
+			            }
+			            text="ThankYou for your interest we will get back to you as soon as possible";
+			    		subject= " Articles On PartyAnalyst"; 
+
+			            quickRequestVO.setText(text);
+			            quickRequestVO.setToEmailId(quickRequestVO.getEmailId());
+
+			            quickRequestVO.setSubject(subject);
+
+			            if(requestFrom.equalsIgnoreCase(IConstants.LOCALHOST)){
+			            	quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
+			            rs=sendMailFromLocalHost(quickRequestVO);
+			            }
+			            else if(requestFrom.equalsIgnoreCase(IConstants.SERVER))
+			            {
+			            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
+			            	rs = sendMailFromServer(quickRequestVO);
+			            }
+			            
+			            
+					return rs;
+			 	    }
+	    	
 	    
 	}
 
