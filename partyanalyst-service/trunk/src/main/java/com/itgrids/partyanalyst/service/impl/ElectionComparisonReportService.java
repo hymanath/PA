@@ -433,7 +433,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			{
 				districtWisePartyResultVO = new DistrictWisePartyResultVO();
 				districtWisePartyResultVO.setDistrictId((Long)values[0]);
-				districtWisePartyResultVO.setDistrictName(((List<Object[]>)districtDAO.getDistrictNameByDistrictId((Long)values[0])).get(0)[0].toString());
+				if(isAssembly)
+					districtWisePartyResultVO.setDistrictName(((List<Object[]>)districtDAO.getDistrictNameByDistrictId((Long)values[0])).get(0)[0].toString());
+				else
+					districtWisePartyResultVO.setDistrictName(stateDAO.get((Long)values[0]).getStateName());
 				districtWisePartyResultVO.setConstiParticipated(0l);
 				districtWisePartyResultVO.setSeatsWon(0l);
 				districtWisePartyResultVO.setVotesPercent(0d);
