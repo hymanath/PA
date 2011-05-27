@@ -171,7 +171,7 @@
 						{
 							ancName:"whoWeAre",
 							head:"",
-							data:"Here are some of the benefits you would get from our end&#58 </p>1&#46We guarantee you a huge exposure by writing to one of its kind website&#46<br>2&#46You will be reaching a huge number of new targeted audience<br>3&#46	You can connect with a whole new group of audience<br>4&#46	Guaranteed back links to your blog<br>All this means<br>&#61&#62 A massive growth in the quality traffic to your own blog<br><b>Topics you can write about&#58</b><br>You can write articles in any of the following topics&#58<br>1&#46Indian Politics &#45 General<br>2&#46	Current Indian Political Situation<br>3&#46What made politicians&#47political parties loose&#47win the previous elections<br>4&#46Views&#47Analysis on Political programs&#47schemes<br>5&#46	Views&#47Analysis on CurrentAffairs &#45 Politics<br><b>Guidelines&#63</b><br><p>To provide the readers with the best&#44 valuable content and also not to salvage the writer&#39s reputation&#44 we have put some <a href=footerLinksAction.action?linkFrom=guidelines target=_blank>Guidelines</a> in place&#46 Please make sure you follow them so as to maintain a healthy environment&#46</p><b>Interested&#63</b><br><p>Please reply back to me with subject line &#34Guest Blog Submission&#34&#46 Include your name and article and we will get back to you as soon as possible&#46</p><p>Thank You and I look forward to seeing you on partyanalyst&#46com</p><p>PS&#46 We completely understand the work that it takes to write an article&#46 However&#44 it doesn&#39t mean that we publish everything that is submitted to us&#46 Given the sensitive nature of the article subject&#44 we have some internal scrutiny guidelines in place&#46 A final decision will be made as to whether publish an article or not&#44 after it is scrutinized by our internal team &#40although&#44 all the articles that are written as per our guidelines are highly unlikely to be rejected&#41&#46</p><br>Should you be interested to post articles on PartyAnalyst, kindly submit the following details: "
+							data:"<b>Requesting To Post Articles On PartyAnalyst </b><br><br>Here are some of the benefits you would get from our end&#58 </p>1&#46We guarantee you a huge exposure by writing to one of its kind website&#46<br>2&#46You will be reaching a huge number of new targeted audience<br>3&#46You can connect with a whole new group of audience<br>4&#46Guaranteed back links to your blog<br><br>All this means<br><strong>&#61&#62 A massive growth in the quality traffic to your own blog</strong><br><br><b>Topics you can write about&#58</b><br>You can write articles in any of the following topics&#58<br>1&#46Indian Politics &#45 General<br>2&#46Current Indian Political Situation<br>3&#46What made politicians&#47political parties loose&#47win the previous elections<br>4&#46Views&#47Analysis on Political programs&#47schemes<br>5&#46Views&#47Analysis on CurrentAffairs &#45 Politics<br><br><b>Guidelines&#63</b><br><p>To provide the readers with the best&#44 valuable content and also not to salvage the writer&#39s reputation&#44 we have put some <a href=footerLinksAction.action?linkFrom=guidelines target=_blank>Guidelines</a> in place&#46 Please make sure you follow them so as to maintain a healthy environment&#46</p><b>Interested&#63</b><br><p>Please reply back to me with subject line &#34Guest Blog Submission&#34&#46 Include your name and article and we will get back to you as soon as possible&#46</p><p>Thank You and I look forward to seeing you on partyanalyst&#46com</p><p>We completely understand the work that it takes to write an article&#46 However&#44 it doesn&#39t mean that we publish everything that is submitted to us&#46 Given the sensitive nature of the article subject&#44 we have some internal scrutiny guidelines in place&#46 A final decision will be made as to whether publish an article or not&#44 after it is scrutinized by our internal team &#40although&#44 all the articles that are written as per our guidelines are highly unlikely to be rejected&#41&#46</p>"
 						}
 
 					]
@@ -187,7 +187,7 @@
 			return;
 
 		var str = '';
-		str += '<div>';
+		str += '<div style="font-family:sans-serif">';
 		
 		for(var i=0;i<content.length;i++)
 		{
@@ -253,38 +253,48 @@
 		<tr>
 			<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td>
 	</tr>
-	<tr>
+		<tr>
 	  <td style="font-weight:bold">
-		<font color="red"> * </font>Name:
+		<font color="red"> * </font><s:label for="nameId" id="nameLabel" value="Name :" theme="simple"/>
 	  </td>
+
 	  <td>
-		<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox">
+		<s:textfield id="nameId" cssClass="quickRequestTextbox" name="name" size="25" maxlength="40" theme="simple"/>
+		
 	  </td>
+
 	</tr>
 	<tr>
 	  <td style="font-weight:bold">
-		<font color="red"> * </font>Email:
+		<font color="red"> * </font><s:label for="emailId" id="emailIdLabel" value="Email :" theme="simple"/>
 	  </td>
+
 	  <td>
-		<input type="text" class="quickRequestTextbox" name="email" id="quickRequestEmailTextbox">
+		<s:textfield id="emailId" cssClass="quickRequestTextbox" name="email" size="25" maxlength="40" theme="simple"/>
 	  </td>
+
 	</tr>
+
 	<tr>
 	  <td style="font-weight:bold">
-		<font color="red"> * </font>Mobile:
-	  </td>
+		<font color="red"> * </font><s:label for="mobileId" id="mobileLabel" value="Mobile :" theme="simple"/>
+	 </td>
+
 	  <td>
-		<input type="text" class="quickRequestTextbox" name="mobileNO" id="quickRequestMobileTextbox">
+		<s:textfield id="mobileId" cssClass="quickRequestTextbox" name="mobileNO" size="25" maxlength="40" theme="simple"/>
 	  </td>
+
 	</tr>
 	<tr>
 	  <td style="font-weight:bold" colspan="2">
-		 Comment:
+		<s:label for="requirementId" id="requirementLabel" value="Comment :" theme="simple"/>
 	  </td>
+
 	</tr>
 	<tr>
 	  <td colspan="2">
-		<textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" ></textarea>
+		<s:textarea cols="22" id="requirementId" name="requirement" rows="3" theme="simple"/>
+			
 	   </td>
 	</tr>
 	<tr>
@@ -296,7 +306,6 @@
 </div>	
 	<script type="text/javascript">
 		buildfooterLinksContent();
-		window.location.hash;
 	</script>
 </body>
 </html>
