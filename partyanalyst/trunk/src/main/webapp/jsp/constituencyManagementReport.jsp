@@ -935,7 +935,7 @@
 					</div>
 					<div style="text-align:right;padding:15px;">
 						
-					<a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Voters Details</a>
+					<a class="linkButton" href="constituencyManagementWithVoterDataAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Voters Details</a>
 					</div>
 				</div>
 			</div>	
