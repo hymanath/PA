@@ -320,6 +320,19 @@
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		
 	</bean>
+	
+	<bean id="constituencyManagementWithVoterDataAction" class="com.itgrids.partyanalyst.web.action.ConstituencyManagementWithVoterDataAction" singleton="false">			
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService"></property>	
+		<property name="cadreManagementService" ref="cadreManagementService"></property>
+		<property name="regionServiceData" ref="regionServiceDataImp"></property>
+		<property name="problemManagementService" ref="problemManagementService"></property>		
+		<property name="problemManagementReportService" ref="problemManagementReportService"/>
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
+		
+	</bean>
+	
 	<bean id="sendMailToAdminAction" class="com.itgrids.partyanalyst.web.action.SendMailToAdminAction" singleton="false">	
 		<property name="mailService" ref="mailService"></property>	
 	</bean>
