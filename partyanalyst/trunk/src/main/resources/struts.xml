@@ -713,6 +713,11 @@
 			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementAction</result>	
 		</action>
 		
+		<action name="constituencyManagementWithVoterDataAction" class="constituencyManagementWithVoterDataAction">
+			<result name="success">/jsp/constituencyManagementWithVoterData.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementWithVoterDataAction?cmTask=CONSTITUENCY_MANAGEMENT</result>	
+		</action>
+		
 		<action name="initailConstituencyManagementAction" class="initailConstituencyManagementAction">
 			<result name="success">/jsp/constituencyManagementReport.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>
