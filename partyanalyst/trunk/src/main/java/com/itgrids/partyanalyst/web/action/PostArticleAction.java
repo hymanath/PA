@@ -29,16 +29,20 @@ public class PostArticleAction extends ActionSupport implements
 	// Instance Variables
 
 	private HttpServletRequest request;
-	private String name;
-	private String email;
-	private String mobileNO;
-	private String comment;
-	
+		
 	JSONObject jObj;
 	private String task = null;
 	private QuickRequestVO quickRequestVO = new QuickRequestVO();
 	private MailService mailService;
 	private ResultStatus result = new ResultStatus();
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
 
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
@@ -70,56 +74,34 @@ public class PostArticleAction extends ActionSupport implements
 
 	}
 
-	public String getName() {
-		return quickRequestVO.getUserName();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Name is Mandatory",  shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "Name should not contain special characters and numbers", shortCircuit = true)
-	public void setName(String name) {
-		this.quickRequestVO.setUserName(name);
-	}
-
-	public String getEmail() {
-		return quickRequestVO.getEmailId();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Email is Mandatory")
-	@EmailValidator(type = ValidatorType.FIELD , message = "Please Enter a valid Email.")
-	public void setEmail(String email) {
-		this.quickRequestVO.setEmailId(email);
-	}
-
-	public String getMobileNO() {
-		return quickRequestVO.getMobileNumber();
-	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile is Mandatory")
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number...", minLength = "10", maxLength = "12")	
-	public void setMobileNO(String mobileNO) {
-		this.quickRequestVO.setMobileNumber(mobileNO);
-	}
-
-	public String getRequirement() {
-		return quickRequestVO.getUserRequirement();
-	}
-	
-	
-	public void setRequirement(String requirement) {
-		this.quickRequestVO.setUserRequirement(requirement);
-	}
-
 	public String execute() throws Exception {
 
-		String requestURL = request.getRequestURL().toString();
-		String requestFrom = "";
-		if (requestURL.contains("www.partyanalyst.com"))
-			requestFrom = IConstants.SERVER;
-		else
-			requestFrom = IConstants.LOCALHOST;
-		result = mailService.sendArticleToAdmin(quickRequestVO,requestFrom);
-		request.setAttribute("result",result);
-		return SUCCESS;
+		 return SUCCESS;
 	}
-
+	
+	public String ajaxHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			quickRequestVO.setUserName(jObj.getString("name"));
+			quickRequestVO.setEmailId(jObj.getString("email"));
+			quickRequestVO.setMobileNumber(jObj.getString("mobile"));
+			quickRequestVO.setUserRequirement(jObj.getString("requirement"));			
+			String requestURL= request.getRequestURL().toString();
+			String requestFrom = "";
+			if(requestURL.contains("www.partyanalyst.com"))
+				requestFrom = IConstants.SERVER;
+			else
+				requestFrom = IConstants.LOCALHOST;
+			result = mailService.sendArticleToAdmin(quickRequestVO,requestFrom);
+			
+		}
+		catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		
+	    return SUCCESS;
+	}
 }
