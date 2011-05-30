@@ -2394,6 +2394,10 @@
 				<param name="root">stateElections</param>				
 			</result>	
 		</action>
+				
+		<action name="memoryManagementAction">
+			<result>/jsp/memMonitor.jsp</result>
+		</action>
 				 		       	
 	</package>
 </struts>      
