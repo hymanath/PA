@@ -773,6 +773,10 @@ function callHomePageAjax(jsObj,url)
 								
 								showQuickRequestStatus(myResults);
 							}
+                            if(jsObj.task == 'submitAricle'){
+								
+								showArticlePostStatus(myResults);
+							}
 							if(jsObj.task == 'getQuestions'){
 								
 								buildQuestions(myResults);
@@ -815,7 +819,8 @@ function showFeedBackStatus(result)
 	else
 	{
 		var errorElmt = document.getElementById("feedback_window_errorMsg");
-			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not Submitted.Please Try again.</font>";
+			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not " +
+					"ted.Please Try again.</font>";
 	}
 }
 
@@ -1753,6 +1758,41 @@ function validateQuickRequest(){
 	return errorMsg;
 	}
 
+
+
+function validatePostArticle(){
+		var errorMsg='';
+		var name=document.getElementsByName("name")[0].value;
+		var email=document.getElementsByName("email")[1].value;
+		var mobile=document.getElementsByName("mobileNO")[0].value;
+		var requirement=document.getElementsByName("requirement")[0].value;
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+        var alphaExp = /^[a-zA-Z\s]+$/;
+
+	if(name==""){
+		errorMsg += '<font size="2">Name is Required</font><br>';
+	}
+	else if(!name.match(alphaExp) || name.charAt(0)==" "){
+	
+		errorMsg += '<font size="2">Name may consist of a-z, A-Z, begin with a letter.</font><br>';
+	}
+	if(email==""){
+		errorMsg += '<font size="2">Email is Required</font><br>';
+	}
+	else if(!email.match(emailExp)){
+		errorMsg += '<font size="2">Invalid Email</font><br>';
+	}
+	if(mobile==""){
+		errorMsg += '<font size="2">Mobile is Required</font><br>';
+	}
+	else if(isNaN(mobile)||mobile.indexOf(" ")!=-1||mobile.length>10 || mobile.length<10||(!(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")))
+	{
+		errorMsg+= '<font size="2">Invalid Mobile</font><br>';
+	}
+	
+	return errorMsg;
+	}
+
 	//to create jquery dialog box for quick request
 	function submitDialogBox(){
 		
@@ -1824,13 +1864,58 @@ function validateQuickRequest(){
 		});
 
 	}
+	
+	
+	
+	
+	function submitArticleBox()
+	{
+			var errorMsg=validatePostArticle();
+var elmt = document.getElementById("errorMsgDiv");
+
+		var str = '';
+		
+		str +='<div id="articleMsgDiv">';
+		
+		if(errorMsg==''){
+
+		str += "<h3 color='green'>Sending Request...</h3>";
+		str += '<img style="margin-left:50px" width="90" height="15" src="images/icons/goldAjaxLoad.gif"/>';		
+	var name	= document.getElementById("articleNameId").value;
+	var email	= document.getElementById("articleEmailId").value;
+	var mobile	= document.getElementById("articleMobileId").value;
+	var requirement= document.getElementById("articleCommentId").value;
+
+	
+	
+	var jObj= {
+			name:name,
+			email:email,
+			mobile:mobile,
+			requirement:requirement,
+			task:"submitAricle"
+	};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "postArticleAction.action?"+rparam;
+	callHomePageAjax(jObj,url);
+	
+}
+else{
+		str += errorMsg;
+		str += '</div>';
+		}
+        str += '</div>';
+
+		elmt.innerHTML = str;	
+	
+	}
 	function showQuickRequestStatus(result){
 		
 	 var errMsg = document.getElementById("quickRequestMsgDiv");
 	
 	if(result.exceptionEncountered == null)
 	{
-		errMsg.innerHTML='<b>'+ result.exceptionMsg+'</b>';
 		document.getElementById("quickRequestNameTextbox").value = '';
 		document.getElementById("quickRequestEmailTextbox").value = '';
 		document.getElementById("quickRequestMobileTextbox").value = '';
@@ -1840,6 +1925,26 @@ function validateQuickRequest(){
 		errMsg.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
 	}
 }
+	
+	
+	function showArticlePostStatus(result){
+		var errMsgs = document.getElementById("articleMsgDiv");
+			if(result.exceptionEncountered == null)
+		{
+		errMsgs.innerHTML='<b><font color="green">'+ result.exceptionMsg+'</font></b>';
+			document.getElementById("articleNameId").value = '';
+			document.getElementById("articleEmailId").value = '';
+			document.getElementById("articleMobileId").value = '';
+			document.getElementById("articleCommentId").value = '';
+		}
+	else{
+		errMsgs.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
+	}
+
+	}
+	
+	
+	
 //To create news box
 
 function newsBox(index)
