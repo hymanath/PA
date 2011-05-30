@@ -1019,7 +1019,7 @@ var new2="Election Message";
 							<div class="homePage_new_footer_links_head">News & Events</div>
 							<ul class="homePage_new_footer_links">
 								<li><a href="javascript:{}" onclick="openMediaOpenionsWindow()">Party Analyst Launch</a></li>
-							<li><a href=footerLinksAction.action?linkFrom=articles target="_blank">Publish Your Article</a></li>
+							<li><a href=footerLinksAction.action?linkFrom=guestArticelsSubmission target="_blank">Publish Your Article</a></li>
 							</ul>
 						</td>
 
