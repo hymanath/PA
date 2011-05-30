@@ -226,7 +226,6 @@
 </head>
 <body>
 
-
 <div id="footerLinksdata_main">
 		<div id="footerLinksdata_head">
 			
@@ -235,76 +234,57 @@
 			
 		</div>
 	</div>
-	<div id="formDiv">
-	<div align="left" style="font-family:sans-serif;font-size:12px"><font color="#109AEB"><strong>&nbsp;&nbsp;&nbsp;&nbsp;Guest Articles Submission Interest Form&#58</strong></font></div>
-	<s:form name="postingArticle" action="postArticleAction.action#formDiv" method="POST">
-	<DIV style="color:green;font-weight:bold"><c:out value="${result.exceptionMsg}"></c:out></DIV>
-	<table id="cadreRegistrationTable" class="registrationTable">
-		<tr>
-			<td colspan="2">
-				<div style="color: red;">
-					<s:actionerror />
-					<s:fielderror />
-				</div>
-			</td>
-		</tr>
-	</table>
 	
-<table id="quickRequestTable">
-		<tr>
-			<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td>
-	</tr>
-		<tr>
-	  <td style="font-weight:bold">
-		<font color="red"> * </font><s:label for="nameId" id="nameLabel" value="Name :" theme="simple"/>
-	  </td>
-
-	  <td>
-		<s:textfield id="nameId" cssClass="quickRequestTextbox" name="name" size="25" maxlength="40" theme="simple"/>
+	<div class="homePageContentWidget_body" style="border: 0px solid">
+		<table id="quickRequestTable">
+			<tr>
+				<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td>
+			</tr>
+		<table/>
+		</div>
+		<div id="errorMsgDiv">
 		
-	  </td>
-
-	</tr>
-	<tr>
-	  <td style="font-weight:bold">
-		<font color="red"> * </font><s:label for="emailId" id="emailIdLabel" value="Email :" theme="simple"/>
-	  </td>
-
-	  <td>
-		<s:textfield id="emailId" cssClass="quickRequestTextbox" name="email" size="25" maxlength="40" theme="simple"/>
-	  </td>
-
-	</tr>
-
-	<tr>
-	  <td style="font-weight:bold">
-		<font color="red"> * </font><s:label for="mobileId" id="mobileLabel" value="Mobile :" theme="simple"/>
-	 </td>
-
-	  <td>
-		<s:textfield id="mobileId" cssClass="quickRequestTextbox" name="mobileNO" size="25" maxlength="40" theme="simple"/>
-	  </td>
-
-	</tr>
-	<tr>
-	  <td style="font-weight:bold" colspan="2">
-		<s:label for="requirementId" id="requirementLabel" value="Comment :" theme="simple"/>
-	  </td>
-
-	</tr>
-	<tr>
-	  <td colspan="2">
-		<s:textarea cols="22" id="requirementId" name="requirement" rows="3" theme="simple"/>
-			
-	   </td>
-	</tr>
-	<tr>
-	  <td colspan="2" align="right"><div id="feedback"><input type="submit" value="Submit" class="quickRequestTextbox" style="margin-top=25px;width:60px"></div></td>
-	</tr>									
-</table>
-
-	</s:form>
-</div>	
+		
+		<table>
+			<tr>
+			  <td style="font-weight:bold">
+				<font color="red"> * </font>Name:
+			  </td>
+			  <td>
+				<input class="quickRequestTextbox" type="text" name="name" id="articleNameId">
+			  </td>
+			</tr>
+			<tr>
+			  <td style="font-weight:bold">
+				<font color="red"> * </font>Email:
+			  </td>
+			  <td>
+				<input type="text" class="quickRequestTextbox" name="email" id="articleEmailId">
+			  </td>
+			</tr>
+			<tr>
+			  <td style="font-weight:bold">
+				<font color="red"> * </font>Mobile:
+			  </td>
+			  <td>
+				<input type="text" class="quickRequestTextbox" name="mobileNO" id="articleMobileId">
+			  </td>
+			</tr>
+			<tr>
+			  <td style="font-weight:bold" colspan="2">
+				 Comment:
+			  </td>
+			</tr>
+			<tr>
+			  <td colspan="2">
+				<textarea name="requirement" rows="3" cols="21" id="articleCommentId" ></textarea>
+			   </td>
+			</tr>
+			<tr>
+			  <td colspan="2" align="right"><div id="feedback"><input type="submit" value="Submit" class="quickRequestTextbox" style="margin-top=25px;width:54px;" onclick="submitArticleBox()"></div></td>
+			</tr>
+				 </table>
+	</div>
 	<script type="text/javascript">
 		buildfooterLinksContent();
 	</script>
