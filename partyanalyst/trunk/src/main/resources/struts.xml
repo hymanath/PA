@@ -7,9 +7,7 @@
 <struts>
 	<package name="myPackage" extends="struts-default,json-default,action-default">
 	
-	
-
-    
+	    
 		<!-- TilesIntegration -->
 		<result-types>
 			<result-type name="tiles"
@@ -22,6 +20,17 @@
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
 	    <default-action-ref name="homePage" />
+	<global-results>
+        <result name="exception">jsp/globalError.jsp</result>
+    </global-results>
+
+    <global-exception-mappings>
+        <exception-mapping exception="java.lang.Exception"
+           result="exception" />
+    </global-exception-mappings>
+    
+    
+    
 		<action name="index" class="indexAction">
 			<result name="success">/jsp/index.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
