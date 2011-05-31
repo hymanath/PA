@@ -363,19 +363,25 @@
 	function removeDeletedElement(id,jsObj)
 	{
 		
-		alert("Event/Date successfully deleted");
 		if(eventDateDialog)
 			eventDateDialog.hide();
-
-		
-		if(jsObj.task=="deleteEvent")		
+		if(jsObj.task=="deleteEvent"){		
 		var elmt = document.getElementById("ImpEvent_"+myResults);
-		else if(jsObj.task=="deleteImpDate")		
-		var elmt = document.getElementById("ImpDate_"+myResults);
-
+		alert("Event successfully deleted");
+	
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
+		}
+		else if(jsObj.task=="deleteImpDate"){		
+		var elmt = document.getElementById("ImpDate_"+myResults);
+		alert("Date successfully deleted");
+			
+		var parent = elmt.parentNode;
+		parent.removeChild(elmt);
+		}
+		
 	}
+
 	function setCadreValue(value)
 	{
 		document.getElementById("cadreLevelValue").value=value;
@@ -393,27 +399,28 @@
 			document.getElementById("cadreLevelValue").value=1;						
 		}
 		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
-			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village"))
+			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village")) 
 		{
 			
 			getnextList("state",id,"true");				
-		}
-		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
-		{
-			
-			getnextList("constituency",id,"true");				
 		}
 		else if(name == "cadreLevelDistrict" && (cadreLevelElmtText == "Mandal" || cadreLevelElmtText == "Village"))
 		{
 			
 			getnextList("district",id,"true");				
 		}
+		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
+		{
+			
+			getnextList("constituency",id,"true");				
+		}
+
 		else if(name == "cadreLevelMandal" && (cadreLevelElmtText == "Village"))
 		{
 			
 			getnextList("mandal",id,"true");				
 		}
-		
+			
 		//if(document.getElementById("cadreLevelField").value == 5)
 		//	getDistrictLevelValues(name,value,id)
 	}
@@ -485,13 +492,11 @@
 			villageElmt.disabled = false;
 		}
 		
-
 		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
 		
 	}
-
 	function getStatesNDistricts(level,text,value)
-	{		
+	{	    
 		var jsObj=
 			{
 					type:level,
@@ -553,7 +558,7 @@
 		divElmt.innerHTML=str;
 	}
 	function fillSelectElement(results,jsObj)
-	{			
+	{
 		if(jsObj.type == "cadreDetails")
 		{
 			if(jsObj.reportLevel=="state")
@@ -562,11 +567,12 @@
 			}
 			else if(jsObj.reportLevel=="district")
 			{
-				var elmt=document.getElementById("cadreLevelMandal");
+				var elmt=document.getElementById("cadreLevelConstituency");
+				
 			}
 			else if(jsObj.reportLevel=="constituency")
 			{
-				var elmt=document.getElementById("cadreLevelConstituency");
+				var elmt=document.getElementById("cadreLevelMandal");
 			}
 			else if(jsObj.reportLevel=="mandal")
 			{
@@ -577,19 +583,17 @@
 				var elmt=document.getElementById("mandalField");
 			}
 		}
-		else if(jsObj.type == "cadreLevel")
+		if(jsObj.type == "cadreLevel")
 			var elmt = document.getElementById("cadreLevelState");
 		else if(jsObj.type == "STATE")
 			var elmt = document.getElementById(jsObj.taskType+"_DistrictSelect");
-		else if(jsObj.type == "DISTRICT	")
+		else if(jsObj.type == "DISTRICT")
 			var elmt = document.getElementById(jsObj.taskType+"_ConstituencySelect");
 		else if(jsObj.type == "CONSTITUENCY")
 			var elmt = document.getElementById(jsObj.taskType+"_MandalSelect");
 		else if(jsObj.type == "MANDAL")
 			var elmt = document.getElementById(jsObj.taskType+"_VillageSelect");
-		else if(jsObj.type == "cadreLevel")
-			var elmt=document.getElementById(jsObj.taskType+"_cadreLevelState");
-		
+			
 		var len=elmt.length;			
 		for(i=len-1;i>=0;i--)		
 			elmt.remove(i);
@@ -624,7 +628,8 @@
 		}
 		
 	}
-	function getUserLocationData(val,type)
+
+function getUserLocationData(val,type)
 	{			
 		if(type == 'event' || type == 'Editevent' )
 		{
@@ -632,7 +637,8 @@
 			
 			cadreAnim = new YAHOO.util.Anim(str, {
 				height: {
-					to: 150 
+					 to: 190
+					
 				} 
 			}, 1, YAHOO.util.Easing.easeOut);
 
@@ -663,13 +669,13 @@
 	}
 
 
-	function getUsersCadreLevelData(value,type)
+function getUsersCadreLevelData(value,type)
 	{		
 		var str="cadreLevelDivId_"+type;
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
 			height: {
-				to: 150 
+				to: 200
 			} 
 		}, 1, YAHOO.util.Easing.easeOut);
 
@@ -724,12 +730,13 @@
 		textBoxElmt.disabled =true;
 	}
 
-	function getCadresLevelForEvent(regTask)
+
+function getCadresLevelForEvent(regTask)
 	{
 		var region;
 		var elmtId = "cadreLevelDivId_"+regTask;
 
-		animateExpandDiv(elmtId,350);
+		animateExpandDiv(elmtId,600);
 		
 		var elements = document.getElementsByTagName('input'); 
 		for(var i=0;i<elements.length;i++)
@@ -764,10 +771,11 @@
 		callAjax(jsObj, url);
 	}
 
-	function fillDataForCadreLevel(results,jsObj)
+
+function fillDataForCadreLevel(results,jsObj)
 	{
 		var successDivElmt=	 document.getElementById("successDiv");
-		successDivElmt.innerHTML="";
+		//successDivElmt.innerHTML="";
 		
 		var actionVal = jsObj.taskType;
 
@@ -932,7 +940,7 @@
 		//---------
 		//Setting values for select box..
 		
-		if(regionTypeSelectElmtLabel)
+	  if(regionTypeSelectElmtLabel)
 			regionTypeSelectElmtLabel.innerHTML="Select Location";
 
 		var regionStr='';
@@ -1011,7 +1019,7 @@
 			regionStr+='<option value="0"> Select Village</option>';
 		}
 		regionStr+='</select>';
-	
+
 		if(regionTypeSelectElmtData)
 			regionTypeSelectElmtData.innerHTML=regionStr;
 
@@ -1111,8 +1119,8 @@
 		else if(region == "VILLAGE")
 	 		var selectElmt = document.getElementById(regTask+"_VillageSelect");
 
-		var regionSelect = selectElmt.options[selectElmt.selectedIndex].value;
-				
+		var regionSelect = selectElmt.options[selectElmt.selectedIndex].value;	
+			
 		var jsObj={	
 					regionVal:region,
 					regionSelectVal:regionSelect,
@@ -1189,6 +1197,9 @@
 			if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
 				textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
 		}
+
+		var valSelectValue = valSelect.options[valSelect.selectedIndex].value;
+		val=val.toUpperCase();
 		//---
 		
 		var jsObj={
@@ -1287,26 +1298,28 @@
 		constituencySelectElmt.disabled=true;	
 		mandalSelectElmt.disabled=true;	
 		villageSelectElmt.disabled=true;	
-
-		if(val == "District")
+		if(val == "STATE"){
+			stateSelectElmt.disabled=false;
+		}
+		if(val == "DISTRICT")
 		{
 			stateSelectElmt.disabled=false;
 			districtSelectElmt.disabled=false;			
 		}
-		if(val == "Constituency")
+		if(val == "CONSTITUENCY")
 		{
 			stateSelectElmt.disabled=false;
 			districtSelectElmt.disabled=false;	
 			constituencySelectElmt.disabled=false;	
 		}
-		if(val == "Mandal")
+		if(val == "MANDAL")
 		{
 			stateSelectElmt.disabled=false;
 			districtSelectElmt.disabled=false;
 			constituencySelectElmt.disabled=false;	
 			mandalSelectElmt.disabled=false;	
 		}
-		if(val == "Village")
+		if(val == "VILLAGE")
 		{
 			stateSelectElmt.disabled=false;
 			districtSelectElmt.disabled=false;	
@@ -1615,7 +1628,7 @@
 	}
 
 	function buildSelectedDateEventPopup(results,jsObj)
-	{			
+	{
 		var elmt = document.getElementById('cadreManagementMainDiv');		
 		var eventId;
 		
@@ -1746,22 +1759,17 @@
 		eventStr+='<th>Description</th>';
 		if(jsObj.taskType == "impEvent")
 		{
-			//if(results.description != '')
-			//{
 				eventStr+='<td colspan="3">';
 				eventStr+='<textarea rows="5" cols="50" id="descTextArea" name="descTextArea">'+results.description+'</textarea>';
 				eventStr+='<td>';
-			//}				
+			
 			
 		}
 		else if(jsObj.taskType == "impDate")
 		{
-			//if(results[0].importance != '')
-			//{
 				eventStr+='<td colspan="3">';
 				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea">'+results[0].importance+'</textarea>';
 				eventStr+='</td>';				
-			//}			
 		}
 		eventStr+='</tr>';
 
@@ -2093,23 +2101,24 @@
 
 	function deleteSelectedEvent(type,eId)
 	{		
-		var status=confirm("Are you sure want to delete this Event/Date");
-		if(status==false)
-			return;
-
 		var jsObj;
-		if(type == 'impEvent')
-		{	
-			jsObj = selectedEventObj;
-			jsObj.userEventsId = eId;
-			jsObj.task="deleteEvent";			
-		}
-		else if(type == 'impDate')
-		{
-			jsObj = selectedDateObj;
-			jsObj.importantDateId = eId;
-			jsObj.task="deleteImpDate";
-		}		
+			if(type == 'impEvent')
+			{	
+				jsObj = selectedEventObj;
+				jsObj.userEventsId = eId;
+				jsObj.task="deleteEvent";			
+				var status=confirm("Are you sure want to delete this Important Event");
+			}
+			else if(type == 'impDate')
+			{
+				jsObj = selectedDateObj;
+				jsObj.importantDateId = eId;
+				jsObj.task="deleteImpDate";
+				var status=confirm("Are you sure want to delete this Important Date");
+			}		
+			if(status==false){
+ 				return;
+			}
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/deleteEventAction.action?"+rparam;		
@@ -2121,7 +2130,7 @@
 		//var mainEventCalendarNavigator = new YAHOO.widget.CalendarNavigator(mainEventCalendar);
 		
 		var eid = elmtId.substring((elmtId.indexOf('_')+1),elmtId.length);
-
+           
 		var jsObj={
 					eventId:eid,
 					currentDay:dateObj.dateVal,
@@ -2130,7 +2139,7 @@
 					eventType:eType,	
 					taskType:taskType,					
 					task:"showSelectedDateEvent"
-				  }
+				  };
 		
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2150,7 +2159,7 @@
 					eventType:eType,	
 					taskType:taskType,					
 					task:"showSelectedDateEvent_nonEditable"
-				  }
+				  };
 		
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2159,18 +2168,13 @@
 	}
 	function addCreatedEvent(results,jsObj)
 	{	
-		//debugger;
-		if(jsObj.task == "updateCreateEvent") 
+	  if(jsObj.task == "updateCreateEvent") 
 		{
 			
 			eventDateDialog.hide();
-			
 			alert("Event Updated Successfully");
-			
 			if(jsObj.task == "updateCreateEvent")
 			var elmt = document.getElementById("ImpEvent_"+results.userEventsId);
-
-
 
 			var parent = elmt.parentNode;
 			parent.removeChild(elmt);
@@ -2181,8 +2185,6 @@
 			alert("Date Updated Successfully");
 			if(jsObj.task == "updateImpDateEvent")
 			var elmt = document.getElementById("ImpDate_"+results[0].importantDateId);
-			
-			
 			
 			var parent = elmt.parentNode;
 			parent.removeChild(elmt);
@@ -2214,7 +2216,7 @@
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
-			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\'impDate\')">';
+			str+='<span id="cadreSpan_'+results[0].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(this.id,\'ImpDate_'+results[0].importantDateId+'\',\'impDate\')">';
 			str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
 
 			//str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+results[0].eventType+'\',\'impDate\')">';
@@ -2296,7 +2298,7 @@
 				}				
 				startDate=new Date(startDate.getTime()+86400000);
 			}			
-			//var renderValue=sDayobj.month+"/"+sDayobj.day+"/"+sDayobj.year+"-"+eDayobj.month+"/"+eDayobj.day+"/"+eDayobj.year;
+			var renderValue=sDayobj.month+"/"+sDayobj.day+"/"+sDayobj.year+"-"+eDayobj.month+"/"+eDayobj.day+"/"+eDayobj.year;
 		}
 		else
 		{			
@@ -2506,10 +2508,9 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Location</th>';
 		eventStr+='<td colspan="3">';
-		eventStr+='	<select id="cadreLevelState" name="cadreLevelState" disabled = "true" class="cadreLevelSelect" onchange="setCadreValue(this.options[this.selectedIndex].value);										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<select id="cadreLevelState" name="cadreLevelState" disabled = "true" class="cadreLevelSelect" onchange="setCadreValue(this.options[this.selectedIndex].value);	getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
 		eventStr+='	<option> </option>';					
 		eventStr+='	</select>'; 
-
  		eventStr+='	<select id="cadreLevelDistrict" class="cadreLevelSelect" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);							getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
 		eventStr+='	<option></option>';					
 		eventStr+='	</select>'; 
@@ -2518,11 +2519,11 @@
 		eventStr+='	<option></option>';					
 		eventStr+='	</select> ';
 		
-		eventStr+='	<select id="cadreLevelMandal" class="cadreLevelSelect" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);								getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<select id="cadreLevelMandal" class="cadreLevelSelect" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);			getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
 		eventStr+='	<option></option>';					
 		eventStr+='	</select> ';
 		
-		eventStr+='	<select id="cadreLevelVillage" class="cadreLevelSelect" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">';
+		eventStr+='	<select id="cadreLevelVillage" class="cadreLevelSelect" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value); getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
 		eventStr+=' 	<option></option>';					
 		eventStr+='	</select>';
 		eventStr+='</td>';
@@ -2551,12 +2552,11 @@
 		eventStr+='<td><div id="actionPlanDiv_Body"><span style="color:#CFCFCF">No Action Plans For Event</span></div></td>';		
 		eventStr+='</tr>';
 		eventStr+='<tr>';
-		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_eventAction\').style.display=\'block\';removeElementsArray(actionCadresArray);}">Add Action Plan</span></td>';		
+		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_eventAction\').style.display= \'block\'; removeElementsArray(actionCadresArray);}">Add Action Plan</span></td>';		
 		eventStr+='</tr>';
 		eventStr+='</table>';
 		eventStr+='<div id="actionPlansDiv"></div>';
 		eventStr+=createActionPlan("eventAction");
-				
 
 		/*eventStr+='<table class="cadreLevelDivClass">';
 		eventStr+='<tr>';
@@ -2580,14 +2580,16 @@
 			newEventDialog.destroy();
 
 		newEventDialog = new YAHOO.widget.Dialog("newEventDiv",
-				{ width : "800px", 
+				{
+				  width : "700px",
 	              fixedcenter : false, 
 	              visible : true,  
 	              constraintoviewport : true, 
 				  iframe :true,
 				  modal :true,
-				  x:200,
 				  y:100,
+				  x:300,
+				  y:700,
 				  hideaftersubmit:true,
 		          buttons : [ { text:"Create Event", handler:handleSubmit, isDefault:true }, 
 	                          { text:"Cancel", handler:handleCancel } ]
@@ -2689,7 +2691,7 @@
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
 			height: {
-				to: 310 
+				 to:640
 			} 
 		}, 1, YAHOO.util.Easing.easeOut);
 
@@ -2763,7 +2765,7 @@
 				
 		var myAnim = new YAHOO.util.Anim(elmtId, {
 			height: {
-				to: 30 
+				  to: 100
 			} 
 		}, 1, YAHOO.util.Easing.easeIn);
 
@@ -3322,14 +3324,22 @@
 		var descVal = document.getElementById("descTextArea").value;
 		descVal = removeEnterStrokeForString(descVal);
 		 
-		 //validation code
-		 if(eventNameVal == '')
+		//validation code
+		if(eventNameVal == '' ){
+			document.getElementById("errorMsgDiv").innerHTML = "Please Enter Event";
+			
+		}
+		else if ( /[^A-Za-z\d]/.test(eventNameVal)) 
 		{
-		  document.getElementById("errorMsgDiv").innerHTML = "Please Enter Event Name";
+		  document.getElementById("errorMsgDiv").innerHTML = " Event Name cannot allow special characters & numbers";
 		}
 		else if(descVal == '')
 		{
 		  document.getElementById("errorMsgDiv").innerHTML = "Please Enter Description";
+		}
+		else if(startDateVal > endDateVal){
+ 
+		document.getElementById("errorMsgDiv").innerHTML = "Please select A valid date for End Date";
 		}
         else {
 		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
@@ -3483,21 +3493,28 @@
 
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
-		
-		if(ImpeventNameVal == '')
-		{ 
-			//alert(ImpeventNameVal);
-			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Title</font>';
-        }
-	 if(ImpDescVal == '')
-		{
-		  //alert(ImpDescVal);
-          document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
-		}
+			
+			//validation code for Imp dates
+		    if(ImpeventNameVal == '')
+		    {
+			document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+			return;
+			}
+			else if ( /[^A-Za-z\d\s]/.test(ImpeventNameVal))
+			{ 
+				document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+				return;
+			}
+			else if(ImpDescVal == '')
+			{
+			   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+			  return;
+			}
 
-
-		 if(repeatFreqVal == "No Repeat")
-			ImpendDateVal = ImpstartDateVal;
+			 if(repeatFreqVal == "No Repeat")
+			{
+				ImpendDateVal = ImpstartDateVal;
+			}
 		
 		selectedDateObj.importantDateId="";
 		selectedDateObj.eventId="";
@@ -3535,7 +3552,6 @@
 
 	function showInitialImpEventsAndDates(eventsarr,type,task)
 	{			
-		//debugger;
 		var divElmt;
 		if(type == "impEvents")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
