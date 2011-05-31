@@ -191,9 +191,11 @@ function buildElectionTypesAndYearsCarousel(divId,arr)
 
 		str+='	</div>';
 		str+='	<div class="electionResultsDiv_footer">';
-		str+='	<a class="viewAncs" href="javascript:{}" onclick="callAjax(\'electionId='+arr[i].electionId+'\')">View All Party Results</a> | ';
+		str+='	<a class="viewAncs" href="javascript:{}" onclick="callAjax(\'electionId='+arr[i].electionId+'\')">View All Party Results</a>  ';
 		//str+='	| <a class="viewAncs" href="javascript:{}" onclick="showElectionResults(\''+arr[i].electionId+'\')">Analyze</a>';
-		str+='	<a href="electionDetailsReportAction.action?electionId='+arr[i].electionId+'&stateID='+statePageObj.stateDetails.stateId+'&stateName='+statePageObj.stateDetails.stateName+'&electionType='+arr[i].electionType+'&electionTypeId='+arr[i].electionTypeId+'&year='+arr[i].year+'"  class="viewAncs">Analyze</a> ';
+		if(arr[i].subtype != 'BYE'){
+		str+='	| <a href="electionDetailsReportAction.action?electionId='+arr[i].electionId+'&stateID='+statePageObj.stateDetails.stateId+'&stateName='+statePageObj.stateDetails.stateName+'&electionType='+arr[i].electionType+'&electionTypeId='+arr[i].electionTypeId+'&year='+arr[i].year+'"  class="viewAncs">Analyze</a> ';
+		}
 		str+='	</div>';
 		str+='</div>';
 		str+='</li>';
