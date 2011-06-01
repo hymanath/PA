@@ -31,4 +31,6 @@ public interface IVillageBoothElectionDAO extends GenericDao<VillageBoothElectio
 	public List findVillageAndBoothInfoForBoothConstituencyElection(Long boothConstituencyElectionId);
 
 	public void flushAndclearSession();
+	
+	public List<Object> findLatestElectionYearInARevenueVillageForElectionType(Long townshipId,String electionType);
 }
