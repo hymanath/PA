@@ -4507,10 +4507,8 @@ public class StaticDataService implements IStaticDataService {
 						candElecResult.setCandidateName((String) params[1]);
 						candElecResult.setConstituencyId((Long) params[2]);
 						candElecResult.setConstituencyName((String) params[3]);
-						candElecResult.setTotalValidVotes(((Double) params[4])
-								.longValue());
-						candElecResult.setTotalVotesEarned(((Double) params[5])
-								.longValue());
+						candElecResult.setTotalValidVotes(((Double) params[4]).longValue());
+						candElecResult.setTotalVotesEarned(((Double) params[5]).longValue());
 						candElecResult.setVotesPercentage((String) params[6]);
 						candElecResult.setUserComments(new Long(0));
 
@@ -4529,23 +4527,16 @@ public class StaticDataService implements IStaticDataService {
 						}
 						if (oppCandVotesPercent != null
 								&& oppCandVotesPercent.size() > 0) {
-							Object votesParams = (Object) oppCandVotesPercent
-									.get(0);
+							Object votesParams = (Object) oppCandVotesPercent.get(0);
 							String oppCandVotesPercnt = (String) votesParams;
-							Double votesMargin = new BigDecimal(Double
-									.parseDouble((String) params[6])
-									- Double.parseDouble(oppCandVotesPercnt))
-									.setScale(2, BigDecimal.ROUND_HALF_UP)
-									.doubleValue();
-							candElecResult.setVotesMargin(votesMargin
-									.toString());
+					Double votesMargin = new BigDecimal(Double.parseDouble(oppCandVotesPercnt)- Double.parseDouble((String) params[6])).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+							candElecResult.setVotesMargin(votesMargin.toString());
 						}
 
-						List candComments = commentCategoryCandidateDAO
-								.getCommentsCountForACandidateInAConstituencyInAnELection(
-										electionId, (Long) params[0],
-										(Long) params[2]);
-						if (candComments != null && candComments.size() > 0) {
+		List candComments = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(electionId, (Long) params[0],(Long) params[2]);
+				
+		
+		if (candComments != null && candComments.size() > 0) {
 							Object count = (Object) candComments.get(0);
 							candElecResult.setUserComments((Long) count);
 						}
@@ -4563,8 +4554,7 @@ public class StaticDataService implements IStaticDataService {
 					electionResultPartyVO.setPartyId(partyId);
 					electionResultPartyVO.setPartyFlag(party.getPartyFlag());
 					electionResultPartyVO.setPartyLongName(party.getLongName());
-					electionResultPartyVO.setPartyShortName(party
-							.getShortName());
+					electionResultPartyVO.setPartyShortName(party.getShortName());
 
 					electionResultPartyVO
 							.setCandidateElectionResultsVO(candidateElectionResultsVO);
