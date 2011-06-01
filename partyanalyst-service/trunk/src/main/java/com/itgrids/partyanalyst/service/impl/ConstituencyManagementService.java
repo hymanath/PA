@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
@@ -37,6 +38,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private ICandidateResultDAO candidateResultDAO;
 	private IElectionDAO electionDAO;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
+	private IVillageBoothElectionDAO villageBoothElectionDAO;
 
 	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
 	public IHamletDAO getHamletDAO() {
@@ -70,6 +72,15 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 
 	public void setPersonalUserGroupDAO(IPersonalUserGroupDAO personalUserGroupDAO) {
 		this.personalUserGroupDAO = personalUserGroupDAO;
+	}
+
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
+
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
 	public List<VoterVO> getVoterInfo(Long hamletId,String year, Integer startIndex, Integer maxRecords, String order, String columnName) {	
@@ -269,15 +280,14 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO = new HamletsListWithBoothsAndVotersVO();
 		if(year==null){
 			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-			List years =electionDAO.findLatestElectionYear(electionType);
+			//List years =electionDAO.findLatestElectionYear(electionType);
+			List<Object> years = villageBoothElectionDAO.findLatestElectionYearInARevenueVillageForElectionType(revenueVillageID, electionType);
 			if(years==null || years.size()==0){
 				Exception ex = new Exception("No Elections available in DB");
 				hamletsListWithBoothsAndVotersVO.setExceptionEncountered(ex);
 				return hamletsListWithBoothsAndVotersVO;
-			}/*
-			Object[] columns = (Object[])years.get(0);
-			year = columns[0].toString();*/
-			year =(String)years.get(0);
+			}
+			year =years.get(0).toString();
 		}
 		List<HamletBoothsAndVotersVO> hamletsListWithBoothsAndVotersList = new ArrayList<HamletBoothsAndVotersVO>();
 		log.debug("Total Hamlet Size="+hamletsListWithBoothsAndVotersList.size());

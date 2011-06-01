@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CastTotalVotersVO;
 import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
@@ -58,6 +59,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IElectionDAO electionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IVoterDAO voterDAO;
+	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
@@ -104,6 +106,15 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
+
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID){
@@ -547,7 +558,8 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	public CastWiseElectionVotersVO findCastWiseVoterForRevenueVillage(Long revenueVillageID, String year, String electionType){
 		if(year==null){
 			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-			List years =electionDAO.findLatestElectionYear(electionType);
+			//List years =electionDAO.findLatestElectionYear(electionType);
+			List<Object> years = villageBoothElectionDAO.findLatestElectionYearInARevenueVillageForElectionType(revenueVillageID, electionType);
 			if(years==null || years.size()==0){
 				Exception ex = new Exception("No Elections available in DB");
 				//hamletsListWithBoothsAndVotersVO.setExceptionEncountered(ex);
@@ -604,7 +616,8 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		GenderAgeWiseVotersVO genderAgeWiseVoters = new GenderAgeWiseVotersVO();
 		if(year==null){
 			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-			List years =electionDAO.findLatestElectionYear(electionType);
+			//List years =electionDAO.findLatestElectionYear(electionType);
+			List<Object> years = villageBoothElectionDAO.findLatestElectionYearInARevenueVillageForElectionType(revenueVillageID, electionType);
 			if(years==null || years.size()==0){
 				Exception ex = new Exception("No Elections available in DB");
 				genderAgeWiseVoters.setExceptionEncountered(ex);
