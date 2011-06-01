@@ -234,8 +234,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}*/
 	public List findMandalCadresByConstituency(Long constituencyID, Long userID, String cadreType){
 		Object[] params = {userID,constituencyID, cadreType};
-		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.constituency.constituencyId=? and model.memberType = ? group by model.tehsil.tehsilId order by model.tehsil.tehsilName", params); 
+		List  results = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, model.currentAddress.tehsil.tehsilName, count(model.currentAddress.tehsil.tehsilId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.constituency.constituencyId=? and model.memberType = ? group by model.currentAddress.tehsil.tehsilId order by model.currentAddress.tehsil.tehsilName", params); 
 		return results;
 	}
 	
@@ -249,8 +249,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findVillageCadresByMandal(Long mandalID, Long userID, String cadreType){
 		Object[] params = {userID,mandalID, cadreType};
-		List  results = getHibernateTemplate().find("Select model.village.townshipId, model.village.townshipName, count(model.village.townshipId), model.village.townshipType from Cadre model " +
-				"where model.registration.registrationId = ? and model.tehsil.tehsilId=? and model.memberType = ? group by model.village.townshipId order by model.village.townshipName", params); 
+		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, model.currentAddress.hamlet.hamletName, count(model.currentAddress.hamlet.hamletId) from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.tehsil.tehsilId=? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params); 
 		return results;
 	}
 	
@@ -258,7 +258,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByVillage(Long villageID, Long userID, String cadreType){
 		Object[] params = {userID,villageID,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.village.townshipId=? and model.memberType = ?", params); 
+				"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params); 
 		return results;
 	}
 	/*
@@ -279,6 +279,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Cadre> findCadresByCadreLevelByUserIDInALocation(String cadreLevel, Long userID, String cadreType, String model, String idToCompare, Long locationId){
 		Object[] params = {userID,cadreLevel, cadreType, locationId};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model WHERE model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? ", params);		
@@ -376,14 +377,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByDistrict(Long districtID, Long userID){
 		Object[] params = {userID,districtID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.district.districtId=?", params); 
+				"where model.registration.registrationId = ? and model.currentAddress.district.districtId=?", params); 
 		return results;
 	}
 	@SuppressWarnings("unchecked")
 	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID){
 		Object[] params = {userID,constituencyID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.constituency.constituencyId=?", params); 
+				"where model.registration.registrationId = ? and model.currentAddress.constituency.constituencyId=?", params); 
 		return results;
 	}
 	
@@ -391,7 +392,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByMandal(Long mandalID, Long userID){
 		Object[] params = {userID,mandalID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.tehsil.tehsilId=?", params); 
+				"where model.registration.registrationId = ? and model.currentAddress.tehsil.tehsilId=?", params); 
 		return results;
 	}
 	
@@ -399,17 +400,17 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByState(Long stateID, Long userID){
 		Object[] params = {userID,stateID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.state.stateId=?", params); 
+				"where model.registration.registrationId = ? and model.currentAddress.state.stateId = ?", params); 
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID, String cadreType){
 		Object[] params = {userID,cadreType};
-		List  results = getHibernateTemplate().find("Select model.hamlet.hamletId, model.hamlet.hamletName, " +
-				"count(model.hamlet.hamletId) from Cadre model " +
-				"where model.registration.registrationId = ?  and model.village.townshipId in (" + revenueVillageIDs +") and model.memberType = ?"+
-				"group by model.hamlet.hamletId order by model.hamlet.hamletName", params); 
+		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, model.currentAddress.hamlet.hamletName, " +
+				"count(model.currentAddress.hamlet.hamletId) from Cadre model " +
+				"where model.registration.registrationId = ?  and model.currentAddress.township.townshipId in (" + revenueVillageIDs +") and model.memberType = ?"+
+				"group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params); 
 		return results;
 	}
 	/*@SuppressWarnings("unchecked")
