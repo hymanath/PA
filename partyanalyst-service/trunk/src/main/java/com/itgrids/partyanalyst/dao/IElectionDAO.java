@@ -162,4 +162,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<Election> findByElectionScopeId(Long electionScopeId);
 	
 	public List<Object[]> getPreviousElectionIdAndYear(Long electionId);
+	
+	public List<Object[]> getElectionYearsBasedOnElectionTypeAndState(Long stateId,String electionType);
 }
