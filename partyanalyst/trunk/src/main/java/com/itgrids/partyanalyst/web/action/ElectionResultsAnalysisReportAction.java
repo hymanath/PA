@@ -591,6 +591,29 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	 return Action.SUCCESS;
 	}
 	
+	public String electionYearsForstateAndElectionType()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long stateID = jObj.getLong("stateId");
+		String electionType = jObj.getString("electionType");
+		
+		if(!stateID.equals(0L) && electionType != null && electionType.trim().length() > 0)
+		{	
+			electionYears = staticDataService.electionYearsForstateAndElectionType(stateID,electionType);
+		}
+		if(electionYears == null || electionYears.size() == 0)
+			electionYears = new ArrayList<SelectOptionVO>(0);
+		
+		electionYears.add(0,new SelectOptionVO(0L,"Select Year"));
+		return Action.SUCCESS;
+	}
+	
     public String getElectionYearsForAnElectionTypeAndState(){
 
    	if(task != null){

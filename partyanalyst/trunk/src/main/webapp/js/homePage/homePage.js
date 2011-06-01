@@ -782,10 +782,13 @@ function callHomePageAjax(jsObj,url)
 								buildQuestions(myResults);
 							}
 
-							if(jsObj.task == 'getElectionTypes'){
+							if(jsObj.task == 'getElectionsTypesInState'){
 								
 								buildElectionTypes(myResults);
-								getElectionYearsInHomePage("Assembly");
+							}
+
+							if(jsObj.task == 'getElectionYearsForAState'){
+								buildElectionYearsSelect(myResults);
 							}
 							
 
@@ -2115,48 +2118,50 @@ elmt.innerHTML = str;
 }
 
 
-function getElectionTypeValue(stateId) {
+function getElectionTypeValue(stateId)
+{
+	showBusyImgWithId("stateLists");
+	clearOptionsListForSelectElmtId("electionLists");
+	clearOptionsListForSelectElmtId("electionYears");
+	
+	var jObj = {
+					stateId : stateId,
+					task : 'getElectionsTypesInState'
+				};
 
-
-showBusyImgWithId("stateLists");
-clearOptionsListForSelectElmtId("electionLists");
-clearOptionsListForSelectElmtId("electionYears");
-var jObj = {
-
-				stateId : stateId,
-				task : 'getElectionTypes'
-			};
-
-var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
-var url = "statePageActionForElectionResults.action?"+rparam;
-callHomePageAjax(jObj,url);
-
-
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionTypesAjaxAction.action?"+rparam;
+	callHomePageAjax(jObj,url);
 }
 
-var statePageObject;
-function buildElectionTypes(statePageObj)
+function buildElectionTypes(myResult)
 {	
-
-	var arrayElectionType = new Array();
-	for(var i=0;i<statePageObj.length;i++){
-		arrayElectionType[i] = statePageObj[i].electionType;
+	if(myResult == null || myResult.length == 0)
+		return;
 	
-	}
-	electionTypeObj=getUniqueElements(arrayElectionType);
 	var electionTypeElmt = document.getElementById("electionLists");
 	electionTypeElmt.options.length=0;
-	for(var i=0;i<electionTypeObj.length;i++){
-		electionTypeElmt.options[i]=new Option( electionTypeObj[i],i);
 
-	}
-	statePageObject = statePageObj;
+	for(var i in myResult)
+	{
+		var option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionTypeElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionTypeElmt.add(option); // IE only
+		}
+	}	
+
+	hideBusyImgWithId("stateLists");
+
 }
 
-
-
-
-  function getUniqueElements(arrayObj) {
+ /* function getUniqueElements(arrayObj) {
     var a = [];
     var l = arrayObj.length;
     for(var i=0; i<l; i++) {
@@ -2168,48 +2173,70 @@ function buildElectionTypes(statePageObj)
     }
 	
     return a;
-  }
+  } */
 
-  function getElectionYearsInHomePage(electionType){
+ function getElectionYearsInHomePage(electionType)
+{
+	var stateEle = document.getElementById("stateLists");
+	var stateId = stateEle.options[stateEle.selectedIndex].value;
+	document.getElementById("electionYears").length = 0;
 	
+	if(electionType == null || electionType == 'Select Type' || stateId == 0)
+		return;
 	
-	var electionYearElmt = document.getElementById("electionYears");
-		electionYearElmt.options.length=0;
-		var j=0;
-		for(var i=0;i<statePageObject.length;i++)
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callHomePageAjax(jObj,url);
+}
+
+function buildElectionYearsSelect(myResult)
+{
+	if(myResult == null || myResult.length == 0)
+		return;
+
+	var electionYearsElmt = document.getElementById("electionYears");
+	electionYearsElmt.options.length=0;
+
+	for(var i in myResult)
+	{
+		var option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
 		{
-				if((statePageObject[i].electionType == electionType)&& (statePageObject[i].electionSubtype == 'MAIN')){
-				electionYearElmt.options[j]=new Option(statePageObject[i].year,i);
-				j++;
-				}
+			electionYearsElmt.add(option,null); // standards compliant
 		}
-	hideBusyImgWithId("stateLists");
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}	
+
+}
+
+function viewElectionResults()
+{
+  var stateSelectEle = document.getElementById("stateLists");
+  var electionYearEle = document.getElementById("electionYears");
+  var electionTypeEle = document.getElementById("electionLists");
+
+  var stateId = stateSelectEle.options[stateSelectEle.selectedIndex].value;
+  var stateName = stateSelectEle.options[stateSelectEle.selectedIndex].text;
+  var electionTypeId = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
+  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
+  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
+
+	if(stateId == 0 || electionTypeId == 0 || electionId == 0)
+		return;
 	
-}
-
-function viewElectionResults(){
-
-var electionTypeRes = document.getElementById("electionLists");
-var electionType_ER = electionTypeRes.options[electionTypeRes.selectedIndex].text;
-
-var stateIdRes = document.getElementById("stateLists");
-var stateId_ER = stateIdRes.options[stateIdRes.selectedIndex].value;
-var stateName_ER = stateIdRes.options[stateIdRes.selectedIndex].text;
-
-var electionYearRes = document.getElementById("electionYears");
-var electionYear_ER = parseInt(electionYearRes.options[electionYearRes.selectedIndex].text);
-
-for(var i=0; i<statePageObject.length; i++ ){
-	if(statePageObject[i].year == electionYear_ER && statePageObject[i].electionType == electionType_ER){
-		electionId_ER = statePageObject[i].electionId;
-		electionTypeId_ER = statePageObject[i].electionTypeId;
-		
-	}
-}
-
-
-document.location = "electionDetailsReportAction.action?electionId="+electionId_ER+"&stateID="+stateId_ER+"&stateName="+stateName_ER+"&electionType="+electionType_ER+"&electionTypeId="+electionTypeId_ER+"&year="+electionYear_ER;
-
+	document.location = "electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear;
 
 }
 
