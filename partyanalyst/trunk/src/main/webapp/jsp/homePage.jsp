@@ -524,11 +524,11 @@ var new2="Election Message";
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue(this.options[this.selectedIndex].value)"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
 									</tr>		
 									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
 									</tr>
-									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage((this.options[this.selectedIndex].text))" ></select></td></tr>
+									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage(this.options[this.selectedIndex].text)" ></select></td></tr>
 									<tr>
 									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
@@ -577,7 +577,7 @@ var new2="Election Message";
 											</td>   -->
 											
 											<td width="100%">
-											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
+											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
 												</font>
 											   </marquee>
 											</td>
@@ -592,7 +592,8 @@ var new2="Election Message";
 												<div class="homePageContentWidget_body_news_main">
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
-														<!--<tr>
+														<tr>
+														<!--
 														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
 														</td>-->
@@ -658,7 +659,7 @@ var new2="Election Message";
 															<li>View additional election analysis report</li>
 														</ul>
 							   <div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a></center>
 							   </div>
 													</div>
 							
@@ -1019,7 +1020,7 @@ var new2="Election Message";
 							<div class="homePage_new_footer_links_head">News & Events</div>
 							<ul class="homePage_new_footer_links">
 								<li><a href="javascript:{}" onclick="openMediaOpenionsWindow()">Party Analyst Launch</a></li>
-							<li><a href=footerLinksAction.action?linkFrom=guestArticelsSubmission target="_blank">Publish Your Article</a></li>
+							<li><a href="footerLinksAction.action?linkFrom=guestArticelsSubmission" target="_blank">Publish Your Article</a></li>
 							</ul>
 						</td>
 

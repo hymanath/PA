@@ -264,6 +264,13 @@
            		<param name="root">electionYears</param>
         	</result>       		
         </action>
+        
+         <action name="electionYearsForstateAndElectionTypeAction" class="electionResultsAnalysisAction" method="electionYearsForstateAndElectionType"> 
+              <result type="json" name="success">
+           		<param name="root">electionYears</param>
+        	</result>       		
+        </action>
+        
         <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getPartysInAState"> 
               <result type="json" name="success">
            		<param name="root">partiesList</param>
