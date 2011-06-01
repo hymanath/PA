@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 
@@ -67,9 +68,17 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
 	}*/
 	
-	public void testFindVillageAndBoothInfoForBoothConstituencyElection(){
+	/*public void testFindVillageAndBoothInfoForBoothConstituencyElection(){
 		List list = villageBoothElectionDAO.findVillageAndBoothInfoForBoothConstituencyElection(3l);
 		System.out.println(list);
+	}*/
+	
+	public void testFindLatestElectionYearInARevenueVillageForElectionType()
+	{
+		List<Object> list = villageBoothElectionDAO.findLatestElectionYearInARevenueVillageForElectionType(21816l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		
+		if(list != null && list.size() > 0)
+			System.out.println(list.get(0));
 	}
 	
 }
