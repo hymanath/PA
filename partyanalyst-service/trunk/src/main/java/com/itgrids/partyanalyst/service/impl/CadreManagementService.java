@@ -2450,10 +2450,12 @@ public class CadreManagementService {
 			String region) {
 		List list = new ArrayList();
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
-		if ("MANDAL".equals(region)) {
+		/*if ("MANDAL".equals(region)) {
 			list = cadreDAO.findVillageCadresByMandal(id, userID,
 					IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-			int size = list.size();
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			*/
+			/*int size = list.size();
 			StringBuilder revenueVillageIDs = new StringBuilder();
 			for (int i = 0; i < size; i++) {
 				Object[] obj = (Object[]) list.get(i);
@@ -2483,25 +2485,24 @@ public class CadreManagementService {
 					result.add(selectOptionVO);
 				}
 			}
-
-		} else {
+*/
+	 
 			SelectOptionVO selectOptionVO = new SelectOptionVO(0L,
-					"select District");
+					"Select District");
 			if ("STATE".equals(region)) {
 				list = cadreDAO.findDistCadresByState(id, userID,
 						IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			} else if ("DISTRICT".equals(region)) {
 				list = cadreDAO.findConstituencyCadresByDist(id, userID,
 						IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-				selectOptionVO.setName("select Constituency");
+				selectOptionVO.setName("Select Constituency");
 			} else if ("CONSTITUENCY".equals(region)) {
 				list = cadreDAO.findMandalCadresByConstituency(id, userID,
 						IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-				selectOptionVO.setName("select Tehsil");
+				selectOptionVO.setName("Select Mandal");
 			}
 			result = dataFormatTo_SelectOptionVO(list);
 			result.add(0, selectOptionVO);
-		}
 		return result;
 	}
 
