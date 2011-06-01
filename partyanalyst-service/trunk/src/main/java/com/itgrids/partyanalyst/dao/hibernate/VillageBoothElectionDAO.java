@@ -91,6 +91,14 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 		getSession().clear();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> findLatestElectionYearInARevenueVillageForElectionType(Long townshipId,String electionType)
+	{
+		Object[] params = {townshipId,electionType};
+		return getHibernateTemplate().find("select max(model.boothConstituencyElection.constituencyElection.election.electionYear) from VillageBoothElection model where model.township.townshipId = ? " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ?",params);
+	}
+	
 }
 
 		
