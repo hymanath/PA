@@ -506,6 +506,7 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
+		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	</bean>
 	
 	 <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
@@ -556,6 +557,7 @@
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
+    	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	</bean>
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
