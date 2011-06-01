@@ -297,4 +297,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getElectionYearByPartyId(Long stateId,Long partyId,Long electionTypeId);
 		
+		public List<SelectOptionVO> electionYearsForstateAndElectionType(Long stateId, String electionType);
+		
 }
