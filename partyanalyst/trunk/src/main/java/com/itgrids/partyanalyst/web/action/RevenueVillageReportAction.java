@@ -86,7 +86,8 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 	}
 
 	public String execute(){
-
+		
+		log.debug("Request Came from ==== "+request.getRemoteAddr());
 		log.debug("RevenueVillageReportAction.execute() started.....");
 		String revenueVillageStr = request.getParameter("revenueVillageID");
 		revenueVillageName = request.getParameter("revenueVillageName");
