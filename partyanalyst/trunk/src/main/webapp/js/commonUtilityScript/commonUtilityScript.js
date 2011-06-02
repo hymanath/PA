@@ -233,3 +233,17 @@ function getMonth(num)
 	else if(num == 11)
 		return "December";
 }
+
+
+// For Calendar
+ function focusCalTextElmt(id){
+	 alert("onclick");
+	id1="#"+id;
+	$(id1).datepick();
+	document.getElementById(id).focus();
+}
+function showCalendar(id){
+	alert("onfocus");
+	id1="#"+id;
+	$(id1).datepick();
+}
