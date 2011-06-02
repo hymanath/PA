@@ -970,18 +970,23 @@ public class CadreRegisterAction extends ActionSupport implements
 			else
 				filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";
 			
+			log.info("Cadre File Path -- "+filePath);
+			
 			BufferedImage image = ImageIO.read(this.uploadImage);
+			
 			
 			if(image == null)
 				return null;
-			
+			log.info("Image is Read");
 			String constiName[] = uploadImageContentType.split("/");
 			String fileName = filePath+cadreId.toString()+"."+constiName[1];
+			log.info("file name -- "+fileName);
 			//String imageName =  cadreId.toString()+"."+constiName[1];
 			
 			FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
 			
 			ImageIO.write(image, constiName[1],filName);
+			log.info("file uploaded");
             filName.close();
             return SUCCESS;
 		}
