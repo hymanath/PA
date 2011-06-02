@@ -19,15 +19,25 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		this.districtDAO = districtDAO;
 	}
 	
-	public void testFindByProperty(){
+	/*public void testFindByProperty(){
 		List<District> list = districtDAO.getAllOrderByName();
 		Assert.assertEquals(23, list.size());
-	}
+	}*/
 	
-	public void testFindByStateId(){
+	/*public void testFindByStateId(){
 		List<District> list =  districtDAO.findByStateId(new Long(1));
 		for(District d : list){
 			System.out.println(d.getDistrictName());
 		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetDistrictIdAndNameByState()
+	{
+		List<District> list2 = districtDAO.findByStateId(1l);
+		System.out.println(list2.size());
+		List<Object[]> list = districtDAO.getDistrictIdAndNameByState(1l);
+		for(Object[] params : list)
+			System.out.println(params[0]+"-------"+params[1]);
 	}
 }
