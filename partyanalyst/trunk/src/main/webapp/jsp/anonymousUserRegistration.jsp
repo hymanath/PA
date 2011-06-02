@@ -101,11 +101,26 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+
+
+<!-- JQuery files (End) -->
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>	
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>	
-	
+    <link rel="stylesheet" type="text/css" href="styles/jQuery/jquery.datepick.css">
+
+<script type="text/javascript" src="js/jQuery/jquery.datepick.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery.datepick-en-GB.js"></script>
+
 <script type="text/javascript">
 var spvar = 'special';
 var r={
@@ -267,7 +282,7 @@ function validateEmail()
 		resultDIVEle.innerHTML = "<font color='red'><b>Plase provide correct Email Address.</b></font>";
 
 }
- 
+
 </script>
 <style type="text/css">
    
@@ -471,10 +486,10 @@ function validateEmail()
 								<font class="requiredFont"> * </font>
 								<s:label for="dateOfBirthField" id="dateOfBirthLabel" class="label"  value="%{getText('dateOfBirth')}" />	
 							</td>
-							<td><s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
-						<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:relative;"></DIV></DIV></td>
+							<td><s:textfield id="dateOfBirthField"  name="dateOfBirth" size="25" onfocus="showCalendar(this.id)"/>
+						</td>
 						
-						<td valign="top"><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('dobText_div','dateOfBirthField','1/1970')"/></td>						
+						<td valign="top"><input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" onclick="focusCalTextElmt(this.id)"/></td>						
 						</tr>
 
 					</table>
