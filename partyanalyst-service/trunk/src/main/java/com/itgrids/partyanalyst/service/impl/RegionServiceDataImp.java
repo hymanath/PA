@@ -180,16 +180,24 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		this.moduleDetailsDAO = moduleDetailsDAO;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
-		List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
-		List<District> districts = districtDAO.findByStateId(stateID);
-		for(District district : districts){
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(district.getDistrictId());
-			objVO.setName(WordUtils.capitalize(district.getDistrictName().toLowerCase()));
-			formattedDistricts.add(objVO);
-		}
+		try
+		{
+			List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
+			List<Object[]> param = districtDAO.getDistrictIdAndNameByState(stateID);
+			for(Object[] obj : param){
+				SelectOptionVO objVO = new SelectOptionVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+				formattedDistricts.add(objVO);
+			}
 		return formattedDistricts;
+		}
+		catch(Exception e){
+			log.error("Exception Occured During fetching Districts from state with stateId = "+ stateID + " Exception is -- "+e);
+			return null;
+		}
 	}
 	
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){

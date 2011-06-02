@@ -77,7 +77,7 @@ IDistrictDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List getDistrictIdAndNameByState(Long stateId){
-		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ?",stateId);
+		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ? order by model.districtName",stateId);
 	}
 	
 
