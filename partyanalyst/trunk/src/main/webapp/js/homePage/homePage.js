@@ -2222,22 +2222,35 @@ function buildElectionYearsSelect(myResult)
 
 function viewElectionResults()
 {
-  var stateSelectEle = document.getElementById("stateLists");
-  var electionYearEle = document.getElementById("electionYears");
-  var electionTypeEle = document.getElementById("electionLists");
+	var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
+  try
+	{
+	  var stateSelectEle = document.getElementById("stateLists");
+	  var electionYearEle = document.getElementById("electionYears");
+	  var electionTypeEle = document.getElementById("electionLists");
+	  
 
-  var stateId = stateSelectEle.options[stateSelectEle.selectedIndex].value;
-  var stateName = stateSelectEle.options[stateSelectEle.selectedIndex].text;
-  var electionTypeId = electionTypeEle.options[electionTypeEle.selectedIndex].value;
-  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
-  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
-  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
-
-	if(stateId == 0 || electionTypeId == 0 || electionId == 0)
+	  var stateId = stateSelectEle.options[stateSelectEle.selectedIndex].value;
+	  var stateName = stateSelectEle.options[stateSelectEle.selectedIndex].text;
+	  var electionTypeId = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+	  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
+	  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
+	  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
+	 
+		if(stateId == 0 || electionTypeId == 0 || electionId == 0)
+		{
+			errorMsgDivEle.style.display = 'block';
+			return;
+		}
+		
+		errorMsgDivEle.style.display = 'none';
+		document.location = "electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear;
+	}
+	catch(err)
+	{
+		errorMsgDivEle.style.display = 'block';
 		return;
-	
-	document.location = "electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear;
-
+	}
 }
 
 function showBusyImgWithId(elmtId)

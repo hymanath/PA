@@ -413,6 +413,7 @@ var new2="Election Message";
 									</tr>								
 								</table>
 							</div>
+							
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
 							</div>
@@ -534,8 +535,13 @@ var new2="Election Message";
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
 								</table>
 							</div>
+							
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
+								<table width="90%"><tr>
+									<td widyh="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
+
+									<td widyh="35%"><img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img></td>
+								</tr></table>
 							</div>
 						</div>
 
