@@ -224,12 +224,23 @@
 
 		elmt.innerHTML = str;
 	}
-	function buildAccordion(){
 
-		var accordionElmtId = document.getElementById("accordion");
-		accordionElmtId.style.display = 'block';
+function buildAccordion()
+{
+	var accordionElmtId = document.getElementById("accordion");
+	
+	if($("#accordion").parents(".ui-dialog").is(":visible"))
+		return;
+	accordionElmtId.style.display = 'block';
 
-		$( "#accordion" ).accordion();
+	getStatesInQuickView('siteSearch','stateList_s');
+	getElectionTypeValue(1);
+	getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
+	hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
+	getAllStatesHavingLocalBody("stateList_l");
+	getLocalBodiesForState(1);
+
+	$( "#accordion" ).accordion();
 		$(function() {
 		$( "#accordion" ).dialog({
 			autoOpen: true,
@@ -238,40 +249,24 @@
 			minHeight:460,
 			hide: "explode"
 		});
-
-		
-	});
-
-		/*
-
-		  
-
-			$("#accordion").dialog({
-			resizable:false,
-			width: 320,
-			minHeight:500,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();*/
-		
-		}	
-
 	
-	function intialize(){
-		
-			$('#floatingDiv_absolute_main').addFloating(  
+	});
+ }	
+	
+function intialize()
+{
+	$('#floatingDiv_absolute_main').addFloating(  
 	 {  
 		 targetRight: 10,  
 		 targetTop: 10,  
 		 snap: true  
 	 });  
-		}
+}
 	
-	</script>
-	 <decorator:head/>
-</head>
+</script>
+ <decorator:head/>
 
+</head>
 <body>
 
 <div id="homePageContainer" style="overflow:visible;">
@@ -413,11 +408,9 @@
 	</div>
 	
 	<div id="accordion" title="Quick View" style="display:none;">
-          
-
-						<h3 ><a href="#">View Your State</a></h3>
-						<div style="padding:0px;">
-							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+          	<h3 ><a href="#">View Your State</a></h3>
+				<div style="padding:0px;">
+					<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
 								<table>
 									<tr>
 										<td style="text-align:justify;padding-bottom:30px;line-height:25px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
@@ -462,7 +455,7 @@
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
 							</div>
 						</div>
-<h3 ><a href="#">View Your Constituency</a></h3>
+						<h3 ><a href="#">View Your Constituency</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
 								<div id="alertMessage" style="color:red;font-weight:bold;"></div>
@@ -533,9 +526,6 @@
 							</div>
 						</div>
 
-
-
-						
 						<h3 ><a href="#">View Election Results</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
@@ -556,15 +546,18 @@
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
+								<table width="90%"><tr>
+									<td widyh="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
+
+									<td widyh="35%"><img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img></td>
+								</tr></table>
 							</div>
 						</div>
 						
 						</div>
 				</div>
 
-	<script type="text/javascript">
-		//buildLogoImage();
+<script type="text/javascript">
 function hideUnhideSelectBoxInQuickView(radioElement, selectElement)
 {
 	
@@ -747,20 +740,9 @@ function callQuickViewAjax(jsObj, url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-		intialize();
-		getStatesInQuickView('siteSearch','stateList_s');
-		//getStatesInQuickView('siteSearch','stateLists');
-		//getStatesInQuickView('siteSearch','stateList2');
-		//getStatesInQuickView('siteSearch','stateList_c');
-		//getStatesInQuickView('siteSearch','stateList_l');
-		getElectionTypeValue(1);
-		getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
-		hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
-		getAllStatesHavingLocalBody("stateList_l");
-		getLocalBodiesForState(1);
+	
+	intialize();
 
-	</script>
+</script>
 </body>
 </html>
-
-
