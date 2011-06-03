@@ -237,13 +237,11 @@ function getMonth(num)
 
 // For Calendar
  function focusCalTextElmt(id){
-	 alert("onclick");
-	id1="#"+id;
+	 id1="#"+id;
 	$(id1).datepick();
 	document.getElementById(id).focus();
 }
 function showCalendar(id){
-	alert("onfocus");
 	id1="#"+id;
 	$(id1).datepick();
 }
