@@ -373,6 +373,10 @@
 	<bean id="distPapersAction" class="com.itgrids.partyanalyst.web.action.DistPapersAction" singleton="false">
 		<property name="epaperService" ref="epaperService"/>
 	</bean>
+	<bean id="getLatestNewsAction" class="com.itgrids.partyanalyst.web.action.GetLatestNewsAction" singleton="false">
+		<property name="epaperService" ref="epaperService"/>
+	</bean>
+	
 	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
 		<property name="userGroupService" ref="userGroupService"/>
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
