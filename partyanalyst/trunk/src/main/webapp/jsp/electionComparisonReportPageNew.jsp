@@ -997,7 +997,7 @@ function overallResultsForYearOne()
 
 
    if("${partyPositions.totalSeatsWon}"!="0"){
-	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
    }else{
 	   str+='<td align="center">'+"${partyPositions.totalSeatsWon}"+'</td>'; 	   	
    }
@@ -1146,8 +1146,7 @@ function getDiffPercent()
 
 function getPartyPositions(partyId,id,rankPos)
 {
-
-	var imgElmt = document.getElementById("imageYearOneId");
+ 	var imgElmt = document.getElementById("imageYearOneId");
     imgElmt.style.display = 'block';
 	
   var elecId;
