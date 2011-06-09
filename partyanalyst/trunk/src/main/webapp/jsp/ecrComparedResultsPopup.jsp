@@ -275,7 +275,18 @@ function displayComparedResults(jsObj,data)
 	  
 	      str+='<div id="alertMsg">';
 		  str+='<table>'; 
-		  str+='<tr>No data available for '+'  '+data.yearOne+' to compare results.'; 
+		  str+='<tr>No data available for the year '+'  '+data.yearOne+' to compare results.'; 
+		  str+='</tr>'; 
+		  str+='</table>'; 
+		  str+='</div>';
+		headerElmt.innerHTML = str;
+		return;
+	}
+	if(data.positionsYearTwo[0]==null){
+	  
+	      str+='<div id="alertMsg">';
+		  str+='<table>'; 
+		  str+='<tr>No data available for the year '+'  '+data.yearTwo+' to compare results.'; 
 		  str+='</tr>'; 
 		  str+='</table>'; 
 		  str+='</div>';
