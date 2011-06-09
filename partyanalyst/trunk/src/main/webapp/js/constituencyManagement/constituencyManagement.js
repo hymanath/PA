@@ -510,7 +510,7 @@ function buildProblemsByStatusDialog(results, jsObj) {
 	var myPanel = new YAHOO.widget.Dialog("problemsByStatusPanelDiv", {
 
 		width : "620px",
-		fixedcenter : true,
+		fixedcenter : false,
 		visible : true,
 		constraintoviewport : true,
 		iframe : true,
