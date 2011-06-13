@@ -3323,27 +3323,29 @@ function fillDataForCadreLevel(results,jsObj)
 
 		var descVal = document.getElementById("descTextArea").value;
 		descVal = removeEnterStrokeForString(descVal);
+        var errorMsg = document.getElementById("errorMsgDiv");
 		 
 		//validation code
 		if(eventNameVal == '' ){
-			document.getElementById("errorMsgDiv").innerHTML = "Please Enter Event";
-			
+			errorMsg.innerHTML = "Please enter event name";
+			return;
 		}
-		else if ( /[^A-Za-z\d]/.test(eventNameVal)) 
+		else if ( /[^A-Za-z\d\s]/.test(eventNameVal)) 
 		{
-		  document.getElementById("errorMsgDiv").innerHTML = " Event Name cannot allow special characters & numbers";
-		}
-		else if(descVal == '')
-		{
-		  document.getElementById("errorMsgDiv").innerHTML = "Please Enter Description";
+		  errorMsg.innerHTML = " Event name should not allow special characters & numbers";
+		  return;
 		}
 		else if(startDateVal > endDateVal){
- 
-		document.getElementById("errorMsgDiv").innerHTML = "Please select A valid date for End Date";
+		  errorMsg.innerHTML = "Please select A valid date for End date";
+		  return;
 		}
-        else {
-		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
-		locationLevelFieldval = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].text.toUpperCase();		
+		
+	var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
+	locationLevelFieldval=loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].
+		text.toUpperCase();	
+		if(locationLevelFieldval =="SELECT LEVEL"){
+			errorMsg.innerHTML='Please select location level';
+		   }
 		
 		var locationValueElmt;
 		if(locationLevelFieldval == "STATE")
@@ -3359,6 +3361,12 @@ function fillDataForCadreLevel(results,jsObj)
 
 		var locationValue = locationValueElmt.options[locationValueElmt.selectedIndex].value;
 		
+
+	    if(descVal == '')
+		{
+		  errorMsg.innerHTML = "Please enter description for event";
+		  return;
+		}
 
 		//var organisersVal = document.getElementById("organisersText").value;
 
@@ -3384,7 +3392,6 @@ function fillDataForCadreLevel(results,jsObj)
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 
 		callAjax(selectedEventObj,url);
-		}
 	}
 
 	function handleCancel()
@@ -3915,6 +3922,7 @@ function fillDataForCadreLevel(results,jsObj)
 		renderStack();
 
 		initializeCadreManagement();
+
 		
 	</script>
 
