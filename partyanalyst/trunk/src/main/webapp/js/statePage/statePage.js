@@ -239,10 +239,10 @@ function showElectionResults(param,results)
 	
 	var myPanel = new YAHOO.widget.Panel("electionResultsPopupDiv_inner", {			
 			 width:"500px",
-			 fixedcenter: true, 
+			 fixedcenter: false, 
 			 constraintoviewport: true, 
 			 underlay: "none", 
-			 close: true, 
+			  close: true, 
 			 visible: true, 
 			 draggable: true
    });
