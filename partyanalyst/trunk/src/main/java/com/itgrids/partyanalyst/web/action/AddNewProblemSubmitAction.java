@@ -248,7 +248,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getEmail() {
 		return email;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Email is Mandatory")
 	@EmailValidator(type = ValidatorType.FIELD , message = "Please Enter a valid Email in Complained Person Details.")
 	public void setEmail(String email) {
 		this.email = email;
