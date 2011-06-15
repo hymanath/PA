@@ -822,11 +822,13 @@ function getMoreResults(elecYear,elecType,constiId)
 		    active:true,
 		    content: mandalElections
 		}));
-		
+			
+		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 		myTabs.addTab( new YAHOO.widget.Tab({
 		    label: 'Census Info in Revenue Villages',
 		    content: cencusInfo
 		}));
+		</c:if>
 
 		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 			myTabs.addTab( new YAHOO.widget.Tab({
@@ -842,7 +844,7 @@ function getMoreResults(elecYear,elecType,constiId)
 
 	function showElectionResultsInPopup()
 	{
-
+		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 		var elmt = document.getElementById("allACPCelectionsInfoMainDiv");
 		
 		for(var i in allACPCElecInfo)
@@ -966,6 +968,7 @@ function getMoreResults(elecYear,elecType,constiId)
 				var myDataTable = new YAHOO.widget.DataTable("div_"+i+"_"+j,myColumnDefs, myDataSource);
 			}
 		}
+	</c:if>
 		
 	}
 
