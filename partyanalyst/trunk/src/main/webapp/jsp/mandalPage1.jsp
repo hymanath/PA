@@ -6,6 +6,9 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
+<title><c:out value='${mandalInfoVO.mandalName}'/> Mandal Page -Census Details, Parties Performance, Voting Trendz, Election Results,MPTC, ZPTC Election Results</title>
+
+<META NAME="Description" CONTENT=" <c:out value='${mandalInfoVO.mandalName}'/> Mandal page provides the outline and basic information ,census information,Revenue villages information ,mandal page provides male and female voters information,Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election ,booth wise results for all election years.">
 <!-- YUI Dependency files (Start) -->
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -844,7 +847,6 @@ function getMoreResults(elecYear,elecType,constiId)
 
 	function showElectionResultsInPopup()
 	{
-		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 		var elmt = document.getElementById("allACPCelectionsInfoMainDiv");
 		
 		for(var i in allACPCElecInfo)
@@ -968,7 +970,6 @@ function getMoreResults(elecYear,elecType,constiId)
 				var myDataTable = new YAHOO.widget.DataTable("div_"+i+"_"+j,myColumnDefs, myDataSource);
 			}
 		}
-	</c:if>
 		
 	}
 
