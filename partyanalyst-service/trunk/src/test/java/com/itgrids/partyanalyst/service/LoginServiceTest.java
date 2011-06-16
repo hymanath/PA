@@ -1,77 +1,56 @@
-package cardinfo;
+package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
+import java.util.ArrayList;
 
-public class CardLoginDetailsBean
-{
+import junit.framework.Assert;
 
-    public CardLoginDetailsBean(int cardNo, Date loginDate, Date loginTime, Date logoutTime, String effectiveHours)
-    {
-        this.cardNo = cardNo;
-        this.loginDate = loginDate;
-        this.loginTime = loginTime;
-        this.logoutTime = logoutTime;
-        this.effectiveHours = effectiveHours;
-    }
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
 
-    public int getCardNo()
-    {
-        return cardNo;
-    }
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.service.impl.LoginService;
+import com.itgrids.partyanalyst.util.DummyRegistrationDAOStuff;
 
-    public void setCardNo(int cardNo)
-    {
-        this.cardNo = cardNo;
-    }
-
-    public Date getLoginDate()
-    {
-        return loginDate;
-    }
-
-    public void setLoginDate(Date loginDate)
-    {
-        this.loginDate = loginDate;
-    }
-
-    public Date getLoginTime()
-    {
-        return loginTime;
-    }
-
-    public void setLoginTime(Date loginTime)
-    {
-        this.loginTime = loginTime;
-    }
-
-    public Date getLogoutTime()
-    {
-        return logoutTime;
-    }
-
-    public void setLogoutTime(Date logoutTime)
-    {
-        this.logoutTime = logoutTime;
-    }
-
-    public String getEffectiveHours()
-    {
-        return effectiveHours;
-    }
-
-    public void setEffectiveHours(String effectiveHours)
-    {
-        this.effectiveHours = effectiveHours;
-    }
-
-    public String toString()
-    {
-        return ( "CardNo :: "+cardNo+", login Date :: "+loginDate+", Login Time :: "+loginTime+", Logout Time :: "+logoutTime+", Effective Hours ::  "+effectiveHours);
-    }
-
-    private int cardNo;
-    private Date loginDate;
-    private Date loginTime;
-    private Date logoutTime;
-    private String effectiveHours;
+	public class LoginServiceTest{
+		
+		
+		public void test()
+		{
+			Assert.assertEquals(2,2);
+		}
+		private IRegistrationDAO registrationDAO;
+		private LoginService loginService;
+		
+		
+	
+		@Before
+		public void setUp() throws Exception {
+			registrationDAO = EasyMock.createMock(IRegistrationDAO.class);
+			loginService = new LoginService();
+			loginService.setRegistrationDAO(registrationDAO);
+		}
+		
+		@Test
+		public void testCheckForValidUser(){
+			EasyMock.expect(registrationDAO.findByUserNameAndPassword("itgrids","password")).andReturn(DummyRegistrationDAOStuff.getRegistrations());
+			EasyMock.replay(registrationDAO);	
+			
+			Assert.assertEquals("lastName",loginService.checkForValidUser("itgrids","password").getLastName());
+			
+			EasyMock.verify(registrationDAO);
+			
+		}
+		
+		
+		@Test
+		public void testForInvalidUser(){
+			EasyMock.expect(registrationDAO.findByUserNameAndPassword("itgrid","password")).andReturn(DummyRegistrationDAOStuff.getEmptyList());
+			EasyMock.replay(registrationDAO);	
+			Assert.assertEquals(null,loginService.checkForValidUser("itgrid","password").getRegistrationID());
+			EasyMock.verify(registrationDAO);
+		}
 }
+
