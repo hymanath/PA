@@ -116,6 +116,7 @@ function callAjax(param,jsObj,url){
 									if(jsObj.task == "getRegionWisePartyElectionResults")
 									{
 										buildRegionWiseElectionsResultsGraph(jsObj,myResults);
+										hideImg();
 									}
 									else if(jsObj.task == "elctionsBasicInfo")
 									{										
@@ -146,12 +147,12 @@ function callAjax(param,jsObj,url){
 										if(myResults.hasRegions == true){
 
 											var elmtDiv = document.getElementById("stateRegionsDiv");
-
 											var str = '';
-
 											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">Overall';
 											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">Region Wise';
-
+											str+='&nbsp;<span id="ajaxImg" style="display:none">';
+											 str+='<img height="" width=""  src="images/icons/search.gif"></img>';
+											 str+='</span>';
 											elmtDiv.innerHTML = str;
 										}
 									  }
@@ -168,6 +169,17 @@ function callAjax(param,jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function showImg(){
+	
+	var ajaxImgElmt = document.getElementById("ajaxImg");
+	  ajaxImgElmt.style.display = "";
+}
+function hideImg(){
+      
+	  var ajaxImgElmt = document.getElementById("ajaxImg");
+	  ajaxImgElmt.style.display = 'none';
 }
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
@@ -269,11 +281,13 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 
 function showOverallResults()
 {
+	showImg();
    getResultsForAnElection(stateID,electionType,year);
 }
 
 function showRegionWiseResults()
 {
+	showImg();
 	var jsObj = {
 				electionId:electionId,
 				stateID:stateID,
