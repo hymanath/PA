@@ -1322,7 +1322,6 @@ function hideBusyImgWithId(elmtId)
 	<!-- Local Elections Info -->	
 		<tr>		
 			<td colspan="2">
-			<c:if test="${constituencyDetails.viewCompletePage}">
 				<div id="LocalElectionsDiv" class="rounded" style="width: 910px;">
 					<div class="corner topLeft"></div>
 					<div class="corner topRight"></div>
@@ -1397,13 +1396,11 @@ function hideBusyImgWithId(elmtId)
 						</tr>
 					</table>
 				</div>
-				</c:if>
 			</td>
 		</tr>
 	<!-- Local Elections Info -->	
 		<tr>
 			<td colspan="2">
-			<c:if test="${constituencyDetails.viewCompletePage}">
 			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
@@ -1481,8 +1478,7 @@ function hideBusyImgWithId(elmtId)
 						</tr>
 				</table>
 			</div>
-			</c:if>
-			</td>
+		  </td>
 		</tr>		
 	</table>	
 </div>
