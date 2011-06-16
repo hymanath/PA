@@ -273,16 +273,23 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		log.debug("No. Of Parties Participated In mandal:"+partiesInMandalWiseElections.size());
 		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalID));
 		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
-		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID), "Mandal");
-		List<PartyResultVO> acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
-		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
+		List<PartyResultVO> acPcElectionResultsForParties = null;
 		
+		if(((regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(regVO,  IConstants.TEHSIL_ANALYSIS)))||
+				entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID))){
+			electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID), "Mandal");
+			acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
+		}
+
+		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
 		Map<PartyResultVO, List<ElectionResultVO>> resultMap = new HashMap<PartyResultVO, List<ElectionResultVO>>();
 		
-		for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
+		if(acPcElectionResultsForParties !=null){
+		  for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
 			resultMap.put(partyResultVO, partyResultVO.getElectionWiseResults());
+		   }
 		}
-		
 		List<ElectionResultVO> elections = null;
 		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
 			elections = resultMap.get(partyResultVO);
@@ -379,11 +386,11 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
         for(PartyResultVO partyResultVO:allElectionResults)
         	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
         		partiesElecResultForGraph = new ElectionResultVO();
-        		partiesElecResultForGraph.setPercentage(result.getPercentage());
+    			partiesElecResultForGraph.setPercentage(result.getPercentage());
         		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
         		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
         		partiesElectionResults.add(partiesElecResultForGraph);
-        	}
+          	}
         
         Collections.sort(partiesElectionResults, new ElectionResultComparator());
         
