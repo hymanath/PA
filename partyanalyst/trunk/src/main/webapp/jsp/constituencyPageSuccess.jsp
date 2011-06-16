@@ -2176,12 +2176,7 @@ function showDetailedElectionResult(id)
 		var vObj=
 				{
 					mandalId:'${info.mandalId}',
-					<c:if test="${constituencyDetails.hasAnalize}">
 					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',
-					</c:if>
-					<c:if test="${!(constituencyDetails.hasAnalize)}">
-					mandalName:'<b><font color="#89745D">${info.mandalName}</font></b>',
-					</c:if>
 					mandalMaleVoters:'${info.totalMaleVoters}',
 					mandalFemaleVoters:'${info.totalFemaleVoters}',
 					mandalTotalVoters:'${info.totalVoters}',
