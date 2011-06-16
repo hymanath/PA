@@ -49,7 +49,14 @@
 		font-size:13px;
 		
 	}
-		
+	#mptcZptcDiv{
+	 
+	color:red;
+	font-size:13px;
+	font-weight:bold;
+	margin-left:149px;
+	margin-top:34px;
+    }
   </style>
 
 <script type="text/javascript">
@@ -292,7 +299,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					{						
 						if(results!= null &&  results.length>0){
 							showAllPartyDetails(results);
-						}else{
+						}
+						else{
 							hideZPTCMPTCDiv();
 							//hideZptcDiv();
 						}
@@ -392,8 +400,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	function hideZPTCMPTCDiv()
 	{
 		var table2El = document.getElementById("table2");
-		table2El.style.display = 'none';
-	}
+		var mptcPartyDetailsElmt = document.getElementById("mptcPartyDetails");
+		var str='';
+		str +='<p id="mptcZptcDiv">No data available</p>';
+		mptcPartyDetailsElmt.innerHTML = str;
+	
+		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
+		  ajaxImgElmt.style.display = 'none';
+		}
 	function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 	{
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
