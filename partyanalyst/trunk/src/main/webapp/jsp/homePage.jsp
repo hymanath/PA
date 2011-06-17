@@ -515,11 +515,11 @@ var new2="Election Message";
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
-<h3><a href="#">View Election Results</a></h3>
+					 <h3><a href="#">View Election Results</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
-								<table>
-									
+							  <table>
+									<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
 									<tr>
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
