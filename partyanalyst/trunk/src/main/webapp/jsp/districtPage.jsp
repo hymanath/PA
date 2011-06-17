@@ -60,7 +60,8 @@
   </style>
 
 <script type="text/javascript">
-
+var mptcHIde = false;
+var zptcHIde = false;
 google.load("elements", "1", {packages : ["newsshow"]});
 
 var Localization = { <%		
@@ -298,20 +299,29 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "getPartyDetails") 
 					{						
 						if(results!= null &&  results.length>0){
+							zptcHide = false;
 							showAllPartyDetails(results);
 						}
 						else{
-							hideZPTCMPTCDiv();
-							//hideZptcDiv();
+							zptcHide = true;
+							 if(mptcHide)
+								hideZPTCMPTCDiv();
+							 else
+								hideZptcDiv();
 						}
 					}
 					if(jsObj.task == "getMptcPartyDetails") 
 					{
 						if(results!= null &&  results.length>0){
+							mptcHide = false;
 							showAllMptcPartyDetails(results);
-						}else{
-							hideZPTCMPTCDiv();
-							//hideMptcDiv();
+						}
+						else{
+							mptcHide = true;
+							 if(zptcHide)
+							  hideZPTCMPTCDiv();
+							 else
+							  hideMptcDiv();
 						}
 					}		
 					if(jsObj.task == "getmuncipalPartyDetails") 
@@ -400,14 +410,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	function hideZPTCMPTCDiv()
 	{
 		var table2El = document.getElementById("table2");
-		var mptcPartyDetailsElmt = document.getElementById("mptcPartyDetails");
-		var str='';
-		str +='<p id="mptcZptcDiv">No data available</p>';
-		mptcPartyDetailsElmt.innerHTML = str;
-	
-		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
-		  ajaxImgElmt.style.display = 'none';
-		}
+		  table2El.style.display = 'none';
+	}
 	function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 	{
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
@@ -994,7 +998,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		 var zptcDetailsElmt = document.getElementById("partyDetails");
 		 var zptcDetailsDiv="";
 		 zptcDetailsDiv+="<br/>";
-		 zptcDetailsDiv+="<b>"+selectedZptcYear+" ZPTC data is not available.</b>";
+		 zptcDetailsDiv+='<p id="mptcZptcDiv">'+selectedZptcYear+' ZPTC data is not available.</p>';
 		 zptcDetailsElmt.innerHTML = zptcDetailsDiv;
 		 
 		 var totalZptcCountResultDiv = document.getElementById("totalZptcCountResultDiv");
@@ -1016,7 +1020,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		 var mptcElmt = document.getElementById("mptcPartyDetails");
 		 var mptcDiv="";
 		 mptcDiv+="<br/>";
-		 mptcDiv+="<b>"+selectedMptcYear+" MPTC data is not available.</b>";
+		 mptcDiv+='<p id="mptcZptcDiv">'+selectedMptcYear+' MPTC data is not available.</p>';
 		 mptcElmt.innerHTML = mptcDiv;
 		 
 		 var totalMptcCountResultDiv = document.getElementById("totalMptcCountResultDiv");
@@ -1713,8 +1717,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							<div id="zptcDiv" class="yui-skin-sam" style="margin-top: 10px;">
 								<table>
 										<td><div id="zptcInfoDivBody"></div></td>
-										<td><div id="zptcAjaxLoadDiv" style="display:none;padding-top:20px;">
-											<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+										<td><div id="zptcAjaxLoadDiv" style="display:none;">
+											<img id="ajaxImg" height="18" width="19" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
 										</div></td><td><div id="candidateLink"></div></td>
 										</table>
 										<table cellpadding="5px">
@@ -1746,8 +1750,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 									<table>
 										<td><br/></td>
 										<td><div id="mptcInfoDivBody"></div></td>
-										<td><div id="mptcAjaxLoadDiv" style="display:none;padding-top:20px;">
-											<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+										<td><div id="mptcAjaxLoadDiv" style="display:none;">
+											<img id="ajaxImg" height="18" width="19" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
 										</div></td><td><div id="mptcCandidateLink"></div></td>
 										</table>
 										<table cellpadding="5px">
