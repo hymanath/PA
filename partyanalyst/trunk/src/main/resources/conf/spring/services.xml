@@ -38,6 +38,9 @@
 	<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>  
 	
+	<bean name="userTrackingService" class="com.itgrids.partyanalyst.service.impl.UserTrackingService" >
+	<property name="userTrackingDAO" ref="userTrackingDAO" />
+	</bean>
 	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
