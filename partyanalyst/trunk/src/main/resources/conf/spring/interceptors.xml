@@ -4,7 +4,9 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 	
 <beans>
-	
+	<bean id="userTrackingInterceptor" class="com.itgrids.partyanalyst.web.interceptor.UserTrackingInterceptor" singleton="false">
+	    <property name="userTrackingService" ref="userTrackingService" />
+	</bean>
 </beans>
 
 
