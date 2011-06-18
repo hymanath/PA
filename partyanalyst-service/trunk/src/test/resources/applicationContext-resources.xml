@@ -201,11 +201,16 @@
 				<value>com.itgrids.partyanalyst.model.FeedBackComment</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
+				<value>com.itgrids.partyanalyst.model.UserTracking</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="userTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="homePageQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
