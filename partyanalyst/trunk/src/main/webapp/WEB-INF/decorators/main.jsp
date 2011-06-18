@@ -118,7 +118,7 @@
 	        id: "partyanalysis",  
 	        itemdata: [  
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
-	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+	            { text: "Elections Comparison Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
@@ -154,7 +154,7 @@
 	        itemdata: [ 
 	                    { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 						{ text: "Assam", url: "statePageAction.action?stateId=3" },
-						/*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
+						{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
 						{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 						{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
@@ -182,7 +182,7 @@
 					{ 
 						id: "partyanalysis",  
 				        itemdata: [	            
-				            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+				            { text: "Elections Comparison Report", url: "electionComparisonAction.action" },
 				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },
 				            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }       	                       
 				        ]    
@@ -192,7 +192,7 @@
 						itemdata: [ 
 								{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 								{ text: "Assam", url: "statePageAction.action?stateId=3" },
-								/*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
+								{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
 								{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 								{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 								{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
