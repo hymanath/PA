@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Constituency Management</title>
+<title>News Zone</title>
 
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -632,7 +632,7 @@ function onYouTubePlayerReady(playerId)
 			</div>
 			</td></tr></table>
 		</td>
-		<td colspan="3">
+		<td colspan="3" align="center">
 			<table border="2">
 			<tr>
 				<td style="font-family:sans-serif;font-size:large">Anti Corruption, Scams</td>
