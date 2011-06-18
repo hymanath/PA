@@ -147,7 +147,7 @@ var new2="Election Message";
 	        id: "partyanalysis",  
 	        itemdata: [  
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
-	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+	            { text: "Elections Comparison Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
@@ -212,7 +212,7 @@ var new2="Election Message";
 					{ 
 						id: "partyanalysis",  
 				        itemdata: [	            
-				            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+				            { text: "Elections Comparison Report", url: "electionComparisonAction.action" },
 				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },
 							{ text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }  	                       
 				        ]    
@@ -577,7 +577,8 @@ var new2="Election Message";
 											</td>   -->
 											
 											<td width="100%">
-											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
+											    <marquee scrollDelay="180">
+											    <font class="scrollDataStyle"/><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
 												</font>
 											   </marquee>
 											</td>
@@ -619,7 +620,7 @@ var new2="Election Message";
 															<li>The features access to free users are restricted</li>
 															<li>Please register to access the advanced features and benefit from it</li>
 								<div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img></a> </center>
 							   </div>
 														</ul>
 													</div>
