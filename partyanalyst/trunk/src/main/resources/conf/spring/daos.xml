@@ -21,6 +21,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="constituencyCensusDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
