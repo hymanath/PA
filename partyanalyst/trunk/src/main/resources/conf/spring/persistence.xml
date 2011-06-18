@@ -187,6 +187,7 @@
 				<value>com.itgrids.partyanalyst.model.ProblemActivity</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
+				<value>com.itgrids.partyanalyst.model.UserTracking</value>
 			</list>
 		</property>
 	</bean>
