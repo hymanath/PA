@@ -2415,7 +2415,7 @@
 			<result>/jsp/memMonitor.jsp</result>
 		</action>
 
-		<action name="getLatestNewsFromMediaAction">
+		<action name="newsZoneAction">
 			<result>/jsp/newsZone.jsp</result>
 		</action>
 
