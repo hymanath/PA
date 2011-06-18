@@ -858,6 +858,10 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setTotalVotesForState(new Double((Double)params[0]).longValue());
 			partyResults.setTotalValidVotesForState(new Double((Double)params[1]).longValue());
 			partyResults.setTotalPolledVotesForState(new Double((Double)params[2]).longValue());
+			
+			if(partyResults.getTotalVotesForState() < partyResults.getTotalPolledVotesForState())
+				  return null;
+			
 			partyResults.setTotalVotingPercentageForState(new BigDecimal((Double)params[2]*100/(Double)params[0]).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			partyResults.setTotalSeatsParticipated((Long)(Long)params[3]);
 		}
@@ -876,6 +880,7 @@ public class ElectionReportService implements IElectionReportService {
 			List<PartyPositionsVO> votersList = null;
 			PartyPositionsVO voterData1 = null;
 			PartyPositionsVO voterData2 = null;
+			votersList = new ArrayList<PartyPositionsVO>(0);
 			
 			Election elect = electionDAO.get(electionId);
 			
@@ -885,12 +890,9 @@ public class ElectionReportService implements IElectionReportService {
 			
 			if(voterData1 != null)
 			{
-				votersList = new ArrayList<PartyPositionsVO>(0);
 				voterData1.setPartyName(elect.getElectionYear());
 				votersList.add(voterData1);
 			}
-			else
-				return null;
 			
 			List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(electionId);
 			
