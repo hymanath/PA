@@ -289,6 +289,14 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			{
 				electionLevelVal = electionLevel; 
 			}
+			if(electionLevel.equals("districtWiseZptc"))
+			{
+				electionLevelVal = electionLevel; 
+			}
+			if(electionLevel.equals("districtWiseMptc"))
+			{
+				electionLevelVal = electionLevel; 
+			}
 			log.debug(electionType);
 			log.debug(year);
 			log.debug(resultsCategoryVal);
