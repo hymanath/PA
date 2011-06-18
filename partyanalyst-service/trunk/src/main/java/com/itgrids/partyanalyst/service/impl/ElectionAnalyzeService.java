@@ -117,11 +117,15 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 				if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE))
 					if(electionLevel.equalsIgnoreCase("stateWiseZptc"))
 						electionLevel = IConstants.STATE_LEVEL;
+					 if(electionLevel.equalsIgnoreCase("districtWiseZptc"))
+						electionLevel = IConstants.DISTRICT_LEVEL;
 				
 				if(electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE))
 					if(electionLevel.equalsIgnoreCase("stateWiseMptc"))
 						electionLevel = IConstants.STATE_LEVEL;
-				
+				    if(electionLevel.equalsIgnoreCase("districtWiseMptc"))
+					electionLevel = IConstants.DISTRICT_LEVEL;
+				    
 				if(partyId==0l){					
 					candidateDetailsVO = getCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);					
 				}else{
@@ -142,7 +146,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 					candidateDetailsVO = getCandidatesInfoForLocalElectionBodies(electionType,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId,startIndex,maxResult,order,columnName);
 				}		
 			}
-			
+
 			//modified by sai
 			//check and place candidate comments size..
 			if(candidateDetailsVO.getCandidateDetails() != null){
@@ -906,7 +910,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 				candidateDetailsVo.setElectionYear(parms[11].toString());
 				candidateDetailsVo.setElectionType(parms[12].toString());	
 				if((electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)) || (electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE))){
-					candidateDetailsVo.setLocalBodyElectionsConstituencyName(parms[14].toString());
+					candidateDetailsVo.setLocalBodyElectionsConstituencyName(parms[10].toString());
 				}
 				candidateDetailsVo.setMoreDetails("view more details");
 				if(successor.containsKey(constituencyId)){
@@ -1044,7 +1048,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage).setScale(2, BigDecimal.ROUND_HALF_UP));
 				}
 				if((electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)) || (electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE))){
-					candidateDetailsVo.setLocalBodyElectionsConstituencyName(parms[14].toString());
+					candidateDetailsVo.setLocalBodyElectionsConstituencyName(parms[10].toString());
 				}
 				rank = Long.parseLong(parms[4].toString());
 				if(rank!=1l){
