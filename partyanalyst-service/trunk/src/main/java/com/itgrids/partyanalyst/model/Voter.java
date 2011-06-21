@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -44,6 +47,8 @@ public class Voter extends BaseModel implements Serializable {
 	private String voterIDCardNo;
 	private String insertionDate;
 	private Hamlet hamlet;
+	private Date dateOfBirth;
+	
 	private Set<BoothConstituencyElectionVoter> boothConstituencyElectionVoters = new HashSet<BoothConstituencyElectionVoter>(0);
 	
 	public Voter(){
@@ -235,6 +240,16 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setLocalArea(String localArea) {
 		this.localArea = localArea;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "date_of_birth", length = 10)
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 	
 	

@@ -141,7 +141,7 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		for(int i=0; i<list.size(); i++)
 			System.out.print(list.get(i)+",");
 	}*/
-	
+	/*
 	public void testFindPrevVotersFromViterIdByHamletAndElectionYear(){
 		List list = boothConstituencyElectionVoterDAO.findVotersForHamletAndElectionYearByStartAndMaxResults(34l, "2009", 
 				11, 10, "", "firstName");
@@ -151,5 +151,36 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 					((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+
 					((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]);
 		}
+	}*/
+	
+	/*public void testGetGenderOfVotersInALocation()
+	{
+		String queryStr = " model.voter.hamlet.township.tehsil.tehsilId = ";
+		Long locationId = 844l;
+		List<Object> list = boothConstituencyElectionVoterDAO.getGenderOfVotersInALocation(queryStr, locationId);
+		
+		for(Object obj : list)
+		{
+			System.out.println(obj.toString());
+		}
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetTotalNoOfVotersInALocation()
+	{
+		String queryStr = " model.voter.hamlet.township.tehsil.tehsilId = ";
+		Long locationId = 844l;
+		List<Object> list = boothConstituencyElectionVoterDAO.getTotalNoOfVotersInALocation(queryStr, locationId);
+		
+		System.out.println(list.get(0).toString());
+	}
+	
+	public void testGetTotalNoOfMaleVotersInALocation()
+	{
+		String queryStr = " model.voter.hamlet.township.tehsil.tehsilId = ";
+		Long locationId = 844l;
+		List<Object> list = boothConstituencyElectionVoterDAO.getTotalNoOfMaleVotersInALocation(queryStr, locationId);
+		
+		System.out.println(list.get(0).toString());
 	}
 }
