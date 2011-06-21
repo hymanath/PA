@@ -233,5 +233,22 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		" order by model.voter.voterId", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> getGenderOfVotersInALocation(String queryStr,Long locationId)
+	{
+		return getHibernateTemplate().find("select model.voter.gender from BoothConstituencyElectionVoter model where "+queryStr + " "+locationId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getTotalNoOfVotersInALocation(String queryStr,Long locationId)
+	{
+		return getHibernateTemplate().find("select count(model.voter.voterId) from BoothConstituencyElectionVoter model where "+queryStr + " "+locationId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getTotalNoOfMaleVotersInALocation(String queryStr,Long locationId)
+	{
+		return getHibernateTemplate().find("select count(model.voter.voterId) from BoothConstituencyElectionVoter model where model.voter.gender = 'M' and "+queryStr + " "+locationId);
+	}
 
 }
