@@ -32,7 +32,7 @@
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
 	    <default-action-ref name="homePage" />
-	
+	    
 	<global-results>
         <result name="exception">jsp/globalError.jsp</result>
     </global-results>
@@ -2434,7 +2434,12 @@
 		<action name="memoryManagementAction">
 			<result>/jsp/memMonitor.jsp</result>
 		</action>
-
+		
+		<action name="voterReportAction" class="voterReportAction">
+			<result name="success">/jsp/voterReport.jsp</result> 
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
 		<action name="newsZoneAction">
 			<result>/jsp/newsZone.jsp</result>
 		</action>
@@ -2442,6 +2447,12 @@
 		<action name="distPapersAjaxAction" class="getLatestNewsAction">
 			<result type="json" name="success">
 				<param name="root">newsPaperURLsVO</param>				
+			</result>			
+		</action>
+		
+		<action name="getVoterDetailsInALocationAjaxAction" class="voterReportAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">voterReportVO</param>				
 			</result>			
 		</action>
 				 		       	
