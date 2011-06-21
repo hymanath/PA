@@ -5,6 +5,9 @@
 
 <beans>
 	
+	<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
+	</bean>
+	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="electionDAO" ref="electionDAO" />

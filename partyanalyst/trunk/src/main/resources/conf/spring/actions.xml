@@ -675,6 +675,14 @@
 	
 	<bean id="staticPagesForElectionResultsAction" class="com.itgrids.partyanalyst.web.action.StaticPagesForElectionResultsAction" singleton="false">	
 	</bean>
+	
+	<bean id="voterReportAction" class="com.itgrids.partyanalyst.web.action.VoterReportAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="voterReportService" ref="voterReportService" />
+	</bean>
+	
 </beans>	
 	
 	
