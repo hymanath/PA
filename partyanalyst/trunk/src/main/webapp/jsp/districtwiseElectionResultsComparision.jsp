@@ -880,7 +880,7 @@ function updateResultsStatewise(distName,results)
 	<DIV> Loading Election Results Please Wait..</DIV>
 	<IMG src="images/icons/barloader.gif"/>
 </DIV>
-<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
