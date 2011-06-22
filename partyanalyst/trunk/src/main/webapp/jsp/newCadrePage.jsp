@@ -833,7 +833,7 @@
 
 		<tr>
 			<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="Family Members Details" /></u></th>
-			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()"><b><u>Edit</u></b></div></td>
+			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()" style="width:25px;"><b><u>Edit</u></b></div></td>
 		</tr>
 	<table id="familyDetailsTableId" class="cadreDetailsTable" width="100%" style="display:none;">	
 		
