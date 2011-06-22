@@ -33,7 +33,14 @@ public class ElectionComparisonReportVO {
 	private String percentageChart;
 	private String seatsWonChart;
 	private String totalPercentChart;
+	private String stateName;
 	
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
 	public String getYearOne() {
 		return yearOne;
 	}
