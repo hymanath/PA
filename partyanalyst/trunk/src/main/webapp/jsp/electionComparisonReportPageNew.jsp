@@ -1848,8 +1848,8 @@ function createCoulmnChart()
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
-		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
-		<c:if test="${allianceCheck == 'false' || allianceCheck == ''}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
+		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName} ${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
+		<c:if test="${allianceCheck == 'false' || allianceCheck == ''}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.stateName} ${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 	</tr>
 </tbody></table>
