@@ -207,6 +207,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		electionComparisonReportVO.setElecIdYearTwo(secondElectionId);
 		Election election1 = electionDAO.get(firstElectionId);
 		Election election2 = electionDAO.get(secondElectionId);
+		if(election1.getElectionScope().getState()!=null)
+		electionComparisonReportVO.setStateName(election1.getElectionScope().getState().getStateName());
+		else
+			electionComparisonReportVO.setStateName("");
 		
 		if(Integer.parseInt(election1.getElectionYear()) < Integer.parseInt(election2.getElectionYear())){
 			Election temp;
@@ -219,7 +223,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		electionComparisonReportVO.setYearOne(election1.getElectionYear());
 		electionComparisonReportVO.setYearTwo(election2.getElectionYear());
 		electionComparisonReportVO.setElectionType(election1.getElectionScope().getElectionType().getElectionType());
+		
 		electionComparisonReportVO.setHasAlliances(hasAlliances);
+		
 		
 		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(election1.getElectionScope().getElectionType().getElectionType())){
 			stateOrCountryId = election1.getElectionScope().getState().getStateId();
