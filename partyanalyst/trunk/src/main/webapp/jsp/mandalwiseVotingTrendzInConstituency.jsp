@@ -795,7 +795,7 @@
 				  }
 				  var ctitle = 'Mandal Wise Election Results For ' + constituencyName + ' In ' + results.electionType + " "+ year; 
 				  new google.visualization.LineChart(document.getElementById(divId)).
-				  draw(data, {curveType: "function",width: 800, height: 450,pointSize:4,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+				  draw(data, {curveType: "function",width: 800, height: 450,pointSize:5,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 					
 			 }
 
@@ -911,7 +911,7 @@
 				  }
 				  var ctitle = 'Mandal Wise Assembly Election Results For ' + constituencyName + ' In  2004'; 
 				  new google.visualization.LineChart(document.getElementById(divId)).
-				  draw(data, {curveType: "function",width: 800, height: 450,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+				  draw(data, {curveType: "function",width: 800, height: 450,pointSize:5,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 					
 			 }
 
