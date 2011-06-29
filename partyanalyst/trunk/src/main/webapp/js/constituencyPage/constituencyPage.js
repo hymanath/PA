@@ -471,7 +471,7 @@ function buildCenterVotersCandidateInfoContent()
 		
 				var str = '';
 				str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
-				if(data.year == "2009"){
+				if(basicData.year == "2009"){
 					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
 						str+='Mandals After Delimitation';
 					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
