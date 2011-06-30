@@ -6,13 +6,13 @@
 	border-left:1px solid #335291;
 	border-bottom:3px solid #335291;
 	border-right:3px solid #335291;
-	color: #666666;
 	padding:5px;	
 }
-.commentsInputTd
-{
-	border:2px solid white;
-	padding:7px;
+.commentsInputTd {
+    border: 1px solid white;
+    font-size: 13px;
+	font-weight: bold;
+    padding: 6px;
 }
 .yui-skin-sam .yui-dt-paginator {
 	color:#505050;
@@ -41,9 +41,13 @@
 	color:#FFFFFF;
 	width:50px;
 }
-#alertMessage
-{
-	padding:10px;
-	font-weight:bold;
-	color:red;
+#alertMessage {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ui-widget {
+    font-family: Verdana,Sans MS,sans-serif;
+    font-size: 0.9em;
 }
