@@ -1801,7 +1801,7 @@ public class CadreManagementService {
 	}
 
 	public String getConstituencyName(Long constituencyID) {
-		Constituency constituency = constituencyDAO.get(constituencyID);
+		Constituency constituency = constituencyDAO.get(new Long(constituencyID));
 		String name = "";
 		if (constituency != null)
 			name = constituency.getName();
@@ -2167,6 +2167,7 @@ public class CadreManagementService {
 			} else if ("DISTRICT".equals(level)) {
 				levelValue = getDistrictName(new Long(levelValueID));
 			} else if ("CONSTITUENCY".equals(level) || "WARD".equals(level) ) {
+				levelValueID =levelValueID.substring(1);
 				levelValue = getConstituencyName(new Long(levelValueID));
 			} else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));
