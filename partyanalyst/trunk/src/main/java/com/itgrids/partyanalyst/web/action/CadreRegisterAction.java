@@ -245,7 +245,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setDateOfBirth(String dateOfBirth) {
 		this.cadreInfo.setDateOfBirth(dateOfBirth);
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age Option")
 	public String getDateOfBirth() {
 		return cadreInfo.getDateOfBirth();
 	}
