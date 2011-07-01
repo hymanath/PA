@@ -154,11 +154,11 @@
 		border:2px solid #95A6B7;
 		height:98%;
 	}
-	#cadreStrengthAreasDiv
-	{
-		text-align:right;
-		padding-top:37px;/*new*/
-	}
+	#cadreStrengthAreasDiv {
+    margin-right: 10px;
+    margin-top: 49px;
+    text-align: right;
+    }
 	#regionLevelCadreDivHead
 	{
 		background-color:#839DB7;
