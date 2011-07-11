@@ -142,16 +142,14 @@
 									if(myResults!= null &&  myResults.length>0){
 										buildZptcResults(myResults);	
 									}else{
-										//hideZptcDiv();
-										hideMptcZptcDiv();			
+										hideZptcOrMptcDiv('ZPTC');
 									}	
 								}else if(jsObj.task == "getMptcElectionResults")
 								{		
 									if(myResults!= null &&  myResults.length>0){
 										buildMptcResults(myResults);
 									}else{
-										//hideMptcDiv();
-										hideMptcZptcDiv();			
+										hideZptcOrMptcDiv('MPTC');	
 									}	
 								}else if(jsObj.task == "getProblemDetails")
 								{									
@@ -1112,6 +1110,23 @@ function hideBusyImgWithId(elmtId)
 		spanElmt.style.display = "none";
 }
 
+function hideZptcOrMptcDiv(election)
+{
+	var divEle = null;
+	if(election == 'MPTC')
+	{
+		divEle = document.getElementById('mptcPartyTrendsDetailsDiv');
+		document.getElementById('mptcCandidateLink').innerHTML ='';
+	}
+	else if(election == 'ZPTC')
+	{
+		divEle = document.getElementById('zptcPartyTrendsDetailsDiv');
+		document.getElementById('zptcCandidateLink').innerHTML ='';
+	}
+	var str = '<font color="red"><B>NO Data Available For This Selection</B></font>';
+	divEle.innerHTML = str;
+	
+}
 </script>
 </head>
 <body onLoad="getString()">
