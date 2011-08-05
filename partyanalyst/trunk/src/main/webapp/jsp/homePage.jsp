@@ -163,9 +163,18 @@ var new2="Election Message";
 	        ] 
 	    },  
 		{ 
-	        id: "constituencyManagement",
+	       id: "constituencyManagement",
 	        itemdata: [
-		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
+		    { text: "Problem Management",
+			    submenu : {
+				     id  : "ProblemManagement",
+				itemdata : [
+					{text: "Add New Problem", onclick: { fn: openAddNewProblemWindow }, keylistener: { ctrl: true, keys: 80 }},
+					{text: "Manage Problems", url: "constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"},
+					{text: "Problem Search & Report", url: "problemManagementReportAction.action"},
+				]
+				}
+			},
 		    { text: "User Groups", url: "userGroupAction.action" },
 		    { text: "Constituency Election Report", url: "constituencyElectionReportAction.action" }
 	        ] 
@@ -236,6 +245,13 @@ var new2="Election Message";
 					}  					 
 				]; 
 	</c:if>
+
+function openAddNewProblemWindow()
+{	
+	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+	
+	browser_addNewProblem.focus();
+}
 </script>
 </head>
 <body>
