@@ -170,7 +170,7 @@ var new2="Election Message";
 				     id  : "ProblemManagement",
 				itemdata : [
 					{text: "Add New Problem", onclick: { fn: openAddNewProblemWindow }, keylistener: { ctrl: true, keys: 80 }},
-					{text: "Manage Problems", url: "constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"},
+					{text: "All Problems", url: "constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"},
 					{text: "Problem Search & Report", url: "problemManagementReportAction.action"},
 				]
 				}
