@@ -388,8 +388,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			log.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);	
-			stateList = regionServiceDataImp.getStatesByCountry(1l);			
-			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
+			//stateList = regionServiceDataImp.getStatesByCountry(1l);			
+			//districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
 			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
 			
 			stateId = list.get(0).getId();
@@ -403,15 +403,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			stateId = accessValue;	
 			setScope(2l);
 			setDefaultStateId(stateId);
-			stateList = regionServiceDataImp.getStatesByCountry(1l);			
+			//stateList = regionServiceDataImp.getStatesByCountry(1l);			
 			
 		}else if("DISTRICT".equals(accessType)){
 			log.debug("Access Type = District ****");			
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
 			stateId = list.get(0).getId();
 			setScope(3l);
-			stateList = regionServiceDataImp.getStatesByCountry(1l);			
-			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+		//	stateList = regionServiceDataImp.getStatesByCountry(1l);			
+		//	districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
 			setDefaultStateId(stateId);
 			setDefaultDistrictId(list.get(1).getId());
 			
@@ -420,11 +420,13 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
 			stateId = list.get(0).getId();	
 			setScope(4l);
-			stateList = regionServiceDataImp.getStatesByCountry(1l);
+			//stateList = regionServiceDataImp.getStatesByCountry(1l);
 			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 			pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
 						
 		}
+		stateList = regionServiceDataImp.getUserStateList(accessType,accessValue);
+		districtList = regionServiceDataImp.getDistrictsByStateID(stateList.get(0).getId());  	
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM, stateId);
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
 		deptScopes = problemManagementService.getAllDepartmentScopes(0L);
