@@ -2696,21 +2696,21 @@ public class ProblemManagementService implements IProblemManagementService {
 	    	 
 	     }else if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase("Revenue Division")){
 	    	 
-	    	 Tehsil tehsil = tehsilDAO.get(locationId);
+	    	 Tehsil tehsil = tehsilDAO.get(Long.parseLong(locationId.toString().substring(1)));
 	    	 problemCompleteLocation.setTehsil(tehsil);
 	    	 problemCompleteLocation.setDistrict(tehsil.getDistrict());
 	    	 problemCompleteLocation.setState(tehsil.getDistrict().getState());
 	    	 
 	     }else if(type.equalsIgnoreCase("Muncipality") || type.equalsIgnoreCase("Corporation")){
 	    	 
-	    	 LocalElectionBody localBody = localElectionBodyDAO.get(locationId);
+	    	 LocalElectionBody localBody = localElectionBodyDAO.get(Long.parseLong(locationId.toString().substring(1)));
 	    	 problemCompleteLocation.setLocalElectionBody(localBody);
 	    	 problemCompleteLocation.setDistrict(localBody.getDistrict());
 	    	 problemCompleteLocation.setState(localBody.getDistrict().getState());
 	    	 
 	     }else if(type.equalsIgnoreCase(IConstants.VILLAGE) || type.equalsIgnoreCase("Gram Panchayath")){
 	    	 
-	    	 Township township = townshipDAO.get(locationId);
+	    	 Township township = townshipDAO.get(Long.parseLong(locationId.toString().substring(1)));
 	    	 problemCompleteLocation.setTownship(township);
 	    	 problemCompleteLocation.setTehsil(township.getTehsil());
 	    	 problemCompleteLocation.setDistrict(township.getTehsil().getDistrict());
