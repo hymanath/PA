@@ -763,7 +763,7 @@ function setLocationValue(value, source)
 function refreshParentWindow()
 {
 	incrementHidden();
-	
-	window.opener.document.location.reload(true);
+	window.close();
+	//window.opener.document.location.reload(true);
 
 }
