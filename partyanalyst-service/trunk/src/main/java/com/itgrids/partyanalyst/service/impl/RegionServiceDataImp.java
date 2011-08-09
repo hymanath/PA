@@ -1168,5 +1168,37 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		return regionList;
 	}
+	
+	
+	public List<SelectOptionVO> getUserStateList(String accessType,Long accessValue)
+	{
+		try
+		{
+			List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>(0);
+			SelectOptionVO selectOptionVO = null;
+			State state = null;
+			
+			if(accessType.equalsIgnoreCase(IConstants.MLA) || accessType.equalsIgnoreCase(IConstants.MP))
+				state = constituencyDAO.get(accessValue).getState();
+			else if(accessType.equalsIgnoreCase(IConstants.STATE))
+				state = stateDAO.get(accessValue);
+			else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+				state = districtDAO.get(accessValue).getState();
+			
+			if(state == null)
+				return null;
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(state.getStateId());
+			selectOptionVO.setName(state.getStateName());
+			
+			statesList.add(selectOptionVO);
+			return statesList;
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured In getUserStateList() And Exception is -- "+e);
+			return null;
+		}
+	}
 }
  
