@@ -60,5 +60,6 @@ public interface IRegionServiceData {
 	public Boolean checkForAreaRuralType(Long locationId);
 	
 	public List<SelectOptionVO> getStatesByCountryForSearch(Long countryID);
+	public List<SelectOptionVO> getUserStateList(String accessType,Long accessValue);
 	
 }
