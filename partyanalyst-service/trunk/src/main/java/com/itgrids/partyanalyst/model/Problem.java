@@ -37,6 +37,7 @@ public class Problem extends BaseModel implements Serializable{
 	private String year;
 	private String problem;
 	private Date existingFrom;
+	private String referenceNo;
 	private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	
 	public Problem(){
@@ -128,6 +129,15 @@ public class Problem extends BaseModel implements Serializable{
 
 	public void setExistingFrom(Date existingFrom) {
 		this.existingFrom = existingFrom;
+	}
+
+	@Column(name = "reference_no", length = 15)
+	public String getReferenceNo() {
+		return referenceNo;
+	}
+
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
 	}
 	
 	
