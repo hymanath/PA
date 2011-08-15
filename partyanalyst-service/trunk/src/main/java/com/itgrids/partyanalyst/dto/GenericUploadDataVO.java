@@ -63,6 +63,8 @@ public class GenericUploadDataVO implements Serializable {
 	public String pincode;
 	public String familyMembers;
 	public String memberType;
+	public String assignProblems;
+	public String cadreType;
 	
 	private Boolean canSave;
 	
@@ -714,6 +716,18 @@ public class GenericUploadDataVO implements Serializable {
 	 */
 	public void setFifthChildAge(Long fifthChildAge) {
 		this.fifthChildAge = fifthChildAge;
+	}
+	public String getCadreType() {
+		return cadreType;
+	}
+	public void setCadreType(String cadreType) {
+		this.cadreType = cadreType;
+	}
+	public String getAssignProblems() {
+		return assignProblems;
+	}
+	public void setAssignProblems(String assignProblems) {
+		this.assignProblems = assignProblems;
 	}
 		
 

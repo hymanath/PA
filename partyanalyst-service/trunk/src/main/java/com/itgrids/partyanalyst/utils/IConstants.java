@@ -192,7 +192,7 @@ public interface IConstants {
     public final static String TRUE = "true";
     public final static String FALSE = "false";
     public final static String EDIT = "edit";
-    public final static String VILLAGE = "village";
+    public final static String VILLAGE = "VILLAGE";
     public final static String 	PROBLEMS_MANAGEMENT = "PROBLEMS_MANAGEMENT";
     public final static String 	CONSTITUENCY_MANAGEMENT = "CONSTITUENCY_MANAGEMENT";
     
@@ -444,6 +444,9 @@ public interface IConstants {
     public static final String TOEMAILID = "info@partyanalyst.com";
     public static final String PASSWORD="ITGRIDS123";
     public static String SUBJECT = "User Requirements From PartyAnalyst";
+    public static String CADRE_ROLE_ASSIGN_PROBLEMS = "Assign Problems";
+    public static String YES = "Yes";
+    public static String NO = "No";
     
 
 }
