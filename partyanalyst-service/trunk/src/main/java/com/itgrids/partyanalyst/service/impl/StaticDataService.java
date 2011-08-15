@@ -6695,6 +6695,7 @@ public class StaticDataService implements IStaticDataService {
 			selectOptionVO.setName(occupation.getOccupation());
 			occupationsList.add(selectOptionVO);
 		}
+		Collections.sort(occupationsList);
 		return occupationsList;
 	}
 
