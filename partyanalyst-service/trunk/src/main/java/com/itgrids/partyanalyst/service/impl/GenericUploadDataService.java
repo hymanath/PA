@@ -20,6 +20,8 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
+import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
+import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -42,6 +44,8 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 import com.itgrids.partyanalyst.model.CadreLevel;
+import com.itgrids.partyanalyst.model.CadreRole;
+import com.itgrids.partyanalyst.model.CadreRoleRelation;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
@@ -80,12 +84,14 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	private TransactionTemplate transactionTemplate;
 	
 	private ICadreDAO cadreDAO;
+	private ICadreRoleDAO cadreRoleDAO;
 	private ICadreLevelDAO cadreLevelDAO;
 	private IOccupationDAO occupationDAO;
 	private IUserAddressDAO userAddressDAO;
 	private IRegistrationDAO registrationDAO;
 	private IUserRelationDAO userRelationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
+	private ICadreRoleRelationDAO cadreRoleRelationDAO;
 	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
 	private IEducationalQualificationsDAO educationalQualificationsDAO;
 		
@@ -418,6 +424,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 				try{
 					
 					Cadre cadre = saveCadreBasicInfo(userId,uploadResultsVO);
+					saveCadreAssignProblemsDetails(cadre,uploadResultsVO.getAssignProblems());
 					if(cadre != null && cadre.getCadreId() != null){
 						log.debug("Cadre Saved Upto Basic Level ..");
 					
@@ -442,6 +449,31 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		});
 		
 	 return resultStatus;
+	}
+	
+	/**
+	 * check and save whether cadre need to be assigned problems
+	 * @param cadre
+	 * @param assignProblems
+	 */
+	private void saveCadreAssignProblemsDetails(Cadre cadre,String assignProblems){
+		
+		log.debug("This Cadre status to be assigned with problems is :" + assignProblems);
+		
+		if(assignProblems.equalsIgnoreCase(IConstants.YES)){
+			
+			List<CadreRole> cadreRoleLst = cadreRoleDAO.findByRoleDesc(IConstants.CADRE_ROLE_ASSIGN_PROBLEMS);
+			if(cadreRoleLst != null && cadreRoleLst.size() > 0){
+				
+				CadreRole cadreRole = cadreRoleLst.get(0);
+				CadreRoleRelation cadreRoleRelation = new CadreRoleRelation();
+				cadreRoleRelation.setCadre(cadre);
+				cadreRoleRelation.setCadreRole(cadreRole);
+				
+				cadreRoleRelationDAO.save(cadreRoleRelation);
+				
+			}
+		}
 	}
 	
 	private Date getExactDateOfBirthFromAge(Long age){
@@ -662,7 +694,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		cadre.setMemberOfPartySince(memOfPartySince);
 		String presentRespInParty = uploadResultsVO.getPresentResponsibilityInParty() != null ? uploadResultsVO.getPresentResponsibilityInParty() : null;
 		cadre.setPresentRespInParty(presentRespInParty);
-		
+				
 		
 		//Cadre Date Of Birth
 		if(uploadResultsVO.getDateOfBirth() != null){
@@ -875,6 +907,26 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	public void setCadreFamilyMemberInfoDAO(
 			ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO) {
 		this.cadreFamilyMemberInfoDAO = cadreFamilyMemberInfoDAO;
+	}
+
+
+	public ICadreRoleDAO getCadreRoleDAO() {
+		return cadreRoleDAO;
+	}
+
+
+	public void setCadreRoleDAO(ICadreRoleDAO cadreRoleDAO) {
+		this.cadreRoleDAO = cadreRoleDAO;
+	}
+
+
+	public ICadreRoleRelationDAO getCadreRoleRelationDAO() {
+		return cadreRoleRelationDAO;
+	}
+
+
+	public void setCadreRoleRelationDAO(ICadreRoleRelationDAO cadreRoleRelationDAO) {
+		this.cadreRoleRelationDAO = cadreRoleRelationDAO;
 	}
 
 }

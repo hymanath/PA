@@ -52,7 +52,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Constituency> findByConstituencyNameAndDistrictId(String constituencyName,Long districtId);
 	
 	@SuppressWarnings("unchecked")
-	public List findByConstituencyIdConstituencyNameAndDistrictId(String constituencyName,Long districtId);
+	public List findByConstituencyIdConstituencyNameAndDistrictId(String constituencyName,Long districtId,String electionType);
 	
 	public List<Constituency> findByConstituencyNameAndDistrictId(String constituencyName,Long districtId,String electionType);
 	

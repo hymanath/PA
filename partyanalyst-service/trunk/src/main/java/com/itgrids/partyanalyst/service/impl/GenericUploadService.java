@@ -28,6 +28,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -64,6 +65,7 @@ public class GenericUploadService implements IGenericUploadService {
 	private IConstituencyDAO constituencyDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	private File uploadFile;
 	private Integer totalNoOfSheets;
@@ -1347,7 +1349,8 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		try{
 			
-		List constiLst      = constituencyDAO.findByConstituencyIdConstituencyNameAndDistrictId(regionName, this.districtId); 
+		//List constiLst      = constituencyDAO.findByConstituencyIdConstituencyNameAndDistrictId(regionName, this.districtId,IConstants.ASSEMBLY_ELECTION_TYPE); 
+		List constiLst      =	delimitationConstituencyDAO.getLatestConstituencyByConstituencyNameAndDistrictIdAndElectionType(regionName, this.districtId, IConstants.ASSEMBLY_ELECTION_TYPE);
 		this.constituencyId = getIdFromList(constiLst,regionName,regionType);
 		this.regionsMap.put(regionType, this.constituencyId);
 		}catch(Exception ex){
@@ -1438,6 +1441,7 @@ public class GenericUploadService implements IGenericUploadService {
 	private void getBoothRegionDetails(String regionType,String regionName) throws Exception{
 		
 		try{
+			
 			List boothsLst = boothDAO.findBoothIdPartNoConstituencyIdAndYear(this.constituencyId, 2009L, regionName);
 			this.boothId   = getIdFromList(boothsLst,regionName,regionType);
 			this.regionsMap.put(regionType, this.boothId);
@@ -1498,6 +1502,15 @@ public class GenericUploadService implements IGenericUploadService {
 		regionMap.put(IConstants.BOOTH,        0L);
 		
 	 this.regionsMap = regionMap;
+	}
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 	
 	
