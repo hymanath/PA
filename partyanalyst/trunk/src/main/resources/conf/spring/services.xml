@@ -794,6 +794,7 @@
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	    <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
 	    <property name="genericUploadDataService" ref="genericUploadDataService" />
+	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	</bean>
 	
 	<bean name="genericUploadDataService" class="com.itgrids.partyanalyst.service.impl.GenericUploadDataService">
@@ -816,7 +817,9 @@
 	    <property name="userRelationDAO" ref="userRelationDAO" />
 	    <property name="socialCategoryDAO" ref="socialCategoryDAO" />
 	    <property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />
-	    <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />	     
+	    <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+	    <property name="cadreRoleDAO" ref="cadreRoleDAO" />	    
+	    <property name="cadreRoleRelationDAO" ref="cadreRoleRelationDAO" />	 
 	</bean>
 	
 	<bean name="electionAnalyzeService" class="com.itgrids.partyanalyst.service.impl.ElectionAnalyzeService" >
