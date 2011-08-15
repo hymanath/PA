@@ -688,7 +688,7 @@ function getLocalBodiesInConstituency(id, selectElement, year)
 		<table width="100%">
 		<tr>
 			<th align = "left">Year</th>
-			<td><s:select id="yearsId" theme="simple" list="{2009}" cssClass="selectWidth"/></td>
+			<td><s:select id="yearsId" theme="simple" list="{2004,2009,2010,2011}" cssClass="selectWidth"/></td>
 			<th align = "left">State</th>
 			<td><s:select id="stateId" theme="simple" cssClass="selectWidth" list="stateList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','boothLocaElectionBodyMapper','districtField','currentAdd')" /></td>
 		</tr>
