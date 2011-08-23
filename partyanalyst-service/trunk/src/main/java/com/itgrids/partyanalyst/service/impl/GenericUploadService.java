@@ -983,6 +983,7 @@ public class GenericUploadService implements IGenericUploadService {
 			Class cls   = this.genericUploadDataVO.getClass();
 			Field field = cls.getField(header);
 			
+			
 			//check data type in cell
 			switch(dataCell.getCellType()){
 			
@@ -1012,8 +1013,15 @@ public class GenericUploadService implements IGenericUploadService {
 			
 			}
 			
+			//check and update booth and ward/mandal details
+			if(header.equalsIgnoreCase(IConstants.TEHSIL) || header.equalsIgnoreCase(IConstants.MANDAL) ||
+					header.equalsIgnoreCase(IConstants.WARD) || header.equalsIgnoreCase(IConstants.BOOTH)){
+				
+				getRegionDetailsByRegionName(header,cellValueToSave);
+			}
+			
 			//save cell data to VO appropriate field
-			if(!"".equalsIgnoreCase(cellValueToSave))
+			else if(!"".equalsIgnoreCase(cellValueToSave))
 				field.set(this.genericUploadDataVO, cellValueToSave);
 		}
 		}catch(Exception ex){
