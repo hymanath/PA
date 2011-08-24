@@ -843,5 +843,16 @@
 	<property name="homePageQuestionDAO" ref="homePageQuestionDAO"/>
 	<property name="homePageQuestionAnswersDAO" ref="homePageQuestionAnswersDAO"></property>
 	</bean>
+	
+	<bean name="announcementService" class="com.itgrids.partyanalyst.service.impl.AnnouncementService">
+	<property name="announcementsDao" ref="announcementsDao" />
+	<property name="userAnnouncementDAO" ref="userAnnouncementDAO" />
+	<property name="userConstituencyScopeDAO" ref="userConstituencyScopeDAO" />
+	<property name="registrationDAO" ref="registrationDAO" />
+	<property name="constituencyDAO" ref="constituencyDAO" />
+	<property name="transactionTemplate" ref="transactionTemplate" />	
+	
+	</bean>
+	
 </beans>		
 		

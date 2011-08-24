@@ -188,6 +188,9 @@
 				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
 				<value>com.itgrids.partyanalyst.model.UserTracking</value>
+				<value>com.itgrids.partyanalyst.model.UserConstituencyScope</value>
+				<value>com.itgrids.partyanalyst.model.Announcement</value>
+				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
 			</list>
 		</property>
 	</bean>
