@@ -561,7 +561,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 		<property name="problemManagementReportService" ref="problemManagementReportService" />			
 	</bean>
-	<bean id="getstates" class="com.itgrids.partyanalyst.web.action.GetStatesAction">
+	<bean id="announcementPageAction" class="com.itgrids.partyanalyst.web.action.AnnouncementPageAction">
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="annocementsService" ref="announcementService" />
 	</bean>
@@ -685,7 +685,7 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="voterReportService" ref="voterReportService" />
 	</bean>
-	<bean id="announcementAction" class="com.itgrids.partyanalyst.web.action.AnnouncementAction" singleton="false">
+	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
 	<property name="annocementsService" ref="announcementService" />	
 	</bean>
 	<bean id="editAnnouncementPageAction" class="com.itgrids.partyanalyst.web.action.EditAnnouncementPageAction" singleton="false">
