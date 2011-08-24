@@ -57,7 +57,7 @@
 			
 		</action>
 		<action name="loginInputAction"><result>/jsp/loginForm.jsp</result></action>
-		<action name="newAnnouncementAction" class="getstates">
+		<action name="newAnnouncementAction" class="announcementPageAction">
 		  <result name="success">/jsp/announcement.jsp</result>
 		</action>
 		<action name="openEditAnnouncementAction"><result>/jsp/editAnnouncement.jsp</result></action>
@@ -131,6 +131,7 @@
 			<result name="input">/jsp/loginForm.jsp?src=adminUpload</result>
 			<result name="success">/jsp/adminUpload.jsp</result>
 		</action>
+		
 		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
 		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
 		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
@@ -145,15 +146,17 @@
 			<result name="success">/jsp/staticPages.jsp</result>
 		</action>
 		
-        <action name="announcementsAction" class="announcementAction">
+        <action name="announcementsAction" class="announcementSaveAction">
 			<result name="failure">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/announcement.jsp</result>
 			<result name="success">/jsp/announcementAddedSuccess.jsp</result>
         
         </action>
+        
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		
 		<!-- PARTY ANALISYS REPORTS ACTIONS START-->
+	
 		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
 			<result type="json" name="success">
 				<param name="root">statesYearList</param>
