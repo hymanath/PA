@@ -64,6 +64,9 @@
 		<pattern>/problemAssigningAction*</pattern>
 		<pattern>/candidateStrenthsAction*</pattern>
 		<pattern>/getMediaOpenionsAction*</pattern>
+		<pattern>/newAnnouncementAction*</pattern>
+		<pattern>/openEditAnnouncementAction*</pattern>
+		<pattern>/editAnnouncementPageAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
