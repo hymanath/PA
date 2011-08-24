@@ -1389,3 +1389,14 @@ function openSubUserRegPopup()
 	var browser = window.open("subUserRegPageAction.action?registrationType=subUser","registerPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	browser.focus();
 }
+function openNewAnnouncementPopup()
+{
+	var task = "new";
+	var browser = window.open("newAnnouncementAction.action?windowTask="+task,"announcementPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser.focus();
+}
+function openEditAnnouncement()
+{
+	var browser = window.open("openEditAnnouncementAction.action","editAnnouncement","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser.focus();
+}
