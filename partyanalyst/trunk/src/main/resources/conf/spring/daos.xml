@@ -588,5 +588,13 @@
 	<bean id="homePageQuestionAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionAnswersDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="announcementsDao" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAnnouncementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAnnouncementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userConstituencyScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
