@@ -57,6 +57,23 @@
 			
 		</action>
 		<action name="loginInputAction"><result>/jsp/loginForm.jsp</result></action>
+		<action name="newAnnouncementAction" class="getstates">
+		  <result name="success">/jsp/announcement.jsp</result>
+		</action>
+		<action name="openEditAnnouncementAction"><result>/jsp/editAnnouncement.jsp</result></action>
+		<action name="editAnnouncementPageAction" class="editAnnouncementPageAction">
+		  <result name="success">/jsp/announcement.jsp</result>
+		</action>
+		<action name="editAnnouncementAction" class="getstates" method="getAnnouncementByUserId" >
+			<result type="json" name="success">
+				<param name="root">announcementInfo</param>
+			</result> 
+		</action>
+		<action name="updateAnnouncementAction" class="getstates" method="updateAnnouncementDetails" >
+			<result type="json" name="success">
+				<param name="root">updated</param>
+			</result> 
+		</action>
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
@@ -128,7 +145,12 @@
 			<result name="success">/jsp/staticPages.jsp</result>
 		</action>
 		
-
+        <action name="announcementsAction" class="announcementAction">
+			<result name="failure">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/announcement.jsp</result>
+			<result name="success">/jsp/announcementAddedSuccess.jsp</result>
+        
+        </action>
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		
 		<!-- PARTY ANALISYS REPORTS ACTIONS START-->
@@ -1847,6 +1869,11 @@
 				<param name="root">greaterInfo</param>				
 			</result>		
 		</action>
+		<action name="getAnnouncementDetailsAction" class="getstates" method="getAnnouncementDetails">
+			<result type="json" name="success">
+				<param name="root">announcementInfo</param>				
+			</result>		
+		</action>
 		
 		<action name="messageToConnectedUser" class="connectPeopleAction" method="sendMessageToConnectedUser">
 			<result type="json" name="success">
@@ -2455,6 +2482,7 @@
 				<param name="root">voterReportVO</param>				
 			</result>			
 		</action>
+
 				 		       	
 	</package>
 </struts>      
