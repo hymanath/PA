@@ -101,10 +101,14 @@
 				</div>		
 				<div id="noticeBoard">
 					<div id="noticeBoard_head">Announcements</div>
-					<div id="noticeBoard_body"></div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<div id="noticeBoard_body">&nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick = "openNewAnnouncementPopup()">Add New Announcement</a>
+					    &nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick = "openEditAnnouncement()">Edit Announcement</a>
+					</div>
 					<div id="noticeBoard_footer"></div>
 				</div>
 				
+			
 			</div>
 
 			<div id="dashBoardCenterlayoutDiv">
