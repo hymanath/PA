@@ -61,6 +61,7 @@ public class Registration implements java.io.Serializable {
 	 private Set<InfluencingPeople> influencingPeople = new HashSet<InfluencingPeople>(0);
 	 private Registration parentUser;
 	 private Set<Registration> subUsers = new HashSet<Registration>(0);
+	 private Set<UserAnnouncement> userAnnouncement = new HashSet<UserAnnouncement>(0);
 	
 
 	public Registration() {
@@ -409,6 +410,17 @@ public class Registration implements java.io.Serializable {
 	public void setSubUsers(Set<Registration> subUsers) {
 		this.subUsers = subUsers;
 	}
+
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserAnnouncement> getUserAnnouncement() {
+		return userAnnouncement;
+	}
+
+	public void setUserAnnouncement(Set<UserAnnouncement> userAnnouncement) {
+		this.userAnnouncement = userAnnouncement;
+	}
+	
 	
 	
 }
