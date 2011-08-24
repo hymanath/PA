@@ -233,6 +233,16 @@
 								   }
 								   hideBusyImgWithId("electionYearSelectForAssets");
 								}
+								else if(jsObj.task == "getAnnouncementDetailsByAnnosId")
+								{alert("SUCCESS");
+                                   if(myResults != null)
+								   {  
+									   buildAnnouncementDetails(myResults);
+
+								   }
+								   
+								}
+
 							}catch (e) {   
 							  // 	alert("Invalid JSON result" + e);   
 							}  
@@ -244,8 +254,24 @@
  		               };
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}	
+	}
+	function buildAnnouncementDetails(myResults){
+               alert("ok");
+        var divElmt = document.getElementById("AnnouncementDiv");
+		var str = '';
+		var divElmt = document.getElementById("constituencyAnnouncementDiv_Body");
 
+		for(var i=0;i<myResults.length;i++)
+		{
+			str += 'anouncement : '+myResults[i].title+' '
+			+myResults[i].discription+' by  '+myResults[i].firstName+' '
+			+myResults[i].lastName;
+
+			
+		}
+		divElmt.innerHTML= str;
+
+	}
 	
     function buildElectionYearsWithAssets(myResults)
 	{
@@ -1250,6 +1276,10 @@ function hideZptcOrMptcDiv(election)
 
 						<div id="constituencyPageRightMapDiv" class="contentDivClass">
 							<div id="map_canvas"></div>
+							<div id="constituencyAnnouncementDiv">
+							    <div id="constituencyAnnouncementDiv_Head"></div>
+							     <div id="constituencyAnnouncementDiv_Body"></div>
+							</div>
 											
 							<div id="constituencyPeopleConnectDiv">
 								<div id="constituencyPeopleConnectDiv_Head"></div>
