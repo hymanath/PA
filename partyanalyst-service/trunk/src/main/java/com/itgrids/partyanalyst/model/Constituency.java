@@ -70,7 +70,10 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupWardRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<LocalGroupRegion> localGroupParliamentConstRegion = new HashSet<LocalGroupRegion>(0);
 	private LocalElectionBodyWard localElectionBodyWard;
+	private Set<UserConstituencyScope> userConstituencyScope = new HashSet<UserConstituencyScope>(0);
 	// Constructors
+
+	
 
 	/** default constructor */
 	public Constituency() {
@@ -360,6 +363,16 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setLocalGroupParliamentConstRegion(
 			Set<LocalGroupRegion> localGroupParliamentConstRegion) {
 		this.localGroupParliamentConstRegion = localGroupParliamentConstRegion;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	public Set<UserConstituencyScope> getUserConstituencyScope() {
+		return userConstituencyScope;
+	}
+
+	public void setUserConstituencyScope(
+			Set<UserConstituencyScope> userConstituencyScope) {
+		this.userConstituencyScope = userConstituencyScope;
 	}
 	
 	
