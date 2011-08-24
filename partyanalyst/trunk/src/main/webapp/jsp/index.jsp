@@ -100,10 +100,12 @@
 					</table>					
 				</div>		
 				<div id="noticeBoard">
-					<div id="noticeBoard_head">Announcements</div>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<div id="noticeBoard_body">&nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick = "openNewAnnouncementPopup()">Add New Announcement</a>
-					    &nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick = "openEditAnnouncement()">Edit Announcement</a>
+					<div id="noticeBoard_head">Announcements</div><BR>
+					<div style="padding-left:10px;">
+						<Table>
+						<tr><td><a href="javascript:{}" onclick = "openNewAnnouncementPopup()">Add New Announcement</a></td></tr>
+					    <tr><td><a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></td></tr>
+						</Table>
 					</div>
 					<div id="noticeBoard_footer"></div>
 				</div>
