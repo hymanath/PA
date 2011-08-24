@@ -1391,12 +1391,11 @@ function openSubUserRegPopup()
 }
 function openNewAnnouncementPopup()
 {
-	var task = "new";
-	var browser = window.open("newAnnouncementAction.action?windowTask="+task,"announcementPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
-	browser.focus();
+	var newAnnouncementBrowser = window.open("newAnnouncementAction.action?windowTask=new","addNewAnnouncement","scrollbars=yes,height=600,width=600,left=200,top=200");
+	newAnnouncementBrowser.focus();
 }
 function openEditAnnouncement()
 {
-	var browser = window.open("openEditAnnouncementAction.action","editAnnouncement","scrollbars=yes,height=600,width=1000,left=200,top=200");
-	browser.focus();
+	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+	editAnnouncementbrowser.focus();
 }
