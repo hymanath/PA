@@ -202,6 +202,9 @@
 				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
 				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
 				<value>com.itgrids.partyanalyst.model.UserTracking</value>
+				<value>com.itgrids.partyanalyst.model.Announcement</value>
+				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
+				<value>com.itgrids.partyanalyst.model.UserConstituencyScope</value>
 		 </list>
 		</property>
 	</bean>
@@ -992,5 +995,14 @@
 	<bean id="problemActivityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
+	<bean id="announcementsDao" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	<bean id="userConstituencyScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAnnouncementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAnnouncementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>
