@@ -1726,9 +1726,38 @@ function getWardWiseElectionResults(type,value)
 	
 	callAjax(jsObj,url);
 }
+function getAnnouncementDetails(constituencyId){
+
+	var jsObj=
+	{		
+		constituencyId:constituencyId,
+		task:"getAnnouncementDetailsByAnnosId"					
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAnnouncementDetailsAction.action?"+rparam;						
+	
+	callAjax(jsObj,url);
+
+}
+function buildConstituencyAnnouncementWindow(){
+	
+	var divElmtHead = document.getElementById("constituencyAnnouncementDiv_Head");
+	var divElmtBody = document.getElementById("constituencyAnnouncementDiv_Body");
+      divElmtHead.innerHTML = "<center>Announcement Details</center>";
+    var bodyStr='';
+	bodyStr+='<div id="AnnouncementDiv"> ';
+	bodyStr+='<span style="position:relative;left:5px;top:-5px;">   </span>';
+	bodyStr+='</div>';
+	bodyStr+='<div id="connectedPersonsDiv">';
+	bodyStr+='<table width="100%">';
+	divElmtBody.innerHTML= bodyStr;
+	getAnnouncementDetails(constituencyPageMainObj.constituencyInfo.constituencyId);
+}
 
 function initializeConstituencyPage()
 {	    
+	buildConstituencyAnnouncementWindow();
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
