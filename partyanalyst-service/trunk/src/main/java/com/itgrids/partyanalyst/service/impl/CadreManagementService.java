@@ -2167,7 +2167,7 @@ public class CadreManagementService {
 			} else if ("DISTRICT".equals(level)) {
 				levelValue = getDistrictName(new Long(levelValueID));
 			} else if ("CONSTITUENCY".equals(level) || "WARD".equals(level) ) {
-				levelValueID =levelValueID.substring(1);
+				//levelValueID =levelValueID.substring(1);
 				levelValue = getConstituencyName(new Long(levelValueID));
 			} else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));

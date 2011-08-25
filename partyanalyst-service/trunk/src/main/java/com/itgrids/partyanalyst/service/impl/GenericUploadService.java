@@ -971,6 +971,7 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		if(log.isDebugEnabled())
 			log.debug("Check And Set Cell Data To VO ..");
+		Boolean isCadreDetails = true;
 		
 		try{
 		if(dataCell != null && dataCell.getCellType() != HSSFCell.CELL_TYPE_BLANK){
@@ -981,8 +982,11 @@ public class GenericUploadService implements IGenericUploadService {
 			
 			//using reflection mechanism to set data to appropriate fields in VO
 			Class cls   = this.genericUploadDataVO.getClass();
-			Field field = cls.getField(header);
 			
+			//if header details are not region details then process and set to VO
+			/*else{
+				Field field = cls.getField(header);
+			}*/
 			
 			//check data type in cell
 			switch(dataCell.getCellType()){
@@ -1013,17 +1017,23 @@ public class GenericUploadService implements IGenericUploadService {
 			
 			}
 			
-			//check and update booth and ward/mandal details
+			//if header details are region details then check and update booth and ward/mandal details
 			if(header.equalsIgnoreCase(IConstants.TEHSIL) || header.equalsIgnoreCase(IConstants.MANDAL) ||
 					header.equalsIgnoreCase(IConstants.WARD) || header.equalsIgnoreCase(IConstants.BOOTH)){
 				
 				getRegionDetailsByRegionName(header,cellValueToSave);
+				isCadreDetails = false;
 			}
 			
+						
 			//save cell data to VO appropriate field
-			else if(!"".equalsIgnoreCase(cellValueToSave))
+			if(!"".equalsIgnoreCase(cellValueToSave) && isCadreDetails){
+				
+				Field field = cls.getField(header);
 				field.set(this.genericUploadDataVO, cellValueToSave);
+			}
 		}
+		
 		}catch(Exception ex){
 			throw ex;
 		}
