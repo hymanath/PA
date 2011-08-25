@@ -1391,11 +1391,11 @@ function openSubUserRegPopup()
 }
 function openNewAnnouncementPopup()
 {
-	var newAnnouncementBrowser = window.open("newAnnouncementAction.action?windowTask=new","addNewAnnouncement","scrollbars=yes,height=600,width=600,left=200,top=200");
+	var newAnnouncementBrowser = window.open("newAnnouncementAction.action?windowTask=new","addNewAnnouncement","scrollbars=yes,height=550,width=500,left=200,top=200");
 	newAnnouncementBrowser.focus();
 }
 function openEditAnnouncement()
 {
-	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=550,width=500,left=200,top=200");
 	editAnnouncementbrowser.focus();
 }
