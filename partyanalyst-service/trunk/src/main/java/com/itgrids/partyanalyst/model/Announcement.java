@@ -25,7 +25,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Announcement extends BaseModel implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private Long announcementsId;
+	private Long announcementId;
 	private String title;
 	private String discription;
 	private Date fromDate ;
@@ -37,10 +37,10 @@ public class Announcement extends BaseModel implements java.io.Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "announcements_id", unique = true, nullable = false)
 	public Long getAnnouncementsId() {
-		return announcementsId;
+		return announcementId;
 	}
-	public void setAnnouncementsId(Long announcementsId) {
-		this.announcementsId = announcementsId;
+	public void setAnnouncementsId(Long announcementId) {
+		this.announcementId = announcementId;
 	}
 	
 	@Column(name = "title" , length = 150)
