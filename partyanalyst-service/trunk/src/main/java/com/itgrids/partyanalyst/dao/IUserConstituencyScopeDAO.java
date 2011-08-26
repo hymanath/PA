@@ -9,7 +9,10 @@ import com.itgrids.partyanalyst.model.UserConstituencyScope;
 
 public interface IUserConstituencyScopeDAO extends GenericDao<UserConstituencyScope, Long>{
 	
-	public List findAnnouncementsByConstituencyId(Long constituencyId,Date date);
-	public List getConstituencyId(long announcementId);
+	public List<Object[]> findAnnouncementsByConstituencyId(Long constituencyId,Date date);
+	
+	public List<Object[]> getConstituencyId(long announcementId);
+	
+	public List<UserConstituencyScope> getUserConstituencyScopeByAnnouncementId(Long announcementId);
 
 }
