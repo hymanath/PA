@@ -1,16 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.UserConstituencyScope;
 
 public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -23,7 +18,7 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 
 	
 	
-
+/*
       @Test
      public void testConstituencyId(){
     	  List annousDetails =  userConstituencyScopeDAO.getConstituencyId(60L);
@@ -38,5 +33,11 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
     			
     			System.out.println(o[3].toString());
     			}
-}
+}*/
+	
+	public void testGetUserConstituencyScopeByAnnouncementId()
+	{
+		List<UserConstituencyScope> list = userConstituencyScopeDAO.getUserConstituencyScopeByAnnouncementId(1l);
+		System.out.println(list.size());
+	}
 }
