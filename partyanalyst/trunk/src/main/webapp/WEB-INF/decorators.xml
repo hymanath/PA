@@ -65,6 +65,7 @@
 		<pattern>/candidateStrenthsAction*</pattern>
 		<pattern>/getMediaOpenionsAction*</pattern>
 		<pattern>/newAnnouncementAction*</pattern>
+		<pattern>/announcementSaveAction*</pattern>
 		<pattern>/openEditAnnouncementAction*</pattern>
 		<pattern>/editAnnouncementPageAction*</pattern>
 	</excludes>  
