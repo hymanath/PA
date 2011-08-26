@@ -12,9 +12,11 @@ public class AnnouncementVO implements Serializable{
     private String toDate;
     private Long userId;
     private Long constituency;
+    private String constituencyName;
     private Long state;
     private String windowTask;
     private Long announcementId;
+    private String type;
        
     public Long getState() {
 		return state;
@@ -70,6 +72,18 @@ public class AnnouncementVO implements Serializable{
 	}
 	public void setWindowTask(String windowTask) {
 		this.windowTask = windowTask;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 		    
 }
