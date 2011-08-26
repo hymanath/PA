@@ -1,49 +1,75 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class AnnouncementVO {
-	    private String title;
-	    private String message;
-	    private String fromdate;
-	    private String todate;
-	    private long userId;
-	    private long constituencyId;
-		public String getTitle() {
-			return title;
-		}
-		public void setTitle(String title) {
-			this.title = title;
-		}
-		public String getMessage() {
-			return message;
-		}
-		public void setMessage(String message) {
-			this.message = message;
-		}
-		public String getFromdate() {
-			return fromdate;
-		}
-		public void setFromdate(String fromdate) {
-			this.fromdate = fromdate;
-		}
-		public String getTodate() {
-			return todate;
-		}
-		public void setTodate(String todate) {
-			this.todate = todate;
-		}
-		public long getUserId() {
-			return userId;
-		}
-		public void setUserId(long userid) {
-			this.userId = userId;
-		}
-		public long getConstituencyId() {
-			return constituencyId;
-		}
-		public void setConstituencyId(long constituencyId) {
-			this.constituencyId = constituencyId;
-		}
-	    
+
+public class AnnouncementVO implements Serializable{
+		
+	private static final long serialVersionUID = 1L;
+	private String title;
+    private String message;
+    private String fromDate;
+    private String toDate;
+    private Long userId;
+    private Long constituency;
+    private Long state;
+    private String windowTask;
+    private Long announcementId;
+       
+    public Long getState() {
+		return state;
+	}
+	public void setState(Long state) {
+		this.state = state;
+	}
+	public Long getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Long constituency) {
+		this.constituency = constituency;
+	}
+    
+    public Long getAnnouncementId() {
+		return announcementId;
+	}
+	public void setAnnouncementId(Long announcementId) {
+		this.announcementId = announcementId;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getWindowTask() {
+		return windowTask;
+	}
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+		    
 }
