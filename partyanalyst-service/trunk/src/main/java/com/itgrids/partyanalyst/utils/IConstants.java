@@ -216,6 +216,7 @@ public interface IConstants {
     public final static String User_Groups = "User Groups";
     public final static String Cadre_Management = "Cadre Management";
     public final static String Influencing_People ="Influencing People";
+    public final static String PROBLEM_MANAGEMENT = "Problem Managemet";
     
     public static final String BYE_ELECTIONS_STATIC_PARTIES = "'INC','PRP','TDP','TRS','BJP','CPM','CPI'";
     
