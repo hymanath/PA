@@ -14,9 +14,9 @@ public class UserAnnouncementDAO extends GenericDaoHibernate<UserAnnouncement, L
 		super(UserAnnouncement.class);
 	}
 
-	public List findAnnouncementDetailsByUserId(long userId){
+	public List<Object[]> findAnnouncementDetailsByUserId(long userId){
 		
-	return	getHibernateTemplate().find("select model.announcement.announcementsId,model.announcement.title" +
+	return	getHibernateTemplate().find("select model.announcement.announcementId,model.announcement.title" +
 				",model.announcement.discription,model.announcement.fromDate,model.announcement.toDate " +
 				"from UserAnnouncement model where model.user.registrationId = ?",userId);
 	}

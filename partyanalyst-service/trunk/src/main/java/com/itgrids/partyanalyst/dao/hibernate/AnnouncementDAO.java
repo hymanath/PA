@@ -35,9 +35,9 @@ public class AnnouncementDAO extends GenericDaoHibernate<Announcement, Long> imp
 		
 			
 		return getHibernateTemplate().find("select model.title,model.discription," +
-				"model.userAnnouncements.user.firstName,model.userAnnouncements.user.middleName," +
-				"model.userAnnouncements.user.lastName FROM Announcement model WHERE " +
-				"model.userAnnouncements.userConstituencyScope.constituency.constituencyId ="+constituencyId);
+				"model.userAnnouncement.user.firstName,model.userAnnouncement.user.middleName," +
+				"model.userAnnouncement.user.lastName FROM Announcement model WHERE " +
+				"model.userAnnouncement.userConstituencyScope.constituency.constituencyId ="+constituencyId);
 			
 	}
 	
