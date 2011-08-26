@@ -2,20 +2,13 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
-import com.itgrids.partyanalyst.dao.IAnnouncementsDao;
+import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 
 public class AnnouncementDAOHibernateTest extends BaseDaoTestCase{
-	private IAnnouncementsDao announcementsDao;
+	private IAnnouncementDAO announcementDAO;
 	
-
-	public void setAnnouncementsDao(IAnnouncementsDao announcementsDao) {
-		this.announcementsDao = announcementsDao;
+	public void setAnnouncementDAO(IAnnouncementDAO announcementDAO) {
+		this.announcementDAO = announcementDAO;
 	}
-
-//	@Test
-//	public void testAnnouncement(){
-//		announcementsDao.deleteAnnouncement(62L);
-//}
-	
 
 }
