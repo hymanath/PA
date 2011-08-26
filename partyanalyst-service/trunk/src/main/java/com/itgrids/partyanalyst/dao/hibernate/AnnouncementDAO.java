@@ -8,7 +8,7 @@ import java.util.Calendar;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.IAnnouncementsDao;
+import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 import com.itgrids.partyanalyst.dto.AnnouncementResultsVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Announcement;
@@ -18,9 +18,9 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 import java.text.SimpleDateFormat;
 
-public class AnnouncementsDAO extends GenericDaoHibernate<Announcement, Long> implements IAnnouncementsDao {
+public class AnnouncementDAO extends GenericDaoHibernate<Announcement, Long> implements IAnnouncementDAO {
 
-	public AnnouncementsDAO() {
+	public AnnouncementDAO() {
 		super(Announcement.class);
 	}
 	
