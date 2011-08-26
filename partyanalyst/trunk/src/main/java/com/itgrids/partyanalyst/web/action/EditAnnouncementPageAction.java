@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AnnouncementInfo;
 import com.itgrids.partyanalyst.dto.AnnouncementResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IAnnocementsService;
+import com.itgrids.partyanalyst.service.IAnnouncementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -31,17 +31,13 @@ private String windowTask;
 private ServletContext context;
 private HttpServletRequest request;
 private HttpSession session;
-private IAnnocementsService annocementsService;
+private IAnnouncementService annocementService;
 private AnnouncementInfo announcementInfo;
 private List<SelectOptionVO> statesList;
 private IStaticDataService staticDataService;
 private IRegionServiceData regionServiceDataImp;
 private List<SelectOptionVO> constituenciesList;
 private String task;
-
-
-
-
 
 public String getTask() {
 	return task;
@@ -79,11 +75,11 @@ public AnnouncementInfo getAnnouncementInfo() {
 public void setAnnouncementInfo(AnnouncementInfo announcementInfo) {
 	this.announcementInfo = announcementInfo;
 }
-public IAnnocementsService getAnnocementsService() {
-	return annocementsService;
+public IAnnouncementService getAnnocementsService() {
+	return annocementService;
 }
-public void setAnnocementsService(IAnnocementsService annocementsService) {
-	this.annocementsService = annocementsService;
+public void setAnnocementsService(IAnnouncementService annocementService) {
+	this.annocementService = annocementService;
 }
 public long getAnnouncementId() {
 	return announcementId;
@@ -125,33 +121,33 @@ public Object getModel() {
 }
 
 public void prepare() throws Exception {
-	session = request.getSession(false);
-	announcementId =  Long.parseLong(request.getParameter("announcementId"));
-	
-	announcementInfo = annocementsService.getAnnouncementDetailsByAnnouncementId(announcementId);
-	List annousDetails = annocementsService.getAnnouncementDetails(announcementId);
-	if(annousDetails.size()>0){
-	Object[] o	= (Object[])(annousDetails.get(0));
-	
-	announcementInfo.setConstituency((Long)o[0]);
-	System.out.println((Long)o[0]);
-	System.out.println(o[1].toString());
-	if((o[2].toString()).equals("Assembly")){
-		
-	
-	announcementInfo.setState((Long)o[3]);
-	constituenciesList =  staticDataService.getConstituenciesByElectionTypeAndStateId(2L, (Long)o[3]).getConstituencies();
-	System.out.println(o[3].toString());
-	}
-	else{
-		constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
-	}
-		
-	
-	System.out.println(o[2].toString());
-	request.setAttribute("type",o[2].toString());
-	session.setAttribute("constituencyid",(Long)o[0]);
-	}
+//	session = request.getSession(false);
+//	announcementId =  Long.parseLong(request.getParameter("announcementId"));
+//	
+////	announcementInfo = annocementService.getAnnouncementDetailsByAnnouncementId(announcementId);
+////	List annousDetails = annocementService.getAnnouncementDetails(announcementId);
+//	if(annousDetails.size()>0){
+//	Object[] o	= (Object[])(annousDetails.get(0));
+//	
+//	announcementInfo.setConstituency((Long)o[0]);
+//	System.out.println((Long)o[0]);
+//	System.out.println(o[1].toString());
+//	if((o[2].toString()).equals("Assembly")){
+//		
+//	
+//	announcementInfo.setState((Long)o[3]);
+//	constituenciesList =  staticDataService.getConstituenciesByElectionTypeAndStateId(2L, (Long)o[3]).getConstituencies();
+//	System.out.println(o[3].toString());
+//	}
+//	else{
+//		constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
+//	}
+//		
+//	
+//	System.out.println(o[2].toString());
+//	request.setAttribute("type",o[2].toString());
+//	session.setAttribute("constituencyid",(Long)o[0]);
+//	}
 }
 
  
