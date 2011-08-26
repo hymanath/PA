@@ -153,31 +153,6 @@ function load()
    }
 }
 
-function updateAnnouncement()
-{
-    var announcementId = '${announcementInfo.announcementId}';
-	var constituency = document.getElementById("constituency");
-   	var constSelectElVal = constituency.options[constituency.selectedIndex].value ;
-    var title = document.forms["announcementForm"]["title"].value ;
-    var announcement = document.forms["announcementForm"]["announcement"].value ;
-    var fromDate = document.forms["announcementForm"]["fromDateField"].value ;
-    var toDate = document.forms["announcementForm"]["toDateField"].value ;
-    taskName = "updateannouncement";
-    
-	var jsObj= {
-				task			: taskName,
-				announcementId	: announcementId,
-				constituencyId	: constSelectElVal,
-                title			: title,
-				announcement	: announcement,
-				fromDate		: fromDate,
-				toDate			: toDate
-        };
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "updateAnnouncementAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
 
 function callAjax(jsObj,url)
 {
@@ -371,19 +346,19 @@ callAjax(jsObj,url);
 
 <DIV style="margin-left:10px;"><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
 
-<s:form name="announcementForm" action="announcementsAction" onsubmit="return validateForm()" method="post">
+<s:form name="announcementForm" action="announcementSaveAction" onsubmit="return validateForm()" method="post">
 <DIV id="errorMsgDivId" class="errorDiv"></DIV>
-<table width="360" border="0" cellspacing="0" cellpadding="0">
+
+<table>
 <tr>
 	<td colspan="2">
-		<div style="color: red;font-weight:bold;" id="errorMessageDiv">
+		<div style="color: red;">
 			<s:actionerror />
 			<s:fielderror />
-			<s:actionmessage/>						
 		</div>
 	</td>
 </tr>
-</table>
+</table>	
   
 <DIV style="width:480px;">
 <FIELDSET style="margin-left:10px;">
@@ -400,7 +375,7 @@ callAjax(jsObj,url);
 <Table>            
 	<TR>
 		<TD class="tdClass">Select State <font class="requiredFont"> * </font></TD>
-		<TD><s:select theme="simple" name="state" cssClass="annSelect" id="stateList_c" list="statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/></TD>
+		<TD><s:select theme="simple" name="state" cssClass="annSelect" id="stateList_c" list="#session.statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/></TD>
     </TR>
 </Table>
 </DIV>
@@ -408,7 +383,7 @@ callAjax(jsObj,url);
 <Table>
 	<TR>
         <TD class="tdClass">Select Constituency <font class="requiredFont"> * </font></TD>
-		<TD><s:select theme="simple" cssClass="annSelect" name="constituency" id="constituency" list="constituenciesList" listKey="id" listValue="name"/></TD>
+		<TD><s:select theme="simple" cssClass="annSelect" name="constituency" id="constituency" list="#session.constituenciesList" listKey="id" listValue="name"/></TD>
     </TR>     
  </Table>
 
@@ -434,12 +409,12 @@ callAjax(jsObj,url);
 <Table style="margin-top:15px;">
     <TR>
 		<TD class="tdClass">From Date <font class="requiredFont"> * </font> </TD>       
-        <TD><s:textfield id="fromDateField"  name="fromdate" readonly="true" onfocus="showCalendar(this.id)" theme="simple" size="20"/></TD>
+        <TD><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="showCalendar(this.id)" theme="simple" size="20"/></TD>
     </TR>
 	 
     <TR>
 		<TD class="tdClass">To Date <font class="requiredFont"> * </font></TD>
-		<TD><s:textfield id="toDateField"  name="todate" size="20"  readonly="true" onfocus="showCalendar(this.id)" theme="simple"/></TD>
+		<TD><s:textfield id="toDateField"  name="toDate" size="20"  readonly="true" onfocus="showCalendar(this.id)" theme="simple"/></TD>
     </TR>
 </Table>
 
@@ -451,6 +426,8 @@ callAjax(jsObj,url);
 </tr>
 </Table>
 
+<input type="hidden" id="windowTaskId" name="windowTask" value="${windowTask}"/>
+<input type="hidden" id="announcementId" name="announcementId" value="${announcementId}"/>
 </s:form>	     		
 
 </FIELDSET>
