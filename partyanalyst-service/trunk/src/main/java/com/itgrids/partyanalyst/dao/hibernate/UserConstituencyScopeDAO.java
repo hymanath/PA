@@ -17,26 +17,33 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 	public List<Object[]> findAnnouncementsByConstituencyId(Long constituencyId,Date date)
 	{
 		Object[] parameters = {constituencyId,date,date};
-		return getHibernateTemplate().find("select model.usersAnnouncement.announcement.title," +
-				"model.usersAnnouncement.announcement.discription," +
-				"model.usersAnnouncement.user.firstName,model.usersAnnouncement.user.middleName," +
-				"model.usersAnnouncement.user.lastName FROM UserConstituencyScope model WHERE " +
+		return getHibernateTemplate().find("select model.userAnnouncement.announcement.title," +
+				"model.userAnnouncement.announcement.discription," +
+				"model.userAnnouncement.user.firstName,model.userAnnouncement.user.middleName," +
+				"model.userAnnouncement.user.lastName FROM UserConstituencyScope model WHERE " +
 				"model.constituency.constituencyId =? " +
-				" and date(model.usersAnnouncement.announcement.toDate) >= ?  " +
-				"and date(model.usersAnnouncement.announcement.fromDate) <= ? "+
-						"order by model.usersAnnouncement.announcement.fromDate desc",parameters);
+				" and date(model.userAnnouncement.announcement.toDate) >= ?  " +
+				"and date(model.userAnnouncement.announcement.fromDate) <= ? "+
+						"order by model.userAnnouncement.announcement.fromDate desc",parameters);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencyId(long announcementId){
 	return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType FROM UserConstituencyScope model " +
-				" where model.usersAnnouncement.announcement.announcementsId = ? ",announcementId);
+				" where model.userAnnouncement.announcement.announcementId = ? ",announcementId);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<UserConstituencyScope> getUserConstituencyScopeByAnnouncementId(Long announcementId)
 	{
 		return getHibernateTemplate().find("select model from UserConstituencyScope model where model.userAnnouncement.announcement.announcementId = ? ",announcementId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAnnouncementDetailsByUserId(Long userId)
+	{
+		return	getHibernateTemplate().find("select model.userAnnouncement.announcement.announcementId,model.userAnnouncement.announcement.title,model.userAnnouncement.announcement.discription,model.userAnnouncement.announcement.fromDate, " +
+				" model.userAnnouncement.announcement.toDate,model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType from UserConstituencyScope model where model.userAnnouncement.user.registrationId = ? ",userId);
 	}
 	
 }
