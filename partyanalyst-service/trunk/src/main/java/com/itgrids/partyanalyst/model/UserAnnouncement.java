@@ -47,7 +47,7 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 		this.announcement = announcement;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "usersAnnouncement")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAnnouncement")
 	public Set<UserConstituencyScope> getUserConstituencyScope() {
 		return userConstituencyScope;
 	}
