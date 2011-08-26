@@ -995,7 +995,7 @@
 	<bean id="problemActivityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
-	<bean id="announcementsDao" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementsDAO" >
+	<bean id="announcementDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	<bean id="userConstituencyScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO" >
