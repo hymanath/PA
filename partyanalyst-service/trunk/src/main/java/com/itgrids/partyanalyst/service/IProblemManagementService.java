@@ -87,4 +87,8 @@ public interface IProblemManagementService {
 	public ResultStatus updateProblemStatusData(Long problemHistoryId,String status);
 	
 	public List<SelectOptionVO> getDepartmentsForADepartmentResolvingAreaScope(Long scopeId);
+	
+	public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId,Long pHistoryId);
+	
+	public ResultStatus sendSMS(Long userId,String message,String moduleName,String[] phoneNumbers);
 }
