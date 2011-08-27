@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
@@ -31,7 +32,7 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> statesList;
 	private IStaticDataService staticDataService;
 	JSONObject jObj = null;
-    private List<AnnouncementResultsVO> announcementInfo;
+    private List<AnnouncementVO> announcementInfo;
     private String task;
 	private HttpServletRequest request;
     private ServletContext context;
@@ -43,10 +44,19 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
     private List<SelectOptionVO> constituenciesList;
     private AnnouncementVO announcementVO; 
     private String announcementId; 
+    private IRegionServiceData regionServiceDataImp;
 
-    public IAnnouncementService getAnnouncementService() {
+    public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	
+	public IAnnouncementService getAnnouncementService() {
 		return announcementService;
 	}
+	
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
 	}
@@ -102,14 +112,6 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		this.task = task;
 	}
 
-	public List<AnnouncementResultsVO> getAnnouncementInfo() {
-		return announcementInfo;
-	}
-
-	public void setAnnouncementInfo(List<AnnouncementResultsVO> announcementInfo) {
-		this.announcementInfo = announcementInfo;
-	}
-	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -136,54 +138,63 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		this.context = context;
 	}
 
+	public List<AnnouncementVO> getAnnouncementInfo() {
+		return announcementInfo;
+	}
+	public void setAnnouncementInfo(List<AnnouncementVO> announcementInfo) {
+		this.announcementInfo = announcementInfo;
+	}
 	public String execute(){	
 	
 		session = request.getSession();
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
-		constituenciesList = new ArrayList<SelectOptionVO>();
+		
+		if(windowTask.equalsIgnoreCase(IConstants.NEW))
+		{
+			constituenciesList = new ArrayList<SelectOptionVO>();
+		}
+		else if(windowTask.equalsIgnoreCase(IConstants.UPDATE_EXISTING))
+		{
+			if(announcementVO.getType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,announcementVO.getState()).getConstituencies();
+			else if(announcementVO.getType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1L,1L);
+		}
 		SelectOptionVO selectOptionVO = new SelectOptionVO(0L,"Select Constituency");
 		constituenciesList.add(selectOptionVO);
 		session.setAttribute(ISessionConstants.STATES, statesList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituenciesList);
+		session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 		
 		return "success";
 	}
 	
 	public String getAnnouncementDetails(){
 
-		String param=null;		
-		param=request.getParameter("task");
-		
 		try {
-			jObj=new JSONObject(param);
+			jObj=new JSONObject(getTask());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		Long constituencyId = jObj.getLong("constituencyId");
 		announcementInfo = announcementService.getAllAnnouncementsInConstituency(constituencyId);
 	
-	     return Action.SUCCESS;
+	    return Action.SUCCESS;
 	}
 	
 	public String getAnnouncementByUserId(){
 
-		String param=null;		
-		param=request.getParameter("task");
-		System.out.println(getTask());
-		
 		try {
-			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			jObj=new JSONObject(getTask());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		session = request.getSession(false);
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		userId = regVO.getRegistrationID();
-		System.out.println(userId);
+		
 		announcementInfo = announcementService.getAllAnnouncementsByUserId(userId);
-		System.out.println(announcementInfo);
-		 return Action.SUCCESS;
+		return Action.SUCCESS;
 	}
 	
 	
@@ -194,11 +205,13 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 	public void prepare() throws Exception {
 		
 		windowTask = request.getParameter("windowTask");
-		if(windowTask.equalsIgnoreCase(IConstants.NEW))
+		announcementId = request.getParameter("announcementId");
+		
+		if(windowTask != null && windowTask.equalsIgnoreCase(IConstants.NEW))
 		{
 			announcementVO = new AnnouncementVO();
 		}
-		else if(windowTask.equalsIgnoreCase(IConstants.UPDATE_EXISTING))
+		else if(windowTask != null && windowTask.equalsIgnoreCase(IConstants.UPDATE_EXISTING))
 		{
 			if(Long.parseLong(announcementId) > 0l)
 			{

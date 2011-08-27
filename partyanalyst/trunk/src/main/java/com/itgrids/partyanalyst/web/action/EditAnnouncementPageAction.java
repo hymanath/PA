@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class EditAnnouncementPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware, ModelDriven, Preparable{
+public class EditAnnouncementPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 private long announcementId;
 private String windowTask;
 private ServletContext context;
@@ -104,52 +104,8 @@ public void setServletContext(ServletContext context) {
 	
 }
 public String execute(){
-	System.out.println(windowTask);			
-	
-	request.setAttribute("windowTask", windowTask);
-	request.setAttribute("announcementInfo", announcementInfo);
-	statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
-	session.setAttribute("constituenciesList",constituenciesList);
-	
 	
 	return "success";
 }
-
-public Object getModel() {
-	
-	return announcementInfo;
-}
-
-public void prepare() throws Exception {
-//	session = request.getSession(false);
-//	announcementId =  Long.parseLong(request.getParameter("announcementId"));
-//	
-////	announcementInfo = annocementService.getAnnouncementDetailsByAnnouncementId(announcementId);
-////	List annousDetails = annocementService.getAnnouncementDetails(announcementId);
-//	if(annousDetails.size()>0){
-//	Object[] o	= (Object[])(annousDetails.get(0));
-//	
-//	announcementInfo.setConstituency((Long)o[0]);
-//	System.out.println((Long)o[0]);
-//	System.out.println(o[1].toString());
-//	if((o[2].toString()).equals("Assembly")){
-//		
-//	
-//	announcementInfo.setState((Long)o[3]);
-//	constituenciesList =  staticDataService.getConstituenciesByElectionTypeAndStateId(2L, (Long)o[3]).getConstituencies();
-//	System.out.println(o[3].toString());
-//	}
-//	else{
-//		constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
-//	}
-//		
-//	
-//	System.out.println(o[2].toString());
-//	request.setAttribute("type",o[2].toString());
-//	session.setAttribute("constituencyid",(Long)o[0]);
-//	}
-}
-
- 
 
 }

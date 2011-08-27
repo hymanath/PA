@@ -10,7 +10,11 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -25,6 +29,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
     private IAnnouncementService announcementService;
     private HttpSession session;
     private AnnouncementVO announcementVO = new AnnouncementVO();
+    private AnnouncementVO resultVO;
     
     @RequiredStringValidator(type = ValidatorType.FIELD, message = "Title field is mandatory",shortCircuit=true)
 	public void setTitle(String title) {
@@ -110,6 +115,14 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		this.request = request;
 	}
 	
+	public AnnouncementVO getResultVO() {
+		return resultVO;
+	}
+
+	public void setResultVO(AnnouncementVO resultVO) {
+		this.resultVO = resultVO;
+	}
+
 	public String execute()
 	{
 		log.debug("Entered into execute method of Announcement Action:");
@@ -121,7 +134,19 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 			return "failure" ;
 		}
 		announcementVO.setUserId(regVO.getRegistrationID());
-		announcementService.saveAnnouncement(announcementVO);
+		
+		if(announcementVO.getWindowTask().equalsIgnoreCase(IConstants.UPDATE_EXISTING) 
+				&& (announcementVO.getAnnouncementId() == null || announcementVO.getAnnouncementId().equals(1L)))
+		{
+			announcementVO.setWindowTask(IConstants.NEW);
+			session.setAttribute(ISessionConstants.WINDOW_TASK,IConstants.NEW);
+		}
+		resultVO = announcementService.saveAnnouncement(announcementVO);
+		
+		if(resultVO != null && resultVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
+			return "failure" ;
+		else
+			announcementVO = new AnnouncementVO();
 		
 		return "success";
 	}
