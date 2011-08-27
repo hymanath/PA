@@ -88,8 +88,9 @@ public class AnnouncementService implements IAnnouncementService {
 		this.constituencyDAO = constituencyDAO;
 	}
 
-	public ResultStatus saveAnnouncement(final AnnouncementVO announcementVO) 
+	public AnnouncementVO saveAnnouncement(final AnnouncementVO announcementVO) 
 	{
+		final AnnouncementVO resultVO = new AnnouncementVO();
 		final ResultStatus resultStatus = new ResultStatus();
 	try{
 			
@@ -132,15 +133,18 @@ public class AnnouncementService implements IAnnouncementService {
 		userConstituencyScope = userConstituencyScopeDAO.save(userConstituencyScope);
 		
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		resultVO.setResultStatus(resultStatus);
+		resultVO.setType(announcementVO.getWindowTask());
 		
 		}
 		});
-		return resultStatus;
+		return resultVO;
 	}
 	catch(Exception e){
 		log.error("Exception Occured in saving Announcement & Exception is -- "+e);
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		return resultStatus;
+		resultVO.setResultStatus(resultStatus);
+		return resultVO;
 	}
 		
 	}
@@ -182,26 +186,41 @@ public class AnnouncementService implements IAnnouncementService {
 		return announcementResult;
 	}
 	
-	public List<AnnouncementResultsVO> getAllAnnouncementsByUserId(Long userId) {
-		   
-		List result = userAnnouncementDAO.findAnnouncementDetailsByUserId(userId);
-		List<AnnouncementResultsVO> resultList = new ArrayList<AnnouncementResultsVO>();
-		if(result != null && result.size()>0){
-			Iterator i =result.iterator();
-			while(i.hasNext()){
-				AnnouncementResultsVO announcementResultsVO = new AnnouncementResultsVO();
-				Object[] o =(Object[])i.next();
-				announcementResultsVO.setAnnouncementsId((Long)(o[0]));
-				announcementResultsVO.setTitle((String)o[1]);
-				announcementResultsVO.setDiscription((String)o[2]);
-				announcementResultsVO.setFromDate((Date)o[3]);
-				announcementResultsVO.setToDate((Date)o[4]);
-				resultList.add(announcementResultsVO);
-			}
-		}
+	public List<AnnouncementVO> getAllAnnouncementsByUserId(Long userId) {
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			List<AnnouncementVO> announcementsList = null; 
 			
-		
-		return resultList;
+			List<Object[]> result = userConstituencyScopeDAO.getAnnouncementDetailsByUserId(userId);
+			
+			if(result != null && result.size() > 0)
+			{
+				announcementsList = new ArrayList<AnnouncementVO>(0);
+				AnnouncementVO announcementVO = null;
+				for(Object[] param : result)
+				{
+					announcementVO = new AnnouncementVO();
+					
+					announcementVO.setAnnouncementId((Long)param[0]);
+					announcementVO.setTitle(param[1].toString());
+					announcementVO.setMessage(param[2].toString());
+					announcementVO.setFromDate(sdf.format((Date)param[3]));
+					announcementVO.setToDate(sdf.format((Date)param[4]));
+					announcementVO.setConstituency((Long)param[5]);
+					announcementVO.setConstituencyName(param[6].toString());
+					announcementVO.setType(param[7].toString());
+					
+					announcementsList.add(announcementVO);
+				}
+				return announcementsList;
+			}
+			else
+				return null;
+			
+		}catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public void updateAnnouncementDetails(final AnnouncementResultsVO announcementResultsVO){
@@ -217,7 +236,7 @@ public class AnnouncementService implements IAnnouncementService {
 				announcement.setFromDate(announcementResultsVO.getFromDate());
 				announcement.setToDate(announcementResultsVO.getToDate());
 				announcement = announcementDAO.save(announcement);
-				Set<UserAnnouncement> userAnnouncementset  = announcement.getUserAnnouncements();
+				Set<UserAnnouncement> userAnnouncementset  = announcement.getUserAnnouncement();
 				Iterator i = userAnnouncementset.iterator();
 				UserAnnouncement userAnnouncement = null;
 				while(i.hasNext()){
@@ -257,7 +276,7 @@ public class AnnouncementService implements IAnnouncementService {
 		    AnnouncementVO announcementVO = new AnnouncementVO();
 		    SimpleDateFormat formatter=  new SimpleDateFormat(IConstants.DATE_PATTERN);
 		    
-		    announcementVO.setAnnouncementId(announcement.getAnnouncementsId());
+		    announcementVO.setAnnouncementId(announcement.getAnnouncementId());
 		    announcementVO.setTitle(announcement.getTitle());
 		    announcementVO.setMessage(announcement.getDiscription());
 		    announcementVO.setFromDate(formatter.format(announcement.getFromDate()));
@@ -267,6 +286,7 @@ public class AnnouncementService implements IAnnouncementService {
 		    if(constDetails != null && constDetails.size() > 0)
 		    {
 		    	announcementVO.setConstituency((Long)constDetails.get(0)[0]);
+		    	announcementVO.setType(constDetails.get(0)[2].toString());
 		    	if(constDetails.get(0)[2].toString().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 		    	{
 		    		announcementVO.setState(constituencyDAO.getStateIdByConstituencyId((Long)constDetails.get(0)[0]).get(0));
