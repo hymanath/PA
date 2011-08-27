@@ -17,8 +17,15 @@ public class AnnouncementVO implements Serializable{
     private String windowTask;
     private Long announcementId;
     private String type;
+    private ResultStatus resultStatus;
        
-    public Long getState() {
+    public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public Long getState() {
 		return state;
 	}
 	public void setState(Long state) {
