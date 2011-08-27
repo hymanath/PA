@@ -56,9 +56,12 @@
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+
 <script type="text/javascript" >
-function build(){
-	  taskName = "editannouncement";
+
+function build()
+{
+   taskName = "editannouncement";
    var jsObj= {
                task : taskName	
         };
@@ -67,13 +70,16 @@ function build(){
 	var url = "editAnnouncementAction.action?"+rparam;						
 	callAjax(rparam,jsObj,url);
 }
-function callAjax(param,jsObj,url){
+
+function callAjax(param,jsObj,url)
+{
 var myResults;	
 var callback = {			
     success : function( o ) {
 		try {												
-			myResults =YAHOO.lang.JSON.parse(o.responseText);	if(task ="editannouncement"){
-				
+			myResults =YAHOO.lang.JSON.parse(o.responseText);	
+			if(task ="editannouncement")
+			{
 				buildAnnouncementDataTable(myResults);
 			}
 							
@@ -95,14 +101,15 @@ function buildAnnouncementDataTable(result)
  YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
-	var id= oRecord.getData("announcementsId");
+	var id= oRecord.getData("announcementId");
 	elLiner.innerHTML ="<a href='javascript:{}' onclick='openAnnouncementForm("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
 		
   };
 
   
   var AnnouncementResultColumnDefs = [ 		    	             
-		    	            {key:"title", label: "Title", sortable: true}, 
+		    	            {key:"title", label: "Title", sortable: true},
+							{key:"message", label: "Description", sortable: true},
 		    	           	{key:"fromDate", label: "FromDate", sortable: true},
 		    				{key:"toDate", label: "ToDate",sortable:true},
 							{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit}
@@ -125,7 +132,7 @@ function buildAnnouncementDataTable(result)
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "title","fromDate" , "toDate"]
+						 fields : [ "title","message","fromDate","announcementId","toDate"]
 					};
 
 		var AnnouncementSearchResultDataTable = new YAHOO.widget.DataTable("searchResult", AnnouncementResultColumnDefs,myDataSource, myConfigs);
@@ -133,26 +140,13 @@ function buildAnnouncementDataTable(result)
 		
 	}
 	
-function openAnnouncementForm(id){
-	var task = "update_existing";
-	var urlStr = "editAnnouncementPageAction.action?announcementId="+id+"&windowTask="+task;
-	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,left=200,top=200");	
+function openAnnouncementForm(id)
+{
+	var urlStr = "newAnnouncementAction.action?announcementId="+id+"&windowTask=update_existing";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=550,width=500,left=200,top=200");	
 	updateBrowser.focus();	
-    }
-/*function deleteAnnouncement(id){
-var ask = confirm("Do You want to delete");
-if (ask ==  true){
-		 taskName = "deleteannouncement";
-   var jsObj= {
-               task : taskName,	
-			   announcementId : id
-        };
+}
 
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "deleteAnnouncementPageAction.action?"+rparam;						
-	callAjax(rparam,jsObj,url);
-    }
-}*/
 
 </script>
 <body>

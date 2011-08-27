@@ -6,7 +6,12 @@
 
 <html>
 <head>
-  <TITLE>Add Announcements<TITLE>
+   <TITLE>
+  <c:if test="${sessionScope.windowTask == 'new' || sessionScope.windowTask == 'NEW'}">Add </c:if>
+  <c:if test="${sessionScope.windowTask == 'update_existing'}">Update </c:if>
+  Announcements
+  </TITLE>
+  
 	<!-- YUI Dependency files (Start) -->
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -57,7 +62,7 @@
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 
 <script type="text/javascript">
-var windowTask = '${windowTask}';
+var windowTask = '${sessionScope.windowTask}';
 
 function validateForm()
 {
@@ -132,20 +137,17 @@ function hideStateSelect()
 	document.getElementById("stateSelectDiv").style.display = 'none';
 }
 
-function load()
+function executeOnLoad()
 {
-	var currentTask = '${windowTask}';
-	var type = '${type}';
-	
-	if(currentTask =='update_existing')
+	if(windowTask =='update_existing')
 	{
-      if(type == 'Parliament')
+      if('${announcementVO.type}' == 'Parliament')
 	  { 
 		 document.getElementById("stateSelectDiv").style.display = 'none';
          document.getElementById("p_radio").checked = true;		
 	  }
 	 
-	  if(type == 'Assembly')
+	  if('${announcementVO.type}' == 'Assembly')
 	  {  
 	     document.getElementById("stateSelectDiv").style.display = 'block';
          document.getElementById("a_radio").checked = true;
@@ -330,14 +332,17 @@ callAjax(jsObj,url);
 </style>
 
 </head>
-<body onload="load()" class="bodyStyle">
+<body class="bodyStyle">
 
 <CENTER>
 <TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:15px;margin-bottom:10px;">
 	<TR>
 		<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
 		<TD>
-			<div class="announcementHeader"><span style="margin-top:2px;">Add Announcement</span></div>
+			<div class="announcementHeader"><span style="margin-top:2px;">
+			<c:if test="${sessionScope.windowTask == 'new'}">Add </c:if>
+			<c:if test="${sessionScope.windowTask == 'update_existing'}">Update </c:if> 
+			Announcement</span></div>
 		</TD>
 		<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>
 	</TR>
@@ -359,7 +364,14 @@ callAjax(jsObj,url);
 	</td>
 </tr>
 </table>	
-  
+
+<c:if test="${resultVO != null && resultVO.resultStatus.resultCode == 0}">
+	<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Announcement 
+	<c:if test="${resultVO.type == 'new' || resultVO.type == 'NEW'}">	Added </c:if>
+	<c:if test="${resultVO.type == 'update_existing'}"> Updated </c:if>
+	Successfully </DIV>
+</c:if>
+
 <DIV style="width:480px;">
 <FIELDSET style="margin-left:10px;">
 	<LEGEND><b>Announcement Details</b></LEGEND>
@@ -426,13 +438,14 @@ callAjax(jsObj,url);
 </tr>
 </Table>
 
-<input type="hidden" id="windowTaskId" name="windowTask" value="${windowTask}"/>
+<input type="hidden" id="windowTaskId" name="windowTask" value="${sessionScope.windowTask}"/>
 <input type="hidden" id="announcementId" name="announcementId" value="${announcementId}"/>
 </s:form>	     		
 
 </FIELDSET>
 </Div>
 <script>
+executeOnLoad();
 $(function()
 {
 	$("#fromDateField").datepicker();
