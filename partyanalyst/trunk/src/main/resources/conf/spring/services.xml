@@ -845,7 +845,7 @@
 	</bean>
 	
 	<bean name="announcementService" class="com.itgrids.partyanalyst.service.impl.AnnouncementService">
-	<property name="announcementsDao" ref="announcementsDao" />
+	<property name="announcementDAO" ref="announcementDAO" />
 	<property name="userAnnouncementDAO" ref="userAnnouncementDAO" />
 	<property name="userConstituencyScopeDAO" ref="userConstituencyScopeDAO" />
 	<property name="registrationDAO" ref="registrationDAO" />
