@@ -87,4 +87,6 @@ public interface ISessionConstants {
 	public static final String CONSTITUENCIES_PROB	= "costituenciesListForProb";
 	public static final String MANDALS_PROB 		= "mandalsListForProb";
 	public static final String VILLAGES_PROB 		= "villagesListForProb";
+	
+	public static final String WINDOW_TASK = "windowTask";
 }
