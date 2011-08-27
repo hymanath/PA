@@ -84,6 +84,7 @@
 			mptcElectionYears:[]
 	};
 	var totalZptcSeats,totalMptcSeats;
+	var hideMptcZptcDiv;
 	var counter = 0;
 	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
 	var mptcElectionTypeId=${mptcElectionId},zptcElectionTypeId=${zptcElectionId};
@@ -139,17 +140,28 @@
 									buildParliamentResults(myResults);			
 								}else if(jsObj.task == "getZptcElectionResults")
 								{		
-									if(myResults!= null &&  myResults.length>0){
-										buildZptcResults(myResults);	
+								
+								 if(myResults!= null && myResults.length>0){
+									
+									hideMptcZptcDiv=false;	buildZptcResults(myResults);	
 									}else{
+										
+										hideMptcZptcDiv =true;
 										hideZptcOrMptcDiv('ZPTC');
 									}	
 								}else if(jsObj.task == "getMptcElectionResults")
-								{		
+								{	
+									
 									if(myResults!= null &&  myResults.length>0){
-										buildMptcResults(myResults);
-									}else{
-										hideZptcOrMptcDiv('MPTC');	
+									hideMptcZptcDiv =false;	buildMptcResults(myResults);
+									}
+									else{
+									  if(hideMptcZptcDiv ==true){
+									var divElmt = document.getElementById("zptcMptcCompleteData");
+	divElmt.style.display = 'none';	}
+										else{
+										hideZptcOrMptcDiv('MPTC');
+										}
 									}	
 								}else if(jsObj.task == "getProblemDetails")
 								{									
@@ -1149,7 +1161,7 @@ function hideZptcOrMptcDiv(election)
 		divEle = document.getElementById('zptcPartyTrendsDetailsDiv');
 		document.getElementById('zptcCandidateLink').innerHTML ='';
 	}
-	var str = '<font color="red"><B>NO Data Available For This Selection</B></font>';
+	var str = '<font color="red"><B>No Data Available For This Selection</B></font>';
 	divEle.innerHTML = str;
 	
 }
