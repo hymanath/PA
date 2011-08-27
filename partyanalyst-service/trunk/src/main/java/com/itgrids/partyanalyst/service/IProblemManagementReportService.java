@@ -93,4 +93,7 @@ public interface IProblemManagementReportService {
 	public List<ProblemBeanVO> getDeptWiseProblemsCountInALocation(Long userId,Long impactedRegionId,Long locationId);
 	
 	public List<ProblemBeanVO> getDeptProblemsBasedOnStatusInARegion(Long userId,Long impactedRegionId,Long locationId,Long deptId,String status);
+	
+	public Long getLocationValue(long scopeId,Long value);
+		
 }
