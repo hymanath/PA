@@ -41,7 +41,8 @@
 		<property name="userEntitlementService" ref="userEntitlementService" />
 		<property name="registrationService" ref="registrationService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
-	</bean>											
+	</bean>	
+											
 	<bean id="villageBoothMapperAction" class="com.itgrids.partyanalyst.web.action.VillageBoothMapperAction" singleton="false">
 		<property name="boothMapperService" ref="boothMapperService" />
 	</bean>	
@@ -93,6 +94,7 @@
 		singleton="false" >
 		<property name="partyService" ref="partyService" />
 	</bean>
+	
 	<bean id="partyPerformanceJasperAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceJasperAction"
 		singleton="false" >
 	</bean>
@@ -117,30 +119,37 @@
 	<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
+	
 	<bean id="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction" singleton="false">
 		<property name="registrationService" ref="registrationService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" singleton="false">
 		<property name="constituencySearchService" ref="constituencySearchService" />
 		<property name="candidateSearchService" ref="candidateSearchService" />
 	</bean>
+	
 	<bean id="getSearchResultsAction" class="com.itgrids.partyanalyst.web.action.GetSearchResultsAction" singleton="false">
 		<property name="constituencySearchService" ref="constituencySearchService" />
 	</bean>
+	
 	<bean id="partyResultsAction" class="com.itgrids.partyanalyst.web.action.PartyResultsAction" singleton="false">
 		<property name="partyResultService" ref="partyResultService" />
 	</bean>
+	
 	<bean id="partyResultsCriteriaAction" class ="com.itgrids.partyanalyst.web.action.PartyResultsCriteriaAction" singleton="false">
 	   <property name="staticDataService" ref="staticDataService" />
 	   <property name="entitlementsHelper" ref="entitlementsHelper" />
 	   <property name="constituencySearchService" ref="constituencySearchService" />
 	</bean>
+	
 	<bean id="uploadExcelAction" class="com.itgrids.partyanalyst.web.action.UploadExcelAction"
 		singleton="false">
 		<property name="excelToDBService" ref="excelToDBService" />
 		<property name="uploadFormVo" ref="uploadFormVo" />
 	</bean> 
+	
 	<bean id="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction" singleton="false">
 		<property name="statePageService" ref="statePageService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
@@ -205,6 +214,7 @@
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		
 	</bean>
+	
 	<bean id="cadreRegisterPageAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterPageAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="staticDataService" ref="staticDataService" />
@@ -243,6 +253,7 @@
 	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
+	
 	<bean id="partyBoothResult2Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
@@ -270,6 +281,7 @@
 	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">		
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
+	
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
@@ -336,6 +348,7 @@
 	<bean id="sendMailToAdminAction" class="com.itgrids.partyanalyst.web.action.SendMailToAdminAction" singleton="false">	
 		<property name="mailService" ref="mailService"></property>	
 	</bean>
+	
 	<bean id="postArticleAction" class="com.itgrids.partyanalyst.web.action.PostArticleAction" singleton="false">	
 		<property name="mailService" ref="mailService"></property>	
 	</bean>
@@ -361,18 +374,22 @@
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
 		<property name="staticDataService" ref="staticDataService"></property>
 	</bean>
+	
 	<bean id="voterInfoAction" class="com.itgrids.partyanalyst.web.action.VoterInfoAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"></property>	
         <property name="problemManagementService" ref="problemManagementService"></property>	
 	</bean>
+	
 	<bean id="mptcElectionAction" class="com.itgrids.partyanalyst.web.action.MPTCElectionAction" singleton="false">
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 		<property name="mptcElectionService" ref="mptcElectionService"/>		
 		<property name="muncipleDataUploadService" ref="muncipleDataUploadService"/>	
 	</bean>
+	
 	<bean id="distPapersAction" class="com.itgrids.partyanalyst.web.action.DistPapersAction" singleton="false">
 		<property name="epaperService" ref="epaperService"/>
 	</bean>
+	
 	<bean id="getLatestNewsAction" class="com.itgrids.partyanalyst.web.action.GetLatestNewsAction" singleton="false">
 		<property name="epaperService" ref="epaperService"/>
 	</bean>
@@ -382,15 +399,19 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+	
 	<bean id="revenueVillageReportAction" class="com.itgrids.partyanalyst.web.action.RevenueVillageReportAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"/>
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
 	</bean>
+	
 	<bean id="hamletReportAction" class="com.itgrids.partyanalyst.web.action.HamletReportAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
 	</bean>
+	
 	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
 	</bean>
+	
 	<bean id="problemManagementReportAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementReportAction" singleton="false">
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
 		<property name="staticDataService" ref="staticDataService"/>
@@ -399,44 +420,54 @@
 		<property name="problemManagementService" ref="problemManagementService"/>
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
+	
 	<bean id="townshipPageAction" class="com.itgrids.partyanalyst.web.action.TownshipPageAction" singleton="false">			
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"></property>
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
 	</bean>
+	
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
 	    <property name="staticDataService" ref="staticDataService"/>
 		<property name="electionTrendzService" ref="electionTrendzService"/>
 	</bean>
+	
 	<bean id="constituencyElectionReportAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>	
+	
 	<bean id="villageBoothElectionMapAction" class="com.itgrids.partyanalyst.web.action.VillageBoothElectionMapAction" singleton="false">
 			<property name="villageBoothDataPopulationService" ref="villageBoothDataPopulationService" />
 			<property name="staticDataService" ref="staticDataService" />
 	</bean>	
+	
 	<bean id="townshipElectionResultsAction" class="com.itgrids.partyanalyst.web.action.TownshipElectionResultsAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="biElectionPageService" ref="biElectionPageService" />		
 	</bean>
+	
 	<bean id="constituencyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionResultsAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />			
 	</bean>
+	
 	<bean id="electionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.ElectionDetailsReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="stateRegionService" ref="stateRegionService" />
 			<property name="partyStrengthService" ref="partyStrengthService" />
 	</bean>
+	
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="electionAnalyzeService" ref="electionAnalyzeService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />		  
 	</bean>
+	
 	<bean id="alliancePartiesPageAction" class="com.itgrids.partyanalyst.web.action.AlliancePartiesPageAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 	</bean>
@@ -452,49 +483,60 @@
 	<bean id="statewiseElectionResultsComparisionToolAction" class="com.itgrids.partyanalyst.web.action.StatewiseElectionResultsComparisionToolAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>
+	
 	<bean id="commentsDataAction" class="com.itgrids.partyanalyst.web.action.CommentsDataAction" singleton="false">
 			<property name="commentsDataService" ref="commentsDataService" />
 	</bean>
+	
 	<bean id="electionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportAction" singleton="false">
 		<property name="analysisReportService" ref="analysisReportService" />
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+	
 	<bean id="partyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.PartyElectionResultsAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="partyElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.PartyElectionResultsAnalysisAction" singleton="false">
 		<property name="analysisReportService" ref="analysisReportService" />
 		<property name="commentsDataService" ref="commentsDataService" />		
 	</bean>
+	
 	<bean id="electionResultsAnalysisReportPopupAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportPopupAction" singleton="false">
 		<property name="analysisReportService" ref="analysisReportService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="indexAction" class="com.itgrids.partyanalyst.IndexAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="userGroupService" ref="userGroupService" />
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>	
 	</bean>
+	
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
 		<property name="countrySmsService" ref="countrySmsService" />
-	</bean>   
+	</bean>
+	   
 	<bean id="influencingPeopleRegistration" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="biElectionAction" class="com.itgrids.partyanalyst.web.action.BiElectionAction" singleton="false">
 	    <property name="biElectionPageService" ref="biElectionPageService" />
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="constituencyPageService" ref="constituencyPageService"/>
 	    <property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+	
 	<bean id="addNewProblemAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />		
 	</bean>
+	
 	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />				
 	</bean>
@@ -513,37 +555,46 @@
 	<bean id="revenueVillagePartyAllElecAction" class="com.itgrids.partyanalyst.web.action.RevenueVillagePartyAllElecAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />					
 	</bean>
+	
 	<bean id="userRegistrationInLandingAction" class="com.itgrids.partyanalyst.web.action.LandingAction" singleton="false">
 		<property name="loginService" ref="loginService" />								
 	</bean>
+	
 	<bean id="boothResultsForAllElectionsPopupAction" class="com.itgrids.partyanalyst.web.action.BoothResultsForAllElectionsPopupAction" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />						
 	</bean>
+	
 	<bean id="allBoothsResultsInTehsilAction" class="com.itgrids.partyanalyst.web.action.AllBoothsResultsInTehsilAction" singleton="false">
 		<property name="biElectionPageService" ref="biElectionPageService" />						
 	</bean>	
+	
 	<bean id="constituencyVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ConstituencyVotingTrendzAction" singleton="false">
 		<property name="biElectionPageService" ref="biElectionPageService" />
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="constituencyPageService" ref="constituencyPageService"/>
 	    <property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"/>
 	</bean>
+	
 	<bean id="mandalRevenueVillagesElecAction" class="com.itgrids.partyanalyst.web.action.MandalRevenueVillagesElecAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />		
 		<property name="biElectionPageService" ref="biElectionPageService" />					
 	</bean>
+	
 	<bean id="byeElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ByeElectionResultsAnalysisAction" singleton="false">
 		<property name="biElectionPageService" ref="biElectionPageService" />								
 	</bean>	
+	
 	<bean id="cadreSearchAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />	
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />					
 	</bean>
+	
 	<bean id="cadreSearchAjaxAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAjaxAction" singleton="false">		
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 		<property name="cadreManagementService" ref="cadreManagementService" />		
 	</bean>
+	
 	<bean id="cadreInfoAction" class="com.itgrids.partyanalyst.web.action.CadreInfoAction" singleton="false">				
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
@@ -555,19 +606,24 @@
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">			
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
+	
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">			
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="statePageService" ref="statePageService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 		<property name="problemManagementReportService" ref="problemManagementReportService" />			
 	</bean>
+	
 	<bean id="announcementPageAction" class="com.itgrids.partyanalyst.web.action.AnnouncementPageAction">
 	    <property name="staticDataService" ref="staticDataService" />
-	    <property name="annocementsService" ref="announcementService" />
+	    <property name="announcementService" ref="announcementService"/>
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 	</bean>
+	
 	<bean id="entitlementsHelper" class="com.itgrids.partyanalyst.helper.EntitlementsHelper" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
+	
 	<bean id="ecrComparedResultsAction" class="com.itgrids.partyanalyst.web.action.ECRComparedResultsAction" singleton="false">
 		<property name="electionComparisonReportService" ref="electionComparisonReportService" />
 	</bean>
@@ -595,6 +651,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
 	<bean id="viewFeaturesAction" class="com.itgrids.partyanalyst.web.action.ViewFeaturesAction" singleton="false">
 	</bean>
 	
@@ -604,6 +661,7 @@
 		
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
+	
 	<bean id="searchPartyAnalystAction" class="com.itgrids.partyanalyst.web.action.SearchPartyAnalystAction" singleton="false">		
 	</bean>	
 	
@@ -611,6 +669,7 @@
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="staticDataService" ref="staticDataService" />		
 	</bean>
+	
 	<bean id="createLocalGroupAction" class="com.itgrids.partyanalyst.web.action.CreateLocalGroupAction" singleton="false">
 	    <property name="influencingPeopleService" ref="influencingPeopleService" />
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
@@ -630,13 +689,16 @@
 	    <property name="constituencySearchService" ref="constituencySearchService" />
 	    <property name="candidateSearchService" ref="candidateSearchService" />
 	</bean>
+	
 	<bean id="commentsControlAdminAction" class="com.itgrids.partyanalyst.web.action.CommentsControlAdminAction" singleton="false">
 		<property name="commentsDataService" ref="commentsDataService" />				
 	</bean>
+	
 	<bean id="problemCompleteDetailsAction" class="com.itgrids.partyanalyst.web.action.ProblemCompleteDetailsAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="dataApprovalService" ref="dataApprovalService" />				
 	</bean>
+	
 	<bean id="dataApprovalAction" class="com.itgrids.partyanalyst.web.action.DataApprovalAction" singleton="false">
 		<property name="dataApprovalService" ref="dataApprovalService" />				
 	</bean>
@@ -644,6 +706,7 @@
 	<bean id="genericUploadAction" class="com.itgrids.partyanalyst.web.action.GenericUploadAction" singleton="false">
 	    <property name="genericUploadService" ref="genericUploadService" />
     </bean>
+    
     <bean id="problemApprovalAdminAction" class="com.itgrids.partyanalyst.web.action.ProblemApprovalAdminAction" singleton="false">
         <property name="dataApprovalService" ref="dataApprovalService"/>
     </bean>
@@ -659,11 +722,11 @@
 	 </bean>
 	
 	<bean id="userFeedbackSubmitAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackSubmitAction" singleton="false">
-	<property name="opinionPollService" ref="opinionPollService" />
+		<property name="opinionPollService" ref="opinionPollService" />
      </bean>
      
-     <bean id="feedbackAdminApprovalAction" class="com.itgrids.partyanalyst.web.action.FeedbackAdminApprovalAction" singleton="false">
-	<property name="opinionPollService" ref="opinionPollService" />
+    <bean id="feedbackAdminApprovalAction" class="com.itgrids.partyanalyst.web.action.FeedbackAdminApprovalAction" singleton="false">
+		<property name="opinionPollService" ref="opinionPollService" />
 	</bean>
 	
 	<bean id="footerLinksAction" class="com.itgrids.partyanalyst.web.action.FooterLinksAction" singleton="false">	
@@ -685,13 +748,15 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="voterReportService" ref="voterReportService" />
 	</bean>
+	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
-	<property name="annocementsService" ref="announcementService" />	
+		<property name="announcementService" ref="announcementService" />	
 	</bean>
+	
 	<bean id="editAnnouncementPageAction" class="com.itgrids.partyanalyst.web.action.EditAnnouncementPageAction" singleton="false">
-	<property name="annocementsService" ref="announcementService" />
-	 <property name="staticDataService" ref="staticDataService" />
-	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />		
+		<property name="announcementService" ref="announcementService" />
+	 	<property name="staticDataService" ref="staticDataService" />
+	 	<property name="regionServiceDataImp" ref="regionServiceDataImp" />		
 	</bean>
 </beans>	
 	
