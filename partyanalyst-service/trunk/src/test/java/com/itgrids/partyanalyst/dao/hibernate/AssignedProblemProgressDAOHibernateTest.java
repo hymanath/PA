@@ -1,15 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
-import com.itgrids.partyanalyst.model.AssignedProblemProgress;
-import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.model.Cadre;
 
 public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 
@@ -164,9 +160,51 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 		
-	public void testgetByCadreId()
+	/*public void testgetByCadreId()
 	{
 		List<AssignedProblemProgress> list = assignedProblemProgressDAO.getByCadreId(109l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetCadreForCadreProblemsInARegion()
+	{
+		String locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.district.districtId = 19";
+		List<Cadre> list = assignedProblemProgressDAO.getCadreForCadreProblemsInARegion(1l,locationStr);
+		System.out.println(list.size());
+		
+		for(Cadre cadre :list)
+		{
+			System.out.println(cadre.getCadreId());
+		}
+	}
+	
+	public void testGetCadreForCadreProblemsForAnUser()
+	{
+		List<Cadre> list = assignedProblemProgressDAO.getCadreForCadreProblemsForAnUser(1l);
+		System.out.println(list.size());
+		for(Cadre cadre :list)
+		{
+			System.out.println(cadre.getCadreId());
+		}
+	}*/
+	
+	/*public void testGetProblemStatusOfACadre()
+	{
+		List<Object> list = assignedProblemProgressDAO.getProblemStatusOfACadre(88l);
+		System.out.println(list.size());
+		
+		for(Object object : list)
+			System.out.println(object.toString());
+	}*/
+	
+	public void testGetCadreForCadreProblemsForAnUser()
+	{
+		List<Cadre> list = assignedProblemProgressDAO.getCadreForCadreProblemsForAnUser(1l);
+		System.out.println("--------------"+list.size());
+		
+		for(Cadre cadre :list)
+		{
+			System.out.println(cadre.getCadreId());
+		}
 	}
 }

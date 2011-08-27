@@ -37,7 +37,22 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetUserConstituencyScopeByAnnouncementId()
 	{
-		List<UserConstituencyScope> list = userConstituencyScopeDAO.getUserConstituencyScopeByAnnouncementId(1l);
+		List<UserConstituencyScope> list = userConstituencyScopeDAO.getUserConstituencyScopeByAnnouncementId(2l);
 		System.out.println(list.size());
 	}
+	
+	/*public void testGetAnnouncementDetailsByUserId()
+	{
+		List<Object[]> list = userConstituencyScopeDAO.getAnnouncementDetailsByUserId(1l);
+		System.out.println(list.size());
+		
+		for(Object[] objects : list)
+		{
+			System.out.println();
+			for(Object object : objects)
+			{
+				System.out.print("--- "+object.toString());
+			}
+		}
+	}*/
 }
