@@ -22,7 +22,7 @@ public class UserConstituencyScope extends BaseModel implements java.io.Serializ
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_constituency_scope", unique = true, nullable = false)
+	@Column(name = "user_constituency_scope_id", unique = true, nullable = false)
 	public Long getUserConstituencyScopeId() {
 		return userConstituencyScopeId;
 	}

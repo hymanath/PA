@@ -30,16 +30,16 @@ public class Announcement extends BaseModel implements java.io.Serializable{
 	private String discription;
 	private Date fromDate ;
 	private Date toDate;
-	private Set<UserAnnouncement> userAnnouncements = new HashSet<UserAnnouncement>(0);
+	private Set<UserAnnouncement> userAnnouncement = new HashSet<UserAnnouncement>(0);
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "announcements_id", unique = true, nullable = false)
-	public Long getAnnouncementsId() {
+	public Long getAnnouncementId() {
 		return announcementId;
 	}
-	public void setAnnouncementsId(Long announcementId) {
+	public void setAnnouncementId(Long announcementId) {
 		this.announcementId = announcementId;
 	}
 	
@@ -78,11 +78,11 @@ public class Announcement extends BaseModel implements java.io.Serializable{
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "announcement")
-	public Set<UserAnnouncement> getUserAnnouncements() {
-		return userAnnouncements;
+	public Set<UserAnnouncement> getUserAnnouncement() {
+		return userAnnouncement;
 	}
-	public void setUserAnnouncements(Set<UserAnnouncement> userAnnouncements) {
-		this.userAnnouncements = userAnnouncements;
+	public void setUserAnnouncement(Set<UserAnnouncement> userAnnouncement) {
+		this.userAnnouncement = userAnnouncement;
 	}
 	
 }
