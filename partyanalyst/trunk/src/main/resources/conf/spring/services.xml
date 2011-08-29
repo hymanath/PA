@@ -854,5 +854,9 @@
 	
 	</bean>
 	
+	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
+	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
+	<property name="registrationDAO" ref="registrationDAO" />
+	</bean>
 </beans>		
 		
