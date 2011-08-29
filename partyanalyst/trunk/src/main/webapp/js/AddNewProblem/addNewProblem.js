@@ -13,8 +13,10 @@ var hidden=1;
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 
 function getCurrentDate()
-{ 			
-	window.document.form.reportedDateField.value = date;
+{ 	
+	if(window.document.form.reportedDateField.value ==""){
+	  window.document.form.reportedDateField.value = date;
+	}
 	document.getElementById("nameText").focus();
 }
 
