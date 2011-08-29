@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -35,6 +36,7 @@ public class RegistrationService implements IRegistrationService{
 	private IStateDAO stateDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IAnanymousUserService ananymousUserService;
+	private IDateService dateService;
 	BaseDTO requestStatus = new BaseDTO();
 	private Long userID = null;
 
@@ -42,7 +44,13 @@ public class RegistrationService implements IRegistrationService{
 	private static final Logger log = Logger.getLogger(RegistrationService.class);
 	
 	
-	
+	public void setDateService(IDateService dateService) {
+		this.dateService = dateService;
+	}
+
+	public IDateService getDateService() {
+		return dateService;
+	}
 	public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
 	}
@@ -283,7 +291,9 @@ public class RegistrationService implements IRegistrationService{
 		registrationVO.setPhone(registration.getPhone());
 		registrationVO.setMobile(registration.getMobile());
 		registrationVO.setAddress(registration.getAddress());
+		if(registration.getDateOfBirth()!=null){
 		registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateOfBirth().toString()));
+		}
 		registrationVO.setAccessType(registration.getAccessType());
 		registrationVO.setAccessValue(registration.getAccessValue());
 		registrationVO.setFirstName(registration.getFirstName());
