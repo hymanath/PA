@@ -940,5 +940,24 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find(" from ProblemHistory model where " +
 				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getCompleteProblemDetailsBySearchString(String query){
+		
+		 return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problem,"+
+				 "model.problemLocation.problemAndProblemSource.problem.description,model.problemStatus.status,"+
+				 "model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
+				 "model.problemLocation.problemAndProblemSource.problemSource.informationSource,"+
+				 "model.problemLocation.problemImpactLevel.scope ,model.problemHistoryId from ProblemHistory model where "+query+" and model.isDelete is null and model.isApproved = 'true' group by model.problemLocation.problemAndProblemSource.problem.problem.problemId");
+	 }
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemDetailsByName(String name){
+		
+		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problem,"+
+				 "model.problemLocation.problemAndProblemSource.problem.description,model.problemStatus.status,"+
+				 "model.problemLocation.problemAndProblemSource.problem.identifiedOn FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userName ="+name+" or "+
+				 "model.problemLocation.problemAndProblemSource.externalUser.username="+name+" or "+
+				 "model.problemLocation.problemAndProblemSource.problemExternalSource.name="+name+" "+
+				 "and model.isDelete is null and model.isApproved = 'true' ");
+	}
 }
