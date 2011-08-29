@@ -81,7 +81,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String problemStatus;
 	private String recentActivity;
 	private List<Object> statusList;
+	private String problemScope;
 	
+
+	public String getProblemScope() {
+		return problemScope;
+	}
+
+	public void setProblemScope(String problemScope) {
+		this.problemScope = problemScope;
+	}
 
 	public List<Object> getStatusList() {
 		return statusList;
