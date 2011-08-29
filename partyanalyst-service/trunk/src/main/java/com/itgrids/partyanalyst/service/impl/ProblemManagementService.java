@@ -591,8 +591,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					if(problemBeanVO.getIsParliament())
 						problemCompleteLocation.setParliamentConstituency(constituencyDAO.get(problemBeanVO.getPConstituencyId()));
 					/*if(!problemBeanVO.getIsParliament())
-						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));*/
-					if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
+						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
+					*/if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
 						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
 					if(problemBeanVO.getConstituency() != null && !"0".equals(problemBeanVO.getConstituency()))
 						problemCompleteLocation.setConstituency(constituencyDAO.get(new Long(problemBeanVO.getConstituency())));
@@ -3452,6 +3452,31 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 	 return departments;
 	}
+	public ProblemBeanVO getProblemCompleteInfoForAUserBasedOnHistoryId(Long problemHistoryId){
+		
+		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		List<ProblemHistory> problemHistory= problemHistoryDAO.getProblemHistoryBasedOnId(problemHistoryId);
+		ProblemHistory problemHistoryObj ;
+		if(problemHistory !=null){
+			
+			problemHistoryObj = problemHistory.get(0);
+			
+			problemBeanVO.setProblem(problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+			problemBeanVO.setDescription(problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+			problemBeanVO.setProblemScope(problemHistoryObj.getProblemLocation().getProblemImpactLevel().getScope());
+			problemBeanVO.setState(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getState().getStateName());
+			problemBeanVO.setDistrict(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getDistrict().getDistrictName());
+			problemBeanVO.setConstituency(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getConstituency().getName());
+			Date iDateOfAddNewProb = problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+			Date eDateOfAddNewProb = problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
+			problemBeanVO.setReportedDate(sdf.format(iDateOfAddNewProb));
+			problemBeanVO.setExistingFrom(sdf.format(eDateOfAddNewProb));
+			problemBeanVO.setProbSource(problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblemSource().getInformationSource());
+						
+			}
+		return problemBeanVO;
+	}
+	
 	public String getRefNo(String str,String type){
 		boolean i=true;
 		try{
