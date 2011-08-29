@@ -44,7 +44,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String village;
 	private String booth;
 	private String reportedDate;
-	private String existingFromDate;
+	private String existingFrom;
 	private String probSource;
 	private String name;
 	private String mobile;
@@ -201,11 +201,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.problemBeanVO.setReportedDate(reportedDate);
 	}
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Existing From Date",shortCircuit=true)
-	public String getExistingFromDate() {
+	public String getExistingFrom() {
 		return problemBeanVO.getExistingFrom();
 	}
 
-	public void setExistingFromDate(String existingFromDate) {
+	public void setExistingFrom(String existingFromDate) {
 		this.problemBeanVO.setExistingFrom(existingFromDate);
 	}
 
