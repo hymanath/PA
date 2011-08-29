@@ -139,8 +139,16 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemCompleteLocationDAO problemCompleteLocationDAO;
 	private IProblemActivityDAO problemActivityDAO;
 	private IStringUtilService stringUtilService;
+	private String refNo=null;
 	
-	
+	public String getRefNo() {
+		return refNo;
+	}
+
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
+	}
+
 	public IStringUtilService getStringUtilService() {
 		return stringUtilService;
 	}
@@ -539,8 +547,19 @@ public class ProblemManagementService implements IProblemManagementService {
 					Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
 					problem.setIdentifiedOn(iDate);
 					problem.setExistingFrom(eDate);
-					problemAndProblemSource.setProblem(problem);
-					
+					String str = ((Long)System.currentTimeMillis()).toString();
+					refNo= str.substring(str.length()-5,str.length());
+					if(new Long(0).equals(problemBeanVO.getProbSourceId()))
+						problem.setReferenceNo(getRefNo(refNo,"FU"));	 
+					else if(new Long(1).equals(problemBeanVO.getProbSourceId()))
+						problem.setReferenceNo(getRefNo(refNo,"PU"));	 
+					else if(new Long(2).equals(problemBeanVO.getProbSourceId()))
+						problem.setReferenceNo(getRefNo(refNo,"EU"));	 
+					else if(new Long(3).equals(problemBeanVO.getProbSourceId()))
+						problem.setReferenceNo(getRefNo(refNo,"CC"));	 
+					else if(new Long(4).equals(problemBeanVO.getProbSourceId()))
+						problem.setReferenceNo(getRefNo(refNo,"CD"));	 
+					problemAndProblemSource.setProblem(problem);			
 					//Check for Party_Analyst Or Free User
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER)){
 					     
@@ -571,8 +590,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemCompleteLocation.setState(stateDAO.get(new Long(problemBeanVO.getState())));
 					if(problemBeanVO.getIsParliament())
 						problemCompleteLocation.setParliamentConstituency(constituencyDAO.get(problemBeanVO.getPConstituencyId()));
-					if(!problemBeanVO.getIsParliament())
-						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
+					/*if(!problemBeanVO.getIsParliament())
+						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));*/
 					if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
 						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
 					if(problemBeanVO.getConstituency() != null && !"0".equals(problemBeanVO.getConstituency()))
@@ -3433,7 +3452,17 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 	 return departments;
 	}
-	
-	
+	public String getRefNo(String str,String type){
+		boolean i=true;
+		try{
+		while(i){
+		if(problemDAO.getProblemReferenceNo(refNo)!=null)
+     	return type+str;
+	    }
+		}catch (Exception e){
+			log.debug("Exception Encountered", e);
+		}
+		return type+str;
+	}
 }
 
