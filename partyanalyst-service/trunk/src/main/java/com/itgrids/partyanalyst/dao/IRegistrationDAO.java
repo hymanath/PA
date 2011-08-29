@@ -43,5 +43,8 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	public List<Registration> findByUserRegistrationId(Long registrationId);
 	
 	public List<Registration> getAllRegisteredUsers();
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSubusersByParentUserId(Long parentUserId);
 
 }
