@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -23,8 +24,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
-public class AddNewProblemAction extends ActionSupport implements ServletRequestAware{
+public class AddNewProblemAction extends ActionSupport implements ServletRequestAware,Preparable,ModelDriven<ProblemBeanVO>{
 
 	/**
 	 * 
@@ -48,6 +51,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private IProblemManagementService problemManagementService;
 	private CadreManagementService cadreManagementService;
 	private List<SelectOptionVO> problemSourcesList;
+	private ProblemBeanVO problemBeanVO ;
 	
 	private String requestSrc;
 	private Long stateId = 0l;
@@ -59,7 +63,24 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long  problemLocation;
 	private Long scope;
 	private Long pConstituencyId;
+	private RegistrationVO user = null;
 	
+	public void setUser(RegistrationVO user) {
+		this.user = user;
+	}
+
+	public RegistrationVO getUser() {
+		return user;
+	}
+
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
+
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -508,6 +529,22 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			}
 		}
 	 return null;
+	}
+
+	@Override
+	public void prepare() throws Exception {
+			 
+		String problemHistoryId =request.getParameter("problemHistoryId");
+		if(problemHistoryId !=null){
+		 problemBeanVO = new ProblemBeanVO();
+			problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnHistoryId(new Long(problemHistoryId));
+		}
+	}
+
+	@Override
+	public ProblemBeanVO getModel() {
+		// TODO Auto-generated method stub
+			return problemBeanVO;
 	}
 
 }
