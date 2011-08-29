@@ -410,7 +410,7 @@ function hideProblemSourceRow()
                     <td style="padding-left:10px;">
 						<TABLE>
 							<TR>
-								<TD><s:textfield id="existingFromText" readonly="true" name="existingFromDate" size="20"/>
+								<TD><s:textfield id="existingFromText" readonly="true" name="existingFrom" size="20"/>
 								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
 								<TD>
 									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">
@@ -424,7 +424,7 @@ function hideProblemSourceRow()
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					
-					<s:select id="userTypeSelectBox" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" name="ProbSource" class="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					<s:select id="userTypeSelectBox" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" name="probSource" value="%{probSource}" class="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
 					</td>
 				</tr>													
