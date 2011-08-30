@@ -750,7 +750,7 @@
 	</bean>
 	<bean id="callCenterAction" class="com.itgrids.partyanalyst.web.action.CallCenterAction" singleton="false">
 		<property name="callCenterService" ref="callCenterService" />
-	
+	</bean>
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
 		<property name="announcementService" ref="announcementService" />	
 	</bean>
