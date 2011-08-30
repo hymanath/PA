@@ -3,9 +3,9 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
@@ -55,6 +55,47 @@ public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
+	/*public void testGetCadreForCadreProblemsInARegion()
+	{
+		String locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.district.districtId = 19";
+		List<Cadre> list = cadreProblemDetailsDAO.getCadreForCadreProblemsInARegion(1l,locationStr);
+		System.out.println(list.size());
+		
+		for(Cadre cadre :list)
+		{
+			System.out.println(cadre.getCadreId());
+		}
+	}
 	
+	public void testGetCadreForCadreProblemsForAnUser()
+	{
+		List<Cadre> list = cadreProblemDetailsDAO.getCadreForCadreProblemsForAnUser(1l);
+		System.out.println(list.size());
+		for(Cadre cadre :list)
+		{
+			System.out.println(cadre.getCadreId());
+		}
+	}*/
+	
+	public void testGetProblemStatusOfACadre()
+	{
+		List<Object> list = cadreProblemDetailsDAO.getProblemStatusOfACadre(15l);
+		System.out.println(list.size());
+		for(Object object : list)
+		{
+			System.out.println(object.toString());
+		}
+	}
+	
+	
+	public void testGetCadreByProblemHistoryId()
+	{
+		List<Cadre> list = cadreProblemDetailsDAO.getCadreByProblemHistoryId(6l);
+	}
+	
+	public void testGetCadreDetailsAndMobileNoByProblemHistoryId()
+	{
+		List<Object[]> list = cadreProblemDetailsDAO.getCadreDetailsAndMobileNoByProblemHistoryId(6l);
+	}
 
 }

@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 
 public class AnnouncementDAOHibernateTest extends BaseDaoTestCase{
@@ -9,6 +8,11 @@ public class AnnouncementDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void setAnnouncementDAO(IAnnouncementDAO announcementDAO) {
 		this.announcementDAO = announcementDAO;
+	}
+	
+	public void test()
+	{
+		announcementDAO.getAll();
 	}
 
 }

@@ -1,11 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
-
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
-import com.itgrids.partyanalyst.model.UserConstituencyScope;
 
 public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -16,9 +14,13 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 		this.userConstituencyScopeDAO = userConstituencyScopeDAO;
 	}
 
-	
-	
-/*
+	public void test()
+	{
+		userConstituencyScopeDAO.getAll();
+	}
+
+	/*	
+
       @Test
      public void testConstituencyId(){
     	  List annousDetails =  userConstituencyScopeDAO.getConstituencyId(60L);
@@ -33,7 +35,7 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
     			
     			System.out.println(o[3].toString());
     			}
-}*/
+}
 	
 	public void testGetUserConstituencyScopeByAnnouncementId()
 	{
@@ -41,7 +43,7 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}
 	
-	/*public void testGetAnnouncementDetailsByUserId()
+	public void testGetAnnouncementDetailsByUserId()
 	{
 		List<Object[]> list = userConstituencyScopeDAO.getAnnouncementDetailsByUserId(1l);
 		System.out.println(list.size());
@@ -53,6 +55,19 @@ public class UserConstituencyScopeDAOHibernateTest extends BaseDaoTestCase{
 			{
 				System.out.print("--- "+object.toString());
 			}
+		}
+	}
+	
+	public void testFindAnnouncementsByConstituencyId()
+	{
+		List<Object[]> list = userConstituencyScopeDAO.findAnnouncementsByConstituencyId(232l,new Date());
+		System.out.println(list.size());
+		
+		for(Object[] param : list)
+		{
+			System.out.println();
+			for(Object object : param)
+				System.out.print("--"+object.toString());
 		}
 	}*/
 }
