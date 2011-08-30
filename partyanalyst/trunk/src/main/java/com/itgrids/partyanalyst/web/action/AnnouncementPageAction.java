@@ -203,6 +203,38 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String getAnnouncementByUserIdAndDate(){
+		AnnouncementVO announcementVO = new AnnouncementVO();
+		try {
+			jObj=new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		session = request.getSession(false);
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		userId = regVO.getRegistrationID();
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		announcementVO.setConstituency(jObj.getLong("constituencyId"));
+		announcementVO.setFromDate(jObj.getString("fromDate"));
+		announcementVO.setToDate(jObj.getString("toDate"));
+		announcementVO.setUserId(userId);
+		
+		announcementInfo = announcementService.searchAnnouncementDetailsByUserIdDateConstId(announcementVO);
+		return Action.SUCCESS;
+	}
+	
+	public String getStateDetails(){
+		
+		session = request.getSession();
+		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		constituenciesList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO = new SelectOptionVO(0L,"Select Constituency");
+		constituenciesList.add(selectOptionVO);
+		session.setAttribute(ISessionConstants.STATES, statesList);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituenciesList);
+		return Action.SUCCESS;
+	}
 	
 	public Object getModel() {
 		return announcementVO;
