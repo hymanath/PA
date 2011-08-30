@@ -1726,38 +1726,121 @@ function getWardWiseElectionResults(type,value)
 	
 	callAjax(jsObj,url);
 }
-function getAnnouncementDetails(constituencyId){
 
+function getAnnouncementDetails(constituencyId)
+{
 	var jsObj=
 	{		
 		constituencyId:constituencyId,
-		task:"getAnnouncementDetailsByAnnosId"					
+		task:"getAnnouncementDetailsOfAConstituency"					
 	};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAnnouncementDetailsAction.action?"+rparam;						
+	var url = "getAnnouncementDetailsOfAConstituency.action?"+rparam;						
 	
 	callAjax(jsObj,url);
 
 }
-function buildConstituencyAnnouncementWindow(){
+
+function getUserAnnouncementDetails(userId,name,divId)
+{
+	var jsObj=
+	{		
+		userId : userId,
+		name : name,
+		divId : divId,
+		task:"getUserAnnouncementDetails"			
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAnnouncementDetailsOfAConstituency.action?"+rparam;						
+	showAjaxImage(divId);
+	callAjax(jsObj,url);
+}
+
+function buildAnnouncementDetails(result)
+{
+	if(result == null || result.length == 0)
+		return;
+	var resultDiv = document.getElementById('announcementsConstituencyInConstituencyDiv');
+	var str = '';
 	
-	var divElmtHead = document.getElementById("constituencyAnnouncementDiv_Head");
-	var divElmtBody = document.getElementById("constituencyAnnouncementDiv_Body");
-      divElmtHead.innerHTML = "<center>Announcement Details</center>";
-    var bodyStr='';
-	bodyStr+='<div id="AnnouncementDiv"> ';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;">   </span>';
-	bodyStr+='</div>';
-	bodyStr+='<div id="connectedPersonsDiv">';
-	bodyStr+='<table width="100%">';
-	divElmtBody.innerHTML= bodyStr;
-	getAnnouncementDetails(constituencyPageMainObj.constituencyInfo.constituencyId);
+	str += '<Div class="layoutHeadersClass">Announcements From Your Leaders</DIv>';
+	
+	for(var i=0;i<result.length;i++)
+	{
+		var id = 'annUserAjaxImg'+i;
+
+		str += '<div class="annDivId">'
+		str += '<Table>';
+		str += '<tr class="annHeaderFont"><td><table><tr>';
+		str += '<th style="width:200px;">Announcement<th>';
+		str += '<td style="width:120px;">'+result[i].fromDate+'<td>';
+		str += '<td><Div class="annUserNameDiv" onClick="getUserAnnouncementDetails('+result[i].userId+',\''+result[i].userName+'\',\'annUserAjaxImg'+i+'\')">'+result[i].userName+'</div></td>';
+		str += '<td><Div id="annUserAjaxImg'+i+'" style="padding-left:10px;display:none;"><img src="images/icons/ajaxImg.gif" height="20px;"></img></div></td>';
+		str += '</tr></table></td></tr>';
+		str += '<tr><td class="annText">'+result[i].title+'</td></tr>';
+		str += '<tr class="annHeaderFont"><th>Description</th></tr>';
+		str += '<tr><td class="annText">'+result[i].message+'</td></tr>';
+		str += '</Table>';
+		str += '</div>'
+	}
+	resultDiv.innerHTML = str;
+}
+
+function buildUserAnnouncementDetails(jsObj,result)
+{
+	if(result == null || result.length == 0)
+		return;
+	var resultDiv = document.getElementById('announcementsOfAUserDiv');
+	var str = '';
+	
+	str += '<Div class="layoutHeadersClass">Total Announcements From '+jsObj.name+'</DIv>';
+	
+	for(var i=0;i<result.length;i++)
+	{
+		var id = 'annUserAjaxImg'+i;
+
+		str += '<div class="annDivId">'
+		str += '<Table>';
+		str += '<tr class="annHeaderFont"><td><table><tr>';
+		str += '<th style="width:200px;">Announcement<th>';
+		str += '<td style="width:120px;">'+result[i].fromDate+'<td>';
+		str += '<td><Div class="annUserNameDiv">';
+		
+		if(constituencyId == result[i].constituency)
+			str += result[i].constituencyName;
+		else
+			str += '<a href="constituencyPageAction.action?constituencyId='+result[i].constituency+'" style="color:#ffffff;">'+result[i].constituencyName+'</a>';
+
+		str += '</div></td>';
+		str += '</tr></table></td></tr>';
+		str += '<tr><td class="annText">'+result[i].title+'</td></tr>';
+		str += '<tr class="annHeaderFont"><th>Description</th></tr>';
+		str += '<tr><td class="annText">'+result[i].message+'</td></tr>';
+		str += '</Table>';
+		str += '</div>'
+	}
+	resultDiv.innerHTML = str;
+}
+
+function hideAnnouncementDetails()
+{
+	document.getElementById('constituencyAnnouncementsDiv').style.display = 'none';
+}
+
+function showAjaxImage(divId)
+{
+	document.getElementById(divId).style.display = 'block';
+}
+
+function hideAjaxImage(divId)
+{
+	document.getElementById(divId).style.display = 'none';
 }
 
 function initializeConstituencyPage()
 {	    
-	buildConstituencyAnnouncementWindow();
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
@@ -1767,6 +1850,7 @@ function initializeConstituencyPage()
 	buildElectionResults();		
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
+	getAnnouncementDetails(constituencyPageMainObj.constituencyInfo.constituencyId);
 
     if(constituencyPageMainObj.forwardTask != null && taskType == "")
 	{
