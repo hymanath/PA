@@ -424,7 +424,7 @@ function hideProblemSourceRow()
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					
-					<s:select id="userTypeSelectBox" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" name="probSource" value="%{probSource}" class="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" cssClass="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
 					</td>
 				</tr>													
