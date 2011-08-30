@@ -18,8 +18,15 @@ public class AnnouncementVO implements Serializable{
     private Long announcementId;
     private String type;
     private ResultStatus resultStatus;
+    private String userName;
        
-    public ResultStatus getResultStatus() {
+    public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
