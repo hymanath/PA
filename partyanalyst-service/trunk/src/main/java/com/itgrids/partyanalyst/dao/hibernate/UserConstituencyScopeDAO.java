@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
 import com.itgrids.partyanalyst.model.UserConstituencyScope;
 
@@ -42,5 +43,34 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 		return	getHibernateTemplate().find("select model.userAnnouncement.announcement.announcementId,model.userAnnouncement.announcement.title,model.userAnnouncement.announcement.discription,model.userAnnouncement.announcement.fromDate, " +
 				" model.userAnnouncement.announcement.toDate,model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType from UserConstituencyScope model where model.userAnnouncement.user.registrationId = ? ",userId);
 	}
+	
+	public List<Object[]> findAnnouncementDetailsByUserIdDateConstId(Long userId,Date fromDate,Date toDate,Long constituencyId)
+    {
+		StringBuilder query = new StringBuilder();
+		query.append("select model.userAnnouncement.announcement.announcementId,model.userAnnouncement.announcement.title" +
+				",model.userAnnouncement.announcement.discription,model.userAnnouncement.announcement.fromDate,model.userAnnouncement.announcement.toDate " +
+				",model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType "+
+				"from UserConstituencyScope model where model.userAnnouncement.user.registrationId = :userId ");
+		if(fromDate!= null)
+			query.append("  and date(model.userAnnouncement.announcement.fromDate) >= :fromDate");
+		if(toDate!= null)
+			query.append("  and date(model.userAnnouncement.announcement.toDate) < :toDate");	
+		if(constituencyId!= 0 && constituencyId!= null)
+			query.append("  and model.constituency.constituencyId = :constituencyId");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setLong("userId", userId);
+		if(fromDate!= null)
+		   queryObject.setDate("fromDate", fromDate);
+		if(toDate!= null)
+		   queryObject.setDate("toDate", toDate);
+		if(constituencyId!= 0)
+		   queryObject.setLong("constituencyId", constituencyId);
+		
+	  return	queryObject.list();
+	}
+	
+	
 	
 }
