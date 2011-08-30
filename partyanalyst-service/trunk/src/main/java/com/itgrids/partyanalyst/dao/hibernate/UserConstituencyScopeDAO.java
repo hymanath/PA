@@ -16,15 +16,12 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 	@SuppressWarnings("unchecked")
 	public List<Object[]> findAnnouncementsByConstituencyId(Long constituencyId,Date date)
 	{
-		Object[] parameters = {constituencyId,date,date};
-		return getHibernateTemplate().find("select model.userAnnouncement.announcement.title," +
-				"model.userAnnouncement.announcement.discription," +
-				"model.userAnnouncement.user.firstName,model.userAnnouncement.user.middleName," +
-				"model.userAnnouncement.user.lastName FROM UserConstituencyScope model WHERE " +
-				"model.constituency.constituencyId =? " +
-				" and date(model.userAnnouncement.announcement.toDate) >= ?  " +
-				"and date(model.userAnnouncement.announcement.fromDate) <= ? "+
-						"order by model.userAnnouncement.announcement.fromDate desc",parameters);
+		Object[] params = {constituencyId,date,date};
+		return getHibernateTemplate().find("select model.userAnnouncement.announcement.title, model.userAnnouncement.announcement.discription," +
+				" model.userAnnouncement.announcement.fromDate,model.userAnnouncement.user.registrationId, model.userAnnouncement.user.firstName, " +
+				" model.userAnnouncement.user.lastName FROM UserConstituencyScope model WHERE model.constituency.constituencyId = ? " +
+				" and date(model.userAnnouncement.announcement.toDate) >= ? and date(model.userAnnouncement.announcement.fromDate) <= ? "+
+				" order by model.userAnnouncement.announcement.fromDate desc, model.userAnnouncement.announcement.announcementId desc ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
