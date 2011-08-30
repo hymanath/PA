@@ -146,7 +146,7 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public List<ProblemHistory> getStatusWiseProblemsForAnUser(Long userId,String statusStr);
 	
-	public List<Object[]> getCompleteProblemDetailsBySearchString(String query);
+	public List<Object[]> getCompleteProblemDetailsBySearchString(String query,Date fromDate,Date toDate);
 	
 	public List<Object[]> getProblemDetailsByName(String name);
 	
