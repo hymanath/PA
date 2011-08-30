@@ -17,12 +17,12 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="user_announcements")
+@Table(name="user_announcement")
 public class UserAnnouncement extends BaseModel implements java.io.Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
-	private Long userAnnouncementsId;
+	private Long userAnnouncementId;
 	private Announcement announcement;
 	private Registration user;
 	private Set<UserConstituencyScope> userConstituencyScope;
@@ -30,16 +30,16 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_announcements_id", unique = true, nullable = false)
-	public Long getUserAnnouncementsId() {
-		return userAnnouncementsId;
+	@Column(name = "user_announcement_id", unique = true, nullable = false)
+	public Long getUserAnnouncementId() {
+		return userAnnouncementId;
 	}
-	public void setUserAnnouncementsId(Long userAnnouncementsId) {
-		this.userAnnouncementsId = userAnnouncementsId;
+	public void setUserAnnouncementId(Long userAnnouncementId) {
+		this.userAnnouncementId = userAnnouncementId;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "announcements_id")
+	@JoinColumn(name = "announcement_id")
 	public Announcement getAnnouncement() {
 		return announcement;
 	}

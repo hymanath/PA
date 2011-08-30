@@ -20,7 +20,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name="announcements")
+@Table(name="announcement")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Announcement extends BaseModel implements java.io.Serializable{
 	
@@ -35,7 +35,7 @@ public class Announcement extends BaseModel implements java.io.Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "announcements_id", unique = true, nullable = false)
+	@Column(name = "announcement_id", unique = true, nullable = false)
 	public Long getAnnouncementId() {
 		return announcementId;
 	}
@@ -51,7 +51,7 @@ public class Announcement extends BaseModel implements java.io.Serializable{
 		this.title = title;
 	}
 	
-	@Column(name = "discription" , length = 700)
+	@Column(name = "discription" , length = 600)
 	public String getDiscription() {
 		return discription;
 	}
