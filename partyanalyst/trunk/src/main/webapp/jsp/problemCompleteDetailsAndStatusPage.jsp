@@ -262,7 +262,7 @@ text-align:left;
  
  var pHistoryId = <%=request.getParameter("pHistoryId")%>;
  var problemStatus = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
-
+ var cadreProblemDetails = null;
 function limitText(limitField, limitCount, limitNum)
 {		
 	var limitFieldElmt = document.getElementById(limitField);
@@ -304,11 +304,19 @@ function setSelectedCadre(cadreId,cadreName)
 	cadreVar += cadreName;
 	cadreVar +='</th>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
-	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblem(\''+cadreId+'\')"/></td>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblemAndSendingSMS(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Remove" class="button" onclick="clearCadreDiv()"/></td></tr>';
 	cadreVar +='</table>';
 	cadreDetailsDivEle.innerHTML = cadreVar;
 	cadreDetailsDivEle.style.display = 'block';
+}
+
+function addCadreToProblemAndSendingSMS(cadreId)
+{
+	if(cadreClickType == 'Assign' || cadreClickType == 'Change')
+	getCadreProblemDetailsForSms(cadreId,pHistoryId);
+	else if(cadreClickType == 'Delete')
+	addCadreToProblem(cadreId);
 }
 
 function addCadreToProblem(cadreId)
@@ -325,12 +333,153 @@ function addCadreToProblem(cadreId)
 	callAjax(jsObj,url);
 }
 
+
+function openCadreSmsPopup(cadreId,pHistoryId)
+{
+	$("#departmentPanel_main" ).dialog({
+		title:"<font color='royalBlue'>Sending SMS To Cadre About Problem</font>",
+		autoOpen: true,
+		show: "blind",
+		width: 500,
+		minHeight:250,
+		modal: true,
+		hide: "explode"
+	});
+	document.getElementById("departmentPanel_main" ).style.background = "#EEF4F6";
+	
+	var elmt = document.getElementById("departmentPanel_content");
+	if(!elmt)
+	return;
+	
+	var str = '';
+	str += '<DIV id="problemAssigningDiv">';
+	str += '<DIV id="cadreSMSErrDiv"></DIV>'
+	str += '<TABLE>';
+	str += '	<tr>';
+	str += '		<th width="110px" style="color:royalBlue">Mobile No</th>';
+	str += '		<td><input type="text" id="mobileNoTextId" maxlength="12"></td>';
+	str += '	</tr>';
+	str += '	<tr>';
+	str += '		<th width="110px" style="color:royalBlue">Message</th>';
+	str += '        <td><textarea rows="6" cols="45" id="messageTextId" theme="simple" name="message" maxlength="800"></textarea></td>';
+	str += '	</tr>';
+	str += '</TABLE>';
+	
+	str += '<TABLE>';
+	str += '	<tr>';
+	str += '	<th width="110px">';
+	str += '	<td><input type="button" class="button" style="float:none;font-weight:bold;height:30px;" value="Proceed" onclick="sendSMSToCadre('+cadreId+')"/></td><td><span id="cadreSmsAjaxImgDiv" style="display:none;padding-left:15px;"><img src="images/icons/loading.gif" align="top" height="30px" width="30px"></img></span>';
+	str += '	</tr>';
+	str += '</TABLE>';
+	str += '</DIV>'; 
+	elmt.innerHTML = str;
+	
+	if(cadreProblemDetails != null)
+	{
+		document.getElementById('mobileNoTextId').value= cadreProblemDetails[0].id;
+		document.getElementById('messageTextId').value= cadreProblemDetails[0].name;
+	}
+		
+}
+
+
+function getCadreProblemDetailsForSms(cadreId,pHistoryId)
+{
+	var jsObj=
+		{
+			cadreId		 : cadreId,
+			pHistoryId	 : pHistoryId,
+			task		 : "getCadreProblemDetailsForSms"
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemDepartmentsAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function sendSMSToCadre(cadreId)
+{
+	var mobileNo = document.getElementById("mobileNoTextId").value.trim();
+	var messageStr = document.getElementById("messageTextId").value.trim();
+	var errorDivEle = document.getElementById("cadreSMSErrDiv");
+	var flag = false;
+	var str = '<font color="red"><b>';
+	if(isNaN(mobileNo)|| mobileNo.indexOf(" ")!=-1)
+	{
+		str += "Mobile Number Should contains only Numbers.<BR>";
+		flag = true;
+	}
+	else if((mobileNo.length > 0 && mobileNo.length < 10) || mobileNo.length > 12)
+	{
+		str += "Plase provide correct Mobile number.<BR>";
+		flag = true;
+	}
+	if(messageStr.length == 0)	
+	{
+		str += "Please Enter A Message.<BR>";
+		flag = true;
+	}
+	else if(messageStr.length >= 800)	
+	{
+		str += 'Message Should not exceed 800 Characters.<BR>';
+		flag = true;
+	}
+	str += '</b></font>';
+	if(flag)
+	{
+		errorDivEle.innerHTML = str;
+		return;
+	}
+
+	addCadreToProblem(cadreId);
+	showAjaxImage('cadreSmsAjaxImgDiv');
+	var jsObj=
+		{
+			MobileNo	 : mobileNo,
+			message		 : messageStr,
+			task		 : "sendSMS"
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemStatusAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 function clearCadreDiv()
 {
 	var cadreDetailsDivEle = document.getElementById("selectedCadreDiv");
 	cadreDetailsDivEle.innerHTML = '';
 }
 
+function showAjaxImage(imgDiv)
+{
+	document.getElementById(imgDiv).style.display = 'block';
+}
+
+function hideAjaxImage(imgDiv)
+{
+	document.getElementById(imgDiv).style.display = 'none';
+}
+
+function showSMSResult(result)
+{
+	hideAjaxImage('cadreSmsAjaxImgDiv');
+	var errorDivEle = document.getElementById("cadreSMSErrDiv");
+	str = '';
+	if(result.resultCode == 0)
+	{
+		str += '<font color="green"><b>SMS Sent Successfully,Window is Closing...</b></font>';
+	}
+	else if(result.resultCode == 1)
+	{
+		str += '<font color="red"><b>Error Occured,SMS Not Sent,Window is Closing...</b></font>';
+	}
+	errorDivEle.innerHTML = str;
+	setTimeout("closewindow()",2000);
+}
+
+function closewindow()
+{
+	$("#departmentPanel_main").dialog("destroy");
+}
 
 function showCadreDetails(cadreId)
 {
@@ -467,6 +616,16 @@ function callAjax(jsObj,url)
 								  getProblemActivities(pHistoryId);*/
 								}
 							}
+							else if(jsObj.task == "getCadreProblemDetailsForSms")
+							{
+								cadreProblemDetails = myResults;
+								openCadreSmsPopup(jsObj.cadreId,jsObj.pHistoryId);
+							}
+							else if(jsObj.task == "sendSMS")
+							{
+								showSMSResult(myResults);
+							}
+				
 						}
 						catch(e)
 						{   
@@ -1147,7 +1306,7 @@ var villagesListForProb = [];
 	</TR>
 </TABLE>
 </CENTER>
-<div id="closeWindowDiv"><input type="button" value="Close" onClick=closeCompleteDetails() /></div>
+<div id="closeWindowDiv"><input type="button" value="Close" onClick="closeCompleteDetails()" /></div>
 <div id="departmentPanel_main"><div id="departmentPanel_content"></div></div>
 <div id="problemContentData_main">
 	<!-- Problem Details Start -->
