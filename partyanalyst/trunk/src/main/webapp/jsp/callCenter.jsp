@@ -70,7 +70,7 @@
     height: 29px;
     padding-left: 12px;
     padding-top: 6px;
-    width: 454px;
+    width: 430px;
   }
 .tdStyle {
     font-size: 12px;
@@ -80,8 +80,8 @@
 #problemDetails_body{
 	border: 2px solid;
     font-size: 12px;
-    margin-left: 75px;
-    margin-right: 75px;
+    margin-left: 139px;
+    margin-right: 139px;
     margin-top: 59px;
 }
 
@@ -113,7 +113,7 @@
     -moz-border-radius-bottomright: 6px;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #DDDDDD;
-    padding: 18px 100px 99px;
+    padding: 18px 67px 99px;
     height: 300px;
  }
 #resultBtnId{
@@ -148,7 +148,7 @@
     border-color: #DDDDDD;
     border-style: solid;
     border-width: 1px 1px 0;
-    color: #666666;
+    color: Navy;
     font-size: 20px;
     font-weight: bold;
     height: 33px;
@@ -177,20 +177,18 @@ function quickSearch(){
   str+='<tr>';
   str+='<td class="tdStyle">';
   str+='<s:textfield name="byMobileNum" value="Mobile Number" id="mobileNumId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" onBlur=" numbersonly(this.id);showTextInTextBoxes(this.id);" theme="simple"/>';
-  str+='</td>';
-  str+='<td>';
-  str+='<span id="errMsg">';
+  str+='&nbsp<span id="errMsg">';
   str+='</span>';
   str+='</td>';
+  
   str+='</tr>';
   str+='<tr>';
   str+='<td class="tdStyle">';
   str+='<s:textfield name="byEmail" value="Email Id" id="emailId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(this.id),showTextInTextBoxes(this.id)"/>';
-  str+='</td>';
-  str+='<td>';
-  str+='<span id="emailErrMsg">';
+  str+='<span id="emailErrMsg" style="padding-left:37px;">';
   str+='</span>';
   str+='</td>';
+  
   str+='</tr>';
   str+='<tr>';
   str+='<td class="tdStyle">';
@@ -439,17 +437,26 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
  <tr>
    <td>
-<input type="button" id="btnStyle" value="Add New Problem" style="padding: 6px; margin-left: -81px;" onclick="openAddNewProblemWindow()" />
+  <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
+   </img>&nbsp&nbsp
+<a class="tdStyle" href="" onclick="openAddNewProblemWindow()">
+Add New Problem</a>
   </td>
 </tr>
 <tr>
    <td>
-<input type="button" id="btnStyle" value="Manage Problem" style="margin-left: -79px; padding: 6px 4px 5px;" onclick="openManageProblemWindow()"/>
+   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
+   </img>&nbsp&nbsp
+   <a class="tdStyle" href="" onclick="openManageProblemWindow()">
+   Manage Problem</a>
    </td>
 </tr>
 <tr>
    <td>
-<input type="button" id="btnStyle" value="Detailed Search on Problems" style="padding: 7px; margin-left: -80px;" onclick="openProblemSearchWindow()"/>
+   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
+   </img>&nbsp&nbsp
+   <a class="tdStyle" href="" onclick="openProblemSearchWindow()">
+   Detailed Search on Problems</a>
    </td>
 </tr>
 </table>
