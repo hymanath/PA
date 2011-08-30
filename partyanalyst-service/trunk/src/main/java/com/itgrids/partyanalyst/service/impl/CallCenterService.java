@@ -89,27 +89,27 @@ public class CallCenterService implements ICallCenterService{
 			 if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("") && refNum.equalsIgnoreCase("") && 
 					 emailId.equalsIgnoreCase("")){
 				 
-				 hbQuery ="date(model.dateUpdated) >='"+fromDate+"' and date(model.dateUpdated) <='"+toDate+"'";
+				 hbQuery ="date(model.dateUpdated) >=? and date(model.dateUpdated) <=?";
 						
 					}
 			 else{
-				 hbQuery +=" and date(model.dateUpdated) >='"+fromDate+"' and date(model.dateUpdated) <='"+toDate+"'";
+				 hbQuery +=" and date(model.dateUpdated) >=? and date(model.dateUpdated) <=?";
 			 }
 		 }
 		else{
 			if(name.equalsIgnoreCase("")&& mobileNum.equalsIgnoreCase("") && refNum.equalsIgnoreCase("") && 
 					 emailId.equalsIgnoreCase("")){			
 			if(fromDate != null)
-				hbQuery = "date(model.dateUpdated) == '"+fromDate+"'";
+				hbQuery = "date(model.dateUpdated) =?";
 			if(toDate != null)
-				hbQuery ="date(model.dateUpdated) =='"+toDate+"'";
+				hbQuery ="date(model.dateUpdated) =?";
 				
 			 }
 			else {
 				if(fromDate != null)
-					hbQuery += " and date(model.dateUpdated) =='"+fromDate+"' ";
+					hbQuery += " and date(model.dateUpdated) =? ";
 				if(toDate != null)
-					hbQuery +=" and date(model.dateUpdated) =='"+toDate+"'";
+					hbQuery +=" and date(model.dateUpdated) =?";
 			}
 		 }
 		 if(userId!=null){
@@ -129,8 +129,8 @@ public class CallCenterService implements ICallCenterService{
 					hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+userId+")";
 				}
 		 //checking for empty fields and executing query
-		if(!name.equalsIgnoreCase("") ||!mobileNum.equalsIgnoreCase("") ||!refNum.equalsIgnoreCase("")||!emailId.equalsIgnoreCase("")){
-		 result = problemHistoryDAO.getCompleteProblemDetailsBySearchString(hbQuery);
+		if(!name.equalsIgnoreCase("") ||!mobileNum.equalsIgnoreCase("") ||!refNum.equalsIgnoreCase("")||!emailId.equalsIgnoreCase("")||fromDate!=null || toDate!=null){
+		 result = problemHistoryDAO.getCompleteProblemDetailsBySearchString(hbQuery,fromDate,toDate);
 		}
 		// Iterating result and setting values to VO
 		for(Object[] params :result){
