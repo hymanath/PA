@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
-import com.itgrids.partyanalyst.model.Announcement;
 import com.itgrids.partyanalyst.model.UserAnnouncement;
 
 public class UserAnnouncementDAO extends GenericDaoHibernate<UserAnnouncement, Long> implements IUserAnnouncementDAO{
@@ -14,9 +11,10 @@ public class UserAnnouncementDAO extends GenericDaoHibernate<UserAnnouncement, L
 		super(UserAnnouncement.class);
 	}
 
-	public List<Object[]> findAnnouncementDetailsByUserId(long userId){
-		
-	return	getHibernateTemplate().find("select model.announcement.announcementId,model.announcement.title" +
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAnnouncementDetailsByUserId(Long userId)
+	{
+		return	getHibernateTemplate().find("select model.announcement.announcementId,model.announcement.title" +
 				",model.announcement.discription,model.announcement.fromDate,model.announcement.toDate " +
 				"from UserAnnouncement model where model.user.registrationId = ?",userId);
 	}
