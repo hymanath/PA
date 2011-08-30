@@ -308,6 +308,14 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			deptScopesList.add(0,new SelectOptionVO(0l,"Select Dept"));
 		}
 		
+		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemDetailsForSms"))
+		{
+			Long cadreId = jObj.getLong("cadreId");
+			Long pHistoryId = jObj.getLong("pHistoryId");
+			
+			deptScopesList = problemManagementService.getCadreProblemDetailsForSms(user.getRegistrationID(),cadreId,pHistoryId);
+		}
+		
 		return SUCCESS;
 	}
 	
@@ -326,11 +334,19 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			e.printStackTrace();
 		}
 		
-		Long problemHistoryId = jObj.getLong("pHistoryId");
-		String problemStatus  = jObj.getString("status");
-		
-		resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
-		
+		if(jObj.getString("task").equalsIgnoreCase("changeProblemStatus"))
+		{
+			Long problemHistoryId = jObj.getLong("pHistoryId");
+			String problemStatus  = jObj.getString("status");
+			
+			resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
+		{
+			String message = jObj.getString("message");
+			String [] phoneNumbers = {jObj.getString("MobileNo")};
+			resultStatus = problemManagementService.sendSMS(user.getRegistrationID(),message,IConstants.PROBLEM_MANAGEMENT,phoneNumbers);
+		}
 		
 	 return Action.SUCCESS;
 	}
