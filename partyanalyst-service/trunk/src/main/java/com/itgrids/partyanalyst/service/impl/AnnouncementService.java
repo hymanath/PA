@@ -1,24 +1,17 @@
 package com.itgrids.partyanalyst.service.impl;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
 import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
-import com.itgrids.partyanalyst.dto.AnnouncementResultsVO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -149,41 +142,36 @@ public class AnnouncementService implements IAnnouncementService {
 		
 	}
 
-	public List<AnnouncementResultsVO> getAllAnnouncementsInConstituency(Long constituencyId) 
+	public List<AnnouncementVO> getAllAnnouncementsInConstituency(Long constituencyId) 
 	{
-		Date date = null;
-		Calendar currentDate = Calendar.getInstance();
-		System.out.println(constituencyId);
-		SimpleDateFormat formatter=  new SimpleDateFormat(IConstants.DATE_PATTERN);
-		String dateNow = formatter.format(currentDate.getTime());
-		System.out.println(dateNow);
-		
-		try {
-			date = formatter.parse(dateNow);
-			System.out.println(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		List announcementsInConstituency = userConstituencyScopeDAO.findAnnouncementsByConstituencyId(constituencyId,date);
-		
-		List<AnnouncementResultsVO> announcementResult = new ArrayList<AnnouncementResultsVO>();
-		if(announcementsInConstituency!= null && announcementsInConstituency.size()>0 ){
-			Iterator i = announcementsInConstituency.iterator();
-		while(i.hasNext()){
-			AnnouncementResultsVO  announcementResultsVO  = new AnnouncementResultsVO();
-			Object[] x = (Object[])i.next();
-			announcementResultsVO.setTitle((String)x[0]);
-			System.out.println((String)x[0]);
-			announcementResultsVO.setDiscription((String)x[1]);
-			announcementResultsVO.setFirstName((String)x[2]);
-			announcementResultsVO.setMiddleName((String)x[3]);
-			announcementResultsVO.setLastName((String)x[4]);
+		try
+		{
+			List<Object[]> result = userConstituencyScopeDAO.findAnnouncementsByConstituencyId(constituencyId,new Date());
 			
-			announcementResult.add(announcementResultsVO);
+			if(result != null && result.size() > 0)
+			{
+				List<AnnouncementVO> announcements = new ArrayList<AnnouncementVO>(0);
+				AnnouncementVO announcementVO = null;
+				for(Object[] param : result)
+				{
+					announcementVO = new AnnouncementVO();
+					announcementVO.setTitle(param[0] != null ? param[0].toString() : "");
+					announcementVO.setMessage(param[1] != null ? param[1].toString() : "");
+					announcementVO.setFromDate(param[2] != null ? param[2].toString() : "");
+					announcementVO.setUserId((Long)param[3]);
+					announcementVO.setUserName(param[4] != null ? param[4].toString() : "" 
+						+ param[5] != null ? param[5].toString() : "");
+					
+					announcements.add(announcementVO);
+				}
+				
+				return announcements;
+			}
+			return null;
+		}catch (Exception e) {
+			log.error("Error Ocuured and Error is - "+e);
+			return null;
 		}
-		}
-		return announcementResult;
 	}
 	
 	public List<AnnouncementVO> getAllAnnouncementsByUserId(Long userId) {
@@ -223,48 +211,6 @@ public class AnnouncementService implements IAnnouncementService {
 		}
 	}
 	
-	public void updateAnnouncementDetails(final AnnouncementResultsVO announcementResultsVO){
-		
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			public void doInTransactionWithoutResult(TransactionStatus status) {
-				try{
-				Announcement announcement = null;
-				System.out.println("start");
-				announcement = announcementDAO.get(announcementResultsVO.getAnnouncementsId());
-				announcement.setTitle(announcementResultsVO.getTitle());
-				announcement.setDiscription(announcementResultsVO.getDiscription());
-				announcement.setFromDate(announcementResultsVO.getFromDate());
-				announcement.setToDate(announcementResultsVO.getToDate());
-				announcement = announcementDAO.save(announcement);
-				Set<UserAnnouncement> userAnnouncementset  = announcement.getUserAnnouncement();
-				Iterator i = userAnnouncementset.iterator();
-				UserAnnouncement userAnnouncement = null;
-				while(i.hasNext()){
-					 userAnnouncement = (UserAnnouncement)i.next();
-					 userAnnouncement = userAnnouncementDAO.save(userAnnouncement);
-				}
-				if(userAnnouncement!= null){
-				Set<UserConstituencyScope> userConstituencyScopeset = userAnnouncement.getUserConstituencyScope();
-				Iterator j = userConstituencyScopeset.iterator();
-				UserConstituencyScope userConstituencyScope = null;
-				while(j.hasNext()){
-					userConstituencyScope = (UserConstituencyScope)j.next();
-				}
-				if(userConstituencyScope!= null){
-					
-					userConstituencyScope.setConstituency(constituencyDAO.get(announcementResultsVO.getConstituencyId()));
-					userConstituencyScopeDAO.save(userConstituencyScope);
-				}
-				
-				}
-				}catch(Exception e){
-					
-				 e.printStackTrace();
-				}
-			}
-		});
-		
-	}
 
 	public AnnouncementVO getAnnouncementDetailsByAnnouncementId(long announcementId)
 	{
