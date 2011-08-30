@@ -15,6 +15,7 @@ import org.hibernate.Transaction;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProblemProgress, Long> implements IAssignedProblemProgressDAO {
@@ -189,6 +190,30 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	{
 		Object[] params = {cadreId};
 		return getHibernateTemplate().find(" from AssignedProblemProgress model where model.cadre.cadreId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> getCadreForCadreProblemsInARegion(Long userId,String locationStr)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find("select distinct model.cadre from AssignedProblemProgress model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> getCadreForCadreProblemsForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select distinct model.cadre from AssignedProblemProgress model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getProblemStatusOfACadre(Long cadreId)
+	{
+		Object[] params = {cadreId};
+		return getHibernateTemplate().find(" select model.problemHistory.problemStatus.status from AssignedProblemProgress model where " +
+				" model.cadre.cadreId = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' group by model.problemHistory.problemHistoryId ",params);
 	}
 			
 }
