@@ -750,6 +750,19 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				problemBean = problemManagementReportService.getCadreProblemsInARegion(user.getRegistrationID(),problemScope,locationId,status);
 		}
 		
+		else if(jObj.getString("task").equalsIgnoreCase("getCadreDetailsForProblemsInARegion"))
+		{
+			Long problemScope = jObj.getLong("selectedProblemScope");
+			Long locationId   = problemManagementReportService.getLocationValue(problemScope,jObj.getLong("selectedLocation"));
+			String status 	  = jObj.getString("status");
+			String location   = jObj.getString("sLocation");
+			
+			if(location.equalsIgnoreCase("cadre"))
+				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(user.getRegistrationID(),null,null,status);
+			else if(location.equalsIgnoreCase("place"))
+				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(user.getRegistrationID(),problemScope,locationId,status);
+		}
+		
 		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsCountForAnUser"))
 		{
 			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(user.getRegistrationID(),null,null);
