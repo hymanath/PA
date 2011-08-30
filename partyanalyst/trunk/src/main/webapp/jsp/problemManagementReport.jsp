@@ -143,6 +143,10 @@
 		{
 			width:160px;
 		}
+		.selectWidth2
+		{
+			width:180px;
+		}
 		#problemInfoDivBody
 		{
 		width: 900px;
@@ -321,6 +325,26 @@
 			font-weight:bold;
 			text-decoration:none;
 			vertical-align:bottom;
+		}
+
+		.btnClass
+		{
+			-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+			background-color:#FFFFFF;
+			background-image:url("images/icons/constituencyManagement/buttonblue.png");
+			background-position:left bottom;
+			background-repeat:repeat-x;
+			border-color:#C4D1DB #9EB7CD #9EB7CD #C4D1DB;
+			border-right:1px solid #9EB7CD;
+			border-style:solid;
+			border-width:1px;
+			font-size:14px;
+			font-weight:bold;
+			height:33px;
+			padding-left:12px;
+			padding-right:12px;
+			text-shadow:0 1px 1px #FFFFFF;
+			margin-bottom : 10px;
 		}
 		
 	</style>   	
@@ -850,6 +874,10 @@ var callback = {
 				{
 					buildResultDataTable(myResults);
 				}
+				else if(jsObj.task == "getCadreDetailsForProblemsInARegion")
+				{
+					buildCadreDetailsDataTable(myResults);
+				}
 				
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
@@ -1326,6 +1354,105 @@ function buildDepartmentWiseProblemsCountInARegionTable(result)
 	
 }
 
+function buildCadreDetailsDataTable(result)
+{
+	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
+	
+	if(!deptWiseProblemInfoDivBodyEle || result == null || result.length == 0)
+		return
+
+	var str = '';
+
+	str += '<div id="stProblemDetails_head">';
+	str +='<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='	<tr>';
+	str +='		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='		<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Problem Details </span></div></td>';
+	str +='		<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='	</tr>';
+	str +='</table>';
+	str += '</div>';
+	str += '<div id="stProblemDetails_body" class="yui-skin-sam"></div>';
+
+	deptWiseProblemInfoDivBodyEle.innerHTML = str;
+	
+	YAHOO.widget.DataTable.cadreLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var cadreName = oData;
+		if(cadreName != null)
+		{
+			var cadreId= oRecord.getData("problemId");
+			elLiner.innerHTML ="<a href='javascript:{}' onClick='getCadreInfo("+cadreId+")'>"+cadreName+"</a>";
+		}
+	};
+	
+	YAHOO.widget.DataTable.total = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var count = new Array();
+		count = oRecord.getData("departments");
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[4].id+"</a>";
+		
+	};
+	YAHOO.widget.DataTable.pending = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var count = new Array();
+		count = oRecord.getData("departments");
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[2].id+"</a>";
+		
+	};
+	YAHOO.widget.DataTable.fixed = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var count = new Array();
+		count = oRecord.getData("departments");
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[3].id+"</a>";
+		
+	};
+	YAHOO.widget.DataTable.new = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var count = new Array();
+		count = oRecord.getData("departments");
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[1].id+"</a>";
+		
+	};
+	YAHOO.widget.DataTable.progress = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var count = new Array();
+		count = oRecord.getData("departments");
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[2].id+"</a>";
+		
+	};
+	
+	var myColumnDefs = [
+            {key:"deptName",label:"Cadre Name",sortable:true,formatter:YAHOO.widget.DataTable.cadreLink},
+            {label:"Total",formatter:YAHOO.widget.DataTable.total,sortable:true},
+            {label:"Fixed",formatter:YAHOO.widget.DataTable.fixed,sortable:true},
+			{label:"New", formatter:YAHOO.widget.DataTable.new, sortable:true},
+			{label:"Progress",formatter:YAHOO.widget.DataTable.progress,sortable:true},
+            {label:"Pending", formatter:YAHOO.widget.DataTable.pending, sortable:true}
+     	    ];
+			
+			var myDataSource = new YAHOO.util.DataSource(result);
+			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+			myDataSource.responseSchema = {
+				fields: ["deptName","departments","problemId"]
+			};
+			
+			var myConfigs = { 
+					paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 20,		        
+					pageLinks: 20
+					}) 
+					};	
+
+			var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_body",
+					myColumnDefs, myDataSource,myConfigs);
+
+			return {
+				oDS: myDataSource,
+				oDT: myDataTable
+			};
+}
+
 function buildDepartmentWiseProblemsCountTable(result)
 {
 	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
@@ -1589,7 +1716,7 @@ function buildCadreProblemDetailsChart(result)
 	str +='					<table class="problemDetailsBody_table">';
 	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th><td><a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
-	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
 	str +='					</tr>';
 	str +='					</table>';
 	str +='				</td>';
@@ -2027,7 +2154,45 @@ function getCadreProblemsInaRegion(cadreStatus)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/getCadreProblemsInARegionAction.action?"+rparam;	
 	callAjax(rparam,jsObj,url);
+	getCadreDetailsForProblemsInARegion(cadreStatus);
+	return;
+}
+
+function getCadreDetailsForProblemsInARegion(cadreStatus)
+{
+	if(cadreStatus == 'Total')
+		return;
+
+	var	selectedOption = '';
+	var problemOptionEl = document.getElementsByName("problemOption");
+	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	var selectedLocation = hiddenEl.value;
+	var sLocation = '';
 	
+	for(var i = 0; i<problemOptionEl.length; i++)
+	{
+		if(problemOptionEl[i].checked == true)
+			selectedOption = problemOptionEl[i].value;
+	}
+
+	if(selectedOption == 'location')
+		sLocation = "place";
+	else if(selectedOption == 'cadre')
+		sLocation = "cadre";
+	
+	var jsObj=
+		{
+			selectedProblemScope : selectedProblemScope,
+			selectedLocation	 : selectedLocation,
+				status			 : cadreStatus,
+				sLocation		 : sLocation,
+				task			 : "getCadreDetailsForProblemsInARegion"
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getCadreProblemsInARegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
 	return;
 }
 
@@ -2271,13 +2436,13 @@ function buildResultDataTable(result)
 	</tr>	
 	</table>
 	<table id="locationsTable" border="0" style="margin-left:10px;margin-top:5px;display:none;">
-	<tr>
-		<th colspan="2">Select Problem Location</th>
-	</tr>
+	<!--<tr>
+		<th colspan="2"> <font color='blue'>Select Problem Location</th>
+	</tr>-->
 	<c:if test="${accessType != 'MP'}">
 		<tr id="row1" style="display:none;">
 			<th style="width:195px;"><%=STATE%><font class="requiredFont">*</font></th>
-			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" value="defaultState" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','problemSearch','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" value="defaultState" list="stateList" listKey="id" listValue="name"  onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','problemSearch','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 		</tr>
 		<tr id="row2" style="display:none;">
 			<th style="width:195px;"><%=DISTRICT%><font class="requiredFont"> * </font></th>
@@ -2313,7 +2478,7 @@ function buildResultDataTable(result)
 		</tr>
 	</TABLE>
 	</div>
-	<div style="text-align:left;margin-left:10px;display:none;" id="problemLocationOptionsDiv">
+	<div style="text-align:left;margin-left:20px;margin-top:15px;display:none;" id="problemLocationOptionsDiv">
 	<table border="0">
 		<tr>
 			<td><input  type="radio" name="problemLocationOption" value="all" onclick="clearReportBody();showProbRegionsSelect()" checked="true"/>All Problems</td>
@@ -2334,7 +2499,7 @@ function buildResultDataTable(result)
 	<table id="deptRegionSpan" width="98%" border="0" style="margin-left:10px;display:none;">
 	<tr>
 		<th style="width:195px;">Department Scope</th>	
-		<td><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" /></td>
+		<td><s:select cssClass="selectWidth2" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" /></td>
 	</tr>		
 	</table>
 	<table border="0" id="deptsSelectTable" width="98%" style="display:none;margin-left:10px;">
