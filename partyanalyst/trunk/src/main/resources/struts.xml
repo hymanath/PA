@@ -42,9 +42,7 @@
            result="exception" />
     </global-exception-mappings>
     
-    
-    
-		<action name="index" class="indexAction">
+      	<action name="index" class="indexAction">
 			<result name="success">/jsp/index.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
 		</action>
@@ -64,11 +62,13 @@
 		
 		<action name="openEditAnnouncementAction"><result>/jsp/editAnnouncement.jsp</result></action>
 		
-		<action name="editAnnouncementPageAction" class="editAnnouncementPageAction">
-		  <result name="success">/jsp/announcement.jsp</result>
+		<action name="editAnnouncementAction" class="announcementPageAction" method="getAnnouncementByUserId" >
+			<result type="json" name="success">
+				<param name="root">announcementInfo</param>
+			</result> 
 		</action>
 		
-		<action name="editAnnouncementAction" class="announcementPageAction" method="getAnnouncementByUserId" >
+		<action name="getAnnouncementDetailsOfAConstituency" class="announcementPageAction" method="AjaxHandler" >
 			<result type="json" name="success">
 				<param name="root">announcementInfo</param>
 			</result> 
@@ -2481,6 +2481,7 @@
 				<param name="root">voterReportVO</param>				
 			</result>			
 		</action>
+		
 		<action name="callCenterAction" class="callCenterAction">
 			<result name="success">/jsp/callCenter.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=callCenterAction</result>
