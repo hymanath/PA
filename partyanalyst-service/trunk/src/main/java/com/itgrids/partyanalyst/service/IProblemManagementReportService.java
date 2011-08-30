@@ -95,5 +95,8 @@ public interface IProblemManagementReportService {
 	public List<ProblemBeanVO> getDeptProblemsBasedOnStatusInARegion(Long userId,Long impactedRegionId,Long locationId,Long deptId,String status);
 	
 	public Long getLocationValue(long scopeId,Long value);
-		
+	
+	public List<ProblemBeanVO> getCadreDetailsForProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
+	
+	public String getProblemLocation(Long impactLevel,Long impactValue);
 }
