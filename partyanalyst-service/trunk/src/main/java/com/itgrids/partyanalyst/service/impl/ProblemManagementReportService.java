@@ -38,7 +38,6 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -51,6 +50,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreProblemDetails;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -106,7 +106,17 @@ public class ProblemManagementReportService implements
 	private IBoothDAO boothDAO;
 	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
 	private IDataApprovalService dataApprovalService;
+	private CadreManagementService cadreManagementService;
 	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
 	public IDataApprovalService getDataApprovalService() {
 		return dataApprovalService;
 	}
@@ -2270,6 +2280,49 @@ public class ProblemManagementReportService implements
 				
 			}catch (Exception e) {
 				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> getCadreDetailsForProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status)
+		{
+		try{
+			List<ProblemBeanVO> list = new ArrayList<ProblemBeanVO>(0);
+			List<Cadre> cadreList = new ArrayList<Cadre>(0);
+			ProblemBeanVO problemBeanVO = null;
+			if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL))
+			{
+				if(impactedRegionId != null && locationId != null)
+					cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+				else
+					cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsForAnUser(userId);
+			}
+			else if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED))
+			{
+				if(impactedRegionId != null && locationId != null)
+					cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+				else
+					cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsForAnUser(userId);
+			}
+			
+			for(Cadre cadre : cadreList)
+			{
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setProblemId(cadre.getCadreId());
+				problemBeanVO.setDeptName(cadre.getFirstName()+" "+cadre.getLastName());
+				problemBeanVO.setProblemLocation(cadreManagementService.setAddress(cadre));
+				
+				if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL))
+					problemBeanVO.setDepartments(getStatusWiseProblemsCount(cadreProblemDetailsDAO.getProblemStatusOfACadre(cadre.getCadreId())));
+				else if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED))
+					problemBeanVO.setDepartments(getStatusWiseProblemsCount(assignedProblemProgressDAO.getProblemStatusOfACadre(cadre.getCadreId())));
+				
+				list.add(problemBeanVO);
+			}
+			return list;
+		  }
+		catch (Exception e) {
+				log.error("Exception Occured In getCadreDetailsForProblemsInARegion() Method "+e); 
 				return null;
 			}
 		}

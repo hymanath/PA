@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStringUtilService;
@@ -139,6 +140,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemCompleteLocationDAO problemCompleteLocationDAO;
 	private IProblemActivityDAO problemActivityDAO;
 	private IStringUtilService stringUtilService;
+	private IProblemManagementReportService problemManagementReportService;
+	private SmsCountrySmsService smsCountrySmsService;
 	private String refNo=null;
 	
 	public String getRefNo() {
@@ -147,6 +150,23 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setRefNo(String refNo) {
 		this.refNo = refNo;
+	}
+	
+	public SmsCountrySmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
 	}
 
 	public IStringUtilService getStringUtilService() {
@@ -591,8 +611,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					if(problemBeanVO.getIsParliament())
 						problemCompleteLocation.setParliamentConstituency(constituencyDAO.get(problemBeanVO.getPConstituencyId()));
 					/*if(!problemBeanVO.getIsParliament())
-						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
-					*/if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
+						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));*/
+					if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
 						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
 					if(problemBeanVO.getConstituency() != null && !"0".equals(problemBeanVO.getConstituency()))
 						problemCompleteLocation.setConstituency(constituencyDAO.get(new Long(problemBeanVO.getConstituency())));
@@ -3477,6 +3497,88 @@ public class ProblemManagementService implements IProblemManagementService {
 		return problemBeanVO;
 	}
 	
+	
+	public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId,Long pHistoryId)
+	{
+		try{
+			List<SelectOptionVO> list = new ArrayList<SelectOptionVO>(0);
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			List<Long> cadreList = new ArrayList<Long>(0);
+			cadreList.add(cadreId);
+			String message = "";
+			ProblemHistory problemHistory = null;
+			long sourceId;
+			Registration user = null;
+			List<Object> mobileNos = cadreDAO.getMobileNosOfCadre(cadreList);
+			
+			if(mobileNos != null && mobileNos.size() >= 0 && mobileNos.get(0).toString().trim().length() > 0)
+				selectOptionVO.setId(Long.parseLong(mobileNos.get(0).toString()));
+			else
+				selectOptionVO.setId(0L);
+			
+			problemHistory = problemHistoryDAO.get(pHistoryId);
+			sourceId = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemSource().getInformationSourceId();
+			
+			if(sourceId == 1)
+			{
+				user = problemHistory.getProblemLocation().getProblemAndProblemSource().getUser();
+				message += user.getFirstName()+IConstants.SPACE+user.getLastName()+IConstants.COMMA;
+				message += user.getMobile() != null ? user.getMobile()+IConstants.COMMA : "";
+			}
+			else if(sourceId == 2 || sourceId == 3)
+			{
+				message += problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getName()+IConstants.COMMA;
+				message += problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getMobile()!= null ?
+						   problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getMobile()+IConstants.COMMA : "";
+			}
+			
+			else if(sourceId == 4)
+			{
+				List<Object[]> cadreDetails = cadreProblemDetailsDAO.getCadreDetailsAndMobileNoByProblemHistoryId(problemHistory.getProblemHistoryId());
+				if(cadreDetails != null && cadreDetails.size() > 0)
+				{
+					message += cadreDetails.get(0)[0].toString()+IConstants.SPACE+cadreDetails.get(0)[1].toString()+IConstants.COMMA;
+					message += cadreDetails.get(0)[2] != null ?  cadreDetails.get(0)[2].toString()+IConstants.COMMA : "";
+				}
+			}
+			
+			message += problemManagementReportService.getProblemLocation(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(),
+					problemHistory.getProblemLocation().getProblemImpactLevelValue())+".";
+			
+			message += "\nPlease Help them in Problem Resolving.";
+			message += "\nProblem : "+problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem()+".";
+			message += "\nDescription : "+problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription()+".";
+			
+			selectOptionVO.setName(message);
+			list.add(selectOptionVO);
+			return list;
+		}catch (Exception e) {
+			log.error("Exception Ocuured in getCadreProblemDetailsForSms() "+e);
+			return null;
+		}
+	}
+	
+	public ResultStatus sendSMS(Long userId,String message,String moduleName,String[] phoneNumbers)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			Long result = smsCountrySmsService.sendSms(message, true, userId, moduleName, phoneNumbers);
+			if(result.longValue() == 0)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				resultStatus.setResultPartial(false);
+			}
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exceprtion Occured in Sending SMS "+e.getMessage());
+			resultStatus.setExceptionEncountered(e.getCause());
+			resultStatus.setExceptionMsg(e.getMessage());
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
 	public String getRefNo(String str,String type){
 		boolean i=true;
 		try{
@@ -3489,5 +3591,6 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return type+str;
 	}
+	
 }
 
