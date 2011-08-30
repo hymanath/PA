@@ -16,5 +16,7 @@ public interface IUserConstituencyScopeDAO extends GenericDao<UserConstituencySc
 	public List<UserConstituencyScope> getUserConstituencyScopeByAnnouncementId(Long announcementId);
 	
 	public List<Object[]> getAnnouncementDetailsByUserId(Long userId);
-
+    
+	public List<Object[]> findAnnouncementDetailsByUserIdDateConstId(Long userId,Date fromDate,Date toDate,Long constituencyId);
+	
 }
