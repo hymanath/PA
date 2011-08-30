@@ -892,4 +892,13 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		return queryObject.executeUpdate();	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getMobileNosOfCadre(List<Long> cadreIdsList)
+	{
+		Query queryObject = getSession().createQuery("select model.mobile from Cadre model where model.cadreId in (:IdsList) and model.mobile is not null");
+		queryObject.setParameterList("IdsList", cadreIdsList);
+		
+		return queryObject.list();
+	}
 }
