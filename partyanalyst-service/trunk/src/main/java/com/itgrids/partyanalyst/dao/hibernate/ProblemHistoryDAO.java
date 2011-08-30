@@ -941,14 +941,33 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getCompleteProblemDetailsBySearchString(String query){
+	public List<Object[]> getCompleteProblemDetailsBySearchString(String query,Date fromDate,Date toDate){
 		
-		 return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problem,"+
+		StringBuilder queryString = new StringBuilder();
+		
+		queryString.append("select model.problemLocation.problemAndProblemSource.problem.problem,"+
 				 "model.problemLocation.problemAndProblemSource.problem.description,model.problemStatus.status,"+
 				 "model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
 				 "model.problemLocation.problemAndProblemSource.problemSource.informationSource,"+
 				 "model.problemLocation.problemImpactLevel.scope ,model.problemHistoryId from ProblemHistory model where "+query+" and model.isDelete is null and model.isApproved = 'true' group by model.problemLocation.problemAndProblemSource.problem.problem.problemId");
-	 }
+	
+		Query queryObj = getSession().createQuery(queryString.toString());
+		if(fromDate !=null && toDate!=null){
+			queryObj.setParameter(0, fromDate);
+			queryObj.setParameter(1, toDate);
+		}
+		else
+		{
+			if(fromDate!=null){
+				queryObj.setParameter(0, fromDate);
+			}
+			if(toDate!=null){
+				queryObj.setParameter(0, toDate);
+			}
+		}
+		return queryObj.list(); 
+	
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getProblemDetailsByName(String name){
