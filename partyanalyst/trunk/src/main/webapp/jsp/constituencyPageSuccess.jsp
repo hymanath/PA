@@ -69,6 +69,43 @@
 	a:link {
 			COLOR: #247CD4;
 	}
+
+	.annDivId
+	{
+		-moz-border-radius : 5px 5px 5px 5px;
+		background : none repeat scroll 0 0 #E0F2F8;
+		margin : 15px 10px;
+		overflow : hidden;
+		padding : 14px 18px 14px 9px;
+		text-align : left;
+		padding-bottom : 9px;
+		padding-top : 9px;
+	}
+	
+	.annHeaderFont
+	{
+		color:#0053B2;
+		font-size:14px;
+	}
+
+	.annUserNameDiv
+	{
+		background:-moz-linear-gradient(center top , #73AEC9 0pt, #73AEC9 1px, #338AB0 1px, #0571A6 100%) repeat scroll 0 0 transparent;
+		border-color:#045A8B;
+		color:#FFFFFF !important;
+		font-weight : bold;
+		padding-left:10px;
+		padding-right:10px;
+		cursor : pointer;
+	}
+
+	.annText
+	{
+		font-family : verdana;
+		font-size :12px;
+		padding-left:5px;
+	}
+
 </style>
 <script type="text/javascript">
 	
@@ -245,14 +282,23 @@
 								   }
 								   hideBusyImgWithId("electionYearSelectForAssets");
 								}
-								else if(jsObj.task == "getAnnouncementDetailsByAnnosId")
-								{alert("SUCCESS");
+								else if(jsObj.task == "getAnnouncementDetailsOfAConstituency")
+								{
                                    if(myResults != null)
 								   {  
 									   buildAnnouncementDetails(myResults);
-
+								   }
+								   else
+								   {
+									   hideAnnouncementDetails();
 								   }
 								   
+								}
+
+								else if(jsObj.task == "getUserAnnouncementDetails")
+								{
+								   hideAjaxImage(jsObj.divId)
+								buildUserAnnouncementDetails(jsObj,myResults);
 								}
 
 							}catch (e) {   
@@ -267,24 +313,7 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	function buildAnnouncementDetails(myResults){
-               alert("ok");
-        var divElmt = document.getElementById("AnnouncementDiv");
-		var str = '';
-		var divElmt = document.getElementById("constituencyAnnouncementDiv_Body");
-
-		for(var i=0;i<myResults.length;i++)
-		{
-			str += 'anouncement : '+myResults[i].title+' '
-			+myResults[i].discription+' by  '+myResults[i].firstName+' '
-			+myResults[i].lastName;
-
-			
-		}
-		divElmt.innerHTML= str;
-
-	}
-	
+		
     function buildElectionYearsWithAssets(myResults)
 	{
 
@@ -1259,6 +1288,19 @@ function hideZptcOrMptcDiv(election)
 								<!-- -->
 							</div>
 						</div>		
+					</div>
+					
+					<div id="constituencyAnnouncementsDiv" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>	
+							<div id="announcements_div_main" class="innerLayoutDivClass">
+								<div id="announcementsConstituencyInConstituencyDiv">
+								</div>
+								<div id="announcementsOfAUserDiv">
+								</div>
+							</div>
 					</div>
 
 					<div id="constituencyCenterContentOuter" class="rounded"> 						
