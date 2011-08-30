@@ -60,7 +60,9 @@
 		  <result name="success">/jsp/announcement.jsp</result>
 		</action>
 		
-		<action name="openEditAnnouncementAction"><result>/jsp/editAnnouncement.jsp</result></action>
+		<action name="openEditAnnouncementAction" class="announcementPageAction" method="getStateDetails">
+		    <result name="success">/jsp/editAnnouncement.jsp</result>
+		</action>
 		
 		<action name="editAnnouncementAction" class="announcementPageAction" method="getAnnouncementByUserId" >
 			<result type="json" name="success">
@@ -69,6 +71,12 @@
 		</action>
 		
 		<action name="getAnnouncementDetailsOfAConstituency" class="announcementPageAction" method="AjaxHandler" >
+			<result type="json" name="success">
+				<param name="root">announcementInfo</param>
+			</result> 
+		</action>
+		
+		<action name="searchAnnouncementByDateAction" class="announcementPageAction" method="getAnnouncementByUserIdAndDate" >
 			<result type="json" name="success">
 				<param name="root">announcementInfo</param>
 			</result> 
