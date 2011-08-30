@@ -15,6 +15,8 @@ import javax.persistence.Table;
 @Table(name="user_constituency_scope")
 public class UserConstituencyScope extends BaseModel implements java.io.Serializable{
   
+	
+	private static final long serialVersionUID = 8296503271278644360L;
 	private Long userConstituencyScopeId;
 	private UserAnnouncement userAnnouncement;
 	private Constituency constituency;
@@ -31,7 +33,7 @@ public class UserConstituencyScope extends BaseModel implements java.io.Serializ
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "users_announcements_id")
+	@JoinColumn(name = "user_announcement_id")
 	public UserAnnouncement getUserAnnouncement() {
 		return userAnnouncement;
 	}
