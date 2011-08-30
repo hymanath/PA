@@ -246,5 +246,51 @@ public class AnnouncementService implements IAnnouncementService {
 		}
 	}
 	
+	
+	public List<AnnouncementVO> searchAnnouncementDetailsByUserIdDateConstId(AnnouncementVO annVO){
+	    List<AnnouncementVO> announcementList = null;
+	    SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	    Date fromDate = null;
+	    Date toDate = null;
+	try{
+		
+		log.debug("Entered Into searchAnnouncementDetailsByDate() Method with UserId ,FromDate,Todate,ConstituencyId -- "+ annVO.getUserId()+" , "+annVO.getFromDate()+" , "+annVO.getToDate()+" , "+annVO.getConstituency());
+		try
+		{   if(annVO.getFromDate() != null && annVO.getFromDate().length()>0)
+			    fromDate = sdf.parse(annVO.getFromDate());
+		if(annVO.getToDate() != null && annVO.getToDate().length()>0)
+			    toDate = sdf.parse(annVO.getToDate());   
+		}catch (Exception e){log.error(" Exception is ",e); }	
+		List<Object[]> result = userConstituencyScopeDAO.findAnnouncementDetailsByUserIdDateConstId(annVO.getUserId(),fromDate,toDate,annVO.getConstituency());
+		if(result != null && result.size() > 0)
+		{
+			announcementList = new ArrayList<AnnouncementVO>(0);
+			AnnouncementVO announcementVO = null;
+			for(Object[] param : result)
+			{
+				announcementVO = new AnnouncementVO();
+				
+				announcementVO.setAnnouncementId((Long)param[0]);
+				announcementVO.setTitle(param[1].toString());
+				announcementVO.setMessage(param[2].toString());
+				announcementVO.setFromDate(sdf.format((Date)param[3]));
+				announcementVO.setToDate(sdf.format((Date)param[4]));
+				announcementVO.setConstituency((Long)param[5]);
+				announcementVO.setConstituencyName(param[6].toString());
+				announcementVO.setType(param[7].toString());
+				
+				announcementList.add(announcementVO);
+			}
+			return announcementList;
+		}
+		else
+			return null;
+	}catch(Exception e){
+		log.error("Error Occured in searchAnnouncementDetailsByDate() Method with UserId ,FromDate,Todate,ConstituencyId -- "+ annVO.getUserId()+" , "+annVO.getFromDate()+" , "+annVO.getToDate()+" , "+annVO.getConstituency());
+		log.error("And Exception is ",e);
+		return null;
+	}
+	
+}
 		
 }
