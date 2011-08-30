@@ -169,17 +169,24 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		return "success";
 	}
 	
-	public String getAnnouncementDetails(){
-
+	@SuppressWarnings("unchecked")
+	public String AjaxHandler()
+	{
 		try {
-			jObj=new JSONObject(getTask());
+			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		Long constituencyId = jObj.getLong("constituencyId");
-		announcementInfo = announcementService.getAllAnnouncementsInConstituency(constituencyId);
-	
-	    return Action.SUCCESS;
+		
+		if(jObj.getString("task").equalsIgnoreCase("getAnnouncementDetailsOfAConstituency"))
+		{
+			announcementInfo = announcementService.getAllAnnouncementsInConstituency(jObj.getLong("constituencyId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getUserAnnouncementDetails"))
+		{
+			announcementInfo = announcementService.getAllAnnouncementsByUserId(jObj.getLong("userId"));
+		}
+		return Action.SUCCESS;
 	}
 	
 	public String getAnnouncementByUserId(){
