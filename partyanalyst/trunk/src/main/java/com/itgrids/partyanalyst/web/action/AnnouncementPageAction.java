@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
-import com.itgrids.partyanalyst.dto.AnnouncementResultsVO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
