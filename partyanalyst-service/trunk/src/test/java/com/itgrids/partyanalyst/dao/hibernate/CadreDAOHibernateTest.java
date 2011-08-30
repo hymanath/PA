@@ -467,11 +467,24 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result.size());
 	}*/
 	
-	public void testUpdateCadreImage()
+	/*public void testUpdateCadreImage()
 	{
 		int x = cadreDAO.updateCadreImage(2l,"human.jpeg");
 		System.out.println(cadreDAO.get(1l).getImage());
 		System.out.println(x);
+	}*/
+	
+	public void testGetMobileNosOfCadre()
+	{
+		List<Long> idList = new ArrayList<Long>(0);
+		idList.add(7l);idList.add(14l);idList.add(15l);idList.add(16l);
+		List<Object> list = cadreDAO.getMobileNosOfCadre(idList);
+		System.out.println(list.size());
+		
+		for(Object object : list)
+		{
+			System.out.println(object.toString());
+		}
 	}
 }
 	

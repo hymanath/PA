@@ -15,7 +15,12 @@ public class UserAnnouncementDAOHibernateTest extends BaseDaoTestCase{
 		this.userAnnouncementDAO = userAnnouncementDAO;
 	}
 	
-	@Test
+	public void test()
+	{
+		userAnnouncementDAO.getAll();
+	}
+	
+	/*@Test
 	public void testAnnouncementResultsByAUser(){
     List<Object[]> s = userAnnouncementDAO.findAnnouncementDetailsByUserId(1L);
     System.out.println(s.size());
@@ -28,7 +33,7 @@ public class UserAnnouncementDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(o[3]);
 		System.out.println(o[4]);
 	}
-	}
+	}*/
 	
 	/*public void testGetUserAnnouncementByAnnouncementId()
 	{
