@@ -748,18 +748,15 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="voterReportService" ref="voterReportService" />
 	</bean>
+	
 	<bean id="callCenterAction" class="com.itgrids.partyanalyst.web.action.CallCenterAction" singleton="false">
 		<property name="callCenterService" ref="callCenterService" />
 	</bean>
+	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
 		<property name="announcementService" ref="announcementService" />	
 	</bean>
 	
-	<bean id="editAnnouncementPageAction" class="com.itgrids.partyanalyst.web.action.EditAnnouncementPageAction" singleton="false">
-		<property name="announcementService" ref="announcementService" />
-	 	<property name="staticDataService" ref="staticDataService" />
-	 	<property name="regionServiceDataImp" ref="regionServiceDataImp" />		
-	</bean>
 </beans>	
 	
 	
