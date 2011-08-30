@@ -12,6 +12,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemProgress, Long> {
@@ -54,5 +55,11 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 	public List<ProblemHistory> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr);
 	
 	public List<AssignedProblemProgress> getByCadreId(Long cadreId);
+	
+	public List<Cadre> getCadreForCadreProblemsInARegion(Long userId,String locationStr);
+	
+	public List<Cadre> getCadreForCadreProblemsForAnUser(Long userId);
+	
+	public List<Object> getProblemStatusOfACadre(Long cadreId);
 	
 }
