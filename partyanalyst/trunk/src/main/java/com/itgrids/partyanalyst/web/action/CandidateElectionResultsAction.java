@@ -109,7 +109,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		StringBuffer candidateURLStringBuffer = new StringBuffer(IConstants.CANDIDATE_STATIC_PAGE_URL);
 		
-		if(candidateVO.getCandidateName().equalsIgnoreCase("RAJASEKHARA REDDY .Y.S") ||
+		if(candidateVO.getCandidateName().equalsIgnoreCase("Y S RAJASEKHAR REDDY") ||
 				candidateVO.getCandidateName().equalsIgnoreCase("Nara Chandrababu Naidu"))
 		{
 			candidateURLStringBuffer.append(candidateVO.getCandidateName().replace(' ', '_'));
