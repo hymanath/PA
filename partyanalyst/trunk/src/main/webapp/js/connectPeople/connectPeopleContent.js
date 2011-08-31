@@ -6,6 +6,11 @@ var connetLocationName = '';
 var connetLocationType = '';
 var connectUserLoginId = '';
 var connectRequestedUserId = '';
+var locationIdLabel;
+var locationNameLabel;
+var locationId;
+var locationName;
+var locationType;
 
 function buildConnectUsersContent(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId)
 {	
@@ -17,8 +22,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	connectUserLoginId = userLoginId;
 
 	var bodyElmt = document.getElementById(divId);
-	var locationIdLabel;
-	var locationNameLabel;
+	
 
 	if(locationType == "DISTRICT")
 	{
@@ -94,14 +98,10 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	{
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="connectAnc">Login</a> </span>';
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="freeUserRegistration.action" class="connectAnc">Register</a> </span>';
-		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="connectAnc">View All</a> </span>';
 	}
-	else
-	{
-		loginUserId=userLoginId;
-		//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
-		bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#514830" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
-	}
+	loginUserId=userLoginId;
+	//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
+	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#514830" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
 	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
 	bodyStr+='</td>';
@@ -540,7 +540,12 @@ function buildAllConnectUserString(users)
 			str += '<table border="0" cellpadding="0" cellspacing="0">';
 			str += '<tr>';
 			str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
+			if(userLoginStatus == "false"){
+				str += '<td><div class="allConnectPeople_Head_botton_center_div"><a style="color:white;" class="allConnectPeople_Head_botton_center_span" href=connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a></div></td>';
+			}
+			else{
 			str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
+			}
 			str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
 			str += '</tr>';
 			str += '</table>';
