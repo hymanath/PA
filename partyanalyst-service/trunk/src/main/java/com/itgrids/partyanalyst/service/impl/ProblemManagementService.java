@@ -672,6 +672,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemBeanFromDB.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
 					Date iDateOfAddNewProb = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 					Date eDateOfAddNewProb = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
+					problemBeanFromDB.setProblemRefNum(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getReferenceNo());
 					problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 					problemBeanFromDB.setExistingFrom(sdf.format(eDateOfAddNewProb));
 					
