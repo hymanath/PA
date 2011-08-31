@@ -10,7 +10,7 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
 </script>
 <!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>
+<!--<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>-->
  
 <script
 	src="js/jQuery/jquery-ui.min.js">
@@ -437,24 +437,24 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
  <tr>
    <td>
-  <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
-   </img>&nbsp&nbsp
-<a class="tdStyle" href="" onclick="openAddNewProblemWindow()">
-Add New Problem</a>
+  	<img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
+   &nbsp&nbsp
+	 <a class="tdStyle" href="" onclick="openAddNewProblemWindow()">
+		Add New Problem</a>
   </td>
 </tr>
 <tr>
    <td>
-   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
-   </img>&nbsp&nbsp
+   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
+   &nbsp&nbsp
    <a class="tdStyle" href="" onclick="openManageProblemWindow()">
    Manage Problem</a>
    </td>
 </tr>
 <tr>
    <td>
-   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg">
-   </img>&nbsp&nbsp
+   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"/>
+   &nbsp&nbsp
    <a class="tdStyle" href="" onclick="openProblemSearchWindow()">
    Detailed Search on Problems</a>
    </td>
