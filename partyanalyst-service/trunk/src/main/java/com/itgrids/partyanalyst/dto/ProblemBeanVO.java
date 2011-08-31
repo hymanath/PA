@@ -82,7 +82,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String recentActivity;
 	private List<Object> statusList;
 	private String problemScope;
-	
+	private String problemRefNum;
 
 	public String getProblemScope() {
 		return problemScope;
@@ -668,6 +668,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
+	}
+
+	public void setProblemRefNum(String problemRefNum) {
+		this.problemRefNum = problemRefNum;
+	}
+
+	public String getProblemRefNum() {
+		return problemRefNum;
 	}
 	
 	
