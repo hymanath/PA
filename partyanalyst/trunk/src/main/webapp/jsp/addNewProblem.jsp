@@ -259,12 +259,16 @@ function hideProblemSourceRow()
 	<div id="problemDetailsDiv" class="accessDivMain" >		
 		<div id="problemDetailsDivBody">
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'PartyAnalyst'}">
-				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Problem Added Successfully</DIV>
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Problem Added Successfully...</DIV>
+				<span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
+				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
+				</c:out></font> used for further details</span>
 			</c:if>
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'FreeUser'}">
-				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Thanks for posting your problem.Your problem will be reviewed by our team and will be published once it gets acceptance from them</DIV>
+				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Thanks for posting your problem.Your problem will be reviewed by our team and will be published once it gets acceptance from them</DIV><span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
+				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
+				</c:out></font> used for further details</span>
 			</c:if>
-			
 			<DIV style="width:500px;">
 				<FIELDSET>
 					<LEGEND>Problem Details</LEGEND>
@@ -361,52 +365,7 @@ function hideProblemSourceRow()
 					</td>
 				</tr>
 				<tr>
-					<td ><%=existingFrom%><font class="requiredFont">*</font></td>						
-					<!-- <td style="padding-left:15px;"><s:textfield id="existingFromText" name="existingFromDate" readonly="true" size="20"/> 
-						<a href="javascript:{}" onClick="setYears(1947, 2020); showCalender(this, 'existingFromDate');" > <img height="23" width="23" src="calender.png"></a> 
-
-    
-	
-                    calender component change code
-
-				    <table id="calenderTable">
-				        <tbody id="calenderTableHead">
-				          <tr>
-				            <td colspan="4" align="center">
-					          <select onChange="showCalenderBody(createCalender(document.getElementById('selectYear').value,
-					           this.selectedIndex, false));" id="selectMonth">
-					              <option value="0">Jan</option>
-					              <option value="1">Feb</option>
-					              <option value="2">Mar</option>
-					              <option value="3">Apr</option>
-					              <option value="4">May</option>
-					              <option value="5">Jun</option>
-					              <option value="6">Jul</option>
-					              <option value="7">Aug</option>
-					              <option value="8">Sep</option>
-					              <option value="9">Oct</option>
-					              <option value="10">Nov</option>
-					              <option value="11">Dec</option>
-					          </select>
-				            </td>
-				            <td colspan="2" align="center">
-							    <select onChange="showCalenderBody(createCalender(this.value, 
-								document.getElementById('selectMonth').selectedIndex, false));" id="selectYear">
-								</select>
-							</td>
-				            <td align="center">
-							    <a href="#" onClick="closeCalender();"><font color="#003333" size="+1">X</font></a>
-							</td>
-						  </tr>
-				       </tbody>
-				       <tbody id="calenderTableDays">
-				         <tr style="">
-				           <td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td>
-				         </tr>
-				       </tbody>
-				       <tbody id="calender"></tbody>
-				    </table>	-->		
-    
+					<td ><%=existingFrom%><font class="requiredFont">*</font></td>		 
                     <td style="padding-left:10px;">
 						<TABLE>
 							<TR>
