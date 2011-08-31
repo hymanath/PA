@@ -190,20 +190,6 @@ function callAjax(jsObj,url)
 YAHOO.util.Connect.asyncRequest('GET', url, callback);	
 }
 
-function limitText(limitField, limitCount, limitNum)
-{		
-	var limitFieldElmt = document.getElementById(limitField);
-	var limitCountElmt = document.getElementById(limitCount);
-
-	if (limitFieldElmt.value.length > limitNum) 
-	{
-		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
-	}
-	else
-	{			
-		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
-	}
-}
 
 function getAllConstituenciesInStateByType(electionType, stateId, element)
 {   
