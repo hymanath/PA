@@ -1,7 +1,7 @@
 
 Photo Gallery Will Be Updated Soon.
 
-<!--
+
 <style type="text/css">
 	
 	.photoIndexDesc
@@ -13,6 +13,11 @@ Photo Gallery Will Be Updated Soon.
 			height: 100px; 
 			width:100px;
 	} 
+	.yui-carousel {
+    overflow: hidden;
+    position: absolute;
+    text-align: left;
+   }
 	#photo_gallery_main
 	{
 		border:1px solid #adadad;
@@ -113,7 +118,7 @@ var ImagesURL = {
 							</td>
 							<td>
 								<div class="photoIndexDesc">
-									<div>Chandra Babu Naidu's Election <br/>Tour photo's <br/></div>
+									<div>Y S RAJASHEKAR REDDY'S Election <br/>Tour photo's <br/></div>
 									<div style="padding-left:100px;padding-top:25px;cursor:pointer;"> Click Here </div>
 								</div>
 							</td>
@@ -127,7 +132,7 @@ var ImagesURL = {
 	</div>	
 </div>
 
-<div id="galleryDivMain" style="display:none;">
+<div id="galleryDivMain" >
 	<div id="galleryHead"> <a href="javascript:{}" id="photoIndexAnc" onclick="showPhotoIndexDiv()"> Back </a></div>
 	<div id="spotLightDiv"></div>	
 	<div id="caourselDiv" class="yui-skin-sam"></div>
