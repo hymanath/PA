@@ -432,6 +432,9 @@
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
 	    <property name="staticDataService" ref="staticDataService"/>
 		<property name="electionTrendzService" ref="electionTrendzService"/>
+	    <property name="registrationService" ref="registrationService" />
+	    <property name="mailService" ref="mailService" />
+	        
 	</bean>
 	
 	<bean id="constituencyElectionReportAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionReportAction" singleton="false">
@@ -742,7 +745,7 @@
 	<bean id="staticPagesForElectionResultsAction" class="com.itgrids.partyanalyst.web.action.StaticPagesForElectionResultsAction" singleton="false">	
 	</bean>
 	
-	<bean id="voterReportAction" class="com.itgrids.partyanalyst.web.action.VoterReportAction" singleton="false">
+		<bean id="voterReportAction" class="com.itgrids.partyanalyst.web.action.VoterReportAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
