@@ -159,8 +159,8 @@ public class AnnouncementService implements IAnnouncementService {
 					announcementVO.setMessage(param[1] != null ? param[1].toString() : "");
 					announcementVO.setFromDate(param[2] != null ? param[2].toString() : "");
 					announcementVO.setUserId((Long)param[3]);
-					announcementVO.setUserName(param[4] != null ? param[4].toString() : "" 
-						+ param[5] != null ? param[5].toString() : "");
+					announcementVO.setUserName((param[4] != null ? param[4].toString() : "") 
+						+" "+(param[5] != null ? param[5].toString() : ""));
 					
 					announcements.add(announcementVO);
 				}
