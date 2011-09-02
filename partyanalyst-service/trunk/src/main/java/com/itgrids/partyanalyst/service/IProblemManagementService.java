@@ -93,4 +93,6 @@ public interface IProblemManagementService {
 	public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId,Long pHistoryId);
 	
 	public ResultStatus sendSMS(Long userId,String message,String moduleName,String[] phoneNumbers);
+	
+	public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId);
 }
