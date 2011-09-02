@@ -2493,7 +2493,7 @@
 		<action name="callCenterAction" class="callCenterAction">
 			<result name="success">/jsp/callCenter.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=callCenterAction</result>
-		    <result name="error">/jsp/callCenter.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>	
 		
 		<action name="callCenterAjaxAction" class="callCenterAction" method="ajaxCallHandler">
