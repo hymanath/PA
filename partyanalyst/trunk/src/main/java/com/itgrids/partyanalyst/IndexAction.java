@@ -59,11 +59,19 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private IUserCadreManagementService userCadreManagementService;
 	private CadreManagementVO cadreManagementVO = null;
 	private RegistrationVO user = null;
-		
+	private String changedUserName = "false";	
 	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
 
 	
 	
+	public String getChangedUserName() {
+		return changedUserName;
+	}
+
+	public void setChangedUserName(String changedUserName) {
+		this.changedUserName = changedUserName;
+	}
+
 	public int getImpDateCount() {
 		return impDateCount;
 	}
