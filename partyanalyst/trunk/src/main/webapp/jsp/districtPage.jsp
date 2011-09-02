@@ -1431,7 +1431,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</object>
 			   </c:if>
 
-               <c:if test="${stateDetails.name != 'Andhra Pradesh' && stateDetails.name != 'Tamil Nadu' && stateDetails.name != 'Kerala' && stateDetails.name != 'Puducherry' && stateDetails.name != 'West Bengal' && stateDetails.name != 'Assam'}">
+               <c:if test="${stateDetails.name != 'Andhra Pradesh' && stateDetails.name != 'Tamil Nadu' && stateDetails.name != 'Kerala' && stateDetails.name != 'Puducherry' && stateDetails.name != 'West Bengal' && stateDetails.name != 'Assam' && stateDetails.name != 'Karnataka'}">
 				<br><br>
 				<center>
 				 <table border="0" >
