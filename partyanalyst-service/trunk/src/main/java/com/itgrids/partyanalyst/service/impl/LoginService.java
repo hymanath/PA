@@ -190,6 +190,7 @@ public class LoginService implements ILoginService{
 			Long userId = reg.getRegistrationId();
 			regVO.setRegistrationID(userId);
 			regVO.setUserName(reg.getUserName());
+			regVO.setEmail(reg.getEmail());
 			regVO.setAccessType(reg.getAccessType());
 			regVO.setAccessValue(reg.getAccessValue());
 			regVO.setFirstName(reg.getFirstName());
@@ -299,6 +300,7 @@ public class LoginService implements ILoginService{
 		regVO.setUserType(IConstants.FREE_USER);
 		regVO.setUserStatus(IConstants.FREE_USER);
 		regVO.setUserProfilePic(user.getProfileImg());
+		regVO.setEmail(user.getEmail());
 		
 		return regVO;
 	}
