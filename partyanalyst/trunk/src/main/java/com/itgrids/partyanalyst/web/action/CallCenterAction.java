@@ -18,6 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICallCenterService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -37,8 +38,19 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 	private String task;
 	private List<ProblemBeanVO> problemBeanVO;
 	private CallCenterVO callCenterVO ;
+	private EntitlementsHelper entitlementsHelper;
 	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+
 	public void setCallCenterService(ICallCenterService callCenterService) {
 		this.callCenterService = callCenterService;
 	}
@@ -97,12 +109,14 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 	public String execute(){
 		
 		HttpSession session = request.getSession();
-		
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		
-		if(user==null){
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CALL_CENTER_ENTITLEMENT))
 			return IConstants.NOT_LOGGED_IN;
-		}
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CALL_CENTER_ENTITLEMENT))
+			return ERROR;
+		
 		return SUCCESS;
 	}
 	
