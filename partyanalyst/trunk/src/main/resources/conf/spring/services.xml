@@ -501,6 +501,7 @@
 		<property name="problemCompleteLocationDAO" ref="problemCompleteLocationDAO" />
 		<property name="problemActivityDAO" ref="problemActivityDAO" />
 		<property name="stringUtilService" ref="stringUtilService" />
+		<property name="problemDAO" ref="problemDAO" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
    </bean>
