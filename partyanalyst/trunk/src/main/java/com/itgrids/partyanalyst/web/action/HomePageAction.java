@@ -50,6 +50,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
 	private ServletContext context;
+	private String changedUserName = "false";
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class);
 	
@@ -311,6 +312,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		log.info("Chart Path : " + imagePath + " In " + osDetails + " Environment ");
 		
 	 return imagePath;
+	}
+
+	public String getChangedUserName() {
+		return changedUserName;
+	}
+
+	public void setChangedUserName(String changedUserName) {
+		this.changedUserName = changedUserName;
 	}
 	
 
