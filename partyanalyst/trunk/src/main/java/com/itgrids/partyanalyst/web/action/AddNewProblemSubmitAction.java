@@ -445,7 +445,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			/*	if(getMobile() == null || getMobile().trim().length() == 0)
 					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");*/
 				if(getAddress() == null || getAddress().trim().length() == 0)
-					addFieldError("addressInput","Please Enter Address in Complained Person Details.");
+					addFieldError("addressInput","Please Enter Email Address.");
+				if(getMobile() == null || getAddress().trim().length() == 0)
+					addFieldError("mobileInput","Please Enter Mobile Number.");
+				if(getEmail() == null||getEmail().trim().length() == 0)
+					addFieldError("emailInput","Please Enter Name in Complained Person Details.");
 			}
 			
 			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
