@@ -54,4 +54,7 @@ public interface IAnanymousUserService {
 	
 	public RegistrationVO getUserDetailsToRecoverPassword(String userName);
 	
+	public Integer saveUserDetailsToChangeUserNameToEmail(Long userId,String userName);
+	
+	
 }	
