@@ -1396,6 +1396,6 @@ function openNewAnnouncementPopup()
 }
 function openEditAnnouncement()
 {
-	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=550,width=500,left=200,top=200");
+	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=750,width=1000,left=10,top=10");
 	editAnnouncementbrowser.focus();
 }
