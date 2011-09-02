@@ -73,9 +73,9 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String constituencySelectName;
     private String districtSelectName;
     private String candidateId;
+    private String changedUserName = "false";
     
-    	
-	public String getDistrictSelectName() {
+    public String getDistrictSelectName() {
 		return districtSelectName;
 	}
 
@@ -447,6 +447,8 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
 			session.setAttribute("UserType", "FreeUser");
+			//session.setAttribute("changedUserName", new Boolean(true));
+			changedUserName = "true";
 			return getRedirectPageDetails();	
 		}
 		
@@ -491,5 +493,13 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			}
 		}
 		return finalResultString();
+	}
+
+	public String getChangedUserName() {
+		return changedUserName;
+	}
+
+	public void setChangedUserName(String changedUserName) {
+		this.changedUserName = changedUserName;
 	}
 }
