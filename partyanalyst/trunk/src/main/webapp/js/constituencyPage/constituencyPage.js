@@ -1762,7 +1762,7 @@ function buildAnnouncementDetails(result)
 {
 	if(result == null || result.length == 0)
 		return;
-	var resultDiv = document.getElementById('announcementsConstituencyInConstituencyDiv');
+	var resultDiv = document.getElementById('announcementsInConstituencyDiv');
 	var str = '';
 	
 	str += '<Div class="layoutHeadersClass">Announcements From Your Leaders</DIv>';
