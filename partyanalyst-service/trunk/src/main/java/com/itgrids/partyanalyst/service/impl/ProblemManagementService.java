@@ -3599,5 +3599,92 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return type+str;
 	}
+	
+	/**
+	 * This method will send a message, when PA User/Free User Post A Problem.
+	 * 
+	 * @param Long ProblemHistoryId
+	 * @return {@link ResultStatus}
+	 * @author Kamalakar Dandu
+	 * 
+	 * 
+	 */
+	public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			if(problemHistoryId == null || problemHistoryId <= 0)
+				return null;
+			
+			String message  = null;
+			String[] mobileArray = new String[1];
+			String mobile = null;
+			ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryId);
+			Long userId = null;
+			
+			if(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemSource() != null)
+			{
+				long ProblemSource = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemSource().getInformationSourceId();
+				userId = problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getRegistrationId();
+				
+				if(ProblemSource == 1)
+				{
+					mobile = problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getMobile();
+				}
+				else if(ProblemSource == 2 || ProblemSource == 3)
+				{
+					mobile = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getMobile();
+				}
+				else if(ProblemSource == 4)
+				{
+					List<Object[]> cadreDetails = cadreProblemDetailsDAO.getCadreDetailsAndMobileNoByProblemHistoryId(problemHistory.getProblemHistoryId());
+					if(cadreDetails != null && cadreDetails.size() > 0)
+					{
+						mobile = cadreDetails.get(0)[2].toString();
+					}
+				}
+			}
+			else
+			{
+				mobile = problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getMobile();
+				userId = problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId();
+			}
+			
+			message = "Your Problem Added Successfully.";
+			message += "\nYour Problem Reference Number is : "+problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getReferenceNo()+".";
+			message += "\nThis Will be usefull for Further Reference";
+			
+			if(mobile != null && mobile.length() >= 10)
+			{
+				mobileArray[0] = mobile;
+				ResultStatus result = sendSMS(userId, message, IConstants.PROBLEM_MANAGEMENT, mobileArray);
+				if(result.getResultCode() == ResultCodeMapper.SUCCESS)
+				{
+					log.debug("Message Sent Successfully To - "+mobile);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					log.warn("Message Not Reached To - "+mobile);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					resultStatus.setExceptionEncountered(result.getExceptionEncountered());
+				}
+			}
+			else
+			{
+				log.debug("Mobile Number is Not Valid");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setExceptionMsg("Mobile NO is Not Valid");
+			}
+			return resultStatus;
+		}catch(Exception e)
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			log.error("Exception Occured & Exception is - "+e);
+			return resultStatus;
+		}
+	}
 }
 
