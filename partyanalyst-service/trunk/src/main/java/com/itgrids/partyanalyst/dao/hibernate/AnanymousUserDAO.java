@@ -153,5 +153,15 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	public List getUserDetails(String userName){
 		return getHibernateTemplate().find("select model.email,model.password from AnanymousUser model where model.username= ?",userName);
 	}
-	
+	public Integer saveUserNameTOEmail(Long userId,String email){
+		StringBuilder query = new StringBuilder();
+		query.append("update AnanymousUser model set model.username = ?,model.email= ? where model.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, email);
+		queryObject.setParameter(1, email);	
+		queryObject.setParameter(2, userId);	
+				
+		return queryObject.executeUpdate();	
+	}
 }
