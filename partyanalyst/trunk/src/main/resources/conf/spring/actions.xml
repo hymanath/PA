@@ -751,6 +751,7 @@
 	
 	<bean id="callCenterAction" class="com.itgrids.partyanalyst.web.action.CallCenterAction" singleton="false">
 		<property name="callCenterService" ref="callCenterService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
