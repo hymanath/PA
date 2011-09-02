@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 
 public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> implements
@@ -84,6 +85,23 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 	public List<Registration> getAllRegisteredUsers() {
 		return getHibernateTemplate().find(" select model.registrationId,model.firstName,model.lastName from Registration model ");
 	}
+	@SuppressWarnings("unchecked")
+	public List<Registration> checkForUserNameAvailabiity(String userName) {
+		return getHibernateTemplate().find("select model.userName from Registration model where model.userName = ?",userName);
+	}
+	@SuppressWarnings("unchecked")
+	public Integer saveUserNameTOEmail(Long userId,String email){
+		StringBuilder query = new StringBuilder();
+		query.append("update Registration model set model.userName = ?,model.email= ? where model.registrationId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, email);
+		queryObject.setParameter(1, email);	
+		queryObject.setParameter(2, userId);	
+				
+		return queryObject.executeUpdate();	
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSubusersByParentUserId(Long parentUserId){
