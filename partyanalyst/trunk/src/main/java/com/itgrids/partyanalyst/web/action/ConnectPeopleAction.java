@@ -514,9 +514,12 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		Long startIndex = Long.parseLong(request.getParameter("startIndex"));
 		Long results = Long.parseLong(request.getParameter("resultsCount"));
-		
+		Long userId = 0l;
+		String loginId = jObj.getString("userId");
 		Long locationId = new Long(jObj.getString("locationId"));
-		Long userId = new Long(jObj.getString("userId"));
+		if(!loginId.equalsIgnoreCase("")){
+		userId = new Long(loginId);
+		}
 		String locationType = jObj.getString("locationType");
 		String nameString = ""; 
 		String locationTypeConst = null;
