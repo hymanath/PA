@@ -85,8 +85,9 @@
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
-			<result type="redirect" name="PARTY_ANALYST_USER">index.action</result>
-			<result type="redirect" name="FREE_USER">homePage.action</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">index.action?changedUserName=true</result>
+			<result type="redirect" name="FREE_USER">homePage.action?changedUserName=true
+			</result>
 			<result type="redirect" name="constituencyProblemManagement">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
@@ -2052,7 +2053,19 @@
 			</result>
         </action>
         
-         <action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
+         <action name="checkRegisteredUserNameAvailabilityAction" class="electionVotingTrendzAction" method="checkForRegisteredUserNameAvailability">
+			<result type="json" name="success">
+				<param name="root">resultStr</param>				
+			</result>		
+		</action>
+		
+		<action name="changeRegisteredUserNameToEmailAction" class="electionVotingTrendzAction" method="changeRegisteredUserNameToEmail">
+			<result type="json" name="success">
+				<param name="root">resultValue</param>				
+			</result>		
+		</action>
+		
+		<action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
 			<result type="json" name="success">
 				<param name="root">result</param>				
 			</result>		
@@ -2061,6 +2074,12 @@
 		<action name="recoverPasswordAnanymousUserAction" class="anonymousUserAction" method="recoverPassword">
 			<result type="json" name="success">
 				<param name="root">regVO</param>				
+			</result>		
+		</action>
+		
+		<action name="changeAnanymousUserNameToEmailAction" class="anonymousUserAction" method="changeUserNameToEmail">
+			<result type="json" name="success">
+				<param name="root">resultValue</param>				
 			</result>		
 		</action>
 		
@@ -2489,6 +2508,7 @@
 				<param name="root">voterReportVO</param>				
 			</result>			
 		</action>
+					 		       	
 		
 		<action name="callCenterAction" class="callCenterAction">
 			<result name="success">/jsp/callCenter.jsp</result>
