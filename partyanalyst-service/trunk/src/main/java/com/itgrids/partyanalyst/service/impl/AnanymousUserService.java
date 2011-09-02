@@ -274,7 +274,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 				
 				try{
 					if(!isUpdate){
-						ananymousUser.setUsername(userDetails.getUserName());
+						ananymousUser.setUsername(userDetails.getEmail());
 						ananymousUser.setPassword(userDetails.getPassword());
 						ananymousUser.setRegisteredDate(getCurrentDateAndTime());
 					}
@@ -284,14 +284,18 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setLastName(userDetails.getLastName());
 					ananymousUser.setGender(userDetails.getGender());
 					SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+					if(userDetails.getDateOfBirth()!=null)
+						if(!("".equalsIgnoreCase(userDetails.getDateOfBirth())))
+					{
 					Date date = format.parse(userDetails.getDateOfBirth());
 					ananymousUser.setDateofbirth(date);
+					}
 					ananymousUser.setEmail(userDetails.getEmail());
 					ananymousUser.setMobile(userDetails.getMobile());
 					ananymousUser.setAddress(userDetails.getAddress());
 					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
-					ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
+					ananymousUser.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
 					ananymousUser.setUpdatedDate(getCurrentDateAndTime());		
 					
 					
@@ -1319,11 +1323,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 			registrationVO.setPhone(registration.getPhone());
 			registrationVO.setMobile(registration.getMobile());
 			registrationVO.setAddress(registration.getAddress());
-			registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
+			if(registration.getDateofbirth()!=null)
+			{
+				registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
+			}
 			registrationVO.setFirstName(registration.getName());
 			registrationVO.setLastName(registration.getLastName());
 			registrationVO.setState(registration.getState().getStateId().toString());
-			registrationVO.setDistrict(registration.getDistrict().getDistrictId().toString());
 			registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
 			registrationVO.setPincode(registration.getPincode());
 			
@@ -1716,4 +1722,22 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 	}
 	return registrationVO;
 }
+
+public Integer saveUserDetailsToChangeUserNameToEmail(Long userId,String userName){
+	
+	Integer detailsList = null;
+	RegistrationVO registrationVO=new RegistrationVO();
+	try{
+		detailsList = (Integer) ananymousUserDAO.saveUserNameTOEmail(userId,userName);
+	
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		return null;
+	}
+	return detailsList;
+}
+
+
+
 }
