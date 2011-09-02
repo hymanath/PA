@@ -307,6 +307,36 @@ public class RegistrationService implements IRegistrationService{
 		
 		return registrationVO;
 	}
-	
-	
+	public ResultStatus checkForUserNameAvalilability(String userName){
+		ResultStatus resultStatus = new ResultStatus();
+		List<Registration> detailsList = null;
+		try{
+			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
+			if(detailsList!=null && detailsList.size()!=0){
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			}else{
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			}
+			resultStatus.setResultPartial(false);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+		}
+		return resultStatus;
+	}
+	public Integer updateRegisteredUserDetailsToUserNameToEmail(Long userId,String userName){
+		
+		Integer detailsList = null;
+		RegistrationVO registrationVO=new RegistrationVO();
+		try{
+			detailsList = (Integer) registrationDAO.saveUserNameTOEmail(userId,userName);
+		
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return detailsList;
+		}
+		return detailsList;
+	}	
 }
