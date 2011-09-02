@@ -4,8 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -24,7 +26,45 @@ public class RegistrationAction extends ActionSupport implements
 	private IStaticDataService staticDataService;
 	private RegistrationVO regVO = new RegistrationVO();
 	private String registrationType;
+	private HttpSession session;
+	private String task = null;
+	JSONObject jObj= null; 
+	private Long resltval;
+	private String resultStr;
+    private Integer resultValue;
 	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public String getResultStr() {
+		return resultStr;
+	}
+
+	public void setResultStr(String resultStr) {
+		this.resultStr = resultStr;
+	}
+
+	public Long getResult() {
+		return resltval;
+	}
+
+	public void setResult(Long result) {
+		this.resltval = result;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public String getRegistrationType() {
 		return registrationType;
 	}
@@ -98,7 +138,61 @@ public class RegistrationAction extends ActionSupport implements
 		}
 
 	}
- 
+	
+	public String checkForRegisteredUserNameAvailability()
+	{
+		System.out.println("=================");
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resltval = new Long(registrationService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
+		resultStr = SUCCESS;
+		return SUCCESS;
+	}
+	
+	public String changeRegisteredUserNameToEmail(){
+		regVO = new RegistrationVO();
+		regVO=(RegistrationVO)session.getAttribute("USER");
+		Long userId=regVO.getRegistrationID();
+		
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("changeRegisteredUserNameToEmail")){
+				
+				resultValue=registrationService.updateRegisteredUserDetailsToUserNameToEmail(userId,jObj.getString("userName"));	
+				return SUCCESS;
+				}
+			/*	else{
+				 email = regVO.getEmail();
+				 System.out.println("email"+email);
+					String requestURL= request.getRequestURL().toString();
+					String requestFrom = "";
+					if(requestURL.contains("www.partyanalyst.com"))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+				 
+				 if(rs.getResultCode() == 1){
+					 regVO = null;
+				 }
+				return SUCCESS;
+			}*/
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	
+	}
+	
 	public String getFirstName() {
 		return regVO.getFirstName();
 	}
