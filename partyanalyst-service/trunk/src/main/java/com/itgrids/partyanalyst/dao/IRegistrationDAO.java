@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 
 
@@ -43,6 +44,12 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	public List<Registration> findByUserRegistrationId(Long registrationId);
 	
 	public List<Registration> getAllRegisteredUsers();
+	
+	public List<Registration> checkForUserNameAvailabiity(String userName);
+	
+	public Integer saveUserNameTOEmail(Long userId,String userName);
+   
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSubusersByParentUserId(Long parentUserId);
