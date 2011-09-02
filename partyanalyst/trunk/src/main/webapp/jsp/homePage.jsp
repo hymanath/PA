@@ -75,6 +75,38 @@
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 
 <script type="text/javascript">
+var uname = '${sessionScope.USER.userName}';
+var emailId='${sessionScope.USER.email}';
+var changedUserName='${sessionScope.changedUserName}';
+function callAJAX(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "changeAnanymousUserNameToEmail")
+					{
+						showDetails(results);
+					}
+					if(jsObj.task == "checkAnanymousUserNameAvailability")
+				{ 
+                        showDetailsForAvailability(results);
+
+				}
+			}catch (e) {   		
+			   	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+
 
 google.load("elements", "1", {packages : ["newsshow"]});
 
@@ -247,7 +279,7 @@ var new2="Election Message";
 					}  					 
 				]; 
 	</c:if>
-
+	
 function openAddNewProblemWindow()
 {	
 	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
@@ -257,6 +289,8 @@ function openAddNewProblemWindow()
 </script>
 </head>
 <body>
+    <div id="username_change_window" style="background-color: #C7CFD2;">
+	<div id="username_change_window_inner"></div></div>
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
@@ -292,6 +326,7 @@ function openAddNewProblemWindow()
                                     <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
                                         <c:out value="Welcome, ${sessionScope.UserName} | "/>
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a> 
+								
 									</c:if>
 									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
 										<c:out value="Welcome, ${sessionScope.UserName} | "/>
@@ -1060,6 +1095,11 @@ function openAddNewProblemWindow()
 
 	initializeHomePage();
 	getElectionTypeValue(1);
+	
+	<c:if test="${loginStatus == 'true' && sessionScope.UserType == 'FreeUser'}">
+	showUserNameChangePanel(uname);
+	</c:if>
+
 	//getElectionYears("Assembly");
 	</script>
 	
