@@ -64,6 +64,8 @@
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
 	</head>
 	<body>
+	<div id="username_change_window" style="background-color: #C7CFD2;">
+	<div id="username_change_window_inner"></div></div>
 		<div id="dashboard_main">
 
 			<div id="dashboard_layout_main">						
@@ -353,6 +355,201 @@
 
 		
 		<script type="text/javascript">
+var uname = '${sessionScope.USER.userName}';
+var emailId='${sessionScope.USER.email}';
+function showDetailsForAvailability(myresults){
+var email = document.getElementById("emailField").value;
+var result = document.getElementById("feedback_window_errorMsg");
+	var str='';
+	if(myresults==121){
+		str = '<font color="#000000">Sending Your Request.Please wait</font>';
+		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+
+		var jsObj=
+		{		
+ 				userName:email,
+				task:"changeRegisteredUserNameToEmail"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/changeRegisteredUserNameToEmailAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		}	
+	else{
+		str+='<div style="color:red"> Username is not available</div>';	
+	}
+	result.innerHTML = str;
+
+}
+function showDetails(myresults)
+{
+	
+	var result = document.getElementById("feedback_window_errorMsg");
+	 str='';
+	
+	if(myresults == null){
+		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
+	}
+	
+	else{
+		$("#username_change_window").dialog("destroy");
+		afterUserNameChanges();
+		return;
+	}
+	result.innerHTML = str;
+	
+}
+
+function afterUserNameChanges(){
+var email = document.getElementById("emailField").value;
+ $("#username_change_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:150,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("username_change_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Do You Want To Change Your UserName As Your Email</div>';
+		str += '<div id="feedback_window_body"';
+		str +='style="font-weight:bold;color:green;text-align:center;">';
+		str += 'Your New UserName Is :'+email;
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr><td>';
+		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
+		str += '   value="OK"></input></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("OkButton");
+
+		oPushButton2.on("click",function(){
+			$("#username_change_window").dialog("destroy");
+		});
+}
+
+
+
+function changeUserName(){
+
+var email = document.getElementById("emailField").value;
+	var resultDIVEle = document.getElementById("feedback_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+	if(email.length == 0)
+		resultDIVEle.innerHTML = "<font color='red'><b>Please Enter EmailId.</b></font>";
+	
+	else if(reg.test(email) == false)
+		resultDIVEle.innerHTML = "<font color='red'><b>Plase provide correct Email Address.</b></font>";
+   
+	else if(reg.test(email) == true)
+	{
+		document.getElementById("feedback_window_errorMsg").innerHTML = " ";
+ 		var jsObj=
+		{		
+ 				userName:email,
+				task:"checkRegisteredUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "checkRegisteredUserNameAvailabilityAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
+	
+	
+	}
+function showUserNameChangePanel(uname){
+
+	var alertIndicator = '${changedUserName}';
+	
+	if(alertIndicator == null || alertIndicator == 'false')
+		return;
+
+var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+if(reg.test(uname) == false)
+	{
+
+$("#username_change_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:225,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("username_change_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Do You Want To Change Your UserName As Your Email</div>';
+		 if(emailId == ''|| emailId== null)
+		str += '<div id="feedback_window_body">';
+		 else
+        str += '<div id="feedback_window_body" style="padding-bottom:48px">';
+		str += '	<div id="feedBackNote_div">';
+		str += '		<table>';
+		str += '		<tr>';
+	 if(emailId == ''|| emailId== null){
+
+		str += '		<td><img src="images/icons/infoicon.png"></td>';
+		str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
+		str += '		</tr>';
+		str += '		</table>';
+		str += '	</div>';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<table id="feedbackTable" width="100%">';
+		str += '		<tr>';
+       	str += '		<th><font color="red">*</font>Enter Your EmailId </th>';
+		str += '		<td>';
+		str += '			<input type="text" id="emailField" size="25"/>';
+		str += '		</td>';
+		str += '		</tr>';
+        }
+		else{
+        str += '<input type="hidden" value='+emailId+' id="emailField" size="25"/>'; 
+		str += '		<tr>';
+       	str += '		<th></th>';
+        str += '		<td>';
+        str += '		</td>';
+		str += '		</tr>';
+	    }
+		str += '		</table>';
+		str += '	</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '		<input id="postButton" type="button" value="Yes"></input>';
+		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("postButton");  
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton1.on("click",function(){
+			changeUserName();
+		});
+
+		oPushButton2.on("click",function(){
+			$("#username_change_window").dialog("destroy");
+		});
+	}
+}
+		
 		var labelResources = { <%		
 				ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 				String regionLevel = rb.getString("regionLevel");
@@ -381,24 +578,31 @@
 		</c:forEach>
 		// for integrating cadre sms					
 		function callAjax(jsObj,url)
-		{			
+		{		
 			
 	 		var callback = {			
 	 		               success : function( o ) {
 								try {
-									myResults = YAHOO.lang.JSON.parse(o.responseText);	
-									if(jsObj.task == "getUserLocation")
-										fillDataOptions(myResults,jsObj);	
-									else if(jsObj.task == "fillSelectElements")
-										fillSelectElement(myResults,jsObj);
-									else if(jsObj.task == "sendSMS")
-										displaySuccessMessage(myResults,jsObj);
-									else if(jsObj.task=="CADRE_LEVEL")
-										fillDataForCadreLevel(myResults,jsObj);
-																				
-								}catch (e) {   
-								   	alert("Invalid JSON result" + e);   
-								}  
+						var myResults = YAHOO.lang.JSON.parse(o.responseText);	
+						 
+						if(jsObj.task == "getUserLocation")
+							fillDataOptions(myResults,jsObj);	
+						if(jsObj.task == "fillSelectElements")
+							fillSelectElement(myResults,jsObj);
+						if(jsObj.task == "sendSMS")
+							displaySuccessMessage(myResults,jsObj);
+						if(jsObj.task=="CADRE_LEVEL")
+							fillDataForCadreLevel(myResults,jsObj);
+					 if(jsObj.task=="checkRegisteredUserNameAvailability")		
+					 showDetailsForAvailability(myResults);	
+					  if(jsObj.task=="changeRegisteredUserNameToEmail")		
+					 showDetails(myResults);	
+					 
+						
+						
+						}catch (e) {   
+						  	alert("Invalid JSON result" + e);   
+						   }  
 	 		               },
 	 		               scope : this,
 	 		               failure : function( o ) {
@@ -1108,7 +1312,15 @@
 			divElmt.innerHTML=str;
 		}
 		initializeIndexPage();
+		<c:if test="${sessionScope.UserType == 'PartyAnalyst'}">
+	showUserNameChangePanel(uname);
+	</c:if>
 		</script>
-			
+
+	
+	
+	
+	
+	
 </body>
 </html>
