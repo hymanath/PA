@@ -420,6 +420,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
 			 isSuccessfullyInserted = true;
+			 problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getProblemHistoryId());
 			 problemBeanVO = new ProblemBeanVO();
 			 
 		 } else 
