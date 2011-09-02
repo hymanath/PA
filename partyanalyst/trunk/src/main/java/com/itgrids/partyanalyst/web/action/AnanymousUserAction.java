@@ -51,8 +51,15 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private Long localBodyElectionTypeId = null;
     private RegistrationVO regVO = null;
     private HttpSession session;
+    private Integer resultValue;
         
-   	public void setSession(HttpSession session) {
+   	public Integer getResultValue() {
+		return resultValue;
+	}
+	public void setResultValue(Integer resultValue) {
+		this.resultValue = resultValue;
+	}
+	public void setSession(HttpSession session) {
 		this.session = session;
 	}
 	public RegistrationVO getRegVO() {
@@ -265,6 +272,43 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		return SUCCESS;
 	}
 	
+	public String changeUserNameToEmail(){
+		regVO = new RegistrationVO();
+		regVO=(RegistrationVO)session.getAttribute("USER");
+		Long userId=regVO.getRegistrationID();
+		
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("changeAnanymousUserNameToEmail")){
+				
+				resultValue=ananymousUserService.saveUserDetailsToChangeUserNameToEmail(userId,jObj.getString("userName"));	
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));
+				 email = regVO.getEmail();
+				 System.out.println("email"+email);
+					String requestURL= request.getRequestURL().toString();
+					String requestFrom = "";
+					if(requestURL.contains("www.partyanalyst.com"))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+				 
+				 if(rs.getResultCode() == 1){
+					 regVO = null;
+				 }
+				return SUCCESS;
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	
+	}
+	
 	public void prepare() throws Exception {
 		
 		registrationId = 0l;
@@ -296,8 +340,8 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		List<String> gender = new ArrayList<String>();
 		List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB(); 
 		List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
-		List<SelectOptionVO> districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(regVO.getState()));
-		List<SelectOptionVO> constituencies = regionServiceDataImp.getConstituenciesByDistrictID(Long.parseLong(regVO.getDistrict()));
+		//List<SelectOptionVO> districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(regVO.getState()));
+	    List<SelectOptionVO> constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(regVO.getState())).getConstituencies();
 		
 		gender.add("Male");
 		gender.add("Female");
@@ -305,7 +349,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     	session.setAttribute("profileOpts", profileOpts);
 		session.setAttribute("gender", gender);
 		session.setAttribute("states", states);
-		session.setAttribute("districts", districts);
+		//session.setAttribute("districts", districts);
 		session.setAttribute("constituencies", constituencies);
     }
 }
