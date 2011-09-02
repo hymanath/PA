@@ -209,7 +209,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getLastName();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select gender",shortCircuit=true)
 	public void setGender(String gender) {
 		this.regVO.setGender(gender);
 	}
@@ -218,7 +217,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getGender();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Date Of Birth is required")
 	public String getDateOfBirth() {
 		return regVO.getDateOfBirth();
 	}
@@ -248,7 +246,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getEmail() {
 		return regVO.getEmail();
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Email is Mandatory")
 	@EmailValidator(type = ValidatorType.FIELD , message = " Enter a valid email.")
 	public void setEmail(String email) {
 		this.regVO.setEmail(email);
@@ -401,8 +398,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
              }
 	           
-			 
-	      
+			
             if(registrationId != null && registrationId > 0){
 				loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
@@ -419,8 +415,9 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				requestFrom = IConstants.LOCALHOST;
 			
             	// For sending notification after registration
-            mailService.sendRegistrationNotification(regVO,requestFrom);
-            
+			 if(!(registrationId != null && registrationId > 0)){
+			mailService.sendRegistrationNotification(regVO,requestFrom);
+			 }
          //    if(regVO.getRegistrationID()!=null){
             
             
@@ -478,12 +475,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return SUCCESS;
 		
 	}
-		
+	
 	public void validate() {		       
 		HttpSession session = request.getSession();
 		if(registrationId == null || registrationId == 0){
-			if(userName == null || userName.trim().length() == 0)
-				addFieldError("userName","Username is required");
+			/*if(userName == null || userName.trim().length() == 0)
+				addFieldError("userName","Username is required");*/
 		
 			if(password == null || password.trim().length() == 0)
 				addFieldError("password","Password is required.");
@@ -497,20 +494,20 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		if(state==null || state.equalsIgnoreCase("0")){
 			addFieldError("state","Please select a State.");
 		}
-		if(district==null || district.equalsIgnoreCase("0")){
+		/*if(district==null || district.equalsIgnoreCase("0")){
 			if(Long.parseLong(state)!=0l){
 				districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(state));
 				session.setAttribute("districts", districts);
 			}
 			addFieldError("district","Please select a District.");
-		}
+		}*/
 		if(constituency==null || constituency.equalsIgnoreCase("0")){
-			if(Long.parseLong(district)!=0l){
+			/*if(Long.parseLong(district)!=0l){
 				constituencies = regionServiceDataImp.getConstituenciesByDistrictID(Long.parseLong(district));
-				/*
+				
 				 * Modified by ravi 
 				 * please refer previous version to check for original code.
-				 */ 
+				  
 				if(constituencies == null || constituencies.size() == 0)
 					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
 				
@@ -518,11 +515,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
 				
 				session.setAttribute("constituencies", constituencies);
-			}
+			}*/
 			addFieldError("constituency","Please select a Constituency.");
 		}
 		
-		Long result = new Long(ananymousUserService.checkForUserNameAvalilability(userName).getResultCode());
+		Long result = new Long(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
 			
 		if(result != 121L){
 			addFieldError("userName","UserName does not exist.");
