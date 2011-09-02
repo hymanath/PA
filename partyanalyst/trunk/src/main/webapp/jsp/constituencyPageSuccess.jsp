@@ -1280,7 +1280,7 @@ function hideZptcOrMptcDiv(election)
 								<div id="electionYears_Main">
 									<div id="electionYearsWithAssets_Div"></div>
 								</div>
-								<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam">
+								<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam" style="height:auto;max-height:400px;overflow-y:auto">
 										<div id="electionYearsWithAssets_Panel_Div"></div>
 										<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
 								</div>
@@ -1296,9 +1296,9 @@ function hideZptcOrMptcDiv(election)
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>	
 							<div id="announcements_div_main" class="innerLayoutDivClass">
-								<div id="announcementsConstituencyInConstituencyDiv">
+								<div id="announcementsInConstituencyDiv" style="height:auto;max-height:550px;overflow-y:auto;margin-top:10px;">
 								</div>
-								<div id="announcementsOfAUserDiv">
+								<div id="announcementsOfAUserDiv" style="height:auto;max-height:550px;overflow-y:auto;margin-top:10px;">
 								</div>
 							</div>
 					</div>
