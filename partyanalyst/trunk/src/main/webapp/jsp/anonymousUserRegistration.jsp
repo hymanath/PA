@@ -412,21 +412,40 @@ function showDetails(results)
 }
 
 function validateMobile()
-{
+{  
 	var mobilEle = document.getElementById("mobileField");
-	var resultDIVEle = document.getElementById("mobileDiv");
+	var resultDIVEle = document.getElementById("mobileFieldDiv");
 	var mobile = mobilEle.value;
 
 	resultDIVEle.innerHTML = "";
+	if(mobilEle.value =="Mobile Number"){
+			resultDIVEle.innerHTML = "";
+              return
+	}
 	
 	if(isNaN(mobile)|| mobile.indexOf(" ")!=-1)
-		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number Should contains only Numbers.</b></font>";
+		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number contains only Numbers.</b></font>";
 		
 	else if((mobile.length > 0 && mobile.length < 10) || mobile.length > 12)
 		resultDIVEle.innerHTML = "<font color='red'><b>Please provide correct Mobile number.</b></font>";
 		
+		
 }
 
+function validateAddress()
+{
+	var mobilEle = document.getElementById("addressField");
+	var resultDIVEle = document.getElementById("addressFieldDiv");
+	var mobile = mobilEle.value;
+
+	resultDIVEle.innerHTML = "";
+	
+	if(mobilEle.value.match(r[spvar]))
+		resultDIVEle.innerHTML = "<font color='red'>Address Should not contain Special Characters</font>";
+	else
+		resultDIVEle.innerHTML = "";
+		
+}
 function validateFirstName()
 { 
 
@@ -434,10 +453,8 @@ function validateFirstName()
 	var fstEleErr=document.getElementById("fstNameId");
 	fstEleErr.innerHTML = "";
 	if(fstEle.value.match(r[spvar]))
-		fstEleErr.innerHTML = "<font color='red'>FirstName Should not contain Special Characters</font>";
-    if(fstEle.value.match(r[spvar]))
-		fstEleErr.innerHTML = "<font color='red'>FirstName Should not contain Special Characters</font>";
-	if(fstEle.value== 'First Name'){
+		fstEleErr.innerHTML = "<font color='red'>Should not contain Special Characters</font>";
+    if(fstEle.value== 'First Name'){
 		fstEleErr.innerHTML = "<font color='red'>&nbsp;Enter First Name.</font>";
 	    return false;
 	}
@@ -805,13 +822,15 @@ function showTextInTextBoxes(id){
 
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" size="30px" theme="simple" cssClass="textFieldStyle"/></td>
+  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id),validateMobile()" onclick="removeTextInTextBoxes(this.id)" size="30px" theme="simple" cssClass="textFieldStyle"/><span id="mobileFieldDiv" style="padding-left:10px;font-weight:lighter">
+  </span></td>
   </tr>
   <tr>
   <td style="padding-left:18px"><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" size="30px" theme="simple" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/></td>
+  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" size="30px" theme="simple" onBlur="showTextInTextBoxes(this.id),validateAddress()" onclick="removeTextInTextBoxes(this.id)"/><span id="addressFieldDiv" style="padding-left:10px;font-weight:lighter">
+  </span></td>
   </tr>
   </c:if>
   <tr>
