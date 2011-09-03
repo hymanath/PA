@@ -352,7 +352,7 @@ function validPassword()
 	resultDIVEle.innerHTML = "";
 	
 	if(textEle.value.length > 0 &&textEle.value.length < 6)
-		resultDIVEle.innerHTML = "<span style="padding-left:10px;font-weight:lighter">Password minimum of 6 characters.</font>";
+		resultDIVEle.innerHTML = "<span style='padding-left:10px;font-weight:lighter'>Password minimum of 6 characters.</span>";
 		if(textEle.value==""){
          resultDIVEle.innerHTML="<font color='red'>please enter password.</font>";
 	     return false; 
@@ -369,7 +369,7 @@ function validRePassword()
 	resultDIVEle.innerHTML = "";
 	if(pwd1.value.length > 0 && pwd1.value.length < 6)
 	{
-		resultDIVEle.innerHTML = "<span style="padding-left:10px;font-weight:lighter">Password minimum of 6 characters.</font>";
+		resultDIVEle.innerHTML = "<span style='padding-left:10px;font-weight:lighter'>Password minimum of 6 characters.</span>";
 		return;
 	}
 	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value)
@@ -433,6 +433,8 @@ function validateFirstName()
 	var fstEle = document.getElementById("firstNameId");
 	var fstEleErr=document.getElementById("fstNameId");
 	fstEleErr.innerHTML = "";
+	if(fstEle.value.match(r[spvar]))
+		fstEleErr.innerHTML = "<font color='red'>FirstName Should not contain Special Characters</font>";
     if(fstEle.value.match(r[spvar]))
 		fstEleErr.innerHTML = "<font color='red'>FirstName Should not contain Special Characters</font>";
 	if(fstEle.value== 'First Name'){
@@ -485,23 +487,34 @@ function validateConstituency()
 }
 
 function validatefields()
-{
+{   
+debugger;
 	var flag = true;
+	 if($("#dateOfBirthField").val() =="DateOfBirth")
+	   $("#dateOfBirthField").val($(this).html());
+	  if($("#addressField").val() =="Address")
+		  $("#addressField").val($(this).html());
+	 if($("#mobileField").val() =="Mobile Number")
+	$("#mobileField").val($(this).html());
+	
+	if(!validateFirstName())
+		flag = false;
+	if(!validateLastName())
+		flag = false;
+	<c:if test="${registrationId == '0'}">
 	if(!validateEmail())
 		flag = false;
 	if(!validPassword())
 		flag = false;
 	if(!validRePassword())
 		flag = false;
-	if(!validateFirstName())
-		flag = false;
-	if(!validateLastName())
-		flag = false;
+	</c:if>
 	if(!validateState())
 		flag = false;
 	if(!validateConstituency())
 		flag = false;
-
+   
+	 
 	return flag;
 
 
@@ -515,15 +528,17 @@ function validateEmail()
 	resultDIVEle.innerHTML = "";
 	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
+	if(reg.test(email) == false)
+		resultDIVEle.innerHTML = "<font color='red'>Please provide correct Email Address.</font>";
+    else 
+             return true;
+
 	if(email.length == 0){
 		resultDIVEle.innerHTML = "<font color='red'>&nbsp;Please Enter User Name.</font>";
         return false;
 	}
 	
-	if(reg.test(email) == false)
-		resultDIVEle.innerHTML = "<font color='red'>Please provide correct Email Address.</font>";
-    else 
-             return true;
+	
 }
 /**function validateEmail(id){
 	
@@ -565,7 +580,10 @@ function removeTextInTextBoxes(id){
 	  $("#"+id).val() =="Constituency"||
 	  $("#"+id).val() =="First Name" ||
 	  $("#"+id).val() =="Re-EnterPassword" ||
-	  $("#"+id).val() =="Last Name"){
+	  $("#"+id).val() =="DateOfBirth"||
+	  $("#"+id).val() =="Address"||
+	  $("#"+id).val() =="Last Name" ||
+      $("#"+id).val() =="Mobile Number"){
     $("input#"+id).val($(this).html());
 	return;
   }
@@ -578,9 +596,8 @@ function showTextInTextBoxes(id){
 	  if($("#constituencyId").val() ==''){
 		$("#constituencyId").val('Constituency');
 	  }
-	  if($("#mobileNumId").val() ==''){
-		$("#mobileNumId").val('Password');
-		$("#mobileNumId").attr('type','password');
+	  if($("#mobileField").val() ==''){
+		$("#mobileField").val('Mobile Number');
 	  }
 	  if($("#firstNameId").val() =='' ){
 		 $("#firstNameId").val('First Name');
@@ -594,6 +611,14 @@ function showTextInTextBoxes(id){
 	  if($("#reEnterPasswordId").val() ==''){
          $("#reEnterPasswordId").val('Re-EnterPassword');
 	 }
+	 if($("#dateOfBirthField").val() ==''){
+         $("#dateOfBirthField").val('DateOfBirth');
+	 }
+   
+	 if($("#addressField").val() ==''){
+         $("#addressField").val('Address');
+	 }
+      
 }
 
 </script>
@@ -698,7 +723,18 @@ function showTextInTextBoxes(id){
 
 <s:form action="anonymousUserRegistrationAction.action" method="GET" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
-   
+<div id="registrationMainDiv" style="padding-bottom:5px;">
+		<table class="registrationTable">
+			<tr>
+				<td colspan="2">
+					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
+						<s:actionerror />
+						<s:fielderror />
+						<s:actionmessage/>						
+					</div>
+				</td>
+			</tr>
+		</table></div>   
 <c:if test="${registrationId == '0'}">
 <div id="tableStyle" style="width:870px;height:530px;"></c:if> 					<c:if test="${registrationId != '0'}">
 <div id="tableStyle" style="width:870px;height:600px;"></c:if> 			
@@ -737,7 +773,7 @@ function showTextInTextBoxes(id){
    </tr>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="firstName" value="First Name" id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id)"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  <s:textfield name="firstName" value="First Name" id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   
@@ -750,29 +786,32 @@ function showTextInTextBoxes(id){
   </c:if>
   <c:if test="${registrationId != '0'}">
   <td>
-  <strong style="color:red">Account Information</strong> 
+  <strong style="color:red">Account Information</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span> 
   </td>
   </tr>
   <tr>
-  <td> <s:textfield id="firstNameId" name="firstName" size="30px"  theme="simple" cssClass="textFieldStyle"/></td>
+  <td class="tdStyle"><b style="color:red">*</b>  <s:textfield id="firstNameId" name="firstName" size="30px"  theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  </span></td>
   </tr>
   <tr>
-  <td> <s:textfield id="lastNameId" name="lastName" size="30px" theme="simple" cssClass="textFieldStyle"/></td>
+  <td class="tdStyle"><b style="color:red">*</b>  <s:textfield id="lastNameId" name="lastName" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  </span></td>
   </tr>
   <tr>
-  <td><s:textfield id="dateOfBirthField"  name="dateOfBirth" size="30px" theme="simple" cssClass="textFieldStyle" onfocus="showCalendar(this.id)"/>
+  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
+  <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
 </td>
 
-<td><input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px" theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/></td>
+
   </tr>
   <tr>
-  <td><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="validateMobile()" size="30px" theme="simple" cssClass="textFieldStyle"/></td>
+  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" size="30px" theme="simple" cssClass="textFieldStyle"/></td>
   </tr>
   <tr>
-  <td><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
+  <td style="padding-left:18px"><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
   </tr>
   <tr>
-  <td><s:textfield id="addressField" name="address" cssClass="textFieldStyle" size="30px" theme="simple"/></td>
+  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" size="30px" theme="simple" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/></td>
   </tr>
   </c:if>
   <tr>
@@ -834,13 +873,16 @@ function showTextInTextBoxes(id){
 		 <input type="hidden" name="stateId" value="<%=stateId %>" />
 		 <input type="hidden" name="districtId" value="<%=districtId %>" />
 		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" 
+		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>"
 		 />
+          <s:hidden name="email" />
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
 	
 <script language="javascript">
+
 //document.getElementsByName("gender")[0].checked = true;
 document.getElementsByName("accept")[0].checked = true;
+
 </script>
 <script>
 $(document).ready(function() {
@@ -873,7 +915,16 @@ $(document).ready(function() {
 			}
 		});
 	});
- 
+ if($("#dateOfBirthField").val() ==''){
+         $("#dateOfBirthField").val('DateOfBirth');
+	 }
+   
+	 if($("#addressField").val() ==''){
+         $("#addressField").val('Address');
+	 }
+	 if($("#mobileField").val() ==''){
+		$("#mobileField").val('Mobile Number');
+	  }
 });
 </script>
 <script>
