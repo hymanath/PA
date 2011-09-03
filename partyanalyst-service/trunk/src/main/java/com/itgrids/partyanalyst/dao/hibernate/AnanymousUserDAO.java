@@ -37,7 +37,8 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 
 	@SuppressWarnings("unchecked")
 	public List<AnanymousUser> checkForUserNameAvailabiity(String userName) {
-		return getHibernateTemplate().find("select model.username from AnanymousUser model where model.username = ?",userName);
+		Object[] params = {userName,userName};
+		return getHibernateTemplate().find("select model from AnanymousUser model where model.username = ? or model.email = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
