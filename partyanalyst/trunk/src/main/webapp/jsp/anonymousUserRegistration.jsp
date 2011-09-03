@@ -307,7 +307,7 @@ function checkAvailability()
 	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 	if(name.length == 0)
-		resultDIVEle.innerHTML = "<font color='red'><b>Enter User Name.</b></font>";
+		resultDIVEle.innerHTML = "<font color='red'>Enter User Name.</font>";
 	
 	else if(reg.test(name) == false)
 		resultDIVEle.innerHTML = "<font color='red'><b>Incorrect Email Address.</b></font>";
@@ -350,8 +350,16 @@ function validPassword()
 	var textEle = document.getElementById("password-password");
 	var resultDIVEle = document.getElementById("errMsg");
 	resultDIVEle.innerHTML = "";
+	
 	if(textEle.value.length > 0 &&textEle.value.length < 6)
-		resultDIVEle.innerHTML = "<font color='red'>Password minimum of 6 characters.</font>";
+		resultDIVEle.innerHTML = "<span style="padding-left:10px;font-weight:lighter">Password minimum of 6 characters.</font>";
+		if(textEle.value==""){
+         resultDIVEle.innerHTML="<font color='red'>please enter password.</font>";
+	     return false; 
+	}
+	else 
+             return true; 
+
 }
 function validRePassword()
 {
@@ -359,14 +367,19 @@ function validRePassword()
 	var pwd2 = document.getElementById("password-rePassword");
 	var resultDIVEle = document.getElementById("errMsg1");
 	resultDIVEle.innerHTML = "";
-	
 	if(pwd1.value.length > 0 && pwd1.value.length < 6)
 	{
-		resultDIVEle.innerHTML = "<font color='red'>Password minimum of 6 characters.</font>";
+		resultDIVEle.innerHTML = "<span style="padding-left:10px;font-weight:lighter">Password minimum of 6 characters.</font>";
 		return;
 	}
 	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value)
 		resultDIVEle.innerHTML = "<font color='red'>Passwords do not match.</font>";
+		if(pwd2.value==""){
+         resultDIVEle.innerHTML="<font color='red'>please enter Re-Password.</font>";
+	return false;
+	}
+	else 
+             return true;
 }
 
 function validNames(id)
@@ -414,6 +427,87 @@ function validateMobile()
 		
 }
 
+function validateFirstName()
+{ 
+
+	var fstEle = document.getElementById("firstNameId");
+	var fstEleErr=document.getElementById("fstNameId");
+	fstEleErr.innerHTML = "";
+    if(fstEle.value.match(r[spvar]))
+		fstEleErr.innerHTML = "<font color='red'>FirstName Should not contain Special Characters</font>";
+	if(fstEle.value== 'First Name'){
+		fstEleErr.innerHTML = "<font color='red'>&nbsp;Enter First Name.</font>";
+	    return false;
+	}
+	else 
+             return true;
+ }
+
+function validateLastName()
+{
+	var lstEle = document.getElementById("lastNameId");
+	var lstEleErr=document.getElementById("lstNameId");
+	lstEleErr.innerHTML = "";
+
+	if(lstEle.value== 'Last Name'){
+		lstEleErr.innerHTML = "<font color='red'>&nbsp;Enter Last Name.</font>";
+	    return false;
+	}
+	else 
+             return true;
+}
+function validateState()
+{
+	var lstElmt = document.getElementById("stateSelectBox");
+	var lstEleErrs=document.getElementById("SelectState");
+	lstEleErrs.innerHTML = "";
+
+	if(lstElmt.value== '0'){
+		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select state.</font>";
+         return false;
+}
+else 
+             return true;
+}
+function validateConstituency()
+{
+	var lstEle = document.getElementById("constituency");
+	var lstEleErr=document.getElementById("selectConstituency");
+	lstEleErr.innerHTML = "";
+
+	if(lstEle.value== '0'){
+		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Select Constituency.</font>";
+		return false;
+	}
+	else 
+             return true;
+
+}
+
+function validatefields()
+{
+	var flag = true;
+	if(!validateEmail())
+		flag = false;
+	if(!validPassword())
+		flag = false;
+	if(!validRePassword())
+		flag = false;
+	if(!validateFirstName())
+		flag = false;
+	if(!validateLastName())
+		flag = false;
+	if(!validateState())
+		flag = false;
+	if(!validateConstituency())
+		flag = false;
+
+	return flag;
+
+
+}
+
+
 function validateEmail()
 {
 	var email = document.getElementById("emailField").value;
@@ -421,12 +515,15 @@ function validateEmail()
 	resultDIVEle.innerHTML = "";
 	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
-	if(email.length == 0)
-		resultDIVEle.innerHTML = "<font color='red'><b>Please Enter User Name.</b></font>";
+	if(email.length == 0){
+		resultDIVEle.innerHTML = "<font color='red'>&nbsp;Please Enter User Name.</font>";
+        return false;
+	}
 	
-	else if(reg.test(email) == false)
-		resultDIVEle.innerHTML = "<font color='red'><b>Please provide correct Email Address.</b></font>";
-
+	if(reg.test(email) == false)
+		resultDIVEle.innerHTML = "<font color='red'>Please provide correct Email Address.</font>";
+    else 
+             return true;
 }
 /**function validateEmail(id){
 	
@@ -599,21 +696,9 @@ function showTextInTextBoxes(id){
 </head>  
 <body>  
 
-<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data">  
+<s:form action="anonymousUserRegistrationAction.action" method="GET" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
-
-    <div id="registrationMainDiv" style="padding-bottom:5px;">
-		<table class="registrationTable">
-			<tr>
-				<td colspan="2">
-					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
-						<s:actionerror />
-						<s:fielderror />
-						<s:actionmessage/>						
-					</div>
-				</td>
-			</tr>
-		</table></div>
+   
 <c:if test="${registrationId == '0'}">
 <div id="tableStyle" style="width:870px;height:530px;"></c:if> 					<c:if test="${registrationId != '0'}">
 <div id="tableStyle" style="width:870px;height:600px;"></c:if> 			
@@ -628,37 +713,39 @@ function showTextInTextBoxes(id){
 <table cellspacing="1px" cellpadding="5px" >
  <tr>
  <c:if test="${registrationId == '0'}">
- <td><strong style="color:red;margin">REGISTER</strong></td></tr>
+ <td><strong style="color:red;margin">REGISTER</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span></td></tr>
  <tr>
- <td class="tdStyle">
+ <td class="tdStyle"><b style="color:red">*</b> 
  <s:textfield name="email" value="UserName" id="emailField" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
- <span id="mobileDiv"></span>
+ <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
   </td>
   
   </tr>
   <tr>
-  <td class="tdStyle">
+  <td class="tdStyle"><b style="color:red">*</b> 
  <s:textfield id="password-clear" cssClass="textFieldStyle" value="Password" size="30px" />
-  <s:password name="password" value="Password" id="password-password" cssClass="textFieldStyle" size="30px" onBlur="validPassword()" theme="simple"/><span id="errMsg">
+  <s:password name="password" value="Password" id="password-password" cssClass="textFieldStyle" size="30px" onBlur="validPassword()" theme="simple"/><span id="errMsg" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   </tr>
   <tr>
-  <td>
+  <td class="tdStyle"><b style="color:red">*</b> 
   <s:textfield id="password-reClear" cssClass="textFieldStyle" value="Re-EnterPassword" size="30px" />
-    <s:password name="reEnteredPassword" value="Re-EnterPassword" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1">
+    <s:password name="reEnteredPassword" value="Re-EnterPassword" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
    </tr>
   <tr>
-  <td class="tdStyle">
-  <s:textfield name="firstName" value="First Name" id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id)"/>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield name="firstName" value="First Name" id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id)"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
   </td>
   
   </tr>
   <tr>
-  <td class="tdStyle">
-  <s:textfield name="lastName" value="Last Name" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" size="30px" theme="simple"/>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield name="lastName" value="Last Name" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
   </td>
   </c:if>
   <c:if test="${registrationId != '0'}">
@@ -689,13 +776,13 @@ function showTextInTextBoxes(id){
   </tr>
   </c:if>
   <tr>
-  <td class="tdStyle">
-   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:212px;"  theme="simple" />
+  <td class="tdStyle"><b style="color:red">*</b> 
+   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:212px;"  theme="simple" /><span id="SelectState" style="padding-left:10px;font-weight:lighter">
   </td>
 
   </tr><tr>
-  <td class="tdStyle">
-  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:212px;" theme="simple" />
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:212px;" theme="simple" /><span id="selectConstituency" style="padding-left:10px;font-weight:lighter">
   </td>
 
   </tr>
@@ -705,12 +792,12 @@ function showTextInTextBoxes(id){
 </tr>
 
  </table>
-<table  style="padding-left:232px">
+<table  style="padding-left:257px">
   <tr>
   <td>
    
 		<div style="margin:5px;margin-left:26px">
-			 <s:checkbox name="accept"/>
+			 <s:checkbox name="accept" id="acceptId"/>
 			<b>I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website</b>
 		</div>
 		<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
@@ -721,12 +808,12 @@ function showTextInTextBoxes(id){
 			<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
 			<c:if test="${registrationId == '0'}">
 			<div style="padding-top:15px">
-				<input type="image" name="Save" src="images/icons/homePage_new/createbutton.jpg"/>
+				<input type="image" src="images/icons/homePage_new/createbutton.jpg"/>
 			</div>
 			</c:if>
 			<c:if test="${registrationId != '0'}">
 			<div style="padding-top:15px">
-				<input type="image" name="Save" src="images/icons/homePage_new/updatebutton.jpg"/>
+				<input type="image" src="images/icons/homePage_new/updatebutton.jpg"/>
 						</div>
 			</c:if>
 		 </div>
@@ -737,205 +824,7 @@ function showTextInTextBoxes(id){
  </table>
 </div>
 
- <!--<div id="headerDiv" class="headerDiv"> 
- <!--  <c:if test="${registrationId == '0'}">
-   	<p>Get a free registration to connect to people and info that you care about</p>
-   </c:if>
-   <c:if test="${registrationId != '0'}">
-   	<p>User Profile</p>
-   </c:if> 
-  </div>
  
-		 <br>
-
-		<c:if test="${registrationId == '0'}">
-	        <FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-
-			    <div class="dotline"></div>
-				<LEGEND> Select an EmailId and Password</LEGEND>
-				 <div id="loginDetailsDiv" class="accessDivMain">
-					<div id="loginDetailsDivBody" class="accessDivBody">
-						
-						<Table class="regTable">
-						<!--	<tr>
-								
-								<td style="padding-left:70px">
-								<font class="requiredFont"> * </font>
-								<s:label for="emailField" id="emailLabel"  class="label" value="%{getText('userName')}" /><br>(EmailId)					
-							</td>
-							<td style="padding-left:4px"><s:textfield id="emailField" name="email" onblur="checkAvailability()"/>  </td>
-							</tr>-->
-
-					<!--	</Table>
-						<table class="freeUserRegDetailsTable">
-						<tr><td></td>
-							<td>
-								<div id="mobileDiv">
-								</div>
-							</td>
-						</tr>
-					</table>
-						<Table class="regTable">
-							<tr><td width="160px"></td><td><div id="resultDIV"></div></td></tr>
-						</Table>
-
-						<Table class="regTable">	
-							<!--<tr>
-								<td style="padding-left:69px"><font class="requiredFont"> * </font><s:label for="passwordField" id="passwordLabel" value="%{getText('password')}" /></td>
-								<td  style="padding-left:10px"><s:password id="passwordField" name="password" maxlength="20" onBlur="validPassword()"/></td>
-								
-								<td width="160px"><font class="requiredFont"> * </font><s:label for="passwordField" id="passwordLabel" value="%{getText('reEnterPassword')}" /></td> 
-								<td style="padding-left:11px"><s:password id="rePasswordField" name="reEnteredPassword" maxlength="20" onBlur="validRePassword()"/></td>  								
-
-							</tr>-->
-				<!--		</Table>
-						
-						<Table class="regTable">
-							<tr><td width="160px"></td><td><div id="pwdDiv"></div></td></tr>
-						</Table>
-
-					</div>
-				 </div>
-	         </FIELDSET>
-         </c:if>
-		  <FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-
-          <div class="dotline"></div>
-		  <LEGEND>Provide Personal Information</LEGEND> -->
-		    <!-- <div id="personalDetailsDiv">
-			 <div id="personalDetailsDivBody" class="accessDivBody">
-					
-					<table class="freeUserRegDetailsTable">
-						<!--<tr class="row">
-							<td>
-								<font class="requiredFont"> * </font>
-								<s:label for="nameField" id="fnameLabel"  cssClass="label" value="%{getText('firstName')}" cssStyle="width:auto"/>						
-							</td>
-							<td><s:textfield id="nameField" name="firstName" onBlur="validNames('nameField')"/> </td>
-
-							<td style="padding-left:69px;">
-								<font class="requiredFont"> * </font>
-								 <s:label for="lastNameField" id="userNameLabel" cssClass="label" value="%{getText('lastName')}" cssStyle="width:auto"/>					
-							</td>
-							<td  style="padding-left:18px;"><s:textfield id="lastNameField" name="lastName" onBlur="validNames('lastNameField')"/> </td>
-						</tr>-->
-	<!--				</table>
-					
-					<table class="regTable">
-						<tr class="row">
-							<td width="160px"></td><td><div id="namesDiv"></div></td>
-						</tr>
-					</table>
-                    <c:if test="${registrationId != '0'}">
-					<table class="freeUserRegDetailsTable">
-						<tr class="row">
-							<td>
-								<font class="requiredFont"> &nbsp; </font>
-								<s:label for="genderField" id="genderLabel" value="%{getText('gender')}" cssClass="label" cssStyle="width:auto" />		
-							</td>
-							<td><s:radio id="genderField" name="gender" list="#session.gender"/> </td>						
-						</tr>
-					</table>
-
-					<table class="freeUserRegDetailsTable">
-						<tr class="row">
-							<td valign="top">
-								<font class="requiredFont"> &nbsp; </font>
-								<s:label for="dateOfBirthField" id="dateOfBirthLabel" class="label"  value="%{getText('dateOfBirth')}" />	
-							</td>
-							<td style="padding-left:0px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" size="25" onfocus="showCalendar(this.id)"/>
-						</td>
-						
-						<td valign="top"><input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" onclick="focusCalTextElmt(this.id)"/></td>						
-						</tr>
-
-					</table>
-				  </c:if> 
-				<!--	<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;margin-left:400px;"></DIV>
-					</DIV> 
-					</div>
-				</div>
-				</FIELDSET>
-
-
-				<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-				<c:if test="${registrationId != '0'}">
-				<div class="dotline"></div>
-				<LEGEND>Provide Contact Details</LEGEND></c:if>
-				<div id="contactDetailsDiv" class="accessDivMain">
-					
-					<table class="freeUserRegDetailsTable">
-						<tr class="row">
-							<c:if test="${registrationId != '0'}">
-							<td width="82px;">
-							<s:label for="mobileField" id="mobileLabel"  class="label" value="%{getText('mobile')}" />					
-							</td>
-							<td><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="validateMobile()"/>  </td>
-							<td style="padding-left:77px">
-								<s:label for="addressField" id="addressLabel"  class="label" value="%{getText('address')}" />				
-							</td>
-							<td style="padding-left:35px"><s:textfield id="addressField" name="address"/>  </td>
-                            </c:if>
-							<!--<td style="width:45px;padding-left:35px;">
-								<font class="requiredFont"> * </font>
-								<s:label for="emailField" id="emailLabel"  class="label" value="%{getText('email')}" />
-							</td>					
-							<td><s:textfield id="emailField" name="email" size="30" onBlur="validateEmail()"/>  </td>
-						</tr>
-					</table>
-					
-					<!--<table class="freeUserRegDetailsTable">
-						<tr><td></td>
-							<td>
-								<div id="mobileDiv">
-								</div>
-							</td>
-						</tr>
-					</table>-->
-						
-				<!--	<table class="freeUserRegDetailsTable">
-						
-						<tr class="row">
-							<td>
-								<font class="requiredFont"> * </font>
-								<s:label for="stateSelectBox" id="stateLabel"  class="label" value="State" />			
-							</td>
-							<td style="padding-left:45px">	<s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:145px;" /></td>	
-							<td width="17px"><div id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>
-							<td style="padding-left:41px">
-								<font class="requiredFont"> * </font>
-								<s:label for="constituencySelectBox" id="constituencytLabel" class="label" value="Constituency" />		
-							</td>
-							<td><s:select name="constituency" id="constituency" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:145px;" />	</td>		
-						</tr>
-						
-					</table>
-			</div>
-		 </FIELDSET>
-		<div style="margin:5px;margin-left:20px">
-			 <s:checkbox name="accept"/>
-			<b>I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website</b>
-		</div>
-		<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-		<div class="dotline"></div>
-		<LEGEND>Do You Want To</LEGEND>
-		 <div id="contactDetailsDiv" class="accessDivMain">
-					
-			<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
-			<c:if test="${registrationId == '0'}">
-			<div style="margin-left:170px;">
-				<s:submit name="Save" value="Create My Account"></s:submit>
-			</div>
-			</c:if>
-			<c:if test="${registrationId != '0'}">
-			<div style="margin-left:170px;">
-				<s:submit name="Save" value="Update My Account"></s:submit>
-			</div>
-			</c:if>
-		 </div>
-		  <div><font class="requiredFont"> * </font><b> Fields are mandatory</b></div>
-		 </FIELDSET>-->
-
 </div>
          <!--  Problem Management Params -->
          <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
@@ -945,17 +834,10 @@ function showTextInTextBoxes(id){
 		 <input type="hidden" name="stateId" value="<%=stateId %>" />
 		 <input type="hidden" name="districtId" value="<%=districtId %>" />
 		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
+		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" 
+		 />
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
-	<!--	 <div>
-    <input class="default-value" type="text" name="email" value="Email Address" />
-</div>
-<div>
-    <input id="password-clear" type="text" value="Password" autocomplete="off" />
-    <input id="password-password" type="password" name="password" value="" autocomplete="off" />
-</div>-->
-
- 
+	
 <script language="javascript">
 //document.getElementsByName("gender")[0].checked = true;
 document.getElementsByName("accept")[0].checked = true;
