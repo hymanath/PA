@@ -9,6 +9,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Problem Details</title>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -80,6 +84,7 @@ legend {
 background-color:#567AAF;
 color:#FFFFFF;
 font-size:12px;
+font-weight: bold;
 padding:5px;
 }
 
@@ -185,7 +190,7 @@ text-align:left;
 #problemContentData_status_main
 {
 	margin:20px 0 10px;
-	padding-top:200px;
+	/*padding-top:200px;*/
 }
 
 .changeAnc
@@ -254,6 +259,21 @@ text-align:left;
 {
   text-align: right;
   margin-right:12px;
+}
+.ui-widget-header {
+    background: none repeat scroll 0 0 #4297D7;
+    border: 1px solid #4297D7;
+    color: #222222;
+    font-weight: bold;
+}
+#tabsLiStyle {
+    color: olive;
+    font-weight: bold;
+}
+.ui-widget-content {
+    background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% transparent;
+    border: 1px solid #4297D7;
+    color: #222222;
 }
 </style>
 
@@ -578,9 +598,18 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "changeProbClassification" || jsObj.task == "addCadreToProblem" || jsObj.task == "changeDepartmentForProblem" || jsObj.task == "PostCommentsToProblem")
 							{
-								getProblemPresentStatus(pHistoryId);
-								getProblemActivities(pHistoryId);	
-
+                                getProblemPresentStatus(pHistoryId);
+								getProblemActivities(pHistoryId);
+								
+								if(jsObj.task == "PostCommentsToProblem"){
+							     var alertMsgElmt;	if(myResults.exceptionEncountered == null){
+									
+								alertMsgElmt = document.getElementById("alertMsg");
+								alertMsgElmt.innerHTML=
+								'<font color="green"><b>		Comments Posted Successfully</b></font>';
+									return;
+								   }
+								}
 								var deptElmt = document.getElementById("departmentAssignedStatusDiv");
                                 if(deptElmt != null)
 								{
@@ -591,8 +620,9 @@ function callAjax(jsObj,url)
 										deptElmt.innerHTML = str;
 									}
 								}
-
-							}else if(jsObj.task == "changeProblemStatus")
+						
+							}
+							else if(jsObj.task == "changeProblemStatus")
 							{
 								
                                 if(myResults.resultState == null)
@@ -625,7 +655,6 @@ function callAjax(jsObj,url)
 							{
 								showSMSResult(myResults);
 							}
-				
 						}
 						catch(e)
 						{   
@@ -953,17 +982,7 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '		<tr>';
 	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
 	str += '				<table width="100%" class="statusData_table_inner">';
-	str += '					<tr>';
-	str += '						<td width="25%"><img src="images/icons/constituencyManagement/calendar.jpeg"></td>';
-	str += '						<th>Posted On</th>';
-	str += '					</tr>';
-	str += '				</table>';								
-	str += '			</td>';
-	str += '			<td class="statusData_table_data">This problem is posted on '+results.postedDate+'</td>';
-	str += '		</tr>';
-	str += '		<tr>';
-	str += '			<td class="statusData_table_links">Duration : '+results.diffDays+' Days </td>';
-	str += '		</tr>';
+	
 	str += '	</table>';
 	str += '</div>';
 	str += '<div class="problemStatusDataDiv_main">';
@@ -1131,6 +1150,7 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '		</tr>';
 	str += '		<tr>';
 	str += '			<td class="statusData_table_links">';
+	str+='<span id="alertMsg"></span>';
 	str += '			<table style="width:65%;">';
 	str += '				<tr>';
 	str += '				<td style="width:50%;"><div id="remainChars"><span id="maxcount">500 </span> <span>chars remaining..</span></div></td>';
@@ -1148,6 +1168,12 @@ function postCommentForProblem()
 {
 	var elmt = document.getElementById("descTextArea");
 	var textAreaValue = elmt.value;
+	document.getElementById("alertMsg").innerHTML ='';
+
+	if(elmt.value ==''){
+		document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter comments</font>';
+		return;
+	}
 	
 	var jsObj = {
 					pHistoryId:pHistoryId,
@@ -1157,7 +1183,7 @@ function postCommentForProblem()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "postCommentsToProblemAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
-}
+   }
 
 function showProbClassification()
 {
@@ -1335,9 +1361,9 @@ var villagesListForProb = [];
 				</tr>
 
 				<tr>
-					<th width="20%" valign="top">Posted Date</th>
-					<td valign="top">:</td>
-					<td valign="top">${problemCompleteDetailsVO.problemBasicDetails.reportedDate}</td>
+				    <th valign="top">Posted on</th>
+				    <td>:</td>
+				    <td>${problemCompleteDetailsVO.problemBasicDetails.reportedDate}</td>
 				</tr>
 
 				<tr>
@@ -1350,7 +1376,18 @@ var villagesListForProb = [];
 	</div>
 	<!-- Problem Details End -->
 	
-	<!-- Problem Status End -->
+   	<!-- Problem Status End -->
+
+
+	<div id="tabs" style="margin-top: 165px;">
+    <ul>
+        <li><a href="#problemContentData_status_main">
+		<span id="tabsLiStyle">Problem Status</span></a></li>
+        <li>
+		<a href="#problemContentData_activities_main">
+		<span id="tabsLiStyle">Activities</span></a></li>
+        
+    </ul>
 	<div id="problemContentData_status_main">
 		<div id="problemContentData_status_head">			
 		</div>
@@ -1377,10 +1414,10 @@ var villagesListForProb = [];
 			</fieldset> -->
 		</div>
 	</div>
+</div>
 	<!-- Problem Activities End -->
 
 </div>
-
 <!--
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
 <DIV>
@@ -1556,5 +1593,11 @@ var villagesListForProb = [];
 doExecuteOnLoad();
 initializePage();
 </script>
+<script>
+  $(document).ready(function() {
+    $("#tabs").tabs();
+  });
+  </script>
+
 </body>
 </html>
