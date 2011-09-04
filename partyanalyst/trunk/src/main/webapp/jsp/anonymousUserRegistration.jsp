@@ -265,7 +265,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 <script type="text/javascript">
 var userFirstName = '${sessionScope.USER.firstName}';
 var userLastName = '${sessionScope.USER.lastName}';
-
+var results='';	
 
 
 var spvar = 'special';
@@ -276,7 +276,7 @@ var r={
 }
 
 function callAJAX(jsObj,url){
-	var results;	
+	
 	var callback = {			
 	    success : function( o ) {
 			try {							
@@ -352,9 +352,9 @@ function validPassword()
 	resultDIVEle.innerHTML = "";
 	
 	if(textEle.value.length > 0 &&textEle.value.length < 6)
-		resultDIVEle.innerHTML = "<span style='padding-left:10px;font-weight:lighter'>Password minimum of 6 characters.</span>";
+		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
 		if(textEle.value==""){
-         resultDIVEle.innerHTML="<font color='red'>please enter password.</font>";
+         resultDIVEle.innerHTML="<font color='red'>Please Enter Password.</font>";
 	     return false; 
 	}
 	else 
@@ -367,15 +367,18 @@ function validRePassword()
 	var pwd2 = document.getElementById("password-rePassword");
 	var resultDIVEle = document.getElementById("errMsg1");
 	resultDIVEle.innerHTML = "";
+	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value){
+		resultDIVEle.innerHTML = "<font color='red'>Passwords Do Not Match.</font>";
+        return false;
+	}
 	if(pwd1.value.length > 0 && pwd1.value.length < 6)
 	{
-		resultDIVEle.innerHTML = "<span style='padding-left:10px;font-weight:lighter'>Password minimum of 6 characters.</span>";
-		return;
+		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
+		return false;
 	}
-	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value)
-		resultDIVEle.innerHTML = "<font color='red'>Passwords do not match.</font>";
+	
 		if(pwd2.value==""){
-         resultDIVEle.innerHTML="<font color='red'>please enter Re-Password.</font>";
+         resultDIVEle.innerHTML="<font color='red'>Please Enter Re-Password.</font>";
 	return false;
 	}
 	else 
@@ -404,13 +407,16 @@ function showDetails(results)
 	var result = document.getElementById("mobileDiv");
 	var str='';
 	if(results==121){		
-		str+="<font color='green'><b> Username is available</b></font>";	
+		str+="<font color='green'> Username is available</font>";
+		result.innerHTML = str;
+		return true;
 	}else{
-		str+="<font color='red'><b> Username is not available</b></font>";	
+		str+="<font color='red'> Username is not available</font>";	
+	    result.innerHTML = str;
+		return false;
 	}
 	result.innerHTML = str;
 }
-
 function validateMobile()
 {  
 	var mobilEle = document.getElementById("mobileField");
@@ -424,10 +430,10 @@ function validateMobile()
 	}
 	
 	if(isNaN(mobile)|| mobile.indexOf(" ")!=-1)
-		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number contains only Numbers.</b></font>";
+		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number Contains Only Numbers.</b></font>";
 		
 	else if((mobile.length > 0 && mobile.length < 10) || mobile.length > 12)
-		resultDIVEle.innerHTML = "<font color='red'><b>Please provide correct Mobile number.</b></font>";
+		resultDIVEle.innerHTML = "<font color='red'><b>Please Provide Correct Mobile Number.</b></font>";
 		
 		
 }
@@ -441,7 +447,7 @@ function validateAddress()
 	resultDIVEle.innerHTML = "";
 	
 	if(mobilEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>Address Should not contain Special Characters</font>";
+		resultDIVEle.innerHTML = "<font color='red'>Address Should Not Contain Special Characters</font>";
 	else
 		resultDIVEle.innerHTML = "";
 		
@@ -452,10 +458,13 @@ function validateFirstName()
 	var fstEle = document.getElementById("firstNameId");
 	var fstEleErr=document.getElementById("fstNameId");
 	fstEleErr.innerHTML = "";
-	if(fstEle.value.match(r[spvar]))
-		fstEleErr.innerHTML = "<font color='red'>Should not contain Special Characters</font>";
+	
     if(fstEle.value== 'First Name'){
 		fstEleErr.innerHTML = "<font color='red'>&nbsp;Enter First Name.</font>";
+	    return false;
+	}
+	if(fstEle.value.match(r[spvar])){
+		fstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
 	    return false;
 	}
 	else 
@@ -467,11 +476,15 @@ function validateLastName()
 	var lstEle = document.getElementById("lastNameId");
 	var lstEleErr=document.getElementById("lstNameId");
 	lstEleErr.innerHTML = "";
-
-	if(lstEle.value== 'Last Name'){
+    if(lstEle.value== 'Last Name'){
 		lstEleErr.innerHTML = "<font color='red'>&nbsp;Enter Last Name.</font>";
 	    return false;
 	}
+	if(lstEle.value.match(r[spvar])){
+		lstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
+		 return false;
+	}
+	
 	else 
              return true;
 }
@@ -482,7 +495,7 @@ function validateState()
 	lstEleErrs.innerHTML = "";
 
 	if(lstElmt.value== '0'){
-		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select state.</font>";
+		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select State.</font>";
          return false;
 }
 else 
@@ -494,7 +507,7 @@ function validateConstituency()
 	var lstEleErr=document.getElementById("selectConstituency");
 	lstEleErr.innerHTML = "";
 
-	if(lstEle.value== '0'){
+	if(lstEle.value== '0'||lstEle.value== ''){
 		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Select Constituency.</font>";
 		return false;
 	}
@@ -505,7 +518,6 @@ function validateConstituency()
 
 function validatefields()
 {   
-debugger;
 	var flag = true;
 	 if($("#dateOfBirthField").val() =="DateOfBirth")
 	   $("#dateOfBirthField").val($(this).html());
@@ -525,6 +537,8 @@ debugger;
 		flag = false;
 	if(!validRePassword())
 		flag = false;
+    if(!showDetails(results))
+        flag = false;
 	</c:if>
 	if(!validateState())
 		flag = false;
@@ -539,7 +553,7 @@ debugger;
 
 
 function validateEmail()
-{
+{   
 	var email = document.getElementById("emailField").value;
 	var resultDIVEle = document.getElementById("mobileDiv");
 	resultDIVEle.innerHTML = "";
@@ -740,18 +754,7 @@ function showTextInTextBoxes(id){
 
 <s:form action="anonymousUserRegistrationAction.action" method="GET" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
-<div id="registrationMainDiv" style="padding-bottom:5px;">
-		<table class="registrationTable">
-			<tr>
-				<td colspan="2">
-					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
-						<s:actionerror />
-						<s:fielderror />
-						<s:actionmessage/>						
-					</div>
-				</td>
-			</tr>
-		</table></div>   
+ 
 <c:if test="${registrationId == '0'}">
 <div id="tableStyle" style="width:870px;height:530px;"></c:if> 					<c:if test="${registrationId != '0'}">
 <div id="tableStyle" style="width:870px;height:600px;"></c:if> 			
@@ -894,7 +897,7 @@ function showTextInTextBoxes(id){
 		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
 		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>"
 		 />
-          <s:hidden name="email" />
+         
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
 	
 <script language="javascript">
@@ -944,6 +947,7 @@ $(document).ready(function() {
 	 if($("#mobileField").val() ==''){
 		$("#mobileField").val('Mobile Number');
 	  }
+	 
 });
 </script>
 <script>
@@ -964,7 +968,7 @@ $(document).ready(function() {
 		}
 	});
  
-	$('.default-value1').each(function() {
+	$('.default-value').each(function() {
 		var default_value = this.value;
 		$(this).focus(function() {
 			if(this.value == default_value) {
