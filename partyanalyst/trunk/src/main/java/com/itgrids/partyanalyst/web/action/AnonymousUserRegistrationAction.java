@@ -519,10 +519,13 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			addFieldError("constituency","Please select a Constituency.");
 		}
 		
-		Long result = new Long(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
-			
-		if(result != 121L){
-			addFieldError("userName","UserName does not exist.");
+		if(registrationId == null || registrationId == 0)
+		{	
+			Long result = new Long(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
+				
+			if(result != 121L){
+				addFieldError("userName","UserName does not exist.");
+			}
 		}
 		
 		if(accept.get(0).equalsIgnoreCase("false"))
