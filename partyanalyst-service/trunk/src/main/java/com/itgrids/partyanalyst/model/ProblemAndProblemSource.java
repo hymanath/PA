@@ -34,6 +34,7 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	private Long problemAndProblemSourceId;
 	private String postedBy;
 	private Registration user;
+	private Registration subUser;
 	private Problem problem;
 	private InformationSource problemSource;
 	private ProblemExternalSource problemExternalSource;
@@ -159,6 +160,18 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 
 	public void setExternalUser(AnanymousUser externalUser) {
 		this.externalUser = externalUser;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "sub_user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Registration getSubUser() {
+		return subUser;
+	}
+	
+	public void setSubUser(Registration subUser) {
+		this.subUser = subUser;
 	}
 
 	
