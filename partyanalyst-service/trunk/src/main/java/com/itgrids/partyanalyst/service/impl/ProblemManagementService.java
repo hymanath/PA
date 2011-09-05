@@ -586,6 +586,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						problemAndProblemSource.setProblemSource(problemSource);
 						reg = registrationDAO.get(problemBeanVO.getUserID());
 					    problemAndProblemSource.setUser(reg);
+					    problemAndProblemSource.setSubUser(registrationDAO.get(problemBeanVO.getSubUserId()));
 					    problemHistory.setIsApproved(IConstants.TRUE);
 					    
 					    if(problemBeanVO.getProbSourceId() == 2 || problemBeanVO.getProbSourceId() == 3)
