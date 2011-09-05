@@ -125,7 +125,7 @@ public class SmsCountrySmsService implements ISmsService {
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));*/
 			
 			post.addParameter("User", "dakavaram");
-			post.addParameter("passwd", "1tGrids123");
+			post.addParameter("passwd", "1tGridsINDIA");
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < phoneNumbers.length; i++) {
 				sb.append("91");
