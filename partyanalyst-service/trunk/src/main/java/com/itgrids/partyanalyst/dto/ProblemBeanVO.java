@@ -83,6 +83,15 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private List<Object> statusList;
 	private String problemScope;
 	private String problemRefNum;
+	private Long subUserId;
+
+	public Long getSubUserId() {
+		return subUserId;
+	}
+
+	public void setSubUserId(Long subUserId) {
+		this.subUserId = subUserId;
+	}
 
 	public String getProblemScope() {
 		return problemScope;
