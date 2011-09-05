@@ -1793,11 +1793,26 @@ function buildUserAnnouncementDetails(jsObj,result)
 	if(result == null || result.length == 0)
 		return;
 	var resultDiv = document.getElementById('announcementsOfAUserDiv');
+	$("#announcementsOfAUserDiv").dialog();
+
+	$("#announcementsOfAUserDiv").dialog({ stack: false,
+							    height: 826,
+								width: 782,
+								position:[102,713],								
+								modal: true,
+								title:'<font color="Navy">Announcements From '+jsObj.name+'</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								buttons: {
+								'Close': function() {
+								 $(this).dialog('close');
+								 }
+								}});
+						
+
+			
 	var str = '';
 	
-	str += '<Div class="layoutHeadersClass">Total Announcements From '+jsObj.name+'</DIv>';
-	
-	for(var i=0;i<result.length;i++)
+  for(var i=0;i<result.length;i++)
 	{
 		var id = 'annUserAjaxImg'+i;
 
