@@ -115,6 +115,7 @@ public class RegistrationAction extends ActionSupport implements
 			}
 						
 			regVO.setParentUserId(user.getRegistrationID());
+			regVO.setMainAccountId(user.getMainAccountId() != null ? user.getMainAccountId() : user.getRegistrationID());
 			if(regVO.getAccessType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 				regVO.setAccessType(IConstants.MLA);
 			else if(regVO.getAccessType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))

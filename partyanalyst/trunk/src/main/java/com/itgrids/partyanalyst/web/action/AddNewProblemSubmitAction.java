@@ -382,26 +382,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		if(user==null)
 			return ERROR;
 		
-		problemBeanVO.setUserID(user.getRegistrationID());
-		//problemBeanVO.setProblem(getProblem());
-		//problemBeanVO.setDescription(getDescription());
+		if(user.getParentUserId() == null || user.getParentUserId() == 0)
+		{
+			problemBeanVO.setUserID(user.getRegistrationID());
+			problemBeanVO.setSubUserId(user.getRegistrationID());
+		}
+		else
+		{
+			problemBeanVO.setUserID(user.getMainAccountId());
+			problemBeanVO.setSubUserId(user.getRegistrationID());
+		}
 		
 		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
 		else
 			problemBeanVO.setProblemPostedBy(IConstants.FREE_USER);
 		problemBeanVO.setIsParliament(isParliament);
-		/*problemBeanVO.setState(getState());
-		problemBeanVO.setDistrict(getDistrict());
-		problemBeanVO.setConstituency(getConstituency());
-		problemBeanVO.setTehsil(getMandal());
-		problemBeanVO.setVillage(getVillage());
-		problemBeanVO.setHamlet(getHamlet());*/
-		//problemBeanVO.setReportedDate(getReportedDate());
-		//problemBeanVO.setExistingFrom(getExistingFromDate());
-		//problemBeanVO.setProblemImpactLevelId(getProblemScope());
-		//problemBeanVO.setProblemImpactLevelValue(getProblemLocationId());
-		
+				
 		if(problemBeanVO.getProbSourceId() == 2L || problemBeanVO.getProbSourceId() == 3L)
 		{
 			problemBeanVO.setName(getName());
@@ -411,7 +408,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemBeanVO.setAddress(getAddress());
 		}
 		
-		//problemBeanVO.setProblemStatusId(getStatus());
 		
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
