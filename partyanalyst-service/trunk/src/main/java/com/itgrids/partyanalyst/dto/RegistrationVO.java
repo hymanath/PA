@@ -53,6 +53,15 @@ public class RegistrationVO extends BaseDTO{
 	private Long parentUserId;
 	private String userProfilePic;
 	private String isAdmin;
+	private Long mainAccountId;
+
+	public Long getMainAccountId() {
+		return mainAccountId;
+	}
+
+	public void setMainAccountId(Long mainAccountId) {
+		this.mainAccountId = mainAccountId;
+	}
 
 	public String getIsAdmin() {
 		return isAdmin;
