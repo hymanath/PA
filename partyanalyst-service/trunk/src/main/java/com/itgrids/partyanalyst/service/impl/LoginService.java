@@ -199,8 +199,8 @@ public class LoginService implements ILoginService{
 			regVO.setUserType(reg.getUserType());
 			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			regVO.setParentUserId(reg.getParentUser() != null?reg.getParentUser().getRegistrationId():null);
-		
-			
+			regVO.setMainAccountId(reg.getMainAccountUser() != null ? reg.getMainAccountUser().getRegistrationId() : null);
+						
 			if(reg.getParty() != null){
 				regVO.setParty(reg.getParty().getPartyId());
 				regVO.setPartyShortName(reg.getParty().getShortName());
