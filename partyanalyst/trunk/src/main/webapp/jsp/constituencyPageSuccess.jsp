@@ -27,7 +27,6 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 
-<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <!-- JQuery files (End) -->
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
@@ -40,6 +39,7 @@
 
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <script src="${mapKey}" type="text/javascript"></script>
 <style type="text/css">
@@ -88,23 +88,41 @@
 		font-size:14px;
 	}
 
-	.annUserNameDiv
+    .annUserNameDiv
 	{
-		background:-moz-linear-gradient(center top , #73AEC9 0pt, #73AEC9 1px, #338AB0 1px, #0571A6 100%) repeat scroll 0 0 transparent;
-		border-color:#045A8B;
-		color:#FFFFFF !important;
-		font-weight : bold;
-		padding-left:10px;
-		padding-right:10px;
-		cursor : pointer;
+		-moz-border-radius: 6px 6px 6px 6px;
+		background: -moz-linear-gradient(center top , #73AEC9 0pt, #73AEC9 1px, #338AB0 1px, #0571A6 100%) repeat scroll 0 0 transparent;
+		border-color: #045A8B;
+		color: #FFFFFF !important;
+		cursor: pointer;
+		font-weight: bold;
+		font-size: 12px;
+		height: 24px;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 3px;
 	}
-
 	.annText
 	{
 		font-family : verdana;
 		font-size :12px;
 		padding-left:5px;
 	}
+.ui-widget-content {
+    background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF;
+    border: 5px solid #AAAAAA;
+    color: #222222;
+	-moz-border-radius: 11px 11px 11px 11px;
+}
+.ui-widget-header {
+    font-weight: bold;
+	background-color: SkyBlue;
+}
+.ui-dialog .ui-dialog-title {
+   
+    float: left;
+    margin: 0.1em 16px 0.2em 0;
+}
 
 </style>
 <script type="text/javascript">
@@ -1298,7 +1316,7 @@ function hideZptcOrMptcDiv(election)
 							<div id="announcements_div_main" class="innerLayoutDivClass">
 								<div id="announcementsInConstituencyDiv" style="height:auto;max-height:550px;overflow-y:auto;margin-top:10px;">
 								</div>
-								<div id="announcementsOfAUserDiv" style="height:auto;max-height:550px;overflow-y:auto;margin-top:10px;">
+								<div id="announcementsOfAUserDiv" >
 								</div>
 							</div>
 					</div>
