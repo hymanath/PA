@@ -11,6 +11,7 @@ var locationNameLabel;
 var locationId;
 var locationName;
 var locationType;
+var userLoginStatus;
 
 function buildConnectUsersContent(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId)
 {	
