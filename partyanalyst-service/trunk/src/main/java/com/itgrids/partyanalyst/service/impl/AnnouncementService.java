@@ -3,6 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -159,8 +161,8 @@ public class AnnouncementService implements IAnnouncementService {
 					announcementVO.setMessage(param[1] != null ? param[1].toString() : "");
 					announcementVO.setFromDate(param[2] != null ? param[2].toString() : "");
 					announcementVO.setUserId((Long)param[3]);
-					announcementVO.setUserName((param[4] != null ? param[4].toString() : "") 
-						+" "+(param[5] != null ? param[5].toString() : ""));
+					announcementVO.setUserName(WordUtils.capitalize((param[4] != null ? param[4].toString().toLowerCase() : "") 
+						+" "+(param[5] != null ? param[5].toString().toLowerCase() : "")));
 					
 					announcements.add(announcementVO);
 				}
