@@ -112,22 +112,30 @@ public class CallCenterService implements ICallCenterService{
 					hbQuery +=" and date(model.dateUpdated) =?";
 			}
 		 }
-		 if(userId!=null){
+		 if(userId != null)
+		 {
 			 // Retrieving subUser and parentUser ids
-			  List<Object[]> userIds = registrationDAO.getSubusersByParentUserId(userId);
-			    if(userIds.size()!=0){
-				 Object[] params = (Object[])userIds.get(0);
-				 userIdsList.add(params[0].toString());
-				 userIdsList.add(params[1].toString());
-				 StringBuilder subUserIdAndparentIds = new StringBuilder();
-				 subUserIdAndparentIds.append(params[0]).append(",").append(params[1]);
-					 
-				 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
+			 /* List<Object[]> userIds = registrationDAO.getSubusersByParentUserId(userId);
+			    if(userIds.size()!=0)
+			    {
+					 Object[] params = (Object[])userIds.get(0);
+					 userIdsList.add(params[0].toString());
+					 userIdsList.add(params[1].toString());
+					 StringBuilder subUserIdAndparentIds = new StringBuilder();
+					 subUserIdAndparentIds.append(params[0]).append(",").append(params[1]);
+						 
+					 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
 				}
-			}
-			else{
+		
+			    else
+			    {
 					hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+userId+")";
-				}
+				}*/
+			 
+			 StringBuilder subUserIdAndparentIds = new StringBuilder();
+			 subUserIdAndparentIds.append(userId.toString());http://localhost:8080/PartyAnalyst/images/icons/homePage_new/blue_header_top_left_login.jpg
+			 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
+		 }
 		 //checking for empty fields and executing query
 		if(!name.equalsIgnoreCase("") ||!mobileNum.equalsIgnoreCase("") ||!refNum.equalsIgnoreCase("")||!emailId.equalsIgnoreCase("")||fromDate!=null || toDate!=null){
 		 result = problemHistoryDAO.getCompleteProblemDetailsBySearchString(hbQuery,fromDate,toDate);
