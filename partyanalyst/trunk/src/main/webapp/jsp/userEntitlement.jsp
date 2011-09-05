@@ -335,7 +335,7 @@
 									All Users		
 								</td>
 								<td>
-									<select id="usersId" onchange="showGroupsForAUser()">
+									<select id="usersId" onchange="showGroupsForAUser()" style="width:150px;">
 										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
