@@ -125,8 +125,13 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 		HttpSession session = request.getSession();
 		
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");	
+		Long userId = null;
 		
-		 Long userId ;
+		if(user.getParentUserId() == null)
+			userId =  user.getRegistrationID();
+		else
+			userId =  user.getMainAccountId();
+		
 		try {
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("problemSearch")){
@@ -146,7 +151,6 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 				if(!endDate.equalsIgnoreCase("")){
 				 toDate =dateFormat.parse(endDate);
 				}
-				userId =  user.getRegistrationID();
 				CallCenterVO callCenterVO = new CallCenterVO();
 				callCenterVO.setName(name);
 				callCenterVO.setEmailId(emailId);

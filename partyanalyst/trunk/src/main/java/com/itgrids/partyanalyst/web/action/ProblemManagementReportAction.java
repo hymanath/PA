@@ -695,6 +695,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	{
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userId = null;
+		
+		if(user.getParentUserId() == null)
+			userId = user.getRegistrationID();
+		else 
+			userId = user.getMainAccountId();
 		
 		if(task != null){
 			try{
@@ -708,7 +714,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			Long problemScope = jObj.getLong("selectedProblemScope");
 			Long locationId = problemManagementReportService.getLocationValue(problemScope,jObj.getLong("selectedLocation"));
-			probCountList = problemManagementReportService.getTotalProblemsCountForAnUserInARegion(user.getRegistrationID(),problemScope,locationId);
+			probCountList = problemManagementReportService.getTotalProblemsCountForAnUserInARegion(userId,problemScope,locationId);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getStatusWiseProblems"))
@@ -716,25 +722,25 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			Long problemScope = jObj.getLong("selectedProblemScope");
 			Long locationId   = problemManagementReportService.getLocationValue(problemScope,jObj.getLong("selectedLocation"));
 			String status 	  = jObj.getString("status");
-			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUserInARegion(user.getRegistrationID(),problemScope,locationId,status);
+			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUserInARegion(userId,problemScope,locationId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getTotalProblemsStatus"))
 		{
-			probCountList = problemManagementReportService.getTotalProblemsStatusForAnUser(user.getRegistrationID());
+			probCountList = problemManagementReportService.getTotalProblemsStatusForAnUser(userId);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getStatusWiseAllProblems"))
 		{
 			String status 	  = jObj.getString("status");
-			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUser(user.getRegistrationID(),status);
+			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUser(userId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsCountInARegion"))
 		{
 			Long problemScope = jObj.getLong("selectedProblemScope");
 			Long locationId   = problemManagementReportService.getLocationValue(problemScope,jObj.getLong("selectedLocation"));
-			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(user.getRegistrationID(),problemScope,locationId);
+			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(userId,problemScope,locationId);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsInARegion"))
@@ -745,9 +751,9 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			String location   = jObj.getString("sLocation");
 			
 			if(location.equalsIgnoreCase("cadre"))
-				problemBean = problemManagementReportService.getCadreProblemsInARegion(user.getRegistrationID(),null,null,status);
+				problemBean = problemManagementReportService.getCadreProblemsInARegion(userId,null,null,status);
 			else if(location.equalsIgnoreCase("place"))
-				problemBean = problemManagementReportService.getCadreProblemsInARegion(user.getRegistrationID(),problemScope,locationId,status);
+				problemBean = problemManagementReportService.getCadreProblemsInARegion(userId,problemScope,locationId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getCadreDetailsForProblemsInARegion"))
@@ -758,20 +764,20 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			String location   = jObj.getString("sLocation");
 			
 			if(location.equalsIgnoreCase("cadre"))
-				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(user.getRegistrationID(),null,null,status);
+				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(userId,null,null,status);
 			else if(location.equalsIgnoreCase("place"))
-				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(user.getRegistrationID(),problemScope,locationId,status);
+				problemBean = problemManagementReportService.getCadreDetailsForProblemsInARegion(userId,problemScope,locationId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsCountForAnUser"))
 		{
-			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(user.getRegistrationID(),null,null);
+			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(userId,null,null);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsCountForAnUser"))
 		{
 			Long deptScopeId = jObj.getLong("deptScopeId");
-			problemBean = problemManagementReportService.getDeptWiseProblemsCountForAnUser(user.getRegistrationID(),deptScopeId);
+			problemBean = problemManagementReportService.getDeptWiseProblemsCountForAnUser(userId,deptScopeId);
 			
 			if(problemBean != null && problemBean.size() > 0)
 				problemBean.get(0).setProblemSourceScopeId(deptScopeId);
@@ -781,14 +787,14 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			Long deptId 	= jObj.getLong("deptId");
 			String status 	= jObj.getString("status");
-			problemBean = problemManagementReportService.getDepartmentWiseProblemsBasedOnStatus(user.getRegistrationID(),deptId,status);
+			problemBean = problemManagementReportService.getDepartmentWiseProblemsBasedOnStatus(userId,deptId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getProblemsInADeptScopeBasedOnScope"))
 		{
 			Long scopeId 	= jObj.getLong("scopeId");
 			String status 	= jObj.getString("status");
-			problemBean = problemManagementReportService.getProblemsInADeptScopeBasedOnScope(user.getRegistrationID(),scopeId,status);
+			problemBean = problemManagementReportService.getProblemsInADeptScopeBasedOnScope(userId,scopeId,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsStatusInALocation"))
@@ -796,7 +802,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			Long impactedRegionId = jObj.getLong("selectedProblemScope");
 			Long locationId   = problemManagementReportService.getLocationValue(impactedRegionId,jObj.getLong("selectedLocation"));
 			
-			problemBean = problemManagementReportService.getDeptWiseProblemsCountInALocation(user.getRegistrationID(),impactedRegionId,locationId);
+			problemBean = problemManagementReportService.getDeptWiseProblemsCountInALocation(userId,impactedRegionId,locationId);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getDeptProblemsBasedOnStatusInARegion"))
@@ -805,7 +811,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			Long locationId   = problemManagementReportService.getLocationValue(impactedRegionId,jObj.getLong("selectedLocation"));
 			String status 	= jObj.getString("status");
 			
-			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(user.getRegistrationID(),impactedRegionId,locationId,null,status);
+			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(userId,impactedRegionId,locationId,null,status);
 		}
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsBasedOnStatusInARegion"))
@@ -815,7 +821,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			Long deptId 	= jObj.getLong("deptId");
 			String status 	= jObj.getString("status");
 			
-			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(user.getRegistrationID(),impactedRegionId,locationId,deptId,status);
+			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(userId,impactedRegionId,locationId,deptId,status);
 		}
 		
 		return SUCCESS;

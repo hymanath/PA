@@ -275,8 +275,14 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 				String startIndex    = request.getParameter("startIndex");
 				String resultsCount  = request.getParameter("resultsCount");
 				
+				Long userId = null;
+				
+				if(user.getParentUserId() == null)
+					userId = user.getRegistrationID();
+				else
+					userId = user.getMainAccountId();
 								
-				ProblemsOfUserVO obj = problemManagementService.getUserProblemsInDifferentStagesByDate(user.getRegistrationID(), Integer.parseInt(startIndex), Integer.parseInt(resultsCount));
+				ProblemsOfUserVO obj = problemManagementService.getUserProblemsInDifferentStagesByDate(userId, Integer.parseInt(startIndex), Integer.parseInt(resultsCount));
 				
 				problemManagementDataVO.setTotalResultsCount(obj.getTotalResultsCount());
 				problemManagementDataVO.setProblemsOfUserVO(obj);
@@ -750,11 +756,17 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userId = null;
 		
 		if(user==null)
 			return ERROR;
 		
-		problemManagementChartVO = problemManagementService.getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(user.getRegistrationID());
+		if(user.getParentUserId() == null)
+			userId = user.getRegistrationID();
+		else
+			userId = user.getMainAccountId();
+		
+		problemManagementChartVO = problemManagementService.getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(userId);
 		return Action.SUCCESS;
 	}
 	
