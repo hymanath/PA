@@ -2341,7 +2341,7 @@ public class ProblemManagementReportService implements
 				if(deptId != null && deptId.longValue() > 0)
 					deptStr = " and model.departmentOrganisation.departmentOrganisationId = "+deptId;
 				else
-					deptStr = "";
+					deptStr = "and model.departmentOrganisation.departmentOrganisationId is not null";
 				
 				List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
 				
