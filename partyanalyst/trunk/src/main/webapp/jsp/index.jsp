@@ -23,7 +23,8 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js">
+	</script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
@@ -39,8 +40,10 @@
 
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js">
+	</script>
+<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
+<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -74,7 +77,7 @@
 		<div class="yui-skin-sam"><div id="myDialog"></div></div> 
 	</div>
 	
-	
+	<div id="uploadPic_window"><div id="uploadPic_window_inner"></div></div>
 			
 			<div id="dashBoardLeftlayoutDiv">
 				<div id="humanImgDiv">
@@ -82,7 +85,7 @@
 						<tr><td colspan="4"><div><img src="images/icons/indexPage/human.jpg"/></div></td></tr>	
 						<tr>	
 							<td width="25%" id="uploadPhotoImage"></td>
-							<td><a href="javascript:{}" class="profileAnc">Upload Photo</a></td>
+							<td><a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()">Upload Photo</a></td>
 						</tr>
 						<tr>
 							<td id=""><img src="images/usergroups/search.gif" style="padding-left:10px;"/></td>
@@ -99,6 +102,11 @@
 							<td id=""><img src="images/icons/constituencyPage/groups.png" width="21px" style="padding-left:10px;"/></td>		
 							<td><a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >DashBoard</a></td> 
 						</tr>
+						<tr>
+							<td id=""><img src="images/icons/callCenter.png" style="padding-left:4px;width: 38px; height: 38px;"/></td>
+							<td><a href="callCenterAction.action" class="profileAnc">Call Center</a></td> 
+						</tr>
+
 					</table>					
 				</div>		
 				<div id="noticeBoard">
@@ -209,7 +217,7 @@
 														<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Cadres Info</span></td>
 													</tr></table>
 												</div>
-												<div id="cadresDiv_body">
+												<div id="cadresDiv_body" style="margin-bottom: -14px;">
 													<span class="dashBoardCenterContentBody" style="color:#4B74C6"></span>
 													<ul class="dashBoardContentList">
 													<c:forEach var="cadreLevels" items="${cadreManagementVO.cadresByCadreLevel}" >
@@ -279,7 +287,7 @@
 				<table id="dashboard_main_table" width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td style="vertical-align:top;width:250px;">
-							<div id="dashboard_leftNav" style="margin-top: 35px;">								
+							<div id="dashboard_leftNav">								
 								<ul id="pa_reportsList_main">
 									<li id="partyAnalysisListItem">										
 										<div id="partyAnalysis_div" class="reportGroupClass reportGroupClassSelected" onclick="showReportsInCarousel('partyAnalysis')">Party Analysis</div>
