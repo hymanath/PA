@@ -341,7 +341,6 @@ text-decoration:none;
 #humanImgDiv
 {
 	padding-left:25px;
-	padding-top:10px;
 	height:215px;
 }
 
@@ -368,9 +367,9 @@ text-decoration:none;
 {
 	background-image:url("../../images/icons/indexPage/notice_board.png");
 	background-repeat:no-repeat;
-	height:195px;
+	height:185px;
 	margin-left:10px;
-	margin-top:20px;
+	margin-top:64px;
 	padding:5px 0 7px 5px;
 	width:175px;
 }
