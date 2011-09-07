@@ -383,7 +383,7 @@ function hideProblemSourceRow()
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					
-					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" cssClass="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
 					</td>
 				</tr>													
@@ -398,23 +398,23 @@ function hideProblemSourceRow()
 					<tr></tr>
 					<tr>
 						<td width="100px;"><s:label for="personNameField" id="personNameFieldLabel"  value="%{getText('name')}" /><font class="requiredFont"> * </font></td>
-						<td style="padding-left: 15px;"><s:textfield id="personNameField" name="name" size="53"/></td>
+						<td style="padding-left: 15px;"><s:textfield id="personNameField" name="name" size="35"/></td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="mobileField" id="mobileFieldLabel"  value="%{getText('mobile')}" /><font class="requiredFont"> * </font></td>
-						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" size="53"/></td>
+						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" maxlength="12" size="35"/></td>
 					</tr>
 					<tr>
 						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td style="padding-left:15px;"><s:textfield id="telephoneNoField" name="phone" size="53"/></td>
+						<td style="padding-left:0px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
 					</tr>
 					<tr>
 						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
-						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="53"  maxlength = "50"/>  </td>
+						<td style="padding-left:0px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /><font class="requiredFont">*</font></td>
-						<td style="padding-left:15px;"><s:textfield id="addressField" name="address" size="53"/>  </td>
+						<td style="padding-left:15px;"><s:textfield id="addressField" name="address" size="35"/>  </td>
 					</tr>
 					<tr>
 						<td colspan="2"><INPUT type="hidden" value="1" name="status"/></td>
