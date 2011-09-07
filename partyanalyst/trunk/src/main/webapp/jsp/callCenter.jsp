@@ -70,7 +70,7 @@
     height: 29px;
     padding-left: 12px;
     padding-top: 6px;
-    width: 430px;
+    width: 457px;
   }
 .tdStyle {
     font-size: 12px;
