@@ -275,6 +275,13 @@ text-align:left;
     border: 1px solid #4297D7;
     color: #222222;
 }
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;
+    overflow: auto;
+    padding: 1.5em 1em;
+    position: relative;
+}
 </style>
 
 <script type="text/javascript">
@@ -325,7 +332,7 @@ function setSelectedCadre(cadreId,cadreName)
 	cadreVar +='</th>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblemAndSendingSMS(\''+cadreId+'\')"/></td>';
-	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Remove" class="button" onclick="clearCadreDiv()"/></td></tr>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Cancel" class="button" onclick="clearCadreDiv()"/></td></tr>';
 	cadreVar +='</table>';
 	cadreDetailsDivEle.innerHTML = cadreVar;
 	cadreDetailsDivEle.style.display = 'block';
@@ -357,7 +364,7 @@ function addCadreToProblem(cadreId)
 function openCadreSmsPopup(cadreId,pHistoryId)
 {
 	$("#departmentPanel_main" ).dialog({
-		title:"<font color='royalBlue'>Sending SMS To Cadre About Problem</font>",
+		title:"<font color='#ffffff'>Sending SMS To Cadre About Problem</font>",
 		autoOpen: true,
 		show: "blind",
 		width: 500,
@@ -365,7 +372,7 @@ function openCadreSmsPopup(cadreId,pHistoryId)
 		modal: true,
 		hide: "explode"
 	});
-	document.getElementById("departmentPanel_main" ).style.background = "#EEF4F6";
+	document.getElementById("departmentPanel_main" ).style.background = "#ffffff";
 	
 	var elmt = document.getElementById("departmentPanel_content");
 	if(!elmt)
@@ -426,12 +433,12 @@ function sendSMSToCadre(cadreId)
 	var str = '<font color="red"><b>';
 	if(isNaN(mobileNo)|| mobileNo.indexOf(" ")!=-1)
 	{
-		str += "Mobile Number Should contains only Numbers.<BR>";
+		str += "Mobile Number Should Contain only Numbers.<BR>";
 		flag = true;
 	}
 	else if((mobileNo.length > 0 && mobileNo.length < 10) || mobileNo.length > 12)
 	{
-		str += "Plase provide correct Mobile number.<BR>";
+		str += "Please provide correct Mobile number.<BR>";
 		flag = true;
 	}
 	if(messageStr.length == 0)	
@@ -1070,7 +1077,7 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '				<option>Personal</option>';
 	str += '			</select>';
 	str += '			<input type="button" style="width:90px;height:25px;float:none;" value="Proceed" class="button" onclick="changeProbClassification()"/>';
-	str += '			<input type="button" style="width:90px;height:25px;float:none;" value="Remove" class="button" onclick="hideProbClassification()"/></td></tr>';
+	str += '			<input type="button" style="width:90px;height:25px;float:none;" value="Cancel" class="button" onclick="hideProbClassification()"/></td></tr>';
 	str += '			</td>';
 	str += '		</tr>';
 	str += '	</table>';
