@@ -231,8 +231,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return mobile;
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Please Enter Mobile Number in Complained Person Details.", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Mobile Number Should Not Contain Special Characters in Complained Person Details.", shortCircuit = true)
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -441,12 +440,13 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 					addFieldError("nameInput","Please Enter Name in Complained Person Details.");
 			/*	if(getMobile() == null || getMobile().trim().length() == 0)
 					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");*/
-				if(getAddress() == null || getAddress().trim().length() == 0)
-					addFieldError("addressInput","Please Enter Email Address.");
-				if(getMobile() == null || getAddress().trim().length() == 0)
+				if(getMobile().equalsIgnoreCase(""))
 					addFieldError("mobileInput","Please Enter Mobile Number.");
+				if(getAddress() == null || getAddress().trim().length() == 0)
+					addFieldError("addressInput","Please Enter Address.");
+				
 				if(getEmail() == null||getEmail().trim().length() == 0)
-					addFieldError("emailInput","Please Enter Name in Complained Person Details.");
+					addFieldError("emailInput","Please Enter Email in Complained Person Details.");
 			}
 			
 			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
