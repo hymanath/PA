@@ -261,401 +261,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
  #password-reClear {
     display: none;
 }
-</style>
-<script type="text/javascript">
-var userFirstName = '${sessionScope.USER.firstName}';
-var userLastName = '${sessionScope.USER.lastName}';
-var results='';	
-
-
-var spvar = 'special';
-var r={
-  'special':/[\W]/g
-  //'quotes':/['\''&'\"']/g,
-  //'notnumbers':/[^\d]/g
-}
-
-function callAJAX(jsObj,url){
-	
-	var callback = {			
-	    success : function( o ) {
-			try {							
-				"",					
-					results = YAHOO.lang.JSON.parse(o.responseText);		
-					if(jsObj.task == "checkAnanymousUserNameAvailability")
-					{
-						showDetails(results);
-					}
-			}catch (e) {   		
-			   	alert("Invalid JSON result" + e);   
-			}  
-	    },
-	    scope : this,
-	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
-	              }
-	    };
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
-	
-function checkAvailability()
-{ 
-	var name = document.getElementById("emailField").value;
- 	var resultDIVEle = document.getElementById("mobileDiv");
-	resultDIVEle.innerHTML = "";
-	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-	if(name.length == 0)
-		resultDIVEle.innerHTML = "<font color='red'>Enter User Name.</font>";
-	
-	else if(reg.test(name) == false)
-		resultDIVEle.innerHTML = "<font color='red'><b>Incorrect Email Address.</b></font>";
-		
-	else {		
-
- 		document.getElementById("mobileDiv").innerHTML = " ";
- 		var jsObj=
-		{		
- 				userName:name,
-				task:"checkAnanymousUserNameAvailability"						
-		};	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
-		callAJAX(jsObj,url);
-	}
-
-}
-
-function validUsername()
-{
-	var textEle = document.getElementById("userNameField");
-	var resultDIVEle = document.getElementById("resultDIV");
-
-	resultDIVEle.innerHTML = "";
-	if(textEle.value.length > 0 && textEle.value.length < 6)
-	{
-		resultDIVEle.innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
-		return;
-	}
-		
-	if(textEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>UserName Should not contain Special Characters</font>";
-	else
-		resultDIVEle.innerHTML = "";
-		
-}
-function validPassword()
-{  
-	var textEle = document.getElementById("password-password");
-	var resultDIVEle = document.getElementById("errMsg");
-	resultDIVEle.innerHTML = "";
-	
-	if(textEle.value.length > 0 &&textEle.value.length < 6)
-		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
-		if(textEle.value==""){
-         resultDIVEle.innerHTML="<font color='red'>Please Enter Password.</font>";
-	     return false; 
-	}
-	else 
-             return true; 
-
-}
-function validRePassword()
-{
-	var pwd1 = document.getElementById("password-password");
-	var pwd2 = document.getElementById("password-rePassword");
-	var resultDIVEle = document.getElementById("errMsg1");
-	resultDIVEle.innerHTML = "";
-	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value){
-		resultDIVEle.innerHTML = "<font color='red'>Passwords Do Not Match.</font>";
-        return false;
-	}
-	if(pwd1.value.length > 0 && pwd1.value.length < 6)
-	{
-		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
-		return false;
-	}
-	
-		if(pwd2.value==""){
-         resultDIVEle.innerHTML="<font color='red'>Please Enter Re-Password.</font>";
-	return false;
-	}
-	else 
-             return true;
-}
-
-function validNames(id)
-{
-	var textEle = document.getElementById(id);
-	var resultDIVEle = document.getElementById("namesDiv");
-	var name = '';
-	if(id == 'nameField')
-		name = 'First name';
-	else 
-		name = 'Last name';
-
-	resultDIVEle.innerHTML = "";
-	if(textEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>"+name+" Should not contain Special Characters</font>";
-	else
-		resultDIVEle.innerHTML = "";
-		
-}
-function showDetails(results)
-{
-	var result = document.getElementById("mobileDiv");
-	var str='';
-	if(results==121){		
-		str+="<font color='green'> Username is available</font>";
-		result.innerHTML = str;
-		return true;
-	}else{
-		str+="<font color='red'> Username is not available</font>";	
-	    result.innerHTML = str;
-		return false;
-	}
-	result.innerHTML = str;
-}
-function validateMobile()
-{  
-	var mobilEle = document.getElementById("mobileField");
-	var resultDIVEle = document.getElementById("mobileFieldDiv");
-	var mobile = mobilEle.value;
-
-	resultDIVEle.innerHTML = "";
-	if(mobilEle.value =="Mobile Number"){
-			resultDIVEle.innerHTML = "";
-              return
-	}
-	
-	if(isNaN(mobile)|| mobile.indexOf(" ")!=-1)
-		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number Contains Only Numbers.</b></font>";
-		
-	else if((mobile.length > 0 && mobile.length < 10) || mobile.length > 12)
-		resultDIVEle.innerHTML = "<font color='red'><b>Please Provide Correct Mobile Number.</b></font>";
-		
-		
-}
-
-function validateAddress()
-{
-	var mobilEle = document.getElementById("addressField");
-	var resultDIVEle = document.getElementById("addressFieldDiv");
-	var mobile = mobilEle.value;
-
-	resultDIVEle.innerHTML = "";
-	
-	if(mobilEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>Address Should Not Contain Special Characters</font>";
-	else
-		resultDIVEle.innerHTML = "";
-		
-}
-function validateFirstName()
-{ 
-
-	var fstEle = document.getElementById("firstNameId");
-	var fstEleErr=document.getElementById("fstNameId");
-	fstEleErr.innerHTML = "";
-	
-    if(fstEle.value== 'First Name'){
-		fstEleErr.innerHTML = "<font color='red'>&nbsp;Enter First Name.</font>";
-	    return false;
-	}
-	if(fstEle.value.match(r[spvar])){
-		fstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
-	    return false;
-	}
-	else 
-             return true;
- }
-
-function validateLastName()
-{
-	var lstEle = document.getElementById("lastNameId");
-	var lstEleErr=document.getElementById("lstNameId");
-	lstEleErr.innerHTML = "";
-    if(lstEle.value== 'Last Name'){
-		lstEleErr.innerHTML = "<font color='red'>&nbsp;Enter Last Name.</font>";
-	    return false;
-	}
-	if(lstEle.value.match(r[spvar])){
-		lstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
-		 return false;
-	}
-	
-	else 
-             return true;
-}
-function validateState()
-{
-	var lstElmt = document.getElementById("stateSelectBox");
-	var lstEleErrs=document.getElementById("SelectState");
-	lstEleErrs.innerHTML = "";
-
-	if(lstElmt.value== '0'){
-		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select State.</font>";
-         return false;
-}
-else 
-             return true;
-}
-function validateConstituency()
-{
-	var lstEle = document.getElementById("constituency");
-	var lstEleErr=document.getElementById("selectConstituency");
-	lstEleErr.innerHTML = "";
-
-	if(lstEle.value== '0'||lstEle.value== ''){
-		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Select Constituency.</font>";
-		return false;
-	}
-	else 
-             return true;
-
-}
-
-function validatefields()
-{   
-	var flag = true;
-	 if($("#dateOfBirthField").val() =="DateOfBirth")
-	   $("#dateOfBirthField").val($(this).html());
-	  if($("#addressField").val() =="Address")
-		  $("#addressField").val($(this).html());
-	 if($("#mobileField").val() =="Mobile Number")
-	$("#mobileField").val($(this).html());
-	
-	if(!validateFirstName())
-		flag = false;
-	if(!validateLastName())
-		flag = false;
-	<c:if test="${registrationId == '0'}">
-	if(!validateEmail())
-		flag = false;
-	if(!validPassword())
-		flag = false;
-	if(!validRePassword())
-		flag = false;
-    if(!showDetails(results))
-        flag = false;
-	</c:if>
-	if(!validateState())
-		flag = false;
-	if(!validateConstituency())
-		flag = false;
-   
-	 
-	return flag;
-
-
-}
-
-
-function validateEmail()
-{   
-	var email = document.getElementById("emailField").value;
-	var resultDIVEle = document.getElementById("mobileDiv");
-	resultDIVEle.innerHTML = "";
-	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-	if(reg.test(email) == false)
-		resultDIVEle.innerHTML = "<font color='red'>Please provide correct Email Address.</font>";
-    else 
-             return true;
-
-	if(email.length == 0){
-		resultDIVEle.innerHTML = "<font color='red'>&nbsp;Please Enter User Name.</font>";
-        return false;
-	}
-	
-	
-}
-/**function validateEmail(id){
-	
-	var email=document.getElementById("emailId").value;
-	var emailFilter=/^.+@.+\..{2,3}$/
-	if(email!="" && email!="Email Id"){
-		if(!emailFilter.test(email)){
-			document.getElementById("emailErrMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
-		}
-	else{
-		document.getElementById("emailErrMsg").innerHTML ='';
-		}
-	}
-	else{
-		document.getElementById("emailErrMsg").innerHTML ='';
-		}
-}*/
-function numbersonly(id){
-	
-
-	var num = document.getElementById(id).value;
-	if(num !=''&& num!="Mobile Number"){
-	 if(isNaN(num) || num.length<10){
-		document.getElementById("errMsg").innerHTML ='<font color="red">Please enter valid Mobile Number</font>';
-	}
-	else{
-		document.getElementById("errMsg").innerHTML ='';
-	}
-	}
-	else{
-		document.getElementById("errMsg").innerHTML ='';
-	}
-}
-function removeTextInTextBoxes(id){
-
-  if($("#"+id).val() =="UserName" || 
-	  $("#"+id).val() =="Password" ||
-	  $("#"+id).val() =="State" || 
-	  $("#"+id).val() =="Constituency"||
-	  $("#"+id).val() =="First Name" ||
-	  $("#"+id).val() =="Re-EnterPassword" ||
-	  $("#"+id).val() =="DateOfBirth"||
-	  $("#"+id).val() =="Address"||
-	  $("#"+id).val() =="Last Name" ||
-      $("#"+id).val() =="Mobile Number"){
-    $("input#"+id).val($(this).html());
-	return;
-  }
-}
-function showTextInTextBoxes(id){
-
-   if($("#emailField").val() ==''){
-		$("#emailField").val('UserName');
-	  } 
-	  if($("#constituencyId").val() ==''){
-		$("#constituencyId").val('Constituency');
-	  }
-	  if($("#mobileField").val() ==''){
-		$("#mobileField").val('Mobile Number');
-	  }
-	  if($("#firstNameId").val() =='' ){
-		 $("#firstNameId").val('First Name');
-	  }
-	 if($("#stateId").val() ==''){
-		 $("#stateId").val('State');
-	 }
-	 if($("#lastNameId").val() ==''){
-         $("#lastNameId").val('Last Name');
-	 }
-	  if($("#reEnterPasswordId").val() ==''){
-         $("#reEnterPasswordId").val('Re-EnterPassword');
-	 }
-	 if($("#dateOfBirthField").val() ==''){
-         $("#dateOfBirthField").val('DateOfBirth');
-	 }
-   
-	 if($("#addressField").val() ==''){
-         $("#addressField").val('Address');
-	 }
-      
-}
-
-</script>
-<style type="text/css">
-   
-   .calBtn
+  .calBtn
 	{
 		background-image: url("images/icons/constituencyManagement/calendar.jpeg");
 		height: 24px;
@@ -749,14 +355,426 @@ function showTextInTextBoxes(id){
 	padding:10px;
 }
 </style>
+<script type="text/javascript">
+var userFirstName = '${sessionScope.USER.firstName}';
+var userLastName = '${sessionScope.USER.lastName}';
+var results='';	
+
+
+var spvar = 'special';
+var r={
+  'special':/[\W]/g
+  //'quotes':/['\''&'\"']/g,
+  //'notnumbers':/[^\d]/g
+}
+
+function callAJAX(jsObj,url){
+	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "checkAnanymousUserNameAvailability")
+					{
+						showDetails(results);
+					}
+			}catch (e) {   		
+			   	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	
+function checkAvailability()
+{ 
+	var name = document.getElementById("emailField").value;
+ 	var resultDIVEle = document.getElementById("mobileDiv");
+	resultDIVEle.innerHTML = "";
+	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+	if(name.length == 0)
+		resultDIVEle.innerHTML="<font color='red'>UserName Sholud Not Be Empty.</font>";
+	
+	else if(reg.test(name) == false)
+		resultDIVEle.innerHTML = "<font color='red'>Please Provide Valid Email Address.</font>";
+		
+	else {		
+
+ 		document.getElementById("mobileDiv").innerHTML = " ";
+ 		var jsObj=
+		{		
+ 				userName:name,
+				task:"checkAnanymousUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
+		callAJAX(jsObj,url);
+	}
+
+}
+
+function validUsername()
+{
+	var textEle = document.getElementById("userNameField");
+	var resultDIVEle = document.getElementById("resultDIV");
+
+	resultDIVEle.innerHTML = "";
+	if(textEle.value.length > 0 && textEle.value.length < 6)
+	{
+		resultDIVEle.innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
+		return;
+	}
+		
+	if(textEle.value.match(r[spvar]))
+		resultDIVEle.innerHTML = "<font color='red'>UserName Should not contain Special Characters</font>";
+	else
+		resultDIVEle.innerHTML = "";
+		
+}
+function validPassword()
+{  
+	var textEle = document.getElementById("password-password");
+	var resultDIVEle = document.getElementById("errMsg");
+	resultDIVEle.innerHTML = "";
+	
+	if(textEle.value.length > 0 &&textEle.value.length < 6)
+		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
+		if(textEle.value==""){
+         resultDIVEle.innerHTML="<font color='red'>Please Enter Password.</font>";
+	     return false; 
+	}
+	else 
+             return true; 
+
+}
+function validRePassword()
+{
+	var pwd1 = document.getElementById("password-password");
+	var pwd2 = document.getElementById("password-rePassword");
+	var resultDIVEle = document.getElementById("errMsg1");
+	resultDIVEle.innerHTML = "";
+	if(pwd1.value.length > 0 && pwd2.value.length > 0 && pwd1.value != pwd2.value){
+		resultDIVEle.innerHTML = "<font color='red'>Passwords Do Not Match.</font>";
+        return false;
+	}
+	if(pwd1.value.length > 0 && pwd1.value.length < 6)
+	{
+		resultDIVEle.innerHTML = "<font color='red'>Password Minimum Of 6 Characters.</font>";
+		return false;
+	}
+	
+		if(pwd2.value==""){
+         resultDIVEle.innerHTML="<font color='red'>Please Re-enter Password.</font>";
+	return false;
+	}
+	else 
+             return true;
+}
+
+function validNames(id)
+{
+	var textEle = document.getElementById(id);
+	var resultDIVEle = document.getElementById("namesDiv");
+	var name = '';
+	if(id == 'nameField')
+		name = 'First name';
+	else 
+		name = 'Last name';
+
+	resultDIVEle.innerHTML = "";
+	if(textEle.value.match(r[spvar]))
+		resultDIVEle.innerHTML = "<font color='red'>"+name+" Should not contain Special Characters</font>";
+	else
+		resultDIVEle.innerHTML = "";
+		
+}
+function showDetails(results)
+{
+	var result = document.getElementById("mobileDiv");
+	var str='';
+	if(results==121){		
+		str+="<font color='green'> Username is available</font>";
+		result.innerHTML = str;
+		return true;
+	}else{
+		str+="<font color='red'> Username is not available</font>";	
+	    result.innerHTML = str;
+		return false;
+	}
+	result.innerHTML = str;
+}
+function validateMobile()
+{  
+	var mobilEle = document.getElementById("mobileField");
+	var resultDIVEle = document.getElementById("mobileFieldDiv");
+	var mobile = mobilEle.value;
+
+	resultDIVEle.innerHTML = "";
+	if(mobilEle.value =="Mobile Number"){
+			resultDIVEle.innerHTML = "";
+              return true;
+	}	
+	if(isNaN(mobile)|| mobile.indexOf(" ")!=-1){
+		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number Contains Only Numbers.</b></font>";
+	   return false;
+	}
+	else if((mobile.length > 0 && mobile.length < 10) || mobile.length > 12){
+		resultDIVEle.innerHTML = "<font color='red'><b>Please Provide Correct Mobile Number.</b></font>";
+		return false;
+	}
+	else
+		return true;
+}
+
+function validateAddress()
+{
+	var mobilEle = document.getElementById("addressField");
+	var resultDIVEle = document.getElementById("addressFieldDiv");
+	var mobile = mobilEle.value;
+
+	resultDIVEle.innerHTML = "";
+	
+	if(mobilEle.value.match(r[spvar]))
+		resultDIVEle.innerHTML = "<font color='red'>Address Should Not Contain Special Characters</font>";
+	else
+		resultDIVEle.innerHTML = "";
+		
+}
+function validateFirstName()
+{ 
+
+	var fstEle = document.getElementById("firstNameId");
+	var fstEleErr=document.getElementById("fstNameId");
+	fstEleErr.innerHTML = "";
+	
+    if(fstEle.value== 'First Name'){
+		fstEleErr.innerHTML = "<font color='red'>&nbsp;Enter First Name.</font>";
+	    return false;
+	}
+	if(fstEle.value.match(r[spvar])){
+		fstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
+	    return false;
+	}
+	else 
+             return true;
+ }
+function validateAccept(){
+var acpt=document.getElementById("acceptId").checked;
+acptErr=document.getElementById("acceptErrId");
+if(!acpt)
+	{
+acptErr.innerHTML="<font color='red'>You Should Accept Terms of use</font>";
+	return false;
+	}
+else 
+	{
+	acptErr.innerHTML="";
+	return true;
+	}
+}
+function validateLastName()
+{
+	var lstEle = document.getElementById("lastNameId");
+	var lstEleErr=document.getElementById("lstNameId");
+	lstEleErr.innerHTML = "";
+    if(lstEle.value== 'Last Name'){
+		lstEleErr.innerHTML = "<font color='red'>&nbsp;Enter Last Name.</font>";
+	    return false;
+	}
+	if(lstEle.value.match(r[spvar])){
+		lstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
+		 return false;
+	}
+	
+	else 
+             return true;
+}
+function validateState()
+{
+	var lstElmt = document.getElementById("stateSelectBox");
+	var lstEleErrs=document.getElementById("SelectState");
+	lstEleErrs.innerHTML = "";
+
+	if(lstElmt.value== '0'){
+		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select State.</font>";
+         return false;
+}
+else 
+             return true;
+}
+function validateConstituency()
+{
+	var lstEle = document.getElementById("constituency");
+	var lstEleErr=document.getElementById("selectConstituency");
+	lstEleErr.innerHTML = "";
+
+	if(lstEle.value== '0'||lstEle.value== ''){
+		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Select Constituency.</font>";
+		return false;
+	}
+	else 
+             return true;
+
+}
+
+function validatefields()
+{   
+	var flag = true;
+	 if($("#dateOfBirthField").val() =="DateOfBirth")
+	   $("#dateOfBirthField").val('');
+	  if($("#addressField").val() =="Address")
+		  $("#addressField").val('');
+	 if($("#mobileField").val() =="Mobile Number")
+	$("#mobileField").val('');
+	
+	if(!validateFirstName())
+		flag = false;
+	if(!validateLastName())
+		flag = false;
+	<c:if test="${registrationId == '0'}">
+	if(!validateEmail())
+		flag = false;
+	if(!validPassword())
+		flag = false;
+	if(!validRePassword())
+		flag = false;
+    if(!showDetails(results))
+        flag = false;
+	</c:if>
+   <c:if test="${registrationId != '0'}">
+    if(!validateMobile())
+	    flag = false;
+	</c:if>
+	if(!validateAccept())
+        flag = false;
+	if(!validateState())
+		flag = false;
+	if(!validateConstituency())
+		flag = false;
+   
+	 
+	return flag;
+
+
+}
+
+
+function validateEmail()
+{   
+	var email = document.getElementById("emailField").value;
+	var resultDIVEle = document.getElementById("mobileDiv");
+	resultDIVEle.innerHTML = "";
+	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+	if(reg.test(email) == false)
+		resultDIVEle.innerHTML = "<font color='red'>Please Provide Correct Email Address.</font>";
+    else 
+             return true;
+
+	if(email.length == 0){
+		resultDIVEle.innerHTML = "<font color='red'>&nbsp; UserName Should Not Be Empty.</font>";
+        return false;
+	}
+	
+	
+}
+
+function numbersonly(id){
+	
+
+	var num = document.getElementById(id).value;
+	if(num !=''&& num!="Mobile Number"){
+	 if(isNaN(num) || num.length<10){
+		document.getElementById("numMsg").innerHTML ='<font color="red">Please enter valid Mobile Number</font>';
+	}
+	else{
+		document.getElementById("numMsg").innerHTML ='';
+	}
+	}
+	else{
+		document.getElementById("numMsg").innerHTML ='';
+	}
+}
+function removeTextInTextBoxes(id){
+	
+ var ids=document.getElementById(id);
+   if(ids.value  =='UserName (Email)' || 
+	  ids.value =='Password' ||
+	  ids.value =='State' || 
+	  ids.value =='Constituency'||
+	  ids.value =='First Name' ||
+	  ids.value =='Re-Enter Password' ||
+	  ids.value =='DateOfBirth'||
+	  ids.value =='Address'||
+	  ids.value =='Last Name' ||
+      ids.value =='Mobile Number'){
+       
+		ids.value='';
+	return;
+  }
+}
+function showTextInTextBoxes(id){
+
+   if($("#emailField").val() ==''){
+		$("#emailField").val('UserName (Email)');
+	  } 
+	  if($("#constituencyId").val() ==''){
+		$("#constituencyId").val('Constituency');
+	  }
+	  if($("#mobileField").val() ==''){
+		$("#mobileField").val('Mobile Number');
+	  }
+	  if($("#firstNameId").val() =='' ){
+		 $("#firstNameId").val('First Name');
+	  }
+	 if($("#stateId").val() ==''){
+		 $("#stateId").val('State');
+	 }
+	 if($("#lastNameId").val() ==''){
+         $("#lastNameId").val('Last Name');
+	 }
+	  if($("#reEnterPasswordId").val() ==''){
+         $("#reEnterPasswordId").val('Re-Enter Password');
+	 }
+	 if($("#dateOfBirthField").val() ==''){
+         $("#dateOfBirthField").val('DateOfBirth');
+	 }
+   
+	 if($("#addressField").val() ==''){
+         $("#addressField").val('Address');
+	 }
+      
+}
+
+</script>
+
 </head>  
 <body>  
 
 <s:form action="anonymousUserRegistrationAction.action" method="GET" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
- 
+  <div id="registrationMainDiv" style="padding-bottom:5px;">
+		<table class="registrationTable">
+			<tr>
+				<td colspan="2">
+					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
+						<s:actionerror />
+						<s:fielderror />
+						<s:actionmessage/>						
+					</div>
+				</td>
+			</tr>
+		</table></div>
 <c:if test="${registrationId == '0'}">
-<div id="tableStyle" style="width:870px;height:530px;"></c:if> 					<c:if test="${registrationId != '0'}">
+<div id="tableStyle" style="width:870px;height:530px;"></c:if>
+<c:if test="${registrationId != '0'}">
 <div id="tableStyle" style="width:870px;height:600px;"></c:if> 			
 <table>
 <tr>
@@ -772,7 +790,7 @@ function showTextInTextBoxes(id){
  <td><strong style="color:red;margin">REGISTER</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span></td></tr>
  <tr>
  <td class="tdStyle"><b style="color:red">*</b> 
- <s:textfield name="email" value="UserName" id="emailField" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
+ <s:textfield name="email" value="UserName (Email)" id="emailField" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
  <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
   </td>
   
@@ -786,8 +804,8 @@ function showTextInTextBoxes(id){
   </tr>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield id="password-reClear" cssClass="textFieldStyle" value="Re-EnterPassword" size="30px" />
-    <s:password name="reEnteredPassword" value="Re-EnterPassword" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1" style="padding-left:10px;font-weight:lighter">
+  <s:textfield id="password-reClear" cssClass="textFieldStyle" value="Re-Enter Password" size="30px" />
+    <s:password name="reEnteredPassword" value="Re-Enter Password" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
    </tr>
@@ -800,9 +818,10 @@ function showTextInTextBoxes(id){
   </tr>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="lastName" value="Last Name" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  <s:textfield name="lastName" value="Last Name" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
+  </tr>
   </c:if>
   <c:if test="${registrationId != '0'}">
   <td>
@@ -810,15 +829,19 @@ function showTextInTextBoxes(id){
   </td>
   </tr>
   <tr>
-  <td class="tdStyle"><b style="color:red">*</b>  <s:textfield id="firstNameId" name="firstName" size="30px"  theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
-  </span></td>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield name="firstName"  id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
   </tr>
   <tr>
-  <td class="tdStyle"><b style="color:red">*</b>  <s:textfield id="lastNameId" name="lastName" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
-  </span></td>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield name="lastName" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
+  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
   <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
 </td>
 
@@ -838,12 +861,12 @@ function showTextInTextBoxes(id){
   </c:if>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:212px;"  theme="simple" /><span id="SelectState" style="padding-left:10px;font-weight:lighter">
+   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:212px;"  theme="simple" /><span id="SelectState" style="padding-left:10px;font-weight:lighter"></span>
   </td>
 
   </tr><tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:212px;" theme="simple" /><span id="selectConstituency" style="padding-left:10px;font-weight:lighter">
+  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:212px;" theme="simple" /><span id="selectConstituency" style="padding-left:10px;font-weight:lighter"></span>
   </td>
 
   </tr>
@@ -856,7 +879,7 @@ function showTextInTextBoxes(id){
 <table  style="padding-left:257px">
   <tr>
   <td>
-   
+        <div style="margin:5px;margin-left:26px" id="acceptErrId"></div>
 		<div style="margin:5px;margin-left:26px">
 			 <s:checkbox name="accept" id="acceptId"/>
 			<b>I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website</b>
