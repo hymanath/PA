@@ -321,7 +321,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 						ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
 				        
 					}
-					
+					userDetails.setDistrict(ananymousUser.getDistrict().getDistrictName());
+					userDetails.setDistrictId(ananymousUser.getDistrict().getDistrictId());
 					if(userDetails.getProfileOpts() != null)
 					for(Long optsId:userDetails.getProfileOpts()){
 						profileOpts = profileOptsDAO.get(optsId);
@@ -399,9 +400,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public ResultStatus checkForUserNameAvalilability(String userName){
 		ResultStatus resultStatus = new ResultStatus();
 		List<AnanymousUser> detailsList = null;
+		List<AnanymousUser> detailsListForEmail = null;
 		try{
 			detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
-			if(detailsList!=null && detailsList.size()!=0){
+			detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+			if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
