@@ -54,7 +54,16 @@ public class RegistrationVO extends BaseDTO{
 	private String userProfilePic;
 	private String isAdmin;
 	private Long mainAccountId;
+	private Long districtId;
 
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	
 	public Long getMainAccountId() {
 		return mainAccountId;
 	}
