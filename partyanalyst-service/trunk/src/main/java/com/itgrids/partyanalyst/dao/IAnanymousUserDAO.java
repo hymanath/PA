@@ -32,4 +32,6 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public Integer saveUserNameTOEmail(Long userId,String userName);
 	
+	public List<AnanymousUser> checkForUserNameAvailabiityForEmail(String userName); 
+	
 }
