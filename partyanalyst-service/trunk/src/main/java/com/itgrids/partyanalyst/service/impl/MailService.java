@@ -189,21 +189,22 @@ public class MailService implements IMailService{
 	    	text = "";
 	    	text +="<b>Hey<font color=\"blue\">"+"     "+ registrationVO.getFirstName();
 
-	    	text +="</b></font><br><br>Just a quick note to confirm that you are now a registered member of our PartyAnalyst community.";
+	    	text +="</b></font><br><br>Just a quick note to confirm that you are now a registered member of our Party Analyst Community.";
 
-	    	text +="<br><br>Thank you for joining - we're so glad to have you as the newest member of our growing community.";
+	    	text +="<br><br>Thank you for joining - we're so glad to have you as the newest member of our growing Community.";
 
 	    	text +="<br><br>Here are your login details. Please keep them safe.";
 
 	    	text +="<br><br>Username:"+ " "+registrationVO.getEmail();
 	    	text +="<br>Password:"+" "+registrationVO.getPassword();
 	    	text +="<br><br>You can now connect with people, post problems, post comments and do lot more things. Why wait? Login now and start connecting with people. <br>Follow this link to log in <a href='www.partyanalyst.com/loginInputAction.action'>Login</a>";
-	    	text +="<br><br>Explore more about your constituency : <a href='www.partyanalyst.com/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency()+"'>"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a>";
+	    	text +="<br><br>Explore more about your Constituency : <a href='www.partyanalyst.com/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency()+"'>"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a>";
+	    	text +="<br><br>Explore more about your  District : <a href='www.partyanalyst.com/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+registrationVO.getDistrict()+"'>"+registrationVO.getDistrict()+"</a>";
 	    	text +="<br><br><br>Please add this email which you like from Party Analyst won&#39;t go for junk email."; 
 	    	text +="<br>We hope to see you around and take part in our community!!!";
-	    	text +="<br><br>For suggestions and support contact us at <b>info@itgrids.com</b>";
+	    	text +="<br><br>For suggestions and support contact us at <b>info@partyanalyst.com</b>";
 	    	text +="<br><br><b>Best Wishes,";
-	    	text +="<br><font color=\"green\">PartyAnalyst Team.</font></b>";
+	    	text +="<br><font color=\"green\">Party Analyst Team.</font></b>";
 
 	    	/*text +="<br><br>PS: Now that you are part of our community, why not invite your friends to join our community? You can not only connect and share your thoughts with them but also make them part of the change.";
 
