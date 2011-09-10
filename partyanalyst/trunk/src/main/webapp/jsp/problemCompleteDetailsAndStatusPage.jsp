@@ -134,7 +134,7 @@ text-align:left;
 
 #problemContentData_details_main
 {
-	margin-top:20px;
+	margin-top:49px;
 }
 
 #problemContentData_details_head
@@ -255,10 +255,10 @@ text-align:left;
 	text-decoration:underline;
 }
 
-#closeWindowDiv
-{
-  text-align: right;
-  margin-right:12px;
+#closeWindowDiv {
+    float: right;
+    margin-top: 11px;
+    text-align: right;
 }
 .ui-widget-header {
     background: none repeat scroll 0 0 #4297D7;
@@ -685,7 +685,7 @@ function buildProblemRecentActivities(jsObj,results)
 	var bodyElmt = document.getElementById("problemContentData_activities_body");
 	if(results == null || results.length == 0)
 	{
-       bodyElmt.innerHTML = '';
+       bodyElmt.innerHTML = 'No Problem Activities are taken place';
 	   return;
 	}
 
@@ -1316,7 +1316,20 @@ function closeCompleteDetails()
    window.opener.document.location.reload(true);
    window.close();
 }
-
+function openAddNewProblemWindow()
+{	
+	var browser1 = 
+	window.open("addNewProblemAction.action","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+						 
+		 browser1.focus();
+}
+function openEditProblemWindow()
+{	
+	var browser = 
+	window.open("addNewProblemAction.action?problemHistoryId="+pHistoryId,"addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+						 
+		 browser.focus();
+}	
 var statesListForProb = [];
 var districtsListForProb = [];
 var costituenciesListForProb = [];
@@ -1339,7 +1352,18 @@ var villagesListForProb = [];
 	</TR>
 </TABLE>
 </CENTER>
-<div id="closeWindowDiv"><input type="button" value="Close" onClick="closeCompleteDetails()" /></div>
+<div id="closeWindowDiv">
+<table>
+ <tr>
+  <td><a href="javaScript:{}" style="padding-right: 12px; color: green;" onclick="openAddNewProblemWindow()">Add New Problem</a>
+  </td>
+  <td><a href="javaScript:{}" style="color: green;" onclick="openEditProblemWindow()">Edit Problem</a>
+  </td>
+  <td style="padding-left: 19px;"><input type="button" value="Close" onClick="closeCompleteDetails()" />
+  </td>
+  </tr>
+ </table>
+ </div>
 <div id="departmentPanel_main"><div id="departmentPanel_content"></div></div>
 <div id="problemContentData_main">
 	<!-- Problem Details Start -->
