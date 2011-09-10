@@ -1234,7 +1234,7 @@ function showVotesObtainedForOptions(myResults){
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
 	str += '<table><tr><td>';
-	str += '<div id="pollQuestionDiv">Q)'+myResults.question;
+	str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
 	str += '</div>';
 	str += '</td></tr>';
 	
@@ -1245,9 +1245,9 @@ function showVotesObtainedForOptions(myResults){
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> view current poll result';
+	str += '<td onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:10px;"> View Current Poll Result';
 	str += '</td>';
-	str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> view all polls';
+	str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> View All Polls';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
