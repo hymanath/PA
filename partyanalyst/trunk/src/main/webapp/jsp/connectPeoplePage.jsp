@@ -254,7 +254,7 @@
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:260px;">
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;">
 									</div>
 									<div id="pollsWidgetFooter">
 										
