@@ -8,15 +8,21 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * problem_type entity. 
@@ -33,6 +39,7 @@ public class ProblemType implements Serializable{
 	private Long problemTypeId;
 	private String problemType;
 	private String description;
+	private Set<Problem> problems = new HashSet<Problem>(0);
 	
 	public ProblemType()
 	{
@@ -68,5 +75,14 @@ public class ProblemType implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemType")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Problem> getProblems() {
+		return problems;
+	}
+	public void setProblems(Set<Problem> problems) {
+		this.problems = problems;
 	}
 }
