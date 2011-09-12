@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
 import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
@@ -66,7 +67,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IModuleRegionScopesDAO moduleRegionScopesDAO;
 	private IModuleDetailsDAO moduleDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO;
 	
+	public IRegionScopesProblemTypeDAO getRegionScopesProblemTypeDAO() {
+		return regionScopesProblemTypeDAO;
+	}
+
+	public void setRegionScopesProblemTypeDAO(
+			IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO) {
+		this.regionScopesProblemTypeDAO = regionScopesProblemTypeDAO;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -1197,6 +1208,37 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		catch(Exception e)
 		{
 			log.error("Exception Occured In getUserStateList() And Exception is -- "+e);
+			return null;
+		}
+	}
+	
+	/**
+	 * This Method will give Problem Type List when we pass regionScopeId as Parameter
+	 * @param regionScopeId
+	 * @return List<SelectOptionVO>
+	 * @author kamalakar Dandu
+	 */
+	public List<SelectOptionVO> getProblemTypesByRegionScopeId(Long regionScopeId)
+	{
+		try{
+			List<Object[]> list = regionScopesProblemTypeDAO.getProblemTypesByRegionScopeId(regionScopeId);
+			List<SelectOptionVO> problemTypesList = null;
+			
+			if(list != null && list.size() > 0)
+			{
+				problemTypesList = new ArrayList<SelectOptionVO>(0);
+				for(Object[] params : list)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					problemTypesList.add(selectOptionVO);
+				}
+			}
+			return problemTypesList;
+			
+		}catch(Exception e){
+			log.error("Exception Occured in getProblemTypesByRegionScopeId() method - "+e);
 			return null;
 		}
 	}
