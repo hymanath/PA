@@ -205,11 +205,22 @@
 				<value>com.itgrids.partyanalyst.model.Announcement</value>
 				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
 				<value>com.itgrids.partyanalyst.model.UserConstituencyScope</value>
+				<value>com.itgrids.partyanalyst.model.ProblemType</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType</value>
+				
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="regionScopesProblemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesProblemTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="userTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTrackingDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
