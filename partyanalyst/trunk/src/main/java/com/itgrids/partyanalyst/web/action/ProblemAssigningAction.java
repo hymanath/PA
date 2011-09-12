@@ -270,8 +270,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user==null)
-			return ERROR;
+	if(user != null)
+	{
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -315,7 +315,7 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			
 			deptScopesList = problemManagementService.getCadreProblemDetailsForSms(user.getRegistrationID(),cadreId,pHistoryId);
 		}
-		
+	}	
 		return SUCCESS;
 	}
 	
@@ -325,8 +325,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user==null)
-			return ERROR;
+	if(user != null)
+	{		
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -340,14 +340,19 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			String problemStatus  = jObj.getString("status");
 			
 			resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
+			resultStatus.setResultCode(1);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
 		{
 			String message = jObj.getString("message");
 			String [] phoneNumbers = {jObj.getString("MobileNo")};
 			resultStatus = problemManagementService.sendSMS(user.getRegistrationID(),message,IConstants.PROBLEM_MANAGEMENT,phoneNumbers);
+			resultStatus.setResultCode(1);
 		}
-		
+	}else{
+		resultStatus = new ResultStatus();
+		resultStatus.setResultCode(0);
+	    }	
 	 return Action.SUCCESS;
 	}
 	
@@ -356,9 +361,9 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user==null)
-			return ERROR;
-		
+	if(user!=null)
+			
+	{	
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
@@ -376,7 +381,12 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			status = IConstants.PROBLEM_TYPE_MODIFY;
 		
 		resultStatus = problemManagementService.updateProblemClassificationData(problemHistoryId, classification, status);
+		resultStatus.setResultCode(1);
+	}else{
 		
+		resultStatus = new ResultStatus();
+		resultStatus.setResultCode(0);
+	}	
 	 return Action.SUCCESS;
 	}
     
@@ -385,8 +395,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user==null)
-			return ERROR;
+	if(user!=null)
+	{
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -408,10 +418,19 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			status = IConstants.CADRE_DELETE;
         
         if(status.equalsIgnoreCase(IConstants.CADRE_DELETE))
+        	{
         	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, 0L, status);
-        else
+            resultStatus.setResultCode(1);
+        	}
+        else{
         	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, cadreId, status);
+        	resultStatus.setResultCode(1);
+            }
+	}else{
+		resultStatus = new ResultStatus();
+		resultStatus.setResultCode(0);
 		
+	     }	
 	 return Action.SUCCESS;
 	}
    
@@ -420,8 +439,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	   session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user==null)
-			return ERROR;
+	if(user!=null)
+	{		
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -432,8 +451,12 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		Long problemHistoryId = jObj.getLong("pHistoryId");
 		String comments = jObj.getString("comments");
 		
-		resultStatus = problemManagementService.updateProblemComments(problemHistoryId, comments, IConstants.PROBLEM_COMMENTS_ADD); 		
-	   
+	    resultStatus = problemManagementService.updateProblemComments(problemHistoryId, comments, IConstants.PROBLEM_COMMENTS_ADD); 
+	    resultStatus.setResultCode(1);
+	}else{
+		resultStatus = new ResultStatus();
+		resultStatus.setResultCode(0);
+		} 
      return Action.SUCCESS;
    }
    
