@@ -571,7 +571,11 @@ function callAjax(jsObj,url)
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);
 							if(jsObj.task == "getProblemResolvingDeptScopes")
-							{
+							{ 
+							  if(myResults == null){
+							      alert("Your Session Expired Please LogIn");	
+                                   return;								  
+							     }
 								clearOptionsListForSelectElmtId('resolvingDeptScopeId');
 								fillOptionsForSelectedElmt('resolvingDeptScopeId', myResults);
 							}
@@ -599,7 +603,12 @@ function callAjax(jsObj,url)
 								buildProblemRecentActivities(jsObj,myResults);
 							}
 							else if(jsObj.task == "changeProbClassification")
-							{
+							{ 
+							    if(myResults.resultCode == 0)
+								  {
+								      alert("Your Session Expired Please LogIn");
+									  return;
+								   }
 								getProblemPresentStatus(pHistoryId);
 								getProblemActivities(pHistoryId);	
 							}
@@ -609,7 +618,13 @@ function callAjax(jsObj,url)
 								getProblemActivities(pHistoryId);
 								
 								if(jsObj.task == "PostCommentsToProblem"){
-							     var alertMsgElmt;	if(myResults.exceptionEncountered == null){
+							     var alertMsgElmt;
+								  if(myResults.resultCode == 0)
+								  {
+								      alert("Your Session Expired Please LogIn To Post");
+									  return;
+								   }
+								 if(myResults.exceptionEncountered == null){
 									
 								alertMsgElmt = document.getElementById("alertMsg");
 								alertMsgElmt.innerHTML=
@@ -631,7 +646,11 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "changeProblemStatus")
 							{
-								
+							  if(myResults.resultCode == 0)
+								 {    
+								      alert("Your Session Expired Please LogIn");
+									  return;
+								   }
                                 if(myResults.resultState == null)
 								{
                                    var statusDivElmt = document.getElementById("statusErrorDiv");
@@ -661,6 +680,13 @@ function callAjax(jsObj,url)
 							else if(jsObj.task == "sendSMS")
 							{
 								showSMSResult(myResults);
+							}
+							if(jsObj.task == "addCadreToProblem"){
+								  if(myResults.resultCode == 0)
+								  {
+								      alert("Your Session Expired Please LogIn");
+									  return;
+								   }
 							}
 						}
 						catch(e)
@@ -1190,6 +1216,7 @@ function postCommentForProblem()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "postCommentsToProblemAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
+	
    }
 
 function showProbClassification()

@@ -1375,7 +1375,6 @@ function buildCadreDetailsDataTable(result)
 	str += '<div id="stProblemDetails_body" class="yui-skin-sam"></div>';
 
 	deptWiseProblemInfoDivBodyEle.innerHTML = str;
-	
 	YAHOO.widget.DataTable.cadreLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var cadreName = oData;
@@ -1411,14 +1410,14 @@ function buildCadreDetailsDataTable(result)
 	{
 		var count = new Array();
 		count = oRecord.getData("departments");
-		elLiner.innerHTML ="<a href='javascript:{}'>"+count[1].id+"</a>";
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[0].id+"</a>";
 		
 	};
 	YAHOO.widget.DataTable.progress = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var count = new Array();
 		count = oRecord.getData("departments");
-		elLiner.innerHTML ="<a href='javascript:{}'>"+count[2].id+"</a>";
+		elLiner.innerHTML ="<a href='javascript:{}'>"+count[1].id+"</a>";
 		
 	};
 	
@@ -1443,9 +1442,10 @@ function buildCadreDetailsDataTable(result)
 					pageLinks: 20
 					}) 
 					};	
-
+                      
 			var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_body",
 					myColumnDefs, myDataSource,myConfigs);
+					
 
 			return {
 				oDS: myDataSource,
@@ -1715,7 +1715,10 @@ function buildCadreProblemDetailsChart(result)
 	str +='				<td valign="top"  width="450px">';
 	str +='					<table class="problemDetailsBody_table">';
 	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
-	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th><td><a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th>';if(personal == 0)
+	str += '                <td >'+personal+'</td>';
+	                           else
+	str += '                <td> <a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
 	str +='					</tr>';
 	str +='					</table>';
@@ -2320,7 +2323,7 @@ function buildResultDataTable(result)
 	str +='	</tr>';
 	str +='</table>';
 	str += '</div>';
-	str += '<div id="stProblemDetails_body" class="yui-skin-sam"></div>';
+	str += '<div id="stProblemDetails_bod" class="yui-skin-sam"></div>';
 
 	statusWiseProblemInfoDivBodyEle.innerHTML = str;
 
@@ -2390,7 +2393,7 @@ function buildResultDataTable(result)
 			    }) 
 				};	
 
-		var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_body",
+		var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_bod",
                 myColumnDefs, myDataSource,myConfigs);
 
 		return {
