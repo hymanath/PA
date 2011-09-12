@@ -601,4 +601,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="problemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="regionScopesProblemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesProblemTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
