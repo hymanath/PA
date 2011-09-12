@@ -1498,7 +1498,8 @@
         	</result>
 		</action>   
 		<action name="cadreSearchAction" class="cadreSearchAction">
-			<result name="success">/jsp/cadreSearchPage.jsp</result>			
+			<result name="success">/jsp/cadreSearchPage.jsp</result>
+			<result type="redirect" name="error">loginInputAction.action</result>			
 		</action>
 		<action name="getStatesForACountryAjaxAction" class="cadreSearchAjaxAction" method="getStatesForACountry"> 
               <result type="json" name="success">
