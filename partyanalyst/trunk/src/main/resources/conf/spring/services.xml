@@ -452,7 +452,8 @@
 		<property name="boothMapperService" ref="boothMapperService" />	
 		<property name="moduleRegionScopesDAO" ref="moduleRegionScopesDAO" />
 		<property name="moduleDetailsDAO" ref="moduleDetailsDAO" />
-		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />				
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
+		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>			
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
