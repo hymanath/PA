@@ -191,6 +191,8 @@
 				<value>com.itgrids.partyanalyst.model.UserConstituencyScope</value>
 				<value>com.itgrids.partyanalyst.model.Announcement</value>
 				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
+				<value>com.itgrids.partyanalyst.model.ProblemType</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType</value>
 			</list>
 		</property>
 	</bean>
