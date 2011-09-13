@@ -327,6 +327,20 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		return SUCCESS;
 	}
 	
+	public String checkForUserNameAvailabilityForFreashUser(){
+
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resultStr =  new Long(registrationService.checkForUserNameAvailabilityForFreashUser(jObj.getString("userName")).getResultCode());
+		 
+		return SUCCESS;
+	}
+	
 	public String changeRegisteredUserNameToEmail(){
 		session = request.getSession();
 		regVO = new RegistrationVO();
