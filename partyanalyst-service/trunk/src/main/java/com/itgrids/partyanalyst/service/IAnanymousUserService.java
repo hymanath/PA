@@ -20,6 +20,8 @@ public interface IAnanymousUserService {
 	
 	public ResultStatus checkForUserNameAvalilability(String userName);
 	
+	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName);
+		
 	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex, String nameString);
 	
 	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject);
