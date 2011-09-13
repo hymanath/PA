@@ -49,6 +49,7 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public Integer saveUserNameTOEmail(Long userId,String userName);
    
+	public List<Registration> checkForUserNameAvailabiityForEmail(String userName);
 	
 	
 	@SuppressWarnings("unchecked")
