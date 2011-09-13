@@ -1498,8 +1498,7 @@
         	</result>
 		</action>   
 		<action name="cadreSearchAction" class="cadreSearchAction">
-			<result name="success">/jsp/cadreSearchPage.jsp</result>
-			<result type="redirect" name="error">loginInputAction.action</result>			
+			<result name="success">/jsp/cadreSearchPage.jsp</result>			
 		</action>
 		<action name="getStatesForACountryAjaxAction" class="cadreSearchAjaxAction" method="getStatesForACountry"> 
               <result type="json" name="success">
@@ -2067,6 +2066,12 @@
 		</action>
 		
 		<action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result>		
+		</action>
+		
+		<action name="checkAnanymousFreashUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailabilityForFreashUser">
 			<result type="json" name="success">
 				<param name="root">result</param>				
 			</result>		
