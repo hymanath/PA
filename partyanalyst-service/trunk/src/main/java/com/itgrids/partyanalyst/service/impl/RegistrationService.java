@@ -312,9 +312,32 @@ public class RegistrationService implements IRegistrationService{
 	public ResultStatus checkForUserNameAvalilability(String userName){
 		ResultStatus resultStatus = new ResultStatus();
 		List<Registration> detailsList = null;
+		List<Registration> detailsListForEmail = null;
 		try{
 			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
-			if(detailsList!=null && detailsList.size()!=0){
+			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			}else{
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			}
+			resultStatus.setResultPartial(false);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+		}
+		return resultStatus;
+	}
+	
+	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName){
+		ResultStatus resultStatus = new ResultStatus();
+		List<Registration> detailsList = null;
+		List<Registration> detailsListForEmail = null;
+		try{
+			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
