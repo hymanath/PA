@@ -418,6 +418,27 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return resultStatus;
 	}
 	
+	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName){
+		ResultStatus resultStatus = new ResultStatus();
+		List<AnanymousUser> detailsList = null;
+		List<AnanymousUser> detailsListForEmail = null;
+		try{
+			detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			}else{
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			}
+			resultStatus.setResultPartial(false);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+		}
+		return resultStatus;
+	}
+	
 	/**
 	 * This method can be used to retrive ananymous/free users of party analyst based on location wise.
 	 * @author Ravi Kiran.Y
