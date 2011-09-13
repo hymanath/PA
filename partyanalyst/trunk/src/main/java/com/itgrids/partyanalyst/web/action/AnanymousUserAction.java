@@ -235,6 +235,21 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		 
 		return SUCCESS;
 	}
+	
+	public String checkForUserNameAvailabilityForFreashUser(){
+
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		result =  new Long(ananymousUserService.checkForUserNameAvailabilityForFreashUser(jObj.getString("userName")).getResultCode());
+		 
+		return SUCCESS;
+	}
+	
 	public String recoverPassword(){
 		
 		regVO = new RegistrationVO();
