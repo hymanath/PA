@@ -380,7 +380,18 @@ var email = document.getElementById("emailField").value;
 	
 	else if(reg.test(email) == false)
 		resultDIVEle.innerHTML = "<font color='red'><b>Plase provide correct Email Address.</b></font>";
-   
+    else if(emailId == ''|| emailId== null){
+		document.getElementById("feedback_window_errorMsg").innerHTML = " ";
+       var jsObj=
+		{		
+ 				userName:email,
+				task:"checkAnanymousUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
+		callAJAX(jsObj,url);
+
+	}
 	else if(reg.test(email) == true)
 	{
         document.getElementById("feedback_window_errorMsg").innerHTML = " ";
