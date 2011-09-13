@@ -2059,6 +2059,12 @@
 			</result>		
 		</action>
 		
+		 <action name="checkFreashRegisteredUserNameAvailabilityAction" class="electionVotingTrendzAction" method="checkForUserNameAvailabilityForFreashUser">
+			<result type="json" name="success">
+				<param name="root">resultStr</param>				
+			</result>		
+		</action>
+		
 		<action name="changeRegisteredUserNameToEmailAction" class="electionVotingTrendzAction" method="changeRegisteredUserNameToEmail">
 			<result type="json" name="success">
 				<param name="root">resultValue</param>				
