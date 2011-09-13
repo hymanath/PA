@@ -13,6 +13,9 @@ public interface IRegistrationService {
 	 public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
 	 
 	 public ResultStatus checkForUserNameAvalilability(String userName);
+	 
+	 public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName);
+	 
 	 public Integer updateRegisteredUserDetailsToUserNameToEmail(Long userId,String userName);
 	 
 }
