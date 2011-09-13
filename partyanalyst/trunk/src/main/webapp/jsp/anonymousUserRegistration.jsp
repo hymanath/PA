@@ -414,7 +414,7 @@ function checkAvailability()
 				task:"checkAnanymousUserNameAvailability"						
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
+		var url = "<%=request.getContextPath()%>/checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
 		callAJAX(jsObj,url);
 	}
 
@@ -511,7 +511,7 @@ function showDetails(results)
 	result.innerHTML = str;
 }
 function validateMobile()
-{  
+{
 	var mobilEle = document.getElementById("mobileField");
 	var resultDIVEle = document.getElementById("mobileFieldDiv");
 	var mobile = mobilEle.value;
@@ -703,8 +703,8 @@ function numbersonly(id){
 	}
 }
 function removeTextInTextBoxes(id){
-	
- var ids=document.getElementById(id);
+
+  var ids=document.getElementById(id);
    if(ids.value  =='UserName (Email)' || 
 	  ids.value =='Password' ||
 	  ids.value =='State' || 
