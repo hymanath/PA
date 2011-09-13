@@ -456,10 +456,23 @@ var email = document.getElementById("emailField").value;
 		resultDIVEle.innerHTML = "<font color='red'><b>Please Enter EmailId.</b></font>";
 	
 	else if(reg.test(email) == false)
-		resultDIVEle.innerHTML = "<font color='red'><b>Plase provide correct Email Address.</b></font>";
+		resultDIVEle.innerHTML = "<font color='red'><b>Please provide correct Email Address.</b></font>";
    
-	else if(reg.test(email) == true)
-	{
+	else if(emailId == '' || emailId == null){
+       document.getElementById("feedback_window_errorMsg").innerHTML = " ";
+       var jsObj=
+		{		
+ 				userName:email,
+				task:"checkRegisteredUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "checkFreashRegisteredUserNameAvailabilityAction.action?"+rparam;				
+		callAjax(jsObj,url);
+
+	}
+		else if(reg.test(email) == true)
+	    {
+		
 		document.getElementById("feedback_window_errorMsg").innerHTML = " ";
  		var jsObj=
 		{		
