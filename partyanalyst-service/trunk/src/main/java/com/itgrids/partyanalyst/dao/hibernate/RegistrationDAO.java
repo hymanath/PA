@@ -89,6 +89,12 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 	public List<Registration> checkForUserNameAvailabiity(String userName) {
 		return getHibernateTemplate().find("select model.userName from Registration model where model.userName = ?",userName);
 	}
+    public List<Registration> checkForUserNameAvailabiityForEmail(String userName) {
+		
+		return getHibernateTemplate().find("select model.email from Registration model where model.email = ?",userName);
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public Integer saveUserNameTOEmail(Long userId,String email){
 		StringBuilder query = new StringBuilder();
