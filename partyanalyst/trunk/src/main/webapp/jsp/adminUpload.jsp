@@ -161,10 +161,17 @@
                                     </fieldset>
                                 </td>
 
+								
 								<td>
                                     <fieldset class="f2">
                                     <legend class="l2">Memory Management</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="memoryManagementAction"/>'><b>Memory Moniter</b></a></h4></center>
+                                    </fieldset>
+                                </td>
+								<td>
+                                    <fieldset class="f2">
+                                    <legend class="l2">User Access</legend>
+                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="userAccessRegionAction"/>'><b>Manage User Access</b></a></h4></center>
                                     </fieldset>
                                 </td>
 							</tr>
