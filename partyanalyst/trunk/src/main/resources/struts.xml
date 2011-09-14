@@ -1395,6 +1395,11 @@
               <result name="error">/jsp/addNewProblem.jsp</result>
               <result name="success">/jsp/addNewProblem.jsp</result>                                   		
         </action>
+        <action name="addProblemTypesAjaxAction" class="addNewProblemAction" method="getProblemTypesBasedOnProblemScope">
+             <result type="json" name="success">
+           		<param name="root">problemTypes</param>
+        	</result>  
+        </action>
 		 <action name="biElectionAction" class="biElectionAction">
 			<result name="success">/jsp/biElectionResultPage.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
