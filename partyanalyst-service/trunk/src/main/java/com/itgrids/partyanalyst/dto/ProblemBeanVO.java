@@ -46,6 +46,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String year;
 	private String problemSourceScope;
 	private String problemType;
+	private Long   problemTypeId;
 	private String problemClassification;
 	private String department;
 	private String departmentConcernedPersonName;
@@ -685,6 +686,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public String getProblemRefNum() {
 		return problemRefNum;
+	}
+
+	public void setProblemTypeId(Long problemTypeId) {
+		this.problemTypeId = problemTypeId;
+	}
+
+	public Long getProblemTypeId() {
+		return problemTypeId;
 	}
 	
 	
