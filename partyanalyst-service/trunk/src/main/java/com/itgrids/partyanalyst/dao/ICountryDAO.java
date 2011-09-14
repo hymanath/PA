@@ -40,5 +40,7 @@ public interface ICountryDAO extends GenericDao<Country, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getCountryIdByCountryName(String name);
+	
+	public List<Object[]> getAllCountryDetails();
 
 }
