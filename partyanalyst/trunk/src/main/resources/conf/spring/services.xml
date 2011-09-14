@@ -874,6 +874,18 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 	</bean>
 	
+	<bean name="userAccessRegionService" class="com.itgrids.partyanalyst.service.impl.UserAccessRegionService">
+	    <property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
+		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
+		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
+	</bean>
+	
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
