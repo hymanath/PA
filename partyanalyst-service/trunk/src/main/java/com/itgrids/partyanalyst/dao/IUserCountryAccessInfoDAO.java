@@ -10,4 +10,6 @@ public interface IUserCountryAccessInfoDAO extends GenericDao<UserCountryAccessI
 
 	public List findByUser(Long userId);
 	
+	public Integer deleteAllCountryAccess(Long userId);
+	
 }
