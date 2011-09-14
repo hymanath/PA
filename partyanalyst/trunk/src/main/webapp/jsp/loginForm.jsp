@@ -260,6 +260,7 @@ String constituencySelectName= "";
 String districtSelectName= "";
 String candidateId = "";
 
+
 if(request.getParameter("candidateId")!=null){
 	candidateId = request.getParameter("candidateId");
 }
@@ -409,9 +410,23 @@ if(request.getParameter("problemHistoryId")!=null){
 
 	<script type="text/javascript">
 	function executeOnload()
-	{
+	{  
+	   var checkedValue='';
+		checkedValue = '${sessionScope.checkedTypeValue}'; 
+		 if(checkedValue =="1")
+		  { 
+		      document.getElementById("paUserRadio").checked=true ;
+		      document.getElementById("freeUserRadio").checked=false;
+		  }
+		 if(checkedValue =="2")
+		 { 
+		      document.getElementById("paUserRadio").checked=false ;
+		      document.getElementById("freeUserRadio").checked=true;
+		  }
 		var textBoxEl = document.getElementById("userName");
 		textBoxEl.focus();
+		
+		
 	}
 		
 	</script> 
