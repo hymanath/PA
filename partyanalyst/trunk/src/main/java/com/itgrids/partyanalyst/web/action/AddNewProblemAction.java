@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private static final Logger log = Logger.getLogger(AddNewProblemAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
-	private String task = null;
-	JSONObject jObj = null;
+	private String task ;
+	JSONObject jObj;
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
@@ -46,6 +47,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> wardsOrHamletsList;
 	private List<SelectOptionVO> hamletList;
 	private List<SelectOptionVO> parliamentConstituencyList;
+	private List<SelectOptionVO> problemTypes;
 	private IRegionServiceData regionServiceDataImp;
 	private IStaticDataService staticDataService;
 	private IProblemManagementService problemManagementService;
@@ -60,6 +62,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long localElectionBodyId = 0l;
 	private Boolean isParliament = false;
 	private List<SelectOptionVO> problemScopes;
+	private Long problemType;
 	private Long  problemLocation;
 	private Long scope;
 	private Long pConstituencyId;
@@ -271,6 +274,14 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public List<SelectOptionVO> getProblemScopes() {
 		return problemScopes;
 	}
+	
+	public void setProblemType(Long problemType) {
+		this.problemType = problemType;
+	}
+
+	public Long getProblemType() {
+		return problemType;
+	}
 
 	public void setProblemScopes(List<SelectOptionVO> problemScopes) {
 		this.problemScopes = problemScopes;
@@ -331,6 +342,14 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		this.problemSourcesList = problemSourcesList;
 	}
 
+	public void setProblemTypes(List<SelectOptionVO> problemTypes) {
+		this.problemTypes = problemTypes;
+	}
+
+	public List<SelectOptionVO> getProblemTypes() {
+		return problemTypes;
+	}
+
 	public String execute () throws Exception 
 	{
 		HttpSession session = request.getSession();
@@ -366,6 +385,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			if("2".equalsIgnoreCase(requestSrc))	
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
 				setProblemLocation(stateId);				
 					
 			}else if("3".equalsIgnoreCase(requestSrc))
@@ -376,11 +396,13 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				if(locationHirarchies != null){
 					stateId = getLocationIdFromHirarchy(IConstants.STATE,locationHirarchies);
 				}
-				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);				
+				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(3l);
 				
 			} else if("4".equalsIgnoreCase(requestSrc))
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
 				setProblemLocation(constituencyId);
 				List<SelectOptionVO> locationHirarchies = staticDataService.getLocationsHirarchyByType(IConstants.CONSTITUENCY, constituencyId);
 				if(locationHirarchies != null){
@@ -418,7 +440,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				}
 				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
-				mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);							
+				mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(8l);
 			} else
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
@@ -442,6 +465,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				stateId = list.get(0).getId();
 				districtId = list.get(1).getId();
 				constituencyId = list.get(2).getId();
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
 				setProblemLocation(constituencyId);
 				setScope(4l);
 							
@@ -450,6 +474,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				log.debug("Access Type = Country ****");
 				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 				stateList.add(0,new SelectOptionVO(0L, "Select State"));
+				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(0l);
 				setProblemLocation(0l);
 				setScope(0l);
 				
@@ -466,6 +491,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				districtList.add(0,new SelectOptionVO(0l,"Select District"));
 				stateId = accessValue;	
 				setProblemLocation(stateId);
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
 				setScope(2l);
 				
 			}else if("DISTRICT".equals(accessType)){
@@ -477,6 +503,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
 				stateId = list.get(0).getId();
 				districtId = accessValue;	
+				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(3l);
 				setProblemLocation(districtId);
 				setScope(3l);
 				
@@ -488,6 +515,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
 				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
 				constituencyList = constituencyInfoVO.getAssembyConstituencies();
+				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
 									
 				/*
 				log.debug("Access Type = MP ****");
@@ -505,6 +533,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			}
 		}
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM,stateId);
+		problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
+		session.setAttribute(ISessionConstants.PROBLEM_TYPES, problemTypes);
 		session.setAttribute(ISessionConstants.STATES_AP, stateList);
 		session.setAttribute(ISessionConstants.DISTRICTS_AP, districtList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES_AP, constituencyList);
@@ -513,7 +543,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS_AP, wardsOrHamletsList);
 		session.setAttribute(ISessionConstants.BOOTHS_AP,new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
-		}catch(Exception ex){
+        }catch(Exception ex){
 			ex.printStackTrace();
 			log.error("Exception Raised :" + ex);
 			return Action.ERROR;
@@ -530,7 +560,24 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		}
 	 return null;
 	}
-
+	public String getProblemTypesBasedOnProblemScope(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("getProblemTypes")){
+				Long regionScopeId = jObj.getLong("problemScopeId");
+				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(regionScopeId);
+				setProblemTypes(problemTypes);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return SUCCESS;
+	}
+	
 	@Override
 	public void prepare() throws Exception {
 			 
