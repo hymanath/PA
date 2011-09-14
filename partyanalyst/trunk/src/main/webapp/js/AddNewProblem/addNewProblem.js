@@ -75,7 +75,11 @@ function callAjax(param,jsObj,url){
 								} if(jsObj.task == "getDistricts")
 								{
 									fillDistrictsOptions(myResults);
-								}
+								}if(jsObj.task == "getProblemTypes")
+							     {
+									fillProblemTypesOptions(myResults);
+								 }
+
 																	
 							}  
 						catch (e)
@@ -762,6 +766,38 @@ function setLocationValue(value, source)
 	
 }
 
+function getProblemTypes(problemScopeId){
+
+var jsObj = {
+       
+	   problemScopeId :problemScopeId,
+       task :"getProblemTypes"
+      }
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "addProblemTypesAjaxAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+
+}
+function fillProblemTypesOptions(results)
+{
+	var problemTypeIdElmt = document.getElementById("problemTypeId");
+	removeSelectElements(problemTypeIdElmt);
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+	
+		try
+			{
+			problemTypeIdElmt.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+			problemTypeIdElmt.add(opElmt); // IE only
+			}
+	}
+}
 function refreshParentWindow()
 {
 	incrementHidden();
@@ -769,3 +805,4 @@ function refreshParentWindow()
 	//window.opener.document.location.reload(true);
 
 }
+
