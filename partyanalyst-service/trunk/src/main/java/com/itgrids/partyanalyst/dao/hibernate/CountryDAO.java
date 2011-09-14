@@ -58,5 +58,9 @@ public class CountryDAO extends GenericDaoHibernate<Country, Long> implements
 	public List getCountryIdByCountryName(String name) {
 		return getHibernateTemplate().find("select model.countryId from Country model where model.countryName = ?",name);
 	}
+	
+	public List<Object[]> getAllCountryDetails(){
+		return getHibernateTemplate().find("select model.countryId,model.countryName  from Country model");
+	}
 
 }
