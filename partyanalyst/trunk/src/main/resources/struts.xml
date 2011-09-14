@@ -82,6 +82,23 @@
 			</result> 
 		</action>
 		
+		<action name="userAccessRegionAction" class="userAccessRegionAction">
+			<result name="success">/jsp/userAccessRegion.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>			
+		</action>
+		
+		<action name="getAllAccessRegionDetailAction" class="userAccessRegionAction" method="getAllAccessRegionDetails" >
+			<result type="json" name="success">
+				<param name="root">userAccessRegionVO</param>
+			</result> 
+		</action>
+		
+		<action name="saveAccessRegionDetailAction" class="userAccessRegionAction" method="saveUserAccessRegionDetail" >
+			<result type="json" name="success">
+				<param name="root">userAccessRegionVO</param>
+			</result> 			
+		</action>
+		
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
