@@ -107,7 +107,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		
 	}
 	*/
-	public void testGetConstituenciesByElectionTypeAndStateId()
+	/*public void testGetConstituenciesByElectionTypeAndStateId()
 	{
 		List constituenciesList  = constituencyDAO.getConstituenciesByElectionTypeAndStateId(new Long(5), new Long(1));
 		
@@ -122,7 +122,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			}		
 			
 		}
-	}
+	}*/
 	
 /*
 	public void testConstituencyDetails(){
@@ -289,4 +289,14 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	System.out.println("tested---");}
 	}
 	*/
+	/*public void testGetAssConstituenciesByElectionTypeAndStateIdAndDistrictAccess()
+	{
+		List result = constituencyDAO.getAssConstituenciesByElectionTypeAndStateIdAndDistrictAccess(2L, 1L, 1L);
+		System.out.println(result.size());
+	}*/
+	
+	public void testGetAllParliamentConstituenciesInCountryByStateAccessAndCountryAccess(){
+		List result = constituencyDAO.getAllParliamentConstituenciesInCountryByStateAccessAndCountryAccess(1L, 1L, 1L);
+		System.out.println(result.size());
+	}
 }

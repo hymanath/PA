@@ -19,7 +19,7 @@ public class UserDistrictAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
 	}
 	
-	public void testGetAll(){
+	/*public void testGetAll(){
 		System.out.println(userDistrictAccessInfoDAO.getAll().size());
 	}
 	
@@ -27,4 +27,10 @@ public class UserDistrictAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 		List list = userDistrictAccessInfoDAO.findByUser(1l);
 		assertEquals(list.size() >= 0, true);
 	}
+	public void testfindByUserAndState(){
+		List list = userDistrictAccessInfoDAO.findByUserAndState(1L,9L);
+		
+		 System.out.println(list.size());
+	}*/
+	
 }
