@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
+import com.itgrids.partyanalyst.dao.IProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -90,6 +91,7 @@ import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
+import com.itgrids.partyanalyst.model.ProblemType;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
@@ -129,6 +131,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IRegionScopesDAO regionScopesDAO;
 	private ICadreDAO cadreDAO;
 	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
+	private IProblemTypeDAO problemTypeDAO;
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
@@ -184,7 +187,13 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
+	public IProblemTypeDAO getProblemTypeDAO() {
+		return problemTypeDAO;
+	}
 
+	public void setProblemTypeDAO(IProblemTypeDAO problemTypeDAO) {
+		this.problemTypeDAO = problemTypeDAO;
+	}
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
 	}
@@ -547,6 +556,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemAndProblemSource = new ProblemAndProblemSource();	
 					problemHistory = new ProblemHistory();
 					problemCompleteLocation = new ProblemCompleteLocation();
+					ProblemType problemType = new ProblemType();
 					
 					if(!problemBeanVO.getProblem().contains(" ")){
 						problem.setProblem(stringUtilService.fragmentARegularString(problemBeanVO.getProblem(), 100, " "));
@@ -559,7 +569,10 @@ public class ProblemManagementService implements IProblemManagementService {
 					}else{
 						problem.setDescription(problemBeanVO.getDescription());
 					}
-					
+					if(problemBeanVO.getProblemTypeId()!=0){
+						problemType = problemTypeDAO.get(problemBeanVO.getProblemTypeId());
+						problem.setProblemType(problemType);
+					}
 				//	problem.setProblem(problemBeanVO.getProblem());
 				//	problem.setDescription(problemBeanVO.getDescription());
 					problem.setYear(problemBeanVO.getYear());					
