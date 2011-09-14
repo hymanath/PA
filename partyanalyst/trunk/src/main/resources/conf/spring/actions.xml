@@ -761,6 +761,13 @@
 		<property name="announcementService" ref="announcementService" />	
 	</bean>
 	
+	<bean id="userAccessRegionAction" class="com.itgrids.partyanalyst.web.action.UserAccessRegionAction" singleton="false">
+		<property name="userAccessRegionService" ref="userAccessRegionService" />	
+		<property name="registrationService" ref="registrationService" />
+		<property name="staticDataService" ref="staticDataService" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp"/>	
+	</bean>
+	
 </beans>	
 	
 	
