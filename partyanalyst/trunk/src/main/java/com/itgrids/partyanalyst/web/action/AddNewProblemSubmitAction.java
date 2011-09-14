@@ -61,6 +61,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public Boolean isParliament;
 	private Long pConstituencyId;
 	private Long cadreId;
+	private Long problemTypeId;
 	
 		
 	public void setServletRequest(HttpServletRequest request) {
@@ -276,6 +277,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.problemBeanVO.setProblemImpactLevelId(problemScope);
 	}	
 	
+	public void setProblemTypeId(Long problemTypeId) {
+		this.problemBeanVO.setProblemTypeId(problemTypeId);
+	}
+
+	public Long getProblemTypeId() {
+		return problemBeanVO.getProblemTypeId();
+	}
+
 	public String getDefaultStateId() {
 		return defaultStateId;
 	}
