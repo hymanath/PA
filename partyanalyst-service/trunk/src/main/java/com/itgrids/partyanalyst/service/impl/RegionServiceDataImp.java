@@ -3,14 +3,12 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -26,11 +24,9 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
 import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
@@ -38,7 +34,6 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
@@ -1227,13 +1222,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			if(list != null && list.size() > 0)
 			{
 				problemTypesList = new ArrayList<SelectOptionVO>(0);
+				problemTypesList.add(0,new SelectOptionVO(0L,"Select Problem Type"));
 				for(Object[] params : list)
 				{
 					SelectOptionVO selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId((Long)params[0]);
-					selectOptionVO.setName(params[1].toString());
+					selectOptionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
 					problemTypesList.add(selectOptionVO);
+					
 				}
+				Collections.sort(problemTypesList);
 			}
 			return problemTypesList;
 			
