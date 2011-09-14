@@ -226,7 +226,12 @@ function hideProblemSourceRow()
 			userTypeSelectBoxEle.value = 0;
 	}
 }
-
+function clearSuccessMsg(){
+	
+	var probSuccessMsg = document.getElementById("probSuccessMsgDiv");
+	if(probSuccessMsg !=null)
+	  probSuccessMsg.innerHTML='';
+}
 </script>
 </head>
 <body onload="executeOnload()" class="bodyStyle">
@@ -259,10 +264,11 @@ function hideProblemSourceRow()
 	<div id="problemDetailsDiv" class="accessDivMain" >		
 		<div id="problemDetailsDivBody">
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'PartyAnalyst'}">
+			<div id="probSuccessMsgDiv">
 				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Problem Added Successfully...</DIV>
 				<span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
 				<font color="maroon"><c:out value="${problemBeanFromDB.problemRefNum}">
-				</c:out></font> used for further details</span>
+				</c:out></font> used for further details</span></div>
 			</c:if>
 			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'FreeUser'}">
 				<DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px;">Thanks for posting your problem.Your problem will be reviewed by our team and will be published once it gets acceptance from them</DIV><span style="color:green;font-weight:bold;margin:5px;">Problem Reference number is 
@@ -275,7 +281,7 @@ function hideProblemSourceRow()
 					<TABLE class="problemDetailsTable">
 						<tr>
 							<td width="100px;"><%=problemLabel%><font class="requiredFont"> * </font></td>
-							<td style="padding-left: 15px;"><s:textfield size="53" id="nameText" name="problem" maxlength="100"/></td>						
+							<td style="padding-left: 15px;"><s:textfield size="53" id="nameText" name="problem" onclick="clearSuccessMsg()" maxlength="100"/></td>						
 						</tr>
 						<tr>
 							<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
@@ -299,9 +305,11 @@ function hideProblemSourceRow()
 					<tr>
 						<td>Problem Scope<font class="requiredFont">*</font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="defaultScope" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="defaultScope" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange');getProblemTypes(this.options[this.selectedIndex].value)">
+							</s:select>
 						</td>
 						</tr>
+						
 					<c:if test="${isParliament == null || isParliament == false}">
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
@@ -353,7 +361,13 @@ function hideProblemSourceRow()
 						<td style="padding-left: 15px;"><s:select id="boothField_s" cssClass="selectWidth" name="booth" list="#session.boothsList_ap" listKey="id" listValue="name" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 						<td><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/></td>
 					</tr>
-					</TABLE>											
+					<tr>
+						<td>Problem Types </td>
+						<td style="padding-left: 15px;">
+							<s:select id="problemTypeId" cssClass="selectWidth" name="problemTypeId" value="problemTypeId" list="#session.problemTypesList" listKey="id" listValue="name"></s:select>
+						</td>
+						</tr>
+						</TABLE>											
 				</FIELDSET>
 				<FIELDSET>
 				<LEGEND>More Details</LEGEND>
@@ -383,7 +397,7 @@ function hideProblemSourceRow()
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					
-					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
 					</td>
 				</tr>													
