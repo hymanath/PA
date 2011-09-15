@@ -463,13 +463,13 @@ function buildCenterVotersCandidateInfoContent()
 	}else{	
 			for(var i in constituencyPageMainObj.constituencyVotersInfo)
 			{
-				var data = constituencyPageMainObj.constituencyVotersInfo[i];
-				var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
-				
 				var divChild = document.createElement('div');
-				divChild.setAttribute("id","divChild"+i);
-		
 				var str = '';
+				var data = constituencyPageMainObj.constituencyVotersInfo[i];
+				if(constituencyPageMainObj.constituencyVotersBasicInfo.length!=0)
+				{
+				var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
+				divChild.setAttribute("id","divChild"+i);
 				str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
 				if(basicData.year == "2009"){
 					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
@@ -483,7 +483,7 @@ function buildCenterVotersCandidateInfoContent()
 					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
 						str+='Assemblies Before Delimitation';
 				}
-					
+				}	
 				str+='</div>';
 				if(data.info.length!=0){
 					str+='<div id="divInteractive_Chart_'+i+'"></div>';
