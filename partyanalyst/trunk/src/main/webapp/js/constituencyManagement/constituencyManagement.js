@@ -293,7 +293,7 @@ function buildProblemsDetailsDT(results) {
 					problemSourceScope:results[i].problemSourceScope,
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
 					status:results[i].status,
-					problemSourceScope:results[i].probSource,
+					problemSource:results[i].probSource,
 					more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
 			};
 			
@@ -319,14 +319,14 @@ function buildProblemsDetailsDT(results) {
 			        					sortable : true
 			        				}, {
 			        					key : "hamlet",
-			        					label : localizationObj.HAMLET,
+			        					label : "Location",
 			        					sortable : true
 			        				}, {
 			        					key : "problemSourceScope",
 			        					label : localizationObj.source,
 			        					sortable : true
 			        				}, {
-			        					key : "problemAmdProblemSourceId",
+			        					key : "problemAndProblemSourceId",
 			        					hidden : true
 			        				}, {
 			        					key : "status",
