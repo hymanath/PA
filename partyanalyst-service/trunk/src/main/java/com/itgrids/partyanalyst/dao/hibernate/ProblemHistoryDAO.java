@@ -236,7 +236,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
-				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemImpactLevelValue "+
+				"model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue "+
 				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
 				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
 				"and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
