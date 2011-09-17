@@ -480,8 +480,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeople.setGender(influencingPeopleBeanVO.getGender());
 					influencingPeople.setPhoneNo(influencingPeopleBeanVO.getMobile());
 					influencingPeople.setEmail(influencingPeopleBeanVO.getEmail());
-					
+					if(!(influencingPeopleBeanVO.getParty().equalsIgnoreCase("0"))){
 					influencingPeople.setParty(partyDAO.get(new Long(influencingPeopleBeanVO.getParty())));
+					}
 					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
 					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
 					influencingPeople.setInfluencingPeoplePosition(influencingPeoplePositionDAO.get(new Long(influencingPeopleBeanVO.getPosition())));
