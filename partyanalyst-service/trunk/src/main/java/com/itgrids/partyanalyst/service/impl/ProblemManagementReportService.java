@@ -1334,13 +1334,16 @@ public class ProblemManagementReportService implements
 		public LocationwiseProblemStatusInfoVO getRecentProblemsWithInTheRegion(String accessType, Long accessValue, Long statusId, int limit){
 			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
 			try{
+				List newProblems = new ArrayList();
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
-				List newProblems = problemHistoryDAO.findLatestProblemsByMandals(tehsilIds, statusId);
+				if(!tehsilIds.equalsIgnoreCase("")){
+				newProblems = problemHistoryDAO.findLatestProblemsByMandals(tehsilIds, statusId);
+				}
 				if(newProblems.size() > limit)
-					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems.subList(0, limit-1)));	
+					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems.subList(0, limit-1)));
 				else
 					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems));
-			}catch(Exception ex){
+		}catch(Exception ex){
 				ex.printStackTrace();
 			}			
 			return locationwiseProblemStatusInfoVO;
