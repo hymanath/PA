@@ -515,7 +515,6 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="userGroupService" ref="userGroupService" />
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
-		<property name="ananymousUserService" ref="ananymousUserService" />	
 	</bean>
 	
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
