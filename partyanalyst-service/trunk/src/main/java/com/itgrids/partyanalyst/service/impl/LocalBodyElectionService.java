@@ -768,6 +768,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			selectOptionVO.setId(Long.parseLong(values[0].toString()));
 			selectOptionVO.setName(values[1].toString());
 			listOfWards.add(selectOptionVO);
+			Collections.sort(listOfWards);
 		}
 		constituencyVO.setListOfWards(listOfWards);
 		
