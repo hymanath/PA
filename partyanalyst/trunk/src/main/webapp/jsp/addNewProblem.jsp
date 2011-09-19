@@ -246,9 +246,16 @@ function clearSuccessMsg(){
 <TABLE border="0" cellpadding="0" cellspacing="0">
 	<TR>
 		<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
+		<c:if test="${problemBeanVO.problem == null}">
 		<TD>
 			<div class="cadreReportHeader"><span style="margin-top:2px;">Add New Problem</span></div>
 		</TD>
+		</c:if>
+		<c:if test="${problemBeanVO.problem != null}">
+		<TD>
+			<div class="cadreReportHeader"><span style="margin-top:2px;">Update Problem</span></div>
+		</TD>
+		</c:if>
 		<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>
 	</TR>
 </TABLE>
@@ -426,12 +433,12 @@ function clearSuccessMsg(){
 						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" maxlength="12" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" ><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td style="padding-left:15px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
+						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td style="padding-left:0px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" ><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
-						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
+						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
+						<td style="padding-left:0px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /><font class="requiredFont">*</font></td>
