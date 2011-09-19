@@ -193,6 +193,8 @@
 				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
 				<value>com.itgrids.partyanalyst.model.ProblemType</value>
 				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType</value>
+				<value>com.itgrids.partyanalyst.model.CallTrackingDetail</value>
+				<value>com.itgrids.partyanalyst.model.CallTrackingProblem</value>
 			</list>
 		</property>
 	</bean>
