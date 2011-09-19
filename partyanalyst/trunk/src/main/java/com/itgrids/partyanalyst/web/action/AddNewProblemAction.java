@@ -15,12 +15,11 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICallTrackingService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
-import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
-import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -54,6 +53,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private CadreManagementService cadreManagementService;
 	private List<SelectOptionVO> problemSourcesList;
 	private ProblemBeanVO problemBeanVO ;
+	private ICallTrackingService callTrackingService;
 	
 	private String requestSrc;
 	private Long stateId = 0l;
@@ -341,7 +341,15 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void setProblemSourcesList(List<SelectOptionVO> problemSourcesList) {
 		this.problemSourcesList = problemSourcesList;
 	}
+	
+	public ICallTrackingService getCallTrackingService() {
+		return callTrackingService;
+	}
 
+	public void setCallTrackingService(ICallTrackingService callTrackingService) {
+		this.callTrackingService = callTrackingService;
+	}
+	
 	public void setProblemTypes(List<SelectOptionVO> problemTypes) {
 		this.problemTypes = problemTypes;
 	}
@@ -585,6 +593,22 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		if(problemHistoryId !=null){
 		 problemBeanVO = new ProblemBeanVO();
 			problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnHistoryId(new Long(problemHistoryId));
+		}
+		String callTrackingProblemId = request.getParameter("callTrackingProblemId");
+		
+		if(callTrackingProblemId !=null){
+			problemBeanVO = callTrackingService.getCallTrackingProblemByProblemId(new Long(callTrackingProblemId));
+		problemBeanVO.setProbSource("3");
+		}
+		
+		if(request.getParameter("callTrackingName") !=null){
+		problemBeanVO = new ProblemBeanVO();
+		problemBeanVO.setProblem(request.getParameter("problemPurpose"));
+		problemBeanVO.setName(request.getParameter("callTrackingName"));
+		problemBeanVO.setMobile(request.getParameter("mobile"));
+		problemBeanVO.setVillage(request.getParameter("villageTown"));
+		problemBeanVO.setProbSource("3");
+		request.setAttribute("callTracking", request.getParameter("callTrackProb"));
 		}
 	}
 
