@@ -25,6 +25,27 @@
 <!-- JQuery files (End) -->
 <title>Call Center</title>
 <style type="text/css">
+
+ #callTrackingCurrentDiv
+        {          
+		  border: 2px solid;
+          font-size: 12px;
+          margin-left: 80px;
+          margin-right: 80px;
+          margin-top: 35px;
+        }
+ 
+.yui-dt-liner
+        {
+		  font-size: 12px; 
+        }
+      th
+        {
+		  margin-left: 30px;  
+		  font-weight: bold; 
+		  font-size: 12px; 
+		  text-align: left;
+        }
 .yui-skin-sam .yui-panel 
 		{
 			background:#FFFFFF none repeat scroll 0 0;
@@ -157,11 +178,197 @@
     text-align: center;
     width: 210px;
  }
+ #showProblemCountDiv{
+     text-align:right;
+	 align:right;
+ }
 </style>
 </head>
 
-<script type="text/javascript">
+<script type="text/javascript">	
 
+function setReferenceNo(refNo){
+  document.getElementById("referenceNo").value = refNo;
+}
+function searchCallTrackingProblem(){
+      var name = document.getElementById("name1").value;
+	  var mobile = document.getElementById("mobile").value;
+	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  var referenceNo = document.getElementById("referenceNo").value;
+	  var villageTown = document.getElementById("villageTown").value;
+	  if(problemPurpose =="All")
+	     problemPurpose = '';
+
+      var jsObj=
+	      {				
+			name: name,
+			mobile: mobile,
+			problemPurpose: problemPurpose,
+			referenceNo:referenceNo,
+			villageOrTown:villageTown,
+			task: "searchCallTrackingProblem"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+}
+function validate(){
+       var val = 0;	    	   	   	   	   	   	   	   	  	   	   
+	   document.getElementById("errorNameDiv").innerHTML='';
+	   document.getElementById("errorMobileDiv").innerHTML='';
+	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
+	   document.getElementById("errorRefDiv").innerHTML='';
+	   document.getElementById("errorVillageDiv").innerHTML='';
+       var name = document.getElementById("name1").value;
+	   var mobile = document.getElementById("mobile").value;
+	   var problemPurpose = document.getElementById("problemPurpose").value;
+	   var referenceNo = document.getElementById("referenceNo").value;
+	   var villageTown = document.getElementById("villageTown").value;
+       if(name.trim().length == 0)
+	{
+		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length == 0)
+	{
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length != 0){
+       if(isNaN(mobile) || mobile.length<10){
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+		val = 1;
+	    }
+	 }
+	if(problemPurpose.trim().length == 0){
+		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">ProblemPurpose is Required</font>';
+		 value = 1;
+	}
+	if(referenceNo.trim().length == 0)
+	{
+		 document.getElementById("errorRefDiv").innerHTML = '<font color="red">ReferenceNo is Required</font><BR/>';
+		val = 1;
+	}
+	if(villageTown.trim().length == 0)
+	{
+		document.getElementById("errorVillageDiv").innerHTML= '<font color="red">village/Town is Required</font>';
+		val = 1;
+	}
+	
+	return val;
+}
+
+function validateForAddProblem(){
+       var val = 0;	    	   	   	   	   	   	   	   	  	   	   
+	   document.getElementById("errorNameDiv").innerHTML='';
+	   document.getElementById("errorMobileDiv").innerHTML='';
+	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
+	   document.getElementById("errorRefDiv").innerHTML='';
+	   document.getElementById("errorVillageDiv").innerHTML='';
+       var name = document.getElementById("name1").value;
+	   var mobile = document.getElementById("mobile").value;
+	   var problemPurpose = document.getElementById("problemPurpose").value;
+	   var villageTown = document.getElementById("villageTown").value;
+       if(name.trim().length == 0)
+	{
+		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length == 0)
+	{
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length != 0){
+       if(isNaN(mobile) || mobile.length<10){
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+		val = 1;
+	    }
+	 }
+	if(problemPurpose.trim().length == 0){
+		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">ProblemPurpose is Required</font>';
+		 value = 1;
+	}
+	if(villageTown.trim().length == 0)
+	{
+		document.getElementById("errorVillageDiv").innerHTML= '<font color="red">village/Town is Required</font>';
+		val = 1;
+	}
+	
+	return val;
+}
+function addProblem(problemId){
+ var browser = 
+window.open("addNewProblemAction.action?callTrackingProblemId="+problemId,"addCallTrackingProblem","scrollbars=yes,height=600,width=600,left=200,top=200");		 
+		 browser.focus();
+}
+function addCallTrackingProb(){
+  if(validateForAddProblem()!=1){
+      var name = document.getElementById("name1").value;
+	  var mobile = document.getElementById("mobile").value;
+	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  var villageTown = document.getElementById("villageTown").value;
+	  var url = 'addNewProblemAction.action?callTrackingName='+name ;
+	     url = url+'&mobile='+mobile+'&problemPurpose='+problemPurpose+'&villageTown='+villageTown+'&callTrackProb=callTracking';
+      var browser = window.open(url,"addCallTrackingProblem","scrollbars=yes,height=600,width=600,left=200,top=200");		 
+		 browser.focus();
+	}
+}
+
+ function editProblem(problemId){
+   var jsObj=
+	      { 
+		    problemId:problemId,
+			task: "deleteCallTrackingProblem"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+   
+  }
+ function getCurrentDayCallTrackingProblem(){
+     var jsObj=
+	      {
+			task: "getCurrentDayCallTrackingProblem"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+	}
+function callForEveryMinute(){
+      getCurrentDayProblemCount();
+     setTimeout('callForEveryMinute()',60000);
+}
+ function getCurrentDayProblemCount(){
+     var jsObj=
+	      {
+			task: "getCurrentDayProblemCount"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+	}
+function saveCallTrackingProblem(){
+        if(validate()!=1){
+      var name = document.getElementById("name1").value;
+	  var mobile = document.getElementById("mobile").value;
+	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  var referenceNo = document.getElementById("referenceNo").value;
+	  var villageTown = document.getElementById("villageTown").value;
+      var jsObj=
+	      {				
+			name: name,
+			mobile: mobile,
+			problemPurpose: problemPurpose,
+			referenceNo:referenceNo,
+			villageOrTown:villageTown,
+			task: "saveCallTrackingProblem"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+	  }
+    }
 function quickSearch(){
  
   var str='';
@@ -318,11 +525,30 @@ var myResults;
 var callback = {			
     success : function( o ) {
 		try {												
-			myResults =YAHOO.lang.JSON.parse(o.responseText);	if(task ="problemSearch"){
+			myResults =YAHOO.lang.JSON.parse(o.responseText);	if(jsObj.task =="problemSearch"){
 				
 				getProblemsDetailsDatatable(myResults);
 			}
-							
+			else if(jsObj.task =="saveCallTrackingProblem"){
+				getCurrentDayProblemCount();
+			    getCurrentDayCallTrackingProblem();
+				
+			}
+			else if(jsObj.task =="getCurrentDayCallTrackingProblem"){
+			     showCurrentDayProblems(myResults);
+			}
+			else if(jsObj.task =="getCurrentDayProblemCount"){
+			      showTotalCount(myResults);
+			}
+			else if(jsObj.task =="deleteCallTrackingProblem"){
+			      getCurrentDayProblemCount();
+			      getCurrentDayCallTrackingProblem();
+			 }
+			 else if(jsObj.task =="searchCallTrackingProblem"){
+			      showSearchDetails(myResults);
+				  showSearchCount(myResults);
+			 }
+			 
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
@@ -335,6 +561,110 @@ var callback = {
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function showTotalCount(result){
+var resultsCountEl = document.getElementById("showProblemCountDiv");
+if(result.lenght!=0){
+resultsCountEl.innerHTML = '<div id="showCount" style=" color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span>'+result[0].count+'</span> Problems Added Today</div>';
+  }
+ else{
+  resultsCountEl.innerHTML = '<div id="showCount" style="color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span> 0 </span> Problems Added Today</div>';
+  }
+}  
+function showSearchCount(result){
+ var resultsCountEl = document.getElementById("callTrackingTotalCountDiv");
+if(result.lenght!=0){
+resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; text-align: center;"><span>'+result[0].count+'</span> Records Found With This Search Criteria</div>';
+  }
+else{
+resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; text-align: center;"><span> 0 </span> Records Found With This Search Criteria</div>';
+  }  
+}
+
+function showSearchDetails(result){
+
+  document.getElementById("callTrackingTotalCountDiv").innerHTML='';
+  var CallTrackingResultColumnDefs = [ 		    	             
+		    	            
+							{key:"name", label: "Name", sortable: true},
+		    	           	{key:"mobile", label: "Mobile", sortable: true},
+							{key:"referenceNo", label: "ReferenceNo", sortable: true},
+							{key:"problemPurpose", label: "ProblemPurpose", sortable: true},
+		    				{key:"problemAddedDate", label: "ProblemAddedDate",sortable:true},
+							{key:"villageOrTown", label: "village/Town", sortable: true}
+							
+		    	        ]; 
+	var CallTrackingResultDataSource = new YAHOO.util.DataSource(result); 
+	
+
+
+    var myConfigs = {    
+				
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 9,		        
+						})
+						
+					};	
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "problem","name","mobile","problemAddedDate","villageOrTown"]
+					};
+
+		var CallTrackingResultDataTable = new YAHOO.widget.DataTable("callTrackingCurrentDiv", CallTrackingResultColumnDefs,myDataSource, myConfigs);
+
+		
+ 
+}
+function showCurrentDayProblems(result){
+ YAHOO.widget.DataTable.add = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("problemId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='addProblem("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+		
+  };
+  YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("problemId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='editProblem("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+		
+  };
+
+  
+  var CallTrackingResultColumnDefs = [ 		    	             
+		    	            {key:"name", label: "Name", sortable: true},
+		    	           	{key:"mobile", label: "Mobile", sortable: true},
+							{key:"referenceNo", label: "ReferenceNo", sortable: true},
+							{key:"problemPurpose", label: "ProblemPurpose", sortable: true},
+		    				{key:"problemAddedDate", label: "ProblemAddedDate",sortable:true},
+							{key:"villageOrTown", label: "village/Town", sortable: true},
+							{key:"Edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
+							{key:"AddProblem", label: "AddProblem",formatter:YAHOO.widget.DataTable.add}
+							
+		    	        ]; 
+	var CallTrackingResultDataSource = new YAHOO.util.DataSource(result); 
+	
+
+
+    var myConfigs = {    
+				
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 9,		        
+						})
+						
+					};	
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "problem","name","mobile","problemAddedDate","villageOrTown"]
+					};
+
+		var CallTrackingResultDataTable = new YAHOO.widget.DataTable("callTrackingCurrentDiv", CallTrackingResultColumnDefs,myDataSource, myConfigs);
+	
+	}
+
 
 function getProblemsDetailsDatatable(result){
 
@@ -428,7 +758,55 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
 </script>
 <body>
-<div id="headerDiv">Call Center</div>
+  <table>
+    <tr>
+      <td>
+         <div id="headerDiv">Call Center</div>
+      </td>
+      <td>
+	     <div id="showProblemCountDiv"></div>
+      </td>
+    </tr>
+  </table>
+
+
+<div id="callTrackingMainDiv" style="padding-top:20px;">
+   <table>
+     <tr>
+      <th>Name</th>
+	  <th>MobileNo</th>
+	  <th>ProblemPurpose</th>	  
+	  <th>Reference No</th>
+	  <th>Village/Town</th>
+     </tr>
+	 <tr>
+	   <td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name1"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile"/></td>
+	   <td>
+	       <select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
+	         <option>Appointment</option>
+			 <option>Others</option>
+			 <option>All</option>
+		   </select>
+	   </td>	   
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="referenceNo" /></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="villageTown"/></td>
+	   <td><input id="resultBtnId" type="button" value="Add" onclick="saveCallTrackingProblem();"/></td>
+	   <td><input id="resultBtnId" type="button" value="Search" onclick="searchCallTrackingProblem();"/></td>
+	   <td><input id="resultBtnId" type="button" value="AddProblem" onclick="addCallTrackingProb();"/></td>
+     </tr>
+	 <tr>
+	   <td><div id="errorNameDiv"></div></td>
+	   <td><div id="errorMobileDiv"></div></td>
+	   <td><div id="errorProblemPurposeDiv"></div></td>
+	   <td><div id="errorRefDiv"></div></td>
+	   <td><div id="errorVillageDiv"></div></td>
+	 </tr>
+   </table>
+</div>
+<div id="callTrackingTotalCountDiv" style="padding-top:20px;"></div>
+<div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt">
+</div>
 <div id="mainDiv">
 <table>
 <tr><td>
@@ -479,6 +857,8 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
 <script type="text/javascript">
 quickSearch();
+callForEveryMinute();
+getCurrentDayCallTrackingProblem();
 </script>
 <script>
 $(function() {
