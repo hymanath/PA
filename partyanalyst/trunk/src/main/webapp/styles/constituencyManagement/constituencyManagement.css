@@ -416,12 +416,13 @@ fieldset {
 	padding:5px;
 	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
 	color:#4B74C6;
-	font-weight:bold;	
+	font-weight:bold;
+	font-size: 10px;
 }
 
 .regionsHead_center_label
 {
-	padding-left:5px;
+	padding-left:1px;
 	padding-top:6px;	
 	display:block;	
 }
@@ -628,10 +629,10 @@ fieldset {
 
 #influencePeopleRegionWisOverView_Outer,#influencePeopleScopeWiseOverView_Outer,#localGroupsRegionWisOverView_Outer
 {
-	width:250px;
+	width: 281px;
 }
 
 #influencePeopleDetail_Outer,#localGroupsDetail_Outer
 {
-	width:615px;
+	 width: 587px;
 }
