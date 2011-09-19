@@ -61,6 +61,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public Boolean isParliament;
 	private Long pConstituencyId;
 	private Long cadreId;
+	private String callTracking;
 	private Long problemTypeId;
 	
 		
@@ -381,7 +382,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	{
 		return pConstituencyId; 
 	}
+	
+	public String getCallTracking() {
+		return callTracking;
+	}
 
+	public void setCallTracking(String callTracking) {
+		this.callTracking = callTracking;
+	}
+	
 	public String execute() throws Exception
 	{
 		session = request.getSession();
@@ -429,7 +438,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			 
 		 } else 
 			 isSuccessfullyInserted = false;
-		 
+		 request.setAttribute("callTracking", getCallTracking());
 		return SUCCESS;
 	}
 	
