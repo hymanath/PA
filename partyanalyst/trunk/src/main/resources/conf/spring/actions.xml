@@ -537,7 +537,8 @@
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="staticDataService" ref="staticDataService" />
-		<property name="cadreManagementService" ref="cadreManagementService" />		
+		<property name="cadreManagementService" ref="cadreManagementService" />	
+		<property name="callTrackingService" ref="callTrackingService" />	
 	</bean>
 	
 	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
@@ -755,6 +756,7 @@
 	<bean id="callCenterAction" class="com.itgrids.partyanalyst.web.action.CallCenterAction" singleton="false">
 		<property name="callCenterService" ref="callCenterService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="callTrackingService" ref="callTrackingService" />
 	</bean>
 	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">

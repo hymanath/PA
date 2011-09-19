@@ -2554,6 +2554,13 @@
 			<result type="json" name="success">
 				<param name="root">problemBeanVO</param>				
 			</result>	
-			</action>	 		       	
+		</action>
+		
+		<action name="saveCallTrackingProblemAction" class="callCenterAction" method="saveCallTrackingProblem">
+			<result type="json" name="success">
+				<param name="root">callTrackingVO</param>				
+			</result>	
+		</action>
+				 		       	
 	</package>
 </struts>      

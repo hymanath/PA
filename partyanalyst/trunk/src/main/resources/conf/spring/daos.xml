@@ -608,5 +608,12 @@
 	<bean id="regionScopesProblemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesProblemTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="callTrackingDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingDetailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="callTrackingProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingProblemDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		

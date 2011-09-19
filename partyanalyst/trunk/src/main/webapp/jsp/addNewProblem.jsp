@@ -85,6 +85,13 @@ var scope = '${scope}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
 
+function populateReferenceNo(){
+
+  if('${callTracking}' == 'callTracking'){
+    
+	window.opener.setReferenceNo('${problemBeanFromDB.problemRefNum}');
+	}
+}
 function setSelectedCadre(cadreId,cadreName)
 {
 	var cadreInputIdEle = document.getElementById("cadreInputId");
@@ -419,12 +426,12 @@ function clearSuccessMsg(){
 						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" maxlength="12" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td style="padding-left:0px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
+						<td width="100px;" ><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td style="padding-left:15px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
-						<td style="padding-left:0px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
+						<td width="100px;" ><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
+						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /><font class="requiredFont">*</font></td>
@@ -443,13 +450,13 @@ function clearSuccessMsg(){
 		<input type="hidden" name="defaultScopeId" value="${defaultScope}">
 		<input type="hidden" name="isParliament" value="${isParliament}">	
 		<input type="hidden" id="cadreInputId" name="cadreId">
-		
+		<input type="hidden" name="callTracking" value="${callTracking}">
     
 		
 			<table>
 				<tr>
 					<td><div style="margin-left:225px;"><s:submit name="Save" value="Save" cssClass="button"></s:submit></div></td>
-					<td><input type="button" value="Exit" class="button" onclick="refreshParentWindow()"/></td>
+					<td><input type="button" value="Exit" class="button" onclick="populateReferenceNo();refreshParentWindow();"/></td>
 				</tr>
 			</table>	
 			</DIV>

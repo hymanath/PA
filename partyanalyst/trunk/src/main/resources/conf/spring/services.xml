@@ -793,6 +793,7 @@
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	
 	<bean id="dataApprovalService" class="com.itgrids.partyanalyst.service.impl.DataApprovalService" >
     	<property name="transactionTemplate" ref="transactionTemplate" />
     	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
@@ -890,6 +891,12 @@
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
+	</bean>
+	
+	<bean name="callTrackingService" class="com.itgrids.partyanalyst.service.impl.CallTrackingService">
+		<property name="callTrackingDetailDAO" ref="callTrackingDetailDAO" />
+		<property name="callTrackingProblemDAO" ref="callTrackingProblemDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 </beans>		
