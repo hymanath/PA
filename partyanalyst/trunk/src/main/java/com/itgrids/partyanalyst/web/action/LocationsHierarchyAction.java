@@ -237,8 +237,11 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		{
 			//to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
 			Long locationId = jObj.getLong("id");
-			List<SelectOptionVO> hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
-			hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
+			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
+			if(locationId !=0){
+			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			}
+			 hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(hamletsOrWards);
 			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
