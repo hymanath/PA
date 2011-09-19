@@ -16,10 +16,12 @@ import org.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
+import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICallCenterService;
+import com.itgrids.partyanalyst.service.ICallTrackingService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -39,6 +41,8 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 	private List<ProblemBeanVO> problemBeanVO;
 	private CallCenterVO callCenterVO ;
 	private EntitlementsHelper entitlementsHelper;
+	private ICallTrackingService callTrackingService;
+	private List<CallTrackingVO> callTrackingVO;
 	
 	
 	public EntitlementsHelper getEntitlementsHelper() {
@@ -104,6 +108,23 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 	public HttpServletResponse getResponse() {
 		return response;
 	}
+	
+	public ICallTrackingService getCallTrackingService() {
+		return callTrackingService;
+	}
+	public void setCallTrackingService(ICallTrackingService callTrackingService) {
+		this.callTrackingService = callTrackingService;
+	}
+	
+	public List<CallTrackingVO> getCallTrackingVO() {
+		return callTrackingVO;
+	}
+
+
+	public void setCallTrackingVO(List<CallTrackingVO> callTrackingVO) {
+		this.callTrackingVO = callTrackingVO;
+	}
+	
 
 
 	public String execute(){
@@ -168,5 +189,54 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 		}
 		return SUCCESS;
 		
+	}
+	public String saveCallTrackingProblem(){
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("saveCallTrackingProblem")){
+				CallTrackingVO callTracVO = new CallTrackingVO();
+				callTracVO.setProblemPurpose(jObj.getString("problemPurpose"));
+				callTracVO.setReferenceNo(jObj.getString("referenceNo"));
+				callTracVO.setName(jObj.getString("name"));
+				callTracVO.setMobile(jObj.getString("mobile"));
+				callTracVO.setVillageOrTown(jObj.getString("villageOrTown"));
+				callTrackingVO = callTrackingService.saveCallTrackingProblem(callTracVO);
+			}
+			
+			else if(jObj.getString("task").equalsIgnoreCase("getCurrentDayCallTrackingProblem")){
+				callTrackingVO = callTrackingService.getCurrentDayCallTrackingProblem();
+			}
+			
+            else if(jObj.getString("task").equalsIgnoreCase("getCurrentDayProblemCount")){
+            	callTrackingVO = callTrackingService.getCurrentDayProblemCount();
+			}
+			
+            else if(jObj.getString("task").equalsIgnoreCase("updateCallTrackingProblem")){
+            	
+            	CallTrackingVO callTracVO = new CallTrackingVO();
+            	callTracVO.setProblemId(jObj.getLong("problemId"));
+				callTracVO.setProblemPurpose(jObj.getString("problemPurpose"));
+				callTracVO.setReferenceNo(jObj.getString("referenceNo"));
+				callTracVO.setName(jObj.getString("name"));
+				callTracVO.setMobile(jObj.getString("mobile"));
+				callTracVO.setVillageOrTown(jObj.getString("villageOrTown"));
+            	callTrackingVO = callTrackingService.updateCallTrackingProblem(callTracVO);
+			}
+          
+            else if(jObj.getString("task").equalsIgnoreCase("searchCallTrackingProblem")){
+            	CallTrackingVO callTracVO = new CallTrackingVO();
+				callTracVO.setProblemPurpose(jObj.getString("problemPurpose"));
+				callTracVO.setReferenceNo(jObj.getString("referenceNo"));
+				callTracVO.setName(jObj.getString("name"));
+				callTracVO.setMobile(jObj.getString("mobile"));
+				callTracVO.setVillageOrTown(jObj.getString("villageOrTown"));
+            	callTrackingVO = callTrackingService.searchCallTrackingProblem(callTracVO);
+			}
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return SUCCESS;
 	}
 }
