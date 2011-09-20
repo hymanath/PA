@@ -101,6 +101,17 @@
 
 	
 </script>
+<STYLE type="text/css" >
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+    background-image:url("images/icons/homePage_new/accordianHeader_selected.jpg");
+   }
+   #connectPeople_messages_center .yui-navset .yui-nav .selected a {
+    background: url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 #D8D8D8;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+</STYLE>
 </head>
 <body>
 
