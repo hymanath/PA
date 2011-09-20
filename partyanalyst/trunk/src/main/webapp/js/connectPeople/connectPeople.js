@@ -72,8 +72,9 @@ function initializeTabView()
 	var myTabs = new YAHOO.widget.TabView();
 
 	myTabs.addTab( new YAHOO.widget.Tab({
+
 		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main" style="text-align:left;"></div>',
+		content: '<div id="postedDiv_main" style="text-align:left; "></div>',
 		active: true
 	}));
 
@@ -1014,9 +1015,9 @@ function showPostedProblems(jsObj,results)
 	str += '<table width="100%">';
 	str += '<tr>';
 	if(results.totalPostedProblemsCount == 0)
-		str += '<td width="180px">Total posted problems - '+results.totalPostedProblemsCount+'</td>';
+		str += '<td width="180px">Total Posted Problems - '+results.totalPostedProblemsCount+'</td>';
 	else
-		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
+		str += '<td width="180px">Total Posted Problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
 
 	if(results.postedProblemsCountByLoggedInUsers == 0)
 		str += '<td width="90px">By User - '+results.postedProblemsCountByLoggedInUsers+'</td>';
@@ -1369,7 +1370,7 @@ function showPostedReasons(jsObj,results)
 	str += '<tr>';
 	
 	if(userType != "PartyAnalyst"){
-        str += '<td align="left" width="194px"> Total Political reasons posted - </td>';
+        str += '<td align="left" width="194px"> Total Political Reasons Posted - </td>';
 		  
 		  if(totalPostedReasonsCount ==0)
 			  str+='<td>'+totalPostedReasonsCount+'</td>';
@@ -1391,7 +1392,7 @@ function showPostedReasons(jsObj,results)
 		  else
 		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
 	}else{
-		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
+		str += '<td align="left" width="211px"> Total Political Reasons Posted - '+totalPostedReasonsCount+'</td>';
 		str += '<td align="left" width="90px"> By User - '+postedReasonsByLoggedInUser+'</td>';
 		str += '<td align="left" width="90px"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
 	}
