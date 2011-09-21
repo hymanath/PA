@@ -606,10 +606,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		
 		if(request.getParameter("callTrackingName") !=null){
 		problemBeanVO = new ProblemBeanVO();
-		problemBeanVO.setProblem(request.getParameter("problemPurpose"));
 		problemBeanVO.setName(request.getParameter("callTrackingName"));
 		problemBeanVO.setMobile(request.getParameter("mobile"));
-		problemBeanVO.setVillage(request.getParameter("villageTown"));
 		problemBeanVO.setProbSource("3");
 		request.setAttribute("callTracking", request.getParameter("callTrackProb"));
 		}
