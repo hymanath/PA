@@ -210,7 +210,9 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
             else if(jObj.getString("task").equalsIgnoreCase("getCurrentDayProblemCount")){
             	callTrackingVO = callTrackingService.getCurrentDayProblemCount();
 			}
-			
+            else if(jObj.getString("task").equalsIgnoreCase("getCallTrackingProblemByProblemId")){
+            	callTrackingVO = callTrackingService.getCallTrackingProblemProblemId(jObj.getLong("ProblemId"));
+            }
             else if(jObj.getString("task").equalsIgnoreCase("updateCallTrackingProblem")){
             	
             	CallTrackingVO callTracVO = new CallTrackingVO();
@@ -232,6 +234,10 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 				callTracVO.setVillageOrTown(jObj.getString("villageOrTown"));
             	callTrackingVO = callTrackingService.searchCallTrackingProblem(callTracVO);
 			}
+			
+            else if(jObj.getString("task").equalsIgnoreCase("drawCallTrackingProblem")){
+            	callTrackingVO = callTrackingService.getProblemCountBetweenDate(jObj.getString("fromDate"),jObj.getString("toDate"));
+            }
 			
 		} catch (Exception e) {
 			
