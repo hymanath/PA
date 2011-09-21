@@ -26,6 +26,7 @@
 <!-- JQuery files (End) -->
 <title>Call Center</title>
 <style type="text/css">
+
 .ui-widget-header {
     background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
     border: 1px solid #AAAAAA;
@@ -175,7 +176,13 @@ td.tdStyle{
 	 font-weight: bold; 
 	 font-size: 13px;
  }
- 
+ .ui-widget-header .ui-icon {
+   background-image: url("images/ui-icons_222222_256x240.png");
+}
+
+.ui-widget-content .ui-icon {
+    background-image: url("images/ui-icons_222222_256x240.png");
+}
 </style>
 </head>
 
@@ -184,7 +191,7 @@ function showAddedResult(result){
  var obj = document.getElementById("showCallAddedResult");
     
     if(result[0].status ==1){
-       obj.innerHTML='<font color="green">Call Added Successfully</font>';
+       obj.innerHTML='<font color="green">CallDetails Added Successfully</font>';
 	  setTimeout('hideMessage()',15000);
 	}
 }
@@ -226,6 +233,7 @@ function showCallTrackingEditWindow(result){
 	str +=   '<td>';
 	str +=      '<select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
     str +=        '<option>All</option>';
+	str +=        '<option>Problem Reporting</option>';
 	str += 		  '<option>Problem Status Enquiry</option>';
 	str += 		  '<option>For Information</option>';
 	str += 		  '<option>Appointment Fixing</option>';
@@ -233,23 +241,55 @@ function showCallTrackingEditWindow(result){
 	str += 		  '<option>Others</option>';
 	str += 	    '</select>';
 	str +=    '</td>';	   
-	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="referenceNo1" /></td>';
+	str +=    '<td><input type="text" size="15" class="textFieldStyle" readonly="readonly" style="height:23px;" id="referenceNo1" /></td>';
 	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="villageTown1"/></td>';
 	str +=    '<td><input id="resultBtnId" type="button" value="Update" onclick="updateCallTrackingProblem();"/></td>';
 	str +=    '<td><input type="hidden"  id="problemId1" /></td>';
 	str +=  '</tr>';
 	str +=  '<tr>';
-	str +=    '<td><div id="errorNameDiv"></div></td>';
-	str +=    '<td><div id="errorMobileDiv"></div></td>';
-	str +=    '<td><div id="errorProblemPurposeDiv"></div></td>';
-	str +=    '<td><div id="errorRefDiv"></div></td>';
-	str +=    '<td><div id="errorVillageDiv"></div></td>';
+	str +=    '<td><div id="errorNameDiv1"></div></td>';
+	str +=    '<td><div id="errorMobileDiv1"></div></td>';
+	str +=    '<td><div id="errorProblemPurposeDiv1"></div></td>';
+	str +=    '<td><div id="errorRefDiv1"></div></td>';
+	str +=    '<td><div id="errorVillageDiv1"></div></td>';
 	str +=  '</tr>';
     str += '</table>';
   resultDiv.innerHTML = str;
 populateDataToEditCallTracking(result);
   
   }
+ function validateForUpdate(){
+     var val = 0;	    	   	   	   	   	   	   	   	  	   	   
+	   document.getElementById("errorNameDiv1").innerHTML='';
+	   document.getElementById("errorMobileDiv1").innerHTML='';
+	   document.getElementById("errorVillageDiv1").innerHTML='';
+       var name = document.getElementById("name2").value;
+	   var mobile = document.getElementById("mobile1").value;
+	   var villageTown = document.getElementById("villageTown1").value;
+       if(name.trim().length == 0)
+	{
+		document.getElementById("errorNameDiv1").innerHTML ='<font color="red">Name is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length == 0)
+	{
+		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">MobileNo is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length != 0){
+       if(isNaN(mobile) || mobile.length<10){
+		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+		val = 1;
+	    }
+	 }
+	if(villageTown.trim().length == 0)
+	{
+		document.getElementById("errorVillageDiv1").innerHTML= '<font color="red">village/Town is Required</font>';
+		val = 1;
+	}
+	
+	return val;
+ }
  function  populateDataToEditCallTracking(result){
        document.getElementById("name2").value = result[0].name;
        document.getElementById("mobile1").value = result[0].mobile;
@@ -259,13 +299,14 @@ populateDataToEditCallTracking(result);
 	   document.getElementById("problemId1").value = result[0].problemId;
  }
 function updateCallTrackingProblem(){
-    var name = document.getElementById("name2").value;
+       if(validateForUpdate()!=1){
+      var name = document.getElementById("name2").value;
 	  var mobile = document.getElementById("mobile1").value;
 	  var problemPurpose = document.getElementById("problemPurpose1").value;
 	  var referenceNo = document.getElementById("referenceNo1").value;
 	  var villageTown = document.getElementById("villageTown1").value;
 	  var problemId = document.getElementById("problemId1").value;
-     var jsObj=
+      var jsObj=
 	      {	
 		    problemId:problemId,
 			name: name,
@@ -278,11 +319,17 @@ function updateCallTrackingProblem(){
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "saveCallTrackingProblemAction.action?"+rparam;						
       callAjax(rparam,jsObj,url);
+	 }
  }
 function setReferenceNo(refNo){
   document.getElementById("referenceNo").value = refNo;
 }
 function searchCallTrackingProblem(){
+       document.getElementById("errorNameDiv").innerHTML='';
+	   document.getElementById("errorMobileDiv").innerHTML='';
+	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
+	   document.getElementById("errorRefDiv").innerHTML='';
+	   document.getElementById("errorVillageDiv").innerHTML='';
       var name = document.getElementById("name1").value;
 	  var mobile = document.getElementById("mobile").value;
 	  var problemPurpose = document.getElementById("problemPurpose").value;
@@ -303,6 +350,22 @@ function searchCallTrackingProblem(){
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "saveCallTrackingProblemAction.action?"+rparam;						
       callAjax(rparam,jsObj,url);
+}
+function validatePhoneNo(){
+  document.getElementById("errorMobileDiv").innerHTML='';
+  var mobile = document.getElementById("mobile").value;
+  if(mobile.trim().length == 0)
+	{
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
+		val = 1;
+	}
+	if(mobile.trim().length != 0){
+       if(isNaN(mobile) || mobile.length<10){
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+		val = 1;
+	    }
+	 }
+  
 }
 function validate(){
        var val = 0;	    	   	   	   	   	   	   	   	  	   	   
@@ -527,8 +590,6 @@ function validateEmail(id){
 		}
 }
 function numbersonly(id){
-	
-
 	var num = document.getElementById(id).value;
 	if(num !=''&& num!="Mobile Number"){
 	 if(isNaN(num) || num.length<10){
@@ -890,10 +951,11 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
      </tr>
 	 <tr>
 	   <td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name1"/></td>
-	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile"/></td>
+	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
 	   <td>
 	       <select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
 	         <option>All</option>
+			 <option>Problem Reporting</option>
 			 <option>Problem Status Enquiry</option>
 			 <option>For Information</option>
 			 <option>Appointment Fixing</option>
