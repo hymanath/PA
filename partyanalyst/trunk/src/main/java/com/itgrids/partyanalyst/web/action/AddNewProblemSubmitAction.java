@@ -249,7 +249,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getEmail() {
 		return email;
 	}
-	@EmailValidator(type = ValidatorType.FIELD , message = "Please Enter a valid Email in Complained Person Details.")
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -463,8 +462,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 				if(getAddress() == null || getAddress().trim().length() == 0)
 					addFieldError("addressInput","Please Enter Address.");
 				
-				if(getEmail() == null||getEmail().trim().length() == 0)
-					addFieldError("emailInput","Please Enter Email in Complained Person Details.");
+				/*if(getEmail() == null||getEmail().trim().length() == 0)
+					addFieldError("emailInput","Please Enter Email in Complained Person Details.");*/
 			}
 			
 			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
