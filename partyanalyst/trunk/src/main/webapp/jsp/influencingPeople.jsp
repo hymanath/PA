@@ -430,6 +430,21 @@ function sessionClean(module,accessType,windowTask)
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 
+function refreshParentWindow(){
+window.close();
+
+}
+function refreshParent() {
+  window.opener.location.href = window.opener.location.href;
+
+  if (window.opener.progressWindow)
+		
+ {
+    window.opener.progressWindow.close()
+  }
+  window.close();
+}
+
 </script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
@@ -547,11 +562,11 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
-		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
+		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select></td>
 	</tr>	
 	<tr>
  		<td class="tdstyle" width="100px"><s:label for="wardOrHamlet" id="wardOrHamletLabel"  value="%{getText('wardOrHamlet')}" /><font class="required"> * </font></td>
-		<td><s:select id="villageField_add" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
+		<td><s:select id="villageField_add" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField_add');"></s:select></td>
 		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="%{getText('pincode')}" /></td>
 		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="6"/></td>
 	</tr>
@@ -634,7 +649,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<tr id="row4" style="display:none;">
 		<td width="120px" class="tdstyle"><%=MANDAL%><font class="required"> * </font></td>
 		<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
@@ -661,10 +676,11 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 
 <div id="saveDiv" align="center">
 	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+	<input type="button" value="Exit" class="button" onClick="refreshParent()"/>
 </div>
-<%--<div id="exitDiv" align="center">
+<!--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
-</div>  ---%>
+</div>  -->
 <div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
 </s:form>
 
