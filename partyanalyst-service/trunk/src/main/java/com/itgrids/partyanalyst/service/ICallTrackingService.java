@@ -15,8 +15,12 @@ public interface ICallTrackingService {
 	
 	public ProblemBeanVO getCallTrackingProblemByProblemId(Long problemId);
 	
+	public List<CallTrackingVO> getCallTrackingProblemProblemId(Long problemId);
+	
 	public List<CallTrackingVO> searchCallTrackingProblem(final CallTrackingVO callTrackingVO);
 	
 	public List<CallTrackingVO> updateCallTrackingProblem(final CallTrackingVO callTrackingVO);
+	
+	public List<CallTrackingVO> getProblemCountBetweenDate(String fromDte,String toDte);
 
 }

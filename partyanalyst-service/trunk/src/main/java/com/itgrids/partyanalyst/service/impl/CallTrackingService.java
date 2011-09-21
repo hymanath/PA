@@ -182,13 +182,28 @@ public class CallTrackingService implements ICallTrackingService {
 		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 		    
 		problemBeanVO.setProblem(result[1] != null ?result[1].toString(): "");
-		problemBeanVO.setName(result[1] != null ?result[3].toString(): "");
-		problemBeanVO.setMobile(result[1] != null ?result[4].toString(): "");
-		problemBeanVO.setVillage(result[1] != null ?result[6].toString(): "");
+		problemBeanVO.setName(result[3] != null ?result[3].toString(): "");
+		problemBeanVO.setMobile(result[4] != null ?result[4].toString(): "");
+		problemBeanVO.setVillage(result[6] != null ?result[6].toString(): "");
 		
 		return problemBeanVO;
 	}
- 
+   
+	public List<CallTrackingVO> getCallTrackingProblemProblemId(Long problemId){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		List<CallTrackingVO> callTrackVO = new ArrayList<CallTrackingVO>();
+		Object[] result = callTrackingProblemDAO.getProblemDetailbyProblemId(problemId).get(0);
+		CallTrackingVO callTrackingVO = new CallTrackingVO();
+		callTrackingVO.setProblemId((Long)result[0]);
+		callTrackingVO.setProblemPurpose(result[1] != null ? result[1].toString() : "");
+		callTrackingVO.setReferenceNo(result[2] != null ? result[2].toString() : "");
+		callTrackingVO.setName(result[3] != null ? result[3].toString() : "");
+		callTrackingVO.setMobile(result[4] != null ? result[4].toString() : "");
+		callTrackingVO.setProblemAddedDate(result[5] != null ?(sdf.format((Date)result[5])):"");
+		callTrackingVO.setVillageOrTown(result[6] != null ? result[6].toString() : "");
+		callTrackVO.add(callTrackingVO);
+		return callTrackVO;
+	}
 
    public List<CallTrackingVO> searchCallTrackingProblem(final CallTrackingVO callTrackVO){
 	   
@@ -220,4 +235,63 @@ public class CallTrackingService implements ICallTrackingService {
 		}
 	   return callTracVo;
    }
+   public List<CallTrackingVO> getProblemCountBetweenDate(String fromDte,String toDte){
+	   List<CallTrackingVO> callVo = new ArrayList<CallTrackingVO>();
+	   String DATE_FORMAT = "dd/MM/yyyy";
+	   Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		try{
+		 
+		  fromDate = (Date)sdf.parse(fromDte);
+		  toDate = (Date)sdf.parse(toDte);
+		}catch(Exception e){}
+         Long totalCount = callTrackingProblemDAO.getProblemCount(fromDate,toDate).get(0);
+         List<String> problemTypes = callTrackingProblemDAO.getProblemTypes();
+         List<CallTrackingVO> record = new ArrayList<CallTrackingVO>();
+      for(String result: problemTypes)
+         {  CallTrackingVO purposeMain = new CallTrackingVO();
+               
+             purposeMain.setProblemPurpose(result);
+        	 List<Object[]> detail  = callTrackingProblemDAO.getProblemByProblemPurpose(result,fromDate,toDate);
+        	 List<Object[]> det	= callTrackingProblemDAO.getProblemCountDateByProblem(result,fromDate,toDate);
+        	 purposeMain.setCount((long)detail.size());
+        	 List<CallTrackingVO> callPurposeRec = new ArrayList<CallTrackingVO>();
+        	 CallTrackingVO callTrackingVO = null;
+ 
+        	 for(Object[] prob: det){
+        		 callTrackingVO = new CallTrackingVO();
+        		 callTrackingVO.setCount((Long)prob[0]);
+        		 callTrackingVO.setProblemPurpose(prob[2] != null ? prob[2].toString() : "");
+        		 callTrackingVO.setProblemAddedDate(prob[1] != null ?(sdf.format((Date)prob[1])):"");
+        		 callPurposeRec.add(callTrackingVO);
+        	 }
+        	 purposeMain.setCallTrackingVO(callPurposeRec);
+        	 purposeMain.setTotalCount(totalCount);
+        	 callVo.add(purposeMain);
+         }
+    	
+	   return callVo;
+   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
