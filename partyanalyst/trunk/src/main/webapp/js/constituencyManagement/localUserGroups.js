@@ -60,7 +60,7 @@ function createCoulmnChartForLocalUserGroups(data,divId)
 	}
 
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
-		chart.draw(data, {width: 850, height: 280,legend:'right',legendTextStyle:{fontSize:10}, title: 'Local Groups',
+		chart.draw(data, {width: 850, height: 400,legend:'right',legendTextStyle:{fontSize:10}, title: 'Local Groups',
 				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:25, titleTextStyle: {color: 'red'}}
 				 });
 	
