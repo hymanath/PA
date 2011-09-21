@@ -20,25 +20,34 @@
 	rel="stylesheet" type="text/css" />
 	<link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
 <link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/demos.css" />
-
-
+<link rel="stylesheet" type="text/css" href="styles/mandalPage/mandalPage.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <!-- JQuery files (End) -->
 <title>Call Center</title>
 <style type="text/css">
 
+.ui-widget-header {
+    background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+    font-weight: bold;
+}
+.yui-skin-sam .yui-dt-liner {
+    padding: 4px 8px;
+}
+td.tdStyle{
+    font-family: times New Roman;
+    font-size: 16px;
+    font-weight: bold;
+}
  #callTrackingCurrentDiv
         {          
-		  border: 2px solid;
           font-size: 12px;
-          margin-left: 80px;
-          margin-right: 80px;
-          margin-top: 35px;
+          
         }
  
-.yui-dt-liner
-        {
-		  font-size: 12px; 
-        }
+
       th
         {
 		  margin-left: 30px;  
@@ -46,36 +55,8 @@
 		  font-size: 12px; 
 		  text-align: left;
         }
-.yui-skin-sam .yui-panel 
-		{
-			background:#FFFFFF none repeat scroll 0 0;
-			border-color:#808080;
-			border-style:solid;
-			border-width:1px 0;
-			left:0;
-			position:relative;
-			top:0;
-			z-index:1;
-		}
-.yui-skin-sam .yui-dt  {
-    border: 2px solid #9696C0;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-family: arial;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-		.yui-skin-sam .yui-dt th .yui-dt th a
-		{
-		background-image:url("images/YUI-images/sprite.png")
-		}
-		
-		#yui-dt0-th-Categorize
-		{
-			background-color:blue;
-		}
+
+
 	
 #searchDiv {
 	
@@ -181,12 +162,95 @@
  #showProblemCountDiv{
      text-align:right;
 	 align:right;
+	 padding-right:40px;
  }
+ 
 </style>
 </head>
 
 <script type="text/javascript">	
+function openCallCenterReport(){
 
+}
+function showCallTrackingEditWindow(result){
+	var resultDiv = document.getElementById("editCallTrackingProblem");
+	
+
+	$("#editCallTrackingProblem").dialog({ stack: false,
+							    height: 150,
+								width: 700,
+								position:[150,120],								
+								modal: true,
+								title:'<font color="Navy">Edit Problem</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								});
+	$("#editCallTrackingProblem").dialog();
+								
+	var str = '';
+	str += '<table>';
+    str +=  '<tr>';
+    str +=   '<th>Name</th>';
+	str +=   '<th>MobileNo</th>';
+	str +=   '<th>ProblemPurpose</th>';	  
+	str +=   '<th>Reference No</th>';
+	str +=   '<th>Village/Town</th>';
+    str +=  '</tr>';
+	str +=  '<tr>';
+	str +=    '<td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name2"/></td>';
+	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile1"/></td>';
+	str +=   '<td>';
+	str +=      '<select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
+	str +=          '<option>Appointment</option>';
+	str += 		 '<option>Others</option>';
+	str += 		 '<option>All</option>';
+	str += 	   '</select>';
+	str +=    '</td>';	   
+	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="referenceNo1" /></td>';
+	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="villageTown1"/></td>';
+	str +=    '<td><input id="resultBtnId" type="button" value="Update" onclick="updateCallTrackingProblem();"/></td>';
+	str +=    '<td><input type="hidden"  id="problemId1" /></td>';
+	str +=  '</tr>';
+	str +=  '<tr>';
+	str +=    '<td><div id="errorNameDiv"></div></td>';
+	str +=    '<td><div id="errorMobileDiv"></div></td>';
+	str +=    '<td><div id="errorProblemPurposeDiv"></div></td>';
+	str +=    '<td><div id="errorRefDiv"></div></td>';
+	str +=    '<td><div id="errorVillageDiv"></div></td>';
+	str +=  '</tr>';
+    str += '</table>';
+  resultDiv.innerHTML = str;
+populateDataToEditCallTracking(result);
+  
+  }
+ function  populateDataToEditCallTracking(result){
+       document.getElementById("name2").value = result[0].name;
+       document.getElementById("mobile1").value = result[0].mobile;
+       document.getElementById("problemPurpose1").value = result[0].problemPurpose;
+       document.getElementById("referenceNo1").value = result[0].referenceNo;
+       document.getElementById("villageTown1").value = result[0].villageOrTown;
+	   document.getElementById("problemId1").value = result[0].problemId;
+ }
+function updateCallTrackingProblem(){
+    var name = document.getElementById("name2").value;
+	  var mobile = document.getElementById("mobile1").value;
+	  var problemPurpose = document.getElementById("problemPurpose1").value;
+	  var referenceNo = document.getElementById("referenceNo1").value;
+	  var villageTown = document.getElementById("villageTown1").value;
+	  var problemId = document.getElementById("problemId1").value;
+     var jsObj=
+	      {	
+		    problemId:problemId,
+			name: name,
+			mobile: mobile,
+			problemPurpose: problemPurpose,
+			referenceNo:referenceNo,
+			villageOrTown:villageTown,
+			task: "updateCallTrackingProblem"
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "saveCallTrackingProblemAction.action?"+rparam;						
+      callAjax(rparam,jsObj,url);
+ }
 function setReferenceNo(refNo){
   document.getElementById("referenceNo").value = refNo;
 }
@@ -318,8 +382,8 @@ function addCallTrackingProb(){
  function editProblem(problemId){
    var jsObj=
 	      { 
-		    problemId:problemId,
-			task: "deleteCallTrackingProblem"
+		    ProblemId:problemId,
+			task: "getCallTrackingProblemByProblemId"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "saveCallTrackingProblemAction.action?"+rparam;						
@@ -548,7 +612,13 @@ var callback = {
 			      showSearchDetails(myResults);
 				  showSearchCount(myResults);
 			 }
-			 
+			  else if(jsObj.task =="getCallTrackingProblemByProblemId"){
+				 showCallTrackingEditWindow(myResults);
+			 }
+			 else if(jsObj.task =="updateCallTrackingProblem"){
+				 getCurrentDayCallTrackingProblem();
+			 }
+			
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
@@ -573,10 +643,13 @@ resultsCountEl.innerHTML = '<div id="showCount" style=" color: rgb(112, 112, 112
 }  
 function showSearchCount(result){
  var resultsCountEl = document.getElementById("callTrackingTotalCountDiv");
+ 
 if(result.lenght!=0){
+
 resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; text-align: center;"><span>'+result[0].count+'</span> Records Found With This Search Criteria</div>';
   }
 else{
+
 resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; text-align: center;"><span> 0 </span> Records Found With This Search Criteria</div>';
   }  
 }
@@ -617,6 +690,7 @@ function showSearchDetails(result){
  
 }
 function showCurrentDayProblems(result){
+ 
  YAHOO.widget.DataTable.add = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
@@ -648,13 +722,14 @@ function showCurrentDayProblems(result){
 	
 
 
-    var myConfigs = {    
-				
-						paginator : new YAHOO.widget.Paginator({ 
-						rowsPerPage    : 9,		        
-						})
-						
-					};	
+   var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10,
+				template : "{PageLinks} {RowsPerPageDropdown}",
+                pageLinks : 5, 
+                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+			    }) 
+				};
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
@@ -760,12 +835,13 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 <body>
   <table>
     <tr>
-      <td>
+      
          <div id="headerDiv">Call Center</div>
-      </td>
-      <td>
+    </tr>
+	<tr>
+      
 	     <div id="showProblemCountDiv"></div>
-      </td>
+      
     </tr>
   </table>
 
@@ -807,6 +883,7 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 <div id="callTrackingTotalCountDiv" style="padding-top:20px;"></div>
 <div id="callTrackingCurrentDiv" class="yui-skin-sam yui-dt">
 </div>
+<div id="editCallTrackingProblem"> </div>
 <div id="mainDiv">
 <table>
 <tr><td>
@@ -835,6 +912,14 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    &nbsp&nbsp
    <a class="tdStyle" href="" onclick="openProblemSearchWindow()">
    Detailed Search on Problems</a>
+   </td>
+</tr>
+<tr>
+   <td>
+   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"/>
+   &nbsp&nbsp
+   <a class="tdStyle" href="" onclick="openCallCenterReport()">
+   Call Center Report</a>
    </td>
 </tr>
 </table>
