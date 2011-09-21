@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1309,8 +1310,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			else
 			 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,"");	
 			
-			if(subRegionsInfPeopleList != null && subRegionsInfPeopleList.size() > 0)
+			if(subRegionsInfPeopleList != null && subRegionsInfPeopleList.size() > 0){
+				//Collections.sort(subRegionsInfPeopleList);
 			 regionWiseOverview.setSubRegionWiseOverview(subRegionsInfPeopleList);
+			}
 		
 		    constituencyManagementDataVO.setRegionWiseOverview(regionWiseOverview);
 			
@@ -1654,19 +1657,19 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setInfluencingRangeScope((String)values[4]);
 				influencingPeopleBeanVO.setInfluencingScopeValue(getRegionNameBasedOnScope((String)values[4],(String)values[5]));
 				influencingPeopleBeanVO.setPartyName((String)values[7]);
-				String casteCategoryId = (String)values[8];
-				String occupationId = (String)values[9];
+				String casteCategoryId = (String)values[6];
+				String occupationId = (String)values[7];
 				
 				SocialCategory caste = socialCategoryDAO.get(new Long(casteCategoryId));
 				Occupation occupation = occupationDAO.get(new Long(occupationId));
 				
 				influencingPeopleBeanVO.setCast(caste.getCategory());
 				influencingPeopleBeanVO.setOccupation(occupation.getOccupation());
-				influencingPeopleBeanVO.setMobile((String)values[10]);
-				influencingPeopleBeanVO.setGender((String)values[11]);
-				influencingPeopleBeanVO.setEmail((String)values[12]);
-				influencingPeopleBeanVO.setFatherOrSpouseName((String)values[13]);
-				influencingPeopleBeanVO.setPosition((String)values[15]);
+				influencingPeopleBeanVO.setMobile((String)values[8]);
+				influencingPeopleBeanVO.setGender((String)values[9]);
+				influencingPeopleBeanVO.setEmail((String)values[10]);
+				influencingPeopleBeanVO.setFatherOrSpouseName((String)values[11]);
+				influencingPeopleBeanVO.setPosition((String)values[13]);
 				
 				State state = null;
 				District district = null;
