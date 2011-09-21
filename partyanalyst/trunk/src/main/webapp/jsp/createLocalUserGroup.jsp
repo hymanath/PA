@@ -461,11 +461,12 @@ function setLocationValue(value,source)
 		<td class="tdstyle"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('ACONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','userGroupReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 		<td class="tdstyle"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
-		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','userGroupReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
+		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','userGroupReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','boothsInTehsilOrMunicipality')" ></s:select></td>
 	</tr>
 	<tr>
  		<td class="tdstyle"><s:label for="villageField" id="villageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
-		<td><s:select id="villageField_add" cssClass="regionSelect" name="villageOrWard" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'userGroupReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
+		<td><s:select id="villageField_add" cssClass="regionSelect" name="villageOrWard" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'userGroupReg','mandalField_add');">
+		</s:select></td>
 		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="Pincode" /></td>
 		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="10"/></td>		
 	</tr>
