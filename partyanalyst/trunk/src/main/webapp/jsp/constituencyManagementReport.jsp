@@ -344,7 +344,9 @@
 				alertMessageDivEl.innerHTML = 'Please Select From Date';				
 				return;
 			}			
-			
+			else{
+				alertMessageDivEl.innerHTML ='';
+
 			
 			var jsObj= 
 			{	
@@ -361,7 +363,7 @@
 			var url = "<%=request.getContextPath()%>/problemsByDateBasedOnStatusAction.action?"+param;
 			callAjax(param,jsObj,url);
 		}
-		
+	}	
 		function getInfluencingPeopleInAConstituency()
 		{
 			var jsObj= 
@@ -797,26 +799,25 @@
 								<div class="corner topRight"></div>
 								<div class="corner bottomLeft"></div>
 								<div class="corner bottomRight"></div> 
-
-								<div id="influencePeopleDetail_main" class="contentDivClass">
-									<div id="influencePeopleDetail_head">
+<div id="influencePeopleDetail_main" class="contentDivClass">
+	<div id="influencePeopleDetail_head">
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
 										<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"></td>
 										<td align="left">
-											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
-												<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
+<div style="height:36px;padding:0px;width: 560px;"" class="districtPageRoundedHeaders_center">
+<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
 											</div>
 										</td>
 										<td width="5px"><img width="8" height="36" src="images/icons/districtPage/header_right.gif"></td>
 									</tr>
 									</table>
 									</div>
-									<div id="influencePeopleDetail_body">
-										<div id="influencePeopleRegionsList" class="influencePeopleRegionsList"></div>
-										<div id="influencePeopleRegionsTypeRadio" class="influencePeopleRegionsList"></div>
-										<div id="influencePeopleRegionsData_main"></div>
-									</div>
+<div id="influencePeopleDetail_body">
+<div id="influencePeopleRegionsList" class="influencePeopleRegionsList"></div>
+<div id="influencePeopleRegionsTypeRadio" class="influencePeopleRegionsList"></div>
+<div id="influencePeopleRegionsData_main"></div>
+</div>
 								</div>	
 							</div>
 						</td>
@@ -871,9 +872,9 @@
 									<div id="localGroupsDetail_head">
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
-										<td width="30px"><img width="8" height="30" src="images/icons/districtPage/header_left.gif"></td>
+										<td width="24px"><img width="25px" height="30px" src="images/icons/districtPage/header_left.gif"></td>
 										<td align="left">
-											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
+											<div style="height:30px;padding:0px" class="districtPageRoundedHeaders_center">
 												<span id="localGroupsLabelSpan" class="regionsHead_center_label" style="top:10px;">Local Groups Detail Info</span>
 											</div>
 										</td>
