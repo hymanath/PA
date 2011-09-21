@@ -72,9 +72,14 @@ function buildRegionWiseOverViewData(data,divId)
 	str += '	<tr>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
 	str += '		<td align="left"><div class="regionsHead_center" style="height:30px;padding:0px;">';
-	str += '			<span class="regionsHead_center_label">';	
-	str +=				data.regionName+' ( '+data.regionType+') -';
+	str += '			<span class="regionsHead_center_label">';
+	str +=                 data.regionName+'('+data.regionType+')-';
+	if(data.countValue !=0){
 	str += '				<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\'region\')">'+data.countValue+' </a>';
+	}
+	else{
+     str += '<td style="color:#4B74C6">'+data.countValue+' </td>';
+	}
 	str += '			</span>';
 	str += '		</div></td>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
