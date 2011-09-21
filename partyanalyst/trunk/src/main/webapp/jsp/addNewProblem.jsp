@@ -433,12 +433,12 @@ function clearSuccessMsg(){
 						<td style="padding-left: 15px;"><s:textfield id="mobileField" name="mobile" maxlength="12" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td style="padding-left:0px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
+						<td width="100px;" style="padding-left:0px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td style="padding-left:15px;"><s:textfield id="telephoneNoField" name="phone" size="35"/></td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/><font class="requiredFont"> * </font></td>
-						<td style="padding-left:0px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
+						<td width="100px;" style="padding-left:0px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}"/></td>
+						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="35"  maxlength = "50"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /><font class="requiredFont">*</font></td>
