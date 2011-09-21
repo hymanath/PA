@@ -121,7 +121,7 @@ function  buildMoreDetailsPopUp(result, probsArr)
 
 		var myPanel = new YAHOO.widget.Dialog("moreDetailsPanelDiv", {
 			width : "620px",
-			fixedcenter : true,
+			fixedcenter : false,
 			visible : true,
 			constraintoviewport : true,
 			iframe : true,
