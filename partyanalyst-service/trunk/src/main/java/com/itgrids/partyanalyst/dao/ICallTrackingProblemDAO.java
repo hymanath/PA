@@ -17,4 +17,12 @@ public interface ICallTrackingProblemDAO extends GenericDao<CallTrackingProblem,
 	public List<Object[]> getProblemDetailbyProblemId(Long problemId);
 	
 	public List<Object[]> searchCallTrackingProblem(CallTrackingVO callTrackingVO,Date addedDate);
+	
+	 public List<Long>  getProblemCount(Date fromDate,Date toDate);
+	 
+	 public List<String> getProblemTypes();
+	 
+	 public List<Object[]> getProblemByProblemPurpose(String problemPurpose,Date fromDate,Date toDate);
+	 
+	 public List<Object[]> getProblemCountDateByProblem(String problemPurpose,Date fromDate,Date toDate);
 }

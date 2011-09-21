@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 public class CallTrackingVO implements Serializable {
 	
@@ -15,6 +15,8 @@ public class CallTrackingVO implements Serializable {
 	private String villageOrTown;
 	private Long count;
 	private Long status;
+	private Long totalCount;
+	private List<CallTrackingVO> callTrackingVO;
 	
 	
 	public Long getProblemId() {
@@ -77,5 +79,19 @@ public class CallTrackingVO implements Serializable {
 	public void setReferenceNo(String referenceNo) {
 		this.referenceNo = referenceNo;
 	}
+	public List<CallTrackingVO> getCallTrackingVO() {
+		return callTrackingVO;
+	}
+	public void setCallTrackingVO(List<CallTrackingVO> callTrackingVO) {
+		this.callTrackingVO = callTrackingVO;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+	
 			
 }

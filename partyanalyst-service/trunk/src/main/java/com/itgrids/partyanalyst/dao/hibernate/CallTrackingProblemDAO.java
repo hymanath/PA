@@ -71,5 +71,27 @@ public class CallTrackingProblemDAO extends GenericDaoHibernate<CallTrackingProb
  		
  	  return	queryObject.list();
  	}
- 	
+    
+    public List<Long> getProblemCount(Date fromDate,Date toDate){
+    	Object[] parameters = {fromDate,toDate};
+    	return getHibernateTemplate().find("select count(*) from CallTrackingProblem model where "+
+    			" date(model.callTrackingDetail.problemAddedDate)>= ? "+
+    			" and date(model.callTrackingDetail.problemAddedDate) <= ? ",parameters);
+    }
+    public List<String> getProblemTypes(){
+    	
+    	return getHibernateTemplate().find("select distinct(model.problemPurpose) from CallTrackingProblem model");
+    }
+public List<Object[]> getProblemByProblemPurpose(String problemPurpose,Date fromDate,Date toDate){
+	Object[] parameters = {problemPurpose,fromDate,toDate};
+    	return getHibernateTemplate().find("select model.problemPurpose,model.callTrackingDetail.problemAddedDate from CallTrackingProblem model"+
+    			" where model.problemPurpose = ? and date(model.callTrackingDetail.problemAddedDate)>= ? "+
+    			" and date(model.callTrackingDetail.problemAddedDate) <= ? ",parameters);
+    }
+public List<Object[]> getProblemCountDateByProblem(String problemPurpose,Date fromDate,Date toDate){
+	Object[] parameters = {problemPurpose,fromDate,toDate};
+    	return getHibernateTemplate().find("select count(*), date(model.callTrackingDetail.problemAddedDate),model.problemPurpose from CallTrackingProblem model"+
+    			" where model.problemPurpose = ? and date(model.callTrackingDetail.problemAddedDate)>= ? "+
+    			" and date(model.callTrackingDetail.problemAddedDate) <= ? group by date(model.callTrackingDetail.problemAddedDate) ",parameters);
+    }
 }
