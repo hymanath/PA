@@ -181,10 +181,10 @@ public class CallTrackingService implements ICallTrackingService {
 		Object[] result = callTrackingProblemDAO.getProblemDetailbyProblemId(problemId).get(0);
 		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 		    
-		problemBeanVO.setProblem(result[1] != null ?result[1].toString(): "");
+		
 		problemBeanVO.setName(result[3] != null ?result[3].toString(): "");
 		problemBeanVO.setMobile(result[4] != null ?result[4].toString(): "");
-		problemBeanVO.setVillage(result[6] != null ?result[6].toString(): "");
+		
 		
 		return problemBeanVO;
 	}
