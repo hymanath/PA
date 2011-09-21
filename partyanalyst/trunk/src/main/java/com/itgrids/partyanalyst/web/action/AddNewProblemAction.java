@@ -342,7 +342,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		this.problemSourcesList = problemSourcesList;
 	}
 	
-	public ICallTrackingService getCallTrackingService() {
+     public ICallTrackingService getCallTrackingService() {
 		return callTrackingService;
 	}
 
@@ -593,6 +593,9 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		if(problemHistoryId !=null){
 		 problemBeanVO = new ProblemBeanVO();
 			problemBeanVO = problemManagementService.getProblemCompleteInfoForAUserBasedOnHistoryId(new Long(problemHistoryId));
+		}
+		else {
+			problemBeanVO = new ProblemBeanVO();
 		}
 		String callTrackingProblemId = request.getParameter("callTrackingProblemId");
 		
