@@ -146,8 +146,8 @@ function getRegionWiseOverviewString(data,type)
 	
 	str += '<div class="regions_overview_data">';
 	str += '<table width="100%"><tr>';
-	str += '<th align="left">Region : </th>';
-	str += '<td align="left">'+data.regionName+' ( '+data.regionType+' )</td>';
+	str += '<th align="left">Region:</th>';
+	str += '<td align="left">'+data.regionName+'('+data.regionType+')</td>';
 	str += '</tr></table>';
 	str += '</div>';
 
