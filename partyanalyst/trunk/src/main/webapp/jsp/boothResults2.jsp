@@ -197,7 +197,7 @@
 		property="percentage" />
 </display:table>
 </div>
-</div>>
+</div>
 <script language="javascript">
 initializeResultsTable();
 </script>
