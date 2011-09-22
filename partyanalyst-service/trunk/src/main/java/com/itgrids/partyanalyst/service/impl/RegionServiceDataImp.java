@@ -215,13 +215,22 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	}
 	
 
-	public List<SelectOptionVO> getMandalsByConstituencyID(
-		Long constituencyID){List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID){
+		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
 		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
-	
+		Constituency constituency = constituencyDAO.get(constituencyID);
+		
 		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
 		
+		if(constituency.getAreaType() == null)
+		return mandalNames;			
+		String areaType = constituency.getAreaType();
+				
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		{
+			mandalNames = getLocalElectionBodies(constituencyID, IConstants.PRESENT_ELECTION_YEAR);
+		}
 		for(Tehsil tehsil : mandals){
 			SelectOptionVO objVO = new SelectOptionVO();
 			objVO.setId(tehsil.getTehsilId());
@@ -701,6 +710,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		{
 			Object[] obj = (Object[])rawData.get(i);
 			constituencies.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),WordUtils.capitalize(obj[1].toString().toLowerCase())));
+			Collections.sort(constituencies);
 		}	
 		return constituencies;	
 	}
@@ -1217,22 +1227,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	{
 		try{
 			List<Object[]> list = regionScopesProblemTypeDAO.getProblemTypesByRegionScopeId(regionScopeId);
-			List<SelectOptionVO> problemTypesList = null;
-			
+			List<SelectOptionVO> problemTypesList =new ArrayList<SelectOptionVO>(0);;
+
 			if(list != null && list.size() > 0)
 			{
-				problemTypesList = new ArrayList<SelectOptionVO>(0);
-				problemTypesList.add(0,new SelectOptionVO(0L,"Select Problem Type"));
 				for(Object[] params : list)
 				{
 					SelectOptionVO selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId((Long)params[0]);
 					selectOptionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
 					problemTypesList.add(selectOptionVO);
-					
+					Collections.sort(problemTypesList);
 				}
-				Collections.sort(problemTypesList);
 			}
+			problemTypesList.add(0,new SelectOptionVO(0L,"Select Problem Type"));
 			return problemTypesList;
 			
 		}catch(Exception e){
