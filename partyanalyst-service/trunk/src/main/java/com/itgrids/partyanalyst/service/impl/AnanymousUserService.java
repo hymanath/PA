@@ -273,7 +273,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 				}
 				
 				try{
+					String str = ((Long)System.currentTimeMillis()).toString();
+					String pwd= str.substring(str.length()-7,str.length());
+					
 					if(!isUpdate){
+						userDetails.setPassword(getPassword(pwd));
 						ananymousUser.setUsername(userDetails.getEmail());
 						ananymousUser.setPassword(userDetails.getPassword());
 						ananymousUser.setRegisteredDate(getCurrentDateAndTime());
@@ -1762,6 +1766,17 @@ public Integer saveUserDetailsToChangeUserNameToEmail(Long userId,String userNam
 	return detailsList;
 }
 
-
+public String getPassword(String password){
+	Boolean i=true;
+	try{
+	while(i){
+	if(ananymousUserDAO.getPassword(password)!=null)
+ 	return password;
+    }
+	}catch (Exception e){
+		log.debug("Exception Encountered", e);
+	}
+	return password;
+}
 
 }
