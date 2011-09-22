@@ -58,5 +58,6 @@ public interface IAnanymousUserService {
 	
 	public Integer saveUserDetailsToChangeUserNameToEmail(Long userId,String userName);
 	
+	public String getPassword(String password);
 	
 }	
