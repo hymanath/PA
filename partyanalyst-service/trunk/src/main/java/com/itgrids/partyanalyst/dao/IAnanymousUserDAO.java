@@ -34,4 +34,5 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<AnanymousUser> checkForUserNameAvailabiityForEmail(String userName); 
 	
+	public List<AnanymousUser>  getPassword(String password);
 }
