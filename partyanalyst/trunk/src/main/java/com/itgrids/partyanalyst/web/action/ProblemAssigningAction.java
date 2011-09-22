@@ -347,7 +347,6 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			String message = jObj.getString("message");
 			String [] phoneNumbers = {jObj.getString("MobileNo")};
 			resultStatus = problemManagementService.sendSMS(user.getRegistrationID(),message,IConstants.PROBLEM_MANAGEMENT,phoneNumbers);
-			resultStatus.setResultCode(1);
 		}
 	}else{
 		resultStatus = new ResultStatus();
