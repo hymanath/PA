@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.RequestUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
@@ -226,8 +227,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	
 	//User Contact Details validation
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	//@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
 		this.regVO.setMobile(mobile);
 	}
@@ -398,7 +399,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
              }
 	           
-			
+             regVO.setContextPath(getPath());
             if(registrationId != null && registrationId > 0){
 				loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
@@ -478,9 +479,9 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	public void validate() {		       
 		HttpSession session = request.getSession();
-		if(registrationId == null || registrationId == 0){
-			/*if(userName == null || userName.trim().length() == 0)
-				addFieldError("userName","Username is required");*/
+		/*if(registrationId == null || registrationId == 0){
+			if(userName == null || userName.trim().length() == 0)
+				addFieldError("userName","Username is required");
 		
 			if(password == null || password.trim().length() == 0)
 				addFieldError("password","Password is required.");
@@ -488,7 +489,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equals(password)){
 				addFieldError("reEnteredPassword","Entered Password and Reentered Password are not Same.");			
 			}
-		}
+		}*/
 		
 		
 		if(state==null || state.equalsIgnoreCase("0")){
@@ -558,6 +559,15 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	 public void setLoginUserId(Long loginUserId) {
 		this.loginUserId = loginUserId;
 	 }
-	
+	public String getPath(){
+		String requestURL = request.getRequestURL().toString();
+        String actionURL = RequestUtils.getServletPath(request);
+
+        String path = requestURL.replace(actionURL, "");
+
+
+        return path;
+		
+	}
 	 
 }
