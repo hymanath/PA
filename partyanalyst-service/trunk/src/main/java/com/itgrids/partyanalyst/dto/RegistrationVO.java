@@ -55,6 +55,15 @@ public class RegistrationVO extends BaseDTO{
 	private String isAdmin;
 	private Long mainAccountId;
 	private Long districtId;
+    private String contextPath;
+	
+    public String getContextPath() {
+		return contextPath;
+	}
+
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}
 
 	public Long getDistrictId() {
 		return districtId;
