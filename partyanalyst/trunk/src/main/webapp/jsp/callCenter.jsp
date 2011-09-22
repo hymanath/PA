@@ -819,7 +819,7 @@ function showCurrentDayProblems(result){
    var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10,
-				template : "{PageLinks} {RowsPerPageDropdown}",
+				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
                 pageLinks : 5, 
                 rowsPerPageOptions : [ 5, 10, 15, 20 ]
 			    }) 
@@ -858,13 +858,17 @@ var resultsColumnDefs = [
 		},
 		{
 		key : "reportedDate",
-		label : "Identified on",
+		label : "Posted on",
 		sortable : true
 		},
-		 
 		{
-		key : "impactLevel",
-		label : "Problem Scope",
+		key : "status",
+		label : "Problem Status",
+		sortable : true		
+	    } ,
+		{
+		key : "problemPostedBy",
+		label : "Posted By",
 		sortable : true		
 	}
 		
@@ -893,10 +897,10 @@ myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 
 
 }
-function openProblemWindow(problemHistoryId){
+function openProblemWindow(pHistoryId){
 
 var browser2 = 
-window.open("addNewProblemAction.action?problemHistoryId="+problemHistoryId,"editProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
 						 
 		 browser2.focus();
 
@@ -960,11 +964,11 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 	   <td>
 	       <select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
 	         <option>All</option>
+			 <option>Appointment Cancellation</option>
+			 <option>Appointment Fixing</option>
+			 <option>For Information</option>
 			 <option>Problem Reporting</option>
 			 <option>Problem Status Enquiry</option>
-			 <option>For Information</option>
-			 <option>Appointment Fixing</option>
-			 <option>Appointment Cancellation</option>
 			 <option>Others</option>
 		   </select>
 	   </td>	   
