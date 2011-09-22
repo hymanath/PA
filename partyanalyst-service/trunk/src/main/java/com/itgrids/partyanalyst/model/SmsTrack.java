@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -35,7 +32,10 @@ public class SmsTrack extends BaseModel implements Serializable {
 	private String renewalDate;
 	private String description;
 	private Registration registration;
-	private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
+	private String smsUsername;
+	private String smsPassword;
+	private String senderId;
+	
 		
 	// Constructors
 
@@ -49,13 +49,12 @@ public class SmsTrack extends BaseModel implements Serializable {
 	}
 
 	/** full constructor */
-	public SmsTrack(Long smsTrackId,Registration registration,Long renewalSmsCount,String renewalDate,String description,Set<SmsHistory> smsHistory) {
+	public SmsTrack(Long smsTrackId,Registration registration,Long renewalSmsCount,String renewalDate,String description) {
 		this.smsTrackId = smsTrackId;
 		this.registration = registration;
 		this.renewalSmsCount = renewalSmsCount;
 		this.renewalDate = renewalDate;
 		this.description = description;
-		this.smsHistory = smsHistory;
 	}
 
 	@Id
@@ -80,15 +79,6 @@ public class SmsTrack extends BaseModel implements Serializable {
 		this.registration = registration;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "smsTrack")
-	public Set<SmsHistory> getSmsHistory() {
-		return smsHistory;
-	}
-
-	public void setSmsHistory(Set<SmsHistory> smsHistory) {
-		this.smsHistory = smsHistory;
-	}
-
 	@Column(name = "renewal_sms_count", length = 250)
 	public Long getRenewalSmsCount() {
 		return renewalSmsCount;
@@ -114,6 +104,33 @@ public class SmsTrack extends BaseModel implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Column(name = "sms_username", length = 50)
+	public String getSmsUsername() {
+		return smsUsername;
+	}
+
+	public void setSmsUsername(String smsUsername) {
+		this.smsUsername = smsUsername;
+	}
+
+	@Column(name = "sms_password", length = 50)
+	public String getSmsPassword() {
+		return smsPassword;
+	}
+
+	public void setSmsPassword(String smsPassword) {
+		this.smsPassword = smsPassword;
+	}
+
+	@Column(name = "sender_id", length = 50)
+	public String getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(String senderId) {
+		this.senderId = senderId;
 	}
 
 }
