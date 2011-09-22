@@ -179,7 +179,10 @@ public class MailService implements IMailService{
 	    	
 	    	QuickRequestVO quickRequestVO = new QuickRequestVO();
 	    	ResultStatus rs = new ResultStatus();
-	    	
+	    	String constituency=registrationVO.getContextPath()+"/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency();
+	    	String district=registrationVO.getContextPath()+"/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+registrationVO.getDistrict();
+	    	String login=registrationVO.getContextPath()+"/loginInputAction.action";
+	    	String sendMail="mailto:info@partyanalyst.com";
 	    	String subject;
     		String text;
 	    	subject = "";
@@ -187,7 +190,7 @@ public class MailService implements IMailService{
 	    	
 	    	
 	    	text = "";
-	    	text +="<b>Hey<font color=\"blue\">"+"     "+ registrationVO.getFirstName();
+	    	text +="<b>Hey"+"     "+ registrationVO.getFirstName();
 
 	    	text +="</b></font><br><br>Just a quick note to confirm that you are now a registered member of our Party Analyst Community.";
 
@@ -197,12 +200,15 @@ public class MailService implements IMailService{
 
 	    	text +="<br><br>Username:"+ " "+registrationVO.getEmail();
 	    	text +="<br>Password:"+" "+registrationVO.getPassword();
-	    	text +="<br><br>You can now connect with people, post problems, post comments and do lot more things. Why wait? Login now and start connecting with people. <br>Follow this link to log in <a href='www.partyanalyst.com/loginInputAction.action'>Login</a>";
-	    	text +="<br><br>Explore more about your Constituency : <a href='www.partyanalyst.com/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency()+"'>"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a>";
-	    	text +="<br><br>Explore more about your  District : <a href='www.partyanalyst.com/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+registrationVO.getDistrict()+"'>"+registrationVO.getDistrict()+"</a>";
+	    	text +="<br><br>You can now connect with people, post problems, post comments and do lot more things. Why wait? Login now and start connecting with people. <br>Follow this link to log in <a href="+login+">Login</a>&nbsp;&nbsp;If you can't get login page click below url :";
+	    	text +="<br><br><a href="+login+" target='_blank'>"+login+"</a>";
+	    	text +="<br><br>Explore more about your Constituency : <a href="+constituency+">"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a>&nbsp;&nbsp;If you can't get constituency page click below url :";
+	    	text +="<br><br><a href="+constituency+" target='_blank'>"+constituency+"</a>";
+	    	text +="<br><br>Explore more about your  District : <a href="+district+">"+registrationVO.getDistrict()+"</a>&nbsp;&nbsp;If you can't get district page click below url :";
+	    	text +="<br><br><a href="+district+" target='_blank'>"+district+"</a>";
 	    	text +="<br><br><br>Please add this email which you like from Party Analyst won&#39;t go for junk email."; 
 	    	text +="<br>We hope to see you around and take part in our community!!!";
-	    	text +="<br><br>For suggestions and support contact us at <b>info@partyanalyst.com</b>";
+	    	text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
 	    	text +="<br><br><b>Best Wishes,";
 	    	text +="<br><font color=\"green\">Party Analyst Team.</font></b>";
 
@@ -313,7 +319,7 @@ public class MailService implements IMailService{
 			            
 					return rs;
 			 	    }
-	    	
+			 
 	    
 	}
 
