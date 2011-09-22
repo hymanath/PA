@@ -1384,7 +1384,7 @@ var villagesListForProb = [];
  <tr>
   <td><a href="javaScript:{}" style="padding-right: 12px; color: green;" onclick="openAddNewProblemWindow()">Add New Problem</a>
   </td>
-  <td><a href="javaScript:{}" style="color: green;" onclick="openEditProblemWindow()">Edit Problem</a>
+  <td><a href="javaScript:{}" style="color: green;" onclick="openEditProblemWindow()">Create Similar Problem</a>
   </td>
   <td style="padding-left: 19px;"><input type="button" value="Close" onClick="closeCompleteDetails()" />
   </td>
