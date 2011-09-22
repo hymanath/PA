@@ -31,10 +31,9 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private String sentDate;
 	private String mobileNumber;
 	private String smsContent;
-	private String locationType;
-	private Long locationId;
 	private SmsModule smsModule;
-	private SmsTrack smsTrack;
+	private Registration registration;
+	
 		
 	// Constructors
 
@@ -54,9 +53,7 @@ public class SmsHistory extends BaseModel implements Serializable {
 		this.sentDate = sentDate;
 		this.mobileNumber = mobileNumber;
 		this.smsContent = smsContent;
-		this.locationId = locationId;
 		this.smsModule = smsModule;
-		this.smsTrack = smsTrack;
 	}
 
 	@Id
@@ -81,17 +78,6 @@ public class SmsHistory extends BaseModel implements Serializable {
 		this.smsModule = smsModule;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_sms_track_id")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public SmsTrack getSmsTrack() {
-		return smsTrack;
-	}
-
-	public void setSmsTrack(SmsTrack smsTrack) {
-		this.smsTrack = smsTrack;
-	}
-	
 	@Column(name = "sent_date", length = 250)
 	public String getSentDate() {
 		return sentDate;
@@ -119,21 +105,15 @@ public class SmsHistory extends BaseModel implements Serializable {
 		this.smsContent = smsContent;
 	}
 
-	@Column(name = "location_type", length = 250) 
-	public String getLocationType() {
-		return locationType;
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Registration getRegistration() {
+		return registration;
 	}
 
-	public void setLocationType(String locationType) {
-		this.locationType = locationType;
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
 	}
 
-	@Column(name = "location_id", length = 250) 
-	public Long getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
-	}	
 }

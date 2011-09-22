@@ -64,6 +64,7 @@ public class Registration implements java.io.Serializable {
 	 private Registration mainAccountUser;
 	 private Set<UserAnnouncement> userAnnouncement = new HashSet<UserAnnouncement>(0);
 	 private Set<Registration> totalSubUsers = new HashSet<Registration>(0);
+	 private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
 
 	public Registration() {
 		 
@@ -442,6 +443,16 @@ public class Registration implements java.io.Serializable {
 
 	public void setTotalSubUsers(Set<Registration> totalSubUsers) {
 		this.totalSubUsers = totalSubUsers;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SmsHistory> getSmsHistory() {
+		return smsHistory;
+	}
+
+	public void setSmsHistory(Set<SmsHistory> smsHistory) {
+		this.smsHistory = smsHistory;
 	}
 	
 	
