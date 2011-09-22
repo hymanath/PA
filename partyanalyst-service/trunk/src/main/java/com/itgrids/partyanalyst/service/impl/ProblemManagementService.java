@@ -3492,8 +3492,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 		List<ProblemHistory> problemHistory= problemHistoryDAO.getProblemHistoryBasedOnId(problemHistoryId);
 		ProblemHistory problemHistoryObj ;
-		String districtName ;
-		String constituency;
+		
 		if(problemHistory !=null){
 			
 			problemHistoryObj = problemHistory.get(0);
@@ -3502,13 +3501,16 @@ public class ProblemManagementService implements IProblemManagementService {
 			problemBeanVO.setDescription(problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
 			problemBeanVO.setProblemScope(problemHistoryObj.getProblemLocation().getProblemImpactLevel().getScope());
 			problemBeanVO.setState(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getState().getStateName());
-			districtName = problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getDistrict().getDistrictName();
-			if(districtName!=null){
-			 problemBeanVO.setDistrict(districtName);
-			}
-			constituency = problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getConstituency().getName();
-			if(constituency!=null)
-			 problemBeanVO.setConstituency(constituency);
+			if(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getDistrict()!=null)
+				 problemBeanVO.setDistrict(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getDistrict().getDistrictName());
+			if(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getConstituency()!= null)
+		    	problemBeanVO.setConstituency(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getConstituency().getName());
+			if(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getTehsil()!=null)
+				problemBeanVO.setMandal(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getTehsil().getTehsilName());
+			if(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getHamlet()!=null)
+				problemBeanVO.setVillage(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getHamlet().getHamletName());
+			if(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getLocalElectionBody()!=null)
+				problemBeanVO.setMandal(problemHistoryObj.getProblemLocation().getProblemCompleteLocation().getLocalElectionBody().getName());
 			Date iDateOfAddNewProb = problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 			Date eDateOfAddNewProb = problemHistoryObj.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
 			problemBeanVO.setReportedDate(sdf.format(iDateOfAddNewProb));
