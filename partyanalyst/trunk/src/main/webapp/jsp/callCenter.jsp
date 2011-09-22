@@ -454,6 +454,10 @@ window.open("addNewProblemAction.action?callTrackingProblemId="+problemId,"addCa
 }
 function addCallTrackingProb(){
     var refNo = document.getElementById("referenceNo").value;
+	document.getElementById("errorRefDiv").innerHTML='';
+	if(refNo.trim().length != 0){
+	document.getElementById("errorRefDiv").innerHTML='<font color="red">Reference No must be empty</font>';;
+	}
 if(refNo.trim().length <= 0){
   if(validateForAddProblem()!=1){
       var name = document.getElementById("name1").value;
