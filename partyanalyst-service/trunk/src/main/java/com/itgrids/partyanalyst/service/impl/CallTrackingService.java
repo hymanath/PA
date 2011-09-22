@@ -93,7 +93,7 @@ public class CallTrackingService implements ICallTrackingService {
 		java.util.Date now = new java.util.Date();
         String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
         String strDateNew = sdf.format(now);        
 			now = sdf.parse(strDateNew);
 			return now;
