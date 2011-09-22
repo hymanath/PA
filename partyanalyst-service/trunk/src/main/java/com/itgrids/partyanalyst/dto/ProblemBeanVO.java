@@ -85,6 +85,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String problemScope;
 	private String problemRefNum;
 	private Long subUserId;
+	private String mandal;
 
 	public Long getSubUserId() {
 		return subUserId;
@@ -694,6 +695,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public Long getProblemTypeId() {
 		return problemTypeId;
+	}
+
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
+	}
+
+	public String getMandal() {
+		return mandal;
 	}
 	
 	
