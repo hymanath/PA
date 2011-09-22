@@ -480,6 +480,7 @@ if(refNo.trim().length <= 0){
    
   }
  function getCurrentDayCallTrackingProblem(){
+   document.getElementById("callTrackingTotalCountDiv").innerHTML='';
      var jsObj=
 	      {
 			task: "getCurrentDayCallTrackingProblem"
