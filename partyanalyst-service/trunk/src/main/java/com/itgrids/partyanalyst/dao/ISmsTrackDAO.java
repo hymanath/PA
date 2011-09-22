@@ -18,4 +18,10 @@ public interface ISmsTrackDAO extends GenericDao<SmsTrack, Long> {
 	
 	public List<SmsTrack> findLatestRenewalDate(Long registrationId);
 	
+	public Object getRemainingSMSCountForAUser(Long userId);
+	
+	public List<Object[]> getUserSmsDetails(Long userId);
+	
+	public Integer updateRemainingSmsLeftForUser(Long userId, Long count);
+	
 }
