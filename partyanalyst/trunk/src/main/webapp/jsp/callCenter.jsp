@@ -187,6 +187,17 @@ td.tdStyle{
 </head>
 
 <script type="text/javascript">	
+  function clearAll(){
+      document.getElementById("name1").value='';
+	  document.getElementById("mobile").value='';
+	  document.getElementById("referenceNo").value='';
+	  document.getElementById("villageTown").value='';
+	  document.getElementById("errorNameDiv").innerHTML='';
+	   document.getElementById("errorMobileDiv").innerHTML='';
+	   document.getElementById("errorProblemPurposeDiv").innerHTML='';
+	   document.getElementById("errorRefDiv").innerHTML='';
+	   document.getElementById("errorVillageDiv").innerHTML='';
+  }
 function showAddedResult(result){
  var obj = document.getElementById("showCallAddedResult");
     
@@ -210,7 +221,7 @@ function showCallTrackingEditWindow(result){
 								width: 700,
 								position:[150,120],								
 								modal: true,
-								title:'<font color="Navy">Edit Problem</font>',
+								title:'<font color="Navy">Edit Call Details</font>',
 								overlay: { opacity: 0.5, background: 'black'},
 								});
 	$("#editCallTrackingProblem").dialog();
@@ -222,10 +233,10 @@ function showCallTrackingEditWindow(result){
 	str +=  '</tr>';
     str +=  '<tr>';
     str +=   '<th>Name</th>';
-	str +=   '<th>MobileNo</th>';
-	str +=   '<th>CallPurpose</th>';	  
+	str +=   '<th>Mobile No</th>';
+	str +=   '<th>Call Purpose</th>';	  
 	str +=   '<th>Reference No</th>';
-	str +=   '<th>Village/Town</th>';
+	str +=   '<th>Action Taken</th>';
     str +=  '</tr>';
 	str +=  '<tr>';
 	str +=    '<td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name2"/></td>';
@@ -233,11 +244,11 @@ function showCallTrackingEditWindow(result){
 	str +=   '<td>';
 	str +=      '<select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
     str +=        '<option>All</option>';
-	str +=        '<option>Problem Reporting</option>';
-	str += 		  '<option>Problem Status Enquiry</option>';
-	str += 		  '<option>For Information</option>';
-	str += 		  '<option>Appointment Fixing</option>';
 	str += 		  '<option>Appointment Cancellation</option>';
+	str += 		  '<option>Appointment Fixing</option>';
+	str += 		  '<option>For Information</option>';	
+	str +=        '<option>Problem Reporting</option>';
+	str += 		  '<option>Problem Status Enquiry</option>';	
 	str += 		  '<option>Others</option>';
 	str += 	    '</select>';
 	str +=    '</td>';	   
@@ -263,9 +274,11 @@ populateDataToEditCallTracking(result);
 	   document.getElementById("errorNameDiv1").innerHTML='';
 	   document.getElementById("errorMobileDiv1").innerHTML='';
 	   document.getElementById("errorVillageDiv1").innerHTML='';
+	   document.getElementById("errorProblemPurposeDiv1").innerHTML='';
        var name = document.getElementById("name2").value;
 	   var mobile = document.getElementById("mobile1").value;
 	   var villageTown = document.getElementById("villageTown1").value;
+	   var problemPurpose = document.getElementById("problemPurpose1").value;
        if(name.trim().length == 0)
 	{
 		document.getElementById("errorNameDiv1").innerHTML ='<font color="red">Name is Required</font>';
@@ -282,11 +295,11 @@ populateDataToEditCallTracking(result);
 		val = 1;
 	    }
 	 }
-	if(villageTown.trim().length == 0)
-	{
-		document.getElementById("errorVillageDiv1").innerHTML= '<font color="red">village/Town is Required</font>';
+	 if(problemPurpose =="All"){
+		 document.getElementById("errorProblemPurposeDiv1").innerHTML = '<font color="red">Please Select Call Purpose</font><BR/>';
 		val = 1;
-	}
+	    }
+	
 	
 	return val;
  }
@@ -386,29 +399,28 @@ function validate(){
 	}
 	if(mobile.trim().length == 0)
 	{
-		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
 	if(mobile.trim().length != 0){
        if(isNaN(mobile) || mobile.length<10){
-		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter Valid Mobile No<br /> Number</font>';
 		val = 1;
 	    }
 	 }
-	if(problemPurpose.trim().length == 0){
-		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">ProblemPurpose is Required</font>';
-		 value = 1;
+	if(problemPurpose.trim() =="All"){
+		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Please Select Call Purpose</font>';
+		 val = 1;
 	}
-	if(referenceNo.trim().length == 0)
-	{
+	if(problemPurpose=="Problem Reporting"){
+	
+	    if(referenceNo.trim().length == 0)
+	    {
 		 document.getElementById("errorRefDiv").innerHTML = '<font color="red">ReferenceNo is Required</font><BR/>';
 		val = 1;
+	    }
 	}
-	if(villageTown.trim().length == 0)
-	{
-		document.getElementById("errorVillageDiv").innerHTML= '<font color="red">village/Town is Required</font>';
-		val = 1;
-	}
+	
 	
 	return val;
 }
@@ -431,7 +443,7 @@ function validateForAddProblem(){
 	}
 	if(mobile.trim().length == 0)
 	{
-		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
 	if(mobile.trim().length != 0){
@@ -440,9 +452,9 @@ function validateForAddProblem(){
 		val = 1;
 	    }
 	 }
-	if(problemPurpose.trim().length == 0){
-		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">ProblemPurpose is Required</font>';
-		 value = 1;
+	if(problemPurpose.trim() =="All"){
+		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Please Select Call Purpose</font>';
+		 val = 1;
 	}
 	
 	return val;
@@ -754,10 +766,10 @@ function showSearchDetails(result){
 		    	            
 							{key:"name", label: "Name", sortable: true},
 		    	           	{key:"mobile", label: "Mobile", sortable: true},
-							{key:"referenceNo", label: "ReferenceNo", sortable: true},
-							{key:"problemPurpose", label: "CallPurpose", sortable: true},
-		    				{key:"problemAddedDate", label: "ProblemAddedDate",sortable:true},
-							{key:"villageOrTown", label: "village/Town", sortable: true}
+							{key:"referenceNo", label: "Reference No", sortable: true},
+							{key:"problemPurpose", label: "Call Purpose", sortable: true},
+		    				{key:"problemAddedDate", label: "Problem Added Date",sortable:true},
+							{key:"villageOrTown", label: "Action Taken", sortable: true}
 							
 		    	        ]; 
 	var CallTrackingResultDataSource = new YAHOO.util.DataSource(result); 
@@ -785,6 +797,10 @@ function showSearchDetails(result){
 }
 function showCurrentDayProblems(result){
  
+       document.getElementById("name1").value='';
+	   document.getElementById("mobile").value='';
+	   document.getElementById("referenceNo").value='';
+	   document.getElementById("villageTown").value='';
  YAHOO.widget.DataTable.add = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
@@ -804,12 +820,12 @@ function showCurrentDayProblems(result){
   var CallTrackingResultColumnDefs = [ 		    	             
 		    	            {key:"name", label: "Name", sortable: true},
 		    	           	{key:"mobile", label: "Mobile", sortable: true},
-							{key:"referenceNo", label: "ReferenceNo", sortable: true},
-							{key:"problemPurpose", label: "CallPurpose", sortable: true},
-		    				{key:"problemAddedDate", label: "ProblemAddedDate",sortable:true},
-							{key:"villageOrTown", label: "village/Town", sortable: true},
+							{key:"referenceNo", label: "Reference No", sortable: true},
+							{key:"problemPurpose", label: "Call Purpose", sortable: true},
+		    				{key:"problemAddedDate", label: "Problem Added Date",sortable:true},
+							{key:"villageOrTown", label: "Action Taken", sortable: true},
 							{key:"Edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit},
-							{key:"AddProblem", label: "AddProblem",formatter:YAHOO.widget.DataTable.add}
+							{key:"AddProblem", label: "Add Problem",formatter:YAHOO.widget.DataTable.add}
 							
 		    	        ]; 
 	var CallTrackingResultDataSource = new YAHOO.util.DataSource(result); 
@@ -953,30 +969,28 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    <table>
      <tr>
       <th>Name</th>
-	  <th>MobileNo</th>
-	  <th>CallPurpose</th>	  
+	  <th>Mobile No</th>
+	  <th>Call Purpose</th>	  
 	  <th>Reference No</th>
-	  <th>Village/Town</th>
+	  <th>Action Taken</th>
      </tr>
 	 <tr>
 	   <td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name1"/></td>
 	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile" onBlur="validatePhoneNo(this.id)"/></td>
 	   <td>
-	       <select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
+	       <select style="width:190px;" class="textFieldStyle" style="height:23px;" id="problemPurpose" >
 	         <option>All</option>
 			 <option>Appointment Cancellation</option>
 			 <option>Appointment Fixing</option>
 			 <option>For Information</option>
 			 <option>Problem Reporting</option>
-			 <option>Problem Status Enquiry</option>
+			 <option>Problem Status Enquiry</option>			 			 			 
 			 <option>Others</option>
 		   </select>
 	   </td>	   
 	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="referenceNo" /></td>
-	   <td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="villageTown"/></td>
-	   <td><input id="resultBtnId" type="button" value="Add" onclick="saveCallTrackingProblem();"/></td>
-	   <td><input id="resultBtnId" type="button" value="Search" onclick="searchCallTrackingProblem();"/></td>
-	   <td><input id="resultBtnId" type="button" value="AddProblem" onclick="addCallTrackingProb();"/></td>
+	   <td><input type="textarea" maxlength="50"  class="textFieldStyle" style="height:23px;" id="villageTown"/></td>
+	   
      </tr>
 	 <tr>
 	   <td><div id="errorNameDiv"></div></td>
@@ -984,6 +998,15 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 	   <td><div id="errorProblemPurposeDiv"></div></td>
 	   <td><div id="errorRefDiv"></div></td>
 	   <td><div id="errorVillageDiv"></div></td>
+	 </tr>
+	 
+   </table>
+   <table style="padding-top:10px;">
+     <tr>
+	   <td><input id="resultBtnId" type="button" value="Add" onclick="saveCallTrackingProblem();"/></td>
+	   <td><input id="resultBtnId" type="button" value="Search" onclick="searchCallTrackingProblem();"/></td>
+	   <td><input id="resultBtnId" type="button" value="Add Problem" onclick="addCallTrackingProb();"/></td>
+	   <td><input id="resultBtnId" type="button" value="Clear All" onclick="clearAll();"/></td>
 	 </tr>
    </table>
 </div>
