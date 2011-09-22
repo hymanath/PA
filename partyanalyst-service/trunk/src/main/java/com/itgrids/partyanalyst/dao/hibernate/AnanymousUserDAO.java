@@ -47,6 +47,13 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<AnanymousUser>  getPassword(String password){
+		
+		return getHibernateTemplate().find("select model.password from AnanymousUser model where password=?", password);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
 		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId,model ");
