@@ -541,7 +541,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			}
 		}
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM,stateId);
-		problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
+		//problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
 		session.setAttribute(ISessionConstants.PROBLEM_TYPES, problemTypes);
 		session.setAttribute(ISessionConstants.STATES_AP, stateList);
 		session.setAttribute(ISessionConstants.DISTRICTS_AP, districtList);
