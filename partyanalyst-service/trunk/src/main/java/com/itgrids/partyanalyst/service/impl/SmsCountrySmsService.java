@@ -11,11 +11,13 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.SmsTrackVO;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
@@ -255,4 +257,59 @@ public class SmsCountrySmsService implements ISmsService {
 			return 0L;
 		}
 	}
+	
+	public SmsTrackVO updateUserMessageCreditDetail(SmsTrackVO smsTrackVO){
+		SmsTrackVO SmsTraVO =new SmsTrackVO();
+	 try{
+		    SmsTrack smsTrack = new SmsTrack();
+		if(smsTrackVO.getUserSmsTrackId()!=null && smsTrackVO.getUserSmsTrackId()!=0L)
+		    smsTrack = smsTrackDAO.get(smsTrackVO.getUserSmsTrackId());		   
+			smsTrack.setSmsUsername(smsTrackVO.getSmsUserName());
+		    smsTrack.setRegistration(registrationDAO.get(smsTrackVO.getUserId()));			
+			smsTrack.setSmsPassword(smsTrackVO.getSmsPassword());		
+			smsTrack.setSenderId(smsTrackVO.getSenderId());
+			smsTrack.setRenewalSmsCount(smsTrackVO.getRenewalSmsCount());
+			smsTrack.setRenewalDate(getCurrentDate());
+		
+		smsTrackDAO.save(smsTrack);
+		SmsTraVO.setUpdateStatus(1L);
+		return SmsTraVO;
+	 }
+	 catch(Exception e){
+		  e.printStackTrace();
+		  SmsTraVO.setUpdateStatus(0L);
+		 return SmsTraVO;
+	 }
+	}
+	public SmsTrackVO getUserMessageCreditDetail(Long userId){
+		SmsTrackVO smsTrackVO = new SmsTrackVO();
+		List<Object[]> records = smsTrackDAO.getUserSmsDetailsByUserId(userId);
+		if(records.size()>0){
+		  Object[] result = records.get(0);
+		  smsTrackVO.setUserSmsTrackId((Long)result[0]);
+		  smsTrackVO.setSmsUserName(result[1] != null ? result[1].toString() : "");
+		  smsTrackVO.setSmsPassword(result[2] != null ? result[2].toString() : "");
+		  smsTrackVO.setSenderId(result[3] != null ? result[3].toString() : "");
+		  smsTrackVO.setRenewalSmsCount((Long)result[4]);
+		  smsTrackVO.setFirstName(result[5] != null ? result[5].toString() : "");
+		  smsTrackVO.setLastName(result[6] != null ? result[6].toString() : "");
+		  smsTrackVO.setRecordNotFound(1L);
+		return smsTrackVO;
+		}
+		else
+		{   
+			Registration registration = registrationDAO.findByUserRegistrationId(userId).get(0);
+			
+			smsTrackVO.setFirstName(registration.getFirstName());
+			smsTrackVO.setLastName(registration.getLastName());
+			smsTrackVO.setUserSmsTrackId(0L);
+			smsTrackVO.setSmsUserName(" ");
+			smsTrackVO.setSmsPassword(" ");
+			smsTrackVO.setSenderId(" ");
+			smsTrackVO.setRenewalSmsCount(0L);
+			
+			return smsTrackVO;
+		}
+	}
+	
 }

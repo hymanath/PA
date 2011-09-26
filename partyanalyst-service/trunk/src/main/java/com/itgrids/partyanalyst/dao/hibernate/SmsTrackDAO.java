@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -62,4 +63,9 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 		query.setParameter(1,userId);
 		return query.executeUpdate();
 	}
+	public List<Object[]> getUserSmsDetailsByUserId(Long userId)
+	{
+		return getHibernateTemplate().find("select model.smsTrackId,model.smsUsername,model.smsPassword,model.senderId,model.renewalSmsCount,model.registration.firstName ,model.registration.lastName from SmsTrack model where model.registration.registrationId = ? ",userId);
+	}
+	
 }

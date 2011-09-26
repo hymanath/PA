@@ -24,4 +24,6 @@ public interface ISmsTrackDAO extends GenericDao<SmsTrack, Long> {
 	
 	public Integer updateRemainingSmsLeftForUser(Long userId, Long count);
 	
+	public List<Object[]> getUserSmsDetailsByUserId(Long userId);
+	
 }

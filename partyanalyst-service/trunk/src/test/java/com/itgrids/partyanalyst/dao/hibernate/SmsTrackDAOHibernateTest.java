@@ -56,7 +56,7 @@ public class SmsTrackDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testUpdateRemainingSmsLeftForUser()
+	/*public void testUpdateRemainingSmsLeftForUser()
 	{
 		Long count = (Long)smsTrackDAO.getRemainingSMSCountForAUser(1l);
 		System.out.println(count);
@@ -65,5 +65,9 @@ public class SmsTrackDAOHibernateTest extends BaseDaoTestCase {
 		count = (Long)smsTrackDAO.getRemainingSMSCountForAUser(1l);
 		System.out.println(count);
 		
+	}*/
+	
+	public void testGetUserSmsDetailsByUserId(){
+		smsTrackDAO.getUserSmsDetailsByUserId(1L);
 	}
 }
