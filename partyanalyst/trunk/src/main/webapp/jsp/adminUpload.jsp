@@ -50,8 +50,15 @@
 		width: 200px;
 		height: 75px;
 	}
+	.f3 {
+		border:2px solid #CFD6DF;
+		margin-bottom:10px;
+		padding:10px;
+		width: 200px;
+		height: 188px;
+	}
 	.l2 {
-		
+		color:navy;
 		font-size:12px;
 		padding:5px;
 		font-weight: bold;		
@@ -90,10 +97,13 @@
 					<legend class="l1">PartyAnalyst Utilities Admin</legend>
 					  	<table border="0" width="100%">
 							<tr>
-								<td>
-									<fieldset class="f2">
-									<legend class="l2">User Registration</legend>
+								<td rowspan="2">
+									<fieldset class="f3">
+									<legend class="l2">Manage Users</legend>
 									<h4 class="tdstyle">Register a new user&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="userRegPageAction?registrationType=mainUser"/>">Register</a></h4>
+									<h4 class="tdstyle">Organise Entitlements&nbsp;:&nbsp;&nbsp;<a  class="alinkstyle" href="<s:url action="userEntitlementAction"/>">organise</a></h4>
+									<h4 class="tdstyle">Manage User Region Access&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="userAccessRegionAction"/>">Manage</a></h4>
+									<h4 class="tdstyle">Manage User Sms Access&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="manageUserMessageCreditsAction"/>">Manage</a></h4>
 									</fieldset>
 								</td>
 								<td>
@@ -109,13 +119,7 @@
 									</fieldset>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<fieldset class="f2">
-									<legend class="l2">Entitlements</legend>
-									<h4 class="tdstyle">Organise Entitlements&nbsp;:&nbsp;&nbsp;<a  class="alinkstyle" href="<s:url action="userEntitlementAction"/>">organise</a></h4>
-									</fieldset>
-								</td>	
+							<tr>	
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Scrutinize Comments</legend>
@@ -166,12 +170,6 @@
                                     <fieldset class="f2">
                                     <legend class="l2">Memory Management</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="memoryManagementAction"/>'><b>Memory Moniter</b></a></h4></center>
-                                    </fieldset>
-                                </td>
-								<td>
-                                    <fieldset class="f2">
-                                    <legend class="l2">User Access</legend>
-                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="userAccessRegionAction"/>'><b>Manage User Access</b></a></h4></center>
                                     </fieldset>
                                 </td>
 							</tr>
