@@ -2561,6 +2561,17 @@
 				<param name="root">callTrackingVO</param>				
 			</result>	
 		</action>
+		
+		<action name="manageUserMessageCreditsAction" class="manageUserMessageCreditsAction">
+			<result name="success">/jsp/manageUserMessageCredits.jsp</result> 
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getUserMessageCreditDetailsAction" class="manageUserMessageCreditsAction" method="getUserMessageCreditDetails">
+			<result type="json" name="success">
+				<param name="root">smsTrackVO</param>				
+			</result>	
+		</action>
 				 		       	
 	</package>
 </struts>      
