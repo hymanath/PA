@@ -770,6 +770,11 @@
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp"/>	
 	</bean>
 	
+	<bean id="manageUserMessageCreditsAction" class="com.itgrids.partyanalyst.web.action.ManageUserMessageCreditsAction" singleton="false">	
+		<property name="registrationService" ref="registrationService" />
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />	    	
+	</bean>
+	
 </beans>	
 	
 	
