@@ -665,7 +665,7 @@ function buildDifferentViewsRadio(info,divId,type)
 			if(i == 0)
 				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
 			else
-				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" name="diffViews_'+type+'">'+data[i].name;
+				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
 		}
 		str += '</th>';
 		str += '</tr>';
