@@ -3599,7 +3599,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			return null;
 		}
 	}
-	public List<SelectOptionVO> getConstituenciesInAState(Long stateId){
+	/*public List<SelectOptionVO> getConstituenciesInAState(Long stateId){
 		List<Constituency> listOfConstituencies = constituencyDAO.getConstituencyByStateId(stateId);
 		
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
@@ -3609,7 +3609,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			constituencies.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName())));
 		}
 		return constituencies;
-	}
+	}*/
 	public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition){
 		List<SelectOptionVO> positionsList = new ArrayList<SelectOptionVO>();
 		InfluencingPeoplePosition userPosition= (InfluencingPeoplePosition)transactionTemplate.execute(new TransactionCallback() {
