@@ -8,10 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Create a User Group</title>
-<SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
-<LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
- <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 	<!-- YUI Dependency files (Start) -->
 
@@ -57,8 +54,14 @@
     <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+	<!-- JQuery files Start-->
+	<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>
+	<!-- JQuery files End -->
+	<SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
+	<LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
+	</script>
+	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 
 	
 <style type="text/css">
@@ -360,7 +363,75 @@ function setLocationValue(value,source)
 		
 	}
 }
+function userGroupCatagory(value){
+	
+var categorysIdElmt = document.getElementById("categoryId");
+var str='';
+categorysIdElmt.innerHTML = str;
+	if(value =='Others'){
+		str+='<input type=text id="groupCategoryId" name="groupCategory" value="Group Catagory" onclick="hideText()" onblur="showText()" onChange="addUserGroupCatagory()">';
+		categorysIdElmt.innerHTML = str;
+	}
+}
+function showText(){
+	
+   if($("#posId").val() == ""){
+		$("#posId").val("Enter Position");
+	}
 
+}
+function hideText(){
+
+	if($("#posId").val() == "Enter Position"){
+		$("#posId").val('');
+	}
+
+}
+function addUserGroupCatagory(){
+	
+ var groupName = document.getElementById("groupCategoryId").value;
+ 
+	var jsObj ={
+		group :groupName,
+		task:"addGroupCatagory"
+      }
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "addUserGroupCatagoryAjaxAction.action?"+rparam;						
+	ajaxCall(rparam,jsObj,url);
+}
+
+function ajaxCall(param,jsObj,url){
+	
+	var myResults;
+					
+	var callback = {			
+		             success : function( o ) 
+					  {
+					try {												
+						if(o.responseText)
+						myResults = YAHOO.lang.JSON.parse(o.responseText);
+								
+						if(jsObj.task == "addGroupCatagory")
+						 {	
+							clearOptionsListForSelectElmtId("categorysId");
+							createOptionsForSelectElmtId("categorysId",myResults);
+							document.getElementById("categoryId").innerHTML = '';
+						 }
+                		}  
+						catch (e)
+							{   
+							   	alert("Invalid JSON result" + e);   
+							}	  
+			              },
+			  scope : this,
+			  failure : function(o) 
+				{
+			      	//alert( "Failed to load result" + o.status + " " + o.statusText);
+			     }
+	};
+
+  YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
 </script>
 </head>
 <body class="bodyStyles">
@@ -404,7 +475,8 @@ function setLocationValue(value,source)
 	<table class="formTableStyle" cellpadding="0" cellspacing="0" border="0" align="left">
   	 <tr>
 	    <td class="tdstyle">Group Category<font class="required">*</font></td>
-		<td><s:select id="categorysId" name="groupCategoryId" cssStyle="width:180px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" ></s:select></td>
+		<td><s:select id="categorysId" name="groupCategoryId" cssStyle="width:180px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" onchange="userGroupCatagory(this.options[this.selectedIndex].text)"></s:select>
+		</td><td><span id="categoryId"></span></td>
 		<td class="tdstyle">Group Name<font class="required">*</font></td>
 		<td><s:textfield id="localGroupName" style="width:180px;" theme="simple" maxlength="61" name="localUserGroupName"/></td>
 	 </tr>
