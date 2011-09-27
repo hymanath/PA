@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Add Influencing People </title>
-
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 <!-- YUI Dependency files (Start) -->
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -52,7 +52,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
     <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 <!-- YUI Dependency files (End) -->
-
+<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>
 <link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
@@ -168,6 +168,12 @@ function callAjax(param,jsObj,url){
 					{
 						clearOptionsListForSelectElmtId("hamletField_s");
 						createOptionsForSelectElmtId("hamletField_s",myResults);
+					}
+					if(jsObj.task == "addNewPosition"){
+
+					clearOptionsListForSelectElmtId("position");
+					createOptionsForSelectElmtId("position",myResults);
+	                document.getElementById("positionId").innerHTML='';
 					}
 					
 			}catch (e) {   		
@@ -444,7 +450,46 @@ function refreshParent() {
   }
   window.close();
 }
+function addPosition(value){
+	
+	var str='';
+	var positionIdElmt = document.getElementById("positionId");
+	positionIdElmt.innerHTML = str;
+	if(value =='Others'){
+	str+='<td><input type="text" id="posId" name="position" onblur="showText()" onclick="hideText()" value="Enter Position"/></td>';
+	str+='<td><input type="button" value="Add Position To List" onclick="addPositionAjaxCall()"><td>';
+	positionIdElmt.innerHTML = str;
+	}
+}
 
+function addPositionAjaxCall(){
+  if($("#posId").val() == "Enter Position"){
+		$("#posId").val("");
+		return;
+	}
+	var position = document.getElementById("posId").value;
+	var jsObj={
+		position :position,
+        task :"addNewPosition"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "influencingPeopleAddPositionAjax.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+function showText(){
+	
+   if($("#posId").val() == ""){
+		$("#posId").val("Enter Position");
+	}
+
+}
+function hideText(){
+
+	if($("#posId").val() == "Enter Position"){
+		$("#posId").val('');
+	}
+
+}
 </script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
@@ -599,7 +644,7 @@ function refreshParent() {
 	<tr>
 		
 		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /><font class="required"> * </font></td>	
-		<td> <s:select id="position" list="#session.positionsList" listKey="id" listValue="name" name="position" cssClass="regionSelect" /></td>
+		<td> <s:select id="position" list="#session.positionsList" listKey="id" listValue="name" name="position" cssClass="regionSelect" onchange="addPosition(this.options[this.selectedIndex].text)" /></td><td><span id="positionId"></span></td>
 	</tr>
  </table>
  </FIELDSET>
