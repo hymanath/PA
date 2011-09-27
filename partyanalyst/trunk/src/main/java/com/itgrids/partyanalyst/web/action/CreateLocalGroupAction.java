@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -549,7 +550,24 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
-
+	
+	public String addNewGroupCategory(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		try {
+			jObj = new JSONObject(getTask());
+			String group = jObj.getString("group");
+			groupCategories = influencingPeopleService.saveNewGroupCatagory(group,userId);
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 	public Object getModel() {
 		
 		return localUserGroupDetailsVO;
