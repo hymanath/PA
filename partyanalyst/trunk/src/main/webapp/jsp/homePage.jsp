@@ -673,7 +673,7 @@ $("#username_change_window").dialog({
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
 							</div>
 						</div>
 						<h3><a href="#">View Your District</a></h3>
@@ -701,7 +701,7 @@ $("#username_change_window").dialog({
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
 							</div>
 						</div>
 						<h3><a href="#">View Your Constituency</a></h3>
@@ -739,7 +739,7 @@ $("#username_change_window").dialog({
 								</table>										
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
 							</div>
 						</div>
 									
@@ -771,7 +771,7 @@ $("#username_change_window").dialog({
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
 					 <h3><a href="#">View Election Results</a></h3>
@@ -794,7 +794,7 @@ $("#username_change_window").dialog({
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
 							</div>
 						</div>
 
