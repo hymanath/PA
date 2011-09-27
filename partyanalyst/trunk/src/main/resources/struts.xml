@@ -383,6 +383,11 @@
          	<result name="success">/jsp/influencingPeople.jsp</result>
          	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
         </action>
+        <action name="influencingPeopleAddPositionAjax" class="influencingPeopleAction" method="ajaxCallHandler">
+			<result name="success" type="json" >
+				<param name="root">positionsList</param>
+			</result>						
+		</action> 
         
         <action name="saveLocalGroupAction" class="saveLocalGroupAction" >
         	<result name="input">/jsp/createLocalUserGroup.jsp</result>
@@ -2022,7 +2027,11 @@
 				<param name="root">designations</param>				
 			</result>	
         </action>                
-        
+        <action name="addUserGroupCatagoryAjaxAction" class="createLocalGroupAction" method="addNewGroupCategory">
+           <result type="json" name="success">
+				<param name="root">groupCategories</param>				
+			</result>	
+        </action>     
         <action name="saveLocalGroupMembersAction" class="saveLocalGroupMembersAction">
 		   <result name="input">/jsp/localUserGroupMemberPage.jsp</result>
 		   <result name="error">/jsp/localUserGroupMemberPage.jsp</result>
@@ -2561,6 +2570,9 @@
 				<param name="root">callTrackingVO</param>				
 			</result>	
 		</action>
+		<!--<action name="candidateProfilePhotosAction" class="candidateProfilePhotosAction">
+			<result name="success">/jsp/jqueryphotogallery.jsp</result>
+		</action>	-->		 		       	
 		
 		<action name="manageUserMessageCreditsAction" class="manageUserMessageCreditsAction">
 			<result name="success">/jsp/manageUserMessageCredits.jsp</result> 
