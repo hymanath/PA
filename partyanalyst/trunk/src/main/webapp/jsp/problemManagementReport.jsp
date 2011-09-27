@@ -2493,7 +2493,7 @@ function buildResultDataTable(result)
 	<div style="text-align:left;margin-left:10px;">
 	<table id="statusSpan" width="98%" border="0" style="margin-left:10px;display:none;">
 	<tr>
-		<th style="width:195px;">Problem Status</th>	
+		<th style="width:195px;">Problem Status<font class="requiredFont">*</font></th>	
 		<td ><s:select theme="simple" cssClass="selectWidth" id="statusList" name="probStatus" headerKey="-1" headerValue = "Select Problem Status" list="statusList" listKey = "id" listValue="name" /></td>
 	</tr>	
 	</table>
