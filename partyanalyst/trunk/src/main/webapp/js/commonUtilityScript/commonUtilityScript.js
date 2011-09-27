@@ -245,3 +245,15 @@ function showCalendar(id){
 	id1="#"+id;
 	$(id1).datepick();
 }
+function showBusyImgWithId(elmtId)
+{		
+		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = 'block';
+}
+function hideBusyImgWithId(elmtId)
+{
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
+}
