@@ -528,7 +528,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
 		for(SelectOptionVO selectOptionVO:list)
 		{
-			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.MANDAL));
+			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),WordUtils.capitalize(selectOptionVO.getName().toLowerCase()+ " " + IConstants.MANDAL)));
 		}
 		return tehsilsList;
 	}
@@ -598,7 +598,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					List<Constituency> wards = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
 					for(Constituency constituency:wards)
 					{
-						regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+constituency.getConstituencyId()),constituency.getName().toUpperCase()));
+						regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+constituency.getConstituencyId()),WordUtils.capitalize(constituency.getName().toLowerCase())));
 					}
 				}								
 			}
@@ -612,7 +612,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
 							concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
 					
-					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),wardName));
+					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),WordUtils.capitalize(wardName.toLowerCase())));
 				}
 			}
 			
@@ -628,7 +628,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for(int i = 0; i<resultsList.size();i++)
 			{
 				Object[] obj = (Object[])resultsList.get(i);
-				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),obj[1].toString()));				
+				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),WordUtils.capitalize(obj[1].toString().toLowerCase())));				
 			}
 		}
 		return regionsList;
