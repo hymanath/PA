@@ -462,8 +462,20 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 				if(getAddress() == null || getAddress().trim().length() == 0)
 					addFieldError("addressInput","Please Enter Address.");
 				
-				/*if(getEmail() == null||getEmail().trim().length() == 0)
-					addFieldError("emailInput","Please Enter Email in Complained Person Details.");*/
+				if(getEmail() != null && getEmail().trim().length() > 0)
+				{
+					if(getEmail().contains("@") && getEmail().contains(".") )
+					{													
+						 int x = getEmail().lastIndexOf("@");
+						 int y = getEmail().lastIndexOf(".");
+						 if(y<x || (x+1)== y )
+							addFieldError("emailInput","Please Enter Valid Email in Complained Person Details."); 
+					}
+					else
+					{
+						 addFieldError("emailInput","Please Enter Valid Email in Complained Person Details.");
+					}
+				}
 			}
 			
 			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
