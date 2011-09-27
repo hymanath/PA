@@ -75,7 +75,7 @@
 		
 		#influencePeopleData_body .yui-pg-container 
 		{
-			margin:6px 60px;
+			margin:6px 450px;
 			text-align:right;
 		}
 
@@ -585,7 +585,7 @@
 				
 			</div>
 			
-			<div id="influencePeopleMainDataDiv">
+			<div id="influencePeopleMainDataDiv" style="width:28.28cm;">
 			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
 				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
 					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head">
