@@ -36,7 +36,6 @@
 <script type="text/javascript" src="js/partyPerformanceReport.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
-<script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -442,7 +441,7 @@ function openAddNewProblemWindow()
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
 							</div>
 						</div>
 						<h3><a href="#">View Your District</a></h3>
@@ -470,7 +469,7 @@ function openAddNewProblemWindow()
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
 							</div>
 						</div>
 						<h3 ><a href="#">View Your Constituency</a></h3>
@@ -508,7 +507,7 @@ function openAddNewProblemWindow()
 								</table>										
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
 							</div>
 						</div>
 
@@ -540,7 +539,7 @@ function openAddNewProblemWindow()
 								</table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
+								<img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
 
@@ -567,7 +566,7 @@ function openAddNewProblemWindow()
 								<table width="90%"><tr>
 									<td widyh="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
 
-									<td widyh="35%"><img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img></td>
+									<td widyh="35%"><img style="cursor:pointer" width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img></td>
 								</tr></table>
 							</div>
 						</div>
