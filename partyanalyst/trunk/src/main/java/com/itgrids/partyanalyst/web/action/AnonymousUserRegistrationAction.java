@@ -529,10 +529,10 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			}
 		}
 		
-		if(accept.get(0).equalsIgnoreCase("false"))
+	/*	if(accept.get(0).equalsIgnoreCase("false"))
 		{
 			addFieldError("userName","You must accept Terms of use and Policy of website to Register.");
-		}
+		}*/
 		
 	}
 	
