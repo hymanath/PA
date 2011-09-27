@@ -21,16 +21,15 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
-	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
-						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId,
-						influencingScopeValue,registrationId;
-	private String booth;
+	private String registrationId;
 	private int resultStatus = 3;
 	private HttpSession session;
 	
 	private String scopeState,scopeDistrict,scopeConstituency;
 	private String scopeMandal,scopeVillage,scopeBooth;
 	private Long pConstituencyId;
+	private InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+	
 	public int getResultStatus() {
 		return resultStatus;
 	}
@@ -62,111 +61,111 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	
 	
 	public String getFirstName() {
-		return firstName;
+		return influencingPeopleBeanVO.getFirstName();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
 	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.influencingPeopleBeanVO.setFirstName(firstName);
 	}
 
 	
 	public String getLastName() {
-		return lastName;
+		return influencingPeopleBeanVO.getLastName();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.influencingPeopleBeanVO.setLastName(lastName);
 	}
 
 	public String getEmail() {
-		return email;
+		return influencingPeopleBeanVO.getEmail();
 	}
 	 @EmailValidator(type = ValidatorType.FIELD, message = " enter a valid for email.")
 	public void setEmail(String email) {
-		this.email = email;
+		this.influencingPeopleBeanVO.setEmail(email);
 	}
 
 	public String getMobile() {
-		return mobile;
+		return influencingPeopleBeanVO.getMobile();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
-		this.mobile = mobile;
+		this.influencingPeopleBeanVO.setMobile(mobile);
 	}
 
 
 	public String getGender() {
-		return gender;
+		return influencingPeopleBeanVO.getGender();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Gender")
 	public void setGender(String gender) {
-		this.gender = gender;
+		this.influencingPeopleBeanVO.setGender(gender);
 	}
 
 	public String getCast() {
-		return cast;
+		return influencingPeopleBeanVO.getCast();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select the Caste Category")
 	public void setCast(String cast) {
-		this.cast = cast;
+		this.influencingPeopleBeanVO.setCast(cast);
 	}
 
 	public String getOccupation() {
-		return occupation;
+		return influencingPeopleBeanVO.getOccupation();
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Occupation Selection")
 	public void setOccupation(String occupation) {
-		this.occupation = occupation;
+		this.influencingPeopleBeanVO.setOccupation(occupation);
 	}
 
 	
 	public String getState() {
-		return state;
+		return influencingPeopleBeanVO.getState();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection")
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection")
 	public void setState(String state) {
-		this.state = state;
+		this.influencingPeopleBeanVO.setState(state);
 	}
 
 	
 	public String getDistrict() {
-		return district;
+		return influencingPeopleBeanVO.getDistrict();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
 	public void setDistrict(String district) {
-		this.district = district;
+		this.influencingPeopleBeanVO.setDistrict(district);
 	}
 
 
 	public String getConstituency() {
-		return constituency;
+		return influencingPeopleBeanVO.getConstituency();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
 	public void setConstituency(String constituency) {
-		this.constituency = constituency;
+		this.influencingPeopleBeanVO.setConstituency(constituency);
 	}
 
 	
 	public String getMandal() {
-		return mandal;
+		return influencingPeopleBeanVO.getMandal();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Tehsil/Muncipality Selection")
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Tehsil/Muncipality Selection")
 	public void setMandal(String mandal) {
-		this.mandal = mandal;
+		this.influencingPeopleBeanVO.setMandal(mandal);
 	}
 	
 	
@@ -179,132 +178,132 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	public String getVillage() {
-		return village;
+		return influencingPeopleBeanVO.getVillage();
 	}
 
 	public void setVillage(String village) {
-		this.village = village;
+		this.influencingPeopleBeanVO.setVillage(village);
 	}
 
 	public String getHamlet() {
-		return hamlet;
+		return influencingPeopleBeanVO.getHamlet();
 	}
 
 	public void setHamlet(String hamlet) {
-		this.hamlet = hamlet;
+		this.influencingPeopleBeanVO.setHamlet(hamlet);
 	}
 
 	public String getParty() {
-		return party;
+		return influencingPeopleBeanVO.getParty();
 	}
 
 	
 	public void setParty(String party) {
-		this.party = party;
+		this.influencingPeopleBeanVO.setParty(party);
 	}
 
 	
 	public String getPosition() {
-		return position;
+		return influencingPeopleBeanVO.getPosition();
 	}
 
 	
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Position Selection")
 	public void setPosition(String position) {
-		this.position = position;
+		this.influencingPeopleBeanVO.setPosition(position);
 	}
 
 	
 	public String getInfluencingRange() {
-		return influencingRange;
+		return influencingPeopleBeanVO.getInfluencingRange();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Influencing Range",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Influencing Range Selection")
 	public void setInfluencingRange(String influencingRange) {
-		this.influencingRange = influencingRange;
+		this.influencingPeopleBeanVO.setInfluencingRange(influencingRange);
 	}
 
 	public String getMiddleName() {
-		return middleName;
+		return influencingPeopleBeanVO.getMiddleName();
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
 	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
+		this.influencingPeopleBeanVO.setMiddleName(middleName);
 	}
 
 	
 	public String getFatherOrSpouseName() {
-		return fatherOrSpouseName;
+		return influencingPeopleBeanVO.getFatherOrSpouseName();
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse name is mandatory")
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
-		this.fatherOrSpouseName = fatherOrSpouseName;
+		this.influencingPeopleBeanVO.setFatherOrSpouseName(fatherOrSpouseName);
 	}
 
 	public String getHouseNo() {
-		return houseNo;
+		return influencingPeopleBeanVO.getHouseNo();
 	}
 
 	public void setHouseNo(String houseNo) {
-		this.houseNo = houseNo;
+		this.influencingPeopleBeanVO.setHouseNo(houseNo);
 	}
 
 	public String getStreetName() {
-		return streetName;
+		return influencingPeopleBeanVO.getStreetName();
 	}
 
 	public void setStreetName(String streetName) {
-		this.streetName = streetName;
+		this.influencingPeopleBeanVO.setStreetName(streetName);
 	}
 
 	public String getPincode() {
-		return pincode;
+		return influencingPeopleBeanVO.getPincode();
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9][0-9][0-9][0-9][0-9][0-9]", message = "Pin Code should contain digits ", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode length should be 6 digits only", minLength = "6", maxLength = "6")
 	public void setPincode(String pincode) {
-		this.pincode = pincode;
+		this.influencingPeopleBeanVO.setPincode(pincode);
 	}
 
 	
 	public String getWardOrHamlet() {
-		return wardOrHamlet;
+		return influencingPeopleBeanVO.getWardOrHamlet();
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid ward or hamlet selection")
 	public void setWardOrHamlet(String wardOrHamlet) {
-		this.wardOrHamlet = wardOrHamlet;
+		this.influencingPeopleBeanVO.setWardOrHamlet(wardOrHamlet);
 	}
 
 	public String getWindowTask() {
-		return windowTask;
+		return influencingPeopleBeanVO.getWindowTask();
 	}
 
 	public void setWindowTask(String windowTask) {
-		this.windowTask = windowTask;
+		this.influencingPeopleBeanVO.setWindowTask(windowTask);
 	}
 
 
 	public String getInfluencingPersonId() {
-		return influencingPersonId;
+		return influencingPeopleBeanVO.getInfluencingPersonId();
 	}
 
 	public void setInfluencingPersonId(String influencingPersonId) {
-		this.influencingPersonId = influencingPersonId;
+		this.influencingPeopleBeanVO.setInfluencingPersonId(influencingPersonId);
 	}
 
 	
 	public String getInfluencingScopeValue() {
-		return influencingScopeValue;
+		return influencingPeopleBeanVO.getInfluencingScopeValue();
 	}
 
 	public void setInfluencingScopeValue(String influencingScopeValue) {
-		this.influencingScopeValue = influencingScopeValue;
+		this.influencingPeopleBeanVO.setInfluencingScopeValue(influencingScopeValue);
 	}
 
 	public String getRegistrationId() {
@@ -316,11 +315,11 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	public String getBooth() {
-		return booth;
+		return influencingPeopleBeanVO.getBooth();
 	}
 
 	public void setBooth(String booth) {
-		this.booth = booth;
+		this.influencingPeopleBeanVO.setBooth(booth);
 	}
 
 	public String getScopeState() {
@@ -372,11 +371,11 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 	
 	public Long getPConstituencyId() {
-		return pConstituencyId;
+		return influencingPeopleBeanVO.getPConstituencyId();
 	}
 
 	public void setPConstituencyId(Long constituencyId) {
-		pConstituencyId = constituencyId;
+		influencingPeopleBeanVO.setPConstituencyId(constituencyId);
 	}
 	
 	public Long getDefaultPConstituency()
@@ -390,34 +389,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		
-		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
-		
 		influencingPeopleBeanVO.setRegistrationId(regVO.getRegistrationID().toString());
-		influencingPeopleBeanVO.setFirstName(getFirstName().trim());
-		influencingPeopleBeanVO.setLastName(getLastName().trim());
-		influencingPeopleBeanVO.setMiddleName(getMiddleName().trim());
-		influencingPeopleBeanVO.setFatherOrSpouseName(getFatherOrSpouseName().trim());
-		influencingPeopleBeanVO.setGender(getGender());
-		influencingPeopleBeanVO.setMobile(getMobile().trim());
-		influencingPeopleBeanVO.setEmail(getEmail().trim());
-		influencingPeopleBeanVO.setHouseNo(getHouseNo().trim());
-		influencingPeopleBeanVO.setStreetName(getStreetName().trim());
-		influencingPeopleBeanVO.setState(getState());
-		influencingPeopleBeanVO.setDistrict(getDistrict());
-		influencingPeopleBeanVO.setConstituency(getConstituency());
-		influencingPeopleBeanVO.setMandal(getMandal());
-		influencingPeopleBeanVO.setWardOrHamlet(getWardOrHamlet());
-		influencingPeopleBeanVO.setBooth(getBooth());
-		influencingPeopleBeanVO.setPincode(getPincode().trim());
-		influencingPeopleBeanVO.setOccupation(getOccupation());
-		influencingPeopleBeanVO.setParty(getParty());
-		influencingPeopleBeanVO.setCast(getCast());
-		influencingPeopleBeanVO.setPosition(getPosition());
-		influencingPeopleBeanVO.setPConstituencyId(getPConstituencyId());
 		influencingPeopleBeanVO.setAccessType(regVO.getAccessType());
-		influencingPeopleBeanVO.setWindowTask(getWindowTask());
-		influencingPeopleBeanVO.setInfluencingPersonId(getInfluencingPersonId());
-		
 				
 		if("2".equalsIgnoreCase(getInfluencingRange()))
 		{
