@@ -65,8 +65,14 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private Long defaultDistrict = 0l;
 	private Long defaultConstituency = 0l;
 	private Long pConstituencyId;
+	private String position;
 	
-	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 	public List<SelectOptionVO> getInfluenceRange() {
 		return influenceRange;
 	}
@@ -501,5 +507,17 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		Integer rows = influencingPeopleService.deleteInfluencingPeople(influencingPeopleId);
 		Log.debug("rows:"+rows);
 		
+	}
+	public String ajaxCallHandler(){
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		String newPosition = jObj.getString("position");
+		positionsList = influencingPeopleService.saveNewPositionForInfluencingPeople(newPosition);
+		return SUCCESS;
 	}
 }
