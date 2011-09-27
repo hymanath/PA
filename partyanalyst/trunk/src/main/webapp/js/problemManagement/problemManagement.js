@@ -342,7 +342,10 @@ function buildProblemsData(jsObj,results)
 
 	var newProblems = results.problemsOfUserVO.problemsByUser;
     if(newProblems == null || newProblems.length == 0)
-		return;
+		{
+		  elmtBody.innerHTML = '<div class="newProblemData_main" style="width:95%"><center><b>No Records Found<center></b> </div>';
+		  return;
+		}
 
 	var bStr = '';
 	for(var i=0;i<newProblems.length; i++)
