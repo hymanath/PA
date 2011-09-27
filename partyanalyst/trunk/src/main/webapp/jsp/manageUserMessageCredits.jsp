@@ -8,14 +8,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Manage User Sms Credits</title>
 <style type="text/css">
+ 
  .button {
-           background: none repeat scroll 0 0 #335291;
-           color: #FFFFFF;
-           margin-bottom: 5px;
-           margin-top: 5px;
-           padding: 2px;
-           width: 110px;
-          }
+    background: none repeat scroll 0 0 #335291;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 2px;
+    width: 110px;
+  }
 </style>
 <script type="text/Javascript">
   var userSmsId ;
@@ -209,7 +211,7 @@ YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	 </tr>
  </table>
 <table>
-    <input type="button" class="button" value="SaveOrUpdate" onclick="updateUserMessageCredits();"/>
+    <input type="button" class="button" value="Save/Update" onclick="updateUserMessageCredits();"/>
 </table> 
 </body>
 </html>
