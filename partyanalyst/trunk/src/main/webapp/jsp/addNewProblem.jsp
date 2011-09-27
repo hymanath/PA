@@ -84,7 +84,27 @@ var accessValue = '${problemLocation}';
 var scope = '${scope}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
+ function clearAllSubsInDistrict(){
+      clearOptionsListForSelectElmtId("mandalField_s");
+	  clearOptionsListForSelectElmtId("hamletField_s");
+	  clearOptionsListForSelectElmtId("boothField_s");
+  }
+ function clearAllSubsInAConstituency(){
+      clearOptionsListForSelectElmtId("hamletField_s");
+	  clearOptionsListForSelectElmtId("boothField_s");
+  }
+  function clearOptionsListForSelectElmtId(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
 
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+   }
 function populateReferenceNo(){
 
   if('${callTracking}' == 'callTracking'){
@@ -335,7 +355,7 @@ function clearSuccessMsg(){
 						<tr id="row2" style="display:none;">
 							<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" value="defaultDistrict" onchange="clearAllSubsInDistrict();getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 							<td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 						</tr>
@@ -355,9 +375,9 @@ function clearSuccessMsg(){
 						</TR>
 					</c:if>
 					<tr id="row3" style="display:none;">
-						<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>
+						<td><%=ACONSTITUENCY%><font class="requiredFont">* </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="clearAllSubsInAConstituency();getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td><td><img id="ajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none"/></td>
 					</tr>								
 					<tr id="row4" style="display:none;">
