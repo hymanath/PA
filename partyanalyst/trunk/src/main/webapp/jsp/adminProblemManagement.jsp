@@ -161,14 +161,24 @@
 
 		function getAllProblemsForParticularDate()			
 		{
+			document.getElementById("alertMsg").innerHTML='';
 			var selection = document.getElementsByName("problemType");
 			var selectedRadio;
+			var flag;
 			for(var i=0;i<selection.length;i++){
 				if(selection[i].checked == true){
-					selectedRadio = selection[i].value;					
+					selectedRadio = selection[i].value;	
+					flag = true;
 				}
-			}				
+				
+			}
 			var selectDate = document.getElementById("selectedDate").value;
+			if(selectDate ==''){
+			document.getElementById("alertMsg").innerHTML ='<font color="red">Please Select Date</font>';
+			return;
+			}
+			if(flag && selectDate !=''){
+			
 			var jsObj=
 			{		
 					choice:selectedRadio,			
@@ -180,7 +190,10 @@
 			var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
 			callAjax(rparam,jsObj,url);			
 		}
-		
+		else{
+     		document.getElementById("alertMsg").innerHTML ='<font color="red">Please Select Any One type of Problems</font>';
+		    }
+		}
 		
 		function buildNewProblemsDataTable(results)
 		{	
@@ -371,7 +384,7 @@
 						<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
 					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText',new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
 					</td>						
 					
 					<td><font class="requiredFont"> * </font></td>
@@ -380,7 +393,7 @@
 						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>
 					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText',new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
 					</td>
 
 					<td><input type="button" value="view" onclick="getAllProblemsBetweenDates()"></input></td>
@@ -416,12 +429,13 @@
 											<div class="yui-skin-sam"><div id="selectedDateDiv" class="tinyDateCal"></div></div>
 										</td>					
 										<td valign="top">
-											<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('selectedDateDiv','selectedDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+											<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('selectedDateDiv','selectedDate',new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
 										</td>		
 										
 										<td><input type="button" value="view" onclick="getAllProblemsForParticularDate()"></input></td>
 									</tr>
 								</table>
+								<span id="alertMsg"></span>
 								</fieldset>	
 					
 									<!-- <div id="saveDiv" align="center">
