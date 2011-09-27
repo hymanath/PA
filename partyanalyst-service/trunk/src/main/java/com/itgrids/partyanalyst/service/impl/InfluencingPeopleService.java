@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -417,9 +420,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			for(InfluencingPeoplePosition influencingPeoplePosition : result){
 				SelectOptionVO selectOption = new SelectOptionVO();
 				selectOption.setId(influencingPeoplePosition.getInfluencingPeoplePositionId());
-				selectOption.setName(influencingPeoplePosition.getPosition());
+				selectOption.setName(WordUtils.capitalize(influencingPeoplePosition.getPosition().toLowerCase()));
 				selectOptionVO.add(selectOption);
 			}
+			Collections.sort(selectOptionVO);
 			return selectOptionVO;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2785,6 +2789,18 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			if(regionType.equals(IConstants.STATE)){
 				
+				if(selectedType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					
+					//List<SelectOptionVO> selectOption = new ArrayList<SelectOptionVO>();
+					RegionSelectOptionVO option = new RegionSelectOptionVO();
+					option.setLabel(IConstants.CONSTITUENCY);
+					List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
+					constituenciesInDistrict.add(0,new SelectOptionVO(0L,"Select Constituency"));
+					option.setOptionsList(constituenciesInDistrict);
+					
+					regionSelectOption.add(0,option);
+				}
+			  
 				RegionSelectOptionVO option = new RegionSelectOptionVO();
 				option.setLabel(IConstants.DISTRICT);
 				List<SelectOptionVO> districtsInState = staticDataService.getDistricts(regionId);
@@ -2792,18 +2808,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				option.setOptionsList(districtsInState);
 				
 				regionSelectOption.add(0, option);
-				
-				if(selectedType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					
-					List<SelectOptionVO> selectOption = new ArrayList<SelectOptionVO>();
-					selectOption.add(new SelectOptionVO(0L,"Select Constituency"));
-					RegionSelectOptionVO option1 = new RegionSelectOptionVO();
-					option1.setLabel(IConstants.CONSTITUENCY);
-					option.setOptionsList(selectOption);
-					
-					regionSelectOption.add(option1);
-				}
-				
 				
 			}else if(regionType.equals(IConstants.DISTRICT)){
 				
@@ -2862,9 +2866,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				Object[] values = (Object[])lstItr.next();
 				
 				option.setId((Long)values[0]);
-				option.setName((String)values[1]);
+				option.setName(WordUtils.capitalize(values[1].toString().toLowerCase()));
 				
 				categoriesList.add(option);
+				Collections.sort(categoriesList);
 				
 			}
 		}
@@ -2879,9 +2884,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				Object[] values = (Object[])lstItr.next();
 				
 				option.setId((Long)values[0]);
-				option.setName((String)values[1]);
+				option.setName(WordUtils.capitalize(values[1].toString().toLowerCase()));
 				
 				categoriesList.add(option);
+				Collections.sort(categoriesList);
 				
 			}
 		}
@@ -3592,6 +3598,81 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		{
 			return null;
 		}
+	}
+	public List<SelectOptionVO> getConstituenciesInAState(Long stateId){
+		List<Constituency> listOfConstituencies = constituencyDAO.getConstituencyByStateId(stateId);
+		
+		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
+		
+		for(Constituency constituency : listOfConstituencies){
+			
+			constituencies.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName())));
+		}
+		return constituencies;
+	}
+	public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition){
+		List<SelectOptionVO> positionsList = new ArrayList<SelectOptionVO>();
+		InfluencingPeoplePosition userPosition= (InfluencingPeoplePosition)transactionTemplate.execute(new TransactionCallback() {
+
+			public Object doInTransaction(TransactionStatus status) {
+				
+				InfluencingPeoplePosition userPosition = new InfluencingPeoplePosition();
+				
+				try{
+					
+					userPosition.setPosition(newPosition);
+					
+					userPosition.setUpdatedDate(getCurrentDate());
+					influencingPeoplePositionDAO.save(userPosition);
+
+				}catch(Exception ex){
+					log.error("Exception Raised In New Position Adding :" + ex);
+					ex.printStackTrace();
+					status.setRollbackOnly();
+				}
+				
+			 return userPosition;
+			}
+			
+		});
+		positionsList =getAllInfluencePeoplePositions();
+		return positionsList;
+	}
+	
+	public List<SelectOptionVO> saveNewGroupCatagory(final String groupType,final Long userId){
+		
+		List<SelectOptionVO> groupsList = new ArrayList<SelectOptionVO>(0);
+		StaticLocalGroup  staticLocalGroupObj = (StaticLocalGroup)transactionTemplate.execute(new TransactionCallback(){
+	
+			public Object doInTransaction(TransactionStatus status) {
+				StaticLocalGroup staticLocalGroup = new StaticLocalGroup();
+				staticLocalGroup.setGroupType(groupType);
+				//staticLocalGroup.setUser(registrationDAO.get(userId));
+				staticLocalGroup.setUpdatedDate(getCurrentDate());
+				staticLocalGroupDAO.save(staticLocalGroup);
+				return staticLocalGroup;
+			}
+			
+		});
+		groupsList = getLocalGroupCategoriesList(userId);
+		return groupsList;
+	}
+	
+	public  Date getCurrentDate(){
+	
+		try {
+			java.util.Date now = new java.util.Date();
+		    String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+		    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		    String strDateNew = sdf.format(now);        
+	
+		now = sdf.parse(strDateNew);
+		return now;
+	} catch (ParseException e) {
+		e.printStackTrace();
+		return null;
+	}
+	
 	}
 }
 
