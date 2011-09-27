@@ -78,5 +78,9 @@ public interface IInfluencingPeopleService {
     public Integer deleteLocalUserGroup(Long groupId);
     
     public Long getStateIdOfAUser(String accessType,Long accessValue);
+    
+    public List<SelectOptionVO> saveNewPositionForInfluencingPeople(final String newPosition);
+   
+    public List<SelectOptionVO> saveNewGroupCatagory(final String group ,final Long userId);
 	
 }
