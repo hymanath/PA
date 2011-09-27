@@ -14,7 +14,12 @@
  
  */
 function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId)
-{		
+{	    
+	if(selectedId ==0){
+		alert("Please Select Valid Location");
+	 return;
+	 }
+	showBusyImgWithId('ajaxImgId');
 	var jsObj=
 		{				
 			id: selectedId,
@@ -47,6 +52,7 @@ function callAjaxForLocations(jsObj,url)
 							} else {
 								clearOptionsListForSelectElmtId(jsObj.selectElementId);
 								fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
+								hideBusyImgWithId('ajaxImgId');
 							}
 						}
 						catch(e)
@@ -271,6 +277,11 @@ callAjaxForLocations(jsObj,url);
 
 function getBooths(address, constituencyField, boothField, id,name, taskType,task )
 {
+	
+	if(id == 0){
+		clearOptionsListForSelectElmtId(boothField);
+		return;
+	}
 	var constituencyEl = document.getElementById(constituencyField);
 	var constiId = constituencyEl.options[constituencyEl.selectedIndex].value;
 	if(constiId == 0)
