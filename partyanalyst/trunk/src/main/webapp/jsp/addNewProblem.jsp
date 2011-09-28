@@ -10,6 +10,9 @@
 <title>Add New Problem</title>
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
+
+<!--<SCRIPT type="text/javascript" src="js/AddNewProblem/addFileInput.js"></SCRIPT>-->
+
 <LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
  <link href="calendar.css" rel="stylesheet" type="text/css">
@@ -64,6 +67,7 @@ var Localization = { <%
 		String telephoneNo = rb.getString("telephoneNo");
 		String reportedDate = rb.getString("reportedDate");
 		String existingFrom = rb.getString("existingFrom");
+		String uploadMater=rb.getString("uploadMater");
 		String problemSource = rb.getString("problemSource");
 		String mobile  = rb.getString("mobile");
 		String problemAddingSuccess  = rb.getString("problemAddingSuccess");
@@ -112,6 +116,18 @@ function populateReferenceNo(){
 	window.opener.setReferenceNo('${problemBeanFromDB.problemRefNum}');
 	}
 }
+
+function addFileInput() {
+    
+	var d = document.createElement("div");
+ 	var file = document.createElement("input");
+ 	file.setAttribute("type", "file");
+ 	file.setAttribute("name", "userFile");
+ 	d.appendChild(file);
+ 	document.getElementById("moreUploads").appendChild(d);
+ 	
+}
+
 function setSelectedCadre(cadreId,cadreName)
 {
 	var cadreInputIdEle = document.getElementById("cadreInputId");
@@ -175,7 +191,40 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
+function addAnotherProblem(divName){
+      
+		var newdiv = document.createElement('div');
+		var str	= "";
+		str += "<table>"
+		str += "<tr>"
+		str += '<td width="100px;">Title</td>';
+		str += '<td style="padding-left: 15px;"><input type="text" id="titleField" name="fileTitle" size="33"/></td>'
+		str += "</tr>";
+		str += "<tr>"
+		str += '<td width="100px;">Description</td>'
+		str += '<td style="padding-left: 15px;"><textarea name="fileDescription" cols="25" rows="3" /></textarea></td>'
+		str += "</tr>";
+		str += "<tr>"
+		str += '<td width="100px;" style="padding-left:0px;">Documents And Images </td>'
+		str += '<td style="padding-left:15px;"> <input type="file" name="userImage" id="userImage"/></td></tr>'
+		str += "<tr>";
+		
+		str += "</table>"
+        newdiv.innerHTML = str;
+		document.getElementById(divName).appendChild(newdiv);
 
+
+  }
+function getProblemDetails()
+{
+	
+var problemDetailDivEle = document.getElementById("problemDetailDiv");
+if(problemDetailDivEle.style.display =='none')
+	problemDetailDivEle.style.display = 'block';
+else
+    problemDetailDivEle.style.display = 'none';
+
+}
 function getComplainedPersonDetails(name)
 {	
 	var personDetailsDivEle = document.getElementById("personDetailsDiv");
@@ -281,7 +330,7 @@ function clearSuccessMsg(){
 </TABLE>
 </CENTER>
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<s:form action="addNewProblemSubmitAction" method="POST" theme="simple" name="form">
+<s:form action="addNewProblemSubmitAction" enctype="multipart/form-data" method="POST" theme="simple" name="form" >
 
  
 <div id = "addNewProblemMainDiv">
@@ -429,10 +478,37 @@ function clearSuccessMsg(){
 						</TABLE>		
 					</td>
 				</tr>
+				
+				<tr>
+					<td ><%=uploadMater%></td>		 
+                    <td><a href="javascript:{}"  onclick="getProblemDetails()"><font color="green">  Click Here</font></a></td>
+				</tr>
+		
+		
+		          <table id="problemDetailDiv" style="display:none">
+					<tr>
+						<th align="left" colspan="2"><u>Upload Documents and Images</u></th>
+					</tr>
+					
+					<tr>
+						<td width="100px;"><s:label value="Title"/></td>
+						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle" size="33"/></td>
+					</tr>
+					<tr>
+						<td width="100px;"><s:label value="Description"/></td>
+						<td style="padding-left: 15px;"><s:textarea  name="fileDescription" cols="25" rows="3" /></td>
+					</tr>
+					<tr>
+						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
+						<td style="padding-left:15px;"> <s:file name="userImage" id="userImage"/></td>
+						
+						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="red">  More Documents...</font></a></td></tr>
+			       
+					</table>
+			<div id="dynamicDiv" ></div>
 				<tr id="problemSourceRowId">
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
-					
 					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
 					</td>
