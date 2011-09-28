@@ -506,6 +506,10 @@
 		<property name="problemTypeDAO" ref="problemTypeDAO" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="fileDAO" ref="fileDAO" />
+		<property name="fileTypeDAO" ref="fileTypeDAO" />
+		<property name="problemFileDAO" ref="problemFileDAO" />
+
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
