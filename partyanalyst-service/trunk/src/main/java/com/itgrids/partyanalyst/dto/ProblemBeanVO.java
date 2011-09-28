@@ -86,6 +86,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String problemRefNum;
 	private Long subUserId;
 	private String mandal;
+	private FileVO fileVO;
+	
+
+	public FileVO getFileVO() {
+		return fileVO;
+	}
+
+	public void setFileVO(FileVO fileVO) {
+		this.fileVO = fileVO;
+	}
 
 	public Long getSubUserId() {
 		return subUserId;
