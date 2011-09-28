@@ -1,18 +1,23 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -32,6 +37,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private ProblemBeanVO problemBeanFromDB;
 	private Boolean isSuccessfullyInserted;
 	ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+	FileVO fileVO=new FileVO();
 	
 	//form inputs
 	private String problem;
@@ -63,8 +69,73 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private Long cadreId;
 	private String callTracking;
 	private Long problemTypeId;
+	private List<File> userImage = new ArrayList<File>();
+	private List<String> userImageContentType = new ArrayList<String>();
+	private List<String> userImageFileName = new ArrayList<String>();
+	private List<String> problemFilepath;
+	private List<String> contentType=new ArrayList<String>();
+	private List<String> fileTitle;
+	private List<String> fileDescription;
+    private HttpServletRequest servletRequest;
 	
 		
+    
+	public List<File> getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(List<File> userImage) {
+		this.userImage = userImage;
+	}
+
+	public List<String> getUserImageContentType() {
+		return userImageContentType;
+	}
+
+	public void setUserImageContentType(List<String> userImageContentType) {
+		this.userImageContentType = userImageContentType;
+	}
+
+	public List<String> getUserImageFileName() {
+		return userImageFileName;
+	}
+
+	public void setUserImageFileName(List<String> userImageFileName) {
+		this.userImageFileName = userImageFileName;
+	}
+
+	public List<String> getProblemFilepath() {
+		return problemFilepath;
+	}
+
+	public void setProblemFilepath(List<String> problemFilepath) {
+		this.problemFilepath = problemFilepath;
+	}
+
+	public List<String> getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(List<String> contentType) {
+		this.contentType = contentType;
+	}
+
+	public List<String> getFileTitle() {
+		return fileTitle;
+	}
+
+	public void setFileTitle(List<String> fileTitle) {
+		this.fileTitle = fileTitle;
+	}
+
+	public List<String> getFileDescription() {
+		return fileDescription;
+	}
+
+	public void setFileDescription(List<String> fileDescription) {
+		this.fileDescription = fileDescription;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -423,8 +494,50 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemBeanVO.setEmail(getEmail());			
 			problemBeanVO.setAddress(getAddress());
 		}
+		fileVO.setFileName(getUserImageFileName());
+		fileVO.setFileTitle(getFileTitle());
+		fileVO.setFileDescription(getFileDescription());
 		
-		
+		//problemBeanVO.setFileName(getUserImageFileName());
+		//problemBeanVO.setFileTitle(getFileTitle());
+		//problemBeanVO.setFileDescription(getFileDescription());
+		try {
+
+			String filePath1 = request.getRealPath("/");
+			//System.out.println("Server path:" + filePath1);
+			String filePath = filePath1 + "/uploaded_files";
+			/*System.out.println("Server path:" + filePath);
+			System.out.println("userImage:" + userImage.size());
+			System.out.println("userImageContentType:"
+					+ userImageContentType.size());
+			System.out.println("userImageFileName:" + userImageFileName.size());*/
+			problemFilepath = new ArrayList<String>();
+			for (int i = 0; i < userImage.size(); i++) {
+				Long systime = System.currentTimeMillis();
+				String fileName = systime + "_" + userImageFileName.get(i);
+				String problemFilePath=filePath+"/"+fileName;
+				problemFilepath.add(problemFilePath);
+				File fileToCreate = new File(filePath, fileName);
+				FileUtils.copyFile(userImage.get(i), fileToCreate);
+				System.out.println("contenyt type.."
+						+ userImageContentType.get(i));
+				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
+				while(st.hasMoreTokens()) {
+				String key = st.nextToken();
+				String val = st.nextToken();
+				System.out.println(key + "\t" + val);
+				contentType.add(val);
+				}
+			}
+			fileVO.setFileContentType(getContentType());
+			//problemBeanVO.setFileContentType(getContentType());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
+		fileVO.setFilePath(problemFilepath);
+		//problemBeanVO.setFilePath(problemFilepath);
+		problemBeanVO.setFileVO(fileVO);
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
 		
