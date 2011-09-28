@@ -21,19 +21,21 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 
-    <bean id="sessionFactory" 
+	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource">
-			<ref bean="dataSource"/>
+			<ref bean="dataSource" />
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</prop>
 				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
 				<prop key="hibernate.max_fetch_depth">0</prop>
 				<prop key="hibernate.connection.autoReconnect">true</prop>
-				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider
+				</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
@@ -41,460 +43,678 @@
 		</property>
 		<property name="annotatedClasses">
 			<list>
-				<value>com.itgrids.partyanalyst.model.Country</value>
-				<value>com.itgrids.partyanalyst.model.State</value>
-				<value>com.itgrids.partyanalyst.model.Constituency</value>
-				<value>com.itgrids.partyanalyst.model.District</value>
-				<value>com.itgrids.partyanalyst.model.CandidateResult</value>
-				<value>com.itgrids.partyanalyst.model.Candidate</value>
-				<value>com.itgrids.partyanalyst.model.ConstituencyElection</value>
-				<value>com.itgrids.partyanalyst.model.Nomination</value>
-				<value>com.itgrids.partyanalyst.model.Ward</value>
-				<value>com.itgrids.partyanalyst.model.Township</value>
-				<value>com.itgrids.partyanalyst.model.Tehsil</value>
-				<value>com.itgrids.partyanalyst.model.ElectionScope</value>
-				<value>com.itgrids.partyanalyst.model.Party</value>
-				<value>com.itgrids.partyanalyst.model.Election</value>
-				<value>com.itgrids.partyanalyst.model.ElectionType</value>
-				<value>com.itgrids.partyanalyst.model.ConstituencyElectionResult</value>
-				<value>com.itgrids.partyanalyst.model.Registration</value> 
-				<value>com.itgrids.partyanalyst.model.Census</value>  
-				<value>com.itgrids.partyanalyst.model.Cadre</value>  
-				<value>com.itgrids.partyanalyst.model.CadreLevel</value> 
-				<value>com.itgrids.partyanalyst.model.Booth</value>
-				<value>com.itgrids.partyanalyst.model.BoothConstituencyElection</value>
-				<value>com.itgrids.partyanalyst.model.BoothResult</value>
-				<value>com.itgrids.partyanalyst.model.BoothVillageCensus</value>
-				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
-				<value>com.itgrids.partyanalyst.model.Group</value>
-				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
-				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
-				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
-				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
-				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
-				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
-				<value>com.itgrids.partyanalyst.model.Problem</value>
-				<value>com.itgrids.partyanalyst.model.ProblemHistory</value>
-				<value>com.itgrids.partyanalyst.model.ProblemSourceScope</value>
-				<value>com.itgrids.partyanalyst.model.ProblemStatus</value>
-				<value>com.itgrids.partyanalyst.model.ProblemLocation</value>
-				<value>com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment</value>
-				<value>com.itgrids.partyanalyst.model.ProblemClassification</value>
-				<value>com.itgrids.partyanalyst.model.ProblemFundSource</value>
-				<value>com.itgrids.partyanalyst.model.FundSource</value>
-				<value>com.itgrids.partyanalyst.model.UserCategory</value>
-				<value>com.itgrids.partyanalyst.model.AssignedProblemProgress</value>
-				<value>com.itgrids.partyanalyst.model.InformationSource</value>
-				<value>com.itgrids.partyanalyst.model.Hamlet</value>
-				<value>com.itgrids.partyanalyst.model.Voter</value>
-				<value>com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter</value>
-				<value>com.itgrids.partyanalyst.model.UserEvents</value>
-				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
-				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
-				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
-				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
-				<value>com.itgrids.partyanalyst.model.EPaper</value>
-				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
-				<value>com.itgrids.partyanalyst.model.VillageBoothElection</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
-		 		<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
-		 		<value>com.itgrids.partyanalyst.model.PersonalUserGroup</value>
-				<value>com.itgrids.partyanalyst.model.StaticGroup</value>
-				<value>com.itgrids.partyanalyst.model.StaticUsers</value>
-				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
-				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
-				<value>com.itgrids.partyanalyst.model.MyGroup</value>
-				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
-				<value>com.itgrids.partyanalyst.model.InfluencingPeople</value>
-				<value>com.itgrids.partyanalyst.model.InfluencingPeoplePosition</value>
-				<value>com.itgrids.partyanalyst.model.CommentData</value>
-				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate</value>
-				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
-				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency</value>
-				<value>com.itgrids.partyanalyst.model.CommentDataCategory</value>
-				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
-				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
-				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
-				<value>com.itgrids.partyanalyst.model.PoliticalChanges</value>
-				<value>com.itgrids.partyanalyst.model.PoliticalChangesInformationSource</value>
-				<value>com.itgrids.partyanalyst.model.SmsHistory</value>
-				<value>com.itgrids.partyanalyst.model.SmsModule</value>
-				<value>com.itgrids.partyanalyst.model.SmsTrack</value>
-				<value>com.itgrids.partyanalyst.model.PartyWorkingCommittee</value>
-				<value>com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation</value>
-				<value>com.itgrids.partyanalyst.model.UserAddress</value>
-				<value>com.itgrids.partyanalyst.model.SocialCategory</value>
-				<value>com.itgrids.partyanalyst.model.EducationalQualifications</value>
-				<value>com.itgrids.partyanalyst.model.Occupation</value>
-				<value>com.itgrids.partyanalyst.model.Language</value>
-				<value>com.itgrids.partyanalyst.model.CadreLanguageEfficiency</value>
-				<value>com.itgrids.partyanalyst.model.PartyCadreSkills</value>
-				<value>com.itgrids.partyanalyst.model.PartyTrainingCamps</value>
-				<value>com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps</value>
-				<value>com.itgrids.partyanalyst.model.CadreSkills</value>
-				<value>com.itgrids.partyanalyst.model.Entitlement</value>
-				<value>com.itgrids.partyanalyst.model.GroupEntitlement</value>
-				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
-				<value>com.itgrids.partyanalyst.model.UserGroups</value>
-				<value>com.itgrids.partyanalyst.model.UserGroupRelation</value>
-				<value>com.itgrids.partyanalyst.model.UserCountryAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserStateAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionStateResult</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
-				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
-				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>
-				<value>com.itgrids.partyanalyst.model.OpinionPoll</value>
-				<value>com.itgrids.partyanalyst.model.OpinionPollQuestionOptions</value>
-				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions</value>
-				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
-				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
-				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard</value>
-				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>
-				<value>com.itgrids.partyanalyst.model.ProblemImpactLevel</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
-				<value>com.itgrids.partyanalyst.model.CustomMessage</value>
-				<value>com.itgrids.partyanalyst.model.MessageType</value>
-				<value>com.itgrids.partyanalyst.model.UserConnectedto</value>
-				<value>com.itgrids.partyanalyst.model.StaticLocalGroup</value>
-				<value>com.itgrids.partyanalyst.model.StaticUserDesignation</value>
-				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
-				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
-				<value>com.itgrids.partyanalyst.model.BoothVillage</value>
-				<value>com.itgrids.partyanalyst.model.UserRelation</value>
-				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserMappingsHistory</value>
-				<value>com.itgrids.partyanalyst.model.RegionScopes</value>
-				<value>com.itgrids.partyanalyst.model.ProfileOpts</value>
-				<value>com.itgrids.partyanalyst.model.UserProfileOpts</value>
-				<value>com.itgrids.partyanalyst.model.ModuleDetails</value>
-				<value>com.itgrids.partyanalyst.model.ModuleRegionScopes</value>
-				<value>com.itgrids.partyanalyst.model.CensusYear</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationYear</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyTown</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationVillage</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationWard</value>
-				<value>com.itgrids.partyanalyst.model.Block</value>
-				<value>com.itgrids.partyanalyst.model.DelimitationBlock</value>
-				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
-				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
-				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
-				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
-				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
-				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
-				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
-				<value>com.itgrids.partyanalyst.model.CadreRole</value>
-				<value>com.itgrids.partyanalyst.model.StateRegion</value>
-				<value>com.itgrids.partyanalyst.model.StateRegionDistrict</value>
-				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
-				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation</value>
-				<value>com.itgrids.partyanalyst.model.ProblemActivity</value>
-				<value>com.itgrids.partyanalyst.model.FeedBack</value>
-				<value>com.itgrids.partyanalyst.model.FeedBackTask</value>
-				<value>com.itgrids.partyanalyst.model.FeedBackComment</value>
-				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
-				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
-				<value>com.itgrids.partyanalyst.model.UserTracking</value>
-				<value>com.itgrids.partyanalyst.model.Announcement</value>
-				<value>com.itgrids.partyanalyst.model.UserAnnouncement</value>
-				<value>com.itgrids.partyanalyst.model.UserConstituencyScope</value>
-				<value>com.itgrids.partyanalyst.model.ProblemType</value>
-				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType</value>
-				<value>com.itgrids.partyanalyst.model.CallTrackingDetail</value>
-				<value>com.itgrids.partyanalyst.model.CallTrackingProblem</value>
-		 </list>
+				<value>com.itgrids.partyanalyst.model.Country
+				</value>
+				<value>com.itgrids.partyanalyst.model.State
+				</value>
+				<value>com.itgrids.partyanalyst.model.Constituency
+				</value>
+				<value>com.itgrids.partyanalyst.model.District
+				</value>
+				<value>com.itgrids.partyanalyst.model.CandidateResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.Candidate
+				</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyElection
+				</value>
+				<value>com.itgrids.partyanalyst.model.Nomination
+				</value>
+				<value>com.itgrids.partyanalyst.model.Ward
+				</value>
+				<value>com.itgrids.partyanalyst.model.Township
+				</value>
+				<value>com.itgrids.partyanalyst.model.Tehsil
+				</value>
+				<value>com.itgrids.partyanalyst.model.ElectionScope
+				</value>
+				<value>com.itgrids.partyanalyst.model.Party
+				</value>
+				<value>com.itgrids.partyanalyst.model.Election
+				</value>
+				<value>com.itgrids.partyanalyst.model.ElectionType
+				</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyElectionResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.Registration
+				</value>
+				<value>com.itgrids.partyanalyst.model.Census
+				</value>
+				<value>com.itgrids.partyanalyst.model.Cadre
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreLevel
+				</value>
+				<value>com.itgrids.partyanalyst.model.Booth
+				</value>
+				<value>com.itgrids.partyanalyst.model.BoothConstituencyElection
+				</value>
+				<value>com.itgrids.partyanalyst.model.BoothResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.BoothVillageCensus
+				</value>
+				<value>com.itgrids.partyanalyst.model.ElectionAlliance
+				</value>
+				<value>com.itgrids.partyanalyst.model.Group
+				</value>
+				<value>com.itgrids.partyanalyst.model.AllianceGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebel
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.DelimitationConstituencyMandal
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituency
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.CandidateBoothResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.NominationHistory
+				</value>
+				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask
+				</value>
+				<value>com.itgrids.partyanalyst.model.Problem
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemHistory
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSourceScope
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemStatus
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLocation
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemClassification
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFundSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.FundSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserCategory
+				</value>
+				<value>com.itgrids.partyanalyst.model.AssignedProblemProgress
+				</value>
+				<value>com.itgrids.partyanalyst.model.InformationSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.Hamlet
+				</value>
+				<value>com.itgrids.partyanalyst.model.Voter
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserEvents
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserEventActionPlan
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyImportantDates
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserImpDate
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemExternalSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.EPaper
+				</value>
+				<value>com.itgrids.partyanalyst.model.EPaperUrl
+				</value>
+				<value>com.itgrids.partyanalyst.model.VillageBoothElection
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.PersonalUserGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.StaticGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.StaticUsers
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges
+				</value>
+				<value>com.itgrids.partyanalyst.model.StaticUserGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.MyGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothElection
+				</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeople
+				</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeoplePosition
+				</value>
+				<value>com.itgrids.partyanalyst.model.CommentData
+				</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate
+				</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryParty
+				</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency
+				</value>
+				<value>com.itgrids.partyanalyst.model.CommentDataCategory
+				</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBody
+				</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition
+				</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody
+				</value>
+				<value>com.itgrids.partyanalyst.model.PoliticalChanges
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.PoliticalChangesInformationSource
+				</value>
+				<value>com.itgrids.partyanalyst.model.SmsHistory
+				</value>
+				<value>com.itgrids.partyanalyst.model.SmsModule
+				</value>
+				<value>com.itgrids.partyanalyst.model.SmsTrack
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyWorkingCommittee
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserAddress
+				</value>
+				<value>com.itgrids.partyanalyst.model.SocialCategory
+				</value>
+				<value>com.itgrids.partyanalyst.model.EducationalQualifications
+				</value>
+				<value>com.itgrids.partyanalyst.model.Occupation
+				</value>
+				<value>com.itgrids.partyanalyst.model.Language
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreLanguageEfficiency
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyCadreSkills
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyTrainingCamps
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreSkills
+				</value>
+				<value>com.itgrids.partyanalyst.model.Entitlement
+				</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlement
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserGroups
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupRelation
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserCountryAccessInfo
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserStateAccessInfo
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance
+				</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionStateResult
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance
+				</value>
+				<value>
+					com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance
+				</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation
+				</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPoll
+				</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestionOptions
+				</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions
+				</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollResult
+				</value>
+				<value>com.itgrids.partyanalyst.model.QuestionsRepository
+				</value>
+				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard
+				</value>
+				<value>com.itgrids.partyanalyst.model.AnanymousUser
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemImpactLevel
+				</value>
+				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody
+				</value>
+				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard
+				</value>
+				<value>com.itgrids.partyanalyst.model.CustomMessage
+				</value>
+				<value>com.itgrids.partyanalyst.model.MessageType
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserConnectedto
+				</value>
+				<value>com.itgrids.partyanalyst.model.StaticLocalGroup
+				</value>
+				<value>com.itgrids.partyanalyst.model.StaticUserDesignation
+				</value>
+				<value>com.itgrids.partyanalyst.model.LocalGroupRegion
+				</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard
+				</value>
+				<value>com.itgrids.partyanalyst.model.BoothVillage
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserRelation
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserMappingsHistory
+				</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopes
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProfileOpts
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserProfileOpts
+				</value>
+				<value>com.itgrids.partyanalyst.model.ModuleDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.ModuleRegionScopes
+				</value>
+				<value>com.itgrids.partyanalyst.model.CensusYear
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationYear
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyTown
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationVillage
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationWard
+				</value>
+				<value>com.itgrids.partyanalyst.model.Block
+				</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationBlock
+				</value>
+				<value>com.itgrids.partyanalyst.model.ApprovalDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserApprovalDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserProblemApproval
+				</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreProblemDetails
+				</value>
+				<value>com.itgrids.partyanalyst.model.CensusParameter
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreRole
+				</value>
+				<value>com.itgrids.partyanalyst.model.StateRegion
+				</value>
+				<value>com.itgrids.partyanalyst.model.StateRegionDistrict
+				</value>
+				<value>com.itgrids.partyanalyst.model.CadreRoleRelation
+				</value>
+				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemActivity
+				</value>
+				<value>com.itgrids.partyanalyst.model.FeedBack
+				</value>
+				<value>com.itgrids.partyanalyst.model.FeedBackTask
+				</value>
+				<value>com.itgrids.partyanalyst.model.FeedBackComment
+				</value>
+				<value>com.itgrids.partyanalyst.model.HomePageQuestion
+				</value>
+				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserTracking
+				</value>
+				<value>com.itgrids.partyanalyst.model.Announcement
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserAnnouncement
+				</value>
+				<value>com.itgrids.partyanalyst.model.UserConstituencyScope
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemType
+				</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType
+				</value>
+				<value>com.itgrids.partyanalyst.model.CallTrackingDetail
+				</value>
+				<value>com.itgrids.partyanalyst.model.CallTrackingProblem
+				</value>
+				<value>com.itgrids.partyanalyst.model.File
+				</value>
+				<value>com.itgrids.partyanalyst.model.FileType
+				</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFile
+				</value>
+			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
-	
-	<bean id="regionScopesProblemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesProblemTypeDAO" >
+
+	<bean id="regionScopesProblemTypeDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesProblemTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="problemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemTypeDAO" >
+
+	<bean id="problemTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTrackingDAO" >
+
+	<bean id="userTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTrackingDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="homePageQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionDAO" >
+
+	<bean id="homePageQuestionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="homePageQuestionAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionAnswersDAO" >
+
+	<bean id="homePageQuestionAnswersDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionAnswersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="cadreRoleRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleRelationDAO" >
+
+	<bean id="cadreRoleRelationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleRelationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="feedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO" >
+
+	<bean id="feedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="feedbackCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackCommentDAO" >
+
+	<bean id="feedbackCommentDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.FeedbackCommentDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="feedbackTaskDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackTaskDAO" >
+
+	<bean id="feedbackTaskDAO" class="com.itgrids.partyanalyst.dao.hibernate.FeedbackTaskDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="cadreRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleDAO" >
+
+	<bean id="cadreRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="censusParameterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusParameterDAO" >
+
+	<bean id="censusParameterDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CensusParameterDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="cadreProblemDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO" >
+
+	<bean id="cadreProblemDetailsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="constituencyCensusDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO" >
+
+	<bean id="constituencyCensusDetailsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="delimitationBlockDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationBlockDAO" >
+
+	<bean id="delimitationBlockDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationBlockDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="blockDAO" class="com.itgrids.partyanalyst.dao.hibernate.BlockDAO" >
+
+	<bean id="blockDAO" class="com.itgrids.partyanalyst.dao.hibernate.BlockDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="delimitationWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationWardDAO" >
+
+	<bean id="delimitationWardDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationWardDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="delimitationVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationVillageDAO" >
+
+	<bean id="delimitationVillageDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationVillageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="delimitationConstituencyTownDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyTownDAO" >
+
+	<bean id="delimitationConstituencyTownDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyTownDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="delimitationYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationYearDAO" >
+
+	<bean id="delimitationYearDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationYearDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="censusYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusYearDAO" >
+
+	<bean id="censusYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusYearDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
-	<bean id="cadreFamilyMemberInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreFamilyMemberInfoDAO" >
+
+	<bean id="cadreFamilyMemberInfoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CadreFamilyMemberInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserRelationDAO" >
+
+	<bean id="userRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserRelationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="ananymousUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO" >
+
+	<bean id="ananymousUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	
-	<bean id="opinionPollDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollDAO" >
+
+
+	<bean id="opinionPollDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="opinionPollQuestionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionOptionsDAO" >
+
+	<bean id="opinionPollQuestionOptionsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionOptionsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="opinionPollQuestionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionsDAO" >
+
+	<bean id="opinionPollQuestionsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="opinionPollResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollResultDAO" >
+
+	<bean id="opinionPollResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="questionsRepositoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionsRepositoryDAO" >
+
+	<bean id="questionsRepositoryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.QuestionsRepositoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO" >
+
+	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO" >
+	<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="electionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionDAO" >
+	<bean id="electionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		<bean id="electionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO" >
+	<bean id="electionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="constituencyElectionDAO"
-		class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionDAO" >
+		class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="candidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDAO" >
+	<bean id="candidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
+	<bean id="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="nominationDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominationDAO" >
+	<bean id="nominationDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="candidateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateResultDAO" >
+	<bean id="candidateResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CandidateResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="countryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CountryDAO" >
+	<bean id="countryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CountryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="constituencyElectionResultDAO"
-		class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionResultDAO"  >
+		class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO" >
+	<bean id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" >
+	<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="tehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO" >
+	<bean id="tehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="electionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionScopeDAO" >
+
+	<bean id="electionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionScopeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	 <bean id="registrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO" >
+	<bean id="registrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	 <bean id="loginDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDAO" >
+
+	<bean id="loginDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="districtDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictDAO" >
+
+	<bean id="districtDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="electionObjectsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionObjectsDAO" >
+	<bean id="electionObjectsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ElectionObjectsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO" >
+	<bean id="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="cadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDAO" >
+	<bean id="cadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO" >
+	<bean id="delimitationConstituencyMandalDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyWorkingCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDAO" >
+	<bean id="partyWorkingCommitteeDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyWorkingCommitteeDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDesignationDAO" >
+	<bean id="partyWorkingCommitteeDesignationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDesignationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO" >
+	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="socialCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SocialCategoryDAO" >
+	<bean id="socialCategoryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.SocialCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="educationalQualificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EducationalQualificationsDAO" >
+	<bean id="educationalQualificationsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.EducationalQualificationsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="occupationDAO" class="com.itgrids.partyanalyst.dao.hibernate.OccupationDAO" >
+	<bean id="occupationDAO" class="com.itgrids.partyanalyst.dao.hibernate.OccupationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="languageDAO" class="com.itgrids.partyanalyst.dao.hibernate.LanguageDAO" >
+	<bean id="languageDAO" class="com.itgrids.partyanalyst.dao.hibernate.LanguageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="cadreLanguageEfficiencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLanguageEfficiencyDAO" >
+	<bean id="cadreLanguageEfficiencyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CadreLanguageEfficiencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyCadreSkillsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreSkillsDAO" >
+	<bean id="partyCadreSkillsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreSkillsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrainingCampsDAO" >
+	<bean id="partyTrainingCampsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyTrainingCampsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="cadreSkillsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSkillsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="cadreParticipatedTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedTrainingCampsDAO">
+	<bean id="cadreParticipatedTrainingCampsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedTrainingCampsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="cadreLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLevelDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userMappingsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserMappingsHistoryDAO">
+	<bean id="userMappingsHistoryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserMappingsHistoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<bean name="Pattern3" class="com.itgrids.partyanalyst.excel.CsvReaderNew" />
 	<bean name="Pattern2" class="com.itgrids.partyanalyst.excel.CsvReader2004" />
 	<bean name="Pattern1" class="com.itgrids.partyanalyst.excel.CsvReader" />
-	
+
 	<bean name="excelReader" class="com.itgrids.partyanalyst.excel.ExcelReaderFactory">
 		<property name="excelReaders">
 			<map>
-				<entry key="Pattern1" value-ref="Pattern1"/>
-				<entry key="Pattern2" value-ref="Pattern2"/>
-				<entry key="Pattern3" value-ref="Pattern3"/>
+				<entry key="Pattern1" value-ref="Pattern1" />
+				<entry key="Pattern2" value-ref="Pattern2" />
+				<entry key="Pattern3" value-ref="Pattern3" />
 			</map>
 		</property>
 	</bean>
-	<!-- 
-	<bean id="cadreService" class="com.itgrids.partyanalyst.service.CadreManagementService">
-	<property name="cadreDAO" ref="cadreDAO" />
-	</bean> -->
-	
-	
-	<!-- EntityManagerFactory -->
-	<!-- <bean id="ApplicationEntityManager"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceUnitManager" ref="persistenceUnitManager" />
-	</bean>
+	<!--
+		<bean id="cadreService"
+		class="com.itgrids.partyanalyst.service.CadreManagementService">
+		<property name="cadreDAO" ref="cadreDAO" /> </bean>
+	-->
 
-	<bean id="persistenceUnitManager"
+
+	<!-- EntityManagerFactory -->
+	<!--
+		<bean id="ApplicationEntityManager"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="persistenceUnitManager"
+		/> </bean> <bean id="persistenceUnitManager"
 		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
-		<property name="persistenceXmlLocations">
-			<list>
-				<value>classpath:persistence.xml</value>
-			</list>
-		</property>
-	</bean>
+		<property name="persistenceXmlLocations"> <list>
+		<value>classpath:persistence.xml</value> </list> </property> </bean>
 	-->
 	<!-- Needed so the @PersistenceUnit annotation is recognized -->
-	<!--<bean
-		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
--->
+	<!--
+		<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"
+		/>
+	-->
 	<!--
 		Transaction manager for a single EntityManagerFactory (alternative to
 		JTA)
 	-->
-	<!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="ApplicationEntityManager" />
-	</bean>
+	<!--
+		<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager"> <property
+		name="entityManagerFactory" ref="ApplicationEntityManager" /> </bean>
 	-->
-	<!-- <bean id="countryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CountryDAO" />
-	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO" />
-	<bean id="districtDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictDAO" />
-	<bean id="tehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO" />
- 	<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" />
-    <bean id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO" />
--->
+	<!--
+		<bean id="countryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CountryDAO" /> <bean
+		id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO"
+		/> <bean id="districtDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DistrictDAO" /> <bean
+		id="tehsilDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO" /> <bean
+		id="townshipDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" /> <bean
+		id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO" />
+	-->
 	<bean id="excelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ExcelDAO">
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="stateDAO" ref="stateDAO" />
@@ -508,8 +728,8 @@
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
-    <bean id="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
-    	<property name="electionTypeDAO" ref="electionTypeDAO" />
+	<bean id="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="countryDAO" ref="countryDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
@@ -522,40 +742,48 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
-    </bean>
-    <bean id="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService">
-    	<property name="tehsilDAO" ref="tehsilDAO" />
+	</bean>
+	<bean id="voterDataUploadService"
+		class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService">
+		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="voterDAO" ref="voterDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
-		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
-    </bean>
-    <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
-    	<property name="boothDAO" ref="boothDAO" />
-    	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
-    	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
-    	<property name="nominationDAO" ref="nominationDAO" />
-    	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
-    </bean>
-    <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
+		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
+	</bean>
+	<bean id="crossVotingEstimationService"
+		class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO"
+			ref="delimitationConstituencyAssemblyDetailsDAO" />
+	</bean>
+	<bean id="delimitationConstituencyAssemblyDetailsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
+	<bean id="candidateBoothResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-    <bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO" >
+	<bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="boothConstituencyElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionDAO" >
+	<bean id="boothConstituencyElectionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="boothVillageCensusDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageCensusDAO" >
+	<bean id="boothVillageCensusDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageCensusDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="boothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothResultDAO" >
+	<bean id="boothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="electionAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
+	<bean id="electionAllianceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
@@ -564,10 +792,11 @@
 	<bean id="rebelPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
+	<bean id="partyRebelCandidateDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<!-- Problem Management -->
 	<bean id="hamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -575,75 +804,91 @@
 	<bean id="voterDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="boothConstituencyElectionVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionVoterDAO">
+	<bean id="boothConstituencyElectionVoterDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionVoterDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO" >
+	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="problemStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemStatusDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO">
+	<bean id="problemHistoryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemClassificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemClassificationDAO">
+	<bean id="problemClassificationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemClassificationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLocationDAO">
+	<bean id="problemLocationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemLocationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="informationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.InformationSourceDAO">
+	<bean id="informationSourceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.InformationSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemSourceScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeDAO" >
+	<bean id="problemSourceScopeDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-    <bean id="problemSourceScopeConcernedDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeConcernedDepartmentDAO" >
+	<bean id="problemSourceScopeConcernedDepartmentDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeConcernedDepartmentDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="fundSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.FundSourceDAO" >
+	<bean id="fundSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.FundSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemFundSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemFundSourceDAO" >
+	<bean id="problemFundSourceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemFundSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCategoryDAO" >
+	<bean id="userCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="assignedProblemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO">
+	<bean id="assignedProblemProgressDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="partyElectionResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultDAO">
+
+	<bean id="partyElectionResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="partyElectionDistrictResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultDAO">
+
+	<bean id="partyElectionDistrictResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	
+
+
 	<!-- Problem Management -->
 	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userEventActionPlanDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
+	<bean id="userEventActionPlanDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyImportantDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
+	<bean id="partyImportantDatesDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userImpDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserImpDatesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemExternalSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">
+	<bean id="problemExternalSourceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemAndProblemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAndProblemSourceDAO">
+	<bean id="problemAndProblemSourceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemAndProblemSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
+	<bean id="delimitationConstituencyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="epaperDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperDAO">
@@ -652,10 +897,12 @@
 	<bean id="epaperUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperUrlDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
+	<bean id="villageBoothElectionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="personalUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.PersonalUserGroupDAO">
+	<bean id="personalUserGroupDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PersonalUserGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="staticGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticGroupDAO">
@@ -664,264 +911,313 @@
 	<bean id="staticUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUsersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
+	<bean id="userGroupPrivilegesDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="staticUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUserGroupDAO">
+	<bean id="staticUserGroupDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.StaticUserGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="myGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MyGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
+	<bean id="hamletBoothElectionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<!-- Comments DataModel -->
 	<bean id="commentDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="commentCategoryCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryCandidateDAO">
+	<bean id="commentCategoryCandidateDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="commentCategoryConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryConstituencyDAO">
+	<bean id="commentCategoryConstituencyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryConstituencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="commentCategoryPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryPartyDAO">
+	<bean id="commentCategoryPartyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryPartyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="commentDataCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
+	<bean id="commentDataCategoryDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>		
+	</bean>
 	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	<bean id="influencingPeopleDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	<bean id="influencingPeoplePositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
+	</bean>
+	<bean id="influencingPeopleDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="boothLocalBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothLocalBodyWardDAO">
+	<bean id="influencingPeoplePositionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO" >
+	<bean id="boothLocalBodyWardDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.BoothLocalBodyWardDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO" >
+
+	<bean id="localElectionBodyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO" >
+	<bean id="electionGoverningBodyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-					
-	<bean id="politicalChangesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO" >
+	<bean id="electionGoverningBodyPositionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="partyElectionStateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO" >
+
+	<bean id="politicalChangesDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="politicalChangesInformationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO" >
+	<bean id="partyElectionStateResultDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="smsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryDAO" >
+	<bean id="politicalChangesInformationSourceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="smsModuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsModuleDAO" >
+
+	<bean id="smsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="smsTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTrackDAO" >
+	<bean id="smsModuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsModuleDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="entitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntitlementDAO" >
+	<bean id="smsTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTrackDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-					
-	<bean id="groupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementDAO" >
+
+	<bean id="entitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntitlementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userGroupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupEntitlementDAO" >
+
+	<bean id="groupEntitlementDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userGroupsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupsDAO" >
+
+	<bean id="userGroupEntitlementDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserGroupEntitlementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userGroupRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupRelationDAO" >
+
+	<bean id="userGroupsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<!--<value>com.itgrids.partyanalyst.model.UserCountryAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserStateAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
-				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>-->
-				
-	<bean id="userCountryAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCountryAccessInfoDAO" >
+
+	<bean id="userGroupRelationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserGroupRelationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userStateAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserStateAccessInfoDAO" >
+
+	<!--
+		<value>com.itgrids.partyanalyst.model.UserCountryAccessInfo</value>
+		<value>com.itgrids.partyanalyst.model.UserStateAccessInfo</value>
+		<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
+		<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>
+	-->
+
+	<bean id="userCountryAccessInfoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserCountryAccessInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userDistrictAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDistrictAccessInfoDAO" >
+
+	<bean id="userStateAccessInfoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserStateAccessInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userConstituencyAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO" >
+
+	<bean id="userDistrictAccessInfoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserDistrictAccessInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="partyElectionResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultWithAllianceDAO" >
+
+	<bean id="userConstituencyAccessInfoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="partyElectionStateResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultWithAllianceDAO" >
+
+	<bean id="partyElectionResultWithAllianceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultWithAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="partyElectionDistrictResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultWithAllianceDAO" >
+
+	<bean id="partyElectionStateResultWithAllianceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultWithAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService">		
-		<property name="transactionTemplate" ref="transactionTemplate" />		
+
+	<bean id="partyElectionDistrictResultWithAllianceDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultWithAllianceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean name="muncipleDataUploadService"
+		class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService">
+		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="electionDAO" ref="electionDAO" />
-		<property name="electionTypeDAO" ref="electionTypeDAO" />		
-		<property name="constituencyDAO" ref="constituencyDAO" />		
-		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />		
-		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />		
-		<property name="candidateDAO" ref="candidateDAO" />		
-		<property name="nominationDAO" ref="nominationDAO" />		
-		<property name="candidateResultDAO" ref="candidateResultDAO" />			
-		<property name="partyDAO" ref="partyDAO" />			
-		<property name="stateDAO" ref="stateDAO" />	
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="stateDAO" ref="stateDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	</bean>
-	
+
 	<bean name="userCalendarService" class="com.itgrids.service.impl.UserCalendarService">
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO" />
 		<property name="userImpDatesDAO" ref="userImpDatesDAO" />
 	</bean>
-	
-	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService">
+
+	<bean name="biElectionPageService"
+		class="com.itgrids.partyanalyst.service.impl.BiElectionPageService">
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
-    	<property name="nominationDAO" ref="nominationDAO" />	
-    	<property name="constituencyDAO" ref="constituencyDAO" />
-    	<property name="staticDataService" ref="staticDataService" />
-    	<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
-    	<property name="electionDAO" ref="electionDAO" />
-    	<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	</bean>
-	
-	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService">
+
+	<bean name="constituencyPageService"
+		class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService">
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	</bean>
-	
-	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService">	
+
+	<bean name="partyBoothWiseResultsService"
+		class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService">
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
-    	<property name="nominationDAO" ref="nominationDAO" />
-    	<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
-	
-	<bean id="problemImpactLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemImpactLevelDAO" >
+
+	<bean id="problemImpactLevelDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemImpactLevelDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="assemblyLocalElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO" >
+
+	<bean id="assemblyLocalElectionBodyDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="assemblyLocalElectionBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyWardDAO" >
+
+	<bean id="assemblyLocalElectionBodyWardDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyWardDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="customMessageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO" >
+
+	<bean id="customMessageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="messageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageTypeDAO" >
+
+	<bean id="messageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userConnectedtoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO" >
+
+	<bean id="userConnectedtoDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-    <bean id="staticLocalGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticLocalGroupDAO" >
+
+	<bean id="staticLocalGroupDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.StaticLocalGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="staticUserDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUserDesignationDAO" >
+
+	<bean id="staticUserDesignationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.StaticUserDesignationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="localGroupRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalGroupRegionDAO" >
+
+	<bean id="localGroupRegionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.LocalGroupRegionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="boothVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageDAO" >
+
+	<bean id="boothVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="groupEntitlementRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementRelationDAO" >
+
+	<bean id="groupEntitlementRelationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementRelationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="regionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesDAO" >
+
+	<bean id="regionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="profileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProfileOptsDAO" >
+
+	<bean id="profileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProfileOptsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userProfileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProfileOptsDAO" >
+
+	<bean id="userProfileOptsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserProfileOptsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="moduleRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleRegionScopesDAO" >
+
+	<bean id="moduleRegionScopesDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ModuleRegionScopesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO" >
+	<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
-	<bean id="approvalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO" >
+	</bean>
+
+	<bean id="approvalDetailsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
-	<bean id="userApprovalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserApprovalDetailsDAO" >
+	</bean>
+
+	<bean id="userApprovalDetailsDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserApprovalDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
-	<bean id="userProblemApprovalDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO" >
+	</bean>
+
+	<bean id="userProblemApprovalDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
-	<bean id="problemCompleteLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemCompleteLocationDAO" >
+	</bean>
+
+	<bean id="problemCompleteLocationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemCompleteLocationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-		
-	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
+	</bean>
+
+	<bean id="boothMapperService"
+		class="com.itgrids.partyanalyst.service.impl.BoothMapperService">
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
@@ -929,14 +1225,16 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>
-	
-	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
-	    <property name="electionDAO" ref="electionDAO" />
+
+	<bean name="partyInfluenceService"
+		class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService">
+		<property name="electionDAO" ref="electionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
-	
-	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
+
+	<bean name="staticDataService"
+		class="com.itgrids.partyanalyst.service.impl.StaticDataService">
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
@@ -955,72 +1253,94 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
-		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO"
+			ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
-		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="boothResultDAO" ref="boothResultDAO" />
 		<property name="groupDAO" ref="groupDAO" />
-		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />		
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
 		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
 		<property name="occupationDAO" ref="occupationDAO" />
-		<property name="languageDAO" ref="languageDAO" />	
-		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
-		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />	
+		<property name="languageDAO" ref="languageDAO" />
+		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />
+		<property name="partyElectionDistrictResultWithAllianceDAO"
+			ref="partyElectionDistrictResultWithAllianceDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="informationSourceDAO" ref="informationSourceDAO" />
 	</bean>
-	
-	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
-    	<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
-    	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
-    	<property name="constituencyDAO" ref="constituencyDAO" />
-    	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
-    	<property name="townshipDAO" ref="townshipDAO" />
-    	<property name="hamletDAO" ref="hamletDAO" />
-    	<property name="electionDAO" ref="electionDAO" />
-    	<property name="boothDAO" ref="boothDAO" />
-    	<property name="transactionTemplate" ref="transactionTemplate" />
+
+	<bean id="villageBoothDataPopulationService"
+		class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService">
+		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
-	
-	<bean id="stateRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDAO" >
+
+	<bean id="stateRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="stateRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDistrictDAO" >
+
+	<bean id="stateRegionDistrictDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDistrictDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService" >
-    	<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
-    	<property name="nominationDAO" ref="nominationDAO" />
+
+	<bean id="commentsDataService"
+		class="com.itgrids.partyanalyst.service.impl.CommentsDataService">
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
-	
-	<bean id="departmentOrganisationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentOrganisationDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="problemActivityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	<bean id="announcementDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	<bean id="userConstituencyScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO" >
+
+	<bean id="departmentOrganisationDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.DepartmentOrganisationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="userAnnouncementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAnnouncementDAO" >
+
+	<bean id="problemActivityDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="callTrackingDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingDetailDAO" >
+	<bean id="announcementDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="callTrackingProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingProblemDAO" >
+	<bean id="userConstituencyScopeDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="userAnnouncementDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.UserAnnouncementDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="callTrackingDetailDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingDetailDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="callTrackingProblemDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingProblemDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+<bean id="fileDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.FileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fileTypeDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.FileTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemFileDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
