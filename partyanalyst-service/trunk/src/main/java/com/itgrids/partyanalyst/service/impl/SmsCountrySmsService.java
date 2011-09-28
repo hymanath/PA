@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-
+import java.util.TimeZone;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -181,6 +181,9 @@ public class SmsCountrySmsService implements ISmsService {
 	public Long  saveSmsData(final String message,final Long userId,final String moduleName,final String... phoneNumbers)
 	{
 		try{
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
 			Registration registration = registrationDAO.get(userId);
 			SmsModule smsModule = null;
 			
@@ -200,6 +203,8 @@ public class SmsCountrySmsService implements ISmsService {
 				smsHistoryDAO.save(smsHistory);
 			}
 			
+				}
+			});
 			return (long)ResultCodeMapper.SUCCESS;
 		}catch (Exception e) {
 			log.error("Error Occured in Saving SMS Data, Exception is - "+e);
@@ -232,6 +237,7 @@ public class SmsCountrySmsService implements ISmsService {
 			java.util.Date updatedDate = new java.util.Date();
 			String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
 			currentDate = sdf.format(updatedDate); 
 			return currentDate;
 		}catch(Exception e){
