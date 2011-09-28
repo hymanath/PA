@@ -36,6 +36,8 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -45,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemCompleteLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
+import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
@@ -76,6 +79,8 @@ import com.itgrids.partyanalyst.model.CadreProblemDetails;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -85,6 +90,7 @@ import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemClassification;
 import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.model.ProblemFile;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemImpactLevel;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -146,7 +152,36 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemManagementReportService problemManagementReportService;
 	private SmsCountrySmsService smsCountrySmsService;
 	private String refNo=null;
+	private IFileDAO fileDAO;
+	private IFileTypeDAO fileTypeDAO;
+	private IProblemFileDAO problemFileDAO;
 	
+	
+	
+	public IProblemFileDAO getProblemFileDAO() {
+		return problemFileDAO;
+	}
+
+	public void setProblemFileDAO(IProblemFileDAO problemFileDAO) {
+		this.problemFileDAO = problemFileDAO;
+	}
+
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+
+	public IFileTypeDAO getFileTypeDAO() {
+		return fileTypeDAO;
+	}
+
+	public void setFileTypeDAO(IFileTypeDAO fileTypeDAO) {
+		this.fileTypeDAO = fileTypeDAO;
+	}
+
 	public String getRefNo() {
 		return refNo;
 	}
@@ -540,7 +575,9 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemLocation problemLocation = null;
 				ProblemHistory problemHistory = null;
 				ProblemCompleteLocation problemCompleteLocation = null;
-				
+				File file = null;
+				ProblemFile problemFile = null;
+				FileType fileType = null;
 				try{					
 					//InformationSource problemSource = informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
 					InformationSource problemSource = null;
@@ -557,7 +594,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory = new ProblemHistory();
 					problemCompleteLocation = new ProblemCompleteLocation();
 					ProblemType problemType = new ProblemType();
-					
+					file = new File();
+					problemFile = new ProblemFile();
+					fileType = new FileType();
 					if(!problemBeanVO.getProblem().contains(" ")){
 						problem.setProblem(stringUtilService.fragmentARegularString(problemBeanVO.getProblem(), 100, " "));
 					}else{
@@ -595,7 +634,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemAndProblemSource.setProblem(problem);			
 					//Check for Party_Analyst Or Free User
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER)){
-					     
+						problemFile.setIsApproved(IConstants.TRUE); 
 						problemAndProblemSource.setProblemSource(problemSource);
 						reg = registrationDAO.get(problemBeanVO.getUserID());
 					    problemAndProblemSource.setUser(reg);
@@ -666,7 +705,25 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
 					problemHistory = problemHistoryDAO.save(problemHistory);		
-					
+					if (problemBeanVO.getFileVO().getFileTitle()!= null) {
+
+						for (int i = 0; i < problemBeanVO.getFileVO().getFileName().size(); i++) {
+							file
+									.setFileName(problemBeanVO.getFileVO().getFileName()
+											.get(i));
+							file
+									.setFilePath(problemBeanVO.getFileVO().getFilePath()
+											.get(i));
+							file.setFileTitle(problemBeanVO.getFileVO().getFileTitle().get(i));
+							file.setFileDescription(problemBeanVO.getFileVO().getFileDescription().get(i));
+							file.setFileType(fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0));
+							File file1=fileDAO.save(file);
+							problemFile.setFile(file1);
+							problemFile.setProblemHistory(problemHistory);
+							ProblemFile problemFile2=problemFileDAO.save(problemFile);
+						}
+						
+					}
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
 				    {
 						CadreProblemDetails cadreProblemDetails = new CadreProblemDetails();
