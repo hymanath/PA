@@ -195,6 +195,9 @@
 				<value>com.itgrids.partyanalyst.model.RegionScopesProblemType</value>
 				<value>com.itgrids.partyanalyst.model.CallTrackingDetail</value>
 				<value>com.itgrids.partyanalyst.model.CallTrackingProblem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFile</value>
+				<value>com.itgrids.partyanalyst.model.File</value>
+				<value>com.itgrids.partyanalyst.model.FileType</value>
 			</list>
 		</property>
 	</bean>
