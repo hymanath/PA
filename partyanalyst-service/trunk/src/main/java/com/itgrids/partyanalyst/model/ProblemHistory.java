@@ -48,6 +48,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0); 
 	private Set<ProblemFundSource> problemFundSources = new HashSet<ProblemFundSource>(0);
 	private Set<CadreProblemDetails> cadreProblemDetails =  new HashSet<CadreProblemDetails>();
+	private Set<ProblemFile> ProblemFile =  new HashSet<ProblemFile>();
 	
 	public ProblemHistory(){
 		
@@ -61,7 +62,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 			ProblemStatus problemStatus, String comments,
 			ProblemSourceScope problemSourceScope, Date dateUpdated,
 			Set<AssignedProblemProgress> assignedProblemProgresses,
-			Set<ProblemFundSource> problemFundSources,String isDelete,String isApproved) {
+			Set<ProblemFundSource> problemFundSources,String isDelete,String isApproved,Set<CadreProblemDetails> cadreProblemDetails,Set<ProblemFile> ProblemFile) {
 		this.isApproved = isApproved;
 		this.isDelete = isDelete;
 		this.problemHistoryId = problemHistoryId;
@@ -72,6 +73,8 @@ public class ProblemHistory extends BaseModel implements Serializable{
 		this.dateUpdated = dateUpdated;
 		this.assignedProblemProgresses = assignedProblemProgresses;
 		this.problemFundSources = problemFundSources;
+		this.cadreProblemDetails=cadreProblemDetails;
+		this.ProblemFile=ProblemFile;
 	}
 
 	
@@ -200,10 +203,20 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	public Set<CadreProblemDetails> getCadreProblemDetails() {
 		return cadreProblemDetails;
 	}
-
 	public void setCadreProblemDetails(Set<CadreProblemDetails> cadreProblemDetails) {
 		this.cadreProblemDetails = cadreProblemDetails;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemHistory")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemFile> getProblemFile() {
+		return ProblemFile;
+	}
+
+	public void setProblemFile(Set<ProblemFile> problemFile) {
+		ProblemFile = problemFile;
+	}
+
+	
 	
 	
 		
