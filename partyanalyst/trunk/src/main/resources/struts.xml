@@ -1395,11 +1395,21 @@
            		<param name="root">districtList</param>
         	</result>       		
         </action>
-        <action name="addNewProblemSubmitAction" class="addNewProblemSubmitAction"> 
-              <result name="input">/jsp/addNewProblem.jsp</result>
-              <result name="error">/jsp/addNewProblem.jsp</result>
-              <result name="success">/jsp/addNewProblem.jsp</result>                                   		
-        </action>
+        <action name="addNewProblemSubmitAction" class="addNewProblemSubmitAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedTypes">
+					image/png,image/gif,image/jpeg,image/pjpeg,application/msword,text/html,text/plain,application/excel,application/pdf,application/x-zip-compressed
+                </param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="input">/jsp/addNewProblem.jsp
+			</result>
+			<result name="error">/jsp/addNewProblem.jsp
+			</result>
+			<result name="success">/jsp/addNewProblem.jsp
+			</result>
+		</action>
         <action name="addProblemTypesAjaxAction" class="addNewProblemAction" method="getProblemTypesBasedOnProblemScope">
              <result type="json" name="success">
            		<param name="root">problemTypes</param>
