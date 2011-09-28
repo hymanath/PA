@@ -615,5 +615,13 @@
 	<bean id="callTrackingProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingProblemDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="fileDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fileTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
