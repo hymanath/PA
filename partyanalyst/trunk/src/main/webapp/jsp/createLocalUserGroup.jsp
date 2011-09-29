@@ -369,21 +369,20 @@ var categorysIdElmt = document.getElementById("categoryId");
 var str='';
 categorysIdElmt.innerHTML = str;
 	if(value =='Others'){
-		str+='<input type=text id="groupCategoryId" name="groupCategory" value="Group Catagory" onclick="hideText()" onblur="showText()" onChange="addUserGroupCatagory()">';
+		str+="<input type=text id='groupCategoryId' name='groupCategory' value='Group Catagory' onclick='hideText(this.id,"+'"Group Catagory"'+")' onblur='showText(this.id,"+'"Group Catagory"'+")' onChange='addUserGroupCatagory()'>";
 		categorysIdElmt.innerHTML = str;
 	}
 }
-function showText(){
+function showText(id,text){
 	
-   if($("#posId").val() == ""){
-		$("#posId").val("Enter Position");
+	if($("#"+id).val() == ""){
+		$("#"+id).val(text);
 	}
 
 }
-function hideText(){
-
-	if($("#posId").val() == "Enter Position"){
-		$("#posId").val('');
+function hideText(id,text){
+  if($("#"+id).val() == text){
+		$("#"+id).val('');
 	}
 
 }
@@ -616,6 +615,7 @@ function ajaxCall(param,jsObj,url){
 		<td width="300"></td>
 		 <td><div align="right">
 			<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
+			<input type="button" value="Exit" class="button" onClick="refreshParent()"/>
 			</div>
 		</td>
 		</tr>
