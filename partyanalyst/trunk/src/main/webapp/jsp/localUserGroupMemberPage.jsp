@@ -34,7 +34,8 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js">
+	</script>
 
 	<!-- YUI Skin Sam -->
 
@@ -48,7 +49,8 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-    
+    <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
+
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="js/jQuery/development-bundle/jquery-1.4.2.js"></script>
@@ -340,14 +342,16 @@
 				<tr>
 					<th> <font color="red"> * </font> Designation</th>
 					<td> <s:select id="designations" name="designations" cssStyle="width:150px;" list="#session.designations" listKey="id" listValue="name"></s:select></td>
-					<td style="background-color: burlyWood;"><input type="button" value="Add New Designation" onclick="showAddDesignation()"></input></td>
+					<td><input type="button" value="Add New Designation" onclick="showAddDesignation()"></input></td>
 				</tr>
 
 				<tr style="background-color:#ADADAD">			
 					<td colspan="3" style="padding:0px;"><div id="designationDiv" style="display:none;padding:10px;"></div></td>
 				</tr>	
 				<tr>
-					<td colspan="3"><s:submit cssStyle="width:140px;" value="Save Group Member" name="Save"></s:submit></td>
+					<td align="center" style="margin-top:22px">
+					<s:submit cssClass="button" value="Save Group Member" name="Save"></s:submit></td>
+					<td><input type="button" class="button"  value="Exit" onClick="refreshParent()"></td>
 				</tr>
 			</table>
 			</center>
