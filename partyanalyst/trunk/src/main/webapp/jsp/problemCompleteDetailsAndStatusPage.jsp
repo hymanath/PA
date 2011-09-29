@@ -9,9 +9,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Problem Details</title>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+
   
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -37,6 +37,9 @@
 
 
 <!-- JQuery files (Start) -->
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
@@ -1382,10 +1385,12 @@ var villagesListForProb = [];
 <div id="closeWindowDiv">
 <table>
  <tr>
+ <c:if test="${Request == true}">
   <td><a href="javaScript:{}" style="padding-right: 12px; color: green;" onclick="openAddNewProblemWindow()">Add New Problem</a>
   </td>
   <td><a href="javaScript:{}" style="color: green;" onclick="openEditProblemWindow()">Create Similar Problem</a>
   </td>
+  </c:if>
   <td style="padding-left: 19px;"><input type="button" value="Close" onClick="closeCompleteDetails()" />
   </td>
   </tr>
