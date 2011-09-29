@@ -628,7 +628,7 @@ function removeTextInTextBoxes(id){
 	  $("#"+id).val() =="Problem Reference"||
 	  $("#"+id).val() =="From Date" ||
 	  $("#"+id).val() =="To Date"){
-    $("input#"+id).val($(this).html());
+    $("input#"+id).val('');
 	return;
   }
 }
@@ -916,7 +916,7 @@ myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 function openProblemWindow(pHistoryId){
 
 var browser2 = 
-window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId+"&&requestFrom=callCenter","problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
 						 
 		 browser2.focus();
 
