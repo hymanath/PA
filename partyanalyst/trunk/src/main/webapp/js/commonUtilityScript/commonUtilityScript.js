@@ -257,3 +257,15 @@ function hideBusyImgWithId(elmtId)
 	if(spanElmt)
 		spanElmt.style.display = "none";
 }
+
+// Function is to Refresh parent window
+function refreshParent() {
+  window.opener.location.href = window.opener.location.href;
+
+  if (window.opener.progressWindow)
+		
+ {
+    window.opener.progressWindow.close()
+  }
+  window.close();
+}
