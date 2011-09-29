@@ -42,6 +42,8 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	private String task = null;
 	JSONObject jObj = null;
 	private Long pHistoryId; 
+	private String requestFrom;
+	private boolean isRequest =false;
 	private List<SelectOptionVO> stateListForProb;
 	private List<SelectOptionVO> districtListForProb;
 	private List<SelectOptionVO> constituencyListForProb;
@@ -58,6 +60,14 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	private List<ProblemStatusDataVO> problemStatusDataVOList;
 	
 	
+	public void setRequest(boolean isRequest) {
+		this.isRequest = isRequest;
+	}
+
+	public boolean isRequest() {
+		return isRequest;
+	}
+
 	public ProblemStatusDataVO getProblemStatusDataVO() {
 		return problemStatusDataVO;
 	}
@@ -205,6 +215,16 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	public void setPHistoryId(Long historyId) {
 		pHistoryId = historyId;
 	}
+
+	public void setRequestFrom(String requestFrom) {
+		this.requestFrom = requestFrom;
+	}
+
+	public String getRequestFrom() {
+		return requestFrom;
+	}
+
+	
 
 	public String execute() throws Exception{
 			problemManagementDataVO = new ProblemManagementDataVO();
@@ -606,7 +626,13 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	{
 		session = request.getSession();
 		pHistoryId = Long.parseLong(request.getParameter("pHistoryId"));
-		
+		requestFrom = request.getParameter("requestFrom");
+		if(requestFrom!=null && !requestFrom.equalsIgnoreCase("")){
+			if(requestFrom.equalsIgnoreCase("callCenter"))
+			  setRequest(true);
+		}
+		else 
+			setRequest(false);
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO==null)
