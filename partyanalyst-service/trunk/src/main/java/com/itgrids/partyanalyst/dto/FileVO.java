@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileVO extends ResultStatus implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	private List<String> fileContentType = new ArrayList<String>();
 	private List<String> fileName = new ArrayList<String>();
@@ -14,7 +15,40 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long fileId;
 	private Long problemFileId;
 	private List<String> filePath;
+	private String file;
+	private String title;
+	private String description;
+	private String pathOfFile;
 
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public String getFile() {
+		return file;
+	}
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getPathOfFile() {
+		return pathOfFile;
+	}
+
+	public void setPathOfFile(String pathOfFile) {
+		this.pathOfFile = pathOfFile;
+	}
 	public List<String> getFileContentType() {
 		return fileContentType;
 	}
