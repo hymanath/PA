@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.springframework.util.StringUtils;
 
@@ -118,9 +119,27 @@ public class CandidateSearchService implements ICandidateSearchService{
 		{
 			idlist.add(IConstants.ASSEMBLY_ELECTION_TYPE);
 		}
+		
+		String searchTextStr = "";
+
+		if(searchText != null && searchText.trim().length() > 0)
+		{
+			StringTokenizer st = new StringTokenizer(searchText);
+			searchTextStr = "(";
+			while(st.hasMoreTokens())
+			{
+				String names = st.nextToken();
+				searchTextStr += " model.candidate.lastname like '%"+names+"%'";
+				searchTextStr += " or ";
+			}
+			
+			searchTextStr = searchTextStr.substring(0,searchTextStr.length()-4);
+			searchTextStr += ") and  ";
+		}
+		
 		String electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
 		
-		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds,stateId);
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchTextStr,electionIds,stateId);
 		
 		return totSearchCount.get(0);
 	}
@@ -131,13 +150,11 @@ public class CandidateSearchService implements ICandidateSearchService{
 		
 		List<CandidateVO> candidateVOs = new ArrayList<CandidateVO>();
 		
-		/*String firstAndLastNames [] = StringUtils.delimitedListToStringArray(StringUtils.trimWhitespace(name), " ");
-		List<Candidate> candidates = candidateDAO.findByFirstMiddleAndLastNames(firstAndLastNames);*/
 		String option = "";
 		if(sortOption.equalsIgnoreCase("id"))
 			option = "model.candidate.candidateId";
 		else if(sortOption.equalsIgnoreCase("candidateName"))
-			option = "model.candidate.firstname";
+			option = "model.candidate.lastname";
 		else if(sortOption.equalsIgnoreCase("party"))
 			option = "model.party.shortName";
 		else if(sortOption.equalsIgnoreCase("year"))
@@ -162,10 +179,27 @@ public class CandidateSearchService implements ICandidateSearchService{
 			idlist.add(IConstants.ASSEMBLY_ELECTION_TYPE);
 		}
 		
-		 electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
+		String searchTextStr = "";
 
-		List<Object[]> candidates = nominationDAO.findByFirstMiddleAndLastNames(searchText,option,order,startIndex,maxResult,electionIds);
-		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds,stateId);
+		if(searchText != null && searchText.trim().length() > 0)
+		{
+			StringTokenizer st = new StringTokenizer(searchText);
+			searchTextStr = "(";
+			while(st.hasMoreTokens())
+			{
+				String names = st.nextToken();
+				searchTextStr += " model.candidate.lastname like '%"+names+"%'";
+				searchTextStr += " or ";
+			}
+			
+			searchTextStr = searchTextStr.substring(0,searchTextStr.length()-4);
+			searchTextStr += ") and  ";
+		}
+		
+		electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
+
+		List<Object[]> candidates = nominationDAO.findByFirstMiddleAndLastNames(searchTextStr,option,order,startIndex,maxResult,electionIds);
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchTextStr,electionIds,stateId);
 		
 		Long count = new Long(startIndex);
 		
