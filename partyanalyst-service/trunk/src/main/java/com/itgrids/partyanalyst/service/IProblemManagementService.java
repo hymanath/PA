@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.File;
 
 public interface IProblemManagementService {
 
@@ -95,4 +97,8 @@ public interface IProblemManagementService {
 	public ResultStatus sendSMS(Long userId,String message,String moduleName,String[] phoneNumbers);
 	
 	public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId);
+	
+	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId);
+	
+	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
 }
