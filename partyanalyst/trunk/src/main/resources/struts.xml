@@ -869,6 +869,11 @@
 			   <param name="root">problemStatusDataVOList</param>
 			</result>	
 		</action>
+		<action name="getProblemImagesAjaxAction" class="problemManagementAction" method="getProblemRelatedImages">
+			<result type="json" name="success">
+			   <param name="root">uploadFilesList</param>
+			</result>	
+		</action>
 				
 		<action name="problemsOverViewGraphDataAction" class="problemManagementAction" method="getProblemsPostedDataByUserToBuildCharts">
 			<result type="json" name="success">
@@ -2582,7 +2587,7 @@
 		</action>
 		<!--<action name="candidateProfilePhotosAction" class="candidateProfilePhotosAction">
 			<result name="success">/jsp/jqueryphotogallery.jsp</result>
-		</action>	-->		 		       	
+		</action>	-->	 		       	
 		
 		<action name="manageUserMessageCreditsAction" class="manageUserMessageCreditsAction">
 			<result name="success">/jsp/manageUserMessageCredits.jsp</result> 
