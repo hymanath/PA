@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
@@ -58,8 +60,26 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	private ProblemCompleteDetailsVO problemCompleteDetailsVO;
 	private ProblemStatusDataVO problemStatusDataVO;
 	private List<ProblemStatusDataVO> problemStatusDataVOList;
+	private ProblemBeanVO problemBeanVO;
+	private List<FileVO> uploadFilesList;
 	
 	
+	public void setUploadFilesList(List<FileVO> uploadFilesList) {
+		this.uploadFilesList = uploadFilesList;
+	}
+
+	public List<FileVO> getUploadFilesList() {
+		return uploadFilesList;
+	}
+
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
+
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+
 	public void setRequest(boolean isRequest) {
 		this.isRequest = isRequest;
 	}
@@ -828,5 +848,17 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		problemStatusDataVOList = problemManagementService.getAllProblemRecentActivityDetails(jObj.getLong("pHistoryId"));
 		
 		return Action.SUCCESS;
+	}
+	public String getProblemRelatedImages(){
+		
+		try  {
+		jObj = new JSONObject(getTask());
+		Long problemHistoryId = jObj.getLong("pHistoryId");
+		uploadFilesList = problemManagementService.getAllProblemRelatedImages(problemHistoryId);
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+		
+		return SUCCESS;
 	}
 }
