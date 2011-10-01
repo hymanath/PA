@@ -42,7 +42,7 @@ public class Gallary implements Serializable{
 	private GallaryType gallaryType;
 	private String isDelete;
 	private String isPrivate;
-	private Set<UserGallary> userGallary= new HashSet<UserGallary>(0);
+	private Set<CandidateGallary> userGallary= new HashSet<CandidateGallary>(0);
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	
 	/* default constructor*/
@@ -142,11 +142,11 @@ public class Gallary implements Serializable{
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gallary")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserGallary> getUserGallary() {
+	public Set<CandidateGallary> getUserGallary() {
 		return userGallary;
 	}
 
-	public void setUserGallary(Set<UserGallary> userGallary) {
+	public void setUserGallary(Set<CandidateGallary> userGallary) {
 		this.userGallary = userGallary;
 	}
 

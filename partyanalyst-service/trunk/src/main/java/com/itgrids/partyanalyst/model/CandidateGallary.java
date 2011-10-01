@@ -25,45 +25,22 @@ import org.hibernate.annotations.NotFoundAction;
  */
 
 @Entity
-@Table(name = "user_gallary")
+@Table(name = "candidate_gallary")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UserGallary implements Serializable{
+public class CandidateGallary implements Serializable{
 
 	private static final long serialVersionUID = 4116973597357848823L;
 	
-	private Long userGallaryId;
-	private Registration registration;
+	private Long candidateGallaryId;
+	private Candidate candidate;
 	private Gallary gallary;
 	
-	private UserGallary(){
+	private CandidateGallary(){
 	}
 	
-	private UserGallary(Registration registration,Gallary gallary){
-		this.registration = registration;
+	private CandidateGallary(Candidate candidate,Gallary gallary){
+		this.candidate = candidate;
 		this.gallary = gallary;
-	}
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="user_gallary", unique=true, nullable=false)
-	public Long getUserGallaryId() {
-		return userGallaryId;
-	}
-
-	public void setUserGallaryId(Long userGallaryId) {
-		this.userGallaryId = userGallaryId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -76,6 +53,29 @@ public class UserGallary implements Serializable{
 
 	public void setGallary(Gallary gallary) {
 		this.gallary = gallary;
+	}
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="candidate_gallary_id", unique=true, nullable=false)
+	public Long getCandidateGallaryId() {
+		return candidateGallaryId;
+	}
+
+	public void setCandidateGallaryId(Long candidateGallaryId) {
+		this.candidateGallaryId = candidateGallaryId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="candidate_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 	
 	
