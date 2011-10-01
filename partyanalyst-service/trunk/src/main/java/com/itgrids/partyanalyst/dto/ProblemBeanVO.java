@@ -87,6 +87,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long subUserId;
 	private String mandal;
 	private FileVO fileVO;
+	private List<FileVO> fileVOList;
 	
 
 	public FileVO getFileVO() {
@@ -713,6 +714,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public String getMandal() {
 		return mandal;
+	}
+
+	public void setFileVOList(List<FileVO> fileVOList) {
+		this.fileVOList = fileVOList;
+	}
+
+	public List<FileVO> getFileVOList() {
+		return fileVOList;
 	}
 	
 	
