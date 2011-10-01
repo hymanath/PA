@@ -216,7 +216,7 @@
 				<value>com.itgrids.partyanalyst.model.ProblemFile</value>
 				<value>com.itgrids.partyanalyst.model.GallaryType</value>
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
-				<value>com.itgrids.partyanalyst.model.UserGallary</value>
+				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
 			</list>
 		</property>
@@ -228,7 +228,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO">
+	<bean id="candidateGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateGallaryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -1150,29 +1150,36 @@
 		class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="announcementDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnouncementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="userConstituencyScopeDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyScopeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="userAnnouncementDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.UserAnnouncementDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="callTrackingDetailDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingDetailDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="callTrackingProblemDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.CallTrackingProblemDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-<bean id="fileDAO"
+	
+	<bean id="fileDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.FileDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="fileTypeDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.FileTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
