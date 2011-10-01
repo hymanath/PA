@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
@@ -11,5 +13,10 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 
 	public ProblemFileDAO() {
 		super(ProblemFile.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemImagesBasedHistoryId(Long probHistoryId){
+		return getHibernateTemplate().find("select model.file.fileName ,model.file.fileTitle,model.file.fileDescription ,model.file.filePath from ProblemFile model where model.isApproved='true' and model.problemHistory.problemHistoryId =?",probHistoryId);
 	}
 }
