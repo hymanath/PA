@@ -200,7 +200,7 @@
 				<value>com.itgrids.partyanalyst.model.FileType</value>
 				<value>com.itgrids.partyanalyst.model.GallaryType</value>
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
-				<value>com.itgrids.partyanalyst.model.UserGallary</value>
+				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
 			</list>
 		</property>
