@@ -636,7 +636,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO" >
+	<bean id="candidateGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateGallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
