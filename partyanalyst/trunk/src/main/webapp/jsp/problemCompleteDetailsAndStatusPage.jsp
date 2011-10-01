@@ -36,7 +36,9 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 
 
-<!-- JQuery files (Start) -->
+<!-- JQuery files (Start) 
+<link type="text/css" href="styles/bottom.css" rel="stylesheet" />-->
+<script type="text/javascript" src=" https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"></script>
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
@@ -48,14 +50,25 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js">
+</script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js">
+</script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
 
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 
+<script>
+		!window.jQuery && document.write('<script src="js/fancybox/jQuery/jquery-1.4.3.min.js"><\/script>');
+	</script>
+	
+	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+ 	<link rel="stylesheet" href="styles/style.css" />
+
+<!--<script type="text/javascript" src="js/picasojs/jquery.pikachoose.full.js"></script>
+<script type="text/javascript" src="js/picasojs/jquery.pikachoose.js"></script>-->
 <!-- JQuery files (End) -->
 
 <style type="text/css">
@@ -691,6 +704,9 @@ function callAjax(jsObj,url)
 									  return;
 								   }
 							}
+							if(jsObj.task =="getProblemImages"){
+								builImagesDiv(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -706,7 +722,29 @@ function callAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function builImagesDiv(results){
 
+ var problemRelatedImagesElmt = document.getElementById("problemRelatedImages");
+ var str ='';
+ str+='<b>Problem Related Images</b>';
+ str+='<div id="content">';
+  for(var i in results){
+	    str+='<td><a rel="photo_gallery" href="'+results[i].pathOfFile+'" title="'+results[i].description+'"><img alt="" src="'+results[i].pathOfFile+'" height="100px"/></a></td>';
+   }
+ 
+ str+='</div>'
+ problemRelatedImagesElmt.innerHTML = str;
+ 
+ $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+
+}
 function buildProblemRecentActivities(jsObj,results)
 {
 	
@@ -1324,7 +1362,17 @@ function getProblemActivities(pHistoryId)
 	var url = "getProblemRecentActivitiesAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+function getProblemRelatedImages(pHistoryId){
+    
+	var jsObj ={
+				pHistoryId:pHistoryId,
+				task:"getProblemImages"
 
+	           };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemImagesAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 function initializePage()
 {
 	var detailsButton = new YAHOO.widget.Button("detailsButton");
@@ -1335,6 +1383,7 @@ function initializePage()
     sliderFunc();
 	getProblemPresentStatus(pHistoryId);
 	getProblemActivities(pHistoryId);
+	getProblemRelatedImages(pHistoryId);
 }
 
 function sliderFunc(){
@@ -1403,7 +1452,7 @@ var villagesListForProb = [];
 		<div id="problemContentData_details_head">
 			<table width="100%">
 				<tr>
-					<th>${problemCompleteDetailsVO.problemBasicDetails.problem}</th>
+				<th>Title Of The Problem  :                    ${problemCompleteDetailsVO.problemBasicDetails.problem}</th>
 					<!--<td class="yui-skin-sam" align="right"><input id="detailsButton" type="button" value="Details"/></td>-->					
 				</tr>
 			</table>
@@ -1436,7 +1485,9 @@ var villagesListForProb = [];
 				</tr>
 			</TABLE>
 		</div>
+		
 	</div>
+	
 	<!-- Problem Details End -->
 	
    	<!-- Problem Status End -->
@@ -1449,6 +1500,9 @@ var villagesListForProb = [];
         <li>
 		<a href="#problemContentData_activities_main">
 		<span id="tabsLiStyle">Activities</span></a></li>
+		<li>
+		<a href="#problemRelatedImages">
+		<span id="tabsLiStyle">Images</span></a></li>
         
     </ul>
 	<div id="problemContentData_status_main">
@@ -1477,10 +1531,12 @@ var villagesListForProb = [];
 			</fieldset> -->
 		</div>
 	</div>
+	<div id="problemRelatedImages"></div>
 </div>
 	<!-- Problem Activities End -->
 
 </div>
+
 <!--
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
 <DIV>
@@ -1645,7 +1701,10 @@ var villagesListForProb = [];
 		</table>
 	</div>
 </td></tr>
+
+
 -->
+</div>
 </table>
 <input type="hidden" id="cadreInputId" name="cadreId"/>
 <input type="hidden" id="probHistoryId" name="probHistoryId"/>
@@ -1655,12 +1714,25 @@ var villagesListForProb = [];
 <script>
 doExecuteOnLoad();
 initializePage();
+ 
 </script>
 <script>
   $(document).ready(function() {
     $("#tabs").tabs();
-  });
-  </script>
 
+   $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+  });
+  </script> 
+  <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
+	</script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
+	</script>
 </body>
 </html>
