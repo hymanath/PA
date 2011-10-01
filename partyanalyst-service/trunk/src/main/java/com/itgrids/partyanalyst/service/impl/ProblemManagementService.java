@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
@@ -704,25 +705,16 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory.setProblemLocation(problemLocationDAO.save(problemLocation));
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
-					problemHistory = problemHistoryDAO.save(problemHistory);		
-					if (problemBeanVO.getFileVO().getFileTitle()!= null) {
-
-						for (int i = 0; i < problemBeanVO.getFileVO().getFileName().size(); i++) {
-							file
-									.setFileName(problemBeanVO.getFileVO().getFileName()
-											.get(i));
-							file
-									.setFilePath(problemBeanVO.getFileVO().getFilePath()
-											.get(i));
-							file.setFileTitle(problemBeanVO.getFileVO().getFileTitle().get(i));
-							file.setFileDescription(problemBeanVO.getFileVO().getFileDescription().get(i));
-							file.setFileType(fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0));
-							File file1=fileDAO.save(file);
-							problemFile.setFile(file1);
-							problemFile.setProblemHistory(problemHistory);
-							ProblemFile problemFile2=problemFileDAO.save(problemFile);
-						}
+					problemHistory = problemHistoryDAO.save(problemHistory);
+					List<File> files =new ArrayList<File>();
+					files = uploadFiles(problemBeanVO);
+					if(files !=null){
+					 for(File fileObj :files){
 						
+						problemFile.setFile(fileObj);
+						problemFile.setProblemHistory(problemHistory);
+						problemFileDAO.save(problemFile);
+					   }
 					}
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
 				    {
@@ -3757,6 +3749,59 @@ public class ProblemManagementService implements IProblemManagementService {
 			resultStatus.setExceptionEncountered(e);
 			log.error("Exception Occured & Exception is - "+e);
 			return resultStatus;
+		}
+	}
+	
+	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId){
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		FileVO fileVO = new FileVO();
+		
+		List<Object[]> imagesList = problemFileDAO.getProblemImagesBasedHistoryId(problemHistoryId);
+		for(Object[] images : imagesList){
+			fileVO = new FileVO();
+			fileVO.setFile(images[0].toString());
+			fileVO.setTitle(images[1].toString());
+			fileVO.setDescription(images[2].toString());
+			String[] imagePath = images[3].toString().split("/");
+			fileVO.setPathOfFile(imagePath[1]+"/"+imagePath[2]);
+			fileVOList.add(fileVO);			
+		}
+		return fileVOList; 
+	}
+	 /**
+	  * Method is used to upload diffrent type of files
+	  * @param problemBeanVO
+	  * @return list of file Objects
+	  */
+	public List<File> uploadFiles(ProblemBeanVO problemBeanVO){
+		
+		File file = new File();
+		List<File> filesList = new ArrayList<File>();
+		
+		try {
+		   if(problemBeanVO.getFileVO().getFileTitle()!= null) {
+
+			for (int i = 0; i < problemBeanVO.getFileVO().getFileName().size(); i++) {
+				file = new File();
+				file.setFileName(problemBeanVO.getFileVO().getFileName().get(i));
+				file.setFilePath(problemBeanVO.getFileVO().getFilePath().get(i));
+				 if(problemBeanVO.getFileVO().getFileTitle().get(i)!=null)
+				file.setFileTitle(problemBeanVO.getFileVO().getFileTitle().get(i));
+				 if(problemBeanVO.getFileVO().getFileDescription().get(i)!=null)
+				file.setFileDescription(problemBeanVO.getFileVO().getFileDescription().get(i));
+				 if(fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0).getFileTypeId()!=0)
+				file.setFileType(fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0));
+				 file=fileDAO.save(file);
+				 
+				 filesList.add(file);
+			}
+			
+		}
+		 return filesList;
+	}catch(Exception e){
+		e.printStackTrace();
+		 return filesList;
 		}
 	}
 }
