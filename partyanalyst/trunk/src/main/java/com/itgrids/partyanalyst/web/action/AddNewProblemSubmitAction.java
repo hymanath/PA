@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -24,7 +26,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
-public class AddNewProblemSubmitAction extends ActionSupport implements ServletRequestAware {
+public class AddNewProblemSubmitAction extends ActionSupport implements ServletRequestAware,ServletContextAware {
 
 	/**
 	 * 
@@ -77,9 +79,18 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private List<String> fileTitle;
 	private List<String> fileDescription;
     private HttpServletRequest servletRequest;
+    private ServletContext context;
 	
 		
     
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
+
+	public ServletContext getContext() {
+		return context;
+	}
+
 	public List<File> getUserImage() {
 		return userImage;
 	}
@@ -502,29 +513,27 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		//problemBeanVO.setFileTitle(getFileTitle());
 		//problemBeanVO.setFileDescription(getFileDescription());
 		try {
-
-			String filePath1 = request.getRealPath("/");
-			//System.out.println("Server path:" + filePath1);
+			String fileName;
+			String filePath1 = context.getRealPath("/");
 			String filePath = filePath1 + "/uploaded_files";
-			/*System.out.println("Server path:" + filePath);
-			System.out.println("userImage:" + userImage.size());
-			System.out.println("userImageContentType:"
-					+ userImageContentType.size());
-			System.out.println("userImageFileName:" + userImageFileName.size());*/
 			problemFilepath = new ArrayList<String>();
 			for (int i = 0; i < userImage.size(); i++) {
 				Long systime = System.currentTimeMillis();
-				String fileName = systime + "_" + userImageFileName.get(i);
+				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
+				while(st.hasMoreTokens()) {
+				String key = st.nextToken();
+				String val = st.nextToken();
+				if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
+					fileName = systime.toString()+"."+key;
+				}
+				else
+				  fileName = systime.toString()+"."+val;
 				String problemFilePath=filePath+"/"+fileName;
 				problemFilepath.add(problemFilePath);
 				File fileToCreate = new File(filePath, fileName);
 				FileUtils.copyFile(userImage.get(i), fileToCreate);
 				System.out.println("contenyt type.."
 						+ userImageContentType.get(i));
-				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
-				while(st.hasMoreTokens()) {
-				String key = st.nextToken();
-				String val = st.nextToken();
 				System.out.println(key + "\t" + val);
 				contentType.add(val);
 				}
