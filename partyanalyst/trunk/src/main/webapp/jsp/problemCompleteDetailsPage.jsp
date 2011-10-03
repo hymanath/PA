@@ -27,13 +27,15 @@
 	<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 	
 	<!-- JQuery files (Start) -->
-<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> -->
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<link rel="stylesheet" href="styles/style.css" />
 
 <!-- JQuery files (End) -->
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
@@ -52,7 +54,12 @@ function callAjax(jsObj,url)
 							if(jsObj.task == "getProblemCompleteDetails")
 							{										
 								showProblemDetails(myResults, jsObj);
-							}						
+							}
+							else if(jsObj.task =="getProblemImages")
+							{
+								builImagesDiv(myResults);
+							}
+
 							
 						}catch (e) {   
 						  // 	alert("Invalid JSON result" + e);   
@@ -147,6 +154,50 @@ if(elmt)
 		postProblemElmt.style.display='block';
 	}
 }
+
+
+function getProblemRelatedImages(pHistoryId){
+    
+	var jsObj ={
+				pHistoryId:pHistoryId,
+				task:"getProblemImages"
+
+	           };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemImagesAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function builImagesDiv(results)
+{
+
+  if(results == null || results.length == 0)
+  {
+	document.getElementById('problemFilesMainOuterDiv').style.display = 'none';	
+  }
+
+ var problemRelatedImagesElmt = document.getElementById("problemFilesMainInnerDiv");
+ var str ='';
+ str+='<div id="content">';
+  for(var i in results)
+  {
+	    str+='<td><a rel="photo_gallery" href="'+results[i].pathOfFile+'" title="'+results[i].description+'"><img alt="" src="'+results[i].pathOfFile+'" height="100px"/></a></td>';
+  }
+ 
+ str+='</div>'
+ problemRelatedImagesElmt.innerHTML = str;
+ 
+ $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+
+}
+
 
 </script>
 <style>
@@ -282,6 +333,20 @@ h3 {
 		</c:if>		
 	</tr>	
 </table>
+<HR><BR>
+<DIV id='problemFilesMainOuterDiv'>
+	<div id='problemFilesHeaderDiv'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Problem Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
+		</table>
+	<div>
+
+	<DIV id='problemFilesMainInnerDiv' class="divInfo">
+	
+	</DIV>
+
+</DIV>
+
 <div id="postProblemDiv">
 <div id="showAllPostsDiv" style="margin-top:10px;margin-bottom:10px;"></div>
 <c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
@@ -328,7 +393,23 @@ h3 {
 <script type="text/javascript">
 
 executeOnload();
+getProblemRelatedImages(id);
 
-</script>
+$(document).ready(function() {
+   
+   $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+  });
+  </script> 
+
+<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
 </body>
 </html>
