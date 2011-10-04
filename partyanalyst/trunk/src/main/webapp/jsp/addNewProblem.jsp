@@ -505,7 +505,9 @@ function clearSuccessMsg(){
 						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="red">  More Documents...</font></a></td></tr>
 			       
 					</table>
-			<div id="dynamicDiv" ></div>
+					<table>
+					<tr><td>
+			<div id="dynamicDiv" ></div></td></tr>
 				<tr id="problemSourceRowId">
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
