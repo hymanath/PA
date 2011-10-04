@@ -101,4 +101,10 @@ public interface IProblemManagementService {
 	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId);
 	
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
+	
+	public List<FileVO> getImageDetails();
+	
+	public void acceptSelectedImagesByAdmin(final Integer[] problemFileIds);
+	
+	public void deleteSelectedImagesByAdmin(final Integer[] problemFileIds);
 }
