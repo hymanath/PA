@@ -1585,6 +1585,11 @@
         <action name="getCadreInfoAction" class="cadreInfoAction"> 
              <result name="success">/jsp/cadreInfoResultPage.jsp</result> 		
         </action>
+        
+         <action name="getImageInfoAction" class="com.itgrids.partyanalyst.web.action.ImageInfoAction"> 
+             <result name="success">/jsp/imageInfoResultPage.jsp</result> 		
+        </action>
+        
         <action name="getCadreInfoAjaxAction" class="cadreInfoAction" method="getCadreInfoByCadreId"> 
               <result type="json" name="success">
            		<param name="root">cadreInfo</param>
@@ -1813,11 +1818,23 @@
 			 <result name="input">/jsp/adminProblemManagement.jsp</result>
         </action>
         
+        <action name="imageManagementAdminAction" class="com.itgrids.partyanalyst.web.action.ImageManagementAdminAction"> 
+             <result name="success">/jsp/adminImageManagement.jsp</result> 
+             <result name="error">/jsp/loginForm.jsp?src=problemManagementAdminAction</result>	
+			 <result name="input">/jsp/adminImageManagement.jsp</result>
+        </action>
+        
 		<action name="getAllProblems" class="problemManagementAdminAction" method="getAllProblemsNeededToBeApprovalForAdmin">
 			<result type="json" name="success">
 				<param name="root">result</param>				
 			</result>		
 		</action>
+		<action name="getAllImageDetails" class="imageManagementAdminAction" >
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result>		
+		</action>
+		
 		<action name="connectPeopleAction" class="connectPeopleAction">
 			<result name="success">/jsp/connectPeoplePage.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>			
@@ -1835,6 +1852,7 @@
 			</result>		
 		</action>
 		
+
 		
 		<action name="getLocalBodyConstiResults" class="localBodyElectionAction" method="getLocalElectionBodyOverallResults">
 			<result type="json" name="success">
