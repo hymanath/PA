@@ -25,6 +25,10 @@
 	    <property name="problemManagementService" ref="problemManagementService" />
 	</bean>
 	
+	<bean id="imageManagementAdminAction" class="com.itgrids.partyanalyst.web.action.ImageManagementAdminAction" singleton="false">
+	    <property name="problemManagementService" ref="problemManagementService" />
+	</bean>
+	
 	<bean id="constituencyWiseCensusMappingAction" class="com.itgrids.partyanalyst.web.action.ConstituencyWiseCensusMappingAction" singleton="false">
 	 	<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
