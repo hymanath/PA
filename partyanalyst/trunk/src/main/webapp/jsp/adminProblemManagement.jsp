@@ -356,7 +356,7 @@
 	<table>
 		<tr>
 			<td style="font-family:verdana;font-weight:bold;">
-				<input type="checkbox" onclick="getAllProblems()" checked="true"> All Problems Posted For Today </input>
+				<input type="checkbox" onclick="getAllProblems()" checked="true"/> All Problems Posted For Today 
 			</td>		
 			<td style="padding-left:450px">
 				<div id="advancedSearchDiv" class="button">

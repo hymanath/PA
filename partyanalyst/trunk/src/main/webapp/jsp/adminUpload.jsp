@@ -115,7 +115,8 @@
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Scrutinize Problems</legend>
-									<h4 class="tdstyle">Accept/Reject recent problems posted&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemManagementAdminAction"/>"><b>&nbsp;Recent Problems</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject recent problems posted&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemManagementAdminAction"/>"><b>&nbsp;Recent Problems</b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<s:url action="imageManagementAdminAction"/>"><b>&nbsp;Related Images</b></a></h4>
+									
 									</fieldset>
 								</td>
 							</tr>
