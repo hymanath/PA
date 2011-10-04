@@ -334,18 +334,18 @@ h3 {
 	</tr>	
 </table>
 <HR><BR>
-<DIV id='problemFilesMainOuterDiv'>
+<div id='problemFilesMainOuterDiv'>
 	<div id='problemFilesHeaderDiv'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Problem Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
 		</table>
-	<div>
+	</div>
 
-	<DIV id='problemFilesMainInnerDiv' class="divInfo">
+	<div id='problemFilesMainInnerDiv' class="divInfo">
 	
-	</DIV>
+	</div>
 
-</DIV>
+</div>
 
 <div id="postProblemDiv">
 <div id="showAllPostsDiv" style="margin-top:10px;margin-bottom:10px;"></div>
