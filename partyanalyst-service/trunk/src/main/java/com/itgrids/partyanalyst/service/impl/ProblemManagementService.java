@@ -156,9 +156,17 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private IProblemFileDAO problemFileDAO;
+	private String tempName;
 	
 	
-	
+	public String getTempName() {
+		return tempName;
+	}
+
+	public void setTempName(String tempName) {
+		this.tempName = tempName;
+	}
+
 	public IProblemFileDAO getProblemFileDAO() {
 		return problemFileDAO;
 	}
@@ -3750,6 +3758,55 @@ public class ProblemManagementService implements IProblemManagementService {
 			log.error("Exception Occured & Exception is - "+e);
 			return resultStatus;
 		}
+	} 
+	
+	public List<FileVO> getImageDetails()
+	{
+		FileVO fileVO=null;
+		List<FileVO> filevo1=new ArrayList<FileVO>();
+		List<Object[]> result1 = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
+        for (Object[] objects : result1) {
+	    fileVO=new FileVO();
+	    fileVO.setProblemFileId((Long)objects[0]);
+	    fileVO.setProblem(objects[1].toString());
+	    
+	    fileVO.setFileTitle1(objects[2].toString());
+	    fileVO.setFileDescription1(objects[3].toString());
+	    fileVO.setScope(objects[4].toString());
+	    fileVO.setIdentifiedOn((Date)objects[5]);
+	    fileVO.setExistingFrom((Date)objects[6]);
+	    fileVO.setName(objects[7].toString());
+	    fileVO.setLastName(objects[8].toString());
+	    fileVO.setFileName1(objects[9].toString());
+	    
+	    
+	    filevo1.add(fileVO);
+
+		}
+		return filevo1;
+	}
+	public void acceptSelectedImagesByAdmin(final Integer[] problemFileIds){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				for(int i=0;i<problemFileIds.length;i++){						
+					ProblemFile problemFile =problemFileDAO.get(problemFileIds[i].longValue());						
+					problemFile.setIsApproved(IConstants.TRUE);
+					problemFileDAO.save(problemFile);
+				}
+			}
+		});
+	}
+	
+	public void deleteSelectedImagesByAdmin(final Integer[] problemFileIds){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				for(int i=0;i<problemFileIds.length;i++){
+					ProblemFile problemFile = problemFileDAO.get(problemFileIds[i].longValue());				
+					problemFile.setIsApproved(IConstants.REJECTED);
+					problemFileDAO.save(problemFile);
+				}	
+			}
+		});
 	}
 	
 	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId){
@@ -3774,6 +3831,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	  * @param problemBeanVO
 	  * @return list of file Objects
 	  */
+
+
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO){
 		
 		File file = new File();
