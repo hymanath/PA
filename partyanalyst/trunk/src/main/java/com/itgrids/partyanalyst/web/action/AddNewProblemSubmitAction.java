@@ -80,9 +80,18 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private List<String> fileDescription;
     private HttpServletRequest servletRequest;
     private ServletContext context;
+    private List<String>tempFileName;
 	
 		
     
+	public List<String> getTempFileName() {
+		return tempFileName;
+	}
+
+	public void setTempFileName(List<String> tempFileName) {
+		this.tempFileName = tempFileName;
+	}
+
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -509,14 +518,12 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		fileVO.setFileTitle(getFileTitle());
 		fileVO.setFileDescription(getFileDescription());
 		
-		//problemBeanVO.setFileName(getUserImageFileName());
-		//problemBeanVO.setFileTitle(getFileTitle());
-		//problemBeanVO.setFileDescription(getFileDescription());
 		try {
 			String fileName;
 			String filePath1 = context.getRealPath("/");
 			String filePath = filePath1 + "/uploaded_files";
 			problemFilepath = new ArrayList<String>();
+			tempFileName=new ArrayList<String>();
 			for (int i = 0; i < userImage.size(); i++) {
 				Long systime = System.currentTimeMillis();
 				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
@@ -528,6 +535,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 				}
 				else
 				  fileName = systime.toString()+"."+val;
+				tempFileName.add(fileName);
 				String problemFilePath=filePath+"/"+fileName;
 				problemFilepath.add(problemFilePath);
 				File fileToCreate = new File(filePath, fileName);
@@ -539,7 +547,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 				}
 			}
 			fileVO.setFileContentType(getContentType());
-			//problemBeanVO.setFileContentType(getContentType());
+			fileVO.setFileName(tempFileName);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			addActionError(e.getMessage());
