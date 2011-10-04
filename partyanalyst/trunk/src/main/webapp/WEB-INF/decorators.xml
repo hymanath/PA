@@ -68,6 +68,7 @@
 		<pattern>/announcementSaveAction*</pattern>
 		<pattern>/openEditAnnouncementAction*</pattern>
 		<pattern>/editAnnouncementPageAction*</pattern>
+		<pattern>/getImageInfoAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
