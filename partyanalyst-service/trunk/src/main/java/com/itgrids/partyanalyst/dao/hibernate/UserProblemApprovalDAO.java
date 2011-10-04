@@ -49,11 +49,12 @@ public List findApprovalInfoForProblem(Long problemHistoryId, int startIndex, in
 @SuppressWarnings("unchecked")
 public List findCountOfPosts(Long problemHistoryId) {
 	
+Object[] params = {"true",problemHistoryId};
 	return getHibernateTemplate().find("select count(model.userProblemApprovalId)," +
 			" count(model.userApprovalDetails.approvalDetails.isApproved), " +
 			" model.userApprovalDetails.approvalDetails.isApproved from UserProblemApproval model" +
-			" where model.userApprovalDetails.approvalDetails.isApproved " +
-			" is not null and model.problemHistory.problemHistoryId = ? group by " +
-			" model.userApprovalDetails.approvalDetails.isApproved", problemHistoryId);
+			" where model.userApprovalDetails.approvalDetails.isAdminApproved = ?" +
+			" and model.problemHistory.problemHistoryId = ? group by " +
+			" model.userApprovalDetails.approvalDetails.isApproved ", params);
 }
 }
