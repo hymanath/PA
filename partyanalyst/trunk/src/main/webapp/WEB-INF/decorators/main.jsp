@@ -289,7 +289,7 @@ function openAddNewProblemWindow()
 <div id="homePageContainer" style="overflow:visible;">
 <div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
-				<a href="javascript:{}" onclick="buildAccordion()"><img width="25" height="100" style="border:0px none;" src="images/icons/QuickView.png"/></a>
+				<a href="javascript:{}" onclick="buildAccordion()"><img   width="25" height="100" style="border:0px none;padding:0px;margin:0px" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
 					<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
 				</div>
