@@ -114,7 +114,8 @@
 </STYLE>
 </head>
 <body>
-
+      <div id="password_change_window" style="background-color: #C7CFD2;">
+	  <div id="password_change_window_inner"></div></div>
 	<div id="connectPeoplePopup_outer" class="yui-skin-sam">
 		<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
 	</div>
