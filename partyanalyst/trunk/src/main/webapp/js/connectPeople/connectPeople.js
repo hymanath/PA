@@ -72,9 +72,8 @@ function initializeTabView()
 	var myTabs = new YAHOO.widget.TabView();
 
 	myTabs.addTab( new YAHOO.widget.Tab({
-
 		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main" style="text-align:left; "></div>',
+		content: '<div id="postedDiv_main" style="text-align:left;"></div>',
 		active: true
 	}));
 
@@ -541,7 +540,11 @@ function callAjax(jsObj,url){
 					{
 						closeConnectPanel(jsObj,results);
 					}
-					
+					else if(jsObj.task == "changePassword")
+					{
+						showresults(results);
+					}
+
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -763,6 +766,128 @@ function uploadUserPic()
 	});
 }
 
+function changeExistingPassword()
+{
+
+$("#password_change_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:225,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("password_change_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Change Password</div>';
+		str += '<div id="feedback_window_body">';
+		str += '<table>';
+		str += '<tr><td><img src="images/icons/infoicon.png"/>';
+		str += 'Fields marked with (<font color="red">*</font>) are mandatory</td></tr><tr><td class="tdStyle"><b style="color:red">*</b>Current Password</td><td>  <input type="password" name="currentPassword"  id="currentPwdId" cssClass="textFieldStyle" /></td></tr>';
+		str += '<tr><td class="tdStyle"><b style="color:red">*</b>New Password</td><td><input type="password" name="newPassword"  id="newPwdId" cssClass="textFieldStyle" />';
+	    str += '</td></tr>';
+		str += '<tr><td class="tdStyle"><b style="color:red">*</b>Confirm Password</td><td>  <input type="password" name="confirmPassword"  id="confirmPwdId" cssClass="textFieldStyle"/>';
+        str += '</td></tr></table>';
+        str += '	</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="66%" align="left"><div id="password_window_errorMsg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '		<input id="changeButton" type="button" value="Change Password"></input>';
+		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("changeButton");  
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton1.on("click",function(){
+			changePassword();
+		});
+
+		oPushButton2.on("click",function(){
+			$("#password_change_window").dialog("destroy");
+		});
+	
+}
+	
+function changePassword()
+	{
+	var cpwd = document.getElementById("currentPwdId").value;
+	var npwd = document.getElementById("newPwdId").value;
+	var cfmpwd = document.getElementById("confirmPwdId").value;
+	var resultDIVEle = document.getElementById("password_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	if(cpwd.length > 0 &&cpwd.length < 6){
+		resultDIVEle.innerHTML = "<font color='red'>Current Password Minimum Of 6 Characters.</font>";
+	        return;
+	}
+	if(npwd.length > 0 &&npwd.length < 6){
+		resultDIVEle.innerHTML = "<font color='red'>New Password Minimum Of 6 Characters.</font>";
+	        return;
+	}
+	if(cpwd.value=="")
+     resultDIVEle.innerHTML="<font color='red'>Please Enter Password.</font>";	
+     if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd){
+ 		resultDIVEle.innerHTML = "<font color='red'>Passwords Do Not Match.</font>";
+         return
+	}
+	if(cpwd==''){
+     resultDIVEle.innerHTML = "<font color='red'>Please Enter Current Password.</font>";
+	return;
+	}
+	if(npwd==''){
+     resultDIVEle.innerHTML = "<font color='red'>Please Enter New Password.</font>";
+	return;
+	}
+	if(cfmpwd==''){
+	resultDIVEle.innerHTML = "<font color='red'>Please Enter Confirm Password.</font>";
+	return;
+	}
+	if(cpwd!='')
+		{
+		str = '<font color="#000000">Sending Your Request.Please wait</font>';
+		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+       	var jsObj={
+          crntPassword:cpwd,
+          newPassword:npwd,
+		  task:"changePassword"	 
+	};
+        var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "changeUserPasswordAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		}
+}
+function closewdw()
+{
+	$("#password_change_window").dialog("destroy");
+}
+function showresults(results){
+
+
+		if(results==121){
+			var result = document.getElementById("password_window_errorMsg");
+		result.innerHTML ='<div style="color:green">Password changed successfully, Window Closing...</div>';
+        
+		setTimeout("closewdw()",3000);
+		}	
+		else if(results==0){
+			var result = document.getElementById("password_window_errorMsg");
+		var str='';
+			str+='<div style="color:red"> Invalid Current Password</div>';	
+		result.innerHTML = str;
+
+		}
+
+	
+}
+
 function previewImg()
 {
 	var photoElmt = document.getElementById("photoUploadElmt");
@@ -848,8 +973,9 @@ function buildQuickRegionAccessContent()
 		return;
 
 	var pStr = '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="freeUserRegistration.action">Edit Profile</a></div>';
-	pStr += '<div style="margin-right:15px;margin-top:9px;" <a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Edit picture</a></div>';
-	profElmt.innerHTML = pStr;
+		pStr += '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Edit picture</a></div>';
+		pStr += '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="changeExistingPassword()">Change Password</a></div>';
+		profElmt.innerHTML = pStr;
 
 	var str = '';
 	str += '<div id="regionAccessDiv_main">';
@@ -1015,9 +1141,9 @@ function showPostedProblems(jsObj,results)
 	str += '<table width="100%">';
 	str += '<tr>';
 	if(results.totalPostedProblemsCount == 0)
-		str += '<td width="180px">Total Posted Problems - '+results.totalPostedProblemsCount+'</td>';
+		str += '<td width="180px">Total posted problems - '+results.totalPostedProblemsCount+'</td>';
 	else
-		str += '<td width="180px">Total Posted Problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
+		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
 
 	if(results.postedProblemsCountByLoggedInUsers == 0)
 		str += '<td width="90px">By User - '+results.postedProblemsCountByLoggedInUsers+'</td>';
@@ -1370,7 +1496,7 @@ function showPostedReasons(jsObj,results)
 	str += '<tr>';
 	
 	if(userType != "PartyAnalyst"){
-        str += '<td align="left" width="194px"> Total Political Reasons Posted - </td>';
+        str += '<td align="left" width="194px"> Total Political reasons posted - </td>';
 		  
 		  if(totalPostedReasonsCount ==0)
 			  str+='<td>'+totalPostedReasonsCount+'</td>';
@@ -1392,7 +1518,7 @@ function showPostedReasons(jsObj,results)
 		  else
 		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
 	}else{
-		str += '<td align="left" width="211px"> Total Political Reasons Posted - '+totalPostedReasonsCount+'</td>';
+		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
 		str += '<td align="left" width="90px"> By User - '+postedReasonsByLoggedInUser+'</td>';
 		str += '<td align="left" width="90px"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
 	}
