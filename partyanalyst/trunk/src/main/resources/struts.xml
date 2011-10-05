@@ -2141,6 +2141,13 @@
 			</result>		
 		</action>
 		
+		<action name="changeUserPasswordAction" class="connectPeopleAction" method="changeUserPassword">
+		    <result type="json" name="success">
+			<param name="root">pwdVal</param>				
+		</result>		
+	    </action>
+	
+		
 		<action name="checkAnanymousFreashUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailabilityForFreashUser">
 			<result type="json" name="success">
 				<param name="root">result</param>				
