@@ -272,9 +272,10 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
    .dotline {
 		border-top: 1px solid #D6D6D6;
 		height: 1px;
-		margin-bottom: 10px;
+		margin-bottom:10px !important; margin-bottom:0px;
 		margin-top: 0.5em;
 		width: 70%;
+		
    }
 	.headerDiv
 	{
@@ -655,13 +656,14 @@ function validatefields()
 		flag = false;*/
     if(!showDetails(results))
         flag = false;
+	if(!validateAccept())
+        flag = false;
 	</c:if>
    <c:if test="${registrationId != '0'}">
     if(!validateMobile())
 	    flag = false;
 	</c:if>
-	if(!validateAccept())
-        flag = false;
+	
 	if(!validateState())
 		flag = false;
 	if(!validateConstituency())
@@ -783,15 +785,22 @@ function showTextInTextBoxes(id){
 <c:if test="${registrationId == '0'}">
 <div id="tableStyle" style="width:870px;height:530px;"></c:if>
 <c:if test="${registrationId != '0'}">
-<div id="tableStyle" style="width:870px;height:495px;"></c:if> 			
+<div id="tableStyle" style="width:870px;height:495px;"></c:if>
+<div style="margin:0px 0px 0px 20px !important; margin:0px 0px 0px 10px; padding:0px 0px 0px 0px; float:left; width:847px;">
 <table>
 <tr>
- <c:if test="${registrationId == '0'}">
-<td width="14%"><img src="images/icons/homePage_new/freeRegPage.jpg" width="250" height="250" style="margin-left:67px"/></td></c:if>
+<td>
+<table width="100%">
+<tr>
+<td width="250">
+<c:if test="${registrationId == '0'}">
+<img src="images/icons/homePage_new/freeRegPage.jpg" width="250" height="192" />
+</c:if>
  <c:if test="${registrationId != '0'}">
-<td width="14%"><img src="images/icons/homePage_new/update.jpg" width="250" height="250" style="margin-left:67px"/></td></c:if>
-
-<td width="40%">
+<img src="images/icons/homePage_new/update.jpg" width="250" height="192" /></c:if>
+</td>
+<td width="80">&nbsp;</td>
+<td width="515" align="left">
 <table cellspacing="1px" cellpadding="5px" >
  <tr>
  <c:if test="${registrationId == '0'}">
@@ -802,8 +811,10 @@ function showTextInTextBoxes(id){
 Your password will be sent to this Email address
  </td>
  </tr>
- <td class="tdStyle"><b style="color:red">*</b> 
- <s:textfield name="email" value="Username (Email)" id="emailField" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
+ <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+ <s:textfield theme="simple" name="email" value="Username (Email)" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
  <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
   </td>
   
@@ -825,15 +836,21 @@ Your password will be sent to this Email address
    </tr>
   -->
   <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="firstName" value="First Name" id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="firstName" value="First Name" id="firstNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   
   </tr>
   <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="lastName" value="Last Name" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="lastName" value="Last Name" id="lastNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
+  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   </tr>
@@ -844,33 +861,39 @@ Your password will be sent to this Email address
   </td>
   </tr>
   <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="firstName"  id="firstNameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/><span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="firstName"  id="firstNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   </tr>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="lastName" id="lastNameId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30px" theme="simple"/><span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  <s:textfield name="lastName" id="lastNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30" theme="simple"/>
+  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30px" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
-  <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
+  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
+    <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
 </td>
 
 
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id),validateMobile()" onclick="removeTextInTextBoxes(this.id)" size="30px" theme="simple" cssClass="textFieldStyle"/><span id="mobileFieldDiv" style="padding-left:10px;font-weight:lighter">
+  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id),validateMobile()" onclick="removeTextInTextBoxes(this.id)" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" cssClass="textFieldStyle"/>
+  <span id="mobileFieldDiv" style="padding-left:10px;font-weight:lighter">
   </span></td>
   </tr>
   <tr>
   <td style="padding-left:18px"><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
   </tr>
   <tr>
-  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" size="30px" theme="simple" onBlur="showTextInTextBoxes(this.id),validateAddress()" onclick="removeTextInTextBoxes(this.id)"/><span id="addressFieldDiv" style="padding-left:10px;font-weight:lighter">
+  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" onBlur="showTextInTextBoxes(this.id),validateAddress()" onclick="removeTextInTextBoxes(this.id)"/>
+  <span id="addressFieldDiv" style="padding-left:10px;font-weight:lighter">
   </span></td>
   </tr>
   </c:if>
@@ -892,7 +915,7 @@ Your password will be sent to this Email address
 
  </table>
  <c:if test="${registrationId == '0'}">
-<table  style="padding-left:206px">
+<table style="margin-left:253px !important; margin-left:20px;">
 	</c:if>
 <c:if test="${registrationId != '0'}">
 <table  style="padding-left:80px">
@@ -900,32 +923,45 @@ Your password will be sent to this Email address
   <tr>
   <td>
         <div style="margin:5px;margin-left:26px" id="acceptErrId"></div>
-		<div style="margin:5px;margin-left:26px;font:11px Arial,Helvetica,sans-serif;">
+		<div style="margin:5px; margin:0px 0px 0px 90px !important; margin:0px 0px 0px 140px; font:11px Arial,Helvetica,sans-serif;">
 			<c:if test="${registrationId == '0'}">
 			 <s:checkbox name="accept" id="acceptId"/>
 			I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website
 		</div>
 		<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-		<div class="dotline"></div>
-		<strong style="font-size:12px;">&nbsp;Do you want to</strong>
-		 <div id="contactDetailsDiv" class="accessDivMain" style="font:11px Arial,Helvetica,sans-serif;">
+		<div class="dotline" style="margin:0px 0px 0px 62px !important; margin:0px 0px 0px 125px;"></div>
+        <div style="margin-left:7px; width:300px; height:50px; float:left;">
+		<div style="float:left; margin:0px 0px 0px 62px !important; margin:0px 0px 0px 60px;">
+		<div style="font-size:12px; float:left; font-weight:bold;">Do you want to</div>
+		<br>
+		 <div id="contactDetailsDiv" style="font:11px Arial,Helvetica,sans-serif;">
 					
 			<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
-			<div style="padding-top:15px">
+			<div style="padding-top:15px;">
 				<input type="image" src="images/icons/homePage_new/createbutton.jpg"/>
 			</div>
 			</c:if>
 			<c:if test="${registrationId != '0'}">
-			<div style="padding-top:15px">
+			<div style="margin:0px 0px 0px 183px !important; margin:0px 0px 0px 0px;">
 				<input type="image" src="images/icons/homePage_new/updatebutton.jpg"/>
 						</div>
 			</c:if>
-		 </div>
+		 </div>  
+		</div>
+		</div>
+
+		
 		 
 
   </td>
   </tr>
  </table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
 </div>
 
  
@@ -946,7 +982,7 @@ Your password will be sent to this Email address
 <script language="javascript">
 
 //document.getElementsByName("gender")[0].checked = true;
-document.getElementsByName("accept")[0].checked = true;
+//document.getElementsByName("accept")[0].checked = true;
 
 </script>
 <script>
