@@ -81,8 +81,19 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
     private String photoUploadStatus;
     private InputStream inputStream;
     private String loginUserProfilePic;
+    private String pwdVal;
     
-    public String getLoginUserProfilePic() {
+    public String getPwdVal() {
+		return pwdVal;
+	}
+
+
+	public void setPwdVal(String pwdVal) {
+		this.pwdVal = pwdVal;
+	}
+
+
+	public String getLoginUserProfilePic() {
 		return loginUserProfilePic;
 	}
 
@@ -498,6 +509,23 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
 		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
+		return Action.SUCCESS;
+	}
+	
+	public String changeUserPassword()
+	{
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		pwdVal=ananymousUserService.changeUserPassword(jObj.getString("crntPassword"),jObj.getString("newPassword"),user.getRegistrationID());
+		
 		return Action.SUCCESS;
 	}
 	
