@@ -1598,3 +1598,8 @@ background-color:#C7CFD2;
 	left:-175px;
 	z-index:1;
 }
+.fancyBoxImageDivTitle{
+	text-align : center;
+	font-weight: bold;
+    color      :#4B74C6;
+}
