@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IProblemManagementService {
 
@@ -101,6 +102,8 @@ public interface IProblemManagementService {
 	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId);
 	
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
+	
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,ProblemHistory problemHistory);
 	
 	public List<FileVO> getImageDetails();
 	
