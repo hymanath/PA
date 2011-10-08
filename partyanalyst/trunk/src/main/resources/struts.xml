@@ -1403,9 +1403,15 @@
         <action name="addNewProblemSubmitAction" class="addNewProblemSubmitAction">
 			<interceptor-ref name="fileUpload">
 				<param name="maximumSize">2097152</param>
-				<param name="allowedTypes">
-					image/png,image/gif,image/jpeg,image/pjpeg,application/msword,text/html,text/plain,application/excel,application/pdf,application/x-zip-compressed
+				<!--<param name="allowedTypes">
+										image/png,image/gif,image/jpeg,image/pjpeg,application/msword,application/vnd.ms-word,text/html,text/plain,application/excel,application/pdf,application/x-zip-compressed
+
+                </param>-->
+				<param name="allowedExtensions">
+										.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg
+
                 </param>
+				
 			</interceptor-ref>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="input">/jsp/addNewProblem.jsp
