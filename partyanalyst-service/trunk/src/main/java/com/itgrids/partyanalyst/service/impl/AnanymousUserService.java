@@ -55,6 +55,7 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class AnanymousUserService implements IAnanymousUserService {
 
@@ -1778,5 +1779,21 @@ public String getPassword(String password){
 	}
 	return password;
 }
+@SuppressWarnings("unchecked")
+public String changeUserPassword(String crntpassword,String newpassword,Long registrationId)
+{   
+	
+	List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
+	if(chkPwd.size()==0)
+		return IConstants.NoPassword;
+	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId);
+	return IConstants.YesPassword;
+}
+
+
+
+
+
+
 
 }
