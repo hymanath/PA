@@ -29,12 +29,31 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<AnanymousUser> checkUserPassword(String password,
+			Long userId) {
+		Object[] parameters = {password,userId};
+		return getHibernateTemplate().find("select model.password from AnanymousUser model where model.password=? and model.userId=?",parameters);
+	}
+	
+	public Integer changeUserPassword(String password,Long registrationId)
+	{
+	StringBuilder query = new StringBuilder();
+	query.append("update AnanymousUser model set model.password = ? where model.userId = ?");
+	
+	Query queryObject = getSession().createQuery(query.toString());
+	queryObject.setParameter(0, password);
+	queryObject.setParameter(1, registrationId);	
+	
+	return queryObject.executeUpdate();	
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<AnanymousUser> checkAnonymousUserLogin(String userId,
 			String password) {
 		Object[] parameters = {userId,password};
 		return getHibernateTemplate().find("from AnanymousUser model where model.username = ? and model.password = ?",parameters);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<AnanymousUser> checkForUserNameAvailabiity(String userName) {
 
