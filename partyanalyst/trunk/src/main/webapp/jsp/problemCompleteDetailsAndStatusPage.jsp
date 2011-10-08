@@ -1,4 +1,5 @@
 
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -724,26 +725,72 @@ function callAjax(jsObj,url)
 }
 function builImagesDiv(results){
 
- var problemRelatedImagesElmt = document.getElementById("problemRelatedImages");
- var str ='';
- str+='<b>Problem Related Images</b>';
- str+='<div id="content">';
-  for(var i in results){
-	    str+='<td><a rel="photo_gallery" href="'+results[i].pathOfFile+'" title="'+results[i].description+'"><img alt="" src="'+results[i].pathOfFile+'" height="100px"/></a></td>';
-   }
- 
- str+='</div>'
- problemRelatedImagesElmt.innerHTML = str;
- 
- $("a[rel=photo_gallery]").fancybox({
-				'transitionIn'		: 'none',
-				'transitionOut'		: 'none',
-				'titlePosition' 	: 'over',
-				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
-				}
-			});
+var problemRelatedImagesElmt = document.getElementById("problemRelatedImages");
+var str ='';
+str+='<b>Problem Related Images</b>';
+var str ='';
+str+='<div id="content">';
+str+='<table>'
+for(var i in results)
+{
+no_of_imagesPerRow = 4; 
+j = i;
+if(j++ % no_of_imagesPerRow == 0){
+str+= '<tr>';
+}
+var fileType = results[i].file.split(".");
 
+if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
+
+
+str+= '<td><table><tr><td>';
+str+= '<a  href="javascript:{}" title="View file" ">';
+
+if(fileType[(fileType.length-1)] == "pdf"  ){
+str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
+}
+else if(fileType[(fileType.length-1)] == 'text'){
+str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
+}
+else if(fileType[(fileType.length-1)].indexOf('word') != -1){
+str+= '<a href="'+results[i].pathOfFile+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
+}
+
+str+= '</a></td>';
+str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].title+'</div></td></tr></table></td>';
+
+
+}
+else{
+str+= '<td><table><tr><td>';
+str+= '<a rel="photo_gallery" href="'+results[i].pathOfFile+'" title="'+results[i].description+'"><img alt="" src="'+results[i].pathOfFile+'" height="100px" /></a></td>';
+str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].title+'</div></td></tr></table></td>';
+
+}
+
+if(j % no_of_imagesPerRow == 0){
+str+= '</tr>';
+}
+
+}
+str+= ' </table>';
+str+='</div>';
+problemRelatedImagesElmt.innerHTML = str;
+
+$("a[rel=photo_gallery]").fancybox({
+'transitionIn'		: 'none',
+'transitionOut'		: 'none',
+'titlePosition' 	: 'over',
+'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+	return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
+}
+});
+
+}
+ 
+function openFile(filePath,fileType){
+
+window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 }
 function buildProblemRecentActivities(jsObj,results)
 {
