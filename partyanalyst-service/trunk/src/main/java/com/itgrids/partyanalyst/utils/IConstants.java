@@ -21,7 +21,8 @@ public interface IConstants {
 	public static final String STATIC_STATE_PARTIES_13 = "'AIADMK','RSP'";
 	
 	
-	
+	public static final String NoPassword = "0";
+	public static final String YesPassword = "121";
 	public static final String NATIONAL_STATIC_PARTIES = "'INC','CPI','CPM','BJP','BSP'";
 	public static final String NATIONAL_PARTY_TYPE = "NP";
 	public static final String STATE_PARTY_TYPE = "SP";
@@ -443,7 +444,7 @@ public interface IConstants {
     public static final String HOST = "smtp.gmail.com";
     public static final String PORT = "465";
     public static final String FROMEMAILID = "info@partyanalyst.com";
-    public static final String TOEMAILID = "info@partyanalyst.com";
+    public static final String TOEMAILID = "kripton514@gmail.com";
     public static final String PASSWORD="ITGRIDS123";
     public static String SUBJECT = "User Requirements From PartyAnalyst";
     public static String CADRE_ROLE_ASSIGN_PROBLEMS = "Assign Problems";
