@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -525,16 +526,18 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemFilepath = new ArrayList<String>();
 			tempFileName=new ArrayList<String>();
 			for (int i = 0; i < userImage.size(); i++) {
+				Random random = new Random();
+				int randomNumber = random.nextInt(10000000);
 				Long systime = System.currentTimeMillis();
 				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
 				while(st.hasMoreTokens()) {
 				String key = st.nextToken();
 				String val = st.nextToken();
 				if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
-					fileName = systime.toString()+"."+key;
+					fileName = systime.toString()+randomNumber+"."+key;
 				}
 				else
-				  fileName = systime.toString()+"."+val;
+				  fileName = systime.toString()+randomNumber+"."+val;
 				tempFileName.add(fileName);
 				String problemFilePath=filePath+"/"+fileName;
 				problemFilepath.add(problemFilePath);
