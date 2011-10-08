@@ -584,9 +584,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemLocation problemLocation = null;
 				ProblemHistory problemHistory = null;
 				ProblemCompleteLocation problemCompleteLocation = null;
-				File file = null;
-				ProblemFile problemFile = null;
-				FileType fileType = null;
+								
 				try{					
 					//InformationSource problemSource = informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
 					InformationSource problemSource = null;
@@ -603,9 +601,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory = new ProblemHistory();
 					problemCompleteLocation = new ProblemCompleteLocation();
 					ProblemType problemType = new ProblemType();
-					file = new File();
-					problemFile = new ProblemFile();
-					fileType = new FileType();
+									
 					if(!problemBeanVO.getProblem().contains(" ")){
 						problem.setProblem(stringUtilService.fragmentARegularString(problemBeanVO.getProblem(), 100, " "));
 					}else{
@@ -643,7 +639,6 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemAndProblemSource.setProblem(problem);			
 					//Check for Party_Analyst Or Free User
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER)){
-						problemFile.setIsApproved(IConstants.TRUE); 
 						problemAndProblemSource.setProblemSource(problemSource);
 						reg = registrationDAO.get(problemBeanVO.getUserID());
 					    problemAndProblemSource.setUser(reg);
@@ -714,16 +709,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
 					problemHistory = problemHistoryDAO.save(problemHistory);
-					List<File> files =new ArrayList<File>();
-					files = uploadFiles(problemBeanVO);
-					if(files !=null){
-					 for(File fileObj :files){
-						
-						problemFile.setFile(fileObj);
-						problemFile.setProblemHistory(problemHistory);
-						problemFileDAO.save(problemFile);
-					   }
-					}
+					   saveProblemRelatedFiles(problemBeanVO,problemHistory);
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
 				    {
 						CadreProblemDetails cadreProblemDetails = new CadreProblemDetails();
@@ -3861,6 +3847,24 @@ public class ProblemManagementService implements IProblemManagementService {
 	}catch(Exception e){
 		e.printStackTrace();
 		 return filesList;
+		}
+	}
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,ProblemHistory problemHistory){
+		List<File> files =new ArrayList<File>();
+		ProblemFile problemFile = null;
+		files = uploadFiles(problemBeanVO);
+		if(files !=null){
+		 for(File fileObj :files){
+			
+			 problemFile = new ProblemFile();
+			 
+			 if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER))
+					problemFile.setIsApproved(IConstants.TRUE); 
+			 
+			problemFile.setFile(fileObj);
+			problemFile.setProblemHistory(problemHistory);
+			problemFileDAO.save(problemFile);
+		   }
 		}
 	}
 }
