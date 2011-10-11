@@ -14,11 +14,11 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 		this.fileDAO = fileDAO;
 	}
 	
-	/*public void test()
+	public void test()
 	{
 		fileDAO.getAll();
 		
-	}*/
+	}
 
 	
 }
