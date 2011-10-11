@@ -202,6 +202,11 @@
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
 				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
+				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
+				<value>com.itgrids.partyanalyst.model.UserSubuserRelation</value>
+				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
+				<value>com.itgrids.partyanalyst.model.ContentType</value>
+				<value>com.itgrids.partyanalyst.model.UserGallary</value>
 			</list>
 		</property>
 	</bean>
