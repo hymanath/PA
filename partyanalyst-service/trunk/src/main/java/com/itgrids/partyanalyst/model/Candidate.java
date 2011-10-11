@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * Candidate entity. 
@@ -55,6 +56,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String gender;
 	private String image;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
+	private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
+	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
 
 	// Constructors
 
@@ -206,6 +209,27 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserCandidateRelation> getUserCandidateRelations() {
+		return userCandidateRelations;
+	}
+
+	public void setUserCandidateRelations(
+			Set<UserCandidateRelation> userCandidateRelations) {
+		this.userCandidateRelations = userCandidateRelations;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Gallary> getGallaries() {
+		return gallaries;
+	}
+
+	public void setGallaries(Set<Gallary> gallaries) {
+		this.gallaries = gallaries;
 	}
 
 }

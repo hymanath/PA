@@ -44,6 +44,9 @@ public class File extends BaseModel implements java.io.Serializable {
 	private String fileTitle;
 	private String fileDescription;
 	private FileType fileType;
+	private RegionScopes regionScopes;
+	private String keywords;
+	private Long locationValue;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 
 	/** default constructor */
@@ -130,6 +133,36 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setProblemFile(Set<ProblemFile> problemFile) {
 		ProblemFile = problemFile;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "location_scope_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public RegionScopes getRegionScopes() {
+		return regionScopes;
+	}
+
+	public void setRegionScopes(RegionScopes regionScopes) {
+		this.regionScopes = regionScopes;
+	}
+	
+	@Column(name = "keywords",length = 200)
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	@Column(name = "location_value")
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
 	}
 
 }
