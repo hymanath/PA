@@ -39,6 +39,7 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 	private Set<GroupEntitlementRelation> groupEntitlementRelations = new HashSet<GroupEntitlementRelation>(0);
 	private Set<UserGroupEntitlement> userGroupEntitlement = new HashSet<UserGroupEntitlement>(0);
 	private String description;
+	private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	
 	/** Default Constructor */
     public GroupEntitlement(){
@@ -106,6 +107,17 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groupEntitlement")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserEntitlementGroupRegion> getUserEntitlementGroupRegions() {
+		return userEntitlementGroupRegions;
+	}
+
+	public void setUserEntitlementGroupRegions(
+			Set<UserEntitlementGroupRegion> userEntitlementGroupRegions) {
+		this.userEntitlementGroupRegions = userEntitlementGroupRegions;
 	}
 	
 }

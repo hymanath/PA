@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Entity;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -40,10 +40,10 @@ public class FileGallary implements Serializable{
 	private String isPrivate;
 	private String isDelete;
 	
-	private FileGallary(){
+	public FileGallary(){
 	}
 	
-	private FileGallary(Gallary gallary,File file,Date createdDate,
+	public FileGallary(Gallary gallary,File file,Date createdDate,
 			Date updateddate,String isPrivate,String isDelete){
 		this.gallary = gallary;
 		this.file = file;
@@ -65,7 +65,7 @@ public class FileGallary implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="gallry_id")
+	@JoinColumn(name="gallary_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Gallary getGallary() {

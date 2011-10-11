@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,14 +18,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Entity;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 
 /**
- * gallary_type entity. 
+ * gallary entity. 
  * @author <a href="mailto:kamalakardandu@gmail.com">Kamalakar Dandu</a>
  */
 
@@ -39,9 +39,10 @@ public class Gallary implements Serializable{
 	private String description;
 	private Date createdDate;
 	private Date updateddate;
-	private GallaryType gallaryType;
+	private ContentType contentType;
 	private String isDelete;
 	private String isPrivate;
+	private Candidate candidate;
 	private Set<CandidateGallary> userGallary= new HashSet<CandidateGallary>(0);
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	
@@ -53,12 +54,12 @@ public class Gallary implements Serializable{
 	/* full constructor */
 	
 	public Gallary(String name,String description,Date createdDate,
-			Date updateddate,GallaryType gallaryType,String isDelete,String isPrivate){
+			Date updateddate,ContentType contentType,String isDelete,String isPrivate){
 		this.name = name;
 		this.description = description;
 		this.createdDate = createdDate;
 		this.updateddate = updateddate;
-		this.gallaryType = gallaryType;
+		this.contentType = contentType;
 		this.isDelete = isDelete;
 		this.isPrivate = isPrivate;
 	}
@@ -110,18 +111,6 @@ public class Gallary implements Serializable{
 		this.updateddate = updateddate;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="gallary_type_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public GallaryType getGallaryType() {
-		return gallaryType;
-	}
-
-	public void setGallaryType(GallaryType gallaryType) {
-		this.gallaryType = gallaryType;
-	}
-
 	@Column(name = "is_delete", length = 10)
 	public String getIsDelete() {
 		return isDelete;
@@ -158,6 +147,30 @@ public class Gallary implements Serializable{
 
 	public void setFileGallary(Set<FileGallary> fileGallary) {
 		this.fileGallary = fileGallary;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="content_type_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ContentType getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(ContentType contentType) {
+		this.contentType = contentType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="candidate_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 	
 
