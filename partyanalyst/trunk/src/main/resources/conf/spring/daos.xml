@@ -643,4 +643,25 @@
 	<bean id="fileGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="userEntitlementGroupRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEntitlementGroupRegionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userSubuserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSubuserRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCandidateRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="contentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
