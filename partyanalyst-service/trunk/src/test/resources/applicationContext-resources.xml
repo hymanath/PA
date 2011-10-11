@@ -218,12 +218,37 @@
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
 				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
+				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
+				<value>com.itgrids.partyanalyst.model.UserSubuserRelation</value>
+				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
+				<value>com.itgrids.partyanalyst.model.ContentType</value>
+				<value>com.itgrids.partyanalyst.model.UserGallary</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="contentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ContentTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCandidateRelationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
+	<bean id="userSubuserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSubuserRelationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userEntitlementGroupRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEntitlementGroupRegionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="gallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
