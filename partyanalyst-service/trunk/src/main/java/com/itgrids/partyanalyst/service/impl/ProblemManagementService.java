@@ -711,7 +711,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
 					problemHistory = problemHistoryDAO.save(problemHistory);
 					problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
-					   saveProblemRelatedFiles(problemBeanVO);
+					
+					saveProblemRelatedFiles(problemBeanVO);
+					
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
 				    {
 						CadreProblemDetails cadreProblemDetails = new CadreProblemDetails();
@@ -3808,8 +3810,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			fileVO.setFile(images[0].toString());
 			fileVO.setTitle(images[1].toString());
 			fileVO.setDescription(images[2].toString());
-			String[] imagePath = images[3].toString().split("/");
-			fileVO.setPathOfFile(imagePath[1]+"/"+imagePath[2]);
+			fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+images[0].toString());
 			fileVOList.add(fileVO);			
 		}
 		return fileVOList; 
