@@ -230,7 +230,8 @@ var new2="Election Message";
 				{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
 	            { text: "West Bengal", url: "statePageAction.action?stateId=28" },
 				{ text: "Gujarat", url: "statePageAction.action?stateId=7"},
-				{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"}
+				{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"},
+				{ text: "Punjab", url: "statePageAction.action?stateId=21"}
 
 	        ]     
 	    }, 
@@ -271,7 +272,8 @@ var new2="Election Message";
 						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
 						{ text: "West Bengal", url: "statePageAction.action?stateId=28" },
 						{ text: "Gujarat", url: "statePageAction.action?stateId=7" },
-						{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"}
+						{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"},
+						{ text: "Punjab", url: "statePageAction.action?stateId=21"}
 
 						]     
 					}, 
