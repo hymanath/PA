@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -709,7 +710,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
 					problemHistory = problemHistoryDAO.save(problemHistory);
-					   saveProblemRelatedFiles(problemBeanVO,problemHistory);
+					problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
+					   saveProblemRelatedFiles(problemBeanVO);
 					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
 				    {
 						CadreProblemDetails cadreProblemDetails = new CadreProblemDetails();
@@ -3849,7 +3851,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		 return filesList;
 		}
 	}
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,ProblemHistory problemHistory){
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO){
 		List<File> files =new ArrayList<File>();
 		ProblemFile problemFile = null;
 		files = uploadFiles(problemBeanVO);
@@ -3862,9 +3864,10 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemFile.setIsApproved(IConstants.TRUE); 
 			 
 			problemFile.setFile(fileObj);
+			ProblemHistory problemHistory =problemHistoryDAO.get(problemBeanVO.getProblemHistoryId());
 			problemFile.setProblemHistory(problemHistory);
-			problemFileDAO.save(problemFile);
-		   }
+		 problemFileDAO.save(problemFile);
+		 }
 		}
 	}
 }
