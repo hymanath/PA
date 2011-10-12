@@ -633,7 +633,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			problemManagementDataVO.setProblemsOfUserVO(obj);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -719,7 +718,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		log.debug("Task::"+jObj.getString("task"));
@@ -744,7 +742,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		
@@ -796,7 +793,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		try {
 			jObj = new JSONObject(param);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		
@@ -813,7 +809,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		try {
 			jObj = new JSONObject(param);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		
