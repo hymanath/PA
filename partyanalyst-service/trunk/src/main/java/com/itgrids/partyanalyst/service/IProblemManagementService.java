@@ -103,7 +103,7 @@ public interface IProblemManagementService {
 	
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
 	
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,ProblemHistory problemHistory);
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO);
 	
 	public List<FileVO> getImageDetails();
 	
