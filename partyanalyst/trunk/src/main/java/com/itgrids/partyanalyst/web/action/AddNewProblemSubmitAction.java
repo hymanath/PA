@@ -75,22 +75,22 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private List<File> userImage = new ArrayList<File>();
 	private List<String> userImageContentType = new ArrayList<String>();
 	private List<String> userImageFileName = new ArrayList<String>();
-	private List<String> problemFilepath;
+	private List<String> problemFilePathList;
 	private List<String> contentType=new ArrayList<String>();
 	private List<String> fileTitle;
 	private List<String> fileDescription;
     private HttpServletRequest servletRequest;
     private ServletContext context;
-    private List<String>tempFileName;
+    private List<String>fileNameList;
 	
 		
     
-	public List<String> getTempFileName() {
-		return tempFileName;
+	public List<String> getFileNameList() {
+		return fileNameList;
 	}
 
-	public void setTempFileName(List<String> tempFileName) {
-		this.tempFileName = tempFileName;
+	public void setFileNameList(List<String> fileNameList) {
+		this.fileNameList = fileNameList;
 	}
 
 	public void setServletContext(ServletContext context) {
@@ -125,16 +125,16 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.userImageFileName = userImageFileName;
 	}
 
-	public List<String> getProblemFilepath() {
-		return problemFilepath;
-	}
-
-	public void setProblemFilepath(List<String> problemFilepath) {
-		this.problemFilepath = problemFilepath;
-	}
-
 	public List<String> getContentType() {
 		return contentType;
+	}
+
+	public List<String> getProblemFilePathList() {
+		return problemFilePathList;
+	}
+
+	public void setProblemFilePathList(List<String> problemFilePathList) {
+		this.problemFilePathList = problemFilePathList;
 	}
 
 	public void setContentType(List<String> contentType) {
@@ -521,43 +521,52 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		
 		try {
 			String fileName;
-			String filePath1 = context.getRealPath("/");
-			String filePath = filePath1 + "/uploaded_files";
-			problemFilepath = new ArrayList<String>();
-			tempFileName=new ArrayList<String>();
-			for (int i = 0; i < userImage.size(); i++) {
+			
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			String filePath = null;
+			
+			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
+			else
+				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+			
+			problemFilePathList = new ArrayList<String>();
+			
+			fileNameList = new ArrayList<String>();
+			for (int i = 0; i < userImage.size(); i++) 
+			{
 				Random random = new Random();
 				int randomNumber = random.nextInt(10000000);
 				Long systime = System.currentTimeMillis();
+				
 				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
-				while(st.hasMoreTokens()) {
+				
+				while(st.hasMoreTokens()) 
+				{
 				String key = st.nextToken();
 				String val = st.nextToken();
-				if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
+				
+				if(userImageContentType.get(i).equalsIgnoreCase("text/plain"))
 					fileName = systime.toString()+randomNumber+"."+key;
-				}
 				else
 				  fileName = systime.toString()+randomNumber+"."+val;
-				tempFileName.add(fileName);
-				String problemFilePath=filePath+"/"+fileName;
-				problemFilepath.add(problemFilePath);
+				
+				fileNameList.add(fileName);
+				problemFilePathList.add(filePath+fileName);
+				
 				File fileToCreate = new File(filePath, fileName);
 				FileUtils.copyFile(userImage.get(i), fileToCreate);
-				System.out.println("contenyt type.."
-						+ userImageContentType.get(i));
-				System.out.println(key + "\t" + val);
 				contentType.add(val);
 				}
 			}
+			
 			fileVO.setFileContentType(getContentType());
-			fileVO.setFileName(tempFileName);
+			fileVO.setFileName(fileNameList);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			addActionError(e.getMessage());
 		}
-		fileVO.setFilePath(problemFilepath);
-		//problemBeanVO.setFilePath(problemFilepath);
+		fileVO.setFilePath(problemFilePathList);
 		problemBeanVO.setFileVO(fileVO);
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
