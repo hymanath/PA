@@ -864,12 +864,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
 		
-		String name1 = request.getParameter("firstName");
-		String name2 = request.getParameter("lastName");
-		String name3 = request.getParameter("constituency");
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		//cadreInfo.setUserID(regVO.getRegistrationID());
 		cadreInfo.setUserID(regVO.getParentUserId() == null ? regVO.getRegistrationID() : regVO.getParentUserId());
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
@@ -962,10 +958,10 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String uploadCadreImage(Long cadreId)
 	{
 		try{
-			String pathSeperator = System.getProperty("file.separator");
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			String filePath = null;
 			
-			if(request.getRequestURL().toString().contains("www.partyanalyst.com"))
+			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator +"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
 			else
 				filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";
