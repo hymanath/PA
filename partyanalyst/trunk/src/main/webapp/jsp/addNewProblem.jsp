@@ -215,7 +215,7 @@ function addAnotherProblem(divName){
 
 
   }
-function getProblemDetails()
+function showOrHideProblemFilesDiv()
 {
 	
 var problemDetailDivEle = document.getElementById("problemDetailDiv");
@@ -481,13 +481,13 @@ function clearSuccessMsg(){
 				
 				<tr>
 					<td ><%=uploadMater%></td>		 
-                    <td><a href="javascript:{}"  onclick="getProblemDetails()"><font color="green">  Click Here</font></a></td>
+                    <td style="padding-left:15px;"><a href="javascript:{}"  onclick="showOrHideProblemFilesDiv()"><font color="green"><b>Click Here</b></font></a></td>
 				</tr>
 		
 		
 		          <table id="problemDetailDiv" style="display:none">
-					<tr>
-						<th align="left" colspan="2"><u>Upload Documents and Images</u></th>
+					<tr style="height:30px;">
+						<th align="left" colspan="2"><img src="images/icons/file_upload_icon.png">&nbsp;&nbsp;<u><font color="blue">Upload Documents and Images</font></u></th>
 					</tr>
 					
 					<tr>
@@ -502,7 +502,7 @@ function clearSuccessMsg(){
 						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
 						<td style="padding-left:15px;"> <s:file name="userImage" id="userImage"/></td>
 						
-						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="red">  More Documents...</font></a></td></tr>
+						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
 			       
 					</table>
 					<table>
