@@ -263,7 +263,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(param);
 				System.out.println(jObj);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
 			log.debug("Task::"+jObj.getString("task"));
@@ -607,7 +606,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		
@@ -704,32 +702,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.VILLAGES_PROB,villagesListForProb);
 		
 		problemCompleteDetailsVO = problemManagementService.getProblemCompleteInformationByProblemHistory(pHistoryId);
-		/*problemCompleteDetailsVO = new ProblemCompleteDetailsVO();
-		
-		ProblemBeanVO problemBean = new ProblemBeanVO();
-		problemBean.setProblem("Z.P High School Building is in worst stage");
-		problemBean.setDescription("Z.P High School Building is to be repaired, Students facing lot of problems.");
-		problemBean.setExistingFrom("2011-02-07");
-		problemBean.setReportedDate("2011-01-01");
-		problemBean.setProbSource("User");
-		problemBean.setProblemLocation("Andhra Pradesh ,Nellore,Kavali.");
-		problemBean.setProblemStatus("PROGRESS");
-		
-		problemCompleteDetailsVO.setProblemBasicDetails(problemBean);
-		
-		List<ProblemStatusDataVO> problemLifeCycleData = new ArrayList<ProblemStatusDataVO>();
-		ProblemStatusDataVO statusData = new ProblemStatusDataVO();
-		statusData.setDepartment("A.P.S.C.H.E Department");
-		statusData.setComments("Progress");
-		statusData.setDeptLocation("Nellore,AP");
-		statusData.setCadre("Murali Manohar");
-		statusData.setOfficialName("Ramana Murthy");
-		statusData.setProblemStatus("NEW");
-		statusData.setPhoneNo("9243222321");
-		problemLifeCycleData.add(statusData);
-		
-		
-		problemCompleteDetailsVO.setProblemLifeCycleData(problemLifeCycleData);*/
 		
 		return Action.SUCCESS;
 	}
