@@ -48,6 +48,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private String keywords;
 	private Long locationValue;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
+	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 
 	/** default constructor */
 	public File() {
@@ -135,6 +136,16 @@ public class File extends BaseModel implements java.io.Serializable {
 		ProblemFile = problemFile;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "file")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<FileGallary> getFileGallary() {
+		return fileGallary;
+	}
+
+	public void setFileGallary(Set<FileGallary> fileGallary) {
+		this.fileGallary = fileGallary;
+	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_scope_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
