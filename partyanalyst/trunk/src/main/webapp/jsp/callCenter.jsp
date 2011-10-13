@@ -5,13 +5,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
-</script>
-<!-- JQuery files (Start) -->
-<!--<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script>-->
- 
+</script> 
 <script
 	src="js/jQuery/jquery-ui.min.js">
 </script>
@@ -53,27 +50,11 @@ td.tdStyle{
 		  font-size: 12px; 
 		  text-align: left;
         }
-	
-#searchDiv {
-	
-    -moz-border-radius-topleft: 14px;
-    -moz-border-radius-topright: 14px;
-    background: -moz-linear-gradient(center top , #73B8DB 0pt, #4393BB 100%) repeat scroll 0 0 transparent;
-    border-color: #DDDDDD;
-    border-style: solid;
-    border-width: 1px 1px 0;
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    height: 29px;
-    padding-left: 12px;
-    padding-top: 6px;
-    width: 457px;
-  }
 .tdStyle {
     font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;
+	
 }
 #problemDetails_body{
 	
@@ -82,57 +63,8 @@ td.tdStyle{
     margin-right: 139px;
     margin-top: 59px;
 }
-
-#tableStyle{
--moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-bottomright: 6px;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-color: #DDDDDD;
-    border-style: solid;
-    border-width: 1px 1px 1px;
-}
-#table1{
-    -moz-border-radius-topleft: 9px;
-    -moz-border-radius-topright: 9px;
-    background: -moz-linear-gradient(center top , #73B8DB 0pt, #4393BB 100%) repeat scroll 0 0 transparent;
-    color: #FFFFFF;
-    margin-left: 1px;
-    margin-top: 18px;
-    padding: 8px;
-	font-size: 12px;
-    font-weight: bold;
-    height: 29px;
-    height: 20px;
-    padding: 6px 8px 8px 10px;
-}
-
-.table1Style{
-    -moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-bottomright: 6px;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #DDDDDD;
-    padding: 18px 67px 99px;
-    height: 300px;
- }
-#resultBtnId{
-	background: -moz-linear-gradient(center top , #AFD47B 0pt, #4393BB 1px, #4393BB 1px, #4393BB 100%) repeat scroll 0 0 transparent;
-	-moz-border-radius: 6px 6px 6px 6px;
-    border-color: #669933;
-    color: #FFFFFF !important;
-    font-weight: bold;
-    white-space: nowrap;
-}
-#btnStyle{
-    background: -moz-linear-gradient(center top , #AFD47B 0pt, #AFD47B 1px, #8BC03F 1px, #69A219 100%) repeat scroll 0 0 transparent;
-	-moz-border-radius: 6px 6px 6px 6px;
-    border-color: #669933;
-    color: #FFFFFF !important;
-    font-weight: bold;
-    white-space: nowrap;
-}
 .textFieldStyle{
-    -moz-border-radius: 6px 6px 6px 6px;
-    background: none repeat scroll 0 0 #FFFFFF;
+    
     border-color: #DDDDDD;
     border-style: solid;
     border-width: 1px 1px 1px;
@@ -141,19 +73,16 @@ td.tdStyle{
 
 }
  #headerDiv{
-   -moz-border-radius: 9px 9px 9px 9px;
-    background: -moz-linear-gradient(center top , #F9F9F9 0pt, #E8E8E8 100%) repeat scroll 0 0 transparent;
-    border-color: #DDDDDD;
-    border-style: solid;
-    border-width: 1px 1px 0;
-    color: Navy;
-    font-size: 20px;
-    font-weight: bold;
-    height: 33px;
-    margin-top: 23px;
-    padding-top: 10px;
-    text-align: center;
-    width: 210px;
+  background-image:url("images/icons/CallCenterHeader.jpg");
+   border-width:1px 1px 0;
+  color:Navy;
+  font-size:20px;
+  font-weight:bold;
+  height:45px;
+  margin-top:20px;
+  padding-top: 23px;
+  text-align:center;
+  width:240px;
  }
   .yui-skin-sam.yui-dt table{
 	border: 1px solid #CCCCCC;
@@ -183,10 +112,108 @@ td.tdStyle{
 .ui-widget-content .ui-icon {
     background-image: url("images/ui-icons_222222_256x240.png");
 }
+
+.quickbg13{
+background:#FFFFFF; 
+width:283px; 
+height:235px; 
+border-left:#dddddd solid 1px; 
+border-right:#dddddd solid 1px;
+}
+
+.quickbg12{
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
+}
+
+.quickbg12{
+margin:0px;
+padding:0px 0px 0px 10px;
+font-size:12px;
+color:#669900;
+line-height:60px;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+list-style-type:none;
+font-style:normal;
+font-weight:bold;
+text-decoration:none;
+}
+
+.quickbg12 a{
+margin:0px;
+padding:0px 0px 0px 10px;
+font-size:12px;
+color:#669900;
+line-height:60px;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+list-style-type:none;
+font-style:normal;
+font-weight:bold;
+text-decoration:none;
+}
+
+.quickbg12 a:hover{
+text-decoration:underline;
+}
+
+.formbg{
+margin:9px 150px 9px 0px !important; margin:9px 130px 9px 0px;
+background:#FFFFFF;
+float:left;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#000000;
+border:1px solid #dddddd;
+width:210px;
+height:30px;
+}
+
+.formbg_1{
+margin:9px 3px 9px 0px !important; margin:9px 3px 9px 0px;
+background:#FFFFFF;
+float:left;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#000000;
+border:1px solid #dddddd;
+width:210px;
+height:30px;
+}
+
+
+
+.formbg12{
+margin:5px 42px 0px 0px !important; margin:5px 42px 10px 0px;
+padding:0px;
+background:#FFFFFF;
+float:left;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#000000;
+border:1px solid #dddddd;
+width:210px;
+height:30px;
+}
+
+.formbg13{
+margin:5px 0px 0px 0px !important; margin:5px 10px 0px 0px;
+padding:0px;
+background:#FFFFFF;
+float:left;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#000000;
+border:1px solid #dddddd;
+width:210px;
+height:30px;
+}
+
 </style>
 </head>
 
 <script type="text/javascript">	
+var timeST = new Date().getTime();
   function clearAll(){
       document.getElementById("name1").value='';
 	  document.getElementById("mobile").value='';
@@ -222,7 +249,7 @@ function showCallTrackingEditWindow(result){
 								position:[150,120],								
 								modal: true,
 								title:'<font color="Navy">Edit Call Details</font>',
-								overlay: { opacity: 0.5, background: 'black'},
+								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#editCallTrackingProblem").dialog();
 								
@@ -242,19 +269,19 @@ function showCallTrackingEditWindow(result){
 	str +=    '<td><input type="text" size="15" class="textFieldStyle"  style="height:23px;" id="name2"/></td>';
 	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="mobile1"/></td>';
 	str +=   '<td>';
-	str +=      '<select style="width:130px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
+	str +=      '<select style="width:175px;" class="textFieldStyle" style="height:23px;" id="problemPurpose1" >';
     str +=        '<option>All</option>';
-	str += 		  '<option>Appointment Cancellation</option>';
-	str += 		  '<option>Appointment Fixing</option>';
-	str += 		  '<option>For Information</option>';	
-	str +=        '<option>Problem Reporting</option>';
-	str += 		  '<option>Problem Status Enquiry</option>';	
-	str += 		  '<option>Others</option>';
+	str += 		  '<option value="Appointment Cancellation">Appointment Cancellation</option>';
+	str += 		  '<option value="Appointment Fixing">Appointment Fixing</option>';
+	str += 		  '<option value="For Information">For Information</option>';	
+	str +=        '<option value="Problem Reporting">Problem Reporting</option>';
+	str += 		  '<option value="Problem Status Enquiry">Problem Status Enquiry</option>';	
+	str += 		  '<option value="Others">Others</option>';
 	str += 	    '</select>';
 	str +=    '</td>';	   
 	str +=    '<td><input type="text" size="15" class="textFieldStyle" readonly="readonly" style="height:23px;" id="referenceNo1" /></td>';
 	str +=    '<td><input type="text" size="15" class="textFieldStyle" style="height:23px;" id="villageTown1"/></td>';
-	str +=    '<td><input id="resultBtnId" type="button" value="Update" onclick="updateCallTrackingProblem();"/></td>';
+	str +=    '<td><img onclick="updateCallTrackingProblem();" src="images/update_button.jpg"/></td>';
 	str +=    '<td><input type="hidden"  id="problemId1" /></td>';
 	str +=  '</tr>';
 	str +=  '<tr>';
@@ -278,19 +305,20 @@ populateDataToEditCallTracking(result);
        var name = document.getElementById("name2").value;
 	   var mobile = document.getElementById("mobile1").value;
 	   var villageTown = document.getElementById("villageTown1").value;
-	   var problemPurpose = document.getElementById("problemPurpose1").value;
-       if(name.trim().length == 0)
+	   var problemPurposeEle = document.getElementById("problemPurpose1");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
+       if(name.length == 0)
 	{
 		document.getElementById("errorNameDiv1").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length == 0)
+	if(mobile.length == 0)
 	{
 		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">MobileNo is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length != 0){
-       if(isNaN(mobile) || mobile.length<10){
+	if(mobile.length != 0){
+       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
 		document.getElementById("errorMobileDiv1").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
 		val = 1;
 	    }
@@ -315,7 +343,8 @@ function updateCallTrackingProblem(){
        if(validateForUpdate()!=1){
       var name = document.getElementById("name2").value;
 	  var mobile = document.getElementById("mobile1").value;
-	  var problemPurpose = document.getElementById("problemPurpose1").value;
+	  var problemPurposeEle = document.getElementById("problemPurpose1");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	  var referenceNo = document.getElementById("referenceNo1").value;
 	  var villageTown = document.getElementById("villageTown1").value;
 	  var problemId = document.getElementById("problemId1").value;
@@ -327,6 +356,7 @@ function updateCallTrackingProblem(){
 			problemPurpose: problemPurpose,
 			referenceNo:referenceNo,
 			villageOrTown:villageTown,
+				time : timeST,
 			task: "updateCallTrackingProblem"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -344,13 +374,22 @@ function searchCallTrackingProblem(){
 	   document.getElementById("errorRefDiv").innerHTML='';
 	   document.getElementById("errorVillageDiv").innerHTML='';
       var name = document.getElementById("name1").value;
+	  if(name.length<=0)
+         name ='';
 	  var mobile = document.getElementById("mobile").value;
-	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  if(mobile.length<=0)
+         mobile ='';
+	  var problemPurposeEle = document.getElementById("problemPurpose");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	  var referenceNo = document.getElementById("referenceNo").value;
+	  if(referenceNo.length<=0)
+         referenceNo ='';
 	  var villageTown = document.getElementById("villageTown").value;
+	  if(villageTown.length<=0)
+         villageTown ='';
 	  if(problemPurpose =="All")
 	     problemPurpose = '';
-
+	 
       var jsObj=
 	      {				
 			name: name,
@@ -358,6 +397,7 @@ function searchCallTrackingProblem(){
 			problemPurpose: problemPurpose,
 			referenceNo:referenceNo,
 			villageOrTown:villageTown,
+			time : timeST,
 			task: "searchCallTrackingProblem"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -367,13 +407,13 @@ function searchCallTrackingProblem(){
 function validatePhoneNo(){
   document.getElementById("errorMobileDiv").innerHTML='';
   var mobile = document.getElementById("mobile").value;
-  if(mobile.trim().length == 0)
+  if(mobile.length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">MobileNo is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length != 0){
-       if(isNaN(mobile) || mobile.length<10){
+	if(mobile.length != 0){
+       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
 		val = 1;
 	    }
@@ -389,32 +429,33 @@ function validate(){
 	   document.getElementById("errorVillageDiv").innerHTML='';
        var name = document.getElementById("name1").value;
 	   var mobile = document.getElementById("mobile").value;
-	   var problemPurpose = document.getElementById("problemPurpose").value;
+	   var problemPurposeEle = document.getElementById("problemPurpose");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	   var referenceNo = document.getElementById("referenceNo").value;
 	   var villageTown = document.getElementById("villageTown").value;
-       if(name.trim().length == 0)
+       if(name.length == 0)
 	{
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length == 0)
+	if(mobile.length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length != 0){
-       if(isNaN(mobile) || mobile.length<10){
-		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter Valid Mobile No<br /> Number</font>';
+	if(mobile.length != 0){
+       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter Valid Mobile<br /> Number</font>';
 		val = 1;
 	    }
 	 }
-	if(problemPurpose.trim() =="All"){
+	if(problemPurpose =="All"){
 		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Please Select Call Purpose</font>';
 		 val = 1;
 	}
 	if(problemPurpose=="Problem Reporting"){
 	
-	    if(referenceNo.trim().length == 0)
+	    if(referenceNo.length == 0)
 	    {
 		 document.getElementById("errorRefDiv").innerHTML = '<font color="red">ReferenceNo is Required</font><BR/>';
 		val = 1;
@@ -434,25 +475,26 @@ function validateForAddProblem(){
 	   document.getElementById("errorVillageDiv").innerHTML='';
        var name = document.getElementById("name1").value;
 	   var mobile = document.getElementById("mobile").value;
-	   var problemPurpose = document.getElementById("problemPurpose").value;
+	   var problemPurposeEle = document.getElementById("problemPurpose");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	   var villageTown = document.getElementById("villageTown").value;
-       if(name.trim().length == 0)
+       if(name.length == 0)
 	{
 		document.getElementById("errorNameDiv").innerHTML ='<font color="red">Name is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length == 0)
+	if(mobile.length == 0)
 	{
 		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Mobile No is Required</font>';
 		val = 1;
 	}
-	if(mobile.trim().length != 0){
-       if(isNaN(mobile) || mobile.length<10){
-		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please enter valid Mobile <br /> Number</font>';
+	if(mobile.length != 0){
+       if(isNaN(mobile) || mobile.length<10 || mobile.length>10 || !(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")){
+		document.getElementById("errorMobileDiv").innerHTML = '<font color="red">Please Enter valid Mobile<br /> Number</font>';
 		val = 1;
 	    }
 	 }
-	if(problemPurpose.trim() =="All"){
+	if(problemPurpose =="All"){
 		 document.getElementById("errorProblemPurposeDiv").innerHTML= '<font color="red">Please Select Call Purpose</font>';
 		 val = 1;
 	}
@@ -467,14 +509,15 @@ window.open("addNewProblemAction.action?callTrackingProblemId="+problemId,"addCa
 function addCallTrackingProb(){
     var refNo = document.getElementById("referenceNo").value;
 	document.getElementById("errorRefDiv").innerHTML='';
-	if(refNo.trim().length != 0){
-	document.getElementById("errorRefDiv").innerHTML='<font color="red">Reference No must be empty</font>';;
+	if(refNo.length != 0){
+	document.getElementById("errorRefDiv").innerHTML='<font color="red">ReferenceNo must be empty</font>';
 	}
-if(refNo.trim().length <= 0){
+if(refNo.length <= 0){
   if(validateForAddProblem()!=1){
       var name = document.getElementById("name1").value;
 	  var mobile = document.getElementById("mobile").value;
-	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  var problemPurposeEle = document.getElementById("problemPurpose");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	  var villageTown = document.getElementById("villageTown").value;
 	  var url = 'addNewProblemAction.action?callTrackingName='+name ;
 	     url = url+'&mobile='+mobile+'&problemPurpose='+problemPurpose+'&villageTown='+villageTown+'&callTrackProb=callTracking';
@@ -488,6 +531,7 @@ if(refNo.trim().length <= 0){
    var jsObj=
 	      { 
 		    ProblemId:problemId,
+			time : timeST,
 			task: "getCallTrackingProblemByProblemId"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -499,6 +543,7 @@ if(refNo.trim().length <= 0){
    document.getElementById("callTrackingTotalCountDiv").innerHTML='';
      var jsObj=
 	      {
+		    time : timeST,
 			task: "getCurrentDayCallTrackingProblem"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -512,6 +557,7 @@ function callForEveryMinute(){
  function getCurrentDayProblemCount(){
      var jsObj=
 	      {
+		    time : timeST,
 			task: "getCurrentDayProblemCount"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -522,9 +568,14 @@ function saveCallTrackingProblem(){
         if(validate()!=1){
       var name = document.getElementById("name1").value;
 	  var mobile = document.getElementById("mobile").value;
-	  var problemPurpose = document.getElementById("problemPurpose").value;
+	  var problemPurposeEle = document.getElementById("problemPurpose");
+	  var problemPurpose = problemPurposeEle.options[problemPurposeEle.selectedIndex].value ;
 	  var referenceNo = document.getElementById("referenceNo").value;
 	  var villageTown = document.getElementById("villageTown").value;
+	  if(referenceNo.length <= 0)
+	    referenceNo='';
+	  if(villageTown.length <= 0)
+	     villageTown='';
       var jsObj=
 	      {				
 			name: name,
@@ -532,6 +583,7 @@ function saveCallTrackingProblem(){
 			problemPurpose: problemPurpose,
 			referenceNo:referenceNo,
 			villageOrTown:villageTown,
+			time : timeST,
 			task: "saveCallTrackingProblem"
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -539,64 +591,14 @@ function saveCallTrackingProblem(){
       callAjax(rparam,jsObj,url);
 	  }
     }
-function quickSearch(){
- 
-  var str='';
-  var quickSearchDivElmt = document.getElementById("quickSearchDiv");
-  str+='<div id="searchDiv">Quick Search For Problems';
-  str+='</div>';
-  str+='<table cellspacing="2px" cellpadding="11px" id="tableStyle" >';
-  str+='<tr>';
-  str+='<td class="tdStyle">';
-  str+='<s:textfield name="byName" value="Name" id="nameId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>';
-  str+='</td>';
-  str+='</tr>';
-  str+='<tr>';
-  str+='<td class="tdStyle">';
-  str+='<s:textfield name="byMobileNum" value="Mobile Number" id="mobileNumId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" onBlur=" numbersonly(this.id);showTextInTextBoxes(this.id);" theme="simple"/>';
-  str+='&nbsp<span id="errMsg">';
-  str+='</span>';
-  str+='</td>';
-  
-  str+='</tr>';
-  str+='<tr>';
-  str+='<td class="tdStyle">';
-  str+='<s:textfield name="byEmail" value="Email Id" id="emailId" cssClass="textFieldStyle" size="30px" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="validateEmail(this.id),showTextInTextBoxes(this.id)"/>';
-  str+='<span id="emailErrMsg" style="padding-left:37px;">';
-  str+='</span>';
-  str+='</td>';
-  
-  str+='</tr>';
-  str+='<tr>';
-  str+='<td class="tdStyle">';
-  str+='<s:textfield name="byRefNum" value="Problem Reference" id="refId" cssClass="textFieldStyle"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" size="30px" theme="simple"/>';
-  str+='</td>';
-  str+='</tr>';
-  str+='<tr>';
-  str+='<tr>';
-  str+='<td class="tdStyle">';
-  str+='<s:textfield name="fromDate" value="From Date" id="fromDate" size="30px" cssClass="textFieldStyle" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>';
-  str+='<s:textfield name="endDate" value="To Date" id="endDate" cssClass="textFieldStyle" size="30px" style="margin-left: 20px;" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>';
-  str+='</td>';
-  str+='</tr>';
-  str+='<tr>';
-  str+='<td align="center">';
-  str+='<input type="button" style="padding:8px;" id="resultBtnId" value="Search" onClick="getProblemDetails()">';
-  str+='</td>';
-  str+='</tr>';
-  str+='</table>';
-  
 
-quickSearchDivElmt.innerHTML = str;
-
-}
 function validateEmail(id){
 	
 	var email=document.getElementById("emailId").value;
 	var emailFilter=/^.+@.+\..{2,3}$/
 	if(email!="" && email!="Email Id"){
 		if(!emailFilter.test(email)){
-			document.getElementById("emailErrMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
+			document.getElementById("emailErrMsg").innerHTML = 'Please enter valid Email';
 		}
 	else{
 		document.getElementById("emailErrMsg").innerHTML ='';
@@ -610,7 +612,7 @@ function numbersonly(id){
 	var num = document.getElementById(id).value;
 	if(num !=''&& num!="Mobile Number"){
 	 if(isNaN(num) || num.length<10){
-		document.getElementById("errMsg").innerHTML ='<font color="red">Please enter valid Mobile Number</font>';
+		document.getElementById("errMsg").innerHTML ='Please Enter Valid Mobile No';
 	}
 	else{
 		document.getElementById("errMsg").innerHTML ='';
@@ -655,33 +657,59 @@ function showTextInTextBoxes(id){
 }
 
 function getProblemDetails(){
-	
-	  if($("#nameId").val() =="Name"){
-		$("#nameId").val($(this).html());
+    var name;
+    var refNum;
+    var mobileNum;
+    var emailId;
+    var fromDate;
+	var endDate;
+
+     if($("#nameId").val() =="Name"){
+		name = '';
 	  } 
+	  else
+	  name = $("#nameId").val();
+	  
 	  if($("#refId").val() =="Problem Reference"){
-		$("#refId").val($(this).html());
+		refNum ='';
 	  }
+	  else
+	  refNum=$("#refId").val();
+	  
 	  if($("#mobileNumId").val() =="Mobile Number"){
-		 $("#mobileNumId").val($(this).html()); 
+		 mobileNum ='';
 	  }
+	  else
+	     mobileNum = $("#mobileNumId").val();
+	  
 	  if($("#emailId").val() =="Email Id"){
-		 $("#emailId").val($(this).html());
+		 emailId ='';
 	  }
+	  else
+	     emailId = $("#emailId").val();
+	  
 	 if($("#fromDate").val() =="From Date"){
-		 $("#fromDate").val($(this).html());
+		 fromDate ='';
 	 }
+	 else
+	    fromDate = $("#fromDate").val();
+	 
 	 if($("#endDate").val() =="To Date"){
-         $("#endDate").val($(this).html());
+         endDate ='';
 	 }
+	 else
+	    endDate = $("#endDate").val();
+	 
+	 
 
 	  var jsObj = {
-		name:$("#nameId").val(),
-		refNum:$("#refId").val(),
-		mobileNum:$("#mobileNumId").val(),
-        emailId:$("#emailId").val(),
-        fromDate:$("#fromDate").val(),
-		endDate:$("#endDate").val(),
+		name:name,
+		refNum:refNum,
+		mobileNum:mobileNum,
+        emailId:emailId,
+        fromDate:fromDate,
+		endDate:endDate,
+		time : timeST,
 		task:"problemSearch"
   };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -740,11 +768,11 @@ YAHOO.util.Connect.asyncRequest('GET', url, callback);
 
 function showTotalCount(result){
 var resultsCountEl = document.getElementById("showProblemCountDiv");
-if(result.length!=0){
-resultsCountEl.innerHTML = '<div id="showCount" style=" color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span>'+result[0].count+'</span> Calls Received Today</div>';
+if(result!=null && result.length!=0){
+resultsCountEl.innerHTML = '<div id="showCount" style=" margin-right: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span>'+result[0].count+'</span> Calls Received Today</div>';
   }
  else{
-  resultsCountEl.innerHTML = '<div id="showCount" style="color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span> 0 </span> Calls Received Today</div>';
+  resultsCountEl.innerHTML = '<div id="showCount" style="margin-left: 30px; color: rgb(112, 112, 112); font-weight: bold; font-size: 13px; "><span> 0 </span> Calls Received Today</div>';
   }
 }  
 function showSearchCount(result){
@@ -947,19 +975,36 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 
 </script>
 <body>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" align="left">
+  <tr>
+  <td valign="left">
+<div style="float:left;margin-left:350px;">
+<div id="headerDiv">Call Center</div>
+</div>
+</td>
+  </tr>
+  <tr>
+  <td valign="left"><div style="float:left;">
   <table>
-    <tr>
+  <tr>
+  <td width="88" align="left">&nbsp;</td>
+  <td width="664" align="left"><div id="showCallAddedResult"></div></td>
+  <td width="231" align="left"><div id="showProblemCountDiv"></div></div></td>
+  </tr>
+  </table>
+  
+  </div></td>
+  </tr>
+  </table>
+  <table>
+	<tr>
       
-         <div id="headerDiv">Call Center</div>
+	     
+      
     </tr>
 	<tr>
       
-	     <div id="showProblemCountDiv"></div>
-      
-    </tr>
-	<tr>
-      
-	     <div id="showCallAddedResult"></div>
+	    
       
     </tr>
   </table>
@@ -1003,10 +1048,10 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    </table>
    <table style="padding-top:10px;">
      <tr>
-	   <td><input id="resultBtnId" type="button" value="Add" onclick="saveCallTrackingProblem();"/></td>
-	   <td><input id="resultBtnId" type="button" value="Search" onclick="searchCallTrackingProblem();"/></td>
-	   <td><input id="resultBtnId" type="button" value="Add Problem" onclick="addCallTrackingProb();"/></td>
-	   <td><input id="resultBtnId" type="button" value="Clear All" onclick="clearAll();"/></td>
+	   <td><img    onclick="saveCallTrackingProblem();" src="images/add_button.jpg"/></td>
+	   <td><img  onclick="searchCallTrackingProblem();" src="images/search_button.jpg"/></td>
+	   <td><img onclick="addCallTrackingProb();" src="images/add_problem.jpg"/></td>
+	   <td><img  onclick="clearAll();" src="images/clear_all_buttom.jpg"/></td>
 	 </tr>
    </table>
 </div>
@@ -1016,13 +1061,37 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 <div id="editCallTrackingProblem"> </div>
 <div id="mainDiv">
 <table>
-<tr><td>
-<div id="table1">Quick Links</div>
-<table class="table1Style">
-
- <tr>
+<tr>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+<table>
+<tr><td> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="283" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td><img src="images/lift_cure.jpg" width="9" height="28" /></td>
+                      <td width="271"  background="images/middel_cure.jpg" ><span style="font-family:Verdana, Arial, Helvetica, sans-serif; float:left; font-size:12px; font-style:normal; color:#FFFFFF; font-weight:bold; padding-left:5px;">Quick Links</span></td>
+                      <td align="right" valign="middle"><img src="images/right_cure.jpg" width="9" height="28" /></td>
+                    </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td align="left" valign="top" style="background:#FFFFFF; width:283px; height:289px; border-left:#dddddd solid 1px; border-right:#dddddd solid 1px;">
+                <div class="quickbg12">
+                <table width="100%">
+				<tr>
    <td>
-  	<img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
+  	<img src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
    &nbsp&nbsp
 	 <a class="tdStyle" href="" onclick="openAddNewProblemWindow()">
 		Add New Problem</a>
@@ -1030,7 +1099,7 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 </tr>
 <tr>
    <td>
-   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
+   <img src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
    &nbsp&nbsp
    <a class="tdStyle" href="" onclick="openManageProblemWindow()">
    Manage Problem</a>
@@ -1038,21 +1107,96 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 </tr>
 <tr>
    <td>
-   <img  style="margin-left: -43px;" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"/>
+   <img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"/>
    &nbsp&nbsp
    <a class="tdStyle" href="" onclick="openProblemSearchWindow()">
    Detailed Search on Problems</a>
    </td>
 </tr>
-</table>
-
-</td>
-<td>
-<table style="margin-left: 62px; margin-top: 65px;">
+				</table>
+                </div></td>
+              </tr>
+              <tr>
+                <td><img src="images/buttom_border_bg.jpg" width="283" height="10" /></td>
+              </tr>
+            </table></td>
+            <td width="24">&nbsp;</td>
+            <td width="492"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="9"><img src="images/lift_cure.jpg" width="9" height="28" /></td>
+                      <td background="images/middel_cure.jpg"><span style="font-family:Verdana, Arial, Helvetica, sans-serif; float:left;font-size:12px; font-style:normal; color:#FFFFFF; font-weight:bold; padding-left:5px;">Quick Search For Problems</span></td>
+                      <td width="9" align="right" valign="middle"><img src="images/right_cure.jpg" width="9" height="28" /></td>
+                    </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td align="left" valign="top" style="background:#FFFFFF;  height:235px; border-left:#dddddd solid 1px; border-right:#dddddd solid 1px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="12">&nbsp;</td>
+                        <td>
+                        <table width="100%">
+						<tr>
+						<td><s:textfield name="byName" value="Name" id="nameId" cssClass="formbg" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+						</td>
+						</tr>
 <tr>
-<td><div id="quickSearchDiv"></div>
-</td>
+ <td>
+<s:textfield name="byMobileNum" value="Mobile Number" id="mobileNumId" cssClass="formbg_1" onClick="removeTextInTextBoxes(this.id)" onBlur=" numbersonly(this.id);showTextInTextBoxes(this.id);" theme="simple"/>
+<span style="font-family:verdana; float:left; font-size:11px; color:#FF0000; padding:18px 0px 0px 5px;" id="errMsg"></span>
+ </td>
 </tr>
+						<tr>
+						<td><s:textfield name="byEmail" value="Email Id" id="emailId" cssClass="formbg_1" onClick="removeTextInTextBoxes(this.id)" theme="simple"onBlur="validateEmail(this.id),showTextInTextBoxes(this.id)"/><span style="font-family:verdana; float:left; font-size:11px; color:#FF0000; padding:18px 0px 0px 5px;" id="emailErrMsg"></span></td>
+						</tr>
+						
+						<tr>
+						<td>
+						<s:textfield name="byRefNum" value="Problem Reference" id="refId" cssClass="formbg"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id)"  theme="simple"/>
+						</td>
+						</tr>
+						</table>
+
+
+                        </td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="15">&nbsp;</td>
+                        <td>
+
+<s:textfield name="fromDate" value="From Date" id="fromDate"  cssClass="formbg12" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+
+<s:textfield name="endDate" value="To Date" id="endDate" cssClass="formbg13" style="margin-left: 20px;" onClick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)" onBlur="showTextInTextBoxes(this.id)" theme="simple"/>
+						</td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="44%" height="30">&nbsp;</td>
+                        <td width="56%" valign="bottom"><a href="#"><img src="images/search_button.jpg" onclick="getProblemDetails();" width="71" height="26" border="0" /></a></td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td><img src="images/buttom_border_bgright.jpg" width="492" height="10" /></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
 </table>
 </td>
 </tr>
@@ -1063,7 +1207,6 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
 </div>
 
 <script type="text/javascript">
-quickSearch();
 callForEveryMinute();
 getCurrentDayCallTrackingProblem();
 </script>
