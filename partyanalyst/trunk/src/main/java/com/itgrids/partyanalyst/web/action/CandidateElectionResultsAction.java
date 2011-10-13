@@ -8,17 +8,20 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -37,7 +40,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private CandidateVO candidateVO;
 	private CandidateProfileInfoVO candidateProfileInfoVO;
 	private String candidateURLString;
-	
+	private JSONObject jObj;
+	private String task;
+	private List<FileVO> fileVO;
 	
 
 	public String getCandidateURLString() {
@@ -81,6 +86,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			List<CandidateDetailsVO> candidateElectionDetails) {
 		this.candidateElectionDetails = candidateElectionDetails;
 	}
+	public List<FileVO> getFileVO() {
+		return fileVO;
+	}
+
+	public void setFileVO(List<FileVO> fileVO) {
+		this.fileVO = fileVO;
+	}
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -98,9 +110,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
 	}
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
 
 	public String execute(){
-		
+		request.setAttribute("candidateId",candidateId);
 		//candidateProfileInfoVO.setCandidateElectionProfile(candidateElectionProfile);
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
@@ -152,5 +171,29 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else
 			return ERROR;
 	}
+	
+	public String getCandidatesPhotoGallaryDetail(){
+		try  {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
+			{
+			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.TYPE_PHOTO_GALLARY);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getPhotosInAGallary"))
+			{
+				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCandidateNewsGallaryDetail"))
+			{
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.TYPE_NEWS_GALLARY);
+			}
+			}catch(ParseException e){
+				e.printStackTrace();
+			}
+		
+		
+		return SUCCESS;
+	}
+
 
 }
