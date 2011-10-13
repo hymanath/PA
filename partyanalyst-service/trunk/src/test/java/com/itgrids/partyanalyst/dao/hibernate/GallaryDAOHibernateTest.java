@@ -11,9 +11,15 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		this.gallaryDAO = gallaryDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		gallaryDAO.getAll();
+	}*/
+	
+	public void testGetCandidateGallaryDetail()
+	{
+		gallaryDAO.getCandidateGallaryDetail(2L,"","");
 	}
+
 
 }
