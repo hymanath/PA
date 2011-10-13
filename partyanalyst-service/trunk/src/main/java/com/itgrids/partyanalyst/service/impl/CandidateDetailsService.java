@@ -14,15 +14,19 @@ import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateDetailsService implements ICandidateDetailsService {
 
@@ -34,6 +38,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	
 	private ICandidateResultDAO candidateResultDAO;
 	private ICandidateDAO candidateDAO;
+	private IGallaryDAO gallaryDAO;
+	private IFileGallaryDAO fileGallaryDAO;
 	
 	
 	
@@ -47,6 +53,22 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
+	}
+		
+	public IGallaryDAO getGallaryDAO() {
+		return gallaryDAO;
+	}
+
+	public void setGallaryDAO(IGallaryDAO gallaryDAO) {
+		this.gallaryDAO = gallaryDAO;
+	}
+
+	public IFileGallaryDAO getFileGallaryDAO() {
+		return fileGallaryDAO;
+	}
+
+	public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
+		this.fileGallaryDAO = fileGallaryDAO;
 	}
 
 	public CandidateVO getCandidateDetails(Long candidateId){
@@ -190,5 +212,50 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		return null;
 	}
 	
+	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,String type){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	 try{
+		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,type, "false");
+		
+		for(Object[] gallary: results){
+			FileVO fileVO = new FileVO();
+		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(Object[] startingRecord: record){
+		    	fileVO.setFileId((Long)startingRecord[0]);
+		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
+		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	
+		    }
+		    fileVO.setGallaryId((Long)gallary[0]);
+		    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
+		    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
+		    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
+		    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+		    retValue.add(fileVO);	  
+		}
+		return retValue;
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+		 return retValue;
+	 }
+	}
+	
+	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId){
+		
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+		 
+		 List<Object[]> results = fileGallaryDAO.getAllRecordInGallary(gallaryId);
+		 for(Object[] imageDetails: results){
+			    FileVO fileVO = new FileVO();
+			    fileVO.setFileId((Long)imageDetails[0]);
+		    	fileVO.setName(imageDetails[1] != null ? imageDetails[1].toString() :"");		    			    	
+		   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+imageDetails[1].toString());
+		    	retValue.add(fileVO);	  
+		 }
+		 
+		return retValue;
+	}
 
 }
