@@ -275,6 +275,8 @@
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="gallaryDAO" ref="gallaryDAO" />
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
