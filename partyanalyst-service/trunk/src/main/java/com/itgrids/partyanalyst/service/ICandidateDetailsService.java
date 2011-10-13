@@ -12,6 +12,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 
 public interface ICandidateDetailsService {
 	
@@ -20,4 +21,8 @@ public interface ICandidateDetailsService {
 	public List<CandidateDetailsVO> getCandidateElectionDetails(Long candidateId);
 	
 	public List<CandidateOppositionVO> getCandidatesOppositionList(Long candidateId,Long electionId,Long constituencyId);
+	
+	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,String type);
+	
+	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId);
 }
