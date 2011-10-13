@@ -43,18 +43,7 @@ public class CandidateGallary implements Serializable{
 		this.gallary = gallary;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="gallary_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Gallary getGallary() {
-		return gallary;
-	}
-
-	public void setGallary(Gallary gallary) {
-		this.gallary = gallary;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="candidate_gallary_id", unique=true, nullable=false)
@@ -78,6 +67,16 @@ public class CandidateGallary implements Serializable{
 		this.candidate = candidate;
 	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="gallary_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Gallary getGallary() {
+		return gallary;
+	}
 
+	public void setGallary(Gallary gallary) {
+		this.gallary = gallary;
+	}
+	
 }
