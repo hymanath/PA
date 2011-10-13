@@ -76,8 +76,143 @@
 
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">	
 
+<script>
+		!window.jQuery && document.write('<script src="js/fancybox/jQuery/jquery-1.4.3.min.js"><\/script>');
+</script>
+	
+	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<style type="text/css">
+#btnStyle {
+    background:none repeat scroll 0 0 #335291;
+    color:#FFFFFF;
+    font-weight:bold;
+    margin-bottom:5px;
+    margin-top:5px;
+    padding:2px;
+    width:125px;	
+}
+
+</style>
 <script type="text/javascript">
 		google.load("elements", "1", {packages : ["newsshow"]});
+		var timeST = new Date().getTime();
+		var candidateId = '${candidateId}';
+ function callAjax(jsObj,url)
+{
+	
+	var callback = {			
+	 success : function( o ) {
+		try
+		{
+		 myResults = YAHOO.lang.JSON.parse(o.responseText);
+         if(jsObj.task == "getCandidatePhotoGallaryDetail")
+			{
+               buildCandidatePhotoGallary(myResults);
+			}
+		else if(jsObj.task == "getPhotosInAGallary")
+			{
+               showPhotosInAGallary(myResults);
+			}
+
+		}
+		catch(e)
+		{   
+		 alert("Invalid JSON result" + e);   
+		}  
+	 },
+	scope : this,
+	failure : function( o )
+	{
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+	}
+  };
+
+ YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function showPhotoGallary(){
+    var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			task:"getCandidatePhotoGallaryDetail"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function showPhotosInAGallary(result){
+  var  str =''; 
+  str+='<table><tr><td>';
+ str+='<input type="button" value="Back To Gallary"  id="btnStyle" onclick="showPhotoGallary();" />';
+ str+= '</td></tr></table>';
+  for(var i in result){
+	    str+='<a rel="photo_gallery" href="'+result[i].path+'"title="'+result[i].name+'"><img alt="" src="'+result[i].path+'" height="100px" width="150px" "/></a>&nbsp;&nbsp;&nbsp;';
+   }
+  
+    document.getElementById("photoGallaryDiv").innerHTML = str;
+	$("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+
+
+}
+
+function buildCandidatePhotoGallary(result){
+     
+	  
+   
+  var  str ='';
+  if(result.length<=0)
+  {
+      str+='<b>&nbsp;No Photo Gallaries Found </b>';
+     document.getElementById("photoGallaryDiv").innerHTML = str;
+  }
+  else
+  {
+  var count = 1;
+  str+='<table>';
+  str+='<tr>';
+  for(var i in result){
+       
+      if(count==5)
+	  {
+	  count = 1;
+	  str+='<tr>';
+	  }
+	  str+='<td><table><tr><td><b>Title:'+result[i].gallaryName+'</b></td></tr>';
+	    str+='<tr><td><a  title="'+result[i].gallaryName+'"><img alt="" src="'+result[i].path+'" height="100px" width="150px" onclick="getCompleteGallaries('+result[i].gallaryId+');"/></a></td></tr>';
+		 str+='<tr><td>'+result[i].gallaryDescription+'</td></tr></table></td>&nbsp;&nbsp;&nbsp;';
+	  if(count==4)
+	  str+='</tr>';
+	  count++
+   }
+   if(count<4)
+   str+='</tr>';
+   
+   str+='</table>';
+  }
+ 
+    document.getElementById("photoGallaryDiv").innerHTML = str;
+}
+function getCompleteGallaries(gallaryId){
+    var jsObj =
+		{ 
+            time : timeST,
+		    gallaryId:gallaryId,
+			task:"getPhotosInAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 
 </script>
 
@@ -176,8 +311,11 @@
 				</div>
 
 				<!-- Photo Info Div-->
-				<div id="candidatePageContent_body_photoMain" class="candidateStaticContentDiv">
-					<jsp:include page="<%= photosURL%>" flush="true"/>				
+				
+				<div id="candidatePageContent_body_photoMain" class="candidateStaticContentDiv" style="overflow:scroll;">
+				   
+					<div id="photoGallaryDiv" width="100%" ></div>	
+				   
 				</div>
 
 				<!-- Videos Info Div-->
@@ -390,7 +528,26 @@
     showLeftMenuContent('video');
 	//showLeftMenuContent('News/Events');
 candidateProfileInfo();
+showPhotoGallary();
 </script>
+<script>
+  $(document).ready(function() {
+    $("#tabs").tabs();
+
+   $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+  });
+  </script> 
+  <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
+	</script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
+	</script>
 
 </body>
 </html>
