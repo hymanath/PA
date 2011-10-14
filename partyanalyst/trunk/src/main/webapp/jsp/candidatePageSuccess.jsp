@@ -156,12 +156,20 @@
 			}
        else if(jsObj.task == "getCandidateNewsGallaryDetail")
 			{
-               buildCandidateNewsGallary(myResults);
+               buildCandidateGallary(myResults,"zero","news");
 			}
 		else if(jsObj.task == "getNewsInAGallary")
 			{ 
-               buildNewsInAGallary(myResults);
+               buildGallary(myResults,"zero","news");
 			}
+		else if(jsObj.task == "getDevelopmentsInAGallary")
+			{ 
+               buildGallary(myResults,"DevelopmentsGallaryDiv","developments");
+			}
+		else if(jsObj.task == "getCandidateDevelopmentGallaryDetail")
+			{ 
+               buildCandidateGallary(myResults,"DevelopmentsGallaryDiv","developments");
+			}	
 		}
 		catch(e)
 		{   
@@ -177,50 +185,51 @@
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-function buildCandidateNewsGallary(results){
-  var problemRelatedImagesElmt = document.getElementById("zero");
+function buildCandidateGallary(results,elementId,type){
+  var problemRelatedImagesElmt = document.getElementById(elementId);
 var str ='';
-str+='<div id="content">';
-str+='<table id="mainTable">';
+str+='<div id="content" style="width:650px;">';
+str += '<fieldset class="imgFieldset">';
+str+='<table width="100%" style="margin-top:10px;">';
   for(var i in results)
 {
 no_of_imagesPerRow = 3; 
 j = i;
 if(j++ % no_of_imagesPerRow == 0){
-str+= '<tr>';
+str+= '<tr style="height:220px;">';
 }
 var fileType = results[i].name.split(".");
 
 if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
 
 
-str+= '<td><table class="tableStyle">';
-str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
+str+= '<td width="33%"><table class="tableStyle">';
+str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</b></font></div></tr></td>';
 
 str+= '<tr><td><a  href="javascript:{}" title="'+results[i].gallaryDescription+'" >';
 
 if(fileType[(fileType.length-1)] == "pdf"  ){
-str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 	onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/>';
+str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 	onclick="getFilesInAGallary(\''+results[i].gallaryId+'\',\''+type+'\')"/>';
 }
 else if(fileType[(fileType.length-1)] == 'text'){
-str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 	onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/>';
+str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 	onclick="getFilesInAGallary(\''+results[i].gallaryId+'\',\''+type+'\')"/>';
 }
 else if(fileType[(fileType.length-1)].indexOf('word') != -1){
-str+= '<img alt="" src="images/doc_images/wordImage.png" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"></img>';
+str+= '<img alt="" src="images/doc_images/wordImage.png" height="100px" onclick="getFilesInAGallary(\''+results[i].gallaryId+'\',\''+type+'\')"></img>';
 }
 
 str+= '</a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
+str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
 
 
 }
 else{
 str+= '<td><table class="tableStyle">';
-str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
-str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</b></font></div></tr></td>';
+str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getFilesInAGallary(\''+results[i].gallaryId+'\',\''+type+'\')"/></a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
+str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
 
 }
 
@@ -230,44 +239,53 @@ str+= '</tr>';
 
 }
 str+= ' </table>';
+str += ' </fieldset>';
 str+='</div>';
 problemRelatedImagesElmt.innerHTML = str;
 
 }
 
-function getNewsInAGallary(gallaryId){
+function getFilesInAGallary(gallaryId,type){
+    var task = '';
+  if(type=="news")
+    task="getNewsInAGallary";
+   if(type=="developments")
+    task="getDevelopmentsInAGallary";
   var jsObj =
 		{   
 		    time : timeST,
 			gallaryId:gallaryId,
-			task:"getNewsInAGallary"
+			task:task
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url); 
 }
-function buildNewsInAGallary(results){
-   var problemRelatedImagesElmt = document.getElementById("zero");
+function buildGallary(results,elementId,type){
+   var problemRelatedImagesElmt = document.getElementById(elementId);
 var str ='';
-str+='<div id="content">';
-str+='<table>'
+str+='<div id="content" style="width:650px;">';
+str += '<fieldset class="imgFieldset">';
+str+='<table width="100%" style="margin-top:10px;">';
 str+='<tr><td>';
+if(type=="news")
 str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showCandidateNewsGallary();" />';
+if(type=="developments")
+str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showDevelopmentsGallary();" />';
 str+= '</td></tr>';
 for(var i in results)
 {
-no_of_imagesPerRow = 4; 
+no_of_imagesPerRow = 3; 
 j = i;
 if(j++ % no_of_imagesPerRow == 0){
-str+= '<tr>';
+str+= '<tr style="height:220px;">';
 }
 var fileType = results[i].name.split(".");
 
 if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
-
-
-str+= '<td><table><tr><td>';
-str+= '<a  href="javascript:{}" title="'+results[i].fileDescription1+'">';
+str+= '<td width="33%"><table class="tableStyle">';
+str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileTitle1+'</b></font></div></tr></td>';
+str+= '<tr><td><a  href="javascript:{}" title="'+results[i].fileDescription1+'" >';
 
 if(fileType[(fileType.length-1)] == "pdf"  ){
 str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 	onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
@@ -279,15 +297,18 @@ else if(fileType[(fileType.length-1)].indexOf('word') != -1){
 str+= '<a href="'+results[i].path+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
 }
 
-str+= '</a></td>';
-str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].fileTitle1+'</div></td></tr></table></td>';
+str+= '</a></td></tr>';
+str+= '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
 
 
 }
 else{
-str+= '<td><table><tr><td>';
-str+= '<a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" height="100px" /></a></td>';
-str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].fileTitle1+'</div></td></tr></table></td>';
+str+= '<td><table class="tableStyle">';
+str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileTitle1+'</b></font></div></tr></td>';
+str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" height="100px" /></a></td>';
+str+= '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+str+= '</tr><tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
 
 }
 
@@ -297,6 +318,7 @@ str+= '</tr>';
 
 }
 str+= ' </table>';
+str += ' </fieldset>';
 str+='</div>';
 problemRelatedImagesElmt.innerHTML = str;
 
@@ -334,29 +356,45 @@ function showPhotoGallary(){
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+function showDevelopmentsGallary(){
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			task:"getCandidateDevelopmentGallaryDetail"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 function showPhotosInAGallary(results){
    var str ='';
-   str+='<div id="content">';
-   str+='<table>'
+   str+='<div id="content" style="width:650px;">';
+   str += '<fieldset class="imgFieldset">';
+   str+='<table width="100%" style="margin-top:10px;">'
    str+='<tr><td>';
    str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showPhotoGallary();" />';
    str+= '</td></tr>';
    for(var i in results)
    {
-     no_of_imagesPerRow = 4; 
+     no_of_imagesPerRow = 3; 
      j = i;
      if(j++ % no_of_imagesPerRow == 0){
-       str+= '<tr>';
+       str+= '<tr style="height:220px;">';
      }
-     str+= '<td><table><tr><td>';
-     str+= '<a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" height="100px" /></a></td>';
-     str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].fileTitle1+'</div></td></tr></table></td>';
+     str+= '<td width="33%"><table class="tableStyle">';
+	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileTitle1+'</b></font></div></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+	 str += '<tr><td><div><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileDescription1+'</b></div></td></tr>';
+     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
      }
 
    }
    str+= ' </table>';
+   str += ' </fieldset>';
    str+='</div>';
    document.getElementById("photoGallaryDiv").innerHTML = str;
 
@@ -526,8 +564,8 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 				</div>
 
 				<!-- Developments Info Div-->
-				<div id="candidatePageContent_body_DevelopmentsMain" class="candidateStaticContentDiv">
-					<jsp:include page="<%= developmentsURL%>" flush="true"/>				
+				<div id="candidatePageContent_body_DevelopmentsMain" class="candidateStaticContentDiv" style="overflow:scroll;overflow-x:hidden;">
+					 <div id="DevelopmentsGallaryDiv" width="100%" ></div>		
 				</div>
 
 				<!-- Speeches Info Div-->
@@ -601,7 +639,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 								<table>
 									<tr>
 									<td><img src="images/icons/candidatePage/camera.png"/></td>
-									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view" onclick="showCandidateNewsGallary();showPhotoGallary();showLeftMenuContent('photo');">View</span></td>
+									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view" onclick="showCandidateNewsGallary();showPhotoGallary();showDevelopmentsGallary();showLeftMenuContent('photo');">View</span></td>
 									</tr>
 								</table>
 							</div>
@@ -755,6 +793,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 candidateProfileInfo();
 showPhotoGallary();
 showCandidateNewsGallary();
+showDevelopmentsGallary();
 </script>
 <script>
   $(document).ready(function() {
