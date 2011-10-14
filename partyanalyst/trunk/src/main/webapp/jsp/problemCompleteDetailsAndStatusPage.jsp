@@ -68,10 +68,6 @@
 	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
  	<link rel="stylesheet" href="styles/style.css" />
 
-<!--<script type="text/javascript" src="js/picasojs/jquery.pikachoose.full.js"></script>
-<script type="text/javascript" src="js/picasojs/jquery.pikachoose.js"></script>-->
-<!-- JQuery files (End) -->
-
 <style type="text/css">
 
 .problemReportHeader {
@@ -299,6 +295,11 @@ text-align:left;
     padding: 1.5em 1em;
     position: relative;
 }
+.errorDiv{
+	color:red;
+	margin-left:10px;
+	margin-bottom : 5px;
+}
 </style>
 
 <script type="text/javascript">
@@ -307,6 +308,7 @@ text-align:left;
  var pHistoryId = <%=request.getParameter("pHistoryId")%>;
  var problemStatus = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
  var cadreProblemDetails = null;
+
 function limitText(limitField, limitCount, limitNum)
 {		
 	var limitFieldElmt = document.getElementById(limitField);
@@ -587,6 +589,7 @@ function callAjax(jsObj,url)
 						try
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);
+							
 							if(jsObj.task == "getProblemResolvingDeptScopes")
 							{ 
 							  if(myResults == null){
@@ -694,6 +697,7 @@ function callAjax(jsObj,url)
 								cadreProblemDetails = myResults;
 								openCadreSmsPopup(jsObj.cadreId,jsObj.pHistoryId);
 							}
+							
 							else if(jsObj.task == "sendSMS")
 							{
 								showSMSResult(myResults);
@@ -1093,6 +1097,62 @@ function saveDepartmentToProblem(type)
 	
 }
 
+function showFileUpload()
+{
+	
+var fileUploadDivEle = document.getElementById("fileUploadDiv");
+var postCommentDivEle = document.getElementById("postCommentDiv");
+postCommentDivEle.style.display ='none';
+	fileUploadDivEle.style.display = 'block';
+
+
+}
+
+function showPostComment()
+{
+	
+var fileUploadDivEle = document.getElementById("fileUploadDiv");
+var postCommentDivEle = document.getElementById("postCommentDiv");
+postCommentDivEle.style.display ='block';
+	fileUploadDivEle.style.display = 'none';
+}
+ function alltrim(str) {
+                return str.replace(/^\s+|\s+$/g, '');
+            }
+function validateUploadFilds()
+{
+var titleFieldEle  = document.getElementById("titleField").value;
+var fileDescriptionEle  = document.getElementById("fileDescription").value;
+var userImageEle  = document.getElementById("userImage").value;
+var errMsgDivEle	 = document.getElementById("errorMsgDivId");
+var str = '';
+var flag = false;
+
+
+if(alltrim(titleFieldEle).length == 0)
+	{
+		str += 'Title is Required<BR>';
+		flag = true;
+	}
+if(alltrim(fileDescriptionEle).length == 0)
+	{
+		str += 'Description is Required<BR>';
+		flag = true;
+	}
+	
+if(userImageEle.length == 0)
+	{
+		str += 'File is Required<BR>';
+		flag = true;
+	}
+	
+	errMsgDivEle.innerHTML = str;
+	if(flag)
+		return false;
+	
+	return true;
+}
+
 function buildProblemPresentStatus(jsObj,results)
 {
 	var elmt = document.getElementById("problemContentData_status_dataDiv");
@@ -1250,10 +1310,31 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '				<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="changeProblemStatus(\'Pending\')" class="changeAnc">Pending</a>';
 	str += '				<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="changeProblemStatus(\'Fixed\')" class="changeAnc">Fixed</a>';
 	str += '			</td>';
+	
 	str += '		</tr>';
+	
 	str += '	</table>';
 	str += '</div>';
+	
 	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += ' <td class="statusData_table_data">';
+	str += '<center>';
+	str += '				<table>';
+	str +='                 <tr>';
+	str += '                <td> <input type="radio" name="group1" value="postComment" onClick="showPostComment()" checked>Post Comment </td>';
+	str += '                <td> <input type="radio" name="group1" value="fileUpload" onClick="showFileUpload()">Upload Files </td>';
+	str += '                </tr>';
+	str += '                </table>';
+	str += '</center>';
+	str += '			</td>';
+	
+	str +=' </tr>';
+    str +=' </table>';
+    str +='</div>'; 
+ 	
+	str += '<div class="problemStatusDataDiv_main" id="postCommentDiv">';
 	str += '	<table class="statusData_table" width="100%">';	
 	str += '		<tr>';
 	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
@@ -1281,10 +1362,120 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '		</tr>';
 	str += '	</table>';
 	str += '</div>';
+
+	
+	str += '<div class="problemStatusDataDiv_main" id="fileUploadDiv" style="display:none;">';
+	str += '<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">'; 
+	
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/file_upload_icon.png"></td>';
+	str += '						<th>File Upload</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data">';
+	str += ' <table>';
+	str += '<tr>';
+	str +='<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>';
+	str += ' <td>Title</td> ';
+	str += ' <td> <input type="text" id="titleField" name="fileTitle" size="15"/></td>';
+	str+='<span id="alertMsg1"></span>';
+	str += '<td>Description </td>';
+	str += ' <td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>';
+	str+='<span id="alertMsg2"></span>';
+	str += ' </tr>';
+	str += '</table>';
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">';
+	str+='<span id="alertMsg3"></span>';
+	str += '			<table style="width:65%;">';
+	str += '				<tr>';
+	str += '				<td>Documents And Images</td>';
+	str += '<input type="hidden" name="problemHistoryId" value='+pHistoryId+'>';
+	str += '				<td><input type="file" name="userImage" id="userImage"/></td>';
+	str += ' <td><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>';
+	str += ' ';
+	str += '				</tr></table>';	
+	str += '			</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</form>';
+	str += '</div>';
 	
 	elmt.innerHTML = str;
 }
 
+
+function postFilesAndImages()
+{
+   if(!uploadFormValidation()){
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				getMessage();				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'postImagesAndFilesAction.action', uploadHandler);
+	}
+	return;
+   }
+
+      function getMessage()
+		{
+			alert("File Uploaded Successfully...");
+			emptyFields();
+		}
+
+function uploadFormValidation()
+{
+	
+	var elmt1 = document.getElementById("titleField");
+	var elmt2 = document.getElementById("fileDescription");
+	var elmt3 = document.getElementById("userImage");
+	
+	var textFieldValue = elmt1.value;
+	var textAreaValue = elmt2.value;
+	var fileValue = elmt3.value;
+	document.getElementById("alertMsg1").innerHTML ='';
+   	document.getElementById("alertMsg2").innerHTML ='';
+    document.getElementById("alertMsg3").innerHTML ='';
+
+
+	if(alltrim(elmt1.value) ==''){
+		document.getElementById("alertMsg1").innerHTML ='<font color="red">Please enter Title</font>';
+		
+		return true;
+	}
+	
+	if(alltrim(elmt2.value) ==''){
+		document.getElementById("alertMsg2").innerHTML ='<font color="red">Please enter Description</font>';
+		
+		return true;
+	}
+
+	if(alltrim(elmt3.value) ==''){
+		document.getElementById("alertMsg3").innerHTML ='<font color="red">Please enter File</font>';
+		
+		return true;
+	}
+	
+   }
+
+   function emptyFields()
+   {
+    document.getElementById("titleField").value='';
+	 document.getElementById("fileDescription").value='';
+	 document.getElementById("userImage").value='';
+   }
 function postCommentForProblem()
 {
 	var elmt = document.getElementById("descTextArea");
@@ -1306,6 +1497,7 @@ function postCommentForProblem()
 	callAjax(jsObj,url);
 	
    }
+
 
 function showProbClassification()
 {
@@ -1423,11 +1615,7 @@ function getProblemRelatedImages(pHistoryId){
 function initializePage()
 {
 	var detailsButton = new YAHOO.widget.Button("detailsButton");
-	/*detailsButton.on("click",function (){
-		$('#problemContentData_details_body').slideToggle();
-	});*/
-
-    sliderFunc();
+	sliderFunc();
 	getProblemPresentStatus(pHistoryId);
 	getProblemActivities(pHistoryId);
 	getProblemRelatedImages(pHistoryId);
@@ -1500,7 +1688,7 @@ var villagesListForProb = [];
 			<table width="100%">
 				<tr>
 				<th>Title Of The Problem  :                    ${problemCompleteDetailsVO.problemBasicDetails.problem}</th>
-					<!--<td class="yui-skin-sam" align="right"><input id="detailsButton" type="button" value="Details"/></td>-->					
+									
 				</tr>
 			</table>
 			
@@ -1571,11 +1759,7 @@ var villagesListForProb = [];
 		<div id="problemContentData_activities_head">			
 		</div>
 		<div id="problemContentData_activities_body">
-			<!--<fieldset>
-				<legend>Activities</legend>
-				<div id="problemContentData_activities_dataDiv">
-				</div>
-			</fieldset> -->
+			
 		</div>
 	</div>
 	<div id="problemRelatedImages"></div>
@@ -1584,173 +1768,14 @@ var villagesListForProb = [];
 
 </div>
 
-<!--
-<DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<DIV>
-<table>
-	<tr>
-		<td colspan="2">
-			<div style="color: red;">
-				<s:actionerror />
-				<s:fielderror />
-			</div>
-		</td>
-	</tr>
-</table>
-</DIV>
 
-
-
-
-<DIV id="assigningButtonDiv">
-<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'NEW'}">
-<Table align="center">
-	<TR>
-		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO PROGRESS' class="button" onclick="showProbStatusDetails();getProblemDepartments(0,'getProblemResolvingDeptScopes');getProblemDepartments(0,'getProblemType')"/></td> 
-	</TR>
-<Table>
-</c:if>
-
-<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'PENDING'}">
-<Table align="center">
-	<TR>
-		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO PROGRESS' class="button" onclick="showProbStatusDetails();getProblemDepartments(0,'getProblemResolvingDeptScopes');getProblemDepartments(0,'getProblemType')"/></td> 
-	</TR>
-<Table>
-</c:if>
-
-<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'PROGRESS'}">
-<Table align="center">
-	<TR>
-		<th><input type="radio" name="probProgress" id="pendingRadioId" value="PENDING" onclick="showProbStatusDetails();setStatusToChange('PROGRESS',this.value)">Move TO Pending</input>
-		</th>
-		<th><input type="radio" name="probProgress" id="fixedRadioId" value="FIXED" onclick="showProbStatusDetails();setStatusToChange('PROGRESS',this.value)">Move TO Fixed</input>
-		</th>
-	</TR>
-</c:if>
-
-</DIV>-->
 
 <form method="post" action="problemAssigningAction.action">
 <table width="100%" id="probAssigningTabId" style="display:block;">
 <tr><td>
-<!--<DIV id="problemAssigningDiv">
-<FIELDSET>
-<LEGEND>Problem Details</LEGEND>
-<TABLE>
-	<tr>
-		<th width="225px"><s:label for="problemTypeId" id="problemTypeLabelId" theme="simple" value="Problem Type"/></th>
-		<td><s:select id="problemTypeId" cssClass="selectWidth" name="problemType" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select></td>
-	</tr>
 
-	<tr>
-		<th width="225px"><s:label for="resolvingDeptScopeId" id="resolvingDeptScope" theme="simple" value="Problem Resolving Dept Scope"/></th>
-		<td><s:select id="resolvingDeptScopeId" cssClass="selectWidth" name="resolvingDeptScope" theme="simple" list="{}" onChange="getProblemDepartments(this.options[this.selectedIndex].value,'getDepartmentCategories');populateDeptLocations(this.options[this.selectedIndex].value);" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope"></s:select></td>
-	</tr>
-
-	<tr>
-		<th><s:label for="deptCategoryId" id="deptCategoryLabelId"  theme="simple" value="Department Category"/></th>
-		<td>
-			<s:select id="deptCategoryId" cssClass="selectWidth" name="deptCategory" theme="simple" onChange="getProblemDepartments(this.options[this.selectedIndex].value,'getDepartments')" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select>
-		</td>
-	</Tr>
-
-	<tr>
-		<th><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Select Department"/></th>
-		<td>
-			<s:select id="deptId" cssClass="selectWidth" name="dept" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Dept"></s:select>
-		</td>
-	</tr>
-
-	<tr id="deptAreaHeadId" style="display:none;">
-		<th id="thId" colspan="4"><u>Problem Resolving Dept Area</u></th>
-	</tr>
-
-	<tr id="row1" style="display:none;">
-		<th><s:label for="stateId" id="stateLabelId" theme="simple" value="Select State"/><font class="requiredFont"> * </font></th>
-		<td>
-			<s:select id="stateId" cssClass="selectWidth" name="state" theme="simple" list="#session.statesListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtId','currentAdd');"></s:select>
-		</td>
-	</tr>
-
-	<tr id="row2" style="display:none;">
-		<th><s:label for="districtId" id="districtLabelId" theme="simple" value="Select District"/><font class="requiredFont"> * </font></th>
-		<td>
-			<s:select id="districtId" cssClass="selectWidth" name="district" theme="simple" list="#session.districtsListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyId','currentAdd');"></s:select>
-		</td>
-	</tr>
-
-	<tr id="row3" style="display:none;">
-		<th><s:label for="constituencyId" id="constituencyLabelId" theme="simple" value="Select Constituency"/><font class="requiredFont"> * </font></th>
-		<td>
-			<s:select id="constituencyId" cssClass="selectWidth" name="constituency" theme="simple" list="#session.costituenciesListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalId','currentAdd', 'null');"></s:select>
-		</td>
-	</tr>
-
-	<tr id="row4" style="display:none;">
-		<th><s:label for="mandalId" id="mandalLabelId" theme="simple" value="Select Mandal/CORP/GMC"/><font class="requiredFont"> * </font></th>
-		<td>
-			<s:select id="mandalId" cssClass="selectWidth" name="mandal" theme="simple" list="#session.mandalsListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageId','currentAdd');" ></s:select>
-		</td>
-	</tr>
-
-	<tr id="row5" style="display:none;">
-		<th><s:label for="villageId" id="villageLabelId" theme="simple" value="Select village"/><font class="requiredFont"> * </font></th>
-		<td>
-			<s:select id="villageId" cssClass="selectWidth" name="village" theme="simple" list="#session.villagesListForProb" listKey="id" listValue="name" ></s:select>
-		</td>
-	</tr>
-
-</table>
-</FIELDSET>
-</DIV>-->
-</td></tr>
-<!--
-<tr><td>
-	<div>
-		<table>
-			
-			<tr>
-				<th width="225px"><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Assign This Problem To Cadre"/></th>
-				<td><input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>
-			</tr>
-			<tr>
-				<div id="cadreDetailsDiv" style="display:none;" theme="simple" ></div></tr>
-			</tr>
-		</table>
-	</div>
 </td></tr>
 
-<tr><td>
-	<div>
-		<table>
-			<tr>
-				<th width="100px;" theme="simple">Comments</th>
-				<td style="padding-left: 15px;"><s:textarea rows="3" cols="45" id="descTextArea" theme="simple"  onkeyup="limitText('descTextArea','maxcount',500)"  name="comments"/></td>
-			</tr>	
-		</table>
-		<table style="width:100%;"><tr>
-				<td style="width:50%;"><div id="remainChars"><span id="maxcount">500 </span> <span>chars remaining..</span></div></td>
-				<td style="width:50%;"><div>Should not exceed 500 chars</div></td>
-		</tr></table>
-	</div>
-</td></tr>
-
-<tr><td>
-	<div>
-		<br><br>
-		<table align="center" id="sumitTableId">
-			<tr>
-				<td width="110px"><s:submit name="Save" cssClass="button" style="width:100px;height:30px;background-color:#9871F3;" theme="simple" /></td>
-
-				<td width="110px"><input type="button" value="Exit" class="button" style="width:100px;height:30px;background-color:#9871F3;" onclick="window.close()"/></td>
-			</tr>
-		</table>
-	</div>
-</td></tr>
-
-
--->
 </div>
 </table>
 <input type="hidden" id="cadreInputId" name="cadreId"/>
@@ -1776,6 +1801,7 @@ initializePage();
 				}
 			});
   });
+  
   </script> 
   <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
 	</script>
