@@ -1864,8 +1864,6 @@
 			</result>		
 		</action>
 		
-
-		
 		<action name="getLocalBodyConstiResults" class="localBodyElectionAction" method="getLocalElectionBodyOverallResults">
 			<result type="json" name="success">
 				<param name="root">teshilPartyInfoVO</param>				
@@ -2636,6 +2634,11 @@
 				<param name="root">smsTrackVO</param>				
 			</result>	
 		</action>
+		
+		<action name="postImagesAndFilesAction" class="problemAssigningAction" method="postImagesAndFiles">		
+			<result name="redirectToJSP" type="redirect">problemDetailsAndStatusAction.action?pHistoryId=${problemHistoryId}</result>						
+		</action>
+		
 				 		       	
 	</package>
 </struts>      
