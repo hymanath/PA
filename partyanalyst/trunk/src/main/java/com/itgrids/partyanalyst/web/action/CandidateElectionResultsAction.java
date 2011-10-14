@@ -177,7 +177,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
 			{
-			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.TYPE_PHOTO_GALLARY);
+			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.PHOTO_GALLARY);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPhotosInAGallary"))
 			{
@@ -185,7 +185,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidateNewsGallaryDetail"))
 			{
-				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.TYPE_NEWS_GALLARY);
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.NEWS_GALLARY);
 			}
 			}catch(ParseException e){
 				e.printStackTrace();
