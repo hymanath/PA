@@ -190,6 +190,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCandidateDevelopmentGallaryDetail"))
+			{
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.DEVELOPEMENT_ACTIVITIES);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getDevelopmentsInAGallary"))
+			{
+				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
+			}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
