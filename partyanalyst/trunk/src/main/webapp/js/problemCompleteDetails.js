@@ -40,8 +40,58 @@ function clearError()
 	alertDivEl.innerHTML = '';
 }
 
+function showFileUpload()
+{
+	
+var fileUploadDivEle = document.getElementById("fileUploadDiv");
+var hideRadioDivEle= document.getElementById("hideTd");
+if(fileUploadDivEle.style.display =='none')
+	fileUploadDivEle.style.display = 'block';
+else
+    fileUploadDivEle.style.display = 'none';
+    hideRadioDivEle.style.display = 'none';
+}
+
+ function alltrim(str) {
+                return str.replace(/^\s+|\s+$/g, '');
+            }
+function validateUploadFilds()
+{
+var titleFieldEle  = document.getElementById("titleField").value;
+var fileDescriptionEle  = document.getElementById("fileDescription").value;
+var userImageEle  = document.getElementById("userImage").value;
+var errMsgDivEle	 = document.getElementById("errorMsgDivId");
+var str = '';
+var flag = false;
+
+
+if(alltrim(titleFieldEle).length == 0)
+	{
+		str += 'Title is Required<BR>';
+		flag = true;
+	}
+if(alltrim(fileDescriptionEle).length == 0)
+	{
+		str += 'Description is Required<BR>';
+		flag = true;
+	}
+	
+if(userImageEle.length == 0)
+	{
+		str += 'File is Required<BR>';
+		flag = true;
+	}
+	
+	errMsgDivEle.innerHTML = str;
+	if(flag)
+		return false;
+	
+	return true;
+}
+
 function showProblemDetails(result)
 {
+	
 	var divEl = document.getElementById("problemDetails");
 	var str = '';
 	
@@ -99,7 +149,7 @@ function showProblemDetails(result)
 	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Status: <span class="bluetext">'+result.status+'</span></p><hr>';
 	str+='<p><img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported Date: <span class="bluetext">'+result.postedDate+'</span><BR>';
 	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Existing From: <span class="bluetext">'+result.existingFrom+'</span><BR>';
-	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported By: <span class="bluetext">'+result.name+'</span></p>';
+	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported By: <span class="bluetext">'+result.name+'</span></p><hr>';
 	str+='</div></div>';
 	divEl.innerHTML = str;
 	var jsObj = {
@@ -111,6 +161,74 @@ function showProblemDetails(result)
 		
 	approvalCallAjax(jsObj,url);		
 }
+
+
+function postFilesAndImages()
+{
+   if(!uploadFormValidation()){
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				getMessage();				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'postImagesAndFilesAction.action', uploadHandler);
+	}
+	return;
+   }
+
+      function getMessage()
+		{
+			alert("File Uploaded Successfully...");
+			emptyFields();
+		}
+
+function uploadFormValidation()
+{
+	
+	var elmt1 = document.getElementById("titleField");
+	var elmt2 = document.getElementById("fileDescription");
+	var elmt3 = document.getElementById("userImage");
+	
+	var textFieldValue = elmt1.value;
+	var textAreaValue = elmt2.value;
+	var fileValue = elmt3.value;
+	document.getElementById("alertMsg1").innerHTML ='';
+   	document.getElementById("alertMsg2").innerHTML ='';
+    document.getElementById("alertMsg3").innerHTML ='';
+
+
+	if(alltrim(elmt1.value) ==''){
+		document.getElementById("alertMsg1").innerHTML ='<font color="red">Please enter Title</font>';
+		
+		return true;
+	}
+	
+	if(alltrim(elmt2.value) ==''){
+		document.getElementById("alertMsg2").innerHTML ='<font color="red">Please enter Description</font>';
+		
+		return true;
+	}
+
+	if(alltrim(elmt3.value) ==''){
+		document.getElementById("alertMsg3").innerHTML ='<font color="red">Please enter File</font>';
+		
+		return true;
+	}
+	
+   }
+
+   function emptyFields()
+   {
+    document.getElementById("titleField").value='';
+	 document.getElementById("fileDescription").value='';
+	 document.getElementById("userImage").value='';
+   }
+
+
 function showProblemAllComments(results)
 {
 	var showAllPostsDivEl = document.getElementById("showAllPostsDiv");
