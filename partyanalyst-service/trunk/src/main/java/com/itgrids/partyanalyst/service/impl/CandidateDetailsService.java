@@ -227,6 +227,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    	
 		    }
 		    fileVO.setGallaryId((Long)gallary[0]);
+		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 		    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
 		    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
 		    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
@@ -243,9 +244,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	}
 	
 	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId){
-		
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-		 
+	 List<FileVO> retValue = new ArrayList<FileVO>();
+	 try{
 		 List<Object[]> results = fileGallaryDAO.getAllRecordInGallary(gallaryId);
 		 for(Object[] imageDetails: results){
 			    FileVO fileVO = new FileVO();
@@ -258,6 +258,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 }
 		 
 		return retValue;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
 	}
 
 }
