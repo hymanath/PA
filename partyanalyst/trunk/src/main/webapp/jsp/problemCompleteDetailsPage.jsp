@@ -45,6 +45,88 @@ var id = '${problemHistoryId}';
 var logInStat = '${sessionScope.loginStatus}';
 var userType = '${sessionScope.UserType}';
 
+function showOrHideProblemFilesDiv()
+{
+	
+var fileUploadDivEle = document.getElementById("problemUploadFilesMainOuterDiv");
+var hideRadioDivEle= document.getElementById("hideTd");
+if(fileUploadDivEle.style.display =='none')
+	fileUploadDivEle.style.display = 'block';
+else
+    fileUploadDivEle.style.display = 'none';
+    hideRadioDivEle.style.display = 'none';
+}
+
+ function alltrim(str) {
+                return str.replace(/^\s+|\s+$/g, '');
+            }
+
+			function postFilesAndImages()
+{
+   if(!uploadFormValidation()){
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				getMessage();				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'postImagesAndFilesAction.action', uploadHandler);
+	}
+	return;
+   }
+
+      function getMessage()
+		{
+			alert("File Uploaded Successfully...");
+			emptyFields();
+		}
+
+function uploadFormValidation()
+{
+	
+	var elmt1 = document.getElementById("titleField");
+	var elmt2 = document.getElementById("fileDescription");
+	var elmt3 = document.getElementById("userImage");
+	
+	var textFieldValue = elmt1.value;
+	var textAreaValue = elmt2.value;
+	var fileValue = elmt3.value;
+	document.getElementById("alertMsg1").innerHTML ='';
+   	document.getElementById("alertMsg2").innerHTML ='';
+    document.getElementById("alertMsg3").innerHTML ='';
+
+
+	if(alltrim(elmt1.value) ==''){
+		document.getElementById("alertMsg1").innerHTML ='<font color="red">Please enter Title</font>';
+		
+		return true;
+	}
+	
+	if(alltrim(elmt2.value) ==''){
+		document.getElementById("alertMsg2").innerHTML ='<font color="red">Please enter Description</font>';
+		
+		return true;
+	}
+
+	if(alltrim(elmt3.value) ==''){
+		document.getElementById("alertMsg3").innerHTML ='<font color="red">Please enter File</font>';
+		
+		return true;
+	}
+	
+   }
+
+   function emptyFields()
+   {
+    document.getElementById("titleField").value='';
+	 document.getElementById("fileDescription").value='';
+	 document.getElementById("userImage").value='';
+   }
+
+
 function callAjax(jsObj,url)
 {	
 		var callback = {			
@@ -58,6 +140,7 @@ function callAjax(jsObj,url)
 							else if(jsObj.task =="getProblemImages")
 							{
 								builImagesDiv(myResults);
+								builUploadImagesDiv(myResults);
 							}
 
 							
@@ -155,7 +238,6 @@ if(elmt)
 	}
 }
 
-
 function getProblemRelatedImages(pHistoryId){
     
 	var jsObj ={
@@ -241,6 +323,65 @@ str+= '</tr>';
 				}
 			});
 
+}
+
+function builUploadImagesDiv(results)
+{
+  if(results == null || results.length == 0)
+  {
+	document.getElementById('problemUploadFilesMainOuterDiv').style.display = 'none';	
+  }
+
+ var problemRelatedImagesElmt = document.getElementById("problemUploadFilesMainInnerDiv");
+ var str ='';
+ 
+    str += '<div id="fileUploadDiv">';
+	str += '<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">'; 
+	
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="13%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/file_upload_icon.png"></td>';
+	str += '						<th>File Upload</th>';       
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data" width="83%">';
+	str += ' <table>';
+	str += '<tr>';
+	str +='<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>';
+	str += ' <td style="padding-right: 62px;">Title</td> ';
+	str += ' <td> <input type="text" id="titleField" name="fileTitle" size="32"/></td>';
+	str+='<span id="alertMsg1"></span>';
+	str += '<td style="padding-left: 22px; padding-right: 10px;">Description </td>';
+	str += ' <td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>';
+	str+='<span id="alertMsg2"></span>';
+	str += ' </tr>';
+	str += '</table>';
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">';
+	str+='<span id="alertMsg3"></span>';
+	str += '			<table style="width:65%;">';
+	str += '				<tr>';
+	str += '				<td>Documents And Images</td>';
+	str += '<input type="hidden" name="problemHistoryId" value='+id+'>';
+	str += '				<td><input type="file" name="userImage" id="userImage"/></td>';
+	str += ' <td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>';
+	str += ' ';
+	str += '				</tr></table>';	
+	str += '			</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</form>';
+	str += '</div>';
+ 
+ problemRelatedImagesElmt.innerHTML = str;
+ 
+ 
 }
 
 
@@ -379,6 +520,23 @@ h3 {
 	</tr>	
 </table>
 <HR><BR>
+<div style="padding-right: 662px;"><BUTTON 
+    TYPE=BUTTON 
+    onClick="showOrHideProblemFilesDiv()" style="color: #ffffFF; font-size: 10pt"><font color="blue">Upload Problem Related Files/Images </font></BUTTON></div>
+<div id='problemUploadFilesMainOuterDiv' style="display:none;">
+	<div id='problemUploadFilesHeaderDiv'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Upload Problem Related Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
+		</table>
+	</div>
+
+	<div id='problemUploadFilesMainInnerDiv' class="divInfo">
+	
+	</div>
+
+</div>
+<HR><BR>
+
 <div id='problemFilesMainOuterDiv'>
 	<div id='problemFilesHeaderDiv'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -391,6 +549,8 @@ h3 {
 	</div>
 
 </div>
+
+
 
 <div id="postProblemDiv">
 <div id="showAllPostsDiv" style="margin-top:10px;margin-bottom:10px;"></div>
@@ -439,7 +599,6 @@ h3 {
 
 executeOnload();
 getProblemRelatedImages(id);
-
 $(document).ready(function() {
    
    $("a[rel=photo_gallery]").fancybox({
