@@ -8,7 +8,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
-import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -187,7 +186,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.NEWS_GALLARY);
 			}
-			}catch(ParseException e){
+			else if(jObj.getString("task").equalsIgnoreCase("getNewsInAGallary"))
+			{
+				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
+			}
+			}catch(Exception e){
 				e.printStackTrace();
 			}
 		
