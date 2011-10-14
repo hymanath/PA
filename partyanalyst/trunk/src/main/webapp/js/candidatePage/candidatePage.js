@@ -383,7 +383,7 @@ function buildLeftNavLinks()
 		str+='<div id="'+leftLinksArray[i].type+'" class="leftLinksClass" onclick="expandSubDiv(this.id,'+i+')">';
 		str+='<div id="'+leftLinksArray[i].type+'_head">';
 		str+='	<img src="images/icons/districtPage/listIcon.png"/>';
-		str+='	<span class="leftLinkSpanClass" onclick="showCandidateNewsGallary();showPhotoGallary();showLeftMenuContent(this.innerHTML);">'+leftLinksArray[i].type+'</span>';
+		str+='	<span class="leftLinkSpanClass" onclick="showCandidateNewsGallary();showPhotoGallary();showDevelopmentsGallary();showLeftMenuContent(this.innerHTML);">'+leftLinksArray[i].type+'</span>';
 		str+='</div>';
 		str+='<div id="'+leftLinksArray[i].type+'_body" class="leftLinksClass_body">';
 		if(leftLinksArray[i].innerLinks.length > 0)
