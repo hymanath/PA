@@ -454,8 +454,10 @@ public interface IConstants {
     public static final String PARTYANALYST_SITE = "www.partyanalyst.com";
     public static final String FILE_SEPARATOR = "file.separator";
     public static final String UPLOADED_FILES = "uploaded_files";
-    public static final String TYPE_PHOTO_GALLARY ="PhotoGallary";
-    public static final String TYPE_NEWS_GALLARY ="NewsGallary";
+    
+    public static final String PHOTO_GALLARY ="Photo Gallary";
+    public static final String NEWS_GALLARY ="News Gallary";
+    public static final String DEVELOPEMENT_ACTIVITIES = "Developement Activities";
     
 
 }
