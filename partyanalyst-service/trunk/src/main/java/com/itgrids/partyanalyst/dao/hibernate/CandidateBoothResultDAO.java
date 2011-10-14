@@ -101,25 +101,6 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc" , tehsilID);
 	}
 	
-	/*
-	 * Commented and Changed on 01-06-2011, If no more issues After some days,remove this - kamalakar
-	 * public List findPartyElectionResultForRevenueVillage(Long revenueVillageID,String electionTypeIDs, String electionYears){
-		return getHibernateTemplate().find("select model.nomination.party.shortName, " +
-				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
-				"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
-				"sum(model.votesEarned) from CandidateBoothResult model " +
-				"where model.boothConstituencyElection.boothConstituencyElectionId in (select distinct bcev.boothConstituencyElection.boothConstituencyElectionId " +
-				"from BoothConstituencyElectionVoter bcev where bcev.voter.hamlet.township.townshipId=? ) and " +
-				"model.boothConstituencyElection.constituencyElection.election.electionYear in (" + electionYears +
-				") and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId " +
-				"in (" + electionTypeIDs + ") group by model.nomination.party.shortName," +
-						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType," +
-						"model.boothConstituencyElection.constituencyElection.election.electionYear " +
-						"order by model.nomination.party.shortName, " +
-						"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
-						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc" , revenueVillageID);
-	}*/
-	
 	public List findPartyElectionResultForRevenueVillage(Long revenueVillageID,String electionTypeIDs, String electionYears){
 		return getHibernateTemplate().find("select model.nomination.party.shortName, " +
 				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
