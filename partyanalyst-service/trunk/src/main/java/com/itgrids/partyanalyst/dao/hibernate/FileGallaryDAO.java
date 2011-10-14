@@ -31,7 +31,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		
-		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath " +
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription  " +
 				" from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
 				" order by model.file.fileId asc ");
 		
