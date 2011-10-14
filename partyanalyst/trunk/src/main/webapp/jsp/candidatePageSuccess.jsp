@@ -91,6 +91,17 @@
     padding:2px;
     width:125px;	
 }
+#tableStyle {
+    width:80%;
+}
+#mainTable{
+    width:67%;
+}
+#titleStyle{
+   color:navy;
+   font-weight:bold;
+}
+
 </style>
 <script type="text/javascript">
 		google.load("elements", "1", {packages : ["newsshow"]});
@@ -140,10 +151,10 @@ function buildCandidateNewsGallary(results){
   var problemRelatedImagesElmt = document.getElementById("zero");
 var str ='';
 str+='<div id="content">';
-str+='<table>';
+str+='<table id="mainTable">';
   for(var i in results)
 {
-no_of_imagesPerRow = 4; 
+no_of_imagesPerRow = 3; 
 j = i;
 if(j++ % no_of_imagesPerRow == 0){
 str+= '<tr>';
@@ -153,8 +164,10 @@ var fileType = results[i].name.split(".");
 if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
 
 
-str+= '<td><table><tr><td>';
-str+= '<a  href="javascript:{}" title="'+results[i].gallaryDescription+'" >';
+str+= '<td><table id="tableStyle">';
+str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
+
+str+= '<tr><td><a  href="javascript:{}" title="'+results[i].gallaryDescription+'" >';
 
 if(fileType[(fileType.length-1)] == "pdf"  ){
 str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 	onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/>';
@@ -166,15 +179,18 @@ else if(fileType[(fileType.length-1)].indexOf('word') != -1){
 str+= '<img alt="" src="images/doc_images/wordImage.png" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"></img>';
 }
 
-str+= '</a></td>';
-str+= '</tr><tr><td><div>'+results[i].gallaryName+'</div></td></tr></table></td>';
+str+= '</a></td></tr>';
+str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
 
 
 }
 else{
-str+= '<td><table><tr><td>';
-str+= '<a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/></a></td>';
-str+= '</tr><tr><td><div>'+results[i].gallaryName+'</div></td></tr></table></td>';
+str+= '<td><table id="tableStyle">';
+str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
+str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
 
 }
 
@@ -334,17 +350,20 @@ function buildCandidatePhotoGallary(results){
  else
  {
    str+='<div id="content">';
-   str+='<table>';
+   str+='<table id="mainTable">';
    for(var i in results)
    {
-    no_of_imagesPerRow = 4; 
+    no_of_imagesPerRow = 3; 
     j = i;
     if(j++ % no_of_imagesPerRow == 0){
       str+= '<tr>';
     }
-    str+= '<td><table><tr><td>';
-    str+= '<a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td>';
-    str+= '</tr><tr><td><div>'+results[i].gallaryName+'</div></td></tr></table></td>';
+    str+= '<td><table id="tableStyle">';
+	str+= '<tr><td><div><b>'+results[i].gallaryName+'</b></div></td></tr>';
+    str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+    str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+	str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr>';
+	str+= '</table></td>';
     if(j % no_of_imagesPerRow == 0){
      str+= '</tr>';
     }
@@ -453,7 +472,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 				</div>
 				
 				<!-- News Info Div-->
-				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv" style="overflow: scroll; display: block;">
+				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv" style="overflow: scroll;overflow-x:hidden;display: block;">
 				    <div id="zero" style="position:relative;left:15px;padding-top:15px;"> </div>
 					<div id="one" style="position:relative;left:-165px;padding-top:15px;"> </div>
 					<div id="two" style="position:relative;left:-165px;padding-top:15px;"> </div>					
@@ -471,7 +490,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 
 				<!-- Photo Info Div-->
 				
-				<div id="candidatePageContent_body_photoMain" class="candidateStaticContentDiv" style="overflow:scroll;">
+				<div id="candidatePageContent_body_photoMain" class="candidateStaticContentDiv" style="overflow:scroll;overflow-x:hidden;">
 				   
 					<div id="photoGallaryDiv" width="100%" ></div>	
 				   
