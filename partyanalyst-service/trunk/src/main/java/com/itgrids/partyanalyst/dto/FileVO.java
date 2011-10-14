@@ -28,6 +28,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String scope;
 	private Date existingFrom;
 	private Date identifiedOn;
+	private Long sizeOfGallary;
 	public String getFileName1() {
 		return fileName1;
 	}
@@ -258,6 +259,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public Long getSizeOfGallary() {
+		return sizeOfGallary;
+	}
+
+	public void setSizeOfGallary(Long sizeOfGallary) {
+		this.sizeOfGallary = sizeOfGallary;
 	}
 
 	
