@@ -1,15 +1,24 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -18,7 +27,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ProblemAssigningAction extends ActionSupport implements ServletRequestAware{
+public class ProblemAssigningAction extends ActionSupport implements ServletRequestAware,ServletContextAware  {
 
 	private static final long serialVersionUID = -2691859423522316985L;
 	private HttpServletRequest request;
@@ -39,14 +48,131 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	private Long village;
 	private String isSubmit;
 	private String statusToChange;
-	
 	private List<SelectOptionVO> deptScopesList;
 	private ResultStatus resultStatus;
-	
 	private HttpSession session;
-	
 	private IProblemManagementService problemManagementService;
+	private List<File> userImage = new ArrayList<File>();
+	private List<String> userImageContentType = new ArrayList<String>();
+	private List<String> userImageFileName = new ArrayList<String>();
+	private List<String> problemFilepath;
+	private List<String> contentType=new ArrayList<String>();
+	private List<String> fileTitle;
+	private List<String> fileDescription;
+    private HttpServletRequest servletRequest;
+    private ServletContext context;
+    private List<String>tempFileName;
+    ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+    FileVO fileVO=new FileVO();
+    private Long problemHistoryId;
+    private InputStream inputStream;
+    private String uploadResult;
+    
 	
+	public String getUploadResult() {
+		return uploadResult;
+	}
+
+	public void setUploadResult(String uploadResult) {
+		this.uploadResult = uploadResult;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public Long getProblemHistoryId() {
+		return problemHistoryId;
+	}
+
+	public void setProblemHistoryId(Long problemHistoryId) {
+		this.problemHistoryId = problemHistoryId;
+	}
+	
+	public List<File> getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(List<File> userImage) {
+		this.userImage = userImage;
+	}
+
+	public List<String> getUserImageContentType() {
+		return userImageContentType;
+	}
+
+	public void setUserImageContentType(List<String> userImageContentType) {
+		this.userImageContentType = userImageContentType;
+	}
+
+	public List<String> getUserImageFileName() {
+		return userImageFileName;
+	}
+
+	public void setUserImageFileName(List<String> userImageFileName) {
+		this.userImageFileName = userImageFileName;
+	}
+
+	public List<String> getProblemFilepath() {
+		return problemFilepath;
+	}
+
+	public void setProblemFilepath(List<String> problemFilepath) {
+		this.problemFilepath = problemFilepath;
+	}
+
+	public List<String> getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(List<String> contentType) {
+		this.contentType = contentType;
+	}
+
+	public List<String> getFileTitle() {
+		return fileTitle;
+	}
+
+	public void setFileTitle(List<String> fileTitle) {
+		this.fileTitle = fileTitle;
+	}
+
+	public List<String> getFileDescription() {
+		return fileDescription;
+	}
+
+	public void setFileDescription(List<String> fileDescription) {
+		this.fileDescription = fileDescription;
+	}
+
+	public ServletContext getContext() {
+		return context;
+	}
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
+	
+	public List<String> getTempFileName() {
+		return tempFileName;
+	}
+
+	public void setTempFileName(List<String> tempFileName) {
+		this.tempFileName = tempFileName;
+	}
+
+	public HttpServletRequest getServletRequest() {
+		return servletRequest;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
 	}
@@ -448,13 +574,79 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		}
 		
 		Long problemHistoryId = jObj.getLong("pHistoryId");
-		String comments = jObj.getString("comments");
+		String titleValue = jObj.getString("titleValue");
+		String descriptionValue = jObj.getString("descriptionValue");
+		String fileValue = jObj.getString("fileValue");
+	
 		
 	    resultStatus = problemManagementService.updateProblemComments(problemHistoryId, comments, IConstants.PROBLEM_COMMENTS_ADD); 
 	    resultStatus.setResultCode(1);
 	}else{
 		resultStatus = new ResultStatus();
 		resultStatus.setResultCode(0);
+		} 
+     return Action.SUCCESS;
+   }
+   
+public String postImagesAndFiles(){
+	   
+	   session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+	if(user!=null)
+	{		
+		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
+		{
+			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
+		}
+		problemBeanVO.setProblemHistoryId(getProblemHistoryId());
+		fileVO.setFileName(getUserImageFileName());
+		fileVO.setFileTitle(getFileTitle());
+		fileVO.setFileDescription(getFileDescription());
+		
+		try {
+			
+			String fileName;
+			String filePath1 = context.getRealPath("/");
+			String filePath = filePath1 + "/uploaded_files";
+			problemFilepath = new ArrayList<String>();
+			System.out.println("problemHistoryID"+problemBeanVO.getProblemHistoryId());
+			tempFileName=new ArrayList<String>();
+			for (int i = 0; i < userImage.size(); i++) {
+				Long systime = System.currentTimeMillis();
+				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
+				while(st.hasMoreTokens()) {
+				String key = st.nextToken();
+				String val = st.nextToken();
+				if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
+					fileName = systime.toString()+"."+key;
+				}
+				else
+				  fileName = systime.toString()+"."+val;
+				tempFileName.add(fileName);
+				String problemFilePath=filePath+"/"+fileName;
+				problemFilepath.add(problemFilePath);
+				File fileToCreate = new File(filePath, fileName);
+				FileUtils.copyFile(userImage.get(i), fileToCreate);
+				System.out.println("contenyt type.."
+						+ userImageContentType.get(i));
+				System.out.println(key + "\t" + val);
+				contentType.add(val);
+				}
+			}
+			fileVO.setFileContentType(getContentType());
+			fileVO.setFileName(tempFileName);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
+		fileVO.setFilePath(problemFilepath);
+		problemBeanVO.setFileVO(fileVO);
+		problemManagementService.saveProblemRelatedFiles(problemBeanVO);
+		 
+		return "redirectToJSP";
+		
 		} 
      return Action.SUCCESS;
    }
@@ -494,4 +686,6 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	   
 	   return Action.SUCCESS;
    }
+
+
  }
