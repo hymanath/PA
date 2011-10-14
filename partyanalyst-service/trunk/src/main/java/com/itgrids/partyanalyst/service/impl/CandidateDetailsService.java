@@ -252,6 +252,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			    fileVO.setFileId((Long)imageDetails[0]);
 		    	fileVO.setName(imageDetails[1] != null ? imageDetails[1].toString() :"");		    			    	
 		   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+imageDetails[1].toString());
+		   	    fileVO.setFileTitle1(imageDetails[3] != null ? imageDetails[3].toString() :"");
+		   	    fileVO.setFileDescription1(imageDetails[4] != null ? imageDetails[4].toString() :"");
 		    	retValue.add(fileVO);	  
 		 }
 		 
