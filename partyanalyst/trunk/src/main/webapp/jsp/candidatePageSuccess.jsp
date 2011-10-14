@@ -91,7 +91,37 @@
     padding:2px;
     width:125px;	
 }
-#tableStyle {
+
+.imageButton{
+	
+	-moz-border-radius: 4px 4px 4px 4px;
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.imgFieldset
+{
+	-moz-border-radius: 4px 4px 4px 4px;
+	border			: 4px solid #9F81F7;
+    margin-bottom	: 10px;
+	margin-top		: 5px;
+}
+
+.gallaryImg
+{
+	width  : 150px;
+	height : 130px;
+}
+
+.tableStyle {
     width:80%;
 }
 #mainTable{
@@ -164,7 +194,7 @@ var fileType = results[i].name.split(".");
 if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
 
 
-str+= '<td><table id="tableStyle">';
+str+= '<td><table class="tableStyle">';
 str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
 
 str+= '<tr><td><a  href="javascript:{}" title="'+results[i].gallaryDescription+'" >';
@@ -186,7 +216,7 @@ str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></t
 
 }
 else{
-str+= '<td><table id="tableStyle">';
+str+= '<td><table class="tableStyle">';
 str+= '<tr><td><div id="titleStyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</div></tr></td>';
 str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getNewsInAGallary(\''+results[i].gallaryId+'\')"/></a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
@@ -340,40 +370,57 @@ function showPhotosInAGallary(results){
    });
 }
 
-function buildCandidatePhotoGallary(results){
-   var str ='';
- if(results.length<=0)
-  {
-      str+='<b>&nbsp;No Photo Galleries Found </b>';
-     document.getElementById("photoGallaryDiv").innerHTML = str;
-  }
- else
- {
-   str+='<div id="content">';
-   str+='<table id="mainTable">';
-   for(var i in results)
-   {
-    no_of_imagesPerRow = 3; 
-    j = i;
-    if(j++ % no_of_imagesPerRow == 0){
-      str+= '<tr>';
-    }
-    str+= '<td><table id="tableStyle">';
-	str+= '<tr><td><div><b>'+results[i].gallaryName+'</b></div></td></tr>';
-    str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
-    str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-	str+= '<tr><td><div><b>(GallerySize: '+results[i].sizeOfGallary+' )</b></div></td></tr>';
-	str+= '</table></td>';
-    if(j % no_of_imagesPerRow == 0){
-     str+= '</tr>';
-    }
+function buildCandidatePhotoGallary(results)
+{
+	var str ='';
 
-   }
-  str+= ' </table>';
-  str+='</div>';
-  document.getElementById("photoGallaryDiv").innerHTML = str;
- }
+	if(results.length<=0)
+	{
+		str+='<b>&nbsp;No Photo Galleries Found </b>';
+		document.getElementById("photoGallaryDiv").innerHTML = str;
+	}
+	else
+	{
+		str+='<div id="content" style="width:650px;">';
+		
+		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+		str += '<tr>';
+		str += '	<td><input type="button" class="imageButton" value="Create Gallary"></td>';
+		str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
+		str += '</tr>';
+		str += '</table>'
+
+		str += '<fieldset class="imgFieldset">';
+		str +='<table width="100%" style="margin-top:10px;">';
+		
+		for(var i in results)
+		{
+			no_of_imagesPerRow = 3; 
+			j = i;
+
+			if(j++ % no_of_imagesPerRow == 0)
+				str += '<tr style="height:220px;">';
+			
+			str += '<td width="33%">';
+			str += '<table class="tableStyle">';
+			str += '<tr><td><div align="center"><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			str += '<tr><td><div align="center"><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+			str+= '<tr><td><div align="center"><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr>';
+			str += '</table>';
+			str += '</td>';
+			
+			if(j % no_of_imagesPerRow == 0)
+				str+= '</tr>';
+		
+		}
+		str += ' </table>';
+		str += ' </fieldset>';
+		str+='</div>';
+		document.getElementById("photoGallaryDiv").innerHTML = str;
+	}
 }
+
 function getCompleteGallaries(gallaryId){
     var jsObj =
 		{ 
