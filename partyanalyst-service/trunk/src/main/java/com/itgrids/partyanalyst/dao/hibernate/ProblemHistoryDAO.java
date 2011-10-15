@@ -979,4 +979,10 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				 "model.problemLocation.problemAndProblemSource.problemExternalSource.name="+name+" "+
 				 "and model.isDelete is null and model.isApproved = 'true' ");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId){
+	Object[] params = {userId,problemHistoryId};
+		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId=? and model.problemHistoryId=?",params);
+	}
 }
