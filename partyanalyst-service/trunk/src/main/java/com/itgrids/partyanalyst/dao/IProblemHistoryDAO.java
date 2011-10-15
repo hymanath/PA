@@ -150,4 +150,6 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public List<Object[]> getProblemDetailsByName(String name);
 	
+	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId);
+	
 }
