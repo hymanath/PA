@@ -365,4 +365,15 @@ public class DataApprovalService implements IDataApprovalService {
 		}
 				return approval;
 	}
+	
+	public Boolean checkUserFileUploadRight(Long userId, Long problemHistoryId)
+	{
+		List<Object[]> no =	problemHistoryDAO.checkUserFileUploadRight(userId ,problemHistoryId);
+	
+		if(no.size()>=1)
+		{	
+	   		return true;	
+		}
+			return false;
+	}
 }
