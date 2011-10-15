@@ -2,45 +2,47 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst-Know | Analyze | Act</title>
+
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-	<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 	
-	<!-- JQuery files (Start) -->
+<!-- JQuery files (Start) -->
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
-
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <link rel="stylesheet" href="styles/style.css" />
 
 <!-- JQuery files (End) -->
-<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+
 
 <script type="text/javascript">
+
 var id = '${problemHistoryId}';
 var logInStat = '${sessionScope.loginStatus}';
 var userType = '${sessionScope.UserType}';
@@ -48,20 +50,21 @@ var userType = '${sessionScope.UserType}';
 function showOrHideProblemFilesDiv()
 {
 	
-var fileUploadDivEle = document.getElementById("problemUploadFilesMainOuterDiv");
-var hideRadioDivEle= document.getElementById("hideTd");
-if(fileUploadDivEle.style.display =='none')
-	fileUploadDivEle.style.display = 'block';
-else
-    fileUploadDivEle.style.display = 'none';
-    hideRadioDivEle.style.display = 'none';
+	var fileUploadDivEle = document.getElementById("problemUploadFilesMainOuterDiv");
+	var hideRadioDivEle= document.getElementById("hideTd");
+	if(fileUploadDivEle.style.display =='none')
+		fileUploadDivEle.style.display = 'block';
+	else
+		fileUploadDivEle.style.display = 'none';
+		hideRadioDivEle.style.display = 'none';
 }
 
- function alltrim(str) {
-                return str.replace(/^\s+|\s+$/g, '');
-            }
+function alltrim(str) 
+{
+	return str.replace(/^\s+|\s+$/g, '');
+}
 
-			function postFilesAndImages()
+function postFilesAndImages()
 {
    if(!uploadFormValidation()){
 	var uploadHandler = {
@@ -76,13 +79,13 @@ else
 	YAHOO.util.Connect.asyncRequest('POST', 'postImagesAndFilesAction.action', uploadHandler);
 	}
 	return;
-   }
+}
 
-      function getMessage()
-		{
-			alert("File Uploaded Successfully...");
-			emptyFields();
-		}
+function getMessage()
+{
+	alert("File Uploaded Successfully");
+	emptyFields();
+}
 
 function uploadFormValidation()
 {
@@ -117,64 +120,66 @@ function uploadFormValidation()
 		return true;
 	}
 	
-   }
+}
 
-   function emptyFields()
-   {
-    document.getElementById("titleField").value='';
-	 document.getElementById("fileDescription").value='';
-	 document.getElementById("userImage").value='';
-   }
+function emptyFields()
+{
+	document.getElementById("titleField").value='';
+	document.getElementById("fileDescription").value='';
+	document.getElementById("userImage").value='';
+}
 
 
 function callAjax(jsObj,url)
 {	
-		var callback = {			
-		               success : function( o ) {
-						try {
-							myResults = YAHOO.lang.JSON.parse(o.responseText);
-							if(jsObj.task == "getProblemCompleteDetails")
-							{										
-								showProblemDetails(myResults, jsObj);
-							}
-							else if(jsObj.task =="getProblemImages")
-							{
-								builImagesDiv(myResults);
-								builUploadImagesDiv(myResults);
-							}
-
+	var callback = {			
+	               success : function( o ) {
+					try {
+						myResults = YAHOO.lang.JSON.parse(o.responseText);
+						if(jsObj.task == "getProblemCompleteDetails")
+						{										
+							showProblemDetails(myResults, jsObj);
+						}
+						else if(jsObj.task =="getProblemImages")
+						{
+							builImagesDiv(myResults);
 							
-						}catch (e) {   
-						  // 	alert("Invalid JSON result" + e);   
-						}  
-		               },
-		               scope : this,
-		               failure : function( o ) {
-		                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
-		                         }
-		               };
+						}
 
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+						
+					}catch (e) {   
+					  // 	alert("Invalid JSON result" + e);   
+					}  
+	               },
+	               scope : this,
+	               failure : function( o ) {
+	                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	                         }
+	               };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
 function approvalCallAjax(jsObj,url)
 {	
-		var callback = {			
-		               success : function( o ) {
-						try {
-							myResults = YAHOO.lang.JSON.parse(o.responseText);							
-							showConfirmation(myResults,jsObj);
-						}catch (e) {   
-						  // 	alert("Invalid JSON result" + e);   
-						}  
-		               },
-		               scope : this,
-		               failure : function( o ) {
-		                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
-		                         }
-		               };
+	var callback = {			
+	               success : function( o ) {
+					try {
+						myResults = YAHOO.lang.JSON.parse(o.responseText);							
+						showConfirmation(myResults,jsObj);
+					}catch (e) {   
+					  // 	alert("Invalid JSON result" + e);   
+					}  
+	               },
+	               scope : this,
+	               failure : function( o ) {
+	                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	                         }
+	               };
 
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
 function showConfirmation(results, obj)
 {	
 	var postProblemElmt = document.getElementById('postProblemDiv');
@@ -249,11 +254,12 @@ function getProblemRelatedImages(pHistoryId){
 	var url = "getProblemImagesAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
-function openFile(filePath){
-	 
-	 
-window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+
+function openFile(filePath)
+{
+	window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 }
+
 function builImagesDiv(results)
 {
 	no_of_imagesPerRow = 4;
@@ -325,67 +331,8 @@ str+= '</tr>';
 
 }
 
-function builUploadImagesDiv(results)
-{
-  if(results == null || results.length == 0)
-  {
-	document.getElementById('problemUploadFilesMainOuterDiv').style.display = 'none';	
-  }
-
- var problemRelatedImagesElmt = document.getElementById("problemUploadFilesMainInnerDiv");
- var str ='';
- 
-    str += '<div id="fileUploadDiv">';
-	str += '<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">'; 
-	
-	str += '	<table class="statusData_table" width="100%">';	
-	str += '		<tr>';
-	str += '			<td rowspan="2" width="13%" class="statusData_table_label">';
-	str += '				<table width="100%" class="statusData_table_inner">';
-	str += '					<tr>';
-	str += '						<td width="25%"><img src="images/icons/file_upload_icon.png"></td>';
-	str += '						<th>File Upload</th>';       
-	str += '					</tr>';
-	str += '				</table>';								
-	str += '			</td>';
-	str += '			<td class="statusData_table_data" width="83%">';
-	str += ' <table>';
-	str += '<tr>';
-	str +='<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>';
-	str += ' <td style="padding-right: 62px;">Title</td> ';
-	str += ' <td> <input type="text" id="titleField" name="fileTitle" size="32"/></td>';
-	str+='<span id="alertMsg1"></span>';
-	str += '<td style="padding-left: 22px; padding-right: 10px;">Description </td>';
-	str += ' <td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>';
-	str+='<span id="alertMsg2"></span>';
-	str += ' </tr>';
-	str += '</table>';
-	str += '			</td>';
-	str += '		</tr>';
-	str += '		<tr>';
-	str += '			<td class="statusData_table_links">';
-	str+='<span id="alertMsg3"></span>';
-	str += '			<table style="width:65%;">';
-	str += '				<tr>';
-	str += '				<td>Documents And Images</td>';
-	str += '<input type="hidden" name="problemHistoryId" value='+id+'>';
-	str += '				<td><input type="file" name="userImage" id="userImage"/></td>';
-	str += ' <td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>';
-	str += ' ';
-	str += '				</tr></table>';	
-	str += '			</td>';
-	str += '		</tr>';
-	str += '	</table>';
-	str += '</form>';
-	str += '</div>';
- 
- problemRelatedImagesElmt.innerHTML = str;
- 
- 
-}
-
-
 </script>
+
 <style>
 #problemHead
 {
@@ -450,10 +397,26 @@ h3 {
 {
 	background: url{images/accept.jpeg};
 }
+
 .reject
 {
 	background: url{images/reject.jpeg};
 }
+
+.imageButton {
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
 </style>
 </head>
 <body>
@@ -519,19 +482,64 @@ h3 {
 		</c:if>		
 	</tr>	
 </table>
-<HR><BR>
-<div style="padding-right: 662px;"><BUTTON 
-    TYPE=BUTTON 
-    onClick="showOrHideProblemFilesDiv()" style="color: #ffffFF; font-size: 10pt"><font color="blue">Upload Problem Related Files/Images </font></BUTTON></div>
+<HR>
+<c:if test="${hasFileUploadRight}">
+
+<div style="padding-right: 662px;" id="mainDiv">
+	<input type="button" class="imageButton" onClick="showOrHideProblemFilesDiv()" value="Upload Problem Related Files"/>
+</div>
+
+<BR>
 <div id='problemUploadFilesMainOuterDiv' style="display:none;">
 	<div id='problemUploadFilesHeaderDiv'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Upload Problem Related Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
 		</table>
 	</div>
+</c:if> 
 
-	<div id='problemUploadFilesMainInnerDiv' class="divInfo">
-	
+<div id='problemUploadFilesMainInnerDiv' class="divInfo">
+<div id="fileUploadDiv">
+<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm"> 
+<table class="statusData_table" width="100%">	
+<tr>
+<td rowspan="2" width="13%" class="statusData_table_label">
+<table width="100%" class="statusData_table_inner">
+<tr>
+<td width="25%"><img src="images/icons/file_upload_icon.png"></td>
+<th>File Upload</th>       
+</tr>
+</table>								
+</td>
+<td class="statusData_table_data" width="83%">
+<table>
+<tr>
+<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>
+<td style="padding-right: 62px;">Title</td> 
+<td> <input type="text" id="titleField" name="fileTitle" size="32"/></td>
+<span id="alertMsg1"></span>
+<td style="padding-left: 22px; padding-right: 10px;">Description </td>
+<td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>
+<span id="alertMsg2"></span>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="statusData_table_links">
+<span id="alertMsg3"></span>
+<table style="width:65%;">
+<tr>
+<td>Documents And Images</td>
+<input type="hidden" name="problemHistoryId" value='+id+'>
+<td><input type="file" name="userImage" id="userImage"/></td>
+<td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>
+</tr></table>	
+</td>
+</tr>
+</table>
+</form>
+</div>
 	</div>
 
 </div>
