@@ -452,7 +452,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetTotalProblemsStatusForAnUser()
+	/*public void testGetTotalProblemsStatusForAnUser()
 	{
 		List<Object> list = problemHistoryDAO.getTotalProblemsStatusForAnUser(1l);
 		System.out.println(list.size());
@@ -467,6 +467,17 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		String status = "";
 		List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(1l,status);
 		System.out.println(list.size());
+	}*/
+	
+	public void testCheckUserFileUploadRight()
+	{
+		List<Object[]> list = problemHistoryDAO.checkUserFileUploadRight(10l,20l);
+		System.out.println(list.size());
+		
+		for(Object obj:list)
+		{
+			System.out.println(obj.toString());
+		}
 	}
 }	
 
