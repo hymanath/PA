@@ -42,6 +42,26 @@ ServletRequestAware, ServletContextAware  {
 	private HttpSession session;
 	private List<ApprovalInfoVO> problemApproovals = new ArrayList<ApprovalInfoVO>(0);
 	private IDataApprovalService dataApprovalService;
+	private Long userId;
+	private boolean hasFileUploadRight;
+	
+	
+	public boolean isHasFileUploadRight() {
+		return hasFileUploadRight;
+	}
+
+	public void setHasFileUploadRight(boolean hasFileUploadRight) {
+		this.hasFileUploadRight = hasFileUploadRight;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -149,14 +169,11 @@ ServletRequestAware, ServletContextAware  {
 
 	public String execute(){
 		session = request.getSession();
-		Object obj = session.getAttribute("USER");
-		
-		if(obj != null)
-		{
-			RegistrationVO user = (RegistrationVO) obj ;
-			logInStatus = true;
-			userType = user.getUserType();
-		}		
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		userId = user.getRegistrationID();
+		logInStatus = true;
+		userType = user.getUserType();
+		hasFileUploadRight = dataApprovalService.checkUserFileUploadRight(userId , problemHistoryId);
 		return Action.SUCCESS;
 	}
 	
