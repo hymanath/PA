@@ -15,4 +15,5 @@ public interface IDataApprovalService {
 	public List<ApprovalInfoVO> scrutinizePostedApprovals(List<Long> approvalDetailsIds,String approvedStatus); 
 	public ProblemBeanVO getCountOfPosts(Long problemHistoryId);
 	public ResultStatus checkApprovalStatus(ApprovalInfoVO approvalInfoVO);
+	public Boolean checkUserFileUploadRight(Long userId, Long problemHistoryId);
 }
