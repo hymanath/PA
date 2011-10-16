@@ -476,9 +476,6 @@ public class CadreManagementService {
 				cadre.setMiddleName(cadreInfo.getMiddleName());
 				cadre.setLastName(cadreInfo.getLastName());
 				cadre.setGender(cadreInfo.getGender());
-				//cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
-				//cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
-				//cadre.setConstituency(constituencyDAO.get(new Long(cadreInfo.getConstituencyID())));
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
@@ -509,7 +506,6 @@ public class CadreManagementService {
 					currentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getVillage().substring(1))));
 					currentAddress.setTehsil(null);
 					currentAddress.setHamlet(null);
-					//cadre.setTehsil(null);
 				}
 				
 				if (IConstants.RURAL_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
@@ -534,13 +530,6 @@ public class CadreManagementService {
 					currentAddress.setBooth(boothDAO.get(new Long(cadreInfo.getBooth())));
 				}
 			
-				/*currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
-				String villageFlag = "";
-				Long id = 0l;
-				villageFlag = cadreInfo.getVillage().substring(0, 1);
-				id = new Long(cadreInfo.getVillage().substring(1));
-				processAddressValues(villageFlag, id, cadre,currentAddress);*/
-				
 				if (log.isDebugEnabled())
 					log.debug("sameas ca::::::::::::::::::::::"+cadreInfo.getSameAsCA());
 				if (cadreInfo.getSameAsCA() == true) {
