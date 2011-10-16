@@ -8,8 +8,6 @@ public interface ISmsService {
 
 	public Long getRemainingSmsLeftForUser(Long userId);
 	
-	public String getCurrentDate();
-	
 	public SmsTrackVO updateUserMessageCreditDetail(SmsTrackVO smsTrackVO);
 		
 	public SmsTrackVO getUserMessageCreditDetail(Long userId);
