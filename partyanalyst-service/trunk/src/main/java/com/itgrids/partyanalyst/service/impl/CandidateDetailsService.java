@@ -17,6 +17,8 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -31,6 +33,7 @@ import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -43,7 +46,25 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IFileGallaryDAO fileGallaryDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IContentTypeDAO contentTypeDAO;
+	private IUserGallaryDAO userGallaryDAO;
+	private IRegistrationDAO registrationDAO;
 	
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
+	public IUserGallaryDAO getUserGallaryDAO() {
+		return userGallaryDAO;
+	}
+
+	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
+		this.userGallaryDAO = userGallaryDAO;
+	}
+
 	public IContentTypeDAO getContentTypeDAO() {
 		return contentTypeDAO;
 	}
@@ -288,6 +309,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		try{
 			
 			Gallary gallary = new Gallary();
+			UserGallary userGallary = null;
 			gallary.setName(gallaryVO.getGallaryName());
 			gallary.setDescription(gallaryVO.getDescription());
 			gallary.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
@@ -297,7 +319,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			gallary.setIsPrivate(gallaryVO.getVisibility());
 			gallary.setIsDelete(IConstants.FALSE);
 			
-			gallaryDAO.save(gallary);
+			gallary = gallaryDAO.save(gallary);
+			
+			userGallary = new UserGallary();
+			userGallary.setGallary(gallary);
+			userGallary.setRegistration(registrationDAO.get(gallaryVO.getUserId()));
+			userGallaryDAO.save(userGallary);
+			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch (Exception e) {
