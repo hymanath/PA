@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +23,13 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CandidateElectionResultsAction extends ActionSupport implements
@@ -42,7 +48,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private JSONObject jObj;
 	private String task;
 	private List<FileVO> fileVO;
+	private ResultStatus result;
+	private GallaryVO gallaryVO;
 	
+
+	public ResultStatus getResult() {
+		return result;
+	}
+
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
 
 	public String getCandidateURLString() {
 		return candidateURLString;
@@ -204,6 +220,28 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		
 		return SUCCESS;
+	}
+	
+	public String AjaxHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("createNewGallary"))
+		{
+			gallaryVO = new GallaryVO();
+			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
+			gallaryVO.setGallaryName(jObj.getString("name"));
+			gallaryVO.setDescription(jObj.getString("desc"));
+			gallaryVO.setVisibility(jObj.getString("visibility"));
+			gallaryVO.setContentType(jObj.getString("contentType"));
+			
+			result = candidateDetailsService.createNewGallary(gallaryVO);
+		}
+		return Action.SUCCESS;
 	}
 
 
