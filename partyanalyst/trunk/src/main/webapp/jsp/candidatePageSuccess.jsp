@@ -169,7 +169,11 @@
 		else if(jsObj.task == "getCandidateDevelopmentGallaryDetail")
 			{ 
                buildCandidateGallary(myResults,"DevelopmentsGallaryDiv","developments");
-			}	
+			}
+		else if(jsObj.task == "createNewGallary")
+			{ 
+               clearGallaryFields(myResults);
+			}
 		}
 		catch(e)
 		{   
@@ -423,7 +427,7 @@ function buildCandidatePhotoGallary(results)
 		
 		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 		str += '<tr>';
-		str += '	<td><input type="button" class="imageButton" value="Create Gallary"></td>';
+		str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
 		str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
 		str += '</tr>';
 		str += '</table>'
@@ -814,6 +818,96 @@ showDevelopmentsGallary();
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
 
+<script>
+
+function buildCreateGallaryDiv()
+{
+	var str ='';
+	str+='<div id="content" style="width:650px;">';
+		
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
+	str += '</tr>';
+	str += '</table>';
+
+	str += '<fieldset class="imgFieldset">';
+
+	str += '<h2 align="center">Create A Gallary</h2>';
+	str += '<div id="gallaryCreateInnerDiv">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<table width="60%"><tr><td>Gallary Name</td><td><input type="text" id="pGallaryNameId"></td></tr></table>';
+
+	str += '<div>Description</div>';
+	str += '<div><textarea id="pGallaryDescId" cols="22" rows="3" name="requirement"></textarea></div>';
+	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true">Visible to Public Also</input></div>';
+	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId">Make This Private</input></div>';
+	
+	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+
+	str += '<div>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("photoGallaryDiv").innerHTML = str;
+
+}
+
+function createGallary()
+{
+	var galName = document.getElementById('pGallaryNameId').value;
+	var galDesc = document.getElementById('pGallaryDescId').value;
+	var isPublic = document.getElementById('publicRadioId').cheched;
+	var makeThis = 'true';
+
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(galName.length == 0)
+	{
+		str += 'Gallary Name Required<br>';
+		eFlag = true;
+	}
+	if(galDesc.length > 300)
+	{
+		str += 'Description should be less than 300 Characters<br>';
+		eFlag = true;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	var jsObj =
+		{ 
+            name : galName,
+		    desc : galDesc,
+			visibility : makeThis,
+			candidateId : candidateId,
+			contentType : 'Photo Gallary',
+			task : "createNewGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function clearGallaryFields()
+{
+	document.getElementById('pGallaryNameId').value = '';
+	document.getElementById('pGallaryDescId').value = '';
+	document.getElementById('publicRadioId').checked = true;
+}
+
+</script>
 </body>
 </html>
   
