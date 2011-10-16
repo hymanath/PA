@@ -13,6 +13,8 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface ICandidateDetailsService {
 	
@@ -25,4 +27,6 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,String type);
 	
 	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId);
+	
+	public ResultStatus createNewGallary(GallaryVO gallaryVO);
 }
