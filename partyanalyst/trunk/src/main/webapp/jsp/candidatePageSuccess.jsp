@@ -172,7 +172,7 @@
 			}
 		else if(jsObj.task == "createNewGallary")
 			{ 
-               clearGallaryFields(myResults);
+               showGallaryCreateMsg(myResults);
 			}
 		}
 		catch(e)
@@ -832,17 +832,16 @@ function buildCreateGallaryDiv()
 	str += '</tr>';
 	str += '</table>';
 
-	str += '<fieldset class="imgFieldset">';
-
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Gallary</h2>';
-	str += '<div id="gallaryCreateInnerDiv">';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<table width="60%"><tr><td>Gallary Name</td><td><input type="text" id="pGallaryNameId"></td></tr></table>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr></table>';
 
-	str += '<div>Description</div>';
-	str += '<div><textarea id="pGallaryDescId" cols="22" rows="3" name="requirement"></textarea></div>';
-	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true">Visible to Public Also</input></div>';
-	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId">Make This Private</input></div>';
+	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
+	str += '<div style="padding-left:30px;"><textarea id="pGallaryDescId" cols="27" rows="3" name="requirement"></textarea></div>';
+	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 
@@ -905,6 +904,22 @@ function clearGallaryFields()
 	document.getElementById('pGallaryNameId').value = '';
 	document.getElementById('pGallaryDescId').value = '';
 	document.getElementById('publicRadioId').checked = true;
+}
+
+function showGallaryCreateMsg(result)
+{
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+		clearGallaryFields();
+		str += '<font color="green"><b>Gallary Created Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
 }
 
 </script>
