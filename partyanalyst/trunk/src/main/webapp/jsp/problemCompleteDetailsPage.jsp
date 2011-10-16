@@ -83,7 +83,8 @@ function postFilesAndImages()
 
 function getMessage()
 {
-	alert("File Uploaded Successfully");
+	var fileUploadDivEle = document.getElementById("alertMessage");
+	fileUploadDivEle.style.display = 'block';
 	emptyFields();
 }
 
@@ -486,7 +487,18 @@ h3 {
 <c:if test="${hasFileUploadRight}">
 
 <div style="padding-right: 728px; padding-top: 22px;" id="mainDiv">
+<table>
+   <tr> 
+       <td> 
 	<input type="button" class="imageButton" onClick="showOrHideProblemFilesDiv()" value="Upload Problem Related Files"/>
+	   </td> 
+	   <td style="padding-left: 146px;">
+	
+	 <DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px; width: 200%; display:none;">File Uploaded Successfully...</DIV>
+	
+	  </td>		
+   </tr>			
+</table>				
 </div>
 <br>
 <div id='problemUploadFilesMainOuterDiv' style="display:none;">
@@ -532,7 +544,7 @@ h3 {
 				<table style="width:65%;">
 				<tr>
 					<td>Documents And Images</td>
-					<input type="hidden" name="problemHistoryId" value=id>
+					<input type="hidden" name="problemHistoryId" value="${problemHistoryId}">
 					<td><input type="file" name="userImage" id="userImage"/></td>
 					<td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>
 				</tr></table>	
@@ -546,6 +558,9 @@ h3 {
 </c:if>
 
 <HR><BR>
+<script>
+
+</script>
 <div id='problemFilesMainOuterDiv'>
 	<div id='problemFilesHeaderDiv'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
