@@ -3019,69 +3019,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				
 		return queryObject.list();
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List getNominationsInAnElection(Long electionId) {
 		
 		return getHibernateTemplate().find("select model.candidate.candidateId,model from Nomination model where model.constituencyElection.election.electionId = ?",electionId);
 	}
-	/*@Override
-	public List totalSearchCount(String searchText, String ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-	
-	/*public List<Long> getListOfUnParticipatedConstituencies(List<Long> constIds,Long electionId,String type,Long stateId,String electionType){
-		
-			StringBuilder query = new StringBuilder();
-			query.append(" select model.constituencyElection.constituency.constituencyId");
-			query.append(" from Nomination model where model.constituencyElection.election.electionId = ? ");	
-			
-			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
-			
-			query.append(" and model.candidateResult.rank != 1 ");
-			query.append(" and model.constituencyElection.constituency.constituencyId not in (:constituencyIds)");
-			query.append(" and model.constituencyElection.constituency.startDate is null ");
-			query.append(" and model.constituencyElection.constituency.deformDate is null");
-						
-			query.append(" order by model.party.partyId");
-			
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			queryObject.setLong(0,electionId);
-			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-				queryObject.setLong(1,stateId);
-			
-			queryObject.setParameterList("constituencyIds", constIds);
-					
-			return queryObject.list();
-	}
-	
-	public List<Long> getAllParticipatedPartyResultsForAParty(List<Long> constituencyIds,String electionType,Long partyId,String electionSubType,Long stateId){
-		StringBuilder query = new StringBuilder();
-		query.append(" select model.constituencyElection.constituency.constituencyId from Nomination model where");			
-		query.append(" model.party.partyId = ? ");
-		query.append(" and model.constituencyElection.election.elecSubtype = ? ");
-		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-			query.append(" and model.constituencyElection.constituency.state.stateId = ?");
-		
-		query.append(" and model.candidateResult.rank != 1 ");
-		query.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) ");
-		query.append(" and model.constituencyElection.constituency.startDate is null");//219 consts
-		query.append(" and model.constituencyElection.constituency.deformDate is null ");		
-		query.append(" order by model.constituencyElection.constituency.constituencyId");	
-					
-		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setLong(0,partyId);		
-		queryObject.setString(1,electionSubType);	
-		
-		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-		queryObject.setLong(2,stateId);
-		
-		queryObject.setParameterList("constituencyIds", constituencyIds);
-		
-		return queryObject.list();	
-	}*/
 	
 	/**
 	 * DAO Method returns Candidate Nomination Details In An Election In A Constituency
