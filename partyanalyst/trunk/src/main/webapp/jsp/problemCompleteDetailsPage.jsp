@@ -482,69 +482,70 @@ h3 {
 		</c:if>		
 	</tr>	
 </table>
-<HR>
+
 <c:if test="${hasFileUploadRight}">
 
-<div style="padding-right: 662px;" id="mainDiv">
+<div style="padding-right: 728px; padding-top: 22px;" id="mainDiv">
 	<input type="button" class="imageButton" onClick="showOrHideProblemFilesDiv()" value="Upload Problem Related Files"/>
 </div>
-
-<BR>
+<br>
 <div id='problemUploadFilesMainOuterDiv' style="display:none;">
-	<div id='problemUploadFilesHeaderDiv'>
-		<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Upload Problem Related Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
-		</table>
-	</div>
-</c:if> 
 
+<div id='problemUploadFilesHeaderDiv'>
+	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"></td><td width="98%"><div style="text-decoration: none;" class="productFeatureHeaderBackground_center2"><span style="text-decoration: none;" class="headerLabelSpan2">Upload Problem Related Files/Images</span></div></td><td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg"></td></tr>
+	</table>
+</div>
+ 
 <div id='problemUploadFilesMainInnerDiv' class="divInfo">
-<div id="fileUploadDiv">
-<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm"> 
-<table class="statusData_table" width="100%">	
-<tr>
-<td rowspan="2" width="13%" class="statusData_table_label">
-<table width="100%" class="statusData_table_inner">
-<tr>
-<td width="25%"><img src="images/icons/file_upload_icon.png"></td>
-<th>File Upload</th>       
-</tr>
-</table>								
-</td>
-<td class="statusData_table_data" width="83%">
-<table>
-<tr>
-<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>
-<td style="padding-right: 62px;">Title</td> 
-<td> <input type="text" id="titleField" name="fileTitle" size="32"/></td>
-<span id="alertMsg1"></span>
-<td style="padding-left: 22px; padding-right: 10px;">Description </td>
-<td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>
-<span id="alertMsg2"></span>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td class="statusData_table_links">
-<span id="alertMsg3"></span>
-<table style="width:65%;">
-<tr>
-<td>Documents And Images</td>
-<input type="hidden" name="problemHistoryId" value='+id+'>
-<td><input type="file" name="userImage" id="userImage"/></td>
-<td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>
-</tr></table>	
-</td>
-</tr>
-</table>
-</form>
-</div>
-	</div>
+	<div id="fileUploadDiv">
+		<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm"> 
+		<table class="statusData_table" width="100%">	
+		<tr>
+			<td rowspan="2" width="13%" class="statusData_table_label">
+				<table width="100%" class="statusData_table_inner">
+				<tr>
+					<td width="25%"><img src="images/icons/file_upload_icon.png"></td>
+					<th>File Upload</th>       
+				</tr>
+				</table>								
+			</td>
 
+			<td class="statusData_table_data" width="83%">
+				<table>
+				<tr>
+					<center><DIV id="errorMsgDivId" class="errorDiv"></DIV></center>
+					<td style="padding-right: 62px;">Title</td> 
+					<td> <input type="text" id="titleField" name="fileTitle" size="32"/></td>
+					<span id="alertMsg1"></span>
+					<td style="padding-left: 22px; padding-right: 10px;">Description </td>
+					<td> <textarea name="fileDescription"  id="fileDescription" cols="20" rows="3"> </textarea></td>
+					<span id="alertMsg2"></span>
+				</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="statusData_table_links">
+				<span id="alertMsg3"></span>
+				<table style="width:65%;">
+				<tr>
+					<td>Documents And Images</td>
+					<input type="hidden" name="problemHistoryId" value=id>
+					<td><input type="file" name="userImage" id="userImage"/></td>
+					<td style="padding-left: 113px;"><input type="button" style="float:none" class="button" value="Upload" onclick="postFilesAndImages()" ></td>
+				</tr></table>	
+			</td>
+		</tr>
+		</table>
+	</form>
 </div>
+</div>
+</div>
+</c:if>
+
 <HR><BR>
-
 <div id='problemFilesMainOuterDiv'>
 	<div id='problemFilesHeaderDiv'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
