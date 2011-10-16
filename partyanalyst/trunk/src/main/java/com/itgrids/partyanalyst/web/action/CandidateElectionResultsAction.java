@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -50,6 +52,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<FileVO> fileVO;
 	private ResultStatus result;
 	private GallaryVO gallaryVO;
+	private HttpSession session;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
+	private ICandidateDetailsService candidateDetailsService;
 	
 
 	public ResultStatus getResult() {
@@ -109,10 +115,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.fileVO = fileVO;
 	}
 	
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private ICandidateDetailsService candidateDetailsService;
-
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -230,14 +232,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			e.printStackTrace();
 		}
 		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
 		if(jObj.getString("task").equalsIgnoreCase("createNewGallary"))
 		{
 			gallaryVO = new GallaryVO();
 			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
+			gallaryVO.setUserId(regVO.getRegistrationID());
 			gallaryVO.setGallaryName(jObj.getString("name"));
 			gallaryVO.setDescription(jObj.getString("desc"));
 			gallaryVO.setVisibility(jObj.getString("visibility"));
 			gallaryVO.setContentType(jObj.getString("contentType"));
+			
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
