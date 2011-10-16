@@ -14,35 +14,44 @@ import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateDetailsService implements ICandidateDetailsService {
 
-	
-	/*
-	 * (doc)
-	 * 
-	 */
-	
 	private ICandidateResultDAO candidateResultDAO;
 	private ICandidateDAO candidateDAO;
 	private IGallaryDAO gallaryDAO;
 	private IFileGallaryDAO fileGallaryDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IContentTypeDAO contentTypeDAO;
 	
-	
-	
+	public IContentTypeDAO getContentTypeDAO() {
+		return contentTypeDAO;
+	}
+
+	public void setContentTypeDAO(IContentTypeDAO contentTypeDAO) {
+		this.contentTypeDAO = contentTypeDAO;
+	}
+
 	public ICandidateResultDAO getCandidateResultDAO() {
 		return candidateResultDAO;
 	}
@@ -264,5 +273,37 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return retValue;
 		}
 	}
-
+	
+	
+	/**
+	* This Method will Create A New Gallary by taking Basic information
+	* @param GallaryVO 
+	* @return ResultStatus
+	* @author kamalakarDandu
+	*/
+	
+	public ResultStatus createNewGallary(GallaryVO gallaryVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			Gallary gallary = new Gallary();
+			gallary.setName(gallaryVO.getGallaryName());
+			gallary.setDescription(gallaryVO.getDescription());
+			gallary.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
+			gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
+			gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			gallary.setIsPrivate(gallaryVO.getVisibility());
+			gallary.setIsDelete(IConstants.FALSE);
+			
+			gallaryDAO.save(gallary);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
 }
