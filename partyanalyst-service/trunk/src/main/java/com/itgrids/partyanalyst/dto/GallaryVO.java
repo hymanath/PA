@@ -18,8 +18,16 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private Date updatedDate;
 	private String visibility;
 	private String contentType;
+	private Long candidateId;
+	private Long userId;
 	
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getContentType() {
 		return contentType;
 	}
@@ -62,8 +70,6 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
 	}
-	private Long candidateId;
-
 	public String getDescription() {
 		return description;
 	}
