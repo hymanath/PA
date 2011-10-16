@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -24,6 +22,7 @@ import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class SmsCountrySmsService implements ISmsService {
 
@@ -36,6 +35,7 @@ public class SmsCountrySmsService implements ISmsService {
 	private ISmsHistoryDAO smsHistoryDAO;
 	private IRegistrationDAO registrationDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	public ISmsHistoryDAO getSmsHistoryDAO() {
 		return smsHistoryDAO;
@@ -198,7 +198,7 @@ public class SmsCountrySmsService implements ISmsService {
 				smsHistory.setRegistration(registration);
 				smsHistory.setMobileNumber(mobileNo);
 				smsHistory.setSmsContent(message);
-				smsHistory.setSentDate(getCurrentDate());
+				smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 				smsHistory.setSmsModule(smsModule);
 				smsHistoryDAO.save(smsHistory);
 			}
@@ -219,33 +219,14 @@ public class SmsCountrySmsService implements ISmsService {
 				if(trackId.size()==0){		
 						SmsTrack track = new SmsTrack();
 						track.setRegistration(registrationDAO.get(userId));
-						track.setRenewalDate(getCurrentDate());
+						track.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 						track.setRenewalSmsCount(10000l);
 						track = smsTrackDAO.save(track);
 				}	
 			}
 		});
 	}
-	/**
-	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss Format.
-	 * 
-	 * @return
-	 */
-	public String getCurrentDate(){
-		String currentDate="";
-		try{
-			java.util.Date updatedDate = new java.util.Date();
-			String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-			sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
-			currentDate = sdf.format(updatedDate); 
-			return currentDate;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return currentDate;		
-	}
-	
+		
 	/**
 	 * This method return total sms left for the user.
 	 * 
@@ -275,7 +256,7 @@ public class SmsCountrySmsService implements ISmsService {
 			smsTrack.setSmsPassword(smsTrackVO.getSmsPassword());		
 			smsTrack.setSenderId(smsTrackVO.getSenderId());
 			smsTrack.setRenewalSmsCount(smsTrackVO.getRenewalSmsCount());
-			smsTrack.setRenewalDate(getCurrentDate());
+			smsTrack.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 		
 		smsTrackDAO.save(smsTrack);
 		SmsTraVO.setUpdateStatus(1L);
