@@ -2635,10 +2635,15 @@
 			</result>	
 		</action>
 		
+		<action name="createNewGallaryAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>	
+		</action>
+		
 		<action name="postImagesAndFilesAction" class="problemAssigningAction" method="postImagesAndFiles">		
 			<result name="redirectToJSP" type="redirect">problemDetailsAndStatusAction.action?pHistoryId=${problemHistoryId}</result>						
 		</action>
-		
 				 		       	
 	</package>
 </struts>      
