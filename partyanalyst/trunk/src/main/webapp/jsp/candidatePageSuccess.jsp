@@ -82,16 +82,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <style type="text/css">
-#btnStyle {
-    background:none repeat scroll 0 0 #335291;
-    color:#FFFFFF;
-    font-weight:bold;
-    margin-bottom:5px;
-    margin-top:5px;
-    padding:2px;
-    width:125px;	
-}
-
 .imageButton{
 	
 	-moz-border-radius: 4px 4px 4px 4px;
@@ -132,6 +122,28 @@
    font-weight:bold;
 }
 
+.selectWidth {
+   width:187px;
+}
+.selectWidth1 {
+   width:183px;
+}
+.tdWidth {           
+  width:50%;
+  font-weight:bold;
+  color:navy;
+}
+.tdWidth1 {           
+  width:187px;
+  font-weight:bold;
+  color:navy;
+}
+legend {
+background-color:#0063DC;
+color:#FFFFFF;
+font-size:12px;
+padding:5px;
+}
 </style>
 <script type="text/javascript">
 		google.load("elements", "1", {packages : ["newsshow"]});
@@ -170,6 +182,43 @@
 			{ 
                buildCandidateGallary(myResults,"DevelopmentsGallaryDiv","developments");
 			}
+		else if(jsObj.task == "searchNewsDetails")
+		{ 
+           buildGallary(myResults,"zero","newsSearch");
+		}	
+			else if(jsObj.task == "getScopesForNewSearch")
+			{ 
+               buildResults(myResults,"scopeDiv");
+			}
+			else if(jsObj.task == "getStates")
+			{ 
+               buildResults(myResults,"stateDiv");
+			}
+			else if(jsObj.task == "getDistrictsByStateId")
+			{ 
+               buildResults(myResults,"districtDiv");
+			}
+			else if(jsObj.task == "constituenciesInDistrict")
+			{ 
+               buildResults(myResults,"constituencyDiv");
+			}
+			else if(jsObj.task == "getConstNotInGivenAreaType")
+			{ 
+               buildResults(myResults,"constituencyDiv");
+			}
+			else if(jsObj.task == "subRegionsInConstituency")
+			{ 
+               buildResults(myResults,"mandalDiv");
+			}
+			else if(jsObj.task == "hamletsOrWardsInRegion")
+			{ 
+               buildResults(myResults,"villageDiv");
+			}
+			else if(jsObj.task == "boothsInTehsilOrMunicipality")
+			{ 
+               buildResults(myResults,"villageDiv");
+			}
+			}
 		else if(jsObj.task == "createNewGallary")
 			{ 
                showGallaryCreateMsg(myResults);
@@ -195,6 +244,8 @@ var str ='';
 str+='<div id="content" style="width:650px;">';
 str += '<fieldset class="imgFieldset">';
 str+='<table width="100%" style="margin-top:10px;">';
+if(results.length<1)
+str+='<b>&nbsp;No Records Found </b>';
   for(var i in results)
 {
 no_of_imagesPerRow = 3; 
@@ -224,7 +275,7 @@ str+= '<img alt="" src="images/doc_images/wordImage.png" height="100px" onclick=
 
 str+= '</a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
+str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
 
 
 }
@@ -233,7 +284,7 @@ str+= '<td><table class="tableStyle">';
 str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].gallaryName+'</b></font></div></tr></td>';
 str+= '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img alt="" src="'+results[i].path+'" height="100px" onclick="getFilesInAGallary(\''+results[i].gallaryId+'\',\''+type+'\')"/></a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr></table></td>';
+str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
 
 }
 
@@ -270,12 +321,19 @@ function buildGallary(results,elementId,type){
 var str ='';
 str+='<div id="content" style="width:650px;">';
 str += '<fieldset class="imgFieldset">';
+
+if(type=="newsSearch")
+str +='<legend><b>Search Results</b></legend>';
+
+if(results.length<1)
+str+='<b>&nbsp;No Records Found </b>';
+
 str+='<table width="100%" style="margin-top:10px;">';
 str+='<tr><td>';
 if(type=="news")
-str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showCandidateNewsGallary();" />';
+str+='<input type="button" value="Back To News"  class="imageButton" onclick="showCandidateNewsGallary();" />';
 if(type=="developments")
-str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showDevelopmentsGallary();" />';
+str+='<input type="button" value="Back To Developments"  class="imageButton" onclick="showDevelopmentsGallary();" />';
 str+= '</td></tr>';
 for(var i in results)
 {
@@ -303,6 +361,11 @@ str+= '<a href="'+results[i].path+'"><img alt="" src="images/doc_images/wordImag
 
 str+= '</a></td></tr>';
 str+= '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+ if(type =='newsSearch')
+ {
+   str+= '<tr><td><div><b>Scope :'+results[i].scope+'</b></div></td></tr>';
+   str+= '<tr><td><div><b>'+results[i].locationValue+'</b></div></td></tr>';
+ }
 str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
 
 
@@ -312,6 +375,11 @@ str+= '<td><table class="tableStyle">';
 str+= '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileTitle1+'</b></font></div></tr></td>';
 str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" height="100px" /></a></td>';
 str+= '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+if(type =='newsSearch')
+ {
+   str+= '<tr><td><div><b>Scope :'+results[i].scope+'</b></div></td></tr>';
+   str+= '<tr><td><div><b>'+results[i].locationValue+'</b></div></td></tr>';
+ }
 str+= '</tr><tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
 
 }
@@ -378,7 +446,7 @@ function showPhotosInAGallary(results){
    str += '<fieldset class="imgFieldset">';
    str+='<table width="100%" style="margin-top:10px;">'
    str+='<tr><td>';
-   str+='<input type="button" value="Back To Gallery"  id="btnStyle" onclick="showPhotoGallary();" />';
+   str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
    str+= '</td></tr>';
    for(var i in results)
    {
@@ -427,7 +495,7 @@ function buildCandidatePhotoGallary(results)
 		
 		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 		str += '<tr>';
-		str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
+		str += '	<td><input type="button" class="imageButton" value="Create Gallary"></td>';
 		str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
 		str += '</tr>';
 		str += '</table>'
@@ -448,7 +516,7 @@ function buildCandidatePhotoGallary(results)
 			str += '<tr><td><div align="center"><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
 			str += '<tr><td><div align="center"><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-			str+= '<tr><td><div align="center"><b>Gallery Size: ('+results[i].sizeOfGallary+' )</b></div></td></tr>';
+			str+= '<tr><td><div align="center"><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 			str += '</table>';
 			str += '</td>';
 			
@@ -475,6 +543,449 @@ function getCompleteGallaries(gallaryId){
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+function getStates()
+{
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function buildSearchNewsDetails(){
+ var str ='';
+  str+='<div id="content" style="width:650px;">';
+  str +='<FIELDSET class="imgFieldset">';
+  str +='<legend><b>Search News</b></legend>';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth1">Keywords :</td>';
+  str +='	   <td><input type="text" class="selectWidth1" id="keywords" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" /></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth1">Location Scope :</td>';
+  str +='	   <td><select id="scopeDiv" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" /></td>';
+  str +='  </tr>';
+  str +='</table>';
+  str +='  <span id="showScopeSubs" />'; 
+  str +='</FIELDSET>';
+  str+='</div>';
+
+ document.getElementById("newsSearch").innerHTML = str;
+ getScopes();
+  var val ='';
+  val +='<table>';
+  val +='  <tr>';
+  val +='	   <td class="tdWidth1"></td>';
+  val +='	   <td><input type="button"  class="imageButton" id="searchButton" value="Search" onclick="searchNewsDetails(\'\')" /></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+}
+function getLocations(id){
+  if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr>';
+  val +='	   <td class="tdWidth1"></td>';
+  val +='	   <td><input type="button"  class="imageButton"  id="searchButton" value="Search" onclick="searchNewsDetails(\'\')" /></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth1"></td>';
+  str +='	   <td><input type="button"  class="imageButton" id="searchButton"  value="Search" onclick="searchNewsDetails(\'\')" /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button" class="imageButton"  id="searchButton" value="Search" onclick="searchNewsDetails(document.getElementById(\'stateDiv\').options[document.getElementById(\'stateDiv\').selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==3)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button" class="imageButton"  id="searchButton"  value="Search" onclick="searchNewsDetails(document.getElementById(\'districtDiv\').options[document.getElementById(\'districtDiv\').selectedIndex].value)" /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==4)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button" class="imageButton"  id="searchButton"  value="Search" onclick="searchNewsDetails(document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"  /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button"  class="imageButton"  id="searchButton" value="Search" onclick="searchNewsDetails(document.getElementById(\'mandalDiv\').options[document.getElementById(\'mandalDiv\').selectedIndex].value)"  /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
+  str +='	   <td><select id="villageDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button"  class="imageButton" id="searchButton"  value="Search" onclick="searchNewsDetails(document.getElementById(\'villageDiv\').options[document.getElementById(\'villageDiv\').selectedIndex].value)"  /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==9)
+  {
+     var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
+  str +='	   <td><select id="villageDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth"></td>';
+  str +='	   <td><input type="button" class="imageButton"  id="searchButton" value="Search" onclick="searchNewsDetails(document.getElementById(\'villageDiv\').options[document.getElementById(\'villageDiv\').selectedIndex].value)"  /></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+}
+
+function getMandalMunicipalityCorpGMC(){
+
+}
+  function getAllDetails(id,task,areaType,constId)
+   {
+        var jsObj =
+		{ 
+            time : timeST,
+			id:id,
+			task:task,
+			taskType:"",
+			selectElementId:"",
+			address:"",
+			areaType:areaType,
+			constId:constId
+		};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	 callAjax(jsObj,url);
+   }
+function getDistricts(stateId){
+  var jsObj =
+		{ 
+            time : timeST,
+			stateId : stateId,
+			task:"getDistrictsByStateId"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+function getScopes(){
+  
+ var jsObj =
+		{ 
+            time : timeST,
+			task:"getScopesForNewSearch"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+function clearAllElmts(scopeId,value){
+ if(scopeId==4)
+ { 
+    if(value==1)
+	clearAllForSelect("constituencyDiv");
+	
+ }
+ if(scopeId==5)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	}
+   if(value==2)
+	clearAllForSelect("mandalDiv");
+ }
+ if(scopeId==6)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==2)
+	{
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==3)
+	clearAllForSelect("villageDiv");
+ }
+ if(scopeId==9)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==2)
+	{
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==3)
+	clearAllForSelect("villageDiv");
+ }
+
+}
+function buildResults(results,divId){
+  var elmt = document.getElementById(divId);
+         if(divId=='scopeDiv')
+		 {
+		    var option1 = document.createElement('option');
+		 option1.value= 0;
+		option1.text= "All";
+		 }
+		 else
+		 {
+	     var option1 = document.createElement('option');
+		 option1.value= 0;
+		option1.text= "Select Location";
+		}
+		try
+		{
+			elmt.add(option1,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option1); // IE only
+		}
+		for(var i in results)
+	  {
+		var option = document.createElement('option');
+		if(divId =="scopeDiv")
+		  {
+		  option.value=results[i].locationScope;
+		  option.text=results[i].locationScopeValue;
+		  }
+		else if(divId =="stateDiv" || divId =="districtDiv")
+		{
+		  option.value=results[i].ids;
+		  option.text=results[i].names;
+		}
+		else 
+		{
+		  if(results[i].id!=0)
+		  {
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		  }
+		}
+		if(results[i].id!=0)
+		  {
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+		}
+	  }
+ 
+}
+function searchNewsDetails(location){
+ var keywords = document.getElementById('keywords').value;
+  if(keywords.length <= 0)
+     keywords='  ';
+ var locationScope = document.getElementById('scopeDiv').options[document.getElementById('scopeDiv').selectedIndex].value;
+  if(locationScope.length <= 0 || locationScope==0)
+     locationScope='  ';
+   if(location == 0)
+     location ='  ';
+   var jsObj =
+		{ 
+            time : timeST,
+			candidateId:candidateId,
+			keywords:keywords,
+			locationScope:locationScope,
+			location:location,
+			task:"searchNewsDetails"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+
+}
+function clearAllForSelect(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=1;i--)
+	{
+		elmt.remove(i);
+	}	
+   }
+function clearAll(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+   }
 function openFile(filePath,fileType){
 
 window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
@@ -562,6 +1073,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 				
 				<!-- News Info Div-->
 				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv" style="overflow: scroll;overflow-x:hidden;display: block;">
+                    <div id="newsSearch" style="position:relative;left:15px;padding-top:15px;"> </div>
 				    <div id="zero" style="position:relative;left:15px;padding-top:15px;"> </div>
 					<div id="one" style="position:relative;left:-165px;padding-top:15px;"> </div>
 					<div id="two" style="position:relative;left:-165px;padding-top:15px;"> </div>					
@@ -798,6 +1310,7 @@ candidateProfileInfo();
 showPhotoGallary();
 showCandidateNewsGallary();
 showDevelopmentsGallary();
+buildSearchNewsDetails();
 </script>
 <script>
   $(document).ready(function() {
@@ -818,111 +1331,6 @@ showDevelopmentsGallary();
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
 
-<script>
-
-function buildCreateGallaryDiv()
-{
-	var str ='';
-	str+='<div id="content" style="width:650px;">';
-		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-	str += '<tr>';
-	str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
-	str += '</tr>';
-	str += '</table>';
-
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
-	str += '<h2 align="center">Create A Gallary</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
-	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr></table>';
-
-	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
-	str += '<div style="padding-left:30px;"><textarea id="pGallaryDescId" cols="27" rows="3" name="requirement"></textarea></div>';
-	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	
-	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
-
-	str += '<div>';
-	str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("photoGallaryDiv").innerHTML = str;
-
-}
-
-function createGallary()
-{
-	var galName = document.getElementById('pGallaryNameId').value;
-	var galDesc = document.getElementById('pGallaryDescId').value;
-	var isPublic = document.getElementById('publicRadioId').cheched;
-	var makeThis = 'true';
-
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
-
-	var str = '<font color="red">';
-
-	if(galName.length == 0)
-	{
-		str += 'Gallary Name Required<br>';
-		eFlag = true;
-	}
-	if(galDesc.length > 300)
-	{
-		str += 'Description should be less than 300 Characters<br>';
-		eFlag = true;
-	}
-	
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	
-	if(eFlag)
-		return;
-
-	if(isPublic)
-		makeThis = 'false';
-	
-	var jsObj =
-		{ 
-            name : galName,
-		    desc : galDesc,
-			visibility : makeThis,
-			candidateId : candidateId,
-			contentType : 'Photo Gallary',
-			task : "createNewGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}
-
-function clearGallaryFields()
-{
-	document.getElementById('pGallaryNameId').value = '';
-	document.getElementById('pGallaryDescId').value = '';
-	document.getElementById('publicRadioId').checked = true;
-}
-
-function showGallaryCreateMsg(result)
-{
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var str = '';
-	
-	if(result.resultCode == 0)
-	{
-		clearGallaryFields();
-		str += '<font color="green"><b>Gallary Created Successfully.</b>';
-	}
-	else
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-
-	errorDivEle.innerHTML = str;
-}
-
-</script>
 </body>
 </html>
   
