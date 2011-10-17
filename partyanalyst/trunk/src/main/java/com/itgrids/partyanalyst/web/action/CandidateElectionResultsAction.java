@@ -10,13 +10,17 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -35,7 +39,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CandidateElectionResultsAction extends ActionSupport implements
-		ServletRequestAware, ServletResponseAware {
+		ServletRequestAware, ServletResponseAware,ServletContextAware {
 
 	/**
 	 * 
@@ -56,7 +60,120 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private ICandidateDetailsService candidateDetailsService;
+	private File userImage;
+	private String userImageContentType;
+	private String userImageFileName;
+	private String problemFilePathList;
+	private String contentType;
+	private String fileTitle;
+	private String fileDescription;
+    private HttpServletRequest servletRequest;
+    private ServletContext context;
+    private String fileNameList;
+    private String problemFilepath;
+    private String tempFileName;
+	private String visibility;
+	private Long gallaryId;
 	
+
+
+	
+	
+	public File getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(File userImage) {
+		this.userImage = userImage;
+	}
+
+	public String getUserImageContentType() {
+		return userImageContentType;
+	}
+
+	public void setUserImageContentType(String userImageContentType) {
+		this.userImageContentType = userImageContentType;
+	}
+
+	public String getUserImageFileName() {
+		return userImageFileName;
+	}
+
+	public void setUserImageFileName(String userImageFileName) {
+		this.userImageFileName = userImageFileName;
+	}
+
+	public String getProblemFilePathList() {
+		return problemFilePathList;
+	}
+
+	public void setProblemFilePathList(String problemFilePathList) {
+		this.problemFilePathList = problemFilePathList;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getFileTitle() {
+		return fileTitle;
+	}
+
+	public void setFileTitle(String fileTitle) {
+		this.fileTitle = fileTitle;
+	}
+
+	public String getFileDescription() {
+		return fileDescription;
+	}
+
+	public void setFileDescription(String fileDescription) {
+		this.fileDescription = fileDescription;
+	}
+
+	public String getFileNameList() {
+		return fileNameList;
+	}
+
+	public void setFileNameList(String fileNameList) {
+		this.fileNameList = fileNameList;
+	}
+
+	public String getProblemFilepath() {
+		return problemFilepath;
+	}
+
+	public void setProblemFilepath(String problemFilepath) {
+		this.problemFilepath = problemFilepath;
+	}
+
+	public String getTempFileName() {
+		return tempFileName;
+	}
+
+	public void setTempFileName(String tempFileName) {
+		this.tempFileName = tempFileName;
+	}
+
+	public String getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+	public Long getGallaryId() {
+		return gallaryId;
+	}
+
+	public void setGallaryId(Long gallaryId) {
+		this.gallaryId = gallaryId;
+	}
 
 	public ResultStatus getResult() {
 		return result;
@@ -111,6 +228,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return fileVO;
 	}
 
+	public ServletContext getContext() {
+		return context;
+	}
+
+	
+	public void setContext(ServletContext context) {
+		this.context = context;
+	}
+
 	public void setFileVO(List<FileVO> fileVO) {
 		this.fileVO = fileVO;
 	}
@@ -133,6 +259,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setTask(String task) {
 		this.task = task;
+	}
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;
 	}
 
 	public String execute(){
@@ -275,6 +405,62 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
-
+	
+	public String uploadFiles()
+	{
+		  session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+		if(user!=null)
+		{		
+			String fileName="";
+			FileVO fileVO=new FileVO();
+			gallaryVO = new GallaryVO();
+			fileVO.setName(getUserImageFileName()) ;
+			fileVO.setTitle(getFileTitle());
+			fileVO.setDescription(getFileDescription());
+			// i think Visibility variable may in fileVO
+			gallaryVO.setVisibility(getVisibility());
+			try {
+				String filePath1 = context.getRealPath("/");
+				String filePath = filePath1 + "/uploaded_files";
+					Long systime = System.currentTimeMillis();
+					StringTokenizer st = new StringTokenizer(userImageContentType, "/");
+					while(st.hasMoreTokens()) {
+					String key = st.nextToken();
+					String val = st.nextToken();
+					if(userImageContentType.equalsIgnoreCase("text/plain")){
+						fileName = systime.toString()+"."+key;
+					}
+					else
+					  fileName = systime.toString()+"."+val;
+					problemFilepath=filePath+"/"+fileName;
+					File fileToCreate = new File(filePath, fileName);
+					FileUtils.copyFile(userImage, fileToCreate);
+					System.out.println("contenyt type.."
+							+ userImageContentType);
+					System.out.println(key + "\t" + val);
+				    fileVO.setContentType(val);
+				    fileVO.setName(fileName);
+					}
+			 } catch (Exception e) {
+				e.printStackTrace();
+				addActionError(e.getMessage());
+			}
+			 fileVO.setPathOfFile(problemFilepath);
+			 System.out.println();
+			 System.out.println("title         := "+getFileTitle());
+			 System.out.println("description   := "+getFileDescription());
+			 System.out.println("path          := "+problemFilepath);
+			 System.out.println("file name     := "+fileName);
+			 System.out.println("content type  := "+fileVO.getContentType());
+			 System.out.println("visibility    := "+getVisibility());
+			 System.out.println();
+			return "redirectToJSP";
+			
+			} 
+	     return Action.SUCCESS;
+	
+	}
 
 }
