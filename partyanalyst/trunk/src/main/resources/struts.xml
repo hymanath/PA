@@ -2644,6 +2644,10 @@
 		<action name="postImagesAndFilesAction" class="problemAssigningAction" method="postImagesAndFiles">		
 			<result name="redirectToJSP" type="redirect">problemDetailsAndStatusAction.action?pHistoryId=${problemHistoryId}</result>						
 		</action>
+		
+		<action name="uploadFilesAction" class="candidateElectionResultsAction" method="uploadFiles">			
+			<result name="redirectToJSP" type="redirect">problemDetailsAndStatusAction.action?pHistoryId=1</result>					
+		</action>
 				 		       	
 	</package>
 </struts>      

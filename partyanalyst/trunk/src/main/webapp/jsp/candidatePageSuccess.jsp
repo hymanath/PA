@@ -144,6 +144,17 @@ color:#FFFFFF;
 font-size:12px;
 padding:5px;
 }
+
+#btnStyle {
+    background:none repeat scroll 0 0 #335291;
+    color:#FFFFFF;
+    font-weight:bold;
+    margin-bottom:5px;
+    margin-top:5px;
+    padding:2px;
+    width:125px;	
+}
+
 </style>
 <script type="text/javascript">
 		google.load("elements", "1", {packages : ["newsshow"]});
@@ -1331,6 +1342,167 @@ buildSearchNewsDetails();
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
 
+<script>
+
+function buildCreateGallaryDiv()
+{
+	var str ='';
+	str+='<div id="content" style="width:650px;">';
+		
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
+	str += '</tr>';
+	str += '</table>';
+
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Create A Gallary</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr></table>';
+
+	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
+	str += '<div style="padding-left:30px;"><textarea id="pGallaryDescId" cols="27" rows="3" name="requirement"></textarea></div>';
+	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	
+	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+
+	str += '<div>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("photoGallaryDiv").innerHTML = str;
+
+}
+
+function createGallary()
+{
+	var galName = document.getElementById('pGallaryNameId').value;
+	var galDesc = document.getElementById('pGallaryDescId').value;
+	var isPublic = document.getElementById('publicRadioId').cheched;
+	var makeThis = 'true';
+
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(galName.length == 0)
+	{
+		str += 'Gallary Name Required<br>';
+		eFlag = true;
+	}
+	if(galDesc.length > 300)
+	{
+		str += 'Description should be less than 300 Characters<br>';
+		eFlag = true;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	var jsObj =
+		{ 
+            name : galName,
+		    desc : galDesc,
+			visibility : makeThis,
+			candidateId : candidateId,
+			contentType : 'Photo Gallary',
+			task : "createNewGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function clearGallaryFields()
+{
+	document.getElementById('pGallaryNameId').value = '';
+	document.getElementById('pGallaryDescId').value = '';
+	document.getElementById('publicRadioId').checked = true;
+}
+
+function showGallaryCreateMsg(result)
+{
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+		clearGallaryFields();
+		str += '<font color="green"><b>Gallary Created Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
+}
+
+function buildUploadPhotosDiv()
+{
+	var str ='';
+	str+='<div id="content" style="width:650px;">';
+		
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
+	str += '</tr>';
+	str += '</table>';
+	
+	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadFilesForm">';
+
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Upload A Photo</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Photo Title</font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="100"></td></tr></table>';
+
+	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
+	str += '<div style="padding-left:30px;"><textarea id="fileDescId" name="fileDescription" cols="27" rows="3" name="requirement"></textarea></div>';
+	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+
+	str +='<div style="margin:10px;"><input type="file" name="userImage" id="fileId"/></div>';
+	
+	str += '<table><tr><td><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+
+	str += '<div>';
+	str += '</form>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("photoGallaryDiv").innerHTML = str;
+
+}
+
+function uploadAFile()
+{
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showUploadStatus();				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadFilesForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
+}
+
+function showUploadStatus()
+{
+ alert("uploaded..");
+}
+
+</script>
 </body>
 </html>
   
