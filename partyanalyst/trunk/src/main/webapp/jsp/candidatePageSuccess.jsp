@@ -506,8 +506,8 @@ function buildCandidatePhotoGallary(results)
 		
 		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 		str += '<tr>';
-		str += '	<td><input type="button" class="imageButton" value="Create Gallary"></td>';
-		str += '	<td><input type="button" class="imageButton" value="Upload photos"></td>';
+		str += '	<td><input type="button" class="imageButton" value="Create Gallary" onclick="buildCreateGallaryDiv()"></td>';
+		str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
 		str += '</tr>';
 		str += '</table>'
 
