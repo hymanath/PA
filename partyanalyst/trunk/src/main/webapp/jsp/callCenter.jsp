@@ -1093,7 +1093,7 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    <td>
   	<img src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
    &nbsp&nbsp
-	 <a class="tdStyle" href="" onclick="openAddNewProblemWindow()">
+	 <a class="tdStyle" href="javascript:{}" onclick="openAddNewProblemWindow()">
 		Add New Problem</a>
   </td>
 </tr>
@@ -1101,7 +1101,7 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    <td>
    <img src="images/icons/homePage_new/widgetHeaderIcon.jpeg" />
    &nbsp&nbsp
-   <a class="tdStyle" href="" onclick="openManageProblemWindow()">
+   <a class="tdStyle" href="javascript:{}" onclick="openManageProblemWindow()">
    Manage Problem</a>
    </td>
 </tr>
@@ -1109,7 +1109,7 @@ window.open("<s:url action="problemManagementReportAction.action"/>","ManageProb
    <td>
    <img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"/>
    &nbsp&nbsp
-   <a class="tdStyle" href="" onclick="openProblemSearchWindow()">
+   <a class="tdStyle" href="javascript:{}" onclick="openProblemSearchWindow()">
    Detailed Search on Problems</a>
    </td>
 </tr>
