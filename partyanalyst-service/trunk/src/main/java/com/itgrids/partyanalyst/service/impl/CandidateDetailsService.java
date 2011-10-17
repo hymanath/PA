@@ -12,12 +12,21 @@ import java.util.List;
 
 import org.apache.velocity.util.StringUtils;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
@@ -26,6 +35,8 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -48,6 +59,16 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IContentTypeDAO contentTypeDAO;
 	private IUserGallaryDAO userGallaryDAO;
 	private IRegistrationDAO registrationDAO;
+	
+	private IRegionScopesDAO regionScopesDAO;
+	private ICountryDAO countryDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO; 
+	private ITehsilDAO tehsilDAO;  
+	private IHamletDAO hamletDAO;  
+	private ILocalElectionBodyDAO localElectionBodyDAO;  
+	private IBoothDAO boothDAO; 
 	
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
@@ -100,7 +121,207 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
 		this.fileGallaryDAO = fileGallaryDAO;
 	}
+	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
 
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+	
+	public List<FileVO> getScopesForNewSearch()
+	{   
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	try{
+		List<RegionScopes> regionScopes = regionScopesDAO.getAll();
+		for(RegionScopes result:regionScopes)
+		{
+			FileVO fileVO = new FileVO();
+			fileVO.setLocationScope(result.getRegionScopesId());
+			fileVO.setLocationScopeValue(result.getScope());
+			retValue.add(fileVO);
+		 }
+		 
+		return retValue;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+	public List<FileVO> searchNewsDetails(FileVO inputs){
+		  List<FileVO> retValue = new ArrayList<FileVO>();
+		  try{
+			  List<Object[]> results = fileGallaryDAO.getNewsRecordsBySearchCriteria(inputs,IConstants.NEWS_GALLARY);
+			
+			  for(Object[] newsDetails: results){
+			    FileVO fileVO = new FileVO();
+		    	fileVO.setName(newsDetails[0] != null ? newsDetails[0].toString() :"");		    			    	
+		   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[0].toString());
+		   	    fileVO.setFileTitle1(newsDetails[2] != null ? newsDetails[2].toString() :"");
+		   	    fileVO.setFileDescription1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+		   	    fileVO.setScope(newsDetails[4] != null ? newsDetails[4].toString() :"");
+		   	    Long scope = (Long)newsDetails[5];
+		   	    Long locationValue = (Long)newsDetails[6];
+		   	    
+		   	    if(scope == 1L)
+		   	    {
+		   	    	fileVO.setLocationValue(countryDAO.get(locationValue).getCountryName());
+		   	    }
+		   	    else if(scope == 2L)
+		   	    {
+		   	    	fileVO.setLocationValue(stateDAO.get(locationValue).getStateName());
+		   	    }
+		   	    else if(scope == 3L)
+		   	    {
+		   	    	fileVO.setLocationValue(districtDAO.get(locationValue).getDistrictName());
+		   	    }
+		   	    else if(scope == 4L)
+		   	    {
+		   	    	fileVO.setLocationValue(constituencyDAO.get(locationValue).getName());
+		   	    }
+		   	    else if(scope == 5L)
+		   	    {
+		   	 	   	fileVO.setLocationValue(tehsilDAO.get(locationValue).getTehsilName());
+		   	    }
+		   	    else if(scope == 6L)
+		   	    {
+	    	    	fileVO.setLocationValue(hamletDAO.get(locationValue).getHamletName());
+		   	    }
+		   	    else if(scope == 7L)
+		   	    {
+		   	    	fileVO.setLocationValue(localElectionBodyDAO.get(locationValue).getName());
+		   	    }
+		   	    else if(scope == 8L)
+		   	    {
+		   	    	fileVO.setLocationValue(constituencyDAO.get(locationValue).getName());
+		   	    }
+		   	    else if(scope == 9L)
+		   	    {
+		   	    	fileVO.setLocationValue(boothDAO.get(locationValue).getPartName());
+		   	    }
+		    	retValue.add(fileVO);	  
+		      }
+			return retValue;
+			}
+		  catch(Exception e){
+				e.printStackTrace();
+				return retValue;
+			}
+		}
+
+	
+	public List<FileVO> getDistrictDetailsByStateId(Long stateId)
+	{   
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	try{
+		List<Object[]> distList = districtDAO.getDistrictIdAndNameByState(stateId);    	 
+    	for(Object[] param : distList)
+		{
+			FileVO fileVO = new FileVO();
+			fileVO.setIds((Long)param[0]);
+			fileVO.setNames(param[1].toString());
+			retValue.add(fileVO);
+		 }
+		 
+		return retValue;
+		}
+	catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+	
+	public List<FileVO> getStateDetails()
+	{   
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	try{
+		List<com.itgrids.partyanalyst.model.State> states = stateDAO.getAll();
+		for(State result:states)
+		{
+			FileVO fileVO = new FileVO();
+			fileVO.setIds(result.getStateId());
+			fileVO.setNames(result.getStateName());
+			retValue.add(fileVO);
+		 }
+		 
+		return retValue;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+	
 	public CandidateVO getCandidateDetails(Long candidateId){
 		CandidateVO candidateVO = new CandidateVO();
 		List<Candidate> candidate = candidateDAO.findCandidateDetails(candidateId);
