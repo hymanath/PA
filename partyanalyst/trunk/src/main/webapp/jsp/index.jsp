@@ -92,12 +92,11 @@
 							<td><a href="javascript:{}" class="profileAnc">View Profile</a></td> 
 						</tr>
 
-						<c:if test="${empty sessionScope.USER.parentUserId}">
 						<tr>
 							<td id=""><img src="images/icons/cadreReport/addCadre.png" width="21px" style="padding-left:10px;"/></td>
 							<td><a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc">Add Sub User</a></td> 
 						</tr>
-						</c:if>						
+										
 						<tr>					
 							<td id=""><img src="images/icons/constituencyPage/groups.png" width="21px" style="padding-left:10px;"/></td>		
 							<td><a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >DashBoard</a></td> 
