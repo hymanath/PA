@@ -29,6 +29,15 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Date existingFrom;
 	private Date identifiedOn;
 	private Long sizeOfGallary;
+	private Long candidateId;
+	private Long locationScope;
+	private Long location;
+	private String keywords;
+	private String locationValue;
+	private String locationScopeValue;
+	private Long ids;
+	private String names;
+	
 	public String getFileName1() {
 		return fileName1;
 	}
@@ -268,6 +277,71 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setSizeOfGallary(Long sizeOfGallary) {
 		this.sizeOfGallary = sizeOfGallary;
 	}
+
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
+	public Long getLocationScope() {
+		return locationScope;
+	}
+
+	public void setLocationScope(Long locationScope) {
+		this.locationScope = locationScope;
+	}
+
+	public Long getLocation() {
+		return location;
+	}
+
+	public void setLocation(Long location) {
+		this.location = location;
+	}
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	public String getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(String locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public String getLocationScopeValue() {
+		return locationScopeValue;
+	}
+
+	public void setLocationScopeValue(String locationScopeValue) {
+		this.locationScopeValue = locationScopeValue;
+	}
+
+	public Long getIds() {
+		return ids;
+	}
+
+	public void setIds(Long ids) {
+		this.ids = ids;
+	}
+
+	public String getNames() {
+		return names;
+	}
+
+	public void setNames(String names) {
+		this.names = names;
+	}
+    
 
 	
 }
