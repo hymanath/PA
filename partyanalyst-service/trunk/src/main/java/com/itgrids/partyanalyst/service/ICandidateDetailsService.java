@@ -29,4 +29,12 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId);
 	
 	public ResultStatus createNewGallary(GallaryVO gallaryVO);
+	
+	public List<FileVO> searchNewsDetails(FileVO inputs);
+	
+	public List<FileVO> getScopesForNewSearch();
+	
+	public List<FileVO> getStateDetails();
+	
+	public List<FileVO> getDistrictDetailsByStateId(Long stateId);
 }
