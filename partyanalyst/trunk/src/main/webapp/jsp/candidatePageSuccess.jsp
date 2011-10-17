@@ -229,7 +229,7 @@ padding:5px;
 			{ 
                buildResults(myResults,"villageDiv");
 			}
-			}
+		
 		else if(jsObj.task == "createNewGallary")
 			{ 
                showGallaryCreateMsg(myResults);
