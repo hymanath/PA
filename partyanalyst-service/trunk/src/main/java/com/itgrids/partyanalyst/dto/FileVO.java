@@ -37,6 +37,42 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String locationScopeValue;
 	private Long ids;
 	private String names;
+	private String contentType;
+	
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	private Long candidateId;
+	private Long locationScope;
+	private Long location;
+	private String keywords;
+	private String locationValue;
+	private String locationScopeValue;
+	private Long ids;
+	private String names;
+	
+	private Long candidateId;
+	private Long locationScope;
+	private Long location;
+	private String keywords;
+	private String locationValue;
+	private String locationScopeValue;
+	private Long ids;
+	private String names;
+	
+	private Long candidateId;
+	private Long locationScope;
+	private Long location;
+	private String keywords;
+	private String locationValue;
+	private String locationScopeValue;
+	private Long ids;
+	private String names;
 	
 	public String getFileName1() {
 		return fileName1;
