@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +25,13 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateVO;
-import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
+import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -77,6 +76,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 
 
+	
+	
+	
 	
 	
 	public File getUserImage() {
@@ -462,5 +464,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	     return Action.SUCCESS;
 	
 	}
+
 
 }
