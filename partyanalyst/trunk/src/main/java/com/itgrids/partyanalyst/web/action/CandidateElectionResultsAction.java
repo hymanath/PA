@@ -216,6 +216,31 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotosInAGallary(jObj.getLong("gallaryId"));
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getScopesForNewSearch"))
+			{
+				fileVO = candidateDetailsService.getScopesForNewSearch();
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getStates"))
+			{
+				fileVO = candidateDetailsService.getStateDetails();
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getDistrictsByStateId"))
+			{
+				fileVO = candidateDetailsService.getDistrictDetailsByStateId(jObj.getLong("stateId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("searchNewsDetails"))
+			{    
+				  FileVO inputs = new FileVO();
+				      inputs.setCandidateId(jObj.getLong("candidateId"));			  
+				  if(jObj.getString("keywords")!= null && jObj.getString("keywords").trim().length()>0 )
+				      inputs.setKeywords(jObj.getString("keywords"));
+				  if(jObj.getString("locationScope")!= null && jObj.getString("locationScope").trim().length()>0 )
+					  inputs.setLocationScope(jObj.getLong("locationScope"));  
+				  if(jObj.getString("location")!= null && jObj.getString("location").trim().length()>0 )
+					  inputs.setLocation(jObj.getLong("location"));
+				fileVO = candidateDetailsService.searchNewsDetails(inputs);
+			}
+			
 			}catch(Exception e){
 				e.printStackTrace();
 			}
