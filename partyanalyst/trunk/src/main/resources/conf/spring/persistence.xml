@@ -207,6 +207,7 @@
 				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
 				<value>com.itgrids.partyanalyst.model.ContentType</value>
 				<value>com.itgrids.partyanalyst.model.UserGallary</value>
+				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
 			</list>
 		</property>
 	</bean>
