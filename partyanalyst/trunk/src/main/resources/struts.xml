@@ -476,9 +476,13 @@
 			<result type="json" name="success"/> 
 		</action>
 
-         <action name="candidateElectionResultsAction" class="candidateElectionResultsAction">
+        <action name="candidateElectionResultsAction" class="candidateElectionResultsAction">
 			<result name="input">/jsp/candidatePage.jsp</result>
 			<result name="success">/jsp/candidatePageSuccess.jsp</result>
+		</action>
+		
+		<action name="candidateProfileAction" class="candidateElectionResultsAction">
+			<result name="success">/jsp/candidateProfilePage.jsp</result>
 		</action>
 		
 		<action name="candidatePhotoGallaryAction" class="candidateElectionResultsAction" method="getCandidatesPhotoGallaryDetail">
