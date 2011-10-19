@@ -1366,7 +1366,7 @@ function buildProblemPresentStatus(jsObj,results)
 	
 	str += '<div class="problemStatusDataDiv_main" id="fileUploadDiv" style="display:none;">';
 	str += '<form name="uploadForm" action="postImagesAndFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadPicForm">'; 
-	
+	str +='  <DIV id="alertMessage" style="color:green;font-weight:bold;margin:5px; width: 200%; display:none; padding-left: 261px;">File Saved Successfully...</DIV>';
 	str += '	<table class="statusData_table" width="100%">';	
 	str += '		<tr>';
 	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
@@ -1431,7 +1431,8 @@ function postFilesAndImages()
 
       function getMessage()
 		{
-			alert("File Uploaded Successfully...");
+			var fileUploadDivEle = document.getElementById("alertMessage");
+	        fileUploadDivEle.style.display = 'block';
 			emptyFields();
 		}
 
