@@ -37,4 +37,6 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getStateDetails();
 	
 	public List<FileVO> getDistrictDetailsByStateId(Long stateId);
+	
+	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
 }
