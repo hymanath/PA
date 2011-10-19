@@ -9,7 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -386,10 +388,10 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(" count :" + count.size());
 		
 		
-	}*/
+	}
 
 
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetProblemsForAnUserByStatus() throws Exception{
 		
@@ -397,9 +399,9 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		 DateFormat format = 
 			 new SimpleDateFormat("yyyy-MM-dd");
 		 Date startDate = 
-			 (Date)format.parse("2011-02-10");
+			 format.parse("2011-08-17");
 		 Date endDate = 
-			 (Date)format.parse("2011-02-11");
+			format.parse("2011-08-18");
 		 
 		 List<ProblemHistory> problemHistoryLst = problemHistoryDAO.getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(1L,0L,startDate,endDate, 0, 10);
 		 
@@ -417,7 +419,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	    
-	}*/
+	}
 	
 	/*public void testGetTotalProblemsCountForAnUserInARegion()
 	{
@@ -466,6 +468,59 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	{
 		String status = "";
 		List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(1l,status);
+		System.out.println(list.size());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetCompleteProblemDetailsByName(){
+		String mobileNum ="9676696760";
+		String name ="Suresh";
+		String ref ="refid";
+		String query ="";
+		Date startDate=null;
+		Date endDate=null;
+		DateFormat format = 
+			 new SimpleDateFormat("yyyy-MM-dd");
+		 
+		try {
+			 startDate = (Date)format.parse("2011-08-17");
+			
+			//endDate = (Date)format.parse("2011-08-18");
+			
+			query+="date(model.dateUpdated) =?";
+		} catch (ParseException e1) {
+				e1.printStackTrace();
+		}
+		
+		
+		 //query+= "model.problemLocation.problemAndProblemSource.problemExternalSource.name like '%"+name+"%' or model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.firstName like '%"+name+"%' ) and model.problemLocation.problemAndProblemSource.user.registrationId in(1,285)";
+		//query +="and model.problemLocation.problemAndProblemSource.user.mobile ="+mobileNum+"";
+		
+		//query+="model.dateUpdated >='"+startDate+"' and model.dateUpdated <='"+endDate+"'";
+		List<Object[]> result = problemHistoryDAO.getCompleteProblemDetailsBySearchString(query,startDate,endDate);
+		
+		for(Object[] resObj:result){
+			System.out.println(resObj[0].toString());
+			
+			
+		}
+		
+	}
+	/*public void testGetProblemDetailsByName(){
+		
+     List<ProblemHistory> result = problemHistoryDAO.getProblemHistoryBasedOnId(77l);
+		
+		for(ProblemHistory resObj:result){
+			System.out.println(resObj.toString());
+			
+	}
+		System.out.println(result.get(0).getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+	}
+	@SuppressWarnings("unchecked")
+	public void testFindProblemCompleteInfo(){
+		
+		List list=problemHistoryDAO.findProblemCompleteInfo(77l);
+		
 		System.out.println(list.size());
 	}*/
 	

@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 
@@ -140,14 +142,24 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(b.toString());
 	}*/
 	
-	/*public void testGetProblemsBasedOnAssignedProblemProgressIdAndStatus()
+	public void testGetProblemsBasedOnAssignedProblemProgressIdAndStatus()
 	{
 		List<Long> asPList = new ArrayList<Long>(0);
-		asPList.add(77l);
-		asPList.add(75l);
-		asPList.add(78l);
+		asPList.add(94l);
+		asPList.add(22l);
+		asPList.add(91l);
+		asPList.add(84l);
+		asPList.add(97l);
+		asPList.add(24l);
+		asPList.add(146l);
+		asPList.add(54l);
+		asPList.add(76l);
+		asPList.add(165l);
+		asPList.add(132l);
+		asPList.add(95l);
 		
-		String deptStr = " and model.departmentOrganisation.departmentOrganisationId = 2";
+		
+		String deptStr = " and model.departmentLocation.problemCompleteLocationId is not null and model.problemActivity.problemActivityId=3";
 		String status = "NEW";
 		String statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'";
 		
@@ -155,9 +167,11 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		
 		System.out.println(list.size());
 		
-		for(ProblemHistory problemHistory : list)
+		for(ProblemHistory problemHistory : list){
 			System.out.println(problemHistory.getProblemStatus().getStatus());
-	}*/
+			System.out.println(problemHistory.getIsApproved());
+			}
+		}
 	
 		
 	/*public void testgetByCadreId()
@@ -195,7 +209,7 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		
 		for(Object object : list)
 			System.out.println(object.toString());
-	}*/
+	}
 	
 	public void testGetCadreForCadreProblemsForAnUser()
 	{
@@ -206,6 +220,6 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(cadre.getCadreId());
 		}
-	}
+	}*/
 	
 }
