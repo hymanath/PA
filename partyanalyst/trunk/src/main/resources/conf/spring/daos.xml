@@ -664,4 +664,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="candidateProfileDescriptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateProfileDescriptionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
