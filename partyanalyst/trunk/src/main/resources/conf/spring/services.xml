@@ -277,7 +277,6 @@
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
-
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -287,12 +286,10 @@
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="countryDAO" ref="countryDAO" />
-		
 		<property name="contentTypeDAO" ref="contentTypeDAO" />
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
-
-		
+		<property name="candidateProfileDescriptionDAO" ref="candidateProfileDescriptionDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
