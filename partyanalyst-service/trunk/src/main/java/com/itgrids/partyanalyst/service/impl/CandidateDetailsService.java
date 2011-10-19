@@ -14,6 +14,7 @@ import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -35,8 +37,6 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.RegionScopes;
-import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -44,6 +44,8 @@ import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -69,7 +71,18 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IHamletDAO hamletDAO;  
 	private ILocalElectionBodyDAO localElectionBodyDAO;  
 	private IBoothDAO boothDAO; 
+	private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
 	
+	
+	public ICandidateProfileDescriptionDAO getCandidateProfileDescriptionDAO() {
+		return candidateProfileDescriptionDAO;
+	}
+
+	public void setCandidateProfileDescriptionDAO(
+			ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO) {
+		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
+	}
+
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -555,4 +568,33 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return resultStatus;
 		}
 	}
+	
+	/**
+	 * This method returns Candidate Profile Descriptions when we pass CandidateId as Argument
+	 * @author Sachin
+	 * @param Long candidateId
+	 * @return List <String>
+	 */
+	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId)
+	{
+	 try{
+		 List<Object> results = candidateProfileDescriptionDAO.getCandidateProfileDescription(candidateId);
+		 
+		 if(results != null && results.size() >0)
+		 {
+			 List<String> descList = new ArrayList<String>(0); 
+			 for(Object desc :results)
+				 descList.add(desc.toString());
+			 return descList;
+		 }
+		 else 
+			return null;
+		 
+	 }catch(Exception e){
+		 return null;
+	 }
+
+
+	}
+	
 }
