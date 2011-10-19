@@ -223,6 +223,8 @@
 				<value>com.itgrids.partyanalyst.model.UserCandidateRelation</value>
 				<value>com.itgrids.partyanalyst.model.ContentType</value>
 				<value>com.itgrids.partyanalyst.model.UserGallary</value>
+				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -1211,6 +1213,11 @@
 	</bean>
 	<bean id="problemFileDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateProfileDescriptionDAO"
+		class="com.itgrids.partyanalyst.dao.hibernate.CandidateProfileDescriptionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
