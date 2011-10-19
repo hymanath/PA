@@ -1,9 +1,9 @@
 /* 
- * Copyright (c) 2010 IT Grids.
+ * Copyright (c) 2011 IT Grids.
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
- * Created on January 24, 2011
+ * Created on sep 24, 2011
  */
 package com.itgrids.partyanalyst.model;
 
