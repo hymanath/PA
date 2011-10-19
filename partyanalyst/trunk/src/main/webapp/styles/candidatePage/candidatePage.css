@@ -52,6 +52,7 @@ table.CandidateElectionResultsTable td {
 {
 	padding-bottom:0px;
 	padding-top:0px;
+	background-color: aliceBlue;
 }
 #CandidatePageMainDiv
 {
@@ -141,7 +142,9 @@ table.CandidateElectionResultsTable td {
 
 #candidatePageLeftContentDiv_Image
 {
-	height:304px;
+	height: 304px;
+    margin-left: 15px;
+    margin-top: -12px;
 }
 
 #candidatePageContent_body
@@ -439,4 +442,85 @@ width:401px;
 #candidatePageContent_body_videosMain{
 	height:301px;
 	overflow:auto;
+}
+#candidateProfileInfo {
+   -moz-border-radius: 6px 6px 6px 6px;
+    background-color: #56A5EC;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+    height: 28px;
+    margin: 15px;
+    padding-top: 6px;
+    text-align: left;
+}
+ #candidateName{
+    color: brown;
+    font-family: arial,times New Roman;
+    font-size: 13px;
+    font-weight: bold;
+ }
+#newsAndEventsDiv{
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 12px;
+    padding: 4px;
+    text-align: left;
+}
+
+.box1 {
+	-moz-border-radius: 4px 4px 4px 4px;
+    background-color: #FFFFFF;
+    border: 1px solid #E7E7E7;
+    height: 1486px;
+    margin-left: 12px;
+    padding: 10px;
+    width: 189px;
+	-webkit-border-radius: 4px;
+	border-radius: 3px;
+	behavior: url(border-radius.htc);
+}
+
+
+.box2 {
+	background-color: #FFFFFF;
+	border:1px solid #e7e7e7;
+	height: 1486px;
+    width: 444px;
+	padding: 10px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 3px;
+	behavior: url(border-radius.htc);
+}
+
+.box3 {
+	background-color: #FFFFFF;
+	border:1px solid #e7e7e7;
+	height: 1486px;
+    width: 227px;
+	padding: 10px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 3px;
+	behavior: url(border-radius.htc);
+}
+
+.rel {
+	margin:0px;
+	padding:0px;
+	position: relative;
+	z-index: inherit;
+	zoom: 1; /* For IE6 */
+}
+.linkClass
+{
+    margin-left: 2px;
+	margin-bottom:10px;
+	padding:10px;
+	text-align:left;
+	font-weight:bold;
+	margin-right:20px;
+	border-bottom:1px solid #D7E2EB;
 }
