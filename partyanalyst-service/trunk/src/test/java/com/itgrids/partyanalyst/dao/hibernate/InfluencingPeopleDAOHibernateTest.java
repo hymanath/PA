@@ -42,7 +42,7 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetInfluencingPeopleDetails(){
-		List results = influencingPeopleDAO.getInfluencingPersonLocationDetailsById(15L);
+		List results = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(385l,"constituency","347");
 		System.out.println(" Results Size :" + results.size());
 	}
 }

@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemTypeDAO;
+import com.itgrids.partyanalyst.model.ProblemType;
 
 public class ProblemTypeDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -14,6 +17,9 @@ public class ProblemTypeDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test()
 	{
-		problemTypeDAO.getAll();
+		List<ProblemType> list = problemTypeDAO.getAll();
+		for(ProblemType prob : list){
+		System.out.println(prob.getProblemType());
+		}
 	}
 }

@@ -22,7 +22,7 @@ public class ProblemExternalSourceDAOHibernateTest extends BaseDaoTestCase{
 		this.problemExternalSourceDAO = problemExternalSourceDAO;
 	}
 	
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List<ProblemExternalSource> list = problemExternalSourceDAO.getAll();
 		assertEquals(1, list.size());
 	}
@@ -47,6 +47,14 @@ public class ProblemExternalSourceDAOHibernateTest extends BaseDaoTestCase{
 			politicalChangesVO.setAddress(resultIterator.getAddress());
 			politicalChangesVO.setEmail(resultIterator.getEmail());
 		}
+		
+	}
+	*/
+	public void testfindByProblemExternalSourceName(){
+		
+		List<ProblemExternalSource> result = problemExternalSourceDAO.findByProblemExternalSourceName("");
+		for(int i=0;i<result.size();i++)
+		System.out.println(result.get(i).getEmail());
 		
 	}
 }

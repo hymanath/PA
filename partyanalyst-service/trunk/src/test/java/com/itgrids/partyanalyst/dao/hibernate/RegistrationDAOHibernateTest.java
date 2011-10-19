@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
@@ -70,10 +71,26 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 	
 	/*public void testSubUsers()
 	{
-		Registration reg =  registrationDAO.get(5L);
+		Registration reg =  registrationDAO.get(359L);
 		System.out.println(reg.getParentUser());
-		System.out.println(reg.getSubUsers().size());
+		System.out.println(reg.getSubUsers());
 	}*/
+	public void testGetSubusersByParentUserId(){
+		
+		List<Object[]> list = registrationDAO.getSubusersByParentUserId(1L);
+		if(list.size() !=0){
+		Object[] params = (Object[])list.get(0);
+		System.out.println(params[0]);
+		System.out.println(params[1]);
+		StringBuilder str = new StringBuilder();
+		str.append(params[0]).append(",").append(params[1]);
+		System.out.println(str);
+		}
+		
+		//+(new Long(obj.getParentUser().getRegistrationId().toString())));
+		
+		
+	}
 	
 	public void test()
 	{
