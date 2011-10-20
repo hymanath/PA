@@ -73,14 +73,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     private String tempFileName;
 	private String visibility;
 	private Long gallaryId;
+	private List<String> descriptions;
 	
+	public List<String> getDescriptions() {
+		return descriptions;
+	}
 
+	public void setDescriptions(List<String> descriptions) {
+		this.descriptions = descriptions;
+	}
 
-	
-	
-	
-	
-	
 	public File getUserImage() {
 		return userImage;
 	}
@@ -270,6 +272,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public String execute(){
 		request.setAttribute("candidateId",candidateId);
 		//candidateProfileInfoVO.setCandidateElectionProfile(candidateElectionProfile);
+		descriptions= candidateDetailsService.getCandidateProfileDescriptionByCandidateID(candidateId);
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
 		
