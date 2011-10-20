@@ -30,6 +30,7 @@
   }
 </style>
 <script type="text/javascript">
+   var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
 function callAjax(jsObj,url)
@@ -309,12 +310,16 @@ function candidateInfo()
  </td>
  <td width="10">&nbsp;</td>
  <td width="444" valign="top"><div class="rel">
-   <div class="box2">
- <div style="font-weight: bold; font-size: 15px;">About Chandrababu Naidu</div>
-	<p>Nara Chandrababu Naidu (born April 20, 1951) was the chief minister of Andhra Pradesh during 1995-2004. He holds the record of being the longest serving chief minister of A. P.He is currently the leader of the Telugu Desam Party, the second largest party in Andhra Pradesh.</p>
-	<p>Mr. N. Chandrababu Naidu was born in the Naravaripally village of Chittoor district on 20th April, 1950. He did his Masters in Economics from the Sri Venkateswara University, Tirupati. He was working towards a Ph.D. degree at the same university, when he took to politics.Naidu is married to Mrs. Bhuvaneswari and has a son Lokesh.</p>
+ <div class="box2">
+ <s:if test="descriptions != null"> 
+ <div style="font-weight: bold; font-size: 15px;">About ${candidateVO.candidateName}</div>
+ 
+	<br><s:iterator value="descriptions">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />
+    </s:iterator>
 <div style="text-align: right;"><a href="javascript:{}" style="color: LightSkyBlue;">
 Read More >></a></div>
+</s:if>
 <div id="electionInfo"></div>
   </div>
  </div>
