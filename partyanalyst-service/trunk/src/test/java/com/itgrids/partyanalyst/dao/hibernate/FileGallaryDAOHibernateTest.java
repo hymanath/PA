@@ -38,7 +38,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(13722L);
+		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(13722L,1,4);
 		System.out.println(results.size());
 		for(Object[] newsDetails: results){
 		    

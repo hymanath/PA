@@ -543,7 +543,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
-			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId);
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,0,4);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -575,11 +575,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				return retValue;
 			}
 		}
-	public List<FileVO> getNewsToDisplay(Long candidateId){
+	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
-			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId);
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,firstResult,maxResult);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
