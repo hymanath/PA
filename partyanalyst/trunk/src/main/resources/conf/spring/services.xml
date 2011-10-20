@@ -290,6 +290,7 @@
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="candidateProfileDescriptionDAO" ref="candidateProfileDescriptionDAO" />
+		<property name="fileDAO" ref="fileDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
