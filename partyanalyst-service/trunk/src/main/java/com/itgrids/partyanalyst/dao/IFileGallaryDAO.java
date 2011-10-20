@@ -14,5 +14,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<Object[]> getAllRecordInGallary(Long gallaryId);
 	
 	public List<Object[]> getNewsRecordsBySearchCriteria(FileVO fileVO,String type);
+	
+	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId);
+	
+	public List<Object[]> getAllNewsToDisplay(Long candidateId);
 
 }
