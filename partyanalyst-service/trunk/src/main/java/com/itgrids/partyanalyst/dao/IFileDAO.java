@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.FileType;
 
 public interface IFileDAO extends GenericDao<File, Long> {
 	
+	public List<Object[]> getFileByFileId(Long fileId);
 }
