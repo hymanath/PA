@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.utils.IConstants;
 public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> implements IFileGallaryDAO{
 	
 	public FileGallaryDAO(){
@@ -67,5 +68,35 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(fileVO.getLocation()!= null)
 		   queryObject.setLong("location", fileVO.getLocation());
 		 return	queryObject.list();
+	}
+	
+	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId)
+	{
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileDate desc ");
+		
+		query.setLong("candidateId", candidateId);
+		query.setString("type", IConstants.NEWS_GALLARY);
+		query.setString("isDelete", "false");
+		query.setString("isPrivate", "false");
+		query.setMaxResults(4);
+		
+		return query.list(); 
+	}
+	public List<Object[]> getAllNewsToDisplay(Long candidateId)
+	{
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileDate desc ");
+		
+		query.setLong("candidateId", candidateId);
+		query.setString("type", IConstants.NEWS_GALLARY);
+		query.setString("isDelete", "false");
+		query.setString("isPrivate", "false");
+		
+		return query.list(); 
 	}
 }
