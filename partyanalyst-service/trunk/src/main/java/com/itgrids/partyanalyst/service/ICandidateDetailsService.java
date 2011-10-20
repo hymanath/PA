@@ -40,9 +40,9 @@ public interface ICandidateDetailsService {
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
 	
-    public List<FileVO> getFirstFourNewsRecordsToDisplay(Long candidateId);
+	public List<FileVO> getFirstFourNewsRecordsToDisplay(Long candidateId);
 	
-	public List<FileVO> getNewsToDisplay(Long candidateId);
+	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult);
 	
 	public List<FileVO> getFileByFileId(Long fileId);
 }

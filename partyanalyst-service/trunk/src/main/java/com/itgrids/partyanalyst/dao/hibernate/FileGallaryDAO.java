@@ -70,7 +70,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		 return	queryObject.list();
 	}
 	
-	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId)
+	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult)
 	{
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
 				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
@@ -81,8 +81,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setString("type", IConstants.NEWS_GALLARY);
 		query.setString("isDelete", "false");
 		query.setString("isPrivate", "false");
-		query.setMaxResults(4);
-		
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+			
+						
 		return query.list(); 
 	}
 	public List<Object[]> getAllNewsToDisplay(Long candidateId)
