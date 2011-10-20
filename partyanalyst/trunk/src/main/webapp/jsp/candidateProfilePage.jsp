@@ -9,8 +9,160 @@
 <title>${candidateVO.candidateName} 'S  Profile</title>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
-<script type="text/javascript">
 
+<style type="text/css">
+.titleStyle {
+    font-family:sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+	color:black;
+    text-decoration:none;
+ }
+ p.sourceColor {  
+    color:#FF4500;
+ }
+ .imgFieldset
+  {
+	-moz-border-radius: 4px 4px 4px 4px;
+	border			: 4px solid #9F81F7;
+    margin-bottom	: 10px;
+	margin-top		: 5px;
+  }
+</style>
+<script type="text/javascript">
+   var timeST = new Date().getTime();
+   var candidateId = '${candidateId}';
+function callAjax(jsObj,url)
+{
+	
+	var callback = {			
+	 success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText);
+         if(jsObj.task == "getFirstFourNewsRecordsToDisplay")
+			{
+               showFirstFourNewsRecords(myResults);
+			}
+		if(jsObj.task == "getFileByFileId")
+			{
+               showNews(myResults);
+			}
+		}
+		catch(e)
+		{   
+		 alert("Invalid JSON result" + e);   
+		}  
+	 },
+	scope : this,
+	failure : function( o )
+	{
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+	}
+  };
+
+ YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function getFirstFourNewsRecords(){
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			task:"getFirstFourNewsRecordsToDisplay"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function showFirstFourNewsRecords(results)
+ { 
+  if(results.length>0)
+  {
+   var str ='';
+   str+='  <table>';
+  
+   for(var i in results)
+   {
+     str+='     <tr>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='     </tr>';
+     str+='     <tr>';
+     str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
+     str+='     </tr>';
+     str+='     <tr>';
+     str+='       <td>'+results[i].fileDescription1+'</td>';
+     str+='     </tr>';
+	 str+='     <hr style="width:98%;"></hr>';
+   }
+   str+='  </table>';
+   
+   str+='<a href="javascript:{}" onclick="getTotalNews()" \"><img src="images/icons/more.jpg" align="right"></a>';
+   str+='<div id="showNewsDiv" />';
+   
+   document.getElementById("newsDisplayDiv").innerHTML=str;
+   }
+ }
+ function getNews(fileId)
+ {
+    var jsObj =
+		{   
+		    time : timeST,
+			fileId:fileId,
+			task:"getFileByFileId"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);  
+ }
+ function showNews(results)
+  {
+    var fileType = results[0].name.split(".");
+	if(fileType[(fileType.length-1)] == "pdf" || fileType[(fileType.length-1)] == 'text'  )
+     openFile(results[0].path);	 
+    else if(fileType[(fileType.length-1)].indexOf('word') != -1)
+	{
+	  window.open(results[0].path);
+	}
+	else
+	{
+	  $("#showNewsDiv").dialog({ stack: false,
+							    height: 570,
+								width: 720,
+								position:[150,120],								
+								modal: true,
+								title:'<font color="Navy">'+results[0].fileTitle1+'</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showNewsDiv").dialog();
+	var str='';
+	 str+='<fieldset class="imgFieldset">';
+	 str+='<table>';
+	  str+='<tr>';
+	   str+='<td>';
+	  str+='<img alt="" src="'+results[0].path+'" height="220px" />';
+	  str+='</td>';
+	   str+='</tr>';
+	   str+='<tr>';
+	   str+='<td>';
+	  str+=''+results[0].fileDescription1+'';
+	  str+='</td>';
+	   str+='</tr>';
+	   str+='<tr>';
+	   str+='<td>';
+	  str+='Source:<font color="#FF4500">'+results[0].source+'</font>  Date : '+results[0].fileDate+'';
+	  str+='</td>';
+	   str+='</tr>';
+	 str+='<table>';
+	 str+='</fieldset>';
+	 document.getElementById("showNewsDiv").innerHTML=str;
+	}
+  }
+function openFile(filePath,fileType){
+
+window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+}
 function buildCandidateElectionInfo()
 {
 	
@@ -115,8 +267,12 @@ Read More >></a></div>
  <td width="10">&nbsp;</td>
 <td width="326">
 <div class="rel">
- <div class="box3"><img src="images/icons/news_events.jpg"></div>
+ <div class="box3"><img src="images/icons/news_events.jpg">
+  <div id="newsDisplayDiv">
+ 
  </div>
+ </div>
+ 
  </td>
  </tr>
  
@@ -191,6 +347,7 @@ function showCandidateElectionDetails(str)
 
 candidateInfo();
 buildCandidateElectionInfo();
+getFirstFourNewsRecords();
 </script>
 </body>
 </html>
