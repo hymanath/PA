@@ -378,7 +378,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getNewsToDisplay"))
 			{
-				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"));
+				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"));
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getFileByFileId"))
 			{
