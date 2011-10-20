@@ -183,7 +183,10 @@
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
-
+	<!--  <bean id="candidateProfileAction" class="com.itgrids.partyanalyst.web.action.CandidateProfileAction" singleton="false">
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
+	</bean>-->
+	
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
 		<property name="staticDataService" ref="staticDataService" />
@@ -519,6 +522,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="userGroupService" ref="userGroupService" />
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
+		<property name="ananymousUserService" ref="ananymousUserService" />
 	</bean>
 	
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
@@ -773,6 +777,9 @@
 		<property name="staticDataService" ref="staticDataService" />
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp"/>	
 	</bean>
+	<bean id="candidateProfilePhotosAction" class="com.itgrids.partyanalyst.web.action.candidateProfilePhotosAction" singleton="false">
+		
+	</bean>
 	
 	<bean id="manageUserMessageCreditsAction" class="com.itgrids.partyanalyst.web.action.ManageUserMessageCreditsAction" singleton="false">	
 		<property name="registrationService" ref="registrationService" />
@@ -780,5 +787,3 @@
 	</bean>
 	
 </beans>	
-	
-	

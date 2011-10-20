@@ -614,6 +614,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		
         if( "0".equals(cadreId)) {
         	cadreInfo = new CadreInfo();
+        	cadreLevelsList = cadreManagementService.getAllCadreLevels();
         } else if(cadreId != null)
         {	
         	cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));

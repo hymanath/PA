@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
@@ -48,6 +49,7 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
     private List<SelectOptionVO> mpConstituenciesList;
     private IStaticDataService staticDataService;
     private IUserGroupService userGroupService;
+    private IAnanymousUserService ananymousUserService;
     private int systemGroups;
     private int userGroups;
 	private HttpSession session;
@@ -59,7 +61,8 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private IUserCadreManagementService userCadreManagementService;
 	private CadreManagementVO cadreManagementVO = null;
 	private RegistrationVO user = null;
-	private String changedUserName = "false";	
+	private String changedUserName = "false";
+	private String loginUserProfilePic;	
 	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
 
 	
@@ -162,6 +165,22 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 		this.mpConstituenciesList = mpConstituenciesList;
 	}
 
+	public void setLoginUserProfilePic(String loginUserProfilePic) {
+		this.loginUserProfilePic = loginUserProfilePic;
+	}
+
+	public String getLoginUserProfilePic() {
+		return loginUserProfilePic;
+	}
+	
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+
 	@TypeConversion(converter = "com.itgrids.partyanalyst.DateConverter")
     public Date getDateNow() { return now; }
     
@@ -188,6 +207,7 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
         for(Entry<String, Long> s: cadreManagementVO.getCadresByCadreLevel().entrySet()) {
         	System.out.println(s.getKey() + " :" + s.getValue());
         }*/
+        loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
         
