@@ -38,6 +38,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long ids;
 	private String names;
 	private String contentType;
+	private String source;
+	private String fileDate;
 	
 	public String getContentType() {
 		return contentType;
@@ -349,6 +351,22 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setNames(String names) {
 		this.names = names;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getFileDate() {
+		return fileDate;
+	}
+
+	public void setFileDate(String fileDate) {
+		this.fileDate = fileDate;
 	}
     
 
