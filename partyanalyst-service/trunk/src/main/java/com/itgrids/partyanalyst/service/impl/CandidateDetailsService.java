@@ -7,7 +7,9 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.velocity.util.StringUtils;
@@ -20,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -60,6 +63,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IContentTypeDAO contentTypeDAO;
 	private IUserGallaryDAO userGallaryDAO;
 	private IRegistrationDAO registrationDAO;
+	private IFileDAO fileDAO;
 	
 	private IRegionScopesDAO regionScopesDAO;
 	private ICountryDAO countryDAO;
@@ -71,17 +75,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;  
 	private IBoothDAO boothDAO; 
 	private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
-	
-	
-	public ICandidateProfileDescriptionDAO getCandidateProfileDescriptionDAO() {
-		return candidateProfileDescriptionDAO;
-	}
-
-	public void setCandidateProfileDescriptionDAO(
-			ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO) {
-		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
-	}
-
+		
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -210,6 +204,24 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.countryDAO = countryDAO;
 	}
 	
+	
+	public ICandidateProfileDescriptionDAO getCandidateProfileDescriptionDAO() {
+		return candidateProfileDescriptionDAO;
+	}
+
+	public void setCandidateProfileDescriptionDAO(
+			ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO) {
+		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
+	}
+	
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+
 	public List<FileVO> getScopesForNewSearch()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -527,6 +539,91 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return retValue;
 		}
 	}
+	public List<FileVO> getFirstFourNewsRecordsToDisplay(Long candidateId){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 try{
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    String desc=""; 
+			   	    if(newsDetails[4] != null && newsDetails[4].toString().length()>=55)
+			   	    {
+			   	    desc = newsDetails[4].toString().substring(0, 50);
+			   	    desc = desc+"...";
+			   	    }
+			   	    else
+			   	    {
+			   	     desc = newsDetails[4].toString();
+			   	     desc = desc+"...";
+			   	    }
+			   	    fileVO.setFileDescription1(desc);
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			    	retValue.add(fileVO);	  
+			 }
+			 
+			return retValue;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return retValue;
+			}
+		}
+	public List<FileVO> getNewsToDisplay(Long candidateId){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 try{
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			    	retValue.add(fileVO);	  
+			 }
+			 
+			return retValue;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return retValue;
+			}
+		}
+	public List<FileVO> getFileByFileId(Long fileId){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 try{
+			 List<Object[]> results = fileDAO.getFileByFileId(fileId);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
+			    	retValue.add(fileVO);	  
+			 }
+			 
+			return retValue;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return retValue;
+			}
+		}
 	
 	
 	/**
@@ -567,6 +664,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return resultStatus;
 		}
 	}
+	
 	
 	/**
 	 * This method returns Candidate Profile Descriptions when we pass CandidateId as Argument
