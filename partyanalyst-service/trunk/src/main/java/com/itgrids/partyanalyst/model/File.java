@@ -1,12 +1,13 @@
 /* 
- * Copyright (c) 2011 IT Grids.
+ * Copyright (c) 2010 IT Grids.
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
- * Created on sep 24, 2011
+ * Created on January 24, 2011
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -47,6 +50,8 @@ public class File extends BaseModel implements java.io.Serializable {
 	private RegionScopes regionScopes;
 	private String keywords;
 	private Long locationValue;
+	private String source;
+	private Date fileDate;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 
@@ -176,4 +181,23 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.locationValue = locationValue;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	@Column(name = "source")
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "file_date")
+	public Date getFileDate() {
+		return fileDate;
+	}
+
+	public void setFileDate(Date fileDate) {
+		this.fileDate = fileDate;
+	}
+  
 }
