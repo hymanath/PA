@@ -372,6 +372,18 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 					  inputs.setLocation(jObj.getLong("location"));
 				fileVO = candidateDetailsService.searchNewsDetails(inputs);
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getFirstFourNewsRecordsToDisplay"))
+			{
+				fileVO = candidateDetailsService.getFirstFourNewsRecordsToDisplay(jObj.getLong("candidateId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getNewsToDisplay"))
+			{
+				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getFileByFileId"))
+			{
+				fileVO = candidateDetailsService.getFileByFileId(jObj.getLong("fileId"));
+			}
 			
 			}catch(Exception e){
 				e.printStackTrace();
