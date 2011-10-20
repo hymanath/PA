@@ -48,6 +48,10 @@ function callAjax(jsObj,url)
 			{
                showNews(myResults);
 			}
+		if(jsObj.task == "getNewsToDisplay")
+			{
+               showTotalNews(myResults);
+			}
 		}
 		catch(e)
 		{   
@@ -99,8 +103,59 @@ function showFirstFourNewsRecords(results)
    
    str+='<a href="javascript:{}" onclick="getTotalNews()" \"><img src="images/icons/more.jpg" align="right"></a>';
    str+='<div id="showNewsDiv" />';
+   str+='<div id="showAllNewsDiv" />';
    
    document.getElementById("newsDisplayDiv").innerHTML=str;
+   }
+ }
+ function getTotalNews()
+ {
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			startRecord:0,
+			maxRecord:20,
+			task:"getNewsToDisplay"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);  
+ }
+ function showTotalNews(results)
+ {
+    $("#showAllNewsDiv").dialog({ stack: false,
+							    height: 570,
+								width: 720,
+								position:[150,120],								
+								modal: true,
+								title:'<font color="Navy"><b>News</b></font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showAllNewsDiv").dialog();
+    if(results.length>0)
+  {
+   var str ='';
+    str+='<fieldset class="imgFieldset">';
+   str+='  <table>';
+  
+   for(var i in results)
+   {
+     str+='     <tr>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='     </tr>';
+     str+='     <tr>';
+     str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
+     str+='     </tr>';
+     str+='     <tr>';
+     str+='       <td>'+results[i].fileDescription1+'</td>';
+     str+='     </tr>';
+	 str+='     <hr style="width:98%;"></hr>';
+   }
+   str+='  </table>';
+   str+='</fieldset>';
+   document.getElementById("showAllNewsDiv").innerHTML=str;
    }
  }
  function getNews(fileId)
@@ -119,11 +174,11 @@ function showFirstFourNewsRecords(results)
  function showNews(results)
   {
     var fileType = results[0].name.split(".");
-	if(fileType[(fileType.length-1)] == "pdf" || fileType[(fileType.length-1)] == 'text'  )
+	if(fileType[(fileType.length-1)] == "pdf"  )
      openFile(results[0].path);	 
-    else if(fileType[(fileType.length-1)].indexOf('word') != -1)
+    else if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'text' )
 	{
-	  window.open(results[0].path);
+	  
 	}
 	else
 	{
@@ -140,8 +195,8 @@ function showFirstFourNewsRecords(results)
 	 str+='<fieldset class="imgFieldset">';
 	 str+='<table>';
 	  str+='<tr>';
-	   str+='<td>';
-	  str+='<img alt="" src="'+results[0].path+'" height="220px" />';
+	   str+='<td align="center">';
+	  str+='<img alt="" src="'+results[0].path+'" style="max-width:645px;max-height:418px;align:center;"/>';
 	  str+='</td>';
 	   str+='</tr>';
 	   str+='<tr>';
@@ -151,7 +206,7 @@ function showFirstFourNewsRecords(results)
 	   str+='</tr>';
 	   str+='<tr>';
 	   str+='<td>';
-	  str+='Source:<font color="#FF4500">'+results[0].source+'</font>  Date : '+results[0].fileDate+'';
+	  str+='<B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
 	  str+='</td>';
 	   str+='</tr>';
 	 str+='<table>';
