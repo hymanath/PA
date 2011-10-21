@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.model.Gallary;
 
 public interface IGallaryDAO extends GenericDao<Gallary, Long>{
 	
-	public List<Object[]> getCandidateGallaryDetail(Long candidateId,String type,String isDelete);
+	public List<Object[]> getCandidateGallaryDetail(Long candidateId,int firstResult,int maxResult,String type);
 	
 	public List<Object[]> getGallariesByCandidateId(Long candidateId);
 
