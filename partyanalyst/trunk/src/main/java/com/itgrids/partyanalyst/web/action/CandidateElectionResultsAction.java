@@ -353,7 +353,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
 			{
-			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.PHOTO_GALLARY);
+			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPhotosInAGallary"))
 			{
@@ -361,7 +361,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidateNewsGallaryDetail"))
 			{
-				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.NEWS_GALLARY);
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.NEWS_GALLARY);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getNewsInAGallary"))
 			{
@@ -369,7 +369,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidateDevelopmentGallaryDetail"))
 			{
-				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),IConstants.DEVELOPEMENT_ACTIVITIES);
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.DEVELOPEMENT_ACTIVITIES);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getDevelopmentsInAGallary"))
 			{
@@ -410,6 +410,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			else if(jObj.getString("task").equalsIgnoreCase("getFileByFileId"))
 			{
 				fileVO = candidateDetailsService.getFileByFileId(jObj.getLong("fileId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getFirstThreeImagesToDisplay"))
+			{
+				fileVO = candidateDetailsService.getFirstThreeImagesToDisplay(jObj.getLong("fileId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getFirstThreePhotoGallaryDetail"))
+			{
+				fileVO = candidateDetailsService.getFirstThreePhotoGallaryDetail(jObj.getLong("candidateId"));
 			}
 			
 			}catch(Exception e){
