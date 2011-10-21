@@ -53,6 +53,7 @@ function callAjax(jsObj,url)
 			{
                showTotalNews(myResults);
 			}
+		
 		}
 		catch(e)
 		{   
@@ -255,6 +256,7 @@ function candidateInfo()
 {
 	var candidateInfoElmt = document.getElementById("candidateInfo");
     var str='';
+	
 
 	str+='<table>';
 	str+='<img id="candidateImage" height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/'+candidateInfoObject.candidateInfoArray[0].candidateName+'.jpg">';
@@ -279,6 +281,65 @@ function candidateInfo()
 	
 	candidateInfoElmt.innerHTML = str;
 }
+
+ function getTotalProfile()
+ {
+
+ $.fx.speeds._default = 900;
+  $("#showProfile").dialog({ stack: false,
+                                show: "clip",
+			                    hide: "clip",
+							    height: 570,
+								width: 600,
+								position:[150,120],								
+								modal: true,
+								title:'<font color="Navy"><b>${candidateVO.candidateName}</b></font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showProfile").dialog();
+   
+ 
+   var str ='';
+    str+='<fieldset class="imgFieldset">';
+    str+='  <table>';
+    str+='  <s:if test="descriptions != null">'; 
+    str+='  <div style="font-weight: bold; font-size: 14px;">About ${candidateVO.candidateName}</div>';
+    str+=' <br><s:iterator value="descriptions">';
+	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;">';
+    str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
+	str+='</div>';
+    str+='</s:iterator>';
+    str+=' </s:if>';
+    str+='  </table>';
+    str+='</fieldset>';
+    document.getElementById("showProfile").innerHTML=str;
+   
+    
+ }
+ 
+ function displayProfile()
+ {
+ 
+   var profileInfoElmt = document.getElementById("ProfileInfo");
+    var str='';
+    var x=1;
+   
+   str+='<s:if test="descriptions != null"> ';
+   str+='<div style="font-weight: bold; font-size: 15px;">About ${candidateVO.candidateName}</div>';
+   
+   str+='	<br><s:iterator value="descriptions">';
+ if (x<=2)
+   {
+   str+='  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
+   x++;
+   }
+   str+='  </s:iterator>';
+   str+='<div style="text-align: right;"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
+   str+='Read More >></a></div>';
+   str+='</s:if>';
+   
+   profileInfoElmt.innerHTML = str;
+ }
 </script>
 </head>
 <body>
@@ -311,15 +372,8 @@ function candidateInfo()
  <td width="10">&nbsp;</td>
  <td width="444" valign="top"><div class="rel">
  <div class="box2">
- <s:if test="descriptions != null"> 
- <div style="font-weight: bold; font-size: 15px;">About ${candidateVO.candidateName}</div>
- 
-	<br><s:iterator value="descriptions">
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />
-    </s:iterator>
-<div style="text-align: right;"><a href="javascript:{}" style="color: LightSkyBlue;">
-Read More >></a></div>
-</s:if>
+ <div id="ProfileInfo"> </div>
+<div id="showProfile"> </div>
 <div id="electionInfo"></div>
   </div>
  </div>
@@ -404,7 +458,7 @@ function showCandidateElectionDetails(str)
     politicalChangesWindow.focus();
 }
 
-
+displayProfile();
 candidateInfo();
 buildCandidateElectionInfo();
 getFirstFourNewsRecords();
