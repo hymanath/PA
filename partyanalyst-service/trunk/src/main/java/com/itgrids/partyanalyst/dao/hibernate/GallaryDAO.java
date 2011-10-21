@@ -13,6 +13,7 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		super(Gallary.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidateGallaryDetail(Long candidateId,String type,String isDelete) {
 		 
 		Object[] parameters = {candidateId,type,isDelete};
@@ -21,5 +22,11 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 				"model.updateddate from Gallary model  where model.candidate.candidateId= ? and  " +
 				"model.contentType.contentType= ?  and model.isDelete = ? ",parameters);
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGallariesByCandidateId(Long candidateId)
+	{
+		return getHibernateTemplate().find("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId = ?",candidateId);
 	}
 }
