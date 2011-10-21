@@ -8,6 +8,8 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,11 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -73,6 +78,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     private String tempFileName;
 	private String visibility;
 	private Long gallaryId;
+	private InputStream inputStream;
+	private List<SelectOptionVO> selectOptionList;
 	private List<String> descriptions;
 	
 	public List<String> getDescriptions() {
@@ -81,6 +88,23 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setDescriptions(List<String> descriptions) {
 		this.descriptions = descriptions;
+	}
+	
+
+	public List<SelectOptionVO> getSelectOptionList() {
+		return selectOptionList;
+	}
+
+	public void setSelectOptionList(List<SelectOptionVO> selectOptionList) {
+		this.selectOptionList = selectOptionList;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
 	}
 
 	public File getUserImage() {
@@ -420,64 +444,69 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("candiadteGallariesForUplaod"))
+		{
+			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"));
+		}
 		return Action.SUCCESS;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String uploadFiles()
 	{
-		  session = request.getSession();
-			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
-		if(user!=null)
-		{		
-			String fileName="";
-			FileVO fileVO=new FileVO();
-			gallaryVO = new GallaryVO();
-			fileVO.setName(getUserImageFileName()) ;
+		String fileName = null;
+		String filePath = null;
+		FileVO fileVO = new FileVO();
+		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		
+		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+			filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
+		else
+			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+		
+		try 
+		{
+			String fileType = null;
+			Long systime = System.currentTimeMillis();
+			
+			if(userImageContentType.equalsIgnoreCase("text/plain"))
+			{
+				fileType = userImageContentType.substring(0,userImageContentType.indexOf("/"));
+				fileName = systime.toString()+"."+fileType;
+			}
+			else
+			{
+				fileType = userImageContentType.substring(userImageContentType.indexOf("/")+1,userImageContentType.length());
+				fileName = systime.toString()+"."+fileType;
+			}
+			
+			fileVO.setName(fileName);
 			fileVO.setTitle(getFileTitle());
 			fileVO.setDescription(getFileDescription());
-			// i think Visibility variable may in fileVO
-			gallaryVO.setVisibility(getVisibility());
-			try {
-				String filePath1 = context.getRealPath("/");
-				String filePath = filePath1 + "/uploaded_files";
-					Long systime = System.currentTimeMillis();
-					StringTokenizer st = new StringTokenizer(userImageContentType, "/");
-					while(st.hasMoreTokens()) {
-					String key = st.nextToken();
-					String val = st.nextToken();
-					if(userImageContentType.equalsIgnoreCase("text/plain")){
-						fileName = systime.toString()+"."+key;
-					}
-					else
-					  fileName = systime.toString()+"."+val;
-					problemFilepath=filePath+"/"+fileName;
-					File fileToCreate = new File(filePath, fileName);
-					FileUtils.copyFile(userImage, fileToCreate);
-					System.out.println("contenyt type.."
-							+ userImageContentType);
-					System.out.println(key + "\t" + val);
-				    fileVO.setContentType(val);
-				    fileVO.setName(fileName);
-					}
-			 } catch (Exception e) {
-				e.printStackTrace();
-				addActionError(e.getMessage());
-			}
-			 fileVO.setPathOfFile(problemFilepath);
-			 System.out.println();
-			 System.out.println("title         := "+getFileTitle());
-			 System.out.println("description   := "+getFileDescription());
-			 System.out.println("path          := "+problemFilepath);
-			 System.out.println("file name     := "+fileName);
-			 System.out.println("content type  := "+fileVO.getContentType());
-			 System.out.println("visibility    := "+getVisibility());
-			 System.out.println();
-			return "redirectToJSP";
+			fileVO.setContentType(fileType);
+			fileVO.setPath(filePath+pathSeperator+fileName);
+			fileVO.setVisibility(getVisibility());
+			fileVO.setGallaryId(getGallaryId());
 			
-			} 
-	     return Action.SUCCESS;
-	
+			/* Here We are saving the to uploaded_files folder */
+			File fileToCreate = new File(filePath, fileName);
+			FileUtils.copyFile(userImage, fileToCreate);
+			
+			result = candidateDetailsService.uploadAFile(fileVO);
+			
+			if(result.getResultCode() == ResultCodeMapper.SUCCESS)
+				inputStream = new StringBufferInputStream(SUCCESS);
+			else
+				inputStream = new StringBufferInputStream("fail");
+						
+		}
+		catch (Exception e) {
+			inputStream = new StringBufferInputStream("fail");
+	}
+		return Action.SUCCESS;
 	}
 
 
