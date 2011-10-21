@@ -18,5 +18,9 @@ public class CandidateGallaryDAOHibernateTest extends BaseDaoTestCase{
 		candidateGallaryDAO.getAll();
 	}
 	
-	
+	/*public void testGetCandidateGallaryDetail()
+	{
+		List<Object[]> result = candidateGallaryDAO.getCandidateGallaryDetail(22L,"image","false");
+		System.out.println(result.size());
+	}*/
 }
