@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 	
 	private IGallaryDAO gallaryDAO;
@@ -23,7 +24,7 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		gallaryDAO.getCandidateGallaryDetail(2L,"","");
 	}*/
 	
-	public void testGetGallariesByCandidateId()
+	/*public void testGetGallariesByCandidateId()
 	{
 		List<Object[]> list = gallaryDAO.getGallariesByCandidateId(3424l);
 		
@@ -33,7 +34,7 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0].toString()+"---"+params[1].toString());
 		}
-	}
+	} */
 
 
 }
