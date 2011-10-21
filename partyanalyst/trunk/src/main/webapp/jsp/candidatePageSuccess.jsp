@@ -155,6 +155,9 @@ padding:5px;
     padding:2px;
     width:125px;	
 }
+.imageStyle {
+  vertical-align:top;
+}
 
 </style>
 <script type="text/javascript">
@@ -427,6 +430,8 @@ function showCandidateNewsGallary(){
 		{   
 		    time : timeST,
 			candidateId:candidateId,
+			startRecord:0,
+            maxRecord:20,
 			task:"getCandidateNewsGallaryDetail"
 		};
 
@@ -439,6 +444,8 @@ function showPhotoGallary(){
 		{   
 		    time : timeST,
 			candidateId:candidateId,
+			startRecord:0,
+			maxRecord:20,
 			task:"getCandidatePhotoGallaryDetail"
 		};
 
@@ -451,6 +458,8 @@ function showDevelopmentsGallary(){
 		{   
 		    time : timeST,
 			candidateId:candidateId,
+			startRecord:0,
+            maxRecord:20,
 			task:"getCandidateDevelopmentGallaryDetail"
 		};
 
