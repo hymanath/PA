@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -39,11 +41,14 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
@@ -56,6 +61,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class CandidateDetailsService implements ICandidateDetailsService {
 
 	private ICandidateResultDAO candidateResultDAO;
+	private static final Logger log = Logger.getLogger(CandidateDetailsService.class);
 	private ICandidateDAO candidateDAO;
 	private IGallaryDAO gallaryDAO;
 	private IFileGallaryDAO fileGallaryDAO;
@@ -63,8 +69,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IContentTypeDAO contentTypeDAO;
 	private IUserGallaryDAO userGallaryDAO;
 	private IRegistrationDAO registrationDAO;
-	private IFileDAO fileDAO;
-	
 	private IRegionScopesDAO regionScopesDAO;
 	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
@@ -75,7 +79,25 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;  
 	private IBoothDAO boothDAO; 
 	private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
-		
+	private IFileDAO fileDAO;
+	private IFileTypeDAO fileTypeDAO;
+	
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+
+	public IFileTypeDAO getFileTypeDAO() {
+		return fileTypeDAO;
+	}
+
+	public void setFileTypeDAO(IFileTypeDAO fileTypeDAO) {
+		this.fileTypeDAO = fileTypeDAO;
+	}
+
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -214,14 +236,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
 	}
 	
-	public IFileDAO getFileDAO() {
-		return fileDAO;
-	}
-
-	public void setFileDAO(IFileDAO fileDAO) {
-		this.fileDAO = fileDAO;
-	}
-
 	public List<FileVO> getScopesForNewSearch()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -665,6 +679,78 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
+	public ResultStatus uploadAFile(FileVO fileVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			log.debug("Entered into uploadAFile() method in Candidate Details Service()");
+			
+			File file = new File();
+			FileGallary fileGallary = new FileGallary();
+			file.setFileName(fileVO.getName());
+			file.setFilePath(fileVO.getPath());
+			file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
+			file.setFileTitle(fileVO.getTitle());
+			file.setFileDescription(fileVO.getDescription());
+			
+			file = fileDAO.save(file);
+			
+			fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
+			fileGallary.setFile(file);
+			fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			fileGallary.setIsDelete(IConstants.FALSE);
+			
+			if(fileVO.getVisibility().equalsIgnoreCase("public"))
+				fileGallary.setIsPrivate(IConstants.FALSE);
+			else
+				fileGallary.setIsPrivate(IConstants.TRUE);
+			
+			fileGallaryDAO.save(fileGallary);
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception encountered, Check log for Details - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	/**
+	 * This method will give Gallaries Id and name in List<SelectOptionVO>, 
+	 * when we pass candidateId as Argument.
+	 * @author Kamalakar Dandu
+	 * @param Long candidateId
+	 * @return List<SelectOptionVO>
+	 */
+	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId)
+	{
+		try{
+			log.debug("Entered into getCandidateGallarySelectList() Method");
+			
+			List<SelectOptionVO> gallarySelectList = null;
+			List<Object[]> list = gallaryDAO.getGallariesByCandidateId(candidateId);
+			
+			if(list != null && list.size() > 0)
+			{
+				gallarySelectList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					gallarySelectList.add(selectOptionVO);
+				}
+			}
+			return gallarySelectList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+			return null;
+		}
+	}
 	
 	/**
 	 * This method returns Candidate Profile Descriptions when we pass CandidateId as Argument
@@ -693,5 +779,4 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 
 	}
-	
 }

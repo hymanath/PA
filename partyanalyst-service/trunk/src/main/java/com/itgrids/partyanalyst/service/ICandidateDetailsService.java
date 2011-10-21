@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface ICandidateDetailsService {
 	
@@ -37,6 +38,10 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getStateDetails();
 	
 	public List<FileVO> getDistrictDetailsByStateId(Long stateId);
+	
+	public ResultStatus uploadAFile(FileVO fileVO);
+	
+	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId);
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
 	
