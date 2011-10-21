@@ -25,7 +25,7 @@ public interface ICandidateDetailsService {
 	
 	public List<CandidateOppositionVO> getCandidatesOppositionList(Long candidateId,Long electionId,Long constituencyId);
 	
-	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,String type);
+	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,int firstRecord,int maxRecord,String type);
 	
 	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId);
 	
@@ -50,4 +50,8 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult);
 	
 	public List<FileVO> getFileByFileId(Long fileId);
+	
+	public List<FileVO> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult);
+	
+	public List<FileVO> getFirstThreePhotoGallaryDetail(Long candidateId);
 }
