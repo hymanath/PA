@@ -2650,7 +2650,15 @@
 		</action>
 		
 		<action name="uploadFilesAction" class="candidateElectionResultsAction" method="uploadFiles">			
-			<result name="redirectToJSP" type="redirect">problemDetailsAndStatusAction.action?pHistoryId=1</result>					
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>					
+		</action>
+		
+		<action name="getCandiadteGallariesForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
 		</action>
 				 		       	
 	</package>
