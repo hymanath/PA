@@ -18,7 +18,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStartingRecordInGallary(Long gallaryId){
 		
-		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath " +
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath ,model.file.fileTitle " +
 				" from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
 				" order by model.file.fileId asc ");
 		
@@ -99,6 +99,23 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setString("isDelete", "false");
 		query.setString("isPrivate", "false");
 		
+		return query.list(); 
+	}
+	public List<Object[]> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult)
+	{
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+				" model.file.source ,model.file.fileDate " +
+				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileId asc ");
+		
+		query.setLong("candidateId", candidateId);
+		query.setString("type", IConstants.PHOTO_GALLARY);
+		query.setString("isDelete", "false");
+		query.setString("isPrivate", "false");
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+			
+						
 		return query.list(); 
 	}
 }
