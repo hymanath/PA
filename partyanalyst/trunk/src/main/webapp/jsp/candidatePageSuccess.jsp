@@ -71,6 +71,7 @@
 
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/candidatePage/carousel.js"></script>
 <script type="text/javascript" src="js/SWFObject/swfobject.js" ></script>
 
@@ -230,10 +231,16 @@ padding:5px;
                buildResults(myResults,"villageDiv");
 			}
 		
-		else if(jsObj.task == "createNewGallary")
+			else if(jsObj.task == "createNewGallary")
 			{ 
                showGallaryCreateMsg(myResults);
 			}
+			else if(jsObj.task == "candiadteGallariesForUplaod")
+			{ 
+               clearOptionsListForSelectElmtId('gallarySelectId');
+			   createOptionsForSelectElmtId('gallarySelectId',myResults);
+			}
+			
 		}
 		catch(e)
 		{   
@@ -1463,8 +1470,10 @@ function buildUploadPhotosDiv()
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Photo</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
-	str += '<div id="galErrorMsgDivId"></div>';
-	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Photo Title</font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="100"></td></tr></table>';
+	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<table width="75%">';
+	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Photo Title</font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="100"></td></tr></table>';
 
 	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
 	str += '<div style="padding-left:30px;"><textarea id="fileDescId" name="fileDescription" cols="27" rows="3" name="requirement"></textarea></div>';
@@ -1480,28 +1489,114 @@ function buildUploadPhotosDiv()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("photoGallaryDiv").innerHTML = str;
-
+	getCandiadteGallariesForUplaod();
 }
 
 function uploadAFile()
 {
-	var uploadHandler = {
-			upload: function(o) {
-				uploadResult = o.responseText;
-				showUploadStatus();				
-			}
+	if(validateFileUpload())
+	{
+		var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					showUploadStatus(uploadResult);				
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('uploadFilesForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
+	}
+	else
+		return;
+}
+
+function showUploadStatus(myResult)
+{
+	var result = (String)(myResult);
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+
+	if(result.search('success') != -1)
+	{
+		clearUploadFileFields();
+		str += '<font color="green"><b>Photo Uploaded Successfully.</b>';
+	}
+	else if(result.search('fail') != -1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	else
+	{
+		str += '<font color="red"><b>'+result+'</b>';
+	}
+	errorDivEle.innerHTML = str;
+}
+
+function clearUploadFileFields()
+{
+	document.getElementById('fileTitleId').value = '';
+	document.getElementById('fileDescId').value = '';
+	document.getElementById('publicRadioId').checked = true;
+	document.getElementById('fileId').value = '';
+}
+
+function validateFileUpload()
+{
+	var fileTitle = document.getElementById('fileTitleId').value;
+	var fileDesc = document.getElementById('fileDescId').value;
+	var fileVal = document.getElementById("fileId").value;
+	var galId = document.getElementById("gallarySelectId").value;
+	var flag = true;
+
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '<font color="red">';
+
+	if(fileTitle.length == 0)
+	{
+		str += 'Photo Title Required.<br>';
+		flag = false;
+	}
+	if(fileDesc.length == 0)
+	{
+		str += 'Photo Description Required.<br>';
+		flag = false;
+	}
+	if(fileDesc.length > 200)
+	{
+		str += 'Photo Description Should not exceed 200 Characters.<br>';
+		flag = false;
+	}
+	if(fileVal.length == 0)
+	{
+		str += 'Photo Required.<br>';
+		flag = false;
+	}
+	if(galId == 0)
+	{
+		alert(galId);
+		str += 'Select Any Gallary.<br>';
+		flag = false;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+
+	return flag;
+}
+
+function getCandiadteGallariesForUplaod()
+{
+	var jsObj =
+		{ 
+            candidateId : candidateId,
+		   	task : "candiadteGallariesForUplaod"
 		};
 
-	
-	YAHOO.util.Connect.setForm('uploadFilesForm',true);
-	YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	callAjax(jsObj,url);
 }
-
-function showUploadStatus()
-{
- alert("uploaded..");
-}
-
 </script>
 </body>
 </html>
