@@ -501,10 +501,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		return null;
 	}
 	
-	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,String type){
+	public List<FileVO> getCandidatesPhotoGallaryDetail(Long candidateId,int firstRecord,int maxRecord,String type){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	 try{
-		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,type, "false");
+		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,firstRecord,maxRecord,type);
 		
 		for(Object[] gallary: results){
 			FileVO fileVO = new FileVO();
@@ -513,6 +513,51 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    	fileVO.setFileId((Long)startingRecord[0]);
 		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
 		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString() :"");
+		    	
+		    }
+		    fileVO.setGallaryId((Long)gallary[0]);
+		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
+		    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
+		    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
+		    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
+		    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+		    retValue.add(fileVO);	  
+		}
+		return retValue;
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+		 return retValue;
+	 }
+	}
+	public List<FileVO> getFirstThreePhotoGallaryDetail(Long candidateId){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	 try{
+		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,0,3,IConstants.PHOTO_GALLARY);
+		
+		for(Object[] gallary: results){
+			FileVO fileVO = new FileVO();
+		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(Object[] startingRecord: record){
+		    	fileVO.setFileId((Long)startingRecord[0]);
+		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
+		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	String title =""; 
+		   	    if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
+		   	    {
+		   	    	title = startingRecord[3].toString().substring(0, 17);
+		   	    	title = title+"...";
+		   	    }
+		   	    else
+		   	    {
+		   	    if(startingRecord[3] != null)
+		   	    {	
+		   	    	title = startingRecord[3].toString();
+		   	    }
+		   	    }
+		    	fileVO.setTitle(title);
 		    	
 		    }
 		    fileVO.setGallaryId((Long)gallary[0]);
@@ -572,8 +617,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    }
 			   	    else
 			   	    {
-			   	     desc = newsDetails[4].toString();
-			   	     desc = desc+"...";
+			   	    if(newsDetails[4] != null)
+			   	     {
+			   	      desc = newsDetails[4].toString();
+			   	     }
 			   	    }
 			   	    fileVO.setFileDescription1(desc);
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -594,6 +641,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
 			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,firstResult,maxResult);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			    	retValue.add(fileVO);	  
+			 }
+			 
+			return retValue;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return retValue;
+			}
+		}
+	public List<FileVO> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 try{
+			 List<Object[]> results = fileGallaryDAO.getFirstThreeImagesToDisplay(candidateId,firstResult,maxResult);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
