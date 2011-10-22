@@ -2610,6 +2610,12 @@
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>	
 		
+		<action name="profileManagePageAction" class="com.itgrids.partyanalyst.web.action.ProfileManagePageAction">
+			<result name="success">/jsp/profileManagePage.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=profileManagePageAction</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>	
+		
 		<action name="callCenterAjaxAction" class="callCenterAction" method="ajaxCallHandler">
 			<result type="json" name="success">
 				<param name="root">problemBeanVO</param>				
