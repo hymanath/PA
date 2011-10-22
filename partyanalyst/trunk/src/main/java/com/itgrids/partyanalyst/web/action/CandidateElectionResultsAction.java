@@ -13,6 +13,7 @@ import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -341,7 +342,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		electionPrf2.setEndDuration("");
 		electionPrf2.setParty("Telugu Desam");
 		
-		
+		fileVO = candidateDetailsService.getCandidateLatestVideos(candidateId,0,20);
 		if(candidateElectionDetails != null)
 			return SUCCESS;
 		else
@@ -456,6 +457,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{
 			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
+		{
+			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -479,16 +484,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{
 			String fileType = null;
 			Long systime = System.currentTimeMillis();
-			
+			Random random = new Random();
 			if(userImageContentType.equalsIgnoreCase("text/plain"))
 			{
 				fileType = userImageContentType.substring(0,userImageContentType.indexOf("/"));
-				fileName = systime.toString()+"."+fileType;
+				fileName = systime.toString()+random.nextInt(10000000)+"."+fileType;
 			}
 			else
 			{
 				fileType = userImageContentType.substring(userImageContentType.indexOf("/")+1,userImageContentType.length());
-				fileName = systime.toString()+"."+fileType;
+				fileName = systime.toString()+random.nextInt(10000000)+"."+fileType;
 			}
 			
 			fileVO.setName(fileName);
