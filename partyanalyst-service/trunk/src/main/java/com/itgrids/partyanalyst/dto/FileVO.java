@@ -41,7 +41,16 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String visibility;
 	private String source;
 	private String fileDate;
+	private String fileType;
 	
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
 	public String getVisibility() {
 		return visibility;
 	}
