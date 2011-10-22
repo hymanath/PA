@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
@@ -18,6 +19,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult);
 	
 	public List<Object[]> getAllNewsToDisplay(Long candidateId);
+	
+	public List<File> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxResults);
 	
 	public List<Object[]> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult);
 
