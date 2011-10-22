@@ -1396,7 +1396,7 @@ function createGallary()
 {
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
-	var isPublic = document.getElementById('publicRadioId').cheched;
+	var isPublic = document.getElementById('publicRadioId').checked;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
