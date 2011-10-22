@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.utils.IConstants;
 public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> implements IFileGallaryDAO{
@@ -101,6 +102,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return query.list(); 
 	}
+	
 	public List<Object[]> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult)
 	{
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
@@ -116,6 +118,22 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setMaxResults(maxResult);
 			
 						
+		return query.list(); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<File> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxResults)
+	{
+		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				" and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.file.fileDate desc");
+		
+		query.setLong("candidateId", candidateId);
+		query.setString("type", IConstants.VIDEO_GALLARY);
+		query.setString("isDelete", "false");
+		query.setString("isPrivate", "false");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
 		return query.list(); 
 	}
 }
