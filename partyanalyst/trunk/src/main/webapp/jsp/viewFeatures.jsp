@@ -86,7 +86,7 @@
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
 
 <link href="styles/viewFeatures/viewFeatures.css" rel="stylesheet" type="text/css" />
-
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js" ></script>
 <script type="text/javascript">
@@ -419,7 +419,7 @@
 								<li><a href="javascript:{}">Problem Management Report</a></li>
 								<li><a href="javascript:{}">User Groups</a></li>
 								<li><a href="javascript:{}">Constituency Election Report</a></li>
-								<li><a href="javascript:{}">Mandal Voting Report</a></li>
+								<li><a href="javascript:{}">Call Center</a></li>
 								<li><a href="javascript:{}">Cross Voting Report</a></li>
 								<li><a href="javascript:{}">Constituency Booth Results Report</a></li>
 							</ul>
