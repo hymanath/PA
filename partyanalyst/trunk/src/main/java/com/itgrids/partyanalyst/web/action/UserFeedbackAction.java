@@ -103,9 +103,9 @@ public String ajaxCallHandler(){
 	
 	session = request.getSession();
 	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-	if(user==null){
+	/*if(user==null){
 		return IConstants.NOT_LOGGED_IN;
-	}
+	}*/
 	
 		try
 		 {
@@ -122,8 +122,10 @@ public String ajaxCallHandler(){
 				    feedbackVO.setCommentType(commentType);				   
 				    feedbackVO.setTaskName(commentTask);
 				    feedbackVO.setResponseCategory(responseCategory);
+				    if(user!=null){
 				    feedbackVO.setUserId(user.getRegistrationID());
 				    feedbackVO.setUserType(user.getUserStatus());
+				    }
 				    
 				    resultStatus =  opinionPollService.saveUserFeedback(feedbackVO);
 		    
