@@ -169,7 +169,7 @@ function buildAccordion()
 <div id="header-mainsec">
   <div class="mainwrapper">
     <div class="header">
-      <div class="logo"><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="images/logo.png" alt=""/></a></div>
+      <div class="logo"><a href="<c:out value="${pageContext.request.contextPath}" />/homePage.action"><img src="./images/new_homepage/logo.png" alt=""/></a></div>
       <div class="header-right-sec">
         <div class="lr-sec">
 
@@ -339,8 +339,8 @@ function buildAccordion()
 <td class="background" border="0"><div style="float:left; padding:12px 12px 9px 80px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
-              <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="images/twitter.gif" alt=""/></a></li>
-              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="images/facebook.gif" alt=""/></a></li>
+              <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
+              <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
             </ul>
             <span class="fright">follow us on</span> </div></td>
 </tr>
