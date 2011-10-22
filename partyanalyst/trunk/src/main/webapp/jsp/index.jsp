@@ -105,7 +105,12 @@
 							<td id=""><img src="images/icons/callCenter.png" style="padding-left:4px;width: 38px; height: 38px;"/></td>
 							<td><a href="callCenterAction.action" class="profileAnc">Call Center</a></td> 
 						</tr>
-
+ 
+                         <tr>
+							<td id=""><img src="images/icons/profile.png" style="padding-left:4px;width: 38px; height: 38px;"/></td>
+							<td><a href="profileManagePageAction.action" class="profileAnc">Manage Profile</a></td> 
+						 </tr>
+						
 					</table>					
 				</div>		
 				<div id="noticeBoard">
