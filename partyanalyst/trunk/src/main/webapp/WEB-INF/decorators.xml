@@ -38,8 +38,7 @@
 		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
 		<pattern>/constituencyVotingTrendzAction.action*</pattern>
 		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
-		<pattern>/getCadreInfoAction.action*</pattern>
-		<pattern>/homePage.action*</pattern>
+		<pattern>/getCadreInfoAction.action*</pattern>		
 		<pattern>/cadreSearchAction.action*</pattern>
 		<pattern>/ecrComparedResultsAction.action*</pattern>
 		<pattern>/completeResultForAPollAction.action*</pattern>  
@@ -70,13 +69,20 @@
 		<pattern>/editAnnouncementPageAction*</pattern>
 		<pattern>/getImageInfoAction*</pattern>
 	</excludes>  
-
-    <decorator name="main" page="main.jsp">
+	
+	<decorator name="main" page="main.jsp">
         <pattern>/*</pattern>
     </decorator>
 
 	<decorator name="jsp" page="main.jsp">
         <pattern>/jsp/*</pattern>
+    </decorator>
+
+    <decorator name="new" page="newlayout.jsp">
+        <pattern>/homePage*</pattern>
+        <pattern>/candidateElectionResultsAction*</pattern>
+		<pattern>/freeUserRegistration*</pattern>
+		
     </decorator>
 
 </decorators>
