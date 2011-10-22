@@ -851,4 +851,72 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 
 	}
+	
+	/**
+	 * This Method will give Videos Details As List<FileVO> when we pass candidateId,start Index and Max results As Arguements
+	 * @author Kamalakar Dandu
+	 * @param Long candidateId
+	 * @param Integer startIndex
+	 * @param Integer maxRecords
+	 * @return List<FileVO>
+	 */
+	public List<FileVO> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxRecords)
+	{
+		try{
+			log.debug("Entered into getCandidateLatestVideos() Method");
+			
+			List<FileVO> fileList = null;
+			List<File> list = fileGallaryDAO.getCandidateLatestVideos(candidateId,startIndex,maxRecords);
+			
+			if(list != null && list.size() > 0)
+			{
+				fileList = new ArrayList<FileVO>(0);
+				FileVO fileVO = null;
+				for(File file : list)
+				{
+					fileVO = copyFileToFileVO(file);
+					if(fileVO != null)
+						fileList.add(fileVO);
+				}
+			}
+			
+			return fileList;
+		}catch (Exception e) {
+			log.error("Error Occured in getCandidateLatestVideos() Method - "+e);
+			return null;
+		}
+	}
+	
+	/**
+	 * This Method Copy The Data From File Object To FileVO Object
+	 * @author Kamalakar Dandu
+	 * @param File
+	 * @return FileVO
+	 */
+	public FileVO copyFileToFileVO(File file)
+	{
+		try{
+			log.debug("Entered into copyFileToFileVO() Method");
+			FileVO fileVO = null;
+			
+			if(file != null)
+			{
+				fileVO = new FileVO();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				fileVO.setFileId(file.getFileId());
+				fileVO.setName(file.getFileName());
+				fileVO.setPath(file.getFilePath());
+				fileVO.setFileType(file.getFileType() != null ? file.getFileType().getType() : "");
+				fileVO.setTitle(file.getFileTitle());
+				fileVO.setDescription(file.getFileDescription());
+				fileVO.setKeywords(file.getKeywords());
+				fileVO.setSource(file.getSource());
+				fileVO.setFileDate(file.getFileDate() != null ? sdf.format(file.getFileDate()) : "");
+			}
+			return fileVO;
+		}catch (Exception e) {
+			log.error("Error Occured in copyFileToFileVO() Method - "+e);
+			return null;
+		}
+	}
 }
