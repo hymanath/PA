@@ -69,11 +69,20 @@
  .imageStyle {
   vertical-align:top;
 }
+ .newsImage {
+   height:53px;
+   width:29px;
+}
 </style>
 <script type="text/javascript">
    var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
+   var fileIdArray = new Array();
+   var initialFileIdArray = new Array();
+   var arraySize =0;
+   var currentSize=0;
+     
 
 function onYouTubePlayerReady(playerId) 
 { 
@@ -328,8 +337,9 @@ function showFirstFourNewsRecords(results)
   
    for(var i in results)
    {
+     fileIdArray[i]=results[i].fileId;
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
@@ -337,19 +347,28 @@ function showFirstFourNewsRecords(results)
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
      str+='     </tr>';
-	 str+='     <hr style="width:98%;"></hr>';
+	 str+='     <tr><td> <hr style="width:98%;"></hr></td></tr>';
    }
    str+='  </table>';
    
-   str+='<a href="javascript:{}" onclick="getTotalNews()" \"><img src="images/icons/more.jpg" align="right"></a>';
-   str+='<div id="showNewsDiv" />';
-   str+='<div id="showAllNewsDiv" />';
+   str+='<a href="javascript:{}" onclick="getTotalNews();" \"><img src="images/icons/more.jpg" align="right"></a>';
+   
+   str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
+   str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
    
    document.getElementById("newsDisplayDiv").innerHTML=str;
    }
  }
+ function deleteElementsInArray()
+ { 
+ for(i =0 ;i<fileIdArray.length;i++)
+	{
+	delete fileIdArray[i];
+	}
+ }
  function getTotalNews()
  {
+   deleteElementsInArray();
    var jsObj =
 		{   
 		    time : timeST,
@@ -364,7 +383,7 @@ function showFirstFourNewsRecords(results)
 	callAjax(jsObj,url);  
  }
  function showTotalNews(results)
- {
+ {  deleteElementsInArray();
     $("#showAllNewsDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
@@ -376,30 +395,34 @@ function showFirstFourNewsRecords(results)
 	$("#showAllNewsDiv").dialog();
     if(results.length>0)
   {
-   var str ='';
-    str+='<fieldset class="imgFieldset">';
-   str+='  <table>';
-  
-   for(var i in results)
-   {
+     var str ='';
+     str+='<fieldset class="imgFieldset">';
+     str+='  <table>'; 
+  for(var i in results)
+   { 
+	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
+//	 str+='     <tr>';
+ //    str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
+ //    str+='     </tr>';
      str+='     <tr>';
      str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
      str+='     </tr>';
-	 str+='     <hr style="width:98%;"></hr>';
+	 str+='    <tr><td><hr style="width:120%;"></td></hr></tr>';
    }
    str+='  </table>';
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
    }
  }
- function getNews(fileId)
- {
+ function getNews(fileId,filSize)
+ { 
+  currentSize= filSize;
     var jsObj =
 		{   
 		    time : timeST,
@@ -413,46 +436,71 @@ function showFirstFourNewsRecords(results)
  }
  function showNews(results)
   {
+    arraySize = fileIdArray.length;
     var fileType = results[0].name.split(".");
-	if(fileType[(fileType.length-1)] == "pdf"  )
-     openFile(results[0].path);	 
-    else if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'text' )
-	{
-	  
-	}
-	else
-	{
+	  $.fx.speeds._default = 1000;
 	  $("#showNewsDiv").dialog({ stack: false,
-							    height: 570,
-								width: 720,
-								position:[150,120],								
+								height: 'auto',
+								width: 'auto',
+								closeOnEscape: true,
+								position:[20,20],
+								show: "blind",
+								hide: "explode",
 								modal: true,
 								title:'<font color="Navy">'+results[0].fileTitle1+'</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showNewsDiv").dialog();
 	var str='';
-	 str+='<fieldset class="imgFieldset">';
+	 
 	 str+='<table>';
-	  str+='<tr>';
-	   str+='<td align="center">';
-	  str+='<img alt="" src="'+results[0].path+'" style="max-width:645px;max-height:418px;align:center;"/>';
-	  str+='</td>';
-	   str+='</tr>';
-	   str+='<tr>';
-	   str+='<td>';
-	  str+=''+results[0].fileDescription1+'';
-	  str+='</td>';
-	   str+='</tr>';
-	   str+='<tr>';
-	   str+='<td>';
-	  str+='<B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
-	  str+='</td>';
-	   str+='</tr>';
+	 str+='   <tr>';
+	 str+='      <td>';
+	 str+='         <table>';
+	 str+='	          <tr>';
+	 if(currentSize-1 >=0)
+	 {
+	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+currentSize+')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+	 }
+	 if(fileType[(fileType.length-1)] == "pdf"  ){
+	 str+='             <td><a href="javascript:{}" onclick="openFile('+results[0].path+')"><img alt="" src="images/doc_images/PDFImage.png" /></a></td>';
+	 }
+	 else
+	 {
+	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 }
+	 if(currentSize+1 <= (arraySize-1))
+	 {
+	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+currentSize+')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
+     }
+	 str+='		      </tr>';
+	 str+='         </table>';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        '+results[0].fileDescription1+'';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
+	 str+='       </td>';
+	 str+='     </tr>';
 	 str+='<table>';
-	 str+='</fieldset>';
+	
 	 document.getElementById("showNewsDiv").innerHTML=str;
-	}
+	
+  }
+  function getPreviousNews(val)
+  {
+     currentSize = val-1;
+    getNews(fileIdArray[currentSize],currentSize);
+  }
+  function getNextNews(val)
+  {
+     currentSize = val+1;
+     getNews(fileIdArray[currentSize],currentSize);
   }
 function getFirstThreePhotoRecords(){
    var jsObj =
