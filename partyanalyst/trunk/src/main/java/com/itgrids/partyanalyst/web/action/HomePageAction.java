@@ -51,8 +51,20 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String loginStatus;
 	private ServletContext context;
 	private String changedUserName = "false";
-	
+	private String feedback = "true"; 
+
+	public String getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
 	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class);
+	
+	
+	
 	
 	public void setServletContext(ServletContext context) {
 		
@@ -189,6 +201,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 
 	public String execute()
 	{	
+		
+		request.setAttribute("feedback", feedback);
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
