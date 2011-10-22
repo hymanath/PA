@@ -137,7 +137,7 @@ function initializeHomePage()
 	
 
 	//buildElectionTrendzTabView();
-	buildHOmePageImageSlider();
+	//buildHOmePageImageSlider();
 	buildHOmePageChartsSlider();
 	//var stateEl = document.getElementById("stateList_res");
 	//var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
@@ -233,61 +233,7 @@ str += '</DIV><br>';
 function showFeedBackFormPanel()
 {		
 	
-	if(loginStatus == "false" || loginStatus == '')
-	{
-		$("#feedback_window").dialog({
-			resizable:false,
-			width: 400,
-			minHeight:110,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
 
-		var elmt = document.getElementById("feedback_window_inner");
-
-		var str = '';
-		str += '<div id="feedback_window_head">Feed Back</div>';
-		str += '<div id="feedback_window_body">';
-		str += '<table width="100%">';
-		str += '<tr>';
-		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left"><font color="red" size="1">You must be logged in to post feedback.</font></th>';
-		str += '</tr>';		
-		str += '<tr>';
-		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left"><font color="red" size="1">Please login to continue..</font></th>';
-		str += '</tr>';
-		str += '</table>';
-		str += '</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-		str += '	<table width="100%">';
-		str += '	<tr>';
-		str += '	<td width="40%" align="left"><div id="feedback_window_errorMsg"></div></td>';
-		str += '	<td width="60%" align="right">';
-		str += '		<input id="loginButton" type="button" value="Login"></input>';
-		str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
-		str += '	</td>';
-		str += '	</tr>';
-		str += '	</table>';	
-		str += '</div>';
-
-		elmt.innerHTML = str;
-
-		var oPushButton1 = new YAHOO.widget.Button("loginButton");  
-		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
-
-		oPushButton1.on("click",function(){
-			$("#feedback_window").dialog("destroy");
-			window.location = "loginInputAction.action";
-		});
-
-		oPushButton2.on("click",function(){
-			$("#feedback_window").dialog("destroy");
-		});
-	}
-	else
-	{
 		$("#feedback_window").dialog({
 			resizable:false,
 			width: 600,
@@ -357,10 +303,10 @@ function showFeedBackFormPanel()
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
-		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_Msg"></div></td>';
 		str += '	<td width="35%" align="right">';
 		str += '		<input id="postButton" type="button" value="Post"></input>';
-		str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
+		str += '		<input id="close" type="button" value="Cancel"></input>';
 		str += '	</td>';
 		str += '	</tr>';
 		str += '	</table>';	
@@ -368,7 +314,7 @@ function showFeedBackFormPanel()
 		elmt.innerHTML = str;
 
 		var oPushButton1 = new YAHOO.widget.Button("postButton");  
-		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+		var oPushButton2 = new YAHOO.widget.Button("close");
 
 		oPushButton1.on("click",function(){
 			postFeedbackAjaxCall();
@@ -380,7 +326,7 @@ function showFeedBackFormPanel()
 	}	
 	
 
-}
+
 function openAssembly2011Window()
 {
 	$("#assembly_2011_window").dialog({
@@ -710,14 +656,14 @@ function openKerala2011Window()
 
 function postFeedbackAjaxCall()
 {
-	var errorElmt = document.getElementById("feedback_window_errorMsg");
+	var errorElmt = document.getElementById("feedback_window_Msg");
 	
 	var feedBackElmt = document.getElementById("commentId");
 	feedBackElmtValue = feedBackElmt.value;
    
 	if(feedBackElmtValue == "")
 	{	
-		errorElmt.innerHTML = '<font size="2">Feedback box cannot be empty</font>';
+		errorElmt.innerHTML = '<font size="2" color="red">Feedback box cannot be empty</font>';
 	    return; 
 	}
 	
@@ -814,14 +760,14 @@ function showFeedBackStatus(result)
 {
 	if(result.exceptionEncountered == null)
 	{
-		var errorElmt = document.getElementById("feedback_window_errorMsg");
+		var errorElmt = document.getElementById("feedback_window_Msg");
 			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
 		
 		setTimeout("closewindow()",2000);
 	}
 	else
 	{
-		var errorElmt = document.getElementById("feedback_window_errorMsg");
+		var errorElmt = document.getElementById("feedback_window_Msg");
 			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not " +
 					"ted.Please Try again.</font>";
 	}
@@ -863,12 +809,12 @@ function buildHOmePageChartsSlider()
 
 	var str = '';
 	str += '<ul>';
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_1.PNG"></li>';
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_4.png"></li>';
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_3.png"></li>';	
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_5.png"></li>';
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_6.png"></li>';
-	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_2.png"></li>';
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_1.PNG"></li>';
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_4.png"></li>';
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_3.png"></li>';	
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_5.png"></li>';
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_6.png"></li>';
+	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_2.png"></li>';
 	str += '</ul>';
 
 	elmt.innerHTML = str;
@@ -1725,35 +1671,35 @@ function showElectionResults(index,elecType)
 //to validate QuickRequest fields
 function validateQuickRequest(){
 		var errorMsg='';
-		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[1].value;
-		var mobile=document.getElementsByName("mobileNO")[0].value;
-		var requirement=document.getElementsByName("requirement")[0].value;
+		var name = document.getElementById("quickRequestNameTextbox").value;
+		var email = document.getElementById("quickRequestEmailTextbox").value;
+		var mobile = document.getElementById("quickRequestMobileTextbox").value;
+		var requirement = document.getElementById("quickRequestReqTextbox").value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
         var alphaExp = /^[a-zA-Z\s]+$/;
 
-	if(name==""){
+	if(name==""|| name=='Name'){
 		errorMsg += '<font size="1">Name is Required</font><br>';
 	}
 	else if(!name.match(alphaExp) || name.charAt(0)==" "){
 	
 		errorMsg += '<font size="1">Name may consist of a-z, A-Z, begin with a letter.</font><br>';
 	}
-	if(email==""){
+	if(email==""|| email=='Email'){
 		errorMsg += '<font size="1">Email is Required</font><br>';
 	}
 	else if(!email.match(emailExp)){
 		errorMsg += '<font size="1">Invalid Email</font><br>';
 	}
-	if(mobile==""){
+	if(mobile=="" || mobile=='Mobile No'){
 		errorMsg += '<font size="1">Mobile is Required</font><br>';
 	}
 	else if(isNaN(mobile)||mobile.indexOf(" ")!=-1||mobile.length>10 || mobile.length<10||(!(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")))
 	{
 		errorMsg+= '<font size="1">Invalid Mobile</font><br>';
 	}
-	if(requirement==""){
-		errorMsg += '<font size="1">Your Requirement is Required</font><br>';
+	if(requirement==""||requirement=='Comment'){
+		errorMsg += '<font size="1">Your Comment is Required</font><br>';
 	}
     else if(!requirement.match(alphaExp)){
 		errorMsg += '<font size="1">Requirement should not contain Special Characters and Numbers</font>';
@@ -1766,7 +1712,7 @@ function validateQuickRequest(){
 function validatePostArticle(){
 		var errorMsg='';
 		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[1].value;
+		var email=document.getElementsByName("email")[0].value;
 		var mobile=document.getElementsByName("mobileNO")[0].value;
 		var requirement=document.getElementsByName("requirement")[0].value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
@@ -1822,11 +1768,11 @@ function validatePostArticle(){
 
 		str += "<h3 color='green'>Sending Request...</h3>";
 		str += '<img style="margin-left:50px" width="90" height="15" src="images/icons/goldAjaxLoad.gif"/>';		
-		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[1].value;
-		var mobile=document.getElementsByName("mobileNO")[0].value;
-		var requirement=document.getElementsByName("requirement")[0].value;
-		
+	var name = document.getElementById("quickRequestNameTextbox").value;
+		var email = document.getElementById("quickRequestEmailTextbox").value;
+		var mobile = document.getElementById("quickRequestMobileTextbox").value;
+		var requirement = document.getElementById("quickRequestReqTextbox").value;
+			
 		var jObj= {
 				name:name,
 				email:email,
@@ -1919,10 +1865,11 @@ else{
 	
 	if(result.exceptionEncountered == null)
 	{
-		document.getElementById("quickRequestNameTextbox").value = '';
-		document.getElementById("quickRequestEmailTextbox").value = '';
-		document.getElementById("quickRequestMobileTextbox").value = '';
-		document.getElementById("quickRequestReqTextbox").value = '';
+		errMsg.innerHTML='<b><font color="green">'+ result.exceptionMsg+'</font></b>';
+		document.getElementById("quickRequestNameTextbox").value = 'Name';
+		document.getElementById("quickRequestEmailTextbox").value = 'Email';
+		document.getElementById("quickRequestMobileTextbox").value = 'Mobile No';
+		document.getElementById("quickRequestReqTextbox").value = 'Comment';
 	}
 	else{
 		errMsg.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
