@@ -357,7 +357,273 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	padding:10px;
 }
 </style>
-<script type="text/javascript"><!--
+
+</head>  
+<body>  
+
+<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
+   <br><br>
+  <div id="registrationMainDiv" style="padding-bottom:5px;">
+		<table class="registrationTable">
+			<tr>
+				<td colspan="2">
+					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
+						<s:actionerror />
+						<s:fielderror />
+						<s:actionmessage/>						
+					</div>
+				</td>
+			</tr>
+		</table></div>
+<c:if test="${registrationId == '0'}">
+<div id="tableStyle" style="width:870px;height:530px;"></c:if>
+<c:if test="${registrationId != '0'}">
+<div id="tableStyle" style="width:870px;height:495px;"></c:if>
+<div style="margin:0px 0px 0px 20px !important; margin:0px 0px 0px 10px; padding:0px 0px 0px 0px; float:left; width:847px;">
+<table>
+<tr>
+<td>
+<table width="100%">
+<tr>
+<td width="250">
+<c:if test="${registrationId == '0'}">
+<img src="images/icons/homePage_new/freeRegPage.gif" width="250" height="192" />
+</c:if>
+ <c:if test="${registrationId != '0'}">
+<img src="images/icons/homePage_new/update.gif" width="250" height="192" /></c:if>
+</td>
+<td width="80">&nbsp;</td>
+<td width="515" align="left">
+<table cellspacing="1px" cellpadding="5px" >
+ <tr>
+ <c:if test="${registrationId == '0'}">
+ <td><strong style="color:red;margin">REGISTER</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span></td></tr>
+ <tr>
+ <tr>
+ <td>
+Your password will be sent to this Email address
+ </td>
+ </tr>
+ <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+ <s:textfield theme="simple" name="email" value="Username (Email)" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
+ <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
+  </td>
+  
+  </tr>
+  <!--
+  <tr>
+  <td class="tdStyle"><b style="color:red">*</b> 
+ <s:textfield id="password-clear" cssClass="textFieldStyle" value="Password" size="30px" />
+  <s:password name="password" value="Password" id="password-password" cssClass="textFieldStyle" size="30px" onBlur="validPassword()" theme="simple"/><span id="errMsg" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+  </tr>
+  <tr>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield id="password-reClear" cssClass="textFieldStyle" value="Re-Enter Password" size="30px" />
+    <s:password name="reEnteredPassword" value="Re-Enter Password" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+   </tr>
+  -->
+  <tr>
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="firstName" value="First Name" id="firstNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+  
+  </tr>
+  <tr>
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="lastName" value="Last Name" id="lastNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
+  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+  </tr>
+  </c:if>
+  <c:if test="${registrationId != '0'}">
+  <td>
+  <strong style="color:red">Account Information</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span> 
+  </td>
+  </tr>
+  <tr>
+  <td style="font-size: 12px;
+    font-weight: bold;
+	font-family: verdana,arial;"><b style="color:red">*</b> 
+  <s:textfield name="firstName"  id="firstNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+  </tr>
+  <tr>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:textfield name="lastName" id="lastNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30" theme="simple"/>
+  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  </span>
+  </td>
+  </tr>
+  <tr>
+  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
+    <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
+</td>
+
+
+  </tr>
+  <tr>
+  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id),validateMobile()" onclick="removeTextInTextBoxes(this.id)" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" cssClass="textFieldStyle"/>
+  <span id="mobileFieldDiv" style="padding-left:10px;font-weight:lighter">
+  </span></td>
+  </tr>
+  <tr>
+  <td style="padding-left:18px"><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
+  </tr>
+  <tr>
+  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" onBlur="showTextInTextBoxes(this.id),validateAddress()" onclick="removeTextInTextBoxes(this.id)"/>
+  <span id="addressFieldDiv" style="padding-left:10px;font-weight:lighter">
+  </span></td>
+  </tr>
+  </c:if>
+  <tr>
+  <td class="tdStyle"><b style="color:red">*</b> 
+   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:189px;"  theme="simple" /><span id="SelectState" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+  </td>
+
+  </tr><tr>
+  <td class="tdStyle"><b style="color:red">*</b> 
+  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:189px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+  </td>
+
+  </tr>
+
+</table>
+</td>
+</tr>
+
+ </table>
+ <c:if test="${registrationId == '0'}">
+<table style="margin-left:253px !important; margin-left:20px;">
+	</c:if>
+<c:if test="${registrationId != '0'}">
+<table  style="padding-left:80px">
+	</c:if>
+  <tr>
+  <td>
+        <div style="margin:5px;margin-left:26px" id="acceptErrId"></div>
+		<div style="margin:5px; margin:0px 0px 0px 90px !important; margin:0px 0px 0px 140px; font:11px Arial,Helvetica,sans-serif;">
+			<c:if test="${registrationId == '0'}">
+			 <s:checkbox name="accept" id="acceptId"/>
+			I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website
+		</div>
+		<FIELDSET id="personalFieldsCollection" style="border:none;" class="fieldsCollection">
+		<div class="dotline" style="margin:0px 0px 0px 62px !important; margin:0px 0px 0px 125px;"></div>
+        <div style="margin-left:7px; width:300px; height:50px; float:left;">
+		<div style="float:left; margin:0px 0px 0px 73px !important; margin:0px 0px 0px 60px;">
+		<div style="font-size:12px; float:left; font-weight:bold;">Do you want to</div>
+		<br>
+		 <div id="contactDetailsDiv" style="font:11px Arial,Helvetica,sans-serif;">
+					
+			<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
+			<div style="padding-top:15px;">
+				<input type="image" src="images/icons/homePage_new/createbutton.jpg"/>
+			</div>
+			</c:if>
+			<c:if test="${registrationId != '0'}">
+			<div style="margin:0px 0px 0px 183px !important; margin:0px 0px 0px 0px;">
+				<input type="image" src="images/icons/homePage_new/updatebutton.jpg"/>
+						</div>
+			</c:if>
+		 </div>  
+		</div>
+		</div>
+
+		
+		 
+
+  </td>
+  </tr>
+ </table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+
+ 
+</div>
+         <!--  Problem Management Params -->
+         <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+		 <input type="hidden" name="task" value="<%=task %>" />
+		 <input type="hidden" name="name" value="<%=name %>" />
+		 <input type="hidden" name="registrationId" value="${registrationId }" />
+		 <input type="hidden" name="stateId" value="<%=stateId %>" />
+		 <input type="hidden" name="districtId" value="<%=districtId %>" />
+		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
+		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>"
+		 />
+         
+		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
+	
+<script language="javascript">
+
+//document.getElementsByName("gender")[0].checked = true;
+//document.getElementsByName("accept")[0].checked = true;
+
+</script>
+<script>
+$(document).ready(function() {
+ 
+	$('#password-clear').show();
+	$('#password-password').hide();
+ 
+	$('#password-clear').focus(function() {
+		$('#password-clear').hide();
+		$('#password-password').show();
+		$('#password-password').focus();
+	});
+	$('#password-password').blur(function() {
+		if($('#password-password').val() == '') {
+			$('#password-clear').show();
+			$('#password-password').hide();
+		}
+	});
+ 
+	$('.default-value').each(function() {
+		var default_value = this.value;
+		$(this).focus(function() {
+			if(this.value == default_value) {
+				this.value = '';
+			}
+		});
+		$(this).blur(function() {
+			if(this.value == '') {
+				this.value = default_value;
+			}
+		});
+	});
+ if($("#dateOfBirthField").val() ==''){
+         $("#dateOfBirthField").val('DateOfBirth');
+	 }
+   
+	 if($("#addressField").val() ==''){
+         $("#addressField").val('Address');
+	 }
+	 if($("#mobileField").val() ==''){
+		$("#mobileField").val('Mobile Number');
+	  }
+	 
+});
+</script>
+<script>
+
 var userFirstName = '${sessionScope.USER.firstName}';
 var userLastName = '${sessionScope.USER.lastName}';
 var results='';	
@@ -370,6 +636,40 @@ var r={
   //'notnumbers':/[^\d]/g
 }
 
+
+$(document).ready(function() {
+ 
+	$('#password-reClear').show();
+	$('#password-rePassword').hide();
+ 
+	$('#password-reClear').focus(function() {
+		$('#password-reClear').hide();
+		$('#password-rePassword').show();
+		$('#password-rePassword').focus();
+	});
+	$('#password-rePassword').blur(function() {
+		if($('#password-rePassword').val() == '') {
+			$('#password-reClear').show();
+			$('#password-rePassword').hide();
+		}
+	});
+ 
+	$('.default-value').each(function() {
+		var default_value = this.value;
+		$(this).focus(function() {
+			if(this.value == default_value) {
+				this.value = '';
+			}
+		});
+		$(this).blur(function() {
+			if(this.value == '') {
+				this.value = default_value;
+			}
+		});
+	});
+ 
+});
+ 
 function callAJAX(jsObj,url){
 	
 	var callback = {			
@@ -712,7 +1012,9 @@ function numbersonly(id){
 		document.getElementById("numMsg").innerHTML ='';
 	}
 }
-function removeTextInTextBoxes(id){
+
+function removeTextInTextBoxes(id)
+{
 
   var ids=document.getElementById(id);
    if(ids.value  =='Username (Email)' || 
@@ -763,306 +1065,10 @@ function showTextInTextBoxes(id){
       
 }
 
---></script>
-
-</head>  
-<body>  
-
-<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
-   <br><br>
-  <div id="registrationMainDiv" style="padding-bottom:5px;">
-		<table class="registrationTable">
-			<tr>
-				<td colspan="2">
-					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
-						<s:actionerror />
-						<s:fielderror />
-						<s:actionmessage/>						
-					</div>
-				</td>
-			</tr>
-		</table></div>
-<c:if test="${registrationId == '0'}">
-<div id="tableStyle" style="width:870px;height:530px;"></c:if>
-<c:if test="${registrationId != '0'}">
-<div id="tableStyle" style="width:870px;height:495px;"></c:if>
-<div style="margin:0px 0px 0px 20px !important; margin:0px 0px 0px 10px; padding:0px 0px 0px 0px; float:left; width:847px;">
-<table>
-<tr>
-<td>
-<table width="100%">
-<tr>
-<td width="250">
-<c:if test="${registrationId == '0'}">
-<img src="images/icons/homePage_new/freeRegPage.jpg" width="250" height="192" />
-</c:if>
- <c:if test="${registrationId != '0'}">
-<img src="images/icons/homePage_new/update.jpg" width="250" height="192" /></c:if>
-</td>
-<td width="80">&nbsp;</td>
-<td width="515" align="left">
-<table cellspacing="1px" cellpadding="5px" >
- <tr>
- <c:if test="${registrationId == '0'}">
- <td><strong style="color:red;margin">REGISTER</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span></td></tr>
- <tr>
- <tr>
- <td>
-Your password will be sent to this Email address
- </td>
- </tr>
- <td style="font-size: 12px;
-    font-weight: bold;
-	font-family: verdana,arial;"><b style="color:red">*</b> 
- <s:textfield theme="simple" name="email" value="Username (Email)" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
- <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
-  </td>
-  
-  </tr>
-  <!--
-  <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
- <s:textfield id="password-clear" cssClass="textFieldStyle" value="Password" size="30px" />
-  <s:password name="password" value="Password" id="password-password" cssClass="textFieldStyle" size="30px" onBlur="validPassword()" theme="simple"/><span id="errMsg" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-  </tr>
-  <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield id="password-reClear" cssClass="textFieldStyle" value="Re-Enter Password" size="30px" />
-    <s:password name="reEnteredPassword" value="Re-Enter Password" id="password-rePassword" cssClass="textFieldStyle" onBlur="validRePassword()" size="30px" theme="simple"/><span id="errMsg1" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-   </tr>
-  -->
-  <tr>
-  <td style="font-size: 12px;
-    font-weight: bold;
-	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="firstName" value="First Name" id="firstNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
-  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-  
-  </tr>
-  <tr>
-  <td style="font-size: 12px;
-    font-weight: bold;
-	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="lastName" value="Last Name" id="lastNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
-  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-  </tr>
-  </c:if>
-  <c:if test="${registrationId != '0'}">
-  <td>
-  <strong style="color:red">Account Information</strong><span style="padding-left:30px"> Fields marked with (<b style="color:red">*</b>) are mandatory</span> 
-  </td>
-  </tr>
-  <tr>
-  <td style="font-size: 12px;
-    font-weight: bold;
-	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="firstName"  id="firstNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
-  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-  </tr>
-  <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:textfield name="lastName" id="lastNameId" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" size="30" theme="simple"/>
-  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
-  </span>
-  </td>
-  </tr>
-  <tr>
-  <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
-    <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
-</td>
 
 
-  </tr>
-  <tr>
-  <td style="padding-left:18px"><s:textfield id="mobileField" name="mobile" maxlength="12" onBlur="showTextInTextBoxes(this.id),validateMobile()" onclick="removeTextInTextBoxes(this.id)" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" cssClass="textFieldStyle"/>
-  <span id="mobileFieldDiv" style="padding-left:10px;font-weight:lighter">
-  </span></td>
-  </tr>
-  <tr>
-  <td style="padding-left:18px"><s:radio id="genderField" name="gender" list="#session.gender"/> </td>	
-  </tr>
-  <tr>
-  <td style="padding-left:18px"><s:textfield id="addressField" name="address" cssClass="textFieldStyle" style=" border-radius: 2px 2px 2px 2px;	background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" theme="simple" onBlur="showTextInTextBoxes(this.id),validateAddress()" onclick="removeTextInTextBoxes(this.id)"/>
-  <span id="addressFieldDiv" style="padding-left:10px;font-weight:lighter">
-  </span></td>
-  </tr>
-  </c:if>
-  <tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:189px;"  theme="simple" /><span id="SelectState" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
-  </td>
 
-  </tr><tr>
-  <td class="tdStyle"><b style="color:red">*</b> 
-  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:189px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
-  </td>
 
-  </tr>
-
-</table>
-</td>
-</tr>
-
- </table>
- <c:if test="${registrationId == '0'}">
-<table style="margin-left:253px !important; margin-left:20px;">
-	</c:if>
-<c:if test="${registrationId != '0'}">
-<table  style="padding-left:80px">
-	</c:if>
-  <tr>
-  <td>
-        <div style="margin:5px;margin-left:26px" id="acceptErrId"></div>
-		<div style="margin:5px; margin:0px 0px 0px 90px !important; margin:0px 0px 0px 140px; font:11px Arial,Helvetica,sans-serif;">
-			<c:if test="${registrationId == '0'}">
-			 <s:checkbox name="accept" id="acceptId"/>
-			I accept <a target="_blank" href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse"> Terms of use </a> &nbsp; and <a target="_blank" href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy policy</a> of the Website
-		</div>
-		<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
-		<div class="dotline" style="margin:0px 0px 0px 62px !important; margin:0px 0px 0px 125px;"></div>
-        <div style="margin-left:7px; width:300px; height:50px; float:left;">
-		<div style="float:left; margin:0px 0px 0px 62px !important; margin:0px 0px 0px 60px;">
-		<div style="font-size:12px; float:left; font-weight:bold;">Do you want to</div>
-		<br>
-		 <div id="contactDetailsDiv" style="font:11px Arial,Helvetica,sans-serif;">
-					
-			<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
-			<div style="padding-top:15px;">
-				<input type="image" src="images/icons/homePage_new/createbutton.jpg"/>
-			</div>
-			</c:if>
-			<c:if test="${registrationId != '0'}">
-			<div style="margin:0px 0px 0px 183px !important; margin:0px 0px 0px 0px;">
-				<input type="image" src="images/icons/homePage_new/updatebutton.jpg"/>
-						</div>
-			</c:if>
-		 </div>  
-		</div>
-		</div>
-
-		
-		 
-
-  </td>
-  </tr>
- </table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-
- 
-</div>
-         <!--  Problem Management Params -->
-         <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-		 <input type="hidden" name="task" value="<%=task %>" />
-		 <input type="hidden" name="name" value="<%=name %>" />
-		 <input type="hidden" name="registrationId" value="${registrationId }" />
-		 <input type="hidden" name="stateId" value="<%=stateId %>" />
-		 <input type="hidden" name="districtId" value="<%=districtId %>" />
-		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>"
-		 />
-         
-		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
-	
-<script language="javascript">
-
-//document.getElementsByName("gender")[0].checked = true;
-//document.getElementsByName("accept")[0].checked = true;
-
-</script>
-<script>
-$(document).ready(function() {
- 
-	$('#password-clear').show();
-	$('#password-password').hide();
- 
-	$('#password-clear').focus(function() {
-		$('#password-clear').hide();
-		$('#password-password').show();
-		$('#password-password').focus();
-	});
-	$('#password-password').blur(function() {
-		if($('#password-password').val() == '') {
-			$('#password-clear').show();
-			$('#password-password').hide();
-		}
-	});
- 
-	$('.default-value').each(function() {
-		var default_value = this.value;
-		$(this).focus(function() {
-			if(this.value == default_value) {
-				this.value = '';
-			}
-		});
-		$(this).blur(function() {
-			if(this.value == '') {
-				this.value = default_value;
-			}
-		});
-	});
- if($("#dateOfBirthField").val() ==''){
-         $("#dateOfBirthField").val('DateOfBirth');
-	 }
-   
-	 if($("#addressField").val() ==''){
-         $("#addressField").val('Address');
-	 }
-	 if($("#mobileField").val() ==''){
-		$("#mobileField").val('Mobile Number');
-	  }
-	 
-});
-</script>
-<script>
-$(document).ready(function() {
- 
-	$('#password-reClear').show();
-	$('#password-rePassword').hide();
- 
-	$('#password-reClear').focus(function() {
-		$('#password-reClear').hide();
-		$('#password-rePassword').show();
-		$('#password-rePassword').focus();
-	});
-	$('#password-rePassword').blur(function() {
-		if($('#password-rePassword').val() == '') {
-			$('#password-reClear').show();
-			$('#password-rePassword').hide();
-		}
-	});
- 
-	$('.default-value').each(function() {
-		var default_value = this.value;
-		$(this).focus(function() {
-			if(this.value == default_value) {
-				this.value = '';
-			}
-		});
-		$(this).blur(function() {
-			if(this.value == '') {
-				this.value = default_value;
-			}
-		});
-	});
- 
-});
- 
 </script>
  
 
