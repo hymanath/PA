@@ -7,7 +7,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
-import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
@@ -35,7 +35,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> results = fileGallaryDAO.getNewsRecordsBySearchCriteria(fileVO,IConstants.NEWS_GALLARY);
 		System.out.println(results.size());
 	}*/
-	public void testGetNewsToDisplay()
+	/*public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(13722L,1,4);
@@ -66,6 +66,17 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	   	System.out.println(((Long)newsDetails[7]));
 	 }
 	 
+	}*/
+	
+	public void testGetCandidateLatestVideos()
+	{
+		List<File> list = fileGallaryDAO.getCandidateLatestVideos(3424l,0,20);
+		System.out.println(list.size());
+		
+		for(File file : list)
+		{
+			System.out.println(file.getFileId() +"--"+file.getFilePath());
+		}
 	}
 	
 }
