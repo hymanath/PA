@@ -14,10 +14,6 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 	private HttpServletResponse response;
 	private Long candidateld;
 	
-	
-	
-	
-	
 	public Long getCandidateld() {
 		return candidateld;
 	}
