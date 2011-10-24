@@ -24,9 +24,9 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		gallaryDAO.getCandidateGallaryDetail(2L,"","");
 	}*/
 	
-	/*public void testGetGallariesByCandidateId()
+	public void testGetGallariesByCandidateId()
 	{
-		List<Object[]> list = gallaryDAO.getGallariesByCandidateId(3424l);
+		List<Object[]> list = gallaryDAO.getGallariesByCandidateId(3424l,IConstants.PHOTO_GALLARY);
 		
 		System.out.println(list.size());
 		
@@ -34,7 +34,7 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0].toString()+"---"+params[1].toString());
 		}
-	} */
+	} 
 
 
 }
