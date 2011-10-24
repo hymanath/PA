@@ -8,27 +8,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst-Know | Analyze | Act</title>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+<<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	 
+	<!-- YUI Skin Sam -->
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 	
 <!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
@@ -140,7 +146,6 @@ h3 {
 	height : 130px;
 }
 
-
 </style>
 
 <script type="text/javascript">
@@ -182,11 +187,16 @@ var candidateId=document.getElementById("candidateld").value;
 	 success : function( o ) {
 		try
 		{ 
-		 myResults = YAHOO.lang.JSON.parse(o.responseText);
+		 myResults = YAHOO.lang.JSON.parse(o.responseText);  
          if(jsObj.task == "getCandidatePhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
+		else if(jsObj.task == "candiadteVideoGallariesForUplaod")
+			{
+           showUploadVideoStatus(myResult);
+			}
+			
 		else if(jsObj.task == "getPhotosInAGallary")
 			{
                showPhotosInAGallary(myResults);
@@ -244,14 +254,23 @@ var candidateId=document.getElementById("candidateld").value;
                buildResults(myResults,"villageDiv");
 			}
 		
-			else if(jsObj.task == "createNewGallary")
+			else if(jsObj.task == "createNewGallary")  
 			{ 
                showGallaryCreateMsg(myResults);
+			}
+			
+			else if(jsObj.task == "createVideoGallary")  
+			{ 
+               showVideoGallaryCreateMsg(myResults);
 			}
 			else if(jsObj.task == "candiadteGallariesForUplaod")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
+			}
+			else if(jsObj.task == "createVideoNewGallary")  
+			{ 
+               alert("kamal");
 			}
 			
 		}
@@ -460,6 +479,7 @@ function showGallaryCreateMsg(result)
 }
 	
 
+	
 function getCompleteGallaries(gallaryId){
     var jsObj =
 		{ 
@@ -673,17 +693,263 @@ else
 
 }
 
-function showVideoGallaey()
+function showVideoGallaey1()
 {
-alert("testing...");
 
 if(!formValidation()){
-
+buildCreateVideoGallaryDiv();
 showOrHideVideoFilesDiv();
 }
 return;
 }
 	
+
+function buildCreateVideoGallaryDiv()
+{
+	var str ='';
+	str+='<div id="content" style="width:650px;">';
+		
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '	<td><input type="button" class="imageButton" value="Create Video Gallary" onclick="buildCreateVideoGallaryDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
+	str += '</tr>';
+	str += '</table>';
+
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Create A Video Gallary</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pVGallaryNameId" size="25" maxlength="100"></td></tr></table>';
+
+	str += '<div style=padding-left:4px;"><b><font color="#4B74C6">Description</font><b></div>';
+	str += '<div style="padding-left:30px;"><textarea id="pVGallaryDescId" cols="27" rows="3" name="requirement"></textarea></div>';
+	str += '<div><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	
+	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+
+	str += '<div>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("videoGallaryDiv").innerHTML = str;
+
+}
+
+function buildUploadVideoDiv()
+{
+	var str ='';
+	str+='<div id="content" style="width:650px;">';
+		
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '	<td><input type="button" class="imageButton" value="Create Video Gallary" onclick="buildCreateVideoGallaryDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadVideoDiv()"></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Upload A Video</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<table width="75%">';
+	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Title</font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="100"></td></tr>';
+    str += '<tr><td><b><font color="#4B74C6">Video Description</font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube</font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><input type="text" id="source" name="source" size="25" maxlength="100"></td></tr>';
+	str += '<TR>';
+	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
+	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	str += '</TR>';
+	str += '</table>';
+	str += '<div style="padding-left:62px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-left:44px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<table><tr><td style="padding-left:87px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<div>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("videoGallaryDiv").innerHTML = str;
+	getCandiadteGallariesForUplaod('Video Gallary');
+}
+
+function getCompleteVideoGallaries(gallaryId){
+    /*var jsObj =
+		{ 
+            time : timeST,
+		    gallaryId:gallaryId,
+			task:"getPhotosInAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);*/
+}
+
+
+	function createVideoGallary(contentType)
+{
+
+	var galName = document.getElementById('pVGallaryNameId').value;
+	var galDesc = document.getElementById('pVGallaryDescId').value;
+	var isPublic = document.getElementById('vpublicRadioId').checked;
+	var candidateId=document.getElementById("candidateld").value;
+	var makeThis = 'true';
+
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(galName.length == 0)
+	{
+		str += 'Gallary Name Required<br>';
+		eFlag = true;
+	}
+	if(galDesc.length > 300)
+	{
+		str += 'Description should be less than 300 Characters<br>';
+		eFlag = true;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	var jsObj =
+		{ 
+            name : galName,
+		    desc : galDesc,
+			visibility : makeThis,
+			candidateId : candidateId,
+			contentType : contentType,
+			task : "createVideoNewGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function uploadVideoGallary()
+{
+
+	var fileTitleId = document.getElementById('fileTitleId').value;
+	var fileDescId = document.getElementById('fileDescId').value;
+	var path = document.getElementById('path').value;
+	
+	var makeThis = 'true';
+
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(fileTitleId.length == 0)
+	{
+		str += 'Title Is Required<br>';
+		eFlag = true;
+	}
+	if(fileDescId.length ==0)
+	{
+		str += 'Description Is Required<br>';
+		eFlag = true;
+	}
+	if(path.length ==0)
+	{
+		str += 'Path Is Required<br>';
+		eFlag = true;
+	}
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	videoUplaod();
+	
+}
+
+function videoUplaod()
+{
+var candidateId=document.getElementById("candidateld").value;
+	var jsObj =
+		{ 
+		    
+            candidateId : candidateId,
+			gallaryId : gallaryId,
+			videoTitle : videoTitle,
+			videoDescription : videoDescription,
+			path : path,
+			keyword : keyword,
+			source : source,
+			fileDate : fileDate,
+		   	task : "candiadteVideoGallariesForUplaod"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function showVideoGallaryCreateMsg(result)
+{
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+		clearVideoGallaryFields();
+		str += '<font color="green"><b>Gallary Created Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
+}
+
+function showUploadVideoStatus(myResult)
+{
+	var result = (String)(myResult);
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+
+	if(result.search('success') != -1)
+	{
+		clearUploadFileFields();
+		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
+	}
+	else if(result.search('fail') != -1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	else
+	{
+		str += '<font color="red"><b>'+result+'</b>';
+	}
+	errorDivEle.innerHTML = str;
+}
+
+function clearVideoGallaryFields()
+{
+	document.getElementById('pVGallaryNameId').value = '';
+	document.getElementById('pVGallaryDescId').value = '';
+	document.getElementById('vpublicRadioId').checked = true;
+}
+
 </script>
 
 
@@ -729,7 +995,7 @@ return;
 				<table>
 				  <tr>
 			    	<td style="padding-left:110px"><b><input type="radio" name="group1" value="photoGallary" onClick="showPhotoGallary1()">Photo Gallary</b></td>
-				    <td style="padding-left:90px"><b><input type="radio" name="group1" value="videoGallaey" onClick="showVideoGallaey()">Video Gallary</b> </td>
+				    <td style="padding-left:90px"><b><input type="radio" name="group1" value="videoGallaey" onClick="showVideoGallaey1()">Video Gallary</b> </td>
 					<td style="padding-left:90px"><b><input type="radio" name="group1" value="newsGallaey" onClick="showNewsGallaey()">News Gallary</b> </td>
 					<td style="padding-left:90px"><b><input type="radio" name="group1" value="developmentActivity" onClick="showDevelopmentActivity()">Development Activity</b> </td>
 				  </tr>
@@ -743,7 +1009,7 @@ return;
 </div>
 
 <!-- for  body 1 start    result  -->
-<HR><BR>
+<HR>
 <div id='profileManagementMainOuterDiv1' style="display:none">
 	<div id='profileManagementHeaderDiv1'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -770,7 +1036,7 @@ return;
 <!-- for  body 1 end    result  -->
 
 <!-- for  body 2 start    result  -->
-<HR><BR>
+<HR>
 <div id='profileManagementMainOuterDiv2' style="display:none">
 	<div id='profileManagementHeaderDiv2'>
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -788,7 +1054,7 @@ return;
 		</table>
 	</div>
 
-	<div id='photoGallaryDiv' class="divInfo">
+	<div id='videoGallaryDiv' class="divInfo">
 	
 	</div>
 
@@ -797,9 +1063,6 @@ return;
 <!-- for  body 2 end    result  -->
 
 
-
-<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
 </body>
 </html>
