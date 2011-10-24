@@ -194,7 +194,7 @@ var candidateId=document.getElementById("candidateld").value;
 			}
 		else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
-           showUploadVideoStatus(myResult);
+           showUploadVideoStatus(myResults);
 			}
 			
 		else if(jsObj.task == "getPhotosInAGallary")
@@ -259,7 +259,7 @@ var candidateId=document.getElementById("candidateld").value;
                showGallaryCreateMsg(myResults);
 			}
 			
-			else if(jsObj.task == "createVideoGallary")  
+			else if(jsObj.task == "createVideoNewGallary")  
 			{ 
                showVideoGallaryCreateMsg(myResults);
 			}
@@ -268,10 +268,7 @@ var candidateId=document.getElementById("candidateld").value;
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
 			}
-			else if(jsObj.task == "createVideoNewGallary")  
-			{ 
-               alert("kamal");
-			}
+			
 			
 		}
 		catch(e)
@@ -354,7 +351,7 @@ function buildCreateGallaryDiv()
 
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Gallary</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr></table>';
 
@@ -365,7 +362,7 @@ function buildCreateGallaryDiv()
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\')"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 
-	str += '<div>';
+
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("photoGallaryDiv").innerHTML = str;
@@ -389,7 +386,7 @@ function buildUploadPhotosDiv()
 
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Photo</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
@@ -404,7 +401,7 @@ function buildUploadPhotosDiv()
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 
-	str += '<div>';
+
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -718,7 +715,7 @@ function buildCreateVideoGallaryDiv()
 
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Create A Video Gallary</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallary Name</font></b></td><td><input type="text" id="pVGallaryNameId" size="25" maxlength="100"></td></tr></table>';
 
@@ -729,7 +726,7 @@ function buildCreateVideoGallaryDiv()
 	
 	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 
-	str += '<div>';
+	
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
@@ -749,10 +746,12 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;">';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
+
 	str += '<table width="75%">';
-	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
+		str += '<div id="galErrorMsgDivId"></div>';
+	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Title</font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="100"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description</font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube</font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="100"></td></tr>';
@@ -771,7 +770,7 @@ function buildUploadVideoDiv()
 	str += '<div style="padding-left:62px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-left:44px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-left:87px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
-	str += '<div>';
+	
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
@@ -844,10 +843,15 @@ function getCompleteVideoGallaries(gallaryId){
 function uploadVideoGallary()
 {
 
-	var fileTitleId = document.getElementById('fileTitleId').value;
-	var fileDescId = document.getElementById('fileDescId').value;
+	var fileTitle = document.getElementById('fileTitleId').value;
+	var fileDesc = document.getElementById('fileDescId').value;
 	var path = document.getElementById('path').value;
-	
+	var candidateId=document.getElementById("candidateld").value;
+	var galId = document.getElementById("gallarySelectId").value;
+	var keyword = document.getElementById("keyword").value;
+	var source = document.getElementById("source").value;
+	var fileDate = document.getElementById("existingFromText").value;
+	var isPublic = document.getElementById('vpublicRadioId').checked;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -855,12 +859,12 @@ function uploadVideoGallary()
 
 	var str = '<font color="red">';
 
-	if(fileTitleId.length == 0)
+	if(fileTitle.length == 0)
 	{
 		str += 'Title Is Required<br>';
 		eFlag = true;
 	}
-	if(fileDescId.length ==0)
+	if(fileDesc.length ==0)
 	{
 		str += 'Description Is Required<br>';
 		eFlag = true;
@@ -878,21 +882,14 @@ function uploadVideoGallary()
 
 	if(isPublic)
 		makeThis = 'false';
-	
-	videoUplaod();
-	
-}
 
-function videoUplaod()
-{
-var candidateId=document.getElementById("candidateld").value;
 	var jsObj =
 		{ 
 		    
             candidateId : candidateId,
-			gallaryId : gallaryId,
-			videoTitle : videoTitle,
-			videoDescription : videoDescription,
+			gallaryId : galId,
+			videoTitle : fileTitle,
+			videoDescription : fileDesc,
 			path : path,
 			keyword : keyword,
 			source : source,
@@ -929,7 +926,7 @@ function showUploadVideoStatus(myResult)
 
 	if(result.search('success') != -1)
 	{
-		clearUploadFileFields();
+		clearUploadVideoFields();
 		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
 	}
 	else if(result.search('fail') != -1) 
@@ -938,6 +935,7 @@ function showUploadVideoStatus(myResult)
 	}
 	else
 	{
+	
 		str += '<font color="red"><b>'+result+'</b>';
 	}
 	errorDivEle.innerHTML = str;
@@ -948,6 +946,17 @@ function clearVideoGallaryFields()
 	document.getElementById('pVGallaryNameId').value = '';
 	document.getElementById('pVGallaryDescId').value = '';
 	document.getElementById('vpublicRadioId').checked = true;
+}
+
+function clearUploadVideoFields()
+{
+	document.getElementById('fileTitleId').value = '';
+	document.getElementById('fileDescId').value = '';
+	document.getElementById('vpublicRadioId').checked = true;
+	document.getElementById('fileId').value = '';
+    document.getElementById('path').value = '';
+	document.getElementById("keyword").value = '';
+	document.getElementById("source").value = '';	
 }
 
 </script>
