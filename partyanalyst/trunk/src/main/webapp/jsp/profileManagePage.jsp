@@ -344,7 +344,7 @@ function buildCreateGallaryDiv()
 	str += '<div><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary()"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td><input type="button" class="imageButton" value="Create Gallary" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\')"></td><td><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 
 	str += '<div>';
 	str += '</fieldset>';
@@ -393,7 +393,7 @@ function buildUploadPhotosDiv()
 	getCandiadteGallariesForUplaod();
 }
 
-	function createGallary()
+	function createGallary(contentType)
 {
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
@@ -432,7 +432,7 @@ function buildUploadPhotosDiv()
 		    desc : galDesc,
 			visibility : makeThis,
 			candidateId : candidateId,
-			contentType : 'Photo Gallary',
+			contentType : contentType,
 			task : "createNewGallary"
 		};
 
