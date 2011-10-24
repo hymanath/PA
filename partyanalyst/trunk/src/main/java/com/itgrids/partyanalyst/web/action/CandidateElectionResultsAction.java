@@ -455,7 +455,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("candiadteGallariesForUplaod"))
 		{
-			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"));
+			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"),jObj.getString("contentType"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
