@@ -41,7 +41,7 @@ public interface ICandidateDetailsService {
 	
 	public ResultStatus uploadAFile(FileVO fileVO);
 	
-	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId);
+	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
 	
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId);
 	
