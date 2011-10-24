@@ -711,7 +711,7 @@ else
     problemDetailDivEle.style.display = 'none';
 
 }
-function showNewsGallery()
+function showNewsGallaey()
 {
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
