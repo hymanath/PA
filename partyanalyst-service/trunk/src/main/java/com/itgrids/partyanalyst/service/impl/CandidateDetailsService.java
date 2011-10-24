@@ -759,11 +759,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			File file = new File();
 			FileGallary fileGallary = new FileGallary();
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_FORMAT);
 			file.setFileName(fileVO.getName());
 			file.setFilePath(fileVO.getPath());
 			file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
+			file.setKeywords(fileVO.getKeywords());
+			//file.setRegionScopes(regionScopes);
+			//file.setLocationValue(locationValue);
+			file.setSource(fileVO.getSource());
+			
+			if(fileVO.getFileDate() != null)
+				file.setFileDate(sdf.parse(fileVO.getFileDate()));
 			
 			file = fileDAO.save(file);
 			
