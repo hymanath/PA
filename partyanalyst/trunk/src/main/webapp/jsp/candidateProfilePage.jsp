@@ -372,16 +372,8 @@ function showFirstFourNewsRecords(results)
 	}
    }
  }
- function deleteElementsInArray()
- { 
- for(i =0 ;i<fileIdArray.length;i++)
-	{
-	delete fileIdArray[i];
-	}
- }
  function getTotalNews(viewType)
  {
-   deleteElementsInArray();
    var jsObj =
 		{   
 		    time : timeST,
@@ -397,7 +389,7 @@ function showFirstFourNewsRecords(results)
 	callAjax(jsObj,url);  
  }
  function showTotalNews(results)
- {  deleteElementsInArray();
+ { 
     $("#showAllNewsDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
