@@ -16,8 +16,15 @@
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
+<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 
 <style type="text/css">
+.ui-widget-header {
+background:url("");
+border:0px;
+color:none;
+font-weight:bold;
+}
 .imageButton{
 	
 	-moz-border-radius: 4px 4px 4px 4px;
@@ -80,6 +87,8 @@
    var candidateId = '${candidateId}';
    var fileIdArray = new Array();
    var initialFileIdArray = new Array();
+   var initialArraySize =0;
+   var initialCurrentSize=0;
    var arraySize =0;
    var currentSize=0;
      
@@ -98,13 +107,13 @@ function callAjax(jsObj,url)
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText);
-         if(jsObj.task == "getFirstFourNewsRecordsToDisplay")
+         if(jsObj.viewtype == "getFirstFourNewsRecordsToDisplay")
 			{
                showFirstFourNewsRecords(myResults);
 			}
 		 else if(jsObj.task == "getFileByFileId")
 			{
-               showNews(myResults);
+               showNews(myResults,jsObj.arrayType);
 			}
 		 else if(jsObj.task == "getNewsToDisplay")
 			{
@@ -335,11 +344,11 @@ function showFirstFourNewsRecords(results)
    var str ='';
    str+='  <table>';
   
-   for(var i in results)
+   for(var i =0 ;i<results.length,i<4;i++)
    {
-     fileIdArray[i]=results[i].fileId;
+     initialFileIdArray[i]=results[i].fileId;
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
@@ -351,12 +360,16 @@ function showFirstFourNewsRecords(results)
    }
    str+='  </table>';
    
-   str+='<a href="javascript:{}" onclick="getTotalNews();" \"><img src="images/icons/more.jpg" align="right"></a>';
+   str+='<a href="javascript:{}" onclick="getTotalNews(\'totalNews\');" \"><img src="images/icons/more.jpg" align="right"></a>';
    
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
    
    document.getElementById("newsDisplayDiv").innerHTML=str;
+    for(var i =4 ;i<results.length;i++)
+	{
+	  initialFileIdArray[i]=results[i].fileId;
+	}
    }
  }
  function deleteElementsInArray()
@@ -366,12 +379,13 @@ function showFirstFourNewsRecords(results)
 	delete fileIdArray[i];
 	}
  }
- function getTotalNews()
+ function getTotalNews(viewType)
  {
    deleteElementsInArray();
    var jsObj =
 		{   
 		    time : timeST,
+			viewtype:viewType,
 			candidateId:candidateId,
 			startRecord:0,
 			maxRecord:20,
@@ -402,7 +416,7 @@ function showFirstFourNewsRecords(results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'array\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
 //	 str+='     <tr>';
  //    str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
@@ -420,11 +434,14 @@ function showFirstFourNewsRecords(results)
    document.getElementById("showAllNewsDiv").innerHTML=str;
    }
  }
- function getNews(fileId,filSize)
+ function getNews(fileId,filSize,arrayType)
  { 
+  if(arrayType=="initialArray")
+  initialCurrentSize=filSize;
+  if(arrayType=='array')
   currentSize= filSize;
     var jsObj =
-		{   
+		{   arrayType:arrayType,
 		    time : timeST,
 			fileId:fileId,
 			task:"getFileByFileId"
@@ -434,9 +451,10 @@ function showFirstFourNewsRecords(results)
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);  
  }
- function showNews(results)
+ function showNews(results,arrayType)
   {
     arraySize = fileIdArray.length;
+	initialArraySize = initialFileIdArray.length;
     var fileType = results[0].name.split(".");
 	  $.fx.speeds._default = 1000;
 	  $("#showNewsDiv").dialog({ stack: false,
@@ -452,7 +470,8 @@ function showFirstFourNewsRecords(results)
 								});
 	$("#showNewsDiv").dialog();
 	var str='';
-	 
+	if(arrayType=='array')
+	{
 	 str+='<table>';
 	 str+='   <tr>';
 	 str+='      <td>';
@@ -460,10 +479,10 @@ function showFirstFourNewsRecords(results)
 	 str+='	          <tr>';
 	 if(currentSize-1 >=0)
 	 {
-	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+currentSize+')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+currentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 	 }
 	 if(fileType[(fileType.length-1)] == "pdf"  ){
-	 str+='             <td><a href="javascript:{}" onclick="openFile('+results[0].path+')"><img alt="" src="images/doc_images/PDFImage.png" /></a></td>';
+	 str+='             <td><img alt="" src="images/doc_images/PDFImage.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
 	 }
 	 else
 	 {
@@ -471,7 +490,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 if(currentSize+1 <= (arraySize-1))
 	 {
-	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+currentSize+')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
+	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+currentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
      }
 	 str+='		      </tr>';
 	 str+='         </table>';
@@ -488,19 +507,75 @@ function showFirstFourNewsRecords(results)
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='<table>';
-	
+	}
+	else if(arrayType=="initialArray")
+	{
+	 str+='<table>';
+	 str+='   <tr>';
+	 str+='      <td>';
+	 str+='         <table>';
+	 str+='	          <tr>';
+	 if(initialCurrentSize-1 >=0)
+	 {
+	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+initialCurrentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+	 }
+	 if(fileType[(fileType.length-1)] == "pdf"  ){
+	 str+='             <td><img alt="" src="images/doc_images/PDFImage.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
+	 }
+	 else
+	 {
+	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 }
+	 if(initialCurrentSize+1 <= (initialArraySize-1))
+	 {
+	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+initialCurrentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
+     }
+	 str+='		      </tr>';
+	 str+='         </table>';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        '+results[0].fileDescription1+'';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='<table>';
+	}
 	 document.getElementById("showNewsDiv").innerHTML=str;
 	
   }
-  function getPreviousNews(val)
-  {
-     currentSize = val-1;
-    getNews(fileIdArray[currentSize],currentSize);
+  function getPreviousNews(val,arrayType)
+  { if(arrayType=="initialArray")
+    {
+     initialCurrentSize = val-1;
+    getNews(initialFileIdArray[initialCurrentSize],initialCurrentSize,arrayType);
+	}
+	else if(arrayType=='array')
+	{
+	  currentSize = val-1;
+    getNews(fileIdArray[currentSize],currentSize,arrayType);
+	
+	}
+	
+	
   }
-  function getNextNews(val)
+  function getNextNews(val,arrayType)
   {
-     currentSize = val+1;
-     getNews(fileIdArray[currentSize],currentSize);
+    if(arrayType=="initialArray")
+	{
+     initialCurrentSize = val+1;
+     getNews(initialFileIdArray[initialCurrentSize],initialCurrentSize,arrayType);
+	 }
+	else if(arrayType=='array')
+	{
+	 currentSize = val+1;
+     getNews(fileIdArray[currentSize],currentSize,arrayType);
+	}
   }
 function getFirstThreePhotoRecords(){
    var jsObj =
@@ -937,7 +1012,7 @@ function showCandidateElectionDetails(str)
 displayProfile();
 candidateInfo();
 buildCandidateElectionInfo();
-getFirstFourNewsRecords();
+getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 </script>
 </body>
