@@ -797,13 +797,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	 * @param Long candidateId
 	 * @return List<SelectOptionVO>
 	 */
-	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId)
+	public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType)
 	{
 		try{
 			log.debug("Entered into getCandidateGallarySelectList() Method");
 			
 			List<SelectOptionVO> gallarySelectList = null;
-			List<Object[]> list = gallaryDAO.getGallariesByCandidateId(candidateId);
+			List<Object[]> list = gallaryDAO.getGallariesByCandidateId(candidateId,contentType);
 			
 			if(list != null && list.size() > 0)
 			{
