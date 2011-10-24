@@ -460,7 +460,8 @@ public interface IConstants {
     public static final String DEVELOPEMENT_ACTIVITIES = "Developement Activities";
     public static final String VIDEO_GALLARY = "Video Gallary";
     
-    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_AND_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     public static final String TIME_ZONE_INDIA = "Asia/Calcutta"; 
     
 
