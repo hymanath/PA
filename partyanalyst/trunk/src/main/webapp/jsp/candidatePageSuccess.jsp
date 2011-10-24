@@ -1498,7 +1498,7 @@ function buildUploadPhotosDiv()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("photoGallaryDiv").innerHTML = str;
-	getCandiadteGallariesForUplaod();
+	getCandiadteGallariesForUplaod('Photo Gallary');
 }
 
 function uploadAFile()
@@ -1594,11 +1594,12 @@ function validateFileUpload()
 	return flag;
 }
 
-function getCandiadteGallariesForUplaod()
+function getCandiadteGallariesForUplaod(contentType)
 {
 	var jsObj =
 		{ 
             candidateId : candidateId,
+            contentType : contentType,
 		   	task : "candiadteGallariesForUplaod"
 		};
 
