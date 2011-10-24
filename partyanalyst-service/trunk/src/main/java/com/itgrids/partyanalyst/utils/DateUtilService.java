@@ -24,7 +24,7 @@ public class DateUtilService {
 		try
 		{
 			Date updatedDate = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_FORMAT);
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
 			sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			return sdf.format(updatedDate);
 			
@@ -44,7 +44,7 @@ public class DateUtilService {
 	public Date getCurrentDateAndTime()
 	{
 		try{
-			return new SimpleDateFormat(IConstants.DATE_FORMAT).
+			return new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT).
 			parse(getCurrentDateAndTimeInStringFormat());
 		}catch (Exception e) {
 			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
