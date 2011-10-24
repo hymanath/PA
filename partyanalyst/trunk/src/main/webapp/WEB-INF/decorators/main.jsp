@@ -76,7 +76,7 @@
 		String errorMsg = resb.getString("constTypeAlert");
 %> }
 
-
+var $j = jQuery.noConflict(true);
 	
 	 
 	YAHOO.util.Event.onContentReady("navigationHead", function () { 	 
@@ -239,11 +239,12 @@
 		elmt.innerHTML = str;
 	}
 
+
 function buildAccordion()
 {
 	var accordionElmtId = document.getElementById("accordion");
 	
-	if($("#accordion").parents(".ui-dialog").is(":visible"))
+	if($j("#accordion").parents(".ui-dialog").is(":visible"))
 		return;
 	accordionElmtId.style.display = 'block';
 
@@ -254,9 +255,9 @@ function buildAccordion()
 	getAllStatesHavingLocalBody("stateList_l");
 	getLocalBodiesForState(1);
 
-	$( "#accordion" ).accordion();
-		$(function() {
-		$( "#accordion" ).dialog({
+	$j( "#accordion" ).accordion();
+		$j(function() {
+		$j( "#accordion" ).dialog({
 			autoOpen: true,
 			show: "blind",
 			width: 350,
@@ -269,7 +270,7 @@ function buildAccordion()
 	
 function intialize()
 {
-	$('#floatingDiv_absolute_main').addFloating(  
+	$j('#floatingDiv_absolute_main').addFloating(  
 	 {  
 		 targetRight: 10,  
 		 targetTop: 10,  
@@ -295,7 +296,7 @@ function openAddNewProblemWindow()
 			<div id="floatingDiv_absolute_main">				
 				<a href="javascript:{}" onclick="buildAccordion()"><img   width="25" height="100" style="border:0px none;padding:0px;margin:0px" src="images/icons/QuickView.png"/></a>
 				<div id="floatingDiv_absolute_close" >
-					<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
+					<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$j('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
 				</div>
 			</div>
 		</div>
