@@ -440,7 +440,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(jObj.getString("task").equalsIgnoreCase("createNewGallary"))
+		if(jObj.getString("task").equalsIgnoreCase("createNewGallary") || 
+				jObj.getString("task").equalsIgnoreCase("createVideoNewGallary"))
 		{
 			gallaryVO = new GallaryVO();
 			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
@@ -449,7 +450,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setDescription(jObj.getString("desc"));
 			gallaryVO.setVisibility(jObj.getString("visibility"));
 			gallaryVO.setContentType(jObj.getString("contentType"));
-			
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
@@ -460,6 +460,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
 			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("candiadteVideoGallariesForUplaod"))
+		{
+			// use service to uoload a video...
 		}
 		return Action.SUCCESS;
 	}
@@ -522,5 +526,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 
-
+	public String  uploadVideo()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		
+		return Action.SUCCESS;
+	}
 }
