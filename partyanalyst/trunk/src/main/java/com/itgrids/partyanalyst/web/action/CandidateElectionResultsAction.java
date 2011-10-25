@@ -488,6 +488,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			result = candidateDetailsService.uploadAFile(fileVOObj);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("saveDiscription"))
+		{
+			gallaryVO = new GallaryVO();
+			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
+			gallaryVO.setDescription(jObj.getString("fileDesc"));
+			result = candidateDetailsService.saveDescription(gallaryVO);
+		}
 		return Action.SUCCESS;
 	}
 	
