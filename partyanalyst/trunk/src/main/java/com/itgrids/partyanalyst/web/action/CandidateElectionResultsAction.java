@@ -452,7 +452,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(jObj.getString("task").equalsIgnoreCase("createNewGallary"))
+		if(jObj.getString("task").equalsIgnoreCase("createNewGallary") || 
+				jObj.getString("task").equalsIgnoreCase("createVideoNewGallary"))
 		{
 			gallaryVO = new GallaryVO();
 			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
@@ -461,7 +462,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setDescription(jObj.getString("desc"));
 			gallaryVO.setVisibility(jObj.getString("visibility"));
 			gallaryVO.setContentType(jObj.getString("contentType"));
-			
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
@@ -472,6 +472,21 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
 			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("candiadteVideoGallariesForUplaod"))
+		{
+			FileVO fileVOObj = new FileVO();
+			fileVOObj.setPath(jObj.getString("path"));
+			fileVOObj.setContentType("video");
+			fileVOObj.setTitle(jObj.getString("videoTitle"));
+			fileVOObj.setDescription(jObj.getString("videoDescription"));
+			fileVOObj.setKeywords(jObj.getString("keywords"));
+			fileVOObj.setSource(jObj.getString("source"));
+			fileVOObj.setFileDate(jObj.getString("fileDate"));
+			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
+			fileVOObj.setVisibility(jObj.getString("visibility"));
+			
+			result = candidateDetailsService.uploadAFile(fileVOObj);
 		}
 		return Action.SUCCESS;
 	}
