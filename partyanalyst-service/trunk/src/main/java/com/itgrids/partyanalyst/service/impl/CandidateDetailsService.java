@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.velocity.util.StringUtils;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
@@ -81,7 +82,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO;
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	public IFileDAO getFileDAO() {
 		return fileDAO;
 	}
@@ -766,9 +777,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
 			file.setKeywords(fileVO.getKeywords());
-			//file.setRegionScopes(regionScopes);
-			//file.setLocationValue(locationValue);
 			file.setSource(fileVO.getSource());
+			
+			if(fileVO.getLocationScope() != null && fileVO.getLocationScope().longValue() > 0 &&
+					fileVO.getLocationValue() != null && Integer.parseInt(fileVO.getLocationValue()) > 0)
+			{
+				file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+				file.setLocationValue(getLocationScopeVlaue(fileVO.getLocationValue()));
+			}
 			
 			if(fileVO.getFileDate() != null)
 				file.setFileDate(sdf.parse(fileVO.getFileDate()));
@@ -795,6 +811,29 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getLocationScopeVlaue(String locationValue)
+	{
+		try{
+			int lValue = Integer.parseInt(locationValue);
+			
+			if(lValue == 1 || lValue == 2 || lValue == 3 || lValue == 4 || lValue == 9)
+				return Long.parseLong(locationValue);
+			else if(lValue == 5 || lValue == 6 || lValue == 8)
+				return Long.parseLong(locationValue.substring(1));
+			else if(lValue == 7)
+			{
+				List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(locationValue.substring(1)));
+				return (Long) list.get(0);
+			}
+			
+			return null;
+		}catch (Exception e) {
+			log.error("Error Occured in getLocationScopeVlaue() method - "+e); 
+			return null;
 		}
 	}
 	
