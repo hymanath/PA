@@ -148,7 +148,7 @@ h3 {
 .tdWidth {           
   font-weight:bold;
   color:#4b74c6;
-  width:34%;
+  width:133px;
 }
 .tdWidth1 {           
   color:#4B74C6;
@@ -321,13 +321,7 @@ function buildCandidatePhotoGallary(results)
 {
 	var str ='';
 
-	if(results.length<=0)
-	{
-		str+='<b>&nbsp;No Photo Galleries Found </b>';
-		document.getElementById("photoGallaryDiv").innerHTML = str;
-	}
-	else
-	{
+	
 		str+='<div id="content" style="width:650px;">';
 		
 		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
@@ -339,6 +333,12 @@ function buildCandidatePhotoGallary(results)
 
 		str += '<fieldset class="imgFieldset">';
 		str +='<table width="100%" style="margin-top:10px;">';
+	if(results.length<=0)
+	{
+		str+='<b>&nbsp;No Photo Galleries Found </b>';
+	}
+	else
+	{
 		
 		for(var i in results)
 		{
@@ -361,11 +361,12 @@ function buildCandidatePhotoGallary(results)
 				str+= '</tr>';
 		
 		}
+	}
 		str += ' </table>';
 		str += ' </fieldset>';
 		str+='</div>';
 		document.getElementById("photoGallaryDiv").innerHTML = str;
-	}
+	
 }
 
 function buildCreateGallaryDiv()
@@ -1286,7 +1287,7 @@ function  buildUploadNews()
     str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
     str +='  </tr>';
 	str +='  <tr>';
-	str +='    <td colspan="3">';
+	str +='    <td colspan="2">';
 	str +='       <div id="showScopeSubs" />'; 
 	str +='    </td>';
 	str +='  </tr>';
