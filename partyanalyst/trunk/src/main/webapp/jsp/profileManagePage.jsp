@@ -829,7 +829,7 @@ function getDistricts1(stateId){
 	var newsCatrgoryName = document.getElementById('newsCateName').value;
 	var newsCatrgoryDesc = document.getElementById('newsCateDesc').value;
 	var isPublic = document.getElementById('newsPublicRadio').checked;
-	var candidateId=document.getElementById("candidateld").value;
+	var candidateId = document.getElementById("candidateld").value;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
@@ -1363,7 +1363,7 @@ function buildUploadVideoDiv()
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Video Gallary" onclick="buildCreateVideoGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadVideoDiv()"></td>';
+	str += '	<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
 	str += '</tr>';
 	str += '</table>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
@@ -1413,7 +1413,7 @@ function getCompleteVideoGallaries(gallaryId){
 }
 
 
-	function createVideoGallary(contentType)
+function createVideoGallary(contentType)
 {
 
 	var galName = document.getElementById('pVGallaryNameId').value;
@@ -1474,7 +1474,7 @@ function uploadVideoGallary()
 	var source = document.getElementById("source").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
-	var makeThis = 'true';
+	var makeThis = 'private';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
@@ -1503,24 +1503,25 @@ function uploadVideoGallary()
 		return;
 
 	if(isPublic)
-		makeThis = 'false';
+		makeThis = 'public';
 
 	var jsObj =
 		{ 
 		    
-            candidateId : candidateId,
-			gallaryId : galId,
-			videoTitle : fileTitle,
+            candidateId	: candidateId,
+			gallaryId	: galId,
+			videoTitle	: fileTitle,
 			videoDescription : fileDesc,
-			path : path,
-			keyword : keyword,
-			source : source,
-			fileDate : fileDate,
-		   	task : "candiadteVideoGallariesForUplaod"
+			path		: path,
+			keywords	: keyword,
+			source		: source,
+			fileDate	: fileDate,
+			visibility	: makeThis,
+		   	task		: "candiadteVideoGallariesForUplaod"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
 
