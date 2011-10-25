@@ -918,16 +918,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			List<Object> results =candidateProfileDescriptionDAO.getMaxOrderNo(gallaryVO.getCandidateId());
-			if(results.size()<1)
-			{
-				orderNo=1l;
-				
-			}
-			else
-			{
-				
-				orderNo =((Long) results.get(0))+1; 
-			}
+			
+			orderNo = results.get(0) == null ? 1l : (Long)results.get(0);
 			
 			candidateProfileDescription.setDescription(gallaryVO.getDescription());
 			candidateProfileDescription.setOrderNo(orderNo);
