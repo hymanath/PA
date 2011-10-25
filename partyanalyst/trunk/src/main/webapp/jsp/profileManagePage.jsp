@@ -148,12 +148,13 @@ h3 {
 .tdWidth {           
   font-weight:bold;
   color:#4b74c6;
-  width:38%;
+  width:34%;
 }
 .tdWidth1 {           
+  color:#4B74C6;
   font-weight:bold;
-  color:#4b74c6;
-  width:38%;
+  width:181px;
+  
 }
 .tdWidth2 {           
   font-weight:bold;
@@ -161,6 +162,10 @@ h3 {
   width:45%;
 } 
 .selectWidth{
+ width:175px;
+}
+.selectWidthPadd{
+padding-left:0px;
  width:175px;
 }
 </style>
@@ -269,6 +274,10 @@ var candidateId=document.getElementById("candidateld").value;
 			else if(jsObj.task == "boothsInTehsilOrMunicipality")
 			{ 
                buildResults(myResults,"villageDiv");
+			}
+			else if(jsObj.task == "createNewGallary" && jsObj.contentType =='News Gallary')
+			{  
+               showNewsGallaryCreateMsg(myResults);
 			}
 		
 			else if(jsObj.task == "createNewGallary")  
@@ -496,6 +505,20 @@ function showGallaryCreateMsg(result)
 
 	errorDivEle.innerHTML = str;
 }
+function showNewsGallaryCreateMsg(result)
+{
+	var errorDivEle = document.getElementById('newsErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+		str += '<font color="green"><b>Gallary Created Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
+}
 	
 
 	
@@ -598,7 +621,7 @@ function uploadNews()
 			};
 
 		
-		YAHOO.util.Connect.setForm('uploadFilesForm',true);
+		YAHOO.util.Connect.setForm('uploadNewsForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
 	}
 	else
@@ -752,20 +775,19 @@ function formValidation()
 function showOrHideProblemFilesDiv()
 {
 	
-var problemDetailDivEle = document.getElementById("profileManagementMainOuterDiv1");
-if(problemDetailDivEle.style.display =='none')
-	problemDetailDivEle.style.display = 'block';
-else
-    problemDetailDivEle.style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
+  document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 
 }
-
 function showNewsGallaey()
 {
+  if(!formValidation()){
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'block';
   buildCreateNewsCategory();
+  }
 }
 function buildCreateNewsCategory()
 {
@@ -1039,8 +1061,8 @@ function clearAllElmts(scopeId,value){
  var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth2">Location Scope :</td>';
-  str +='	   <td><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+  str +='	   <td style="color:#4B74C6;font-weight:bold;">Location Scope :</td>';
+  str +='	   <td style="width:172px;padding-left:10px;"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
   str +='  </tr>';
   str +='</table>';
   str +='  <span id="showScopeSubs" />'; 
@@ -1223,32 +1245,32 @@ function  buildUploadNews()
 {
    var str ='';
 	str+='<div id="content" style="width:650px;">';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:450px;">';
 	str += '        <table><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
-	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadFilesForm">';
+	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Category</td><td><select id="gallaryId" name="gallaryId" /></select></td>';
+	str += '       <td class="tdWidth1">Select Category :</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
-	str += '       <td class="tdWidth1">Title<b></td>';
-	str += '       <td><input type="text" id="fileTitle" name="fileTitle"></text></td>'; 
+	str += '       <td class="tdWidth1">Title :<b></td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" ></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description</td>';
-	str += '       <td><textarea id="fileDescription" cols="27" rows="3" name="fileDescription"></textarea></td>';
+	str += '       <td class="tdWidth1">News Description :</td>';
+	str += '       <td class="selectWidthPadd"><textarea id="fileDescription" cols="27" rows="3" name="fileDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords</td>';
-	str += '       <td><input type="text" id="keywords" name="keywords" ></text></td></tr>';
+	str += '       <td class="tdWidth1">Keywords :</td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" ></text></td></tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Source</td>';
-	str += '       <td><input type="text" id="source" name="source" ></text></td>';
+	str += '       <td class="tdWidth1">Source :</td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="source" name="source" size="25" ></text></td>';
 	str += '   </tr>';
 	str += '   <TR>';
-	str += '     <td><b><font color="#4B74C6">File Date</font></b></td>';
-	str += '     <TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
+	str += '     <td class="tdWidth1"><b><font color="#4B74C6">File Date :</font></b></td>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1256,22 +1278,26 @@ function  buildUploadNews()
 	str += '     </TD>';
 	str += '   </TR>';
 	str += '   <tr>';
-	str += '       <td></td>';
-	str += '       <td><input type="file" name="userImage" id="fileId"/></td>';
+	str += '       <td class="tdWidth1"></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
 	str += '   </tr>';
-	str += '</table>';
-	str += '<table>';
-    str += '<tr><td><div id="uploadNewsDiv" /></td></tr>';
-    str += '</table>';	
+	str +='    <tr>';
+    str +='	   <td class="tdWidth1">Location Scope :</td>';
+    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+    str +='  </tr>';
+	str +='  <tr>';
+	str +='    <td colspan="3">';
+	str +='       <div id="showScopeSubs" />'; 
+	str +='    </td>';
+	str +='  </tr>';
+	 str += '</table>';
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv();" style="background-color:#CF4740"></td></tr></table>';
-
-	str += '<div>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getCandiadteGallariesForUplaod("News Gallary");
-	 buildSearchNewsDetails();
+	 getScopes();
 }
 function clearDiv()
 {
@@ -1280,12 +1306,9 @@ function clearDiv()
 function showOrHideVideoFilesDiv()
 {
 	
-var problemDetailDivEle = document.getElementById("profileManagementMainOuterDiv2");
-if(problemDetailDivEle.style.display =='none')
-	problemDetailDivEle.style.display = 'block';
-else
-    problemDetailDivEle.style.display = 'none';
-
+document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
+  document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 }
 
 function showVideoGallaey1()
@@ -1533,7 +1556,7 @@ function showUploadVideoStatus(myResult)
 	}
 	else
 	{
-	    
+	
 		str += '<font color="red"><b>'+result+'</b>';
 	}
 	errorDivEle.innerHTML = str;
@@ -1551,7 +1574,7 @@ function clearUploadVideoFields()
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
 	document.getElementById('vpublicRadioId').checked = true;
-	
+	document.getElementById('fileId').value = '';
     document.getElementById('path').value = '';
 	document.getElementById("keyword").value = '';
 	document.getElementById("source").value = '';	
@@ -1668,7 +1691,35 @@ function clearUploadVideoFields()
 </div>
 
 <!-- for  body 2 end    result  -->
+<div id='profileManagementMainOuterDiv3' style="display:none">
+	<div id='profileManagementHeaderDiv3'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
+				   </td>
+				   <td width="98%">
+					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
+					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
+					 </div>
+				   </td>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
+				   </td>
+			 </tr>
+		</table>
+		<table style="margin:5px;width:40%;margin-left:50px;">
+		 <tr>
+			<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>
+			<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>
+		 </tr>
+		</table>
+		<div id='newsGallaryDiv' class="divInfo">
+	</div>
 
+	
+	
+	</div>
+
+</div>
 
 
 </body>
