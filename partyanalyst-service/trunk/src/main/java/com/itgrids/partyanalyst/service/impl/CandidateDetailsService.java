@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
@@ -83,6 +84,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private CandidateProfileDescription candidateProfileDescription;
 	
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -91,6 +93,15 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+		
+	public CandidateProfileDescription getCandidateProfileDescription() {
+		return candidateProfileDescription;
+	}
+
+	public void setCandidateProfileDescription(
+			CandidateProfileDescription candidateProfileDescription) {
+		this.candidateProfileDescription = candidateProfileDescription;
 	}
 
 	public IFileDAO getFileDAO() {
@@ -898,7 +909,42 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	}
 	
+ 	
+	
+	public ResultStatus saveDescription(GallaryVO gallaryVO)
+	{
+		Long orderNo;
+		
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<Object> results =candidateProfileDescriptionDAO.getMaxOrderNo(gallaryVO.getCandidateId());
+			if(results.size()<1)
+			{
+				orderNo=1l;
+				
+			}
+			else
+			{
+				
+				orderNo =((Long) results.get(0))+1; 
+			}
+			
+			candidateProfileDescription.setDescription(gallaryVO.getDescription());
+			candidateProfileDescription.setOrderNo(orderNo);
+			candidateProfileDescription.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
+			candidateProfileDescriptionDAO.save(candidateProfileDescription);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
 	/**
+	 * 
+	 * 
 	 * This Method will give Videos Details As List<FileVO> when we pass candidateId,start Index and Max results As Arguements
 	 * @author Kamalakar Dandu
 	 * @param Long candidateId

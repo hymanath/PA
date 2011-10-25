@@ -19,4 +19,9 @@ public class CandidateProfileDescriptionDAO extends
 	public List<Object> getCandidateProfileDescription(Long candidateId){		
 		return getHibernateTemplate().find("select model.description from CandidateProfileDescription model where model.candidate.candidateId=? order by model.orderNo asc",candidateId);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object> getMaxOrderNo(Long candidateId){
+		
+		return getHibernateTemplate().find("select max(model.orderNo) from CandidateProfileDescription model where model.candidate.candidateId=?",candidateId);
+	}
 }
