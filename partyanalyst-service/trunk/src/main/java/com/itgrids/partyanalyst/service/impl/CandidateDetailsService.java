@@ -770,7 +770,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			File file = new File();
 			FileGallary fileGallary = new FileGallary();
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_FORMAT);
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			file.setFileName(fileVO.getName());
 			file.setFilePath(fileVO.getPath());
 			file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
@@ -786,7 +786,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				file.setLocationValue(getLocationScopeVlaue(fileVO.getLocationValue()));
 			}
 			
-			if(fileVO.getFileDate() != null)
+			if(fileVO.getFileDate() != null && fileVO.getFileDate().length() > 0)
 				file.setFileDate(sdf.parse(fileVO.getFileDate()));
 			
 			file = fileDAO.save(file);
@@ -814,7 +814,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Long getLocationScopeVlaue(String locationValue)
 	{
 		try{
