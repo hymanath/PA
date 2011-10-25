@@ -1589,8 +1589,15 @@ function clearUploadVideoFields()
 	document.getElementById('existingFromText').value = '';
 }
 //****** profile discription ***
+
+function cleardescriptionFields()
+{
+	document.getElementById('profileDescId').value = '';
+
+}
 function insertProfileDiscription()
 {
+
 if(!formValidation()){
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
@@ -1602,6 +1609,7 @@ return;
  
 function profileDiscriptionDiv()
 {
+
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';	
@@ -1615,6 +1623,8 @@ function profileDiscriptionDiv()
 	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
+	
+
 	document.getElementById("discriptionDiv").innerHTML = str;
 
 } 
@@ -1647,31 +1657,27 @@ function profileDiscriptionDiv()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
     
  }
  
  function showDiscriptionStatus(myResult)  
 {
-	var result = (String)(myResult);
+
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '';
 
-	if(result.search('success') != -1)
+	if(myResult.resultCode == 0)
 	{
-		clearUploadVideoFields();
+		cleardescriptionFields();
 		str += '<font color="green"><b>Profile Discription saved Successfully.</b>';
 	}
-	else if(result.search('fail') != -1) 
+	else if(myResult.resultCode == 1) 
 	{
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
 	}
-	else
-	{
-	    
-		str += '<font color="red"><b>'+result+'</b>';
-	}
+	
 	errorDivEle.innerHTML = str;
 }
 
@@ -1812,7 +1818,7 @@ function profileDiscriptionDiv()
 	</div>
 	
 	</div>
-
+</div>
 <!-- for  body Discription start      -->
 
 <div id='profileManagementMainOuterDiv5' style="display:none">
