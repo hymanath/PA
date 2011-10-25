@@ -11,10 +11,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +80,43 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private InputStream inputStream;
 	private List<SelectOptionVO> selectOptionList;
 	private List<String> descriptions;
+	private String keywords;
+	private Long locationScope;
+	private Long locationValue;
+	private String fileDate;
 	
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	public Long getLocationScope() {
+		return locationScope;
+	}
+
+	public void setLocationScope(Long locationScope) {
+		this.locationScope = locationScope;
+	}
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public String getFileDate() {
+		return fileDate;
+	}
+
+	public void setFileDate(String fileDate) {
+		this.fileDate = fileDate;
+	}
+
 	public List<String> getDescriptions() {
 		return descriptions;
 	}
@@ -294,9 +328,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.context = context;
 	}
 
-	public String execute(){
+	public String execute()
+	{
 		request.setAttribute("candidateId",candidateId);
-		//candidateProfileInfoVO.setCandidateElectionProfile(candidateElectionProfile);
+		
 		descriptions= candidateDetailsService.getCandidateProfileDescriptionByCandidateID(candidateId);
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
@@ -317,30 +352,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 		candidateURLString = candidateURLStringBuffer.toString();
 		
-		System.out.println("candidateURLString = "+candidateURLString);
-		
 		request.setAttribute("candidateURLString", candidateURLString);
-		
-		/* ---- Dummy Information ------- */
-		
-		candidateProfileInfoVO = new CandidateProfileInfoVO();
-		CandidateElectionProfileVO electionPrf1 = new CandidateElectionProfileVO();
-		electionPrf1.setPositionTitle("MLA");
-		electionPrf1.setConstituency("Chandragiri");
-		electionPrf1.setDistrict("Chittor");
-		electionPrf1.setState("Andhra Pradesh");
-		electionPrf1.setStartDuration("1976");
-		electionPrf1.setEndDuration("");
-		electionPrf1.setParty("Telugu Desam");
-		
-		CandidateElectionProfileVO electionPrf2 = new CandidateElectionProfileVO();
-		electionPrf2.setPositionTitle("MLA");
-		electionPrf2.setConstituency("Chandragiri");
-		electionPrf2.setDistrict("Chittor");
-		electionPrf2.setState("Andhra Pradesh");
-		electionPrf2.setStartDuration("1976");
-		electionPrf2.setEndDuration("");
-		electionPrf2.setParty("Telugu Desam");
 		
 		fileVO = candidateDetailsService.getCandidateLatestVideos(candidateId,0,20);
 		if(candidateElectionDetails != null)
@@ -440,8 +452,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(jObj.getString("task").equalsIgnoreCase("createNewGallary") || 
-				jObj.getString("task").equalsIgnoreCase("createVideoNewGallary"))
+		if(jObj.getString("task").equalsIgnoreCase("createNewGallary"))
 		{
 			gallaryVO = new GallaryVO();
 			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
@@ -450,6 +461,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setDescription(jObj.getString("desc"));
 			gallaryVO.setVisibility(jObj.getString("visibility"));
 			gallaryVO.setContentType(jObj.getString("contentType"));
+			
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
@@ -460,10 +472,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
 			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
-		}
-		else if(jObj.getString("task").equalsIgnoreCase("candiadteVideoGallariesForUplaod"))
-		{
-			// use service to uoload a video...
 		}
 		return Action.SUCCESS;
 	}
@@ -497,7 +505,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			else
 			{
 				fileType = userImageContentType.substring(userImageContentType.indexOf("/")+1,userImageContentType.length());
-				fileName = systime.toString()+random.nextInt(10000000)+"."+fileType;
+				fileName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
 			}
 			
 			fileVO.setName(fileName);
@@ -507,6 +515,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setPath(filePath+pathSeperator+fileName);
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
+			fileVO.setKeywords(getKeywords());
+			fileVO.setLocationScope(getLocationScope());
+			fileVO.setLocationValue(getLocationValue().toString());
+			fileVO.setFileDate(getFileDate());
 			
 			/* Here We are saving the to uploaded_files folder */
 			File fileToCreate = new File(filePath, fileName);
@@ -526,12 +538,5 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 
-	public String  uploadVideo()
-	{
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
-		
-		return Action.SUCCESS;
-	}
+
 }
