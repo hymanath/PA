@@ -342,6 +342,7 @@ function showFirstFourNewsRecords(results)
   if(results.length>0)
   {
    var str ='';
+   str +='<img src="images/icons/news_events.jpg"/>';
    str+='  <table>';
   
    for(var i =0 ;i<results.length,i<4;i++)
@@ -874,7 +875,7 @@ function buildVideoGallaryDiv(result)
  <td width="10">&nbsp;</td>
 <td width="326">
 <div class="rel">
- <div class="box3"><img src="images/icons/news_events.jpg"/>
+ <div class="box3">
   <div id="newsDisplayDiv"></div>
 
 <s:if test="fileVO != null && fileVO.size() > 0"> 
