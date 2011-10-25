@@ -914,7 +914,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public ResultStatus saveDescription(GallaryVO gallaryVO)
 	{
 		Long orderNo;
-		
+		candidateProfileDescription = new CandidateProfileDescription() ;
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			List<Object> results =candidateProfileDescriptionDAO.getMaxOrderNo(gallaryVO.getCandidateId());
