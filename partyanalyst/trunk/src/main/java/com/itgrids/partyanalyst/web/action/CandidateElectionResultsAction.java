@@ -539,7 +539,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setGallaryId(getGallaryId());
 			fileVO.setKeywords(getKeywords());
 			fileVO.setLocationScope(getLocationScope());
-			fileVO.setLocationValue(getLocationValue().toString());
+			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
 			
 			/* Here We are saving the to uploaded_files folder */
