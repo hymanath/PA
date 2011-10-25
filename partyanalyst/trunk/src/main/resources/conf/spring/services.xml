@@ -291,6 +291,7 @@
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="candidateProfileDescriptionDAO" ref="candidateProfileDescriptionDAO" />
 	</bean>
 	
