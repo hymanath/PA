@@ -1369,10 +1369,9 @@ function buildUploadVideoDiv()
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<div id="galErrorMsgDivId"></div>';
 
 	str += '<table width="75%">';
-		str += '<div id="galErrorMsgDivId"></div>';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallary</font></b></td><td><select id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Title</font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="100"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description</font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
@@ -1541,18 +1540,17 @@ function showVideoGallaryCreateMsg(result)
 	errorDivEle.innerHTML = str;
 }
 
-function showUploadVideoStatus(myResult)
+function showUploadVideoStatus(result)
 {
-	var result = (String)(myResult);
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
 
-	if(result.search('success') != -1)
+	if(result.resultCode == 0)
 	{
 		clearUploadVideoFields();
 		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
 	}
-	else if(result.search('fail') != -1) 
+	else if(result.resultCode == 1) 
 	{
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
 	}
@@ -1576,10 +1574,10 @@ function clearUploadVideoFields()
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
 	document.getElementById('vpublicRadioId').checked = true;
-	document.getElementById('fileId').value = '';
-    document.getElementById('path').value = '';
+	document.getElementById('path').value = '';
 	document.getElementById("keyword").value = '';
 	document.getElementById("source").value = '';	
+	document.getElementById('existingFromText').value = '';
 }
 
 </script>
@@ -1716,13 +1714,10 @@ function clearUploadVideoFields()
 		</table>
 		<div id='newsGallaryDiv' class="divInfo">
 	</div>
-
-	
 	
 	</div>
 
 </div>
-
 
 </body>
 </html>
