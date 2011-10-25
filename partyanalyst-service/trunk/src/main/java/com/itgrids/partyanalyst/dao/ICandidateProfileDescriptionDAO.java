@@ -10,4 +10,6 @@ public interface ICandidateProfileDescriptionDAO extends
 		GenericDao<CandidateProfileDescription, Long> {
 
 	public List<Object> getCandidateProfileDescription(Long candidateId);
+	
+	public List<Object> getMaxOrderNo(Long candidateId);
 }

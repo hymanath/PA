@@ -56,4 +56,6 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getFirstThreePhotoGallaryDetail(Long candidateId);
 	
 	public List<FileVO> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxRecords);
+	
+	public ResultStatus saveDescription(GallaryVO gallaryVO);
 }
