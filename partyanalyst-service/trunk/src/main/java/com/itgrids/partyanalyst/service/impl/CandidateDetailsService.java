@@ -557,7 +557,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public List<FileVO> getFirstThreePhotoGallaryDetail(Long candidateId){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	 try{
-		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,0,3,IConstants.PHOTO_GALLARY);
+		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,0,20,IConstants.PHOTO_GALLARY);
 		
 		for(Object[] gallary: results){
 			FileVO fileVO = new FileVO();
