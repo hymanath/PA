@@ -203,7 +203,14 @@ function buildCandidatePhotoGallary(results)
 			str += '<td width="33%" class="imageStyle">';
 			str += '<table class="tableStyle">';
 			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+			if(results[i].path!=null)
+			{
 			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+            }
+			else
+			{
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			}
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
 			
@@ -585,6 +592,7 @@ function getFirstThreePhotoRecords(){
 function buildFirstThreePhotoRecords(results){
 if(results.length>0)
  {
+  var count=0;
   document.getElementById("photoGallaryDiv").innerHTML= '';
   str ='';
   str+='<table>';
@@ -592,6 +600,9 @@ if(results.length>0)
   str+='    <td style="margin-bottom:21px;font-weight:bolder;font-size:14px;font-family:Arial;">PHOTO GALLERY</td>';
   str+='  </tr>';
   str+='  <tr>';
+  if(results[0].path!=null)
+  {
+   count++;
   str+='     <td>';
   str+='      <table>';
   str+='         <tr><td>';
@@ -602,8 +613,10 @@ if(results.length>0)
   str+='         </td></tr>';
   str+='       </table>';
   str+='     </td>';
-  if(results[1]!=null)
+  }
+  if(results[1]!=null && results[1].path!=null)
   {
+  count++;
   str+='     <td>';
   str+='       <table>';
   str+='         <tr><td>';
@@ -615,8 +628,9 @@ if(results.length>0)
   str+='       </table>';
   str+='      </td>';
   }
-  if(results[2]!=null)
+  if(results[2]!=null  && results[2].path!=null)
   {
+  count++;
   str+='      <td>';
   str+='       <table>';
   str+='         <tr><td>';
@@ -627,6 +641,23 @@ if(results.length>0)
   str+='         </td></tr>';
   str+='       </table>';
   str+='      </td>';
+  }
+  for(var i=3;i<results.length;i++)
+  {
+   if(results[i]!=null  && results[i].path!=null && count<3)
+   {
+    count++;
+	str+='     <td>';
+  str+='       <table>';
+  str+='         <tr><td>';
+  str+='           <img alt="" src="'+results[i].path+'" class="photoStyle" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/>';
+  str+='         </td></tr>';
+  str+='         <tr><td>';
+  str+='             &nbsp;&nbsp;'+results[i].title+'';
+  str+='         </td></tr>';
+  str+='       </table>';
+  str+='      </td>';  
+   }
   }
   str+='    </tr>';
   str+='</table>';
