@@ -554,6 +554,41 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 return retValue;
 	 }
 	}
+	public List<FileVO> getCandidatesPhotoGallaryDetailWithOutGallerySizeZero(Long candidateId,int firstRecord,int maxRecord,String type){
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	 try{
+		List<Object[]> results = gallaryDAO.getCandidateGallaryDetail(candidateId,firstRecord,maxRecord,type);
+		
+		for(Object[] gallary: results){
+			FileVO fileVO = new FileVO();
+		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(Object[] startingRecord: record){
+		    if(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()>0L)
+		    {
+		    	fileVO.setFileId((Long)startingRecord[0]);
+		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
+		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString() :"");
+		    	fileVO.setGallaryId((Long)gallary[0]);
+			    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
+			    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
+			    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
+			    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
+			    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+			    retValue.add(fileVO);
+		    }
+			    
+	      }
+		    	  
+		}
+		return retValue;
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+		 return retValue;
+	 }
+	}
 	public List<FileVO> getFirstThreePhotoGallaryDetail(Long candidateId){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	 try{
