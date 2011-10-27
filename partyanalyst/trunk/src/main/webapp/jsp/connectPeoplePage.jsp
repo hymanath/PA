@@ -37,6 +37,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
 
 
