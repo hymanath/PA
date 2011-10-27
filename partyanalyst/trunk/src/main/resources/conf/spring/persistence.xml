@@ -206,6 +206,9 @@
 				<value>com.itgrids.partyanalyst.model.ContentType</value>
 				<value>com.itgrids.partyanalyst.model.UserGallary</value>
 				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
+				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
+				<value>com.itgrids.partyanalyst.model.Source</value>
+				
 			</list>
 		</property>
 	</bean>
