@@ -434,7 +434,7 @@ if(request.getParameter("problemHistoryId")!=null){
 						</table>-->
 						<div>
 							
-								<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+								<!-- <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 								<input type="hidden" name="task" value="<%=task %>" />
 								<input type="hidden" name="name" value="<%=name %>" />
 								<input type="hidden" name="stateId" value="<%=stateId %>" />
@@ -460,7 +460,7 @@ if(request.getParameter("problemHistoryId")!=null){
 								<input type="hidden" name="partySelectName" value="<%=partySelectName%>"/>
 								<input type="hidden" name="constituencySelectName" value="<%=constituencySelectName%>"/>
 								<input type="hidden" name="districtSelectName" value="<%=districtSelectName%>"/>
-								<input type="hidden" name="candidateId" value="<%=candidateId%>"/>
+								<input type="hidden" name="candidateId" value="<%=candidateId%>"/> -->
 								
 								<table  class="loginDetailTable">
 									<tr>
