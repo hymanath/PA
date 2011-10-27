@@ -132,7 +132,20 @@ h3 {
     text-decoration: none;
     white-space: nowrap;
 }
-
+.buttonStyle {
+	-moz-border-radius:5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #04B404;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
 
 .imgFieldset
 {
@@ -1805,11 +1818,11 @@ function profileDiscriptionDiv()
 			<td class="statusData_table_data" width="100%" style="padding-top:23px">
 				<table>
 				  <tr>
-			    	<td style="padding-left:0px"><b><input type="radio" name="group1" value="photoGallary" onClick="showPhotoGallary1()">Photo Gallery</b></td>
-				    <td style="padding-left:75px"><b><input type="radio" name="group1" value="videoGallaey" onClick="showVideoGallaey1()">Video Gallery</b> </td>
-					<td style="padding-left:80px"><b><input type="radio" name="group1" value="newsGallaey" onClick="showNewsGallaey()">News Gallery</b> </td>
-					<td style="padding-left:80px"><b><input type="radio" name="group1" value="developmentActivity" onClick="showDevelopmentActivity()">Development Activity</b> </td>
-					<td style="padding-left:80px"><b><input type="radio" name="group1" value="developmentActivity" onClick="insertProfileDiscription()">Profile Description</b> </td>
+			    	<td style="padding-left:0px"><b><input type="button" class="buttonStyle" value="Photo Gallery" onClick="showPhotoGallary1()"></b></td>
+				    <td style="padding-left:75px"><b><input type="button" class="buttonStyle" value="Video Gallery" onClick="showVideoGallaey1()"></b> </td>
+					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="News Gallery" onClick="showNewsGallaey()"></b> </td>
+					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="Development Activity" onClick="showDevelopmentActivity()"></b> </td>
+					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="Profile Description" onClick="insertProfileDiscription()"></b> </td>
 				  </tr>
 				</table>
 			</td>
