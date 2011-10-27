@@ -214,9 +214,7 @@
 				<value>com.itgrids.partyanalyst.model.File</value>
 				<value>com.itgrids.partyanalyst.model.FileType</value>
 				<value>com.itgrids.partyanalyst.model.ProblemFile</value>
-				<value>com.itgrids.partyanalyst.model.GallaryType</value>
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
-				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
 				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.UserSubuserRelation</value>
@@ -255,15 +253,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="candidateGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateGallaryDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
 	<bean id="fileGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="gallaryTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
