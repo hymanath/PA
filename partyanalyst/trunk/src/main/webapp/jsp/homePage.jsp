@@ -63,7 +63,7 @@ function openAddNewProblemWindow()
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
 	<div id="feedback_window"><div id="feedback_window_inner"></div></div>
 	<div id="assembly_2011_window"><div id="assembly_2011_window_inner"></div></div>
-	<div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
+	
 	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	
 </div>
