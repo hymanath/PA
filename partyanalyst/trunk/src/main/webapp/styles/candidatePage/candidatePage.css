@@ -450,9 +450,10 @@ width:401px;
     font-size: 13px;
     font-weight: bold;
     height: 28px;
-    margin: 15px;
+    margin: 0px;
     padding-top: 6px;
     text-align: left;
+    width:90%;
 }
  #candidateName{
     color: brown;
