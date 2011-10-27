@@ -39,7 +39,7 @@
 <!-- Combo-handled YUI JS files: --> 
 
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="js/ddcontent.js"></script>
+
   
 <script type="text/javascript">
 
