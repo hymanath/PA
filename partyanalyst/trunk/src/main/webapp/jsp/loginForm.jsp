@@ -4,11 +4,7 @@
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 
-
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
@@ -16,204 +12,7 @@
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 
-<!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
-<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
-
-<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
-
-<!-- JQuery files (End) -->
-
-<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-
-<script type="text/javascript">
-
-
-function callAJAX(jsObj,url){
-	var results;	
-	var callback = {			
-	    success : function( o ) {
-			try {							
-				"",					
-					results = YAHOO.lang.JSON.parse(o.responseText);		
-					if(jsObj.task == "forgotPassword")
-					{
-						showDetails(results);
-					}
-			}catch (e) {   		
-			   	alert("Invalid JSON result" + e);   
-			}  
-	    },
-	    scope : this,
-	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
-	              }
-	    };
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
-function closewindow(){
-	
-	$("#forgot_password_window").dialog("destroy");
-}
-
-function showDetails(results)
-{
-	
-	var result = document.getElementById("feedback_window_errorMsg");
-	 str='';
-	
-	if(results == null){
-		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
-	}
-	else if(results.email == null){		
-		str+='<div style="color:red"><b> Username Doesnot exist </b></div>';
-	}
-	else{
-		$("#forgot_password_window").dialog("destroy");
-		afterPasswordSubmit(results.email);
-		return;
-	}
-	result.innerHTML = str;
-	
-}
-function afterPasswordSubmit(email){
-
- $("#forgot_password_window").dialog({
-			resizable:false,
-			width: 600,
-			minHeight:150,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
-
-		var elmt = document.getElementById("forgot_password_window_inner");
-
-		var str = '';
-		str += '<div id="feedback_window_head">ForgotPassword?</div>';
-		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
-		str += 'Your password has been mailed to your email address :'+email+'</div>';
-		str += '</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-		str += '	<table width="100%">';
-		str += '	<tr><td>';
-		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
-		str += '   value="OK"></input></td>';
-		str += '	</tr>';
-		str += '	</table>';	
-		str += '</div>';
-		elmt.innerHTML = str;
-
-		var oPushButton2 = new YAHOO.widget.Button("OkButton");
-
-		oPushButton2.on("click",function(){
-			$("#forgot_password_window").dialog("destroy");
-		});
-}
-
-function showForgotPasswordPanel(){
-
-$("#forgot_password_window").dialog({
-			resizable:false,
-			width: 600,
-			minHeight:200,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
-
-		var elmt = document.getElementById("forgot_password_window_inner");
-
-		var str = '';
-		str += '<div id="feedback_window_head">ForgotPassword?</div>';
-		str += '<div id="feedback_window_body">';
-		str += '	<div id="feedBackNote_div">';
-		str += '		<table>';
-		str += '		<tr>';
-		str += '		<td><img src="images/icons/infoicon.png"></td>';
-		str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
-		str += '		</tr>';
-		str += '		</table>';
-		str += '	</div>';
-		str += '	<div id="feedBackForm_div">';
-		str += '		<table id="feedbackTable" width="100%">';
-		str += '		<tr>';
-		str += '		<th><font color="red">*</font>UserName </th>';
-		str += '		<td>';
-		str += '			<input type="text" id="userName_FP" size="25"/>';
-		str += '		</td>';
-		str += '		</tr>';
-		str += '		</table>';
-		str += '	</div>';
-		str += '</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-		str += '	<table width="100%">';
-		str += '	<tr>';
-		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
-		str += '	<td width="35%" align="right">';
-		str += '		<input id="postButton" type="button" value="submit"></input>';
-		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
-		str += '	</td>';
-		str += '	</tr>';
-		str += '	</table>';	
-		str += '</div>';
-		elmt.innerHTML = str;
-
-		var oPushButton1 = new YAHOO.widget.Button("postButton");  
-		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
-
-		oPushButton1.on("click",function(){
-			checkAvailability();
-		});
-
-		oPushButton2.on("click",function(){
-			$("#forgot_password_window").dialog("destroy");
-		});
-
-}
-
-
-function checkAvailability()
-{
-
-	var name = document.getElementById("userName_FP").value;
- 	
-	if(name==""){
-		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName field cannot be empty</font>";
- 	 }
-	 else if (name.charAt(0).indexOf(" ")==0){
-		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Should not contain spaces</font>";
- 	 }
-	 else if(name.length < 6)
-	{
-		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
-	}
-	 
-     else{ 
-		var str = '<font color="#000000">Sending Your Request.Please wait</font>';
-		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
- 		document.getElementById("feedback_window_errorMsg").innerHTML = str;
- 		var jsObj=
-		{		
- 				userName:name,
-				task:"forgotPassword",
-		};	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/recoverPasswordAnanymousUserAction.action?"+rparam;						
-		callAJAX(jsObj,url);
- 	 }
-}
-
-
-</script>
 
 
 <%
@@ -408,28 +207,7 @@ if(request.getParameter("problemHistoryId")!=null){
 	
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">		
 
-	<script type="text/javascript">
-	function executeOnload()
-	{  
-	   var checkedValue='';
-		checkedValue = '${sessionScope.checkedTypeValue}'; 
-		 if(checkedValue =="1")
-		  { 
-		      document.getElementById("paUserRadio").checked=true ;
-		      document.getElementById("freeUserRadio").checked=false;
-		  }
-		 if(checkedValue =="2")
-		 { 
-		      document.getElementById("paUserRadio").checked=false ;
-		      document.getElementById("freeUserRadio").checked=true;
-		  }
-		var textBoxEl = document.getElementById("userName");
-		textBoxEl.focus();
-		
-		
-	}
-		
-	</script> 
+
 
 	<style type="text/css">
 
@@ -514,7 +292,7 @@ if(request.getParameter("problemHistoryId")!=null){
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner"></div>
 		</div>
-		<div id="loginPanel_main">
+		<div id="loginPanel_main" class="background">
 		
 		<div style="width:360px;">
 			<table width="100%" cellpadding="0" cellspacing="0" style="width:360px;">
@@ -620,7 +398,7 @@ if(request.getParameter("problemHistoryId")!=null){
 									<td colspan="2"><a href="javascript:{}" onclick="showForgotPasswordPanel()" style="margin:179px;color:#0174DF;" >Forgot Password</a></td>
 								</tr>
 							</table>							
-						</s:form>
+						
 					</div>
 				</div>
 			</div>		
@@ -655,7 +433,7 @@ if(request.getParameter("problemHistoryId")!=null){
 							</tr>
 						</table>-->
 						<div>
-							<s:form name="regForm" action="freeUserRegistration" method="POST" theme="simple" >
+							
 								<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 								<input type="hidden" name="task" value="<%=task %>" />
 								<input type="hidden" name="name" value="<%=name %>" />
@@ -692,7 +470,7 @@ if(request.getParameter("problemHistoryId")!=null){
 									</tr>
 									<tr>	
 										<td align="right">
-											<s:submit value="Sign Up" cssClass="btnStyle" align="center"/>
+											<h3><a href="freeUserRegistration.action"><img src="images/icons/homePage_new/signup_button.gif"></a></h3>
 										</td>
 									</tr>	
 								</table>
@@ -706,6 +484,213 @@ if(request.getParameter("problemHistoryId")!=null){
         
        
 		</div>
+
+		<script type="text/javascript">
+
+
+function callAJAX(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "forgotPassword")
+					{
+						showDetails(results);
+					}
+			}catch (e) {   		
+			   	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+function closewindow(){
+	
+	$("#forgot_password_window").dialog("destroy");
+}
+
+function showDetails(results)
+{
+	
+	var result = document.getElementById("feedback_window_errorMsg");
+	 str='';
+	
+	if(results == null){
+		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
+	}
+	else if(results.email == null){		
+		str+='<div style="color:red"><b> Username Doesnot exist </b></div>';
+	}
+	else{
+		$("#forgot_password_window").dialog("destroy");
+		afterPasswordSubmit(results.email);
+		return;
+	}
+	result.innerHTML = str;
+	
+}
+function afterPasswordSubmit(email){
+
+ $("#forgot_password_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:150,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("forgot_password_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
+		str += 'Your password has been mailed to your email address :'+email+'</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr><td>';
+		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
+		str += '   value="OK"></input></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("OkButton");
+
+		oPushButton2.on("click",function(){
+			$("#forgot_password_window").dialog("destroy");
+		});
+}
+
+function showForgotPasswordPanel(){
+
+$("#forgot_password_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:200,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("forgot_password_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackNote_div">';
+		str += '		<table>';
+		str += '		<tr>';
+		str += '		<td><img src="images/icons/infoicon.png"></td>';
+		str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
+		str += '		</tr>';
+		str += '		</table>';
+		str += '	</div>';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<table id="feedbackTable" width="100%">';
+		str += '		<tr>';
+		str += '		<th><font color="red">*</font>UserName </th>';
+		str += '		<td>';
+		str += '			<input type="text" id="userName_FP" size="25"/>';
+		str += '		</td>';
+		str += '		</tr>';
+		str += '		</table>';
+		str += '	</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '		<input id="postButton" type="button" value="submit"></input>';
+		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("postButton");  
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton1.on("click",function(){
+			checkAvailability();
+		});
+
+		oPushButton2.on("click",function(){
+			$("#forgot_password_window").dialog("destroy");
+		});
+
+}
+
+
+function checkAvailability()
+{
+
+	var name = document.getElementById("userName_FP").value;
+ 	
+	if(name==""){
+		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName field cannot be empty</font>";
+ 	 }
+	 else if (name.charAt(0).indexOf(" ")==0){
+		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Should not contain spaces</font>";
+ 	 }
+	 else if(name.length < 6)
+	{
+		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
+	}
+	 
+     else{ 
+		var str = '<font color="#000000">Sending Your Request.Please wait</font>';
+		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+ 		document.getElementById("feedback_window_errorMsg").innerHTML = str;
+ 		var jsObj=
+		{		
+ 				userName:name,
+				task:"forgotPassword",
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/recoverPasswordAnanymousUserAction.action?"+rparam;						
+		callAJAX(jsObj,url);
+ 	 }
+}
+
+
+</script>
+
+
+
+	<script type="text/javascript">
+	function executeOnload()
+	{  
+	   var checkedValue='';
+		checkedValue = '${sessionScope.checkedTypeValue}'; 
+		 if(checkedValue =="1")
+		  { 
+		      document.getElementById("paUserRadio").checked=true ;
+		      document.getElementById("freeUserRadio").checked=false;
+		  }
+		 if(checkedValue =="2")
+		 { 
+		      document.getElementById("paUserRadio").checked=false ;
+		      document.getElementById("freeUserRadio").checked=true;
+		  }
+		var textBoxEl = document.getElementById("userName");
+		textBoxEl.focus();
+		
+		
+	}
+		
+	</script> 
         <script type="text/javascript">
         	executeOnload();
         </script>
