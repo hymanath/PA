@@ -58,4 +58,6 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxRecords);
 	
 	public ResultStatus saveDescription(GallaryVO gallaryVO);
+	
+	public List<FileVO> getCandidatesPhotoGallaryDetailWithOutGallerySizeZero(Long candidateId,int firstRecord,int maxRecord,String type);
 }
