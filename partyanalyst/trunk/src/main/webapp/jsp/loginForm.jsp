@@ -318,7 +318,7 @@ if(request.getParameter("problemHistoryId")!=null){
 					<div id="loginPanel" class="panelContainer">
 						<table>
 							<tr>
-								<td colspan="2"><s:actionerror /></td>
+								<td colspan="2" style="color:red"><s:actionerror /></td>
 							</tr>
 						</table>
 						
