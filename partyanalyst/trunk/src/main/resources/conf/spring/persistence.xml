@@ -198,9 +198,7 @@
 				<value>com.itgrids.partyanalyst.model.ProblemFile</value>
 				<value>com.itgrids.partyanalyst.model.File</value>
 				<value>com.itgrids.partyanalyst.model.FileType</value>
-				<value>com.itgrids.partyanalyst.model.GallaryType</value>
 				<value>com.itgrids.partyanalyst.model.Gallary</value>
-				<value>com.itgrids.partyanalyst.model.CandidateGallary</value>
 				<value>com.itgrids.partyanalyst.model.FileGallary</value>
 				<value>com.itgrids.partyanalyst.model.UserEntitlementGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.UserSubuserRelation</value>
