@@ -72,8 +72,11 @@ background:url("./images/new_homepage/js-banner-bg1.jpg");
 margin:-1px 0px 0px 0px ;
 }
 </style>
+<decorator:head/>
 </head>
 <body>
+
+<div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
 <div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">
 <c:choose>
