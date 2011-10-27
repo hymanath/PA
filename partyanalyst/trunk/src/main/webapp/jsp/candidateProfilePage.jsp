@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${candidateVO.candidateName} 'S  Profile</title>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
+
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
 <style type="text/css">#videogallery a#videolb{display:none}</style>
@@ -17,7 +17,7 @@
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
 <style type="text/css">
 .ui-widget-header {
 background:url("");
@@ -81,6 +81,109 @@ font-weight:bold;
    width:29px;
 }
 </style>
+
+</head>
+<body>
+<div id="candidateProfileInfo">
+ <span style="margin-top: 12px; margin-left: 12px;">${candidateVO.candidateName} 'S  Profile</span></div><br>
+<table width="987px" border="0" align="center" cellpadding="0" cellspacing="0">
+ <tr>
+  <td width="206">
+  <div class="rel">
+   <div class="box1">
+   <div id="candidateInfo" >
+	
+	</div>
+	<div style="border-bottom: 1px solid #D7E2EB;"></div>
+	 <div class="linkClass">About
+	   </div>
+	   <div class="linkClass">News And Events
+	   </div>
+	   <div class="linkClass">Videos
+	   </div>
+	   <div class="linkClass">Photo Gallery
+	   </div>
+	   <div class="linkClass">Elections
+	   </div>
+	   <div class="linkClass">Developments
+	   </div>
+    </div>
+	</div>
+ </td>
+ <td width="10">&nbsp;</td>
+ <td width="444" valign="top"><div class="rel">
+ <div class="box2">
+ <div id="ProfileInfo" style="font-family:arial;font-size:12px"> </div>
+<div id="showProfile"> </div>
+<div id="electionInfo" style="font-family:arial;font-size:12px"></div>
+     <div id="photoGallaryDiv"></div>
+  </div>
+ </div>
+</td>
+ <td width="10">&nbsp;</td>
+<td width="326">
+<div class="rel">
+ <div class="box3">
+  <div id="newsDisplayDiv"></div>
+
+<s:if test="fileVO != null && fileVO.size() > 0"> 
+<img src="images/icons/videos.jpg" style="margin-top:5px;margin-bottom:5px;"></img>
+<div id="videogallery">
+
+	<s:iterator status="stat" value="fileVO">
+		
+		<s:if test="#stat.index == 0">
+		<DIV>
+		<a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="230px;" height="210px;"/>
+		</DIV>
+		</s:if>
+	</s:iterator>
+
+	<s:if test="fileVO.size() > 1"> 
+		<DIV style="margin-top:5px;"><table width="100%"><tr>
+			<s:iterator status="stat" value="fileVO">
+				<s:if test="#stat.index >= 1 && #stat.index <= 3">
+				<td><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
+				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="72px;" height="75px;"/></td>
+				</s:if>
+			</s:iterator>
+		</tr></table>
+		</DIV>
+	</s:if>
+
+</div>
+</s:if>
+
+<s:if test="fileVO != null && fileVO.size() > 4"> 
+<img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="javascript:{}">
+</s:if>
+
+ </div>
+ 
+ </td>
+ </tr>
+ 
+</table>
+<script>
+  $(document).ready(function() {
+    $("#tabs").tabs();
+
+   $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+  });
+  </script> 
+  <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
+	</script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
+	</script>
+
 <script type="text/javascript">
    var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
@@ -123,7 +226,7 @@ function callAjax(jsObj,url)
 			{
                buildFirstThreePhotoRecords(myResults);
 			}
-		 else if(jsObj.task == "getCandidatesPhotoGallaryDetailWithOutGallerySizeZero")
+		 else if(jsObj.task == "getCandidatePhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
@@ -173,7 +276,7 @@ function showPhotoGallary(){
 			candidateId:candidateId,
 			startRecord:0,
 			maxRecord:20,
-			task:"getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"
+			task:"getCandidatePhotoGallaryDetail"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -202,10 +305,18 @@ function buildCandidatePhotoGallary(results)
 			
 			str += '<td width="33%" class="imageStyle">';
 			str += '<table class="tableStyle">';
-			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';			
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';            
+			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+			if(results[i].path!=null)
+			{
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+            }
+			else
+			{
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			}
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';			
+			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+			
 			str += '</table>';
 			str += '</td>';
 			
@@ -395,7 +506,7 @@ function showFirstFourNewsRecords(results)
 								width: 720,
 								position:[150,120],								
 								modal: true,
-								title:'<font color="Navy"><b>${candidateVO.candidateName} \'s News</b></font>',
+								title:'<font color="Navy"><b>News</b></font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showAllNewsDiv").dialog();
@@ -731,12 +842,12 @@ function candidateInfo()
 	
 
 	str+='<table>';
-	str+='<img id="candidateImage" height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/'+candidateInfoObject.candidateInfoArray[0].candidateName+'.jpg">';
+	str+='<img id="candidateImage" height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg">';
 	str+='<tr><td>';
-	str+='<span id="candidateName">'+candidateInfoObject.candidateInfoArray[0].candidateName+'</span></td></tr>';
+	str+='<span id="candidateName">${candidateVO.candidateName}</span></td></tr>';
 	str+='<tr><td align="center">';
 	str+='<span  style="font-weight: bold; font-size:12px;">';
-    if(candidateInfoObject.candidateInfoArray[0].electionType =="Assembly")
+    /*if(candidateInfoObject.candidateInfoArray[0].electionType =="Assembly")
 	{
      str+='MLA';
 	}
@@ -749,7 +860,7 @@ function candidateInfo()
 	str+='<tr><td align="center">';
 	str+='<span  style="font-weight: bold; font-size: 12px;">'+candidateInfoObject.candidateInfoArray[0].constituencyName+'&nbsp;Constituency</span></td></tr>';
 	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size: 12px;">'+candidateInfoObject.candidateInfoArray[0].partyName+' Party</span></td>';
+	str+='<span  style="font-weight: bold; font-size: 12px;">'+candidateInfoObject.candidateInfoArray[0].partyName+' Party</span></td>';*/
 	
 	candidateInfoElmt.innerHTML = str;
 }
@@ -857,165 +968,11 @@ function buildVideoGallaryDiv(result)
 }
 
 </script>
-</head>
-<body>
-<div id="candidateProfileInfo">
- <span style="margin-top: 12px; margin-left: 12px;">${candidateVO.candidateName} 'S  Profile</span></div>
-<table width="987px" border="0" align="center" cellpadding="0" cellspacing="0">
- <tr>
-  <td width="206">
-  <div class="rel">
-   <div class="box1">
-   <div id="candidateInfo" >
-	
-	</div>
-	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	 <div class="linkClass">About
-	   </div>
-	   <div class="linkClass">News And Events
-	   </div>
-	   <div class="linkClass">Videos
-	   </div>
-	   <div class="linkClass">Photo Gallery
-	   </div>
-	   <div class="linkClass">Elections
-	   </div>
-	   <div class="linkClass">Developments
-	   </div>
-    </div>
-	</div>
- </td>
- <td width="10">&nbsp;</td>
- <td width="444" valign="top"><div class="rel">
- <div class="box2">
- <div id="ProfileInfo"> </div>
-<div id="showProfile"> </div>
-<div id="electionInfo"></div>
-     <div id="photoGallaryDiv"></div>
-  </div>
- </div>
-</td>
- <td width="10">&nbsp;</td>
-<td width="326">
-<div class="rel">
- <div class="box3">
-  <div id="newsDisplayDiv"></div>
-
-<s:if test="fileVO != null && fileVO.size() > 0"> 
-<img src="images/icons/videos.jpg" style="margin-top:5px;margin-bottom:5px;"></img>
-<div id="videogallery">
-
-	<s:iterator status="stat" value="fileVO">
-		
-		<s:if test="#stat.index == 0">
-		<DIV>
-		<a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="230px;" height="210px;"/>
-		</DIV>
-		</s:if>
-	</s:iterator>
-
-	<s:if test="fileVO.size() > 1"> 
-		<DIV style="margin-top:5px;"><table width="100%"><tr>
-			<s:iterator status="stat" value="fileVO">
-				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<td><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="72px;" height="75px;"/></td>
-				</s:if>
-			</s:iterator>
-		</tr></table>
-		</DIV>
-	</s:if>
-
-</div>
-</s:if>
-
-<s:if test="fileVO != null && fileVO.size() > 4"> 
-<img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="javascript:{}">
-</s:if>
-
- </div>
- 
- </td>
- </tr>
- 
-</table>
-<script>
-  $(document).ready(function() {
-    $("#tabs").tabs();
-
-   $("a[rel=photo_gallery]").fancybox({
-				'transitionIn'		: 'none',
-				'transitionOut'		: 'none',
-				'titlePosition' 	: 'over',
-				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
-				}
-			});
-  });
-  </script> 
-  <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
-	</script>
-	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
-	</script>
 
 <script type="text/javascript">	
 	
 	
-	candidateInfoObject.name = "${candidateVO.candidateName}";
-	candidateInfoObject.candidateImgURL = "<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ;
-	candidateInfoObject.contextPath = "<%=request.getContextPath()%>";
-	candidateInfoObject.candidatePartyFlag = "<%=request.getContextPath()%>/images/party_flags/${partyFlag}";
-
-	<c:forEach var="candidateElectionResults" items="${candidateElectionDetails}" >		
-			var candidateObj={
-								electionId:'${candidateElectionResults.electionId}',
-								candidateName:'${candidateElectionResults.candidateName}',
-								partyName:'${candidateElectionResults.partyName}',
-								partyFlag:'${candidateElectionResults.partyFlag}',
-								constituencyName:'${candidateElectionResults.constituencyName}',
-								electionType:'${candidateElectionResults.electionType}',
-								electionYear:'${candidateElectionResults.electionYear}',
-								districtName:'${candidateElectionResults.districtName}',
-								stateName:'${candidateElectionResults.stateName}',
-								votesEarned:'${candidateElectionResults.votesEarned}',
-								votePercentage:'${candidateElectionResults.votesPercentage}',
-								constituencyId:'${candidateElectionResults.constituencyId}',
-								education:'${candidateElectionResults.education}',
-								partyShortName:'${candidateElectionResults.shortName}',	
-								status:'',
-								oppositionCandidates:[]
-							};
-			<c:if test="${candidateElectionResults.status == true }">
-				candidateObj.status='Won';
-			</c:if>						
-			<c:if test="${candidateElectionResults.status == false }">
-				candidateObj.status='Lost';
-			</c:if>
-
-			<c:forEach var="detailedResult" items="${candidateElectionResults.oppositionCandidates}" >
-				var oppositionList={
-									candidateName:'${detailedResult.candidateName}',
-									partyName:'${detailedResult.partyName}',
-									votesEarned:'${detailedResult.votesEarned}',
-									votesPercentage:'${detailedResult.votesPercentage}',
-									status:''
-								};
-						<c:if test="${detailedResult.status == true }">
-							oppositionList.status='Won';
-						</c:if>
-						<c:if test="${detailedResult.status == false }">
-							 oppositionList.status='Lost';
-						</c:if>
-					candidateObj.oppositionCandidates.push(oppositionList);
-			</c:forEach>			
-			candidateInfoObject.candidateInfoArray.push(candidateObj);			
-	</c:forEach>
 	
-	function setDefaultImage(img)
-	{
-		img.src = "images/candidates/human.jpg";
-	}
 
 function showCandidateElectionDetails(str)
 {
@@ -1031,5 +988,6 @@ buildCandidateElectionInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 </script>
+
 </body>
 </html>
