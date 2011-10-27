@@ -628,15 +628,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="gallaryTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryTypeDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
 	<bean id="gallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="candidateGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateGallaryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
