@@ -123,7 +123,7 @@ function callAjax(jsObj,url)
 			{
                buildFirstThreePhotoRecords(myResults);
 			}
-		 else if(jsObj.task == "getCandidatePhotoGallaryDetail")
+		 else if(jsObj.task == "getCandidatesPhotoGallaryDetailWithOutGallerySizeZero")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
@@ -173,7 +173,7 @@ function showPhotoGallary(){
 			candidateId:candidateId,
 			startRecord:0,
 			maxRecord:20,
-			task:"getCandidatePhotoGallaryDetail"
+			task:"getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -202,18 +202,10 @@ function buildCandidatePhotoGallary(results)
 			
 			str += '<td width="33%" class="imageStyle">';
 			str += '<table class="tableStyle">';
-			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
-			if(results[i].path!=null)
-			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
-            }
-			else
-			{
-			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
-			}
+			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';			
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';            
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-			
+			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';			
 			str += '</table>';
 			str += '</td>';
 			
@@ -403,7 +395,7 @@ function showFirstFourNewsRecords(results)
 								width: 720,
 								position:[150,120],								
 								modal: true,
-								title:'<font color="Navy"><b>News</b></font>',
+								title:'<font color="Navy"><b>${candidateVO.candidateName} \'s News</b></font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showAllNewsDiv").dialog();
