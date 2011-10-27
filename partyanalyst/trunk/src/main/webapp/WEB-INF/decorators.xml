@@ -82,7 +82,9 @@
         <pattern>/homePage*</pattern>
         <pattern>/candidateElectionResultsAction*</pattern>
 		<pattern>/freeUserRegistration*</pattern>
-		
+		<pattern>/loginAction*</pattern>
+		<pattern>/loginInputAction*</pattern>
+		<pattern>/candidateProfileAction*</pattern>
     </decorator>
 
 </decorators>
