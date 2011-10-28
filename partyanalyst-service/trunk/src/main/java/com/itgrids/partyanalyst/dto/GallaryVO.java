@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Kamalakar Dandu
@@ -20,8 +22,15 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private String contentType;
 	private Long candidateId;
 	private Long userId;
+	private List<FileVO> filesList = new ArrayList<FileVO>(0);
 	
 	
+	public List<FileVO> getFilesList() {
+		return filesList;
+	}
+	public void setFilesList(List<FileVO> filesList) {
+		this.filesList = filesList;
+	}
 	public Long getUserId() {
 		return userId;
 	}
