@@ -242,10 +242,10 @@ function buildAccordion()
         <c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
         <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
-                <li style="float:left;"><a href="electionComparisonAction.action"><span >Elections Comparison Report</span></a>
+                <li><a href="electionComparisonAction.action"><span >Elections Comparison Report</span></a>
                  
                 </li>
-                <li style="float:left;"><a href="partyResultsCriteriaAction.action"><span style="float:left">Party Results Report</span></a>
+                <li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a>
                     
                 </li>
                 <li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
