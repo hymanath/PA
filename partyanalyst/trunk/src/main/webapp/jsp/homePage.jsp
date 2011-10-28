@@ -289,10 +289,11 @@ function openAddNewProblemWindow()
               </li>
               <li>
                 <div class="q-icon">q</div>
-                <div class="q-theme">The information displayed in this website are based on the data collected from the Election Commmission Of India. ?</div>
+                <div class="q-theme">Want to Know More?</div>
                 <div class="clear"></div>
                 <div class="a-icon">a</div>
-                <div class="a-theme" style="border-bottom:none;">The information displayed in this website are based on the data</div>
+                <div class="a-theme" style="border-bottom:none;">Call us at +91 9676696760 or +91 40 4012 4153<br>
+                Drop an email to a.dakavaram@itgrids.com or a.dakavaram@partyanalyst.com</div>
               </li>
             </ul>
             <script type="text/javascript" src="js/vscroll.js"></script> 
