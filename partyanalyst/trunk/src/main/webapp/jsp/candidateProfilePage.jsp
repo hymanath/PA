@@ -80,6 +80,11 @@ font-weight:bold;
    height:53px;
    width:29px;
 }
+
+.eleprofileImg{
+	margin: 1px;
+    padding-right: 8px;
+}
 </style>
 
 </head>
@@ -155,9 +160,10 @@ font-weight:bold;
 </div>
 </s:if>
 
-<s:if test="fileVO != null && fileVO.size() > 4"> 
+
+<!-- <s:if test="fileVO != null && fileVO.size() > 4"> 
 <img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="javascript:{}">
-</s:if>
+</s:if> --->
 
  </div>
  
@@ -810,7 +816,7 @@ function buildCandidateElectionInfo()
 	}
 	
     str+='<div onmouseover="this.style.color=\'#4D2AEB\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
-	str+='<b><img src="images/icons/round.JPG">Won</b>';
+	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Won</b>';
 	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName" /> constituency<br><br></div></s:if>';
 	
 	str+'</s:iterator>';
@@ -825,7 +831,7 @@ function buildCandidateElectionInfo()
 	}
 	
     str+='<div onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
-	str+='<b><img src="images/icons/round.JPG">Lost</b>';
+	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Lost</b>';
 	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName"/> constituency<br><br></div></s:if>';
 	
 	str+'</s:iterator>';
