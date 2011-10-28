@@ -77,6 +77,7 @@ margin:-1px 0px 0px 0px ;
 <body>
 
 <div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
+	
 <div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">
 <c:choose>
@@ -240,11 +241,11 @@ function buildAccordion()
         <li><a href="homePage.action" ><span>HOME</span></a>           
         <c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
         <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
-            <div style="z-index:1;"><ul>
-                <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a>
+            <div style="z-index:1;text-align:left;"><ul>
+                <li style="float:left;"><a href="electionComparisonAction.action"><span >Elections Comparison Report</span></a>
                  
                 </li>
-                <li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a>
+                <li style="float:left;"><a href="partyResultsCriteriaAction.action"><span style="float:left">Party Results Report</span></a>
                     
                 </li>
                 <li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
@@ -290,7 +291,7 @@ function buildAccordion()
 			  <li><a href="cadreManagementAction.action"><span>CADRE</span></a>
 			 </c:if>
         <li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
-		 <div  style="z-index:8;"><ul>
+		 <div  style="z-index:8;text-align:left;" ><ul>
                 <li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a>
                  
                 </li>
@@ -418,7 +419,7 @@ function buildAccordion()
       <li style="width:307px;">
         <textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox"  style="height:78px;width:297px;border:1px solid #7f7f7f;background-color:#7f7f7f" >Comment</textarea>
       </li>
-      <li style="width:307px;">
+      <li style="width:307px;text-align:left;">
        <input name="mobileNO" id="quickRequestMobileTextbox" type="text" class="text-fields" value="Mobile No"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
         <input name="" type="submit" value="" class="submit" onclick="submitDialogBox()"/>
       </li>
