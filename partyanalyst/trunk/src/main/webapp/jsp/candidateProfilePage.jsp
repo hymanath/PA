@@ -85,6 +85,13 @@ font-weight:bold;
 	margin: 1px;
     padding-right: 8px;
 }
+
+.submenuImg{
+	float: left;
+    height: 28px;
+    padding-right: 8px;
+}
+
 </style>
 
 </head>
@@ -100,10 +107,10 @@ font-weight:bold;
 	
 	</div>
 	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	   <div class="linkClass">News And Events</div>
-	   <div class="linkClass">Videos</div>
-	   <div class="linkClass">Photo Gallery</div>
-	   <div class="linkClass">Developments</div>
+	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>News And Events</div>
+	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Videos</div>
+	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Photo Gallery</div>
+	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Developments</div>
     </div>
 	</div>
  </td>
