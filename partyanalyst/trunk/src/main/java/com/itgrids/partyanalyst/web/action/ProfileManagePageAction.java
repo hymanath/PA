@@ -2,9 +2,13 @@ package com.itgrids.partyanalyst.web.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProfileManagePageAction extends ActionSupport implements ServletRequestAware{
@@ -13,7 +17,16 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private Long candidateld;
+	private EntitlementsHelper entitlementsHelper;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public Long getCandidateld() {
 		return candidateld;
 	}
@@ -22,14 +35,19 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 		this.candidateld = candidateld;
 	}
 
-	@Override
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 	
 	public String execute()  {
 		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
+			return IConstants.NOT_LOGGED_IN;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
+			return ERROR;
 		
 		return SUCCESS;
 	}
