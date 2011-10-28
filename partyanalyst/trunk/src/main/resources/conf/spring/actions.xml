@@ -767,6 +767,10 @@
 		<property name="callTrackingService" ref="callTrackingService" />
 	</bean>
 	
+	<bean id="profileManagePageAction" class="com.itgrids.partyanalyst.web.action.ProfileManagePageAction" singleton="false">
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
+	</bean>
+	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
 		<property name="announcementService" ref="announcementService" />	
 	</bean>
