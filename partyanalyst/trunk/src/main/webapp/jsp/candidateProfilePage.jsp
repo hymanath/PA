@@ -988,6 +988,11 @@ function showCandidateElectionDetails(str)
     politicalChangesWindow.focus();
 }
 
+function setDefaultImage(img)
+{
+		img.src = "images/candidates/human.jpg";
+}
+
 displayProfile();
 candidateInfo();
 buildCandidateElectionInfo();
