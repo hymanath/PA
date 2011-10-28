@@ -90,7 +90,7 @@ p{padding:0px 0px 15px 0px; line-height:17px;}
 .qa-sec ul{width:438px; float:left; margin:0px 0px 0px 4px;}
 .qa-sec li{float:left; width:438px; line-height:17px; padding:0px 0px 14px;}
 .q-icon{width:11px; float:left; color:#ff4705; font-weight:bold; text-transform:uppercase; padding:0px 2px 7px 0px;}
-.q-theme{width:407px; float:left; color:#252525; font-weight:bold; padding:0px 9px 7px;}
+.q-theme{width:407px; float:left; color:#252525; text-align:left; font-weight:bold; padding:0px 9px 7px;}
 .a-icon{width:11px; float:left; color:#bdbdbd; font-weight:bold; padding-right:2px; text-transform:uppercase;}
 .a-theme{width:407px; float:left; border-bottom:1px solid #e3e3e3; padding:0px 9px 15px;}
 
@@ -98,8 +98,8 @@ p{padding:0px 0px 15px 0px; line-height:17px;}
 
 /*CURRENT ELECTION SUB CONTENT SECTION START*/
 
-.title{font-size:18px; line-height:18px; color:#0d0e3b; padding-bottom:26px;}
-.ce-sub-fields{width:355px; padding:27px 0px 32px 36px;}
+.title{font-size:18px; line-height:18px; color:#0d0e3b; padding-bottom:26px;text-align:left;}
+.ce-sub-fields{width:355px; padding:27px 0px 32px 36px; text-align:left;}
 .ce-sub-fields li{background:url(../images/new_homepage/orange-square.gif) left 5px no-repeat; float:left; padding-left:17px; width:338px; padding-bottom:3px;}
 .ce-sub-fields li a{color:#5b5b5b;}
 
@@ -109,7 +109,7 @@ p{padding:0px 0px 15px 0px; line-height:17px;}
 
 .sneak-peak-sec{width:662px; float:left; padding:0px 8px 0px 18px;}
 .sneak-peak-sec p{line-height:20px;}
-.pft-social-sec{width:290px; float:right; padding:7px 7px 17px 8px; border-left:1px dotted #9c9c9c;}
+.pft-social-sec{width:290px; float:right; text-align:left; padding:7px 7px 17px 8px; border-left:1px dotted #9c9c9c;}
 .pft-sec{float:left; padding:0px 0px 16px 24px; font-size:20px; color:#777777; width:244px; line-height:24px;}
 .pft-sec strong{font-size:22px; color:#0a0b39; text-transform:uppercase; display:block; line-height:21px;}
 .pft-sec strong span{font-size:30px;}
@@ -131,7 +131,7 @@ text-indent:-9999px; margin-top:18px;}
 .footer-left-sec li span{float:left; padding:0px 7px;}
 
 .footer-right-sec{width:316px; float:right; padding:10px 26px 0px 0px;}
-.form-title{font-size:16px; color:#c4c4c4; padding-bottom:9px; font-weight:normal;}
+.form-title{font-size:16px; text-align:left; color:#c4c4c4; padding-bottom:9px; font-weight:normal;}
 .footer-right-sec li{width:151px; float:left; padding:0px 7px 8px 0px;}
 .text-fields{font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#1a1a1a; height:24px; background-color:#7f7f7f; 
 border:1px solid #7f7f7f; padding:0px 10px; width:129px; color:#000;}
@@ -163,14 +163,14 @@ color:#2a4f97; font-size:11px; line-height:21px;}
 .sr-sec{width:279px; float:left; background:url(../images/new_homepage/sr-bgs.png) left top no-repeat; padding-top:4px;}
 .sr-mbg{width:265px; float:left; background-color:#fff; border-left:1px solid #ebebeb; border-right:1px solid #ebebeb; padding:2px 6px;}
 .sr-bbg{width:279px; float:left; background:url(../images/new_homepage/sr-bgs.png) left -9px no-repeat; height:4px;}
-.glossymenu{float:left; width:265px;}
-.glossymenu a.menuitem{background:url(../images/new_homepage/sr-bgs.png) left -17px no-repeat; width:242px; height:23px; color:#000; display:block;
+.glossymenu{float:left; text-align:left;width:265px;}
+.glossymenu a.menuitem{background:url(../images/new_homepage/sr-bgs.png) left -17px no-repeat; width:242px; height:23px; color:#000; display:block; float:left;
 font:bold 12px/23px "Trebuchet MS", Arial, Helvetica, sans-serif; position:relative; padding: 3px 9px 0px 14px; margin-bottom:1px;
 text-transform:uppercase;}
 .glossymenu a.menuitem .statusicon{position:absolute; top:9px; right:9px;}
 .glossymenu a.menuitem:hover{background:url(../images/new_homepage/sr-bgs.png) left -47px no-repeat; text-decoration:none;}
 
-.sr-sec .submenu{width:237px; padding:9px 12px 13px 16px; color:#4b4b4b; font-size:12px; line-height:17px; display:block;}
+.sr-sec .submenu{text-align:left;width:237px; padding:9px 12px 13px 16px; color:#4b4b4b; float:left; font-size:12px; line-height:17px; display:block;}
 .sr-sec .submenu p{padding:0px 0px 16px 0px; line-height:17px;}
 .sr-sec .submenu select{width:237px; color:#000; display:block; font:12px "Trebuchet MS", Arial, Helvetica, sans-serif; margin-bottom:11px;}
 .view-results a{background:url(../images/new_homepage/sprites.png) -310px top no-repeat; width:94px; height:24px; border:none; cursor:pointer; text-indent:-9999px;display:block; margin:0px 0px 0px 143px;}
