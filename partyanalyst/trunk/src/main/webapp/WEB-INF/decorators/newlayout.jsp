@@ -254,9 +254,9 @@ function buildAccordion()
         </c:if>
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 
          <li><a href="#" class="parent"><span>ANALYSIS</span></a>
-            <div  style="z-index:1;"><ul>
+            <div  style="z-index:1;text-align:left;"><ul>
                 <li><a href="#" class="parent"><span>Election Analysis</span></a>
-                    <div  style="z-index:1;"><ul>
+                    <div  style="z-index:1;text-align:left;"><ul>
                         <li><a href="partyPerformanceMain.action"><span>Party Performance Report</span></a></li>
                         <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
                         <li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
@@ -267,7 +267,7 @@ function buildAccordion()
 					 </ul></div>
                 </li>
                 <li><a href="#" class="parent"><span>Politician Analysis</span></a>
-                    <div  style="z-index:1;"><ul>
+                    <div  style="z-index:1;text-align:left;"><ul>
                         <li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
                         <li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
 						 <li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
@@ -275,7 +275,7 @@ function buildAccordion()
                 </li>
              </ul></div>
          <li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
-            <div  style="z-index:1;"><ul>
+            <div  style="z-index:1;text-align:left;"><ul>
                 <li><a href="#" class="parent"><span>Problem Management</span></a>
                     <div><ul>
                         <li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
