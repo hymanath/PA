@@ -270,6 +270,7 @@ public interface IConstants {
     public static final String CENSUS_REPORT_ENTITLEMENT = "CENSUS_REPORT_ENTITLEMENT";
     public static final String CADRE_UPLOAD_ENTITLEMENT = "CADRE_UPLOAD_ENTITLEMENT";
     public static final String CALL_CENTER_ENTITLEMENT = "CALL_CENTER_ENTITLEMENT";
+    public static final String PROFILE_MANAGEMENT_ENTITLEMENT = "PROFILE_MANAGEMENT_ENTITLEMENT";
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
