@@ -231,7 +231,7 @@ function callAjax(jsObj,url)
 			{
                buildFirstThreePhotoRecords(myResults);
 			}
-		 else if(jsObj.task == "getCandidatePhotoGallaryDetail")
+		 else if(jsObj.task == "getCandidatesPhotoGallaryDetailWithOutGallerySizeZero")
 			{
                buildCandidatePhotoGallary(myResults);
 			}
@@ -281,7 +281,7 @@ function showPhotoGallary(){
 			candidateId:candidateId,
 			startRecord:0,
 			maxRecord:20,
-			task:"getCandidatePhotoGallaryDetail"
+			task:"getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
