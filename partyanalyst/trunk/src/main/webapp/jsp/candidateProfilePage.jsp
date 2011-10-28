@@ -839,27 +839,32 @@ function candidateInfo()
     var str='';
 	
 
-	str+='<table>';
+	str+='<table style="margin-bottom:25px;">';
 	str+='<img id="candidateImage" height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg">';
-	str+='<tr><td>';
+	str+='<tr><td align="center">';
 	str+='<span id="candidateName">${candidateVO.candidateName}</span></td></tr>';
+	
 	str+='<tr><td align="center">';
 	str+='<span  style="font-weight: bold; font-size:12px;">';
-    /*if(candidateInfoObject.candidateInfoArray[0].electionType =="Assembly")
-	{
-     str+='MLA';
-	}
-	if(candidateInfoObject.candidateInfoArray[0].electionType =="Parliament")
-	{
-     str+='MP';
-	} 
+	
+	<s:if test="candidateElectionDetails[0].electionType == 'Assembly'">
+		str += 'MLA';
+	</s:if>
+
+	<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
+		str += 'MP';
+	</s:if>
+
 	str+='</span></td>';
 	str+='</tr>';
+
 	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size: 12px;">'+candidateInfoObject.candidateInfoArray[0].constituencyName+'&nbsp;Constituency</span></td></tr>';
+	str+='<span  style="font-weight: bold; font-size: 12px;">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</span></td></tr>';
+
 	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size: 12px;">'+candidateInfoObject.candidateInfoArray[0].partyName+' Party</span></td>';*/
-	
+	str+='<span  style="font-weight: bold; font-size: 12px;">${candidateElectionDetails[0].partyName} PARTY</span></td></tr>';
+
+	str += '</table>';
 	candidateInfoElmt.innerHTML = str;
 }
 
