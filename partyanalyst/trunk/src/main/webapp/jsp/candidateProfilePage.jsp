@@ -117,7 +117,7 @@ font-weight:bold;
  <td width="10">&nbsp;</td>
  <td width="444" valign="top"><div class="rel">
  <div class="box2">
- <div id="ProfileInfo" style="font-family:arial;font-size:12px"> </div>
+ <div id="ProfileInfo" style="font-family:arial;font-size:12px;text-align:justify;"> </div>
 <div id="showProfile"> </div>
 <div id="electionInfo" style="font-family:arial;font-size:12px"></div>
      <div id="photoGallaryDiv"></div>
@@ -131,8 +131,8 @@ font-weight:bold;
   <div id="newsDisplayDiv"></div>
 
 <s:if test="fileVO != null && fileVO.size() > 0"> 
-<img src="images/icons/videos.jpg" style="margin-top:5px;margin-bottom:5px;"></img>
-<div id="videogallery">
+<img src="images/icons/videos.jpg" style="margin-top:5px;margin-bottom:5px;text-align:left;"></img>
+<div id="videogallery" style="text-align:left;">
 
 	<s:iterator status="stat" value="fileVO">
 		
@@ -801,8 +801,8 @@ function buildCandidateElectionInfo()
 	var str ='';
 	var electionInfoElmt = document.getElementById("electionInfo");
 	
-	str+='<table>';
-    str+='<div style="margin-bottom: 21px; font-weight: normal; font-size: 19px; font-family: tahoma;">Election Profile</div>';
+	str+='<table><tr><td>';
+    str+='<div style="margin-bottom: 21px; font-weight: normal; font-size: 19px; font-family: tahoma;text-align:left">Election Profile</div>';
 
 	str+='<s:iterator value="candidateElectionDetails" status="stat">';
 
@@ -810,11 +810,11 @@ function buildCandidateElectionInfo()
 	
 	if(wFlag == true)
 	{
-		str += '<div><img src="images/icons/won.jpg"><br><br></div>';
+		str += '<div style="text-align:left"><img src="images/icons/won.jpg"><br><br></div>';
 		wFlag = false;
 	}
 	
-    str+='<div onmouseover="this.style.color=\'#4D2AEB\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
+    str+='<div onmouseover="this.style.color=\'#4D2AEB\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
 	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Won</b>';
 	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName" /> constituency<br><br></div></s:if>';
 	
@@ -825,17 +825,17 @@ function buildCandidateElectionInfo()
 	
 	if(lFlag == true)
 	{
-		str+='<div><img src="images/icons/lost.jpg"><br><br></div>';
+		str+='<div style="text-align:left"><img src="images/icons/lost.jpg"><br><br></div>';
 		lFlag=false;
 	}
 	
-    str+='<div onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
+    str+='<div onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
 	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Lost</b>';
 	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName"/> constituency<br><br></div></s:if>';
 	
 	str+'</s:iterator>';
 		
-	str+='</table>';
+	str+='</td></tr></table>';
 	
  electionInfoElmt.innerHTML = str;
 }
@@ -894,16 +894,16 @@ function candidateInfo()
  
    var str ='';
     str+='<fieldset class="imgFieldset">';
-    str+='  <table>';
+    str+='  <table><tr><td>';
     str+='  <s:if test="descriptions != null">'; 
     str+='  <div style="font-weight: bold; font-size: 14px;">About ${candidateVO.candidateName}</div>';
     str+=' <br><s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;">';
+	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
     str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
 	str+='</div>';
     str+='</s:iterator>';
     str+=' </s:if>';
-    str+='  </table>';
+    str+=' </td></tr> </table>';
     str+='</fieldset>';
     document.getElementById("showProfile").innerHTML=str;
    
