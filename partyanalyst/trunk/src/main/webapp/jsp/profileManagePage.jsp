@@ -134,7 +134,7 @@ h3 {
 }
 .buttonStyle {
 	-moz-border-radius:5px 5px 5px 5px;
-    background: none repeat scroll 0 0 #04B404;
+    background: none repeat scroll 0 0 #0063DC;
     border: medium none;
     border-radius: 4px 4px 4px 4px;
     color: #FFFFFF;
@@ -1818,11 +1818,11 @@ function profileDiscriptionDiv()
 			<td class="statusData_table_data" width="100%" style="padding-top:23px">
 				<table>
 				  <tr>
-			    	<td style="padding-left:0px"><b><input type="button" class="buttonStyle" value="Photo Gallery" onClick="showPhotoGallary1()"></b></td>
-				    <td style="padding-left:75px"><b><input type="button" class="buttonStyle" value="Video Gallery" onClick="showVideoGallaey1()"></b> </td>
-					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="News Gallery" onClick="showNewsGallaey()"></b> </td>
-					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="Development Activity" onClick="showDevelopmentActivity()"></b> </td>
-					<td style="padding-left:80px"><b><input type="button" class="buttonStyle" value="Profile Description" onClick="insertProfileDiscription()"></b> </td>
+			    	<td style="padding-left:79px"><b><input type="button" class="buttonStyle" value="Photo Gallery" onClick="showPhotoGallary1()"></b></td>
+				    <td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" onClick="showVideoGallaey1()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" onClick="showNewsGallaey()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" onClick="showDevelopmentActivity()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" onClick="insertProfileDiscription()"></b> </td>
 				  </tr>
 				</table>
 			</td>
