@@ -100,18 +100,10 @@ font-weight:bold;
 	
 	</div>
 	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	 <div class="linkClass">About
-	   </div>
-	   <div class="linkClass">News And Events
-	   </div>
-	   <div class="linkClass">Videos
-	   </div>
-	   <div class="linkClass">Photo Gallery
-	   </div>
-	   <div class="linkClass">Elections
-	   </div>
-	   <div class="linkClass">Developments
-	   </div>
+	   <div class="linkClass">News And Events</div>
+	   <div class="linkClass">Videos</div>
+	   <div class="linkClass">Photo Gallery</div>
+	   <div class="linkClass">Developments</div>
     </div>
 	</div>
  </td>
