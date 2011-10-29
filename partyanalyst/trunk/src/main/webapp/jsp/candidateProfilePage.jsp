@@ -460,7 +460,7 @@ function showFirstFourNewsRecords(results)
    str +='<img src="images/icons/news_events.jpg"/>';
    str+='  <table>';
   
-   for(var i =0 ;i<results.length,i<4;i++)
+   for(var i =0 ;i<results.length && i<4;i++)
    {
      initialFileIdArray[i]=results[i].fileId;
      str+='     <tr>';
