@@ -51,7 +51,78 @@ function openAddNewProblemWindow()
 }
 
 </script>
+<style type="text/css">
+#menu ul.menu li.active a {
 
+  background-position: left 0px;
+}
+
+#menu ul.menu li.active a span {
+		color: #E8F3F7;
+  background-position: right -27px;
+}
+#feedback_window
+{
+	background-color:#C7CFD2;	
+}
+
+#feedback_window_inner
+{
+	background-color:#FFFFFF;	
+}
+
+#feedback_window_head
+{
+	background-color:#7898BC;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+#feedback_window_body
+{
+	background-color:#FFFFFF;
+	color:#3A4347;
+	padding:5px;
+}
+
+#feedBackNote_div
+{	
+	border-bottom:1px solid #695532;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+#feedbackTable th
+{
+	padding:5px;
+	text-align:left;
+	width:200px;
+}
+
+#feedbackTable td
+{
+	padding:5px;
+	text-align:left;
+}
+
+#feedback_window_footer
+{
+	text-align:right;
+	padding:5px;
+	background-color:#D6E5E9;
+}
+
+#feedback_window_errorMsg
+{
+	color:red;
+	font-size:11px;
+	text-align:left;
+}
+
+
+
+</style>
 </head>
 
 <body>
@@ -122,11 +193,11 @@ function openAddNewProblemWindow()
             <h1 class="main-title">Search for results</h1>
             <div class="sr-sec">
               <div class="sr-mbg">
-                <div class="glossymenu"> <a class="menuitem submenuheader" href="#">View Your State.</a>
+                <div class="glossymenu"> <a class="menuitem submenuheader" href="javascript:{}">View Your State.</a>
                   <div class="submenu">
                     <p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
-                    <div class="view-results"><a href="#" onclick="navigateToStatePage()">view results</a></div>
+                    <div class="view-results"><a href="javascript:{}" onclick="navigateToStatePage()">view results</a></div>
                   </div>
                   <a class="menuitem submenuheader" href="#" >View Your district.</a>
                   <div clAss="submenu">
@@ -134,7 +205,7 @@ function openAddNewProblemWindow()
                     <p>Select your district to view its election results in district level.</p>
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
-                    <div class="view-results"><a href="#" onclick="navigateToDistrictPage()">view results</a></div>
+                    <div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPage()">view results</a></div>
                   </div>
                    <a class="menuitem submenuheader" href="#">View Your Constituency.</a>
                   <div class="submenu">
@@ -159,10 +230,10 @@ function openAddNewProblemWindow()
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
 									</tr>
 								</table>
-                    <div class="view-results"><a href="#" onclick="navigateToConstituencyPage()">view results</a></div>
+                    <div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPage()">view results</a></div>
                   </div>
                   
-                  <a class="menuitem submenuheader" href="#">View Your Localty.</a>
+                  <a class="menuitem submenuheader" href="javascript:{}">View Your Localty.</a>
                   <div class="submenu">
                    
 							<div >
@@ -187,10 +258,10 @@ function openAddNewProblemWindow()
 									</tr>
 								</table>
 							</div>
-							<div class="view-results"><a href="#">view results</a></div>
+							<div class="view-results"><a onclick="navigateToLocalBodyPage()" href="javascript:{}">view results</a></div>
                   </div>
 						                   
-						<a class="menuitem submenuheader" href="#">View all Election Results.</a>
+						<a class="menuitem submenuheader" href="javascript:{}">View all Election Results.</a>
                   <div class="submenu" style="padding-bottom:5px;">
                     <table>
 									<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
@@ -203,7 +274,7 @@ function openAddNewProblemWindow()
 									
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
 								</table>
-                    <div class="view-results"><a href="#" onclick="viewElectionResults()">view results</a></div>
+                    <div class="view-results"><a href="javascript:{}" onclick="viewElectionResults()">view results</a></div>
                   </div>
                 </div>
               </div>
@@ -304,29 +375,42 @@ function openAddNewProblemWindow()
           
           <!--CURRENT ELECTION SECTION START-->
           
-          <div class="ce-sec">
-<h1 class="title"><span class="orange">Current</span> Elections</h1> <div id="wrap">
+          <div class="ce-sec" style="padding-top:0px;">
+<h1 class="title"><span class="orange">Current </span>Elections</h1> <div id="wrap">
               <div id="list">
                 <div class="prev"><img src="./images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div>
                 <div class="slider">
                   <ul>
-                    <li> <a href="statePageAction.action?stateId=7" title="Title 1"><img src="./images/new_homepage/ce-01.jpg" alt="Title 1" /> <span>BJP Narendra modi</span> </a></li>
-                    <li> <a href="statePageAction.action?stateId=28" title="Title 2"><img src="./images/new_homepage/ce-02.jpg" alt="Title 2"/> <span>TCON Mamatha</span> </a></li>
-                    <li> <a href="statePageAction.action?stateId=24" title="Title 3"><img src="./images/new_homepage/ce-03.jpg" alt="Title 3" /> <span>ADMK Jayalalitha</span> </a></li>
-					<li> <a href="statePageAction.action?stateId=13" title="Title 3"><img src="images/icons/homePage_new/KL_elections_img.jpg" alt="Title 3" /> <span>INC Oommen Chandy</span> </a></li>
+                    <li> <a href="statePageAction.action?stateId=7" title="Narendra modi"><img src="./images/new_homepage/ce-01.jpg" alt="Narendra" /> <span>BJP Narendra modi</span> </a></li>
+                    <li> <a href="statePageAction.action?stateId=28" title="Mamatha"><img src="./images/new_homepage/ce-02.jpg" alt="Mamatha"/> <span>TCON Mamatha</span> </a></li>
+                    <li> <a href="statePageAction.action?stateId=24" title="Jayalalitha"><img src="./images/new_homepage/ce-03.jpg" alt="Title 3" /> <span>ADMK Jayalalitha</span> </a></li>
+					<li> <a href="statePageAction.action?stateId=13" title="Oommen  Chandy"><img src="images/icons/homePage_new/KL_elections_img.jpg" alt="Oommen Chandy" /> <span>INC Oommen Chandy</span> </a></li>
                   </ul>
                 </div>
-                <div class="next"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
+                <div class="next" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
               </div>
             </div>
-            <div class="clear"></div>
-            <ul class="ce-sub-fields">
-              <li>Post a problem of their constituency</li>
-              <li>View all posted comments</li>
-              <li>View replies to their comments</li>
-            </ul>
-          </div>
-          
+            
+          </div>          
+
+<div class="ce-sec" >
+<h1 class="title"><span class="orange">PartyAnalyst </span>Launch</h1> <div id="wrap1">
+              <div id="list">
+                <div class="prev1"></div>
+                <div class="slider1">
+                  <ul>
+                    <li> <a href="http://www.youtube.com/watch?v=mMTRWXNVXCw" title="Overview" target="_blank"><img src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg" alt="PartAnalyst" /> <span>PartyAnalyst Overview</span> </a></li>
+                    <li> <a href="http://www.youtube.com/watch?v=PKZpPe1pYIw" title="Media" target="_blank"><img src="http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg" alt="PartAnalyst"/> <span>Media coverage</span> </a></li>
+                    <li> <a href="http://www.youtube.com/watch?v=3k9vFj0Ca54" title="Media" target="_blank"><img src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg" alt="Title 3" /> <span>Media coverage</span> </a></li>
+					
+                  </ul>
+                </div>
+                <div class="next1" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
+              </div>
+            </div>
+            
+          </div>          
+
           <!--CURRENT ELECTION SECTION END--> 
           
         </div>
@@ -603,7 +687,36 @@ $("#username_change_window").dialog({
 	}
 }
 
+$(function() {
+    		$(".slider1").jCarouselLite({
+        		btnNext: ".next1",
+        		btnPrev: ".prev1",
+        		visible: 3
+    		});
+		});
 
+		$(document).ready(function(){
+			$('img.captify').captify({
+
+				speedOver: 'fast',
+
+				speedOut: 'normal',
+
+				hideDelay: 500,	
+
+				animation: 'slide',		
+
+				prefix: '',		
+
+				opacity: '0.7',					
+
+				className: 'caption-bottom',	
+
+				position: 'bottom',
+
+				spanWidth: '100%'
+			});
+		});
 
 	</script>
 	
