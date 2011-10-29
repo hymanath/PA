@@ -133,7 +133,7 @@ font-weight:bold;
 		<s:if test="#stat.index == 0">
 		<DIV>
 		<a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="230px;" height="210px;"/>
+		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="230px;" height="210px;"/></a>
 		</DIV>
 		</s:if>
 	</s:iterator>
@@ -143,7 +143,7 @@ font-weight:bold;
 			<s:iterator status="stat" value="fileVO">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
 				<td><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="72px;" height="75px;"/></td>
+				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="72px;" height="75px;"/></a></td>
 				</s:if>
 			</s:iterator>
 		</tr></table>
@@ -154,9 +154,21 @@ font-weight:bold;
 </s:if>
 
 
-<!-- <s:if test="fileVO != null && fileVO.size() > 4"> 
-<img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="javascript:{}">
-</s:if> --->
+<s:if test="fileVO != null && fileVO.size() > 4"> 
+ <img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="videoGallaryPopUp();" />
+ </s:if>
+ </div>
+ 
+ </td>
+ </tr>
+ 
+</table>
+</div>
+
+<div id="videoGallaryPopUpDiv">
+	
+</div>
+
 
  </div>
  
@@ -177,7 +189,7 @@ font-weight:bold;
 				}
 			});
   });
-  </script> 
+ </script> 
   <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
@@ -240,6 +252,14 @@ function callAjax(jsObj,url)
 		else if(jsObj.task == "getCandidateLatestVideos")
 			{
 			   buildVideoGallaryDiv(myResults);
+			}
+		else if(jsObj.task == "videoGalleriesForACandidate")
+			{
+			     buildVideoGallaries(myResults);
+		    }
+		else if(jsObj.task == "getVideosInGallary")
+            {
+			   buildAllVideosInGallary(myResults);
 			}
 		}
 		catch(e)
@@ -971,32 +991,120 @@ function buildVideoGallaryDiv(result)
 	videoGalEle.innerHTML = str;
 }
 
-</script>
-
-<script type="text/javascript">	
-	
-	
-	
-
 function showCandidateElectionDetails(str)
 {
-	
-	//var data = candidateInfoObject.candidateInfoArray[index];
 	var politicalChangesWindow = window.open(str+"","politicalChangesWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
     politicalChangesWindow.focus();
 }
 
-function setDefaultImage(img)
+function videoGallaryPopUp()
 {
-		img.src = "images/candidates/human.jpg";
+   $("#videoGallaryPopUpDiv").dialog({ stack: false,
+							    height: 350,
+								width: 520,
+								position:[150,120],								
+								modal: true,
+								title:'<font color="Navy">Video Galleries</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	showAllVideoGalleries();
 }
 
+function showAllVideoGalleries(){
+		
+   var jsObj = {
+	       	   time : timeST,
+			   candidateId:candidateId,
+			   startRecord:0,
+			   maxRecord:20,
+			   task:"videoGalleriesForACandidate"
+            };
+
+    var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+	}
+
+function buildVideoGallaries(results)
+{
+    var str ='';
+    str+='<table>';
+    str += '<tr>';
+	for(var i=0;i<results.length;i++)
+	{
+		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+		str += '<tr><td>';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='</div>';
+		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
+			
+		 }
+		 str+='</tr>';
+		 str+='</table>';
+		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
+}
+function getVideosInAGallary(gallaryId){
+
+    var jsObj = {
+			
+			time : timeST,
+			gallaryId:gallaryId,
+			task:"getVideosInGallary"
+          };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+     callAjax(jsObj,url);
+}
+function buildAllVideosInGallary(results){
+
+ var str ='';
+ var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
+		
+		
+		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+		
+		str+='<table style="width:100%;">';
+		for(var i in results)
+		{
+			no_of_imagesPerRow = 3; 
+			j = i;
+
+			if(j++ % no_of_imagesPerRow == 0)
+				str += '<tr style="height:230px;">';
+			
+			str+='<td>';
+			str+='<table style="font-size: 13px; font-family: verdana,arial;">';
+			str+='<tr>';
+			str+='<td>'+results[i].title+'';
+			str+='</td>';
+			str+='</tr>';
+			str+='	<tr >';
+			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
+			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
+			str+='</tr>';
+			str+='<tr>';
+			str+='<td>'+results[i].description+'';
+			str+='</td>';
+			str+='</table>';
+			
+			if(j % no_of_imagesPerRow == 0)
+             str+= '</tr>';
+						
+		}
+		str+='</table>';
+		str+='</div>';
+		videosDivElmt.innerHTML =str;
+			
+		
+		
+}
 displayProfile();
 candidateInfo();
 buildCandidateElectionInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 </script>
-
 </body>
 </html>
