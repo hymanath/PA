@@ -92,9 +92,9 @@ font-weight:bold;
 <body>
 <div id="candidateProfileInfo">
  <span style="margin-top: 12px; margin-left: 12px;">${candidateVO.candidateName} 'S  Profile</span></div><br>
-<table width="987px" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="987px" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:15px;">
  <tr>
-  <td width="206">
+  <td width="206" valign="top">
   <div class="rel">
    <div class="box1">
    <div id="candidateInfo" >
@@ -119,7 +119,7 @@ font-weight:bold;
  </div>
 </td>
  <td width="10">&nbsp;</td>
-<td width="326">
+<td width="326" valign="top">
 <div class="rel">
  <div class="box3">
   <div id="newsDisplayDiv"></div>
