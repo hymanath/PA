@@ -471,8 +471,8 @@ function showFirstFourNewsRecords(results)
   if(results.length>0)
   {
    var str ='';
-   str +='<img src="images/icons/news_events.jpg"/>';
-   str+='  <table>';
+   str +='<img src="images/icons/news_events.jpg" style="margin-bottom:5px;"/>';
+   str+='  <table style="width:98%;">';
   
    for(var i =0 ;i<results.length && i<4;i++)
    {
@@ -533,7 +533,7 @@ function showFirstFourNewsRecords(results)
   {
      var str ='';
      str+='<fieldset class="imgFieldset">';
-     str+='  <table>'; 
+     str+='  <table style="width:98%">'; 
   for(var i in results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
@@ -549,7 +549,7 @@ function showFirstFourNewsRecords(results)
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
      str+='     </tr>';
-	 str+='    <tr><td><hr style="width:120%;"></td></hr></tr>';
+	 str+='    <tr><td><hr style="width:98%;"></td></hr></tr>';
    }
    str+='  </table>';
    str+='</fieldset>';
