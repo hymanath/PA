@@ -191,6 +191,9 @@ padding-left:49px;
 color:red;
 font-size:18px;
 }
+.imageStyle {
+  vertical-align:top;
+}
 </style>
 
 <script type="text/javascript">
@@ -378,9 +381,9 @@ function buildCandidatePhotoGallary(results)
 			if(j++ % no_of_imagesPerRow == 0)
 				str += '<tr style="height:220px;">';
 			
-			str += '<td width="33%">';
+			str += '<td width="33%" class="imageStyle">';
 			str += '<table class="tableStyle">';
-			str += '<tr><td><div align="center"><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 			if(results[i].path!=null)
 			{
 			 str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
@@ -389,8 +392,8 @@ function buildCandidatePhotoGallary(results)
 			{
 			  str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
 			}
-			str += '<tr><td><div align="center"><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-			str+= '<tr><td><div align="center"><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 			str += '</table>';
 			str += '</td>';
 			
@@ -459,7 +462,7 @@ function buildUploadPhotosDiv()
 	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
@@ -495,6 +498,11 @@ function buildUploadPhotosDiv()
 	if(galName.length == 0)
 	{
 		str += 'Gallery Name Required<br>';
+		eFlag = true;
+	}
+	if(galName.length >100)
+	{
+		str += 'Gallery Name should be less than 100 Characters<br>';
 		eFlag = true;
 	}
 	if(galDesc.length > 300)
@@ -589,10 +597,10 @@ function getCompleteGallaries(gallaryId){
      if(j++ % no_of_imagesPerRow == 0){
        str+= '<tr style="height:220px;">';
      }
-     str+= '<td width="33%"><table class="tableStyle">';
-	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileTitle1+'</b></font></div></td></tr>';
+     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
+	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
      str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	 str += '<tr><td><div><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+results[i].fileDescription1+'</b></div></td></tr>';
+	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
@@ -683,6 +691,11 @@ function validateFileUpload()
 		str += 'Photo Title Required.<br>';
 		flag = false;
 	}
+	if(fileTitle.length > 50)
+	{
+		str += 'Photo Title Should not exceed 50 Characters.<br><br>';
+		flag = false;
+	}
 	if(fileDesc.length == 0)
 	{
 		str += 'Photo Description Required.<br>';
@@ -716,6 +729,7 @@ function validateNewsFileUpload()
 	var fileDesc = document.getElementById('fileDescription').value;
 	var fileVal = document.getElementById("fileId").value;
 	var source = document.getElementById("source").value;
+	var keywords = document.getElementById("keywords").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
@@ -724,6 +738,11 @@ function validateNewsFileUpload()
 	if(fileTitle.length == 0)
 	{
 		str += ' Title Is Required.<br>';
+		flag = false;
+	}
+	if(fileTitle.length >50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
 		flag = false;
 	}
 	if(fileDesc.length == 0)
@@ -744,6 +763,16 @@ function validateNewsFileUpload()
 	if(source.length == 0)
 	{
 		str += 'Source Is Required.<br>';
+		flag = false;
+	}
+	if(source.length >50)
+	{
+		str += 'Source should be less than 50 Characters<br>';
+		flag = false;
+	}
+	if(keywords.length >200)
+	{
+		str += 'Keywords should be less than 200 Characters<br>';
 		flag = false;
 	}
 	
@@ -1341,7 +1370,7 @@ function  buildUploadNews()
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" ></text></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" maxlength="50"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
@@ -1349,7 +1378,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords</td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" ></text></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></text></td></tr>';
 	str += '   <TR>';
 	str += '     <td colspan="2">';
 	str += '<table>';
@@ -1367,7 +1396,7 @@ function  buildUploadNews()
 	str += '   </TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="source" name="source" size="25" ></text></td>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="source" name="source" size="25" maxlength="50" ></text></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
@@ -1474,7 +1503,7 @@ function buildUploadVideoDiv()
     str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
@@ -1485,9 +1514,9 @@ function buildUploadVideoDiv()
 	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
-	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="100"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="100"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><input type="text" id="source" name="source" size="25" maxlength="100"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><input type="text" id="source" name="source" size="25" maxlength="50"></td></tr>';
 	str += '</table>';
 	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
@@ -1586,14 +1615,39 @@ function uploadVideoGallary()
 		str += 'Title Is Required<br>';
 		eFlag = true;
 	}
+	if(fileTitle.length > 50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
+		eFlag = true;
+	}
 	if(fileDesc.length ==0)
 	{
 		str += 'Description Is Required<br>';
 		eFlag = true;
 	}
+	if(fileDesc.length >200)
+	{
+		str += 'Description should be less than 200 Characters<br>';
+		eFlag = true;
+	}
 	if(path.length ==0)
 	{
 		str += 'Path Is Required<br>';
+		eFlag = true;
+	}
+	if(path.length >200)
+	{
+		str += 'Path should be less than 200 Characters<br>';
+		eFlag = true;
+	}
+	if(keyword.length > 200)
+	{
+		str += 'Keywords should be less than 200 Characters<br>';
+		eFlag = true;
+	}
+	if(source.length > 50)
+	{
+		str += 'Source should be less than 50 Characters<br>';
 		eFlag = true;
 	}
 	str += '</font>';
