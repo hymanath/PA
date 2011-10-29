@@ -156,6 +156,20 @@ color:#2a4f97; font-size:11px; line-height:21px;}
 .prev{background:url(../images/new_homepage/sprites.png) -272px top no-repeat; float:left; left:-34px; z-index:1003;}
 .next{background:url(../images/new_homepage/sprites.png) -290px top no-repeat; float:right; right:-34px; z-index:1001;}
 
+
+#wrap1{width:409px; position:relative; }
+#list1{height:110px; width:409px; float:left;}
+.slider1{float:left; left:-5000px; position:relative; visibility:hidden; width:409px !important;}
+.slider1 ul li{padding-right:14px; height:110px; width:127px; text-align:center; position:relative;}
+.slider1 ul li a{text-decoration:none; color:#ff8b26;}
+.slider1 ul li span{background-color:#f0f0f0; float:left; width:127px; text-align:center; position:absolute; left:0px; bottom:0px; height:21px; 
+color:#2a4f97; font-size:11px; line-height:21px;}
+.slider1 ul li img{cursor:pointer; height:89px; width:127px; float:left;}
+.prev1, .next1{cursor:pointer; width:15px; height:26px; position:absolute; top:32px; text-indent:-9999px;}
+.prev1{background:url(../images/new_homepage/sprites.png) -272px top no-repeat; float:left; left:-34px; z-index:1003;}
+.next1{background:url(../images/new_homepage/sprites.png) -290px top no-repeat; float:right; right:-34px; z-index:1001;}
+
+
 /*CURRENT ELECTION H SLIDE SECTION END*/
 
 /*SEARCH RESULTS DROP DOWN CONTENT SECTION START*/
