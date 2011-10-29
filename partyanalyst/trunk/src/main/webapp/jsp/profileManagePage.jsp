@@ -591,6 +591,14 @@ function getCompleteGallaries(gallaryId){
    var str ='';
    str+='<div id="content" style="width:650px;">';
    str += '<fieldset class="imgFieldset">';
+   if(results.length>0)
+   {
+   str +='<table>';
+   str +='   <tr>';
+   str +='     <td><b style="color:green;font-size:14px;">'+results[0].gallaryName+'</b></td>'; 
+   str +='   </tr>';
+   str +='</table>';
+   }
    str+='<table width="100%" style="margin-top:10px;">'
    str+='<tr><td>';
    str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
