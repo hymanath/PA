@@ -101,10 +101,10 @@ font-weight:bold;
 	
 	</div>
 	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>News And Events</div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Videos</div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Photo Gallery</div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Developments</div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="getTotalNews('totalNews');" href="javascript:{}" style="color:#5B5B5B">News And Events</a></div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="videoGallaryPopUp();" href="javascript:{}" style="color:#5B5B5B">Videos</a></div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="photoGallaryPopUp();" href="javascript:{}" style="color:#5B5B5B">Photo Gallery</a></div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="" href="javascript:{}" style="color:#5B5B5B">Developments</a></div>
     </div>
 	</div>
  </td>
@@ -283,6 +283,9 @@ function setDefaultImage(img)
 }
 
 function photoGallaryPopUp(){
+	
+	if(document.getElementById('buildPhotoGallaryDiv') == null)
+		return;
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
@@ -1005,6 +1008,10 @@ function showCandidateElectionDetails(str)
 
 function videoGallaryPopUp()
 {
+   <s:if test="fileVO == null || fileVO.size() < 4"> 
+   return;
+   </s:if>
+
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
 							    height: 350,
 								width: 520,
