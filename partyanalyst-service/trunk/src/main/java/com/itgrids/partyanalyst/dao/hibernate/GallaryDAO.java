@@ -36,6 +36,6 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 	public List<Object[]> getGallariesByCandidateId(Long candidateId,String contentType)
 	{
 		Object[] params = {candidateId,contentType};
-		return getHibernateTemplate().find("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId = ? and model.contentType.contentType = ? order by model.name asc",params);
+		return getHibernateTemplate().find("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId = ? and model.contentType.contentType = ? and model.isDelete = 'false' order by model.name asc",params);
 	}
 }
