@@ -85,7 +85,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long locationScope;
 	private Long locationValue;
 	private String fileDate;
-		
+	private String source;
+	
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public String getKeywords() {
 		return keywords;
 	}
@@ -548,6 +557,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
 			fileVO.setKeywords(getKeywords());
+			fileVO.setSource(getSource());
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
