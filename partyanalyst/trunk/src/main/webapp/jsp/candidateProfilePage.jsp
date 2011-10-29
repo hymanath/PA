@@ -276,6 +276,12 @@ function callAjax(jsObj,url)
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function setDefaultImage(img)
+{
+		img.src = "images/candidates/human.jpg";
+}
+
 function photoGallaryPopUp(){
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
 							    height: 570,
