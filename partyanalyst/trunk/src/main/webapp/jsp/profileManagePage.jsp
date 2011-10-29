@@ -211,6 +211,11 @@ document.getElementById("profileManagementMainOuterDiv2").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 }
 return;
 }
@@ -889,6 +894,11 @@ function showNewsGallaey()
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'block';
   document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
   document.getElementById("videoGallaryDiv").innerHTML=''; 
+  $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+  $("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+  $("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   buildCreateNewsCategory();
   }
 }
@@ -1447,6 +1457,11 @@ document.getElementById("profileManagementMainOuterDiv1").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 buildCreateVideoGallaryDiv();
 
 }
@@ -1749,6 +1764,11 @@ document.getElementById("profileManagementMainOuterDiv1").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+$("#profileGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 profileDiscriptionDiv();
 }
 return;
@@ -1808,7 +1828,14 @@ function profileDiscriptionDiv()
 	callAjax(jsObj,url);	
     
  }
- 
+ function showDevelopmentActivity()
+ {
+   $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+   $("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
+   $("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
+ }
  function showDiscriptionStatus(myResult)  
 {
 
@@ -1872,11 +1899,11 @@ function profileDiscriptionDiv()
 			<td class="statusData_table_data" width="100%" style="padding-top:23px">
 				<table>
 				  <tr>
-			    	<td style="padding-left:79px"><b><input type="button" class="buttonStyle" value="Photo Gallery" onClick="showPhotoGallary1()"></b></td>
-				    <td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" onClick="showVideoGallaey1()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" onClick="showNewsGallaey()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" onClick="showDevelopmentActivity()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" onClick="insertProfileDiscription()"></b> </td>
+			    	<td style="padding-left:79px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()"></b></td>
+				    <td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick="showDevelopmentActivity()"></b> </td>
+					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 				  </tr>
 				</table>
 			</td>
