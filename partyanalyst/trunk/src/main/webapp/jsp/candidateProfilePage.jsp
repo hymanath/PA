@@ -86,12 +86,6 @@ font-weight:bold;
     padding-right: 8px;
 }
 
-.submenuImg{
-	float: left;
-    height: 28px;
-    padding-right: 8px;
-}
-
 </style>
 
 </head>
@@ -107,10 +101,10 @@ font-weight:bold;
 	
 	</div>
 	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>News And Events</div>
-	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Videos</div>
-	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Photo Gallery</div>
-	   <div class="linkClass"><img src="images/icons/profile_arrow.jpg" class="submenuImg"/>Developments</div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>News And Events</div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Videos</div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Photo Gallery</div>
+	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/>Developments</div>
     </div>
 	</div>
  </td>
