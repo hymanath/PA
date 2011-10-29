@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -84,7 +85,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long locationScope;
 	private Long locationValue;
 	private String fileDate;
-	
+		
 	public String getKeywords() {
 		return keywords;
 	}
@@ -436,7 +437,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 				fileVO = candidateDetailsService.getFirstThreePhotoGallaryDetail(jObj.getLong("candidateId"));
 			}
-			
+			else if(jObj.getString("task").equalsIgnoreCase("videoGalleriesForACandidate")){
+				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.VIDEO_GALLARY);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getVideosInGallary")){
+				fileVO = candidateDetailsService.getAllVideosInAGalleryForACandidate(jObj.getLong("gallaryId"));
+			}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
