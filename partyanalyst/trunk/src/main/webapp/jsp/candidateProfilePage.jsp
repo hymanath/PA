@@ -487,14 +487,26 @@ function showFirstFourNewsRecords(results)
    {
      initialFileIdArray[i]=results[i].fileId;
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
+	 
+	 if(results[i].fileTitle1.length > 30)
+		str += results[i].fileTitle1.substring(0,30)+'..';
+	 else
+		str += results[i].fileTitle1;
+
+	 str += '</a></td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
      str+='     </tr>';
-     str+='     <tr>';
-     str+='       <td>'+results[i].fileDescription1+'</td>';
-     str+='     </tr>';
+     str+='     <tr><td>';
+	
+	 if(results[i].fileDescription1.length > 62)
+		str += results[i].fileDescription1.substring(0,62)+'..';
+	 else
+		str += results[i].fileDescription1;
+
+     str+='     </td></tr>';
 	 str+='     <tr><td> <hr style="width:98%;"></hr></td></tr>';
    }
    str+='  </table>';
