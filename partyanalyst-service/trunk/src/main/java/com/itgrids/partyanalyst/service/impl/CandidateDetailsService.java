@@ -9,7 +9,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
@@ -31,10 +33,12 @@ import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
@@ -56,6 +60,7 @@ import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -85,7 +90,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IFileDAO fileDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private INominationDAO nominationDAO;
 	private CandidateProfileDescription candidateProfileDescription;
+	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -258,7 +265,24 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			ICandidateProfileDescriptionDAO candidateProfileDescriptionDAO) {
 		this.candidateProfileDescriptionDAO = candidateProfileDescriptionDAO;
 	}
+
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
 	
+	public IUserCandidateRelationDAO getUserCandidateRelationDAO() {
+		return userCandidateRelationDAO;
+	}
+
+	public void setUserCandidateRelationDAO(
+			IUserCandidateRelationDAO userCandidateRelationDAO) {
+		this.userCandidateRelationDAO = userCandidateRelationDAO;
+	}
+
 	public List<FileVO> getScopesForNewSearch()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -1044,6 +1068,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		}
 	}
+	public List<SelectOptionVO> getCandidateDetailsBySearchCriteria(String gender,String name,Long constituencyId,Long userId,Long stateId)
+	{
+		List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+		try
+		{
+		   List<Object[]> results = nominationDAO.getCandidatesToMapWithUser(gender,name,constituencyId,userId,stateId);
+		   for(Object[] candidateDetails: results)
+		   {
+			  SelectOptionVO selectOptionVO = new SelectOptionVO();
+			  selectOptionVO.setId((Long)candidateDetails[0]);
+			  selectOptionVO.setName(candidateDetails[1] != null ? candidateDetails[1].toString() :"");
+			  returnValue.add(selectOptionVO);
+		   }
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
 	
 	public List<FileVO> getAllVideosInAGalleryForACandidate(Long gallaryId){
 		
@@ -1065,5 +1110,74 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		return filesList;
 		
+	}
+	
+	public ResultStatus saveUserCandidateRelation(Long userId,Long candidateId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+		  UserCandidateRelation userCandidateRelation = new UserCandidateRelation();
+		  userCandidateRelation.setCandidate(candidateDAO.get(candidateId));
+		  userCandidateRelation.setRegistration(registrationDAO.get(userId));
+		  userCandidateRelationDAO.save(userCandidateRelation);
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	public ResultStatus deleteUserCandidateRelation(String userCandidateRelationIds)
+	{   List<String> elements = null;
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			if(userCandidateRelationIds.length()>0)
+			{
+				elements = new ArrayList<String>(new HashSet<String>(Arrays.asList(new String(userCandidateRelationIds).split(","))));	
+				for(int i=0;i<elements.size();i++)
+				  {
+					Long id = new Long(elements.get(i));
+					userCandidateRelationDAO.deleteUserCandidateRelation(id);
+					
+				  }
+			}
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	public List<FileVO> getAllCandidateDetailsAssignedToAUser(Long userId)
+	{
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+		   List<Object[]> results = userCandidateRelationDAO.getUserCandidateRelationDetails(userId);
+		   for(Object[] candidateDetails: results)
+		   {
+			   FileVO fileVO = new FileVO();
+			   fileVO.setIds((Long)candidateDetails[0]);
+			   fileVO.setCandidateId((Long)candidateDetails[1]);
+			   fileVO.setNames(candidateDetails[2] != null ? candidateDetails[2].toString() :"");
+			  returnValue.add(fileVO);
+		   }
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
 	}
 }
