@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
@@ -13,9 +15,17 @@ public class UserCandidateRelationDAOHibernateTest extends BaseDaoTestCase{
 		this.userCandidateRelationDAO = userCandidateRelationDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		userCandidateRelationDAO.getAll();
+	}*/
+	/*public void testDeleteUserCandidateRelation()
+	{
+		userCandidateRelationDAO.deleteUserCandidateRelation(2L);
+	}*/
+	public void testDeleteUserCandidateRelation()
+	{
+		List<Object[]> result = userCandidateRelationDAO.getUserCandidateRelationDetails(1L);
+		System.out.println(result.size());
 	}
-
 }
