@@ -790,4 +790,9 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />	    	
 	</bean>
 	
+	<bean id="assigningCandidatesToUserAction" class="com.itgrids.partyanalyst.web.action.AssigningCandidatesToUserAction" singleton="false">	
+		<property name="registrationService" ref="registrationService" />
+		<property name="candidateDetailsService" ref="candidateDetailsService" />	    	
+	</bean>
+	
 </beans>	
