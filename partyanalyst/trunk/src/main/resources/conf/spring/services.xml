@@ -293,6 +293,8 @@
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="candidateProfileDescriptionDAO" ref="candidateProfileDescriptionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -920,6 +922,5 @@
 		<property name="callTrackingProblemDAO" ref="callTrackingProblemDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
-	
 </beans>		
 		
