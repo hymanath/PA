@@ -868,7 +868,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 				System.out.println(obj);
 	}*/
 	
-	public void testFindConstituencyElectionByElectionIdAndDistrictIdAndPartys()
+	/*public void testFindConstituencyElectionByElectionIdAndDistrictIdAndPartys()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(53l);ids.add(265l);
@@ -877,7 +877,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		if(list != null && list.size() > 0)
 			for(ConstituencyElection election : list)
 				System.out.println(election.getConstituency().getConstituencyId());
-	}
+	}*/
 	
+	public void testGetCandidatesToMapWithUser()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(53l);ids.add(265l);
+		List<Object[]> list = nominationDAO.getCandidatesToMapWithUser("M","KALIKI YANADI REDDY",0L,1L,1L);
+		
+			for(Object[] result : list)
+				System.out.println("id :"+result[0]+"Name :"+result[1]);
+	}
 }
 	
