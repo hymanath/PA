@@ -3058,5 +3058,43 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.constituencyElection.constituency.state.stateId = ? and model.party.partyId = ? and model.constituencyElection.election.electionScope.electionType.electionTypeId = ?" +
 				" order by model.constituencyElection.election.electionYear desc ",param);
 	}
+
+	
+	public List<Object[]> getCandidatesToMapWithUser(String gender,String name,Long constituencyId,Long userId,Long stateId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select distinct model.candidate.candidateId,model.candidate.lastname  from Nomination model " +
+		" where model.candidate.candidateId not in(select model1.candidate.candidateId from UserCandidateRelation model1" +
+		" where model1.registration.registrationId=:userId )");
+		
+		if(name!= null && name.trim().length()>0)
+			query.append("  and model.candidate.lastname like '%"+name+"%' ");
+		
+		if(gender!= null && gender.trim().length()>0)
+			query.append("  and model.candidate.gender=:gender ");	
+		
+		if(constituencyId!= null && constituencyId>0L)
+			query.append("  and model.constituencyElection.constituency.constituencyId=:constituencyId ");	
+		
+		if(stateId!= null && stateId>0L)
+			query.append("  and model.constituencyElection.constituency.state.stateId=:stateId ");
+		
+		query.append("  order by model.candidate.lastname asc ");	
+		
+		 Query queryObject = getSession().createQuery(query.toString());
+		 
+		 queryObject.setLong("userId", userId);
+		 
+		 if(gender!= null && gender.trim().length()>0)
+		 queryObject.setString("gender",gender);
+		 
+		 if(constituencyId!= null && constituencyId>0L)
+			 queryObject.setLong("constituencyId", constituencyId);	 
+		 
+		 if(stateId!= null && stateId>0L)
+			 queryObject.setLong("stateId", stateId);	 
+		 
+		 return	queryObject.list();
+	}
 	
 }
