@@ -2669,6 +2669,29 @@
            		<param name="root">fileVO</param>
         	</result>	
 		</action>
+		
+		<action name="assigningCandidatesToUserAction" class="assigningCandidatesToUserAction">
+			<result name="success">/jsp/assigningCandidatesToUser.jsp</result> 
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="saveUserCandidateRelationAction" class="assigningCandidatesToUserAction" method="saveUserCandidateRelation">
+			<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>	
+		</action>
+		
+		<action name="getCandidateDetailsBySearchCriteriaAction" class="assigningCandidatesToUserAction" method="getCandidateDetailsBySearchCriteria">
+			<result type="json" name="success">
+           		<param name="root">selectOptionVO</param>
+        	</result>	
+		</action>
+		
+		<action name="getAllCandidateDetailsAssignedToAUserAction" class="assigningCandidatesToUserAction" method="getAllCandidateDetailsAssignedToAUser">
+			<result type="json" name="success">
+           		<param name="root">fileVO</param>
+        	</result>	
+		</action>
 				 		       	
 	</package>
 </struts>      
