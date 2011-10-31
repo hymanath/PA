@@ -104,6 +104,7 @@
 									<h4 class="tdstyle">Organise Entitlements&nbsp;:&nbsp;&nbsp;<a  class="alinkstyle" href="<s:url action="userEntitlementAction"/>">organise</a></h4>
 									<h4 class="tdstyle">Manage User Region Access&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="userAccessRegionAction"/>">Manage</a></h4>
 									<h4 class="tdstyle">Manage User Sms Access&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="manageUserMessageCreditsAction"/>">Manage</a></h4>
+									<h4 class="tdstyle">Assign Candidates To User&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="assigningCandidatesToUserAction"/>">Assign</a></h4>
 									</fieldset>
 								</td>
 								<td>
