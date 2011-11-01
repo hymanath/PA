@@ -224,11 +224,16 @@
 				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
 				<value>com.itgrids.partyanalyst.model.Source</value>
+				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="candidateUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateUpdatesEmailDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="userGallaryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGallaryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
