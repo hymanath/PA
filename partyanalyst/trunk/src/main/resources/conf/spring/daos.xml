@@ -667,4 +667,9 @@
 	<bean id="sourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.SourceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="candidateUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateUpdatesEmailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
