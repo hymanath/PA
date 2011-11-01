@@ -59,6 +59,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
 	private Set<CandidateProfileDescription> candidateProfileDescription = new HashSet<CandidateProfileDescription>();
+	private Set<CandidateUpdatesEmail> candidateUpdatesEmails = new HashSet<CandidateUpdatesEmail>(0);
 
 	// Constructors
 
@@ -242,6 +243,17 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setCandidateProfileDescription(
 			Set<CandidateProfileDescription> candidateProfileDescription) {
 		this.candidateProfileDescription = candidateProfileDescription;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidateUpdatesEmail> getCandidateUpdatesEmails() {
+		return candidateUpdatesEmails;
+	}
+
+	public void setCandidateUpdatesEmails(
+			Set<CandidateUpdatesEmail> candidateUpdatesEmails) {
+		this.candidateUpdatesEmails = candidateUpdatesEmails;
 	}
 
 	
