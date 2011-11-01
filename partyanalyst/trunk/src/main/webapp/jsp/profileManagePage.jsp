@@ -283,6 +283,7 @@ var candidateId=document.getElementById("candidateld").value;
 		}	
 			else if(jsObj.task == "getScopesForNewSearch")
 			{ 
+			   clearOptionsListForSelectElmtId("scopeDiv");
                buildResults(myResults,"scopeDiv");
 			}
 			else if(jsObj.task == "getStates")
@@ -570,9 +571,10 @@ function showNewsGallaryCreateMsg(result)
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
 
 	errorDivEle.innerHTML = str;
+	document.getElementById('newsCateName').value='';
+	document.getElementById('newsCateDesc').value='';
 }
-	
-
+		
 	
 function getCompleteGallaries(gallaryId){
     var jsObj =
