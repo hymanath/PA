@@ -16,12 +16,16 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Object[]> getNewsRecordsBySearchCriteria(FileVO fileVO,String type);
 	
-	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult);
+	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType);
 	
 	public List<Object[]> getAllNewsToDisplay(Long candidateId);
 	
 	public List<File> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxResults);
 	
 	public List<Object[]> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult);
+	
+	public List<Long> getNewsCountByScope(Long candidateId,Long scopeType,String queryType);
+	
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType);
 
 }
