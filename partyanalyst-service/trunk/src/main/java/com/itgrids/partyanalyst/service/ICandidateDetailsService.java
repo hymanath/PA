@@ -47,7 +47,7 @@ public interface ICandidateDetailsService {
 	
 	public List<FileVO> getFirstFourNewsRecordsToDisplay(Long candidateId);
 	
-	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult);
+	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType);
 	
 	public List<FileVO> getFileByFileId(Long fileId);
 	
@@ -70,4 +70,10 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getAllCandidateDetailsAssignedToAUser(Long userId);
 	
 	public List<FileVO> getAllVideosInAGalleryForACandidate(Long gallaryId);
+	
+	public List<FileVO> getNewsCountByScope(Long candidateId,String queryType);
+	
+	public List<FileVO> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType);
+	
+	public Long getUserCandidateRelationCount(Long userId,Long candidateId);
 }
