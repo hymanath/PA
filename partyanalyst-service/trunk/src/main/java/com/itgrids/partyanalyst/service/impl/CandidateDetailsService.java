@@ -859,7 +859,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					fileVO.getLocationValue() != null && Integer.parseInt(fileVO.getLocationValue()) > 0)
 			{
 				file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
-				file.setLocationValue(getLocationScopeVlaue(fileVO.getLocationValue()));
+				file.setLocationValue(getLocationScopeValue(fileVO.getLocationScope(),fileVO.getLocationValue()));
 			}
 			
 			if(fileVO.getFileDate() != null && fileVO.getFileDate().length() > 0)
@@ -890,16 +890,16 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	public Long getLocationScopeVlaue(String locationValue)
+	public Long getLocationScopeValue(Long scope,String locationValue)
 	{
 		try{
-			int lValue = Integer.parseInt(locationValue);
+			int scopeValue = scope.intValue();
 			
-			if(lValue == 1 || lValue == 2 || lValue == 3 || lValue == 4 || lValue == 9)
+			if(scopeValue == 1 || scopeValue == 2 || scopeValue == 3 || scopeValue == 4 || scopeValue == 9)
 				return Long.parseLong(locationValue);
-			else if(lValue == 5 || lValue == 6 || lValue == 8)
+			else if(scopeValue == 5 || scopeValue == 6 || scopeValue == 8)
 				return Long.parseLong(locationValue.substring(1));
-			else if(lValue == 7)
+			else if(scopeValue == 7)
 			{
 				List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(locationValue.substring(1)));
 				return (Long) list.get(0);
