@@ -689,7 +689,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
-			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,0,4);
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,0,4,"Public");
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -723,11 +723,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				return retValue;
 			}
 		}
-	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult){
+	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
-			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,firstResult,maxResult);
+			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,firstResult,maxResult,queryType);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -1178,6 +1178,72 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		{
 			e.printStackTrace();
 			return returnValue;
+		}
+	}
+	public List<FileVO> getNewsCountByScope(Long candidateId,String queryType)
+	{
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+		   FileVO fileVO = null;
+		   for(int index=1;index<10;index++)
+		   {
+			   List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,(long)index,queryType);  
+			   fileVO = new FileVO();
+			   fileVO.setFileTypeId(list.get(0));
+			   fileVO.setName(regionScopesDAO.getScopeById((long)index).get(0));
+			   returnValue.add(fileVO);
+		   }
+		   
+		   return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+	public List<FileVO> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			   	    returnValue.add(fileVO);	  
+			 }
+		  
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+	public Long getUserCandidateRelationCount(Long userId,Long candidateId)
+	{
+		log.debug("Entered into getUserCandidateRelationCount() method in Candidate Details Service()");
+		try
+		{
+			List<Long> result = userCandidateRelationDAO.getUserCandidateRelationCount(userId,candidateId);
+			return result.get(0);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception encountered, Check log for Details - "+e);
+			e.printStackTrace();
+			return 0L;
 		}
 	}
 }
