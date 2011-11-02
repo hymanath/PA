@@ -153,7 +153,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	
 	<!--PROFILE LEFT CONENT SECTION END--> 
 
-  <td width="444">
+  <td width="444" valign="top">
 
     <!--PROFILE MIDDLE CONTENT SECTION START-->
       
@@ -162,12 +162,13 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 		
 		<!--  ABOUT POLITICIAN SECTION START   --> 
          
+		<s:if test="descriptions != null"> 
 		  <div id="pm-inner-cont-sec" class="pm-inner-cont-sec"> </div>
-		  
+		</s:if>  
 		  <!--  ABOUT POLITICIAN SECTION END  --> 
              
-			 <div id="showProfile"> </div>
-
+			 <div id="showProfile"></div>
+		
 			 <!--ELECTION PROFILE SECTION START-->
 
               <div class="pm-inner-cont-sec" id="electionInfo"></div>
@@ -238,6 +239,13 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 		</ul>
 	</s:if>
     </div>
+  </s:if>
+
+  <s:if test="fileVO == null">
+  <div class="pr-sub-fields-sec">
+            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span></h1>
+	<br><br><strong>videos Updated Soon..</strong>
+	</div>
   </s:if>
 
     <s:if test="fileVO != null && fileVO.size() > 4"> 
@@ -585,10 +593,12 @@ function getFirstFourNewsRecords(){
 }
 function showFirstFourNewsRecords(results)
  { 
+  
+   var str ='';
+   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span></h1>';
+	
   if(results.length>0)
   {
-   var str ='';
-   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span> </h1>';
    str+='<ul>';
    for(var i =0 ;i<results.length && i<4;i++)
    {
@@ -616,13 +626,19 @@ function showFirstFourNewsRecords(results)
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
    
-   document.getElementById("newsDisplayDiv").innerHTML=str;
+  
     for(var i =4 ;i<results.length;i++)
 	{
 	  initialFileIdArray[i]=results[i].fileId;
 	}
    }
+	else
+	{
+		str += '</ul><li><strong>News And Events Updated Soon..</strong></li></ul>';
+	}
+    document.getElementById("newsDisplayDiv").innerHTML=str;
  }
+
  function getTotalNews(viewType)
  {  
     var queryType='Public';
@@ -1042,7 +1058,11 @@ function buildFirstThreePhotoRecords(results)
 	  str+='<div id="buildPhotoGallaryDiv"></div>';
 	  document.getElementById("photoGallaryDiv").innerHTML= str;
 	 }
-	}
+	 else
+	 {
+		 document.getElementById("photoGallaryDiv").style.display = 'none';
+	 }
+}
 function getCandidatesPhotosInAGallary(gallaryId)
 {
     var jsObj =
@@ -1168,6 +1188,8 @@ function candidateInfo()
  {
  
    var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
+   if(profileInfoElmt == null)
+	   return;
     var str='';
     var x=1;
    
