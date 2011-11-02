@@ -38,7 +38,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(13722L,1,4);
+		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(900L,0,20,"All");
 		System.out.println(results.size());
 		for(Object[] newsDetails: results){
 		    
@@ -68,7 +68,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	 
 	}*/
 	
-	public void testGetCandidateLatestVideos()
+	/*public void testGetCandidateLatestVideos()
 	{
 		List<File> list = fileGallaryDAO.getCandidateLatestVideos(3424l,0,20);
 		System.out.println(list.size());
@@ -77,6 +77,16 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(file.getFileId() +"--"+file.getFilePath());
 		}
+	}*/
+	/*public void testGetNewsCountByScope()
+	{
+		List<Long> list = fileGallaryDAO.getNewsCountByScope(900L,2L,"All");
+		System.out.println(list.size());
+		System.out.println(list.get(0));
+	}*/
+	public void testGetNewsByScope()
+	{
+		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,2L,0,20,"Private");
+		System.out.println(list.size());
 	}
-	
 }
