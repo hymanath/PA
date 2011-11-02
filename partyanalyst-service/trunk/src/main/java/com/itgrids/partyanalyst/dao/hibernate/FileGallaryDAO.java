@@ -71,22 +71,31 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		 return	queryObject.list();
 	}
 	
-	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult)
+	public List<Object[]> getFirstFourNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType)
 	{
-		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+		StringBuilder query = new StringBuilder();
+		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
 				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
-				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileDate desc ");
+				"  and  model.gallary.isDelete='false' and model.gallary.contentType.contentType= :type   and model.isDelete = :isDelete   ");
 		
-		query.setLong("candidateId", candidateId);
-		query.setString("type", IConstants.NEWS_GALLARY);
-		query.setString("isDelete", "false");
-		query.setString("isPrivate", "false");
-		query.setFirstResult(firstResult);
-		query.setMaxResults(maxResult);
+		if(queryType.equals("Public"))
+		   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+		
+		if(queryType.equals("Private"))
+		  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		query.append(" order by model.file.fileDate desc ");
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setLong("candidateId", candidateId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		queryObject.setString("isDelete", "false");
+		queryObject.setFirstResult(firstResult);
+		queryObject.setMaxResults(maxResult);
 			
 						
-		return query.list(); 
+		return queryObject.list(); 
 	}
 	public List<Object[]> getAllNewsToDisplay(Long candidateId)
 	{
@@ -135,5 +144,52 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setMaxResults(maxResults);
 		
 		return query.list(); 
+	}
+	public List<Long> getNewsCountByScope(Long candidateId,Long scopeType,String queryType)
+	{
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select count(*) from FileGallary model where model.gallary.candidate.candidateId =:candidateId and model.gallary.contentType.contentType =:type and model.gallary.isDelete = 'false' " +
+				"  and model.isDelete = 'false' and model.file.regionScopes.regionScopesId =:scopeType  ");
+		
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setLong("candidateId", candidateId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		queryObject.setLong("scopeType", scopeType);
+		
+		return queryObject.list(); 
+	}
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
+				" and model.gallary.isDelete = 'false'  and model.file.regionScopes.regionScopesId =:scopeType ");
+
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		query.append("   order by model.file.fileDate desc   ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong("candidateId", candidateId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		queryObject.setLong("scopeType", scopeType);
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResults);	
+						
+		return queryObject.list(); 
 	}
 }
