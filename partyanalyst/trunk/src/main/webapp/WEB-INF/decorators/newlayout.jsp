@@ -168,8 +168,8 @@ function buildAccordion()
 </script>
 
 <!--HEADER SECTION START-->
-<center>
-<table style="border-collapse: collapse;"><tr><td>
+
+<table style="border-collapse: collapse;" width="100%"><tr><td>
 <div id="header-mainsec">
   <div class="mainwrapper">
     <div class="header">
@@ -196,40 +196,27 @@ function buildAccordion()
 										
 									</c:if>		-->
 
-									<table width="100%">
-									<tr>
-									<td>
-									<table width="100%">
-									<tr>
-									<td><c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
                                         <c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
 									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
 										<c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
-										</td>
-									<td><c:if test="${sessionScope.USER.isAdmin == 'true'}">
-											<a style="float:right" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
-										</c:if></td>
-									<td><c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-										<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> 
 										
+									<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+											<a style="float:right" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+										</c:if>
+									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+										<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> 
+										<span class="fleft">|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
 										
-									</c:if></td>
+									</c:if>
 									
-									<td><c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
                                        	<a style="float:right" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
 										</c:if>
 								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        
 								<a href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
 								</c:if>	
-									</td>
-                                     
-									</tr>
-									</table>
-									
-									</td>
-									</tr>
-									</table>
 		</div>
         
         
@@ -306,7 +293,7 @@ function buildAccordion()
 				<li><a href="statePageAction.action?stateId=28"><span>West Bengal</span></a></li>
 				<li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span></a></li>
 				<li><a href="statePageAction.action?stateId=21"><span>Punjab</span></a></li>
-				<li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
+                <li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
                             </ul></div>
 		
 		</li>
@@ -350,17 +337,11 @@ function buildAccordion()
             <span class="fright">follow us on</span> </div></td>
 </tr>
 </div>
-<tr><td>
+ <tr><td class="background" border="0">
  	
-		
-
-<div id="contenttable" class="background">
-
-
-			<center>
-				<decorator:body/>
-			</center>
-		</div>
+	<div id="contenttable" class="background">
+			<decorator:body/>
+	</div>
 		
 </td></tr>
 <tr><td>
@@ -444,7 +425,6 @@ function buildAccordion()
 </td></tr>
 </table>
 
-</center>
 <div id="accordion" title="Quick View" style="display:none;">
           	<h3 ><a href="#">View Your State</a></h3>
 				<div style="padding:0px;">
