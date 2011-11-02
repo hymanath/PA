@@ -432,7 +432,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getNewsToDisplay"))
 			{
-				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"));
+				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getFileByFileId"))
 			{
@@ -579,6 +579,54 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	}
 		return Action.SUCCESS;
 	}
-
-
+	public String getCandidatesNewsDetail()
+	{
+	 try  
+	  {
+		jObj = new JSONObject(getTask());  
+		if(jObj.getString("task").equalsIgnoreCase("getNewsCountByScope"))
+		 {
+			FileVO status = new FileVO();
+			fileVO = candidateDetailsService.getNewsCountByScope(jObj.getLong("candidateId"),jObj.getString("queryType"));
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO!=null)
+			{
+				if(session.getAttribute("UserType")=="PartyAnalyst")
+				{
+					Long count = candidateDetailsService.getUserCandidateRelationCount(regVO.getRegistrationID(),jObj.getLong("candidateId"));
+					if(count>0L)
+					{
+						status.setVisibility("True");
+						fileVO.add(status);
+					}
+					else
+					{
+						status.setVisibility("False");
+						fileVO.add(status);
+					}
+				}
+				else
+				{
+					status.setVisibility("False");
+					fileVO.add(status);
+				}
+			}
+			else
+			{
+				status.setVisibility("False");
+				fileVO.add(status);
+			}
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsByScope"))
+		 {
+			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),jObj.getLong("scopeType"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+		 }
+	  }
+	 catch(Exception e)
+	  {
+		e.printStackTrace();
+	  }
+		return SUCCESS;
+   }
 }
