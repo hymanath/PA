@@ -46,14 +46,14 @@ table.CandidateElectionResultsTable td {
 }
 
 
-/* ---- New Candidate Page Styles ----------*/
+/* ---- New Candidate Page Styles ----------
 
 #contenttable 
 {
 	padding-bottom:0px;
 	padding-top:0px;
 	background-color: aliceBlue;
-}
+}*/
 #CandidatePageMainDiv
 {
 	background-color:#EFF1F3;
@@ -444,7 +444,7 @@ width:401px;
 	overflow:auto;
 }
 #candidateProfileInfo {
-   -moz-border-radius: 6px 6px 6px 6px;
+  /* -moz-border-radius: 6px 6px 6px 6px;
     background-color: #56A5EC;
     color: #FFFFFF;
     font-size: 13px;
@@ -453,7 +453,7 @@ width:401px;
     margin: 0px;
     padding-top: 6px;
     text-align: left;
-    width:90%;
+    width:90%;*/
 }
  #candidateName{
     color: brown;
@@ -474,11 +474,10 @@ width:401px;
 	-moz-border-radius: 4px 4px 4px 4px;
     background-color: #FFFFFF;
     border: 1px solid #E7E7E7;
-    height: 820px;
+    height: 1486px;
     margin-left: 12px;
     padding: 10px;
     width: 189px;
-	overflow: auto;
 	-webkit-border-radius: 4px;
 	border-radius: 3px;
 	behavior: url(border-radius.htc);
@@ -488,10 +487,9 @@ width:401px;
 .box2 {
 	background-color: #FFFFFF;
 	border:1px solid #e7e7e7;
-	height: 820px;
+	height: 1486px;
     width: 444px;
 	padding: 10px;
-	overflow: auto;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 3px;
@@ -501,10 +499,9 @@ width:401px;
 .box3 {
 	background-color: #FFFFFF;
 	border:1px solid #e7e7e7;
-	height: 820px;
+	height: 1486px;
     width: 227px;
 	padding: 10px;
-	overflow: auto;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 3px;
@@ -528,3 +525,100 @@ width:401px;
 	margin-right:20px;
 	border-bottom:1px solid #D7E2EB;
 }
+
+/* NEW STYLES START */
+
+
+.orange{color:#ff3b05;}
+.blue{color:#2a4f97;}
+.gray{color:#979797;}
+.c-red{color:#900a0a;}
+.li-red{color:#ed5b21;}
+.da-gray{color:#313131;}
+.li-green{color:#5cb275;}
+
+.tc-tf{text-transform:uppercase;}
+.pa-fi{padding-top:5px;}
+.clear{clear:both; margin:0px; padding:0px; line-height:0px; height:0px; font-size:0px; _display/**/:/**/ inline;}
+.ppc-title{float:left; padding:27px 0px 0px 300px; color:#171717;}
+.main-title-sec{background:url(../../images/icons/candidatePage/blue-crv-bgs.png) left top no-repeat; float:left; padding-left:6px; height:35px; margin:9px 0px;}
+.main-mbg{background-color:#06abea; float:left;width: 974px;height:35px; text-transform:uppercase; color:#fff; padding-left:13px;
+font:bold 14px/35px "Trebuchet MS", Arial, Helvetica, sans-serif;text-align: left;}
+.main-bbg{background:url(../../images/icons/candidatePage/blue-crv-bgs.png) left -40px no-repeat; float:left; width:6px; height:35px;}
+
+.profile-left-sec{width:206px; float:left; background:url(../../images/icons/candidatePage/content-crv-bgs.png) left top no-repeat; padding-top:5px; 
+margin-right:7px;}
+.pl-cont-sec{background: none repeat scroll 0 0 #FFFFFF;width:182px; float:left; border:1px solid #e7e7e7; border-top:none; padding:7px 11px 12px; /*min-height:1469px;*/}
+.ptd-sec{width:182px; float:left; text-align:center; font-size:13px; color:#040404; padding-bottom:21px;}
+.ptd-sec img{float:left; margin-bottom:12px;}
+.ptd-rating{float:left; width:182px; padding-bottom:28px;}
+.rating-green{font-size:13px; color:#0d6b1a; width:91px; float:left; text-align:right; line-height:36px;}
+.rating-green img{float:right; margin-left:5px;}
+.rating-red{float:right; width:85px; color:#ff1e00; text-align:left; font-size:13px; line-height:36px;}
+.rating-red img{float:left; margin:12px 5px 0px 0px;}
+
+.pl-sub-fields{width:176px; float:left; font-size:13px; padding:0px 0px 29px 6px;}
+.pl-sub-fields li{background:url(../../images/icons/diamond.png) left 12px no-repeat; float:left; width:167px; padding-left:14px; line-height:18px;}
+.pl-sub-fields li a{color:#2d2d2d; padding:7px 0px; display:block;}
+.pl-sub-fields span{border-bottom:1px solid #d1d1d1; width:152px; float:left; height:0px; line-height:0px; margin:0px; padding:0px;}
+
+.ea-fc-sec{width:182px; float:left; padding-bottom:27px;}
+.ea-fc-title{background-color:#21b2ed; color:#fff; text-transform:uppercase; font:bold 14px/30px "Trebuchet MS", Arial, Helvetica, sans-serif;
+padding-left:9px; position:relative;}
+.blue-down-arrow{position:absolute; left:29px; bottom:-6px;}
+.ea-fc-cont-sec{width:172px; float:left; border:1px solid #d1d1d1; border-top:none; padding:17px 0px 2px 8px; text-align:center; 
+line-height:16px;} 
+.ea-text-fields{border:1px solid #d1d1d1; float:left; width:156px; height:21px; font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif;
+padding:0px 3px; margin-top:11px; color:#d1d1d1;}
+.pl-sub-but a{background:url(../../images/icons/candidatePage/menu-bg.png) left -60px no-repeat; float:right; padding-left:5px; height:22px; font-size:12px; 
+color:#fff; line-height:22px; margin:7px 0px 9px;}
+.pl-sub-but a strong{background:url(../../images/icons/candidatePage/menu-bg.png) right -87px no-repeat; float:left; height:22px; padding:0px 10px 0px 5px; 
+font:bold 13px/22px "Trebuchet MS", Arial, Helvetica, sans-serif;}
+
+.ea-fc-cont-sec .pl-sub-but{padding-right:57px;}
+.ea-fc-cont-sec .fan-club-fields{float:left; width:172px; padding-bottom:9px;}
+.ea-fc-cont-sec .fan-club-fields li{float:left; padding-right:7px;}
+
+.profile-mid-sec{width:453px; float:left; background:url(../../images/icons/candidatePage/content-crv-bgs.png) -211px top no-repeat; padding-top:5px;}
+.pm-cont-sec{width:427px; float:left; border:1px solid #e7e7e7; border-top:none; padding:9px 12px; /*min-height:1470px;*/background:#ffffff}
+.pm-inner-cont-sec{float:left; margin:9px 9px 11px; width:403px; border-bottom:1px solid #d9d9d9; padding:0px 3px 12px;}
+.inc-title{font:19px/20px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#2d2d2d; padding-bottom:9px;}
+.read-more a{color:#06abea; float:right;}
+.win-title, .loss-title{background:#109b23 url(../../images/icons/candidatePage/gr-arrows.gif) right top no-repeat; float:left; height:22px; font-size:12px; 
+font-weight:bold; color:#fff; padding:0px 21px 0px 12px; line-height:22px; margin:3px 0px 13px;}
+.loss-title{background-position:right -27px; background-color:#ff1e00;}
+.wl-sub-details li{font-size: 13px;width:402px; float:left; background:url(../../images/icons/candidatePage/red-circle.png) left 6px no-repeat; padding-left:13px; color:#313131; padding-bottom:15px;}
+.wl-sub-details li strong{font-size:13px;}
+.photo-gallery-fields{width:427px; float:left; padding-bottom:13px;}
+.photo-gallery-fields li{float:left; padding:5px 10px 0px 3px;cursor: pointer;}
+.more a{background-color:#5cb275; color:#fff; font-size:11px; line-height:18px; height:18px; padding:0px 13px; float:right; margin-right:9px;}
+
+.profile-right-sec{width:326px; float:right; background:url(../../images/icons/candidatePage/content-crv-bgs.png) -683px top no-repeat; padding-top:5px;}
+.pr-cont-sec{background: none repeat scroll 0 0 #FFFFFF;width:296px; float:left; border:1px solid #e7e7e7; border-top:none; padding:9px 14px;}
+.pr-sub-fields-sec{width:296px; float:left; padding-bottom:12px; border-bottom:1px solid #D9D9D9; margin-bottom:12px;}
+.pr-title{background-color:#ed5b21; color:#fff; height:24px; position:relative; text-transform:uppercase; float:left;
+font:bold 14px/24px "Trebuchet MS", Arial, Helvetica, sans-serif; margin-bottom:13px; padding:0px 15px;}
+.or-down-arrow{position:absolute; left:25px; bottom:-6px;}
+.news-events-fields li{width:296px; float:left; border-bottom:1px solid #d9d9d9; font-size:11px; color:#2d2d2d; padding-bottom:11px; 
+margin-bottom:11px;}
+.year-time{float:left; width:296px; padding-bottom:3px;}
+.news-events-fields li strong{font-size:13px; display:block; padding-bottom:3px;}
+.pr-sub-fields-sec .more a{margin-right:0px;}
+.video-thumb-sec li{float:left; width: 72px; text-align:center; padding:12px 26px 7px 0px;}
+.video-thumb-sec li img{float:left; margin-bottom:3px;}
+.video-thumb-sec li a{color:#525252;}
+
+.cbn-fields-sec li{width:296px; float:left; padding-bottom:9px;}
+.cbn-fields-sec label{width:69px; float:left; text-align:right; padding-right:5px;}
+.text-fields-sec{width:222px; float:left;}
+.text-fields-sec .text-fields{width:175px; height:21px; float:left; font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; 
+color:#9d9c9c; background-color:#eaeaea; border:1px solid #eaeaea; padding:0px 3px;}
+.text-fields-sec textarea{width:178px; float:left; height:73px; font:12px/18px "Trebuchet MS", Arial, Helvetica, sans-serif; 
+padding-left:3px; background-color:#eaeaea; border:1px solid #eaeaea;}
+.send-but{background:url(../../images/sprites.png) -312px -65px no-repeat; float:left; width:67px; height:22px; cursor:pointer; border:none;
+margin-left:75px;}
+.leader-thumbs li{width:118px; color:#313131; text-align:center; padding:0px 9px 5px 5px;}
+.leader-thumbs li img{float:left; padding-bottom:3px;}
+.leader-thumbs li a{color:#313131;}
+
+/* NEW STYLES END */
