@@ -452,7 +452,7 @@ public interface IConstants {
     public static final String YES = "Yes";
     public static final String NO = "No";
     
-    public static final String PARTYANALYST_SITE = "www.partyanalyst.com";
+    public static final String PARTYANALYST_SITE = "partyanalyst.com";
     public static final String FILE_SEPARATOR = "file.separator";
     public static final String UPLOADED_FILES = "uploaded_files";
     
