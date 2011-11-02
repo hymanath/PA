@@ -53,7 +53,7 @@ font-weight:bold;
  .imgFieldset
   {
 	-moz-border-radius: 4px 4px 4px 4px;
-	border			: 4px solid #9F81F7;
+	border			: 2px solid #CCCCCC;
     margin-bottom	: 10px;
 	margin-top		: 5px;
   }
@@ -86,96 +86,169 @@ font-weight:bold;
     padding-right: 8px;
 }
 
+.submenuImg{
+	float: left;
+    height: 28px;
+    padding-right: 8px;
+}
+#videoGallaryPopUpDiv {
+    height: auto;
+    min-height: 0;
+    width: auto;
+}
+
 </style>
 
 </head>
 <body>
-<div id="candidateProfileInfo">
- <span style="margin-top: 12px; margin-left: 12px;">${candidateVO.candidateName} 'S  Profile</span></div><br>
-<table width="987px" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:15px;">
+<table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr><td><div class="clear"></div>
+<div class="main-title-sec">
+ <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
+  <span style="margin-top:12px; margin-left: 520px;">
+ <a name="fb_share" type="button_count" 
+share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
+</script>
+</span>
+</div>
+ <div class="main-bbg"></div></div><br></td></tr></table>
+<table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
  <tr>
-  <td width="206" valign="top">
-  <div class="rel">
-   <div class="box1">
-   <div id="candidateInfo" >
+  <td width="200" valign="top">
+
+  <!--PROFILE LEFT CONENT SECTION START-->
+
+    <div class="profile-left-sec" id="profile-left-sec">
+	 </div>
+	 <div class="pl-cont-sec" id="pl-cont-sec">
+	<span id="candidateInfo"></span>
+	<div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
+            <ul>
+              <li><a onclick="getTotalNews('totalNews');" href="javascript:{}">News and events</a><span></span></li>
+              <li><a onclick="videoGallaryPopUp();" href="javascript:{}">Videos</a><span></span></li>
+              <li><a onclick="photoGallaryPopUp();" href="javascript:{}">Photo Gallery</a><span></span></li>
+              <li><a onclick="" href="javascript:{}">Developments</a><span></span></li>
+            </ul>
+          </div>
 	
+	  <div class="clear"></div>
+	   <!--EMAIL ALERT SECTION START-->
+          
+          <div class="ea-fc-sec">
+            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images//icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
+              updates of<br />
+              <span class="li-red">${candidateVO.candidateName}</span>
+              <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
+              <div id="alertMsg" style="dispaly:none"></div>
+			  <div class="pl-sub-but"><a onclick="validateEmailField()"><strong>Set alert</strong></a></div>
+            </div>
+          </div>
+          
+          <!--EMAIL ALERT SECTION END--> 
+     </div>
+   </div>
+</td>
+	
+	<!--PROFILE LEFT CONENT SECTION END--> 
+
+  <td width="444">
+
+    <!--PROFILE MIDDLE CONTENT SECTION START-->
+      
+      <div class="profile-mid-sec">
+        <div class="pm-cont-sec"> 
+		
+		<!--  ABOUT POLITICIAN SECTION START   --> 
+         
+		  <div id="pm-inner-cont-sec" class="pm-inner-cont-sec"> </div>
+		  
+		  <!--  ABOUT POLITICIAN SECTION END  --> 
+             
+			 <div id="showProfile"> </div>
+
+			 <!--ELECTION PROFILE SECTION START-->
+
+              <div class="pm-inner-cont-sec" id="electionInfo"></div>
+
+			  <!--ELECTION PROFILE SECTION END--> 
+
+			  <!--PHOTO GALLERY SECTION START-->
+          
+               <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
+            
+			 <div class="clear"></div>
+			
+			 
+			 <!--FACE BOOK COMMENTS SECTION START
+          
+          <div class="fleft"> <img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/></div>
+          
+          FACE BOOK COMMENTS SECTION END--> 
+     			  
 	</div>
-	<div style="border-bottom: 1px solid #D7E2EB;"></div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="getTotalNews('totalNews');" href="javascript:{}" style="color:#5B5B5B">News And Events</a></div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="videoGallaryPopUp();" href="javascript:{}" style="color:#5B5B5B">Videos</a></div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="photoGallaryPopUp();" href="javascript:{}" style="color:#5B5B5B">Photo Gallery</a></div>
-	   <div class="linkClass"><img src="images/icons/star.jpg" class="eleprofileImg"/><a onclick="" href="javascript:{}" style="color:#5B5B5B">Developments</a></div>
-    </div>
-	</div>
- </td>
- <td width="10">&nbsp;</td>
- <td width="444" valign="top"><div class="rel">
- <div class="box2">
- <div id="ProfileInfo" style="font-family:arial;font-size:12px;text-align:justify;"> </div>
-<div id="showProfile"> </div>
-<div id="electionInfo" style="font-family:arial;font-size:12px"></div>
-     <div id="photoGallaryDiv"></div>
-  </div>
- </div>
+   </div>
+          
+      <!--PROFILE MIDDLE CONTENT SECTION END--> 
 </td>
  <td width="10">&nbsp;</td>
-<td width="326" valign="top">
-<div class="rel">
- <div class="box3">
-  <div id="newsDisplayDiv"></div>
+ 
+ <!-- PROFILE RIGHT CONTENT SECTION START -->
+   
+   <td width="326" valign="top">
 
-<s:if test="fileVO != null && fileVO.size() > 0"> 
-<img src="images/icons/videos.jpg" style="margin-top:5px;margin-bottom:5px;text-align:left;"></img>
-<div id="videogallery" style="text-align:left;">
+      <div class="profile-right-sec">
+        <div class="pr-cont-sec"> 
+		  
+		 <!-- NEWS AND EVENTS SECTION START -->
+
+        <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
+         <div class="news-events-fields" id="newsDisplayDiv">
+          </div>
+       </div>
+          
+          <!--NEWS AND EVENTS SECTION END--> 
+           
+		   <!--VIDEOS SECTION START-->
+ 
+		<s:if test="fileVO != null && fileVO.size() > 0"> 
+		<div class="pr-sub-fields-sec">
+            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
+		<div id="videogallery" class="fleft">
 
 	<s:iterator status="stat" value="fileVO">
 		
 		<s:if test="#stat.index == 0">
 		<DIV>
 		<a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
-		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="230px;" height="210px;"/></a>
+		<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width: 297px; height: 227px;"/></a>
 		</DIV>
 		</s:if>
 	</s:iterator>
 
 	<s:if test="fileVO.size() > 1"> 
-		<DIV style="margin-top:5px;"><table width="100%"><tr>
+		<ul class="video-thumb-sec">
 			<s:iterator status="stat" value="fileVO">
 				<s:if test="#stat.index >= 1 && #stat.index <= 3">
-				<td><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
-				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' width="72px;" height="75px;"/></a></td>
+				<li><a rel="#voverlay" href='http://www.youtube.com/v/<s:property value="path"/>?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer' style="width:72px;">
+				<img src='http://img.youtube.com/vi/<s:property value="path"/>/0.jpg' style="width:95px;height:80px;"/></a></li>
 				</s:if>
 			</s:iterator>
-		</tr></table>
-		</DIV>
+		</ul>
 	</s:if>
+    </div>
+  </s:if>
 
-</div>
-</s:if>
+    <s:if test="fileVO != null && fileVO.size() > 4"> 
+	 <div class="more"><a onClick="videoGallaryPopUp();">More</a></div>
+	 </s:if>
+	<div id="videoGallaryPopUpDiv">
 
-
-<s:if test="fileVO != null && fileVO.size() > 4"> 
- <img src="images/icons/more.jpg" align="right" style="margin-top:5px;" onClick="videoGallaryPopUp();" />
- </s:if>
- </div>
- 
+    <!--VIDEOS SECTION END--> 
  </td>
  </tr>
- 
-</table>
-</div>
-
-<div id="videoGallaryPopUpDiv">
-	
-</div>
-
-
- </div>
- 
- </td>
- </tr>
- 
-</table>
+ </table>
 <script>
   $(document).ready(function() {
     $("#tabs").tabs();
@@ -194,8 +267,7 @@ font-weight:bold;
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
-
-<script type="text/javascript">
+ <script type="text/javascript">
    var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
@@ -281,7 +353,34 @@ function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
+function validateEmailField()
+	{
+		debugger;
+		var emailIdVal = document.getElementById("emailId").value;
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(emailIdVal !='' && emailIdVal!='your email'){
+          
+		  if(!emailIdVal.match(emailExp)){
 
+				document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	/* var jsObj = {
+		          emailId : emailIdVal,
+				  candidateId :candidateId,
+                   task:"setEmailAlertForUser"
+	             };
+    
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+	callAjax(jsObj,url);*/
+}
 function photoGallaryPopUp(){
 	
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
@@ -480,38 +579,30 @@ function showFirstFourNewsRecords(results)
   if(results.length>0)
   {
    var str ='';
-   str +='<img src="images/icons/news_events.jpg" style="margin-bottom:5px;"/>';
-   str+='  <table style="width:98%;">';
-  
+   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span> </h1>';
+   str+='<ul>';
    for(var i =0 ;i<results.length && i<4;i++)
    {
      initialFileIdArray[i]=results[i].fileId;
-     str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
+     str+='<a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
 	 
 	 if(results[i].fileTitle1.length > 30)
-		str += results[i].fileTitle1.substring(0,30)+'..';
+		str +='<li><strong>'+results[i].fileTitle1.substring(0,30)+'..</strong>';
 	 else
-		str += results[i].fileTitle1;
+		str +='<li><strong>'+results[i].fileTitle1+'</strong>';;
 
-	 str += '</a></td>';
-     str+='     </tr>';
-     str+='     <tr>';
-     str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
-     str+='     </tr>';
-     str+='     <tr><td>';
-	
+	 str += '</a>';
+     str+='<div class="year-time"><span class="li-red">'+results[i].source+'</span> | '+results[i].fileDate+'</div>';
+     
 	 if(results[i].fileDescription1.length > 62)
-		str += results[i].fileDescription1.substring(0,62)+'..';
+		str += results[i].fileDescription1.substring(0,62)+'..</li>';
 	 else
-		str += results[i].fileDescription1;
+		str += ''+results[i].fileDescription1+'</li>';
 
-     str+='     </td></tr>';
-	 str+='     <tr><td> <hr style="width:98%;"></hr></td></tr>';
-   }
-   str+='  </table>';
+     }
+   str+='  </ul>';
    
-   str+='<a href="javascript:{}" onclick="getTotalNews(\'totalNews\');" \"><img src="images/icons/more.jpg" align="right"></a>';
+   str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');" \">More</a></div>';
    
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
@@ -732,84 +823,52 @@ function getFirstThreePhotoRecords(){
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);  
 }
-function buildFirstThreePhotoRecords(results){
-if(results.length>0)
+function buildFirstThreePhotoRecords(results)
  {
-  var count=0;
-  document.getElementById("photoGallaryDiv").innerHTML= '';
-  str ='';
-  str+='<table>';
-  str+='  <tr>';
-  str+='    <td style="margin-bottom:21px;font-weight:bolder;font-size:14px;font-family:Arial;">PHOTO GALLERY</td>';
-  str+='  </tr>';
-  str+='  <tr>';
-  if(results[0].path!=null)
-  {
-   count++;
-  str+='     <td>';
-  str+='      <table>';
-  str+='         <tr><td>';
-  str+='             <img alt="" src="'+results[0].path+'" class="photoStyle" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/>';
-  str+='         </td></tr>';
-  str+='         <tr><td>';
-  str+='           &nbsp;&nbsp;'+results[0].title+'';
-  str+='         </td></tr>';
-  str+='       </table>';
-  str+='     </td>';
-  }
-  if(results[1]!=null && results[1].path!=null)
-  {
-  count++;
-  str+='     <td>';
-  str+='       <table>';
-  str+='         <tr><td>';
-  str+='           <img alt="" src="'+results[1].path+'" class="photoStyle" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/>';
-  str+='         </td></tr>';
-  str+='         <tr><td>';
-  str+='            &nbsp;&nbsp;'+results[1].title+'';
-  str+='         </td></tr>';
-  str+='       </table>';
-  str+='      </td>';
-  }
-  if(results[2]!=null  && results[2].path!=null)
-  {
-  count++;
-  str+='      <td>';
-  str+='       <table>';
-  str+='         <tr><td>';
-  str+='           <img alt="" src="'+results[2].path+'" class="photoStyle" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/>';
-  str+='         </td></tr>';
-  str+='         <tr><td>';
-  str+='             &nbsp;&nbsp;'+results[2].title+'';
-  str+='         </td></tr>';
-  str+='       </table>';
-  str+='      </td>';
-  }
-  for(var i=3;i<results.length;i++)
-  {
-   if(results[i]!=null  && results[i].path!=null && count<3)
-   {
-    count++;
-	str+='     <td>';
-  str+='       <table>';
-  str+='         <tr><td>';
-  str+='           <img alt="" src="'+results[i].path+'" class="photoStyle" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/>';
-  str+='         </td></tr>';
-  str+='         <tr><td>';
-  str+='             &nbsp;&nbsp;'+results[i].title+'';
-  str+='         </td></tr>';
-  str+='       </table>';
-  str+='      </td>';  
-   }
-  }
-  str+='    </tr>';
-  str+='</table>';
-  str+='</tr>';
-  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()" \"><img src="images/icons/more.jpg" align="right"></a>';
-  str+='<div id="buildPhotoGallaryDiv"></div>';
-  document.getElementById("photoGallaryDiv").innerHTML= str;
- }
-}
+
+	if(results.length>0)
+	 {
+	  var count=0;
+	  document.getElementById("photoGallaryDiv").innerHTML= '';
+	  str ='';
+	  str+='<h3 class="main-title"><span class="da-gray">PHOTO GALLERY</span></h3>';
+	  str+='<ul class="photo-gallery-fields">';
+	  if(results[0].path!=null)
+	  {
+	   count++;
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	  str+=''+results[0].title+'</li>';
+	 
+	  }
+	  if(results[1]!=null && results[1].path!=null)
+	  {
+	  count++;
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+=''+results[1].title+'</li>';
+	  }
+	  if(results[2]!=null  && results[2].path!=null)
+	  {
+	  count++;
+	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=''+results[2].title+'</li>';
+	  
+	  }
+	  for(var i=3;i<results.length;i++)
+	  {
+	   if(results[i]!=null  && results[i].path!=null && count<3)
+	   {
+		count++;
+		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+	    str+=''+results[i].title+'</li>';
+	   }
+	  }
+	  str+='</ul>';
+	  str+='<div class="more">';
+	  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()" \">More</a></div>';
+	  str+='<div id="buildPhotoGallaryDiv"></div>';
+	  document.getElementById("photoGallaryDiv").innerHTML= str;
+	 }
+	}
 function getCandidatesPhotosInAGallary(gallaryId)
 {
     var jsObj =
@@ -836,8 +895,7 @@ function buildCandidateElectionInfo()
 	var str ='';
 	var electionInfoElmt = document.getElementById("electionInfo");
 	
-	str+='<table><tr><td>';
-    str+='<div style="margin-bottom: 21px; font-weight: normal; font-size: 19px; font-family: tahoma;text-align:left">Election Profile</div>';
+	str+='<h1 class="inc-title">Election Profile</h1>';
 
 	str+='<s:iterator value="candidateElectionDetails" status="stat">';
 
@@ -845,13 +903,13 @@ function buildCandidateElectionInfo()
 	
 	if(wFlag == true)
 	{
-		str += '<div style="text-align:left"><img src="images/icons/won.jpg"><br><br></div>';
+		str += '<h3 class="win-title">Won</h3>';
 		wFlag = false;
 	}
 	
-    str+='<div onmouseover="this.style.color=\'#4D2AEB\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
-	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Won</b>';
-	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName" /> constituency<br><br></div></s:if>';
+    str+='<ul class="wl-sub-details">';
+	str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
+	str+='<strong>Won in <s:property value="electionYear" /> </strong> <s:property value="electionType" /> Election with <s:property value="votesPercentage" />% of votes gain for <s:property value="partyName" /> party in <s:property value="constituencyName" /> constituency</li></ul></s:if>';
 	
 	str+'</s:iterator>';
 	
@@ -860,19 +918,17 @@ function buildCandidateElectionInfo()
 	
 	if(lFlag == true)
 	{
-		str+='<div style="text-align:left"><img src="images/icons/lost.jpg"><br><br></div>';
+		str+='<h3 class="loss-title">Lost</h3>';
 		lFlag=false;
 	}
 	
-    str+='<div onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
-	str+='<b><img src="images/icons/round.JPG" class="eleprofileImg">Lost</b>';
-	str+=' <b>in <s:property value="electionYear" /></b>&nbsp;&nbsp;<s:property value="electionType" />&nbsp;&nbsp;Election with &nbsp;&nbsp;<b><s:property value="votesPercentage" />% </b>&nbsp;&nbsp;of votes gain for   <s:property value="partyName" />&nbsp;&nbsp;party in &nbsp;&nbsp;<s:property value="constituencyName"/> constituency<br><br></div></s:if>';
+    str+='<ul class="wl-sub-details">';
+	str+='<li  onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" onclick="showCandidateElectionDetails(\'constituencyElectionResultsAction.action?constituencyId=<s:property value="constituencyId"/>&electionType=<s:property value="electionType"/>&electionYear=<s:property value="electionYear"/>\')">';
+	str+='<strong>Lost in <s:property value="electionYear" /></strong> <s:property value="electionType" /> Election with <s:property value="votesPercentage" />% of votes gain for <s:property value="partyName" />  party in <s:property value="constituencyName"/> constituency</li></ul></s:if>';
 	
 	str+'</s:iterator>';
 		
-	str+='</td></tr></table>';
-	
- electionInfoElmt.innerHTML = str;
+	electionInfoElmt.innerHTML = str;
 }
 
 function candidateInfo()
@@ -880,33 +936,22 @@ function candidateInfo()
 	var candidateInfoElmt = document.getElementById("candidateInfo");
     var str='';
 	
-
-	str+='<table style="margin-bottom:25px;">';
-	str+='<img id="candidateImage" height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg">';
-	str+='<tr><td align="center">';
-	str+='<span id="candidateName">${candidateVO.candidateName}</span></td></tr>';
-	
-	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size:12px;">';
+    str+='<div class="ptd-sec">';
+	str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg"><span class="tc-tf pa-fi">';
+	str+='<label class="c-red">${candidateVO.candidateName}</label></span><br />';
 	
 	<s:if test="candidateElectionDetails[0].electionType == 'Assembly'">
-		str += 'MLA';
+		str += 'MLA <br />';
 	</s:if>
 
 	<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
-		str += 'MP';
+		str += 'MP <br />';
 	</s:if>
-
-	str+='</span></td>';
-	str+='</tr>';
-
-	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size: 12px;">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</span></td></tr>';
-
-	str+='<tr><td align="center">';
-	str+='<span  style="font-weight: bold; font-size: 12px;">${candidateElectionDetails[0].partyName} PARTY</span></td></tr>';
-
-	str += '</table>';
+	str+='<a target ="blank" href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
+	str+='${candidateElectionDetails[0].partyName} PARTY';
+    str+='</div>';
+	str+='<div class="clear"></div>';
+     	
 	candidateInfoElmt.innerHTML = str;
 }
 
@@ -917,9 +962,9 @@ function candidateInfo()
   $("#showProfile").dialog({ stack: false,
                                 show: "clip",
 			                    hide: "clip",
-							    height: 570,
-								width: 600,
-								position:[150,120],								
+							    height: 'auto',
+								width:600,
+								position:[130,130],								
 								modal: true,
 								title:'<font color="Navy"><b>${candidateVO.candidateName}</b></font>',
 								overlay: { opacity: 0.5, background: 'black'}
@@ -948,21 +993,21 @@ function candidateInfo()
  function displayProfile()
  {
  
-   var profileInfoElmt = document.getElementById("ProfileInfo");
+   var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
     var str='';
     var x=1;
    
    str+='<s:if test="descriptions != null"> ';
-   str+='<div style="font-weight: bold; font-size: 15px;">About ${candidateVO.candidateName}</div>';
+   str+='<h1 class="inc-title">About ${candidateVO.candidateName}</h1>';
    
-   str+='	<br><s:iterator value="descriptions">';
+   str+='<s:iterator value="descriptions">';
  if (x<=2)
    {
-   str+='  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
+   str+='  <p style="font-size: 13px;"><s:property /></p><br />';
    x++;
    }
    str+='  </s:iterator>';
-   str+='<div style="text-align: right;"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
+   str+='<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
    str+='Read More >></a></div>';
    str+='</s:if>';
    
@@ -1023,7 +1068,7 @@ function videoGallaryPopUp()
    <s:if test="fileVO == null || fileVO.size() < 4"> 
    return;
    </s:if>
-
+  
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
 							    height: 350,
 								width: 520,
@@ -1032,6 +1077,7 @@ function videoGallaryPopUp()
 								title:'<font color="Navy">Video Galleries</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
+
 	showAllVideoGalleries();
 }
 
