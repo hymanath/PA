@@ -277,7 +277,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
    var initialCurrentSize=0;
    var arraySize =0;
    var currentSize=0;
-     
+   var queryTypeChecked='Public';
 
 function onYouTubePlayerReady(playerId) 
 { 
@@ -332,6 +332,14 @@ function callAjax(jsObj,url)
 		else if(jsObj.task == "getVideosInGallary")
             {
 			   buildAllVideosInGallary(myResults);
+			}
+		else if(jsObj.task == "getNewsCountByScope")
+            {
+			   buildNewsCount(myResults);
+			}
+		else if(jsObj.task == "getNewsByScope")
+            {
+			   showTotalNews(myResults);
 			}
 		}
 		catch(e)
@@ -567,6 +575,7 @@ function getFirstFourNewsRecords(){
 		{   
 		    time : timeST,
 			candidateId:candidateId,
+			
 			task:"getFirstFourNewsRecordsToDisplay"
 		};
 
@@ -615,7 +624,35 @@ function showFirstFourNewsRecords(results)
    }
  }
  function getTotalNews(viewType)
- {
+ {  
+    var queryType='Public';
+   if(document.getElementById("candidateVisibility")!=null)
+    { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
    var jsObj =
 		{   
 		    time : timeST,
@@ -623,6 +660,7 @@ function showFirstFourNewsRecords(results)
 			candidateId:candidateId,
 			startRecord:0,
 			maxRecord:20,
+			queryType:queryType,
 			task:"getNewsToDisplay"
 		};
 
@@ -645,6 +683,11 @@ function showFirstFourNewsRecords(results)
   {
      var str ='';
      str+='<fieldset class="imgFieldset">';
+	 str+='   <table>';
+	 str+='     <tr>';
+     str+='       <td colspan="2"><div id="showScopeWiseNewsCount" /></td>';
+     str+='     </tr>';
+	 str+='   </table>';
      str+='  <table style="width:98%">'; 
   for(var i in results)
    { 
@@ -653,8 +696,8 @@ function showFirstFourNewsRecords(results)
      str+='       <td><a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'array\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
 //	 str+='     <tr>';
- //    str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
- //    str+='     </tr>';
+ //  str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
+ //  str+='     </tr>';
      str+='     <tr>';
      str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
      str+='     </tr>';
@@ -666,7 +709,138 @@ function showFirstFourNewsRecords(results)
    str+='  </table>';
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
+   getScopeWiseNewsCount();
    }
+ }
+ function  buildNewsCount(result)
+ {
+    str='';
+	if(result[9].visibility=="True")
+	{
+	 str+='   <table>';
+	 str+='     <tr>';
+	 str+='       <td>Sort By : </td>';
+	 str+='       <td>';
+	 str+='          <select id="candidateVisibility" onchange="getTotalNews(\'totalNews\');"  >';
+	 str+='             <option value="Public">Public</option>';
+	 str+='             <option value="Private">Private</option>';
+	 str+='             <option value="All">All</option>';
+	 str+='          </select>';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='   </table>';
+   	}
+     str+='   <table>';
+	 str+='     <tr>';
+	 str+='     <td>News Impact: </td>';
+	 if(result[3].fileTypeId>0)
+     str+='       <td>'+result[3].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+4+')" ><font color="brown">'+result[3].fileTypeId+'</font></a></td>';
+	 else
+	 str+='       <td>'+result[3].name+' Level -<font color="brown">'+result[3].fileTypeId+'</font></td>';
+	 if(result[4].fileTypeId>0)
+	 str+='       <td>'+result[4].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+5+')" ><font color="brown">'+result[4].fileTypeId+'</font></a></td>';
+	 else
+	 str+='       <td>'+result[4].name+' Level -<font color="brown">'+result[4].fileTypeId+'</font></td>';
+     if(result[5].fileTypeId>0)
+	 str+='       <td>'+result[5].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+6+')" ><font color="brown">'+result[5].fileTypeId+'</font></a></td>';
+	 else
+	 str+='       <td>'+result[5].name+' Level -<font color="brown">'+result[5].fileTypeId+'</font></td>';
+     str+='     </tr>';
+	 str+='   </table>';
+    document.getElementById("showScopeWiseNewsCount").innerHTML=str; 
+	if(queryTypeChecked=="Public")
+     {
+	    if(document.getElementById("candidateVisibility")!=null)  
+        {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='Public';
+        }		 
+	 }
+   if(queryTypeChecked=="Private")
+     {
+	   if(document.getElementById("candidateVisibility")!=null)    
+	    {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='Private';
+        }
+	 }
+   if(queryTypeChecked=="All")
+     {
+	   if(document.getElementById("candidateVisibility")!=null)    
+	    {		
+	     var candidateVisibilityEle = document.getElementById("candidateVisibility").value='All';
+        }
+	 }
+	
+ }
+ function deleteAllElements()
+ {
+   
+   for(var i=0 ; i<fileIdArray.length;)
+   {
+     fileIdArray.pop();
+   }
+ }
+ function getScopeWiseNews(scopeId)
+ {
+   deleteAllElements();
+   timeST = new Date().getTime();
+   var queryType='Public';
+   if(document.getElementById("candidateVisibility")!=null)
+    { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			scopeType:scopeId,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryType,
+			task:"getNewsByScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+ }
+ function getScopeWiseNewsCount()
+ { 
+   timeST = new Date().getTime();
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			queryType:queryTypeChecked,
+			task:"getNewsCountByScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+   
  }
  function getNews(fileId,filSize,arrayType)
  { 
@@ -707,6 +881,11 @@ function showFirstFourNewsRecords(results)
 	if(arrayType=='array')
 	{
 	 str+='<table>';
+	 	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
+	 str+='       </td>';
+	 str+='     </tr>';
 	 str+='   <tr>';
 	 str+='      <td>';
 	 str+='         <table>';
@@ -735,11 +914,6 @@ function showFirstFourNewsRecords(results)
 	 str+='        '+results[0].fileDescription1+'';
 	 str+='       </td>';
 	 str+='     </tr>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
-	 str+='       </td>';
-	 str+='     </tr>';
 	 str+='<table>';
 	}
 	else if(arrayType=="initialArray")
@@ -748,6 +922,11 @@ function showFirstFourNewsRecords(results)
 	 str+='   <tr>';
 	 str+='      <td>';
 	 str+='         <table>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: <font color="#FF4500">'+results[0].fileDate+'</font>';
+	 str+='       </td>';
+	 str+='     </tr>';
 	 str+='	          <tr>';
 	 if(initialCurrentSize-1 >=0)
 	 {
@@ -771,11 +950,6 @@ function showFirstFourNewsRecords(results)
 	 str+='     <tr>';
 	 str+='       <td>';
 	 str+='        '+results[0].fileDescription1+'';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: '+results[0].fileDate+'';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='<table>';
