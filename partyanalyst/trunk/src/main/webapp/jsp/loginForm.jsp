@@ -288,11 +288,11 @@ if(request.getParameter("problemHistoryId")!=null){
 
 	</style>	
 	</head>
-	<body>	 
+	<body><center>	 
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner"></div>
 		</div>
-		<div id="loginPanel_main" class="background">
+		<div id="loginPanel_main" class="background" style="align:center">
 		
 		<div style="width:360px;">
 			<table width="100%" cellpadding="0" cellspacing="0" style="width:360px;">
