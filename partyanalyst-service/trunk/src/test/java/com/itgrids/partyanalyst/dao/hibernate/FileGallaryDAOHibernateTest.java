@@ -80,13 +80,18 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	/*public void testGetNewsCountByScope()
 	{
-		List<Long> list = fileGallaryDAO.getNewsCountByScope(900L,2L,"All");
+		List<Long> list = fileGallaryDAO.getNewsCountByScope(900L,null,"Private");
 		System.out.println(list.size());
 		System.out.println(list.get(0));
 	}*/
-	public void testGetNewsByScope()
+	/*public void testGetNewsByScope()
 	{
-		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,2L,0,20,"Private");
+		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,null,0,20,"Private");
+		System.out.println(list.size());
+	}*/
+	public void testGetOtherNews()
+	{
+		List<Object[]> list = fileGallaryDAO.getOtherNews(900L,0,20,"Private");
 		System.out.println(list.size());
 	}
 }
