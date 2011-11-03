@@ -19,7 +19,7 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/animation/animation-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/carousel/carousel-min.js&2.8.2r1/build/layout/layout-min.js"></script>  
 
 <!-- JQuery files (Start) -->
-<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
