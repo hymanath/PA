@@ -150,8 +150,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select count(*) from FileGallary model where model.gallary.candidate.candidateId =:candidateId and model.gallary.contentType.contentType =:type and model.gallary.isDelete = 'false' " +
-				"  and model.isDelete = 'false' and model.file.regionScopes.regionScopesId =:scopeType  ");
+				"  and model.isDelete = 'false' ");
 		
+		if(scopeType!=null)
+			query.append("   and model.file.regionScopes.regionScopesId =:scopeType   ");
+			
 		if(queryType.equals("Public"))
 			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
 			
@@ -162,6 +165,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		queryObject.setLong("candidateId", candidateId);
 		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		if(scopeType!=null)
 		queryObject.setLong("scopeType", scopeType);
 		
 		return queryObject.list(); 
@@ -173,8 +178,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
-				" and model.gallary.isDelete = 'false'  and model.file.regionScopes.regionScopesId =:scopeType ");
+				" and model.gallary.isDelete = 'false'  ");
 
+		if(scopeType!=null)
+			query.append("   and model.file.regionScopes.regionScopesId =:scopeType   ");
+		
 		if(queryType.equals("Public"))
 			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
 			
@@ -186,10 +194,41 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong("candidateId", candidateId);
 		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		if(scopeType!=null)
 		queryObject.setLong("scopeType", scopeType);
+		
 		queryObject.setFirstResult(startIndex);
 		queryObject.setMaxResults(maxResults);	
 						
 		return queryObject.list(); 
 	}
+	
+	public List<Object[]> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
+				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
+				" and model.gallary.isDelete = 'false' and ((model.file.regionScopes.regionScopesId is null ) or " +
+				"  ( model.file.regionScopes.regionScopesId in(1,2,3,7,8,9))) ");
+		
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		query.append("   order by model.file.fileDate desc   ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong("candidateId", candidateId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResults);	
+						
+		return queryObject.list(); 
+	}
+	
 }
