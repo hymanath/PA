@@ -905,16 +905,19 @@ public class ProblemManagementReportService implements
 								log.debug("Setting data into ProblemBeanVO......");
 							for(int j=0;j<result.size();j++){
 								Object[] problemData = (Object[]) result.get(j);
-								departmentName = problemData[0].toString();
+								if(problemData[0].toString()!=null)
 								problemBean.setDepartment(problemData[0].toString());
+								if(problemData[1]!=null)
 								problemBean.setDepartmentConcernedPersonName(problemData[1].toString());
-								problemBean.setUpdatedDate(problemData[1].toString());
+								problemBean.setUpdatedDate(problemData[2].toString());
 								if(!(problemData[3]==null && problemData[4]==null)){
 									problemBean.setContactNo(problemData[3].toString());
 									problemBean.setDesignation(problemData[4].toString());
 								}
 								else{
+									if(problemData[3]!=null)
 									problemBean.setContactNo(problemData[3].toString());
+									if(problemData[4]!=null)
 									problemBean.setDesignation(problemData[4].toString());
 								}
 							}
