@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -53,6 +54,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateResult;
+import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
@@ -97,7 +99,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private CandidateProfileDescription candidateProfileDescription;
     private IMessageToCandidateDAO messageToCandidateDAO;
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
+	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
 	
+	public ICandidateUpdatesEmailDAO getCandidateUpdatesEmailDAO() {
+		return candidateUpdatesEmailDAO;
+	}
+
+	public void setCandidateUpdatesEmailDAO(
+			ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO) {
+		this.candidateUpdatesEmailDAO = candidateUpdatesEmailDAO;
+	}
+
 	
       
 	public IMessageToCandidateDAO getMessageToCandidateDAO() {
@@ -1319,7 +1331,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return returnValue;
 		}
 	}
-	public List<FileVO> getNewsCountByScope(Long candidateId,String queryType)
+	
+		public List<FileVO> getNewsCountByScope(Long candidateId,String queryType)
 	{
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
@@ -1389,6 +1402,28 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return 0L;
 		}
 	}
+	 public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long candidateId){
+		 
+		 ResultStatus statusCode = new ResultStatus()  ;
+		 try {
+			  CandidateUpdatesEmail candidateUpdatesEmail = new CandidateUpdatesEmail();
+				 
+			     candidateUpdatesEmail.setEmail(emailId);
+				 candidateUpdatesEmail.setCandidate(candidateDAO.get(candidateId));
+				 candidateUpdatesEmail.setUnsubscribed("false");
+				 candidateUpdatesEmailDAO.save(candidateUpdatesEmail);
+		
+		     statusCode.setResultCode(ResultCodeMapper.SUCCESS);
+		 
+		     return statusCode;
+		
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 statusCode.setExceptionEncountered(e);
+			 statusCode.setResultCode(ResultCodeMapper.FAILURE);
+			 return statusCode;
+		 }
+	 }
 	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
