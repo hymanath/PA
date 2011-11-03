@@ -678,7 +678,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByScope"))
 		 {
-			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),jObj.getLong("scopeType"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+			Long scopeType=null;
+			if(jObj.getString("scopeType").trim().length()>0)
+				scopeType = jObj.getLong("scopeType");
+				
+			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getOtherNews"))
+		 {
+			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
 		 }
 	  }
 	 catch(Exception e)
