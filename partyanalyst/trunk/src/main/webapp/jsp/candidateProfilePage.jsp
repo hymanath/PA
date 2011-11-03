@@ -1026,20 +1026,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -1048,7 +1048,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:128px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
