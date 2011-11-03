@@ -935,14 +935,14 @@ function showFirstFourNewsRecords(results)
 	else if(arrayType=="initialArray")
 	{
 	 str+='<table>';
-	 str+='   <tr>';
-	 str+='      <td>';
-	 str+='         <table>';
 	 str+='     <tr>';
 	 str+='       <td>';
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: <font color="#FF4500">'+results[0].fileDate+'</font>';
 	 str+='       </td>';
 	 str+='     </tr>';
+	 str+='   <tr>';
+	 str+='      <td>';
+	 str+='         <table>';
 	 str+='	          <tr>';
 	 if(initialCurrentSize-1 >=0)
 	 {
