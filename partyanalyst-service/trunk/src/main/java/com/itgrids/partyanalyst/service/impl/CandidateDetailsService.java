@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.MessageToCandidateDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -57,6 +59,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
+import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
@@ -92,8 +95,20 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private INominationDAO nominationDAO;
 	private CandidateProfileDescription candidateProfileDescription;
+    private IMessageToCandidateDAO messageToCandidateDAO;
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	
+	
+      
+	public IMessageToCandidateDAO getMessageToCandidateDAO() {
+		return messageToCandidateDAO;
+	}
+
+	public void setMessageToCandidateDAO(
+			IMessageToCandidateDAO messageToCandidateDAO) {
+		this.messageToCandidateDAO = messageToCandidateDAO;
+	}
+
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
@@ -955,6 +970,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public List<String> getCandidateProfileDescriptionByCandidateID(Long candidateId)
 	{
 	 try{
+			log.debug("Entered into getCandidateProfileDescriptionByCandidateID() Method");
 		 List<Object> results = candidateProfileDescriptionDAO.getCandidateProfileDescription(candidateId);
 		 
 		 if(results != null && results.size() >0)
@@ -968,24 +984,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		 
 	 }catch(Exception e){
+		 log.error("Exception Occured in getCandidateProfileDescriptionByCandidateID() method - "+e);
 		 return null;
 	 }
 
 
 	}
 	
- 	
+	/**
+	 * This method will save the Candidate Profile Descriptions when we pass the candidate id and description (In GallaryVO) as Argument
+	 * @author Sachin
+	 * @param GallaryVO gallaryVO
+	 * @return ResultStatus
+	 */
 	
 	public ResultStatus saveDescription(GallaryVO gallaryVO)
 	{
+		log.debug("Entered into saveDescription() Method");
 		Long orderNo;
 		candidateProfileDescription = new CandidateProfileDescription() ;
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			List<Object> results =candidateProfileDescriptionDAO.getMaxOrderNo(gallaryVO.getCandidateId());
 			
-			orderNo = results.get(0) == null ? 1l : (Long)results.get(0);
-			
+			orderNo = results.get(0) == null ? 0l : (Long)results.get(0);
+			orderNo = orderNo + 1;
 			candidateProfileDescription.setDescription(gallaryVO.getDescription());
 			candidateProfileDescription.setOrderNo(orderNo);
 			candidateProfileDescription.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
@@ -995,13 +1018,129 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}catch (Exception e) {
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 log.error("Exception Occured in saveDescription() method - "+e);
 			return resultStatus;
 		}
 	}
 	
 	/**
-	 * 
-	 * 
+	 * This method will populate  the Candidate Profile Descriptions information when we pass the candidate id  as Argument
+	 * @author Sachin
+	 * @param Long candidateId
+	 * @return List<GallaryVO>
+	 */
+	public List<GallaryVO> getCandidateProfileInfo(Long candidateId)
+	{
+		log.debug("Entered into getCandidateProfileInfo() Method");
+		
+		List<GallaryVO> gallaryVO = new ArrayList<GallaryVO>();
+	List<Object[]> list = candidateProfileDescriptionDAO.getCandidateProfileInfo(candidateId);
+	
+	try{
+	for(Object[] params : list)
+	{
+		GallaryVO gallary = new GallaryVO();
+		gallary.setCandidateId((Long)params[0]);
+		gallary.setDescription(params[1].toString());
+		gallary.setUserId((Long)params[2]);
+		gallaryVO.add(gallary);
+	}
+	}catch (Exception e)
+	{
+		 log.error("Exception Occured in getCandidateProfileInfo() method - "+e);
+		return null;
+	}
+		return gallaryVO;
+		
+	}
+	
+	/**
+	 * This method will update  the Candidate Profile Descriptions information when we pass the gallaryVO (to update the description and order no) and candidate id  as Argument
+	 * @author Sachin
+	 * @param List<GallaryVO> gallaryVO
+	 * @param Long candidateId
+	 * @return ResultStatus
+	 */
+	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long candidateId)
+	{
+		log.debug("Entered into updateProfileDescription() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+	
+		try{
+			Candidate candidate = candidateDAO.get(candidateId);
+			
+				for(GallaryVO params : gallaryVO)
+				{
+			    CandidateProfileDescription candidateProfileDescription = candidateProfileDescriptionDAO.get(params.getUserId());
+			    candidateProfileDescription.setCandidate(candidate);
+			    candidateProfileDescription.setDescription(params.getDescription());
+			    candidateProfileDescription.setOrderNo(params.getCandidateId());
+		        candidateProfileDescriptionDAO.save(candidateProfileDescription);
+				}
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+     	}catch (Exception e) {
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 log.error("Exception Occured in updateProfileDescription() method - "+e);
+		return resultStatus;
+	    }
+	}
+	
+	/**
+	 * This method will save  the message send to the candidate and it will take argument as gallaryVO(sender name,constituencyId and message)
+	 * @author Sachin
+	 * @param GallaryVO gallaryVO
+	 * @return ResultStatus
+	 */
+	public ResultStatus saveMessage(GallaryVO gallaryVO)
+	{
+		log.debug("Entered into saveMessage() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+	
+		try{
+		MessageToCandidate candidate = new MessageToCandidate();
+		Constituency constituency = constituencyDAO.get(gallaryVO.getUserId());
+		Candidate candidate2 = candidateDAO.get(gallaryVO.getCandidateId());
+		candidate.setName(gallaryVO.getGallaryName());
+		candidate.setCandidate(candidate2);
+		candidate.setConstituency(constituency);
+		candidate.setMessage(gallaryVO.getDescription());
+			messageToCandidateDAO.save(candidate);
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+     	}catch (Exception e) {
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 log.error("Exception Occured in saveMessage() method - "+e);
+		return resultStatus;
+	    }
+	}
+	
+	/**
+	 * This method will delete  the Candidate Profile Descriptions information when we pass the CandidateProfileDescriptionId  as argument
+	 * @author Sachin
+	 * @param Long profDescId
+	 * @return ResultStatus
+	 */
+	public ResultStatus deleteProfileDescById(Long profDescId)
+	{
+		log.debug("Entered into deleteProfileDescById() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+		
+	    int flag = candidateProfileDescriptionDAO.deleteCandidateProfileDescriptionById(profDescId);
+          if(flag!=0){	
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+          }
+          else
+          {  
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		   }
+		}
+		
+	/**
 	 * This Method will give Videos Details As List<FileVO> when we pass candidateId,start Index and Max results As Arguements
 	 * @author Kamalakar Dandu
 	 * @param Long candidateId
