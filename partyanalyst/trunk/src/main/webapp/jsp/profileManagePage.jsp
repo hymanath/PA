@@ -199,7 +199,7 @@ font-size:18px;
 <script type="text/javascript">
 google.load("elements", "1", {packages : ["newsshow"]});
 		var timeST = new Date().getTime();
-		
+		var sizeOfArray;
 
 
 function showPhotoGallary1()
@@ -244,7 +244,8 @@ var candidateId=document.getElementById("candidateld").value;
 	 success : function( o ) {
 		try
 		{ 
-		 myResults = YAHOO.lang.JSON.parse(o.responseText);  
+		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
+         	 
          if(jsObj.task == "getCandidatePhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
@@ -257,6 +258,14 @@ var candidateId=document.getElementById("candidateld").value;
 			{
            showDiscriptionStatus(myResults);  
 			}	
+		else if(jsObj.task == "deleteDiscription")
+			{
+           showDeleteStatus(myResults);  
+			}		
+		else if(jsObj.task == "updateProfileDiscription")
+			{
+           showDiscriptionUpdateStatus(myResults);  
+			}		
 		else if(jsObj.task == "getPhotosInAGallary")
 			{
                showPhotosInAGallary(myResults);
@@ -338,9 +347,11 @@ var candidateId=document.getElementById("candidateld").value;
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
 			}
-			
-			
-		}
+			else if(jsObj.task == "candiadteDescriptionUpdate")
+			{ 
+               showCandidateDescription(myResults);
+			}
+     	}
 		catch(e)
 		{   
 		 alert("Invalid JSON result" + e);   
@@ -1788,8 +1799,15 @@ function profileDiscriptionDiv()
 {
 
 	var str ='';
-	str+='<div id="content" style="width:650px;">';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
+	str += '</tr>';
+	str += '</table>'
+    str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
@@ -1805,12 +1823,90 @@ function profileDiscriptionDiv()
 	document.getElementById("discriptionDiv").innerHTML = str;
 
 } 
- 
- function addProfileDiscription()
+ function addDescriptionDiv()
  {
- var fileDesc = document.getElementById('profileDescId').value;
- var candidateId=document.getElementById("candidateld").value;
- var errorDivEle = document.getElementById('galErrorMsgDivId');
+ var str ='';
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
+	str += '</tr>';
+	str += '</table>'
+    str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The Profile Description </font> </b> </center>';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<tr>';
+	str += '<td>';
+	str += '<b><font color="#4B74C6">Profile  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
+	str += '</table>';
+	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '</fieldset>';
+	str+='</div>';
+	
+
+	document.getElementById("discriptionDiv").innerHTML = str;
+ }
+ 
+ function updateDescriptionDiv()
+ {	
+    var candidateId=document.getElementById("candidateld").value;
+	var jsObj =
+		{ 
+            candidateId : candidateId,
+			
+		   	task : "candiadteDescriptionUpdate"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	callAjax(jsObj,url); 
+	
+ }
+
+function  showCandidateDescription(myResults)
+ {
+	var listSize = myResults.length;
+	sizeOfArray = listSize;
+	var i;
+	var str ='';
+	str += '<div id="content" style="width:650px;">';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<tr>';
+	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
+	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
+	str += '</tr>';
+	str += '</table>'
+	str += '<fieldset class="imgFieldset" style="width:400px;">';	
+	str += '<center><b style="font-size:15px"><font color="#4B74C6">Update The Profile Description </font> </b> </center>';
+	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="galErrorMsgDivId"></div>';
+	str += '<div id="fileUploadErrorMsgDivId"></div>';
+	str += '<tr>';
+	str += '<td>';
+	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
+	for(i=0 ; i<listSize ; i++)
+	{
+	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].candidateId+'" size="5"></td>';
+	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
+	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" value = "Delete" onClick="deleteProfileById('+myResults[i].userId+')"></td></tr>';
+	str += ' <input type="hidden" id="candProfId_'+i+'" value="'+myResults[i].userId+'">';
+	}
+	str += '</table>';
+	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '</fieldset>';
+	str+='</div>';
+	
+	document.getElementById("discriptionDiv").innerHTML = str;
+	
+	}
+function addProfileDiscription()
+ {
+   var fileDesc = document.getElementById('profileDescId').value;
+   var candidateId=document.getElementById("candidateld").value;
+   var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
 
 	var str = '<font color="red">';
@@ -1838,6 +1934,24 @@ function profileDiscriptionDiv()
 	callAjax(jsObj,url);	
     
  }
+ 
+ function deleteProfileById(profDescId)
+ {
+ var r=confirm("Do you want to delete!");
+ if (r==true)
+ {
+ var jsObj =
+		{ 
+     		profDescId : profDescId,
+		   	task : "deleteDiscription"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;
+	callAjax(jsObj,url);	
+	}
+	
+ }
  function showDevelopmentActivity()
  {
    $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -1847,8 +1961,7 @@ function profileDiscriptionDiv()
    $("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
  }
  function showDiscriptionStatus(myResult)  
-{
-
+ {
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '';
 
@@ -1865,9 +1978,73 @@ function profileDiscriptionDiv()
 	errorDivEle.innerHTML = str;
 }
 
+function updateProfileDiscription()
+{
+	var candidateId=document.getElementById("candidateld").value;
+	var orderNoArr = [];
+	var descriptionArr = [];
+	var profDescIdArr = [];
+	   for(i=0 ; i < sizeOfArray ; i++)
+   		{
+			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
+			descriptionArr.push(document.getElementById('descId_'+i).value);
+			profDescIdArr.push(document.getElementById('candProfId_'+i).value);
+
+   		}
+  
+  var jsObj =
+		{ 
+		    candidateId : candidateId,
+			orderNoArr : orderNoArr,
+			descriptionArr : descriptionArr,
+			profDescIdArr : profDescIdArr,
+		   	task : "updateProfileDiscription"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;
+	callAjax(jsObj,url);	
+    
+}
+
+function showDiscriptionUpdateStatus(myResult)  
+{
+
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+
+	if(myResult.resultCode == 0)
+	{
+		str += '<font color="green"><b>Profile Discription Updated Successfully.</b>';
+	}
+	else if(myResult.resultCode == 1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	
+	errorDivEle.innerHTML = str;
+}
+
+function showDeleteStatus(myResult)  
+{
+
+var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+
+	if(myResult.resultCode == 0)
+	{
+		updateDescriptionDiv();
+		str += '<font color="green"><b>Profile Discription Deleted Successfully.</b>';
+	}
+	else if(myResult.resultCode == 1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	
+	errorDivEle.innerHTML = str;
+}
+
 </script>
-
-
 </head>
 <body>
 <br>
