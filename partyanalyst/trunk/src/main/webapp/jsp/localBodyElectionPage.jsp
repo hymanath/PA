@@ -58,8 +58,7 @@
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/localBodyElection/localBodyElection.js"></script>
-
-<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery.liquidcarousel.js"></script>
 
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>

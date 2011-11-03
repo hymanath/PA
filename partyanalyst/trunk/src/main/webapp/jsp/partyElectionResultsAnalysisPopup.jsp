@@ -34,7 +34,7 @@
 <script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 
 <!-- JQuery files (Start) -->
-<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
