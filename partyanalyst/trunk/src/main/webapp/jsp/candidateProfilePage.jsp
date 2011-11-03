@@ -215,7 +215,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
  
 		<s:if test="fileVO != null && fileVO.size() > 0"> 
 		<div class="pr-sub-fields-sec">
-            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
+            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
 		<div id="videogallery" class="fleft">
 
 	<s:iterator status="stat" value="fileVO">
@@ -243,7 +243,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 
   <s:if test="fileVO == null">
   <div class="pr-sub-fields-sec">
-            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span></h1>
+            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>
 	<br><br><strong>videos Updated Soon..</strong>
 	</div>
   </s:if>
@@ -595,7 +595,7 @@ function showFirstFourNewsRecords(results)
  { 
   
    var str ='';
-   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/icons/candidatePage/or-down-arrow.png" alt=""/></span></h1>';
+   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>';
 	
   if(results.length>0)
   {
