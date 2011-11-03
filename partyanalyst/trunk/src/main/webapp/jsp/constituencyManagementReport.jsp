@@ -53,7 +53,7 @@
 <!-- YUI Dependency files (End) -->
 
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
-	<!--<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
+	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
