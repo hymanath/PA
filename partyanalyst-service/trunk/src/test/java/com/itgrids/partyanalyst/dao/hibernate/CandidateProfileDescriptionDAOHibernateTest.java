@@ -32,7 +32,7 @@ public class CandidateProfileDescriptionDAOHibernateTest extends
 		}
 	}*/
 	
-	public void testgetMaxOrderNo()
+	/*public void testgetMaxOrderNo()
 	{
 		List<Object> list = candidateProfileDescriptionDAO.getMaxOrderNo(3424l);
 		
@@ -43,5 +43,27 @@ public class CandidateProfileDescriptionDAOHibernateTest extends
 		{
 			System.out.println(params.toString());
 		}
+	}*/
+	
+	/*public void testGetCandidateProfileInfo()
+	{
+		List<Object[]> list = candidateProfileDescriptionDAO.getCandidateProfileInfo(3424l);
+		
+		System.out.println(list.size());
+		System.out.println(list);
+		
+		for(Object[] params : list)
+		{
+			System.out.println((Long)params[0]);
+			System.out.println(params[1].toString());
+			System.out.println((Long)params[2]);
+		}
+	}*/
+	
+	public void testDeleteCandidateProfileDescriptionById()
+	{
+		Integer integer = candidateProfileDescriptionDAO.deleteCandidateProfileDescriptionById(2l);
+		
+		System.out.println(integer);	
 	}
 }
