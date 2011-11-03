@@ -639,6 +639,10 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
+		else if(jsObj.task == "getOtherNews")
+            {
+			   showTotalNews(myResults);
+			}
 		}
 		catch(e)
 		{   
@@ -911,7 +915,7 @@ function showFirstFourNewsRecords(results)
      }
    str+='  </ul>';
    
-   str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');" \">More</a></div>';
+   str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');">More</a></div>';
    
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
@@ -1020,11 +1024,13 @@ function showFirstFourNewsRecords(results)
  }
  function  buildNewsCount(result)
  {
+    if(result[result.length-1].visibility=="False")
+	   queryTypeChecked='Public';
     str='';
-	if(result[9].visibility=="True")
-	{
-	 str+='   <table>';
-	 str+='     <tr>';
+	str+='   <table align="center">';
+	str+='     <tr>';
+	if(result[result.length-1].visibility=="True")
+	{	 
 	 str+='       <td>Sort By : </td>';
 	 str+='       <td>';
 	 str+='          <select id="candidateVisibility" onchange="getTotalNews(\'totalNews\');"  >';
@@ -1032,10 +1038,12 @@ function showFirstFourNewsRecords(results)
 	 str+='             <option value="Private">Private</option>';
 	 str+='             <option value="All">All</option>';
 	 str+='          </select>';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='   </table>';
+	 str+='       </td>';	 
    	}
+	 str+='       <td>&nbsp;&nbsp;Total News Articels : </td>';
+	 str+='       <td><a href="javascript:{}" onclick="getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
+	 str+='    </tr>';
+	 str+='   </table>';
      str+='   <table>';
 	 str+='     <tr>';
 	 str+='     <td>News Impact: </td>';
@@ -1051,6 +1059,14 @@ function showFirstFourNewsRecords(results)
 	 str+='       <td>'+result[5].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+6+')" ><font color="brown">'+result[5].fileTypeId+'</font></a></td>';
 	 else
 	 str+='       <td>'+result[5].name+' Level -<font color="brown">'+result[5].fileTypeId+'</font></td>';
+	
+	var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),parseInt(result[3].fileTypeId),parseInt(result[4].fileTypeId),parseInt(result[5].fileTypeId));
+	
+	if(remainingCount>0)
+	 str+='       <td> Others -<a href="javascript:{}" onclick="getOtherNews()" ><font color="brown">'+remainingCount+'</font></a></td>';
+	 else
+	 str+='       <td> Others -<font color="brown">'+remainingCount+'</font></td>';
+	
      str+='     </tr>';
 	 str+='   </table>';
     document.getElementById("showScopeWiseNewsCount").innerHTML=str; 
@@ -1131,6 +1147,29 @@ function showFirstFourNewsRecords(results)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidateNewsGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url); 
+ }
+ function getOtherNews()
+ {
+    timeST = new Date().getTime();
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryTypeChecked,
+			task:"getOtherNews"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+ 
+ }
+ function getRemainingCount(total,constituency,mandal,village)
+ {
+    var remaining = total-constituency-mandal-village;
+   return remaining;
  }
  function getScopeWiseNewsCount()
  { 
@@ -1344,7 +1383,7 @@ function buildFirstThreePhotoRecords(results)
 	  }
 	  str+='</ul>';
 	  str+='<div class="more">';
-	  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()" \">More</a></div>';
+	  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()">More</a></div>';
 	  str+='<div id="buildPhotoGallaryDiv"></div>';
 	  document.getElementById("photoGallaryDiv").innerHTML= str;
 	 }
