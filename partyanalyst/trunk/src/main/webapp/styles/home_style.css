@@ -32,7 +32,7 @@ img{border:none;}
 .logo{position:relative; left:54px; bottom:-14px; float:left; z-index:101;}
 .header-right-sec{width:740px; float:right;}
 .lr-sec{float:right; color:#80d1f1; font-weight:bold; text-transform:uppercase; padding-right:25px; line-height:11px; font-size:12px;}
-.lr-sec a{color:#80d1f1; float:left; margin:0px 10px;}
+.lr-sec a{color:#80d1f1; margin:0px 10px;}
 
 /*MENU SECTION START*/
 
