@@ -84,4 +84,6 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType);
 	
 	public Long getUserCandidateRelationCount(Long userId,Long candidateId);
+	
+	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
 }
