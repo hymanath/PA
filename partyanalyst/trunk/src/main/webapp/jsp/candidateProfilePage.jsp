@@ -431,7 +431,7 @@ function showAssemblyData()
    str+=' <tr>  <td>Message <font class="requiredFont"> * </font></td>';
    str+=' <td> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
    str+=' border: 1px solid #ffffff;';
-   str+=' color: #000000; width: 181px;height: 104px;';
+   str+=' color: #000000; width: 181px;height: 85px;';
    str+=' font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;';
    str+=' padding: 0px 0 0px 0px;"></textarea></td>';
    str+= '</tr>';
