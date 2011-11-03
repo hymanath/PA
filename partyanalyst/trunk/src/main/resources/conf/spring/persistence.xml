@@ -208,6 +208,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.SourceLanguage</value>
 				<value>com.itgrids.partyanalyst.model.Source</value>
+				<value>com.itgrids.partyanalyst.model.MessageToCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
 				
 			</list>
