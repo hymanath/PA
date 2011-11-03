@@ -202,11 +202,12 @@ function buildAccordion()
 										<c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
 										
 									<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-											<a style="float:right" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+											<a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+											|
 										</c:if>
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 										<a href="<c:out value="${pageContext.request.contextPath}/loginInputAction.action"/>">Login</a> 
-										<span class="fleft">|</span>
+										<span>|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>
 										
 									</c:if>
@@ -328,7 +329,7 @@ function buildAccordion()
 </td></tr>
 <div>
 <tr>
-<td class="background" border="0"><div style="float:left; padding:12px 12px 9px 80px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+<td class="background" border="0"><div style="float:left; padding: 14px 22px 9px 121px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
