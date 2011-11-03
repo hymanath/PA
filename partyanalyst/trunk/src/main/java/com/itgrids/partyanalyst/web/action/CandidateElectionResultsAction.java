@@ -637,7 +637,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	}
 		return Action.SUCCESS;
 	}
-	public String getCandidatesNewsDetail()
+     
+     	public String getCandidatesNewsDetail()
 	{
 	 try  
 	  {
@@ -695,4 +696,21 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	  }
 		return SUCCESS;
    }
+	public String setEmailAlertsForUser(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		String email = jObj.getString("emailId");
+		result = candidateDetailsService.subScribeEmailAlertForAUser(email,jObj.getLong("candidateId"));
+		
+		return Action.SUCCESS;
+	}
+
 }
