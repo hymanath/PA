@@ -62,9 +62,9 @@ public interface ICandidateDetailsService {
 	public List<GallaryVO> getCandidateProfileInfo(Long candidateId);
 	
 	public List<FileVO> getCandidatesPhotoGallaryDetailWithOutGallerySizeZero(Long candidateId,int firstRecord,int maxRecord,String type);
-
+	
 	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long candidateId);
-
+	
 	public List<SelectOptionVO> getCandidateDetailsBySearchCriteria(String gender,String name,Long constituencyId,Long userId,Long stateId);
 	
 	public ResultStatus saveUserCandidateRelation(Long userId,Long candidateId);
@@ -74,6 +74,8 @@ public interface ICandidateDetailsService {
 	public List<FileVO> getAllCandidateDetailsAssignedToAUser(Long userId);
 	
 	public List<FileVO> getAllVideosInAGalleryForACandidate(Long gallaryId);
+	
+	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long candidateId);
 	
 	public ResultStatus saveMessage(GallaryVO gallaryVO);
 	
