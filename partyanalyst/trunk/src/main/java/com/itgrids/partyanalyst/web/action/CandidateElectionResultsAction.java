@@ -24,10 +24,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -85,8 +85,18 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long locationScope;
 	private Long locationValue;
 	private String fileDate;
+	private List<GallaryVO> gallaryList;
 	private String source;
-	
+
+
+	public List<GallaryVO> getGallaryList() {
+		return gallaryList;
+	}
+
+	public void setGallaryList(List<GallaryVO> gallaryList) {
+		this.gallaryList = gallaryList;
+	}
+
 	public String getSource() {
 		return source;
 	}
@@ -488,6 +498,36 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{
 			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"),jObj.getString("contentType"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
+		{
+			List<Long> orderNo = new ArrayList<Long>();
+			List<String> description = new ArrayList<String>();
+			List<Long> condiProfDescId = new ArrayList<Long>();
+			gallaryList =new ArrayList<GallaryVO>();
+			JSONArray jOrderNo = jObj.getJSONArray("orderNoArr");
+			JSONArray jDescription = jObj.getJSONArray("descriptionArr");
+			JSONArray jprofDescId = jObj.getJSONArray("profDescIdArr");
+			Long candidateId = jObj.getLong("candidateId");
+			try{
+			    
+			    for (int i = 0; i < jOrderNo.length(); i++) {
+				    orderNo.add(new Long(jOrderNo.get(i).toString()));
+				    description.add(jDescription.get(i).toString());
+				    condiProfDescId.add(new Long(jprofDescId.get(i).toString()));
+			      }
+			    for (int i = 0; i < jOrderNo.length(); i++) {
+				   GallaryVO gallary = new GallaryVO();
+				   gallary.setCandidateId(orderNo.get(i));
+				   gallary.setDescription(description.get(i));
+				   gallary.setUserId(condiProfDescId.get(i));
+				   gallaryList.add(gallary);
+			      }
+			      result = candidateDetailsService.updateProfileDescription(gallaryList,candidateId);
+			 }catch(Exception e)
+			       {
+				e.printStackTrace();
+			    }
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("getCandidateLatestVideos"))
 		{
 			fileVO = candidateDetailsService.getCandidateLatestVideos(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxRecords"));
@@ -514,6 +554,24 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setDescription(jObj.getString("fileDesc"));
 			result = candidateDetailsService.saveDescription(gallaryVO);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("candiadteDescriptionUpdate"))
+		{
+			gallaryList = candidateDetailsService.getCandidateProfileInfo(jObj.getLong("candidateId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("saveMessage"))
+		{
+			gallaryVO = new GallaryVO();
+			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
+			gallaryVO.setGallaryName(jObj.getString("name"));
+			gallaryVO.setGallaryId(jObj.getLong("stateSelect"));
+			gallaryVO.setUserId(jObj.getLong("constituencySelect"));
+			gallaryVO.setDescription(jObj.getString("message"));
+			result = candidateDetailsService.saveMessage(gallaryVO);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteDiscription"))
+		{	
+			result = candidateDetailsService.deleteProfileDescById(jObj.getLong("profDescId"));
+		}	
 		return Action.SUCCESS;
 	}
 	
