@@ -2668,7 +2668,11 @@
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
-		
+		<action name="getCandiadteGallariesForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">gallaryList</param>
+        	</result>	
+		</action>
 		<action name="getCandidateLatestVideosAction" class="candidateElectionResultsAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">fileVO</param>
