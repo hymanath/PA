@@ -295,6 +295,7 @@
 		<property name="candidateProfileDescriptionDAO" ref="candidateProfileDescriptionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
+		<property name="messageToCandidateDAO" ref="messageToCandidateDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
