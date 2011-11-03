@@ -161,7 +161,11 @@
 </head>
 <body>
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td><div class="clear"></div>
+<tr><td><div class="ppc-title">State: <strong><s:property value="candidateElectionDetails[0].stateName"/></strong>
+<s:if test="candidateElectionDetails[0].districtName!=''"> &gt;  
+District: 
+<strong><s:property value="candidateElectionDetails[0].districtName"/></strong></s:if> &gt;  <s:property value="candidateElectionDetails[0].electionType"/>: <strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></div>
+<div class="clear"></div>
 <div class="main-title-sec">
  <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
   <span style="margin-top:12px; margin-left: 520px;">
@@ -199,7 +203,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
             <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
               updates of<br />
               <span class="li-red">${candidateVO.candidateName}</span>
-              <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
+              <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
               <div id="alertMsg" style="dispaly:none"></div>
 			  <div class="pl-sub-but"><a onclick="validateEmailField()"><strong>Set alert</strong></a></div>
             </div>
@@ -207,7 +211,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           
           <!--EMAIL ALERT SECTION END--> 
      </div>
-   </div>
+   
 </td>
 	
 	<!--PROFILE LEFT CONENT SECTION END--> 
@@ -302,13 +306,15 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
   <s:if test="fileVO == null">
   <div class="pr-sub-fields-sec">
             <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>
-	<br><br><strong>videos Updated Soon..</strong>
+	<br><br><strong>Videos Updated Soon..</strong>
 	</div>
   </s:if>
 
     <s:if test="fileVO != null && fileVO.size() > 4"> 
 	 <div class="more"><a onClick="videoGallaryPopUp();">More</a></div>
 	 </s:if>
+	<div id="videoGallaryPopUpDiv"></div>
+<div id="emailAlertDiv"></div>
 	<div id="videoGallaryPopUpDiv">
 	<div id="sendMessageDiv">
       <div id="constituencySelectDiv" />
@@ -532,17 +538,8 @@ function getStates()
  function clearAll(elmtId)
    {
 	var elmt = document.getElementById(elmtId);
-
-	if(!elmt)
-		return;
-	var len=elmt.length;			
-	for(i=len-1;i>=0;i--)
-	{
-		elmt.remove(i);
-	}	
-   }
-   
-  function showStatus(myResult)  
+}
+function showStatus(myResult)  
 {
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -639,6 +636,10 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
+			else if(jsObj.task == "setEmailAlertForUser")
+            {
+			   showStatusForEmailSubscription(myResults);
+			}
 		else if(jsObj.task == "getOtherNews")
             {
 			   showTotalNews(myResults);
@@ -658,14 +659,30 @@ function callAjax(jsObj,url)
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function showStatusForEmailSubscription(results){
 
+    $("#emailAlertDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 'auto',
+								position:'center',								
+								modal: true,
+								title:'<font color="Navy">Email Alert</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#emailAlertDiv").dialog();
+	var str='';
+	if(results.resultCode == 0){
+	str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';
+	}
+    document.getElementById("emailAlertDiv").innerHTML = str;
+}
 function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
 function validateEmailField()
 	{
-		debugger;
+		document.getElementById("alertMsg").innerHTML = '';
 		var emailIdVal = document.getElementById("emailId").value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
       if(emailIdVal !='' && emailIdVal!='your email'){
@@ -681,7 +698,7 @@ function validateEmailField()
 		return;
 	 }
 
-	/* var jsObj = {
+	var jsObj = {
 		          emailId : emailIdVal,
 				  candidateId :candidateId,
                    task:"setEmailAlertForUser"
@@ -689,7 +706,7 @@ function validateEmailField()
     
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-	callAjax(jsObj,url);*/
+	callAjax(jsObj,url);
 }
 function photoGallaryPopUp(){
 	
@@ -698,7 +715,7 @@ function photoGallaryPopUp(){
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
-								position:[150,120],								
+								position:[130,130],								
 								modal: true,
 								title:'<font color="Navy">Photo Galleries</font>',
 								overlay: { opacity: 0.5, background: 'black'}
