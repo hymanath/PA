@@ -1628,21 +1628,30 @@ function showAllVideoGalleries(){
 
 function buildVideoGallaries(results)
 {
-    var str ='';
+	var str ='';
     str+='<table>';
-    str += '<tr>';
+    
 	for(var i=0;i<results.length;i++)
 	{
+		
+		no_of_imagesPerRow = 3; 
+			j = i;
+
+			if(j++ % no_of_imagesPerRow == 0)
+				str += '<tr style="height:230px;">';
+		
 		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 		str += '<tr><td>';
-		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
 		str+='</div>';
 		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
+
+		if(j % no_of_imagesPerRow == 0)
+             str+= '</tr>';
 			
 		 }
-		 str+='</tr>';
-		 str+='</table>';
+	 str+='</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 function getVideosInAGallary(gallaryId){
@@ -1681,7 +1690,7 @@ function buildAllVideosInGallary(results){
 			str+='</td>';
 			str+='</tr>';
 			str+='	<tr >';
-			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
+			str+='<td>';
 			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
 			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
 			str+='</tr>';
