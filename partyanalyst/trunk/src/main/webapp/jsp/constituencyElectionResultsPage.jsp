@@ -256,7 +256,7 @@ function displayConstituencyElectionResults()
 		str+='<tr>';
 		str+='<th width="25%">Constituency</th>';
 		if(constituencyElecMainObj.constituencyBasicInfo.reservationZone==""){
-			str+='<td width="25%"><a href="constituencyPageAction.action?constituencyId='+constituencyElecMainObj.constituencyBasicInfo.constituencyId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"> '+constituencyElecMainObj.constituencyBasicInfo.constituencyName+'</a></td>';
+			str+='<td width="25%"><a href="constituencyPageAction.action?constituencyId='+constituencyElecMainObj.constituencyBasicInfo.constituencyId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.constituencyName+'</a></td>';
 		}else{
 			str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyName+' <b style="color:green;"> ( '+ (constituencyElecMainObj.constituencyBasicInfo.reservationZone )+' ) </b></td>';
 		}
@@ -270,7 +270,7 @@ function displayConstituencyElectionResults()
 		if(constituencyElecMainObj.constituencyBasicInfo.districtName == "" || constituencyElecMainObj.constituencyBasicInfo.districtName == null)
 			str+='<td> -- </td>';
 		else
-		str+='<td><a href="districtPageAction.action?districtId='+constituencyElecMainObj.constituencyBasicInfo.districtId+'&districtName='+constituencyElecMainObj.constituencyBasicInfo.districtName+'" onclick="window.opener.location.href=this.href;window.blur();return false;"> '+constituencyElecMainObj.constituencyBasicInfo.districtName+'</a></td>';
+		str+='<td><a href="districtPageAction.action?districtId='+constituencyElecMainObj.constituencyBasicInfo.districtId+'&districtName='+constituencyElecMainObj.constituencyBasicInfo.districtName+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.districtName+'</a></td>';
 		str+='<th>Total Voters</th>';
 		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalVotes+'</td>';	
 		str+='</tr>';	
@@ -280,7 +280,7 @@ function displayConstituencyElectionResults()
 				
 		str+='</tr>';
 		str+='<th>State </th>';
-		str+='<td><a href="statePageAction.action?stateId='+constituencyElecMainObj.constituencyBasicInfo.stateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"> '+constituencyElecMainObj.constituencyBasicInfo.stateName+'</a></td>';
+		str+='<td><a href="statePageAction.action?stateId='+constituencyElecMainObj.constituencyBasicInfo.stateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.constituencyBasicInfo.stateName+'</a></td>';
 		str+='<th>Total Polled Votes</th>';
 		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes+'</td>';
 		str+='<tr>';
@@ -307,7 +307,7 @@ function displayConstituencyElectionResults()
 
 		str+='<tr>';
 		str+='<th>Name</th>';
-		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+constituencyElecMainObj.wonCandidateInfo.candidateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"> '+constituencyElecMainObj.wonCandidateInfo.candidateName+'</a></td>';	
+		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+constituencyElecMainObj.wonCandidateInfo.candidateId+'" onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;"> '+constituencyElecMainObj.wonCandidateInfo.candidateName+'</a></td>';	
 		str+='<th>Votes Percentage</th>';
 		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesPercent+' %</td>'
 		str+='</tr>';
