@@ -7,10 +7,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><c:out value='${districtName}'/> District Page - News, Details, Constituencies, Parties Performance, Election Results,MLA, MP,MPTC, ZPTC, Municipality, Corporation Election Results</title>
+<title><c:out value='${districtName}'/> District News,Constituencies,MLA, MP,Details,  Elections Results,Parties Performance,MPTC, ZPTC, Municipality, Corporation Election Results</title>
  <META NAME="Keywords" CONTENT="<c:out value='${districtName}'/> District, About <c:out value='${districtName}' />, <c:out value='${districtName}'/> Elections, <c:out value='${districtName}'/> Elections Analysis,<c:out value='${districtName}'/> Elections Results, <c:out value='${districtName}'/> Leaders,  <c:out value='${districtName}'/> Parties, <c:out value='${districtName}'/> Problems, <c:out value='${districtName}'/> Politics, <c:out value='${districtName}'/> MLA's, <c:out value='${districtName}'/> MP's,<c:out value='${districtName}'/> Voting Trends,<c:out value='${districtName}'/> MPTC, <c:out value='${districtName}'/> ZPTC, <c:out value='${districtName}'/> Municipality,<c:out value='${districtName}'/> Cross Voting,<c:out value='${districtName}'/> Constituencies">
 
-<META NAME="Description" CONTENT=" <c:out value='${districtName}'/> district page provides the outline and basic information ,MLA constituencies information, MP constituencies information, district election results and latest news of the district.<c:out value='${districtName}'/> district page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
+<META NAME="Description" CONTENT=" <c:out value='${districtName}'/> district page ,district page news,MLA constituencies information, MP constituencies information, district election results and latest news of the district.<c:out value='${districtName}'/> district page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
 
 <!-- Combo-handled YUI CSS files: --> 
