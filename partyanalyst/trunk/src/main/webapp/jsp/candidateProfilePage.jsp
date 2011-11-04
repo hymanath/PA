@@ -555,6 +555,7 @@ function cleardescriptionFields()
 {
 	document.getElementById('name').value = '';
     document.getElementById('message').value = '';
+    document.getElementById('constituencySelect').value = 0;
 }
 function onYouTubePlayerReady(playerId) 
 { 
