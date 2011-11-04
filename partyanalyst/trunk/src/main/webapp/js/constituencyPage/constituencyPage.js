@@ -600,25 +600,27 @@ function showCandidateNominationsInRecentElections(myResults)
 
 function buildAssetsAndLiabilities(myResults)
 {
-
-	
    var HeadElmt = document.getElementById('constituencyPageCandidateAssets_Head');
    
+   YAHOO.widget.DataTable.problemLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var candidateName = oData;
+		var candidateId = oRecord.getData("candidateId");
+		elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"'>"+candidateName+"</a>";		
+	};
+
    if(myResults.candidateNominations != null && myResults.candidateNominations.length > 0)
    {
 	  var headStr = '';
 	   headStr+='Candidates Affidavit Summary for ' + myResults.electionType + ' '+myResults.electionYear;
-	   /*if(HeadElmt)
-			HeadElmt.innerHTML=headStr;*/
-
-   
-     var myDataSource = new YAHOO.util.DataSource(myResults.candidateNominations); 
+	 var myDataSource = new YAHOO.util.DataSource(myResults.candidateNominations); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
 				fields: [
 							{	key : "candidateName"},
+							{	key : "candidateId"},                            
 							{	key : "party"},
-							{	key : "gender"},
+							{	key : "gender"},   
 					        {	key : "education"},
 					        {	key : "assets"},
 					        {	key : "liabilities"},
@@ -627,7 +629,7 @@ function buildAssetsAndLiabilities(myResults)
 			}; 
 	
 	 var myColumnDefs = [ 
-				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true , formatter:YAHOO.widget.DataTable.problemLink}, 
 				{key:"party", label:'Party',sortable:true, resizeable:true},
 				{key:"gender", label:'Gender', sortable:true, resizeable:true}, 
 		        {key:"education", label:'Education', sortable:true, resizeable:true}, 
