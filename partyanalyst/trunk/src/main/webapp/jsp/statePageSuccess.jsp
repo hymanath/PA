@@ -10,12 +10,12 @@
 
 <HTML>
  <HEAD>
-  <TITLE> <c:out value="${statePage.stateName}" /> State Page - News, Details, Census, Election Results</TITLE>
+  <TITLE> <c:out value="${statePage.stateName}" /> News,Elections, districts,Constituencies,Census, Election Results</TITLE>
   <META NAME="Generator" CONTENT="EditPlus">
-  <META NAME="Author" CONTENT="">
-  <META NAME="Keywords" CONTENT="<c:out value='${statePage.stateName}'/> State, About <c:out value='${statePage.stateName}'/>, <c:out value='${statePage.stateName}'/> Elections, <c:out value='${statePage.stateName}'/> Elections Results, <c:out value='${statePage.stateName}'/> Leaders,  <c:out value='${statePage.stateName}'/> Parties, <c:out value='${statePage.stateName}'/> Problems, <c:out value='${statePage.stateName}'/> Politics, <c:out value='${statePage.stateName}'/> MLA's, <c:out value='${statePage.stateName}'/> MP's,<c:out value='${statePage.stateName}'/> Voting Trends,<c:out value='${statePage.stateName}'/> MPTC, <c:out value='${statePage.stateName}'/> ZPTC, <c:out value='${statePage.stateName}'/> Municipality,<c:out value='${statePage.stateName}'/> Cross Voting,<c:out value='${statePage.stateName}'/> Constituencies">
+  
+  <META NAME="Keywords" CONTENT="<c:out value='${statePage.stateName}'/> State page, About <c:out value='${statePage.stateName}'/>, <c:out value='${statePage.stateName}'/> Elections, <c:out value='${statePage.stateName}'/> Elections Results, <c:out value='${statePage.stateName}'/> Leaders,  <c:out value='${statePage.stateName}'/> Parties, <c:out value='${statePage.stateName}'/> Problems, <c:out value='${statePage.stateName}'/> Politics, <c:out value='${statePage.stateName}'/> MLA's, <c:out value='${statePage.stateName}'/> MP's,<c:out value='${statePage.stateName}'/> Voting Trends,<c:out value='${statePage.stateName}'/> MPTC, <c:out value='${statePage.stateName}'/> ZPTC, <c:out value='${statePage.stateName}'/> Municipality,<c:out value='${statePage.stateName}'/> Cross Voting,<c:out value='${statePage.stateName}'/> Constituencies">
 
-  <META NAME="Description" CONTENT=" <c:out value='${statePage.stateName}'/> State page provides the outline and basic information ,districts information,districts election results, census information and latest news of the state.<c:out value='${statePage.stateName}'/> State page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
+  <META NAME="Description" CONTENT=" <c:out value='${statePage.stateName}'/> State page ,State page provides the outline and basic information ,districts information,districts election results, census information and latest news of the state.<c:out value='${statePage.stateName}'/> State page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 	
 	<!-- YUI Dependency files (Start) -->
 
