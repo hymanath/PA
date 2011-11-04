@@ -132,18 +132,6 @@
 		color:red;
 	
 	}
-.text-fields
-{
-	font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; 
-	color:#1a1a1a; 
-	height:19px; 
-	background-color:#EBE8E8; 
-	border:1px solid #ffffff; 
-	padding:0px 10px; 
-	width:171px; 
-	color:#000;
-    padding-top:5px;
-}
 .submenuImg
 {
 	float: left;
@@ -420,29 +408,29 @@ function showAssemblyData()
    str+=' <table>';
    str += '<tr>';
    str+='<td style = "padding-top:9px;">Name <font class="requiredFont"> * </font></td>';
-   str+='<td> <input type = "text" id="name" size = "20" class="text-fields"> </td>';
+   str+='<td> <input type = "text" id="name" size = "20" class="sm-text-fields"> </td>';
    str+='</tr>';
    str+='   <tr>';
    str+='     <td>State</td>';
-   str+='     <td>';
+   str+='     <td style="padding-top: 5px;">';
    str+='       <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style = "width:192px;background-color:#EBE8E8; border:1px solid #ffffff;"/>';
    str+='     </td>';
    str+='   </tr>';
    str+='   <tr>';
    str+='     <td>Constituency <font class="requiredFont"> * </font></td>';
-   str+='     <td>';
+   str+='     <td style="padding-top: 5px;">';
    str+='       <select id="constituencySelect" style = "width:192px; background-color:#EBE8E8; border:1px solid #ffffff; "/>';
    str+='     </td>';
    str+='   </tr>';
-   str+=' <tr>  <td>Message <font class="requiredFont"> * </font></td>';
-   str+=' <td> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
+   str+=' <tr>  <td >Message <font class="requiredFont"> * </font></td>';
+   str+=' <td style="padding-top: 5px;"> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
    str+=' border: 1px solid #ffffff;';
    str+=' color: #000000; width: 181px;height: 85px;';
    str+=' font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;';
    str+=' padding: 0px 0 0px 0px;"></textarea></td>';
    str+= '</tr>';
    str += '<tr>';
-   str += '<td></td><td> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
+   str += '<td></td><td style="padding-top: 5px;"> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
    str += '</tr>';
    str+=' <table>';
    document.getElementById("constituencySelectDiv").innerHTML=str;
