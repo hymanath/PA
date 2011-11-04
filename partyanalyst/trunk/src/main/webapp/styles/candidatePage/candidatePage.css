@@ -540,7 +540,7 @@ width:401px;
 .tc-tf{text-transform:uppercase;}
 .pa-fi{padding-top:5px;}
 .clear{clear:both; margin:0px; padding:0px; line-height:0px; height:0px; font-size:0px; _display/**/:/**/ inline;}
-.ppc-title{float:left; padding:27px 0px 0px 300px; color:#171717;}
+.ppc-title{float:left; margin-top:-22px;padding:0px 0px 0px 300px; color:#171717;}
 .main-title-sec{background:url(../../images/icons/candidatePage/blue-crv-bgs.png) left top no-repeat; float:left; padding-left:6px; height:35px; margin:9px 0px;}
 .main-mbg{background-color:#06abea; float:left;width: 974px;height:35px; text-transform:uppercase; color:#fff; padding-left:13px;
 font:bold 14px/35px "Trebuchet MS", Arial, Helvetica, sans-serif;text-align: left;}
