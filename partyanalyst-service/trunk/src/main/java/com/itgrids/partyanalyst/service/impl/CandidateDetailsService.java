@@ -504,9 +504,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateDetails.setVotesEarned(votesEarn[0]);
 				candidateDetails.setVotesPercentage(result.getVotesPercengate());
-				if(constituency.getDistrict() != null)
+				if(constituency.getDistrict() != null){
 					districtName = constituency.getDistrict().getDistrictName();
-				candidateDetails.setDistrictName(districtName);
+					candidateDetails.setDistrictId(constituency.getDistrict().getDistrictId());
+					candidateDetails.setDistrictName(districtName);
+				}
+				candidateDetails.setStateId(constituency.getState().getStateId());
 				candidateDetails.setStateName(constituency.getState().getStateName());
 				candidateDetails.setImage(candidate.getImage());
 				
