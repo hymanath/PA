@@ -20,7 +20,7 @@
 
 <meta name="author" content="Ashok Dakavaram">
 
-<meta name="email" content="info@itgrids.com">
+<meta name="email" content="a.dakavaram@partyanalyst.com">
 
 <meta name="Charset" content="ISO-8859-1">
 
@@ -190,7 +190,7 @@ function openAddNewProblemWindow()
           <!--BANNER RIGHT (SEARCH RESULTS) SECTION START-->
           
           <div class="banner-right-sec">
-            <h1 class="main-title">Search for results</h1>
+            <h1 class="main-title">Quick View</h1>
             <div class="sr-sec">
               <div class="sr-mbg">
                 <div class="glossymenu"> <a class="menuitem submenuheader" href="javascript:{}">View Your State.</a>
