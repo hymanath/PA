@@ -6,7 +6,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${candidateVO.candidateName} 'S  Profile</title>
+<title>${candidateVO.candidateName},${candidateVO.candidateName} 'S  Profile</title>
+<META NAME="Keywords" CONTENT="${candidateVO.candidateName},${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} constituency,${candidateVO.candidateName} election details">
+<meta name="description" content="${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} videos,${candidateVO.candidateName} gallaries,${candidateVO.candidateName} election results and analysis">
+
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -149,14 +152,17 @@
 </head>
 <body>
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td><div class="ppc-title">State: <strong><s:property value="candidateElectionDetails[0].stateName"/></strong>
+<tr><td><div class="ppc-title">State: 
+<a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
+<s:property value="candidateElectionDetails[0].stateName"/></strong></a>
 <s:if test="candidateElectionDetails[0].districtName!=''"> &gt;  
 District: 
-<strong><s:property value="candidateElectionDetails[0].districtName"/></strong></s:if> &gt;  <s:property value="candidateElectionDetails[0].electionType"/>: <strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></div>
+<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></strong></a></s:if> &gt;  <s:property value="candidateElectionDetails[0].electionType"/>:
+<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
 <div class="clear"></div>
 <div class="main-title-sec">
  <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
-  <span style="margin-top:12px; margin-left: 520px;">
+  <span style="margin-top:12px; margin-left: 635px;">
  <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
@@ -294,7 +300,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
   <s:if test="fileVO == null">
   <div class="pr-sub-fields-sec">
             <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>
-	<br><br><strong>Videos Updated Soon..</strong>
+	<br><br><span><strong>Videos Updated Soon..</span></strong>
 	</div>
   </s:if>
 
@@ -1475,7 +1481,7 @@ function candidateInfo()
 	<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
 		str += 'MP <br />';
 	</s:if>
-	str+='<a target ="blank" href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
+	str+='<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
 	str+='${candidateElectionDetails[0].partyName} PARTY';
     str+='</div>';
 	str+='<div class="clear"></div>';
@@ -1628,30 +1634,21 @@ function showAllVideoGalleries(){
 
 function buildVideoGallaries(results)
 {
-	var str ='';
+    var str ='';
     str+='<table>';
-    
+    str += '<tr>';
 	for(var i=0;i<results.length;i++)
 	{
-		
-		no_of_imagesPerRow = 3; 
-			j = i;
-
-			if(j++ % no_of_imagesPerRow == 0)
-				str += '<tr style="height:230px;">';
-		
 		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 		str += '<tr><td>';
 		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
 		str+='</div>';
 		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
-
-		if(j % no_of_imagesPerRow == 0)
-             str+= '</tr>';
 			
 		 }
-	 str+='</table>';
+		 str+='</tr>';
+		 str+='</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 function getVideosInAGallary(gallaryId){
@@ -1690,7 +1687,7 @@ function buildAllVideosInGallary(results){
 			str+='</td>';
 			str+='</tr>';
 			str+='	<tr >';
-			str+='<td>';
+			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
 			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
 			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
 			str+='</tr>';
