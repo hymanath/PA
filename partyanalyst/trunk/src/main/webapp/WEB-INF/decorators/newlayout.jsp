@@ -329,7 +329,7 @@ function buildAccordion()
 </td></tr>
 <div>
 <tr>
-<td class="background" border="0"><div style="float:left; padding: 14px 22px 9px 121px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+<td class="background" border="0"><div style="float: left; margin-left: 114px; margin-top: 15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
