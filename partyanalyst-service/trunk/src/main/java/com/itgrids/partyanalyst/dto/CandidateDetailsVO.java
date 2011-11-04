@@ -29,7 +29,9 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String electionYear;
 	private String constituencyName;
 	private Long constituencyId;
+	private Long districtId;
 	private String districtName;
+	private Long stateId;
 	private String stateName;
 	private Long rank;
 	private String votesEarned;
@@ -58,6 +60,18 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String shortName;
 	//getters and setters
 	
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
