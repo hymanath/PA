@@ -7,6 +7,16 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results, ${year}</TITLE></c:if>
+<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
+
+<meta http-equiv="Content-Language" content="en">
+
+<meta name="description" content="${stateName} ${electionType} Election Details in india ${year},${stateName} ${electionType} Election results ${year},ditrist wise results ,partywise results in all districts .">
+
+<meta name="keywords" content="election details in india,${stateName} ${electionType} Election Results  ${year} ,election analysis,${stateName} ${electionType} Election Details in india ${year},district wise results,Party Results in all Districts with alliance and without alliance,party results with graphs, election commission of india,election commissioner of india,elections in india, indian elections ${year}, general elections india, forthcoming indian elections, india-elections, elections ${year}, parliament election, forthcoming indian elections, ${year} election results, assembly elections,upcoming indian elections, general elections ${year} schedule india, election schedule, opinion polls, key contenders of forthcoming general elections in india, party profiles, party manifestoes, india. ">
+
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></SCRIPT> 
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></SCRIPT>
@@ -39,9 +49,6 @@
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 
-
-<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results  ${year}</TITLE></c:if>
-<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
 <style>
 
 #stateResults{
