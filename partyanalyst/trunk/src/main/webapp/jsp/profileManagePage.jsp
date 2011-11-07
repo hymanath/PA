@@ -337,12 +337,17 @@ var candidateId=document.getElementById("candidateld").value;
 			{ 
                showVideoGallaryCreateMsg(myResults);
 			}
-			else if(jsObj.task == "candiadteGallariesForUplaod" && jsObj.contentType=="News Gallary")
+			else if(jsObj.task == "candidateGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
                clearOptionsListForSelectElmtId('gallaryId');
 			   createOptionsForSelectElmtId('gallaryId',myResults);
 			}
-			else if(jsObj.task == "candiadteGallariesForUplaod")
+			else if(jsObj.task == "candidateGallariesForUplaod" && jsObj.contentType=="News Gallary")
+			{ 
+               clearOptionsListForSelectElmtId('gallarySelectId');
+			   createOptionsForSelectElmtId('gallarySelectId',myResults);
+			}
+			else if(jsObj.task == "candidateGallariesForUplaod")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
@@ -496,7 +501,7 @@ function buildUploadPhotosDiv()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("photoGallaryDiv").innerHTML = str;
-	getCandiadteGallariesForUplaod('Photo Gallary');
+	getCandidateGallariesForUplaod('Photo Gallary');
 }
 
 	function createGallary(contentType)
@@ -649,18 +654,18 @@ function getCompleteGallaries(gallaryId){
 }
 
 
-function getCandiadteGallariesForUplaod(contentType)
+function getCandidateGallariesForUplaod(contentType)
 {
 var candidateId=document.getElementById("candidateld").value;
 	var jsObj =
 		{ 
             candidateId : candidateId,
 			contentType : contentType,
-		   	task : "candiadteGallariesForUplaod"
+		   	task : "candidateGallariesForUplaod"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
 
@@ -1456,7 +1461,7 @@ function  buildUploadNews()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
-	getCandiadteGallariesForUplaod("News Gallary");
+	getCandidateGallariesForUplaod("News Gallary");
 	 getScopes();
 }
 function clearDiv(divId)
@@ -1561,7 +1566,7 @@ function buildUploadVideoDiv()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
-	getCandiadteGallariesForUplaod('Video Gallary');
+	getCandidateGallariesForUplaod('Video Gallary');
 }
 
 function getCompleteVideoGallaries(gallaryId){
@@ -1861,7 +1866,7 @@ function profileDiscriptionDiv()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url); 
 	
  }
