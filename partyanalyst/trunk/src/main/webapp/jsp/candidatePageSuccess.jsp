@@ -238,7 +238,7 @@ padding:5px;
 			{ 
                showGallaryCreateMsg(myResults);
 			}
-			else if(jsObj.task == "candiadteGallariesForUplaod")
+			else if(jsObj.task == "candidateGallariesForUplaod")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
@@ -1498,7 +1498,7 @@ function buildUploadPhotosDiv()
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("photoGallaryDiv").innerHTML = str;
-	getCandiadteGallariesForUplaod('Photo Gallary');
+	getCandidateGallariesForUplaod('Photo Gallary');
 }
 
 function uploadAFile()
@@ -1594,17 +1594,17 @@ function validateFileUpload()
 	return flag;
 }
 
-function getCandiadteGallariesForUplaod(contentType)
+function getCandidateGallariesForUplaod(contentType)
 {
 	var jsObj =
 		{ 
             candidateId : candidateId,
             contentType : contentType,
-		   	task : "candiadteGallariesForUplaod"
+		   	task : "candidateGallariesForUplaod"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
 </script>
