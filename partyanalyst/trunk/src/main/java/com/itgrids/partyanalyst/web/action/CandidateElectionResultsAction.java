@@ -494,7 +494,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("candiadteGallariesForUplaod"))
+		else if(jObj.getString("task").equalsIgnoreCase("candidateGallariesForUplaod"))
 		{
 			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"),jObj.getString("contentType"));
 		}
