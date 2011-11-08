@@ -497,7 +497,7 @@ function getStates()
  function showResults(results,divId)
  {
   var elmt = document.getElementById(divId);
-   
+
    if(results.length<=0 && divId=="constituencySelect")
      {
    	   var option1 = document.createElement('option');
@@ -579,7 +579,8 @@ function callAjax(jsObj,url)
 				buildResults(myResults,"stateSelect");
 			  }
 	   else if(jsObj.task == "getConstituencies")
-			 {   
+			 {  
+				clearOptionsListForSelectElmtId("constituencySelect");
 				showResults(myResults,"constituencySelect");
 			 }
 	    else if(jsObj.task == "saveMessage") 
