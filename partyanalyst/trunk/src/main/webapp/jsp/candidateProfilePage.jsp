@@ -199,7 +199,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
               <span class="li-red">${candidateVO.candidateName}</span>
               <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
               <div id="alertMsg" style="dispaly:none"></div>
-			  <div class="pl-sub-but"><a onclick="validateEmailField()"><strong>Set alert</strong></a></div>
+			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>
             </div>
           </div>
           
@@ -305,7 +305,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
   </s:if>
 
     <s:if test="fileVO != null && fileVO.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp();">More</a></div>
+	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
