@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${candidateVO.candidateName},${candidateVO.candidateName} 'S  Profile</title>
+<title>${candidateVO.candidateName} 'S  Profile</title>
 <META NAME="Keywords" CONTENT="${candidateVO.candidateName},${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} constituency,${candidateVO.candidateName} election details">
 <meta name="description" content="${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} videos,${candidateVO.candidateName} gallaries,${candidateVO.candidateName} election results and analysis">
 
@@ -193,7 +193,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
-            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images//icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
             <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
               updates of<br />
               <span class="li-red">${candidateVO.candidateName}</span>
@@ -308,10 +308,9 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	 <div class="more"><a onClick="videoGallaryPopUp();">More</a></div>
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
-<div id="emailAlertDiv"></div>
-	<div id="videoGallaryPopUpDiv">
+	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
-      <div id="constituencySelectDiv" />
+    <div id="constituencySelectDiv"/>
     </div>
 
     <!--VIDEOS SECTION END--> 
