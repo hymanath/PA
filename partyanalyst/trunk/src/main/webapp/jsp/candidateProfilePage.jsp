@@ -162,7 +162,7 @@ District:
 <div class="clear"></div>
 <div class="main-title-sec">
  <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
-  <span style="margin-top:12px; margin-left: 635px;">
+ <span style="margin-top:10px;margin-right:18px;float:right">
  <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
