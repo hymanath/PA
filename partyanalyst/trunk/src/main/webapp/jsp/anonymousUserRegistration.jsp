@@ -356,7 +356,7 @@ Your password will be sent to this Email address
  <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
- <s:textfield theme="simple" name="email" value="Username (Email)" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
+ <s:textfield theme="simple" name="email" value="Username (Email)" maxlength = "40" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
  <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
   </td>
   
@@ -381,7 +381,7 @@ Your password will be sent to this Email address
   <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="firstName" value="First Name" id="firstNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <s:textfield name="firstName" value="First Name" id="firstNameId" maxlength = "20" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
   <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
@@ -391,7 +391,7 @@ Your password will be sent to this Email address
   <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="lastName" value="Last Name" id="lastNameId" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
+  <s:textfield name="lastName" value="Last Name" id="lastNameId"  maxlength = "20" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
   <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
   </span>
   </td>
