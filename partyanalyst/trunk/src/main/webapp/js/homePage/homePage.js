@@ -1964,9 +1964,9 @@ function contactLinkInHomePage(){
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
 							    height: 220,
-								width: 630,
+								width: 700,
 								modal: true,
-								position: [250,200],
+								position: [170,150],
 								title:'Contact Us www.partyanalyst.com',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
