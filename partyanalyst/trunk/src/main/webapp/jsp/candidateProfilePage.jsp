@@ -297,14 +297,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
     </div>
   </s:if>
 
-  <s:if test="fileVO == null">
-  <div class="pr-sub-fields-sec">
-            <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>
-	<br><br><span><strong>Videos Updated Soon..</span></strong>
-	</div>
-  </s:if>
-
-    <s:if test="fileVO != null && fileVO.size() > 4"> 
+     <s:if test="fileVO != null && fileVO.size() > 4"> 
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
@@ -900,11 +893,13 @@ function getFirstFourNewsRecords(){
 function showFirstFourNewsRecords(results)
  { 
   
-   var str ='';
-   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>';
-	
+  var str ='';
+  
   if(results.length>0)
   {
+   
+   str +='<h1 class="pr-title">news &amp; Events<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span></h1>';
+
    str+='<ul>';
    for(var i =0 ;i<results.length && i<4;i++)
    {
@@ -940,7 +935,18 @@ function showFirstFourNewsRecords(results)
    }
 	else
 	{
-		str += '</ul><li><strong>News And Events Updated Soon..</strong></li></ul>';
+		str+='<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>';
+            str+='<div class="clear"></div>';
+            str+='<p></p>';
+            str+='<span class="gray">Are you a</span>'; 
+			str+='<strong>Politician';
+			str+='<span class="orange">/</span>Political Party';
+			str+='<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with ';
+			str+='<span class="orange">PartyAnalyst</span> ?';
+            str+='<div class="clear"></div>';
+            str+='<div class="clickhere-button">';
+			str+='<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>';
+          str+='</div>';
 	}
     document.getElementById("newsDisplayDiv").innerHTML=str;
  }
