@@ -113,18 +113,15 @@ public String ajaxCallHandler(){
 			String task = jObj.getString("task");
 			  if(task.equalsIgnoreCase("getComments"))
 			  {
-				    String comment = jObj.getString("feedback");
-				    Long commentType = jObj.getLong("commentTypeId");
-				    Long commentTask = jObj.getLong("commentTaskId");
-				    String responseCategory = jObj.getString("responseType");
+				    feedbackVO.setComment(jObj.getString("feedback"));
+				    feedbackVO.setCommentType(jObj.getLong("commentTypeId"));				   
+				    feedbackVO.setTaskName(jObj.getLong("commentTaskId"));
+				    feedbackVO.setResponseCategory(jObj.getString("responseType"));
 				    
-				    feedbackVO.setComment(comment);
-				    feedbackVO.setCommentType(commentType);				   
-				    feedbackVO.setTaskName(commentTask);
-				    feedbackVO.setResponseCategory(responseCategory);
-				    if(user!=null){
-				    feedbackVO.setUserId(user.getRegistrationID());
-				    feedbackVO.setUserType(user.getUserStatus());
+				    if(user!=null)
+				    {
+				    	feedbackVO.setUserId(user.getRegistrationID());
+				    	feedbackVO.setUserType(user.getUserStatus());
 				    }
 				    
 				    resultStatus =  opinionPollService.saveUserFeedback(feedbackVO);
