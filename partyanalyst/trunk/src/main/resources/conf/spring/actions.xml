@@ -769,6 +769,7 @@
 	
 	<bean id="profileManagePageAction" class="com.itgrids.partyanalyst.web.action.ProfileManagePageAction" singleton="false">
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 	</bean>
 	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
