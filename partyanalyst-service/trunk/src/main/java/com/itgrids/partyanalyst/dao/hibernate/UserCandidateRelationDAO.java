@@ -23,16 +23,26 @@ public class UserCandidateRelationDAO extends GenericDaoHibernate<UserCandidateR
 		queryObject.setLong("userCandidateRelationId", userCandidateRelationId);
 		queryObject.executeUpdate();
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserCandidateRelationDetails(Long userId)
 	{
 		return getHibernateTemplate().find("select model.userCandidateRelationId,model.candidate.candidateId," +
 				" model.candidate.lastname from UserCandidateRelation model where model.registration.registrationId=?",userId);
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getUserCandidateRelationCount(Long userId,Long candidateId)
 	{
 		Object[] parameters ={userId,candidateId};
 		return getHibernateTemplate().find("select count(*) from UserCandidateRelation model where model.registration.registrationId=? " +
 				" and model.candidate.candidateId=?",parameters);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesOfAUser(Long userId)
+	{
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname from UserCandidateRelation model where model.registration.registrationId = ?",userId);
 	}
 }
 

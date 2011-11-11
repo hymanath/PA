@@ -436,11 +436,11 @@ public class OpinionPollService implements IOpinionPollService {
 		feedBack.setStatus(IConstants.NEW);
 		feedBack.setPostedDate(problemManagementService.getCurrentDateAndTime());
 		
-		if(feedbackVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+		if(feedbackVO.getUserType() != null && feedbackVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 			
 			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
 		
-		else if(feedbackVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
+		else if(feedbackVO.getUserType() != null && feedbackVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
 			
 			feedBack.setAnanymousUser(ananymousUserDAO.get(feedbackVO.getUserId()));
 		

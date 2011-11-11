@@ -28,10 +28,16 @@ public class UserCandidateRelationDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> result = userCandidateRelationDAO.getUserCandidateRelationDetails(1L);
 		System.out.println(result.size());
 	}*/
-	public void testGetUserCandidateRelationCount()
+	/*public void testGetUserCandidateRelationCount()
 	{
 		List<Long> result = userCandidateRelationDAO.getUserCandidateRelationCount(2L,2757L);
 		System.out.println(result.size());
 		System.out.println(result.get(0));
+	}*/
+	
+	public void testGetCandidatesOfAUser()
+	{
+		List<Object[]> list = userCandidateRelationDAO.getCandidatesOfAUser(1l);
+		System.out.println(list.size());
 	}
 }

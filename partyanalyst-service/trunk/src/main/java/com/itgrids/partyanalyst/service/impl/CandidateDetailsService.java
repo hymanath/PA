@@ -1455,4 +1455,28 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return returnValue;
 		}
 	}
+	
+	public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
+	{
+		try{
+			List<Object[]> list = userCandidateRelationDAO.getCandidatesOfAUser(userId);
+			List<SelectOptionVO> cadidatesList = null;
+			if(list != null && list.size() > 0)
+			{
+				cadidatesList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1] != null ? params[1].toString() : "");
+					cadidatesList.add(selectOptionVO);
+				}
+			}
+			
+			return cadidatesList;
+		}catch(Exception e){
+			return null;
+		}
+	}
 }
