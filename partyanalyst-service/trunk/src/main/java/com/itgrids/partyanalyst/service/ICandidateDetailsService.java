@@ -88,4 +88,6 @@ public interface ICandidateDetailsService {
 	public Long getUserCandidateRelationCount(Long userId,Long candidateId);
 	
 	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
+	
+	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 }
