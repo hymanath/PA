@@ -194,6 +194,11 @@ font-size:18px;
 .imageStyle {
   vertical-align:top;
 }
+
+.canSelect
+{
+	width : 230px;
+}
 </style>
 
 <script type="text/javascript">
@@ -221,7 +226,7 @@ return;
 }
 
 function showPhotoGallary(){
-var candidateId=document.getElementById("candidateld").value;
+var candidateId = document.getElementById("candidateId").value;
     var jsObj =
 		{   
 		    time : timeST,
@@ -509,7 +514,7 @@ function buildUploadPhotosDiv()
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
 	var isPublic = document.getElementById('publicRadioId').checked;
-	var candidateId=document.getElementById("candidateld").value;
+	var candidateId=document.getElementById("candidateId").value;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -656,7 +661,7 @@ function getCompleteGallaries(gallaryId){
 
 function getCandidateGallariesForUplaod(contentType)
 {
-var candidateId=document.getElementById("candidateld").value;
+var candidateId=document.getElementById("candidateId").value;
 	var jsObj =
 		{ 
             candidateId : candidateId,
@@ -886,7 +891,7 @@ function clearGallaryFields()
 function formValidation()
 {
 	
-	var elmt1 = document.getElementById("candidateld");
+	var elmt1 = document.getElementById("candidateId");
 	
 	
 	var textFieldValue = elmt1.value;
@@ -973,7 +978,7 @@ function getDistricts1(stateId){
 	var newsCatrgoryName = document.getElementById('newsCateName').value;
 	var newsCatrgoryDesc = document.getElementById('newsCateDesc').value;
 	var isPublic = document.getElementById('newsPublicRadio').checked;
-	var candidateId = document.getElementById("candidateld").value;
+	var candidateId = document.getElementById("candidateId").value;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
@@ -1589,7 +1594,7 @@ function createVideoGallary(contentType)
 	var galName = document.getElementById('pVGallaryNameId').value;
 	var galDesc = document.getElementById('pVGallaryDescId').value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
-	var candidateId=document.getElementById("candidateld").value;
+	var candidateId=document.getElementById("candidateId").value;
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -1638,7 +1643,7 @@ function uploadVideoGallary()
 	var fileTitle = document.getElementById('fileTitleId').value;
 	var fileDesc = document.getElementById('fileDescId').value;
 	var path = document.getElementById('path').value;
-	var candidateId=document.getElementById("candidateld").value;
+	var candidateId=document.getElementById("candidateId").value;
 	var galId = document.getElementById("gallarySelectId").value;
 	var keyword = document.getElementById("keyword").value;
 	var source = document.getElementById("source").value;
@@ -1857,7 +1862,7 @@ function profileDiscriptionDiv()
  
  function updateDescriptionDiv()
  {	
-    var candidateId=document.getElementById("candidateld").value;
+    var candidateId=document.getElementById("candidateId").value;
 	var jsObj =
 		{ 
             candidateId : candidateId,
@@ -1910,7 +1915,7 @@ function  showCandidateDescription(myResults)
 function addProfileDiscription()
  {
    var fileDesc = document.getElementById('profileDescId').value;
-   var candidateId=document.getElementById("candidateld").value;
+   var candidateId=document.getElementById("candidateId").value;
    var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
 
@@ -1985,7 +1990,7 @@ function addProfileDiscription()
 
 function updateProfileDiscription()
 {
-	var candidateId=document.getElementById("candidateld").value;
+	var candidateId=document.getElementById("candidateId").value;
 	var orderNoArr = [];
 	var descriptionArr = [];
 	var profDescIdArr = [];
@@ -2080,8 +2085,9 @@ var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 			<td class="statusData_table_data" width="83%">
 				<table>
 				  <tr>
-			    	<td style="padding-left:350px"><b>Candidate Id</b></td>
-				     <td> <input type="text" id="candidateld" name="candidateld" size="20"/></td>
+			    	<td style="padding-left:350px"><b>Select Candidate</b></td>
+				     <td><s:select cssClass="canSelect" theme="simple" id="candidateId" name="candidate" list="candidatesList" listKey="id" listValue="name" onchange="showPhotoGallary1()"/>
+					 </td>
 					 <span id="alertMsg1" style="padding-left:410px"></span>
 				  </tr>
 				</table>
@@ -2217,6 +2223,8 @@ $(document).ready(function() {
 			});
   });
 
+
+showPhotoGallary1();
 </script>
 </body>
 </html>
