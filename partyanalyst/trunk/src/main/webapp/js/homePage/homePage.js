@@ -1711,10 +1711,10 @@ function validateQuickRequest(){
 
 function validatePostArticle(){
 		var errorMsg='';
-		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[0].value;
-		var mobile=document.getElementsByName("mobileNO")[0].value;
-		var requirement=document.getElementsByName("requirement")[0].value;
+		var name=document.getElementById("articleNameId").value;
+		var email=document.getElementById("articleEmailId").value;
+		var mobile=document.getElementById("articleMobileId").value;
+		var requirement=document.getElementById("articleCommentId").value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
         var alphaExp = /^[a-zA-Z\s]+$/;
 
@@ -1741,6 +1741,7 @@ function validatePostArticle(){
 	
 	return errorMsg;
 	}
+
 
 	//to create jquery dialog box for quick request
 	function submitDialogBox(){
