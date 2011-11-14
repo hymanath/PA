@@ -7,15 +7,22 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * file entity.
@@ -30,6 +37,7 @@ public class Source extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = -1588780888291765414L;
 	private Long sourceId;
 	private String source;
+	private Set<File> files = new HashSet<File>(0);
 
 	/** default constructor */
 	public Source() {
@@ -60,6 +68,16 @@ public class Source extends BaseModel implements java.io.Serializable {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "source")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
 	}
 
 }
