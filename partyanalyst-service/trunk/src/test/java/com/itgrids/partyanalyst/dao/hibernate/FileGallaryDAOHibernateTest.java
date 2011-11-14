@@ -89,9 +89,11 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,null,0,20,"Private");
 		System.out.println(list.size());
 	}*/
-	public void testGetOtherNews()
-	{
-		List<Object[]> list = fileGallaryDAO.getOtherNews(900L,0,20,"Private");
-		System.out.println(list.size());
-	}
+//	public Integer deleteFilesAndPhotos(Long fileId,Long gallaryId)
+public void testDeleteFilesAndPhotos()
+{
+int i= fileGallaryDAO.deleteFilesAndPhotos(796l);
+System.out.println("i " +i);
+}
+	
 }
