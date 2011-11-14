@@ -52,6 +52,8 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Long locationValue;
 	private String source;
 	private Date fileDate;
+	private Source sourceObj;
+	private SourceLanguage language;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 
@@ -198,6 +200,30 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setFileDate(Date fileDate) {
 		this.fileDate = fileDate;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "source_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Source getSourceObj() {
+		return sourceObj;
+	}
+
+	public void setSourceObj(Source sourceObj) {
+		this.sourceObj = sourceObj;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "language_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public SourceLanguage getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(SourceLanguage language) {
+		this.language = language;
 	}
   
 }

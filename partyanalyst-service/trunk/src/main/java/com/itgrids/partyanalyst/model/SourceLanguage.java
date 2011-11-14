@@ -7,17 +7,22 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * file entity.
@@ -32,6 +37,7 @@ public class SourceLanguage extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = -38175259016513403L;
 	private Long languageId;
 	private String language;
+	private Set<File> files = new HashSet<File>(0);
 
 	/** default constructor */
 	public SourceLanguage() {
@@ -62,6 +68,16 @@ public class SourceLanguage extends BaseModel implements java.io.Serializable {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "language")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
 	}
 
 }
