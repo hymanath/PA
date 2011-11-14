@@ -297,6 +297,8 @@
 		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
 		<property name="messageToCandidateDAO" ref="messageToCandidateDAO" />
 		<property name="candidateUpdatesEmailDAO" ref="candidateUpdatesEmailDAO" />
+		<property name="sourceDAO" ref="sourceDAO" />
+		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
