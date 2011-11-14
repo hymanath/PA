@@ -42,7 +42,26 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String source;
 	private String fileDate;
 	private String fileType;
+	private Long sourceId;
+	private Long languegeId;
 	
+	
+	public Long getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public Long getLanguegeId() {
+		return languegeId;
+	}
+
+	public void setLanguegeId(Long languegeId) {
+		this.languegeId = languegeId;
+	}
+
 	public String getFileType() {
 		return fileType;
 	}
