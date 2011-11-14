@@ -1704,6 +1704,7 @@ function uploadVideoGallary()
 	var galId = document.getElementById("gallarySelectId").value;
 	var keyword = document.getElementById("keyword").value;
 	var sourceId = document.getElementById("source").value;
+	var languageId = document.getElementById("language").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
 	var makeThis = 'private';
