@@ -75,7 +75,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and  model.gallary.isDelete='false' and model.gallary.contentType.contentType= :type   and model.isDelete = :isDelete   ");
 		
