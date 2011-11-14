@@ -88,6 +88,17 @@ public interface ICandidateDetailsService {
 	public Long getUserCandidateRelationCount(Long userId,Long candidateId);
 	
 	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
+
+	
+	public List<SelectOptionVO> getSource();
+	
+	public List<SelectOptionVO> getLanguage();
+
 	
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
+	
+	 public ResultStatus deleteFilesAndPhotos(Long fileId);
+	 
+	 public ResultStatus deleteGallary(Long gallaryId);
+
 }
