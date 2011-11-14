@@ -202,6 +202,7 @@ font-size:18px;
 </style>
 
 <script type="text/javascript">
+var gGallaryId;
 google.load("elements", "1", {packages : ["newsshow"]});
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -266,7 +267,15 @@ var candidateId = document.getElementById("candidateId").value;
 		else if(jsObj.task == "deleteDiscription")
 			{
            showDeleteStatus(myResults);  
-			}		
+			}	
+        else if(jsObj.task == "deleteFilesAndPhotos")
+			{
+           showDeleteFilesAndPhotosStatus(myResults);  
+			}	
+        else if(jsObj.task == "deleteGallary")  
+			{
+           showDeleteGallary(myResults);  
+			}				
 		else if(jsObj.task == "updateProfileDiscription")
 			{
            showDiscriptionUpdateStatus(myResults);  
@@ -347,6 +356,17 @@ var candidateId = document.getElementById("candidateId").value;
                clearOptionsListForSelectElmtId('gallaryId');
 			   createOptionsForSelectElmtId('gallaryId',myResults);
 			}
+			
+			else if(jsObj.task == "getSource")
+			{ 
+               clearOptionsListForSelectElmtId('source');
+			   createOptionsForSelectElmtId('source',myResults);
+			}
+			else if(jsObj.task == "getLanguage")
+			{ 
+               clearOptionsListForSelectElmtId('language');
+			   createOptionsForSelectElmtId('language',myResults);
+			}
 			else if(jsObj.task == "candidateGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
@@ -421,6 +441,7 @@ function buildCandidatePhotoGallary(results)
 			}
 			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+			str +='<tr><td> <input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value="Delete" id= "deleteGallary_'+i+'" onclick="deleteGallary('+results[i].gallaryId+')"></td></tr>';
 			str += '</table>';
 			str += '</td>';
 			
@@ -598,6 +619,7 @@ function showNewsGallaryCreateMsg(result)
 		
 	
 function getCompleteGallaries(gallaryId){
+    gGallaryId=gallaryId;
     var jsObj =
 		{ 
             time : timeST,
@@ -622,9 +644,11 @@ function getCompleteGallaries(gallaryId){
    str +='   </tr>';
    str +='</table>';
    }
+   str += '<center><div id="fileUploadErrorMsgDivId"></div></center>';
    str+='<table width="100%" style="margin-top:10px;">'
    str+='<tr><td>';
    str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
+   
    str+= '</td></tr>';
    for(var i in results)
    {
@@ -637,6 +661,7 @@ function getCompleteGallaries(gallaryId){
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
      str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+	 str += '<tr><td><input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" id= "deleteFile_'+i+'" onclick="deleteFilesAndPhotos('+results[i].fileId+')"></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
@@ -1437,7 +1462,11 @@ function  buildUploadNews()
 	str += '   </TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="source" name="source" size="25" maxlength="50" ></text></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
@@ -1468,6 +1497,8 @@ function  buildUploadNews()
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getCandidateGallariesForUplaod("News Gallary");
 	 getScopes();
+	 getSource();
+	 getLanguage();
 }
 function clearDiv(divId)
 {
@@ -1562,7 +1593,8 @@ function buildUploadVideoDiv()
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><input type="text" id="source" name="source" size="25" maxlength="50"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Language</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
 	str += '</table>';
 	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
@@ -1572,6 +1604,36 @@ function buildUploadVideoDiv()
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
 	getCandidateGallariesForUplaod('Video Gallary');
+	getSource();
+	getLanguage();
+}
+
+function getSource()
+{
+var jsObj =
+		{ 
+            time : timeST,
+			task:"getSource"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+
+function getLanguage()
+{
+var jsObj =
+		{ 
+            time : timeST,
+			task:"getLanguage"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
 }
 
 function getCompleteVideoGallaries(gallaryId){
@@ -1646,14 +1708,14 @@ function uploadVideoGallary()
 	var candidateId=document.getElementById("candidateId").value;
 	var galId = document.getElementById("gallarySelectId").value;
 	var keyword = document.getElementById("keyword").value;
-	var source = document.getElementById("source").value;
+	var sourceId = document.getElementById("source").value;
+	var languageId = document.getElementById("language").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
 	var makeThis = 'private';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
-
 	var str = '<font color="red">';
 
 	if(fileTitle.length == 0)
@@ -1668,7 +1730,7 @@ function uploadVideoGallary()
 	}
 	if(fileDesc.length ==0)
 	{
-		str += 'Description Is Required<br>';
+		str += 'Description is required<br>';
 		eFlag = true;
 	}
 	if(fileDesc.length >200)
@@ -1678,7 +1740,7 @@ function uploadVideoGallary()
 	}
 	if(path.length ==0)
 	{
-		str += 'Path Is Required<br>';
+		str += 'Path is required<br>';
 		eFlag = true;
 	}
 	if(path.length >200)
@@ -1691,9 +1753,14 @@ function uploadVideoGallary()
 		str += 'Keywords should be less than 200 Characters<br>';
 		eFlag = true;
 	}
-	if(source.length > 50)
+	if(sourceId.length == 0)
 	{
-		str += 'Source should be less than 50 Characters<br>';
+		str += 'Source is required<br>';
+		eFlag = true;
+	}
+	if(languageId.length == 0)
+	{
+		str += 'Language is required<br>';
 		eFlag = true;
 	}
 	str += '</font>';
@@ -1714,7 +1781,8 @@ function uploadVideoGallary()
 			videoDescription : fileDesc,
 			path		: path,
 			keywords	: keyword,
-			source		: source,
+			sourceId    : sourceId,
+			languageId  : languageId,
 			fileDate	: fileDate,
 			visibility	: makeThis,
 		   	task		: "candiadteVideoGallariesForUplaod"
@@ -1871,7 +1939,7 @@ function profileDiscriptionDiv()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
+	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url); 
 	
  }
@@ -1901,7 +1969,7 @@ function  showCandidateDescription(myResults)
 	{
 	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].candidateId+'" size="5"></td>';
 	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
-	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" value = "Delete" onClick="deleteProfileById('+myResults[i].userId+')"></td></tr>';
+	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].userId+')"></td></tr>';
 	str += ' <input type="hidden" id="candProfId_'+i+'" value="'+myResults[i].userId+'">';
 	}
 	str += '</table>';
@@ -2035,7 +2103,7 @@ function showDiscriptionUpdateStatus(myResult)
 	errorDivEle.innerHTML = str;
 }
 
-function showDeleteStatus(myResult)  
+function showDeleteStatus(myResult) 
 {
 
 var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -2054,6 +2122,78 @@ var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	errorDivEle.innerHTML = str;
 }
 
+function showDeleteFilesAndPhotosStatus(myResult)
+	{
+	
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+		var str = '';
+
+		if(myResult.resultCode == 0)
+		{
+			getCompleteGallaries(gGallaryId);
+			str += '<font color="green"><b>Photo Deleted Successfully.</b>';
+		}
+		else if(myResult.resultCode == 1) 
+		{
+			str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+		}
+		
+		errorDivEle.innerHTML = str;
+		
+}
+
+function showDeleteGallary(myResult)   
+	{
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+		var str = '';
+
+		if(myResult.resultCode == 0)
+		{
+			showPhotoGallary();
+			str += '<font color="green"><b>Gallary Deleted Successfully.</b>';
+		}
+		else if(myResult.resultCode == 1) 
+		{
+			str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+		}
+		
+		errorDivEle.innerHTML = str;
+		
+}
+
+function deleteFilesAndPhotos(fileId)
+{
+var r=confirm("Do you want to delete!");
+ if (r==true)
+ {
+ var jsObj =
+		{ 
+     		fileId : fileId,
+		   	task : "deleteFilesAndPhotos"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;
+	callAjax(jsObj,url);	
+	}
+}
+
+function deleteGallary(gallaryId)
+{
+var r=confirm("Do you want to delete!");
+ if (r==true)
+ {
+ var jsObj =
+		{ 
+     		gallaryId : gallaryId,
+		   	task : "deleteGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;
+	callAjax(jsObj,url);	
+	}
+}
 </script>
 </head>
 <body>
@@ -2102,6 +2242,7 @@ var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick="showDevelopmentActivity()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
+					<td style="padding-left:50px"><b><a href="<s:url action="sitemapAction"/>"><b>Sitemap</b></a></td>
 				  </tr>
 				</table>
 			</td>
