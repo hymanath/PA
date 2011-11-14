@@ -410,7 +410,7 @@ function buildCandidatePhotoGallary(results)
 		str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
 		str += '</tr>';
 		str += '</table>'
-
+        str += '<center><div id="fileUploadErrorMsgDivId"></div></center>'; 
 		str += '<fieldset class="imgFieldset">';
 		str +='<table width="100%" style="margin-top:10px;">';
 	if(results.length<=0)
@@ -824,11 +824,6 @@ function validateNewsFileUpload()
 	if(source.length == 0)
 	{
 		str += 'Source Is Required.<br>';
-		flag = false;
-	}
-	if(source.length >50)
-	{
-		str += 'Source should be less than 50 Characters<br>';
 		flag = false;
 	}
 	if(keywords.length >200)
@@ -1709,7 +1704,6 @@ function uploadVideoGallary()
 	var galId = document.getElementById("gallarySelectId").value;
 	var keyword = document.getElementById("keyword").value;
 	var sourceId = document.getElementById("source").value;
-	var languageId = document.getElementById("language").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
 	var makeThis = 'private';
@@ -1756,11 +1750,6 @@ function uploadVideoGallary()
 	if(sourceId.length == 0)
 	{
 		str += 'Source is required<br>';
-		eFlag = true;
-	}
-	if(languageId.length == 0)
-	{
-		str += 'Language is required<br>';
 		eFlag = true;
 	}
 	str += '</font>';
@@ -2242,7 +2231,6 @@ var r=confirm("Do you want to delete!");
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick="showDevelopmentActivity()"></b> </td>
 					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Profile Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
-					<td style="padding-left:50px"><b><a href="<s:url action="sitemapAction"/>"><b>Sitemap</b></a></td>
 				  </tr>
 				</table>
 			</td>
