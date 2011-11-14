@@ -14,6 +14,8 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public FileDAO() {
 		super(File.class);
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getFileByFileId(Long fileId)
 	{
 		return getHibernateTemplate().find("select model.fileId,model.fileName,model.filePath,model.fileTitle,model.fileDescription , " +
