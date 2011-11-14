@@ -231,4 +231,13 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		return queryObject.list(); 
 	}
 	
+	public Integer deleteFilesAndPhotos(Long fileId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update FileGallary model set model.isDelete = 'true' where model.file.fileId = ?");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, fileId);
+		return queryObject.executeUpdate();	
+	}
+	
 }

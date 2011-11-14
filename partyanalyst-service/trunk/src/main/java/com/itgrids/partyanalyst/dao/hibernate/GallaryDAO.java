@@ -38,4 +38,13 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		Object[] params = {candidateId,contentType};
 		return getHibernateTemplate().find("select model.gallaryId,model.name from Gallary model where model.candidate.candidateId = ? and model.contentType.contentType = ? and model.isDelete = 'false' order by model.name asc",params);
 	}
+	
+	public Integer deleteGallary(Long gallaryId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update Gallary model set model.isDelete = 'true' where model.gallaryId = ?");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, gallaryId);
+		return queryObject.executeUpdate();	
+	}
 }
