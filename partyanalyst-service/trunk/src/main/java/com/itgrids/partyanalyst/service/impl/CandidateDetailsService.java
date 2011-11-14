@@ -38,6 +38,8 @@ import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.ISourceDAO;
+import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
@@ -64,6 +66,8 @@ import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.Source;
+import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
@@ -83,6 +87,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IUserGallaryDAO userGallaryDAO;
 	private IRegistrationDAO registrationDAO;
 	private IRegionScopesDAO regionScopesDAO;
+	private ISourceDAO sourceDAO;
 	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
@@ -100,7 +105,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IMessageToCandidateDAO messageToCandidateDAO;
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
+	private ISourceLanguageDAO sourceLanguageDAO;
 	
+	
+	public ISourceLanguageDAO getSourceLanguageDAO() {
+		return sourceLanguageDAO;
+	}
+
+	public void setSourceLanguageDAO(ISourceLanguageDAO sourceLanguageDAO) {
+		this.sourceLanguageDAO = sourceLanguageDAO;
+	}
+
 	public ICandidateUpdatesEmailDAO getCandidateUpdatesEmailDAO() {
 		return candidateUpdatesEmailDAO;
 	}
@@ -267,6 +282,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		return candidateDAO;
 	}
 	
+	public ISourceDAO getSourceDAO() {
+		return sourceDAO;
+	}
+
+	public void setSourceDAO(ISourceDAO sourceDAO) {
+		this.sourceDAO = sourceDAO;
+	}
+
 	public IRegionScopesDAO getRegionScopesDAO() {
 		return regionScopesDAO;
 	}
@@ -883,7 +906,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
 			file.setKeywords(fileVO.getKeywords());
-			file.setSource(fileVO.getSource());
+			
+			if(fileVO.getLanguegeId() != null && fileVO.getLanguegeId() > 0)
+				file.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
+			if(fileVO.getSourceId() != null && fileVO.getSourceId() > 0)
+				file.setSourceObj(sourceDAO.get(fileVO.getSourceId()));
 			
 			if(fileVO.getLocationScope() != null && fileVO.getLocationScope().longValue() > 0 &&
 					fileVO.getLocationValue() != null && Integer.parseInt(fileVO.getLocationValue()) > 0)
@@ -1155,6 +1182,39 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		   }
 		}
 		
+  public ResultStatus deleteFilesAndPhotos(Long fileId)
+	 {
+	 	log.debug("Entered into deleteFilesAndPhotos() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+		
+	    int flag = fileGallaryDAO.deleteFilesAndPhotos(fileId);
+          if(flag!=0){	
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+          }
+          else
+          {  
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		   }
+		}
+  
+  public ResultStatus deleteGallary(Long gallaryId)
+	 {
+	 	log.debug("Entered into deleteFilesAndPhotos() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+		
+	    int flag = gallaryDAO.deleteGallary(gallaryId);
+       if(flag!=0){	
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+       }
+       else
+       {  
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		   }
+	}
 	/**
 	 * This Method will give Videos Details As List<FileVO> when we pass candidateId,start Index and Max results As Arguements
 	 * @author Kamalakar Dandu
@@ -1455,6 +1515,59 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return returnValue;
 		}
 	}
+
+	
+	/**
+	 * This method will return source (for Video and news)
+	 * 
+	 * @return
+	 */
+	public List<SelectOptionVO> getSource()
+	{   
+		List<SelectOptionVO> gallarySelectList = new ArrayList<SelectOptionVO>(0);
+		
+	try{
+		List<Source> source = sourceDAO.getAll();
+		SelectOptionVO selectOptionVO = null;
+		for(Source result:source)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(result.getSourceId());
+			selectOptionVO.setName(result.getSource());
+			gallarySelectList.add(selectOptionVO);
+		 }
+		 
+		return gallarySelectList;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return gallarySelectList;
+		}
+	}
+	
+ public List<SelectOptionVO> getLanguage()
+	{   
+		List<SelectOptionVO> gallarySelectList = new ArrayList<SelectOptionVO>(0);
+		
+	try{
+		List<SourceLanguage> sourceLanguage = sourceLanguageDAO.getAll();
+		SelectOptionVO selectOptionVO = null;
+		for(SourceLanguage result:sourceLanguage)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(result.getLanguageId());
+			selectOptionVO.setName(result.getLanguage());
+			gallarySelectList.add(selectOptionVO);
+		 }
+		 
+		return gallarySelectList;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return gallarySelectList;
+		}
+	}
+
 	
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	{
@@ -1479,4 +1592,5 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		}
 	}
+
 }
