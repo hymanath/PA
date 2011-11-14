@@ -86,8 +86,25 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long locationValue;
 	private String fileDate;
 	private List<GallaryVO> gallaryList;
-	private String source;
+	private Long source;
+	private Long language;
 
+	
+	public Long getSource() {
+		return source;
+	}
+
+	public void setSource(Long source) {
+		this.source = source;
+	}
+
+	public Long getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Long language) {
+		this.language = language;
+	}
 
 	public List<GallaryVO> getGallaryList() {
 		return gallaryList;
@@ -95,14 +112,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setGallaryList(List<GallaryVO> gallaryList) {
 		this.gallaryList = gallaryList;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
 	}
 
 	public String getKeywords() {
@@ -498,6 +507,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{
 			selectOptionList = candidateDetailsService.getCandidateGallarySelectList(jObj.getLong("candidateId"),jObj.getString("contentType"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getSource"))
+		 {
+			selectOptionList = candidateDetailsService.getSource();
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getLanguage"))
+		 {
+			selectOptionList = candidateDetailsService.getLanguage();
+		 }
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{
 			List<Long> orderNo = new ArrayList<Long>();
@@ -540,7 +557,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setTitle(jObj.getString("videoTitle"));
 			fileVOObj.setDescription(jObj.getString("videoDescription"));
 			fileVOObj.setKeywords(jObj.getString("keywords"));
-			fileVOObj.setSource(jObj.getString("source"));
+			fileVOObj.setSourceId(jObj.getLong("sourceId"));
+			fileVOObj.setLanguegeId(jObj.getLong("languageId"));
 			fileVOObj.setFileDate(jObj.getString("fileDate"));
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
@@ -571,7 +589,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("deleteDiscription"))
 		{	
 			result = candidateDetailsService.deleteProfileDescById(jObj.getLong("profDescId"));
-		}	
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteFilesAndPhotos"))
+		{	
+			result = candidateDetailsService.deleteFilesAndPhotos(jObj.getLong("fileId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteGallary"))
+		{	
+			result = candidateDetailsService.deleteGallary(jObj.getLong("gallaryId"));
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -615,7 +641,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
 			fileVO.setKeywords(getKeywords());
-			fileVO.setSource(getSource());
+			fileVO.setSourceId(getSource());
+			fileVO.setLanguegeId(getLanguage());
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
@@ -638,7 +665,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
      
-     	public String getCandidatesNewsDetail()
+   public String getCandidatesNewsDetail()
 	{
 	 try  
 	  {
@@ -689,7 +716,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 {
 			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
 		 }
-	  }
+		}
 	 catch(Exception e)
 	  {
 		e.printStackTrace();
