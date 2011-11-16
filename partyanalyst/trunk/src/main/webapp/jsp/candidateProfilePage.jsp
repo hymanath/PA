@@ -624,6 +624,14 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
+		else if(jsObj.task == "getNewsBySourceScope")
+            {
+			   showTotalNews(myResults);
+			}
+		else if(jsObj.task == "getNewsByLanguageScope")
+            {
+			   showTotalNews(myResults);
+			}	
 			else if(jsObj.task == "setEmailAlertForUser")
             {
 			   showStatusForEmailSubscription(myResults);
@@ -1027,7 +1035,7 @@ function showFirstFourNewsRecords(results)
  //  str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
  //  str+='     </tr>';
      str+='     <tr>';
-     str+='       <td><font color="#FF4500">'+results[i].source+'</font> | '+results[i].fileDate+'</td>';
+     str+='       <td><a href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
@@ -1714,6 +1722,105 @@ function buildAllVideosInGallary(results){
 		
 		
 }
+function getNewsBySource(source)
+  {
+  scopeId='';
+  deleteAllElements();
+   timeST = new Date().getTime();
+   var queryType='Public';
+   if(document.getElementById("candidateVisibility")!=null)
+    { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			scopeType:scopeId,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryType,
+			source : source,
+			task:"getNewsBySourceScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+  }
+  
+function getNewsByLanguage(language)
+  {
+   scopeId='';
+  deleteAllElements();
+   timeST = new Date().getTime();
+   var queryType='Public';
+   if(document.getElementById("candidateVisibility")!=null)
+    { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+   if(document.getElementById("candidateVisibility")!=null)
+    {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+   var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			scopeType:scopeId,
+			language : language,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryType,
+			task:"getNewsByLanguageScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+  }  
 showAssemblyData();
 displayProfile();
 candidateInfo();
