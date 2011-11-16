@@ -2158,6 +2158,7 @@ var r=confirm("Do you want to delete!");
  {
  var jsObj =
 		{ 
+		    gallaryId : gGallaryId,
      		fileId : fileId,
 		   	task : "deleteFilesAndPhotos"
 		};
