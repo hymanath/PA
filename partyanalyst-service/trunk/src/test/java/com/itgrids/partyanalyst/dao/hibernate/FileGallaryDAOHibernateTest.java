@@ -38,7 +38,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(900L,0,20,"All");
+		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(900L,0,20,"Public");
 		System.out.println(results.size());
 		for(Object[] newsDetails: results){
 		    
@@ -60,10 +60,12 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	   	 System.out.println(desc);
 	   	 if(newsDetails[5]!= null)
 	   	System.out.println((newsDetails[5].toString()));
-	   	 if(newsDetails[6]!= null)
-	   	System.out.println((sdf.format((Date)newsDetails[6])) );
+	   	if(newsDetails[6]!= null)
+		  System.out.println((newsDetails[6].toString()));
 	   	 if(newsDetails[7]!= null)
-	   	System.out.println(((Long)newsDetails[7]));
+	   	System.out.println((sdf.format((Date)newsDetails[7])) );
+	   	 if(newsDetails[8]!= null)
+	   	System.out.println(((Long)newsDetails[8]));
 	 }
 	 
 	}*/
@@ -84,15 +86,15 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		System.out.println(list.get(0));
 	}*/
-	/*public void testGetNewsByScope()
-	{
-		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,null,0,20,"Private");
-		System.out.println(list.size());
-	}*/
+//	public void testGetNewsByScope()
+//	{
+//		List<Object[]> list = fileGallaryDAO.getNewsByScope(900L,null,0,20,"Public",null,"Hindi");
+//		System.out.println(list.size());
+//	}
 //	public Integer deleteFilesAndPhotos(Long fileId,Long gallaryId)
 public void testDeleteFilesAndPhotos()
 {
-int i= fileGallaryDAO.deleteFilesAndPhotos(796l);
+int i= fileGallaryDAO.deleteFilesAndPhotos(804l,1l);
 System.out.println("i " +i);
 }
 	
