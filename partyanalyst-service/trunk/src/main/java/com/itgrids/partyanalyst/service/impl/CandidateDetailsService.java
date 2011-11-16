@@ -764,8 +764,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    }
 			   	    fileVO.setFileDescription1(desc);
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			   	 fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			    	retValue.add(fileVO);	  
 			 }
 			 
@@ -789,8 +790,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			    	retValue.add(fileVO);	  
 			 }
 			 
@@ -1182,12 +1184,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		   }
 		}
 		
-  public ResultStatus deleteFilesAndPhotos(Long fileId)
+  public ResultStatus deleteFilesAndPhotos(Long fileId , Long gallaryId)
 	 {
 	 	log.debug("Entered into deleteFilesAndPhotos() Method");
 		ResultStatus resultStatus = new ResultStatus();	
 		
-	    int flag = fileGallaryDAO.deleteFilesAndPhotos(fileId);
+	    int flag = fileGallaryDAO.deleteFilesAndPhotos(fileId , gallaryId);
           if(flag!=0){	
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
@@ -1396,39 +1398,39 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	}
 	
 		public List<FileVO> getNewsCountByScope(Long candidateId,String queryType)
-	{
-		List<FileVO> returnValue = new ArrayList<FileVO>();
-		try
-		{
-		   FileVO fileVO = null;
-		   for(int index=1;index<10;index++)
-		   {
-			   List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,(long)index,queryType);  
-			   fileVO = new FileVO();
-			   fileVO.setFileTypeId(list.get(0));
-			   fileVO.setName(regionScopesDAO.getScopeById((long)index).get(0));
-			   returnValue.add(fileVO);
-		   }
-		  
-		   List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,null,queryType); 
-		   fileVO = new FileVO();
-		   fileVO.setFileTypeId(list.get(0));
-		   returnValue.add(fileVO);
-		   return returnValue;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return returnValue;
-		}
-	}
+			{
+				List<FileVO> returnValue = new ArrayList<FileVO>();
+				try
+				{
+				   FileVO fileVO = null;
+				   for(int index=1;index<10;index++)
+				   {
+					   List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,(long)index,queryType);  
+					   fileVO = new FileVO();
+					   fileVO.setFileTypeId(list.get(0));
+					   fileVO.setName(regionScopesDAO.getScopeById((long)index).get(0));
+					   returnValue.add(fileVO);
+				   }
+				  
+				   List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,null,queryType); 
+				   fileVO = new FileVO();
+				   fileVO.setFileTypeId(list.get(0));
+				   returnValue.add(fileVO);
+				   return returnValue;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return returnValue;
+				}
+	       }
 	public List<FileVO> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType);
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -1437,8 +1439,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    returnValue.add(fileVO);	  
 			 }
 		  
@@ -1450,6 +1453,68 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return returnValue;
 		}
 	}
+	
+	public List<FileVO> getNewsByLanguage(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType,String language)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    returnValue.add(fileVO);	  
+			 }
+		  
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+	
+	public List<FileVO> getNewsBySource(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    returnValue.add(fileVO);	  
+			 }
+		  
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+	
+	
 	public Long getUserCandidateRelationCount(Long userId,Long candidateId)
 	{
 		log.debug("Entered into getUserCandidateRelationCount() method in Candidate Details Service()");
@@ -1502,8 +1567,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[7]);
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    returnValue.add(fileVO);	  
 			 }
 		  
