@@ -790,6 +790,7 @@ function validateNewsFileUpload()
 	var fileDesc = document.getElementById('fileDescription').value;
 	var fileVal = document.getElementById("fileId").value;
 	var source = document.getElementById("source").value;
+	var languageId = document.getElementById("language").value;
 	var keywords = document.getElementById("keywords").value;
 	var flag = true;
 
@@ -824,6 +825,11 @@ function validateNewsFileUpload()
 	if(source.length == 0)
 	{
 		str += 'Source Is Required.<br>';
+		flag = false;
+	}
+	if(languageId.length == 0)
+	{
+		str += 'Language Is Required.<br>';
 		flag = false;
 	}
 	if(keywords.length >200)
@@ -1588,8 +1594,8 @@ function buildUploadVideoDiv()
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Language</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
 	str += '</table>';
 	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
@@ -1751,6 +1757,11 @@ function uploadVideoGallary()
 	if(sourceId.length == 0)
 	{
 		str += 'Source is required<br>';
+		eFlag = true;
+	}
+	if(languageId.length == 0)
+	{
+		str += 'Language is required<br>';
 		eFlag = true;
 	}
 	str += '</font>';
