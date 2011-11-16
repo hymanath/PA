@@ -26,9 +26,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Long> getNewsCountByScope(Long candidateId,Long scopeType,String queryType);
 	
-	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType);
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String spScope , String spScopeLang);
     
 	public List<Object[]> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
 	
-	public Integer deleteFilesAndPhotos(Long fileId);
+	public Integer deleteFilesAndPhotos(Long fileId , Long gallaryId);
 }
