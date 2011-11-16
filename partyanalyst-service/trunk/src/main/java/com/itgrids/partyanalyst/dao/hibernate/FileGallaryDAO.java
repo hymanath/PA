@@ -171,7 +171,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return queryObject.list(); 
 	}
-	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String spScope , String spScopeLang)
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
@@ -183,10 +183,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(scopeType!=null)
 			query.append("   and model.file.regionScopes.regionScopesId =:scopeType   ");
 		
-		if(spScope!=null)
+		if(sourceStr!=null)
 			query.append("   and model.file.sourceObj.source =:spScope");
 		
-		if(spScopeLang!=null)
+		if(languageStr!=null)
 			query.append("   and model.file.language.language =:spScopeLang");
 		
 		if(queryType.equals("Public"))
@@ -204,11 +204,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(scopeType!=null)
 		queryObject.setLong("scopeType", scopeType);
 		
-		if(spScope!=null)
-		queryObject.setString("spScope", spScope);
+		if(sourceStr!=null)
+		queryObject.setString("spScope", sourceStr);
 		
-		if(spScopeLang!=null)
-		queryObject.setString("spScopeLang", spScopeLang);
+		if(languageStr!=null)
+		queryObject.setString("spScopeLang", languageStr);
 		
 		queryObject.setFirstResult(startIndex);
 		queryObject.setMaxResults(maxResults);	
