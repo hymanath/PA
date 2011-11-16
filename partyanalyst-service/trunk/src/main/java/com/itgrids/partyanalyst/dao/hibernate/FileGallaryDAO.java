@@ -75,7 +75,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and  model.gallary.isDelete='false' and model.gallary.contentType.contentType= :type   and model.isDelete = :isDelete   ");
 		
@@ -100,7 +100,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Object[]> getAllNewsToDisplay(Long candidateId)
 	{
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileDate desc ");
 		
@@ -171,17 +171,23 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return queryObject.list(); 
 	}
-	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType)
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String spScope , String spScopeLang)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
 				" and model.gallary.isDelete = 'false'  ");
 
 		if(scopeType!=null)
 			query.append("   and model.file.regionScopes.regionScopesId =:scopeType   ");
+		
+		if(spScope!=null)
+			query.append("   and model.file.sourceObj.source =:spScope");
+		
+		if(spScopeLang!=null)
+			query.append("   and model.file.language.language =:spScopeLang");
 		
 		if(queryType.equals("Public"))
 			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -198,6 +204,12 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(scopeType!=null)
 		queryObject.setLong("scopeType", scopeType);
 		
+		if(spScope!=null)
+		queryObject.setString("spScope", spScope);
+		
+		if(spScopeLang!=null)
+		queryObject.setString("spScopeLang", spScopeLang);
+		
 		queryObject.setFirstResult(startIndex);
 		queryObject.setMaxResults(maxResults);	
 						
@@ -208,7 +220,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.source ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
 				" and model.gallary.isDelete = 'false' and ((model.file.regionScopes.regionScopesId is null ) or " +
@@ -231,12 +243,13 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		return queryObject.list(); 
 	}
 	
-	public Integer deleteFilesAndPhotos(Long fileId)
+	public Integer deleteFilesAndPhotos(Long fileId , Long gallaryId)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("update FileGallary model set model.isDelete = 'true' where model.file.fileId = ?");
+		query.append("update FileGallary model set model.isDelete = 'true' where model.file.fileId = ? and model.gallary.gallaryId = ?");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, fileId);
+		queryObject.setParameter(1, gallaryId);
 		return queryObject.executeUpdate();	
 	}
 	
