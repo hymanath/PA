@@ -44,8 +44,17 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String fileType;
 	private Long sourceId;
 	private Long languegeId;
+	private String language;
 	
 	
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
 	public Long getSourceId() {
 		return sourceId;
 	}
