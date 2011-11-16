@@ -97,8 +97,12 @@ public interface ICandidateDetailsService {
 	
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 	
-	 public ResultStatus deleteFilesAndPhotos(Long fileId);
+	 public ResultStatus deleteFilesAndPhotos(Long fileId , Long gallaryId);
 	 
 	 public ResultStatus deleteGallary(Long gallaryId);
+	 
+	 public List<FileVO> getNewsByLanguage(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType,String language);
+	 
+	 public List<FileVO> getNewsBySource(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source);
 
 }
