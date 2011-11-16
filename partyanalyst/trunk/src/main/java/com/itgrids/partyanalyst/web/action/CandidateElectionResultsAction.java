@@ -592,7 +592,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("deleteFilesAndPhotos"))
 		{	
-			result = candidateDetailsService.deleteFilesAndPhotos(jObj.getLong("fileId"));
+			result = candidateDetailsService.deleteFilesAndPhotos(jObj.getLong("fileId"),jObj.getLong("gallaryId"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("deleteGallary"))
 		{	
@@ -711,6 +711,26 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				scopeType = jObj.getLong("scopeType");
 				
 			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsBySourceScope"))
+		 {
+			Long scopeType=null;
+			String source = null;
+			if(jObj.getString("scopeType").trim().length()>0)
+				scopeType = jObj.getLong("scopeType");
+			if(jObj.getString("source").trim().length()>0)
+				source = jObj.getString("source");
+			fileVO = candidateDetailsService.getNewsBySource(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),source);
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsByLanguageScope"))
+		 {
+			Long scopeType=null;
+			String language = null;
+			if(jObj.getString("scopeType").trim().length()>0)
+				scopeType = jObj.getLong("scopeType");
+			if(jObj.getString("language").trim().length()>0)
+				language = jObj.getString("language");
+			fileVO = candidateDetailsService.getNewsByLanguage(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),language);
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getOtherNews"))
 		 {
