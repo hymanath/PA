@@ -2298,7 +2298,7 @@ function updateGallary(gallaryId)
 	str += '<h2 align="center">Update A Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100" value = '+myResults.gallaryName+'></td></tr>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.gallaryDescription+'</textarea></td></tr></table>';
 	str +='<input type = "hidden" name = gallaryId id = gallaryId value ='+myResults.gallaryId+'>';
@@ -2308,6 +2308,7 @@ function updateGallary(gallaryId)
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
+	document.getElementById("pGallaryNameId").value=myResults.gallaryName;
 	if(myResults.fileName1 != 'false')
 	document.getElementById("privateRadioId").checked= true;
 	else
