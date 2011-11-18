@@ -1658,5 +1658,43 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return null;
 		}
 	}
-
+ public	FileVO getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId)
+ {
+	 FileVO fileVO = new FileVO(); 
+	 try {
+		  List<Object[]> result = gallaryDAO.getCandidatesGallaryDescForUpdate(gallaryId, candidateId);
+		 for (Object[] objects : result) {
+			fileVO.setGallaryId((Long)objects[0]);
+			fileVO.setGallaryName(objects[1].toString());
+			fileVO.setGallaryDescription(objects[2].toString());
+			fileVO.setFileName1(objects[3].toString());
+		}
+		 
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+		return null;
+	    }
+	 return fileVO;
+ }
+ 
+ public ResultStatus updatePhotoGallary(GallaryVO gallaryVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			Gallary gallary = gallaryDAO.get(gallaryVO.getGallaryId());
+			
+			gallary.setName(gallaryVO.getGallaryName());
+			gallary.setDescription(gallaryVO.getDescription());
+			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			gallary.setIsPrivate(gallaryVO.getVisibility());
+			gallary = gallaryDAO.save(gallary);			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	} 
 }
