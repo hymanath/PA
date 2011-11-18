@@ -358,7 +358,7 @@ function buildAccordion()
       <li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre">Who we are</a><span>|</span></li>
       <li><a href="footerLinksAction.action?linkFrom=aboutUs#whatWeDo">What we do</a><span>|</span></li>
       <li><a href="footerLinksAction.action?linkFrom=aboutUs#coreCompetency">Core Competency</a><span>|</span></li>
-      <li><a href="javascript:{}">Customer Support</a><span>|</span></li>
+      <li><a href="javascript:{}" onClick="contactForSupportLinkInHomePage()">Customer Support</a><span>|</span></li>
       <li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a><span>|</span></li>
       <li><a href="sitemapAction.action?linkFrom=aboutUs#sitemap">Sitemap</a></li>
     </ul>
@@ -367,7 +367,7 @@ function buildAccordion()
       <li><a href="freeUserRegistration.action">Register</a><span>|</span></li>
       <li><a href="loginInputAction.action">Login</a><span>|</span></li>
       <li><a href="viewFeaturesAction.action">Explore</a><span>|</span></li>
-      <li><a href="javascript:{}" onClick="contactLinkInHomePage()">Ask for DEMO/TEST</a><span>|</span></li>
+      <li><a href="javascript:{}" onClick="contactForDemoLinkInHomePage()">Ask for DEMO/TEST</a><span>|</span></li>
       <li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a><span>|</span></li>
       <li><a href="javascript:{}">Articles</a><span>|</span></li>
       <li><a href="http://www.blog.partyanalyst.com/" target="">Blogs</a></li>
