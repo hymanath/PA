@@ -360,7 +360,7 @@ function buildAccordion()
       <li><a href="footerLinksAction.action?linkFrom=aboutUs#coreCompetency">Core Competency</a><span>|</span></li>
       <li><a href="javascript:{}">Customer Support</a><span>|</span></li>
       <li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a><span>|</span></li>
-      <li><a href="javascript:{}">Sitemap</a></li>
+      <li><a href="sitemapAction.action?linkFrom=aboutUs#sitemap">Sitemap</a></li>
     </ul>
     <ul>
       <li class="f-title">Connect</li>
