@@ -58,6 +58,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private JSONObject jObj;
 	private String task;
 	private List<FileVO> fileVO;
+	private FileVO fileVO2;
 	private ResultStatus result;
 	private GallaryVO gallaryVO;
 	private HttpSession session;
@@ -90,6 +91,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long language;
 
 	
+	public FileVO getFileVO2() {
+		return fileVO2;
+	}
+
+	public void setFileVO2(FileVO fileVO2) {
+		this.fileVO2 = fileVO2;
+	}
+
 	public Long getSource() {
 		return source;
 	}
@@ -397,6 +406,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 			    fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetail(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
 			}
+			if(jObj.getString("task").equalsIgnoreCase("UpdateGallary"))
+			{
+			    fileVO2 = candidateDetailsService.getCandidatesGallaryDescForUpdate(jObj.getLong("gallaryId"),jObj.getLong("candidateId"));
+			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"))
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetailWithOutGallerySizeZero(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
@@ -502,6 +515,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setContentType(jObj.getString("contentType"));
 			
 			result = candidateDetailsService.createNewGallary(gallaryVO);
+		}
+		if(jObj.getString("task").equalsIgnoreCase("UpdatePhotoGallary"))
+		{
+			gallaryVO = new GallaryVO();
+			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
+			gallaryVO.setUserId(regVO.getRegistrationID());
+			gallaryVO.setGallaryName(jObj.getString("name"));
+			gallaryVO.setDescription(jObj.getString("desc"));
+			gallaryVO.setVisibility(jObj.getString("visibility"));
+			
+			gallaryVO.setGallaryId(jObj.getLong("gallaryId"));
+			
+			result = candidateDetailsService.updatePhotoGallary(gallaryVO);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("candidateGallariesForUplaod"))
 		{
