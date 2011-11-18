@@ -47,4 +47,15 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		queryObject.setParameter(0, gallaryId);
 		return queryObject.executeUpdate();	
 	}
+	
+	public List<Object[]> getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId)
+		{
+		  Query query = getSession().createQuery("select model.gallaryId,model.name,model.description," +
+				"model.isPrivate from Gallary model  where model.candidate.candidateId=:candidateId and  " +
+				"model.gallaryId = :gallaryId");
+		   query.setLong("candidateId", candidateId);
+		   query.setLong("gallaryId", gallaryId);			
+		   return query.list(); 
+		
+		}
 }
