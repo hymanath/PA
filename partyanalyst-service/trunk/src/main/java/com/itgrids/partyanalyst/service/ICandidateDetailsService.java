@@ -105,4 +105,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getNewsBySource(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source);
 
+	 public	FileVO getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId);
+	 
+	 public ResultStatus updatePhotoGallary(GallaryVO gallaryVO);
 }
