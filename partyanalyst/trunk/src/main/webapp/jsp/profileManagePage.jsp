@@ -228,6 +228,8 @@ return;
 
 function showPhotoGallary(){
 var candidateId = document.getElementById("candidateId").value;
+document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
+document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
     var jsObj =
 		{   
 		    time : timeST,
@@ -275,7 +277,15 @@ var candidateId = document.getElementById("candidateId").value;
         else if(jsObj.task == "deleteGallary")  
 			{
            showDeleteGallary(myResults);  
-			}				
+			}		
+		else if(jsObj.task == "UpdateGallary")  
+			{
+           updateGallaryDiv(myResults);  
+			}		
+		else if(jsObj.task == "UpdatePhotoGallary")  
+			{
+           updateGallaryStatus(myResults);  
+			}			
 		else if(jsObj.task == "updateProfileDiscription")
 			{
            showDiscriptionUpdateStatus(myResults);  
@@ -441,7 +451,11 @@ function buildCandidatePhotoGallary(results)
 			}
 			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
 			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str +='<tr><td> <input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value="Delete" id= "deleteGallary_'+i+'" onclick="deleteGallary('+results[i].gallaryId+')"></td></tr>';
+			str +='<tr>';
+			str +='<table><tr>';
+			str +='<td> <input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #0063dc;" value="Update" id= "updateGallary_'+i+'" onclick="updateGallary('+results[i].gallaryId+')"></td>';
+			str +='<td style="padding-right:10px;"><input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value="Delete" id= "deleteGallary_'+i+'" onclick="deleteGallary('+results[i].gallaryId+')"></td></tr>';
+			str +='</tr>';
 			str += '</table>';
 			str += '</td>';
 			
@@ -531,11 +545,12 @@ function buildUploadPhotosDiv()
 }
 
 	function createGallary(contentType)
-{
+    {
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
 	var isPublic = document.getElementById('publicRadioId').checked;
-	var candidateId=document.getElementById("candidateId").value;
+	var candidateId=document.getElementById("candidateId").value; 
+    var gallaryId=document.getElementById("gallaryId").value;	
 	var makeThis = 'true';
 
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -575,6 +590,7 @@ function buildUploadPhotosDiv()
 			visibility : makeThis,
 			candidateId : candidateId,
 			contentType : contentType,
+			gallaryId : gallaryId,
 			task : "createNewGallary"
 		};
 
@@ -583,6 +599,61 @@ function buildUploadPhotosDiv()
 	callAjax(jsObj,url);
 }
 
+
+function updatePhotoGallary(contentType)
+    {
+	var galName = document.getElementById('pGallaryNameId').value;
+	var galDesc = document.getElementById('pGallaryDescId').value;
+	var isPublic = document.getElementById('publicRadioId').checked;
+	var candidateId=document.getElementById("candidateId").value; 
+    var gallaryId=document.getElementById("gallaryId").value;	
+	var makeThis = 'true';
+
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(galName.length == 0)
+	{
+		str += 'Gallery Name Required<br>';
+		eFlag = true;
+	}
+	if(galName.length >100)
+	{
+		str += 'Gallery Name should be less than 100 Characters<br>';
+		eFlag = true;
+	}
+	if(galDesc.length > 300)
+	{
+		str += 'Description should be less than 300 Characters<br>';
+		eFlag = true;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	var jsObj =
+		{ 
+            name : galName,
+		    desc : galDesc,
+			visibility : makeThis,
+			candidateId : candidateId,
+			contentType : contentType,
+			gallaryId : gallaryId,
+			task : "UpdatePhotoGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 
 
 function showGallaryCreateMsg(result)
@@ -2196,6 +2267,69 @@ var r=confirm("Do you want to delete!");
 	callAjax(jsObj,url);	
 	}
 }
+function updateGallary(gallaryId)
+ {
+ var r=confirm("Do you want to update!");
+ if (r==true)
+    {
+	var candidateId=document.getElementById("candidateId").value;
+	var jsObj =
+		{ 
+     		gallaryId : gallaryId,
+			candidateId : candidateId,
+		   	task : "UpdateGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryUpdateAction.action?"+rparam;
+	callAjax(jsObj,url);	
+	}
+ 
+ }
+ 
+ function updateGallaryDiv(myResults)
+ {
+    var str ='';
+	document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
+	document.getElementById("profileManagementMainOuterDiv6").style.display = 'block';
+	
+	str+='<div id="content" style="width:650px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Update A Gallery</h2>';
+	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
+	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100" value = '+myResults.gallaryName+'></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
+	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.gallaryDescription+'</textarea></td></tr></table>';
+	str +='<input type = "hidden" name = gallaryId id = gallaryId value ='+myResults.gallaryId+'>';
+	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="updatePhotoGallary(\'Photo Gallary\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("updateGallaryDiv").innerHTML = str;
+	if(myResults.fileName1 != 'false')
+	document.getElementById("privateRadioId").checked= true;
+	else
+	document.getElementById("publicRadioId").checked= true;
+ }
+ 
+ function  updateGallaryStatus(myResults)
+    {
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var str = '';
+	
+	if(myResults.resultCode == 0)
+	{
+		showPhotoGallary();
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
+	
+
+	}
 </script>
 </head>
 <body>
@@ -2349,7 +2483,28 @@ var r=confirm("Do you want to delete!");
 	<div id='discriptionDiv' class="divInfo">
 	
 	</div>
+</div>
+	
+<div id='profileManagementMainOuterDiv6' style="display:none">
+	<div id='profileManagementHeaderDiv2'>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
+				   </td>
+				   <td width="98%">
+					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
+					   <span style="text-decoration: none;" class="headerLabelSpan2">Update Candidate Gallary</span>
+					 </div>
+				   </td>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
+				   </td>
+			 </tr>
+		</table>
+	</div>
 
+	<div id='updateGallaryDiv' class="divInfo">
+
+  </div>
 </div>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
