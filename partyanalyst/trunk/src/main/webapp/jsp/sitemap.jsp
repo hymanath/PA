@@ -106,6 +106,16 @@ $(function() {
 			});
 		})		
 		
+$(function() {
+			$("#tree2").treeview({
+				collapsed: true,
+				animated: "fast",
+				control:"#sidetreecontrol",
+				prerendered: true,
+				persist: "location"
+			});
+		})		
+		
 </script>
 </head>
 <body>
@@ -121,7 +131,7 @@ $(function() {
 <div id="main">
 <div id="sidetree">
 
-<Table style="width:90%"><tr><td style="width:50%;" valign = "top"><div>
+<Table style="width:100%"><tr><td style="width:40%;" valign = "top"><div>
 
   <ul class="treeview" id="tree">
     <li class="last"><div class="hitarea expandable-hitarea"></div>Parliament and Assembly Election Results
@@ -319,7 +329,7 @@ $(function() {
 </ul>
 
    </div></td>
-	<td style="width:50%;" valign = "top"><div>
+	<td style="width:40%;" valign = "top"><div>
 	  
   <ul class="treeview" id="tree1">
     <li class="last"><div class="hitarea expandable-hitarea"></div>Parliament and Assembly Constituencies
@@ -4011,7 +4021,312 @@ $(function() {
 	
 
 </ul>
-	</div></td></tr></table>  
+	</div></td>
+	
+	<td style="width:20%;" valign = "top">
+	<div>
+	<ul class="treeview" id="tree2">
+	<li class="last"><div class="hitarea expandable-hitarea"></div>Geographically
+		<ul style="display: none;">	
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=1">Andhra Pradesh</a>
+			    <ul style="display: none;">
+			 <li><a href="http://partyanalyst.com/districtPageAction.action?districtId=1&districtName=Adilabad">Adilabad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=22&districtName=Anantapur">Anantapur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=23&districtName=Chittoor">Chittoor</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=14&districtName=East Godavari">East Godavari</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=17&districtName=Guntur">Guntur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=5&districtName=Hyderabad">Hyderabad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=3&districtName=Karimnagar">Karimnagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=10&districtName=Khammam">Khammam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=16&districtName=Krishna">Krishna</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=21&districtName=Kurnool">Kurnool</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=7&districtName=Mahbubnagar">Mahbubnagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=4&districtName=Medak">Medak</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=8&districtName=Nalgonda">Nalgonda</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=19&districtName=Nellore">Nellore</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=2&districtName=Nizamabad">Nizamabad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=18&districtName=Prakasam">Prakasam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=6&districtName=Rangareddi">Rangareddi</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=11&districtName=Srikakulam">Srikakulam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=13&districtName=Visakhapatnam">Visakhapatnam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=12&districtName=Vizianagaram">Vizianagaram</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=9&districtName=Warangal">Warangal</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=15&districtName=West Godavari">West Godavari</a></li>
+	
+				</ul>
+				</li> 
+			 
+			 <li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=3">Assam</a>
+			 <ul style="display: none;">
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=92&districtName=BAKSA">BAKSA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=73&districtName=Barpeta">Barpeta</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=72&districtName=Bongaigaon">Bongaigaon</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=89&districtName=Cachar">Cachar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=93&districtName=CHIRANG">CHIRANG</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=76&districtName=Darrang">Darrang</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=81&districtName=Dhemaji">Dhemaji</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=70&districtName=Dhubri">Dhubri</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=83&districtName=Dibrugarh">Dibrugarh</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=71&districtName=Goalpara">Goalpara</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=86&districtName=Golaghat">Golaghat</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=91&districtName=Hailakandi">Hailakandi</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=85&districtName=Jorhat">Jorhat</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=74&districtName=Kamrup">Kamrup</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=94&districtName=KAMRUP (METRO)">KAMRUP (METRO)</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=87&districtName=Karbi Anglong">Karbi Anglong</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=90&districtName=Karimganj">Karimganj</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=69&districtName=Kokrajhar">Kokrajhar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=80&districtName=Lakhimpur">Lakhimpur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=77&districtName=Marigaon">Marigaon</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=78&districtName=Nagaon">Nagaon</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=75&districtName=Nalbari">Nalbari</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=88&districtName=North Cachar Hills">North Cachar Hills</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=84&districtName=Sibsagar">Sibsagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=79&districtName=Sonitpur">Sonitpur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=82&districtName=Tinsukia">Tinsukia</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=95&districtName=UDALGURI">UDALGURI</a></li>
+					
+			</ul>
+			</li> 
+			
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=7">Gujarat</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=152&districtName=Ahmadabad">Ahmadabad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=158&districtName=Amreli">Amreli</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=160&districtName=Anand">Anand</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=147&districtName=Banas Kantha">Banas Kantha</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=166&districtName=Bharuch">Bharuch</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=159&districtName=Bhavnagar">Bhavnagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=163&districtName=Dohad">Dohad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=151&districtName=Gandhinagar">Gandhinagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=155&districtName=Jamnagar">Jamnagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=157&districtName=Junagadh">Junagadh</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=146&districtName=Kachchh">Kachchh</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=161&districtName=Kheda">Kheda</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=149&districtName=Mahesana">Mahesana</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=165&districtName=Narmada">Narmada</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=169&districtName=Navsari">Navsari</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=162&districtName=Panch Mahals">Panch Mahals</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=148&districtName=Patan">Patan</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=156&districtName=Porbandar">Porbandar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=154&districtName=Rajkot">Rajkot</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=150&districtName=Sabar Kantha">Sabar Kantha</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=167&districtName=Surat">Surat</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=153&districtName=Surendranagar">Surendranagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=168&districtName=The Dangs">The Dangs</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=164&districtName=Vadodara">Vadodara</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=170&districtName=Valsad">Valsad</a></li>
+			</ul>
+			</li>
+             
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=9">Himachal Pradesh</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=278&districtName=Bilaspur">Bilaspur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=271&districtName=Chamba">Chamba</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=276&districtName=Hamirpur">Hamirpur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=272&districtName=Kangra">Kangra</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=282&districtName=Kinnaur">Kinnaur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=274&districtName=Kullu">Kullu</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=273&districtName=Lahul & Spiti">Lahul & Spiti</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=275&districtName=Mandi">Mandi</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=281&districtName=Shimla">Shimla</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=280&districtName=Sirmaur">Sirmaur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=279&districtName=Solan">Solan</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=277&districtName=Una">Una</a></li>
+ 
+			</ul>
+			</li>
+             
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=12">Karnataka</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=120&districtName=Bagalkot">Bagalkot</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=139&districtName=Bangalore Rural">Bangalore Rural</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=138&districtName=Bangalore Urban">Bangalore Urban</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=119&districtName=Belgaum">Belgaum</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=130&districtName=Bellary">Bellary</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=123&districtName=Bidar">Bidar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=121&districtName=Bijapur">Bijapur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=145&districtName=Chamarajanagar">Chamarajanagar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=135&districtName=Chikmagalur">Chikmagalur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=131&districtName=Chitradurga">Chitradurga</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=142&districtName=Dakshina Kannada">Dakshina Kannada</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=132&districtName=Davanagere">Davanagere</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=127&districtName=Dharwad">Dharwad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=126&districtName=Gadag">Gadag</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=122&districtName=Gulbarga">Gulbarga</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=141&districtName=Hassan">Hassan</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=129&districtName=Haveri">Haveri</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=143&districtName=Kodagu">Kodagu</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=137&districtName=Kolar">Kolar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=125&districtName=Koppal">Koppal</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=140&districtName=Mandya">Mandya</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=144&districtName=Mysore">Mysore</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=124&districtName=Raichur">Raichur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=133&districtName=Shimoga">Shimoga</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=136&districtName=Tumkur">Tumkur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=134&districtName=Udupi">Udupi</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=128&districtName=Uttara Kannada">Uttara Kannada</a></li>
+
+			
+			
+			</ul>
+			</li>
+            
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=13">Kerala</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=65&districtName=Alappuzha">Alappuzha</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=62&districtName=Ernakulam">Ernakulam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=63&districtName=Idukki">Idukki</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=56&districtName=Kannur">Kannur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=55&districtName=Kasaragod">Kasaragod</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=67&districtName=Kollam">Kollam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=64&districtName=Kottayam">Kottayam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=58&districtName=Kozhikode">Kozhikode</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=59&districtName=Malappuram">Malappuram</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=60&districtName=Palakkad">Palakkad</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=66&districtName=Pathanamthitta">Pathanamthitta</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=68&districtName=Thiruvananthapuram">Thiruvananthapuram</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=61&districtName=Thrissur">Thrissur</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=57&districtName=Wayanad">Wayanad</a></li>
+ 
+			</ul>
+			</li>
+            
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=35">Puducherry</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=115&districtName=PUDUCHERRY">PUDUCHERRY</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=116&districtName=KARAIKAL">KARAIKAL</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=117&districtName=MAHE">MAHE</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=118&districtName=YANAM">YANAM</a></li>
+ 
+			</ul>
+			</li>
+            
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=21">Punjab</a>
+			<ul style="display: none;">
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=255&districtName=Amritsar">Amritsar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=267&districtName=Bathinda">Bathinda</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=266&districtName=Faridkot">Faridkot</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=261&districtName=Fatehgarh Sahib">Fatehgarh Sahib</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=264&districtName=Firozpur">Firozpur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=254&districtName=Gurdaspur">Gurdaspur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=258&districtName=Hoshiarpur">Hoshiarpur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=257&districtName=Jalandhar">Jalandhar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=256&districtName=Kapurthala">Kapurthala</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=262&districtName=Ludhiana">Ludhiana</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=268&districtName=Mansa">Mansa</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=263&districtName=Moga">Moga</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=265&districtName=Muktsar">Muktsar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=259&districtName=Nawanshahr">Nawanshahr</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=270&districtName=Patiala">Patiala</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=260&districtName=Rupnagar">Rupnagar</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=269&districtName=Sangrur">Sangrur</a></li>
+
+			</ul>
+			</li>
+            
+			<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=24">Tamil Nadu</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=40&districtName=Ariyalur">Ariyalur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=25&districtName=Chennai">Chennai</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=35&districtName=Coimbatore">Coimbatore</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=41&districtName=Cuddalore">Cuddalore</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=28&districtName=Dharmapuri">Dharmapuri</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=36&districtName=Dindigul">Dindigul</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=33&districtName=Erode">Erode</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=26&districtName=Kancheepuram">Kancheepuram</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=53&districtName=Kanniyakumari">Kanniyakumari</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=37&districtName=Karur">Karur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=54&districtName=Krishnagiri">Krishnagiri</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=47&districtName=Madurai">Madurai</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=42&districtName=Nagapattinam">Nagapattinam</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=32&districtName=Namakkal">Namakkal</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=34&districtName=Nilgiris">Nilgiris</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=39&districtName=Perambalur">Perambalur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=45&districtName=Pudukkottai">Pudukkottai</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=50&districtName=Ramanathapuram">Ramanathapuram</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=31&districtName=Salem">Salem</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=46&districtName=Sivaganga">Sivaganga</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=44&districtName=Thanjavur">Thanjavur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=48&districtName=Theni">Theni</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=24&districtName=Thiruvallur">Thiruvallur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=43&districtName=Thiruvarur">Thiruvarur</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=51&districtName=Thoothukkudi">Thoothukkudi</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=38&districtName=Tiruchirappalli">Tiruchirappalli</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=52&districtName=Tirunelveli">Tirunelveli</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=29&districtName=Tiruvannamalai">Tiruvannamalai</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=27&districtName=Vellore">Vellore</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=30&districtName=Viluppuram">Viluppuram</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=49&districtName=Virudhunagar">Virudhunagar</a></li>
+ 
+		 
+			</ul>
+			</li>
+            
+
+			<li class="last"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=26">Uttaranchal</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=249&districtName=Almora">Almora</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=248&districtName=Bageshwar">Bageshwar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=242&districtName=Chamoli">Chamoli</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=250&districtName=Champawat">Champawat</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=245&districtName=Dehradun">Dehradun</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=246&districtName=Garhwal">Garhwal</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=253&districtName=Hardwar">Hardwar</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=251&districtName=Nainital">Nainital</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=247&districtName=Pithoragarh">Pithoragarh</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=243&districtName=Rudraprayag">Rudraprayag</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=244&districtName=Tehri Garhwal">Tehri Garhwal</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=252&districtName=Udham Singh Nagar">Udham Singh Nagar</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=241&districtName=Uttarkashi">Uttarkashi</a></li>
+ 
+			</ul>
+			</li>
+            
+			
+			<li class="last"><div class="hitarea expandable-hitarea"></div><a href="http://www.partyanalyst.com/statePageAction.action?stateId=28">West Bengal</a>
+			<ul style="display: none;">
+			
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=112&districtName=BANKURA">BANKURA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=113&districtName=BARDHAMAN">BARDHAMAN</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=114&districtName=BIRBHUM">BIRBHUM</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=100&districtName=DAKSHIN DINAJPUR">DAKSHIN DINAJPUR</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=98&districtName=DARJEELING">DARJEELING</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=108&districtName=HOOGHLY">HOOGHLY</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=107&districtName=HOWRAH">HOWRAH</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=97&districtName=JALPAIGURI">JALPAIGURI</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=96&districtName=KOCH BIHAR">KOCH BIHAR</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=106&districtName=KOLKATA">KOLKATA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=101&districtName=MALDAHA">MALDAHA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=102&districtName=MURSHIDABAD">MURSHIDABAD</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=103&districtName=NADIA">NADIA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=104&districtName=NORTH 24 PARGANAS">NORTH 24 PARGANAS</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=110&districtName=PASCHIM MEDINIPUR">PASCHIM MEDINIPUR</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=109&districtName=PURBO MEDINIPUR">PURBO MEDINIPUR</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=111&districtName=PURULIA">PURULIA</a></li>
+			<li><a href="http://partyanalyst.com/districtPageAction.action?districtId=105&districtName=SOUTH 24 PARGANAS">SOUTH 24 PARGANAS</a></li>
+			<li class="last"><a href="http://partyanalyst.com/districtPageAction.action?districtId=99&districtName=UTTAR DINAJPUR">UTTAR DINAJPUR</a></li>
+			 	
+			</ul>
+			</li>
+             
+			 
+		</ul>	
+	</li>
+    </ul>	
+	</div>
+	</td>
+	
+	
+	</tr></table>  
 
 </div>
 
