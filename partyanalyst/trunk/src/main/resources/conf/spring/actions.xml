@@ -796,7 +796,4 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService" />	    	
 	</bean>
 	
-	<bean id="showContentAction" class="com.itgrids.partyanalyst.web.action.ShowContentAction" singleton="false">	
-	</bean>
-
 </beans>	
