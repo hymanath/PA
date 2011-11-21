@@ -226,6 +226,7 @@
 				<value>com.itgrids.partyanalyst.model.Source</value>
 				<value>com.itgrids.partyanalyst.model.MessageToCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
+				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
 			</list>
 		</property>
 	</bean>
@@ -1232,4 +1233,9 @@
 		class="com.itgrids.partyanalyst.dao.hibernate.MessageToCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyProfileDescriptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>
