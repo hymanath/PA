@@ -71,6 +71,12 @@
 background:url("./images/new_homepage/js-banner-bg1.jpg");
 margin:-1px 0px 0px 0px ;
 }
+
+.header2 {
+    float: none;
+    padding: 0px 7px 0 0;
+    width: 992px;
+}
 </style>
 <decorator:head/>
 </head>
@@ -329,13 +335,21 @@ function buildAccordion()
 </td></tr>
 <div>
 <tr>
-<td class="background" border="0"><div style="float: left; margin-left: 114px; margin-top: 15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+<td class="background" border="0">
+<div style="width:100%;float:left;">
+<center>
+<div class="header2">
+<div style="float: left; margin-left: 114px; margin-top: 15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>
               <li><a title="Facebook" href="http://www.facebook.com/PartyAnalyst" target="_blank"><img src="./images/new_homepage/facebook.gif" alt=""/></a></li>
             </ul>
-            <span class="fright">follow us on</span> </div></td>
+            <span class="fright">follow us on</span> </div>
+</div>
+</center>
+</div>
+</td>
 </tr>
 </div>
  <tr><td class="background" border="0">
