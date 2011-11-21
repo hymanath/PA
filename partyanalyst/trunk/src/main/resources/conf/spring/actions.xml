@@ -769,7 +769,7 @@
 	
 	<bean id="profileManagePageAction" class="com.itgrids.partyanalyst.web.action.ProfileManagePageAction" singleton="false">
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
-		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 	
 	<bean id="announcementSaveAction" class="com.itgrids.partyanalyst.web.action.AnnouncementSaveAction" singleton="false">
@@ -796,4 +796,7 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService" />	    	
 	</bean>
 	
+	<bean id="showContentAction" class="com.itgrids.partyanalyst.web.action.ShowContentAction" singleton="false">	
+	</bean>
+
 </beans>	
