@@ -532,8 +532,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					candidateDetails.setDistrictId(constituency.getDistrict().getDistrictId());
 					candidateDetails.setDistrictName(districtName);
 				}
-				candidateDetails.setStateId(constituency.getState().getStateId());
-				candidateDetails.setStateName(constituency.getState().getStateName());
+				
+				if(constituency.getState() != null)
+				{
+					candidateDetails.setStateId(constituency.getState().getStateId());
+					candidateDetails.setStateName(constituency.getState().getStateName());
+				}
+				else
+				{
+					candidateDetails.setStateId(constituency.getLocalElectionBody().getDistrict().getState().getStateId());
+					candidateDetails.setStateName(constituency.getLocalElectionBody().getDistrict().getState().getStateName());
+				}
 				candidateDetails.setImage(candidate.getImage());
 				
 				if(result.getRank().equals(new Long(1)))
