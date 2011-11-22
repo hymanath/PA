@@ -223,8 +223,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
-				" and model.gallary.isDelete = 'false' and ((model.file.regionScopes.regionScopesId is null ) or " +
-				"  ( model.file.regionScopes.regionScopesId in(1,2,3,7,8,9))) ");
+				" and model.gallary.isDelete = 'false' and model.file.regionScopes.regionScopesId is null ");
 		
 		if(queryType.equals("Public"))
 			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
