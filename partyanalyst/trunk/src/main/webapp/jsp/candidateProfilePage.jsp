@@ -1018,7 +1018,7 @@ function showFirstFourNewsRecords(results)
     
      var str ='';
      str+='<fieldset class="imgFieldset">';
-	 str+='   <table>';
+	 str+='   <table style="width:98%">';
 	 str+='     <tr>';
      str+='       <td colspan="2"><div id="showScopeWiseNewsCount" /></td>';
      str+='     </tr>';
@@ -1069,7 +1069,7 @@ function showFirstFourNewsRecords(results)
 	 str+='       <td style="font-weight:bold;font-size:12px;"><a title="Click To Get Total News" href="javascript:{}" onclick="getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
 	 str+='    </tr>';
 	 str+='   </table>';
-	 str+='	<hr style="width:90%;">';
+	 str+='	<hr style="width:98%;">';
      str+='   <table style="padding-bottom:10px;">';
 	 str+='     <tr>';
 	 str+='     <td style="font-weight:bold;font-size:12px;color:#06ABEA;">NEWS IMPACT LEVELS :</td>';
@@ -1109,7 +1109,7 @@ function showFirstFourNewsRecords(results)
      str+='     </tr>';
 	 str+='   </table>';
 
-	str+='	<hr style="width:90%;">';
+	str+='	<hr style="width:98%;">';
     document.getElementById("showScopeWiseNewsCount").innerHTML=str; 
 	if(queryTypeChecked=="Public")
      {
