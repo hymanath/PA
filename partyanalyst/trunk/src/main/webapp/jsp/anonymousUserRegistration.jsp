@@ -308,7 +308,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 </style>
 
 </head>  
-<body>  
+<body><center>  
 
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
@@ -1022,6 +1022,6 @@ function showTextInTextBoxes(id){
  
 
 
-
+</center>
 </body>  
 </html>
