@@ -399,7 +399,7 @@ function showAssemblyData()
    var str='';
    
    str+='  <div class="pr-sub-fields-sec">';
-   str+='  <h1 class="pr-title">send a message to ${candidateVO.candidateName} <span class="or-down-arrow">';
+   str+='  <h1 class="pr-title" style="margin-top:15px;">send a message to ${candidateVO.candidateName} <span class="or-down-arrow">';
    str+=' 	  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
    str += '<div id="galErrorMsgDivId" style = "width:190px;"></div>';
    str += '<div id="fileUploadErrorMsgDivId" style = "width:190px;"></div>';	  
@@ -1036,7 +1036,8 @@ function showFirstFourNewsRecords(results)
  //  str+='     </tr>';
      str+='     <tr>';
      str+='       <td><a href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
-     str+='     </tr>';
+    
+	 str+='     </tr>';
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
      str+='     </tr>';
@@ -1070,6 +1071,7 @@ function showFirstFourNewsRecords(results)
 	 str+='       <td><a href="javascript:{}" onclick="getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
 	 str+='    </tr>';
 	 str+='   </table>';
+	 str+='	<hr style="width:90%;">';
      str+='   <table>';
 	 str+='     <tr>';
 	 str+='     <td>News Impact: </td>';
@@ -1095,6 +1097,8 @@ function showFirstFourNewsRecords(results)
 	
      str+='     </tr>';
 	 str+='   </table>';
+
+	str+='	<hr style="width:90%;">';
     document.getElementById("showScopeWiseNewsCount").innerHTML=str; 
 	if(queryTypeChecked=="Public")
      {
@@ -1527,7 +1531,7 @@ function candidateInfo()
     str+='  <s:if test="descriptions != null">'; 
     str+='  <div style="font-weight: bold; font-size: 14px;">About ${candidateVO.candidateName}</div>';
     str+=' <br><s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
+	str+=' <div style="margin-bottom:-5px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
     str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
 	str+='</div>';
     str+='</s:iterator>';
@@ -1543,24 +1547,28 @@ function candidateInfo()
  {
  
    var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
+   
    if(profileInfoElmt == null)
 	   return;
-    var str='';
-    var x=1;
    
-   str+='<s:if test="descriptions != null"> ';
-   str+='<h1 class="inc-title">About ${candidateVO.candidateName}</h1>';
+   var str = '';
+   var descFlag = 1;
    
-   str+='<s:iterator value="descriptions">';
- if (x<=2)
+   str += '<s:if test="descriptions != null"> ';
+   str += '<h1 class="inc-title">About ${candidateVO.candidateName}</h1>';
+   
+   str += '<s:iterator value="descriptions">';
+   
+   if(descFlag <= 2)
    {
-   str+='  <p style="font-size: 13px;"><s:property /></p><br />';
-   x++;
+	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
+	  descFlag++;
    }
-   str+='  </s:iterator>';
-   str+='<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
-   str+='Read More >></a></div>';
-   str+='</s:if>';
+   str += '  </s:iterator>';
+
+   str += '<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
+   str += 'Read More >></a></div>';
+   str += '</s:if>';
    
    profileInfoElmt.innerHTML = str;
  }
@@ -1621,9 +1629,9 @@ function videoGallaryPopUp()
    </s:if>
   
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
-							    height: 350,
-								width: 520,
-								position:[150,120],								
+							    height: 500,
+								width: 600,
+								position:[150,25],								
 								modal: true,
 								title:'<font color="Navy">Video Galleries</font>',
 								overlay: { opacity: 0.5, background: 'black'}
@@ -1650,20 +1658,25 @@ function showAllVideoGalleries(){
 function buildVideoGallaries(results)
 {
     var str ='';
-    str+='<table>';
-    str += '<tr>';
+    str+='<table width="100%">';
+   	
 	for(var i=0;i<results.length;i++)
 	{
-		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+		if(i%4 == 0)
+			str += '<tr height="185px;">';
+
+		str += '<td valign="top" width="25%"><table width="100%">';
 		str += '<tr><td>';
-		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="120px;" height="120px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')" alt="'+results[i].gallaryName+'" title="'+results[i].gallaryDescription+'"/></td></tr>';
 		str+='</div>';
-		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
-			
-		 }
-		 str+='</tr>';
-		 str+='</table>';
+		str += '<tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Videos: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
+		
+		if((i+1)% 4 == 0)
+			str += '</tr>';
+		
+	}
+		str+='</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 function getVideosInAGallary(gallaryId){
@@ -1684,9 +1697,9 @@ function buildAllVideosInGallary(results){
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
 		
-		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To Gallary</a>';
 		
-		str+='<table style="width:100%;">';
+		str+='<table style="width:100%;margin-top:15px;">';
 		for(var i in results)
 		{
 			no_of_imagesPerRow = 3; 
@@ -1695,21 +1708,15 @@ function buildAllVideosInGallary(results){
 			if(j++ % no_of_imagesPerRow == 0)
 				str += '<tr style="height:230px;">';
 			
-			str+='<td>';
-			str+='<table style="font-size: 13px; font-family: verdana,arial;">';
-			str+='<tr>';
-			str+='<td>'+results[i].title+'';
-			str+='</td>';
-			str+='</tr>';
-			str+='	<tr >';
-			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
-			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
-			str+='</tr>';
-			str+='<tr>';
-			str+='<td>'+results[i].description+'';
-			str+='</td>';
-			str+='</table>';
+			str += '<td valign="top" width="33%">';
+			str += '<table style="font-size:13px;font-family:verdana,arial;">';
+			str += '<tr>';
+			str += '<td style="border:2px solid #CCCCCC;padding:5px;">';
+			str += '<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" alt="'+results[i].title+'" title="'+results[i].description+'"/></td></a>';
+			str += '</tr>';
+			str += '<tr><td>'+results[i].title+'</td></tr>';
+			str += '</table>';
 			
 			if(j % no_of_imagesPerRow == 0)
              str+= '</tr>';
