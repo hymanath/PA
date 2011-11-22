@@ -1015,8 +1015,7 @@ function showFirstFourNewsRecords(results)
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showAllNewsDiv").dialog();
-    if(results.length>0)
-  {
+    
      var str ='';
      str+='<fieldset class="imgFieldset">';
 	 str+='   <table>';
@@ -1035,9 +1034,9 @@ function showFirstFourNewsRecords(results)
  //  str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
  //  str+='     </tr>';
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
+     str+='       <td><a title="Click To Get All '+results[i].source+' News " href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a title="Click To Get All '+results[i].language+' News" href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
     
-	 str+='     </tr>';
+     str+='     </tr>';
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
      str+='     </tr>';
@@ -1047,18 +1046,17 @@ function showFirstFourNewsRecords(results)
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
    getScopeWiseNewsCount();
-   }
  }
  function  buildNewsCount(result)
  {
     if(result[result.length-1].visibility=="False")
 	   queryTypeChecked='Public';
     str='';
-	str+='   <table align="center">';
+	str+='   <table style="padding-left:118px;padding-top:10px;padding-bottom:20px;">';
 	str+='     <tr>';
 	if(result[result.length-1].visibility=="True")
 	{	 
-	 str+='       <td>Sort By : </td>';
+	 str+='       <td style="font-weight:bold;font-size:12px;color:navy;">SORT BY : </td>';
 	 str+='       <td>';
 	 str+='          <select id="candidateVisibility" onchange="getTotalNews(\'totalNews\');"  >';
 	 str+='             <option value="Public">Public</option>';
@@ -1067,34 +1065,47 @@ function showFirstFourNewsRecords(results)
 	 str+='          </select>';
 	 str+='       </td>';	 
    	}
-	 str+='       <td>&nbsp;&nbsp;Total News Articels : </td>';
-	 str+='       <td><a href="javascript:{}" onclick="getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
+	 str+='       <td style="font-weight:bold;font-size:12px;color:navy;">&nbsp;&nbsp;&nbsp;TOTAL NEWS ARTICELS : </td>';
+	 str+='       <td style="font-weight:bold;font-size:12px;"><a title="Click To Get Total News" href="javascript:{}" onclick="getScopeWiseNews(\'\')" ><font color="brown">'+result[result.length-2].fileTypeId+'</font></a></td>';
 	 str+='    </tr>';
 	 str+='   </table>';
 	 str+='	<hr style="width:90%;">';
-     str+='   <table>';
+     str+='   <table style="padding-bottom:10px;">';
 	 str+='     <tr>';
-	 str+='     <td>News Impact: </td>';
-	 if(result[3].fileTypeId>0)
-     str+='       <td>'+result[3].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+4+')" ><font color="brown">'+result[3].fileTypeId+'</font></a></td>';
-	 else
-	 str+='       <td>'+result[3].name+' Level -<font color="brown">'+result[3].fileTypeId+'</font></td>';
-	 if(result[4].fileTypeId>0)
-	 str+='       <td>'+result[4].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+5+')" ><font color="brown">'+result[4].fileTypeId+'</font></a></td>';
-	 else
-	 str+='       <td>'+result[4].name+' Level -<font color="brown">'+result[4].fileTypeId+'</font></td>';
-     if(result[5].fileTypeId>0)
-	 str+='       <td>'+result[5].name+' Level -<a href="javascript:{}" onclick="getScopeWiseNews('+6+')" ><font color="brown">'+result[5].fileTypeId+'</font></a></td>';
-	 else
-	 str+='       <td>'+result[5].name+' Level -<font color="brown">'+result[5].fileTypeId+'</font></td>';
-	
-	var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),parseInt(result[3].fileTypeId),parseInt(result[4].fileTypeId),parseInt(result[5].fileTypeId));
-	
-	if(remainingCount>0)
-	 str+='       <td> Others -<a href="javascript:{}" onclick="getOtherNews()" ><font color="brown">'+remainingCount+'</font></a></td>';
-	 else
-	 str+='       <td> Others -<font color="brown">'+remainingCount+'</font></td>';
-	
+	 str+='     <td style="font-weight:bold;font-size:12px;color:#06ABEA;">NEWS IMPACT LEVELS :</td>';
+	 str+='     </tr><tr>';
+	 str+='     <td>';
+	 str+='      <table>';
+	 var i=-1;
+	 no_of_imagesPerRow = 5; 
+	 var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),result);
+     for(var k = 0;k<9 ;k++)
+	 {
+	    
+	    if(result[k].fileTypeId>0)
+		{
+		 i++
+        j =i;
+		if(j++ % no_of_imagesPerRow == 0)
+       str+= '<tr>';
+     str+='       <td style="padding-left:20px;font-weight:bold;font-size:11px;color:navy;">'+getFirstCapsLetter(result[k].name)+'</td>';
+	 str+='<td><a style="font-size:11px;" title="Click To Get '+getFirstCapsLetter(result[k].name)+' Level News " href="javascript:{}" onclick="getScopeWiseNews('+(k+1)+')" ><font color="brown"><b>-'+result[k].fileTypeId+'</b></font></a></</td>';
+	 if(j % no_of_imagesPerRow == 0)
+       str+= '</tr>';
+	 }
+	 }
+	 if(++i % no_of_imagesPerRow != 0)
+	 {
+	   if(remainingCount>0)
+	   {
+	    str+='<td style="padding-left:20px;font-weight:bold;font-size:11px;color:navy;"> Others</td>';
+	    str+='<td><a style="font-size:11px;" title="Click To Get Remaining News" href="javascript:{}" onclick="getOtherNews()" ><font color="brown"><b>-'+remainingCount+'</b></font></a></td>';
+	   }
+		str+= '</tr>';
+	 }
+	    str+= ' </table>';	 
+	  var remainingCount = getRemainingCount(parseInt(result[result.length-2].fileTypeId),result);
+
      str+='     </tr>';
 	 str+='   </table>';
 
@@ -1122,6 +1133,10 @@ function showFirstFourNewsRecords(results)
         }
 	 }
 	
+ }
+ function getFirstCapsLetter(string)
+ {
+    return string.charAt(0)+ string.slice(1).toLowerCase();
  }
  function deleteAllElements()
  {
@@ -1196,10 +1211,12 @@ function showFirstFourNewsRecords(results)
 	callAjax(jsObj,url); 
  
  }
- function getRemainingCount(total,constituency,mandal,village)
+ function getRemainingCount(total,result)
  {
-    var remaining = total-constituency-mandal-village;
-   return remaining;
+  for(var i=0;i<9;i++)
+    var total = total-parseInt(result[i].fileTypeId);
+	
+   return total;
  }
  function getScopeWiseNewsCount()
  { 
