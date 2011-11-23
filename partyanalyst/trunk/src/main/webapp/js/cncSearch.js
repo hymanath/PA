@@ -32,7 +32,7 @@ function buildAutoSuggest()
 	var txtDivElmt=document.getElementById("textFldDiv");
 	if(navigator.appName=="Microsoft Internet Explorer")
 	{		
-		var txtstr='<input id="myInput" type="text" size="25" name="searchText" onkeyup="ajax_showOptions(this,\'getCountriesByLetters\',event)" style="position:absolute;top:2px;"/>';
+		var txtstr='<input id="myInput" type="text" size="25" name="searchText" onkeyup="ajax_showOptions(this,\'getCountriesByLetters\',event)" style="position:absolute;"/>';
 		txtstr += '<input type="hidden" id="myInput_hidden" name="myInput_ID">';
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
