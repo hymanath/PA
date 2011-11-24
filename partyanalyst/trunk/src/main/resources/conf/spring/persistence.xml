@@ -210,7 +210,7 @@
 				<value>com.itgrids.partyanalyst.model.Source</value>
 				<value>com.itgrids.partyanalyst.model.MessageToCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
-				
+				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
 			</list>
 		</property>
 	</bean>
