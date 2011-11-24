@@ -29,7 +29,7 @@ public interface ICandidateDetailsService {
 	
 	public List<FileVO> getCandidatesPhotosInAGallary(Long gallaryId);
 	
-	public ResultStatus createNewGallary(GallaryVO gallaryVO);
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate);
 	
 	public List<FileVO> searchNewsDetails(FileVO inputs);
 	
@@ -107,5 +107,7 @@ public interface ICandidateDetailsService {
 
 	 public	FileVO getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId);
 	 
-	 public ResultStatus updatePhotoGallary(GallaryVO gallaryVO);
+	 public	FileVO getPhotoUploadDescForUpdate(Long gallaryId , Long fileId);
+	 
+	 public ResultStatus updateIndividualPhoto(FileVO fileVO);
 }
