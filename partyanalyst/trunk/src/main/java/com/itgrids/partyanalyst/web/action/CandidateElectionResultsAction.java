@@ -410,6 +410,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			{
 			    fileVO2 = candidateDetailsService.getCandidatesGallaryDescForUpdate(jObj.getLong("gallaryId"),jObj.getLong("candidateId"));
 			}
+			if(jObj.getString("task").equalsIgnoreCase("updateFilesAndPhotos"))
+			{
+			    fileVO2 = candidateDetailsService.getPhotoUploadDescForUpdate(jObj.getLong("gallaryId"),jObj.getLong("fileId"));
+			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidatesPhotoGallaryDetailWithOutGallerySizeZero"))
 			{
 				fileVO = candidateDetailsService.getCandidatesPhotoGallaryDetailWithOutGallerySizeZero(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
@@ -512,22 +516,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setGallaryName(jObj.getString("name"));
 			gallaryVO.setDescription(jObj.getString("desc"));
 			gallaryVO.setVisibility(jObj.getString("visibility"));
-			gallaryVO.setContentType(jObj.getString("contentType"));
-			
-			result = candidateDetailsService.createNewGallary(gallaryVO);
-		}
-		if(jObj.getString("task").equalsIgnoreCase("UpdatePhotoGallary"))
-		{
-			gallaryVO = new GallaryVO();
-			gallaryVO.setCandidateId(jObj.getLong("candidateId"));
-			gallaryVO.setUserId(regVO.getRegistrationID());
-			gallaryVO.setGallaryName(jObj.getString("name"));
-			gallaryVO.setDescription(jObj.getString("desc"));
-			gallaryVO.setVisibility(jObj.getString("visibility"));
-			
-			gallaryVO.setGallaryId(jObj.getLong("gallaryId"));
-			
-			result = candidateDetailsService.updatePhotoGallary(gallaryVO);
+			if(jObj.getString("createOrUpdate").trim().equalsIgnoreCase("Create"))
+			{
+				gallaryVO.setContentType(jObj.getString("contentType"));
+			}
+			if(jObj.getString("createOrUpdate").trim().equalsIgnoreCase("Update"))
+			{
+				gallaryVO.setGallaryId(jObj.getLong("gallaryId"));
+			}
+			result = candidateDetailsService.createNewGallaryOrUpdateGallary(gallaryVO,jObj.getString("createOrUpdate").trim());
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("candidateGallariesForUplaod"))
 		{
@@ -623,6 +620,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("deleteGallary"))
 		{	
 			result = candidateDetailsService.deleteGallary(jObj.getLong("gallaryId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("updateIndividualPhotoDetails"))
+		{	
+			FileVO fileVO = new FileVO();
+			fileVO.setFileId(jObj.getLong("fileId"));
+			fileVO.setFileTitle1(jObj.getString("title"));
+			fileVO.setDescription(jObj.getString("desc"));
+			fileVO.setFileTypeId(jObj.getLong("fileGallaryId"));
+			fileVO.setGallaryId(jObj.getLong("gallaryId"));
+			fileVO.setFileType(jObj.getString("visibility"));
+			result = candidateDetailsService.updateIndividualPhoto(fileVO);
 		}
 		return Action.SUCCESS;
 	}
