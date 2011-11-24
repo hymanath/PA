@@ -62,6 +62,7 @@ public class Party implements java.io.Serializable {
 	private Set<PartyWorkingCommittee> partyWorkingCommittees = new HashSet<PartyWorkingCommittee>(0);
 	private Set<PartyCadreSkills> partyCadreSkills = new HashSet<PartyCadreSkills>(0);
 	private Set<PartyTrainingCamps> partyTrainingCamps = new HashSet<PartyTrainingCamps>(0);
+	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -295,6 +296,16 @@ public class Party implements java.io.Serializable {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
+	public Set<PartyGallery> getPartyGallery() {
+		return partyGallery;
+	}
+
+	public void setPartyGallery(Set<PartyGallery> partyGallery) {
+		this.partyGallery = partyGallery;
 	}
 	
 	
