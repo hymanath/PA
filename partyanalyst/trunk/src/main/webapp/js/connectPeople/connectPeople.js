@@ -909,9 +909,16 @@ function previewImg()
 		}
 		else
 		{
+			var reader = new FileReader();
+           //  init the reader event handlers
+			reader.onloadend = handleReaderLoadEnd;
+			 
+			// begin the read operation
+			reader.readAsDataURL(file);
+			
 			photoStatusElmt.innerHTML = '';
 			var previewElmt = document.getElementById("Imgpreview");
-			previewElmt.src = file.getAsDataURL();
+			//previewElmt.src = file.getAsDataURL();
 			uploadPicStatus = true;
 		}
 	}
@@ -923,7 +930,10 @@ function previewImg()
 	
 
 }
-
+function handleReaderLoadEnd(evt) {
+  var img = document.getElementById("Imgpreview");
+  img.src = evt.target.result;
+}
 function getUploadpic()
 {
 	if(!uploadPicStatus)
