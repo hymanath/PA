@@ -870,29 +870,35 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	* @author kamalakarDandu
 	*/
 	
-	public ResultStatus createNewGallary(GallaryVO gallaryVO)
-	{
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
+	{   Gallary gallary = null;
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			
-			Gallary gallary = new Gallary();
+			if(createOrUpdate.trim().equalsIgnoreCase("Update") && gallaryVO.getGallaryId()!=null)
+				gallary = gallaryDAO.get( gallaryVO.getGallaryId());
+			else
+			    gallary = new Gallary();
 			UserGallary userGallary = null;
 			gallary.setName(gallaryVO.getGallaryName());
 			gallary.setDescription(gallaryVO.getDescription());
-			gallary.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
-			gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
-			gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			if(createOrUpdate.trim().equalsIgnoreCase("Create"))
+			{
+				gallary.setCandidate(candidateDAO.get(gallaryVO.getCandidateId()));
+			    gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
+			    gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			    gallary.setIsDelete(IConstants.FALSE);
+			}
 			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-			gallary.setIsPrivate(gallaryVO.getVisibility());
-			gallary.setIsDelete(IConstants.FALSE);
+			gallary.setIsPrivate(gallaryVO.getVisibility());	
 			
 			gallary = gallaryDAO.save(gallary);
-			
+			if(createOrUpdate.trim().equalsIgnoreCase("Create")) 
+			{	
 			userGallary = new UserGallary();
 			userGallary.setGallary(gallary);
 			userGallary.setRegistration(registrationDAO.get(gallaryVO.getUserId()));
 			userGallaryDAO.save(userGallary);
-			
+			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch (Exception e) {
@@ -1686,24 +1692,51 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	 return fileVO;
  }
  
- public ResultStatus updatePhotoGallary(GallaryVO gallaryVO)
-	{
-		ResultStatus resultStatus = new ResultStatus();
-		try{
-			
-			Gallary gallary = gallaryDAO.get(gallaryVO.getGallaryId());
-			
-			gallary.setName(gallaryVO.getGallaryName());
-			gallary.setDescription(gallaryVO.getDescription());
-			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-			gallary.setIsPrivate(gallaryVO.getVisibility());
-			gallary = gallaryDAO.save(gallary);			
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			return resultStatus;
-		}catch (Exception e) {
-			resultStatus.setExceptionEncountered(e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;
+ public	FileVO getPhotoUploadDescForUpdate(Long gallaryId , Long fileId)
+ {
+	 FileVO fileVO = new FileVO(); 
+	 try {
+		  List<Object[]> result = fileGallaryDAO.getPhotoAndFileDescForUpdate(gallaryId, fileId);
+		 for (Object[] objects : result) {
+			fileVO.setFileId((Long)objects[0]);
+			fileVO.setGallaryId((Long)objects[1]);
+			fileVO.setGallaryName(objects[2]!=null?objects[2].toString():"");
+			fileVO.setFileTitle1(objects[3]!=null?objects[3].toString():"");
+			fileVO.setFileDescription1(objects[4]!=null?objects[4].toString():"");
+			fileVO.setFilePath1(objects[5]!=null?objects[5].toString():"");
+			fileVO.setFile(objects[6].toString());
+			fileVO.setFileTypeId((Long)objects[7]);
 		}
-	} 
+		 
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+		return null;
+	    }
+	 return fileVO;
+ }
+ public ResultStatus updateIndividualPhoto(FileVO fileVO)
+ {   
+	 ResultStatus statusCode = new ResultStatus()  ;
+	try{
+	   File file =  fileDAO.get(fileVO.getFileId());
+	   file.setFileTitle(fileVO.getFileTitle1());
+	   file.setFileDescription(fileVO.getDescription());
+	   fileDAO.save(file);
+	   FileGallary fileGallary = fileGallaryDAO.get(fileVO.getFileTypeId());
+	   Gallary gallary = gallaryDAO.get(fileVO.getGallaryId());
+	   fileGallary.setGallary(gallary);
+	   fileGallary.setIsPrivate(fileVO.getFileType());
+	   fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+
+	     statusCode.setResultCode(ResultCodeMapper.SUCCESS);
+	 
+	     return statusCode;
+	
+	 }catch(Exception e){
+		 e.printStackTrace();
+		 statusCode.setExceptionEncountered(e);
+		 statusCode.setResultCode(ResultCodeMapper.FAILURE);
+		 return statusCode;
+	 }
+ }
 }
