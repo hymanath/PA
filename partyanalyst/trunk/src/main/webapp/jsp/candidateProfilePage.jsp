@@ -1635,7 +1635,7 @@ function buildVideoGallaryDiv(result)
 
 function showCandidateElectionDetails(str)
 {
-	var politicalChangesWindow = window.open(str+"","politicalChangesWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+	var politicalChangesWindow = window.open(str+"","constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
     politicalChangesWindow.focus();
 }
 
