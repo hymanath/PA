@@ -237,12 +237,12 @@ function displayConstituencyElectionResults()
 		
 		var elementHead = document.getElementById("detailsHead");
 		var headDiv = '';
-		headDiv+='<centre><table><tr>';
+		headDiv+='<center><table><tr>';
 		headDiv+='<td>'+smallerCase+'</td>';
 		headDiv+='<td>'+smallerCaseElecType+'</td>';
 		headDiv+='<td> Election Result For - </td>';
 		headDiv+='<td>'+constituencyElecMainObj.constituencyElectionInfo.electionYear+'</td>';
-		headDiv+='</tr></table></centre>';
+		headDiv+='</tr></table></center>';
 		elementHead.innerHTML = headDiv;
 
 		
@@ -371,7 +371,7 @@ function displayConstituencyElectionResults()
 <body>
 <div id="constituencyPageMain" style="background-color:none;">
 	<div id="detailsHead"></div>
-	<div id="allYears" style="margin:15px;"></div>
+	<div id="allYears" style="text-align:center;"></div>
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel"></div>
 	</div>	
