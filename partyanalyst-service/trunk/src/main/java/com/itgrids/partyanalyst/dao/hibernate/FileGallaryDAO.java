@@ -251,5 +251,15 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		queryObject.setParameter(1, gallaryId);
 		return queryObject.executeUpdate();	
 	}
-	
+
+	public List<Object[]> getPhotoAndFileDescForUpdate(Long gallaryId , Long fileId)
+	{
+		Query query = getSession().createQuery("select model.file.fileId,model.gallary.gallaryId,model.gallary.name,model.file.fileTitle," +
+				"model.file.fileDescription,model.file.filePath,model.isPrivate,model.fileGallaryId from FileGallary model  where model.file.fileId=:fileId and  " +
+				"model.gallary.gallaryId = :gallaryId");
+		   query.setLong("fileId", fileId);
+		   query.setLong("gallaryId", gallaryId);			
+		   return query.list(); 
+		
+	}
 }
