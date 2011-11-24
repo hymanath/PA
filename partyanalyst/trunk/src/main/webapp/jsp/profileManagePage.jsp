@@ -285,7 +285,11 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 		else if(jsObj.task == "UpdatePhotoGallary")  
 			{
            updateGallaryStatus(myResults);  
-			}			
+			}	
+		else if(jsObj.task == "updateFilesAndPhotos")  
+			{
+           updateFilesAndPhotosDiv(myResults,jsObj.fileId);  
+			}		
 		else if(jsObj.task == "updateProfileDiscription")
 			{
            showDiscriptionUpdateStatus(myResults);  
@@ -354,7 +358,7 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 		
 			else if(jsObj.task == "createNewGallary")  
 			{ 
-               showGallaryCreateMsg(myResults);
+               showGallaryCreateMsg(myResults,jsObj.createOrUpdate);
 			}
 			
 			else if(jsObj.task == "createVideoNewGallary")  
@@ -391,6 +395,10 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{ 
                showCandidateDescription(myResults);
 			}
+			else if(jsObj.task == "updateIndividualPhotoDetails")
+			{ 
+               showPhotoUpdateDetails(myResults);
+			}
      	}
 		catch(e)
 		{   
@@ -406,7 +414,22 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function showPhotoUpdateDetails(result)
+{ 
+  var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+	   document.getElementById('fileTitleId').value='';
+	   document.getElementById('fileDescId').value='';
+		str += '<font color="green"><b>Photo Updated Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
 
+	errorDivEle.innerHTML = str;
+}
 function buildCandidatePhotoGallary(results)
 {
 	var str ='';
@@ -494,7 +517,7 @@ function buildCreateGallaryDiv()
 	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 
 	str += '</fieldset>';
@@ -544,18 +567,20 @@ function buildUploadPhotosDiv()
 	getCandidateGallariesForUplaod('Photo Gallary');
 }
 
-	function createGallary(contentType)
+	function createGallary(contentType,createOrUpdate)
     {
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
 	var isPublic = document.getElementById('publicRadioId').checked;
-	var candidateId=document.getElementById("candidateId").value; 
-    var gallaryId=document.getElementById("gallaryId").value;	
+	var candidateId=document.getElementById("candidateId").value; 	
 	var makeThis = 'true';
-
+    var gallaryId ='';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
-
+     if(createOrUpdate=='Update')
+	{
+	  gallaryId = document.getElementById("gallaryId").value;
+	}
 	var str = '<font color="red">';
 
 	if(galName.length == 0)
@@ -591,6 +616,7 @@ function buildUploadPhotosDiv()
 			candidateId : candidateId,
 			contentType : contentType,
 			gallaryId : gallaryId,
+			createOrUpdate:createOrUpdate,
 			task : "createNewGallary"
 		};
 
@@ -599,64 +625,7 @@ function buildUploadPhotosDiv()
 	callAjax(jsObj,url);
 }
 
-
-function updatePhotoGallary(contentType)
-    {
-	var galName = document.getElementById('pGallaryNameId').value;
-	var galDesc = document.getElementById('pGallaryDescId').value;
-	var isPublic = document.getElementById('publicRadioId').checked;
-	var candidateId=document.getElementById("candidateId").value; 
-    var gallaryId=document.getElementById("gallaryId").value;	
-	var makeThis = 'true';
-
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
-
-	var str = '<font color="red">';
-
-	if(galName.length == 0)
-	{
-		str += 'Gallery Name Required<br>';
-		eFlag = true;
-	}
-	if(galName.length >100)
-	{
-		str += 'Gallery Name should be less than 100 Characters<br>';
-		eFlag = true;
-	}
-	if(galDesc.length > 300)
-	{
-		str += 'Description should be less than 300 Characters<br>';
-		eFlag = true;
-	}
-	
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	
-	if(eFlag)
-		return;
-
-	if(isPublic)
-		makeThis = 'false';
-	
-	var jsObj =
-		{ 
-            name : galName,
-		    desc : galDesc,
-			visibility : makeThis,
-			candidateId : candidateId,
-			contentType : contentType,
-			gallaryId : gallaryId,
-			task : "UpdatePhotoGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}
-
-
-function showGallaryCreateMsg(result)
+function showGallaryCreateMsg(result,createOrUpdate)
 {
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
@@ -664,7 +633,10 @@ function showGallaryCreateMsg(result)
 	if(result.resultCode == 0)
 	{
 		clearGallaryFields();
+		if(createOrUpdate=='Create')
 		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+		str += '<font color="green"><b>Gallery Updated Successfully.</b>';
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -732,7 +704,8 @@ function getCompleteGallaries(gallaryId){
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
      str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
-	 str += '<tr><td><input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" id= "deleteFile_'+i+'" onclick="deleteFilesAndPhotos('+results[i].fileId+')"></td></tr>';
+	 str += '<tr><td><table><tr><td><input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #0063dc;" value = "Update" id= "updateFile_'+i+'" onclick="updateFilesAndPhotos('+results[i].fileId+')"></td>';
+	 str += '<td> <input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" id= "deleteFile_'+i+'" onclick="deleteFilesAndPhotos('+results[i].fileId+')"></td></tr></table>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
@@ -1021,6 +994,7 @@ function showNewsGallaey()
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'block';
   document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -1119,6 +1093,7 @@ function getDistricts1(stateId){
             name : newsCatrgoryName,
 		    desc : newsCatrgoryDesc,
 			visibility : makeThis,
+			createOrUpdate:'Create',
 			candidateId : candidateId,
 			contentType : 'News Gallary',
 			task : "createNewGallary"
@@ -1591,6 +1566,7 @@ document.getElementById("profileManagementMainOuterDiv1").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -1763,6 +1739,7 @@ function createVideoGallary(contentType)
 			visibility : makeThis,
 			candidateId : candidateId,
 			contentType : contentType,
+			createOrUpdate:'Create',
 			task : "createVideoNewGallary"
 		};
 
@@ -1935,6 +1912,7 @@ document.getElementById("profileManagementMainOuterDiv1").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -2304,7 +2282,7 @@ function updateGallary(gallaryId)
 	str +='<input type = "hidden" name = gallaryId id = gallaryId value ='+myResults.gallaryId+'>';
 	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="updatePhotoGallary(\'Photo Gallary\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
@@ -2331,6 +2309,109 @@ function updateGallary(gallaryId)
 	
 
 	}
+	
+	function updateFilesAndPhotos(fileId)
+		{
+			var r=confirm("Do you want to update the photo(or files)!");
+			 if (r==true)
+			 {
+			 var jsObj =
+					{ 
+						gallaryId : gGallaryId,
+						fileId : fileId,
+						task : "updateFilesAndPhotos"
+					};
+
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "candidatePhotoGallaryUpdateAction.action?"+rparam;
+				callAjax(jsObj,url);	
+				}
+		}
+		
+function updateFilesAndPhotosDiv(myResults,fileId)
+     {
+	 var str ='';
+		str+='<div id="content" style="width:650px;">';
+		str += '<fieldset class="imgFieldset" style="width:400px;">';
+		str += '<h2 align="center">Update A Photo</h2>';
+		str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+		str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
+		str += '<table width="75%">';
+		str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" class="gallaryTitleVal" name="gallaryId" style="width:175px;"></select></td></tr>';
+		str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
+		str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
+		str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement">'+myResults.fileDescription1+'</textarea></td></tr></table>';
+		str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+		str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+		str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Update Photo" style="background-color:#57B731" onClick="updatePhoto('+fileId+','+myResults.fileTypeId+')"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="getCompleteGallaries(gGallaryId)"  style="background-color:#CF4740"></td></tr></table>';
+		str += '</fieldset>';
+		str+='</div>';
+		document.getElementById("photoGallaryDiv").innerHTML = str;
+		getCandidateGallariesForUplaod('Photo Gallary');
+		document.getElementById('fileTitleId').value = myResults.fileTitle1;
+		if(myResults.file != 'false')
+		document.getElementById('privateRadioId').checked = true;
+		else 
+		document.getElementById('publicRadioId').checked = true;
+		document.getElementById('gallarySelectId').value = gGallaryId;
+	 }	
+function updatePhoto(fileId,fileGallaryId)
+{ 
+  var galEle = document.getElementById('gallarySelectId');
+     var gallaryId = galEle.options[galEle.selectedIndex].value;
+	 var title = document.getElementById('fileTitleId').value;
+	var galDesc = document.getElementById('fileDescId').value;
+	var isPublic = document.getElementById('publicRadioId').checked;	
+	var makeThis = 'true';
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var eFlag = false;
+	var str = '<font color="red">';
+
+	if(title.length == 0)
+	{
+		str += 'Title Is  Required<br>';
+		eFlag = true;
+	}
+	if(title.length >50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
+		eFlag = true;
+	}
+	if(galDesc.length == 0)
+	{
+		str += 'Description Is  Required<br>';
+		eFlag = true;
+	}
+	if(galDesc.length > 300)
+	{
+		str += 'Description should be less than 300 Characters<br>';
+		eFlag = true;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+
+	if(isPublic)
+		makeThis = 'false';
+	
+	var jsObj =
+		{ 
+            title : title,
+		    desc : galDesc,
+			visibility : makeThis,
+             fileId:fileId,
+			gallaryId : gallaryId,
+			fileGallaryId:fileGallaryId,
+			task : "updateIndividualPhotoDetails"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}	 
 </script>
 </head>
 <body>
