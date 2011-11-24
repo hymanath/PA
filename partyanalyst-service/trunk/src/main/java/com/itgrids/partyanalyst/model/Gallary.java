@@ -44,7 +44,7 @@ public class Gallary implements Serializable{
 	private String isPrivate;
 	private Candidate candidate;
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
-	
+	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
 	/* default constructor*/
 	
 	public Gallary(){
@@ -160,6 +160,16 @@ public class Gallary implements Serializable{
 
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gallery")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyGallery> getPartyGallery() {
+		return partyGallery;
+	}
+
+	public void setPartyGallery(Set<PartyGallery> partyGallery) {
+		this.partyGallery = partyGallery;
 	}
 	
 
