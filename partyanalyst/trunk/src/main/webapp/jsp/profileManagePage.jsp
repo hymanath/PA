@@ -40,6 +40,7 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -2115,9 +2116,8 @@ function updateProfileDiscription()
 	   for(i=0 ; i < sizeOfArray ; i++)
    		{
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
-			descriptionArr.push(document.getElementById('descId_'+i).value);
 			profDescIdArr.push(document.getElementById('candProfId_'+i).value);
-
+			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
    		}
   
   var jsObj =
