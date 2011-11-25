@@ -269,3 +269,39 @@ function refreshParent() {
   }
   window.close();
 }
+
+function replaceEnterKey(value,replaceWith)
+{
+   var val = escape(value);  
+     //encode all characters in string  
+     //to find carriage return character  
+   for(z=0; z < val.length; z++)  
+   {   
+    //loop through string, replacing carriage return   
+    //encoding with HTML break tag  
+    if(val.indexOf("%0D%0A") > -1)  
+    {   
+     //Windows encodes returns as \r\n hex  
+     val=val.replace("%0D%0A",replaceWith);  
+    }  
+    else if(val.indexOf("%0A") > -1)  
+    {   
+     //Unix encodes returns as \n hex  
+     val=val.replace("%0A",replaceWith);  
+    }  
+    else if(val.indexOf("%0D") > -1)  
+    {   
+     //Macintosh encodes returns as \r hex  
+     val=val.replace("%0D",replaceWith);  
+    }  
+   }  
+   val=unescape(val);  
+   return val;
+  //decode all characters in string 
+}
+
+function removeAllUnwantedCharacters(str)
+{
+   var strng = str.replace(/[\'\\\%\&\#\"+"]/g," ");
+   return replaceEnterKey(strng,"  ");
+} 
