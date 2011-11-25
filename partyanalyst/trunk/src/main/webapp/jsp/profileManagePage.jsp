@@ -259,6 +259,11 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{
                buildCandidatePhotoGallary(myResults);
 			}
+		else if(jsObj.task == "candidateGallariesForUplaod" && jsObj.updatePhoto== "UpdatePhoto")
+			{
+               clearOptionsListForSelectElmtId('gallarySelectId');
+			   createListData('gallarySelectId',myResults);
+			}
 		else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
            showUploadVideoStatus(myResults);  
@@ -382,11 +387,6 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
                clearOptionsListForSelectElmtId('language');
 			   createOptionsForSelectElmtId('language',myResults);
 			}
-			else if(jsObj.task == "candidateGallariesForUplaod" && jsObj.contentType=="News Gallary")
-			{ 
-               clearOptionsListForSelectElmtId('gallarySelectId');
-			   createOptionsForSelectElmtId('gallarySelectId',myResults);
-			}
 			else if(jsObj.task == "candidateGallariesForUplaod")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
@@ -415,6 +415,30 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function createListData(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+     document.getElementById('gallarySelectId').value = gGallaryId;
+}
+
 function showPhotoUpdateDetails(result)
 { 
   var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -743,7 +767,21 @@ var candidateId=document.getElementById("candidateId").value;
 	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
+function getCandidateGallariesForUpdatePhoto()
+{
+var candidateId=document.getElementById("candidateId").value;
+	var jsObj =
+		{ 
+            candidateId : candidateId,
+			contentType :'Photo Gallary',
+			updatePhoto:'UpdatePhoto',
+		   	task : "candidateGallariesForUplaod"
+		};
 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
 function uploadAFile()
 {
 	if(validateFileUpload())
@@ -2347,14 +2385,13 @@ function updateFilesAndPhotosDiv(myResults,fileId)
 		str += '</fieldset>';
 		str+='</div>';
 		document.getElementById("photoGallaryDiv").innerHTML = str;
-		getCandidateGallariesForUplaod('Photo Gallary');
 		document.getElementById('fileTitleId').value = myResults.fileTitle1;
 		if(myResults.file != 'false')
 		document.getElementById('privateRadioId').checked = true;
 		else 
 		document.getElementById('publicRadioId').checked = true;
-		document.getElementById('gallarySelectId').value = gGallaryId;
-	 }	
+		getCandidateGallariesForUpdatePhoto();
+	 }	 
 function updatePhoto(fileId,fileGallaryId)
 { 
   var galEle = document.getElementById('gallarySelectId');
