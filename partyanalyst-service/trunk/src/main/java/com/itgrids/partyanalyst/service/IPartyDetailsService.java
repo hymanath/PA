@@ -1,5 +1,26 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.PartyVO;
+import com.itgrids.partyanalyst.model.File;
 public interface IPartyDetailsService {
 
+	public PartyVO getPartyDetails(Long partyId);
+
+	public List<String> getPartyProfileDescriptionById(Long partyId);
+
+	public List<FileVO> getNewsToDisplay(Long partyId, int firstResult,
+			int maxResult, String queryType);
+
+	public List<FileVO> getPartyLatestVideos(Long partyId, Integer startIndex,
+			Integer maxRecords);
+
+	public FileVO copyFileToFileVO(File file);
+	
+	public List<FileVO> getFirstThreePhotoGallaryDetail(Long partyId);
+	
+	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(Long partyId,int firstRecord,int maxRecord,String type);
+	
+	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,int firstRecord,int maxRecord,String type);
 }
