@@ -69,17 +69,17 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	 }
 	 
 	}*/
-	
-	/*public void testGetCandidateLatestVideos()
+	//public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults)
+	public void testGetPartyLatestVideos()
 	{
-		List<File> list = fileGallaryDAO.getCandidateLatestVideos(3424l,0,20);
+		List<File> list = fileGallaryDAO.getPartyLatestVideos(163l,0,20);
 		System.out.println(list.size());
 		
 		for(File file : list)
 		{
 			System.out.println(file.getFileId() +"--"+file.getFilePath());
 		}
-	}*/
+	}
 	/*public void testGetNewsCountByScope()
 	{
 		List<Long> list = fileGallaryDAO.getNewsCountByScope(900L,null,"Private");
@@ -92,10 +92,36 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 //		System.out.println(list.size());
 //	}
 //	public Integer deleteFilesAndPhotos(Long fileId,Long gallaryId)
-public void testDeleteFilesAndPhotos()
+/*public void testDeleteFilesAndPhotos()
 {
 int i= fileGallaryDAO.deleteFilesAndPhotos(804l,1l);
 System.out.println("i " +i);
-}
+}*/
+
+	/* public void testGetPhotoAndFileDescForUpdate()
+	   {
+		   
+		   List<Object[]> result = fileGallaryDAO.getPhotoAndFileDescForUpdate(1l,10l);
+		   System.out.println("size "+ result.size());
+		   for (Object[] object : result) {
+			System.out.println((Long)object[0]);
+			
+			System.out.println(object[1]!=null?object[1].toString():null);
+			System.out.println(object[2]!=null?object[2].toString():null);
+			System.out.println(object[3]!=null?object[3].toString():null);
+		} 
+	   }*/
 	
+	//public List<File> getFilesofaparty(Long partyId)
+	
+	/*public void testGetFilesofaparty()
+	{
+		List<File> result =fileGallaryDAO.getFilesofaparty(163l);
+		System.out.println(result.size());
+		for (File file : result) {
+			System.out.println(file.getFileName());
+			System.out.println(file.getFileDescription());
+						
+		}
+	}*/
 }
