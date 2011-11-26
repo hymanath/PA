@@ -434,6 +434,8 @@
 	</bean>
 	
 	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
+	 <property name="partyDetailsService" ref="partyDetailsService"/>
+	 <property name="partyResultService" ref="partyResultService"/>
 	</bean>
 	
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
