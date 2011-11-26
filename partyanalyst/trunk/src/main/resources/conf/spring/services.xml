@@ -926,5 +926,12 @@
 		<property name="callTrackingProblemDAO" ref="callTrackingProblemDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	<bean name="partyDetailsService" class="com.itgrids.partyanalyst.service.impl.PartyDetailsService">
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="partyProfileDescriptionDAO" ref="partyProfileDescriptionDAO" /> 
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" /> 
+		<property name="partyGalleryDAO" ref="partyGalleryDAO" /> 
+		
+	</bean>
 </beans>		
 		
