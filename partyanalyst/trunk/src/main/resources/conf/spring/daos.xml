@@ -673,8 +673,14 @@
 	<bean id="candidateUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateUpdatesEmailDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean id="partyProfileDescriptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	
     <bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
 </beans>		
