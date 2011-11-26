@@ -290,14 +290,15 @@ if(request.getParameter("problemHistoryId")!=null){
 	</head>
 	<body><center>	 
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
-		<div id="forgot_password_window_inner"></div>
+		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
 		<div id="loginPanel_main" class="background" style="align:center">
 		
 		<div style="width:360px;">
 			<table width="100%" cellpadding="0" cellspacing="0" style="width:360px;">
 				<tr>
-					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_left_login.jpg"></img></td>
+					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_left_login.jpg">
+					</img></td>
 					<td><div id="loginHeadCenter_center" class="containerHeader_center">
 							<span class="containerHeader_center_label">Member Login</span>
 						</div>
@@ -377,8 +378,8 @@ if(request.getParameter("problemHistoryId")!=null){
 								<tr>
 									<th>Sign In As</th>
 									<td>
-										<input id="paUserRadio" type="radio" name="userType" value="1"/>Customer
-										<input id="freeUserRadio" type="radio" name="userType" value="2" checked="checked"/>Free User
+										<input id="paUserRadio" type="radio" name="userType" value="1"/>&nbsp;&nbsp;Customer
+										<input id="freeUserRadio" type="radio" name="userType" value="2" checked="checked"/>&nbsp;&nbsp;Free User
 									</td>
 								</tr>
 								<tr>
@@ -585,7 +586,7 @@ $("#forgot_password_window").dialog({
 		var elmt = document.getElementById("forgot_password_window_inner");
 
 		var str = '';
-		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_head">Forgot Password ?</div>';
 		str += '<div id="feedback_window_body">';
 		str += '	<div id="feedBackNote_div">';
 		str += '		<table>';
@@ -611,15 +612,15 @@ $("#forgot_password_window").dialog({
 		str += '	<tr>';
 		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
 		str += '	<td width="35%" align="right">';
-		str += '		<input id="postButton" type="button" value="submit"></input>';
-		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
+		str += '		<input  style="text-align:center;" id="submitButton" type="button" value="Submit"></input>';
+		str += '		<input style="text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
 		str += '	</td>';
 		str += '	</tr>';
 		str += '	</table>';	
 		str += '</div>';
 		elmt.innerHTML = str;
 
-		var oPushButton1 = new YAHOO.widget.Button("postButton");  
+		var oPushButton1 = new YAHOO.widget.Button("submitButton");  
 		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
 
 		oPushButton1.on("click",function(){
