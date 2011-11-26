@@ -66,7 +66,7 @@ public class PartyProfileDescription extends BaseModel implements java.io.Serial
 	public void setParty(Party party) {
 		this.party = party;
 	}
-	@Column(name = "description", length = 300)
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -74,7 +74,7 @@ public class PartyProfileDescription extends BaseModel implements java.io.Serial
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Column(name = "order_no", length = 300)
+	@Column(name = "order_no")
 	public Long getOrderNo() {
 		return orderNo;
 	}
