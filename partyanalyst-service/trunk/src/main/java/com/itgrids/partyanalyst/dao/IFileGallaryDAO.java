@@ -33,4 +33,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public Integer deleteFilesAndPhotos(Long fileId , Long gallaryId);
 	
 	public List<Object[]> getPhotoAndFileDescForUpdate(Long gallaryId , Long fileId);
+	
+	public List<File> getFirstFourNewsForParty(Long partyId,int firstResult,int maxResult,String queryType);
+	
+	public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults);
 }
