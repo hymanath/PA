@@ -13,8 +13,10 @@ import com.itgrids.partyanalyst.model.PartyProfileDescription;
   public PartyProfileDescriptionDAO() {
      super(PartyProfileDescription.class);
       }
-      
-  
+  @SuppressWarnings("unchecked")
+	public List<Object> getPartyProfileDescription(Long partyId){		
+		return getHibernateTemplate().find("select model.description from PartyProfileDescription model where model.party.partyId=? order by model.orderNo asc",partyId);
+	} 
 }
 
 
