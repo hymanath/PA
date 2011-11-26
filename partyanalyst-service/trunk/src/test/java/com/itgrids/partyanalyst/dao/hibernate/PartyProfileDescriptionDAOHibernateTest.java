@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.*;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
@@ -13,8 +14,15 @@ public class PartyProfileDescriptionDAOHibernateTest extends BaseDaoTestCase {
 		this.partyProfileDescriptionDAO = partyProfileDescriptionDAO;
 	}
 
-	public void test() {
+	/*public void test() {
 		partyProfileDescriptionDAO.getAll();
+	}*/
+	public void testGetPartyProfileDescription()
+	{
+		
+   List<Object> result = partyProfileDescriptionDAO.getPartyProfileDescription(163l);
+   for (Object object : result) {
+	System.out.println(object.toString());
+}
 	}
-	
 }
