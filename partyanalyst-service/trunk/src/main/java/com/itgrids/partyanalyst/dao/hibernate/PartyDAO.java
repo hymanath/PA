@@ -74,5 +74,9 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		return getHibernateTemplate().find("from Party model where model.partyRecognization = ?",partyType);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<Party> getPartyDetails(Long partyId){
+		
+		return getHibernateTemplate().find("from Party model where model.partyId = ?", partyId);
+	}	
 }
