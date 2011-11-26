@@ -8,6 +8,5 @@ import com.itgrids.partyanalyst.model.PartyProfileDescription;
 
 public interface IPartyProfileDescriptionDAO extends GenericDao<PartyProfileDescription, Long> {
 	
-
-	
+	public List<Object> getPartyProfileDescription(Long partyId);
 }
