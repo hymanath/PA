@@ -106,7 +106,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 		List<FileVO> retValue = new ArrayList<FileVO>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			List<File> file = fileGallaryDAO.getFirstFourNewsForParty(partyId,firstResult,maxResult,queryType);
+			List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,firstResult,maxResult,queryType);
 			for (File file2 : file) {
 				FileVO fileVO = new FileVO();
 				fileVO.setFileId((Long) file2.getFileId());
