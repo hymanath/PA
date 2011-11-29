@@ -263,7 +263,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 	}
 	 
-	public List<File> getFirstFourNewsForParty(Long partyId,int firstResult,int maxResult,String queryType)
+	/*public List<File> getFirstFourNewsForParty(Long partyId,int firstResult,int maxResult,String queryType)
 	{
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
@@ -279,7 +279,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return query.list(); 
 	 }
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults)
 	{
