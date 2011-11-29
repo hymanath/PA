@@ -7,8 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${partyVO.partyLongName} Party</title>
-<META NAME="Keywords" CONTENT="${candidateVO.candidateName},${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} constituency,${candidateVO.candidateName} election details">
-<meta name="description" content="${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} videos,${candidateVO.candidateName} gallaries,${candidateVO.candidateName} election results and analysis">
+<META NAME="Keywords" CONTENT="${partyVO.partyLongName},${partyVO.partyLongName} news,${partyVO.partyLongName} photos,${partyVO.partyLongName} election details ,${partyVO.partyShortName} news ,${partyVO.partyShortName} photos ,${partyVO.partyShortName} election details">
+<meta name="description" content="${partyVO.partyLongName} news,${partyVO.partyLongName} photos,${partyVO.partyLongName} videos,${partyVO.partyLongName} gallaries,${partyVO.partyLongName} election results and analysis , ${partyVO.partyShortName} news , ${partyVO.partyShortName} photos,${partyVO.partyShortName} videos,${partyVO.partyShortName} election results and analysis,${partyVO.partyShortName} gallery,${partyVO.partyShortName} galleries ">
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
@@ -692,7 +692,7 @@ function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
-function validateEmailField()
+/*function validateEmailField()
 	{
 		document.getElementById("alertMsg").innerHTML = '';
 		var emailIdVal = document.getElementById("emailId").value;
@@ -719,7 +719,7 @@ function validateEmailField()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
 	callAjax(jsObj,url);
-}
+}*/
 function photoGallaryPopUp(){
 	
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
@@ -1051,7 +1051,7 @@ function showFirstFourNewsRecords(results)
  //  str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
  //  str+='     </tr>';
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
+     str+='       <td><a href="javascript:{}" onclick="getNewsBySource1(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a href="javascript:{}" onclick="getNewsByLanguage1(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
      str+='     </tr>';
      str+='     <tr>';
      str+='       <td>'+results[i].fileDescription1+'</td>';
