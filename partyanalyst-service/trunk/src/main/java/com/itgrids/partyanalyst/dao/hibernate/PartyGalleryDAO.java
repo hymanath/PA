@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
@@ -57,5 +58,80 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 						
 		return query.list(); 
 		
+	}
+	
+	public List<Object[]> getNewsByScope(Long partyId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.fileId,model.fileName,model.filePath,model.fileTitle,model.fileDescription , " +
+				" model.sourceObj.source ,model.language.language ,model.fileDate " +
+				" from File model where model.gallary.candidate.candidateId =:candidateId "+
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
+				" and model.gallary.isDelete = 'false'  ");
+
+		if(scopeType!=null)
+			query.append("   and model.file.regionScopes.regionScopesId =:scopeType   ");
+		
+		if(sourceStr!=null)
+			query.append("   and model.file.sourceObj.source =:spScope");
+		
+		if(languageStr!=null)
+			query.append("   and model.file.language.language =:spScopeLang");
+		
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		query.append("   order by model.file.fileDate desc   ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong("partyId", partyId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		if(scopeType!=null)
+		queryObject.setLong("scopeType", scopeType);
+		
+		if(sourceStr!=null)
+		queryObject.setString("spScope", sourceStr);
+		
+		if(languageStr!=null)
+		queryObject.setString("spScopeLang", languageStr);
+		
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResults);	
+						
+		return queryObject.list(); 
+	}
+	
+	public List<File> getFirstFourNewsForParty(Long partyId,int firstResult,int maxResult,String queryType)
+	{
+		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in "+
+				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate)");
+		
+		query.setLong("partyId", partyId);
+		query.setString("type", IConstants.NEWS_GALLARY);
+		
+		query.setString("isDelete", "false");
+		query.setString("isPrivate", "false");
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+		
+		return query.list(); 
+	 }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllRecordInGallary(Long gallaryId){
+		
+		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription,  " +
+				" model.gallary.name  from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
+				" order by model.file.fileId asc ");
+		
+		query.setParameter(0,gallaryId);
+		query.setParameter(1,"false");
+		query.setParameter(2,"false");				
+		return query.list(); 
 	}
 }
