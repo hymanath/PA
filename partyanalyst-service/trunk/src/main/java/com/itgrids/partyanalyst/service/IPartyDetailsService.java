@@ -17,10 +17,12 @@ public interface IPartyDetailsService {
 			Integer maxRecords);
 
 	public FileVO copyFileToFileVO(File file);
-	
+
 	public List<FileVO> getFirstThreePhotoGallaryDetail(Long partyId);
-	
-	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(Long partyId,int firstRecord,int maxRecord,String type);
-	
-	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,int firstRecord,int maxRecord,String type);
+
+	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(
+			Long partyId, int firstRecord, int maxRecord, String type);
+
+	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,
+			int firstRecord, int maxRecord, String type);
 }
