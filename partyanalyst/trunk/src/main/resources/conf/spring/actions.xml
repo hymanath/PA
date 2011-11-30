@@ -798,4 +798,8 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService" />	    	
 	</bean>
 	
+	<bean id="partyManagementAction" class ="com.itgrids.partyanalyst.web.action.PartyManagementAction" singleton="false">
+	   <property name="partyDetailsService" ref="partyDetailsService" />
+	</bean>																				
+	
 </beans>	
