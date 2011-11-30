@@ -1,10 +1,16 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import java.util.List;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.File;
 public interface IPartyDetailsService {
+	
+	public List<SelectOptionVO> getAllPartysNames() ;
 
 	public PartyVO getPartyDetails(Long partyId);
 
@@ -25,4 +31,7 @@ public interface IPartyDetailsService {
 
 	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,
 			int firstRecord, int maxRecord, String type);
+	
+	public ResultStatus saveDescription(GallaryVO gallaryVO);
+	
 }

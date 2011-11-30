@@ -16,7 +16,16 @@ import com.itgrids.partyanalyst.model.PartyProfileDescription;
   @SuppressWarnings("unchecked")
 	public List<Object> getPartyProfileDescription(Long partyId){		
 		return getHibernateTemplate().find("select model.description from PartyProfileDescription model where model.party.partyId=? order by model.orderNo asc",partyId);
-	} 
+	}
+  public List<Object> getMaxOrderNo(Long partyId){
+		
+		return getHibernateTemplate().find("select max(model.orderNo) from PartyProfileDescription model where model.party.partyId=?",partyId);
+	}
+  
+  @SuppressWarnings("unchecked")
+	public List<Object[]> getPartyProfileInfo(Long partyId){		
+		return getHibernateTemplate().find("select model.orderNo , model.description , model.partyProfileDescriptionId from PartyProfileDescription model where model.party.partyId=?",partyId);
+	}
 }
 
 

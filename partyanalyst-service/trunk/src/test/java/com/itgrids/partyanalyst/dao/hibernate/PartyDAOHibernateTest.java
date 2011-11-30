@@ -62,8 +62,20 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 		List parties = partyDAO.findPartyIdByShortName("TRS");
 		System.out.println(parties.get(0));
 	}*/
+	public void testfindAllPartyNames()
+	{
+		List<Object[]> list=partyDAO.findAllPartyNames();
+		System.out.println(list.size());
+		for(Object[] params:list)
+		{
+			System.out.println(params[0]);
+			System.out.println(params[1]);
+			System.out.println(params[2]);
+
+		}
+	}
 	
-	public void testgetPartyDetails()
+/*	public void testgetPartyDetails()
 	{
 		
 		List<Party> result = partyDAO.getPartyDetails(362l);
@@ -74,5 +86,5 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(party.getShortName());
 		}
 		System.out.println();
-	}
+	}*/
 }
