@@ -487,7 +487,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(candidateId);
 		 
-		 if(candidateResults != null && candidateResults.size()>0){
+		 if(candidateResults != null){
 			//Nomination nomination = null;
 			Candidate candidate = null;
 			Party party = null;
