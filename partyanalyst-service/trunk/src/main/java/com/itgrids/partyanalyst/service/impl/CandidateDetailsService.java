@@ -487,7 +487,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(candidateId);
 		 
-		 if(candidateResults != null){
+		 if(candidateResults != null && candidateResults.size()>0){
 			//Nomination nomination = null;
 			Candidate candidate = null;
 			Party party = null;
@@ -513,14 +513,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  else
 					name = candidate.getFirstname();
 				candidateDetails.setCandidateName(name);
-				candidateDetails.setConstituencyName(constituency.getName());
-				candidateDetails.setConstituencyId(constituency.getConstituencyId());
-				candidateDetails.setElectionId(election.getElectionId());
-				candidateDetails.setElectionType(election.getElectionScope().getElectionType().getElectionType());
-				candidateDetails.setElectionYear(election.getElectionYear());
-				candidateDetails.setPartyName(party.getLongName());
-				candidateDetails.setShortName(party.getShortName());
-				candidateDetails.setPartyFlag(party.getPartyFlag());
+				if(constituency !=null){
+					if(constituency.getConstituencyId()!=null){
+						candidateDetails.setConstituencyName(constituency.getName());
+						candidateDetails.setConstituencyId(constituency.getConstituencyId());
+					}
+				}
+				if(election !=null){
+					if(election.getElectionId() != null){
+						candidateDetails.setElectionId(election.getElectionId());
+						candidateDetails.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+						candidateDetails.setElectionYear(election.getElectionYear());
+					}
+				}
+				if(party != null){
+					if(party.getPartyId()!=null){
+						candidateDetails.setPartyName(party.getLongName());
+						candidateDetails.setShortName(party.getShortName());
+						candidateDetails.setPartyFlag(party.getPartyFlag());
+					}
+				}
+				
 				candidateDetails.setRank(result.getRank());
 				candidateDetails.setEducation(candidate.getEducation());
 				String votes = result.getVotesEarned().toString();
