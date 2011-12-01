@@ -152,12 +152,14 @@
 </head>
 <body>
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td><div class="ppc-title">State: 
+<tr><td><div class="ppc-title">
+<s:if test="candidateElectionDetails[0].stateId !=null">State: 
 <a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
 <s:property value="candidateElectionDetails[0].stateName"/></strong></a>
-<s:if test="candidateElectionDetails[0].districtName!=''"> &gt;  
+ &gt;  </s:if>
+<s:if test="candidateElectionDetails[0].districtName!=''"> 
 District: 
-<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></strong></a></s:if> &gt;  <s:property value="candidateElectionDetails[0].electionType"/>:
+<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></a></strong>&gt; </s:if>  <s:property value="candidateElectionDetails[0].electionType"/>:
 <a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
 <div class="clear"></div>
 <div class="main-title-sec">
@@ -227,9 +229,9 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 			 <div id="showProfile"></div>
 		
 			 <!--ELECTION PROFILE SECTION START-->
-
+			<s:if test="candidateElectionDetails[0].electionId !=null">
               <div class="pm-inner-cont-sec" id="electionInfo"></div>
-
+			</s:if>
 			  <!--ELECTION PROFILE SECTION END--> 
 
 			  <!--PHOTO GALLERY SECTION START-->
@@ -1517,8 +1519,12 @@ function candidateInfo()
 	<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
 		str += 'MP <br />';
 	</s:if>
+	str+='<s:if test="candidateElectionDetails[0].constituencyId !=null">';
 	str+='<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
+	str+='</s:if>';
+	str+='<s:if test="candidateElectionDetails[0].partyName !=''">';
 	str+='${candidateElectionDetails[0].partyName} PARTY';
+	str+='</s:if>';
     str+='</div>';
 	str+='<div class="clear"></div>';
      	
