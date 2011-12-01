@@ -1008,7 +1008,8 @@ function showFirstFourNewsRecords(results)
  }
  function showTotalNews(results)
  { 
-    $("#showAllNewsDiv").dialog({ stack: false,
+	if(results != null && results.length >0)){
+     $("#showAllNewsDiv").dialog({ stack: false,
 							    height: 570,
 								width: 720,
 								position:[150,120],								
@@ -1048,6 +1049,7 @@ function showFirstFourNewsRecords(results)
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
    getScopeWiseNewsCount();
+	 }
  }
  function  buildNewsCount(result)
  {
