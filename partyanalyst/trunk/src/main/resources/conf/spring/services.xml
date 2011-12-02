@@ -931,7 +931,14 @@
 		<property name="partyProfileDescriptionDAO" ref="partyProfileDescriptionDAO" /> 
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" /> 
 		<property name="partyGalleryDAO" ref="partyGalleryDAO" /> 
-		
+		<property name="gallaryDAO" ref="gallaryDAO" />
+		<property name="contentTypeDAO" ref="contentTypeDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="userGallaryDAO" ref="userGallaryDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="messageToCandidateDAO" ref="messageToCandidateDAO" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 	</bean>
 </beans>		
 		
