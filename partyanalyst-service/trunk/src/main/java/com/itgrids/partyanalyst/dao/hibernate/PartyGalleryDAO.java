@@ -134,4 +134,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		query.setParameter(2,"false");				
 		return query.list(); 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGallariesByPartyId(Long partyId,String contentType)
+	{
+		Object[] params = {partyId,contentType};
+		return getHibernateTemplate().find("select model.gallery.gallaryId,model.gallery.name from PartyGallery model where model.party.partyId = ? and model.gallery.contentType.contentType = ? and model.isDelete = 'false' order by model.gallery.name asc",params);
+	}
 }
