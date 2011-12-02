@@ -800,6 +800,7 @@
 	
 	<bean id="partyManagementAction" class ="com.itgrids.partyanalyst.web.action.PartyManagementAction" singleton="false">
 	   <property name="partyDetailsService" ref="partyDetailsService" />
+	   <property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>																				
 	
 </beans>	
