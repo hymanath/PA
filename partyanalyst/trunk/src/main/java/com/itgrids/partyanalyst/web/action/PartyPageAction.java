@@ -181,6 +181,10 @@ public class PartyPageAction extends ActionSupport implements
 			
 			fileVO = partyDetailsService.getPartyPhotoGallaryDetail(jObj.getLong("partyId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.VIDEO_GALLARY);
 		}
+        else if(jObj.getString("task").equalsIgnoreCase("getPartyPhotoGallaryDetail")){
+			
+        	fileVO = partyDetailsService.getPartyPhotoGallaryDetail(jObj.getLong("partyId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.PHOTO_GALLARY);
+		}
 	return Action.SUCCESS;
 }
 }
