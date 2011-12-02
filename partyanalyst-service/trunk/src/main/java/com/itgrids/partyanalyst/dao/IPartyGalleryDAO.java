@@ -13,4 +13,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public List<Object[]> getNewsByScope(Long partyId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr);
 	
 	public List<Object[]> getAllRecordInGallary(Long gallaryId);
+	
+	public List<Object[]> getGallariesByPartyId(Long partyId,String contentType);
 }
