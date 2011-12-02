@@ -44,7 +44,7 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		query.setParameter(2,"false");				
 		return query.list(); 
 	}*/
-	public void testGetAllRecordInGallary()
+	/*public void testGetAllRecordInGallary()
 	{
 		List<Object[]> result = partyGalleryDAO.getAllRecordInGallary(9l);
 		System.out.println(result.size());
@@ -53,5 +53,15 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
         System.out.println(objects[1].toString());
 		}
 		
+	}*/
+	//public List<Object[]> getGallariesByPartyId(Long partyId,String contentType)
+	public void testGetGallariesByPartyId()
+	{
+		
+		List<Object[]> result = partyGalleryDAO.getGallariesByPartyId(163l, "photo gallary");
+		for (Object[] objects : result) {
+			System.out.println((Long)objects[0]);
+			System.out.println(objects[1].toString());
+		}
 	}
 }
