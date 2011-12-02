@@ -1,47 +1,48 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
-
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.ISourceDAO;
+import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateProfileDescription;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Gallary;
-import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO;
 public class PartyDetailsService implements IPartyDetailsService {
 private static final Logger log = Logger.getLogger(PartyDetailsService.class);
 private DateUtilService dateUtilService = new DateUtilService();
@@ -54,6 +55,80 @@ private DateUtilService dateUtilService = new DateUtilService();
 	private IContentTypeDAO contentTypeDAO;
 	private IRegistrationDAO registrationDAO;
 	private IUserGallaryDAO userGallaryDAO;
+	private IFileTypeDAO fileTypeDAO;
+	private ISourceLanguageDAO sourceLanguageDAO;
+	private ISourceDAO sourceDAO;
+	private IRegionScopesDAO regionScopesDAO;
+	private IElectionTypeDAO electionTypeDAO;
+	private IFileDAO fileDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
+	
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
+	public ISourceDAO getSourceDAO() {
+		return sourceDAO;
+	}
+
+	public void setSourceDAO(ISourceDAO sourceDAO) {
+		this.sourceDAO = sourceDAO;
+	}
+
+	public ISourceLanguageDAO getSourceLanguageDAO() {
+		return sourceLanguageDAO;
+	}
+
+	public void setSourceLanguageDAO(ISourceLanguageDAO sourceLanguageDAO) {
+		this.sourceLanguageDAO = sourceLanguageDAO;
+	}
+
+	public IFileTypeDAO getFileTypeDAO() {
+		return fileTypeDAO;
+	}
+
+	public void setFileTypeDAO(IFileTypeDAO fileTypeDAO) {
+		this.fileTypeDAO = fileTypeDAO;
+	}
+
+	public IUserGallaryDAO getUserGallaryDAO() {
+		return userGallaryDAO;
+	}
+
+	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
+		this.userGallaryDAO = userGallaryDAO;
+	}
+
 	private ICandidateDAO candidateDAO;
 	private IConstituencyDAO constituencyDAO; 
 	 private IMessageToCandidateDAO messageToCandidateDAO;
@@ -446,6 +521,101 @@ private DateUtilService dateUtilService = new DateUtilService();
 			 log.error("Exception Occured in saveDescription() method - "+e);
 			return resultStatus;
 		}
+	}
+	
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
+	{   Gallary gallary = null;
+	    PartyGallery partyGallery = new PartyGallery();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(createOrUpdate.trim().equalsIgnoreCase("Update") && gallaryVO.getGallaryId()!=null)
+				gallary = gallaryDAO.get( gallaryVO.getGallaryId());
+			else
+			    gallary = new Gallary();
+			UserGallary userGallary = null;
+			gallary.setName(gallaryVO.getGallaryName());
+			gallary.setDescription(gallaryVO.getDescription());
+			if(createOrUpdate.trim().equalsIgnoreCase("Create"))
+			{
+			    gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
+			    gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			    gallary.setIsDelete(IConstants.FALSE);
+			}
+			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			gallary.setIsPrivate(gallaryVO.getVisibility());	
+			
+			gallary = gallaryDAO.save(gallary);
+			partyGallery.setIsDelete(IConstants.FALSE);
+			partyGallery.setIsPrivate(gallaryVO.getVisibility());
+			partyGallery.setParty(partyDAO.get(gallaryVO.getCandidateId()));
+			partyGallery.setGallery(gallary);
+			partyGallery.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			partyGallery.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			partyGallery=partyGalleryDAO.save(partyGallery);
+			if(createOrUpdate.trim().equalsIgnoreCase("Create")) 
+			{	
+			userGallary = new UserGallary();
+			userGallary.setGallary(gallary);
+			userGallary.setRegistration(registrationDAO.get(gallaryVO.getUserId()));
+			userGallaryDAO.save(userGallary);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	
+	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,String contentType)
+	{
+		try{
+			log.debug("Entered into getCandidateGallarySelectList() Method");
+			
+			List<SelectOptionVO> gallarySelectList = null;
+			List<Object[]> list = partyGalleryDAO.getGallariesByPartyId(partyId,contentType);
+			
+			if(list != null && list.size() > 0)
+			{
+				gallarySelectList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					gallarySelectList.add(selectOptionVO);
+				}
+			}
+			return gallarySelectList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+			return null;
+		}
+	}
+	
+	public List<FileVO> getElectionType()
+	{
+		
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+			try{
+				List<ElectionType> electionType = electionTypeDAO.getAll();
+				for(ElectionType result:electionType)
+				{
+					FileVO fileVO = new FileVO();
+					fileVO.setCandidateId(result.getElectionTypeId());
+					fileVO.setFile(result.getElectionType());
+					retValue.add(fileVO);
+				 }
+				 
+				return retValue;
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					return retValue;
+				}
 	}
 	
 }
