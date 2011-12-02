@@ -34,4 +34,9 @@ public interface IPartyDetailsService {
 	
 	public ResultStatus saveDescription(GallaryVO gallaryVO);
 	
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate);
+	
+	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,String contentType);
+	
+	public List<FileVO> getElectionType();
 }
