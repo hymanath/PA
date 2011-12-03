@@ -939,6 +939,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="messageToCandidateDAO" ref="messageToCandidateDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
+		<property name="partyManifestoDAO" ref="partyManifestoDAO" />
 	</bean>
 </beans>		
 		
