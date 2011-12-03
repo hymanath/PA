@@ -39,4 +39,6 @@ public interface IPartyDetailsService {
 	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,String contentType);
 	
 	public List<FileVO> getElectionType();
+	
+	public List<FileVO> getPartyManifestoInfo(long partyId);
 }

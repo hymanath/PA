@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.IPartyManifestoDAO;
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -38,14 +39,15 @@ import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
-import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+
 public class PartyDetailsService implements IPartyDetailsService {
-private static final Logger log = Logger.getLogger(PartyDetailsService.class);
-private DateUtilService dateUtilService = new DateUtilService();
+	private static final Logger log = Logger
+			.getLogger(PartyDetailsService.class);
+	private DateUtilService dateUtilService = new DateUtilService();
 	private IPartyDAO partyDAO;
 	private IPartyProfileDescriptionDAO partyProfileDescriptionDAO;
 	private IFileGallaryDAO fileGallaryDAO;
@@ -62,8 +64,16 @@ private DateUtilService dateUtilService = new DateUtilService();
 	private IElectionTypeDAO electionTypeDAO;
 	private IFileDAO fileDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-	
-	
+	private IPartyManifestoDAO partyManifestoDAO;
+
+	public IPartyManifestoDAO getPartyManifestoDAO() {
+		return partyManifestoDAO;
+	}
+
+	public void setPartyManifestoDAO(IPartyManifestoDAO partyManifestoDAO) {
+		this.partyManifestoDAO = partyManifestoDAO;
+	}
+
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
 	}
@@ -130,9 +140,9 @@ private DateUtilService dateUtilService = new DateUtilService();
 	}
 
 	private ICandidateDAO candidateDAO;
-	private IConstituencyDAO constituencyDAO; 
-	 private IMessageToCandidateDAO messageToCandidateDAO;
-	
+	private IConstituencyDAO constituencyDAO;
+	private IMessageToCandidateDAO messageToCandidateDAO;
+
 	public IMessageToCandidateDAO getMessageToCandidateDAO() {
 		return messageToCandidateDAO;
 	}
@@ -269,7 +279,8 @@ private DateUtilService dateUtilService = new DateUtilService();
 		List<FileVO> retValue = new ArrayList<FileVO>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,firstResult,maxResult,queryType);
+			List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,
+					firstResult, maxResult, queryType);
 			for (File file2 : file) {
 				FileVO fileVO = new FileVO();
 				fileVO.setFileId((Long) file2.getFileId());
@@ -326,14 +337,14 @@ private DateUtilService dateUtilService = new DateUtilService();
 		}
 	}
 
-	public List<FileVO> getPartyLatestVideos(Long partyId,
-			Integer startIndex, Integer maxRecords) {
+	public List<FileVO> getPartyLatestVideos(Long partyId, Integer startIndex,
+			Integer maxRecords) {
 		try {
 			log.debug("Entered into getCandidateLatestVideos() Method");
 
 			List<FileVO> fileList = null;
-			List<File> list = fileGallaryDAO.getPartyLatestVideos(
-					partyId, startIndex, maxRecords);
+			List<File> list = fileGallaryDAO.getPartyLatestVideos(partyId,
+					startIndex, maxRecords);
 
 			if (list != null && list.size() > 0) {
 				fileList = new ArrayList<FileVO>(0);
@@ -353,269 +364,332 @@ private DateUtilService dateUtilService = new DateUtilService();
 		}
 	}
 
-	public List<FileVO> getFirstThreePhotoGallaryDetail(Long partyId){
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-	 try{
-		List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId,0,20,IConstants.PHOTO_GALLARY);
-		
-		for(Object[] gallary: results){
-			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
-		    	String title =""; 
-		   	    if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
-		   	    {
-		   	    	title = startingRecord[3].toString().substring(0, 17);
-		   	    	title = title+"...";
-		   	    }
-		   	    else
-		   	    {
-		   	    if(startingRecord[3] != null)
-		   	    {	
-		   	    	title = startingRecord[3].toString();
-		   	    }
-		   	    }
-		    	fileVO.setTitle(title);
-		    	
-		    }
-		    fileVO.setGallaryId((Long)gallary[0]);
-		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
-		    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
-		    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
-		    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
-		    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
-		    retValue.add(fileVO);	  
+	public List<FileVO> getFirstThreePhotoGallaryDetail(Long partyId) {
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(
+					partyId, 0, 20, IConstants.PHOTO_GALLARY);
+
+			for (Object[] gallary : results) {
+				FileVO fileVO = new FileVO();
+				List<Object[]> record = fileGallaryDAO
+						.getStartingRecordInGallary((Long) gallary[0]);
+				for (Object[] startingRecord : record) {
+					fileVO.setFileId((Long) startingRecord[0]);
+					fileVO
+							.setName(startingRecord[1] != null ? startingRecord[1]
+									.toString()
+									: "");
+					fileVO.setPath(IConstants.UPLOADED_FILES + "/"
+							+ startingRecord[1].toString());
+					String title = "";
+					if (startingRecord[3] != null
+							&& startingRecord[3].toString().length() >= 18) {
+						title = startingRecord[3].toString().substring(0, 17);
+						title = title + "...";
+					} else {
+						if (startingRecord[3] != null) {
+							title = startingRecord[3].toString();
+						}
+					}
+					fileVO.setTitle(title);
+
+				}
+				fileVO.setGallaryId((Long) gallary[0]);
+				fileVO.setSizeOfGallary((long) (fileGallaryDAO
+						.getAllRecordInGallary((Long) gallary[0]).size()));
+				fileVO.setGallaryName(gallary[1] != null ? gallary[1]
+						.toString() : "");
+				fileVO.setGallaryDescription(gallary[2] != null ? gallary[2]
+						.toString() : "");
+				fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3]
+						.toString() : "");
+				fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4]
+						.toString() : "");
+				retValue.add(fileVO);
+			}
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
 		}
-		return retValue;
-	 }
-	 catch(Exception e)
-	 {
-		 e.printStackTrace();
-		 return retValue;
-	 }
-	}
-	
-	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(Long partyId,int firstRecord,int maxRecord,String type){
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-	 try{
-		List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId,firstRecord,maxRecord,type);
-		
-		for(Object[] gallary: results){
-			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    if(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()>0L)
-		    {
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
-		    	fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString() :"");
-		    	fileVO.setGallaryId((Long)gallary[0]);
-			    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
-			    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
-			    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
-			    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
-			    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
-			    retValue.add(fileVO);
-		    }
-			    
-	      }
-		    	  
-		}
-		return retValue;
-	 }
-	 catch(Exception e)
-	 {
-		 e.printStackTrace();
-		 return retValue;
-	 }
-	}
-	
-	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,int firstRecord,int maxRecord,String type){
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-	 try{
-		List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId,firstRecord,maxRecord,type);
-		
-		for(Object[] gallary: results){
-			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
-		    	if(type.equalsIgnoreCase(IConstants.VIDEO_GALLARY))
-		    		fileVO.setPath(startingRecord[2].toString());
-		    	else
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
-		    	
-		    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
-		    	
-		    }
-		    fileVO.setGallaryId((Long)gallary[0]);
-		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
-		    fileVO.setGallaryName(gallary[1] != null ? WordUtils.capitalize(gallary[1].toString()) :"");
-		    fileVO.setGallaryDescription(gallary[2] != null ? WordUtils.capitalize(gallary[2].toString()) :"");
-		    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
-		    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
-		    retValue.add(fileVO);	  
-		}
-		return retValue;
-	 }
-	 catch(Exception e)
-	 {
-		 e.printStackTrace();
-		 return retValue;
-	 }
 	}
 
-	public List<SelectOptionVO> getAllPartysNames()
-	{
-		try{
+	public List<FileVO> getPartyPhotoGallaryDetailWithOutGallerySizeZero(
+			Long partyId, int firstRecord, int maxRecord, String type) {
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(
+					partyId, firstRecord, maxRecord, type);
+
+			for (Object[] gallary : results) {
+				FileVO fileVO = new FileVO();
+				List<Object[]> record = fileGallaryDAO
+						.getStartingRecordInGallary((Long) gallary[0]);
+				for (Object[] startingRecord : record) {
+					if (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0])
+							.size() > 0L) {
+						fileVO.setFileId((Long) startingRecord[0]);
+						fileVO
+								.setName(startingRecord[1] != null ? startingRecord[1]
+										.toString()
+										: "");
+						fileVO.setPath(IConstants.UPLOADED_FILES + "/"
+								+ startingRecord[1].toString());
+						fileVO
+								.setTitle(startingRecord[3] != null ? startingRecord[3]
+										.toString()
+										: "");
+						fileVO.setGallaryId((Long) gallary[0]);
+						fileVO.setSizeOfGallary((long) (fileGallaryDAO
+								.getAllRecordInGallary((Long) gallary[0])
+								.size()));
+						fileVO.setGallaryName(gallary[1] != null ? gallary[1]
+								.toString() : "");
+						fileVO
+								.setGallaryDescription(gallary[2] != null ? gallary[2]
+										.toString()
+										: "");
+						fileVO
+								.setGallaryCreatedDate(gallary[3] != null ? gallary[3]
+										.toString()
+										: "");
+						fileVO
+								.setGallaryUpdatedDate(gallary[4] != null ? gallary[4]
+										.toString()
+										: "");
+						retValue.add(fileVO);
+					}
+
+				}
+
+			}
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+
+	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,
+			int firstRecord, int maxRecord, String type) {
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(
+					partyId, firstRecord, maxRecord, type);
+
+			for (Object[] gallary : results) {
+				FileVO fileVO = new FileVO();
+				List<Object[]> record = fileGallaryDAO
+						.getStartingRecordInGallary((Long) gallary[0]);
+				for (Object[] startingRecord : record) {
+					fileVO.setFileId((Long) startingRecord[0]);
+					fileVO.setName(startingRecord[1] != null ? WordUtils
+							.capitalize(startingRecord[1].toString()) : "");
+					if (type.equalsIgnoreCase(IConstants.VIDEO_GALLARY))
+						fileVO.setPath(startingRecord[2].toString());
+					else
+						fileVO.setPath(IConstants.UPLOADED_FILES + "/"
+								+ startingRecord[1].toString());
+
+					fileVO.setTitle(startingRecord[3] != null ? WordUtils
+							.capitalize(startingRecord[3].toString()) : "");
+
+				}
+				fileVO.setGallaryId((Long) gallary[0]);
+				fileVO.setSizeOfGallary((long) (fileGallaryDAO
+						.getAllRecordInGallary((Long) gallary[0]).size()));
+				fileVO.setGallaryName(gallary[1] != null ? WordUtils
+						.capitalize(gallary[1].toString()) : "");
+				fileVO.setGallaryDescription(gallary[2] != null ? WordUtils
+						.capitalize(gallary[2].toString()) : "");
+				fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3]
+						.toString() : "");
+				fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4]
+						.toString() : "");
+				retValue.add(fileVO);
+			}
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+
+	public List<SelectOptionVO> getAllPartysNames() {
+		try {
 			log.debug("Entered into getAllPartysNames() Method");
-			
+
 			List<SelectOptionVO> partySelectList = null;
-			List<Object[]> list =partyDAO.findAllPartyNames();
-			
-			if(list != null && list.size() > 0)
-			{
+			List<Object[]> list = partyDAO.findAllPartyNames();
+
+			if (list != null && list.size() > 0) {
 				partySelectList = new ArrayList<SelectOptionVO>(0);
 				SelectOptionVO selectOptionVO = null;
-				for(Object[] params : list)
-				{
+				for (Object[] params : list) {
 					selectOptionVO = new SelectOptionVO();
-					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setId((Long) params[0]);
 					selectOptionVO.setName(params[2].toString());
 					partySelectList.add(selectOptionVO);
 				}
 			}
 			return partySelectList;
-		}catch (Exception e) {
-			log.error("Exception Occured in  getAllPartysNames() method - "+e);
+		} catch (Exception e) {
+			log
+					.error("Exception Occured in  getAllPartysNames() method - "
+							+ e);
 			return null;
 		}
 	}
 
-	//added
-	public ResultStatus saveDescription(GallaryVO gallaryVO)
-	{
+	// added
+	public ResultStatus saveDescription(GallaryVO gallaryVO) {
 		log.debug("Entered into saveDescription() Method");
 		Long orderNo;
-		partyProfileDescription = new PartyProfileDescription() ;
+		partyProfileDescription = new PartyProfileDescription();
 		ResultStatus resultStatus = new ResultStatus();
-		try{
-			List<Object> results =partyProfileDescriptionDAO.getMaxOrderNo(gallaryVO.getCandidateId());
-			
-			orderNo = results.get(0) == null ? 0l : (Long)results.get(0);
+		try {
+			List<Object> results = partyProfileDescriptionDAO
+					.getMaxOrderNo(gallaryVO.getCandidateId());
+
+			orderNo = results.get(0) == null ? 0l : (Long) results.get(0);
 			orderNo = orderNo + 1;
 			partyProfileDescription.setDescription(gallaryVO.getDescription());
 			partyProfileDescription.setOrderNo(orderNo);
-			partyProfileDescription.setParty(partyDAO.get(gallaryVO.getCandidateId()));
+			partyProfileDescription.setParty(partyDAO.get(gallaryVO
+					.getCandidateId()));
 			partyProfileDescriptionDAO.save(partyProfileDescription);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			 log.error("Exception Occured in saveDescription() method - "+e);
+			log.error("Exception Occured in saveDescription() method - " + e);
 			return resultStatus;
 		}
 	}
-	
-	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
-	{   Gallary gallary = null;
-	    PartyGallery partyGallery = new PartyGallery();
+
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,
+			String createOrUpdate) {
+		Gallary gallary = null;
+		PartyGallery partyGallery = new PartyGallery();
 		ResultStatus resultStatus = new ResultStatus();
-		try{
-			if(createOrUpdate.trim().equalsIgnoreCase("Update") && gallaryVO.getGallaryId()!=null)
-				gallary = gallaryDAO.get( gallaryVO.getGallaryId());
+		try {
+			if (createOrUpdate.trim().equalsIgnoreCase("Update")
+					&& gallaryVO.getGallaryId() != null)
+				gallary = gallaryDAO.get(gallaryVO.getGallaryId());
 			else
-			    gallary = new Gallary();
+				gallary = new Gallary();
 			UserGallary userGallary = null;
 			gallary.setName(gallaryVO.getGallaryName());
 			gallary.setDescription(gallaryVO.getDescription());
-			if(createOrUpdate.trim().equalsIgnoreCase("Create"))
-			{
-			    gallary.setContentType((ContentType)contentTypeDAO.getContentTypeByType(gallaryVO.getContentType()));
-			    gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-			    gallary.setIsDelete(IConstants.FALSE);
+			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
+				gallary.setContentType((ContentType) contentTypeDAO
+						.getContentTypeByType(gallaryVO.getContentType()));
+				gallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+				gallary.setIsDelete(IConstants.FALSE);
 			}
 			gallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-			gallary.setIsPrivate(gallaryVO.getVisibility());	
-			
+			gallary.setIsPrivate(gallaryVO.getVisibility());
+
 			gallary = gallaryDAO.save(gallary);
 			partyGallery.setIsDelete(IConstants.FALSE);
 			partyGallery.setIsPrivate(gallaryVO.getVisibility());
 			partyGallery.setParty(partyDAO.get(gallaryVO.getCandidateId()));
 			partyGallery.setGallery(gallary);
-			partyGallery.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-			partyGallery.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-			partyGallery=partyGalleryDAO.save(partyGallery);
-			if(createOrUpdate.trim().equalsIgnoreCase("Create")) 
-			{	
-			userGallary = new UserGallary();
-			userGallary.setGallary(gallary);
-			userGallary.setRegistration(registrationDAO.get(gallaryVO.getUserId()));
-			userGallaryDAO.save(userGallary);
+			partyGallery
+					.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			partyGallery
+					.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			partyGallery = partyGalleryDAO.save(partyGallery);
+			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
+				userGallary = new UserGallary();
+				userGallary.setGallary(gallary);
+				userGallary.setRegistration(registrationDAO.get(gallaryVO
+						.getUserId()));
+				userGallaryDAO.save(userGallary);
 			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
 		}
 	}
-	
-	
-	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,String contentType)
-	{
-		try{
+
+	public List<SelectOptionVO> getPartyGallarySelectList(Long partyId,
+			String contentType) {
+		try {
 			log.debug("Entered into getCandidateGallarySelectList() Method");
-			
+
 			List<SelectOptionVO> gallarySelectList = null;
-			List<Object[]> list = partyGalleryDAO.getGallariesByPartyId(partyId,contentType);
-			
-			if(list != null && list.size() > 0)
-			{
+			List<Object[]> list = partyGalleryDAO.getGallariesByPartyId(
+					partyId, contentType);
+
+			if (list != null && list.size() > 0) {
 				gallarySelectList = new ArrayList<SelectOptionVO>(0);
 				SelectOptionVO selectOptionVO = null;
-				for(Object[] params : list)
-				{
+				for (Object[] params : list) {
 					selectOptionVO = new SelectOptionVO();
-					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setId((Long) params[0]);
 					selectOptionVO.setName(params[1].toString());
 					gallarySelectList.add(selectOptionVO);
 				}
 			}
 			return gallarySelectList;
-		}catch (Exception e) {
-			log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+		} catch (Exception e) {
+			log
+					.error("Exception Occured in getCandidateGallarySelectList() method - "
+							+ e);
 			return null;
 		}
 	}
-	
-	public List<FileVO> getElectionType()
-	{
-		
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-			try{
-				List<ElectionType> electionType = electionTypeDAO.getAll();
-				for(ElectionType result:electionType)
-				{
-					FileVO fileVO = new FileVO();
-					fileVO.setCandidateId(result.getElectionTypeId());
-					fileVO.setFile(result.getElectionType());
-					retValue.add(fileVO);
-				 }
-				 
-				return retValue;
-				}
-				catch(Exception e){
-					e.printStackTrace();
-					return retValue;
-				}
+
+	public List<FileVO> getElectionType() {
+
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+			List<ElectionType> electionType = electionTypeDAO.getAll();
+			for (ElectionType result : electionType) {
+				FileVO fileVO = new FileVO();
+				fileVO.setCandidateId(result.getElectionTypeId());
+				fileVO.setFile(result.getElectionType());
+				retValue.add(fileVO);
+			}
+
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
+		}
 	}
-	
+
+	public List<FileVO> getPartyManifestoInfo(long partyId) {
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+         List<Object[]> results=partyManifestoDAO.getPartyManifestoInfo(partyId);
+         for (Object[] objects : results) {
+        	 FileVO fileVO = new FileVO();
+        	 fileVO.setFile(objects[0].toString());
+        	 fileVO.setGallaryName(objects[1].toString());
+        	 fileVO.setTitle(objects[2].toString());
+        	 fileVO.setDescription(objects[3].toString());
+        	 fileVO.setFileDate(objects[4].toString());
+        	 fileVO.setIds((Long)objects[5]);
+        	 fileVO.setFileName1(objects[6].toString());
+        	 fileVO.setPath(objects[7].toString());
+        	 fileVO.setProblem(objects[8].toString());
+        	 fileVO.setLanguage(objects[9].toString());
+        	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[0].toString());
+		}
+         
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
+
+		}
+
+	}
 }
