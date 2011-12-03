@@ -228,6 +228,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
+				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>
 			</list>
 		</property>
 	</bean>
@@ -1241,5 +1242,7 @@
 	<bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="partyManifestoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifestoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
