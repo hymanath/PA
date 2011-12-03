@@ -683,7 +683,7 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-   <bean id="partyManifesto" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifesto">
+   <bean id="partyManifestoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifestoDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
