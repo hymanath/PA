@@ -25,6 +25,7 @@ public class PartyManifesto extends BaseModel implements java.io.Serializable {
 	private Party party;
 	private File file;
 	private Election election;
+	private State state;
 
 	/** default constructor */
 	public PartyManifesto() {
@@ -33,11 +34,12 @@ public class PartyManifesto extends BaseModel implements java.io.Serializable {
 
 	/** full constructor */
 	public PartyManifesto(Long partyManifestoId, Party party, File file,
-			Election election) {
+			Election election, State state) {
 		this.partyManifestoId = partyManifestoId;
 		this.party = party;
 		this.file = file;
 		this.election = election;
+		this.state = state;
 	}
 
 	@Id
@@ -85,6 +87,18 @@ public class PartyManifesto extends BaseModel implements java.io.Serializable {
 
 	public void setElection(Election election) {
 		this.election = election;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }
