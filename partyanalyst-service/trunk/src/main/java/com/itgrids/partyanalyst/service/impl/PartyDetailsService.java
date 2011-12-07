@@ -681,7 +681,8 @@ public class PartyDetailsService implements IPartyDetailsService {
         	 fileVO.setPath(objects[7].toString());
         	 fileVO.setProblem(objects[8].toString());
         	 fileVO.setLanguage(objects[9].toString());
-        	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[0].toString());
+        	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[6].toString());
+        	 retValue.add(fileVO);
 		}
          
 			return retValue;
