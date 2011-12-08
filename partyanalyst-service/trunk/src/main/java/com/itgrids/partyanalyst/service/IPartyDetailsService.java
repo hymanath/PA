@@ -41,4 +41,6 @@ public interface IPartyDetailsService {
 	public List<FileVO> getElectionType();
 	
 	public List<FileVO> getPartyManifestoInfo(long partyId);
+	
+	public ResultStatus uploadPartyManifesto(FileVO fileVO);
 }
