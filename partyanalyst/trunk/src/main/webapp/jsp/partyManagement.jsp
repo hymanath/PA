@@ -170,8 +170,8 @@ h3 {
 .tdWidth1 {           
   color:#4B74C6;
   font-weight:bold;
-  width:181px;
-  
+  width:162px;
+  text-align:left;
 }
 .tdWidth2 {           
   font-weight:bold;
@@ -184,6 +184,7 @@ h3 {
 .selectWidthPadd{
 padding-left:0px;
  width:175px;
+ text-align:left;
 }
 .paddingCss {
 padding-left:49px;
@@ -332,7 +333,7 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			else if(jsObj.task == "getElectionType")
 			{ 
 			   clearOptionsListForSelectElmtId("electionType");
-               buildResults(myResults,"electionType");
+               buildResultsForElectType(myResults);
 			}
 			else if(jsObj.task == "getStates")
 			{ 
@@ -405,6 +406,10 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{ 
                showPhotoUpdateDetails(myResults);
 			}
+			else if(jsObj.task == "getAssmblParlElecYears")
+			{ 
+               createListData('assmblParlElecYearsSelect',myResults);
+			}
      	}
 		catch(e)
 		{   
@@ -441,6 +446,7 @@ function createListData(elmtId,optionsList)
 			elmt.add(option); // IE only
 		}
 	}
+	 if(elmtId != 'assmblParlElecYearsSelect')
      document.getElementById('gallarySelectId').value = gGallaryId;
 }
 
@@ -1230,6 +1236,35 @@ function buildResults(results,divId){
 	  }
  
 }
+function buildResultsForElectType(results){
+
+  var elmt = document.getElementById('electionType'); 
+  var option1 = document.createElement('option');	
+      option1.value='0';
+	  option1.text='Select Election Type';	
+	  try
+		{
+			elmt.add(option1,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option1); // IE only
+		}
+  for(var i=0 ;i<2 ;i++)
+	{
+	  var option = document.createElement('option');	
+      option.value=results[i].candidateId;
+	  option.text=results[i].file;		
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+    }
+}
  function getAllDetails(id,task,areaType,constId)
    {
         var jsObj =
@@ -1348,6 +1383,81 @@ function clearAllElmts(scopeId,value){
  document.getElementById("uploadNewsDiv").innerHTML = str;
  getScopes();
 }
+function buildAssmblParlElecYears(electionType)
+{ 
+     var str ='';
+		 str +='<table>';
+		 str +='  <tr>';
+		 str +='	   <td style="width:134px;font-weight:bold;color:#4b74c6;text-align:left;">Election Year<font class="requiredFont">*</font></td>';
+		 str +='	   <td><select id="assmblParlElecYearsSelect" style="width:175px;text-align:left;" name="electionId"/></td>';
+		 str +='  </tr>';
+		 str +='</table>';
+		 document.getElementById("assmblParlElecYears").innerHTML = str; 
+		 getAssmblParlElecYears(electionType);
+}
+function getAssmblParlElecYears(electionType)
+{
+    var stateId = "";
+	if(document.getElementById("stateDiv") != null)
+	{
+	  var stateEle = document.getElementById("stateDiv");
+	  stateId = stateEle.options[stateEle.selectedIndex].value;
+	}
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			task:"getAssmblParlElecYears",
+			electionType:electionType,
+			stateId:stateId
+		};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "getElectionIdsAndYears.action?"+rparam;						
+	 callAjax(jsObj,url);
+}
+function buildStatesForAssParl(type)
+{   
+    document.getElementById("assmblParlElecYears").innerHTML="";
+    var str ='';
+		 str +='<table>';
+		 str +='  <tr>';
+		 str +='	   <td style="width:134px;font-weight:bold;color:#4b74c6;text-align:left;">State<font class="requiredFont">*</font></td>';
+		 str +='	   <td><select id="stateDiv" style="width:175px;text-align:left;" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
+		 str +='  </tr>';
+		 str +='</table>';
+		 document.getElementById("assemblyStates").innerHTML = str;
+		 getStates(); 
+}
+ function getLocationsForPartyManifUpld(id){
+  document.getElementById("assemblyStates").innerHTML = "";
+ if(document.getElementById("assmblParlElecYears") != null)
+   document.getElementById("assmblParlElecYears").innerHTML = "";
+   document.getElementById("parlCounState").innerHTML = "";
+     if(id==1)
+	 {
+	   var str ='';
+		 str +='<table style="padding-left:135px;">';
+		 str +='  <tr>';
+		 str +='	   <td><input type="radio" name="assemblyRadio" id="CountryRadio" checked="checked" onclick="buildParlCountryYears();">Country</input></td>';
+		 str +='	   <td><input type="radio" name="assemblyRadio" id="stateRadio" onclick="buildStatesForAssParl(\'Parliament\');">State</input></td>';
+		 str +='  </tr>';
+		 str +='</table>';
+		 document.getElementById("parlCounState").innerHTML = str;
+	   buildAssmblParlElecYears('Parliament');
+	   
+	 }
+	 if(id==2)
+	 { 
+	    document.getElementById("parlCounState").innerHTML ="";
+        buildStatesForAssParl('Assembly');		 
+	 }
+ }
+ function buildParlCountryYears()
+ {
+    document.getElementById("assemblyStates").innerHTML = "";
+    if(document.getElementById("assmblParlElecYears") != null)
+      document.getElementById("assmblParlElecYears").innerHTML = "";
+    buildAssmblParlElecYears('Parliament');
+ }
 function getLocations(id){
    if(id==0)
   {
@@ -2496,11 +2606,14 @@ function updatePhoto(fileId,fileGallaryId)
 	
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
+	
+	str += '<form name="uploadmanifestoForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadmanifestoForm">';
+	
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload Party Manifesto</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table>';
+	str += '<table align="left" class="paddingCss"><tr><td><div id="partyManifestoErrorMsgDiv"></div></td></tr></table>';
+	str += '<table align="left" width="100%">';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Manifesto Description<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="fileDescription" cols="19" rows="3" name="fileDescription"></textarea></td>';
@@ -2509,16 +2622,33 @@ function updatePhoto(fileId,fileGallaryId)
 	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
-	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Election Type<font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="electionType" name="electionType" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"><option value="0">Select Election Type</option></select></td>';
-    str +='  </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
+	str += '       <td><input type="file" name="userImage" id="fileId" size="25" /></td>';
 	str += '   </tr>';
+	str +='    <tr>';
+    str +='	   <td class="tdWidth1">Election Type<font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="electionType" name="electionType" class="selectWidth" onchange="getLocationsForPartyManifUpld(this.options[this.selectedIndex].value)"><option value="0">Select Election Type</option></select></td>';
+    str +='  </tr>';
 	str += '</table>';
-	str += '<table><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table  align="left" width="100%">';
+    str +='    <tr>';
+    str +='	   <td colspan="2"><div id="parlCounState" /></td>';
+    str +='  </tr>';
+	str += '</table>';
+	str += '<table  align="left" width="100%">';
+    str +='    <tr>';
+    str +='	   <td colspan="2"><div id="assemblyStates" /></td>';
+    str +='  </tr>';
+	str += '</table>';
+	str += '<table  align="left">';
+	str +='    <tr>';
+    str +='	   <td colspan="2"><div id="assmblParlElecYears" /></td>';
+    str +='  </tr>';
+	str += '</table>';
+	str += '<table  align="left" style="padding-left:115px;"><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<input type="hidden" name="partId" value=\''+document.getElementById("partyId").value+'\' />';
+	str += '<input type="hidden" name="time" value=\''+new Date().getTime()+'\' />';
 	str += '</form>';
 	str += '</fieldset>';
 	str +='</div>';
@@ -2527,6 +2657,123 @@ function updatePhoto(fileId,fileGallaryId)
 	document.getElementById("manifestoDiv").innerHTML = str;
 	getElectionType();
 	getLanguage();
+	}
+	function uploadManifesto()
+	{	    
+	  if(validateManifestoUpload())
+	  {
+		var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					showUploadManifestoStatus(uploadResult);				
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('uploadmanifestoForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadPartyManifestoAction.action',uploadHandler);
+	 }
+	else
+		return;
+	 }
+	 function showUploadManifestoStatus(uploadResult)
+	 {
+	    var result = (String)(uploadResult);
+	    var errorDivEle = document.getElementById('partyManifestoErrorMsgDiv');
+	    var str = '';
+
+	    if(result.search('success') != -1)
+	     {
+	 	    str += '<font color="green"><b>Manifesto Uploaded Successfully.</b>';
+	     }
+	    else if(result.search('fail') != -1) 
+	    {
+		   str += '<font color="red"><b>Error Occurred, Try Again.</b>';
+	    }
+	    else
+	    {
+	       str += '<font color="red"><b>'+result+'</b>';
+	    }
+	   errorDivEle.innerHTML = str;
+	 }
+	function validateManifestoUpload()
+	{
+	var fileDesc = document.getElementById('fileDescription').value;
+	var languageEle = document.getElementById('language');
+	var language = languageEle.options[languageEle.selectedIndex].value;
+	var electionTypeEle =  document.getElementById('electionType');
+	var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+	var state ='';
+	var stateChecked = false;
+	if(document.getElementById('stateDiv')!=null)
+	{
+	   var stateEle =  document.getElementById('stateDiv');
+	   state = stateEle.options[stateEle.selectedIndex].value;
+	}
+	if(document.getElementById('stateRadio')!=null)
+	{
+	  stateChecked = document.getElementById('stateRadio').checked;
+	}
+	var fileVal = document.getElementById("fileId").value;
+	
+	var electionId = null;
+	
+	if(document.getElementById("assmblParlElecYearsSelect") != null)
+	{
+	  var electionIdEle = document.getElementById("assmblParlElecYearsSelect");
+	  electionId = electionIdEle.options[electionIdEle.selectedIndex].value;
+	 }
+	
+	var flag = true;
+
+	var errorDivEle = document.getElementById('partyManifestoErrorMsgDiv');
+	var str = '<font color="red">';
+
+	if(fileDesc.length == 0)
+	{
+		str += 'Manifesto Description Required.<br>';
+		flag = false;
+	}
+	if(fileDesc.length > 200)
+	{
+		str += 'Manifesto Description Should not exceed 200 Characters.<br>';
+		flag = false;
+	}
+	if(language == 0)
+	{
+		str += 'Please Select Language.<br>';
+		flag = false;
+	}
+	if(electionType == 0)
+	{
+		str += 'Please Select Election Type.<br>';
+		flag = false;
+	}
+	if(electionType == 2 && state == 0)
+	{
+		str += 'Please Select State.<br>';
+		flag = false;
+	}
+	if(electionType == 1 && stateChecked == true && state == 0)
+	{
+		str += 'Please Select State.<br>';
+		flag = false;
+	}
+	if(electionId != null && electionId == 0)
+	{
+		str += 'Please Select Election Year.<br>';
+		flag = false;
+	}
+	if(fileVal.length == 0)
+	{
+		str += 'File Path Is Required.<br>';
+		flag = false;
+	}	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+
+	return flag;
+	   return true;
 	}
 	function getElectionType()
 	  {
