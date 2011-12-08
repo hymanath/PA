@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -38,6 +40,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
+import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
@@ -65,6 +68,8 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IFileDAO fileDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IPartyManifestoDAO partyManifestoDAO;
+	private IElectionDAO electionDAO;
+	private IStateDAO stateDAO;
 
 	public IPartyManifestoDAO getPartyManifestoDAO() {
 		return partyManifestoDAO;
@@ -232,6 +237,22 @@ public class PartyDetailsService implements IPartyDetailsService {
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}	
+
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
 	}
 
 	public PartyVO getPartyDetails(Long partyId) {
@@ -693,4 +714,40 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 
 	}
+	//to upload party manifesto
+	public ResultStatus uploadPartyManifesto(FileVO fileVO)
+	{
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		 
+		log.debug("Entered into uploadPartyManifesto() method in PartyDetailsService ");
+		File file = new File();
+		file.setFileName(fileVO.getName());
+		file.setFileDate(dateUtilService.getCurrentDateAndTime());
+		file.setFilePath(fileVO.getPath());
+		file.setFileDescription(fileVO.getDescription());
+		file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
+		file.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
+		
+		file = fileDAO.save(file);
+		
+		PartyManifesto partyManifesto = new PartyManifesto();
+		partyManifesto.setFile(file);
+		partyManifesto.setElection(electionDAO.get(fileVO.getElectionId()));
+		partyManifesto.setParty(partyDAO.get(fileVO.getIds()));
+		if(fileVO.getStateId() != null)
+		partyManifesto.setState(stateDAO.get(fileVO.getStateId()));
+		
+		partyManifestoDAO.save(partyManifesto);
+		
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	  }catch (Exception e) {
+		log.error("Exception encountered in uploadPartyManifesto() method in PartyDetailsService, Check log for Details - "+e);
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			
+	 }
+		
+	  return resultStatus;
+  }
 }
