@@ -132,7 +132,7 @@
 			<result type="redirect" name="electionDetailsReportAction">electionDetailsReportAction.action</result>
 			<result type="redirect" name="callCenterAction">callCenterAction.action</result>
 			<result type="chain" name="redirectUrl">${url}</result>
-			<!--<result type="redirect" name="partyManagementAction">PartyManagementAction.action</result>-->
+			<result type="redirect" name="partyManagementAction">partyManagementAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 
@@ -2729,7 +2729,8 @@
         	</result>	
 		</action>
 		<action name="partyManagementAction" class="partyManagementAction">
-		<result>/jsp/partyManagement.jsp</result>
+		<result name="success">/jsp/partyManagement.jsp</result>
+		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=partyManagementAction</result>
 		</action>
 		
 		<action name="partyManageAction" class="partyManagementAction" method="AjaxHandler">
@@ -2754,6 +2755,16 @@
 		<result type="json" name="success">
            		<param name="root">fileVO</param>
 		</result>
+		</action>
+		<action name="getElectionIdsAndYears" class="partyManagementAction" method="getElectionIdsAndYears">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+		</action>
+		<action name="uploadPartyManifestoAction" class="partyManagementAction" method="uploadFiles">			
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>					
 		</action>
 				 		       	
 	</package>
