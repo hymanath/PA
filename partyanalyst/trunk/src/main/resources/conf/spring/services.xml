@@ -940,6 +940,11 @@
 		<property name="messageToCandidateDAO" ref="messageToCandidateDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="partyManifestoDAO" ref="partyManifestoDAO" />
+		<property name="fileTypeDAO" ref="fileTypeDAO" />
+		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="fileDAO" ref="fileDAO" />
+		<property name="stateDAO" ref="stateDAO" />
 	</bean>
 </beans>		
 		
