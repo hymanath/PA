@@ -45,7 +45,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long sourceId;
 	private Long languegeId;
 	private String language;
-	
+	private Long electionId;
+	private Long stateId;
 	
 	public String getLanguage() {
 		return language;
@@ -413,6 +414,22 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setFileDate(String fileDate) {
 		this.fileDate = fileDate;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
     
 
