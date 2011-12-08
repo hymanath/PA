@@ -2,14 +2,17 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -18,10 +21,13 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -36,6 +42,7 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private HttpServletResponse response;
 	private HttpSession session;
 	private IPartyDetailsService partyDetailsService;
+	private IStaticDataService staticDataService;
 	private GallaryVO gallaryVO;
 	private ResultStatus result;
 	private List<GallaryVO> gallaryList;
@@ -56,6 +63,8 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private File userImage;
 	private InputStream inputStream;
 	private ICandidateDetailsService candidateDetailsService;
+	private Long partId;
+	private Long electionId;
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -261,17 +270,48 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		jObj = obj;
 	}
 	
- public String execute()
+    public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}	
+
+	public Long getPartId() {
+		return partId;
+	}
+
+	public void setPartId(Long partId) {
+		this.partId = partId;
+	}
+	
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+public String execute()
  {
+	session = request.getSession();
+	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+	if (registrationVO != null) 
+	{
 	 partyList= partyDetailsService.getAllPartysNames();
-	 return SUCCESS;
+	 return Action.SUCCESS;
+	}
+	else
+		return IConstants.NOT_LOGGED_IN;
 	 
  }
 
  @Override
  public void setServletContext(ServletContext context) {
  	// TODO Auto-generated method stub
- 	context=context;
+ 	this.context=context;
  }
  public String AjaxHandler()
 	{
@@ -339,4 +379,80 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		}
 		return Action.SUCCESS;
 } 
+  public String getElectionIdsAndYears()
+  {
+	  Long stateId = null;
+	  String electionType = null;
+	  try {
+			jObj = new JSONObject(getTask());
+			
+				electionType = jObj.getString("electionType");
+			 if(jObj.getString("stateId") != null && jObj.getString("stateId").trim().length()>0)
+				stateId = jObj.getLong("stateId");
+			
+			selectOptionList = staticDataService.electionYearsForstateAndElectionType(stateId,electionType);
+	  } 
+	  catch (ParseException e) {
+			e.printStackTrace();
+		}
+	  return Action.SUCCESS;
+  }
+  @SuppressWarnings("deprecation")
+public String uploadFiles()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+		String fileName = null;
+		String filePath = null;
+		FileVO fileVO = new FileVO();
+		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		
+		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+			filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
+		else
+			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+		
+		try 
+		{
+			String fileType = null;
+			Long systime = System.currentTimeMillis();
+			Random random = new Random();
+			if(userImageContentType.equalsIgnoreCase("text/plain"))
+			{
+				fileType = userImageContentType.substring(0,userImageContentType.indexOf("/"));
+				fileName = systime.toString()+random.nextInt(10000000)+"."+fileType;
+			}
+			else
+			{
+				fileType = userImageContentType.substring(userImageContentType.indexOf("/")+1,userImageContentType.length());
+				fileName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+			}
+			if(fileType.equals("pjpeg"))
+				fileType = "jpeg";
+			fileVO.setName(fileName);
+			fileVO.setDescription(getFileDescription());
+			fileVO.setContentType(fileType);
+			fileVO.setPath(filePath+pathSeperator+fileName);
+			fileVO.setLanguegeId(getLanguage());
+			fileVO.setIds(getPartId());//setting party id
+			fileVO.setElectionId(getElectionId());
+			fileVO.setStateId(getLocationValue());
+			/* Here We are saving the to uploaded_files folder */
+			File fileToCreate = new File(filePath, fileName);
+			FileUtils.copyFile(userImage, fileToCreate);
+			
+			result = partyDetailsService.uploadPartyManifesto(fileVO);
+			
+			if(result.getResultCode() == ResultCodeMapper.SUCCESS)
+				inputStream = new StringBufferInputStream(SUCCESS);
+			else
+				inputStream = new StringBufferInputStream("fail");
+						
+		}
+		catch (Exception e) {
+			inputStream = new StringBufferInputStream("fail");
+	}
+		return Action.SUCCESS;
+	}
 }
