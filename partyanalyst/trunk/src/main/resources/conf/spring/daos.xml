@@ -680,11 +680,19 @@
 
 	
     <bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
-	<property name="sessionFactory" ref="sessionFactory" />
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-   <bean id="partyManifestoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifestoDAO">
-	<property name="sessionFactory" ref="sessionFactory" />
+    <bean id="partyManifestoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifestoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="panchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="panchayatHamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 </beans>		
