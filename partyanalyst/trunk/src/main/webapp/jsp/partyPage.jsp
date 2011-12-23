@@ -239,7 +239,7 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 		
 			 <!--ELECTION PROFILE SECTION START-->
 
-              <!-- <div class="pm-inner-cont-sec" id="electionInfo"></div> --> 
+               <div class="pm-inner-cont-sec" id="partyManifestoDiv"></div>
 
 			  <!--ELECTION PROFILE SECTION END--> 
 
@@ -350,217 +350,6 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
    var arraySize =0;
    var currentSize=0;
    var queryTypeChecked='Public';
-/*function sendMessage()
-{
-  var name = document.getElementById("name").value;
-  var stateSelect=document.getElementById("stateSelect").value;
-  var constituencySelect=document.getElementById("constituencySelect").value;
-  var message=document.getElementById("message").value;
-    document.getElementById('galErrorMsgDivId').innerHTML = '';
-    document.getElementById('fileUploadErrorMsgDivId').innerHTML = '';
-  var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
-
-	var str = '<font color="red">';
-
-	if(name.length == 0)
-	{
-		str += 'Name is Required<br>';
-		eFlag = true;
-	}
-	
-	if(stateSelect.length == 0)
-	{
-		str += 'State is Required<br>';
-		eFlag = true;
-	}
-	if(constituencySelect == 0)
-	{
-		str += 'Constituency is Required<br>';
-		eFlag = true;
-	}
-	if(message.length == 0)
-	{
-		str += 'Message is Required<br>';
-		eFlag = true;
-	}
-	
-    str += '</font>';
-	errorDivEle.innerHTML = str;
-	
-	if(eFlag)
-		return;
-	var jsObj =
-		{ 
-		    candidateId : candidateId,
-            name : name,
-			stateSelect : stateSelect,
-			constituencySelect : constituencySelect,
-			message : message,
-		   	task : "saveMessage"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
-	callAjax(jsObj,url);	
-
-}*/
-/*function showAssemblyData()
- {
-   var str='';
-   
-   str+='  <div class="pr-sub-fields-sec">';
-   str+='  <h1 class="pr-title">send a message to ${candidateVO.candidateName} <span class="or-down-arrow">';
-   str+=' 	  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
-   str += '<div id="galErrorMsgDivId" style = "width:190px;"></div>';
-   str += '<div id="fileUploadErrorMsgDivId" style = "width:190px;"></div>';	  
-   str+=' <table>';
-   str += '<tr>';
-   str+='<td style = "padding-top:9px;">Name <font class="requiredFont"> * </font></td>';
-   str+='<td> <input type = "text" id="name" size = "20" class="sm-text-fields"> </td>';
-   str+='</tr>';
-   str+='   <tr>';
-   str+='     <td>State</td>';
-   str+='     <td style="padding-top: 5px;">';
-   str+='       <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style = "width:192px;background-color:#EBE8E8; border:1px solid #ffffff;"/>';
-   str+='     </td>';
-   str+='   </tr>';
-   str+='   <tr>';
-   str+='     <td>Constituency <font class="requiredFont"> * </font></td>';
-   str+='     <td style="padding-top: 5px;">';
-   str+='       <select id="constituencySelect" style = "width:192px; background-color:#EBE8E8; border:1px solid #ffffff; "/>';
-   str+='     </td>';
-   str+='   </tr>';
-   str+=' <tr>  <td >Message <font class="requiredFont"> * </font></td>';
-   str+=' <td style="padding-top: 5px;"> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
-   str+=' border: 1px solid #ffffff;';
-   str+=' color: #000000; width: 181px;height: 85px;';
-   str+=' font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;';
-   str+=' padding: 0px 0 0px 0px;"></textarea></td>';
-   str+= '</tr>';
-   str += '<tr>';
-   str += '<td></td><td style="padding-top: 5px;"> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
-   str += '</tr>';
-   str+=' <table>';
-   document.getElementById("constituencySelectDiv").innerHTML=str;
-   getStates();
-   getAllConstituenciesInStateByType(2,1,"constituency");
- }*/
- 
- /*function getAllConstituenciesInStateByType(electionType, stateId, element)
- {
-    var timeST = new Date().getTime();
-	var jsObj=
-	{		
-            time : timeST,	
-			electionTypeId: electionType,
-			stateId: stateId,
-			task: "getConstituencies",
-			elmtId: element 	
-	}
-
-   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-   var url = "getAllConstituenciesInState.action?"+rparam;						
-   callAjax(jsObj,url);
- }
-function getStates()
- {
-  var timeST = new Date().getTime();
-  var jsObj =
-		{ 
-            time : timeST,
-			task:"getStates"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
- }*/
- 
-/* function buildResults(results,divId)
- {
-  var elmt = document.getElementById(divId);
-	for(var i in results)
-	  {
-		var option = document.createElement('option');
-		
-		  option.value=results[i].ids;
-		  option.text=results[i].names;
-		  
-		try
-		 {
-			elmt.add(option,null); // standards compliant
-		 }
-		catch(ex)
-		 {
-			elmt.add(option); // IE only
-		 }
-	 }
- }
- 
- function showResults(results,divId)
- {
-  var elmt = document.getElementById(divId);
-
-   if(results.length<=0 && divId=="constituencySelect")
-     {
-   	   var option1 = document.createElement('option');
-		option1.value= 0;
-		option1.text= "Select Constituency";
-		 try
-		{
-			elmt.add(option1,null); // standards compliant
-		}
-		catch(ex)
-		{
-			elmt.add(option1); // IE only
-		}
-	  }
-	for(var i in results)
-	  {
-		var option = document.createElement('option');
-		  option.value=results[i].id;
-		  option.text=results[i].name;
-		try
-		 {
-			elmt.add(option,null); // standards compliant
-		 }
-		catch(ex)
-		 {
-			elmt.add(option); // IE only
-		 }
-	 }
- }
- 
- function clearAll(elmtId)
-   {
-	var elmt = document.getElementById(elmtId);
-}
-function showStatus(myResult)  
-{
-
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
-	var str = '';
-
-	if(myResult.resultCode == 0)
-	{
-		cleardescriptionFields();
-		str += '<font color="green"><b>Message Send Successfully.</b>';
-	}
-	else if(myResult.resultCode == 1) 
-	{
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-	}
-	
-	errorDivEle.innerHTML = str;
-}
-function cleardescriptionFields()
-{
-	document.getElementById('name').value = '';
-    document.getElementById('message').value = '';
-    document.getElementById('constituencySelect').value = 0;
-}
-*/
 function onYouTubePlayerReady(playerId) 
 { 
 	ytplayer = document.getElementById("video_overlay"); 
@@ -579,19 +368,6 @@ function callAjax(jsObj,url)
 			{
                showFirstFourNewsRecords(myResults);
 			}
-		/*else if(jsObj.task == "getStates")
-			  {    
-				buildResults(myResults,"stateSelect");
-			  }
-	   else if(jsObj.task == "getConstituencies")
-			 {  
-				clearOptionsListForSelectElmtId("constituencySelect");
-				showResults(myResults,"constituencySelect");
-			 }
-	    else if(jsObj.task == "saveMessage") 
-			 {   
-				showStatus(myResults);
-			 }	*/	 
 		 else if(jsObj.task == "getFileByFileId")
 			{
                showNews(myResults,jsObj.arrayType);
@@ -656,6 +432,19 @@ function callAjax(jsObj,url)
             {
 			   showParliamentResultByStatewise(myResults);
 			}	
+		else if(jsObj.task =="getPartyManifesto")
+			{
+				builImagesDiv(myResults);
+			}
+		else if(jsObj.task =="getPartyManifestoDetails")
+			{
+				buildPartyManifesoGallary(myResults); 
+			}
+        else if(jsObj.task == "getSelectedStateDetailstails")
+			{ 
+			   clearOptionsListForSelectElmtId("stateDiv");
+               buildResults(myResults,"stateDiv");
+			}			
 		}
 		catch(e)
 		{   
@@ -692,34 +481,6 @@ function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
-/*function validateEmailField()
-	{
-		document.getElementById("alertMsg").innerHTML = '';
-		var emailIdVal = document.getElementById("emailId").value;
-		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-      if(emailIdVal !='' && emailIdVal!='your email'){
-          
-		  if(!emailIdVal.match(emailExp)){
-
-				document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
-				return;
-		  }
-	  }
-	 else {
-		document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
-		return;
-	 }
-
-	var jsObj = {
-		          emailId : emailIdVal,
-				  candidateId :candidateId,
-                   task:"setEmailAlertForUser"
-	             };
-    
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}*/
 function photoGallaryPopUp(){
 	
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
@@ -901,19 +662,6 @@ function fireEvent(obj,evt){
 	}
 }
 
-/*function getFirstFourNewsRecords(){
-   var jsObj =
-		{   
-		    time : timeST,
-			candidateId:candidateId,
-			
-			task:"getFirstFourNewsRecordsToDisplay"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}*/
 function showFirstFourNewsRecords(results)
  { 
   
@@ -978,33 +726,6 @@ function showFirstFourNewsRecords(results)
  function getTotalNews(viewType)
  {  
     var queryType='Public';
-  /* if(document.getElementById("candidateVisibility")!=null)
-    { 
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
-		 {
-		  queryType='Public';
-		  queryTypeChecked='Public';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
-		 {
-		  queryType='Private';
-		  queryTypeChecked='Private';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
-		  {
-		   queryType='All';
-		   queryTypeChecked='All';
-		  }
-	}*/
    var jsObj =
 		{   
 		    time : timeST,
@@ -1452,55 +1173,15 @@ function openFile(filePath,fileType){
 window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 }
 
-/*function buildCandidateElectionInfo()
-{
-	
-	var wFlag = true;
-	var lFlag = true;
-	var str ='';
-	var electionInfoElmt = document.getElementById("electionInfo");
-	
-	str+='<h1 class="inc-title">Election Results</h1>';
-
-	str+='<table><tr><td>';
-	str+='      <table border="0" cellpadding="0" cellspacing="0">';
-	str+='				<tr>';
-	str+='					<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-	str+='					<td><div id="statePageHeading"><span id="stateNameSpan"><a href="javascript:{}" onclick="getParliamentResult()" style="color: #1C4B7A;">View Parliament Election Results</a></span></div></td>';
-	str+='					<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>';
-	str+='				</tr>';
-	str+='			</table> ';
-	str+='</td></tr><tr><td>';
-	str+='      <table border="0" cellpadding="0" cellspacing="0">';
-	str+='				<tr>';
-	str+='					<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-	str+='					<td><div id="statePageHeading"><span id="stateNameSpan"><a href="javascript:{}" onclick="getTest1()" style="color: #1C4B7A;">View Assembly Election Results</a></span></div></td>';
-	str+='					<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>';
-	str+='				</tr>';
-	str+='			</table> ';
-	str += '</td></tr>';
-    str +='</table>';
-    
-	electionInfoElmt.innerHTML = str;
-}
-*/
 function partyInfo()
 {
 	var candidateInfoElmt = document.getElementById("candidateInfo");
     var str='';
 	
     str+='<div class="ptd-sec">';
-	str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/party_flags/${partyVO.partyFlag}"><span class="tc-tf pa-fi">';
-	
-
-	//<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
-	//	str += 'MP <br />';
-	//</s:if>
-	//str+='<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
-	//str+='${candidateElectionDetails[0].partyName} PARTY';
+	str+='<img height="175" width="180" onerror="setDefaultImage(this)" src="images/party_flags/${partyVO.partyFlag}"><span class="tc-tf pa-fi">';
     str+='</div>';
-	str+='<div class="clear"></div>';
-     	
+	str+='<div class="clear"></div>'; 	
 	candidateInfoElmt.innerHTML = str;
 }
 
@@ -1728,35 +1409,6 @@ function getNewsBySource(source)
   deleteAllElements();
    timeST = new Date().getTime();
    var queryType='Public';
-   /*
-   if(document.getElementById("candidateVisibility")!=null)
-    { 
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
-		 {
-		  queryType='Public';
-		  queryTypeChecked='Public';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
-		 {
-		  queryType='Private';
-		  queryTypeChecked='Private';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
-		  {
-		   queryType='All';
-		   queryTypeChecked='All';
-		  }
-	}
-	*/
    var jsObj =
 		{   
 		    time : timeST,
@@ -1780,35 +1432,6 @@ function getNewsByLanguage(language)
   deleteAllElements();
    timeST = new Date().getTime();
    var queryType='Public';
-   /*
-   if(document.getElementById("candidateVisibility")!=null)
-    { 
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
-		 {
-		  queryType='Public';
-		  queryTypeChecked='Public';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
-		 {
-		  queryType='Private';
-		  queryTypeChecked='Private';
-		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
-		  {
-		   queryType='All';
-		   queryTypeChecked='All';
-		  }
-	}
-	*/
    var jsObj =
 		{   
 		    time : timeST,
@@ -1825,42 +1448,7 @@ function getNewsByLanguage(language)
 	var url = "candidateNewsGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url); 
   }  
- /* function getParliamentResult()
-     {
-	  $.fx.speeds._default = 900;
-      $("#showParliamentResultDiv").dialog({ stack: false,
-                                show: "clip",
-			                    hide: "clip",
-							    height: 'auto',
-								width:600,
-								position:[130,130],								
-								modal: true,
-								title:'<font color="Navy"><b>${partyVO.partyLongName}</b></font>',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	$("#showParliamentResultDiv").dialog();
-   
  
-   var str ='';
-    str+='<fieldset class="imgFieldset">';
-	str+='${partyVO.partyLongName} Parliament Election Result Statewise';
-	str +='<br/>';
-    str+='  <table style="padding-top:10px"><tr><td>';
-	str+='Select State';
-	str +='</td><td>';
-    str+=' <select id="stateSelect"  style = "width:192px;background-color:#EBE8E8; border:1px solid #ffffff;"><option value="0">Select</option></select>';
-	str +='</td> <td> <input type = "button" value="Submit" onclick="getResult()">';
-    str+=' </td></tr><tr> ';
-    str+='<td> ';
-	str+='Alliance Parties ';
-	str+='</td><td>';
-	str+='<input type="checkbox" name="alliances" value="true" id="alliances"> Include in the Report';
-    str+=' </td></tr> </table>';
-    str+='</fieldset>';
-    document.getElementById("showParliamentResultDiv").innerHTML=str;
-    getStates();
-     }*/
-	 
 	function getResult()
 	  {
 	  var partyId =  ${partyId};
@@ -1885,25 +1473,257 @@ function getNewsByLanguage(language)
      {
 	 
 	 }	
-//showAssemblyData();
+	function getPartyManifesto(partyId)
+       {
+	   	var jsObj ={
+				partyId:partyId,
+				task:"getPartyManifesto"
+
+	           };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+      }
+	  
+	  function builImagesDiv(results)
+	  {     
+	        var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
+			var str ='';
+			
+			var str ='';
+			str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifesto</span></h3>';
+			str += '<fieldset class="imgFieldset">';
+			str +='<table width=80%>';
+		    str +='<tr><td>';
+			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()"> Country</td><td>';
+			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope"onclick="relatedState()"> State</td>';
+			str +='<td><div id="selectStatediv"style="display:none"><select id="stateDiv" name="stateDiv" class="selectWidth"/></div></td></tr>';
+			str +='</table>';
+			str+='<div id="content">';
+			if(results!=null){
+			str+='<table>'
+			str +='<tr>';
+			if(results[0]!=null){
+			str += '<td>';
+			str += '<table>';
+			str +='<tr><td>';
+			if(results[0].title=='Assembly'){
+	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+             }
+            else
+             {
+			 str += results[0].title+''+results[0].fileDate;
+			 }			
+			str +='</td></tr><tr><td>';
+			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+			str +='</td></tr><tr><td>';
+			str +=''+results[0].problem+'';
+			str +='</td></tr>';
+			str += '</table>';
+			str +='</td>';
+			}
+			if(results[1]!=null){
+			str += '<td>';
+			str += '<table>';
+			str +='<tr><td>';
+	        if(results[0].title=='Assembly'){
+	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+             }
+            else
+             {
+			 str += results[0].title+''+results[0].fileDate;
+			 }			
+			str +='</td></tr><tr><td>';
+			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].pathOfFile+'\')}"/>';
+			str +='</td></tr><tr><td>';
+			str +=''+results[0].problem+'';
+			str +='</td></tr>';
+			str += '</table>';
+			str +='</td>';
+			}
+			if(results[2]!=null){
+			str += '<td>';
+			str += '<table>';
+			str +='<tr><td>';
+	       if(results[0].title=='Assembly'){
+	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+             }
+            else
+             {
+			 str += results[0].title+''+results[0].fileDate;
+			 }			
+			str +='</td></tr><tr><td>';
+			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].pathOfFile+'\')}"/>';
+			str +='</td></tr><tr><td>';
+			str +=''+results[2].problem+'';
+			str +='</td></tr>';
+			str += '</table>';
+			str +='</td>';
+			}
+			str +='</tr>';
+			str +='</table>';
+			}
+			str +='</div>';
+			str+='<div class="more">';
+	        str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
+			str +='</fieldset>';
+			 str+='<div id="buildManifestoGallaryDiv"></div>';
+			partyManifestoDivElmt.innerHTML = str;
+			
+		}
+		function PartyManifestoPopup(){
+	
+	      if(document.getElementById('buildManifestoGallaryDiv') == null)
+		       return;
+           $("#buildManifestoGallaryDiv").dialog({ stack: false,
+							    height: 570,
+								width: 720,
+								position:[130,130],								
+								modal: true,
+								title:'<font color="Navy">${partyVO.partyLongName} Manifesto</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	        $("#buildManifestoGallaryDiv").dialog();
+	        showManifestoGallary();
+	   }
+	   function showManifestoGallary()
+	   {
+	   
+          var jsObj =
+		   {   
+		    time : timeST,
+			partyId:partyId,
+			startRecord:0,
+			maxRecord:20,
+			task:"getPartyManifestoDetails"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+	   }
+	function buildPartyManifesoGallary(results)
+    {
+	var str ='';
+
+		str+='<div id="content" style="width:650px;">';		
+		str += '<fieldset class="imgFieldset">';
+		str +='<table  width="100%" style="margin-top:10px;">';
+		
+	if(results.length<=0)
+	{
+		str+='<b>&nbsp;No Manifesto Found </b>';
+	}
+		for(var i in results)
+		{
+			no_of_imagesPerRow = 3; 
+			j = i;
+
+			if(j++ % no_of_imagesPerRow == 0)
+				str += '<tr style="height:220px;">';
+			
+			str += '<td width="33%" class="imageStyle">';
+			str += '<table class="tableStyle">';
+		
+			str +='<tr><td>';
+			if(results[0].title=='Assembly'){
+	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+             }
+            else
+             {
+			 str += results[0].title+''+results[0].fileDate;
+			 }			
+			str +='</td></tr><tr><td>';
+			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+			str +='</td></tr><tr><td>';
+			str +=''+results[0].problem+'';
+			str +='</td></tr>';
+			
+			str += '</table>';
+			str += '</td>';
+			
+			if(j % no_of_imagesPerRow == 0)
+				str+= '</tr>';
+		
+		}
+		str += ' </table>';
+		str += ' </fieldset>';
+		str+='</div>';
+		document.getElementById("buildManifestoGallaryDiv").innerHTML = str;
+}   
+function relatedState()
+{
+/*
+  var elmt = document.getElementById('selectStatediv');
+  str +='<select id="stateDiv" name="stateDiv" class="selectWidth"/>';
+  elmt.innerHTML = str;*/
+  selectedState();
+}
+function buildResults(results,divId){
+document.getElementById("selectStatediv").style.display = 'block';
+  var elmt = document.getElementById(divId);
+  var option1;
+         if(divId=='stateDiv')
+		    {
+			    option1 = document.createElement('option');
+				option1.value= 0;
+				option1.text= "Select State";
+		    }
+				try
+				{
+					elmt.add(option1,null); // standards compliant
+				}
+				catch(ex)
+				{
+					elmt.add(option1); // IE only
+				}
+				var option = document.createElement('option');
+				for(var i in results)
+			   {
+				
+				if(divId =="stateDiv")
+				  {
+				  option.value=results[i].candidateId;
+				  option.text=results[i].description;
+				  }
+				if(results[i].candidateId!=0)
+				  {
+				try
+				{
+					elmt.add(option,null); // standards compliant
+				}
+				catch(ex)
+				{
+					elmt.add(option); // IE only
+				}
+				}
+			  }
+		 
+}
+function selectedState()
+{
+ var jsObj =
+		   {   
+		    time : timeST,
+			partyId:partyId,
+			task:"getSelectedStateDetailstails"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+
+}
+function getCountry()
+{
+document.getElementById("selectStatediv").style.display = 'none';
+}
 displayProfile();
 partyInfo();
-//buildCandidateElectionInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
+getPartyManifesto(partyId);
 </script>
-
-<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style ">
-<a class="addthis_button_preferred_1"></a>
-<a class="addthis_button_preferred_2"></a>
-<a class="addthis_button_preferred_3"></a>
-<a class="addthis_button_preferred_4"></a>
-<a class="addthis_button_compact"></a>
-<a class="addthis_counter addthis_bubble_style"></a>
-</div>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4ecb734e3289829f"></script>
-<!-- AddThis Button END -->
 
 </body>
 </html>
