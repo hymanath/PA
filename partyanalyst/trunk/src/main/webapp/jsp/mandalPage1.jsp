@@ -505,7 +505,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		revenueInfo += '<div id="revenueVillagesMainDiv">';
 		revenueInfo += '<table>';
 		revenueInfo += '<tr><td>Election Type:</td>';
-		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">';
+		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'village\')" class = "selectWidth">';
 		revenueInfo += '<option value="0">Select </option>';
 		revenueInfo += '<option value="1">Parliament</option>';
 		revenueInfo += '<option value="2">Assembly</option>';
@@ -524,11 +524,43 @@ function getMoreResults(elecYear,elecType,constiId)
 		return revenueInfo;
 	}
 
-	function getElectionYears(id){
+	function buildPanchayatInfoTab(){
+		var panchayatInfo = '';
+		panchayatInfo += '<br>'
+		panchayatInfo += '<div id="div4_panchayat">';
+		panchayatInfo += '<div id="panchayatTable">';
+		panchayatInfo += '</div>';
+		panchayatInfo += '<div id="panchayatMainDiv">';
+		panchayatInfo += '<table>';
+		panchayatInfo += '<tr><td>Election Type:</td>';
+		panchayatInfo += '<td><select id="electionTypeSelectId" onchange = "getElectionYears(this.options[this.selectedIndex].value,\'panchayat\')" class = "selectWidth">';
+		panchayatInfo += '<option value="0">Select </option>';
+		panchayatInfo += '<option value="1">Parliament</option>';
+		panchayatInfo += '<option value="2">Assembly</option>';
+		panchayatInfo += '</select></td>';
+		panchayatInfo += '<td><div id="electionIdSelectDivLabelId"></div></td>';
+		panchayatInfo += '<td><div id="electionIdSelectDivDataId"></div></td>';
+        panchayatInfo += '<td><div id="panchayatAjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+        panchayatInfo += '</tr>';
+		panchayatInfo += '</table>';
+		panchayatInfo += '<br>';
+		panchayatInfo += '<div id="panchayatsInfo"></div>';
+		panchayatInfo += '</div>';
+		panchayatInfo += '</div>';
+		
+		return panchayatInfo;
+	}
+
+	function getElectionYears(id,name){
+		var task;
+		if(name == 'panchayat')
+			task = 'getElectionYearsForPanchayat';
+		else
+			task = 'getElectionYears';
 		var jsObj=
 			{
 					electionTypeId:id,
-					task:"getElectionYears"						
+					task:task			
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -559,6 +591,27 @@ function getMoreResults(elecYear,elecType,constiId)
 			callAjax(rparam,jsObj,url);
 	}
 
+	function getPanchayatInfo(id){
+         var imgElmt = document.getElementById('panchayatAjaxImgDiv');
+		 if(imgElmt.style.display == "none")
+		{
+           imgElmt.style.display = "block";
+		}
+
+		electionId = id;
+		mandalId = ${mandalId};
+		var jsObj=
+			{
+					electionId:id,
+					mandalId:${mandalId},
+					task:"getPanchayatsInfo"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getRevenueVillagesInfoAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
+
 	function getTownshipElectionsInfo(name,townshipId, electionId){
 		var jsObj=
 		{
@@ -566,6 +619,21 @@ function getMoreResults(elecYear,elecType,constiId)
 				townshipId:townshipId,
 				electionId:electionId,
 				task:"getRevenueVillagesElectionInfo"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
+	}
+
+	function getPanchayatElectionsInfo(panchayatName,boothIdStr, electionId)
+	{
+		var jsObj=
+		{
+				villageName : panchayatName,
+				boothIdStr:boothIdStr,
+				electionId:electionId,
+				task:"getPanchayatElectionInfo"						
 		};
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -593,18 +661,29 @@ function getMoreResults(elecYear,elecType,constiId)
 	               success : function( o ) {
 						try {								
 								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
-								
 								if(jsObj.task == "getElectionYears")
 								{								
 									showElectionYearTextBox(resultVO);				
 								}
-								else if(jsObj.task == "getRevenueVillagesInfo")
+								if(jsObj.task == "getElectionYearsForPanchayat")
 								{								
+									showElectionYearTextBoxForPanchayat(resultVO);				
+								}
+								else if(jsObj.task == "getRevenueVillagesInfo")
+								{	
 									showRevenueVillagesInfo(resultVO);				
-								}			
+								}	
+								else if(jsObj.task == "getPanchayatsInfo")
+								{
+									showPanchayatInfo(resultVO);
+								}
 								else if(jsObj.task == "getRevenueVillagesElectionInfo")
 								{								
-									showRevenueVillageElectionInfo(resultVO,jsObj);			
+									showRevenueVillageElectionInfo(resultVO,jsObj);
+								}
+								else if(jsObj.task == "getPanchayatElectionInfo")
+								{
+									showPanchayatElectionInfo(resultVO,jsObj);
 								}
 								else if(jsObj.task == "getAllRevenueVillagesElectionResults")
 								{								
@@ -631,6 +710,26 @@ function getMoreResults(elecYear,elecType,constiId)
 		var elmtData = document.getElementById('electionIdSelectDivData');
 		
 		electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getRevenueVillagesInfo(this.options[this.selectedIndex].value)">';
+		for(var i in resultVO)
+		{			
+			electionYearSelect += '<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>';
+		}
+	
+		electionYearSelect += '</select>';
+
+		if(elmtLabel)
+			elmtLabel.innerHTML='Election Year:';
+		if(elmtData)
+			elmtData.innerHTML=electionYearSelect;
+	}
+
+	function showElectionYearTextBoxForPanchayat(resultVO){
+		
+		var electionYearSelect = '';
+		var elmtLabel = document.getElementById('electionIdSelectDivLabelId');
+		var elmtData = document.getElementById('electionIdSelectDivDataId');
+		
+		electionYearSelect += '<select id="electionYearSelectId" class = "selectWidth" onchange = "getPanchayatInfo(this.options[this.selectedIndex].value)">';
 		for(var i in resultVO)
 		{			
 			electionYearSelect += '<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>';
@@ -685,6 +784,47 @@ function getMoreResults(elecYear,elecType,constiId)
 		 myPanel.render(); 
 	}
 	
+	function showPanchayatElectionInfo(resultVO,jsObj){
+
+		var typeSelectElmt = document.getElementById("electionTypeSelectId");
+		var yearSelectElmt = document.getElementById("electionYearSelectId");		
+
+		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
+		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
+
+		
+		 var rvEleStr = '';
+		 rvEleStr += '<div class="commonVotersHeadDiv"> Voting Trendz Of Different Parties In '+jsObj.villageName+' Panchayat </div>';
+		 rvEleStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
+		 rvEleStr += '<tr>';
+		 rvEleStr += '<th style="background-color:#8D7463">Party</th>';
+		 for(var i in resultVO){
+		 rvEleStr += '<td>'+resultVO[i].partyName+'</td>';
+		 }
+		 rvEleStr += '</tr><tr>';
+		 rvEleStr += '<th style="background-color:#8D7463">Votes Earned</th>';
+		 for(var i in resultVO){
+		 rvEleStr += '<td>'+resultVO[i].votesEarned+'</td>';
+		 }
+		 rvEleStr += '</tr>';
+		 rvEleStr += '</table>';
+
+		 myPanel = new YAHOO.widget.Panel("townshipPartyResultsPanel", {
+		 width: "550px",
+		 x:210,
+		 y:760,
+		 constraintoviewport: true,
+		 underlay: "none",
+		 close: true,
+		 visible: true,
+		 draggable: false
+		 });
+		 
+		 myPanel.setHeader(" Panchayat : "+jsObj.villageName);
+		 myPanel.setBody(rvEleStr);
+		 myPanel.render(); 
+	}
+
 	function openwin(){
 		
 		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
@@ -796,7 +936,111 @@ function getMoreResults(elecYear,elecType,constiId)
 		}
 
 	}
-	
+
+
+	var ptypeSelectElmt;
+	var pyearSelectElmt;
+	function showPanchayatInfo(resultVO){
+		
+		ptypeSelectElmt = document.getElementById("electionTypeSelectId");
+		pyearSelectElmt = document.getElementById("electionYearSelectId");		
+
+		var typeVal = ""+ptypeSelectElmt.options[ptypeSelectElmt.selectedIndex].text;
+		var yearVal = ""+pyearSelectElmt.options[pyearSelectElmt.selectedIndex].text;
+		
+		var rvStrDiv = document.getElementById('panchayatsInfo');
+		var boothIdStr;
+		var rvStr = '';		
+		rvStr += '<a name="votersDiv"></a>';
+		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
+		rvStr += 'Voting Trendz In Panchayats for ${mandalInfoVO.mandalName} in  '+yearVal+' '+typeVal+' Election ';
+		rvStr += '</div>';
+		
+
+		for(var k in resultVO.partiesResultsInVillages){
+			rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' '+typeVal+' In '+yearVal+'</b></div>';
+			rvStr += '<div id="revenueVillageDiv_'+k+'">';	
+			rvStr += '<table id="revillageInfoTable_'+k+'" >';
+			for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
+			{			
+				rvStr += '<tr>';
+				rvStr += '<td><a href="javascript:{}">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</a></td>';
+				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].population+'</td>';
+				rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].votesPolled+'</td>';
+				rvStr += '<td>';
+				boothIdStr = '';
+				for(var j in resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths)
+				{
+					boothIdStr += ''+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+',';
+					
+					if(j%3 == 0 && j!=0)
+						rvStr += '<br>';
+					rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name+',';
+				}
+				rvStr += '</td>';
+				rvStr += '<td>';
+				for(var j in resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].hamletsOfTownship)
+				{
+					rvStr += resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].hamletsOfTownship[j].name+'<br>';
+				}
+				rvStr += '</td>';
+				rvStr += '<td>';
+				//rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
+				rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getPanchayatElectionsInfo(\''+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'\',\''+boothIdStr+'\','+electionId+')"> View Voting Trendz </a><br>';
+				//rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
+				rvStr += '</td>';
+				rvStr += '</tr>';
+			}
+			rvStr += '</table>';
+			rvStr += '</div>';
+		}
+		
+
+		if(rvStrDiv)
+			rvStrDiv.innerHTML = rvStr;
+		for(var k in resultVO.partiesResultsInVillages){
+			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+					.get("revillageInfoTable_"+k)); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+			  myDataSource.responseSchema = { 
+			            fields: [
+									{
+										key : "townshipName"
+									},{
+										key : "totalVoters",parser:"number"
+									},{
+										key : "votesPolled",parser:"number"
+									},{
+										key : "booths"
+									},{
+										key : "hamlets"
+									},{
+										key : "links"
+									}
+								]    
+			        }; 
+			
+			 var myColumnDefs = [ 
+			            {key:"townshipName",label:'Panchayat Name', sortable:true, resizeable:true}, 
+			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
+			            {key:"votesPolled", label:'Votes Polled', sortable:true, resizeable:true},
+			            {key:"booths",label:'Total Booths', resizeable:true}, 
+			            {key:"hamlets",label:'Total Hamlets', resizeable:true},
+			            {key:"links",label:'Links', resizeable:true}
+			        ]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv_"+k,myColumnDefs, myDataSource);
+		}
+		
+          var imgElmt = document.getElementById('panchayatAjaxImgDiv');
+		 if(imgElmt.style.display == "block")
+		{
+           imgElmt.style.display = "none";
+		}
+
+	}
+
+
 	function showElectionResultsInAllRevenueVillages(){
 		var typeSelectElmt = document.getElementById("radioRevenueVillagesResultsDiv");
 		rvStr = '';
@@ -840,6 +1084,12 @@ function getMoreResults(elecYear,elecType,constiId)
 			    
 			}));
 		</c:if>
+
+			myTabs.addTab( new YAHOO.widget.Tab({
+			    label: 'Panchayat Wise Election Info',
+			    content: buildPanchayatInfoTab()
+			    
+			}));
 
 		myTabs.appendTo('mandalPageTab');
 				
@@ -1242,7 +1492,5 @@ function getMoreResults(elecYear,elecType,constiId)
 	
 </script>
 </body>
-
-
 
 </html>
