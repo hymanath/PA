@@ -8,4 +8,6 @@ import com.itgrids.partyanalyst.model.PartyManifesto;
 
 public interface IPartyManifestoDAO extends GenericDao<PartyManifesto, Long> {
 	public List<Object[]> getPartyManifestoInfo(Long partyId);
+	
+	public List<Object[]> getSelectedState(Long partyId);
 }
