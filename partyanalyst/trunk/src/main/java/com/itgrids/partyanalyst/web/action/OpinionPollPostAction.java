@@ -32,7 +32,7 @@ import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 public class OpinionPollPostAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(VotesPollAction.class);
+	private static final Logger log = Logger.getLogger(OpinionPollPostAction.class);
 	
 	private HttpServletRequest request;
 	private ServletContext context;
