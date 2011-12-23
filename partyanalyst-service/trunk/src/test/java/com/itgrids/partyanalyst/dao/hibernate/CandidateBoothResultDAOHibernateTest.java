@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -389,5 +390,22 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	  System.out.println(obj.size());
 	}*/
 	
+	public void testFindBoothResultsForBoothsAndElection()
+	{
+		List<Long> boothslist = new ArrayList<Long>(0);
+		boothslist.add(211l);boothslist.add(212l);boothslist.add(213l);boothslist.add(214l);
+		boothslist.add(215l);boothslist.add(216l);boothslist.add(217l);boothslist.add(218l);boothslist.add(219l);
+		
+		List<Object[]> list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothslist,38l);
+		System.out.println(list.size());
+		
+		long totalvotes = 0;
+		for(Object[] params : list)
+		{
+			totalvotes += (Long)params[2];
+			System.out.println("Party Id - "+params[0]+" Party Name - "+params[1]+" Votes Earned - "+params[2]);
+		}
+		System.out.println("Total Votes - "+totalvotes);
+	}
 
 }
