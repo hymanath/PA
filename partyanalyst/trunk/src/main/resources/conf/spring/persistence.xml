@@ -214,6 +214,8 @@
 				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
 				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>
+				<value>com.itgrids.partyanalyst.model.Panchayat</value>
+				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
 			</list>
 		</property>
 	</bean>
