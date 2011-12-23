@@ -2712,8 +2712,8 @@
            		<param name="root">fileVO</param>
         	</result>	
 		</action>
-			
-			<action name="sitemapAction">
+		
+		<action name="sitemapAction">
 			<result>/jsp/sitemap.jsp</result>
 		</action>
 		
@@ -2756,6 +2756,7 @@
            		<param name="root">fileVO</param>
 		</result>
 		</action>
+		
 		<action name="getElectionIdsAndYears" class="partyManagementAction" method="getElectionIdsAndYears">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
@@ -2766,6 +2767,18 @@
 			    <param name="inputName">inputStream</param>
 			</result>					
 		</action>
-				 		       	
+		
+		<action name="socialAuthDemoAction">
+			<result>/jsp/socialAuthDemo.jsp</result>
+		</action>
+		
+		<action name="socialAuthenticationAction" class="com.itgrids.partyanalyst.web.action.SocialAuthenticationAction">
+			<result name="success" type="redirect">${redirectURL}</result>
+		</action>
+		
+		<action name="socialAuthSuccessAction" class="com.itgrids.partyanalyst.web.action.SocialAuthSuccessAction">
+			<result name="success">/jsp/socialAuthSuccess.jsp</result> 
+		</action>
+			
 	</package>
 </struts>      
