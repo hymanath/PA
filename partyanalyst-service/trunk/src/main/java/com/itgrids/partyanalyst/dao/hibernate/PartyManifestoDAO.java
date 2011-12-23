@@ -15,14 +15,15 @@ public class PartyManifestoDAO extends
 	}
 
 	public List<Object[]> getPartyManifestoInfo(Long partyId) {
-		return getHibernateTemplate().find("select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,model.election.electionScope.state.stateName," +
-				"model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language " +
-				"from PartyManifesto model where  model.party.partyId=?",partyId); 
+		return getHibernateTemplate()
+				.find(
+						"select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,model.election.electionScope.state.stateName,"
+								+ "model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language "
+								+ "from PartyManifesto model where  model.party.partyId=?",
+						partyId);
 	}
-	
-	/*public List<Object[]> getPartyManifestoInfo(Long partyId) {
-		return getHibernateTemplate().find("select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType," +
-				"model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language " +
-				"from PartyManifesto model where  model.party.partyId=?",partyId); 
-	}*/
+
+	public List<Object[]> getSelectedState(Long partyId) {
+return getHibernateTemplate().find("select model.state.stateId,model.state.stateName from PartyManifesto model where  model.party.partyId=?",partyId);
+	}
 }
