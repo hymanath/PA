@@ -39,4 +39,17 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				"model.boothConstituencyElection.booth.boothId",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatWiseBoothDetails(Long tehsilId,Long electionId)
+	{
+		Object[] params = {tehsilId, electionId};
+		
+		return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId,model.boothConstituencyElection.constituencyElection.constituency.name," +
+				" model4.panchayat.panchayatId,model4.panchayat.panchayatName,model.hamlet.hamletId,model.hamlet.hamletName,model.boothConstituencyElection.booth.boothId,model.boothConstituencyElection.booth.partNo," +
+				" model.boothConstituencyElection.booth.totalVoters,model.boothConstituencyElection.boothResult.validVotes from HamletBoothElection model,PanchayatHamlet model4 where model4.hamlet.hamletId = model.hamlet.hamletId " +
+				" and model.hamlet.hamletId in(select model2.hamlet.hamletId from PanchayatHamlet model2 where model2.panchayat.panchayatId in(select model3.panchayatId from Panchayat model3 where model3.tehsil.tehsilId = ?)) " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId = ? group by model.boothConstituencyElection.booth.boothId order by model.boothConstituencyElection.constituencyElection.constituency.name," +
+				" model4.panchayat.panchayatName,model.hamlet.hamletName, model.boothConstituencyElection.booth.boothId ",params);
+	}
+	
 }
