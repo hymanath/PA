@@ -44,8 +44,11 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyTownDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationVillageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationWardDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
@@ -143,8 +146,36 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	private ICandidateResultDAO candidateResultDAO;
 	private List<SelectOptionVO> skippedMandals = new ArrayList<SelectOptionVO>(0);
+	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IPanchayatDAO panchayatDAO;
+	private IHamletBoothElectionDAO hamletBoothElectionDAO;
 	
 		
+	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
+		return hamletBoothElectionDAO;
+	}
+
+	public void setHamletBoothElectionDAO(
+			IHamletBoothElectionDAO hamletBoothElectionDAO) {
+		this.hamletBoothElectionDAO = hamletBoothElectionDAO;
+	}
+
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
 	public List<SelectOptionVO> getSkippedMandals() {
 		return skippedMandals;
 	}
@@ -745,6 +776,188 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return mandalWiseResult;
 	}
 	
+	public MandalAndRevenueVillagesInfoVO getPanchayatWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
+		MandalAndRevenueVillagesInfoVO mandalWiseResult = new MandalAndRevenueVillagesInfoVO();
+		List<ElectionResultByLocationVO> panchayatsInConstituencyVOList = new ArrayList<ElectionResultByLocationVO>();
+		Map<ElectionResultByLocationVO, List<Object[]>> panchayatsInConstituencyMap = new HashMap<ElectionResultByLocationVO, List<Object[]>>();
+		List<LocationWiseBoothDetailsVO> panchayatWiseBoothDetails = null;
+		ElectionResultByLocationVO constituencyWisePanchayats = null;
+		LocationWiseBoothDetailsVO boothsHamletsInAPanchayat = null;
+		List<Object[]> rawData = null;
+		Set<SelectOptionVO> boothNos = null;
+		List<SelectOptionVO> hamletsOfAPanchayat = null;
+		
+		try{
+			
+			List<Object[]> boothDetails = hamletBoothElectionDAO.getPanchayatWiseBoothDetails(tehsilId,electionId); 
+			
+			if(boothDetails != null && boothDetails.size() > 0)
+			{
+				for(Object[] params : boothDetails)
+				{
+					constituencyWisePanchayats = new ElectionResultByLocationVO();
+					constituencyWisePanchayats.setConstituencyId((Long)params[0]);
+					constituencyWisePanchayats.setConstituencyName(params[1] != null ? params[1].toString():"");
+					rawData = panchayatsInConstituencyMap.get(constituencyWisePanchayats);
+					
+					if(rawData == null)
+						rawData = new ArrayList<Object[]>();
+						
+					rawData.add(params);
+					panchayatsInConstituencyMap.put(constituencyWisePanchayats, rawData);	
+				}
+				
+				for(Map.Entry<ElectionResultByLocationVO, List<Object[]>> entry :panchayatsInConstituencyMap.entrySet())
+				{
+					constituencyWisePanchayats = entry.getKey();
+					rawData = entry.getValue();
+					panchayatWiseBoothDetails = new ArrayList<LocationWiseBoothDetailsVO>(0);
+					for(Object[] obj:rawData)
+					{
+						boothsHamletsInAPanchayat = checkForPanchayatObj(panchayatWiseBoothDetails,(Long)obj[2]);
+						if(boothsHamletsInAPanchayat == null)
+						{
+							boothsHamletsInAPanchayat = new LocationWiseBoothDetailsVO();
+							boothsHamletsInAPanchayat.setLocationId((Long)obj[2]);
+							boothsHamletsInAPanchayat.setLocationName(obj[3] != null ? obj[3].toString() : "");
+							
+							hamletsOfAPanchayat = new ArrayList<SelectOptionVO>(0);
+							boothNos = new LinkedHashSet<SelectOptionVO>(0);
+							
+							hamletsOfAPanchayat.add(new SelectOptionVO((Long)obj[4],obj[5] != null ? obj[5].toString() : ""));
+							boothNos.add(new SelectOptionVO((Long)obj[6],obj[7] != null ? obj[7].toString() : ""));
+							
+							boothsHamletsInAPanchayat.setBooths(boothNos);
+							boothsHamletsInAPanchayat.setHamletsOfTownship(hamletsOfAPanchayat);
+							
+							boothsHamletsInAPanchayat.setPopulation((Long)obj[8]);
+							boothsHamletsInAPanchayat.setVotesPolled((Long)obj[9]);
+							
+							panchayatWiseBoothDetails.add(boothsHamletsInAPanchayat);
+						}
+						else
+						{
+							SelectOptionVO booths  = new SelectOptionVO((Long)obj[6],obj[7] != null ? obj[7].toString() : "");
+							SelectOptionVO hamlets = new SelectOptionVO((Long)obj[4],obj[5] != null ? obj[5].toString() : "");
+							
+							if(!boothsHamletsInAPanchayat.getBooths().contains(booths))
+								boothsHamletsInAPanchayat.getBooths().add(booths);
+							
+							if(!boothsHamletsInAPanchayat.getHamletsOfTownship().contains(hamlets))
+								boothsHamletsInAPanchayat.getHamletsOfTownship().add(hamlets);
+							
+							boothsHamletsInAPanchayat.setPopulation((Long)obj[8] + boothsHamletsInAPanchayat.getPopulation());
+							boothsHamletsInAPanchayat.setVotesPolled((Long)obj[9] + boothsHamletsInAPanchayat.getVotesPolled());
+						}
+					}
+					constituencyWisePanchayats.setRevenueVillagesInfo(panchayatWiseBoothDetails);
+					panchayatsInConstituencyVOList.add(constituencyWisePanchayats);
+				}
+				mandalWiseResult.setPartiesResultsInVillages(panchayatsInConstituencyVOList);
+			}	
+			else
+			{
+				mandalWiseResult.setResultCode(ResultCodeMapper.FAILURE);
+				mandalWiseResult.setResultPartial(true);
+			}
+			
+		}catch(Exception e){
+			mandalWiseResult.setExceptionEncountered(e);
+			mandalWiseResult.setResultCode(ResultCodeMapper.FAILURE);
+			if(log.isDebugEnabled()){
+				log.debug("Exception Occured ::", e);
+			}
+		}		
+		
+		return mandalWiseResult;
+	}
+	
+	public LocationWiseBoothDetailsVO checkForPanchayatObj(List<LocationWiseBoothDetailsVO> list , Long panchayatId)
+	{
+		for(LocationWiseBoothDetailsVO locVO : list)
+		{
+			if(locVO.getLocationId().longValue() == panchayatId.longValue())
+				return locVO;
+		}
+		return null;
+	}
+	
+	/*public MandalAndRevenueVillagesInfoVO getPanchayatWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
+		MandalAndRevenueVillagesInfoVO mandalWiseResult = new MandalAndRevenueVillagesInfoVO();
+		List<ElectionResultByLocationVO> villagesInConstituencyVOList = new ArrayList<ElectionResultByLocationVO>();
+		List<LocationWiseBoothDetailsVO> panchayatWiseBoothDetails = null;
+		ElectionResultByLocationVO constituencyWisePanchayats = null;
+		LocationWiseBoothDetailsVO boothsHamletsInAPanchayat = null;
+		Set<SelectOptionVO> boothNos = null;
+		List<SelectOptionVO> hamletsOfAPanchayat = null;
+		Long totalVoters;
+		Long polledVotes;
+		try{
+			
+			List<Object[]> list = panchayatDAO.getPanchayatsByTehsilId(tehsilId);
+			
+			if(list != null && list.size() > 0)
+			{
+				panchayatWiseBoothDetails = new ArrayList<LocationWiseBoothDetailsVO>(0);
+				
+				for(Object[] params:list)
+				{
+					boothsHamletsInAPanchayat = new LocationWiseBoothDetailsVO();
+					boothsHamletsInAPanchayat.setLocationId((Long)params[0]);
+					boothsHamletsInAPanchayat.setLocationName(params[1] != null ? params[1].toString(): "");
+					
+					totalVoters = 0l;
+					polledVotes = 0l;
+					hamletsOfAPanchayat = new ArrayList<SelectOptionVO>(0);
+					boothNos = new LinkedHashSet<SelectOptionVO>(0);
+					
+					List<Object[]> boothDetails = hamletBoothElectionDAO.getPanchayatWiseBoothDetails((Long)params[0], electionId); 
+					
+					if(boothDetails != null && boothDetails.size() > 0)
+					{
+						SelectOptionVO selectOptionVO = null;
+						for(Object[] obj : boothDetails)
+						{
+							selectOptionVO = new SelectOptionVO((Long)obj[0],obj[1] != null ? obj[1].toString() : "");
+							if(!hamletsOfAPanchayat.contains(selectOptionVO))
+								hamletsOfAPanchayat.add(selectOptionVO);
+							boothNos.add(new SelectOptionVO((Long)obj[2],obj[3] != null ? obj[3].toString() : ""));
+							totalVoters += (Long)(obj[4] != null ? obj[4] : 0L);
+							polledVotes += (Long)(obj[5] != null ? obj[5] : 0L);
+						}
+					}	
+					
+					boothsHamletsInAPanchayat.setBooths(boothNos);
+					boothsHamletsInAPanchayat.setHamletsOfTownship(hamletsOfAPanchayat);
+					boothsHamletsInAPanchayat.setPopulation(totalVoters);
+					boothsHamletsInAPanchayat.setVotesPolled(polledVotes);
+					
+					panchayatWiseBoothDetails.add(boothsHamletsInAPanchayat);
+				}
+				constituencyWisePanchayats = new ElectionResultByLocationVO();
+				constituencyWisePanchayats.setRevenueVillagesInfo(panchayatWiseBoothDetails);
+				villagesInConstituencyVOList.add(constituencyWisePanchayats);
+				mandalWiseResult.setPartiesResultsInVillages(villagesInConstituencyVOList);
+			}
+			
+			else
+			{
+				mandalWiseResult.setResultCode(ResultCodeMapper.FAILURE);
+				mandalWiseResult.setResultPartial(true);
+			}
+			
+		}catch(Exception e){
+			mandalWiseResult.setExceptionEncountered(e);
+			mandalWiseResult.setResultCode(ResultCodeMapper.FAILURE);
+			if(log.isDebugEnabled()){
+				log.debug("Exception Occured ::", e);
+			}
+		}		
+		
+		return mandalWiseResult;
+	}*/
+	
+
 	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInVillagesGroupByMandal(Long tehsilId, Long electionId) {
 
 		List mandalWiseInfo = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(tehsilId, electionId);
@@ -926,6 +1139,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			partyVotesEarnedVO.setPartyId((Long)values[0]);
 			partyVotesEarnedVO.setPartyName(values[1].toString());
 			partyVotesEarnedVO.setVotesEarned((Long)values[2]);
+			partyResults.add(partyVotesEarnedVO);
+		}
+		return partyResults;
+	}
+	
+	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsil(String boothIdStr,Long electionId)
+	{
+		StringTokenizer str = new StringTokenizer(boothIdStr,",");
+		List<Long> boothIdList = new ArrayList<Long>(0);
+		while(str.hasMoreTokens())
+		{
+			boothIdList.add(Long.parseLong(str.nextToken()));
+		}
+		List<Object[]> list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
+		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
+		PartyVotesEarnedVO partyVotesEarnedVO = null;
+		for(Object[] params : list)
+		{
+			partyVotesEarnedVO = new PartyVotesEarnedVO();
+			partyVotesEarnedVO.setPartyId((Long)params[0]);
+			partyVotesEarnedVO.setPartyName(params[1].toString());
+			partyVotesEarnedVO.setVotesEarned((Long)params[2]);
 			partyResults.add(partyVotesEarnedVO);
 		}
 		return partyResults;
