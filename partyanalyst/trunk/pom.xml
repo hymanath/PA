@@ -77,6 +77,15 @@
 			<enabled>false</enabled> 
 			</snapshots> 
 		</repository> 
+		
+		<repository>
+		    <id>sonatype-oss-public</id>
+		    <url>https://oss.sonatype.org/content/groups/public/</url>
+		    <releases>
+		        <enabled>true</enabled>
+		    </releases>
+		</repository>
+		
 	</repositories>
 
 	<pluginRepositories>
@@ -344,6 +353,31 @@
 	      <artifactId>urlrewritefilter</artifactId>
 	      <version>3.2.0</version>
 	    </dependency>
+	    
+	    <dependency>
+		    <groupId>org.brickred</groupId>
+		    <artifactId>socialauth</artifactId>
+		    <version>2.0-beta4</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>commons-httpclient</groupId>
+		    <artifactId>commons-httpclient</artifactId>
+		    <version>3.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.0.4</version>
+		</dependency>
+		
 	</dependencies>
 
 </project>
