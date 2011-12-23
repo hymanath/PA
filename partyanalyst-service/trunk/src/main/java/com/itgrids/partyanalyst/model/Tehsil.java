@@ -53,6 +53,7 @@ public class Tehsil implements java.io.Serializable {
 	private Set<Booth> booths = new HashSet<Booth>(0);
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	private Set<Panchayat> pachayats = new HashSet<Panchayat>(0);
 
 	// Constructors
 
@@ -173,6 +174,16 @@ public class Tehsil implements java.io.Serializable {
 
 	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
 		this.localGroupRegion = localGroupRegion;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tehsil")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Panchayat> getPachayats() {
+		return pachayats;
+	}
+
+	public void setPachayats(Set<Panchayat> pachayats) {
+		this.pachayats = pachayats;
 	}	
 
 }
