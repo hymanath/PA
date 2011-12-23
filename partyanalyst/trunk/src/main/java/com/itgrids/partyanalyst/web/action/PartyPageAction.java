@@ -189,6 +189,14 @@ public class PartyPageAction extends ActionSupport implements
 			
         	fileVO = partyDetailsService.getPartyManifestoInfo(jObj.getLong("partyId"));
 		}
+        else if(jObj.getString("task").equalsIgnoreCase("getPartyManifestoDetails")){
+			
+        	fileVO = partyDetailsService.getPartyManifestoInfo(jObj.getLong("partyId"));
+		}
+        else if(jObj.getString("task").equalsIgnoreCase("getSelectedStateDetailstails")){
+			
+        	fileVO = partyDetailsService.getSelectedState(jObj.getLong("partyId"));
+		}
 	return Action.SUCCESS;
 }
 }
