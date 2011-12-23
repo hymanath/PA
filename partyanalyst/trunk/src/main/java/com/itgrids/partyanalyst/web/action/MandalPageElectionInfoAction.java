@@ -330,7 +330,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 				e.printStackTrace();
 			}
 			
-			if(jObj.getString("task").equals("getElectionYears")){
+			if(jObj.getString("task").equals("getElectionYears") || jObj.getString("task").equals("getElectionYearsForPanchayat")){
 				System.out.println("For Districts Of State");
 				electionSelectVO = staticDataService.getElectionIdsAndYears(jObj.getLong("electionTypeId"));
 				electionSelectVO.add(0,new SelectOptionVO(0l,"Select Year"));
@@ -358,6 +358,9 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 			if(jObj.getString("task").equals("getRevenueVillagesInfo")){
 				mandalAndRevenueVillagesInfoVO = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(jObj.getLong("mandalId"), jObj.getLong("electionId"));
 			}
+			else if(jObj.getString("task").equals("getPanchayatsInfo")){
+				mandalAndRevenueVillagesInfoVO = constituencyPageService.getPanchayatWiseBoothDetailsForTehsil(jObj.getLong("mandalId"), jObj.getLong("electionId"));
+			}
 		}
 		return SUCCESS;
 	}
@@ -373,6 +376,10 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	
 			if(jObj.getString("task").equals("getRevenueVillagesElectionInfo")){
 				townshipResults = constituencyPageService.getTownshipWiseElectionsForTehsil(jObj.getLong("townshipId"), jObj.getLong("electionId"));
+			}
+			else if(jObj.getString("task").equals("getPanchayatElectionInfo"))
+			{
+				townshipResults = constituencyPageService.getPanchayatWiseElectionsForTehsil(jObj.getString("boothIdStr"),jObj.getLong("electionId"));
 			}
 		}
 		return SUCCESS;
