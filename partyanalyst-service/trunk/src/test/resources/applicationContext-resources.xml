@@ -229,11 +229,21 @@
 				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
 				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>
+				<value>com.itgrids.partyanalyst.model.Panchayat</value>
+				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="panchayatHamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="panchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="candidateUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateUpdatesEmailDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
