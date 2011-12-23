@@ -714,6 +714,28 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 
 	}
+
+	
+	public List<FileVO> getSelectedState(Long partyId)
+	{
+		List<FileVO> fileVO = new ArrayList<FileVO>();
+		try{
+		List<Object[]> list = partyManifestoDAO.getSelectedState(partyId);
+		for(Object[]  objects : list)
+		{
+			FileVO fileVO2=new FileVO();
+			fileVO2.setCandidateId((Long)objects[0]);
+			fileVO2.setDescription(objects[1].toString());
+			fileVO.add(fileVO2);
+		}
+		return fileVO;
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	//to upload party manifesto
 	public ResultStatus uploadPartyManifesto(FileVO fileVO)
 	{
@@ -750,4 +772,5 @@ public class PartyDetailsService implements IPartyDetailsService {
 		
 	  return resultStatus;
   }
+
 }
