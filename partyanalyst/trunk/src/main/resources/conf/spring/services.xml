@@ -268,7 +268,10 @@
 		<property name="delimitationWardDAO" ref="delimitationWardDAO" />
 		<property name="delimitationConstituencyTownDAO" ref="delimitationConstituencyTownDAO" />	
 		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />	
-		<property name="candidateResultDAO" ref="candidateResultDAO" />	
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO" />
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
+		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
 		
 	</bean>	
 	
