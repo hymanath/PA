@@ -417,6 +417,17 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 						" group by model.nomination.party.partyId order by sum(model.votesEarned) desc", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findBoothResultsForBoothsAndElection(List<Long> boothslist, Long electionId){
+		Query query = getSession().createQuery("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
+				" and model.boothConstituencyElection.booth.boothId in(:boothslist) group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("boothslist",boothslist);
+		return query.list();
+	}
+	
 	public List findRevenueVillagesWisePartyResultsForElectionInMandal(Long tehsilId, Long electionId, Long partyId) {
 		Object[] params = {electionId, tehsilId, partyId};
 		StringBuilder hqlQuery =new StringBuilder();
