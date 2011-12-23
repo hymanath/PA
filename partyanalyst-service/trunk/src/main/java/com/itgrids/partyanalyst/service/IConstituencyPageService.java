@@ -124,5 +124,9 @@ public interface IConstituencyPageService {
 	
 	public ConstituencyNominationsVO getCandidateNominations(Long constiElecId);
 	
+	public MandalAndRevenueVillagesInfoVO getPanchayatWiseBoothDetailsForTehsil(Long tehsilId, Long electionId);
+	
+	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsil(String boothIdStr,Long electionId);
+	
 		
 }
