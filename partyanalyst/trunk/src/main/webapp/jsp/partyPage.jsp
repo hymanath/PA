@@ -1495,7 +1495,7 @@ function getNewsByLanguage(language)
 			str += '<fieldset class="imgFieldset">';
 			str +='<table width=80%>';
 		    str +='<tr><td>';
-			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()"> Country</td><td>';
+			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()"checked="true"> Country</td><td>';
 			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope"onclick="relatedState()"> State</td>';
 			str +='<td><div id="selectStatediv"style="display:none"><select id="stateDiv" name="stateDiv" class="selectWidth"/></div></td></tr>';
 			str +='</table>';
@@ -1506,18 +1506,18 @@ function getNewsByLanguage(language)
 			if(results[0]!=null){
 			str += '<td>';
 			str += '<table>';
-			str +='<tr><td>';
+			str +='<tr><td style="padding-left:15px">';
 			if(results[0].title=='Assembly'){
-	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+	        str +=''+results[0].fileDate;
              }
             else
              {
-			 str += results[0].title+''+results[0].fileDate;
+			 str +=''+results[0].fileDate;
 			 }			
 			str +='</td></tr><tr><td>';
 			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
 			str +='</td></tr><tr><td>';
-			str +=''+results[0].problem+'';
+			//str +=''+results[0].problem+'';
 			str +='</td></tr>';
 			str += '</table>';
 			str +='</td>';
@@ -1525,18 +1525,18 @@ function getNewsByLanguage(language)
 			if(results[1]!=null){
 			str += '<td>';
 			str += '<table>';
-			str +='<tr><td>';
+			str +='<tr><td style="padding-left:15px">';
 	        if(results[0].title=='Assembly'){
-	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+	        str += ''+results[0].fileDate;
              }
             else
              {
-			 str += results[0].title+''+results[0].fileDate;
+			 str +=''+results[0].fileDate;
 			 }			
 			str +='</td></tr><tr><td>';
 			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].pathOfFile+'\')}"/>';
 			str +='</td></tr><tr><td>';
-			str +=''+results[0].problem+'';
+			//str +=''+results[0].problem+'';
 			str +='</td></tr>';
 			str += '</table>';
 			str +='</td>';
@@ -1544,18 +1544,18 @@ function getNewsByLanguage(language)
 			if(results[2]!=null){
 			str += '<td>';
 			str += '<table>';
-			str +='<tr><td>';
+			str +='<tr><td style="padding-left:15px">';
 	       if(results[0].title=='Assembly'){
-	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+	        str += ''+results[0].fileDate;
              }
             else
              {
-			 str += results[0].title+''+results[0].fileDate;
+			 str +=''+results[0].fileDate;
 			 }			
 			str +='</td></tr><tr><td>';
 			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].pathOfFile+'\')}"/>';
 			str +='</td></tr><tr><td>';
-			str +=''+results[2].problem+'';
+			//str +=''+results[2].problem+'';
 			str +='</td></tr>';
 			str += '</table>';
 			str +='</td>';
@@ -1663,12 +1663,12 @@ function buildResults(results,divId){
 document.getElementById("selectStatediv").style.display = 'block';
   var elmt = document.getElementById(divId);
   var option1;
-         if(divId=='stateDiv')
-		    {
+  debugger;
+        
 			    option1 = document.createElement('option');
 				option1.value= 0;
 				option1.text= "Select State";
-		    }
+		    
 				try
 				{
 					elmt.add(option1,null); // standards compliant
@@ -1677,17 +1677,15 @@ document.getElementById("selectStatediv").style.display = 'block';
 				{
 					elmt.add(option1); // IE only
 				}
-				var option = document.createElement('option');
+				
 				for(var i in results)
 			   {
 				
-				if(divId =="stateDiv")
-				  {
+				var option = document.createElement('option');
 				  option.value=results[i].candidateId;
 				  option.text=results[i].description;
-				  }
-				if(results[i].candidateId!=0)
-				  {
+				  
+				
 				try
 				{
 					elmt.add(option,null); // standards compliant
@@ -1696,7 +1694,7 @@ document.getElementById("selectStatediv").style.display = 'block';
 				{
 					elmt.add(option); // IE only
 				}
-				}
+				
 			  }
 		 
 }
