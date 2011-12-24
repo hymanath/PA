@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -11,11 +12,13 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStatePageService;
@@ -36,6 +39,9 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class HomePageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
+	
+	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class); 
+	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
 	private IStaticDataService staticDataService;
@@ -45,13 +51,33 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	JSONObject jObj = null;
 	private IStatePageService statePageService;
 	private IRegionServiceData regionServiceDataImp;
+	private ICandidateDetailsService candidateDetailsService ;
 	private List<SelectOptionVO> constituenciesList;
 	private IProblemManagementReportService problemManagementReportService;
 	private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
 	private ServletContext context;
+	private Map<String, List<FileVO>> resultMap ;
 	private String changedUserName = "false";
 	private String feedback = "true"; 
+
+	
+	
+	public void setResultMap(Map<String, List<FileVO>> resultMap) {
+		this.resultMap = resultMap;
+	}
+
+	public Map<String, List<FileVO>> getResultMap() {
+		return resultMap;
+	}
+
+	public void setCandidateDetailsService(ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
 
 	public String getFeedback() {
 		return feedback;
@@ -61,10 +87,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.feedback = feedback;
 	}
 
-	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class);
-	
-	
-	
+	public String getChangedUserName() {
+		return changedUserName;
+	}
+
+	public void setChangedUserName(String changedUserName) {
+		this.changedUserName = changedUserName;
+	}
+
 	
 	public void setServletContext(ServletContext context) {
 		
@@ -232,6 +262,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
 		
+		//getRecentlyUpdatePhotosVideosNewsForACandidate();
 		return Action.SUCCESS;
 	}
 	
@@ -327,14 +358,11 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 	 return imagePath;
 	}
-
-	public String getChangedUserName() {
-		return changedUserName;
-	}
-
-	public void setChangedUserName(String changedUserName) {
-		this.changedUserName = changedUserName;
-	}
 	
-
+	public String getRecentlyUpdatePhotosVideosNewsForACandidate(){
+		
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(1 ,10);
+		
+		return SUCCESS;
+	}
 }
