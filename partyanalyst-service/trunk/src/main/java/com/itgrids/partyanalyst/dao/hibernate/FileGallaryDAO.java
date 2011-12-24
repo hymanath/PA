@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hsqldb.Session;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -296,5 +298,15 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setMaxResults(maxResults);
 		
 		return query.list(); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr){
+		
+		Query query = getSession().createQuery("from FileGallary model "+queryStr+" order by model.updateddate");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();
 	}
 }
