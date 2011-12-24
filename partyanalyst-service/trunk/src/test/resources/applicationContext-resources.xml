@@ -231,6 +231,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>
 				<value>com.itgrids.partyanalyst.model.Panchayat</value>
 				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
+				<value>com.itgrids.partyanalyst.model.PartyUpdatesEmail</value>
 			</list>
 		</property>
 	</bean>
@@ -1252,7 +1253,13 @@
 	<bean id="partyGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyGalleryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="partyManifestoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyManifestoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		
 </beans>

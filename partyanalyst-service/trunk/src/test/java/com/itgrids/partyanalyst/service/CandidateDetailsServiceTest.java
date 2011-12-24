@@ -25,8 +25,8 @@ public class CandidateDetailsServiceTest {
 	@Test
 	public void checkGetCandidateProfileDescriptionByCandidateID(){
 		List<Object> results = new ArrayList<Object>(0);
-		results.add("Ram");
-		results.add("Ramesh");
+		results.add("Ram is a very good boy");
+		results.add("Ramesh is tall boy");
 		EasyMock.expect(candidateProfileDescriptionDAO.getCandidateProfileDescription(10L)).andReturn(results);
 		EasyMock.replay(candidateProfileDescriptionDAO);
 		candidateDetailsService.setCandidateProfileDescriptionDAO(candidateProfileDescriptionDAO);

@@ -62,7 +62,7 @@ public class CandidateProfileDescriptionDAOHibernateTest extends
 	
 	public void testDeleteCandidateProfileDescriptionById()
 	{
-		Integer integer = candidateProfileDescriptionDAO.deleteCandidateProfileDescriptionById(2l);
+		Integer integer = candidateProfileDescriptionDAO.deleteCandidateProfileDescriptionById(1l);
 		
 		System.out.println(integer);	
 	}
