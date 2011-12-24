@@ -727,7 +727,6 @@ function getConstituencyElections(){
 }
 
 function buildConstituencyElecResultsDataTable(value){
-	
 	if(constituencyResults == null){
 		var mandalwiseVotingTrendzEL = document.getElementById("MandalwiseVotingTrendz");
 		if(mandalwiseVotingTrendzEL)
@@ -761,33 +760,34 @@ function buildConstituencyElecResultsDataTable(value){
 		details.innerHTML = detailsDIV;
 	}
 	
-	if(counter>=1){
+		/*if(counter>=1){
 		
 		// Parliament Detailed Chart is disabled.
 		// Modified by sai
 
-		/*var details = document.getElementById("detailsDiv");
+		var details = document.getElementById("detailsDiv");
 		var detailsDIV = '';
 		detailsDIV += '<table><tr>';
 		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Parliament"></div></td>';
-		details.innerHTML = detailsDIV;*/
-	}
-
+		details.innerHTML = detailsDIV;
+	}*/
+	
 	var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
 	var chart = '';
 	chart += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
 	chartResultDiv.innerHTML = chart;
-
-    var conName = constituencyResults.constituencyName;
-	var elecYear = constituencyResults.electionYear;
-	var elecTyp = constituencyResults.electionType;
-    getInteractiveChart(chartResultDiv,constituencyResults.constituencyOrMandalWiseElectionVO,constituencyResults.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
-		
 	var imgElmt = document.getElementById('AjaxImgDiv');
 	if(imgElmt.style.display == "block")
 	{
           imgElmt.style.display = "none";
 	}
+    var conName = constituencyResults.constituencyName;
+	var elecYear = constituencyResults.electionYear;
+	var elecTyp = constituencyResults.electionType;
+    getInteractiveChart(chartResultDiv,constituencyResults.constituencyOrMandalWiseElectionVO,constituencyResults.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
+		
+	
+	
 }
 
 function buildConstituencyElectionResultsDataTable(value)
