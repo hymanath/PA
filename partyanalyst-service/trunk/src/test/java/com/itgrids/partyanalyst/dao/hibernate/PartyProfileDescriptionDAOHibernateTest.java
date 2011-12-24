@@ -37,7 +37,7 @@ public class PartyProfileDescriptionDAOHibernateTest extends BaseDaoTestCase {
 }
 	}*/
 	
-	public void testGetPartyProfileDescription()
+	/*public void testGetPartyProfileDescription()
 	{
 		
    List<Object[]> result = partyProfileDescriptionDAO.getPartyProfileInfo(1l);
@@ -46,11 +46,14 @@ public class PartyProfileDescriptionDAOHibernateTest extends BaseDaoTestCase {
 	   System.out.println("description"+object[1].toString());
 	   System.out.println("orderno"+object[2]);
    }
+	}*/
+	/*public void testDeletePartyProfileDescriptionById()
+	{
+		Integer integer=partyProfileDescriptionDAO.deletePartyProfileDescriptionById(1l);
+		System.out.println(integer);
+	}*/
 	
-	
-
-	
-  }
 	}
+
 	
 
