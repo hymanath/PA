@@ -674,6 +674,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		String fromDate = jObj.getString("fromDate");
 		String toDate =  jObj.getString("toDate");
 		Long statusId = jObj.getLong("status");
+		/* To display the Problems in Constituency Management Page*/
 		//String accessType = jObj.getString("accessType");
 		//Long accessValue = jObj.getLong("accessValue");
 		
