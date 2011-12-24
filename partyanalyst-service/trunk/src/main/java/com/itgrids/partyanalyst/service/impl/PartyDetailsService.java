@@ -884,6 +884,24 @@ public class PartyDetailsService implements IPartyDetailsService {
 		 return resultStatus;
 	    }
 	}
+
+	
+	public GallaryVO getPartyGalleryDetails(Long galleryId, Long partyId) {
+		
+		GallaryVO gallaryVO = new GallaryVO();
+		try {
+		List<Object[]> result = partyGalleryDAO.getPartyGalleriesDescForUpdate(galleryId, partyId);
+		 for(Object[] params : result){
+			gallaryVO.setGallaryId(new Long(params[0].toString()));
+			gallaryVO.setGallaryName(params[1].toString());
+			gallaryVO.setDescription(params[2].toString());
+		 }
+		return gallaryVO;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return gallaryVO;
+		}
+	}
 }
 	
 
