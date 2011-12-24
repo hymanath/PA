@@ -16,7 +16,9 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -36,13 +38,22 @@ public class PartyPageAction extends ActionSupport implements
 	private IPartyDetailsService partyDetailsService;
 	private PartyVO partyVO;
 	private List<String> descriptions;
-	JSONObject jObj = null;
+	private JSONObject jObj;
 	private String task=null;
 	private PartyResultService partyResultService;
     private List<PartyResultInfoVO> partyResultInfoVOList;
     private List<FileVO> fileVO;
-	
+    private ResultStatus result;
+
     
+	public ResultStatus getResult() {
+		return result;
+	}
+
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
+
 	public List<FileVO> getFileVO() {
 		return fileVO;
 	}
@@ -199,4 +210,24 @@ public class PartyPageAction extends ActionSupport implements
 		}
 	return Action.SUCCESS;
 }
+
+
+
+	public String setEmailAlertsForUser(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+	
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	
+	String email = jObj.getString("emailId");
+    result = partyDetailsService.subScribeEmailAlertForAUser(email,jObj.getLong("partyId"));
+    
+     return Action.SUCCESS;
+}
+
 }
