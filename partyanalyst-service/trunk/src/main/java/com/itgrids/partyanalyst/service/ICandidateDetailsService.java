@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
@@ -110,4 +111,6 @@ public interface ICandidateDetailsService {
 	 public	FileVO getPhotoUploadDescForUpdate(Long gallaryId , Long fileId);
 	 
 	 public ResultStatus updateIndividualPhoto(FileVO fileVO);
+
+	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults);
 }
