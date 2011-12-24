@@ -200,7 +200,7 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
-            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <!--<h2 class="ea-fc-title">email alert <span class="blue-down-arrow">--><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
             <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
               updates of<br />
               <span class="li-red">${partyVO.partyLongName}</span>
@@ -420,7 +420,7 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}	
-			else if(jsObj.task == "setEmailAlertForUser")
+			else if(jsObj.task == "setEmailAlertsForUser")
             {
 			   showStatusForEmailSubscription(myResults);
 			}
@@ -462,7 +462,7 @@ function callAjax(jsObj,url)
 }
 function showStatusForEmailSubscription(results){
 
-    $("#emailAlertDiv").dialog({ stack: false,
+    /*$("#emailAlertDiv").dialog({ stack: false,
 							    height: 'auto',
 								width: 'auto',
 								position:'center',								
@@ -470,10 +470,12 @@ function showStatusForEmailSubscription(results){
 								title:'<font color="Navy">Email Alert</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
-	$("#emailAlertDiv").dialog();
+	$("#emailAlertDiv").dialog();*/
 	var str='';
 	if(results.resultCode == 0){
-	str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';
+		cleardescriptionFields();
+	/*str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';*/
+	document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
 	}
     document.getElementById("emailAlertDiv").innerHTML = str;
 }
@@ -481,9 +483,13 @@ function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
+function cleardescriptionFields()
+  {
+	document.getElementById('emailId').value = '';
+}
 function validateEmailField()
-	{
-		document.getElementById("alertMsg").innerHTML = '';
+ {
+    	document.getElementById("alertMsg").innerHTML = '';
 		var emailIdVal = document.getElementById("emailId").value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
       if(emailIdVal !='' && emailIdVal!='your email'){
@@ -502,11 +508,11 @@ function validateEmailField()
 	var jsObj = {
 		          emailId : emailIdVal,
 				  partyId :partyId,
-                   task:"setEmailAlertForUser"
+                   task:"setEmailAlertsForUser"
 	             };
     
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyEmailAlertsForUserAction.action"+rparam;						
+	var url = "partyEmailAlertsForUserAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
 function photoGallaryPopUp(){
