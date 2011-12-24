@@ -2785,6 +2785,11 @@
            		<param name="root">result</param>
         	</result>	
 		</action>
+		<action name="createNewPartyGallaryAction" class="partyManagementAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>	
+		</action>
 			
 	</package>
 </struts>      
