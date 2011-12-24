@@ -42,10 +42,15 @@ public interface IPartyDetailsService {
 	
 	public List<FileVO> getPartyManifestoInfo(long partyId);
 
-	
 	public List<FileVO> getSelectedState(Long partyId);
-
 	
 	public ResultStatus uploadPartyManifesto(FileVO fileVO);
-
+	
+	public List<GallaryVO> getPartyProfileInfo(Long partyId);
+	
+	public ResultStatus deleteProfileDescById(Long profDescId);
+	
+	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
+	
+	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId);
 }
