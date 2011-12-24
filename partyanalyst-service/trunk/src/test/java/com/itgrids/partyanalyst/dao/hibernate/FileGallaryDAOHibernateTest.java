@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
@@ -70,7 +71,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	 
 	}*/
 	//public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults)
-	public void testGetPartyLatestVideos()
+	/*public void testGetPartyLatestVideos()
 	{
 		List<File> list = fileGallaryDAO.getPartyLatestVideos(163l,0,20);
 		System.out.println(list.size());
@@ -79,7 +80,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(file.getFileId() +"--"+file.getFilePath());
 		}
-	}
+	}*/
 	/*public void testGetNewsCountByScope()
 	{
 		List<Long> list = fileGallaryDAO.getNewsCountByScope(900L,null,"Private");
@@ -124,4 +125,14 @@ System.out.println("i " +i);
 						
 		}
 	}*/
+	
+	public void testGetRecentlyUploadedFiles(){
+		List<FileGallary> list = fileGallaryDAO.getRecentlyUploadedFiles(1, 15,IConstants.PHOTO_GALLARY);
+		for(int i=0;i<list.size();i++){
+		System.out.println(list.get(i).getGallary().getContentType().getContentType());
+		System.out.println(list.get(i).getGallary().getCandidate().getLastname());
+		System.out.println(list.get(i).getFile().getFilePath());
+		}
+		System.out.println(list.size());
+	}
 }
