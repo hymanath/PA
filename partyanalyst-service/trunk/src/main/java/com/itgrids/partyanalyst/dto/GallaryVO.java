@@ -22,6 +22,20 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private String contentType;
 	private Long candidateId;
 	private Long userId;
+	private Long orderNo;
+	private Long PartyProfileDescriptionId;
+	public Long getPartyProfileDescriptionId() {
+		return PartyProfileDescriptionId;
+	}
+	public void setPartyProfileDescriptionId(Long partyProfileDescriptionId) {
+		PartyProfileDescriptionId = partyProfileDescriptionId;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
 	private List<FileVO> filesList = new ArrayList<FileVO>(0);
 	
 	
