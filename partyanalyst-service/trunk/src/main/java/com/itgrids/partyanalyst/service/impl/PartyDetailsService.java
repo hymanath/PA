@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyManifestoDAO;
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
+import com.itgrids.partyanalyst.dao.IPartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
@@ -34,6 +35,10 @@ import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.CandidateProfileDescription;
+import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
@@ -46,6 +51,9 @@ import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
+import com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO;
 
 public class PartyDetailsService implements IPartyDetailsService {
 	private static final Logger log = Logger
@@ -70,7 +78,11 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IPartyManifestoDAO partyManifestoDAO;
 	private IElectionDAO electionDAO;
 	private IStateDAO stateDAO;
-
+	private ICandidateDAO candidateDAO;
+	private IConstituencyDAO constituencyDAO; 
+	private IMessageToCandidateDAO messageToCandidateDAO;
+	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
+	
 	public IPartyManifestoDAO getPartyManifestoDAO() {
 		return partyManifestoDAO;
 	}
@@ -144,9 +156,13 @@ public class PartyDetailsService implements IPartyDetailsService {
 		this.userGallaryDAO = userGallaryDAO;
 	}
 
-	private ICandidateDAO candidateDAO;
-	private IConstituencyDAO constituencyDAO;
-	private IMessageToCandidateDAO messageToCandidateDAO;
+	public IPartyUpdatesEmailDAO getPartyUpdatesEmailDAO() {
+		return partyUpdatesEmailDAO;
+	}
+
+	public void setPartyUpdatesEmailDAO(IPartyUpdatesEmailDAO partyUpdatesEmailDAO) {
+		this.partyUpdatesEmailDAO = partyUpdatesEmailDAO;
+	}
 
 	public IMessageToCandidateDAO getMessageToCandidateDAO() {
 		return messageToCandidateDAO;
@@ -590,10 +606,34 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 	}
 
-	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,
-			String createOrUpdate) {
-		Gallary gallary = null;
-		PartyGallery partyGallery = new PartyGallery();
+	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId){
+		 
+		 ResultStatus statusCode = new ResultStatus()  ;
+		 try {
+			PartyUpdatesEmail partyUpdatesEmail = new PartyUpdatesEmail();
+				 
+				 partyUpdatesEmail.setEmail(emailId);
+				 partyUpdatesEmail.setParty(partyDAO.get(partyId));
+				 partyUpdatesEmail.setUnsubscribed("false");
+				 partyUpdatesEmailDAO.save(partyUpdatesEmail);
+		
+		     statusCode.setResultCode(ResultCodeMapper.SUCCESS);
+		 
+		     return statusCode;
+		
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 statusCode.setExceptionEncountered(e);
+			 statusCode.setResultCode(ResultCodeMapper.FAILURE);
+			 return statusCode;
+		 }
+	 }
+	
+
+	public ResultStatus createNewGallaryOrUpdateGallary(GallaryVO gallaryVO,String createOrUpdate)
+	{  
+		 	Gallary gallary = null;
+	     	PartyGallery partyGallery = new PartyGallery();
 		ResultStatus resultStatus = new ResultStatus();
 		try {
 			if (createOrUpdate.trim().equalsIgnoreCase("Update")
@@ -772,5 +812,78 @@ public class PartyDetailsService implements IPartyDetailsService {
 		
 	  return resultStatus;
   }
-
+	public List<GallaryVO> getPartyProfileInfo(Long partyId)
+	{
+		
+			log.debug("Entered into getPartyProfileInfo() Method");
+			List<GallaryVO> gallaryVOList = new ArrayList<GallaryVO>(0);
+			GallaryVO gallaryVO = new GallaryVO();
+			List<Object[]> list = partyProfileDescriptionDAO.getPartyProfileInfo(partyId);
+		try
+		   {
+			for(Object[] params:list)
+			{
+				gallaryVO = new GallaryVO();
+				gallaryVO.setOrderNo((Long)params[0]);
+				gallaryVO.setDescription(params[1].toString());
+				gallaryVO.setPartyProfileDescriptionId((Long)params[2]);
+				gallaryVOList.add(gallaryVO);
+				
+			}
+			return gallaryVOList;
+		}
+			catch(Exception e){
+				log.error("Exception Occured in getPartyProfileInfo() method - "+e);
+			return gallaryVOList;
+			}
+			
+		}
+	
+	public ResultStatus deleteProfileDescById(Long profDescId)
+	{
+		log.debug("Entered into deleteProfileDescById() Method");
+		ResultStatus resultStatus=new ResultStatus();
+		int flag=partyProfileDescriptionDAO.deletePartyProfileDescriptionById(profDescId);
+		if(flag!=0){
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;	
+		}
+		else
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+			
+	}
+	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId)
+	{
+		log.debug("Entered into updateProfileDescription() Method");
+		ResultStatus resultStatus = new ResultStatus();	
+	
+		try{
+			Party party = partyDAO.get(partyId);
+			
+				for(GallaryVO params : gallaryVO)
+				 {
+				    PartyProfileDescription partyProfileDescription = partyProfileDescriptionDAO.get(params.getPartyProfileDescriptionId());
+				    partyProfileDescription.setParty(party);
+				    partyProfileDescription.setDescription(params.getDescription());
+				    partyProfileDescription.setOrderNo(params.getOrderNo());
+				    partyProfileDescriptionDAO.save(partyProfileDescription);
+				 }
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		
+			return resultStatus;
+     	 }
+		catch (Exception e) {
+			
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			log.error("Exception Occured in updateProfileDescription() method - "+e);
+		
+		 return resultStatus;
+	    }
+	}
 }
+	
+
