@@ -2739,6 +2739,12 @@
 			</result>
 		</action>
 		
+		<action name="partyPhotoGallaryUpdateAction" class="partyManagementAction" method="getPartyGallaryDescription">
+		<result type="json" name="success">
+           		<param name="root">gallaryVO</param>
+			</result>
+		</action>
+		
 		<action name="getPartyGallariesForUplaodAction" class="partyManagementAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">gallaryList</param>
