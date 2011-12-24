@@ -5,37 +5,35 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-
 <title>Party Analyst - An Election Analysis &amp; Political Management Platform</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
 
-<meta http-equiv="Content-Language" content="en">
+<meta http-equiv="Content-Language" content="en" />
 
-<meta name="description" content="Party Analyst is a complete Indian Election Analysis Platform that also offers, Constituency, Cadre Management to Indian Political Parties and Politicians.">
+<meta name="description" content="Party Analyst is a complete Indian Election Analysis Platform that also offers, Constituency, Cadre Management to Indian Political Parties and Politicians." />
 
-<meta name="keywords" content="Indian Elections, Election Analysis, Indian Democracy, Andhra Pradesh Politics, Indian Political Parties, Indian Politicians, Indian Leaders, Congress, BJP, TDP, TRS, Indian Election Commission, Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results, MPTC Elections, ZPTC Elections, Constituency Management, Cadre Management, Party Performance, Election Comparison, Municipal Elections, Corporation Elections">
+<meta name="keywords" content="Indian Elections, Election Analysis, Indian Democracy, Andhra Pradesh Politics, Indian Political Parties, Indian Politicians, Indian Leaders, Congress, BJP, TDP, TRS, Indian Election Commission, Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results, MPTC Elections, ZPTC Elections, Constituency Management, Cadre Management, Party Performance, Election Comparison, Municipal Elections, Corporation Elections" />
 
-<meta name="copyright" content="IT Grids (India) Pvt. Ltd.">
+<meta name="copyright" content="IT Grids (India) Pvt. Ltd." />
 
-<meta name="author" content="Ashok Dakavaram">
+<meta name="author" content="Ashok Dakavaram" />
 
-<meta name="email" content="a.dakavaram@partyanalyst.com">
+<meta name="email" content="a.dakavaram@partyanalyst.com" />
 
-<meta name="Charset" content="ISO-8859-1">
+<meta name="Charset" content="ISO-8859-1" />
 
-<meta name="Distribution" content="Global">
+<meta name="Distribution" content="Global" />
 
-<meta name="Rating" content="General">
+<meta name="Rating" content="General" />
 
-<meta name="ROBOTS" content="INDEX,FOLLOW">
+<meta name="ROBOTS" content="INDEX,FOLLOW" />
 
-<meta name="Revisit-after" content="1 Day">
+<meta name="Revisit-after" content="1 Day" />
 
-<meta name="expires" content="Never">
+<meta name="expires" content="Never" />
 
 <!-- Combo-handled YUI CSS files: --> 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
 <!-- Combo-handled YUI JS files: --> 
 
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
@@ -137,12 +135,11 @@ function openAddNewProblemWindow()
 	
 	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	
-</div>
-<!--CONTENT MAIN SECTION START-->
+		<!--CONTENT MAIN SECTION START-->
 
-<div id="content-mainsec">
-  <div class="js-banner-bg">
-    <div class="mainwrapper"> 
+			<div id="content-mainsec">
+  			 <div class="js-banner-bg">
+    			<div class="mainwrapper"> 
       
       <!--CONTENT SECTION START-->
       
@@ -175,7 +172,7 @@ function openAddNewProblemWindow()
              <div class="clear"></div>
 			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
 			<div class="register-free"><span class="fleft" style="line-height:30px">Click Here for </span>
-               <a href="freeUserRegistration.action"><img src="images/icons/homePage_new/updatebutton.jpg" style="padding-left:13px;"></a>
+               <a href="freeUserRegistration.action"><img alt="" src="images/icons/homePage_new/updatebutton.jpg" style="padding-left:13px;" ></img></a>
             </div>
 			</c:if>
 			<c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
@@ -200,7 +197,7 @@ function openAddNewProblemWindow()
                     <div class="view-results"><a href="javascript:{}" onclick="navigateToStatePage()">view results</a></div>
                   </div>
                   <a class="menuitem submenuheader" href="#" >View Your district.</a>
-                  <div clAss="submenu">
+                  <div class="submenu">
 				  <div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
                     <p>Select your district to view its election results in district level.</p>
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"></s:select>
@@ -215,7 +212,7 @@ function openAddNewProblemWindow()
                       <input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/>
                       Assembly</span> <span class="radio-type">
                       <input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/>
-                      Parliament</span> </p><br>
+                      Parliament</span> </p><br />
 					  <table id="stateTable" style="display:none;">
 									<tr>
 										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" headerKey = "0" headerValue="Select State" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
@@ -264,9 +261,10 @@ function openAddNewProblemWindow()
 						<a class="menuitem submenuheader" href="javascript:{}">View all Election Results.</a>
                   <div class="submenu" style="padding-bottom:5px;">
                     <table>
-									<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
+						<tr>
+							<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
 									
-									<tr>
+						</tr>			<tr>
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
 									</tr>		
 									
@@ -293,7 +291,8 @@ function openAddNewProblemWindow()
         <div class="latest-nu-sec">
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
-         <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180"><font class="scrollDataStyle"/><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
+         <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180" >
+          <font class="scrollDataStyle"><u>News</u> :<a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
 		</font>
           </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
@@ -363,7 +362,7 @@ function openAddNewProblemWindow()
                 <div class="q-theme">Want to Know More?</div>
                 <div class="clear"></div>
                 <div class="a-icon">a</div>
-                <div class="a-theme" style="border-bottom:none;">Call us at +91 9676696760 or +91 40 4012 4153<br>
+                <div class="a-theme" style="border-bottom:none;">Call us at +91 9676696760 or +91 40 4012 4153<br />
                 Drop an email to a.dakavaram@itgrids.com or a.dakavaram@partyanalyst.com</div>
               </li>
             </ul>
@@ -443,7 +442,14 @@ function openAddNewProblemWindow()
         <!--PPPM AND FT ICONS SECTION START-->
         
         <div class="pft-social-sec">
-          <div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
+          <div class="pft-sec" style="font-size: 13px; padding-left: 7px;width:291px;"> 
+          <!--<s:iterator value="fileVO" status="stat">
+           <ul>
+            <li><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}"><s:property value="gallaryName" /> of <s:property value="contentType"/> is Updated For
+            <s:property value="candidateName" /></a></li>
+            </ul>
+          </s:iterator> -->
+            <img src="./images/new_homepage/pft.jpg" alt=""/>
             <div class="clear"></div>
             <p></p>
             <span class="gray">Are you a</span> <strong>Politician<span class="orange">/</span>Political Party<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with <span class="orange">PartyAnalyst</span> ?
