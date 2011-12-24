@@ -211,9 +211,9 @@
 				<value>com.itgrids.partyanalyst.model.MessageToCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CandidateUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
-				<value>com.itgrids.partyanalyst.model.PartyProfileDescription</value>
 				<value>com.itgrids.partyanalyst.model.PartyGallery</value>
-				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>
+				<value>com.itgrids.partyanalyst.model.PartyManifesto</value>				
+				<value>com.itgrids.partyanalyst.model.PartyUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.Panchayat</value>
 				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
 			</list>
