@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -1752,4 +1754,54 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 return statusCode;
 	 }
  }
+ 
+ public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults){
+	
+	 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
+	 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
+	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
+	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
+	 List<FileVO> resultList = new ArrayList<FileVO>();
+	 
+		 String queryStr = "where model.gallary.contentType.contentType ='Photo Gallary'";
+		 photoGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr);
+		 resultList = setToFileVO(photoGallaryresultList);
+		 resultMap.put("photogallary", resultList);
+		 String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
+		 newsGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr1);
+		 resultList = setToFileVO(newsGallaryresultList);
+		 resultMap.put("NewsGallary", resultList);
+		 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
+		 videoGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr2);
+		 resultList = setToFileVO(videoGallaryresultList);
+		 resultMap.put("VideoGallary", resultList);
+		
+     return resultMap;
+	 
+ 
+}
+ 
+ 
+ public List<FileVO> setToFileVO(List<FileGallary> result){
+	 List<FileVO> fileVOs = new ArrayList<FileVO>();
+	 
+	FileVO fileVO = new FileVO();
+	if(result !=null){
+		  for(int i=0; i<result.size(); i++){
+			 fileVO = new FileVO();
+			 fileVO.setCandidateName(result.get(i).getGallary().getCandidate().getLastname());
+			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
+			 fileVO.setFileName1(result.get(i).getFile().getFileName());
+			 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+result.get(i).getFile().getFileName());
+			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
+				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
+			 
+			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
+			 fileVO.setGallaryName(result.get(i).getGallary().getName());
+			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
+			 fileVOs.add(fileVO);
+		 }
+	}
+	 return fileVOs;
+  }
 }
