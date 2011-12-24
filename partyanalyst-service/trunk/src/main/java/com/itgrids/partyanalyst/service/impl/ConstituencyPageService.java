@@ -1961,7 +1961,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			partyVotes.setPartyId((Long)values[5]);
 			partyVotes.setRank(Long.parseLong(values[4].toString()));
 			votesEarnedBoothwise = partyIdAndTheirVotes.get(values[4]);
-			votesDiff =  ((Double)values[2]).longValue() - votesEarnedBoothwise;
+			if(votesEarnedBoothwise != null)
+				votesDiff =  ((Double)values[2]).longValue() - votesEarnedBoothwise;
 			if(votesDiff < 0){
 				partyVotes.setVotesEarned(0l);
 				partyVotes.setVotesPercentage("0");
