@@ -481,6 +481,34 @@ function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";
 }
+function validateEmailField()
+	{
+		document.getElementById("alertMsg").innerHTML = '';
+		var emailIdVal = document.getElementById("emailId").value;
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(emailIdVal !='' && emailIdVal!='your email'){
+          
+		  if(!emailIdVal.match(emailExp)){
+
+				document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	var jsObj = {
+		          emailId : emailIdVal,
+				  partyId :partyId,
+                   task:"setEmailAlertForUser"
+	             };
+    
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyEmailAlertsForUserAction.action"+rparam;						
+	callAjax(jsObj,url);
+}
 function photoGallaryPopUp(){
 	
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
