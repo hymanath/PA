@@ -45,6 +45,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long sourceId;
 	private Long languegeId;
 	private String language;
+	private String candidateName;
 	private Long electionId;
 	private Long stateId;
 	
@@ -430,6 +431,13 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+
+	public String getCandidateName() {
+		return candidateName;
 	}
     
 
