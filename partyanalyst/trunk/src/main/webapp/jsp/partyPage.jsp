@@ -604,6 +604,7 @@ function getCompleteGallaries(gallaryId){
 	callAjax(jsObj,url);
 }
 function showPhotosInAGallary(results){
+
    var str ='';
    str+='<div id="content" style="width:650px;">';
    str += '<fieldset class="imgFieldset">';
@@ -1141,7 +1142,7 @@ function getFirstThreePhotoRecords(){
 }
 function buildFirstThreePhotoRecords(results)
  {
-
+	debugger;
 	if(results.length>0)
 	 {
 	  var count=0;
@@ -1152,14 +1153,14 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
