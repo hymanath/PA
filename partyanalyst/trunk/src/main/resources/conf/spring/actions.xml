@@ -625,6 +625,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="statePageService" ref="statePageService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />			
 	</bean>
 	
