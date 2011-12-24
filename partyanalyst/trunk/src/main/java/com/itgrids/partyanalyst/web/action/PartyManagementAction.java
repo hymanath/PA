@@ -421,6 +421,21 @@ public String execute()
 		}
 		return Action.SUCCESS;
 } 
+ public String getPartyGallaryDescription(){
+	 
+	 try {
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("UpdatePartyGallary")){
+			Long galleryId = new Long(jObj.getString("gallaryId"));
+			Long partyId = new Long(jObj.getString("partyId"));
+			gallaryVO = partyDetailsService.getPartyGalleryDetails(galleryId,partyId); 
+		}
+	} catch (ParseException e) {
+		
+		e.printStackTrace();
+	}
+	 return Action.SUCCESS;
+ }
   public String getElectionIdsAndYears()
   {
 	  Long stateId = null;
