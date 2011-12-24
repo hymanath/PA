@@ -63,6 +63,7 @@ public class Party implements java.io.Serializable {
 	private Set<PartyCadreSkills> partyCadreSkills = new HashSet<PartyCadreSkills>(0);
 	private Set<PartyTrainingCamps> partyTrainingCamps = new HashSet<PartyTrainingCamps>(0);
 	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
+	private Set<PartyUpdatesEmail> partyUpdatesEmails = new HashSet<PartyUpdatesEmail>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -111,6 +112,8 @@ public class Party implements java.io.Serializable {
 		this.commentCategoryParty = commentCategoryParty;
 		this.state = state;
 	}
+
+	
 
 	// Property accessors
 	@Id
@@ -308,8 +311,15 @@ public class Party implements java.io.Serializable {
 		this.partyGallery = partyGallery;
 	}
 	
-	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<PartyUpdatesEmail> getPartyUpdatesEmails() {
+		return partyUpdatesEmails;
+	}
+
+	public void setPartyUpdatesEmails(Set<PartyUpdatesEmail> partyUpdatesEmails) {
+		this.partyUpdatesEmails = partyUpdatesEmails;
+	}
 	
 	
 
