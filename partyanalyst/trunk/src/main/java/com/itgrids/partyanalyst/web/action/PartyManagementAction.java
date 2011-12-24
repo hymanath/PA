@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -28,6 +30,7 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -63,8 +66,18 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private File userImage;
 	private InputStream inputStream;
 	private ICandidateDetailsService candidateDetailsService;
-	private Long partId;
-	private Long electionId;
+    private Long partyId;
+    private Long electionId;
+    private String task = null;
+	JSONObject jObj = null;
+	
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
@@ -235,8 +248,6 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		this.partyDetailsService = partyDetailsService;
 	}
 
-	private String task = null;
-	JSONObject jObj = null;
 	
 
 	public List<SelectOptionVO> getPartyList() {
@@ -278,13 +289,6 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		this.staticDataService = staticDataService;
 	}	
 
-	public Long getPartId() {
-		return partId;
-	}
-
-	public void setPartId(Long partId) {
-		this.partId = partId;
-	}
 	
 	public Long getElectionId() {
 		return electionId;
@@ -377,6 +381,44 @@ public String execute()
 		{
 			fileVO = partyDetailsService.getElectionType();
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("partyDescriptionUpdate"))
+		{
+			gallaryList=partyDetailsService.getPartyProfileInfo(jObj.getLong("partyId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteDiscription"))
+		 {
+			result= partyDetailsService.deleteProfileDescById(jObj.getLong("profDescId"));
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
+		{
+			List<Long> orderNo = new ArrayList<Long>();
+			List<String> description = new ArrayList<String>();
+			List<Long> condiProfDescId = new ArrayList<Long>();
+			gallaryList =new ArrayList<GallaryVO>();
+			JSONArray jOrderNo = jObj.getJSONArray("orderNoArr");
+			JSONArray jDescription = jObj.getJSONArray("descriptionArr");
+			JSONArray jprofDescId = jObj.getJSONArray("profDescIdArr");
+			Long partyId = jObj.getLong("partyId");
+			try{
+			    
+			    for (int i = 0; i < jOrderNo.length(); i++) {
+				    orderNo.add(new Long(jOrderNo.get(i).toString()));
+				    description.add(jDescription.get(i).toString());
+				    condiProfDescId.add(new Long(jprofDescId.get(i).toString()));
+			      }
+			    for (int i = 0; i < jOrderNo.length(); i++) {
+				   GallaryVO gallary = new GallaryVO();
+				   gallary.setOrderNo(orderNo.get(i));
+				   gallary.setDescription(description.get(i));
+				   gallary.setPartyProfileDescriptionId(condiProfDescId.get(i));
+				   gallaryList.add(gallary);
+			      }
+			      result = partyDetailsService.updateProfileDescription(gallaryList,partyId);
+			 }catch(Exception e)
+			       {
+				e.printStackTrace();
+			    }
+		}
 		return Action.SUCCESS;
 } 
   public String getElectionIdsAndYears()
@@ -435,7 +477,7 @@ public String uploadFiles()
 			fileVO.setContentType(fileType);
 			fileVO.setPath(filePath+pathSeperator+fileName);
 			fileVO.setLanguegeId(getLanguage());
-			fileVO.setIds(getPartId());//setting party id
+			fileVO.setIds(getPartyId());//setting party id
 			fileVO.setElectionId(getElectionId());
 			fileVO.setStateId(getLocationValue());
 			/* Here We are saving the to uploaded_files folder */
