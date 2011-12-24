@@ -948,6 +948,7 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="stateDAO" ref="stateDAO" />
+		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
 	</bean>
 </beans>		
 		
