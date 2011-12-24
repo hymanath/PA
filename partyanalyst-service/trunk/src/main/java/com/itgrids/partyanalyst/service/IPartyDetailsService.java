@@ -53,4 +53,6 @@ public interface IPartyDetailsService {
 	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
 	
 	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId);
+	
+	public GallaryVO getPartyGalleryDetails(Long galleryId,Long partyId);
 }
