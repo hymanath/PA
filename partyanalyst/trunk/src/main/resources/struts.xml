@@ -2779,6 +2779,12 @@
 		<action name="socialAuthSuccessAction" class="com.itgrids.partyanalyst.web.action.SocialAuthSuccessAction">
 			<result name="success">/jsp/socialAuthSuccess.jsp</result> 
 		</action>
+		
+		<action name="partyEmailAlertsForUserAction" class="partyPageAction" method="setEmailAlertsForUser">
+			<result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>	
+		</action>
 			
 	</package>
 </struts>      
