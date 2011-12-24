@@ -11,4 +11,6 @@ public interface IPartyProfileDescriptionDAO extends GenericDao<PartyProfileDesc
 	public List<Object> getPartyProfileDescription(Long partyId);
 	  public List<Object> getMaxOrderNo(Long partyId);
 	  public List<Object[]> getPartyProfileInfo(Long partyId);
+	  public Integer deletePartyProfileDescriptionById(Long profDescId);
+		
 }
