@@ -398,9 +398,9 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
 			}
-			else if(jsObj.task == "candiadteDescriptionUpdate")
+			else if(jsObj.task == "partyDescriptionUpdate")
 			{ 
-               showCandidateDescription(myResults);
+               showPartyDescription(myResults);
 			}
 			else if(jsObj.task == "updateIndividualPhotoDetails")
 			{ 
@@ -2156,17 +2156,18 @@ function profileDiscriptionDiv()
 		{ 
             partyId : partyId,
 			
-		   	task : "candiadteDescriptionUpdate"
+		   	task : "partyDescriptionUpdate"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "getPartyGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url); 
 	
  }
 
-function  showCandidateDescription(myResults)
+function  showPartyDescription(myResults)
  {
+
 	var listSize = myResults.length;
 	sizeOfArray = listSize;
 	var i;
@@ -2188,10 +2189,10 @@ function  showCandidateDescription(myResults)
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
 	for(i=0 ; i<listSize ; i++)
 	{
-	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].candidateId+'" size="5"></td>';
+	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5"></td>';
 	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
-	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].userId+')"></td></tr>';
-	str += ' <input type="hidden" id="candProfId_'+i+'" value="'+myResults[i].userId+'">';
+	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].partyProfileDescriptionId+')"></td></tr>';
+	str += ' <input type="hidden" id="partyProfileDescriptionId_'+i+'" value="'+myResults[i].partyProfileDescriptionId+'">';
 	}
 	str += '</table>';
 	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
@@ -2206,7 +2207,7 @@ function addProfileDiscription()
    var fileDesc = document.getElementById('profileDescId').value;
    var partyId=document.getElementById("partyId").value;
    var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
+   var eFlag = false;
 
 	var str = '<font color="red">';
 
@@ -2236,6 +2237,7 @@ function addProfileDiscription()
  
  function deleteProfileById(profDescId)
  {
+
  var r=confirm("Do you want to delete!");
  if (r==true)
  {
@@ -2246,7 +2248,7 @@ function addProfileDiscription()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
+	var url = "createNewPartyGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
 	}
 	
@@ -2279,20 +2281,21 @@ function addProfileDiscription()
 
 function updateProfileDiscription()
 {
-	var candidateId=document.getElementById("candidateId").value;
+	var partyId=document.getElementById("partyId").value;
 	var orderNoArr = [];
 	var descriptionArr = [];
 	var profDescIdArr = [];
 	   for(i=0 ; i < sizeOfArray ; i++)
    		{
+		
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
-			profDescIdArr.push(document.getElementById('candProfId_'+i).value);
+			profDescIdArr.push(document.getElementById('partyProfileDescriptionId_'+i).value);
 			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
    		}
   
   var jsObj =
 		{ 
-		    candidateId : candidateId,
+		    partyId :partyId,
 			orderNoArr : orderNoArr,
 			descriptionArr : descriptionArr,
 			profDescIdArr : profDescIdArr,
@@ -2300,7 +2303,7 @@ function updateProfileDiscription()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
+	var url = "createUpdateGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
     
 }
