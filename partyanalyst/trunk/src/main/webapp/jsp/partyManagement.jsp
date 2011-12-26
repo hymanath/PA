@@ -2421,7 +2421,7 @@ var r=confirm("Do you want to delete!");
 }
 function updateGallary(gallaryId)
  {
- var r=confirm("Do you want to update!");
+  var r=confirm("Do you want to update!");
  if (r==true)
     {
 	//var candidateId=document.getElementById("candidateId").value;
