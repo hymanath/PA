@@ -55,4 +55,12 @@ public interface IPartyDetailsService {
 	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId);
 	
 	public GallaryVO getPartyGalleryDetails(Long galleryId,Long partyId);
+	
+	public List<SelectOptionVO> getElectionTypesBasedOnStateIdAndPartyId(Long partyId ,Long stateId);
+	
+	public List<SelectOptionVO> getElectionYearsBasedOnElectionTypeIdAndPartyId(Long electionTypeId , Long partyId , Long stateId);
+	
+	public List<FileVO> getPartyRelatedManifestoBasedOnYear(Long electionId,Long partyId,Long stateId);
+	
+	public List<FileVO> getPartyManifestoBasedOnStateIdAndPartyd(Long stateId,Long partyId);
 }

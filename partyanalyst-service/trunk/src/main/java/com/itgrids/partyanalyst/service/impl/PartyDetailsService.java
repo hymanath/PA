@@ -727,35 +727,53 @@ public class PartyDetailsService implements IPartyDetailsService {
 	}
 
 	public List<FileVO> getPartyManifestoInfo(long partyId) {
-		List<FileVO> retValue = new ArrayList<FileVO>();
+		 List<FileVO> fileVOList = new ArrayList<FileVO>();
 		try {
-         List<Object[]> results=partyManifestoDAO.getPartyManifestoInfo(partyId);
-         for (Object[] objects : results) {
-        	 FileVO fileVO = new FileVO();
-        	 fileVO.setFile(objects[0].toString());
-        	 fileVO.setGallaryName(objects[1].toString());
-        	 fileVO.setTitle(objects[2].toString());
-        	 fileVO.setDescription(objects[3].toString());
-        	 fileVO.setFileDate(objects[4].toString());
-        	 fileVO.setIds((Long)objects[5]);
-        	 fileVO.setFileName1(objects[6].toString());
-        	 fileVO.setPath(objects[7].toString());
-        	 fileVO.setProblem(objects[8].toString());
-        	 fileVO.setLanguage(objects[9].toString());
-        	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[6].toString());
-        	 retValue.add(fileVO);
-		}
-         
-			return retValue;
+         List<Object[]> results = partyManifestoDAO.getPartyManifestoInfo(partyId);
+         	
+         fileVOList = setToFileVO(results);
+			
+         return fileVOList;
+		
 		} catch (Exception e) {
 			e.printStackTrace();
-			return retValue;
+			return fileVOList;
 
 		}
 
 	}
-
+	public List<FileVO> getPartyManifestoBasedOnStateIdAndPartyd(Long stateId,Long partyId){
+		String queryStr ="";
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		if(stateId != null){
+			
+			queryStr = "and model.state.stateId ="+stateId+"";
+		}
+		List<Object[]> results = partyManifestoDAO.getPartyManifestoInfo(partyId,queryStr);
+		fileVOList = setToFileVO(results);
+		return fileVOList;
+		
+	}
+	public List<FileVO> setToFileVO(List<Object[]> results) {
 	
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		for (Object[] objects : results) {
+	   	 FileVO fileVO = new FileVO();
+	   	 fileVO.setFile(objects[0].toString());
+	   	 fileVO.setGallaryName(objects[1].toString());
+	   	 fileVO.setTitle(objects[2].toString());
+	   	 fileVO.setDescription(objects[3].toString());
+	   	 fileVO.setFileDate(objects[4].toString());
+	   	 fileVO.setIds((Long)objects[5]);
+	   	 fileVO.setFileName1(objects[6].toString());
+	   	 fileVO.setPath(objects[7].toString());
+	   	 fileVO.setProblem(objects[8].toString());
+	   	 fileVO.setLanguage(objects[9].toString());
+	   	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[6].toString());
+	   	 retValue.add(fileVO);
+	  }
+    return retValue;
+	}
 	public List<FileVO> getSelectedState(Long partyId)
 	{
 		List<FileVO> fileVO = new ArrayList<FileVO>();
@@ -796,9 +814,10 @@ public class PartyDetailsService implements IPartyDetailsService {
 		PartyManifesto partyManifesto = new PartyManifesto();
 		partyManifesto.setFile(file);
 		partyManifesto.setElection(electionDAO.get(fileVO.getElectionId()));
-		partyManifesto.setParty(partyDAO.get(fileVO.getIds()));
+		if(fileVO.getIds() != null)
+		 partyManifesto.setParty(partyDAO.get(fileVO.getIds()));
 		if(fileVO.getStateId() != null)
-		partyManifesto.setState(stateDAO.get(fileVO.getStateId()));
+		 partyManifesto.setState(stateDAO.get(fileVO.getStateId()));
 		
 		partyManifestoDAO.save(partyManifesto);
 		
@@ -901,6 +920,65 @@ public class PartyDetailsService implements IPartyDetailsService {
 			e.printStackTrace();
 			return gallaryVO;
 		}
+	}
+
+	public List<SelectOptionVO> getElectionTypesBasedOnStateIdAndPartyId(
+			Long partyId, Long stateId) {
+		
+		List<SelectOptionVO> selOptionVO = new ArrayList<SelectOptionVO>();
+		SelectOptionVO optionVO = new SelectOptionVO();
+		List<Object[]> electionTypeObj = partyManifestoDAO.getElectionTypes(partyId,stateId);
+		optionVO.setId(0l);
+		optionVO.setName("Select Election Type");
+		selOptionVO.add(0,optionVO);
+		if(electionTypeObj !=null && electionTypeObj.size() >0){
+			for(Object[] electionTypes : electionTypeObj){
+				optionVO = new SelectOptionVO();
+				optionVO.setId((Long) electionTypes[0]);
+				optionVO.setName(electionTypes[1].toString());
+				selOptionVO.add(optionVO);
+			}
+		}
+		return selOptionVO;
+	}
+
+	
+	public List<SelectOptionVO> getElectionYearsBasedOnElectionTypeIdAndPartyId(
+			Long electionTypeId, Long partyId, Long stateId) {
+		
+		List<SelectOptionVO> selOptionVO = new ArrayList<SelectOptionVO>();
+		SelectOptionVO optionVO = new SelectOptionVO();
+		List<Object[]> electionYearsObj = partyManifestoDAO.getElectionYearsBasedOnElectionTypeId(electionTypeId, partyId, stateId);
+		optionVO.setId(0l);
+		optionVO.setName("Select Election Year");
+		selOptionVO.add(0,optionVO);
+		if(electionYearsObj != null && electionYearsObj.size() >0){
+			for(Object[] electionYears : electionYearsObj){
+				optionVO = new SelectOptionVO();
+				optionVO.setId((Long) electionYears[1]);
+				optionVO.setName(electionYears[0].toString());
+				selOptionVO.add(optionVO);
+			}
+		}
+		return selOptionVO;
+	}
+
+	@Override
+	public List<FileVO> getPartyRelatedManifestoBasedOnYear(Long electionId,
+			Long partyId, Long stateId) {
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		FileVO fileVO = new FileVO();
+		List<File> manifestoFileObj = partyManifestoDAO.getPartyManifestoBasedOnElectionYear(electionId,partyId,stateId);
+		for(File file : manifestoFileObj){
+			fileVO = new FileVO();
+			fileVO.setTitle(file.getFileTitle());
+			fileVO.setDescription(file.getFileDescription());
+			fileVO.setFileDate(file.getFileDate().toString());
+			fileVO.setPathOfFile(file.getFilePath());
+			fileVOList.add(fileVO);
+		}
+		return fileVOList;
 	}
 }
 	
