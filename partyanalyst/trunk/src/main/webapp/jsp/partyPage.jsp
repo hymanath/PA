@@ -1142,7 +1142,7 @@ function getFirstThreePhotoRecords(){
 }
 function buildFirstThreePhotoRecords(results)
  {
-	debugger;
+	
 	if(results.length>0)
 	 {
 	  var count=0;
@@ -1698,7 +1698,7 @@ function buildResults(results,divId){
 document.getElementById("selectStatediv").style.display = 'block';
   var elmt = document.getElementById(divId);
   var option1;
-  debugger;
+ 
         
 			    option1 = document.createElement('option');
 				option1.value= 0;
