@@ -2796,12 +2796,36 @@
            		<param name="root">result</param>
         	</result>	
 		</action>
+		
 		<action name="createUpdateGallaryAction" class="partyManagementAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
 		</action>
 		
+		<action name="getElectionTypesBasedOnStateAction" class="partyManagementAction" method="getElectionTypes">
+			<result type="json" name="success">
+           		<param name="root">electionTypesList</param>
+        	</result>	
+		</action>
 			
+		<action name="getElectionYearsBasedOnElecTypePartyAndStateAction" class="partyManagementAction" method="getElectionYearsBasedOnElecTypeIdPartyIdAndStateId">
+			<result type="json" name="success">
+           		<param name="root">electionYearsList</param>
+        	</result>	
+		</action>
+		<action name="getPartyRelatedManifestoFileAction" class="partyManagementAction" method="getPartyRelatedManifestoFileBasedOnElectionYear">
+			<result type="json" name="success">
+           		<param name="root">electionYearsList</param>
+        	</result>	
+		</action>
+		
+		<action name="getPartyManifestoBasedOnStateAction" class="partyPageAction" method="getPartyManifestoBasedOnStateId">
+		<result type="json" name="success">
+           		<param name="root">fileVO</param>
+		</result>
+		</action>
+		
+		
 	</package>
 </struts>      
