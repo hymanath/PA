@@ -398,9 +398,9 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
 			}
-			else if(jsObj.task == "candiadteDescriptionUpdate")
+			else if(jsObj.task == "partyDescriptionUpdate")
 			{ 
-               showCandidateDescription(myResults);
+               showPartyDescription(myResults);
 			}
 			else if(jsObj.task == "updateIndividualPhotoDetails")
 			{ 
@@ -603,19 +603,19 @@ function buildUploadPhotosDiv()
 	getPartyGallariesForUplaod('Photo Gallary');
 }
 
-	function createGallary(contentType,createOrUpdate,gallaryId)
+	function createGallary(contentType,createOrUpdate)
     {
 	var galName = document.getElementById('pGallaryNameId').value;
 	var galDesc = document.getElementById('pGallaryDescId').value;
 	var isPublic = document.getElementById('publicRadioId').checked;
 	var partyId=document.getElementById("partyId").value; 	
 	var makeThis = 'true';
-    //var gallaryId ='';
+    var gallaryId ='';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
      if(createOrUpdate=='Update')
 	{
-	 // gallaryId = document.getElementById("gallaryId").value;
+	  gallaryId = document.getElementById("gallaryId").value;
 	}
 	var str = '<font color="red">';
 
@@ -2156,17 +2156,18 @@ function profileDiscriptionDiv()
 		{ 
             partyId : partyId,
 			
-		   	task : "candiadteDescriptionUpdate"
+		   	task : "partyDescriptionUpdate"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandiadteGallariesForUplaodAction.action?"+rparam;
+	var url = "getPartyGallariesForUplaodAction.action?"+rparam;
 	callAjax(jsObj,url); 
 	
  }
 
-function  showCandidateDescription(myResults)
+function  showPartyDescription(myResults)
  {
+
 	var listSize = myResults.length;
 	sizeOfArray = listSize;
 	var i;
@@ -2188,10 +2189,10 @@ function  showCandidateDescription(myResults)
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
 	for(i=0 ; i<listSize ; i++)
 	{
-	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].candidateId+'" size="5"></td>';
+	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5"></td>';
 	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
-	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].userId+')"></td></tr>';
-	str += ' <input type="hidden" id="candProfId_'+i+'" value="'+myResults[i].userId+'">';
+	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].partyProfileDescriptionId+')"></td></tr>';
+	str += ' <input type="hidden" id="partyProfileDescriptionId_'+i+'" value="'+myResults[i].partyProfileDescriptionId+'">';
 	}
 	str += '</table>';
 	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
@@ -2206,7 +2207,7 @@ function addProfileDiscription()
    var fileDesc = document.getElementById('profileDescId').value;
    var partyId=document.getElementById("partyId").value;
    var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
+   var eFlag = false;
 
 	var str = '<font color="red">';
 
@@ -2236,6 +2237,7 @@ function addProfileDiscription()
  
  function deleteProfileById(profDescId)
  {
+
  var r=confirm("Do you want to delete!");
  if (r==true)
  {
@@ -2246,7 +2248,7 @@ function addProfileDiscription()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
+	var url = "createNewPartyGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
 	}
 	
@@ -2268,6 +2270,7 @@ function addProfileDiscription()
 	{
 		cleardescriptionFields();
 		str += '<font color="green"><b>Profile Discription saved Successfully.</b>';
+
 	}
 	else if(myResult.resultCode == 1) 
 	{
@@ -2279,14 +2282,15 @@ function addProfileDiscription()
 
 function updateProfileDiscription()
 {
-	var candidateId=document.getElementById("candidateId").value;
+	var partyId=document.getElementById("partyId").value;
 	var orderNoArr = [];
 	var descriptionArr = [];
 	var profDescIdArr = [];
 	   for(i=0 ; i < sizeOfArray ; i++)
    		{
+		
 			orderNoArr.push(document.getElementById('orderNoId_'+i).value);
-			profDescIdArr.push(document.getElementById('candProfId_'+i).value);
+			profDescIdArr.push(document.getElementById('partyProfileDescriptionId_'+i).value);
 			descriptionArr.push(removeAllUnwantedCharacters(document.getElementById('descId_'+i).value));		
    		}
   
@@ -2300,7 +2304,7 @@ function updateProfileDiscription()
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
+	var url = "createUpdateGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
     
 }
@@ -2417,7 +2421,7 @@ var r=confirm("Do you want to delete!");
 }
 function updateGallary(gallaryId)
  {
-	var r=confirm("Do you want to update!");
+ var r=confirm("Do you want to update!");
  if (r==true)
     {
 	//var candidateId=document.getElementById("candidateId").value;
@@ -2438,7 +2442,7 @@ function updateGallary(gallaryId)
  
  function updateGallaryDiv(myResults)
  {
-	var str ='';
+    var str ='';
 	document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 	document.getElementById("profileManagementMainOuterDiv6").style.display = 'block';
 	
@@ -2453,7 +2457,7 @@ function updateGallary(gallaryId)
 	str +='<input type = "hidden" name ="gallaryId" id ="gallaryId" value ='+myResults.gallaryId+'>';
 	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\',\''+myResults.gallaryId+'\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
