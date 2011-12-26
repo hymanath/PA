@@ -167,7 +167,7 @@
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr><td>
 <div class="main-title-sec">
- <div class="main-mbg">${partyVO.partyLongName} Party
+ <div class="main-mbg">${partyVO.partyLongName} 
  
  <span style="margin-top:10px;margin-right:18px;float:right">
  <a name="fb_share" type="button_count" 
@@ -200,7 +200,7 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
-            <!--<h2 class="ea-fc-title">email alert <span class="blue-down-arrow">--><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
             <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
               updates of<br />
               <span class="li-red">${partyVO.partyLongName}</span>
@@ -440,11 +440,30 @@ function callAjax(jsObj,url)
 			{
 				buildPartyManifesoGallary(myResults); 
 			}
-        else if(jsObj.task == "getSelectedStateDetailstails")
+        else if(jsObj.task == "getSelectedStateDetails")
 			{ 
 			   clearOptionsListForSelectElmtId("stateDiv");
                buildResults(myResults,"stateDiv");
 			}			
+		
+		else if(jsObj.task == "getElectionTypesByStateId"){
+			
+			document.getElementById("electionTypeDiv").style.display ='block';
+
+			clearOptionsListForSelectElmtId("electionTypeDiv");
+			createOptionsForSelectElmtId("electionTypeDiv",myResults);
+		  }
+		  else if(jsObj.task == "getElectionYears"){
+			
+			document.getElementById("electionYearDiv").style.display ='block';
+
+			clearOptionsListForSelectElmtId("electionYearDiv");
+			createOptionsForSelectElmtId("electionYearDiv",myResults);
+		  }
+		  else if(jsObj.task =="PartyManifestoBasedOnStateId")
+			{
+				builImagesDiv(myResults); 
+			}
 		}
 		catch(e)
 		{   
@@ -644,6 +663,7 @@ function showPhotosInAGallary(results){
    });
 }
 function showPhotosInInitialGallary(results){
+
    var str ='';
    str+='<div id="content" style="display:none;">';
    str+='<table width="100%" style="margin-top:10px;">'
@@ -682,8 +702,9 @@ function showPhotosInInitialGallary(results){
         return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
      }
    });
+
    fireEvent(document.getElementById('photoClickId'),'click');
-    document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
+   document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
 }
 function fireEvent(obj,evt){
 	
@@ -1520,171 +1541,245 @@ function getNewsByLanguage(language)
 	callAjax(jsObj,url);
       }
 	  
-	  function builImagesDiv(results)
-	  {     
-	        var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
-			var str ='';
-			
-			var str ='';
-			str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifesto</span></h3>';
-			str += '<fieldset class="imgFieldset">';
-			str +='<table width=80%>';
-		    str +='<tr><td>';
-			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()"checked="true"> Country</td><td>';
-			str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope"onclick="relatedState()"> State</td>';
-			str +='<td><div id="selectStatediv"style="display:none"><select id="stateDiv" name="stateDiv" class="selectWidth"/></div></td></tr>';
-			str +='</table>';
-			str+='<div id="content">';
-			if(results!=null){
-			str+='<table>'
-			str +='<tr>';
-			if(results[0]!=null){
-			str += '<td>';
-			str += '<table>';
-			str +='<tr><td style="padding-left:15px">';
-			if(results[0].title=='Assembly'){
-	        str +=''+results[0].fileDate;
-             }
-            else
-             {
-			 str +=''+results[0].fileDate;
-			 }			
-			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
-			str +='</td></tr><tr><td>';
-			//str +=''+results[0].problem+'';
-			str +='</td></tr>';
-			str += '</table>';
-			str +='</td>';
-			}
-			if(results[1]!=null){
-			str += '<td>';
-			str += '<table>';
-			str +='<tr><td style="padding-left:15px">';
-	        if(results[0].title=='Assembly'){
-	        str += ''+results[0].fileDate;
-             }
-            else
-             {
-			 str +=''+results[0].fileDate;
-			 }			
-			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].pathOfFile+'\')}"/>';
-			str +='</td></tr><tr><td>';
-			//str +=''+results[0].problem+'';
-			str +='</td></tr>';
-			str += '</table>';
-			str +='</td>';
-			}
-			if(results[2]!=null){
-			str += '<td>';
-			str += '<table>';
-			str +='<tr><td style="padding-left:15px">';
-	       if(results[0].title=='Assembly'){
-	        str += ''+results[0].fileDate;
-             }
-            else
-             {
-			 str +=''+results[0].fileDate;
-			 }			
-			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].pathOfFile+'\')}"/>';
-			str +='</td></tr><tr><td>';
-			//str +=''+results[2].problem+'';
-			str +='</td></tr>';
-			str += '</table>';
-			str +='</td>';
-			}
-			str +='</tr>';
-			str +='</table>';
-			}
-			str +='</div>';
-			str+='<div class="more">';
-	        str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
-			str +='</fieldset>';
-			 str+='<div id="buildManifestoGallaryDiv"></div>';
-			partyManifestoDivElmt.innerHTML = str;
-			
+  function builImagesDiv(results)
+  {     
+	 var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
+		var str ='';
+		
+		var str ='';
+		str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifesto</span></h3>';
+		str += '<fieldset class="imgFieldset">';
+		str +='<table width=80%>';
+		str +='<tr><td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()" checked="true"> Country</td><td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="relatedState()"> State</td>';
+		str +='<td><div id="selectStatediv" style="display:none"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"/></div></td></tr>';
+		str+='<tr>';
+		str+='<td><select id="electionTypeDiv" style="display:none" onchange="getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
+		str+='</td>';
+		str+='<td><select id="electionYearDiv" style="display:none" onchange="getPartyManifestoFile()" class="selectWidth"></select>';
+		str+='</td>';
+		str+='</tr>';
+		str +='</table>';
+		str+='<div id="content">';
+		if(results!=null){
+		str+='<table>'
+		str +='<tr>';
+		if(results[0]!=null){
+		str += '<td>';
+		str += '<table>';
+		str +='<tr><td style="padding-left:15px">';
+		if(results[0].title=='Assembly'){
+		str +=''+results[0].fileDate;
+		 }
+		else
+		 {
+		 str +=''+results[0].fileDate;
+		 }			
+		str +='</td></tr><tr><td>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+		str +='</td></tr><tr><td>';
+		//str +=''+results[0].problem+'';
+		str +='</td></tr>';
+		str += '</table>';
+		str +='</td>';
 		}
-		function PartyManifestoPopup(){
-	
-	      if(document.getElementById('buildManifestoGallaryDiv') == null)
-		       return;
-           $("#buildManifestoGallaryDiv").dialog({ stack: false,
-							    height: 570,
-								width: 720,
-								position:[130,130],								
-								modal: true,
-								title:'<font color="Navy">${partyVO.partyLongName} Manifesto</font>',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	        $("#buildManifestoGallaryDiv").dialog();
-	        showManifestoGallary();
-	   }
-	   function showManifestoGallary()
-	   {
-	   
-          var jsObj =
+		if(results[1]!=null){
+		str += '<td>';
+		str += '<table>';
+		str +='<tr><td style="padding-left:15px">';
+		if(results[0].title=='Assembly'){
+		str += ''+results[0].fileDate;
+		 }
+		else
+		 {
+		 str +=''+results[0].fileDate;
+		 }			
+		str +='</td></tr><tr><td>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].pathOfFile+'\')}"/>';
+		str +='</td></tr><tr><td>';
+		//str +=''+results[0].problem+'';
+		str +='</td></tr>';
+		str += '</table>';
+		str +='</td>';
+		}
+		if(results[2]!=null){
+		str += '<td>';
+		str += '<table>';
+		str +='<tr><td style="padding-left:15px">';
+	   if(results[0].title=='Assembly'){
+		str += ''+results[0].fileDate;
+		 }
+		else
+		 {
+		 str +=''+results[0].fileDate;
+		 }			
+		str +='</td></tr><tr><td>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].pathOfFile+'\')}"/>';
+		str +='</td></tr><tr><td>';
+		//str +=''+results[2].problem+'';
+		str +='</td></tr>';
+		str += '</table>';
+		str +='</td>';
+		}
+		str +='</tr>';
+		str +='</table>';
+		}
+		str +='</div>';
+		str+='<div class="more">';
+		str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
+		str +='</fieldset>';
+		 str+='<div id="buildManifestoGallaryDiv"></div>';
+		partyManifestoDivElmt.innerHTML = str;
+		
+	}
+function getPartyManifestoFile(){
+
+	var stateElmt = document.getElementById("stateDiv");
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+	var electionYearDivElmt = document.getElementById("electionYearDiv");
+	var electionId = electionYearDivElmt.options[electionYearDivElmt.selectedIndex].value;
+	var jsObj = {
+		stateId : stateId,
+		electionId : electionId,
+		partyId : ${partyVO.partyId},
+		task : "getPartyManifestoFile"
+	  };
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPartyRelatedManifestoFileAction.action?"+rparam;
+	callAjax(jsObj ,url);
+}
+function getElectionYearsBasedOnElecTypePartyIdAndStateId(){
+
+	var stateElmt = document.getElementById("stateDiv");
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+	var electionTypeIdElmt = document.getElementById("electionTypeDiv");
+	var electionTypeId = electionTypeIdElmt.options[electionTypeIdElmt.selectedIndex].value;
+	 
+	  var jsObj = {
+		stateId : stateId,
+        partyId : ${partyVO.partyId},
+		electionTypeId : electionTypeId,
+		task :"getElectionYears"
+
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElecTypePartyAndStateAction.action?"+rparam;						
+	callAjax(jsObj,url);
+
+}
+
+/*function getElectionTypesBasedOnStateId(){
+
+	var stateElmt = document.getElementById("stateDiv");
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+		var jsObj =
 		   {   
-		    time : timeST,
-			partyId:partyId,
-			startRecord:0,
-			maxRecord:20,
-			task:"getPartyManifestoDetails"
+			stateId : stateId,
+			partyId : ${partyVO.partyId},
+			task:"getElectionTypesByStateId"
 		  };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyPhotoGallaryAction.action?"+rparam;						
+	var url = "getElectionTypesBasedOnStateAction.action?"+rparam;						
 	callAjax(jsObj,url);
-	   }
-	function buildPartyManifesoGallary(results)
-    {
-	var str ='';
 
-		str+='<div id="content" style="width:650px;">';		
-		str += '<fieldset class="imgFieldset">';
-		str +='<table  width="100%" style="margin-top:10px;">';
-		
-	if(results.length<=0)
+}*/
+function getPartyManifestoBasedOnStateId(){
+
+	var stateElmt = document.getElementById("stateDiv");
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+		var jsObj =
+		   {   
+			stateId : stateId,
+			partyId : ${partyVO.partyId},
+			task:"PartyManifestoBasedOnStateId"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyManifestoBasedOnStateAction.action?"+rparam;						
+	callAjax(jsObj,url);
+
+}
+function PartyManifestoPopup(){
+
+  if(document.getElementById('buildManifestoGallaryDiv') == null)
+	   return;
+   $("#buildManifestoGallaryDiv").dialog({ stack: false,
+						height: 570,
+						width: 720,
+						position:[130,130],								
+						modal: true,
+						title:'<font color="Navy">${partyVO.partyLongName} Manifesto</font>',
+						overlay: { opacity: 0.5, background: 'black'}
+						});
+	$("#buildManifestoGallaryDiv").dialog();
+	showManifestoGallary();
+}
+function showManifestoGallary()
+{
+
+  var jsObj =
+   {   
+	time : timeST,
+	partyId:partyId,
+	startRecord:0,
+	maxRecord:20,
+	task:"getPartyManifestoDetails"
+  };
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "partyPhotoGallaryAction.action?"+rparam;						
+callAjax(jsObj,url);
+}
+function buildPartyManifesoGallary(results)
+{
+var str ='';
+
+	str+='<div id="content" style="width:650px;">';		
+	str += '<fieldset class="imgFieldset">';
+	str +='<table  width="100%" style="margin-top:10px;">';
+	
+if(results.length<=0)
+{
+	str+='<b>&nbsp;No Manifesto Found </b>';
+}
+	for(var i in results)
 	{
-		str+='<b>&nbsp;No Manifesto Found </b>';
-	}
-		for(var i in results)
-		{
-			no_of_imagesPerRow = 3; 
-			j = i;
+		no_of_imagesPerRow = 3; 
+		j = i;
 
-			if(j++ % no_of_imagesPerRow == 0)
-				str += '<tr style="height:220px;">';
-			
-			str += '<td width="33%" class="imageStyle">';
-			str += '<table class="tableStyle">';
+		if(j++ % no_of_imagesPerRow == 0)
+			str += '<tr style="height:220px;">';
 		
-			str +='<tr><td>';
-			if(results[0].title=='Assembly'){
-	        str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
-             }
-            else
-             {
-			 str += results[0].title+''+results[0].fileDate;
-			 }			
-			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
-			str +='</td></tr><tr><td>';
-			str +=''+results[0].problem+'';
-			str +='</td></tr>';
-			
-			str += '</table>';
-			str += '</td>';
-			
-			if(j % no_of_imagesPerRow == 0)
-				str+= '</tr>';
+		str += '<td width="33%" class="imageStyle">';
+		str += '<table class="tableStyle">';
+	
+		str +='<tr><td>';
+		if(results[0].title=='Assembly'){
+		str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+		 }
+		else
+		 {
+		 str += results[0].title+''+results[0].fileDate;
+		 }			
+		str +='</td></tr><tr><td>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+		str +='</td></tr><tr><td>';
+		str +=''+results[0].problem+'';
+		str +='</td></tr>';
 		
-		}
-		str += ' </table>';
-		str += ' </fieldset>';
-		str+='</div>';
-		document.getElementById("buildManifestoGallaryDiv").innerHTML = str;
+		str += '</table>';
+		str += '</td>';
+		
+		if(j % no_of_imagesPerRow == 0)
+			str+= '</tr>';
+	
+	}
+	str += ' </table>';
+	str += ' </fieldset>';
+	str+='</div>';
+	document.getElementById("buildManifestoGallaryDiv").innerHTML = str;
 }   
 function relatedState()
 {
@@ -1698,7 +1793,7 @@ function buildResults(results,divId){
 document.getElementById("selectStatediv").style.display = 'block';
   var elmt = document.getElementById(divId);
   var option1;
- 
+  
         
 			    option1 = document.createElement('option');
 				option1.value= 0;
@@ -1739,7 +1834,7 @@ function selectedState()
 		   {   
 		    time : timeST,
 			partyId:partyId,
-			task:"getSelectedStateDetailstails"
+			task:"getSelectedStateDetails"
 		  };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
