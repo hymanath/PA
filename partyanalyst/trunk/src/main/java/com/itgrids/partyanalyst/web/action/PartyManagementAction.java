@@ -70,7 +70,25 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
     private Long electionId;
     private String task = null;
 	JSONObject jObj = null;
+	private List<SelectOptionVO> electionTypesList;
+	private List<SelectOptionVO> electionYearsList;
 	
+	public void setElectionYearsList(List<SelectOptionVO> electionYearsList) {
+		this.electionYearsList = electionYearsList;
+	}
+
+	public List<SelectOptionVO> getElectionYearsList() {
+		return electionYearsList;
+	}
+
+	public void setElectionTypesList(List<SelectOptionVO> electionTypesList) {
+		this.electionTypesList = electionTypesList;
+	}
+
+	public List<SelectOptionVO> getElectionTypesList() {
+		return electionTypesList;
+	}
+
 	public Long getPartyId() {
 		return partyId;
 	}
@@ -512,4 +530,52 @@ public String uploadFiles()
 	}
 		return Action.SUCCESS;
 	}
+  
+  public String getElectionTypes(){
+	  
+	  try {
+		jObj = new JSONObject(getTask());
+		Long stateId = new Long(jObj.getString("stateId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		electionTypesList = partyDetailsService.getElectionTypesBasedOnStateIdAndPartyId(partyId , stateId);
+		
+		
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+	  
+	  return Action.SUCCESS;
+  }
+  
+  public String getElectionYearsBasedOnElecTypeIdPartyIdAndStateId(){
+	  
+	  try {
+		jObj = new JSONObject(getTask());
+		Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		electionYearsList = partyDetailsService.getElectionYearsBasedOnElectionTypeIdAndPartyId(electionTypeId, partyId, stateId);
+	} 
+	  catch (ParseException e) {
+		e.printStackTrace();
+	}
+	  
+	  return Action.SUCCESS;
+  }
+  
+  public String getPartyRelatedManifestoFileBasedOnElectionYear(){
+	  try {
+		jObj = new JSONObject(getTask());
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		fileVO = partyDetailsService.getPartyRelatedManifestoBasedOnYear(electionId,partyId,stateId);
+			
+		
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+	  return Action.SUCCESS;
+  }
+  
 }
