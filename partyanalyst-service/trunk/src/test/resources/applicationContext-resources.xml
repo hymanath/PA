@@ -232,11 +232,16 @@
 				<value>com.itgrids.partyanalyst.model.Panchayat</value>
 				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
 				<value>com.itgrids.partyanalyst.model.PartyUpdatesEmail</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPage</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="specialPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="panchayatHamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
