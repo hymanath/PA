@@ -204,7 +204,7 @@ public class PartyPageAction extends ActionSupport implements
 			
         	fileVO = partyDetailsService.getPartyManifestoInfo(jObj.getLong("partyId"));
 		}
-        else if(jObj.getString("task").equalsIgnoreCase("getSelectedStateDetailstails")){
+        else if(jObj.getString("task").equalsIgnoreCase("getSelectedStateDetails")){
 			
         	fileVO = partyDetailsService.getSelectedState(jObj.getLong("partyId"));
 		}
@@ -229,5 +229,19 @@ public class PartyPageAction extends ActionSupport implements
     
      return Action.SUCCESS;
 }
+	
+	public String getPartyManifestoBasedOnStateId(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = new Long(jObj.getString("stateId"));
+			Long partyId = new Long(jObj.getString("partyId"));
+			fileVO = partyDetailsService.getPartyManifestoBasedOnStateIdAndPartyd(stateId,partyId);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
 
 }
