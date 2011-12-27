@@ -113,4 +113,9 @@ public interface ICandidateDetailsService {
 	 public ResultStatus updateIndividualPhoto(FileVO fileVO);
 
 	 public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults);
+	 
+	 public SelectOptionVO assignAndReturnCandidate(Long userId,Long candidateId);
+	
+	 public boolean checkForCandidateExistence(List<SelectOptionVO> candidatesList,Long candidateId);
+	 
 }
