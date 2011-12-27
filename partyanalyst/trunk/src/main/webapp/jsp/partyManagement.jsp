@@ -2683,6 +2683,7 @@ function updatePhoto(fileId,fileGallaryId)
 	 }
 	 function showUploadManifestoStatus(uploadResult)
 	 {
+		uploadPartyManifestoDiv();
 	    var result = (String)(uploadResult);
 	    var errorDivEle = document.getElementById('partyManifestoErrorMsgDiv');
 	    var str = '';
@@ -2700,7 +2701,7 @@ function updatePhoto(fileId,fileGallaryId)
 	       str += '<font color="red"><b>'+result+'</b>';
 	    }
 	   errorDivEle.innerHTML = str;
-	 }
+       }
 	function validateManifestoUpload()
 	{
 	var fileDesc = document.getElementById('fileDescription').value;
