@@ -206,6 +206,10 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           
           <!--EMAIL ALERT SECTION END--> 
      </div>
+	 <s:if test="isAdmin == 'true'"> 
+	 <div><a href="profileManagePageAction.action?candidateId=${candidateId}">Manage Profile</a>
+	 </div>
+	 </s:if>
    
 </td>
 	
