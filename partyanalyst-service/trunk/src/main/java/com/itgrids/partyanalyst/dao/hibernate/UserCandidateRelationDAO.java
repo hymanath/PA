@@ -42,7 +42,7 @@ public class UserCandidateRelationDAO extends GenericDaoHibernate<UserCandidateR
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidatesOfAUser(Long userId)
 	{
-		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname from UserCandidateRelation model where model.registration.registrationId = ?",userId);
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname from UserCandidateRelation model where model.registration.registrationId = ? order by lastname",userId);
 	}
 }
 
