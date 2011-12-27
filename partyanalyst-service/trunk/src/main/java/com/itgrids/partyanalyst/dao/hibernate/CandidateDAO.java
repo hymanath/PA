@@ -184,4 +184,11 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return candidate;
 	}
 	
+	public Object getCandidateNameByCandidateId(Long candidateId)
+	{
+		Query query = getSession().createQuery("select model.lastname from Candidate model where model.candidateId = ?");
+		query.setParameter(0,candidateId);
+		return query.uniqueResult();
+	}
+	
 }
