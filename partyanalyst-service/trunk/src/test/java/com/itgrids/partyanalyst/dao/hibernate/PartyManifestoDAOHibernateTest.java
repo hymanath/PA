@@ -18,7 +18,7 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 		partyManifestoDAO.getAll();
 	}*/
 	//public List<Object[]> getPartyManifestoInfo(Long partyId) {
-	/*public void testGetPartyManifestoInfo()
+	public void testGetPartyManifestoInfo()
 	{
 		 List<Object[]> result = partyManifestoDAO.getPartyManifestoInfo(163l);
 		 System.out.println(result.size());
@@ -29,9 +29,9 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(objects[3].toString());
 			System.out.println(objects[4].toString());
 		}
-	}*/
+	}
 	//public List<Object[]> getSelectedState(Long partyId)
-	public void testGetSelectedState()
+	/*public void testGetSelectedState()
 	{
 		List<Object[]> result= partyManifestoDAO.getSelectedState(163l);
 		System.out.println(result.size());
@@ -43,4 +43,24 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}
+	
+	public void testGetElectionTypes(){
+		List<Object[]> result = partyManifestoDAO.getElectionTypes(163l, 1l);
+		for(Object[] object:result)
+		{
+			System.out.println((Long)object[0]);
+			System.out.println(object[1].toString());
+			
+		}
+	}
+	
+	public void testGetElectionYearsBasedOnElectionTypeIdPartyIdAndStateId(){
+		List<Object[]> result = partyManifestoDAO.getElectionYearsBasedOnElectionTypeId(2l, 163l, 1l);
+		for(Object[] object:result)
+		{
+			System.out.println(object[0]);
+			System.out.println((Long)object[1]);
+			
+		}
+	}*/
 }
