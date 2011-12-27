@@ -5,6 +5,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import java.util.List;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.File;
@@ -63,4 +64,6 @@ public interface IPartyDetailsService {
 	public List<FileVO> getPartyRelatedManifestoBasedOnYear(Long electionId,Long partyId,Long stateId);
 	
 	public List<FileVO> getPartyManifestoBasedOnStateIdAndPartyd(Long stateId,Long partyId);
+	
+	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO);
 }
