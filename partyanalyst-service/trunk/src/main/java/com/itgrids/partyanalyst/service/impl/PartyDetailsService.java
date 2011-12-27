@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -56,6 +57,7 @@ import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
 import com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO;
 
 public class PartyDetailsService implements IPartyDetailsService {
+	
 	private static final Logger log = Logger
 			.getLogger(PartyDetailsService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
@@ -993,6 +995,30 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 		return fileVOList;
 	}
+
+	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO) {
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		String queryStr ="";
+		try {
+			if(partyPageVO.getStateId()!=null)
+				queryStr+= "and model.state.stateId ="+partyPageVO.getStateId()+"";
+			if(partyPageVO.getElectionTypeId()!=null)
+				queryStr+= "and model.election.electionScope.electionType.electionTypeId ="+partyPageVO.getElectionTypeId()+"";
+			if(partyPageVO.getElectionId()!=null)
+				queryStr+= "and model.election.electionId = "+partyPageVO.getElectionId()+"";
+	
+		List<Object[]> partyManifestoObj = partyManifestoDAO.getPartyManifestoInfo(partyPageVO.getPartyId(), queryStr);
+			fileVOList = setToFileVO(partyManifestoObj);
+		
+		return fileVOList;
+		}
+	 catch (Exception e) {
+			e.printStackTrace();
+			return fileVOList;
+		}
+	}
+	
 }
 	
 
