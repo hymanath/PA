@@ -60,6 +60,9 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	public List<Candidate> findCandidateDetails(Long candidateId);
 
 	public Candidate findCandidateByLastName(String lastName);
+	
+	public Object getCandidateNameByCandidateId(Long candidateId);
+	
 	/*public List<Object[]> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult,String ids);
 
 	public List<Long> totalSearchCount(String searchText, String ids);*/
