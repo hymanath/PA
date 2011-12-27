@@ -24,6 +24,10 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 	private Long candidateId;
 	private EntitlementsHelper entitlementsHelper;
 	private List<SelectOptionVO> candidatesList;
+    private RegistrationVO registrationVO;
+    
+	
+	
 	
 	public List<SelectOptionVO> getCandidatesList() {
 		return candidatesList;
@@ -63,10 +67,19 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+	public RegistrationVO getRegistrationVO() {
+		return registrationVO;
+	}
+
+	public void setRegistrationVO(RegistrationVO registrationVO) {
+		this.registrationVO = registrationVO;
+	}
+	
 	
 	public String execute()  {
 		
 		HttpSession session = request.getSession();
+	    
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(session.getAttribute(IConstants.USER) == null && 
@@ -79,6 +92,12 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 		
 		if(candidatesList == null)
 			candidatesList = new ArrayList<SelectOptionVO>(0);
+		
+		if(candidateId != null && user.getIsAdmin().equalsIgnoreCase("true") && !candidateDetailsService.checkForCandidateExistence(candidatesList,candidateId))
+		{
+				SelectOptionVO selectOptionVO = candidateDetailsService.assignAndReturnCandidate(user.getRegistrationID(),candidateId);
+				candidatesList.add(selectOptionVO);
+		}
 		
 		return SUCCESS;
 	}
