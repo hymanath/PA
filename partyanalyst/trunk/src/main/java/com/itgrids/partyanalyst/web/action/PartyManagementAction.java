@@ -563,7 +563,7 @@ public String uploadFiles()
 	  return Action.SUCCESS;
   }
   
-  public String getPartyRelatedManifestoFileBasedOnElectionYear(){
+ /* public String getPartyRelatedManifestoFileBasedOnElectionYear(){
 	  try {
 		jObj = new JSONObject(getTask());
 		Long electionId = new Long(jObj.getString("electionId"));
@@ -576,6 +576,6 @@ public String uploadFiles()
 		e.printStackTrace();
 	}
 	  return Action.SUCCESS;
-  }
+  }*/
   
 }
