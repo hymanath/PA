@@ -13,6 +13,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -244,4 +245,28 @@ public class PartyPageAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 
+	public String getPartyRelatedManifestoFile(){
+		
+		try {
+			PartyPageVO partyPageVO = new PartyPageVO();
+			jObj = new JSONObject(getTask());
+			Long electionId = new Long(jObj.getString("electionId"));
+			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			partyPageVO.setPartyId(partyId);
+			if(electionId !=0)
+			partyPageVO.setElectionId(electionId);
+			if(stateId !=0)
+				partyPageVO.setStateId(stateId);
+			if(electionTypeId !=0)
+				partyPageVO.setElectionTypeId(electionTypeId);
+			fileVO = partyDetailsService.getPartyManifestoDetailsBasedOnSelection(partyPageVO);
+		} 
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	return Action.SUCCESS;
+	}
 }
