@@ -1163,7 +1163,7 @@ function getFirstThreePhotoRecords(){
 }
 function buildFirstThreePhotoRecords(results)
  {
-	
+    
 	if(results.length>0)
 	 {
 	  var count=0;
@@ -1551,7 +1551,7 @@ function getNewsByLanguage(language)
 		str += '<fieldset class="imgFieldset">';
 		str +='<table width=80%>';
 		str +='<tr><td>';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getCountry()" checked="true"> Country</td><td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifesto(${partyVO.partyId});getCountry();" checked="true"> Country</td><td>';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="relatedState()"> State</td>';
 		str +='<td><div id="selectStatediv" style="display:none"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"/></div></td></tr>';
 		str+='<tr>';
@@ -1793,7 +1793,6 @@ function buildResults(results,divId){
 document.getElementById("selectStatediv").style.display = 'block';
   var elmt = document.getElementById(divId);
   var option1;
-  
         
 			    option1 = document.createElement('option');
 				option1.value= 0;
