@@ -727,22 +727,35 @@ public class PartyDetailsService implements IPartyDetailsService {
 	}
 
 	public List<FileVO> getPartyManifestoInfo(long partyId) {
-		 List<FileVO> fileVOList = new ArrayList<FileVO>();
-		try {
+		 
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		 try {
          List<Object[]> results = partyManifestoDAO.getPartyManifestoInfo(partyId);
          	
-         fileVOList = setToFileVO(results);
-			
-         return fileVOList;
-		
-		} catch (Exception e) {
+         for (Object[] objects : results) {
+	 	   	 FileVO fileVO = new FileVO();
+	 	   	 fileVO.setFile(objects[0].toString());
+	 	   	 fileVO.setGallaryName(objects[1].toString());
+	 	   	 fileVO.setTitle(objects[2].toString());
+	 	   	 fileVO.setFileDate(objects[3].toString());
+	 	   	 fileVO.setIds((Long)objects[4]);
+	 	   	 fileVO.setFileName1(objects[5].toString());
+	 	   	 fileVO.setPath(objects[6].toString());
+	 	   	 fileVO.setProblem(objects[7].toString());
+	 	   	 fileVO.setLanguage(objects[8].toString());
+	 	   	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[5].toString());
+ 	   	fileVOList.add(fileVO);
+ 	  }
+     return fileVOList;
+	} catch (Exception e) {
 			e.printStackTrace();
 			return fileVOList;
 
-		}
-
 	}
+
+ }
 	public List<FileVO> getPartyManifestoBasedOnStateIdAndPartyd(Long stateId,Long partyId){
+		
 		String queryStr ="";
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
 		if(stateId != null){
