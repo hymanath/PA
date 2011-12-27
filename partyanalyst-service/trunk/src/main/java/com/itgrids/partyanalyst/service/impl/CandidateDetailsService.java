@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -108,9 +109,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
-	
-	
-	public ISourceLanguageDAO getSourceLanguageDAO() {
+	private List<SelectOptionVO> candidatesList;
+
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
+
+		public ISourceLanguageDAO getSourceLanguageDAO() {
 		return sourceLanguageDAO;
 	}
 
@@ -1802,5 +1811,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 }
 	}
 	 return fileVOs;
-  }
+ }
+ 
+ public SelectOptionVO assignAndReturnCandidate(Long userId,Long candidateId)
+ {
+	 SelectOptionVO selectOptionVO = null;
+	 if(saveUserCandidateRelation(userId, candidateId).getResultCode() == ResultCodeMapper.SUCCESS)
+	 {
+		 selectOptionVO = new SelectOptionVO();
+		 selectOptionVO.setId(candidateId);
+		 selectOptionVO.setName(candidateDAO.getCandidateNameByCandidateId(candidateId).toString());
+	 }
+	 return selectOptionVO;
+ }
+ 
+ public boolean checkForCandidateExistence(List<SelectOptionVO> candidatesList,Long candidateId)
+ {
+	 if(candidatesList != null && candidatesList.size() > 0)
+	 for(SelectOptionVO selectOptionVO :candidatesList)
+		 if(selectOptionVO.getId().equals(candidateId))
+			 return true;
+	 return false;
+ }
+ 
 }
