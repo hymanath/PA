@@ -216,6 +216,10 @@
 				<value>com.itgrids.partyanalyst.model.PartyUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.Panchayat</value>
 				<value>com.itgrids.partyanalyst.model.PanchayatHamlet</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPage</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageDescription</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
 			</list>
 		</property>
 	</bean>
