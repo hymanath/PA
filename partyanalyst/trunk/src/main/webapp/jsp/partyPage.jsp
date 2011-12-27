@@ -77,6 +77,7 @@
  .tableStyle 
  {
    align:top;
+   font: 14px "Trebuchet MS",Arial,Helvetica,sans-serif;
  }
  .imageStyle {
   vertical-align:top;
@@ -1740,7 +1741,7 @@ var str ='';
 	str += '<fieldset class="imgFieldset">';
 	str +='<table  width="100%" style="margin-top:10px;">';
 	
-if(results.length<=0)
+if(results.length <=0)
 {
 	str+='<b>&nbsp;No Manifesto Found </b>';
 }
@@ -1756,17 +1757,17 @@ if(results.length<=0)
 		str += '<table class="tableStyle">';
 	
 		str +='<tr><td>';
-		if(results[0].title=='Assembly'){
-		str += results[0].title+'('+results[0].description+')'+results[0].fileDate;
+		if(results[i].title=='Assembly'){
+		str += results[i].title+'('+results[i].description+')'+results[i].fileDate;
 		 }
 		else
 		 {
-		 str += results[0].title+''+results[0].fileDate;
+		 str += results[i].title+'     '+results[i].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
 		str +='</td></tr><tr><td>';
-		str +=''+results[0].problem+'';
+		str +=''+results[i].problem+'';
 		str +='</td></tr>';
 		
 		str += '</table>';
