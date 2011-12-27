@@ -89,8 +89,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<GallaryVO> gallaryList;
 	private Long source;
 	private Long language;
-
+	private String isAdmin;
 	
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public FileVO getFileVO2() {
 		return fileVO2;
 	}
@@ -370,6 +378,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	{
 		request.setAttribute("candidateId",candidateId);
 		
+		session = request.getSession();
+		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		if(regVO != null)
+			isAdmin = regVO.getIsAdmin();
+			
 		descriptions= candidateDetailsService.getCandidateProfileDescriptionByCandidateID(candidateId);
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
