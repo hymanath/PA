@@ -698,4 +698,20 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="specialPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageDescriptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageDescriptionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageUpdatesEmailDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageGalleryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
