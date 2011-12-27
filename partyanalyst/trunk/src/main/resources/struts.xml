@@ -2814,9 +2814,9 @@
            		<param name="root">electionYearsList</param>
         	</result>	
 		</action>
-		<action name="getPartyRelatedManifestoFileAction" class="partyManagementAction" method="getPartyRelatedManifestoFileBasedOnElectionYear">
+		<action name="getPartyRelatedManifestoFileAction" class="partyPageAction" method="getPartyRelatedManifestoFile">
 			<result type="json" name="success">
-           		<param name="root">electionYearsList</param>
+           		<param name="root">fileVO</param>
         	</result>	
 		</action>
 		
