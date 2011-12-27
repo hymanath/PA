@@ -301,6 +301,7 @@ function buildAccordion()
 				<li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span></a></li>
 				<li><a href="statePageAction.action?stateId=21"><span>Punjab</span></a></li>
                 <li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
+				<li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
                             </ul></div>
 		
 		</li>
