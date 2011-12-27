@@ -2652,7 +2652,7 @@ function updatePhoto(fileId,fileGallaryId)
     str +='  </tr>';
 	str += '</table>';
 	str += '<table  align="left" style="padding-left:115px;"><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
-	str += '<input type="hidden" name="partId" value=\''+document.getElementById("partyId").value+'\' />';
+	str += '<input type="hidden" name="partyId" value=\''+document.getElementById("partyId").value+'\' />';
 	str += '<input type="hidden" name="time" value=\''+new Date().getTime()+'\' />';
 	str += '</form>';
 	str += '</fieldset>';
