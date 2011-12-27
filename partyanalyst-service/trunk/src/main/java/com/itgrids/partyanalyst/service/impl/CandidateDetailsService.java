@@ -1698,14 +1698,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			fileVO.setGallaryName(objects[1].toString());
 			fileVO.setGallaryDescription(objects[2].toString());
 			fileVO.setFileName1(objects[3].toString());
-		}
-		 
+		 }
+		 return fileVO;
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-		return null;
+		return fileVO;
 	    }
-	 return fileVO;
- }
+}
  
  public	FileVO getPhotoUploadDescForUpdate(Long gallaryId , Long fileId)
  {
