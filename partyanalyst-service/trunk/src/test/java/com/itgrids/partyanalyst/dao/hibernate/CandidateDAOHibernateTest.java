@@ -59,5 +59,24 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		List<Candidate> obj = candidateDAO.findByFirstMiddleAndLastNames(names);
 		System.out.println(obj.size());
 	}*/
+	/*public void testfindByLastName()
+	{
+		List<Object[]> params=candidateDAO.getLastName(2l);
+		for(Object[] list:params)
+		{
+			System.out.println(list.length);
+			System.out.println(list.toString());
+			
+			System.out.println(list);
+			
+			
+		}
+	}
+	*/
 	
+	public void testGetCandidateNameByCandidateId()
+	{
+		Object object = candidateDAO.getCandidateNameByCandidateId(900l);
+		System.out.println(object.toString());
+	}
 }
