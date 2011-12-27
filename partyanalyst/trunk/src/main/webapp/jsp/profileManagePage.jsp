@@ -2448,7 +2448,12 @@ function updatePhoto(fileId,fileGallaryId)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "createNewGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
-}	 
+}	
+
+function setSelectedCandidate(id)
+{
+	document.getElementById('candidateId').value = id;
+}
 </script>
 </head>
 <body>
@@ -2639,7 +2644,7 @@ $(document).ready(function() {
 			});
   });
 
-
+setSelectedCandidate(${candidateId});
 showPhotoGallary1();
 </script>
 </body>
