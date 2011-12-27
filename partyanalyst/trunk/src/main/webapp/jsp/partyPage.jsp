@@ -443,8 +443,8 @@ function callAjax(jsObj,url)
 			}
         else if(jsObj.task == "getSelectedStateDetails")
 			{ 
-			   clearOptionsListForSelectElmtId("stateDiv");
-               buildResults(myResults,"stateDiv");
+			   clearOptionsListForSelectElmtId(jsObj.divElmt);
+			   buildResults(myResults,jsObj.divElmt);
 			}			
 		
 		else if(jsObj.task == "getElectionTypesByStateId"){
@@ -464,6 +464,10 @@ function callAjax(jsObj,url)
 		  else if(jsObj.task =="PartyManifestoBasedOnStateId")
 			{
 				builImagesDiv(myResults); 
+			}
+		 else if(jsObj.task =="getPartyManifestoFile")
+			{
+				buildPartyManifesoGallary(myResults); 
 			}
 		}
 		catch(e)
@@ -1553,14 +1557,8 @@ function getNewsByLanguage(language)
 		str +='<table width=80%>';
 		str +='<tr><td>';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifesto(${partyVO.partyId});getCountry();" checked="true"> Country</td><td>';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="relatedState()"> State</td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'stateDiv\');"> State</td>';
 		str +='<td><div id="selectStatediv" style="display:none"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"/></div></td></tr>';
-		str+='<tr>';
-		str+='<td><select id="electionTypeDiv" style="display:none" onchange="getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
-		str+='</td>';
-		str+='<td><select id="electionYearDiv" style="display:none" onchange="getPartyManifestoFile()" class="selectWidth"></select>';
-		str+='</td>';
-		str+='</tr>';
 		str +='</table>';
 		str+='<div id="content">';
 		if(results!=null){
@@ -1630,21 +1628,34 @@ function getNewsByLanguage(language)
 		str+='<div class="more">';
 		str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
 		str +='</fieldset>';
-		 str+='<div id="buildManifestoGallaryDiv"></div>';
+		str+='<div id="buildManifestoGallaryDiv"><div id="selectionDiv"></div>';
+		str+='<div id="manifestoGallaryPopupDiv"></div></div>';
 		partyManifestoDivElmt.innerHTML = str;
 		
 	}
 function getPartyManifestoFile(){
 
-	var stateElmt = document.getElementById("stateDiv");
+	var stateElmt = document.getElementById("statePopUpDiv");
+	var electionTypeId =0;
+	var electionId =0;
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
-	var electionYearDivElmt = document.getElementById("electionYearDiv");
-	var electionId = electionYearDivElmt.options[electionYearDivElmt.selectedIndex].value;
+	var electionTypeIdElmt = document.getElementById("electionTypeDiv");
+    
+	if(electionTypeIdElmt.value !=''){
+		electionTypeId = electionTypeIdElmt.options[electionTypeIdElmt.selectedIndex].value;
+	}
+   var electionYearDivElmt = document.getElementById("electionYearDiv");
+   
+   if(electionYearDivElmt.value !=''){
+	electionId = electionYearDivElmt.options[electionYearDivElmt.selectedIndex].value;
+	}
+	
 	var jsObj = {
-		stateId : stateId,
-		electionId : electionId,
-		partyId : ${partyVO.partyId},
-		task : "getPartyManifestoFile"
+			partyId : ${partyVO.partyId},
+			stateId : stateId,
+			electionId : electionId,
+			electionTypeId : electionTypeId,		
+		    task : "getPartyManifestoFile"
 	  };
 		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getPartyRelatedManifestoFileAction.action?"+rparam;
@@ -1652,7 +1663,7 @@ function getPartyManifestoFile(){
 }
 function getElectionYearsBasedOnElecTypePartyIdAndStateId(){
 
-	var stateElmt = document.getElementById("stateDiv");
+	var stateElmt = document.getElementById("statePopUpDiv");
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 	var electionTypeIdElmt = document.getElementById("electionTypeDiv");
 	var electionTypeId = electionTypeIdElmt.options[electionTypeIdElmt.selectedIndex].value;
@@ -1670,9 +1681,9 @@ function getElectionYearsBasedOnElecTypePartyIdAndStateId(){
 
 }
 
-/*function getElectionTypesBasedOnStateId(){
-
-	var stateElmt = document.getElementById("stateDiv");
+function getElectionTypesBasedOnStateId(){
+	
+	var stateElmt = document.getElementById("statePopUpDiv");
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		var jsObj =
 		   {   
@@ -1685,10 +1696,10 @@ function getElectionYearsBasedOnElecTypePartyIdAndStateId(){
 	var url = "getElectionTypesBasedOnStateAction.action?"+rparam;						
 	callAjax(jsObj,url);
 
-}*/
+}
 function getPartyManifestoBasedOnStateId(){
 
-	var stateElmt = document.getElementById("stateDiv");
+	var stateElmt = document.getElementById("statePopUpDiv");
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		var jsObj =
 		   {   
@@ -1704,7 +1715,7 @@ function getPartyManifestoBasedOnStateId(){
 }
 function PartyManifestoPopup(){
 
-  if(document.getElementById('buildManifestoGallaryDiv') == null)
+ if(document.getElementById('buildManifestoGallaryDiv') == null)
 	   return;
    $("#buildManifestoGallaryDiv").dialog({ stack: false,
 						height: 570,
@@ -1715,11 +1726,31 @@ function PartyManifestoPopup(){
 						overlay: { opacity: 0.5, background: 'black'}
 						});
 	$("#buildManifestoGallaryDiv").dialog();
+	buildSelectionDiv();
 	showManifestoGallary();
+	
+	
 }
+function buildSelectionDiv(){
+	
+	var selectionDivElmt = document.getElementById("selectionDiv");
+	var str ='';
+	
+		str +='<table style="" >';
+		str +='<tr><td style="width:18%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifestoFile();getCountry();" checked="true"> Country</td><td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'statePopUpDiv\')"> State</td>';
+		str +='<td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><div id="selectStatePopupdiv" style="display:none"><select id="statePopUpDiv" onchange="getPartyManifestoFile();getElectionTypesBasedOnStateId();" class="selectWidth"/></div></td>';
+		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionTypeDiv" style="display:none" onchange="getPartyManifestoFile();getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
+		str+='</td>';
+		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionYearDiv" style="display:none" onchange="getPartyManifestoFile()" class="selectWidth"></select>';
+		str+='</tr></td>';
+		str +='</table>';
+selectionDivElmt.innerHTML = str;
+
+	}
 function showManifestoGallary()
 {
-
   var jsObj =
    {   
 	time : timeST,
@@ -1733,10 +1764,10 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 var url = "partyPhotoGallaryAction.action?"+rparam;						
 callAjax(jsObj,url);
 }
+
 function buildPartyManifesoGallary(results)
 {
-var str ='';
-
+	var str='';
 	str+='<div id="content" style="width:650px;">';		
 	str += '<fieldset class="imgFieldset">';
 	str +='<table  width="100%" style="margin-top:10px;">';
@@ -1758,7 +1789,7 @@ if(results.length <=0)
 	
 		str +='<tr><td>';
 		if(results[i].title=='Assembly'){
-		str += results[i].title+'('+results[i].description+')'+results[i].fileDate;
+		str += results[i].title+'   ('+results[i].description+') '+results[i].fileDate;
 		 }
 		else
 		 {
@@ -1780,7 +1811,7 @@ if(results.length <=0)
 	str += ' </table>';
 	str += ' </fieldset>';
 	str+='</div>';
-	document.getElementById("buildManifestoGallaryDiv").innerHTML = str;
+	document.getElementById("manifestoGallaryPopupDiv").innerHTML = str;
 }   
 function relatedState()
 {
@@ -1791,7 +1822,11 @@ function relatedState()
   selectedState();
 }
 function buildResults(results,divId){
-document.getElementById("selectStatediv").style.display = 'block';
+	
+	if(document.getElementById("selectStatediv").style.display = 'none')
+		document.getElementById("selectStatediv").style.display = 'block';
+	if(document.getElementById("selectStatePopupdiv").style.display = 'none')
+		document.getElementById("selectStatePopupdiv").style.display = 'block';
   var elmt = document.getElementById(divId);
   var option1;
         
@@ -1828,13 +1863,14 @@ document.getElementById("selectStatediv").style.display = 'block';
 			  }
 		 
 }
-function selectedState()
+function selectedState(selectStateDiv)
 {
- var jsObj =
+       var jsObj =
 		   {   
 		    time : timeST,
 			partyId:partyId,
-			task:"getSelectedStateDetails"
+			task:"getSelectedStateDetails",
+			divElmt : selectStateDiv
 		  };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
