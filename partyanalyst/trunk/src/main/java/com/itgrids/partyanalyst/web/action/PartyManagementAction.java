@@ -72,7 +72,34 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	JSONObject jObj = null;
 	private List<SelectOptionVO> electionTypesList;
 	private List<SelectOptionVO> electionYearsList;
+	private String profileType;
+	private String profileId;
+	private String profileGalleryType;
 	
+	public String getProfileType() {
+		return profileType;
+	}
+
+	public void setProfileType(String profileType) {
+		this.profileType = profileType;
+	}
+
+	public String getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(String profileId) {
+		this.profileId = profileId;
+	}
+
+	public String getProfileGalleryType() {
+		return profileGalleryType;
+	}
+
+	public void setProfileGalleryType(String profileGalleryType) {
+		this.profileGalleryType = profileGalleryType;
+	}
+
 	public void setElectionYearsList(List<SelectOptionVO> electionYearsList) {
 		this.electionYearsList = electionYearsList;
 	}
@@ -472,8 +499,8 @@ public String execute()
 		}
 	  return Action.SUCCESS;
   }
-  @SuppressWarnings("deprecation")
-public String uploadFiles()
+  
+  public String uploadFiles()
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -486,7 +513,12 @@ public String uploadFiles()
 		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
 		else
-			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
+		
+		if(profileType != null && profileId != null && profileGalleryType != null)
+		{
+			filePath = filePath + profileType + pathSeperator + profileId + pathSeperator + profileGalleryType + pathSeperator;
+		}
 		
 		try 
 		{
@@ -508,11 +540,16 @@ public String uploadFiles()
 			fileVO.setName(fileName);
 			fileVO.setDescription(getFileDescription());
 			fileVO.setContentType(fileType);
-			fileVO.setPath(filePath+pathSeperator+fileName);
 			fileVO.setLanguegeId(getLanguage());
 			fileVO.setIds(getPartyId());//setting party id
 			fileVO.setElectionId(getElectionId());
 			fileVO.setStateId(getLocationValue());
+			
+			if(profileType != null && profileId != null && profileGalleryType != null)
+				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
+			else
+				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+fileName);
+			
 			/* Here We are saving the to uploaded_files folder */
 			File fileToCreate = new File(filePath, fileName);
 			FileUtils.copyFile(userImage, fileToCreate);
