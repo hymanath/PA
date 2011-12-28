@@ -86,6 +86,7 @@
 		<pattern>/loginInputAction*</pattern>
 		<pattern>/candidateProfileAction*</pattern>
 		<pattern>/partyPageAction*</pattern>
+		<pattern>/specialPageAction*</pattern>
     </decorator>
 
 </decorators>
