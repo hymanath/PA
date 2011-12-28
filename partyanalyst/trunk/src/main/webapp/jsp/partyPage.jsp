@@ -1576,7 +1576,7 @@ function getNewsByLanguage(language)
 		 str +=''+results[0].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].pathOfFile+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[0].path+'\')}"/>';
 		str +='</td></tr><tr><td>';
 		//str +=''+results[0].problem+'';
 		str +='</td></tr>';
@@ -1595,7 +1595,7 @@ function getNewsByLanguage(language)
 		 str +=''+results[0].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].pathOfFile+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[1].path+'\')}"/>';
 		str +='</td></tr><tr><td>';
 		//str +=''+results[0].problem+'';
 		str +='</td></tr>';
@@ -1614,7 +1614,7 @@ function getNewsByLanguage(language)
 		 str +=''+results[0].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].pathOfFile+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[2].path+'\')}"/>';
 		str +='</td></tr><tr><td>';
 		//str +=''+results[2].problem+'';
 		str +='</td></tr>';
@@ -1796,7 +1796,7 @@ if(results.length <=0)
 		 str += results[i].title+'     '+results[i].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
 		str +='</td></tr><tr><td>';
 		str +=''+results[i].problem+'';
 		str +='</td></tr>';
