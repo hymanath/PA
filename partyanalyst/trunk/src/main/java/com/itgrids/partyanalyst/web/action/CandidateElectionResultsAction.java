@@ -90,7 +90,34 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long source;
 	private Long language;
 	private String isAdmin;
+	private String profileType;
+	private String profileId;
+	private String profileGalleryType;
 	
+	public String getProfileType() {
+		return profileType;
+	}
+
+	public void setProfileType(String profileType) {
+		this.profileType = profileType;
+	}
+
+	public String getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(String profileId) {
+		this.profileId = profileId;
+	}
+
+	public String getProfileGalleryType() {
+		return profileGalleryType;
+	}
+
+	public void setProfileGalleryType(String profileGalleryType) {
+		this.profileGalleryType = profileGalleryType;
+	}
+
 	public String getIsAdmin() {
 		return isAdmin;
 	}
@@ -664,8 +691,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 			filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
 		else
-			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
 		
+		if(profileType != null && profileId != null && profileGalleryType != null)
+		{
+			filePath = filePath + profileType + pathSeperator + profileId + pathSeperator + profileGalleryType + pathSeperator;
+		}
 		try 
 		{
 			String fileType = null;
@@ -686,7 +717,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setTitle(getFileTitle());
 			fileVO.setDescription(getFileDescription());
 			fileVO.setContentType(fileType);
-			fileVO.setPath(filePath+pathSeperator+fileName);
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
 			fileVO.setKeywords(getKeywords());
@@ -695,6 +725,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
+			
+			if(profileType != null && profileId != null && profileGalleryType != null)
+				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
+			else
+				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+fileName);
 			
 			/* Here We are saving the to uploaded_files folder */
 			File fileToCreate = new File(filePath, fileName);
