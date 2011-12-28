@@ -1085,12 +1085,13 @@ function getMoreResults(elecYear,elecType,constiId)
 			}));
 		</c:if>
 
+		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
 			myTabs.addTab( new YAHOO.widget.Tab({
 			    label: 'Panchayat Wise Election Info',
 			    content: buildPanchayatInfoTab()
 			    
 			}));
-
+		</c:if>
 		myTabs.appendTo('mandalPageTab');
 				
 	}
