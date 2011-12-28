@@ -2826,6 +2826,15 @@
 		</result>
 		</action>
 		
+		<action name="specialPageAction" class="specialPageAction">
+			<result name="success">/jsp/specialPage.jsp</result> 
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="specialPageManageAction" class="specialPageManageAction">
+			<result name="success">/jsp/specialPageManagePage.jsp</result> 
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
 		
 	</package>
 </struts>      
