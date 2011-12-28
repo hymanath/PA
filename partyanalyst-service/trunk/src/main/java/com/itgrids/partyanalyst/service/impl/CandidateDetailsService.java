@@ -757,7 +757,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			    FileVO fileVO = new FileVO();
 			    fileVO.setFileId((Long)imageDetails[0]);
 		    	fileVO.setName(imageDetails[1] != null ? imageDetails[1].toString() :"");		    			    	
-		   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+imageDetails[1].toString());
+		   	  	fileVO.setPath(imageDetails[2] != null ? imageDetails[2].toString() :"");
 		   	    fileVO.setFileTitle1(imageDetails[3] != null ? imageDetails[3].toString() :"");
 		   	    fileVO.setFileDescription1(imageDetails[4] != null ? imageDetails[4].toString() :"");
 		   	    fileVO.setGallaryName(imageDetails[5] != null ? imageDetails[5].toString() :"");
@@ -870,7 +870,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
