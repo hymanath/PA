@@ -565,6 +565,7 @@ function buildCreateGallaryDiv()
 
 function buildUploadPhotosDiv()
 {
+	var tempPartyId = document.getElementById("partyId").value; 
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
@@ -590,8 +591,10 @@ function buildUploadPhotosDiv()
 	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId"/></td></tr></table>';
 	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-
 	
+	str +='<input type="hidden" name="profileType" value="party_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	
 	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 
@@ -1631,6 +1634,7 @@ function getLocations(id){
 
 function  buildUploadNews()
 {
+   var tempPartyId = document.getElementById("partyId").value;
    var str ='';
 	str+='<div id="content" style="width:650px;">';
 	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
@@ -1702,7 +1706,12 @@ function  buildUploadNews()
 	str +='       <div id="showScopeSubs" />'; 
 	str +='    </td>';
 	str +='  </tr>';
-	 str += '</table>';
+	str += '</table>';
+
+	str +='<input type="hidden" name="profileType" value="party_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
+
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
@@ -2607,8 +2616,8 @@ function updatePhoto(fileId,fileGallaryId)
 		return;
 	  }
   function uploadPartyManifestoDiv()
-    {
-	
+  {
+	var tempPartyId = document.getElementById("partyId").value; 
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 	
@@ -2651,6 +2660,11 @@ function updatePhoto(fileId,fileGallaryId)
     str +='	   <td colspan="2"><div id="assmblParlElecYears" /></td>';
     str +='  </tr>';
 	str += '</table>';
+	
+	str +='<input type="hidden" name="profileType" value="party_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="manifestoes">';
+
 	str += '<table  align="left" style="padding-left:115px;"><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '<input type="hidden" name="partyId" value=\''+document.getElementById("partyId").value+'\' />';
 	str += '<input type="hidden" name="time" value=\''+new Date().getTime()+'\' />';
@@ -2663,6 +2677,7 @@ function updatePhoto(fileId,fileGallaryId)
 	getElectionType();
 	getLanguage();
 	}
+
 	function uploadManifesto()
 	{	    
 	  if(validateManifestoUpload())
