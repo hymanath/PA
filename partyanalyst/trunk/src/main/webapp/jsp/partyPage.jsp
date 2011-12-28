@@ -1825,8 +1825,10 @@ function buildResults(results,divId){
 	
 	if(document.getElementById("selectStatediv").style.display = 'none')
 		document.getElementById("selectStatediv").style.display = 'block';
+	if(document.getElementById("selectStatePopupdiv")){
 	if(document.getElementById("selectStatePopupdiv").style.display = 'none')
 		document.getElementById("selectStatePopupdiv").style.display = 'block';
+	}
   var elmt = document.getElementById(divId);
   var option1;
         
