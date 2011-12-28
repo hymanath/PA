@@ -803,6 +803,12 @@
 	   <property name="partyDetailsService" ref="partyDetailsService" />
 	   <property name="candidateDetailsService" ref="candidateDetailsService" />
 	   <property name="staticDataService" ref="staticDataService" />
-	</bean>																				
+	</bean>	
 	
+	<bean id="specialPageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageAction" singleton="false">	
+	</bean>
+	
+	<bean id="specialPageManageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageManageAction" singleton="false">	
+	</bean>
+			
 </beans>	
