@@ -1,23 +1,32 @@
 package com.itgrids.partyanalyst.model;
 
-import java.io.Serializable;                         
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="special_page_description")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SpecialPageDescription implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Long specialPageDescriptionId; 
-	private Long specialPageId; 
+	private SpecialPage specialPage; 
 	private String description;
 	private Long orderNo;
 
@@ -25,10 +34,10 @@ public class SpecialPageDescription implements Serializable{
 	
 	public SpecialPageDescription(){
 	}
-	public SpecialPageDescription(Long specialPageId,String description,Long orderNo){
+	public SpecialPageDescription(SpecialPage specialPage,String description,Long orderNo){
 		
 		this.description = description;
-		this.specialPageId = specialPageId;
+		this.specialPage = specialPage;
 		this.orderNo = orderNo;
 	
 	}
@@ -43,14 +52,16 @@ public class SpecialPageDescription implements Serializable{
 		this.specialPageDescriptionId = specialPageDescriptionId;
 	}
 	
-	@Column(name="special_page_id")
-	public Long getSpecialPageId() {
-		return specialPageId;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "special_page_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public SpecialPage getSpecialPage() {
+		return specialPage;
 	}
-	public void setSpecialPageId(Long specialPageId) {
-		this.specialPageId = specialPageId;
+	public void setSpecialPage(SpecialPage specialPage) {
+		this.specialPage = specialPage;
 	}
-	
 	@Column(name="description",length=1000)
 	public String getDescription() {
 		return description;

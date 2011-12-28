@@ -1,16 +1,22 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "special_page")
@@ -26,6 +32,9 @@ public class SpecialPage extends BaseModel implements java.io.Serializable{
 	private Date createdDate;
 	private Date updateddate;
 	private String isDelete;
+	private Set<SpecialPageDescription> specialPageDescriptions = new HashSet<SpecialPageDescription>(0);
+	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
+	private Set<SpecialPageUpdatesEmail> specialPageUpdatesEmails = new HashSet<SpecialPageUpdatesEmail>(0);
 	
 	public SpecialPage()
 	{}
@@ -104,6 +113,38 @@ public class SpecialPage extends BaseModel implements java.io.Serializable{
 
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specialPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<SpecialPageDescription> getSpecialPageDescriptions() {
+		return specialPageDescriptions;
+	}
+
+	public void setSpecialPageDescriptions(
+			Set<SpecialPageDescription> specialPageDescriptions) {
+		this.specialPageDescriptions = specialPageDescriptions;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specialPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<SpecialPageGallery> getSpecialPageGalleries() {
+		return specialPageGalleries;
+	}
+
+	public void setSpecialPageGalleries(Set<SpecialPageGallery> specialPageGalleries) {
+		this.specialPageGalleries = specialPageGalleries;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specialPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<SpecialPageUpdatesEmail> getSpecialPageUpdatesEmails() {
+		return specialPageUpdatesEmails;
+	}
+
+	public void setSpecialPageUpdatesEmails(
+			Set<SpecialPageUpdatesEmail> specialPageUpdatesEmails) {
+		this.specialPageUpdatesEmails = specialPageUpdatesEmails;
 	}
 	
 	
