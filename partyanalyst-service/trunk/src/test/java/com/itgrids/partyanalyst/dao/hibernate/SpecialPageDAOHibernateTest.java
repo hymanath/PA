@@ -4,7 +4,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 
-public class SpecailPageDAOHibernateTest extends BaseDaoTestCase{
+public class SpecialPageDAOHibernateTest extends BaseDaoTestCase{
 	
 	private ISpecialPageDAO specialPageDAO;
 

@@ -3,15 +3,22 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="special_page_gallery")
@@ -20,8 +27,8 @@ public class SpecialPageGallery  implements Serializable{
 	
 	private static final long serialVersionUID = -1142255989596343369L;
 	private Long specialPageGalleryId;
-	private Long galleryId;
-	private Long specialPageId;
+	private Gallary gallary;
+	private SpecialPage specialPage;
 	private Date createdDate;
 	private Date updatedDate; 
 	private String isDelect;
@@ -29,11 +36,11 @@ public class SpecialPageGallery  implements Serializable{
 	public SpecialPageGallery(){
 		
 	}
-	public SpecialPageGallery(Long specialPageGalleryId,Long galleryId,Long specialPageId,Date createdDate,Date updatedDate,String isDelect){
+	public SpecialPageGallery(Long specialPageGalleryId,Gallary gallary,SpecialPage specialPage,Date createdDate,Date updatedDate,String isDelect){
 		 this.createdDate = createdDate;
 		 this.specialPageGalleryId =specialPageGalleryId;
-		 this.galleryId = galleryId;
-		 this.specialPageId = specialPageId;
+		 this.gallary = gallary;
+		 this.specialPage = specialPage;
 		 this.updatedDate = updatedDate;
 		 this.isDelect = isDelect;
 		 
@@ -50,21 +57,27 @@ public class SpecialPageGallery  implements Serializable{
 	public void setSpecialPageGalleryId(Long specialPageGalleryId) {
 		this.specialPageGalleryId = specialPageGalleryId;
 	}
-	//gallary_id        bigint(15) NULL
-	@Column(name="gallary_id")
-	public Long getGalleryId() {
-		return galleryId;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "gallary_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Gallary getGallary() {
+		return gallary;
 	}
-	public void setGalleryId(Long galleryId) {
-		this.galleryId = galleryId;
+	public void setGallary(Gallary gallary) {
+		this.gallary = gallary;
 	}
-	//special_page_id        bigint(15) NULL
-	@Column(name="special_page_id")
-	public Long getSpecialPageId() {
-		return specialPageId;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "special_page_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public SpecialPage getSpecialPage() {
+		return specialPage;
 	}
-	public void setSpecialPageId(Long specialPageId) {
-		this.specialPageId = specialPageId;
+	public void setSpecialPage(SpecialPage specialPage) {
+		this.specialPage = specialPage;
 	}
 	//created_date        timestamp NULL
 	@Column(name="created_date",length = 10)

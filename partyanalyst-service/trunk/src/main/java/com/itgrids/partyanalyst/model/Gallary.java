@@ -45,6 +45,7 @@ public class Gallary implements Serializable{
 	private Candidate candidate;
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
+	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
 	/* default constructor*/
 	
 	public Gallary(){
@@ -170,6 +171,16 @@ public class Gallary implements Serializable{
 
 	public void setPartyGallery(Set<PartyGallery> partyGallery) {
 		this.partyGallery = partyGallery;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gallary")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SpecialPageGallery> getSpecialPageGalleries() {
+		return specialPageGalleries;
+	}
+
+	public void setSpecialPageGalleries(Set<SpecialPageGallery> specialPageGalleries) {
+		this.specialPageGalleries = specialPageGalleries;
 	}
 	
 
