@@ -950,5 +950,8 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
 	</bean>
+	
+	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
+	</bean>
 </beans>		
 		
