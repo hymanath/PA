@@ -1699,7 +1699,7 @@ function getElectionTypesBasedOnStateId(){
 }
 function getPartyManifestoBasedOnStateId(){
 
-	var stateElmt = document.getElementById("statePopUpDiv");
+	var stateElmt = document.getElementById("stateDiv");
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		var jsObj =
 		   {   
