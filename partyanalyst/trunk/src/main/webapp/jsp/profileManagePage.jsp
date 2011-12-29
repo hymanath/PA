@@ -554,6 +554,7 @@ function buildCreateGallaryDiv()
 
 function buildUploadPhotosDiv()
 {
+	var tempCandidateId = document.getElementById("candidateId").value;
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
@@ -580,7 +581,9 @@ function buildUploadPhotosDiv()
 	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 
-	
+	str +='<input type="hidden" name="profileType" value="candidate_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	
 	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 
@@ -1504,7 +1507,8 @@ function getLocations(id){
 
 function  buildUploadNews()
 {
-   var str ='';
+	var tempCandidateId = document.getElementById("candidateId").value;
+	var str ='';
 	str+='<div id="content" style="width:650px;">';
 	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str +=  '<tr>';
@@ -1575,7 +1579,12 @@ function  buildUploadNews()
 	str +='       <div id="showScopeSubs" />'; 
 	str +='    </td>';
 	str +='  </tr>';
-	 str += '</table>';
+	str += '</table>';
+	
+	str +='<input type="hidden" name="profileType" value="candidate_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
+
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
