@@ -18,11 +18,9 @@ public class PartyManifestoDAO extends
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartyManifestoInfo(Long partyId) {
-		return getHibernateTemplate()
-				.find(
-						"select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,"
-								+ "model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language "
-								+ "from PartyManifesto model where  model.party.partyId=? and model.election.electionScope.electionType.electionType ='"+IConstants.PARLIAMENT_ELECTION_TYPE+"'",
+		return getHibernateTemplate().find("select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,"
+					+ "model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language "
+					+ "from PartyManifesto model where  model.party.partyId=? and model.election.electionScope.electionType.electionType ='"+IConstants.PARLIAMENT_ELECTION_TYPE+"'",
 						partyId);
 	}
 
@@ -55,13 +53,9 @@ public class PartyManifestoDAO extends
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartyManifestoInfo(Long partyId, String queryStr) {
 		
-		return getHibernateTemplate()
-		.find(
-				"select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,model.state.stateName,"
+		return getHibernateTemplate().find("select model.party.longName,model.party.shortName,model.election.electionScope.electionType.electionType,model.state.stateName,"
 						+ "model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language "
-						+ "from PartyManifesto model where  model.party.partyId=? "+queryStr+"",
-				partyId);
-		
+						+ "from PartyManifesto model where  model.party.partyId=? "+queryStr+"",partyId);
 	}
 	
 }
