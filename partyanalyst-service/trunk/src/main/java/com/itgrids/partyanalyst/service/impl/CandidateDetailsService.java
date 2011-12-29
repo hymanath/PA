@@ -372,7 +372,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  for(Object[] newsDetails: results){
 			    FileVO fileVO = new FileVO();
 		    	fileVO.setName(newsDetails[0] != null ? newsDetails[0].toString() :"");		    			    	
-		   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[0].toString());
+		   	  	fileVO.setPath(newsDetails[1] != null ? newsDetails[1].toString() :"");
 		   	    fileVO.setFileTitle1(newsDetails[2] != null ? newsDetails[2].toString() :"");
 		   	    fileVO.setFileDescription1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 		   	    fileVO.setScope(newsDetails[4] != null ? newsDetails[4].toString() :"");
@@ -645,11 +645,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    for(Object[] startingRecord: record){
 		    	fileVO.setFileId((Long)startingRecord[0]);
 		    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
-		    	if(type.equalsIgnoreCase(IConstants.VIDEO_GALLARY))
-		    		fileVO.setPath(startingRecord[2].toString());
-		    	else
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
-		    	
+		    	fileVO.setPath(startingRecord[2].toString());
 		    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
 		    	
 		    }
@@ -682,7 +678,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    {
 		    	fileVO.setFileId((Long)startingRecord[0]);
 		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
 		    	fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString() :"");
 		    	fileVO.setGallaryId((Long)gallary[0]);
 			    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
@@ -715,7 +711,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    for(Object[] startingRecord: record){
 		    	fileVO.setFileId((Long)startingRecord[0]);
 		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+startingRecord[1].toString());
+		    	fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
 		    	String title =""; 
 		   	    if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
 		   	    {
@@ -780,7 +776,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    String desc=""; 
 			   	    if(newsDetails[4] != null && newsDetails[4].toString().length()>=55)
@@ -819,7 +815,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -845,7 +841,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -1474,7 +1470,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -1504,14 +1500,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    returnValue.add(fileVO);	  
+			   	    returnValue.add(fileVO);
 			 }
 		  
 		  return returnValue;
@@ -1534,7 +1530,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -1602,7 +1598,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(IConstants.UPLOADED_FILES+"/"+newsDetails[1].toString());
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
 			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
@@ -1800,7 +1796,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			 fileVO.setCandidateName(result.get(i).getGallary().getCandidate().getLastname());
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setFileName1(result.get(i).getFile().getFileName());
-			 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+result.get(i).getFile().getFileName());
+			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
 			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
 				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
 			 
