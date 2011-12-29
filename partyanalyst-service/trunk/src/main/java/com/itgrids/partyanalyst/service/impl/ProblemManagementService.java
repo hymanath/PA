@@ -3810,7 +3810,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			fileVO.setFile(images[0].toString());
 			fileVO.setTitle(images[1].toString());
 			fileVO.setDescription(images[2].toString());
-			fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+images[0].toString());
+			fileVO.setPathOfFile(images[3].toString());
 			fileVOList.add(fileVO);			
 		}
 		return fileVOList; 
