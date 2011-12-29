@@ -482,47 +482,36 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 	}
 
-	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,
-			int firstRecord, int maxRecord, String type) {
+	public List<FileVO> getPartyPhotoGallaryDetail(Long partyId,int firstRecord, int maxRecord, String type) 
+	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
 		try {
-			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(
-					partyId, firstRecord, maxRecord, type);
+			List<Object[]> results = partyGalleryDAO.getPartyGallaryDetail(partyId, firstRecord, maxRecord, type);
 
-			for (Object[] gallary : results) {
+			for (Object[] gallary : results) 
+			{
 				FileVO fileVO = new FileVO();
-				List<Object[]> record = fileGallaryDAO
-						.getStartingRecordInGallary((Long) gallary[0]);
-				for (Object[] startingRecord : record) {
+				List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long) gallary[0]);
+				for (Object[] startingRecord : record)
+				{
 					fileVO.setFileId((Long) startingRecord[0]);
-					fileVO.setName(startingRecord[1] != null ? WordUtils
-							.capitalize(startingRecord[1].toString()) : "");
-					if (type.equalsIgnoreCase(IConstants.VIDEO_GALLARY))
-						fileVO.setPath(startingRecord[2].toString());
-					else
-						fileVO.setPath(IConstants.UPLOADED_FILES + "/"
-								+ startingRecord[1].toString());
-
-					fileVO.setTitle(startingRecord[3] != null ? WordUtils
-							.capitalize(startingRecord[3].toString()) : "");
+					fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) : "");
+					fileVO.setPath(startingRecord[2].toString());
+					fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) : "");
 
 				}
+				
 				fileVO.setGallaryId((Long) gallary[0]);
-				fileVO.setSizeOfGallary((long) (fileGallaryDAO
-						.getAllRecordInGallary((Long) gallary[0]).size()));
-				fileVO.setGallaryName(gallary[1] != null ? WordUtils
-						.capitalize(gallary[1].toString()) : "");
-				fileVO.setGallaryDescription(gallary[2] != null ? WordUtils
-						.capitalize(gallary[2].toString()) : "");
-				fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3]
-						.toString() : "");
-				fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4]
-						.toString() : "");
+				fileVO.setSizeOfGallary((long) (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size()));
+				fileVO.setGallaryName(gallary[1] != null ? WordUtils.capitalize(gallary[1].toString()) : "");
+				fileVO.setGallaryDescription(gallary[2] != null ? WordUtils.capitalize(gallary[2].toString()) : "");
+				fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() : "");
+				fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() : "");
 				retValue.add(fileVO);
 			}
 			return retValue;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception Occured, Please Check For Log Details - "+e);
 			return retValue;
 		}
 	}
@@ -717,7 +706,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 	 	   	 fileVO.setPath(objects[6].toString());
 	 	   	 fileVO.setProblem(objects[7].toString());
 	 	   	 fileVO.setLanguage(objects[8].toString());
-	 	   	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[5].toString());
+	 	   	 fileVO.setPathOfFile(objects[6].toString());
  	   	fileVOList.add(fileVO);
  	  }
      return fileVOList;
@@ -756,7 +745,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 	   	 fileVO.setPath(objects[7].toString());
 	   	 fileVO.setProblem(objects[8].toString());
 	   	 fileVO.setLanguage(objects[9].toString());
-	   	 fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/"+objects[6].toString());
+	   	 fileVO.setPathOfFile(objects[7].toString());
 	   	 retValue.add(fileVO);
 	  }
     return retValue;
