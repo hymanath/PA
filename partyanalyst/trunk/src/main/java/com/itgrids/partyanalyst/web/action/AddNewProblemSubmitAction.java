@@ -528,7 +528,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
 				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
 			else
-				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+"\\";
+				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
 			
 			problemFilePathList = new ArrayList<String>();
 			
