@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -40,6 +42,7 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 
 	
 	private static final long serialVersionUID = 1L;
+	private static final Logger log = Logger.getLogger(PartyManagementAction.class);
 	private List<SelectOptionVO> partyList;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
