@@ -805,7 +805,8 @@
 	   <property name="staticDataService" ref="staticDataService" />
 	</bean>	
 	
-	<bean id="specialPageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageAction" singleton="false">	
+	<bean id="specialPageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageAction" singleton="false">
+		<property name="specialPageService" ref="specialPageService" />	
 	</bean>
 	
 	<bean id="specialPageManageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageManageAction" singleton="false">	
