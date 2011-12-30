@@ -21,9 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -49,7 +52,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private static final Logger log = Logger.getLogger(CandidateElectionResultsAction.class);
 	private Long candidateId;
 	private List<CandidateDetailsVO> candidateElectionDetails;
 	private CandidateVO candidateVO;
@@ -680,6 +683,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	@SuppressWarnings("deprecation")
 	public String uploadFiles()
 	{
+		log.debug("Enter into uploadFiles() Method");
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
@@ -743,9 +747,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				inputStream = new StringBufferInputStream("fail");
 						
 		}
-		catch (Exception e) {
+		catch (Exception e) 
+		{
 			inputStream = new StringBufferInputStream("fail");
-	}
+			log.error("Exception Occured in uploadFile() method, Exception is - "+e); 
+		}
 		return Action.SUCCESS;
 	}
      
