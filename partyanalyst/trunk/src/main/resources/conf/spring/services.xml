@@ -952,6 +952,7 @@
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
+		<property name="specialPageDescriptionDAO" ref="specialPageDescriptionDAO"/>
 	</bean>
 </beans>		
 		
