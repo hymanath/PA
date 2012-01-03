@@ -2836,5 +2836,70 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="specialEmailAlertsForUserAction" class="specialPageAction" method="setEmailAlertsForEvent">
+			<result type="json" name="success">
+           		<param name="root">result</param>			
+			</result>						
+		</action>
+		
+		<action name="getEventGallariesForUplaodAction" class="specialPageManageAction" method="getEventDescription">
+			<result type="json" name="success">
+				<param name="root">specialPageList</param>
+			</result>
+		</action>
+		
+		<action name="deleteEventGallaryAction" class="specialPageManageAction" method="deleteEventDescription">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="EventManageAction" class="specialPageManageAction" method="saveEventDescription">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="createUpdateEventGallaryAction" class="specialPageManageAction" method="updateEventDescription">
+			<result type="json" name="success">
+				<param name="root">result</param></result>
+		</action>
+		
+		<action name="createNewEventGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="getEventsGallariesForUplaodAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionList</param>
+			</result>
+		</action>
+		
+		<action name="eventManageAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionList</param>
+			</result>
+		</action>
+			
+        <action name="createEventGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+		</action>
+				
 	</package>
 </struts>      
