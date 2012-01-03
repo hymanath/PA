@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${candidateVO.candidateName} 'S  Profile</title>
-<META NAME="Keywords" CONTENT="${candidateVO.candidateName},${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} constituency,${candidateVO.candidateName} election details">
-<meta name="description" content="${candidateVO.candidateName} news,${candidateVO.candidateName} photos,${candidateVO.candidateName} videos,${candidateVO.candidateName} gallaries,${candidateVO.candidateName} election results and analysis">
+<title>${candidateVO.candidateName} 'S  Profile , News, Photos, Constituency, Election details and Election results and Analysis</title>
+<META NAME="Keywords" CONTENT="${candidateVO.candidateName}  News, Photos, Constituency, Election details and Election results and Analysis">
+<meta name="description" content="${candidateVO.candidateName}  News, Photos, Constituency, Election details and Election results and Analysis">
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
