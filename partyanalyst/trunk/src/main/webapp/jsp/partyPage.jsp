@@ -6,9 +6,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${partyVO.partyLongName} Party</title>
-<META NAME="Keywords" CONTENT="${partyVO.partyLongName},${partyVO.partyLongName} news,${partyVO.partyLongName} photos,${partyVO.partyLongName} election details ,${partyVO.partyShortName} news ,${partyVO.partyShortName} photos ,${partyVO.partyShortName} election details">
-<meta name="description" content="${partyVO.partyLongName} news,${partyVO.partyLongName} photos,${partyVO.partyLongName} videos,${partyVO.partyLongName} gallaries,${partyVO.partyLongName} election results and analysis , ${partyVO.partyShortName} news , ${partyVO.partyShortName} photos,${partyVO.partyShortName} videos,${partyVO.partyShortName} election results and analysis,${partyVO.partyShortName} gallery,${partyVO.partyShortName} galleries ">
+<title>${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS</title>
+<META NAME="Keywords" CONTENT="${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS">
+<meta name="description" content="${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS">
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
@@ -1552,7 +1552,7 @@ function getNewsByLanguage(language)
 		var str ='';
 		
 		var str ='';
-		str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifesto</span></h3>';
+		str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h3>';
 		str += '<fieldset class="imgFieldset">';
 		str +='<table width=80%>';
 		str +='<tr><td>';
