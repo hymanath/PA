@@ -6,6 +6,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title></title>
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	 
+	<!-- YUI Skin Sam -->
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	
+<!-- JQuery files (Start) -->
+
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+
+
+
 <style>
 #problemHead
 {
@@ -202,10 +233,10 @@ font-size:18px;
 					<table>
 					  <tr>
 						<td style="padding-left:93px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick=""></b></td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick=""></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick=""></b> </td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick=""></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick=""></b> </td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 						<!--<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Party Manifesto" id="manifestoId" onClick="uploadPartyManifesto()"></b> </td>-->
 					  </tr>
 					</table>
@@ -262,12 +293,13 @@ font-size:18px;
 				 </tr>
 			</table>
 		</div>
+	
 
-		<div id='videoGallaryDiv' class="divInfo">
+		
+	</div>
+	<div id='videoGallaryDiv' class="divInfo">
 		
 		</div>
-
-	</div>
 
 	<!-- for  body 2 end    result  -->
 	<div id='profileManagementMainOuterDiv3' style="display:none">
@@ -285,10 +317,12 @@ font-size:18px;
 					   </td>
 				 </tr>
 			</table>
-			<div id='newsGallaryDiv' class="divInfo">
-		 </div>		
+				
 		</div>
+			
 	</div>
+	<div id='newsGallaryDiv' class="divInfo">
+		 </div>
 
 	<!-- for  body Discription start      -->
 
@@ -309,11 +343,11 @@ font-size:18px;
 			</table>
 		</div>
 
-		<div id='discriptionDiv' class="divInfo">
+		
+	</div>
+		<div id='descriptionDiv' class="divInfo">
 		
 		</div>
-	</div>
-		
 	<div id='profileManagementMainOuterDiv6' style="display:none">
 		<div id='profileManagementHeaderDiv2'>
 			<table width="100%" cellspacing="0" cellpadding="0" border="0">
