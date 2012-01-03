@@ -278,7 +278,12 @@ public class PartyDetailsService implements IPartyDetailsService {
 		List<Party> party = partyDAO.getPartyDetails(partyId);
 		if (party != null) {
 			for (Party party2 : party) {
-				partyVO.setPartyLongName(party2.getLongName());
+				
+				if(party2.getLongName().contains("PARTY"))
+					partyVO.setPartyLongName(party2.getLongName());
+				else
+					partyVO.setPartyLongName(party2.getLongName() + " PARTY");
+				
 				partyVO.setAddress(party2.getAddress());
 				partyVO.setPartyFlag(party2.getPartyFlag());
 				partyVO.setPartyId(party2.getPartyId());
@@ -286,7 +291,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 				partyVO.setPartyRecognization(party2.getPartyRecognization());
 				partyVO.setPartyShortName(party2.getShortName());
 				partyVO.setSymbol(party2.getSymbol());
-
 			}
 			return partyVO;
 		}
