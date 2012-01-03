@@ -6,6 +6,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -33,6 +35,7 @@ public class PartyPageAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = -4697694648631810338L;
+	private static final Logger log = Logger.getLogger(PartyPageAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private Long partyId;
@@ -142,7 +145,7 @@ public class PartyPageAction extends ActionSupport implements
 		return task;
 	}
 	public String execute() throws Exception {
-		Log.debug("Entered into party page action");
+		log.debug("Entered into party page action");
 		request.setAttribute("partyId", partyId);
 		partyVO = partyDetailsService.getPartyDetails(partyId);
 		descriptions = partyDetailsService.getPartyProfileDescriptionById(partyId);
