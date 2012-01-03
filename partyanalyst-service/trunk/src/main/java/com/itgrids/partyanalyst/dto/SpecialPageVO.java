@@ -6,7 +6,28 @@ public class SpecialPageVO {
 	private String title;
 	private String heading;
 	private String eventImagePath;
+	private Long orderNo;
+	private String description;
+	private Long specialPageDescriptionId;
 	
+	public Long getSpecialPageDescriptionId() {
+		return specialPageDescriptionId;
+	}
+	public void setSpecialPageDescriptionId(Long specialPageDescriptionId) {
+		this.specialPageDescriptionId = specialPageDescriptionId;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getSpecialPageId() {
 		return specialPageId;
 	}
