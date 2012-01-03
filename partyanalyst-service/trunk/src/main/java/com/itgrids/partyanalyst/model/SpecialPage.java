@@ -147,6 +147,4 @@ public class SpecialPage extends BaseModel implements java.io.Serializable{
 		this.specialPageUpdatesEmails = specialPageUpdatesEmails;
 	}
 	
-	
-	
 }
