@@ -958,15 +958,16 @@
 		<property name="contentTypeDAO" ref="contentTypeDAO" />
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
-		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="sourceDAO" ref="sourceDAO" />
 		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
-		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
+		<property name="fileGallaryDAO" ref="fileGallaryDAO"/>
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 	</bean>
 </beans>		
 		
