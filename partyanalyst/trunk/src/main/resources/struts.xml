@@ -2836,6 +2836,18 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="specialPagePhotoGallaryAction" class="specialPageAction" method="ajaxCallHandlerForSpecialPage">
+			<result type="json" name="success">
+           		<param name="root">fileVOList</param>
+        	</result>	
+		</action>
+		
+		<action name="getLatestVideosAction" class="specialPageAction" method="getLatestVideosForSpecialPage">
+			<result type="json" name="success">
+           		<param name="root">fileVOList</param>
+        	</result>	
+		</action>
+		
 		<action name="specialEmailAlertsForUserAction" class="specialPageAction" method="setEmailAlertsForEvent">
 			<result type="json" name="success">
            		<param name="root">result</param>			
