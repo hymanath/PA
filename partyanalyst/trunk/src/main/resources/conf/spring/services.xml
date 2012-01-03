@@ -953,6 +953,20 @@
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
 		<property name="specialPageDescriptionDAO" ref="specialPageDescriptionDAO"/>
+		<property name="specialPageDAO" ref="specialPageDAO"/>
+		<property name="specialPageUpdatesEmailDAO" ref="specialPageUpdatesEmailDAO"/>
+		<property name="contentTypeDAO" ref="contentTypeDAO" />
+		<property name="gallaryDAO" ref="gallaryDAO" />
+		<property name="userGallaryDAO" ref="userGallaryDAO" />
+		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="sourceDAO" ref="sourceDAO" />
+		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="fileDAO" ref="fileDAO" />
+		<property name="fileTypeDAO" ref="fileTypeDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="regionScopesDAO" ref="regionScopesDAO" />
 	</bean>
 </beans>		
 		
