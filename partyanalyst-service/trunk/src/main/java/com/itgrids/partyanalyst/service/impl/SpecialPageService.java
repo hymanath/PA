@@ -39,12 +39,14 @@ import com.itgrids.partyanalyst.model.SpecialPageDescription;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
 import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
-public class SpecialPageService implements ISpecialPageService {
+public class SpecialPageService implements ISpecialPageService{
+	
 	//log object creation
 	public static final Logger log = Logger.getLogger(SpecialPageService.class);
 	private ISpecialPageDAO specialPageDAO;
@@ -72,6 +74,15 @@ public class SpecialPageService implements ISpecialPageService {
 	private IFileGallaryDAO fileGallaryDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private List<SelectOptionVO> gallarySelectList;
+	private ICandidateDetailsService candidateDetailsService;
+
+	public void setCandidateDetailsService(ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
 
 	public List<SelectOptionVO> getGallarySelectList() {
 		return gallarySelectList;
@@ -253,33 +264,206 @@ public class SpecialPageService implements ISpecialPageService {
 	public ISpecialPageDescriptionDAO getSpecialPageDescriptionDAO() {
 		return specialPageDescriptionDAO;
 	}
-
+	
 	public void setSpecialPageDescriptionDAO(
 			ISpecialPageDescriptionDAO specialPageDescriptionDAO) {
 		this.specialPageDescriptionDAO = specialPageDescriptionDAO;
 	}
-
+	
 	//implementations of declaration reference variable
 	public List<String> getSpecialPageDescription(Long specialPageId)
 	{
-	 	List<String> descList = new ArrayList<String>(0); 
+		 List<String> descList = new ArrayList<String>(0); 
 	   try{
 			log.debug("Entered into getSpecialPageDescription() Method");
+			 
 		     List<Object> results = specialPageDescriptionDAO.getSpecialPageDescription(specialPageId);
 		 
 		   if(results != null && results.size() >0)
 		   {
-			  
+			 
 			   for(Object desc :results)
 				 descList.add(desc.toString());
 			   
 		   }
-		  return descList;
+		   return descList;
 	   }catch(Exception e){
 		 log.error("Exception Occured in getCandidateProfileDescriptionByCandidateID() method - "+e);
 		 return descList;
 		 }
 	}
+	
+	/**
+	 * Used to retrieve SpecialPage BasicDetails
+	 * @param specialPageId
+	 * @return specialPageVO
+	 */
+	public SpecialPageVO getSpecialPageBasicDetails(Long specialPageId) {
+		
+		specialPageVO = new SpecialPageVO();
+ 	try {
+		List<Object[]> specialPageDetails = specialPageDAO.getSpecialPageDetails(specialPageId);
+		if(specialPageDetails !=null && specialPageDetails.size() >0){
+			for(Object[] params : specialPageDetails){
+				
+				specialPageVO.setTitle(params[0].toString());
+				specialPageVO.setHeading(params[1].toString());
+				specialPageVO.setEventImagePath(params[2].toString());
+				specialPageVO.setSpecialPageId((Long)params[3]);
+			}
+		 }
+		return specialPageVO;
+ 	}catch (Exception e) {
+		e.printStackTrace();
+		return specialPageVO;
+	}
+	
+  }
+	/**
+	 * To get Photo Gallery 
+	 * @param specialPageId
+	 * @return fileVOList
+	 */
+	public List<FileVO> getPhotoGalleryBasedOnSpecialPageId(Long specialPageId){
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		List<Object[]> gallaries = specialPageGalleryDAO.getSpecialPageGallaryDetails(specialPageId, IConstants.PHOTO_GALLARY);
+		
+		if(gallaries != null && gallaries.size() >0){
+			fileVOList = setGallaryObjectToFileVO(gallaries);
+		}
+		return fileVOList;
+		
+	}
+	
+	/**
+	 * To get News Gallery
+	 * @param specialPageId
+	 * @return fileVOList
+	 */
+	public List<FileVO> getNewsGalleryBasedOnSpecialPageId(Long specialPageId,int startingRecord,int maxRecord , String queryType){
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		List<File> fileObject = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(specialPageId, startingRecord, maxRecord, IConstants.NEWS_GALLARY);
+		
+		if(fileObject != null && fileObject.size() >0){
+			
+			for (File file2 : fileObject) 
+			{
+				FileVO fileVO = new FileVO();
+				fileVO.setFileId((Long) file2.getFileId());
+				fileVO.setFileName1(file2.getFileName() != null ? file2.getFileName() : "");
+				fileVO.setPath(file2.getFilePath());
+				fileVO.setFileTitle1(file2.getFileTitle() != null ? file2.getFileTitle() : "");
+				fileVO.setFileDescription1(file2.getFileDescription() != null ? file2.getFileDescription(): "");
+				fileVO.setSource(file2.getSourceObj() != null ? file2.getSourceObj().getSource() : "");
+				fileVO.setLanguage(file2.getLanguage() != null ? file2.getLanguage().getLanguage() : "");
+				fileVO.setFileDate(file2.getFileDate() != null ? file2.getFileDate().toString() : "");
+				fileVOList.add(fileVO);
+			}
+		}
+		return fileVOList;
+	}
+	
+	/**
+	 * To get Video Gallery
+	 * @param specialPageId
+	 * @return fileVOList
+	 */
+	public List<FileVO> getVideoGalleryBasedOnSpecialPageId(Long specialPageId ,int startingRecord,int maxRecord){
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		List<File> listOfVideos = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(specialPageId, startingRecord,maxRecord,IConstants.VIDEO_GALLARY);
+		
+		if(listOfVideos != null && listOfVideos.size() >0){
+			for(File fileObj : listOfVideos){
+				fileVO = new FileVO();
+				fileVO = candidateDetailsService.copyFileToFileVO(fileObj);
+				if(fileVO !=null)
+					fileVOList.add(fileVO);
+			}
+		}
+		return fileVOList;
+	}
+	
+	/**
+	 * Set Gallery Object to FileVO
+	 * @param records
+	 * @return fileVOList
+	 */
+	public List<FileVO> setGallaryObjectToFileVO(List<Object[]> records){
+		
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		for(Object[] gallariesObj : records){
+			fileVO = new FileVO();
+			fileVO.setGallaryId((Long)gallariesObj[0]);
+			fileVO.setGallaryName(gallariesObj[1].toString());
+			fileVO.setGallaryDescription(gallariesObj[2].toString());
+			List<Object[]> fileGallaries = fileGallaryDAO.getStartingRecordInGallary((Long)gallariesObj[0]);
+			
+			for(Object[] startingRecord : fileGallaries)
+			{
+				fileVO.setFileId((Long) startingRecord[0]);
+				fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString(): "");
+				fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString():"");
+				String title = "";
+				
+				if(startingRecord[3] != null && startingRecord[3].toString().length() >= 18)
+				{
+					title = startingRecord[3].toString().substring(0, 17);
+					title = title + "...";
+				} 
+				else
+				{
+				if(startingRecord[3] != null) {
+					title = startingRecord[3].toString();
+				}
+			 
+			}
+			fileVO.setTitle(title);
+			}
+			fileVOList.add(fileVO);
+		}
+		return fileVOList;
+	}
+	
+	public List<FileVO> getSpecialPageGallaryDetailWithOutGallerySizeZero(Long specialPageId, int firstRecord, int maxRecord, String type) 
+	{
+		List<FileVO> retValue = new ArrayList<FileVO>();
+		try {
+			List<Object[]> results = specialPageGalleryDAO.getSpecialPageGallaryDetail(specialPageId, firstRecord, maxRecord, type);
+
+			if(results != null && results.size() > 0)
+			{
+				for (Object[] gallary : results) 
+				{
+					FileVO fileVO = new FileVO();
+					List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+					for (Object[] startingRecord : record)
+					{
+						if (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size() > 0L) {
+							fileVO.setFileId((Long) startingRecord[0]);
+							fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString(): "");
+							fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString(): "");
+							fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString():"");
+							fileVO.setGallaryId((Long) gallary[0]);
+							fileVO.setSizeOfGallary((long) (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size()));
+							fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() : "");
+							fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString(): "");
+							fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString(): "");
+							fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString(): "");
+							retValue.add(fileVO);
+						}
+					}
+				}
+			}
+			return retValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+
 	public ResultStatus subScribeEmailAlertForAEvent(String emailId,
 			Long specialPageId) {
 
@@ -626,5 +810,5 @@ public class SpecialPageService implements ISpecialPageService {
 			return null;
 		}
 	}
-
+	
 }
