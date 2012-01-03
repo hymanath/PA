@@ -24,6 +24,7 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private Long userId;
 	private Long orderNo;
 	private Long PartyProfileDescriptionId;
+	
 	public Long getPartyProfileDescriptionId() {
 		return PartyProfileDescriptionId;
 	}
