@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.File;
 
 public interface ICandidateDetailsService {
 	
@@ -95,6 +96,7 @@ public interface ICandidateDetailsService {
 	
 	public List<SelectOptionVO> getLanguage();
 
+	public FileVO copyFileToFileVO(File file);
 	
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 	
