@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>${candidateVO.candidateName} 'S  Profile , News, Photos, Constituency, Election details and Election results and Analysis</title>
-<META NAME="Keywords" CONTENT="${candidateVO.candidateName}  News, Photos, Constituency, Election details and Election results and Analysis">
-<meta name="description" content="${candidateVO.candidateName}  News, Photos, Constituency, Election details and Election results and Analysis">
-
+<title>${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS</title>
+<META NAME="Keywords" CONTENT="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
+<meta name="description" content="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
+<meta property="fb:app_id" content="{214809065198537}"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -150,6 +150,15 @@
 
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr><td><div class="ppc-title">
 <s:if test="candidateElectionDetails[0].stateId !=null">State: 
@@ -244,11 +253,14 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 			 <div class="clear"></div>
 			
 			 
-			 <!--FACE BOOK COMMENTS SECTION START
+		 <!--FACE BOOK COMMENTS SECTION START --> 
           
-          <div class="fleft"> <img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/></div>
+          <div class="fleft"> 
+		  <!--<img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/>--> 
+		  <div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}" data-num-posts="500" data-width="430"></div>
+		  </div> 
           
-          FACE BOOK COMMENTS SECTION END--> 
+         <!--FACE BOOK COMMENTS SECTION END--> 
      			  
 	</div>
    </div>
