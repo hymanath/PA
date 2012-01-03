@@ -39,5 +39,9 @@ public class SpecialPageDescriptionDAOHibernateTest extends BaseDaoTestCase{
 		Object orderNo=specialPageDescriptionDAO.getMaxOrderNo(1l);
 		System.out.println(orderNo);
 	}
-
+	public void testGetSpecialPageDescription()
+	{
+		List<Object> list = specialPageDescriptionDAO.getSpecialPageDescription(1l);
+		System.out.println(list.size());
+	}
 }
