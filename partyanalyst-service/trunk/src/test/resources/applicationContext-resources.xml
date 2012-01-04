@@ -236,6 +236,7 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageDescription</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail</value>
+				<value>com.itgrids.partyanalyst.model.MessageToParty</value>
 			</list>
 		</property>
 	</bean>
@@ -243,6 +244,10 @@
 	<!-- Add new DAOs here -->
 	
 	<bean id="specialPageUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageUpdatesEmailDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="messageToPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageToPartyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
