@@ -6,7 +6,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -15,6 +14,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
