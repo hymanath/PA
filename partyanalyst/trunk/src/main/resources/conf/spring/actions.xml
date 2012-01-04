@@ -182,6 +182,7 @@
 
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="partyDetailsService" ref="partyDetailsService" />
 	</bean>
 	<!--  <bean id="candidateProfileAction" class="com.itgrids.partyanalyst.web.action.CandidateProfileAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
