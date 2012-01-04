@@ -66,4 +66,6 @@ public interface IPartyDetailsService {
 	public List<FileVO> getPartyManifestoBasedOnStateIdAndPartyd(Long stateId,Long partyId);
 	
 	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO);
+	
+	public ResultStatus savePartyMessageFromPeople(GallaryVO gallaryVO);
 }
