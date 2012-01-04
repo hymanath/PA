@@ -64,6 +64,7 @@ public class Party implements java.io.Serializable {
 	private Set<PartyTrainingCamps> partyTrainingCamps = new HashSet<PartyTrainingCamps>(0);
 	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
 	private Set<PartyUpdatesEmail> partyUpdatesEmails = new HashSet<PartyUpdatesEmail>(0);
+	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -320,9 +321,14 @@ public class Party implements java.io.Serializable {
 	public void setPartyUpdatesEmails(Set<PartyUpdatesEmail> partyUpdatesEmails) {
 		this.partyUpdatesEmails = partyUpdatesEmails;
 	}
-	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<MessageToParty> getMessageToParty() {
+		return messageToParty;
+	}
 
-
+	public void setMessageToParty(Set<MessageToParty> messageToParty) {
+		this.messageToParty = messageToParty;
+	}
 
 }
