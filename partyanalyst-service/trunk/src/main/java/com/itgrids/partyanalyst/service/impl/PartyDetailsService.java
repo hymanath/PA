@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
+import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyManifestoDAO;
@@ -36,25 +37,21 @@ import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateProfileDescription;
-import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Gallary;
+import com.itgrids.partyanalyst.model.MessageToParty;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
+import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
-import com.itgrids.partyanalyst.dao.hibernate.PartyProfileDescriptionDAO;
 
 public class PartyDetailsService implements IPartyDetailsService {
 	
@@ -84,7 +81,17 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IConstituencyDAO constituencyDAO; 
 	private IMessageToCandidateDAO messageToCandidateDAO;
 	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
+	private IMessageToPartyDAO messageToPartyDAO;
 	
+	
+	public IMessageToPartyDAO getMessageToPartyDAO() {
+		return messageToPartyDAO;
+	}
+
+	public void setMessageToPartyDAO(IMessageToPartyDAO messageToPartyDAO) {
+		this.messageToPartyDAO = messageToPartyDAO;
+	}
+
 	public IPartyManifestoDAO getPartyManifestoDAO() {
 		return partyManifestoDAO;
 	}
@@ -983,6 +990,40 @@ public class PartyDetailsService implements IPartyDetailsService {
 			return fileVOList;
 		}
 	}
+	
+	
+	public ResultStatus savePartyMessageFromPeople(GallaryVO gallaryVO)
+	{
+		log.debug("Entered Into savePartyMessageFromPeople() Method");
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try
+		{
+			if(gallaryVO != null)
+			{
+				MessageToParty messageToParty = new MessageToParty();
+				
+				messageToParty.setParty(partyDAO.get(gallaryVO.getPartyId()));
+				messageToParty.setConstituency(constituencyDAO.get(gallaryVO.getUserId()));
+				messageToParty.setName(gallaryVO.getGallaryName());
+				messageToParty.setIsDelete(IConstants.FALSE);
+				messageToParty.setMessage(gallaryVO.getDescription());
+				messageToParty.setSentTime(dateUtilService.getCurrentDateAndTime());
+				
+				messageToPartyDAO.save(messageToParty);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}
+		}catch (Exception e) {
+			log.error("Exception occured in savePartyMessageFromPeople() Method - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+		return null;
+	}
+	
 	
 }
 	
