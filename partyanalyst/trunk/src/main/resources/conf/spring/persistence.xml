@@ -220,6 +220,7 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageDescription</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
+				<value>com.itgrids.partyanalyst.model.MessageToParty</value>
 			</list>
 		</property>
 	</bean>
