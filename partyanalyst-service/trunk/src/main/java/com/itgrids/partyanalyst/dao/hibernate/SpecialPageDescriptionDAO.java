@@ -18,7 +18,7 @@ public class SpecialPageDescriptionDAO extends GenericDaoHibernate<SpecialPageDe
 	
 	@SuppressWarnings("unchecked")
 	public List<Object> getSpecialPageDescription(Long specialPageId){		
-		return getHibernateTemplate().find("select model.description from SpecialPageDescription model where model.specialPageId=? order by model.orderNo asc",specialPageId);
+		return getHibernateTemplate().find("select model.description from SpecialPageDescription model where model.specialPage.specialPageId=? order by model.orderNo asc",specialPageId);
 	}
 	
 	public List<Object[]> getEventDescription(Long specialPageId){
