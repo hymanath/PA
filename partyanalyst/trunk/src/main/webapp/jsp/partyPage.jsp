@@ -127,7 +127,7 @@
 	 position:relative; 
 	 text-transform:uppercase; 
 	 float:left;
-	font:bold 14px/24px "Trebuchet MS", Arial, Helvetica, sans-serif; 
+	font:bold 11px/24px "Trebuchet MS", Arial, Helvetica, sans-serif; 
 	margin-bottom:13px; 
 	padding:0px 15px;
 }
@@ -314,9 +314,9 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
-	<!--<div id="sendMessageDiv">
+	<div id="sendMessageDiv">
     <div id="constituencySelectDiv"/>
-    </div>-->
+    </div>
 
     <!--VIDEOS SECTION END--> 
  </td>
@@ -351,10 +351,205 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
    var arraySize =0;
    var currentSize=0;
    var queryTypeChecked='Public';
+
+   function sendMessage()
+{
+  var name = document.getElementById("name").value;
+  var stateSelect=document.getElementById("stateSelect").value;
+  var constituencySelect=document.getElementById("constituencySelect").value;
+  var message=document.getElementById("message").value;
+    document.getElementById('galErrorMsgDivId').innerHTML = '';
+    document.getElementById('fileUploadErrorMsgDivId').innerHTML = '';
+  var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(name.length == 0)
+	{
+		str += 'Name is Required<br>';
+		eFlag = true;
+	}
+	
+	if(stateSelect.length == 0)
+	{
+		str += 'State is Required<br>';
+		eFlag = true;
+	}
+	if(constituencySelect == 0)
+	{
+		str += 'Constituency is Required<br>';
+		eFlag = true;
+	}
+	if(message.length == 0)
+	{
+		str += 'Message is Required<br>';
+		eFlag = true;
+	}
+	
+    str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+	var jsObj =
+		{ 
+		    partyId :partyId,
+            name : name,
+			stateSelect : stateSelect,
+			constituencySelect : constituencySelect,
+			message : message,
+		   	task : "saveMessageToParty"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewGallaryAction.action?"+rparam;
+	callAjax(jsObj,url);	
+
+}
+
+function showAssemblyData()
+ {
+   var str='';
+   
+   str += '  <div class="pr-sub-fields-sec">';
+   str += '  <h1 class="pr-title" style="margin-top:15px;">send a message to ${partyVO.partyLongName} <span class="or-down-arrow">';
+   str += '  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
+   str += '	<div id="galErrorMsgDivId" style = "width:190px;"></div>';
+   str += '	<div id="fileUploadErrorMsgDivId" style = "width:190px;"></div>';	  
+   str += ' <table>';
+   
+   str += ' <tr>';
+   str += '		<td style = "padding-top:9px;">Name <font class="requiredFont"> * </font></td>';
+   str += '		<td> <input type = "text" id="name" size = "20" class="sm-text-fields"> </td>';
+   str += ' </tr>';
+
+   str +='   <tr>';
+   str +='     <td>State</td>';
+   str +='     <td style="padding-top: 5px;">';
+   str +='     <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style = "width:192px;background-color:#EBE8E8; border:1px solid #ffffff;"/></td>';
+   str +='   </tr>';
+
+   str +='   <tr>';
+   str +='     <td>Constituency <font class="requiredFont"> * </font></td>';
+   str +='     <td style="padding-top: 5px;"><select id="constituencySelect" style = "width:192px; background-color:#EBE8E8; border:1px solid #ffffff;"/></td>';
+   str +='   </tr>';
+
+   str +=' <tr>';
+   str +='   <td >Message <font class="requiredFont"> * </font></td>';
+   str +=' <td style="padding-top: 5px;"> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
+   str +=' border: 1px solid #ffffff;';
+   str +=' color: #000000; width: 181px;height: 85px;';
+   str +=' font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;';
+   str +=' padding: 0px 0 0px 0px;"></textarea></td>';
+   str += '</tr>';
+
+   str += '<tr>';
+   str += '   <td></td><td style="padding-top: 5px;"> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
+   str += '</tr>';
+
+   str +=' <table>';
+   document.getElementById("constituencySelectDiv").innerHTML=str;
+   getStates();
+   getAllConstituenciesInStateByType(2,1,"constituency");
+ }
+ 
+ function getAllConstituenciesInStateByType(electionType, stateId, element)
+ {
+    var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			electionTypeId: electionType,
+			stateId: stateId,
+			task: "getConstituencies",
+			elmtId: element 	
+	}
+
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "getAllConstituenciesInState.action?"+rparam;						
+   callAjax(jsObj,url);
+ }
+function getStates()
+ {
+  var timeST = new Date().getTime();
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ }
+ 
 function onYouTubePlayerReady(playerId) 
 { 
 	ytplayer = document.getElementById("video_overlay"); 
 	ytplayer.setVolume(100);
+}
+function showResults(results,divId)
+ {
+  var elmt = document.getElementById(divId);
+
+   if(results.length<=0 && divId=="constituencySelect")
+     {
+   	   var option1 = document.createElement('option');
+		option1.value= 0;
+		option1.text= "Select Constituency";
+		 try
+		{
+			elmt.add(option1,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option1); // IE only
+		}
+	  }
+	for(var i in results)
+	  {
+		var option = document.createElement('option');
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		try
+		 {
+			elmt.add(option,null); // standards compliant
+		 }
+		catch(ex)
+		 {
+			elmt.add(option); // IE only
+		 }
+	 }
+ }
+  function clearAll(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
+}
+
+function showStatus(myResult)  
+{
+
+	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var str = '';
+
+	if(myResult.resultCode == 0)
+	{
+		clearFields();
+		str += '<font color="green"><b>Message Send Successfully.</b>';
+	}
+	else if(myResult.resultCode == 1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	
+	errorDivEle.innerHTML = str;
+}
+function clearFields()
+{  
+	document.getElementById('name').value = '';
+    document.getElementById('message').value = '';
+    document.getElementById('constituencySelect').value = 0;
 }
 
 function callAjax(jsObj,url)
@@ -401,6 +596,10 @@ function callAjax(jsObj,url)
 			{
 			     buildVideoGallaries(myResults);
 		    }
+		else if(jsObj.task == "getStates")
+			  {    
+				buildResults1(myResults,"stateSelect");
+			  }
 		else if(jsObj.task == "getVideosInGallary")
             {
 			   buildAllVideosInGallary(myResults);
@@ -469,6 +668,15 @@ function callAjax(jsObj,url)
 			{
 				buildPartyManifesoGallary(myResults); 
 			}
+		else if(jsObj.task == "getConstituencies")
+		 {  
+			clearOptionsListForSelectElmtId("constituencySelect");
+			showResults(myResults,"constituencySelect");
+		 }
+		  else if(jsObj.task == "saveMessageToParty") 
+			 { 
+				showStatus(myResults);
+			 }		
 		}
 		catch(e)
 		{   
@@ -484,6 +692,7 @@ function callAjax(jsObj,url)
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
 function showStatusForEmailSubscription(results){
 
     /*$("#emailAlertDiv").dialog({ stack: false,
@@ -1821,6 +2030,27 @@ function relatedState()
   elmt.innerHTML = str;*/
   selectedState();
 }
+function buildResults1(results,divId)
+ {
+  var elmt = document.getElementById(divId);
+	for(var i in results)
+	  {
+		var option = document.createElement('option');
+		
+		  option.value=results[i].ids;
+		  option.text=results[i].names;
+		  
+		try
+		 {
+			elmt.add(option,null); // standards compliant
+		 }
+		catch(ex)
+		 {
+			elmt.add(option); // IE only
+		 }
+	 }
+ }
+ 
 function buildResults(results,divId){
 	
 	if(document.getElementById("selectStatediv").style.display = 'none')
@@ -1889,6 +2119,7 @@ partyInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
+showAssemblyData();
 </script>
 
 </body>
