@@ -4,6 +4,10 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+
+    <bean id="messageToPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageToPartyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="cadreRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
