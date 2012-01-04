@@ -39,7 +39,9 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
+import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -96,7 +98,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String profileType;
 	private String profileId;
 	private String profileGalleryType;
+	private IPartyDetailsService partyDetailsService;
 	
+	public IPartyDetailsService getPartyDetailsService() {
+		return partyDetailsService;
+	}
+
+	public void setPartyDetailsService(IPartyDetailsService partyDetailsService) {
+		this.partyDetailsService = partyDetailsService;
+	}
+
 	public String getProfileType() {
 		return profileType;
 	}
@@ -653,6 +664,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setUserId(jObj.getLong("constituencySelect"));
 			gallaryVO.setDescription(jObj.getString("message"));
 			result = candidateDetailsService.saveMessage(gallaryVO);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("saveMessageToParty"))
+		{
+			gallaryVO = new GallaryVO();
+			gallaryVO.setPartyId(jObj.getLong("partyId"));
+			gallaryVO.setGallaryName(jObj.getString("name"));
+			gallaryVO.setGallaryId(jObj.getLong("stateSelect"));
+			gallaryVO.setUserId(jObj.getLong("constituencySelect"));
+			gallaryVO.setDescription(jObj.getString("message"));
+			result = partyDetailsService.savePartyMessageFromPeople(gallaryVO);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("deleteDiscription"))
 		{	
