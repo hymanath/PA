@@ -21,6 +21,7 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private String visibility;
 	private String contentType;
 	private Long candidateId;
+	private Long partyId;
 	private Long userId;
 	private Long orderNo;
 	private Long PartyProfileDescriptionId;
@@ -100,4 +101,11 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
 }
