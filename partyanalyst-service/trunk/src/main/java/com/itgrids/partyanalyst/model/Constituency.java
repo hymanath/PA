@@ -71,9 +71,11 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupParliamentConstRegion = new HashSet<LocalGroupRegion>(0);
 	private LocalElectionBodyWard localElectionBodyWard;
 	private Set<UserConstituencyScope> userConstituencyScope = new HashSet<UserConstituencyScope>(0);
+	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
 	// Constructors
 
 	
+
 
 	/** default constructor */
 	public Constituency() {
@@ -374,6 +376,16 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 			Set<UserConstituencyScope> userConstituencyScope) {
 		this.userConstituencyScope = userConstituencyScope;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
+	public Set<MessageToParty> getMessageToParty() {
+		return messageToParty;
+	}
+
+	public void setMessageToParty(Set<MessageToParty> messageToParty) {
+		this.messageToParty = messageToParty;
+	}
+	
 	
 	
 	
