@@ -62,7 +62,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 
              <div class="ea-fc-sec">
               <h2 class="ea-fc-title">email alert <span class="blue-down-arrow">
-               <img	src="images/icons/blue-down-arrow.png" alt="" /></span></h2>
+               <img	src="images/icons/candidatePage/blue-down-arrow.png" alt="" /></span></h2>
                   <div class="ea-fc-cont-sec">Set an email elert to get<br />
                          updates of<br />
                   <span class="li-red">Event</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
