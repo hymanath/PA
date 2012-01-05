@@ -76,6 +76,9 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SelectOptionVO> gallarySelectList;
 	private ICandidateDetailsService candidateDetailsService;
 
+	
+	//getter&setter methods for reference variables
+
 	public void setCandidateDetailsService(ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
 	}
@@ -259,8 +262,7 @@ public class SpecialPageService implements ISpecialPageService{
 			ISpecialPageUpdatesEmailDAO specialPageUpdatesEmailDAO) {
 		this.specialPageUpdatesEmailDAO = specialPageUpdatesEmailDAO;
 	}
-	//getter&setter methods for reference variables
-
+	
 	public ISpecialPageDescriptionDAO getSpecialPageDescriptionDAO() {
 		return specialPageDescriptionDAO;
 	}
