@@ -122,8 +122,8 @@ public class SpecialPageAction extends ActionSupport implements
 	
 		Long specialPageId = new Long(request.getParameter("specialPageId"));
 		descriptions = specialPageService.getSpecialPageDescription(specialPageId);
-		setSpecialPageVO(specialPageService.getSpecialPageBasicDetails(specialPageId));
-		setFileVOList(specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20));
+		specialPageVO = specialPageService.getSpecialPageBasicDetails(specialPageId);
+		fileVOList = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
 	return SUCCESS;
 	}
 
