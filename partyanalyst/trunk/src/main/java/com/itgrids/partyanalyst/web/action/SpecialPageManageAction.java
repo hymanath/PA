@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -19,10 +24,13 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
+import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -42,8 +50,106 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 	private GallaryVO gallaryVO;
 	private HttpSession session;
 	private List<SelectOptionVO> selectOptionList;
+	private String profileType;
+	private String profileId;
+	private String profileGalleryType;
+	private String userImageContentType;
+	private long specialPageId;
+	private String fileDescription;
+	private Long electionId;
+	private Long language;
+	private Long locationValue;
+	private File userImage;
+	private InputStream inputStream;
 	
-	
+	public File getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(File userImage) {
+		this.userImage = userImage;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public String getFileDescription() {
+		return fileDescription;
+	}
+
+	public void setFileDescription(String fileDescription) {
+		this.fileDescription = fileDescription;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Long getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Long language) {
+		this.language = language;
+	}
+
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	public long getSpecialPageId() {
+		return specialPageId;
+	}
+
+	public void setSpecialPageId(long specialPageId) {
+		this.specialPageId = specialPageId;
+	}
+
+	public String getUserImageContentType() {
+		return userImageContentType;
+	}
+
+	public void setUserImageContentType(String userImageContentType) {
+		this.userImageContentType = userImageContentType;
+	}
+
+	public String getProfileType() {
+		return profileType;
+	}
+
+	public void setProfileType(String profileType) {
+		this.profileType = profileType;
+	}
+
+	public String getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(String profileId) {
+		this.profileId = profileId;
+	}
+
+	public String getProfileGalleryType() {
+		return profileGalleryType;
+	}
+
+	public void setProfileGalleryType(String profileGalleryType) {
+		this.profileGalleryType = profileGalleryType;
+	}
+
 	public List<SelectOptionVO> getSelectOptionList() {
 		return selectOptionList;
 	}
@@ -233,7 +339,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		else if(jobj.getString("task").equalsIgnoreCase("getLanguage")){
 			selectOptionList = specialPageService.getLanguage();	
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("eventVideoGallariesForUplaod"))
+		else if(jobj.getString("task").equalsIgnoreCase("partyVideoGallariesForUplaod"))
 		{
 			FileVO fileVOObj = new FileVO();
 			fileVOObj.setPath(jobj.getString("path"));
@@ -249,14 +355,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 			
 			result = specialPageService.uploadAFile(fileVOObj);
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("eventGallariesForUplaod")){
+		else if(jobj.getString("task").equalsIgnoreCase("partyGallariesForUplaod")){
 			selectOptionList = specialPageService.getEventGallarySelectList(jobj.getLong("specialPageId"),jobj.getString("contentType"));
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("partyGallariesForUplaod"))
+		else if(jobj.getString("task").equalsIgnoreCase("eventGallariesForUplaod"))
 		{
 			selectOptionList = specialPageService.getPartyGallarySelectList(jobj.getLong("specialPageId"),jobj.getString("contentType"));
 		}
 		
 		return Action.SUCCESS;
 	} 
+	
+	
 	}
