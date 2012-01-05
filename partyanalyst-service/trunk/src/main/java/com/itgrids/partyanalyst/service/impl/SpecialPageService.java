@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.PartyGallery;
+import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
@@ -809,8 +810,9 @@ public class SpecialPageService implements ISpecialPageService{
 			log
 					.error("Exception Occured in getCandidateGallarySelectList() method - "
 							+ e);
-			return null;
+			return gallarySelectList;
 		}
+		
 	}
 	
 }
