@@ -88,7 +88,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           
           <!--ABOUT POLITICIAN SECTION START-->
           
-          <div class="pm-inner-cont-sec">
+          <div class="pm-inner-cont-sec" id="pm-inner-cont-sec">
             <h1 class="inc-title">About Event</h1>
             <p></p>
             <div class="read-more"><a href="#">read more</a></div>
@@ -169,7 +169,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
     </div>
   </s:if>
     <s:if test="fileVOList != null && fileVOList.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
+	 <div class="more"><a onClick="videoGallaryPopUp(fileVOList);" href="javascript:{};">More</a></div>
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
 
@@ -199,7 +199,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 		<li><input name="" type="submit" value="" class="send-but" /></li>
 	</ul> 
    </div>    
-      
+      <div id="showProfile"></div>
       <!--PROFILE RIGHT CONTENT SECTION END--> 
       
     <!--CONTENT SECTION END--> 
@@ -209,6 +209,70 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 <script type="text/javascript">
   var specialPageId = '${specialPageId}';
 
+ function displayProfile()
+ {
+   var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
+   
+   if(profileInfoElmt == null)
+	   return;
+   
+   var str = '';
+   var descFlag = 1;
+   
+   str += '<s:if test="descriptions != null"> ';
+   str += '<h1 class="inc-title">About ${specialPageVO.heading}</h1>';
+   
+   str += '<s:iterator value="descriptions">';
+   
+   if(descFlag <= 2)
+   {
+	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
+	  descFlag++;
+   }
+   str += '  </s:iterator>';
+
+   str += '<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
+   str += 'Read More >></a></div>';
+   str += '</s:if>';
+   
+   profileInfoElmt.innerHTML = str;
+ }
+
+ 
+ function getTotalProfile()
+ {
+
+ $.fx.speeds._default = 900;
+  $("#showProfile").dialog({ stack: false,
+                                show: "clip",
+			                    hide: "clip",
+							    height: 'auto',
+								width:600,
+								position:[130,130],								
+								modal: true,
+								title:'<font color="Navy"><b>${specialPageVO.heading}</b></font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showProfile").dialog();
+   
+ 
+   var str ='';
+    str+='<fieldset class="imgFieldset">';
+    str+='  <table><tr><td>';
+    str+='  <s:if test="descriptions != null">'; 
+    str+='  <div style="font-weight: bold; font-size: 14px;">About ${specialPageVO.heading}</div>';
+    str+=' <br><s:iterator value="descriptions">';
+	str+=' <div style="margin-bottom:-5px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
+    str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
+	str+='</div>';
+    str+='</s:iterator>';
+    str+=' </s:if>';
+    str+=' </td></tr> </table>';
+    str+='</fieldset>';
+    document.getElementById("showProfile").innerHTML=str;
+   
+    
+ }
 	function callAjax(jsObj,url)
 	{
 	
@@ -281,6 +345,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 var specialPageId = '${specialPageVO.specialPageId}';
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
+displayProfile();
 </script>
 </body>
 </html>
