@@ -1550,7 +1550,7 @@ function showFirstFourNewsRecords(results)
  function getTotalNews(viewType)
  {  
 	var queryType='Public';
-   var jsObj =
+   	var jsObj =
 		{   
 		    time : timeST,
 			viewtype:viewType,
@@ -2043,11 +2043,11 @@ function buildVideoGallaryDiv(result)
 }
 
 
-function videoGallaryPopUp()
+function videoGallaryPopUp(fileVOList)
 {
-   <s:if test="fileVOList == null || fileVOList.size() < 4"> 
-   return;
-   </s:if>
+  if(fileVOList == null || fileVOList.size() < 4) 
+    return;
+  
   
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
 							    height: 350,
