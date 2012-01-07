@@ -42,7 +42,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
  <div class="main-bbg"></div></div><br>
       <div class="profile-left-sec">
         <div class="pl-cont-sec">
-          <div class="ptd-sec"><img src="${specialPageVO.eventImagePath}" alt=""/> <span class="tc-tf pa-fi">
+          <div class="ptd-sec"><img src="${specialPageVO.eventImagePath}" alt=""/> <span class="tc-tf pa-fi"></span>
             <label class="c-red"></label>
             </div>
           <div class="clear"></div>
