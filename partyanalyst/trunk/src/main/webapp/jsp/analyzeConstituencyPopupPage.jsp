@@ -329,8 +329,8 @@ body
 		{
 			candidateId = id;
 
-			if(electionType == 'Parliament')
-				constituencyId = '${parliamentConstiId}';
+			if(electionType == 'Parliament' && '${parliamentConstiId}' == '')
+				constituencyId = constituencyId;
 			else
 			constituencyId = constituencyId;		
 		}
@@ -571,7 +571,7 @@ if(category == "candidate")
 		electionId = results[0].electionId;
 		electionType = results[0].electionType;
 		year = results[0].year;
-
+		var candidateProfileId = <%=request.getParameter("candidateId")%>;
 		for(var i=0; i<results.length; i++)
 		{
 			var rankStatus;
@@ -580,10 +580,29 @@ if(category == "candidate")
 				rankStatus = "Won";
 			else
 				rankStatus = "Lost";
-			if(i == 0)
+			if(i == 0){
+				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
 				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
+			}
+			else if(results[i].status == 1 && candidateProfileId != null){
+				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
+			}
+			
+			else if(results[i].status == 1 && candidateProfileId == null){
+				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+
+				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
+			}
+			
+			else if(results[i].id == candidateProfileId && candidateProfileId!=null){
+				
+			candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+			
+				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+candidateId+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
+			}
 			else
-				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>' 	
+				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			var obj =	{
 							radio: radioStr,
 							candidateName:results[i].candidateName,
@@ -611,7 +630,7 @@ if(category == "candidate")
 
         var myDataTable = new YAHOO.widget.DataTable("candidateResults_body",
                 myColumnDefs, myDataSource);
-       showPostComments(results[0].id,results[0].candidateName,'candidate',results[0].status,constituencyId,constituencyName,results[0].party,jsObj.task,'0',results[0].electionType,results[0].year)
+ 	   showPostComments(candidateId,candidateName,'candidate',status,constituencyId,constituencyName,party,jsObj.task,'0',electionType,year);
 
 	}
 	
