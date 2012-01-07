@@ -1052,20 +1052,12 @@ function showFirstFourNewsRecords(results)
 		  queryType='Public';
 		  queryTypeChecked='Public';
 		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
 		 {
 		  queryType='Private';
 		  queryTypeChecked='Private';
 		 }
-	}
-   if(document.getElementById("candidateVisibility")!=null)
-    {
-	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
-	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
 		  {
 		   queryType='All';
 		   queryTypeChecked='All';
