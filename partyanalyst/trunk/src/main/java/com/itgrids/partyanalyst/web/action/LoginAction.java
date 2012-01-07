@@ -491,6 +491,8 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 				return "connectPeoplePageRedirect";
 			}else if(redirectLoc.equalsIgnoreCase(IConstants.PROBLEM_DISCUSSION)){
 				return "problemDiscussionRedirect";
+			}else if(redirectLoc.equalsIgnoreCase("CANDIDATE_PROFILE")){
+				return "candidatePageRedirect";
 			}
 		}
 		return finalResultString();
