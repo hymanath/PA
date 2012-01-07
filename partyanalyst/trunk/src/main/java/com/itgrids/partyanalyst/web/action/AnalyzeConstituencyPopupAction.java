@@ -254,6 +254,8 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 				return "constituencyPageRedirect";
 			}else if(redirectLoc.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
 				return "localElectionBodyPageRedirect";
+			}else if(redirectLoc.equalsIgnoreCase("CANDIDATE_PROFILE")){
+				return "candidatePageRedirect";
 			}
 		}
 		
