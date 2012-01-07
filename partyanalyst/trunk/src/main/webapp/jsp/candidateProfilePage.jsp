@@ -21,6 +21,7 @@
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
+<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 
 <style type="text/css">
 .ui-widget-header {
@@ -252,7 +253,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
             
 			 <div class="clear"></div>
 			
-			 
+			 <div id="analyzeCandidateDiv_Body"></div>
 		 <!--FACE BOOK COMMENTS SECTION START --> 
           
           <div class="fleft"> 
@@ -356,6 +357,70 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
    var arraySize =0;
    var currentSize=0;
    var queryTypeChecked='Public';
+   var userId = "${sessionScope.USER.registrationID}";
+   var userType = "${sessionScope.USER.userStatus}";
+   var loginStat = "${sessionScope.loginStatus}";
+	
+function buildAnalyzeConstituencyWindow()
+ {
+	var constituencyId = '${candidateElectionDetails[0].constituencyId}';
+	var constituencyName = '${candidateElectionDetails[0].constituencyName}';
+	var candidateId = '${candidateElectionDetails[0].candidateId}';
+	var bodyElmt = document.getElementById('analyzeCandidateDiv_Body');
+		
+	var str='';
+	str+='<fieldset id="analyzeConstituencyFieldSet">';
+	str+='<legend style="font-weight:bold;"> Assess Your Politician</legend>';
+	str+='<div id="analyzeConstituencyContentDiv" class="problemPostingContentDivClass">';	
+	str+='<div>Assess your Politician and post your reasons for winning/loosing .</div>';
+	if(loginStat == 'out')
+	{
+		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
+		{
+			str	+= '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
+			str += '<a href="javascript:{}" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
+			str += '<a href="javascript:{}" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">Previous Posts</a>';
+			str += '</div>';		
+		}
+	}
+	else {
+        str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
+		str += '<a href="loginInputAction.action?redirectLoc=CANDIDATE_PROFILE&candidateId='+candidateId+'" title="Click to Assess Results" style="margin-right:10px;">Assess</a>';
+		str += '<a href="loginInputAction.action?redirectLoc=CANDIDATE_PROFILE&candidateId='+candidateId+'" title="Click to View Previous Posts" style="margin-right:10px;">Previous Posts</a>';
+		str += '</div>';		
+	}
+		
+	
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+}
+function openAnalyzeConstituencyWindow(type)
+{		
+	
+	var constituencyId = '${candidateElectionDetails[0].constituencyId}';
+	var constituencyName = '${candidateElectionDetails[0].constituencyName}';
+	var candidateId = '${candidateElectionDetails[0].candidateId}';
+	
+	var taskType = type;
+
+	if(userId != "" && userType == "FREE_USER")
+	{
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+''+"&parliamentConstiName="+''+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		browser1.focus();
+	}
+	else if(userId == "" && userType == "FREE_USER")
+	{
+		alert("Please Login To Post Comment");
+	}
+	else if(userType != "FREE_USER")
+	{
+		alert("Comment For Free User Only");
+	}
+}
+
 function sendMessage()
 {
   var name = document.getElementById("name").value;
@@ -1874,6 +1939,7 @@ candidateInfo();
 buildCandidateElectionInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
+buildAnalyzeConstituencyWindow();
 </script>
 </body>
 </html>
