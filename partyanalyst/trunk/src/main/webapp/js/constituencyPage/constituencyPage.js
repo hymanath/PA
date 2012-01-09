@@ -932,12 +932,18 @@ function buildAnalyzeConstituencyWindow()
 
 
 function openAnalyzeConstituencyWindow(type)
-{		
+{	
 	var taskType = type;
+	var constituencyId= constituencyPageMainObj.constituencyInfo.constituencyId;
+	var constituencyName = constituencyPageMainObj.constituencyInfo.constituencyName;
+	if(parliamentConstiId =='')
+		parliamentConstiId = constituencyId;
+	if(parliamentConstiName =='')
+		parliamentConstiName = constituencyName;
 
 	if(userId != "" && userType == "FREE_USER")
 	{
-		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
 	}
 	else if(userId == "" && userType == "FREE_USER")
