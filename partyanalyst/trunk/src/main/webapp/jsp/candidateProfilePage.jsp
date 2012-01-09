@@ -370,7 +370,7 @@ function buildAnalyzeConstituencyWindow()
 		
 	var str='';
 	str+='<fieldset id="analyzeConstituencyFieldSet">';
-	str+='<legend style="font-weight:bold;"> Assess Your Politician</legend>';
+	str+='<legend style="font-weight:bold;background:#06ABEA"> Assess Your Politician</legend>';
 	str+='<div id="analyzeConstituencyContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Assess your Politician and post your reasons for winning/loosing .</div>';
 	if(loginStat == 'out')
@@ -378,8 +378,8 @@ function buildAnalyzeConstituencyWindow()
 		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
 		{
 			str	+= '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
-			str += '<a href="javascript:{}" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
-			str += '<a href="javascript:{}" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">Previous Posts</a>';
+			str += '<a href="javascript:{}" title="Click to Assess Results" style="margin-right:10px;background: none repeat scroll 0% 0% rgb(92, 178, 117); text-decoration: none; color: rgb(255, 255, 255); font-weight: bold; margin: 4px 19px 5px 4px; border-radius: 4px 4px 4px 4px; padding: 3px 12px; width: 160px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
+			str += '<a href="javascript:{}" title="Click to View Previous Posts" style="margin-right:10px;background: none repeat scroll 0% 0% rgb(92, 178, 117); text-decoration: none; color: rgb(255, 255, 255); font-weight: bold; margin: 4px 19px 5px 4px; border-radius: 4px 4px 4px 4px; padding: 3px 12px; width: 160px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">Previous Posts</a>';
 			str += '</div>';		
 		}
 	}
@@ -399,16 +399,25 @@ function buildAnalyzeConstituencyWindow()
 }
 function openAnalyzeConstituencyWindow(type)
 {		
-	
 	var constituencyId = '${candidateElectionDetails[0].constituencyId}';
 	var constituencyName = '${candidateElectionDetails[0].constituencyName}';
 	var candidateId = '${candidateElectionDetails[0].candidateId}';
-	
+	var parliamentConstiId = '${candidateElectionDetails[0].parliamentConstituencyId}';
+	var parliamentConstiName = '${candidateElectionDetails[0].parliamentConstituencyName}';
+	if(parliamentConstiId=='')
+		parliamentConstiId = constituencyId;
+	if(parliamentConstiName =='')
+		parliamentConstiName = constituencyName;
 	var taskType = type;
 
 	if(userId != "" && userType == "FREE_USER")
 	{
-		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+''+"&parliamentConstiName="+''+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		browser1.focus();
+	}
+	if(userId != "" && taskType == 'viewResults')
+	{
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
 	}
 	else if(userId == "" && userType == "FREE_USER")
