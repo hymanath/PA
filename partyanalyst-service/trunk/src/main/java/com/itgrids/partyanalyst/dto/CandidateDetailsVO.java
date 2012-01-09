@@ -58,8 +58,16 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private Long totalSearchCount;
 	private String education;
 	private String shortName;
+	private Long parliamentConstituencyId;
+	private String parliamentConstituencyName;
 	//getters and setters
 	
+	public void setParliamentConstituencyName(String parliamentConstituencyName) {
+		this.parliamentConstituencyName = parliamentConstituencyName;
+	}
+	public String getParliamentConstituencyName() {
+		return parliamentConstituencyName;
+	}
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
@@ -298,6 +306,12 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	public void setLocalBodyElectionsConstituencyName(
 			String localBodyElectionsConstituencyName) {
 		this.localBodyElectionsConstituencyName = localBodyElectionsConstituencyName;
+	}
+	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+		this.parliamentConstituencyId = parliamentConstituencyId;
+	}
+	public Long getParliamentConstituencyId() {
+		return parliamentConstituencyId;
 	}
 	public int compareTo(CandidateDetailsVO obj) {
 		if(obj instanceof CandidateDetailsVO){
