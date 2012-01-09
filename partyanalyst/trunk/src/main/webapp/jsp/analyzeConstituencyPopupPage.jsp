@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Analyze Constituency</title>
-
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 <!-- YUI Dependency files (Start) -->
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -322,15 +322,14 @@ body
 
 	function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName,rank)
 	{
-		
 		var candidateId;
 		var constituencyId;
 		if(category == "candidate")
 		{
 			candidateId = id;
 
-			if(electionType == 'Parliament' && '${parliamentConstiId}' == '')
-				constituencyId = constituencyId;
+			if(electionType == 'Parliament' && '${parliamentConstiId}' !='')
+				constituencyId = '${parliamentConstiId}';
 			else
 			constituencyId = constituencyId;		
 		}
@@ -888,7 +887,10 @@ if(category == "candidate")
 		}
 		else if(value == "parliament")
 		{
-			id = parliamentConstiId;
+			if(parliamentConstiId !='')
+				id = parliamentConstiId;
+			else
+				id = constituencyId;
 			elmt.innerHTML = 'Assess ${parliamentConstiName} Parliament Constituency Elections Results';
 		}		
 		
