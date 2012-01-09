@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -109,7 +110,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IUserCandidateRelationDAO userCandidateRelationDAO;
 	private ICandidateUpdatesEmailDAO candidateUpdatesEmailDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private List<SelectOptionVO> candidatesList;
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
 
 	public List<SelectOptionVO> getCandidatesList() {
 		return candidatesList;
@@ -528,6 +539,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					if(constituency.getConstituencyId()!=null){
 						candidateDetails.setConstituencyName(constituency.getName());
 						candidateDetails.setConstituencyId(constituency.getConstituencyId());
+					}
+					List pConstituencyList = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesForAAssemblyConstituency(constituency.getConstituencyId());
+					if(pConstituencyList != null && pConstituencyList.size()>0){
+					for(int i=0;i<pConstituencyList.size();i++){
+						Object[] params = (Object[]) pConstituencyList.get(i);
+						candidateDetails.setParliamentConstituencyId(new Long(params[0].toString()));
+						candidateDetails.setParliamentConstituencyName(params[2].toString());
+					 }
 					}
 				}
 				if(election !=null){
