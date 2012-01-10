@@ -15,11 +15,13 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -76,7 +78,17 @@ public class SpecialPageService implements ISpecialPageService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private List<SelectOptionVO> gallarySelectList;
 	private ICandidateDetailsService candidateDetailsService;
+	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
+	
+	
+	public ISpecialPageCustomPagesDAO getSpecialPageCustomPagesDAO() {
+		return specialPageCustomPagesDAO;
+	}
 
+	public void setSpecialPageCustomPagesDAO(
+			ISpecialPageCustomPagesDAO specialPageCustomPagesDAO) {
+		this.specialPageCustomPagesDAO = specialPageCustomPagesDAO;
+	}
 	
 	//getter&setter methods for reference variables
 
@@ -813,6 +825,25 @@ public class SpecialPageService implements ISpecialPageService{
 			return gallarySelectList;
 		}
 		
+	}
+	
+	public List<CustomPageVO> getCustomPagesOfASpecialPage(Long specialPageId)
+	{
+		try{
+			List<CustomPageVO> customPages = null;
+			List<Object[]> list = specialPageCustomPagesDAO.getCustomPagesOfASpecialPage(specialPageId);
+			
+			if(list != null && list.size() > 0)
+			{
+				customPages = new ArrayList<CustomPageVO>(0);
+				for(Object[] params : list)
+					customPages.add(new CustomPageVO(IConstants.CUSTOM_JSP_PAGES_PATH+"/"+params[0].toString(),params[1].toString()));
+			}
+			return customPages;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCustomPagesOfASpecialPage(), Exception is - "+e);
+			return null;
+		}
 	}
 	
 }
