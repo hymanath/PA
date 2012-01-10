@@ -254,6 +254,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="customPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomPageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="specialPageUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageUpdatesEmailDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
