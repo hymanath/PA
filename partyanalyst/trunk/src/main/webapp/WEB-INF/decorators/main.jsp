@@ -171,7 +171,9 @@ var $j = jQuery.noConflict(true);
 						{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"},
 						{ text: "Punjab", url: "statePageAction.action?stateId=21"},
 						{ text: "Himachal Pradesh", url: "statePageAction.action?stateId=9"},
-						{ text: "Uttar Pradesh", url: "statePageAction.action?stateId=27"}
+						{ text: "Uttar Pradesh", url: "statePageAction.action?stateId=27"},
+						{ text: "Manipur", url: "statePageAction.action?stateId=16"},
+						{ text: "Goa", url: "statePageAction.action?stateId=6"}
 	        ]     
 	    }, 
 	    { 
@@ -214,7 +216,9 @@ var $j = jQuery.noConflict(true);
 								{ text: "Uttaranchal", url: "statePageAction.action?stateId=26"},
 								{ text: "Punjab", url: "statePageAction.action?stateId=21"},
 								{ text: "Himachal Pradesh", url: "statePageAction.action?stateId=9"},
-								{ text: "Uttar Pradesh", url: "statePageAction.action?stateId=27"}
+								{ text: "Uttar Pradesh", url: "statePageAction.action?stateId=27"},
+								{ text: "Manipur", url: "statePageAction.action?stateId=16"},
+								{ text: "Goa", url: "statePageAction.action?stateId=6"}
 						]     
 					}, 
 					{ 
