@@ -299,4 +299,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> electionYearsForstateAndElectionType(Long stateId, String electionType);
 		
+		public List<TownshipBoothDetailsVO> getPanchayatVotingTrendsByMandalAndElectionIds(Long tehsilId, String electionIds);
+		
 }
