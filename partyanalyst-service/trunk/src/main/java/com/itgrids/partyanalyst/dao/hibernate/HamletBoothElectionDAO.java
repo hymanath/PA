@@ -52,4 +52,14 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				" model4.panchayat.panchayatName,model.hamlet.hamletName, model.boothConstituencyElection.booth.boothId ",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findPanchayatWiseVotingTrendsForATehsil(Long tehsilId, String electionIds)
+	{
+		return getHibernateTemplate().find("select model2.panchayat.panchayatId, model2.panchayat.panchayatName, " +
+				" sum(model.boothConstituencyElection.boothResult.validVotes), model.boothConstituencyElection.constituencyElection.election.electionId" +
+				" from HamletBoothElection model,PanchayatHamlet model2 where model.boothConstituencyElection.booth.tehsil.tehsilId = ? " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId in ("+electionIds+
+				" ) and model2.hamlet.hamletId = model.hamlet.hamletId group by model2.panchayat.panchayatId,model.boothConstituencyElection.constituencyElection.election.electionId",tehsilId);
+	}
+		
 }
