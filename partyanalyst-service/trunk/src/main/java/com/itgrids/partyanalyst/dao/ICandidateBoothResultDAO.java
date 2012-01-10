@@ -142,4 +142,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getCandidatesResultsForElectionAndConstituencyByMandalWise(Long constituencyId, String electionYear, String electionType);
 	
 	public List<Object[]> findBoothResultsForBoothsAndElection(List<Long> boothslist, Long electionId);
+	
+	public List<Object[]> findPachayatWisePartiesResultsForElectionInATehsil(Long tehsilId, Long electionId);
+	
+	public List<Object[]> findBoothResultsForBoothsAndElectionWithParty(List<Long> boothslist, Long electionId);
 }
