@@ -237,11 +237,22 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.MessageToParty</value>
+				<value>com.itgrids.partyanalyst.model.CustomPageType</value>
+				<value>com.itgrids.partyanalyst.model.CustomPage</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="specialPageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="customPageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomPageTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="specialPageUpdatesEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageUpdatesEmailDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
