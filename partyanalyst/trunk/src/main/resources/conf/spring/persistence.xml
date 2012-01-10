@@ -221,6 +221,9 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageGallery</value>
 				<value>com.itgrids.partyanalyst.model.MessageToParty</value>
+				<value>com.itgrids.partyanalyst.model.CustomPage</value>
+				<value>com.itgrids.partyanalyst.model.CustomPageType</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 			</list>
 		</property>
 	</bean>
