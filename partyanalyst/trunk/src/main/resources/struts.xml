@@ -1090,10 +1090,16 @@
 			<result type="json" name="success">
 				<param name="root">electionTrendzReportVO</param>				
 			</result>		
-		</action>		
+		</action>	
+			
 		<action name="townshipElectionResultsAction" class="townshipElectionResultsAction">
 			<result name="success">/jsp/revenueVillageElectionResults.jsp</result>	
 		</action>
+		
+		<action name="panchayatWiseElectionResultsAction" class="townshipElectionResultsAction">
+			<result name="success">/jsp/panchayatWiseElectionResults.jsp</result>	
+		</action>
+		
 		<action name="districtPageMptcAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
 			<result type="json" name="success">
 				<param name="root">mptcElectionDetails</param>				
