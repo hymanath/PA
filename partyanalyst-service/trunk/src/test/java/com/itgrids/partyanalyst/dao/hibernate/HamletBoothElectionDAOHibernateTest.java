@@ -49,4 +49,17 @@ public class HamletBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 	
+	/*public void testtFindPanchayatWiseVotingTrendsForATehsil()
+	{
+		List<Object[]> list = hamletBoothElectionDAO.findPanchayatWiseVotingTrendsForATehsil(844l,"38");
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}*/
+		
 }
