@@ -47,7 +47,6 @@ import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
 import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
-import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -82,7 +81,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IMessageToCandidateDAO messageToCandidateDAO;
 	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
-	
 	
 	public IMessageToPartyDAO getMessageToPartyDAO() {
 		return messageToPartyDAO;
