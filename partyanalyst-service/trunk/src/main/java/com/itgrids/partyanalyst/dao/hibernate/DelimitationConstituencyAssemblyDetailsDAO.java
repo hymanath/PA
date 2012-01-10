@@ -53,13 +53,13 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	
 	public List findParliamentForAssemblyForTheGivenYear(Long assemblyId,Long electionYear){
 		Object[] params = {assemblyId,electionYear};
-		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId," +
+		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId," +
 				" model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? and" +
 				" model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1 where model1.year <=?)",params);
 	}
 	public List findParliamentForAssemblyForTheMaxOfGivenYear(Long assemblyId){
 		Object[] params = {assemblyId};
-		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId," +
+		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId," +
 				" model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? and" +
 				" model.delimitationConstituency.year =(select max(model1.year) from DelimitationConstituency model1)",params);
 	}
