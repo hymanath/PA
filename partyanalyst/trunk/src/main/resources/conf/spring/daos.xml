@@ -718,4 +718,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="customPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomPageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="customPageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomPageTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
