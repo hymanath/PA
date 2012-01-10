@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGroupDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -184,6 +186,16 @@ public class StaticDataService implements IStaticDataService {
 	private IElectionAnalyzeService electionAnalyzeService;
 	private IProblemStatusDAO problemStatusDAO;
 	private IPartyStrengthService partyStrengthService;
+	private IHamletBoothElectionDAO hamletBoothElectionDAO;
+
+	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
+		return hamletBoothElectionDAO;
+	}
+
+	public void setHamletBoothElectionDAO(
+			IHamletBoothElectionDAO hamletBoothElectionDAO) {
+		this.hamletBoothElectionDAO = hamletBoothElectionDAO;
+	}
 
 	public IPartyStrengthService getPartyStrengthService() {
 		return partyStrengthService;
@@ -5797,15 +5809,14 @@ public class StaticDataService implements IStaticDataService {
 	 * @param tehsilId
 	 * @param electionIds
 	 */
-	public List<TownshipBoothDetailsVO> getRevenueVillageVotingTrendsByMandalAndElectionIds(
-			Long tehsilId, String electionIds) {
+	public List<TownshipBoothDetailsVO> getRevenueVillageVotingTrendsByMandalAndElectionIds(Long tehsilId, String electionIds) 
+	{
 		Long totalValidVotesInMandal = 0l;
 		List mandalResult = new ArrayList<Long>(0);
 		List list = new ArrayList(0);
 		ResultStatus resultStatus = new ResultStatus();
 		Map<Long, Long> electionIdsAndTotalVotes = new HashMap<Long, Long>(0);
-		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(
-				0);
+		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(0);
 		String mandalName = "";
 		String elections = null;
 		try {
@@ -5813,8 +5824,7 @@ public class StaticDataService implements IStaticDataService {
 			// Making DAO call to get Total Valid Votes in mandal.
 
 			elections = getLatestAssemblyElectionId();
-			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(
-					tehsilId, elections);
+			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
 			for (int i = 0; i < mandalResult.size(); i++) {
 				Object[] parms = (Object[]) mandalResult.get(i);
 				electionIdsAndTotalVotes.put(Long
@@ -5825,8 +5835,7 @@ public class StaticDataService implements IStaticDataService {
 
 			// Making DAO call to get All Total Valid Votes for every township
 			// in mandal.
-			list = villageBoothElectionDAO
-					.findTownshipWiseVotingTrendsForATehsil(tehsilId, elections);
+			list = villageBoothElectionDAO.findTownshipWiseVotingTrendsForATehsil(tehsilId, elections);
 
 			StringTokenizer st = new StringTokenizer(elections, ",");
 
@@ -5881,6 +5890,82 @@ public class StaticDataService implements IStaticDataService {
 				votesByElectionId.setMandalId(tehsilId);
 				votesByElectionId.setMandalName(mandalName);
 				mandal.add(votesByElectionId);
+			}
+			return mandal;
+		} catch (Exception e) {
+			log.error("Exception raised please check the log for details" + e);
+			e.printStackTrace();
+			return mandal;
+		}
+	}
+	
+	public List<TownshipBoothDetailsVO> getPanchayatVotingTrendsByMandalAndElectionIds(Long tehsilId, String electionIds) 
+	{
+		Long totalValidVotesInMandal = 0l;
+		List<Object[]> mandalResult = new ArrayList<Object[]>(0);
+		List<Object[]> list = new ArrayList<Object[]>(0);
+		ResultStatus resultStatus = new ResultStatus();
+		Map<Long, Long> electionIdsAndTotalVotes = new HashMap<Long, Long>(0);
+		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(0);
+		String mandalName = "";
+		String elections = null;
+		try {
+
+			elections = getLatestAssemblyElectionId();
+			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
+			
+			for(Object[] params : mandalResult)
+			{
+				electionIdsAndTotalVotes.put((Long)params[1], (Long)params[0]);
+				mandalName = params[2].toString();
+			}
+			
+			list = hamletBoothElectionDAO.findPanchayatWiseVotingTrendsForATehsil(tehsilId, elections);
+
+			StringTokenizer st = new StringTokenizer(elections, ",");
+
+			while (st.hasMoreElements())
+			{
+				Long electionID = Long.parseLong(st.nextElement().toString());
+				TownshipBoothDetailsVO townshipBoothDetailsVO = new TownshipBoothDetailsVO();
+				List<TownshipBoothDetailsVO> township = new ArrayList<TownshipBoothDetailsVO>(0);
+				Long count = 1l;
+				ListIterator result = list.listIterator();
+				
+				while (result.hasNext())
+				{
+					Long electionId = electionID;
+					Object[] parms = (Object[]) result.next();
+					
+					if (electionId == Long.parseLong(parms[3].toString()))
+					{
+						TownshipBoothDetailsVO votes = new TownshipBoothDetailsVO();
+						votes.setSNO(count++);
+						Long eachTownshipVotes = Long.parseLong(parms[2].toString());
+						votes.setTownshipID(Long.parseLong(parms[0].toString()));
+						votes.setTownshipName(parms[1].toString());
+						votes.setElectionId(Long.parseLong(parms[3].toString()));
+						votes.setValidVoters(eachTownshipVotes);
+						
+						Double percentage = ((eachTownshipVotes * 100.0) / electionIdsAndTotalVotes.get(Long.parseLong(parms[3].toString())));
+						votes.setPercentageOfValidVotes(new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+						township.add(votes);
+					}
+				}
+				List election = electionDAO.getElectionTypeAndElectionYearByElectionId(electionID);
+				String elect = "";
+				
+				for (int i = 0; i < election.size(); i++) 
+				{
+					Object[] parms = (Object[]) election.get(i);
+					elect = parms[0].toString() + "-" + parms[1].toString();
+				}
+				townshipBoothDetailsVO.setChartTitle("Votes Polling In " + mandalName+ " Mandal for " + elect);
+				townshipBoothDetailsVO.setChartName("Votes_PollingIn_" + mandalName+ "for ElectionType" + electionID + "_piechart"+ ".png");
+				townshipBoothDetailsVO.setTownshipVotingTrends(township);
+				townshipBoothDetailsVO.setMandalId(tehsilId);
+				townshipBoothDetailsVO.setMandalName(mandalName);
+				mandal.add(townshipBoothDetailsVO);
 			}
 			return mandal;
 		} catch (Exception e) {
