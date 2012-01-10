@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -50,4 +51,6 @@ public interface ISpecialPageService {
 
 	public List<FileVO> getSpecialPageGallaryDetailWithOutGallerySizeZero(
 			Long specialPageId, int firstRecord, int maxRecord, String type);
+	
+	public List<CustomPageVO> getCustomPagesOfASpecialPage(Long specialPageId);
 }
