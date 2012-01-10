@@ -22,24 +22,28 @@
 </head>
 
 <body>
-
-
-
 <!--CONTENT MAIN SECTION START-->
-
-
-      <!--PROFILE LEFT CONENT SECTION START-->
-      <div class="main-title-sec">
-	 
- <div class="main-mbg">${specialPageVO.heading}
- <span style="margin-top:10px;margin-right:18px;float:right">
- <a name="fb_share" type="button_count" 
+<!--PROFILE LEFT CONENT SECTION START-->
+<div class="main-title-sec">
+<div class="main-mbg">${specialPageVO.heading}
+<span style="margin-top:10px;margin-right:18px;float:right">
+<a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
-</script>
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 </span>
 </div>
- <div class="main-bbg"></div></div><br>
+<div class="main-bbg"></div></div><br>
+
+<s:if test="customPages != null && customPages.size() > 0">
+<s:iterator value="customPages" var="custom"> 
+<s:if test="#custom.type == 'banner'">
+	<div>
+		<jsp:include page='${custom.name}' flush="true"/> 
+	</div>
+</s:if>
+</s:iterator>
+</s:if>
+
       <div class="profile-left-sec">
         <div class="pl-cont-sec">
           <div class="ptd-sec"><img src="${specialPageVO.eventImagePath}" alt=""/> <span class="tc-tf pa-fi"></span>
@@ -75,6 +79,16 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 		</div>
 		</div>
 
+<s:if test="customPages != null && customPages.size() > 0">
+<s:iterator value="customPages" var="custom"> 
+	<s:if test="#custom.type == 'left_navigation'">
+		<div style="width:200px;">
+			<jsp:include page='${custom.name}' flush="true"/> 
+		</div>
+	</s:if>
+</s:iterator>
+</s:if>
+
 <!--EMAIL ALERT SECTION END--></div>
 </div>
       </div>
@@ -96,13 +110,15 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           
           <!--ABOUT POLITICIAN SECTION END--> 
           
-          <!--ELECTION PROFILE SECTION START-->
-          
-          <div class="pm-inner-cont-sec">
-            <h1 class="inc-title">Election Profile</h1>
-            
-          </div>
-          
+			<s:if test="customPages != null && customPages.size() > 0">
+			<s:iterator value="customPages" var="custom"> 
+				<s:if test="#custom.type == 'center_div'">
+					<div style="width:435px;">
+						<jsp:include page='${custom.name}' flush="true"/> 
+					</div>
+				</s:if>
+			</s:iterator>
+			</s:if>
           <!--ELECTION PROFILE SECTION END--> 
           
           <!--PHOTO GALLERY SECTION START-->
@@ -198,8 +214,19 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 		</li>
 		<li><input name="" type="submit" value="" class="send-but" /></li>
 	</ul> 
-   </div>    
-      <div id="showProfile"></div>
+   </div> 
+   
+   <s:if test="customPages != null && customPages.size() > 0">
+		<s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'right_navigation'">
+				<div style="width:300px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+		</s:iterator>
+	</s:if>
+
+   <div id="showProfile"></div>
       <!--PROFILE RIGHT CONTENT SECTION END--> 
       
     <!--CONTENT SECTION END--> 
