@@ -66,7 +66,7 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 	public void testParliamentIdByAssemblyId(){
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(3382l,2004l);
 		Assert.assertEquals(2, list.size());
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void testFindDistrictsOfParliamentConstituency(){
@@ -115,7 +115,19 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(232L);
 		
 		System.out.println(list.size());
+	}
+	public void testFindParliamentConstituenciesForAAssemblyConstituency() {
+		List lst = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesForAAssemblyConstituency(240l);
+		//System.out.println(lst.size());
+		for(int i=0;i<lst.size();i++){
+			Object[] param =(Object[]) lst.get(i);
+			System.out.println(param[0].toString());
+			//System.out.println(param[1].toString());
+			System.out.println(param[2].toString());
+		}
 	}*/
-	
-	
+	public void testfindParliamentForAssemblyForTheGivenYear(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheMaxOfGivenYear(496l);
+		System.out.println(list.size());
+	}
 }
