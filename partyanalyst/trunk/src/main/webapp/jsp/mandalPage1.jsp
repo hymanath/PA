@@ -541,6 +541,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		panchayatInfo += '<td><div id="electionIdSelectDivLabelId"></div></td>';
 		panchayatInfo += '<td><div id="electionIdSelectDivDataId"></div></td>';
         panchayatInfo += '<td><div id="panchayatAjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+		panchayatInfo += '<td width="20px" height="10px"><div id="panchayatResultsLinkDiv"></div></td>';
         panchayatInfo += '</tr>';
 		panchayatInfo += '</table>';
 		panchayatInfo += '<br>';
@@ -833,6 +834,15 @@ function getMoreResults(elecYear,elecType,constiId)
 		var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal,"brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
+
+	function openwindowForPanchayats(){
+		
+		var typeVal = ""+ptypeSelectElmt.options[ptypeSelectElmt.selectedIndex].text;
+		var yearVal = ""+pyearSelectElmt.options[pyearSelectElmt.selectedIndex].text;
+		
+		var brow1 = window.open("<s:url action="panchayatWiseElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal+"resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		brow1.focus();
+	}
 	
 	var typeSelectElmt;
 	var yearSelectElmt;
@@ -949,6 +959,11 @@ function getMoreResults(elecYear,elecType,constiId)
 		var yearVal = ""+pyearSelectElmt.options[pyearSelectElmt.selectedIndex].text;
 		
 		var rvStrDiv = document.getElementById('panchayatsInfo');
+		
+		var revenueResult = document.getElementById('panchayatResultsLinkDiv');
+		revenueResultStr = '<a href="#" onclick="openwindowForPanchayats()" ><img style="border:medium none;"src="images/icons/mandalPage/clickHere.png" width="420px" height="30px"/></a>';
+		revenueResult.innerHTML = revenueResultStr;
+		
 		var boothIdStr;
 		var rvStr = '';		
 		rvStr += '<a name="votersDiv"></a>';
