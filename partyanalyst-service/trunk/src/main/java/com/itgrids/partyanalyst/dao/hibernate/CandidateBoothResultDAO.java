@@ -193,7 +193,25 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		.append("model.nomination.nominationId");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List findPachayatWisePartiesResultsForElectionInATehsil(Long tehsilId, Long electionId) {
+		Object[] params = {tehsilId,electionId};
+		StringBuilder hqlQuery = new StringBuilder();
+		hqlQuery.append("select  model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		.append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		.append("model.nomination.candidate.candidateId, model.nomination.candidate.lastname,")
+		.append("model.nomination.party.partyId, model.nomination.party.shortName,")
+		.append("model3.panchayat.panchayatId,model3.panchayat.panchayatName,")
+		.append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes), ")
+		.append("model.nomination.candidateResult.rank from CandidateBoothResult model,HamletBoothElection model2,PanchayatHamlet model3 ")
+		.append("where model.boothConstituencyElection.boothConstituencyElectionId = model2.boothConstituencyElection.boothConstituencyElectionId and ")
+		.append("model3.panchayat.tehsil.tehsilId = ? and model3.hamlet.hamletId = model2.hamlet.hamletId and ")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		.append("group by model.nomination.nominationId,model3.panchayat.panchayatId ")
+		.append("order by model3.panchayat.panchayatName,model.nomination.nominationId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List findMandalWisePartiesResultForMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
@@ -421,6 +439,18 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	public List<Object[]> findBoothResultsForBoothsAndElection(List<Long> boothslist, Long electionId){
 		Query query = getSession().createQuery("select model.nomination.party.partyId, model.nomination.party.shortName,"+
 				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
+				" and model.boothConstituencyElection.booth.boothId in(:boothslist) group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("boothslist",boothslist);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findBoothResultsForBoothsAndElectionWithParty(List<Long> boothslist, Long electionId){
+		Query query = getSession().createQuery("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.candidate.lastname,model.nomination.candidateResult.rank " +
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
 				" and model.boothConstituencyElection.booth.boothId in(:boothslist) group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
 		
 		query.setParameter(0,electionId);
