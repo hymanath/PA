@@ -12,4 +12,14 @@ public interface IWebConstants {
 	public static final String SPECIAL_PAGE = "special_page";
 	public static final String NEWS_GALLERY = "news_gallery";
 	public static final String PHOTO_GALLERY = "photo_gallery";
+	
+	public static final String PANCHAYATS = "panchayats";
+	public static final String REVENUE_VILLAGES = "revenueVillages";
+	
+	public static final String LEFT_NAVIGATION = "left_navigation";
+	public static final String BANNER = "banner";
+	public static final String RIGHT_NAVIGATION = "right_navigation";
+	public static final String CENTER_DIV = "center_div";
+	
+	public static final String CUSTOM_JSP_PAGES_PATH = "custom_jsp_pages";
 }
