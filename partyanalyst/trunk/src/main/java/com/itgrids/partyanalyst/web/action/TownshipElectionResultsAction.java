@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -61,6 +62,16 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO;
     private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	private String resultFor;
+	
+	public String getResultFor() {
+		return resultFor;
+	}
+
+	public void setResultFor(String resultFor) {
+		this.resultFor = resultFor;
+	}
+
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
 	}
@@ -195,8 +206,12 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		mandalName = request.getParameter("mandalName");
 		tehsilId = mandalId;
 		electId = electionId;
-		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);		
-		townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
+		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);
+		
+		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(mandalId, electionId);
+		else
+			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
 		
 		allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
 		 
@@ -209,9 +224,16 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			else
 				chartPath = chartProducerURL+ chartName;
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
-	        ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
+	        
+	        if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+	        	ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
+		        		" In "+constituencyObj.getConstituencyName()+" Constituency By Panchayats In "+mandalName+" ", 
+		        		"Panchayats", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);
+	        else
+	        	ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" ", 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);	
+	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);
+	        
 	        constituencyObj.setChartPath(chartName);
 		}
 		
@@ -221,7 +243,10 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	
 	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
 		String cPath = request.getContextPath();
-		townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
+		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);
+		else
+			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
 	
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
