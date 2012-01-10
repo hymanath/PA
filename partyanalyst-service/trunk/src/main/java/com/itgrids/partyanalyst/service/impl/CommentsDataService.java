@@ -636,6 +636,9 @@ public class CommentsDataService implements ICommentsDataService {
 				nominations = nominationDAO.getNominationOfACandidateInAnElection(electionId, constituencyId, candidateId);
 			}else{
 				List parliamentConstId = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId,Long.parseLong(electionYear));
+				if(parliamentConstId.size()==0)
+					parliamentConstId = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheMaxOfGivenYear(constituencyId);
+				
 				Long conId = 0l;
 				for(int i=0;i<parliamentConstId.size();i++){
 					Object[] parms = (Object[])parliamentConstId.get(i);
