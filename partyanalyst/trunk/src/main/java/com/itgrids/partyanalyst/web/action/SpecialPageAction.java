@@ -13,15 +13,14 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
-import com.itgrids.partyanalyst.service.impl.SpecialPageService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.SpecialPageVO;
 
 public class SpecialPageAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware, ServletContextAware {
@@ -40,7 +39,16 @@ public class SpecialPageAction extends ActionSupport implements
 	private SpecialPageVO specialPageVO;
 	private List<FileVO> fileVOList;
 	private ISpecialPageService specialPageService;
+	private List<CustomPageVO> customPages;
 	
+	public List<CustomPageVO> getCustomPages() {
+		return customPages;
+	}
+
+	public void setCustomPages(List<CustomPageVO> customPages) {
+		this.customPages = customPages;
+	}
+
 	public void setFileVOList(List<FileVO> fileVOList) {
 		this.fileVOList = fileVOList;
 	}
@@ -120,10 +128,10 @@ public class SpecialPageAction extends ActionSupport implements
 
 	public String execute() {
 	
-		Long specialPageId = new Long(request.getParameter("specialPageId"));
 		descriptions = specialPageService.getSpecialPageDescription(specialPageId);
 		specialPageVO = specialPageService.getSpecialPageBasicDetails(specialPageId);
 		fileVOList = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
+		customPages = specialPageService.getCustomPagesOfASpecialPage(specialPageId);
 	return SUCCESS;
 	}
 
