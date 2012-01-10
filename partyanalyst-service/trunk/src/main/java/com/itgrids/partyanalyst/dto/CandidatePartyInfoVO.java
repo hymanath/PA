@@ -7,7 +7,16 @@ public class CandidatePartyInfoVO {
 	private String party;
 	private Long partyId;
 	private Long rank;
+	private Long votesEarned;
 	
+	public Long getVotesEarned() {
+		return votesEarned;
+	}
+
+	public void setVotesEarned(Long votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+
 	public String getCandidateName() {
 		return candidateName;
 	}
