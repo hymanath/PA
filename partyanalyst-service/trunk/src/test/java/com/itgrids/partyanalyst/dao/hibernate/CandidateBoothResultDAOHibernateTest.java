@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,8 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	/*public void testFindMandalWisePartiesResultsForElection(){
-		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(844l, 2l);
+		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(844l, 38l);
+		System.out.println(list.size());
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
 	}*/
@@ -390,7 +392,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	  System.out.println(obj.size());
 	}*/
 	
-	public void testFindBoothResultsForBoothsAndElection()
+	/*public void testFindBoothResultsForBoothsAndElection()
 	{
 		List<Long> boothslist = new ArrayList<Long>(0);
 		boothslist.add(211l);boothslist.add(212l);boothslist.add(213l);boothslist.add(214l);
@@ -406,6 +408,33 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("Party Id - "+params[0]+" Party Name - "+params[1]+" Votes Earned - "+params[2]);
 		}
 		System.out.println("Total Votes - "+totalvotes);
+	}*/
+	
+	/*public void testFindPachayatWisePartiesResultsForElectionInATehsil()
+	{
+		List<Object[]> list = candidateBoothResultDAO.findPachayatWisePartiesResultsForElectionInATehsil(844l,38l);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}*/
+	
+	public void test()
+	{
+		try
+		{
+			InetAddress addr = InetAddress.getByName("180.76.5.155");
+			System.out.println(addr.getHostName());
+			System.out.println(addr.getCanonicalHostName());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
 	}
 
 }
