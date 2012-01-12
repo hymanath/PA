@@ -387,6 +387,11 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
                clearOptionsListForSelectElmtId('language');
 			   createOptionsForSelectElmtId('language',myResults);
 			}
+			else if(jsObj.task == "getCategory")
+			{ 
+               clearOptionsListForSelectElmtId('category');
+			   createOptionsForSelectElmtId('category',myResults);
+			}
 			else if(jsObj.task == "candidateGallariesForUplaod")
 			{ 
                clearOptionsListForSelectElmtId('gallarySelectId');
@@ -399,6 +404,11 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			else if(jsObj.task == "updateIndividualPhotoDetails")
 			{ 
                showPhotoUpdateDetails(myResults);
+			}
+			else if(jsObj.task == "getNewsImportance")
+			{ 
+               clearOptionsListForSelectElmtId('newsimportance');
+			   createOptionsForSelectElmtId('newsimportance',myResults);
 			}
      	}
 		catch(e)
@@ -877,7 +887,8 @@ function validateNewsFileUpload()
 	var fileVal = document.getElementById("fileId").value;
 	var source = document.getElementById("source").value;
 	var languageId = document.getElementById("language").value;
-	var keywords = document.getElementById("keywords").value;
+    var categoryId = document.getElementById("category").value;
+    var keywords = document.getElementById("keywords").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
@@ -916,6 +927,11 @@ function validateNewsFileUpload()
 	if(languageId.length == 0)
 	{
 		str += 'Language Is Required.<br>';
+		flag = false;
+	}
+	if(categoryId.length == 0)
+	{
+		str += 'Category Is Required.<br>';
 		flag = false;
 	}
 	if(keywords.length >200)
@@ -1558,6 +1574,13 @@ function  buildUploadNews()
 	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
+	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="category" name="category" style="width:175px;"><option value="0">Select Category</option></select></td>';
+	str += '   </tr>';
+	str += '   </tr>';
+	str += '       <td class="tdWidth1">News-Importance<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;"><option value="0">Select NewsImportance</option></select></td>';
+	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
@@ -1591,9 +1614,12 @@ function  buildUploadNews()
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getCandidateGallariesForUplaod("News Gallary");
-	 getScopes();
-	 getSource();
-	 getLanguage();
+	getScopes();
+	getSource();
+	getLanguage();
+	getCategory();
+	getNewsImportance();
+	 
 }
 function clearDiv(divId)
 {
@@ -1728,6 +1754,32 @@ var jsObj =
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+function getCategory()
+{
+var jsObj =
+		{ 
+            time : timeST,
+			task:"getCategory"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getNewsGalleryForUplaodAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+function getNewsImportance()
+{
+var jsObj =
+		{ 
+            time : timeST,
+			task:"getNewsImportance"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getNewsGalleryForUplaodAction.action?"+rparam;						
 	callAjax(jsObj,url);
  
 }
