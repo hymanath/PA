@@ -26,7 +26,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<Long> getNewsCountByScope(Long candidateId,Long scopeType,String queryType);
 	
-	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String spScope , String spScopeLang);
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String spScope , String spScopeLang,String categoryStr,String newsImportance);
     
 	public List<Object[]> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
 	
@@ -39,4 +39,5 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults);
 	
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr);
+	public List<Object[]> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String categoryStr);
 }
