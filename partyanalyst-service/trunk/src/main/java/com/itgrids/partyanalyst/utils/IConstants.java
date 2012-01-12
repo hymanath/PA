@@ -271,6 +271,7 @@ public interface IConstants {
     public static final String CADRE_UPLOAD_ENTITLEMENT = "CADRE_UPLOAD_ENTITLEMENT";
     public static final String CALL_CENTER_ENTITLEMENT = "CALL_CENTER_ENTITLEMENT";
     public static final String PROFILE_MANAGEMENT_ENTITLEMENT = "PROFILE_MANAGEMENT_ENTITLEMENT";
+    public static final String ECR_DETAILED_ANALYSIS = "ECR_DETAILED_ANALYSIS";
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
@@ -400,7 +401,7 @@ public interface IConstants {
     
     public static final String SELECT_USER_MESSAGE = "select a user";
     
-    public static final String STATES_FOR_SEARCH_FUNCTIONALITY = "1,12,24,3,28,13,35";
+    public static final String STATES_FOR_SEARCH_FUNCTIONALITY = "1,12,24,3,28,13,35,7,26,21,9,27,16,6";
     
     public static final String ACCEPT = "Accept";
     public static final String REJECT = "Reject";
