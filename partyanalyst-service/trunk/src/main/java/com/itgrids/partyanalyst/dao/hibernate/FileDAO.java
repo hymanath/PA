@@ -23,4 +23,10 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCategoryDetailsOfAFile(Long fileId)
+	{
+		return getHibernateTemplate().find("select model.category.categoryId,model.category.categoryType from File model where model.fileId = ?",fileId);
+	}
 }
