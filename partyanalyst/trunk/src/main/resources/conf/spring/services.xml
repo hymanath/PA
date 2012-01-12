@@ -304,6 +304,9 @@
 		<property name="sourceDAO" ref="sourceDAO" />
 		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
+		<property name="categoryDAO" ref="categoryDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
