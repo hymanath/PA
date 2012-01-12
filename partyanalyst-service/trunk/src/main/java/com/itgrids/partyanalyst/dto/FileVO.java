@@ -48,7 +48,27 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String candidateName;
 	private Long electionId;
 	private Long stateId;
+	private Long categoryId;
+	private String categoryType;
+	private String importance;
+	private Long newsImportanceId;
 	
+	public String getCategoryType() {
+		return categoryType;
+	}
+
+	public void setCategoryType(String categoryType) {
+		this.categoryType = categoryType;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public String getLanguage() {
 		return language;
 	}
@@ -438,6 +458,22 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public String getCandidateName() {
 		return candidateName;
+	}
+
+	public String getImportance() {
+		return importance;
+	}
+
+	public void setImportance(String importance) {
+		this.importance = importance;
+	}
+
+	public Long getNewsImportanceId() {
+		return newsImportanceId;
+	}
+
+	public void setNewsImportanceId(Long newsImportanceId) {
+		this.newsImportanceId = newsImportanceId;
 	}
     
 
