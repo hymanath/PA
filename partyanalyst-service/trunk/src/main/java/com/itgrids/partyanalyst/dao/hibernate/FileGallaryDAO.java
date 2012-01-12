@@ -77,7 +77,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and  model.gallary.isDelete='false' and model.gallary.contentType.contentType= :type   and model.isDelete = :isDelete   ");
 		
@@ -173,11 +173,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return queryObject.list(); 
 	}
-	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr)
+	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr,String categoryStr,String newsImportance)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance    " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
 				" and model.gallary.isDelete = 'false'  ");
@@ -190,6 +190,12 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		if(languageStr!=null)
 			query.append("   and model.file.language.language =:spScopeLang");
+		
+		if(categoryStr!=null)
+			query.append("   and model.file.category.categoryType =:categoryStr");
+		
+		if(newsImportance!=null)
+			query.append("   and model.file.newsImportance.importance =:newsImportance");
 		
 		if(queryType.equals("Public"))
 			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -211,6 +217,12 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		if(languageStr!=null)
 		queryObject.setString("spScopeLang", languageStr);
+		
+		if(categoryStr!=null)
+			queryObject.setString("categoryStr", categoryStr);
+		
+		if(newsImportance!=null)
+			queryObject.setString("newsImportance", newsImportance);
 		
 		queryObject.setFirstResult(startIndex);
 		queryObject.setMaxResults(maxResults);	
