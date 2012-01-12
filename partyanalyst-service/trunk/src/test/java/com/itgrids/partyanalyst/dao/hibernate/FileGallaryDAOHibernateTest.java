@@ -36,10 +36,10 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> results = fileGallaryDAO.getNewsRecordsBySearchCriteria(fileVO,IConstants.NEWS_GALLARY);
 		System.out.println(results.size());
 	}*/
-	/*public void testGetNewsToDisplay()
+	public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(900L,0,20,"Public");
+		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(3596L,0,20,"Public");
 		System.out.println(results.size());
 		for(Object[] newsDetails: results){
 		    
@@ -69,7 +69,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	   	System.out.println(((Long)newsDetails[8]));
 	 }
 	 
-	}*/
+	}
 	//public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults)
 	/*public void testGetPartyLatestVideos()
 	{
@@ -126,7 +126,7 @@ System.out.println("i " +i);
 		}
 	}*/
 	
-	public void testGetRecentlyUploadedFiles(){
+	/*public void testGetRecentlyUploadedFiles(){
 		List<FileGallary> list = fileGallaryDAO.getRecentlyUploadedFiles(1, 15,IConstants.PHOTO_GALLARY);
 		for(int i=0;i<list.size();i++){
 		System.out.println(list.get(i).getGallary().getContentType().getContentType());
@@ -134,5 +134,5 @@ System.out.println("i " +i);
 		System.out.println(list.get(i).getFile().getFilePath());
 		}
 		System.out.println(list.size());
-	}
+	}*/
 }
