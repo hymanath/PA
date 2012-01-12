@@ -54,6 +54,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Date fileDate;
 	private Source sourceObj;
 	private SourceLanguage language;
+	private NewsImportance newsImportance;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 
@@ -224,6 +225,19 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setLanguage(SourceLanguage language) {
 		this.language = language;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "news_importance_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public NewsImportance getNewsImportance() {
+		return newsImportance;
+	}
+   
+	
+	public void setNewsImportance(NewsImportance newsImportance) {
+		this.newsImportance = newsImportance;
 	}
   
 }
