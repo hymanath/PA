@@ -8,7 +8,7 @@
 <title>${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS</title>
 <META NAME="Keywords" CONTENT="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
 <meta name="description" content="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
-<meta property="fb:app_id" content="167844749984003"/>
+<meta property="fb:app_id" content="{214809065198537}"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -732,6 +732,15 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
+		else if(jsObj.task == "getNewsByCategoryScope")
+          {
+		   showTotalNews(myResults);
+		   }
+		   
+		else if(jsObj.task == "getNewsByNewsImportance")
+          {
+		   showTotalNews(myResults);
+		   }	
 		}
 		catch(e)
 		{   
@@ -1119,7 +1128,16 @@ function showFirstFourNewsRecords(results)
  //  str+='       <td><img alt="" src="'+results[i].path+'" style="width:242px;height:275px;"/></td>';
  //  str+='     </tr>';
      str+='     <tr>';
-     str+='       <td><a title="Click To Get All '+results[i].source+' News " href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a title="Click To Get All '+results[i].language+' News" href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a> | '+results[i].fileDate+'</td>';
+     str+='       <td><a title="Click To Get All '+results[i].source+' News " href="javascript:{}" onclick="getNewsBySource(\''+results[i].source+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].source+'</font></a> | <a title="Click To Get All '+results[i].language+' News" href="javascript:{}" onclick="getNewsByLanguage(\''+results[i].language+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].language+'</font></a>|'; 
+	 if(results[i].categoryType != null)
+	   {
+	    str+='  <a title="Click To Get All '+results[i].categoryType+' News" href="javascript:{}" onclick="getNewsByCategory(\''+results[i].categoryType+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].categoryType+'</font></a> |'; 
+	   }
+	 if(results[i].importance != null)
+	   {
+	    str+='  <a title="Click To Get All '+results[i].importance+' News" href="javascript:{}" onclick="getNewsByNewsImportance(\''+results[i].importance+'\')" class="titleStyle"\"><font color="#FF4500">'+results[i].importance+'</font></a> |'; 
+	   }
+	str+=''+results[i].fileDate+'</td>';
     
      str+='     </tr>';
      str+='     <tr>';
@@ -1935,6 +1953,104 @@ function getNewsByLanguage(language)
 	var url = "candidateNewsGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url); 
   }  
+function getNewsByCategory(category)
+{
+ scopeId='';
+deleteAllElements();
+ timeST = new Date().getTime();
+ var queryType='Public';
+ if(document.getElementById("candidateVisibility")!=null)
+  { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+ if(document.getElementById("candidateVisibility")!=null)
+  {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+ if(document.getElementById("candidateVisibility")!=null)
+  {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+ var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			scopeType:scopeId,
+			category : category,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryType,
+			task:"getNewsByCategoryScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+}  
+function getNewsByNewsImportance(newsImportance)
+{
+ scopeId='';
+deleteAllElements();
+ timeST = new Date().getTime();
+ var queryType='Public';
+ if(document.getElementById("candidateVisibility")!=null)
+  { 
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Public')
+		 {
+		  queryType='Public';
+		  queryTypeChecked='Public';
+		 }
+	}
+ if(document.getElementById("candidateVisibility")!=null)
+  {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='Private')
+		 {
+		  queryType='Private';
+		  queryTypeChecked='Private';
+		 }
+	}
+ if(document.getElementById("candidateVisibility")!=null)
+  {
+	   var candidateVisibilityEle = document.getElementById("candidateVisibility");
+	    if(candidateVisibilityEle.options[candidateVisibilityEle.selectedIndex].value=='All')
+		  {
+		   queryType='All';
+		   queryTypeChecked='All';
+		  }
+	}
+ var jsObj =
+		{   
+		    time : timeST,
+			candidateId:candidateId,
+			scopeType:scopeId,
+			newsImportance : newsImportance,
+			startIndex:0,
+			maxResults:20,
+			queryType:queryType,
+			task:"getNewsByNewsImportance"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidateNewsGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+}  
 showAssemblyData();
 displayProfile();
 candidateInfo();
