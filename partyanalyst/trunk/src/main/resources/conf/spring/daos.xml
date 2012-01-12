@@ -717,6 +717,9 @@
 	<bean id="specialPageGalleryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageGalleryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="categoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="customPageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomPageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
