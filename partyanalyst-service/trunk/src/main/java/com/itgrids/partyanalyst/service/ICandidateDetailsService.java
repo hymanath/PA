@@ -90,7 +90,8 @@ public interface ICandidateDetailsService {
 	public Long getUserCandidateRelationCount(Long userId,Long candidateId);
 	
 	public List<FileVO> getOtherNews(Long candidateId,int startIndex,int maxResults,String queryType);
-
+	
+	public List<SelectOptionVO> getCategory();
 	
 	public List<SelectOptionVO> getSource();
 	
@@ -119,5 +120,8 @@ public interface ICandidateDetailsService {
 	 public SelectOptionVO assignAndReturnCandidate(Long userId,Long candidateId);
 	
 	 public boolean checkForCandidateExistence(List<SelectOptionVO> candidatesList,Long candidateId);
+	 public List<FileVO> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType,String category);
+	 public List<SelectOptionVO> getNewsImportance();
+	 public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance);
 	 
 }
