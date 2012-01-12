@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,8 +39,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
-import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
-import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -98,8 +95,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String profileType;
 	private String profileId;
 	private String profileGalleryType;
+	private Long category;
 	private IPartyDetailsService partyDetailsService;
+	private Long newsimportance;
 	
+	
+	public Long getCategory() {
+		return category;
+	}
+
+	public void setCategory(Long category) {
+		this.category = category;
+	}
+
 	public IPartyDetailsService getPartyDetailsService() {
 		return partyDetailsService;
 	}
@@ -414,6 +422,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
+    public Long getNewsimportance() {
+		return newsimportance;
+	}
+
+	public void setNewsimportance(Long newsimportance) {
+		this.newsimportance = newsimportance;
+	}
 
 	public String execute()
 	{
@@ -594,6 +609,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 {
 			selectOptionList = candidateDetailsService.getLanguage();
 		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getCategory"))
+		 {
+			selectOptionList = candidateDetailsService.getCategory();
+		 }
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{
 			List<Long> orderNo = new ArrayList<Long>();
@@ -698,6 +717,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setFileType(jObj.getString("visibility"));
 			result = candidateDetailsService.updateIndividualPhoto(fileVO);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsImportance"))
+		 {
+			selectOptionList = candidateDetailsService.getNewsImportance();
+		 }
 		return Action.SUCCESS;
 	}
 	
@@ -747,6 +770,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setKeywords(getKeywords());
 			fileVO.setSourceId(getSource());
 			fileVO.setLanguegeId(getLanguage());
+			fileVO.setCategoryId(getCategory());
+			fileVO.setNewsImportanceId(getNewsimportance());
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
@@ -846,6 +871,26 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getOtherNews"))
 		 {
 			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsByCategoryScope"))
+		 {
+			Long scopeType=null;
+			String category = null;
+			if(jObj.getString("scopeType").trim().length()>0)
+				scopeType = jObj.getLong("scopeType");
+			if(jObj.getString("category").trim().length()>0)
+				category = jObj.getString("category");
+			fileVO = candidateDetailsService.getNewsByCategory(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),category);
+		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getNewsByNewsImportance"))
+		 {
+			Long scopeType=null;
+			String newsImportance = null;
+			if(jObj.getString("scopeType").trim().length()>0)
+				scopeType = jObj.getLong("scopeType");
+			if(jObj.getString("newsImportance").trim().length()>0)
+				newsImportance = jObj.getString("newsImportance");
+			fileVO = candidateDetailsService.getNewsByNewsImportance(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),newsImportance);
 		 }
 		}
 	 catch(Exception e)
