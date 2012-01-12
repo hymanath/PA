@@ -31,7 +31,8 @@
 		<class>com.itgrids.partyanalyst.model.PersonalUserGroup</class>
 		<class>com.itgrids.partyanalyst.model.UserGroupPrivileges</class>
 		<class>com.itgrids.partyanalyst.model.AnanymousUser</class> 
-		<class>com.itgrids.partyanalyst.model.UserAddress</class>  
+		<class>com.itgrids.partyanalyst.model.UserAddress</class>
+		<class>com.itgrids.partyanalyst.model.NewsImportance</class>  
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
