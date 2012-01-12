@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,9 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.util.StringUtils;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -26,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
+import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -38,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
+import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -47,13 +53,11 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.MessageToCandidateDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -61,6 +65,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
+import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
@@ -68,6 +73,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToCandidate;
+import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
@@ -112,6 +118,24 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ISourceLanguageDAO sourceLanguageDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private List<SelectOptionVO> candidatesList;
+	private ICategoryDAO categoryDAO; 
+	private TransactionTemplate transactionTemplate;
+	private INewsImportanceDAO newsImportanceDAO;
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public ICategoryDAO getCategoryDAO() {
+		return categoryDAO;
+	}
+
+	public void setCategoryDAO(ICategoryDAO categoryDAO) {
+		this.categoryDAO = categoryDAO;
+	}
 
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
@@ -353,6 +377,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public void setUserCandidateRelationDAO(
 			IUserCandidateRelationDAO userCandidateRelationDAO) {
 		this.userCandidateRelationDAO = userCandidateRelationDAO;
+	}
+   
+	public INewsImportanceDAO getNewsImportanceDAO() {
+		return newsImportanceDAO;
+	}
+
+	public void setNewsImportanceDAO(INewsImportanceDAO newsImportanceDAO) {
+		this.newsImportanceDAO = newsImportanceDAO;
 	}
 
 	public List<FileVO> getScopesForNewSearch()
@@ -841,7 +873,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			    	retValue.add(fileVO);	  
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
+			   	    	
+			   	    retValue.add(fileVO);	  
 			 }
 			 
 			return retValue;
@@ -947,12 +989,15 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	public ResultStatus uploadAFile(FileVO fileVO)
+	public ResultStatus uploadAFile(final FileVO fileVO)
 	{
+		
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			log.debug("Entered into uploadAFile() method in Candidate Details Service()");
 			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
 			File file = new File();
 			FileGallary fileGallary = new FileGallary();
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
@@ -967,6 +1012,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				file.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
 			if(fileVO.getSourceId() != null && fileVO.getSourceId() > 0)
 				file.setSourceObj(sourceDAO.get(fileVO.getSourceId()));
+			if(fileVO.getCategoryId() != null && fileVO.getCategoryId() > 0)
+				file.setCategory(categoryDAO.get(fileVO.getCategoryId()));
+			if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
+				file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
+			
 			
 			if(fileVO.getLocationScope() != null && fileVO.getLocationScope().longValue() > 0 &&
 					fileVO.getLocationValue() != null && Integer.parseInt(fileVO.getLocationValue()) > 0)
@@ -976,7 +1026,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			}
 			
 			if(fileVO.getFileDate() != null && fileVO.getFileDate().length() > 0)
-				file.setFileDate(sdf.parse(fileVO.getFileDate()));
+				try {
+					file.setFileDate(sdf.parse(fileVO.getFileDate()));
+				} catch (ParseException e) {
+					log.error(e);
+				}
 			
 			file = fileDAO.save(file);
 			
@@ -992,7 +1046,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				fileGallary.setIsPrivate(IConstants.TRUE);
 			
 			fileGallaryDAO.save(fileGallary);
-			
+			}
+			});
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch (Exception e) {
@@ -1484,7 +1539,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null);
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -1495,8 +1550,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    returnValue.add(fileVO);	  
+			        fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
+			   	    returnValue.add(fileVO);
 			 }
 		  
 		  return returnValue;
@@ -1514,7 +1578,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language);
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -1526,6 +1590,15 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
 			   	    returnValue.add(fileVO);
 			 }
 		  
@@ -1544,7 +1617,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null);
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
@@ -1556,6 +1629,15 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
 			   	    returnValue.add(fileVO);	  
 			 }
 		  
@@ -1687,9 +1769,52 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return gallarySelectList;
 		}
 	}
-
-	
-	public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
+ 
+ public List<SelectOptionVO> getCategory()
+	{   
+		List<SelectOptionVO> categorySelectList = new ArrayList<SelectOptionVO>(0);
+		
+	try{
+		List<Category> category = categoryDAO.getAll();
+		SelectOptionVO selectOptionVO = null;
+		for(Category result:category)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(result.getCategoryId());
+			selectOptionVO.setName(result.getCategoryType());
+			categorySelectList.add(selectOptionVO);
+		 }
+		 
+		return categorySelectList;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return categorySelectList;
+		}
+	}
+ public List<SelectOptionVO> getNewsImportance()
+	{   
+		List<SelectOptionVO> newsImportanceSelectList = new ArrayList<SelectOptionVO>(0);
+		
+	try{
+		List<NewsImportance> newsImportance = newsImportanceDAO.getAll();
+		SelectOptionVO selectOptionVO = null;
+		for(NewsImportance result:newsImportance)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(result.getNewsImportanceId());
+			selectOptionVO.setName(result.getImportance());
+			newsImportanceSelectList.add(selectOptionVO);
+		 }
+		 
+		return newsImportanceSelectList;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return newsImportanceSelectList;
+		}
+	}
+public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	{
 		try{
 			List<Object[]> list = userCandidateRelationDAO.getCandidatesOfAUser(userId);
@@ -1848,5 +1973,80 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			 return true;
 	 return false;
  }
- 
+ public List<FileVO> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,source,null);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
+			   	    returnValue.add(fileVO);	  
+			 }
+		  
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+ public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,newsImportance);
+			 for(Object[] newsDetails: results){
+				    FileVO fileVO = new FileVO();
+				    fileVO.setFileId((Long)newsDetails[0]);
+			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
+			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
+			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
+			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
+			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
+			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
+			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
+			   	    fileVO.setCandidateId((Long)newsDetails[8]);
+			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
+			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    
+			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
+			   	    if(category != null && category.size() > 0)
+			   	    {
+			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
+			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
+			   	    }
+			   	    returnValue.add(fileVO);	  
+			 }
+		  
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
 }
