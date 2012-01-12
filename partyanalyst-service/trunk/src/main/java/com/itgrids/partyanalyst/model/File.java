@@ -55,6 +55,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Source sourceObj;
 	private SourceLanguage language;
 	private NewsImportance newsImportance;
+	private Category category;
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 
@@ -238,6 +239,17 @@ public class File extends BaseModel implements java.io.Serializable {
 	
 	public void setNewsImportance(NewsImportance newsImportance) {
 		this.newsImportance = newsImportance;
+	}	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
   
 }
