@@ -68,6 +68,7 @@
 		<pattern>/openEditAnnouncementAction*</pattern>
 		<pattern>/editAnnouncementPageAction*</pattern>
 		<pattern>/getImageInfoAction*</pattern>
+		<pattern>/panchayatWiseElectionResultsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
