@@ -251,6 +251,7 @@
 	     <property name="electionComparisonReportService" ref="electionComparisonReportService" />
 	     <property name="partyService" ref="partyService" />
 	     <property name="staticDataService" ref="staticDataService" />
+	     <property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>  
 
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false">
