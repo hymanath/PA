@@ -19,12 +19,12 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 		this.fileDAO = fileDAO;
 	}
 	
-	/*public void test()
+	public void test()
 	{
 		fileDAO.getAll();
 		
-	}*/
-	public void testGetFileByFileId()
+	}
+	/*public void testGetFileByFileId()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		List<Object[]> results =fileDAO.getFileByFileId(1L);
@@ -43,6 +43,6 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 	 }
 	 
 		
-	}
+	}*/
 	
 }
