@@ -1951,6 +1951,7 @@ function createCoulmnChart()
 </div>
 <!-- New UI Changes end -->
 
+<c:if test="${hasECRPage}">
 <table style="width:70%;" border="0">
 <tr>
 	<td id="tdThr" align="left" width="70%" colspan="2">
@@ -2007,7 +2008,7 @@ function createCoulmnChart()
 	  </td>	   
 </tr>
 </table> 
-
+</c:if>
 <div class="yui-skin-sam">
 	<div id="comparedResultsPanel"></div>
 </div>
