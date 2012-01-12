@@ -225,6 +225,7 @@
 				<value>com.itgrids.partyanalyst.model.CustomPageType</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
+				<value>com.itgrids.partyanalyst.model.Category</value>
 			</list>
 		</property>
 	</bean>
