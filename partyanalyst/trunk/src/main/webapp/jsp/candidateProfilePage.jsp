@@ -8,7 +8,7 @@
 <title>${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS</title>
 <META NAME="Keywords" CONTENT="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
 <meta name="description" content="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
-<meta property="fb:app_id" content="{214809065198537}"/>
+<meta property="fb:app_id" content="{167844749984003}"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -147,7 +147,13 @@
     min-height: 0;
     width: auto;
 }
-
+.container {
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    background-color: #FFFFFF;
+    margin: 9px auto 40px;
+    max-width: 800px;
+    padding: 10px;
+}
 </style>
 
 </head>
@@ -1357,73 +1363,64 @@ function showFirstFourNewsRecords(results)
  }
  function showNews(results,arrayType)
   {
-    arraySize = fileIdArray.length;
+	arraySize = fileIdArray.length;
 	initialArraySize = initialFileIdArray.length;
     var fileType = results[0].name.split(".");
 	  $.fx.speeds._default = 1000;
 	  $("#showNewsDiv").dialog({ stack: false,
 								height: 'auto',
-								width: 'auto',
+								width: 950,
 								closeOnEscape: true,
-								position:[20,20],
+								position:[30,30],
 								show: "blind",
 								hide: "explode",
 								modal: true,
-								title:'<font color="Navy">'+results[0].fileTitle1+'</font>',
+								maxWidth : 950,
+								maxHeight : 800,
+								title:'<center><font color="Navy">'+results[0].fileTitle1+'</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showNewsDiv").dialog();
-	var str='';
-	if(arrayType=='array')
-	{
+	
+	var str='<DIV><center>';
+
 	 str+='<table>';
-	 	 str+='     <tr>';
+	 str+='     <tr>';
 	 str+='       <td>';
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
 	 str+='       </td>';
 	 str+='     </tr>';
-	 str+='   <tr>';
-	 str+='      <td>';
-	 str+='         <table>';
-	 str+='	          <tr>';
+	 str+='     </table>';
+	
+	 str+='     <table>';
+	 str+='			<tr>';
+
+	if(arrayType=='array')
+	{
 	 if(currentSize-1 >=0)
 	 {
 	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+currentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 	 }
-	 if(fileType[(fileType.length-1)] == "pdf"  ){
+
+	 if(fileType[(fileType.length-1)] == "pdf"  )
+	 {
 	 str+='             <td><img alt="" src="images/doc_images/PDFImage.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+		str+='             <td><div class="container"><img alt="'+results[0].fileTitle1+'" src="'+results[0].path+'" title="'+results[0].fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 }
+
 	 if(currentSize+1 <= (arraySize-1))
 	 {
 	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+currentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
      }
-	 str+='		      </tr>';
-	 str+='         </table>';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        '+results[0].fileDescription1+'';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='<table>';
-	}
+	 
+  }
+
 	else if(arrayType=="initialArray")
 	{
-	 str+='<table>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: <font color="#FF4500">'+results[0].fileDate+'</font>';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='   <tr>';
-	 str+='      <td>';
-	 str+='         <table>';
-	 str+='	          <tr>';
+	 
 	 if(initialCurrentSize-1 >=0)
 	 {
 	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+initialCurrentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
@@ -1433,26 +1430,29 @@ function showFirstFourNewsRecords(results)
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 str+='             <td><div class="container"><img alt="'+results[0].fileTitle1+'" src="'+results[0].path+'" title="'+results[0].fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 }
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
 	 {
 	 str+='		        <td><a href="javascript:{}" onclick="getNextNews('+initialCurrentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
      }
-	 str+='		      </tr>';
-	 str+='         </table>';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        '+results[0].fileDescription1+'';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='<table>';
+	 
 	}
-	 document.getElementById("showNewsDiv").innerHTML=str;
+
+	str+='		      </tr>';
+	str+='         </table>';
+
+	str += '<table><tr>';
+	str+='       <td>';
+	str+='        '+results[0].fileDescription1+'';
+	str+='       </td>';
+	str+='     </tr>';
+	str+='<table>';
 	
-  }
+	str += '</center></DIV>';
+	 document.getElementById("showNewsDiv").innerHTML=str;
+}
+
   function getPreviousNews(val,arrayType)
   { if(arrayType=="initialArray")
     {
