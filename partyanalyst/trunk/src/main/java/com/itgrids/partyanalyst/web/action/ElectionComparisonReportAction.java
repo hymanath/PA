@@ -25,7 +25,9 @@ import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsPercentageVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionComparisonReportService;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
 import com.itgrids.partyanalyst.service.IPartyService;
@@ -57,9 +59,26 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private IElectionComparisonReportService electionComparisonReportService;
 	private IPartyService partyService;
 	private IStaticDataService staticDataService;
-	
+	private Boolean hasECRPage = new Boolean(false);
 	private Long electionType,electionYears2,electionYears1,state;//variables comes from  electionComparisonReportPopUp
 	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
+	private EntitlementsHelper entitlementsHelper;
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public Boolean getHasECRPage() {
+		return hasECRPage;
+	}
+
+	public void setHasECRPage(Boolean hasECRPage) {
+		this.hasECRPage = hasECRPage;
+	}
 	
 	public Long getState() {
 		return state;
@@ -259,8 +278,14 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 			
 		Boolean hasAlliances = new Boolean(allianceCheck);
 		if(logger.isDebugEnabled())
-			logger.debug("alliance-->" + allianceCheck);		
+			logger.debug("alliance-->" + allianceCheck);	
 		
+		HttpSession session = request.getSession();
+		session = request.getSession();
+		
+		if(session != null)
+			hasECRPage = entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ECR_DETAILED_ANALYSIS);
+				
 		if(electionId1==null ||  electionId2==null){
 			List result = staticDataService.getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(electionType,electionYears2,electionYears1,state,IConstants.ELECTION_SUBTYPE_MAIN);
 			if(result.size() == 0)
