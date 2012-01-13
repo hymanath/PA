@@ -58,13 +58,38 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 <!-- YUI Dependency files (End) -->
-	
+
+	<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<!-- JQuery files (End) -->
 
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="js/cadreManagement/cadre.js" ></script>
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
+
+	<style>
+	/*#dashBoardCenterlayout_body thead{
+		background-color :#dddddd;
+	}
+	#dashBoardCenterlayout_body table{
+
+		border: 1px solid #dddddd;
+	}*/
+.yui-skin-sam .yui-pg-container{
+ 
+ text-align: center;
+
+}
+	</style>
 	</head>
 	<body>
 	<div id="username_change_window" style="background-color: #C7CFD2;">
@@ -102,12 +127,12 @@
 							<td><a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >DashBoard</a></td> 
 						</tr>
 						<tr>
-							<td id=""><img src="images/icons/callCenter.png" style="padding-left:4px;width: 38px; height: 38px;"/></td>
+							<td id=""><img src="images/icons/callCenter.png" style="padding-left:4px;width: 35px; height: 30px;"/></td>
 							<td><a href="callCenterAction.action" class="profileAnc">Call Center</a></td> 
 						</tr>
  
                          <tr>
-							<td id=""><img src="images/icons/profile.png" style="padding-left:4px;width: 38px; height: 38px;"/></td>
+							<td id=""><img src="images/icons/profile.png" style="padding-left:4px;width: 38px; height: 30px;"/></td>
 							<td><a href="profileManagePageAction.action" class="profileAnc">Manage Profile</a></td> 
 						 </tr>
 						
@@ -147,7 +172,28 @@
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
 					</table>
 				</div>
-				<div id="dashBoardCenterlayout_body">
+
+			<c:if test="${hasNewsMonitoring == true}">
+				<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
+			
+				<table id="dashBoardCenterlayout_table" style="">
+				<c:forEach var="newsDetails" varStatus="stat" items="${fileVOList}">
+				<tr>
+				<td>${newsDetails.source}</td>
+				<td>
+<a href="javascript:{showNewsPopUp(${stat.count},'${newsDetails.title}','${newsDetails.fileId}','${newsDetails.scope}','${newsDetails.description}','${newsDetails.pathOfFile}','${newsDetails.fileDate}');}">
+${newsDetails.title}</a></td>
+				<td>${newsDetails.description}</td>
+				<td>${newsDetails.scope}</td>
+				<td>${newsDetails.locationScopeValue}</td>
+				</tr>
+				</c:forEach>
+				</table>
+				</c:if>
+				
+			<c:if test="${hasNewsMonitoring == false}">	
+			<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
+			</c:if>
 					<table width="100%" style="width:100%;height:100%">
 						<tr>
 							<td style="vertical-align:top;width:70%;">
@@ -234,10 +280,10 @@
 														<a href="cadreManagementAction.action#regionLevelCadreDivHead" class="indexPageAnc">View All</a>
 													</span>
 													<span class="dashBoardLinks">
-														<!--<span><img src="images/icons/indexPage/sms_cell.png"/></span>-->
+														<!--<span><img src="images/icons/indexPage/sms_cell.png"/></span>
 														<span>
 															<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup();" class="indexPageAnc">Send SMS</a>				
-														</span>														
+														</span>	-->													
 													</span>
 												</div>
 											</div>
@@ -257,10 +303,10 @@
 											<li>View Your District</li>
 											<li>View Your Constituency</li>
 											<li>View Your Mandal</li>											
-										</ul>-->
+										</ul>
 									</div>
 									<div id="staticDataView_footer"></div>
-								</div>
+								</div>-->
 
 								<div id="usergroups_main">
 									<div id="usergroups_head">
@@ -364,7 +410,9 @@
 			</div>
 		</div>
 
-
+<div id="newsPopUpDiv">
+	<div id="newsInnerContetDiv"></div>
+</div>
 		
 		<script type="text/javascript">
 var uname = '${sessionScope.USER.userName}';
@@ -1340,12 +1388,145 @@ $("#username_change_window").dialog({
 		<c:if test="${sessionScope.UserType == 'PartyAnalyst'}">
 	showUserNameChangePanel(uname);
 	</c:if>
-		</script>
+var size='<s:property value="fileVOList.size"/>';
+function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate){
 
 	
+	$("#newsPopUpDiv").dialog({ stack: false,
+			height: 'auto',
+			width: 'auto',
+			closeOnEscape: true,
+			position:[20,20],
+			show: "blind",
+			hide: "explode",
+			modal: true,
+			title:'<font color="Navy">'+title+'</font>',
+			overlay: { opacity: 0.5, background: 'black'}
+	});
 	
+	var newsInnerContetDivElmt = document.getElementById("newsInnerContetDiv");
+	var str='';
+	str+='<div id="content">';
+	str+='<table width="100%">';
+	str+='<tr>';
+	str+='<td>'+scope+'</td>';
+	str+='<td>'+fileDate+'</td>';
+	str+='</tr><tr>';
+	str+='<td>';
+	if(count>1){
+	str+='<a href="javascript:{getPreviousNews('+fileId+','+count+');}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	}
+	str+='</td>';
+	str+='<td><img src="'+pathOfFile+'">';
+	str+='</td>';
+	if(count!=size)
+	str+='<td><a href="javascript:{getNextNews('+fileId+','+count+');}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='</td>';
+	str+='</tr><tr>';
+	str+='<td>'+description+'</td>';
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
+	newsInnerContetDivElmt.innerHTML = str;
+}	
+
+//var fileList = '${fileVOList}';
+//var hasNewsMonitoringentitlement ='${hasNewsMonitoring}' ; 
+//alert(hasNewsMonitoringentitlement);
+<c:if test="${hasNewsMonitoring == true}">
+	buildNews();
+</c:if>
+
+function getPreviousNews(fileId){
+
+var newsInnerContetDivElmt = document.getElementById("newsInnerContetDiv");
+var str='';
+var ui_dialog_title_newsPopUpDivElmt = document.getElementById("ui-dialog-title-newsPopUpDiv");
 	
+	str+='<s:iterator value="fileVOList" status="stat">';
+		var fileListId = '<s:property value="fileId"/>';
+if(fileListId == fileId){
+			
 	
+	count='<s:property value="#stat.index-1"/>';
+	str+='<div id="content">';
+	str+='<table width="100%">';
+	str+='<tr>';
 	
+	str+='<td><s:property value="fileVOList[#stat.index-1].scope"/></td>';
+	str+='<td><s:property value="fileVOList[#stat.index-1].fileDate"/></td>';
+	str+='</tr><tr>';
+	if(count>=1){
+	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	str+='</td>';
+	}
+	str+='<td><img src="<s:property value="fileVOList[#stat.index-1].pathOfFile"/>">';
+	str+='</td>';
+	if(count <size){
+	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='</td>';
+	}
+	str+='</tr><tr>';
+	str+='<td>';
+	
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
+	ui_dialog_title_newsPopUpDivElmt.innerHTML = '<s:property value="fileVOList[#stat.index-1].title"/>';
+	newsInnerContetDivElmt.innerHTML = str;
+		return;	
+	
+	}
+	
+str+='</s:iterator>';
+
+
+
+}
+function getNextNews(fileId,count){
+
+
+var newsInnerContetDivElmt = document.getElementById("newsInnerContetDiv");
+var str='';
+	var ui_dialog_title_newsPopUpDivElmt = document.getElementById("ui-dialog-title-newsPopUpDiv");
+	str+='<s:iterator value="fileVOList" status="stat">';
+		var fileListId = '<s:property value="fileId"/>';
+ if( fileListId == fileId){
+	count='<s:property value="#stat.index+1"/>';
+	str+='<div id="content">';
+	str+='<table width="100%">';
+	str+='<tr>';
+	str+='<td><s:property value="fileVOList[#stat.index+1].scope"/></td>';
+	str+='<td><s:property value="fileVOList[#stat.index+1].fileDate"/></td>';
+	str+='</tr><tr>';
+	if(count>1){
+	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	str+='</td>';
+	}
+	str+='<td><img src="<s:property value="fileVOList[#stat.index+1].pathOfFile"/>">';
+	str+='</td>';
+	if(count>size){
+	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='</td>';
+	}
+	str+='</tr><tr>';
+	str+='<td>';
+	
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
+	ui_dialog_title_newsPopUpDivElmt.innerHTML = '<s:property value="fileVOList[#stat.index+1].title"/>';
+	newsInnerContetDivElmt.innerHTML = str;
+		return;	
+	
+	}
+	
+str+='</s:iterator>';
+
+	
+}
+
+
+</script>
 </body>
 </html>
