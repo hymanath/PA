@@ -190,7 +190,7 @@ a:hover
 #dashBoardLeftlayoutDiv
 {
 	background-color:#FFFFFF;
-	height:100%;
+	height:535px;
 }
 
 #dashBoardCenterlayoutDiv
@@ -367,9 +367,9 @@ text-decoration:none;
 {
 	background-image:url("../../images/icons/indexPage/notice_board.png");
 	background-repeat:no-repeat;
-	height:185px;
+	height:149px;
 	margin-left:10px;
-	margin-top:64px;
+	margin-top:120px;
 	padding:38px 0 7px 5px;
 	width:175px;
 	
