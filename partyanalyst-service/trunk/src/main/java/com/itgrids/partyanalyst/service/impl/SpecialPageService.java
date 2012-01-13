@@ -846,4 +846,25 @@ public class SpecialPageService implements ISpecialPageService{
 		}
 	}
 	
+	public ResultStatus createNewSpecialPage(GallaryVO gallaryVO)
+	{
+		ResultStatus resultStatus = new ResultStatus(); 
+		try{
+			log.error("Entered into createNewSpecialPage() Method");
+			SpecialPage specialPage = new SpecialPage();
+			specialPage.setName(gallaryVO.getGallaryName());
+			specialPage.setTitle(gallaryVO.getContentType());
+			specialPage.setHeading(gallaryVO.getContentType());
+			
+			specialPageDAO.save(specialPage);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			
+		}catch(Exception e){
+		log.error("Ecxeption Occured in createNewSpecialPage(), Exception is - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+		}
+	}
+	
 }
