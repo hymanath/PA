@@ -363,6 +363,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 			selectOptionList = specialPageService.getPartyGallarySelectList(jobj.getLong("specialPageId"),jobj.getString("contentType"));
 		}
 		
+		else if(jobj.getString("task").equalsIgnoreCase("createNewSpecialPage"))
+		{
+			GallaryVO gallary = new GallaryVO();
+			gallary.setGallaryName(jobj.getString("name"));
+			gallary.setVisibility(jobj.getString("title"));
+			gallary.setContentType(jobj.getString("heading"));
+			
+			result = specialPageService.createNewSpecialPage(gallary);
+		}
+		
 		return Action.SUCCESS;
 	} 
 	
