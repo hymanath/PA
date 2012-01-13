@@ -884,7 +884,7 @@ function validateNewsFileUpload()
 {
 	var fileTitle = document.getElementById('fileTitle').value;
 	var fileDesc = document.getElementById('fileDescription').value;
-	var fileVal = document.getElementById("fileId").value;
+	var fileVal = document.getElementById("newsFileId").value;
 	var source = document.getElementById("source").value;
 	var languageId = document.getElementById("language").value;
     var categoryId = document.getElementById("category").value;
@@ -996,7 +996,7 @@ function clearNewsUploadFileFields()
 	document.getElementById('keywords').value = '';
 	document.getElementById('existingFromText').value = '';
 	document.getElementById('source').value = '';
-	document.getElementById('fileId').value = '';	
+	document.getElementById('newsFileId').value = '';	
 	document.getElementById('publicRadioId').checked = true;
 	getScopes();
 }
@@ -1538,7 +1538,7 @@ function  buildUploadNews()
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 	str += '<table>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
+	str += '       <td class="tdWidth1">Select News Gallery</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
@@ -1583,7 +1583,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" /></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
