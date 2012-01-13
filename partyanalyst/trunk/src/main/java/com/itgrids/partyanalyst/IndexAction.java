@@ -16,13 +16,17 @@
 package com.itgrids.partyanalyst;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.web.action.CadreManagementAction;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.Date;
@@ -50,12 +54,16 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
     private IStaticDataService staticDataService;
     private IUserGroupService userGroupService;
     private IAnanymousUserService ananymousUserService;
+    private ICandidateDetailsService candidateDetailsService;
+    private List<FileVO> fileVOList;
     private int systemGroups;
     private int userGroups;
 	private HttpSession session;
 	private HttpServletRequest request;
 	private int eventCount;
 	private int impDateCount;
+	private EntitlementsHelper entitlementsHelper;
+	private boolean hasNewsMonitoring;
 	private static final long serialVersionUID = 1L;
 	
 	private IUserCadreManagementService userCadreManagementService;
@@ -67,6 +75,22 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 
 	
 	
+	public void setFileVOList(List<FileVO> fileVOList) {
+		this.fileVOList = fileVOList;
+	}
+
+	public List<FileVO> getFileVOList() {
+		return fileVOList;
+	}
+
+	public void setCandidateDetailsService(ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
 	public String getChangedUserName() {
 		return changedUserName;
 	}
@@ -184,7 +208,23 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	@TypeConversion(converter = "com.itgrids.partyanalyst.DateConverter")
     public Date getDateNow() { return now; }
     
-    public String execute() throws Exception {
+    public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setHasNewsMonitoring(boolean hasNewsMonitoring) {
+		this.hasNewsMonitoring = hasNewsMonitoring;
+	}
+
+	public boolean isHasNewsMonitoring() {
+		return hasNewsMonitoring;
+	}
+
+	public String execute() throws Exception {
     	session = request.getSession();
 		user = (RegistrationVO) session.getAttribute("USER");
 		
@@ -210,7 +250,13 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
         loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
-        
+       if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
+        	hasNewsMonitoring = true;
+        	fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
+        }
+       else
+    	   hasNewsMonitoring = false;
+		
         return SUCCESS;
     }
 }
