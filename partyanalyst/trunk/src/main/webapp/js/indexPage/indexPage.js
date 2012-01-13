@@ -135,7 +135,7 @@ function buildSMSPopup()
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:480,
+	height:538,
 	units: [			
 			{ 
 				position: 'left', 
@@ -143,7 +143,8 @@ function buildIndexPageLayout()
 				header:false,
 				body: 'dashBoardLeftlayoutDiv',
 				resize: false,
-				gutter: '2px',
+					
+				//gutter: '2px',
 				collapse: false,
 				scroll: true,						
 				animate: true 
@@ -152,6 +153,7 @@ function buildIndexPageLayout()
 				position: 'center',						
 				body: 'dashBoardCenterlayoutDiv',
 				resize: false,
+					top:0,
 				gutter: '2px',
 				collapse: true,
 				scroll: true,						
@@ -448,7 +450,8 @@ function initializeIndexPage()
 	buildIndexPageLayout();
 	showCurrentDateTime();
 	buildReportsCarousel();
-	showRegionStaticData();
+	//buildNews(fileList);
+	//showRegionStaticData();
 }
 
 
@@ -1398,4 +1401,59 @@ function openEditAnnouncement()
 {
 	var editAnnouncementbrowser = window.open("openEditAnnouncementAction.action","addNewProblem","scrollbars=yes,height=750,width=1000,left=10,top=10");
 	editAnnouncementbrowser.focus();
+}
+function buildNews(){
+	
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("dashBoardCenterlayout_table"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "source",formatter:YAHOO.widget.DataTable.formatLink
+		}, {
+			key : "title",formatter:YAHOO.widget.DataTable.formatLink
+		}, {
+			key : "description"
+		}, {
+			key : "scope"
+		}, {
+			key : "locationScopeValue"
+		},
+		]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "source",
+		label : "Source",
+		sortable : true
+	}, {
+		key : "title",
+		label : "Title",
+		sortable : true
+	}, {
+		key : "description",
+		label : "Description",
+		sortable : true	
+	}, {
+		key : "scope",
+		label : "Impact Area",
+		sortable : true	
+	}, {
+		key : "locationScopeValue",
+		label : "Area Name",
+		sortable : true	
+	},
+	];
+
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5,
+				template : "{PageLinks} {RowsPerPageDropdown}",
+                pageLinks : 5, 
+                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+			    }) 
+				};
+	var myDataTable = new YAHOO.widget.DataTable("dashBoardCenterlayout_body",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+
 }
