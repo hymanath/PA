@@ -1376,7 +1376,6 @@ function showFirstFourNewsRecords(results)
 								hide: "explode",
 								modal: true,
 								maxWidth : 950,
-								maxHeight : 800,
 								title:'<center><font color="Navy">'+results[0].fileTitle1+'</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
@@ -1387,7 +1386,7 @@ function showFirstFourNewsRecords(results)
 	 str+='<table>';
 	 str+='     <tr>';
 	 str+='       <td>';
-	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
