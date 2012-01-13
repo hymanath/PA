@@ -124,7 +124,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
-
+	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -1973,6 +1973,59 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 return true;
 	 return false;
  }
+
+
+
+ @SuppressWarnings("unchecked")
+ public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId) {
+	List<FileVO> fileVOList = new ArrayList<FileVO>();
+	GallaryVO gallaryVO = new GallaryVO();
+	FileVO fileVO = new FileVO();
+	List gallaryIds = new ArrayList();
+
+	List<Object[]> gallaries = userGallaryDAO.getAllNewsGallaryBasedOnUserId(userId);
+	for(Object[] params : gallaries){
+		gallaryVO.setGallaryId(new Long(params[0].toString()));
+		gallaryVO.setGallaryName(params[1].toString());
+		gallaryIds.add(params[0]);
+	}
+	List<Object[]> files = fileGallaryDAO.getNewsByGalleryId(gallaryIds);
+	for(Object[] filesObj : files){
+		fileVO = new FileVO();
+		fileVO.setFileId(new Long(filesObj[0].toString()));
+		fileVO.setFileName1(filesObj[1].toString());
+		fileVO.setPathOfFile(IConstants.UPLOADED_FILES +"/"+filesObj[1].toString());
+		fileVO.setTitle(filesObj[3].toString());
+		fileVO.setDescription(filesObj[4].toString());
+		fileVO.setFileType(filesObj[5].toString());
+		fileVO.setScope(filesObj[6].toString());
+		fileVO.setFileDate(filesObj[7].toString());
+		fileVO.setSource(filesObj[8].toString());
+		fileVO.setLanguage(filesObj[9].toString());
+		fileVO.setLocationScope(new Long(filesObj[10].toString()));
+		Long scopeId = new Long(filesObj[10].toString());
+		Long locationId = new Long(filesObj[11].toString());
+		fileVO.setLocationScopeValue(getLocationBasedOnScopeId(scopeId,locationId));
+		fileVOList.add(fileVO);
+	}
+	return fileVOList;
+}
+ public String getLocationBasedOnScopeId(Long scopeId,Long locationId){
+	 String locationName = "";
+	 if(scopeId==2){
+		 locationName = stateDAO.get(locationId).getStateName();
+	 }
+	if(scopeId == 3)
+		locationName = districtDAO.get(locationId).getDistrictName();
+	if(scopeId == 4)
+		locationName = constituencyDAO.get(locationId).getName();
+	if(scopeId == 5)
+		locationName = tehsilDAO.get(locationId).getTehsilName();
+	
+	return locationName;
+	 
+ }
+ 
  public List<FileVO> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
