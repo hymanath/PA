@@ -124,4 +124,5 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getNewsImportance();
 	 public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance);
 	 
-}
+	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);
+	}
