@@ -53,4 +53,6 @@ public interface ISpecialPageService {
 			Long specialPageId, int firstRecord, int maxRecord, String type);
 	
 	public List<CustomPageVO> getCustomPagesOfASpecialPage(Long specialPageId);
+	
+	public ResultStatus createNewSpecialPage(GallaryVO gallaryVO);
 }
