@@ -35,8 +35,6 @@
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 
-
-
 <style>
 #problemHead
 {
@@ -232,13 +230,13 @@ font-size:18px;
 				<td class="statusData_table_data" width="100%" style="padding-top:23px">
 					<table>
 					  <tr>
-						<td style="padding-left:93px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick=""></b></td>
+					    <td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick=""></b></td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick=""></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
-						<!--<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Party Manifesto" id="manifestoId" onClick="uploadPartyManifesto()"></b> </td>-->
-					  </tr>
+					 </tr>
 					</table>
 				</td>
 			 </tr>
@@ -297,9 +295,12 @@ font-size:18px;
 
 		
 	</div>
+	
 	<div id='videoGallaryDiv' class="divInfo">
-		
-		</div>
+	</div>
+
+	<div id='createNewDiv' class="divInfo">
+	</div>
 
 	<!-- for  body 2 end    result  -->
 	<div id='profileManagementMainOuterDiv3' style="display:none">
@@ -368,29 +369,7 @@ font-size:18px;
 		<div id='updateGallaryDiv' class="divInfo">
 
 	  </div>
-	   </div>
-	  <!--<div id='profileManagementMainOuterDiv7' style="display:none">
-		<div id='profileManagementHeaderDiv2'>
-			<table width="100%" cellspacing="0" cellpadding="0" border="0">
-				  <tr>
-					   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-					   </td>
-					   <td width="98%">
-						 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-						   <span style="text-decoration: none;" class="headerLabelSpan2">Upload Party Manifesto</span>
-						 </div>
-					   </td>
-					   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-					   </td>
-				 </tr>
-			</table>
-		</div>
-
-		<div id='manifestoDiv' class="divInfo">
-
-	  </div>
+	 </div>
 	  
-	</div>-->
-
 </body>
 </html>
