@@ -527,6 +527,8 @@
 		<property name="userGroupService" ref="userGroupService" />
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
 		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
