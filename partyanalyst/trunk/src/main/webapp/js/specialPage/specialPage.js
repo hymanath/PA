@@ -15,13 +15,16 @@ var timeST = new Date().getTime();
 function insertProfileDiscription()
 {
 	if(document.getElementById('descriptionDiv').style.display = 'none')
-		document.getElementById('descriptionDiv').style.display = 'block' ;
-	if(document.getElementById('newsGallaryDiv').style.display = 'block')
-	document.getElementById("newsGallaryDiv").style.display = 'none';
-	
+		document.getElementById('descriptionDiv').style.display = 'block';
 
+	if(document.getElementById('newsGallaryDiv').style.display = 'block')
+		document.getElementById("newsGallaryDiv").style.display = 'none';
+
+	if(document.getElementById('createNewDiv').style.display = 'block')
+		document.getElementById('createNewDiv').style.display = 'none';
+	
 	if(document.getElementById("videoGallaryDiv").style.display = 'block')
-	document.getElementById("videoGallaryDiv").style.display = 'none';
+		document.getElementById("videoGallaryDiv").style.display = 'none';
 	
 	var str ='';
 	str += '<div id="content" style="width:650px;">';
@@ -152,9 +155,12 @@ function callAjax(jsObj,url){
               // clearOptionsListForSelectElmtId('gallarySelectId');
 			   createListDataForNews('gallaryId',myResults);
 			}
+			else if(jsObj.task == 'createNewSpecialPage')
+			{
+				showSuccessOfCreateNew(myResults);
+			}
 
-
-		}
+	}
 		catch(e)
 						{   
 							alert("Invalid JSON result" + e);   
@@ -354,7 +360,10 @@ if(document.getElementById('descriptionDiv').style.display = 'block')
 	document.getElementById('descriptionDiv').style.display = 'none' ;
 
 if(document.getElementById('newsGallaryDiv').style.display = 'block')
-document.getElementById('newsGallaryDiv').style.display = 'none';
+	document.getElementById('newsGallaryDiv').style.display = 'none';
+
+if(document.getElementById('createNewDiv').style.display = 'block')
+	document.getElementById('createNewDiv').style.display = 'none';
 
 if(document.getElementById("videoGallaryDiv").style.display = 'none')
 	document.getElementById("videoGallaryDiv").style.display = 'block' ;
@@ -784,9 +793,12 @@ if(document.getElementById('videoGallaryDiv').style.display = 'block')
 if(document.getElementById('descriptionDiv').style.display = 'block')
 	document.getElementById('descriptionDiv').style.display = 'none';
 
+if(document.getElementById('createNewDiv').style.display = 'block')
+	document.getElementById('createNewDiv').style.display = 'none';
+
 if(document.getElementById('newsGallaryDiv').style.display = 'none')
 	document.getElementById('newsGallaryDiv').style.display = 'block';
-	
+
 	//var newsGallaryDiv = document.getElementById("newsGallaryDiv");
 	
 	var str ='';
@@ -2095,6 +2107,7 @@ function buildVideoGallaries(results)
 		 str+='</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
+
 function getVideosInAGallary(gallaryId){
 
     var jsObj = {
@@ -2107,6 +2120,7 @@ function getVideosInAGallary(gallaryId){
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjaxForSpecialPage(jsObj,url);
 }
+
 function buildAllVideosInGallary(results){
 
  var str ='';
@@ -2147,4 +2161,124 @@ function buildAllVideosInGallary(results){
 		str+='</table>';
 		str+='</div>';
 		videosDivElmt.innerHTML =str;
+}
+
+function buildCreateNewDiv()
+{
+
+	if(document.getElementById('descriptionDiv').style.display = 'block')
+		document.getElementById('descriptionDiv').style.display = 'none' ;
+
+	if(document.getElementById('newsGallaryDiv').style.display = 'block')
+	document.getElementById('newsGallaryDiv').style.display = 'none';
+
+	if(document.getElementById("videoGallaryDiv").style.display = 'block')
+		document.getElementById("videoGallaryDiv").style.display = 'none' ;
+
+	if(document.getElementById("createNewDiv").style.display = 'none')
+		document.getElementById("createNewDiv").style.display = 'block' ;
+
+	
+	var createNewDivElmt = document.getElementById("createNewDiv");
+	var str ='';
+	str +='<div id="content" style="width:650px;">';
+		
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Create A Special Page</h2>';
+	
+	str += '<div id="createNewInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+	
+	str += '<table align="left" class="paddingCss"><tr><td><div id="createNewErrorMsgDivId"></div></td></tr></table>';
+
+	str += '<table width="75%">';
+	str += '<tr><td><b><font color="#4B74C6">Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewNameId" size="25" maxlength="100"></td></tr>';
+
+	str += '<tr><td><b><font color="#4B74C6">Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewTitleId" size="25" maxlength="500"></td></tr>';
+
+	str += '<tr><td><b><font color="#4B74C6">Heading<font class="requiredFont">*</font></font></b></td><td><input type="text" id="createNewHeadingId" size="25" maxlength="300"></td></tr>';
+
+	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Create" style="background-color:#57B731" onClick="createNewSpecialPage()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearCreateNewDiv()" style="background-color:#CF4740"></td></tr></table>';
+
+	
+	str += '</fieldset>';
+	str +='</div>';
+	
+	createNewDivElmt.innerHTML = str;
+}
+
+function createNewSpecialPage()
+{
+	var name	= document.getElementById('createNewNameId').value;
+	var title	= document.getElementById('createNewTitleId').value;
+	var heading = document.getElementById('createNewHeadingId').value;
+
+	var errorDivEle = document.getElementById('createNewErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+	if(name.length == 0)
+	{
+		str += 'Special Page Name Required<br>';
+		eFlag = true;
+	}
+	if(title.length == 0)
+	{
+		str += 'Special Page Title Required<br>';
+		eFlag = true;
+	}
+	if(heading.length == 0)
+	{
+		str += 'Special Page Heading Required<br>';
+		eFlag = true;
+	}
+	
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+	
+	var jsObj =
+		{ 
+            name	: name,
+		    title	: title,
+			heading : heading,
+			task	: "createNewSpecialPage"
+		};
+
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewEventGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function clearCreateNewDiv()
+{
+	var createNewDivElmt = document.getElementById("createNewDiv");
+	createNewDivElmt.innerHTML = '';
+}
+
+function clearFieldsOfCreateNewDiv()
+{
+	document.getElementById('createNewNameId').value = '';
+	document.getElementById('createNewTitleId').value = '';
+	document.getElementById('createNewHeadingId').value = '';
+}
+
+function showSuccessOfCreateNew(result)
+{
+	var errorDivEle = document.getElementById('createNewErrorMsgDivId');
+	var str = '';
+
+	if(result.resultCode == 0)
+	{
+		str += '<font color="Green">Special Page Created SuccessFully</font>';
+		clearFieldsOfCreateNewDiv();
+	}
+	else 
+		str += '<font color="red">Special Page is Not Created, Try Again</font>';
+	errorDivEle.innerHTML = str;
+
+	clearFieldsOfCreateNewDiv();
 }
