@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
+import org.apache.poi.hssf.record.formula.functions.Request;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -320,5 +321,17 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		query.setMaxResults(maxResults);
 		
 		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsByGalleryId(List galleryIds){
+		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +
+		 		"model.file.fileTitle,model.file.fileDescription,model.file.fileType.type,model.file.regionScopes.scope," +
+		 		"model.file.fileDate,model.file.sourceObj.source,model.file.language.language,model.file.regionScopes.regionScopesId ," +
+		 		"model.file.locationValue  " +
+		 		"FROM FileGallary model WHERE model.gallary.gallaryId in(:galleryIds)");
+		 query.setParameterList("galleryIds", galleryIds);
+		 //query.setParameter("galleryIds", galleryIds);
+		 
+		 return query.list();
 	}
 }
