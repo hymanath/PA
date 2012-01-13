@@ -19,7 +19,7 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public List<Object[]> getFileByFileId(Long fileId)
 	{
 		return getHibernateTemplate().find("select model.fileId,model.fileName,model.filePath,model.fileTitle,model.fileDescription , " +
-				" model.source ,model.fileDate from File model where  model.fileId=?",fileId); 
+				" model.sourceObj.source ,model.fileDate from File model where  model.fileId=?",fileId); 
 		
 		
 	}
