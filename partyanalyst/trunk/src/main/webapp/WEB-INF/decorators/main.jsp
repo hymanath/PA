@@ -198,9 +198,8 @@ var $j = jQuery.noConflict(true);
 						id: "partyanalysis",  
 				        itemdata: [	            
 				            { text: "Elections Comparison Report", url: "electionComparisonAction.action" },
-				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },
-				            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }       	                       
-				        ]    
+				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" }      	            
+						]    
 					},
 					{ 
 						id: "staticData",  
