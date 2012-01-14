@@ -25,7 +25,7 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		this.partyElectionResultDAO = partyElectionResultDAO;
 	}
 	
-	@Test
+	/*@Test
 	public void testFindByElectionAndParty()
 	{
 		List<PartyElectionResult> partyElectionResults = partyElectionResultDAO.getByElectionAndParty(new Long(1), new Long(34));
@@ -38,9 +38,9 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		else if(partyElectionResults.equals(null) || partyElectionResults.size() == 0){
 			System.out.println("No Results Available.....");
 		}
-	}
+	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testFindSeatsWonByAPartyInAnElection(){
 	 List resultsList = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(new Long(9), new Long(62));	
@@ -56,6 +56,20 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 	 else if(resultsList == null || resultsList.size() == 0){
 		 System.out.println("No Results Available.....");
 	 }
+	}*/
+	
+	public void testGetPartyBasicResultForAnElection()
+	{
+		List<Object[]> list = partyElectionResultDAO.getPartyBasicResultForAnElection(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
 	}
 	
 }

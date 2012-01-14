@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 
 public interface IElectionReportService {
@@ -19,5 +20,7 @@ public interface IElectionReportService {
 	public PartyPositionsVO getCompleteStatewiseVotersInfoForAnElection(Long electionId);
 	
 	public List<PartyPositionsVO> getVotersDataOfTwoElections(Long electionId);
+	
+	public List<PartyElectionResultVO> getPartyBasicDetailsWithGenderInfoForAnElection(Long electionId);
 	
 }
