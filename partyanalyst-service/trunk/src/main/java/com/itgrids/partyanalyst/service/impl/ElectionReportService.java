@@ -1218,14 +1218,16 @@ public class ElectionReportService implements IElectionReportService {
 		try{
 			List<PartyElectionResultVO> partyResult = null;
 			
-			List<Object[]> result = new ArrayList<Object[]>(0);
+			List<Object[]> result = partyElectionResultDAO.getPartyBasicResultForAnElection(electionId);
 			
 			if(result != null && result.size() > 0)
 			{
 				partyResult = new ArrayList<PartyElectionResultVO>(0);
+				List<Long> partiesList = new ArrayList<Long>(0);
 				for(Object[] params : result)
 				{
 					PartyElectionResultVO partyElectionResultVO = new PartyElectionResultVO();
+					partiesList.add((Long)params[0]);
 					partyElectionResultVO.setPartyId((Long)params[0]);
 					partyElectionResultVO.setPartyName(params[1].toString());
 					partyElectionResultVO.setTotalParticipated((Long)params[2]);
@@ -1236,7 +1238,7 @@ public class ElectionReportService implements IElectionReportService {
 					partyResult.add(partyElectionResultVO);
 				}
 				
-				List<Object[]> resultList = new ArrayList<Object[]>(0);
+				List<Object[]> resultList = nominationDAO.getGenderWiseElectionResultOfParties(electionId,partiesList);
 				
 				if(resultList != null && resultList.size() > 0)
 				{
