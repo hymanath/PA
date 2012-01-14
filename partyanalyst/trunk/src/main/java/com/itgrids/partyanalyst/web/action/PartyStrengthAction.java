@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -14,7 +15,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -47,7 +50,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private ElectionInfoVO electionInfo,excludingAlliance,includingAlliance,details;	
 	private PartiesDetailsVO alliancesYears;
 	private int errorCode = 0;
-	
+	private EntitlementsHelper entitlementsHelper;
 	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyStrengthAction.class);
 	private String task = null;
 	JSONObject jObj = null;
@@ -125,6 +128,12 @@ public class PartyStrengthAction extends ActionSupport implements
 		this.errorCode = errorCode;
 	}	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
 	}
@@ -201,6 +210,17 @@ public class PartyStrengthAction extends ActionSupport implements
 	public String execute(){
 		
 		try{
+			
+		HttpSession session = request.getSession();
+		session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_STRENGTH_AND_WEAKNESS))
+			return INPUT;
+		
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_STRENGTH_AND_WEAKNESS))
+			return ERROR;
+		
 		partyList = staticDataService.getStaticParties();
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
