@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -64,6 +65,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private StateElectionsVO partyResultsInRegionVO; 
 	private PartyPositionsVO partyPositionsVO = new PartyPositionsVO();
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	private List<PartyElectionResultVO> partyElectionResultVO;
 	
 	public void setPartyPositionsVO(PartyPositionsVO partyPositionsVO) {
 		this.partyPositionsVO = partyPositionsVO;
@@ -229,6 +231,15 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 
 	public void setStateRegionService(IStateRegionService stateRegionService) {
 		this.stateRegionService = stateRegionService;
+	}
+    
+	public List<PartyElectionResultVO> getPartyElectionResultVO() {
+		return partyElectionResultVO;
+	}
+
+	public void setPartyElectionResultVO(
+			List<PartyElectionResultVO> partyElectionResultVO) {
+		this.partyElectionResultVO = partyElectionResultVO;
 	}
 
 	public String execute() throws Exception {
@@ -469,6 +480,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				 * log.debug("Exception Raised :" + ex); }
 				 */
 			}
+		}
+		if (jObj.getString("task").equalsIgnoreCase("getPartyGenderInfo")) {
+			partyElectionResultVO = electionReportService.getPartyBasicDetailsWithGenderInfoForAnElection(jObj.getLong("electionId"));
+			
 		}
 		return Action.SUCCESS;
 
