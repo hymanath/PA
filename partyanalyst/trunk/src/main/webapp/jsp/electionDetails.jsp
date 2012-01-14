@@ -163,7 +163,10 @@ function callAjax(param,jsObj,url){
 											elmtDiv.innerHTML = str;
 										}
 									  }
-									}  									
+									} 
+                                    else if(jsObj.task == "getPartyGenderInfo") {
+									  buildGenderCountResultsDataTable('genderWiseResultsDataTable',myResults);
+									}
 								}
 							catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -298,14 +301,24 @@ function showRegionWiseResults()
 	var jsObj = {
 				electionId:electionId,
 				stateID:stateID,
-				task:"getRegionWisePartyElectionResults",
+				task:"getRegionWisePartyElectionResults"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/regionWisePartyElectionResultsAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 
 }
+function getPartyGenderInfo()
+{
+	var jsObj = {
+				electionId:electionId,
+				task:"getPartyGenderInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(param,jsObj,url);
 
+}
 function showDistrictWiseResultsLineGraph(results)
 {
 
@@ -1027,6 +1040,53 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
         return { 
             oDS: partywiseResultsDataSource, 
             oDT: partywiseResultsDataTable 
+            
+      };	     	
+	
+}
+function buildGenderCountResultsDataTable(divId,dtSourceArray)
+{	
+	var partywiseResultsWithGenderColumnDefs = [
+								{key: "partyName", label: "<%=party%>", sortable:true},		
+								{key: "totalParticipated", label: "TP*", sortable:true},	
+		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "Complete Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "Participated Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "malePerticipated", label: "Male Participants",formatter:"number", sortable:true},
+		              	 	 	{key: "maleWon", label: "Male Won",formatter:"number", sortable:true}, 
+								{key: "MVotesPercent", label: "Male Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+		              	 	 	{key: "femalePerticipated", label:"Female Participants", formatter:"number",sortable: true},
+		              	 	 	{key: "femaleWon", label:"Female Won",formatter:"number", sortable: true},
+								{key: "FVotesPercent", label: "Female Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+		              	 	    ];                	 	    
+
+		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
+		partywiseResultsWithGenderDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		partywiseResultsWithGenderDataSource.responseSchema = {
+                fields: ["partyName", {key: "totalParticipated", parser:"number"},
+                         		  {key: "totalSeatsWon", parser:"number"},
+                         		  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key:  "PVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key:  "malePerticipated", parser:"number"},
+                         		  {key: "maleWon", parser:"number"},
+								  {key: "MVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "femalePerticipated", parser:"number"},
+								  {key: "femaleWon", parser:"number"},
+                         		  {key: "FVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+        		};
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15			        
+			    }),
+			    caption:"Partywise Male And Female Candidate Election Results" 
+				};
+		
+		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable(divId, partywiseResultsWithGenderColumnDefs, partywiseResultsWithGenderDataSource,myConfigs);
+					
+        return { 
+            oDS: partywiseResultsWithGenderDataSource, 
+            oDT: partywiseResultsWithGenderDataTable 
            
       };	     	
 	
@@ -2117,7 +2177,15 @@ callAjax(rparam,jsObj,url);
 </DIV>
 <DIV class="graphBottom"></DIV>
 </DIV>
-
+<DIV class="yui-skin-sam" >
+	<TABLE border="0" width="95%" >
+		<TR>
+			<TD valign="top" align="left">
+				<DIV id="genderWiseResultsDataTable"></DIV>
+			</TD>
+		</TR>		
+	</TABLE>	
+</DIV>
 <DIV id="analysisToolsDataDiv">
 <DIV class="graphTop">Analysis Tools</DIV>
 <DIV id="toolsDiv">
@@ -2266,6 +2334,7 @@ callAjax(rparam,jsObj,url);
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
+getPartyGenderInfo();
 </SCRIPT>
 </BODY>
 </HTML>
