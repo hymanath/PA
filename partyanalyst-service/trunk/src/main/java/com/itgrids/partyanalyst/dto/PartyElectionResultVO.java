@@ -40,7 +40,77 @@ public class PartyElectionResultVO implements Serializable {
 	private String electionTypeYear;
 	private Long townshipId;
 	private String townshipName;
+	private Long totalParticipated;
+	private Long totalSeatsWon;
+	private String completeVotesPercent;
+	private String pVotesPercent;
+	private Long malePerticipated;
+	private Long femalePerticipated;
+	private Long maleWon;
+	private Long femaleWon;
+	private String mVotesPercent;
+	private String fVotesPercent;
 	
+	public Long getMalePerticipated() {
+		return malePerticipated;
+	}
+	public void setMalePerticipated(Long malePerticipated) {
+		this.malePerticipated = malePerticipated;
+	}
+	public Long getFemalePerticipated() {
+		return femalePerticipated;
+	}
+	public void setFemalePerticipated(Long femalePerticipated) {
+		this.femalePerticipated = femalePerticipated;
+	}
+	public Long getMaleWon() {
+		return maleWon;
+	}
+	public void setMaleWon(Long maleWon) {
+		this.maleWon = maleWon;
+	}
+	public Long getFemaleWon() {
+		return femaleWon;
+	}
+	public void setFemaleWon(Long femaleWon) {
+		this.femaleWon = femaleWon;
+	}
+	public String getMVotesPercent() {
+		return mVotesPercent;
+	}
+	public void setMVotesPercent(String votesPercent) {
+		mVotesPercent = votesPercent;
+	}
+	public String getFVotesPercent() {
+		return fVotesPercent;
+	}
+	public void setFVotesPercent(String votesPercent) {
+		fVotesPercent = votesPercent;
+	}
+	public String getCompleteVotesPercent() {
+		return completeVotesPercent;
+	}
+	public void setCompleteVotesPercent(String completeVotesPercent) {
+		this.completeVotesPercent = completeVotesPercent;
+	}
+	public String getPVotesPercent() {
+		return pVotesPercent;
+	}
+	public void setPVotesPercent(String votesPercent) {
+		pVotesPercent = votesPercent;
+	}
+	public Long getTotalSeatsWon() {
+		return totalSeatsWon;
+	}
+	public void setTotalSeatsWon(Long totalSeatsWon) {
+		this.totalSeatsWon = totalSeatsWon;
+	}
+	public Long getTotalParticipated() {
+		return totalParticipated;
+	}
+	public void setTotalParticipated(Long totalParticipated) {
+		this.totalParticipated = totalParticipated;
+	}
 	//getters and setters
 	public Long getTotalVotes() {
 		return totalVotes;
