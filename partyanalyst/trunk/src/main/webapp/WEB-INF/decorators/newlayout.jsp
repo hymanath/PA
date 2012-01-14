@@ -240,10 +240,8 @@ function buildAccordion()
                  
                 </li>
                 <li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a>
-                    
-                </li>
-                <li><a href="partyStrengthAction.action"><span>Party Strenths/Weakness</span></a></li>
-                            </ul></div>
+                 
+				</ul></div>
         </li>
         </c:if>
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 
