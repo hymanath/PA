@@ -24,5 +24,7 @@ public interface IPartyElectionResultDAO extends GenericDao<PartyElectionResult,
 	
 	@SuppressWarnings("unchecked")
 	public List getBasicPartyElectionResultForAPartyInAnElection(Long electionId,Long partyId);
+	
+	public List<Object[]> getPartyBasicResultForAnElection(Long electionId);
 
 }

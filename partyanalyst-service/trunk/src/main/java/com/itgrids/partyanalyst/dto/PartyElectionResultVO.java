@@ -50,7 +50,21 @@ public class PartyElectionResultVO implements Serializable {
 	private Long femaleWon;
 	private String mVotesPercent;
 	private String fVotesPercent;
+	public Long mVotesPolled;
+	public Long fVotesPolled;
 	
+	public Long getMVotesPolled() {
+		return mVotesPolled;
+	}
+	public void setMVotesPolled(Long votesPolled) {
+		mVotesPolled = votesPolled;
+	}
+	public Long getFVotesPolled() {
+		return fVotesPolled;
+	}
+	public void setFVotesPolled(Long votesPolled) {
+		fVotesPolled = votesPolled;
+	}
 	public Long getMalePerticipated() {
 		return malePerticipated;
 	}

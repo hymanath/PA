@@ -51,7 +51,7 @@ public interface IPartyDetailsService {
 	
 	public ResultStatus deleteProfileDescById(Long profDescId);
 	
-	public ResultStatus updatePartyProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
+	public ResultStatus updateProfileDescription(List<GallaryVO> gallaryVO , Long partyId);
 	
 	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long partyId);
 	

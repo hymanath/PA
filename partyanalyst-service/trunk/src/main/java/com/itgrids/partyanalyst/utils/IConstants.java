@@ -468,5 +468,8 @@ public interface IConstants {
     public static final String DATE_AND_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     public static final String TIME_ZONE_INDIA = "Asia/Calcutta"; 
     public static final String CUSTOM_JSP_PAGES_PATH = "custom_jsp_pages";
+    
+    public static final String MALE = "M";
+    public static final String FEMALE = "F";
 
 }

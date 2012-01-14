@@ -3097,4 +3097,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 return	queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> selectData(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.party.shortName,model.candidate.lastname,model.candidate.gender,model.candidateResult.rank from Nomination model where " +
+				" model.constituencyElection.election.electionId = ? order by model.party.shortName ",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderWiseElectionResultOfParties(Long electionId,List<Long> partiesList)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model.candidate.gender,model.candidateResult.rank,model.candidateResult.votesEarned," +
+				" model.constituencyElection.constituencyElectionResult.validVotes from Nomination model where model.constituencyElection.election.electionId = ? and model.party.partyId in (:partiesList) " +
+				" order by model.party.shortName");
+		query.setParameter(0,electionId);
+		query.setParameterList("partiesList",partiesList);
+		
+		return query.list();
+	}
+	
 }

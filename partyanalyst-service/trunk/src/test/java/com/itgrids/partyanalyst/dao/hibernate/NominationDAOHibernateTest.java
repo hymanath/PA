@@ -879,7 +879,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 				System.out.println(election.getConstituency().getConstituencyId());
 	}*/
 	
-	public void testGetCandidatesToMapWithUser()
+	/*public void testGetCandidatesToMapWithUser()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(53l);ids.add(265l);
@@ -887,6 +887,37 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 			for(Object[] result : list)
 				System.out.println("id :"+result[0]+"Name :"+result[1]);
+	}*/
+	
+	/*public void testSelectData()
+	{
+		List<Object[]> list = nominationDAO.selectData(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj:params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetGenderWiseElectionResultOfParties()
+	{
+		List<Long> partiesList = new ArrayList<Long>(0);
+		partiesList.add(362l);
+		partiesList.add(872l);
+		List<Object[]> list = nominationDAO.getGenderWiseElectionResultOfParties(38l,partiesList);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params:list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
 	}
 }
 	
