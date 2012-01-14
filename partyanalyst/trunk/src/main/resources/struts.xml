@@ -2926,6 +2926,12 @@
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
+		
+		<action name="electionDetailsReportWithGenderAction" class="electionDetailsReportAction" method="ajaxCallHandler">
+            <result type="json" name="success">
+           		<param name="root">partyElectionResultVO</param>
+        	</result>		
+		</action>
 				
 	</package>
 </struts>      
