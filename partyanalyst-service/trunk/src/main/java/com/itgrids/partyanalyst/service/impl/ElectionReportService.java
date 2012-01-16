@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
@@ -24,11 +27,14 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionResultsWithGenderAnalysisDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStateRegionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
@@ -45,6 +51,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -68,7 +75,35 @@ public class ElectionReportService implements IElectionReportService {
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IStateRegionDAO stateRegionDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private IPartyElectionResultsWithGenderAnalysisDAO partyElectionResultsWithGenderAnalysisDAO;
+	private IPartyDAO partyDAO;
+	private TransactionTemplate transactionTemplate;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+	public IPartyElectionResultsWithGenderAnalysisDAO getPartyElectionResultsWithGenderAnalysisDAO() {
+		return partyElectionResultsWithGenderAnalysisDAO;
+	}
+
+	public void setPartyElectionResultsWithGenderAnalysisDAO(
+			IPartyElectionResultsWithGenderAnalysisDAO partyElectionResultsWithGenderAnalysisDAO) {
+		this.partyElectionResultsWithGenderAnalysisDAO = partyElectionResultsWithGenderAnalysisDAO;
+	}
+
 	private final static Logger log = Logger.getLogger(ElectionReportService.class);
 	
 	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
@@ -1238,67 +1273,17 @@ public class ElectionReportService implements IElectionReportService {
 					partyResult.add(partyElectionResultVO);
 				}
 				
-				List<Object[]> resultList = nominationDAO.getGenderWiseElectionResultOfParties(electionId,partiesList);
+				if(checkDataForGenderAnalysis(electionId,partiesList))
+					partyResult = getGenderWiseElectionResultOfParties(partyResult,electionId,partiesList);
 				
-				if(resultList != null && resultList.size() > 0)
+				else
 				{
-					PartyElectionResultVO partyElectionResultVO = null;
-					for(Object[] params : resultList)
-					{
-						partyElectionResultVO = getPartyElectionResultVO((Long)params[0],partyResult);
-												
-						if(partyElectionResultVO != null && params[2] != null)
-						{
-							if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-							{
-								partyElectionResultVO.setMalePerticipated(
-										partyElectionResultVO.getMalePerticipated() == null ? 1L : partyElectionResultVO.getMalePerticipated()+1L);
-								if(((Long)params[3]).longValue() == 1)
-									partyElectionResultVO.setMaleWon(
-											partyElectionResultVO.getMaleWon() == null ? 1L : partyElectionResultVO.getMaleWon() + 1L);
-								
-								partyElectionResultVO.setMVotesPolled(partyElectionResultVO.getMVotesPolled() != null ?
-										(partyElectionResultVO.getMVotesPolled() + ((Double)params[4]).longValue()) : ((Double)params[4]).longValue());
-								
-								partyElectionResultVO.setMaleVoters(partyElectionResultVO.getMaleVoters() != null ?
-										(partyElectionResultVO.getMaleVoters()+ ((Double)params[5]).longValue()) : ((Double)params[5]).longValue());
-							}
-							else
-							{
-								partyElectionResultVO.setFemalePerticipated(
-										partyElectionResultVO.getFemalePerticipated() == null ? 1L : partyElectionResultVO.getFemalePerticipated()+1L);
-								
-								if(((Long)params[3]).longValue() == 1)
-									partyElectionResultVO.setFemaleWon(
-											partyElectionResultVO.getFemaleWon() == null ? 1L : partyElectionResultVO.getFemaleWon() + 1L);
-								
-								partyElectionResultVO.setFVotesPolled(partyElectionResultVO.getFVotesPolled() != null ?
-										(partyElectionResultVO.getFVotesPolled() + ((Double)params[4]).longValue()) : ((Double)params[4]).longValue());
-								
-								partyElectionResultVO.setFemaleVoters(partyElectionResultVO.getFemaleVoters() != null ?
-										(partyElectionResultVO.getFemaleVoters()+ ((Double)params[5]).longValue()) : ((Double)params[5]).longValue());
-							}
-						}
-					}
-				}
-				
-				for(PartyElectionResultVO partyElectionResultVO : partyResult)
-				{
-					Double mper = 0.0D;
-					Double fper = 0.0D;
-					try{
-					mper = (Double.parseDouble(partyElectionResultVO.getMVotesPolled().toString())*100)/
-										Double.parseDouble(partyElectionResultVO.getMaleVoters().toString());
-					partyElectionResultVO.setMVotesPercent(new BigDecimal(mper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					ResultStatus resultStatus = populateGenderWiseElectionResultOfParties(electionId);
 					
-					fper = (Double.parseDouble(partyElectionResultVO.getFVotesPolled().toString())*100)/
-					Double.parseDouble(partyElectionResultVO.getFemaleVoters().toString());
-					partyElectionResultVO.setFVotesPercent(new BigDecimal(fper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-					
-					}catch (Exception ex) {
-						partyElectionResultVO.setMVotesPercent(new BigDecimal(mper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-						partyElectionResultVO.setFVotesPercent(new BigDecimal(fper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-					}
+					if(resultStatus.getResultCode() == ResultCodeMapper.SUCCESS)
+						partyResult = getGenderWiseElectionResultOfParties(partyResult,electionId,partiesList);
+					else 
+						partyResult = null;
 				}
 			}
 			
@@ -1318,5 +1303,169 @@ public class ElectionReportService implements IElectionReportService {
 				return partyElectionResultVO;
 		}
 		return null;
+	}
+	
+	public Boolean checkDataForGenderAnalysis(Long electionId,List<Long> partiesList)
+	{
+		log.error("Entered into checkDataForGenderAnalysis() Method");
+		try{
+			Long count = (Long)partyElectionResultsWithGenderAnalysisDAO.getCountOfPartiesInAElection(electionId, partiesList);
+			
+			if(count == null || count.intValue() < partiesList.size())
+				return false;
+			else
+				return true;
+		}catch (Exception e) {
+			log.error("Exception Occured in checkDataForGenderAnalysis() Method, Exception is -"+e);
+			return false;
+		}
+	}
+	
+	public ResultStatus populateGenderWiseElectionResultOfParties(final Long electionId)
+	{
+		log.debug("Entered into populateGenderWiseElectionResultOfParties() Method");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<Object[]> resultList = nominationDAO.getGenderWiseElectionResultOfParties(electionId);
+			List<PartyElectionResultVO> partyResult = new ArrayList<PartyElectionResultVO>(0);
+			
+			if(resultList != null && resultList.size() > 0)
+			{
+				PartyElectionResultVO partyElectionResultVO = null;
+				for(Object[] params : resultList)
+				{
+					Boolean isNull = false;
+					partyElectionResultVO = getPartyElectionResultVO((Long)params[0],partyResult);
+					
+					if(partyElectionResultVO == null)
+					{
+						partyElectionResultVO = new PartyElectionResultVO();
+						isNull = true;
+					}
+					
+					if(partyElectionResultVO != null && params[2] != null)
+					{
+						partyElectionResultVO.setPartyId((Long)params[0]);
+						if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+						{
+							partyElectionResultVO.setMalePerticipated(
+									partyElectionResultVO.getMalePerticipated() == null ? 1L : partyElectionResultVO.getMalePerticipated()+1L);
+							if(((Long)params[3]).longValue() == 1)
+								partyElectionResultVO.setMaleWon(
+										partyElectionResultVO.getMaleWon() == null ? 1L : partyElectionResultVO.getMaleWon() + 1L);
+							
+							partyElectionResultVO.setMVotesPolled(partyElectionResultVO.getMVotesPolled() != null ?
+									(partyElectionResultVO.getMVotesPolled() + ((Double)params[4]).longValue()) : ((Double)params[4]).longValue());
+							
+							partyElectionResultVO.setMaleVoters(partyElectionResultVO.getMaleVoters() != null ?
+									(partyElectionResultVO.getMaleVoters()+ ((Double)params[5]).longValue()) : ((Double)params[5]).longValue());
+						}
+						else
+						{
+							partyElectionResultVO.setFemalePerticipated(
+									partyElectionResultVO.getFemalePerticipated() == null ? 1L : partyElectionResultVO.getFemalePerticipated()+1L);
+							
+							if(((Long)params[3]).longValue() == 1)
+								partyElectionResultVO.setFemaleWon(
+										partyElectionResultVO.getFemaleWon() == null ? 1L : partyElectionResultVO.getFemaleWon() + 1L);
+							
+							partyElectionResultVO.setFVotesPolled(partyElectionResultVO.getFVotesPolled() != null ?
+									(partyElectionResultVO.getFVotesPolled() + ((Double)params[4]).longValue()) : ((Double)params[4]).longValue());
+							
+							partyElectionResultVO.setFemaleVoters(partyElectionResultVO.getFemaleVoters() != null ?
+									(partyElectionResultVO.getFemaleVoters()+ ((Double)params[5]).longValue()) : ((Double)params[5]).longValue());
+						}
+					}
+					
+					if(isNull)
+						partyResult.add(partyElectionResultVO);
+				}
+			}
+			
+			for(PartyElectionResultVO partyElectionResultVO : partyResult)
+			{
+				Double mper = 0.0D;
+				Double fper = 0.0D;
+				try{
+				mper = (Double.parseDouble(partyElectionResultVO.getMVotesPolled().toString())*100)/
+									Double.parseDouble(partyElectionResultVO.getMaleVoters().toString());
+				partyElectionResultVO.setMVotesPercent(new BigDecimal(mper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				
+				fper = (Double.parseDouble(partyElectionResultVO.getFVotesPolled().toString())*100)/
+				Double.parseDouble(partyElectionResultVO.getFemaleVoters().toString());
+				partyElectionResultVO.setFVotesPercent(new BigDecimal(fper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				
+				}catch (Exception ex) {
+					partyElectionResultVO.setMVotesPercent(new BigDecimal(mper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					partyElectionResultVO.setFVotesPercent(new BigDecimal(fper).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+			
+			if(partyResult != null && partyResult.size() > 0)
+			{
+				for(final PartyElectionResultVO partyElectionResultVO : partyResult)
+				{
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+					PartyElectionResultsWithGenderAnalysis genderAnalysis = new PartyElectionResultsWithGenderAnalysis();
+					
+					genderAnalysis.setElection(electionDAO.get(electionId));
+					genderAnalysis.setParty(partyDAO.get(partyElectionResultVO.getPartyId()));
+					genderAnalysis.setMaleParticipated(partyElectionResultVO.getMalePerticipated() != 
+						null ? partyElectionResultVO.getMalePerticipated() : 0L);
+					genderAnalysis.setMaleWon(partyElectionResultVO.getMaleWon() != null ?
+							partyElectionResultVO.getMaleWon() : 0L);
+					genderAnalysis.setMaleCandidateVotesGainedPercetage(partyElectionResultVO.getMVotesPercent());
+					genderAnalysis.setFemaleParticipated(partyElectionResultVO.getFemalePerticipated() != null ?
+							partyElectionResultVO.getFemalePerticipated() : 0L);
+					genderAnalysis.setFemaleWon(partyElectionResultVO.getFemaleWon() != null ? 
+							partyElectionResultVO.getFemaleWon() : 0L);
+					genderAnalysis.setFemaleCandidateVotesGainedPercetage(partyElectionResultVO.getFVotesPercent());
+					
+					partyElectionResultsWithGenderAnalysisDAO.save(genderAnalysis);
+					}
+					});
+				}
+				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				
+			}
+			return resultStatus;	
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in populateGenderWiseElectionResultOfParties() Method, Exception is  - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			return resultStatus;
+		}
+	}
+	
+	List<PartyElectionResultVO> getGenderWiseElectionResultOfParties(List<PartyElectionResultVO> partyResult,Long electionId,List<Long> partiesList)
+	{
+		log.debug("Enterd into getGenderWiseElectionResultOfParties() Method");
+		try{
+		List<Object[]> resultList = partyElectionResultsWithGenderAnalysisDAO.getPartyWiseGenderDetails(electionId,partiesList);
+		
+		PartyElectionResultVO partyElectionResultVO = null;
+		for(Object[] params : resultList)
+		{
+			partyElectionResultVO = getPartyElectionResultVO((Long)params[0],partyResult);
+			
+			if(partyElectionResultVO != null)
+			{
+				partyElectionResultVO.setMalePerticipated((Long)params[1]);
+				partyElectionResultVO.setMaleWon((Long)params[2]);
+				partyElectionResultVO.setMVotesPercent(params[3] != null ? params[3].toString() : "");
+				partyElectionResultVO.setFemalePerticipated((Long)params[4]);
+				partyElectionResultVO.setFemaleWon((Long)params[5]);
+				partyElectionResultVO.setFVotesPercent(params[6] != null ? params[6].toString() : "");
+			}
+		}
+		return partyResult;
+		
+		}catch (Exception e) {
+			log.equals("Exception occured in getGenderWiseElectionResultOfParties() Method, Exception is - "+e);
+			return null;
+		}
 	}
 }
