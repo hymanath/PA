@@ -732,7 +732,13 @@
 	<bean id="specialPageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageCustomPagesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="newsImportanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsImportanceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyElectionResultsWithGenderAnalysisDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultsWithGenderAnalysisDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
