@@ -2927,6 +2927,16 @@
         	</result>	
 		</action>
 		
+		<action name="newsDisplayAction" class="newsDisplayAction">
+			<result name="success">/jsp/newsDisplay.jsp</result> 
+		</action>
+		
+		<action name="getNewsToDisplayAction" class="newsDisplayAction" method="getNews">
+			<result type="json" name="success">
+				<param name="root">returnVal</param>
+			</result>
+		</action>
+		
 		<action name="electionDetailsReportWithGenderAction" class="electionDetailsReportAction" method="ajaxCallHandler">
             <result type="json" name="success">
            		<param name="root">partyElectionResultVO</param>
