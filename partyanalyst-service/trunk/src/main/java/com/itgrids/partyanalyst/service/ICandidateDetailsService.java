@@ -125,4 +125,6 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance);
 	 
 	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);
-	}
+	 	 
+	 public String getLocationDetails(Long scope,Long locationValue);
+}
