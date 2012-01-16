@@ -976,5 +976,9 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO"/>
 	</bean>
+	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
+		<property name="fileGallaryDAO" ref="fileGallaryDAO"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	</bean>
 </beans>		
 		
