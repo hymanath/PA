@@ -1578,7 +1578,7 @@ function  buildUploadNews()
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" style="width:175px;"><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
 	str += '   </tr>';
-	str += '       <td class="tdWidth1">News-Importance<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
