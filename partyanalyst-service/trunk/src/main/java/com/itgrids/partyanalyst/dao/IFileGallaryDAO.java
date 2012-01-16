@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -40,5 +41,19 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr);
 	
-	public List<Object[]> getNewsByGalleryId(List galleryIds);
+	public List<Object[]> getNewsByGalleryId(List galleryIds);	
+	
+	public List<File> getNewsForRegisterUsers(FileVO fileVO);
+	
+    public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getCountDetailsForLocationScopeValue(Date fromDate,Date toDate,String fileType,Long regId);
 }
