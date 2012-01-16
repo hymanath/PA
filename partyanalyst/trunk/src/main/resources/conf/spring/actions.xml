@@ -817,5 +817,8 @@
 	<bean id="specialPageManageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageManageAction" singleton="false">
 		<property name="specialPageService" ref="specialPageService"/>		
 	</bean>
-			
+	
+	<bean id="newsDisplayAction" class="com.itgrids.partyanalyst.web.action.NewsDisplayAction" singleton="false">
+		<property name="newsMonitoringService" ref="newsMonitoringService"/>		
+	</bean>		
 </beans>	
