@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.record.formula.functions.Request;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hsqldb.Session;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -334,4 +333,263 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		 
 		 return query.list();
 	}
+     public List<File> getNewsForRegisterUsers(FileVO fileVO){
+		
+    	 StringBuilder query = new StringBuilder();
+ 		query.append("select model.file from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+ 				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+ 		
+ 		if(fileVO.getExistingFrom() != null)
+ 			query.append(" and date(model.file.fileDate) >= :fromDate");
+ 			
+ 		if(fileVO.getIdentifiedOn() != null)
+ 			query.append(" and date(model.file.fileDate) <= :toDate");
+ 			
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+			query.append(" and model.file.language.languageId = :languageId");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId");
+ 			
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId");
+ 			
+ 		if(fileVO.getLocationScope() != null)
+ 			query.append(" and model.file.regionScopes.regionScopesId = :locScop");	
+ 			
+ 		if(fileVO.getLocation() != null)
+			query.append(" and model.file.locationValue =:locScopVal");		
+		
+		if(fileVO.getFileType().trim().equalsIgnoreCase("Public"))
+			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(fileVO.getFileType().trim().equalsIgnoreCase("Private"))
+			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+		
+		query.append(" order by model.file.fileDate desc   ");
+ 		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setLong("registrationId", fileVO.getCandidateId());
+		
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		if(fileVO.getExistingFrom() != null)
+		    queryObject.setDate("fromDate", fileVO.getExistingFrom());
+		
+		if(fileVO.getIdentifiedOn() != null)
+			queryObject.setDate("toDate",fileVO.getIdentifiedOn());
+ 			
+ 		if(fileVO.getSourceId() != null)
+ 			queryObject.setLong("sourceId",fileVO.getSourceId());
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			queryObject.setLong("languageId",fileVO.getLanguegeId());
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			queryObject.setLong("categoryId",fileVO.getCategoryId());
+ 			
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId",fileVO.getNewsImportanceId());
+ 			
+ 		if(fileVO.getLocationScope() != null)
+ 			queryObject.setLong("locScop",fileVO.getLocationScope());	
+ 			
+ 		if(fileVO.getLocation() != null)
+ 			queryObject.setLong("locScopVal",fileVO.getLocation());		
+		 
+		//queryObject.setFirstResult(fileVO.getStartIndex());
+		//queryObject.setMaxResults(fileVO.getMaxResult());	
+						
+		return queryObject.list(); 
+	}
+     public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.category.categoryType,model.file.category.categoryId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  		
+  		if(fromDate != null)
+ 			query.append(" and date(model.file.fileDate) >= :fromDate");
+ 			
+ 		if(toDate != null)
+ 			query.append(" and date(model.file.fileDate) <= :toDate");
+ 		
+ 		if(fileType.trim().equalsIgnoreCase("Public"))
+			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(fileType.trim().equalsIgnoreCase("Private"))
+			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+		
+ 		
+  		query.append(" group by  model.file.category.categoryType   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.sourceObj.source,model.file.sourceObj.sourceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		 		
+  		query.append(" group by  model.file.sourceObj.source   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.language.language,model.file.language.languageId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		 		
+  		query.append(" group by  model.file.language.language   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		  		
+  		query.append(" group by  model.file.newsImportance.importance   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		  		
+  		query.append(" group by  model.file.regionScopes.regionScopesId   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getCountDetailsForLocationScopeValue(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId,model.file.locationValue from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.file.fileDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		 		
+  		query.append(" group by  model.file.regionScopes.regionScopesId,model.file.locationValue   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
 }
