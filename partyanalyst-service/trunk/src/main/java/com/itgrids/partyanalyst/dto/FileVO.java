@@ -12,6 +12,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<String> fileName = new ArrayList<String>();
 	private List<String> fileTitle;
 	private List<String> fileDescription;
+	private List<FileVO> fileVOList;
 	private Long fileTypeId,gallaryId;
 	private Long fileId;
 	private Long problemFileId;
@@ -52,6 +53,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String categoryType;
 	private String importance;
 	private Long newsImportanceId;
+	private int startIndex;
+	private int maxResult;
 	
 	public String getCategoryType() {
 		return categoryType;
@@ -474,6 +477,30 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setNewsImportanceId(Long newsImportanceId) {
 		this.newsImportanceId = newsImportanceId;
+	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public int getMaxResult() {
+		return maxResult;
+	}
+
+	public void setMaxResult(int maxResult) {
+		this.maxResult = maxResult;
+	}
+
+	public List<FileVO> getFileVOList() {
+		return fileVOList;
+	}
+
+	public void setFileVOList(List<FileVO> fileVOList) {
+		this.fileVOList = fileVOList;
 	}
     
 
