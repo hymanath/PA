@@ -1500,6 +1500,8 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 //alert(hasNewsMonitoringentitlement);
 <c:if test="${hasNewsMonitoring == true}">
 	//buildNews();
+getNews("byTodayDate","getCount","Public","","","","","","");
+getNews("byTodayDate","getNews","Public","","","","","","");
 </c:if>
 
 function getPreviousNews(fileId){
@@ -1592,9 +1594,6 @@ str+='</s:iterator>';
 
 	
 }
-getNews("byTodayDate","getCount","Public","","","","","","");
-getNews("byTodayDate","getNews","Public","","","","","","");
-
 </script>
 </body>
 </html>
