@@ -941,7 +941,7 @@ function openAnalyzeConstituencyWindow(type)
 	if(parliamentConstiName =='')
 		parliamentConstiName = constituencyName;
 
-	if(userId != "" && userType == "FREE_USER")
+	if((userId != "" && userType == "FREE_USER") || type == "viewResults")
 	{
 		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
