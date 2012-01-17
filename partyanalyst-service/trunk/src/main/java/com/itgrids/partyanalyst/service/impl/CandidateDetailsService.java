@@ -1962,7 +1962,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		fileVO = new FileVO();
 		fileVO.setFileId(new Long(filesObj[0].toString()));
 		fileVO.setFileName1(filesObj[1].toString());
-		fileVO.setPathOfFile(IConstants.UPLOADED_FILES +"/"+filesObj[1].toString());
+		fileVO.setPathOfFile(filesObj[2].toString());
 		fileVO.setTitle(filesObj[3].toString());
 		fileVO.setDescription(filesObj[4].toString());
 		fileVO.setFileType(filesObj[5].toString());
@@ -1970,10 +1970,10 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		fileVO.setFileDate(filesObj[7].toString());
 		fileVO.setSource(filesObj[8].toString());
 		fileVO.setLanguage(filesObj[9].toString());
-		fileVO.setLocationScope(new Long(filesObj[10].toString()));
-		Long scopeId = new Long(filesObj[10].toString());
-		Long locationId = new Long(filesObj[11].toString());
-		fileVO.setLocationScopeValue(getLocationBasedOnScopeId(scopeId,locationId));
+		fileVO.setLocationScope((Long)filesObj[10]);
+		
+		if(filesObj[10] != null)
+			fileVO.setLocationScopeValue(getLocationDetails((Long)filesObj[10],(Long)filesObj[11]));
 		fileVOList.add(fileVO);
 	}
 	return fileVOList;
