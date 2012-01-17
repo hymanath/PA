@@ -135,7 +135,7 @@ function buildSMSPopup()
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:538,
+	height:569,
 	units: [			
 			{ 
 				position: 'left', 
@@ -1463,4 +1463,219 @@ function openShowNews()
 	var showNewsBrowser = window.open("newsDisplayAction.action","shoeNews","scrollbars=yes,height=750,width=1000,left=10,top=10");
 	showNewsBrowser.focus();
 }
+
+function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location){
+	
+var jsObj=
+	      { 
+		    queryType:queryType,
+			fileType:fileType,
+			sourceId :sourceId,
+            languegeId :languegeId,
+            categoryId :categoryId,
+            newsImportanceId :newsImportanceId,
+            locationScope :locationScope,
+            location :location,
+			task:task
+	       }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "getNewsToDisplayAction.action?"+rparam;						
+      callAjaxForNews(jsObj,url);
+}
+var newsDetails = null;
+function callAjaxForNews(jsObj,url){
+
+var myResults;	
+var callback = {			
+    success : function( o ) {
+		try {												
+			myResults = YAHOO.lang.JSON.parse(o.responseText);	
+			   
+			 if(jsObj.queryType == "getCount")
+			 {
+			   showNewsCountDetails(myResults,jsObj);
+			 }
+			 else if(jsObj.queryType == "getNews")
+			 {	
+				 newsDetails = myResults;
+				showNewsDetails(myResults);
+			 }
+			
+			}catch (e) {   		
+		   	alert("Invalid JSON result" + e);   
+		}  
+    },
+    scope : this,
+    failure : function( o ) {
+     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+              }
+    };
+
+YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function getMaxCount(result)
+{
+  var count = 0;
+  for(var i in result){
+   if(result[i].fileVOList !=null && result[i].fileVOList.length > 0)
+      if(result[i].fileVOList.length > count)
+         count = result[i].fileVOList.length;
+	}
+   return count;
+}
+function showNewsCountDetails(result,jsObj){
+ 
+ document.getElementById("showNewsCount").innerHTML='';
+  var maxCount = getMaxCount(result);
+  var str = "";
+  if(maxCount >0){
+  str+= '<table border="1px" align="center">';
+  str+= '     <tr style="text-align:center">';
+   str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>';
+   str+= '     </tr>';
+  for(i=0 ; i < maxCount ; i++)
+   {
+   str+= '<tr style="text-align:center">';
+      if(result[0].fileVOList[i] != null)
+       str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\');"> '+result[0].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	   str+= '<td style="text-align:center">--</td>';
+	  if(result[1].fileVOList[i] != null)
+	    str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\');"> '+result[1].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	    str+= '<td>--</td>';
+	  if(result[2].fileVOList[i] != null)
+	   str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\');">'+ result[2].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	    str+= '<td>--</td>';
+	  if(result[3].fileVOList[i] != null)
+	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\');">'+result[3].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	   str+= '<td>--</td>';
+	  if(result[4].fileVOList[i] != null)	
+	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\');">'+ result[4].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	    str+= '<td>--</td>';
+	  if(result[5].fileVOList[i] != null)
+	      if(result[5].fileVOList[i].location != null)
+	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
+	      else
+		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
+	  else
+	   str+= '<td>--</td>';
+	str+= '	  </tr>';
+   }
+  
+  str+= '<table>';
+  
+ document.getElementById("showNewsCount").innerHTML = str;
+  }
+}
+function showNewsDetails(result){
+
+	var i = 0;
+  document.getElementById("dashBoardCenterlayout_body").innerHTML='';
+  YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	
+	var source = oRecord.getData("source");
+	var title = oRecord.getData("fileTitle1");
+	var path = oRecord.getData("path");
+	var description = oRecord.getData("description");
+	var fileDate = oRecord.getData("fileDate");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews("+i+")'>"+title+"</a>";
+	i++;
+		
+  };
+  var newsResultColumnDefs = [ 		    	             
+		    	            
+							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
+		    	           	{key:"source", label: "SOURCE", sortable: true},
+							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
+							{key:"description", label: "DESCRIPTIONS", sortable: true},
+		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
+							{key:"locationValue", label: "AREA NAME", sortable: true},
+							{key:"fileDate", label: "NEWS DATE", sortable: true}
+							
+		    	        ]; 
+	var newsResultDataSource = new YAHOO.util.DataSource(result); 
+	
+
+
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5,
+				template : "{PageLinks} {RowsPerPageDropdown}",
+                pageLinks : 5, 
+                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+			    }) 
+				};
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate"]
+					};
+
+		var newsResultDataSource = new YAHOO.widget.DataTable("dashBoardCenterlayout_body", newsResultColumnDefs,myDataSource, myConfigs);
+}
+function showNews(i)
+  {
+	  $.fx.speeds._default = 1000;
+	  $("#showNewsOuterDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								title:'<center><font color="Navy"><div id="titleText" /></font><center>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showNewsOuterDiv").dialog();
+	
+	showImages(i)
+	
+ }
+ function showImages(i){
+  var size = newsDetails.length;
+  document.getElementById("showNewsDiv").innerHTML='';
+  document.getElementById("titleText").innerHTML= newsDetails[i].fileTitle1;
+    
+ var str ='<div><center>';
+	  str+=' <table>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+newsDetails[i].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+newsDetails[i].fileDate+'</font>';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     </table>';
+	
+	 str+='     <table>';
+	 str+='			<tr>';
+
+	if(i>0)
+	 str+=' <td><a href="javascript:{}" onclick="showImages('+(i-1)+')" ><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+	
+
+	 
+	 
+		str+='             <td><div class="container"><img alt="'+newsDetails[i].fileTitle1+'" src="'+newsDetails[i].path+'" title="'+newsDetails[i].description+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	
+
+	if((i+1) < size)
+	 str+='<td><a href="javascript:{}" onclick="showImages('+(i+1)+')" ><img alt="" src="images/icons/jQuery/next.png"  class="newsImage" /></a></td>';
+	 
+	 str+='	</tr></table>';	  
+     str += '<table><tr>';
+	str+='       <td>';
+	str+='        '+newsDetails[i].description+'';
+	str+='       </td>';
+	str+='     </tr>';
+	str+='<table>';	 
+	str+='</center></div>';	 
+  document.getElementById("showNewsDiv").innerHTML= str;
+ }
 
