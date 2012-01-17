@@ -75,18 +75,52 @@
 	<script type="text/javascript" src="js/cadreManagement/cadre.js" ></script>
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
-
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 	<style>
-	/*#dashBoardCenterlayout_body thead{
-		background-color :#dddddd;
+	.yui-skin-sam thead{
+		background: #dddddd;
 	}
-	#dashBoardCenterlayout_body table{
+	/*#dashBoardCenterlayout_body table{
 
 		border: 1px solid #dddddd;
 	}*/
+	 .yui-skin-sam .yui-dt-liner{
+	 	margin: 0;
+		padding: 4px 10px;
+		font: 12px "Trebuchet MS",Arial,Helvetica,sans-serif;
+	}
+	 .yui-skin-sam table{
+		font-size:12px;
+		border: 1px solid #dddddd;
+		
+	}
+	a{
+		font-size:12px;
+		color:green;
+	}
 .yui-skin-sam .yui-pg-container{
  
  text-align: center;
+
+}
+.newsImage {
+   height:53px;
+   width:29px;
+}
+.container {
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    background-color: #FFFFFF;
+    margin: 9px auto 40px;
+    max-width: 800px;
+    padding: 10px;
+}
+#newsHeading{
+	color: #FFFFFF;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
 
 }
 	</style>
@@ -94,6 +128,25 @@
 	<body>
 	<div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
+	<div id="dashBoardCenterlayout_header" style="margin: 0px 21px;">		
+    	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+			<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
+			<td class="centerSwasthicImage" style="vertical-align: middle;">	
+				<table width="100%">
+					<tr>
+						<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
+						<td align="right">
+							<!--<img src="images/icons/indexPage/clock.png" height="25px"/>-->
+							<div id="todayDate"></div>
+						</td>
+					</tr>
+				</table>						
+
+					</td>
+					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
+					</table>
+	</div>
 		<div id="dashboard_main">
 
 			<div id="dashboard_layout_main">						
@@ -107,7 +160,7 @@
 			<div id="dashBoardLeftlayoutDiv">
 				<div id="humanImgDiv">
 					<table>
-						<tr><td colspan="4"><div><img src="images/icons/indexPage/human.jpg"/></div></td></tr>	
+						<tr><td colspan="4"><div><img src="images/icons/indexPage/human.jpg" style="margin-top: 28px;" /></div></td></tr>	
 						<tr>	
 							<td width="25%" id="uploadPhotoImage"></td>
 							<td><a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()">Upload Photo</a></td>
@@ -142,8 +195,8 @@
 					<div id="noticeBoard_head">Announcements</div><BR>
 					<div style="padding-left:10px;">
 						<Table>
-						<tr><td><a href="javascript:{}" onclick = "openNewAnnouncementPopup()">Add New Announcement</a></td></tr>
-					    <tr><td><a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></td></tr>
+						<tr><td><img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openNewAnnouncementPopup()">Add New Announcement</a></td></tr>
+					    <tr><td><img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></td></tr>
 						</Table>
 					</div>
 					<div id="noticeBoard_footer"></div>
@@ -153,7 +206,7 @@
 			</div>
 
 			<div id="dashBoardCenterlayoutDiv">
-				<div id="dashBoardCenterlayout_header">		
+				<!--<div id="dashBoardCenterlayout_header">		
 					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
 					<tr>
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
@@ -162,7 +215,7 @@
 							<tr>
 								<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
 								<td align="right">
-									<!--<img src="images/icons/indexPage/clock.png" height="25px"/>-->
+									<!--<img src="images/icons/indexPage/clock.png" height="25px"/>
 									<div id="todayDate"></div>
 								</td>
 							</tr>
@@ -171,24 +224,34 @@
 					</td>
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
 					</table>
-				</div>
+				</div>-->
+				
+		
 
 			<c:if test="${hasNewsMonitoring == true}">
-				<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
 			
-				<table id="dashBoardCenterlayout_table" style="">
-				<c:forEach var="newsDetails" varStatus="stat" items="${fileVOList}">
-				<tr>
-				<td>${newsDetails.source}</td>
-				<td>
-<a href="javascript:{showNewsPopUp(${stat.count},'${newsDetails.title}','${newsDetails.fileId}','${newsDetails.scope}','${newsDetails.description}','${newsDetails.pathOfFile}','${newsDetails.fileDate}');}">
-${newsDetails.title}</a></td>
-				<td>${newsDetails.description}</td>
-				<td>${newsDetails.scope}</td>
-				<td>${newsDetails.locationScopeValue}</td>
-				</tr>
-				</c:forEach>
-				</table>
+			<div id="newsHeading">
+			<span style="background-color: SteelBlue; border-radius: 4px 4px 4px 4px; padding: 9px;">News Overview</span></div>
+			<table align="center" style="margin-top: 14px;" >
+			
+	   <tr>
+	      <td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
+		 <font color="navy"><b>Today</b></font></input></td>
+		  <td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
+		  <font color="navy"><b>This Week</b></font></input></td>
+		  <td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
+		  <font color="navy"><b>This Month</b></font></input></td>
+	   </tr>
+    </table>
+		<div id="showNewsCount" style="margin-top: 25px;"></div>	
+		<div id="showNewsOuterDiv">
+ <div id="showNewsDiv"></div>
+</div>
+		
+			<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
+
+<div id="showNews" class="yui-skin-sam" style="width:900px;" ></div>
+
 				</c:if>
 				
 			<c:if test="${hasNewsMonitoring == false}">	
@@ -356,8 +419,8 @@ ${newsDetails.title}</a></td>
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Performance Report</div>
 												<div class="pa_reports_body">													
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
-													<div style="height:120px">
+													<div style="margin-top:0px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
+													<div style="height: 138px; font-size: 12px;">
 														Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
 														This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
 													</div>
@@ -369,8 +432,8 @@ ${newsDetails.title}</a></td>
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Election Comparison Report</div>
 												<div class="pa_reports_body">
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
-													<div style="height:120px">
+													<div style="margin-top:0px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
+													<div style="height: 138px; font-size: 12px;">
 													Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.
 													</div>
 													<div style="float:right;padding-top:4px;"><a href="electionComparisonAction.action" class="viewReportAnc">View</a></div>
@@ -381,8 +444,8 @@ ${newsDetails.title}</a></td>
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Results Report</div>
 												<div class="pa_reports_body">
-													 <div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
-													<div style="height:120px">
+													 <div style="margin-top:0px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
+													<div style="height: 138px; font-size: 12px;">
 													 Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.
 													</div>
 													 <div style="float:right;padding-top:4px;"><a href="partyResultsCriteriaAction.action" class="viewReportAnc">View</a></div>
@@ -393,8 +456,8 @@ ${newsDetails.title}</a></td>
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head"> Party Influence Report</div>
 												<div class="pa_reports_body"> 
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
-													<div style="height:120px">
+													<div style="margin-top:0px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
+													<div style="height: 138px; font-size: 12px;">
 													Party Influence Report compares the election results among one party and newly establish party.The resuilts are compared among all the districts wise and the mandals wise.
 													</div>
 													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
@@ -1393,16 +1456,18 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 
 	
 	$("#newsPopUpDiv").dialog({ stack: false,
-			height: 'auto',
-			width: 'auto',
-			closeOnEscape: true,
-			position:[20,20],
-			show: "blind",
-			hide: "explode",
-			modal: true,
-			title:'<font color="Navy">'+title+'</font>',
-			overlay: { opacity: 0.5, background: 'black'}
-	});
+								height: 'auto',
+								width: 950,
+								top:150,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								title:'<font color="Navy">'+title+'</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+			});
 	
 	var newsInnerContetDivElmt = document.getElementById("newsInnerContetDiv");
 	var str='';
@@ -1412,15 +1477,15 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 	str+='<td>'+scope+'</td>';
 	str+='<td>'+fileDate+'</td>';
 	str+='</tr><tr>';
-	str+='<td>';
+	str+='<td width="10px">';
 	if(count>1){
-	str+='<a href="javascript:{getPreviousNews('+fileId+','+count+');}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	str+='<a href="javascript:{getPreviousNews('+fileId+','+count+');}"><img class="newsImage" src="images/icons/jQuery/previous.png"></a>';
 	}
 	str+='</td>';
-	str+='<td><img src="'+pathOfFile+'">';
-	str+='</td>';
+	str+='<td><div class="container"><img style="max-width:780px;max-length:800px;" src="'+pathOfFile+'">';
+	str+='</div></td>';
 	if(count!=size)
-	str+='<td><a href="javascript:{getNextNews('+fileId+','+count+');}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='<td width="20px"><a href="javascript:{getNextNews('+fileId+','+count+');}"><img class="newsImage" src="images/icons/jQuery/next.png"></a>';
 	str+='</td>';
 	str+='</tr><tr>';
 	str+='<td>'+description+'</td>';
@@ -1434,7 +1499,7 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 //var hasNewsMonitoringentitlement ='${hasNewsMonitoring}' ; 
 //alert(hasNewsMonitoringentitlement);
 <c:if test="${hasNewsMonitoring == true}">
-	buildNews();
+	//buildNews();
 </c:if>
 
 function getPreviousNews(fileId){
@@ -1452,18 +1517,18 @@ if(fileListId == fileId){
 	str+='<div id="content">';
 	str+='<table width="100%">';
 	str+='<tr>';
-	
+	alert(count);
 	str+='<td><s:property value="fileVOList[#stat.index-1].scope"/></td>';
 	str+='<td><s:property value="fileVOList[#stat.index-1].fileDate"/></td>';
 	str+='</tr><tr>';
-	if(count>=1){
-	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	if(count>0){
+	str+='<td width="10px"><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img class="newsImage" src="images/icons/jQuery/previous.png"></a>';
 	str+='</td>';
 	}
-	str+='<td><img src="<s:property value="fileVOList[#stat.index-1].pathOfFile"/>">';
-	str+='</td>';
-	if(count <size){
-	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='<td><div class="container"><img style="max-width:780px;max-length:800px;" src="<s:property value="fileVOList[#stat.index-1].pathOfFile"/>">';
+	str+='</div></td>';
+	if(count <=size){
+	str+='<td width="20px"><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img class="newsImage" src="images/icons/jQuery/next.png"></a>';
 	str+='</td>';
 	}
 	str+='</tr><tr>';
@@ -1472,7 +1537,7 @@ if(fileListId == fileId){
 	str+='</tr>';
 	str+='</table>';
 	str+='</div>';
-	ui_dialog_title_newsPopUpDivElmt.innerHTML = '<s:property value="fileVOList[#stat.index-1].title"/>';
+	ui_dialog_title_newsPopUpDivElmt.innerHTML =' <font color="Navy"><s:property value="fileVOList[#stat.index-1].title"/></font>';
 	newsInnerContetDivElmt.innerHTML = str;
 		return;	
 	
@@ -1493,20 +1558,22 @@ var str='';
 		var fileListId = '<s:property value="fileId"/>';
  if( fileListId == fileId){
 	count='<s:property value="#stat.index+1"/>';
+	
 	str+='<div id="content">';
 	str+='<table width="100%">';
 	str+='<tr>';
-	str+='<td><s:property value="fileVOList[#stat.index+1].scope"/></td>';
-	str+='<td><s:property value="fileVOList[#stat.index+1].fileDate"/></td>';
+	str+='<td width="10px">Scope:</td><td><s:property value="fileVOList[#stat.index+1].scope"/></td>';
+	str+='<td width="10px"><s:property value="fileVOList[#stat.index+1].fileDate"/></td>';
 	str+='</tr><tr>';
-	if(count>1){
-	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_left.png"></a>';
+	if(count>=1){
+	str+='<td width="10px"><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index-1].fileId"/>);}"><img class="newsImage" src="images/icons/jQuery/previous.png"></a>';
 	str+='</td>';
 	}
-	str+='<td><img src="<s:property value="fileVOList[#stat.index+1].pathOfFile"/>">';
-	str+='</td>';
-	if(count>size){
-	str+='<td><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img height="50" width="50" src="js/fancybox/fancy_nav_right.png"></a>';
+	str+='<td width="50px"><div class="container"><img style="max-width:780px;max-length:800px;" src="<s:property value="fileVOList[#stat.index+1].pathOfFile"/>">';
+	str+='</div></td>';
+	if(count >=size){
+		
+	str+='<td width="0px"><a href="javascript:{getNextNews(<s:property value="fileVOList[#stat.index+1].fileId"/>);}"><img class="newsImage" src="images/icons/jQuery/next.png"></a>';
 	str+='</td>';
 	}
 	str+='</tr><tr>';
@@ -1515,7 +1582,7 @@ var str='';
 	str+='</tr>';
 	str+='</table>';
 	str+='</div>';
-	ui_dialog_title_newsPopUpDivElmt.innerHTML = '<s:property value="fileVOList[#stat.index+1].title"/>';
+	ui_dialog_title_newsPopUpDivElmt.innerHTML = '<font color="Navy"><s:property value="fileVOList[#stat.index+1].title"/></font>';
 	newsInnerContetDivElmt.innerHTML = str;
 		return;	
 	
@@ -1525,7 +1592,8 @@ str+='</s:iterator>';
 
 	
 }
-
+getNews("byTodayDate","getCount","Public","","","","","","");
+getNews("byTodayDate","getNews","Public","","","","","","");
 
 </script>
 </body>
