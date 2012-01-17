@@ -1168,6 +1168,7 @@ a:hover
 {
 	background-image:url("../../images/icons/indexPage/swasthic_body.png");	
 	height:30px;
+	margin: 0px 23px;
 }
 
 
@@ -1192,7 +1193,7 @@ a:hover
 #dashboard_reportsNav_main
 {
 	height:100%;
-	margin-top:2px;
+	margin-left:29px;
 }
 
 #pa_reportsList_main
@@ -1227,7 +1228,9 @@ a:hover
 {
 	color:#355A7A;
 	font-size:10px;
-	font-weight:bold
+	font-weight:bold;
+	float:right;
+	padding:5px;
 }
 
 .pa_reports_head
@@ -1280,7 +1283,7 @@ a:hover
 
 #pa_reports_carousel .yui-carousel-element li
 {
-	height:300px;
+	height:312px;
 }
 
 .viewReportAnc
@@ -1305,7 +1308,7 @@ text-decoration:none;
 
 #dashBoardCenterlayout_body
 {
-	height:410px;
+	height:340px;
 	padding:10px;
 }
 
@@ -1357,11 +1360,12 @@ text-decoration:none;
 {
 	background-image:url("../../images/icons/indexPage/notice_board.png");
 	background-repeat:no-repeat;
-	height:195px;
+	height:149px;
 	margin-left:10px;
-	margin-top:20px;
-	padding:5px 0 7px 5px;
+	margin-top:120px;
+	padding:38px 0 7px 5px;
 	width:175px;
+	
 }
 
 #noticeBoard_head 
@@ -1373,6 +1377,7 @@ text-decoration:none;
 	padding-top:5px;
 	text-decoration:underline;
 }
+
 
 #usergroups_main
 {
