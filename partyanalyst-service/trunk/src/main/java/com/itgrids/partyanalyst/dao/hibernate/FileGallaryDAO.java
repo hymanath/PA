@@ -77,7 +77,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.createdDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and  model.gallary.isDelete='false' and model.gallary.contentType.contentType= :type   and model.isDelete = :isDelete   ");
 		
@@ -87,7 +87,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(queryType.equals("Private"))
 		  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 		
-		query.append(" order by model.file.fileDate desc ");
+		query.append(" order by model.createdDate desc ");
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		queryObject.setLong("candidateId", candidateId);
@@ -102,9 +102,9 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Object[]> getAllNewsToDisplay(Long candidateId)
 	{
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.createdDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
-				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileDate desc ");
+				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.createdDate desc ");
 		
 		query.setLong("candidateId", candidateId);
 		query.setString("type", IConstants.NEWS_GALLARY);
@@ -117,7 +117,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Object[]> getFirstThreeImagesToDisplay(Long candidateId,int firstResult,int maxResult)
 	{
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.source ,model.file.fileDate " +
+				" model.file.source ,model.createdDate " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate  order by model.file.fileId asc ");
 		
@@ -136,7 +136,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<File> getCandidateLatestVideos(Long candidateId,Integer startIndex, Integer maxResults)
 	{
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
-				" and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.file.fileDate desc");
+				" and model.gallary.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate order by model.createdDate desc");
 		
 		query.setLong("candidateId", candidateId);
 		query.setString("type", IConstants.VIDEO_GALLARY);
@@ -177,7 +177,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance    " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.createdDate,model.gallary.candidate.candidateId , model.file.newsImportance.newsImportanceId , model.file.newsImportance.importance    " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
 				" and model.gallary.isDelete = 'false'  ");
@@ -203,7 +203,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(queryType.equals("Private"))
 			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 		
-		query.append("   order by model.file.fileDate desc   ");
+		query.append("   order by model.createdDate desc   ");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong("candidateId", candidateId);
@@ -234,7 +234,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription , " +
-				" model.file.sourceObj.source ,model.file.language.language ,model.file.fileDate,model.gallary.candidate.candidateId  " +
+				" model.file.sourceObj.source ,model.file.language.language ,model.createdDate,model.gallary.candidate.candidateId  " +
 				" from FileGallary model where model.gallary.candidate.candidateId =:candidateId "+
 				"  and model.gallary.contentType.contentType= :type  and model.isDelete = 'false'  " +
 				" and model.gallary.isDelete = 'false' and model.file.regionScopes.regionScopesId is null ");
@@ -245,7 +245,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(queryType.equals("Private"))
 			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 		
-		query.append("   order by model.file.fileDate desc   ");
+		query.append("   order by model.createdDate desc   ");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong("candidateId", candidateId);
@@ -325,7 +325,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Object[]> getNewsByGalleryId(List galleryIds){
 		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +
 		 		"model.file.fileTitle,model.file.fileDescription,model.file.fileType.type,model.file.regionScopes.scope," +
-		 		"model.file.fileDate,model.file.sourceObj.source,model.file.language.language,model.file.regionScopes.regionScopesId ," +
+		 		"model.createdDate,model.file.sourceObj.source,model.file.language.language,model.file.regionScopes.regionScopesId ," +
 		 		"model.file.locationValue  " +
 		 		"FROM FileGallary model WHERE model.gallary.gallaryId in(:galleryIds)");
 		 query.setParameterList("galleryIds", galleryIds);
@@ -340,10 +340,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
  		
  		if(fileVO.getExistingFrom() != null)
- 			query.append(" and date(model.file.fileDate) >= :fromDate");
+ 			query.append(" and date(model.createdDate) >= :fromDate");
  			
  		if(fileVO.getIdentifiedOn() != null)
- 			query.append(" and date(model.file.fileDate) <= :toDate");
+ 			query.append(" and date(model.createdDate) <= :toDate");
  			
  		if(fileVO.getSourceId() != null)
  			query.append(" and model.file.sourceObj.sourceId = :sourceId");
@@ -369,7 +369,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(fileVO.getFileType().trim().equalsIgnoreCase("Private"))
 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
 		
-		query.append(" order by model.file.fileDate desc   ");
+		query.append(" order by model.createdDate desc   ");
  		
 		Query queryObject = getSession().createQuery(query.toString());
 		
@@ -412,10 +412,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
   		
   		if(fromDate != null)
- 			query.append(" and date(model.file.fileDate) >= :fromDate");
+ 			query.append(" and date(model.createdDate) >= :fromDate");
  			
  		if(toDate != null)
- 			query.append(" and date(model.file.fileDate) <= :toDate");
+ 			query.append(" and date(model.createdDate) <= :toDate");
  		
  		if(fileType.trim().equalsIgnoreCase("Public"))
 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -443,10 +443,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
-  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			query.append(" and date(model.createdDate) >= :fromDate");
   			
   		if(toDate != null)
-  			query.append(" and date(model.file.fileDate) <= :toDate");
+  			query.append(" and date(model.createdDate) <= :toDate");
   		
   		if(fileType.trim().equalsIgnoreCase("Public"))
  			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -474,10 +474,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
-  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			query.append(" and date(model.createdDate) >= :fromDate");
   			
   		if(toDate != null)
-  			query.append(" and date(model.file.fileDate) <= :toDate");
+  			query.append(" and date(model.createdDate) <= :toDate");
   		
   		if(fileType.trim().equalsIgnoreCase("Public"))
  			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -505,10 +505,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
-  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			query.append(" and date(model.createdDate) >= :fromDate");
   			
   		if(toDate != null)
-  			query.append(" and date(model.file.fileDate) <= :toDate");
+  			query.append(" and date(model.createdDate) <= :toDate");
   		
   		if(fileType.trim().equalsIgnoreCase("Public"))
  			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -536,10 +536,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
-  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			query.append(" and date(model.createdDate) >= :fromDate");
   			
   		if(toDate != null)
-  			query.append(" and date(model.file.fileDate) <= :toDate");
+  			query.append(" and date(model.createdDate) <= :toDate");
   		
   		if(fileType.trim().equalsIgnoreCase("Public"))
  			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
@@ -567,10 +567,10 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
-  			query.append(" and date(model.file.fileDate) >= :fromDate");
+  			query.append(" and date(model.createdDate) >= :fromDate");
   			
   		if(toDate != null)
-  			query.append(" and date(model.file.fileDate) <= :toDate");
+  			query.append(" and date(model.createdDate) <= :toDate");
   		
   		if(fileType.trim().equalsIgnoreCase("Public"))
  			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
