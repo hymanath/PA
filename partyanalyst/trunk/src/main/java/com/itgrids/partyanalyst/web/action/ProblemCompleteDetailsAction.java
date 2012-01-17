@@ -170,10 +170,15 @@ ServletRequestAware, ServletContextAware  {
 	public String execute(){
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		userId = user.getRegistrationID();
-		logInStatus = true;
-		userType = user.getUserType();
-		hasFileUploadRight = dataApprovalService.checkUserFileUploadRight(userId , problemHistoryId);
+		
+		if(user !=null){
+			userId = user.getRegistrationID();
+			logInStatus = true;
+			userType = user.getUserType();
+			hasFileUploadRight = dataApprovalService.checkUserFileUploadRight(userId , problemHistoryId);
+		}
+		else
+			logInStatus = false;
 		return Action.SUCCESS;
 	}
 	
