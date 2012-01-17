@@ -135,7 +135,7 @@ function buildSMSPopup()
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:569,
+	height:576,
 	units: [			
 			{ 
 				position: 'left', 
@@ -1524,7 +1524,7 @@ function getMaxCount(result)
    return count;
 }
 function showNewsCountDetails(result,jsObj){
- 
+
  document.getElementById("showNewsCount").innerHTML='';
   var maxCount = getMaxCount(result);
   var str = "";
@@ -1590,7 +1590,8 @@ function showNewsDetails(result){
   };
   var newsResultColumnDefs = [ 		    	             
 		    	            
-							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
+							{key:"categoryType", label: "CATEGORY", sortable: true},
+							{key:"importance", label: "IMPORTANCE", sortable: true},
 		    	           	{key:"source", label: "SOURCE", sortable: true},
 							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
 							{key:"description", label: "DESCRIPTIONS", sortable: true},
