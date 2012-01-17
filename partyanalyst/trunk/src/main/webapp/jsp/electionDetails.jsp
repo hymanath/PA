@@ -867,10 +867,10 @@ function showPartywiseDetailsDataTable(results)
 		var str ='';
 		
 		if('${electionType}' == 'Assembly')
-		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 14px;font-family:verdana;color:activecaption; "><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
+		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-size: 11px;font-family:verdana;color:activecaption; "><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
 
 		else if('${electionType}' == 'Parliament')
-		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 14px;font-family:verdana;color:activecaption; "><td>${electionType} Election Details Overview : </td></tr></table>';
+		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-size: 11px;font-family:verdana;color:activecaption; "><td>${electionType} Election Details Overview : </td></tr></table>';
 		
 		str +='<table class="searchresultsTable" style="width:600px"> ';
 
