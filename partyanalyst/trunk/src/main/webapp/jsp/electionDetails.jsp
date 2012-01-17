@@ -137,6 +137,7 @@ function callAjax(param,jsObj,url){
 										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);								
 										
+										<c:if test="${hasDeatiledAnalysis}">
 										if(myResults.electionResultsInDistricts.allPartiesResults != null &&
 											myResults.electionResultsInDistricts.allPartiesResults.length > 0)
 										{
@@ -150,6 +151,13 @@ function callAjax(param,jsObj,url){
                                             toolsDiv.innerHTML='';
 											subRegionsDiv.innerHTML='';
 										}
+										</c:if>
+
+										<c:if test="${!hasDeatiledAnalysis}">
+											var subRegionsDiv = document.getElementById("subRegionWiseDetailsDiv");
+											subRegionsDiv.innerHTML='';
+										</c:if>
+
                                         if(electionType != 'Parliament'){
 										if(myResults.hasRegions == true){
 
@@ -859,10 +867,10 @@ function showPartywiseDetailsDataTable(results)
 		var str ='';
 		
 		if('${electionType}' == 'Assembly')
-		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px;font-family:verdana;color:activecaption; "><td>${stateName}  ${electionType} Election Details Overview</td></tr></table>';
+		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 14px;font-family:verdana;color:activecaption; "><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
 
 		else if('${electionType}' == 'Parliament')
-		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 18px;font-family:verdana;color:activecaption; "><td>${electionType} Election Details Overview</td></tr></table>';
+		str +='	<table cellspacing="5px" cellpadding="3px" width=95%><tr style="font-weight: bold; font-size: 14px;font-family:verdana;color:activecaption; "><td>${electionType} Election Details Overview : </td></tr></table>';
 		
 		str +='<table class="searchresultsTable" style="width:600px"> ';
 
@@ -2098,15 +2106,19 @@ callAjax(rparam,jsObj,url);
 	</TABLE>
 	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;TP and PC% columns are empty for alliance parties in Partywise Results table, to find TP and PC% for alliance parties kindly refer TP and PC% columns of Alliance Details Table.TP and PC% are Not Applicable for Independent Candidates(IND).</P></DIV>
 </DIV>
+
 <DIV style="padding:10px;">
 	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
+		<c:if test="${hasDeatiledAnalysis}">
 		<TR>
 			<TD align="left"><IMG src="images/icons/infoicon.png" border="none" /></TD>
 			<TD align="center" style="color:#606060;font-size:12px;">Click Here To Access Candidates Results</TD>
 			<TD align="left"><DIV><A href="javascript:{}" class="viewChartsForResults1" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV></TD>
 		</TR>
+		</c:if>
 	</TABLE>
 </DIV>
+
 
 <!--<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
 --></DIV>
@@ -2334,7 +2346,9 @@ callAjax(rparam,jsObj,url);
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
+<c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
+</c:if>
 </SCRIPT>
 </BODY>
 </HTML>
