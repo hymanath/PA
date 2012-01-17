@@ -475,6 +475,7 @@
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="stateRegionService" ref="stateRegionService" />
 			<property name="partyStrengthService" ref="partyStrengthService" />
+			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
