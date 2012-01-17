@@ -1602,16 +1602,16 @@ function showNewsDetails(result){
 		    	        ]; 
 	var newsResultDataSource = new YAHOO.util.DataSource(result); 
 	
-
-
-    var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 5,
-				template : "{PageLinks} {RowsPerPageDropdown}",
-                pageLinks : 5, 
-                rowsPerPageOptions : [ 5, 10, 15, 20 ]
-			    }) 
-				};
+	if(result.length>0){
+	    var myConfigs = { 
+				    paginator : new YAHOO.widget.Paginator({ 
+			        rowsPerPage    : 5,
+					template : "{PageLinks} {RowsPerPageDropdown}",
+	                pageLinks : 5, 
+	                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+				    }) 
+					};
+	}
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
