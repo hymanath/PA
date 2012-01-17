@@ -23,10 +23,12 @@ import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStateRegionService;
@@ -66,7 +68,25 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private PartyPositionsVO partyPositionsVO = new PartyPositionsVO();
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	private List<PartyElectionResultVO> partyElectionResultVO;
+	private Boolean hasDeatiledAnalysis = false;
+	private EntitlementsHelper entitlementsHelper;
 	
+	public Boolean getHasDeatiledAnalysis() {
+		return hasDeatiledAnalysis;
+	}
+
+	public void setHasDeatiledAnalysis(Boolean hasDeatiledAnalysis) {
+		this.hasDeatiledAnalysis = hasDeatiledAnalysis;
+	}
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public void setPartyPositionsVO(PartyPositionsVO partyPositionsVO) {
 		this.partyPositionsVO = partyPositionsVO;
 	}
@@ -243,6 +263,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	}
 
 	public String execute() throws Exception {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+		
+		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+			hasDeatiledAnalysis = true;
+		
 		electionYears = new ArrayList<SelectOptionVO>();
 		partiesList = new ArrayList<SelectOptionVO>();
 
