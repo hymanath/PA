@@ -75,8 +75,8 @@
 	<script type="text/javascript" src="js/cadreManagement/cadre.js" ></script>
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<style>
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+ <style>
 	.yui-skin-sam thead{
 		background: #dddddd;
 	}
@@ -89,42 +89,37 @@
 		padding: 4px 10px;
 		font: 12px "Trebuchet MS",Arial,Helvetica,sans-serif;
 	}
-	 .yui-skin-sam table{
+	/* .yui-skin-sam table{
 		font-size:12px;
 		border: 1px solid #dddddd;
 		
-	}
+	}*/
 	a{
 		font-size:12px;
 		color:green;
 	}
-.yui-skin-sam .yui-pg-container{
- 
- text-align: center;
+	.yui-skin-sam .yui-pg-container{
+  		text-align: center;
 
-}
-.newsImage {
-   height:53px;
-   width:29px;
-}
-.container {
-    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
-    background-color: #FFFFFF;
-    margin: 9px auto 40px;
-    max-width: 800px;
-    padding: 10px;
-}
-#newsHeading{
-	color: #FFFFFF;
-    font-weight: bold;
-    padding: 5px;
-    text-align: center;color: #FFFFFF;
-    font-weight: bold;
-    text-align: center;
-
-}
-	</style>
-	</head>
+	}
+	.newsImage {
+   		height:53px;
+   		width:29px;
+	 }
+	.container {
+    	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    	background-color: #FFFFFF;
+    	margin: 9px auto 40px;
+    	max-width: 800px;
+    	padding: 10px;
+	}
+	#newsHeading{
+		color: #FFFFFF;
+    	font-weight: bold;
+    	padding: 19px 4px 0 12px;
+  	}
+   </style>
+</head>
 	<body>
 	<div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
@@ -206,7 +201,8 @@
 			</div>
 
 			<div id="dashBoardCenterlayoutDiv">
-				<!--<div id="dashBoardCenterlayout_header">		
+			<%
+			/*<div id="dashBoardCenterlayout_header">		
 					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
 					<tr>
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
@@ -224,37 +220,30 @@
 					</td>
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
 					</table>
-				</div>-->
-				
-		
-
-			<c:if test="${hasNewsMonitoring == true}">
-			
-			<div id="newsHeading">
-			<span style="background-color: SteelBlue; border-radius: 4px 4px 4px 4px; padding: 9px;">News Overview</span></div>
+				</div>*/
+				%>
+		<c:if test="${hasNewsMonitoring == true}">
+	      <div id="newsHeading">
+			<span style="background-color: SteelBlue; padding: 9px; -moz-border-radius: 5px 5px 5px 5px; border-radius: 4px 4px 4px 4px; ">News Overview</span></div>
 			<table align="center" style="margin-top: 14px;" >
-			
-	   <tr>
-	      <td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
-		 <font color="navy"><b>Today</b></font></input></td>
-		  <td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
-		  <font color="navy"><b>This Week</b></font></input></td>
-		  <td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
-		  <font color="navy"><b>This Month</b></font></input></td>
-	   </tr>
-    </table>
+			  <tr>
+	      		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
+		 		  <font color="navy"><b>Today</b></font></input></td>
+		  		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
+		  		 <font color="navy"><b>This Week</b></font></input></td>
+		  		<td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
+		  		 <font color="navy"><b>This Month</b></font></input></td>
+	   		  </tr>
+    		</table>
 		<div id="showNewsCount" style="margin-top: 25px;"></div>	
 		<div id="showNewsOuterDiv">
- <div id="showNewsDiv"></div>
-</div>
-		
-			<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
+		 <div id="showNewsDiv"></div>
+			</div>
+		<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
+		<div id="showNews" class="yui-skin-sam" style="width:900px;" ></div>
 
-<div id="showNews" class="yui-skin-sam" style="width:900px;" ></div>
-
-				</c:if>
-				
-			<c:if test="${hasNewsMonitoring == false}">	
+</c:if>
+  <c:if test="${hasNewsMonitoring == false}">	
 			<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
 			</c:if>
 					<table width="100%" style="width:100%;height:100%">
@@ -1500,8 +1489,8 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 //alert(hasNewsMonitoringentitlement);
 <c:if test="${hasNewsMonitoring == true}">
 	//buildNews();
-getNews("byTodayDate","getCount","Public","","","","","","");
-getNews("byTodayDate","getNews","Public","","","","","","");
+	getNews("byTodayDate","getCount","Public","","","","","","");
+	getNews("byTodayDate","getNews","Public","","","","","","");
 </c:if>
 
 function getPreviousNews(fileId){
