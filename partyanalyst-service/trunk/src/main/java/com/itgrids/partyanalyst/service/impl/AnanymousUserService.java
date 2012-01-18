@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -791,7 +792,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 				dataTransferVO.setDistrictId((Long)params[2]);
 				dataTransferVO.setDistrictName(params[3].toString());
 				dataTransferVO.setConstituencyId((Long)params[4]);
-				dataTransferVO.setConstituencyName(params[5].toString());				
+				dataTransferVO.setConstituencyName(WordUtils.capitalize(params[5].toString().toLowerCase()));				
 			}
 			else
 			{
