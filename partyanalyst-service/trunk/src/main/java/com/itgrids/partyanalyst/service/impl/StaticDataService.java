@@ -630,7 +630,7 @@ public class StaticDataService implements IStaticDataService {
 					.getElectionScopes(stateID);
 			if (electionScopes != null) {
 				for (ElectionScope scope : electionScopes) {
-					list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType()));
+					list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), WordUtils.capitalize(scope.getElectionType().getElectionType().toLowerCase())));
 				}
 			}
 		}
@@ -6968,7 +6968,7 @@ public class StaticDataService implements IStaticDataService {
 					Object[] values = (Object[]) electionTypes.get(i);
 					SelectOptionVO option = new SelectOptionVO();
 					option.setId((Long) values[0]);
-					option.setName((String) values[1]);
+					option.setName(WordUtils.capitalize(((String) values[1]).toLowerCase()));
 
 					localBodyElectionsList.add(option);
 				}

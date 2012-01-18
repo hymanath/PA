@@ -404,7 +404,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		{
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
 			selectOptionVO.setId(constituency.getConstituencyId());
-			selectOptionVO.setName(constituency.getName().toUpperCase());
+			selectOptionVO.setName(WordUtils.capitalize(constituency.getName().toLowerCase()));
 			
 			constsList.add(selectOptionVO);
  		}
