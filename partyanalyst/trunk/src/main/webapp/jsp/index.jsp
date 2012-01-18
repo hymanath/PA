@@ -123,7 +123,7 @@
 	<body>
 	<div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
-	<div id="dashBoardCenterlayout_header" style="margin: 0px 21px;">		
+	<div id="dashBoardCenterlayout_header" style="margin: 0px 21px;"><center><div style="width:960px;">		
     	<table width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr>
 			<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
@@ -140,8 +140,9 @@
 
 					</td>
 					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
-					</table>
+	</div></center></table>
 	</div>
+
 		<div id="dashboard_main">
 
 			<div id="dashboard_layout_main">						
@@ -385,8 +386,8 @@
 				</div>
 			</div>
 
-			<div id="dashboard_reportsNav_main">
-				<table id="dashboard_main_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+			<div id="dashboard_reportsNav_main" style="margin-left:10px;"><center><div style="width:970px;">
+				<table id="dashboard_main_table" style="width:960px;" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td style="vertical-align:top;width:250px;">
 							<div id="dashboard_leftNav">								
@@ -458,7 +459,8 @@
 							</div>
 						</td>
 					</tr>
-				</table>
+				</table></center>
+				</div>
 			</div>
 		</div>
 
