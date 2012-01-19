@@ -2282,3 +2282,51 @@ function showSuccessOfCreateNew(result)
 
 	clearFieldsOfCreateNewDiv();
 }
+
+function validateEmailField()
+{
+ document.getElementById("alertMsg").innerHTML = '';
+ var emailIdVal = document.getElementById("emailId").value;
+ var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+ 
+ if(emailIdVal !='' && emailIdVal!='your email')
+ {
+	 if(!emailIdVal.match(emailExp))
+	 {
+
+		document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
+		return;
+	 }
+ }
+ else
+ {
+	document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
+	return;
+ }
+
+  var jsObj={
+		emailId : emailIdVal,
+		specialPageId : 1,
+		task:"setEmailAlertsForEvent"
+	};
+
+ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+ var url="specialEmailAlertsForUserAction.action?"+rparam;
+callAjax(jsObj,url);
+
+}
+
+function showStatusForEmailSubscription(results)
+{
+	var str='';
+	if(results.resultCode == 0)
+	{
+		cleardescriptionFields();
+		document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
+	}
+}
+
+function cleardescriptionFields()
+{
+	document.getElementById('emailId').value='';
+}
