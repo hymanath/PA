@@ -490,6 +490,7 @@
 
 	<bean id="districtwiseElectionResultsAnalysysForElectionReportAction" class="com.itgrids.partyanalyst.web.action.DistrictwiseElectionResultsAnalysysForElectionReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
+			<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 	
 	<bean id="muncipalElectionReportAction" class="com.itgrids.partyanalyst.web.action.MuncipalElectionReportAction" singleton="false">
