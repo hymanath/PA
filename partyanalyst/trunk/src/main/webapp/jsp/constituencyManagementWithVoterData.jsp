@@ -1312,6 +1312,7 @@
 					type:"cadreDetails",
 					reportLevel:"constituency",
 					selected:value,
+					addresstype:'',
 					changed:choice
 			}
 		
@@ -1359,6 +1360,7 @@
 					type:"cadreDetails",
 					reportLevel:"Constituencies",
 					selected:value,
+					addresstype:'',
 					changed:choice
 			}
 		
