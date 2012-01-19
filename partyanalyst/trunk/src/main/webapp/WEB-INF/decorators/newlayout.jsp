@@ -429,8 +429,12 @@ function buildAccordion()
   <div class="clear"></div>
   
   <!--COPYRIGHT SECTION START-->
-  
-  <div class="copy-rights"> &copy; Copyright 2011. All rights reserved  IT GRIDS (India) Pvt. Ltd. </div>
+  <%
+  	java.util.Calendar now = java.util.Calendar.getInstance();
+    int year =  now.get(java.util.Calendar.YEAR);
+  %>
+
+  <div class="copy-rights"> &copy; Copyright <%=year %>. All rights reserved  IT GRIDS (India) Pvt. Ltd. </div>
   
   <!--COPYRIGHT SECTION END--> 
   
