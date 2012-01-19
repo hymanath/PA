@@ -106,7 +106,7 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.filePath = filePath;
 	}
 
-	@Column(name = "file_title", length = 50)
+	@Column(name = "file_title", length = 100)
 	public String getFileTitle() {
 		return fileTitle;
 	}

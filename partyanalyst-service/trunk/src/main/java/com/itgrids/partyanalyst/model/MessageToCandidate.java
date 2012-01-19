@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -44,6 +45,8 @@ public class MessageToCandidate extends BaseModel implements
 	private String message;
 	private Candidate candidate;
 	private String isDelete;
+	private String isApproved;
+	private Date time;
 
 	/** default constructor */
 	public MessageToCandidate() {
@@ -116,6 +119,24 @@ public class MessageToCandidate extends BaseModel implements
 	
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	@Column(name = "is_approved")
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
+
+	@Column(name = "time", length = 10)
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
 	}
 
 }
