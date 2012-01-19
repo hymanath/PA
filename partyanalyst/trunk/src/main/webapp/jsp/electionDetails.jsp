@@ -29,8 +29,9 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></SCRIPT>
+<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
-	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
@@ -45,7 +46,7 @@
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
+<LINK rel="stylesheet" type="text/css" href="styles/styles.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 
@@ -67,7 +68,42 @@ font-size:14px;
 	font-size		:11px;
 	margin-top		:10px;
 }
-
+.yui-skin-sam .yui-dt table{
+	color:DimGray;
+	}
+	.main-bbg {
+    	background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left -40px transparent;
+    	float: left;
+    	height: 35px;
+    	width: 6px;
+	}
+	.main-mbg {
+    	background-color: #06ABEA;
+    	color: #FFFFFF;
+    	float: left;
+    	font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    	height: 35px;
+    	padding-left: 13px;
+    	text-align: left;
+    	text-transform: uppercase;
+    	width: 900px;
+	}
+	.main-title-sec {
+    	background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left top transparent;
+    	float: left;
+    	height: 35px;
+    	margin: 9px 0;
+   	    padding-left: 6px;
+	}
+	.clear{
+		clear:both;
+		margin:0px; 
+		padding:0px;
+		line-height:0px;
+		height:0px;
+		font-size:0px;
+		_display/**/:/**/ inline;
+	}
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -163,8 +199,8 @@ function callAjax(param,jsObj,url){
 
 											var elmtDiv = document.getElementById("stateRegionsDiv");
 											var str = '';
-											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">Overall';
-											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">Region Wise';
+											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">							Overall          ';
+											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">				Region Wise';
 											str+='&nbsp;<span id="ajaxImg" style="display:none">';
 											 str+='<img height="" width=""  src="images/icons/search.gif"></img>';
 											 str+='</span>';
@@ -867,10 +903,10 @@ function showPartywiseDetailsDataTable(results)
 		var str ='';
 		
 		if('${electionType}' == 'Assembly')
-		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-size: 11px;font-family:verdana;color:activecaption; "><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
+		str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); background: none repeat scroll 0pt 0pt rgb(255, 255, 255);"><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
 
 		else if('${electionType}' == 'Parliament')
-		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-size: 11px;font-family:verdana;color:activecaption; "><td>${electionType} Election Details Overview : </td></tr></table>';
+		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); background: none repeat scroll 0pt 0pt rgb(255, 255, 255);"><td>${electionType} Election Details Overview : </td></tr></table>';
 		
 		str +='<table class="searchresultsTable" style="width:600px"> ';
 
@@ -2060,26 +2096,38 @@ callAjax(rparam,jsObj,url);
 
 </SCRIPT>
 </HEAD>
+
 <BODY>
+<center>
 <DIV id="sampleDiv"></DIV>
-<TABLE cellspacing="0" cellpadding="0" border="0" >
-<TR>
-<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-top:15px;" /></TD><TD valign="top">
-<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-top:15px;" border="none"/>
-</TD>
-</TR>
-</TABLE>
+
+<div class="clear"></div>
+<div class="main-title-sec">
+ <div class="main-mbg"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if>
+<c:if test="${electionType == 'Parliament'}">${electionType} Election Results ${year}</c:if>
+ <span style="margin-top:10px;margin-right:18px;float:right">
+ <a name="fb_share" type="button_count" 
+share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">Share in Facebook</a> 
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
+</script>
+</span>
+</div>
+<div class="main-bbg"></div></div>
+ <div class="clear"></div>
+
+<div id="stateResults">
+</div>
 <div id="electionPageAjaxImgDiv">
 	<div> Loading Election Results Please Wait..</div>
 	<img src="images/icons/barloader.gif"/>
 </div>
-<div id="stateResults">
-</div>
+
+
 <DIV id="task1"></DIV>
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV>
  </c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
+
 <DIV id="statewiseGraph">
  <DIV id="stateRegionsDiv"></DIV>
 
@@ -2350,5 +2398,6 @@ getResultsForAnElection(stateID,electionType,year);
 getPartyGenderInfo();
 </c:if>
 </SCRIPT>
+</center>
 </BODY>
 </HTML>
