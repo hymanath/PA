@@ -339,7 +339,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		else if(jobj.getString("task").equalsIgnoreCase("getLanguage")){
 			selectOptionList = specialPageService.getLanguage();	
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("partyVideoGallariesForUplaod"))
+		else if(jobj.getString("task").equalsIgnoreCase("eventVideoGallariesForUpload"))
 		{
 			FileVO fileVOObj = new FileVO();
 			fileVOObj.setPath(jobj.getString("path"));
