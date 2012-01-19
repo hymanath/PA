@@ -1945,38 +1945,49 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 
 
  @SuppressWarnings("unchecked")
- public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId) {
+ public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId)
+ {
 	List<FileVO> fileVOList = new ArrayList<FileVO>();
+	log.debug("Entered into getNewsGalleryByUserIdFromUserGallery() Method");
+	try{
 	GallaryVO gallaryVO = new GallaryVO();
 	FileVO fileVO = new FileVO();
 	List gallaryIds = new ArrayList();
 
 	List<Object[]> gallaries = userGallaryDAO.getAllNewsGallaryBasedOnUserId(userId);
-	for(Object[] params : gallaries){
-		gallaryVO.setGallaryId(new Long(params[0].toString()));
-		gallaryVO.setGallaryName(params[1].toString());
-		gallaryIds.add(params[0]);
-	}
-	List<Object[]> files = fileGallaryDAO.getNewsByGalleryId(gallaryIds);
-	for(Object[] filesObj : files){
-		fileVO = new FileVO();
-		fileVO.setFileId(new Long(filesObj[0].toString()));
-		fileVO.setFileName1(filesObj[1].toString());
-		fileVO.setPathOfFile(filesObj[2].toString());
-		fileVO.setTitle(filesObj[3].toString());
-		fileVO.setDescription(filesObj[4].toString());
-		fileVO.setFileType(filesObj[5].toString());
-		fileVO.setScope(filesObj[6].toString());
-		fileVO.setFileDate(filesObj[7].toString());
-		fileVO.setSource(filesObj[8].toString());
-		fileVO.setLanguage(filesObj[9].toString());
-		fileVO.setLocationScope((Long)filesObj[10]);
-		
-		if(filesObj[10] != null)
-			fileVO.setLocationScopeValue(getLocationDetails((Long)filesObj[10],(Long)filesObj[11]));
-		fileVOList.add(fileVO);
+	
+	if(gallaries != null && gallaries.size() > 0)
+	{
+		for(Object[] params : gallaries){
+			gallaryVO.setGallaryId(new Long(params[0].toString()));
+			gallaryVO.setGallaryName(params[1].toString());
+			gallaryIds.add(params[0]);
+		}
+		List<Object[]> files = fileGallaryDAO.getNewsByGalleryId(gallaryIds);
+		for(Object[] filesObj : files){
+			fileVO = new FileVO();
+			fileVO.setFileId(new Long(filesObj[0].toString()));
+			fileVO.setFileName1(filesObj[1].toString());
+			fileVO.setPathOfFile(filesObj[2].toString());
+			fileVO.setTitle(filesObj[3].toString());
+			fileVO.setDescription(filesObj[4].toString());
+			fileVO.setFileType(filesObj[5].toString());
+			fileVO.setScope(filesObj[6].toString());
+			fileVO.setFileDate(filesObj[7].toString());
+			fileVO.setSource(filesObj[8].toString());
+			fileVO.setLanguage(filesObj[9].toString());
+			fileVO.setLocationScope((Long)filesObj[10]);
+			
+			if(filesObj[10] != null)
+				fileVO.setLocationScopeValue(getLocationDetails((Long)filesObj[10],(Long)filesObj[11]));
+			fileVOList.add(fileVO);
+		}
 	}
 	return fileVOList;
+	}catch (Exception e) {
+		log.error("Exception occured in getNewsGalleryByUserIdFromUserGallery() Method, exception is - "+e);
+		return fileVOList;
+	}
 }
  public String getLocationBasedOnScopeId(Long scopeId,Long locationId){
 	 String locationName = "";
