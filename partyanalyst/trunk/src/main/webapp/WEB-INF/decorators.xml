@@ -90,6 +90,8 @@
 		<pattern>/specialPageAction*</pattern>
 		<pattern>/index*</pattern>
 		<pattern>/newsDisplayAction*</pattern>
+		<!--<pattern>/districtPageAction*</pattern>-->
+		<pattern>/electionDetailsReportAction*</pattern>
     </decorator>
 
 </decorators>
