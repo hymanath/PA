@@ -18,7 +18,9 @@ import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -40,11 +42,21 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	private String selectedElectionYear;
 	private ElectionResultsReportVO electionCompleteDetailsVO;
 	private IElectionReportService electionReportService;
+	private EntitlementsHelper entitlementsHelper;
 	private String task = null;
 	JSONObject jObj = null;
 	private ServletContext context;
 	private HttpSession session;
     private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+		
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;			
 	}
@@ -161,6 +173,12 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 
 	public String execute () throws Exception 
 	{
+		HttpSession session = request.getSession();
+		session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+			return ERROR;
+		
 		return Action.SUCCESS;
 		
 	}
