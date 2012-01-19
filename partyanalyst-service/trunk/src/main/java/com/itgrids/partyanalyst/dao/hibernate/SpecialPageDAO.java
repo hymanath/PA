@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.model.SpecialPage;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SpecialPageDAO extends GenericDaoHibernate<SpecialPage,Long> implements ISpecialPageDAO {
 	
@@ -22,7 +23,7 @@ public class SpecialPageDAO extends GenericDaoHibernate<SpecialPage,Long> implem
 		Query query = getSession().createQuery("SELECT model.title,model.heading,model.profileImgPath ,model.specialPageId FROM SpecialPage model where model.specialPageId =:specialPageId and model.isDelete =:isDelete");
 			
 			query.setParameter("specialPageId", specialPageId);
-			query.setParameter("isDelete", "false");
+			query.setParameter("isDelete", IConstants.FALSE);
 			
 		return query.list();
 	}
