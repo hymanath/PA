@@ -294,7 +294,7 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
           
           <!--SEND MESSAGE TO POLITICIAN SECTION START-->
 
-			<div class="pr-sub-fields-sec">
+			<div class="pr-sub-fields-sec" style="margin-top:15px;">
 				<h1 class="pr-title">send a message to Party Analyst <span
 			class="or-down-arrow"><img src="images/icons/or-down-arrow.png"
 				alt="" /></span></h1>
