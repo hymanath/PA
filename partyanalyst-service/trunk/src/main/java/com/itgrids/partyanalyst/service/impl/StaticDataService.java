@@ -578,6 +578,35 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
+	public List<SelectOptionVO> getElectionYearsBasedOnStateIdAndElecTypeId(Long stateId,Long electionTypeId){
+		List<SelectOptionVO> yearsList = new ArrayList<SelectOptionVO>(0);
+		try{
+			log.isDebugEnabled();
+			log.debug("Entered Into getElectionYearsBasedOnStateIdAndElecTypeId()");
+			
+			
+			List<Object[]> electionYears = electionDAO.getElectionYearsBasedOnElectionTypeIdAndStateId(stateId,electionTypeId);
+			if(electionYears != null && electionYears.size() > 0)
+			{
+				yearsList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : electionYears)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					yearsList.add(selectOptionVO);
+				}
+			}
+			
+			return yearsList;
+		}catch(Exception e)
+		{
+			log.isDebugEnabled();
+			log.error("Exception Encoutered during fetching Election Years from A state with state id - "+stateId +" For Election Type - "+ electionTypeId);
+			return yearsList;
+		}
+	}
 	
 	public List<SelectOptionVO> electionYearsForstateAndElectionType(Long stateId, String electionType)
 	{
