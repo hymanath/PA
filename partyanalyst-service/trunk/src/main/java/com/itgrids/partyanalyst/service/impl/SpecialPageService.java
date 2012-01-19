@@ -313,19 +313,18 @@ public class SpecialPageService implements ISpecialPageService{
 	 * @param specialPageId
 	 * @return specialPageVO
 	 */
-	public SpecialPageVO getSpecialPageBasicDetails(Long specialPageId) {
-		
+	public SpecialPageVO getSpecialPageBasicDetails(Long specialPageId)
+	{
 		specialPageVO = new SpecialPageVO();
  	try {
 		List<Object[]> specialPageDetails = specialPageDAO.getSpecialPageDetails(specialPageId);
-		if(specialPageDetails !=null && specialPageDetails.size() >0){
-			for(Object[] params : specialPageDetails){
-				
-				specialPageVO.setTitle(params[0].toString());
-				specialPageVO.setHeading(params[1].toString());
-				specialPageVO.setEventImagePath(params[2].toString());
-				specialPageVO.setSpecialPageId((Long)params[3]);
-			}
+		if(specialPageDetails !=null && specialPageDetails.size() >0)
+		{
+			Object[] param = specialPageDetails.get(0);
+			specialPageVO.setTitle(param[0].toString());
+			specialPageVO.setHeading(param[1].toString());
+			specialPageVO.setEventImagePath(param[2] != null ? param[2].toString() : "");
+			specialPageVO.setSpecialPageId((Long)param[3]);
 		 }
 		return specialPageVO;
  	}catch (Exception e) {
@@ -855,6 +854,7 @@ public class SpecialPageService implements ISpecialPageService{
 			specialPage.setName(gallaryVO.getGallaryName());
 			specialPage.setTitle(gallaryVO.getContentType());
 			specialPage.setHeading(gallaryVO.getContentType());
+			specialPage.setIsDelete(IConstants.FALSE);
 			
 			specialPageDAO.save(specialPage);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
