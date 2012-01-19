@@ -15,7 +15,7 @@
 
 <meta name="description" content="${stateName} ${electionType} Election Details in india ${year},${stateName} ${electionType} Election results ${year},ditrist wise results ,partywise results in all districts .">
 
-<meta name="keywords" content="election details in india,${stateName} ${electionType} Election Results  ${year} ,election analysis,${stateName} ${electionType} Election Details in india ${year},district wise results,Party Results in all Districts with alliance and without alliance,party results with graphs, election commission of india,election commissioner of india,elections in india, indian elections ${year}, general elections india, forthcoming indian elections, india-elections, elections ${year}, parliament election, forthcoming indian elections, ${year} election results, assembly elections,upcoming indian elections, general elections ${year} schedule india, election schedule, opinion polls, key contenders of forthcoming general elections in india, party profiles, party manifestoes, india. ">
+<meta name="keywords" content="election details in india, ${stateName} ${electionType} Election Results  ${year}  ,election analysis, ${stateName} ${electionType} Election Details in india ${year}, district wise results, Party Results in all Districts with alliance and without alliance , party results with graphs, election commission of india,election commissioner of india, elections in india, indian elections ${year}, general elections india, forthcoming indian elections, india-elections, elections ${year}, parliament election, forthcoming indian elections, ${year} election results, assembly elections,upcoming indian elections, general elections ${year} schedule india, election schedule, opinion polls, key contenders of forthcoming general elections in india, party profiles, party manifestoes, india. ">
 
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></SCRIPT> 
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></SCRIPT>
@@ -71,31 +71,32 @@ font-size:14px;
 .yui-skin-sam .yui-dt table{
 	color:DimGray;
 	}
-	.main-bbg {
-    	background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left -40px transparent;
-    	float: left;
-    	height: 35px;
-    	width: 6px;
-	}
-	.main-mbg {
-    	background-color: #06ABEA;
-    	color: #FFFFFF;
-    	float: left;
-    	font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    	height: 35px;
-    	padding-left: 13px;
-    	text-align: left;
-    	text-transform: uppercase;
-    	width: 900px;
-	}
-	.main-title-sec {
-    	background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left top transparent;
-    	float: left;
-    	height: 35px;
-    	margin: 9px 0;
-   	    padding-left: 6px;
-	}
-	.clear{
+.main-bbg {
+    background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left -40px transparent;
+    float: left;
+    height: 35px;
+    width: 6px;
+}
+.main-mbg {
+    background-color: #06ABEA;
+    color: #FFFFFF;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 900px;
+	-moz-border-radius: 7px 7px 7px 7px;
+	border-radius:7px;
+}
+.main-title-sec {
+    background: url("images/icons/candidatePage/blue-crv-bgs.png") no-repeat scroll left top transparent;
+    float: left;
+    height: 35px;
+    margin: 9px 0;
+    padding-left: 6px;
+}
+.clear{
 		clear:both;
 		margin:0px; 
 		padding:0px;
@@ -103,7 +104,32 @@ font-size:14px;
 		height:0px;
 		font-size:0px;
 		_display/**/:/**/ inline;
-	}
+}
+#accessDiv{
+		-moz-border-radius: 7px 7px 7px 7px;
+		background: none repeat scroll 0 0 #FFF8E5;
+		 border: 1px solid #06ABEA;
+		height: auto;
+		padding: 10px;
+		text-align: center;
+		width: 500px;
+		border-radius:7px;
+
+}
+.ui-widget-header{
+		background: #06ABEA;
+		border :0px;
+		font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+
+}
+.ui-dialog .ui-dialog-title {
+    float: left;
+    padding-top: 0;
+}
+.ui-draggable .ui-dialog-titlebar {
+    cursor: move;
+    padding: 0 12px;
+}
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -193,6 +219,9 @@ function callAjax(param,jsObj,url){
 											var subRegionsDiv = document.getElementById("subRegionWiseDetailsDiv");
 											subRegionsDiv.innerHTML='';
 										</c:if>
+									<c:if test="${hasDeatiledAnalysis == false}">
+										showAlertMsg();
+										</c:if>
 
                                         if(electionType != 'Parliament'){
 										if(myResults.hasRegions == true){
@@ -223,6 +252,21 @@ function callAjax(param,jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function showAlertMsg(){
+
+		var accessDivElmt = document.getElementById("accessDiv");
+		var str='';
+
+	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>';
+	str+='<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;">'; 
+	str+='Sorry, You Don\'t have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>';
+	str+='<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
+	str+='Phone No:+91 40 40124153 / +91 096766 96760<br />';
+	str+='Email: <a href="mailTo:info@partyanalyst.com">info@itgrids.com</a></span>';
+	
+	accessDivElmt.innerHTML=str;
 }
 
 function showImg(){
@@ -1351,10 +1395,25 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 }
 function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 {
-	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
+	<c:if test="${hasDeatiledAnalysis}">
+		var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
 	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
 	
-	browser1.focus();	
+	browser1.focus();
+	</c:if>
+	
+	<c:if test="${hasDeatiledAnalysis == false}">
+		$("#accessDiv").css("width","474px");
+			$("#accessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#ffffff">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+				});
+		showAlertMsg();
+		</c:if>
 }
 
 
@@ -2101,8 +2160,6 @@ callAjax(rparam,jsObj,url);
 <center>
 <DIV id="sampleDiv"></DIV>
 
-<div class="clear"></div>
-<div class="main-title-sec">
  <div class="main-mbg"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if>
 <c:if test="${electionType == 'Parliament'}">${electionType} Election Results ${year}</c:if>
  <span style="margin-top:10px;margin-right:18px;float:right">
@@ -2112,7 +2169,6 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </script>
 </span>
 </div>
-<div class="main-bbg"></div></div>
  <div class="clear"></div>
 
 <div id="stateResults">
@@ -2157,13 +2213,12 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 
 <DIV style="padding:10px;">
 	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
-		<c:if test="${hasDeatiledAnalysis}">
-		<TR>
+	 <TR>
 			<TD align="left"><IMG src="images/icons/infoicon.png" border="none" /></TD>
 			<TD align="center" style="color:#606060;font-size:12px;">Click Here To Access Candidates Results</TD>
 			<TD align="left"><DIV><A href="javascript:{}" class="viewChartsForResults1" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV></TD>
 		</TR>
-		</c:if>
+		
 	</TABLE>
 </DIV>
 
@@ -2172,7 +2227,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 --></DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
-
+<div id="accessDiv"></div>
 <DIV id="subRegionWiseDetailsDiv">
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
@@ -2246,6 +2301,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		</TR>		
 	</TABLE>	
 </DIV>
+<div class="clear"></div>
 <DIV id="analysisToolsDataDiv">
 <DIV class="graphTop">Analysis Tools</DIV>
 <DIV id="toolsDiv">
