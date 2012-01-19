@@ -29,8 +29,8 @@
 					<tr><td><U>For Access Privileges Please Contact</U><br></td></tr> 
 					<tr><td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>
 					<tr><td>Hyderabad.<br></td></tr>
-					<tr><td>Mobile: +91 96766 96760<br></td></tr>
-					<tr><td>Email: info@itgrids.com or a.dakavaram@itgrids.com<br></td></tr>
+					<tr><td>Phone No: +91 40 40124153  / +91 96766 96760<br></td></tr>
+					<tr><td>Email: info@partyanalyst.com <br></td></tr>
 				</table>
 				</td>
 				<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="80px" width="170px"></td>				
