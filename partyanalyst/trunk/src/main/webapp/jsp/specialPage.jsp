@@ -19,6 +19,105 @@
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
+
+<script type="text/javascript">
+
+var specialPageId = '${specialPageId}';
+
+ function displayProfile()
+ {
+   var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
+   
+   if(profileInfoElmt == null)
+	   return;
+   
+   var str = '';
+   var descFlag = 1;
+   
+   str += '<s:if test="descriptions != null"> ';
+   str += '<h1 class="inc-title">About ${specialPageVO.heading}</h1>';
+   
+   str += '<s:iterator value="descriptions">';
+   
+   if(descFlag <= 2)
+   {
+	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
+	  descFlag++;
+   }
+   str += '  </s:iterator>';
+
+   str += '<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
+   str += 'Read More >></a></div>';
+   str += '</s:if>';
+   
+   profileInfoElmt.innerHTML = str;
+ }
+
+ 
+ function getTotalProfile()
+ {
+
+ $.fx.speeds._default = 900;
+  $("#showProfile").dialog({ stack: false,
+                                show: "clip",
+			                    hide: "clip",
+							    height: 'auto',
+								width:600,
+								position:[130,130],								
+								modal: true,
+								title:'<font color="Navy"><b>${specialPageVO.heading}</b></font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showProfile").dialog();
+   
+ 
+   var str ='';
+    str+='<fieldset class="imgFieldset">';
+    str+='  <table><tr><td>';
+    str+='  <s:if test="descriptions != null">'; 
+    str+='  <div style="font-weight: bold; font-size: 14px;">About ${specialPageVO.heading}</div>';
+    str+=' <br><s:iterator value="descriptions">';
+	str+=' <div style="margin-bottom:-5px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
+    str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
+	str+='</div>';
+    str+='</s:iterator>';
+    str+=' </s:if>';
+    str+=' </td></tr> </table>';
+    str+='</fieldset>';
+    document.getElementById("showProfile").innerHTML=str;
+   
+    
+ }
+	function callAjax(jsObj,url)
+	{
+	
+		var callback = {			
+	 	success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText);
+		 if(jsObj.task == "setEmailAlertsForEvent")
+            {
+			   showStatusForEmailSubscription(myResults);
+			}
+
+			}catch(e)
+
+			{   
+			 alert("Invalid JSON result" + e);   
+			}
+		 },
+			scope : this,
+			failure : function( o )
+			{
+										//alert( "Failed to load result" + o.status + " " + o.statusText);
+			}
+		  };
+
+		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	 
+</script>
 </head>
 
 <body>
@@ -28,7 +127,7 @@
 <div class="main-mbg">${specialPageVO.heading}
 <span style="margin-top:10px;margin-right:18px;float:right">
 <a name="fb_share" type="button_count" 
-share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
+share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specialPageId}">Share in Facebook</a> 
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 </span>
 </div>
@@ -234,145 +333,11 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
  <!--CONTENT MAIN SECTION END--> 
 
 <script type="text/javascript">
-  var specialPageId = '${specialPageId}';
-
- function displayProfile()
- {
-   var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
-   
-   if(profileInfoElmt == null)
-	   return;
-   
-   var str = '';
-   var descFlag = 1;
-   
-   str += '<s:if test="descriptions != null"> ';
-   str += '<h1 class="inc-title">About ${specialPageVO.heading}</h1>';
-   
-   str += '<s:iterator value="descriptions">';
-   
-   if(descFlag <= 2)
-   {
-	  str += '  <p style="font-size:13px;text-align:justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:property/>';
-	  descFlag++;
-   }
-   str += '  </s:iterator>';
-
-   str += '<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
-   str += 'Read More >></a></div>';
-   str += '</s:if>';
-   
-   profileInfoElmt.innerHTML = str;
- }
-
- 
- function getTotalProfile()
- {
-
- $.fx.speeds._default = 900;
-  $("#showProfile").dialog({ stack: false,
-                                show: "clip",
-			                    hide: "clip",
-							    height: 'auto',
-								width:600,
-								position:[130,130],								
-								modal: true,
-								title:'<font color="Navy"><b>${specialPageVO.heading}</b></font>',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	$("#showProfile").dialog();
-   
- 
-   var str ='';
-    str+='<fieldset class="imgFieldset">';
-    str+='  <table><tr><td>';
-    str+='  <s:if test="descriptions != null">'; 
-    str+='  <div style="font-weight: bold; font-size: 14px;">About ${specialPageVO.heading}</div>';
-    str+=' <br><s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom:-5px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
-    str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
-	str+='</div>';
-    str+='</s:iterator>';
-    str+=' </s:if>';
-    str+=' </td></tr> </table>';
-    str+='</fieldset>';
-    document.getElementById("showProfile").innerHTML=str;
-   
-    
- }
-	function callAjax(jsObj,url)
-	{
-	
-		var callback = {			
-	 	success : function( o ) {
-		try
-		{ 
-		 myResults = YAHOO.lang.JSON.parse(o.responseText);
-		 if(jsObj.task == "setEmailAlertsForEvent")
-            {
-			   showStatusForEmailSubscription(myResults);
-			}
-
-			}catch(e)
-
-			{   
-			 alert("Invalid JSON result" + e);   
-			}
-		 },
-			scope : this,
-			failure : function( o )
-			{
-										//alert( "Failed to load result" + o.status + " " + o.statusText);
-			}
-		  };
-
-		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-			}
-	 function validateEmailField()
-	  {
-		 document.getElementById("alertMsg").innerHTML = '';
-			var emailIdVal = document.getElementById("emailId").value;
-			var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-	      if(emailIdVal !='' && emailIdVal!='your email'){
-	          
-			  if(!emailIdVal.match(emailExp)){
-
-					document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
-					return;
-			  }
-		}
-		 else {
-			document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
-			return;
-		 	}
-			 var jsObj={
-	 			emailId : emailIdVal,
-	 			specialPageId : 1,
-	 			task:"setEmailAlertsForEvent"
-		 	};
-		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		 var url="specialEmailAlertsForUserAction.action?"+rparam;
-		callAjax(jsObj,url);
-
-		}
-
-		function showStatusForEmailSubscription(results){
-
-	   		var str='';
-			if(results.resultCode == 0){
-			cleardescriptionFields();
-		
-			document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
-				}
-	    
-		}
-		function cleardescriptionFields(){
-			document.getElementById('emailId').value='';
-		}
-var specialPageId = '${specialPageVO.specialPageId}';
+  
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 displayProfile();
+
 </script>
 </body>
 </html>
