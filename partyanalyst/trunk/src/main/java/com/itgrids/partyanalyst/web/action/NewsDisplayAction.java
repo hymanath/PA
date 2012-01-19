@@ -18,8 +18,11 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
+
 public class NewsDisplayAction implements ServletRequestAware{
+	
 	private static final Logger log = Logger.getLogger(NewsDisplayAction.class);
 	private INewsMonitoringService newsMonitoringService;
 	private HttpServletRequest request;
@@ -27,76 +30,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private String task;
 	private JSONObject jObj;
 	private List<FileVO> returnVal;
-	public String execute(){
-		
-		return Action.SUCCESS;
-	}
-	
-	public String getNews(){
-	 try{
-		 jObj = new JSONObject(getTask());
-		 session = request.getSession();
-		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(jObj.getString("queryType").trim().equalsIgnoreCase("getNews"))
-		{	
-		    FileVO fileVO = new FileVO();
-			if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
-			{
-			   fileVO.setExistingFrom(getCurrentDate());
-			   fileVO.setIdentifiedOn(getCurrentDate());
-			}
-			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
-			{
-			   fileVO.setExistingFrom(getStartDayOfWeek());
-			   fileVO.setIdentifiedOn(getCurrentDate());
-			}
-			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
-			{
-			   fileVO.setExistingFrom(getStartDayOfMonth());
-			   fileVO.setIdentifiedOn(getCurrentDate());
-			}
-			
-			if(regVO!=null)
-				fileVO.setCandidateId(regVO.getRegistrationID());
-			    fileVO.setFileType(jObj.getString("fileType"));
-			
-		    if(jObj.getString("sourceId") !=null && jObj.getString("sourceId").trim().length()>0)
-				fileVO.setSourceId(jObj.getLong("sourceId"));
-		    if(jObj.getString("languegeId") !=null && jObj.getString("languegeId").trim().length()>0)
-			    fileVO.setLanguegeId(jObj.getLong("languegeId"));
-		    if(jObj.getString("categoryId") !=null && jObj.getString("categoryId").trim().length()>0)
-			    fileVO.setCategoryId(jObj.getLong("categoryId"));
-		    if(jObj.getString("newsImportanceId") !=null && jObj.getString("newsImportanceId").trim().length()>0)
-			    fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
-		    if(jObj.getString("locationScope") !=null && jObj.getString("locationScope").trim().length()>0)
-			    fileVO.setLocationScope(jObj.getLong("locationScope"));
-		    if(jObj.getString("location") !=null && jObj.getString("location").trim().length()>0)
-			    fileVO.setLocation(jObj.getLong("location"));
-			
-			
-			returnVal = newsMonitoringService.getNewsForRegisterUsers(fileVO);
-		}
-		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getCount"))
-		{
-			if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
-			{
-			   returnVal = newsMonitoringService.getAllCountDetails(getCurrentDate(),getCurrentDate(),jObj.getString("fileType"),regVO.getRegistrationID());
-			}
-			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
-			{
-			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfWeek(),getCurrentDate(),jObj.getString("fileType"),regVO.getRegistrationID());
-			}
-			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
-			{
-			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfMonth(),getCurrentDate(),jObj.getString("fileType"),regVO.getRegistrationID());
-			}
-		}
-	 }
-	 catch(Exception e){
-		 e.printStackTrace();
-	 }
-	 return Action.SUCCESS;
-	}
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
@@ -128,23 +62,82 @@ public class NewsDisplayAction implements ServletRequestAware{
 	public void setTask(String task) {
 		this.task = task;
 	}
-	public Date getCurrentDate(){
-		try {
-		java.util.Date now = new java.util.Date();
-        String DATE_FORMAT = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
-        String strDateNew = sdf.format(now);        
-			now = sdf.parse(strDateNew);
-			return now;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
+	
+	
+	public String execute(){
+		
+		return Action.SUCCESS;
 	}
+	
+	public String getNews(){
+	 try{
+		 jObj = new JSONObject(getTask());
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(jObj.getString("queryType").trim().equalsIgnoreCase("getNews"))
+		{	
+		    FileVO fileVO = new FileVO();
+			if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
+			{
+			   fileVO.setExistingFrom(dateUtilService.getCurrentDateAndTime());
+			   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
+			{
+			   fileVO.setExistingFrom(getStartDayOfWeek());
+			   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
+			{
+			   fileVO.setExistingFrom(getStartDayOfMonth());
+			   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+			}
+			
+			if(regVO!=null)
+				fileVO.setCandidateId(regVO.getRegistrationID());
+			    fileVO.setFileType(jObj.getString("fileType"));
+			
+		    if(jObj.getString("sourceId") !=null && jObj.getString("sourceId").trim().length()>0)
+				fileVO.setSourceId(jObj.getLong("sourceId"));
+		    if(jObj.getString("languegeId") !=null && jObj.getString("languegeId").trim().length()>0)
+			    fileVO.setLanguegeId(jObj.getLong("languegeId"));
+		    if(jObj.getString("categoryId") !=null && jObj.getString("categoryId").trim().length()>0)
+			    fileVO.setCategoryId(jObj.getLong("categoryId"));
+		    if(jObj.getString("newsImportanceId") !=null && jObj.getString("newsImportanceId").trim().length()>0)
+			    fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
+		    if(jObj.getString("locationScope") !=null && jObj.getString("locationScope").trim().length()>0)
+			    fileVO.setLocationScope(jObj.getLong("locationScope"));
+		    if(jObj.getString("location") !=null && jObj.getString("location").trim().length()>0)
+			    fileVO.setLocation(jObj.getLong("location"));
+			
+			
+			returnVal = newsMonitoringService.getNewsForRegisterUsers(fileVO);
+		}
+		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getCount"))
+		{
+			if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
+			{
+			   returnVal = newsMonitoringService.getAllCountDetails(dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
+			{
+			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfWeek(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
+			{
+			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfMonth(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			}
+		}
+	 }
+	 catch(Exception e){
+		 e.printStackTrace();
+	 }
+	 return Action.SUCCESS;
+	}
+	
   public Date getStartDayOfWeek(){
 	 try{
-	  Date currentDate = getCurrentDate();
+	  Date currentDate = dateUtilService.getCurrentDateAndTime();
 	  Calendar cal = Calendar.getInstance(); 
 	  cal.setTime(currentDate);
 	  int currentDOW = cal.get(Calendar.DAY_OF_WEEK);
@@ -158,7 +151,7 @@ public class NewsDisplayAction implements ServletRequestAware{
   }
   public Date getStartDayOfMonth(){
 		 try{
-		  Date currentDate = getCurrentDate();
+		  Date currentDate = dateUtilService.getCurrentDateAndTime();
 		  Calendar cal = Calendar.getInstance(); 
 		  cal.setTime(currentDate);
 		  int currentDOW = cal.get(Calendar.DAY_OF_MONTH);
