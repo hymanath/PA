@@ -277,8 +277,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				&& electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE)
 				|| electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)) {
 			try {
-				electionYears = staticDataService.getElectionIdsAndYearsInfo(
-						electionTypeId, new Long(stateID));
+				electionYears = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(
+						 new Long(stateID) ,electionTypeId);
 				electionYears.add(0, new SelectOptionVO(0l, "Select Year"));
 				partiesList = partyStrengthService.getAllPartiesData(new Long(stateID));
 				partiesList.add(0, new SelectOptionVO(0l, "Select A Party"));
