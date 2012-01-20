@@ -117,10 +117,7 @@ font-size:14px;
 
 }
 .ui-widget-header{
-		background: #06ABEA;
-		border :0px;
 		font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-
 }
 .ui-dialog .ui-dialog-title {
     float: left;
@@ -1414,7 +1411,7 @@ function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 								width: 500,
 								position:'center',								
 								modal: true,
-								title:'<font color="#ffffff">ALERT</font>',
+								title:'<font color="#000000">ALERT</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 				});
 		showAlertMsg("candidateResultAccessDiv");
