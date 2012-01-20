@@ -135,7 +135,7 @@ function buildSMSPopup()
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:576,
+	height:650,
 	units: [			
 			{ 
 				position: 'left', 
@@ -1448,7 +1448,7 @@ function buildNews(){
 	var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 5,
-				template : "{PageLinks} {RowsPerPageDropdown}",
+				template : "{PageLinks} Show {RowsPerPageDropdown}  Per Page",
                 pageLinks : 5, 
                 rowsPerPageOptions : [ 5, 10, 15, 20 ]
 			    }) 
@@ -1499,6 +1499,7 @@ var callback = {
 			 {	
 				 newsDetails = myResults;
 				showNewsDetails(myResults);
+				document.getElementById("ajaxImg").style.display="none";
 			 }
 			
 			}catch (e) {   		
@@ -1572,8 +1573,8 @@ function showNewsCountDetails(result,jsObj){
   }
 }
 function showNewsDetails(result){
-
 	var i = 0;
+	document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total News Count : </b></font>'+result.length;
   document.getElementById("dashBoardCenterlayout_body").innerHTML='';
   YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
   {
@@ -1606,7 +1607,7 @@ function showNewsDetails(result){
 	    var myConfigs = { 
 				    paginator : new YAHOO.widget.Paginator({ 
 			        rowsPerPage    : 5,
-					template : "{PageLinks} {RowsPerPageDropdown}",
+					template : "{PageLinks} Show {RowsPerPageDropdown} Per Page",
 	                pageLinks : 5, 
 	                rowsPerPageOptions : [ 5, 10, 15, 20 ]
 				    }) 
