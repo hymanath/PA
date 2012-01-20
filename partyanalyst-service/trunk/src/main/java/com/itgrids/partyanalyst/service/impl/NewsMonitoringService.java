@@ -6,37 +6,80 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.ISourceDAO;
+import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.NewsImportance;
+import com.itgrids.partyanalyst.model.Source;
+import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 
 public class NewsMonitoringService implements INewsMonitoringService {
 	
 	private static final Logger log = Logger.getLogger(NewsMonitoringService.class);
-      private IFileGallaryDAO fileGallaryDAO;
-      private ICandidateDetailsService candidateDetailsService;
-
-      public IFileGallaryDAO getFileGallaryDAO() {
+    private IFileGallaryDAO fileGallaryDAO;
+    private ICandidateDetailsService candidateDetailsService;
+    private ISourceDAO sourceDAO;
+    private ICategoryDAO categoryDAO;
+    private ISourceLanguageDAO sourceLanguageDAO;
+    private INewsImportanceDAO newsImportanceDAO;
+      
+    public IFileGallaryDAO getFileGallaryDAO() {
 	          return fileGallaryDAO;
       }
 
-      public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
+    public void setFileGallaryDAO(IFileGallaryDAO fileGallaryDAO) {
 	        this.fileGallaryDAO = fileGallaryDAO;
 	
       }      
       
-      public ICandidateDetailsService getCandidateDetailsService() {
+    public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
-	}
+	  }
 
 	public void setCandidateDetailsService(
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
+	  }
+	
+	public ISourceDAO getSourceDAO() {
+		return sourceDAO;
 	}
 
-	
+	public void setSourceDAO(ISourceDAO sourceDAO) {
+		this.sourceDAO = sourceDAO;
+	}
+
+	public ICategoryDAO getCategoryDAO() {
+		return categoryDAO;
+	}
+
+	public void setCategoryDAO(ICategoryDAO categoryDAO) {
+		this.categoryDAO = categoryDAO;
+	}
+
+	public INewsImportanceDAO getNewsImportanceDAO() {
+		return newsImportanceDAO;
+	}
+
+	public void setNewsImportanceDAO(INewsImportanceDAO newsImportanceDAO) {
+		this.newsImportanceDAO = newsImportanceDAO;
+	}
+
+	public ISourceLanguageDAO getSourceLanguageDAO() {
+		return sourceLanguageDAO;
+	}
+
+	public void setSourceLanguageDAO(ISourceLanguageDAO sourceLanguageDAO) {
+		this.sourceLanguageDAO = sourceLanguageDAO;
+	}
+
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs){
       log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
        List<FileVO> fileVOList = new ArrayList<FileVO>();
@@ -170,4 +213,87 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    	}
 	    	  return returnFileVOList;
 	}
+	public List<FileVO> getAllSourceDetails(){
+		log.debug("Enter into getAllSourceDetails Method of NewsMonitoringService ");
+	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
+	    FileVO fileVO = null;
+	 try{ 	
+		List<Object[]>  sourceList = sourceDAO.getSourceDetails();
+		 for(Object[] source: sourceList){
+			 fileVO = new FileVO();
+			 fileVO.setIds((Long)source[0]);
+			 fileVO.setNames(source[1].toString());
+			 
+			 returnFileVOList.add(fileVO);
+		  }
+	 }
+ 	 catch(Exception e){
+ 		log.error("Exception rised in  getAllSourceDetails Method of NewsMonitoringService", e);
+ 		e.printStackTrace();
+ 	 }
+ 	  return returnFileVOList;
+		
+  }
+	public List<FileVO> getAllCategoryDetails(){
+		log.debug("Enter into getAllCategoryDetails Method of NewsMonitoringService ");
+	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
+	    FileVO fileVO = null;
+	 try{ 	
+		List<Object[]>  categoryList = categoryDAO.getCategoryDetails();
+		for(Object[] category: categoryList){
+			 fileVO = new FileVO();
+			 fileVO.setIds((Long)category[0]);
+			 fileVO.setNames(category[1].toString());
+			 
+			 returnFileVOList.add(fileVO);
+		 }
+	  }
+	 catch(Exception e){
+	   log.error("Exception rised in  getAllCategoryDetails Method of NewsMonitoringService", e);
+	   e.printStackTrace();
+	 }
+	 return returnFileVOList;
+		
+  }
+	public List<FileVO> getAllSourceLanguageDetails(){
+	   log.debug("Enter into getAllSourceLanguageDetails Method of NewsMonitoringService ");
+	   List<FileVO> returnFileVOList = new ArrayList<FileVO>();
+	   FileVO fileVO = null;
+	 try{ 	
+	   List<Object[]>  sourceLanguageList = sourceLanguageDAO.getSourceLanguageDetails();
+	   for(Object[] sourceLanguage: sourceLanguageList){
+			 fileVO = new FileVO();
+			 fileVO.setIds((Long)sourceLanguage[0]);
+			 fileVO.setNames(sourceLanguage[1].toString());
+			 
+			 returnFileVOList.add(fileVO);
+		 }
+	 }
+	 catch(Exception e){
+	  log.error("Exception rised in  getAllSourceLanguageDetails Method of NewsMonitoringService", e);
+	  e.printStackTrace();
+	}
+	return returnFileVOList;
+		
+  }
+	public List<FileVO> getAllNewsImportanceDetails(){
+		log.debug("Enter into getAllNewsImportanceDetails Method of NewsMonitoringService ");
+	    List<FileVO> returnFileVOList = new ArrayList<FileVO>();
+	    FileVO fileVO = null;
+	 try{ 
+		List<Object[]>  newsImportanceList = newsImportanceDAO.getNewsImportanceDetails();
+		for(Object[] newsImportance: newsImportanceList){
+			 fileVO = new FileVO();
+			 fileVO.setIds((Long)newsImportance[0]);
+			 fileVO.setNames(newsImportance[1].toString());
+			 
+			 returnFileVOList.add(fileVO);
+		}
+	  }
+	 catch(Exception e){
+	   log.error("Exception rised in  getAllNewsImportanceDetails Method of NewsMonitoringService", e);
+	   e.printStackTrace();
+	 }
+	return returnFileVOList;
+  }
 }
