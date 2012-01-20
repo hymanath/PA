@@ -138,7 +138,7 @@ border:1px solid #7f7f7f; padding:0px 10px; width:129px; color:#000;}
 textarea{font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#1a1a1a; line-height:17px; background-color:#7f7f7f; color:#000;
 border:1px solid #7f7f7f; padding:5px 0px 5px 10px; width:296px; height:78px;}
 .submit{background:url(../images/new_homepage/sprites.png) -231px -55px no-repeat; float:right; width:76px; height:28px; cursor:pointer; border:none;}
-.copy-rights{width:992px; float:left; border-top:1px solid #3f3f3f; text-align:center; font-size:11px; color:#2f2f2f; line-height:34px;}
+.copy-rights{width:992px; float:left; border-top:1px solid #3f3f3f; text-align:center; font-size:11px; color:#ffffff; line-height:34px;}
 
 /*FOOTER SECTION END*/
 
