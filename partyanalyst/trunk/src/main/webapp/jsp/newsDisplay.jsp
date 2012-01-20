@@ -5,7 +5,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
-</script> 
+</script>
+<script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <title></title>
@@ -20,9 +23,104 @@ background:#dddddd;
 
 text-align:center;
 }
+.newsImage {
+   height:53px;
+   width:29px;
+}
+#headerImageCenterDiv {
+		background-image:url(images/icons/constituencyManagement/header_body_blue.png);
+		height:30px;
+		text-align:center;
+		width:250px;		
+		}
+#headerImageCenterSpan {
+		color:#FFFFFF;
+		font-size:14px;
+		font-weight:bold;
+		position:relative;
+		top:6px;
+		}
+.rounded
+{
+	position:relative; padding:10px; margin:10px 0;background-color:#FFFFFF;
+}
+.corner 
+{
+	position:absolute; width:17px; height:17px;
+}
+
+.topLeft 
+{
+	top:0; left:0; background-position:-1px -1px;
+}
+.topRight 
+{
+	top:0; right:0;background-position:20px -1px;
+}
+.bottomLeft
+{
+	bottom:0; left:0; background-position:-1px 18px;
+}
+.bottomRight
+{
+	bottom:0; right:0; background-position:18px 17px;
+}
+
+.rounded .corner
+{	
+background-image:url(../../images/icons/constituencyPage/cornerSprite1.png);
+background-color:#E4EDF0;
+}
+.widgetHeader
+		{
+			background-image:url("images/icons/districtPage/header_body.png");
+			height:36px;
+			padding-left: 15px;
+		}
+		.widgetHeaderSpan
+		{
+			
+			position:relative;
+			top:11px;
+			color:#4B74C6;
+			font-weight:bold;
+		}
+.f3 {
+    border: 2px solid #CFD6DF;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 10px;
+    padding: 0px;
+    width: 950px;
+}
+.tinyDateCal
+{
+position:absolute;
+}
+.calendarWidth
+	{
+		height:24px;
+		width:22px;
+	}
+#fromDate_Div{
+  height:240px;
+  width:144px;
+}
+#toDate_Div{
+  height:240px;
+  width:144px;
+}
+#newsSearch_head {
+    background-color: #EEF4F6;
+    margin-bottom: 15px;
+    padding: 5px;
+}
 </style>
 <script type="text/javascript">
-function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location){
+$(document).ready(function(){
+  $("#newsSearch").slideUp("fast");
+});
+function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
+    
 var jsObj=
 	      { 
 		    queryType:queryType,
@@ -33,6 +131,9 @@ var jsObj=
             newsImportanceId :newsImportanceId,
             locationScope :locationScope,
             location :location,
+			fromDate:fromDate,
+			toDate:toDate,
+			title:title,
 			task:task
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -52,9 +153,25 @@ var callback = {
 			 }
 			 else if(jsObj.queryType == "getNews")
 			 {	
-				showNewsDetails(myResults);
+				newsDetails = myResults;
+				showNewsDetails(jsObj,myResults);
 			 }
-			
+			else if(jsObj.queryType == "getAllSourceDetails")
+			 {	
+				bildDate(myResults,"source");
+			 }
+			 else if(jsObj.queryType == "getAllCategoryDetails")
+			 {	
+				bildDate(myResults,"category");
+			 }
+			 else if(jsObj.queryType == "getAllSourceLanguageDetails")
+			 {	
+				bildDate(myResults,"language");
+			 }
+			 else if(jsObj.queryType == "getAllNewsImportanceDetails")
+			 {	
+				bildDate(myResults,"importance");
+			 }
 			}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
@@ -66,6 +183,27 @@ var callback = {
     };
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function bildDate(optionsList,elmtId){
+   var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].ids;
+		option.text=optionsList[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
 }
 function getMaxCount(result)
 {
@@ -80,39 +218,41 @@ function getMaxCount(result)
 function showNewsCountDetails(result,jsObj){
 document.getElementById("showNewsCount").innerHTML='';
   var maxCount = getMaxCount(result);
+ if(maxCount >0)
+{
   var str = "";
-  str+= '<table border="1px" align="center">';
+  str+= '<table border="1px" CELLSPACING="0" align="center">';
   str+= '     <tr style="text-align:center">';
-   str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>';
+   str+= '       <th style="color:#AE6623;">CATEGORY</th><th style="color:#AE6623;">SOURCE</th><th style="color:#AE6623;">LANGUAGE</th><th style="color:#AE6623;">NEWS IMPORTANCE</th><th style="color:#AE6623;">IMPACT LEVEL</th><th  style="color:#AE6623;">LOCATION</th>';
    str+= '     </tr>';
   for(i=0 ; i < maxCount ; i++)
    {
    str+= '<tr style="text-align:center">';
       if(result[0].fileVOList[i] != null)
-       str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\');"> '+result[0].fileVOList[i].sizeOfGallary+'</a></td>';
+       str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td style="text-align:center">--</td>';
 	  if(result[1].fileVOList[i] != null)
-	    str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\');"> '+result[1].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\',\''+result[1].fileVOList[i].source+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"> <font color="brown"> '+result[1].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[2].fileVOList[i] != null)
-	   str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\');">'+ result[2].fileVOList[i].sizeOfGallary+'</a></td>';
+	   str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[3].fileVOList[i] != null)
-	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\');">'+result[3].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\',\''+result[3].fileVOList[i].importance+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+result[3].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td>--</td>';
 	  if(result[4].fileVOList[i] != null)	
-	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\');">'+ result[4].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\',\''+result[4].fileVOList[i].locationScopeValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[4].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[5].fileVOList[i] != null)
 	      if(result[5].fileVOList[i].location != null)
-	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
+	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\',\''+result[5].fileVOList[i].locationValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[5].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	      else
-		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
+		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\',\''+result[5].fileVOList[i].locationValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[5].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td>--</td>';
 	str+= '	  </tr>';
@@ -121,15 +261,31 @@ document.getElementById("showNewsCount").innerHTML='';
   str+= '<table>';
   
  document.getElementById("showNewsCount").innerHTML = str;
+ }
 }
-function showNewsDetails(result){
+function showNewsDetails(jsObj,result){
+	 
+	document.getElementById("newsHeading").innerHTML=jsObj.title+" News";
 
   document.getElementById("showNews").innerHTML='';
+  YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	
+	var source = oRecord.getData("source");
+	var title = oRecord.getData("fileTitle1");
+	var path = oRecord.getData("path");
+	var description = oRecord.getData("description");
+	var fileDate = oRecord.getData("fileDate");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+source+"\",\""+title+"\",\""+path+"\",\""+description+"\",\""+fileDate+"\")'>"+title+"</a>";
+	
+		
+  };
   var newsResultColumnDefs = [ 		    	             
 		    	            
 							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
 		    	           	{key:"source", label: "SOURCE", sortable: true},
-							{key:"fileTitle1", label: "TITLE", sortable: true},
+							{key:"fileTitle1", label: "TITLE",formatter:YAHOO.widget.DataTable.news, sortable: true},
 							{key:"description", label: "DESCRIPTIONS", sortable: true},
 		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
 							{key:"locationValue", label: "AREA NAME", sortable: true},
@@ -156,21 +312,228 @@ function showNewsDetails(result){
 
 		var newsResultDataSource = new YAHOO.widget.DataTable("showNews", newsResultColumnDefs,myDataSource, myConfigs);
 }
+function showNews(source,title,path,description,fileDate)
+  {
+	  $.fx.speeds._default = 1000;
+	  $("#showNewsOuterDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								title:'<center><font color="Navy">'+title+'</font><center>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#showNewsOuterDiv").dialog();
+	
+	var str ='<div><center>';
+	  str+=' <table>';
+	 str+='     <tr>';
+	 str+='       <td>';
+	 str+='        <B>Source</B> : <font color="#FF4500">'+source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+fileDate+'</font>';
+	 str+='       </td>';
+	 str+='     </tr>';
+	 str+='     </table>';
+	
+	 str+='     <table>';
+	 str+='			<tr>';
+	 
+		str+='<td><div class="container"><img alt="'+title+'" src="'+path+'" title="'+description+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	
+	 str+='	</tr></table>';	  
+     str += '<table><tr>';
+	str+='       <td>';
+	str+='        '+description+'';
+	str+='       </td>';
+	str+='     </tr>';
+	str+='<table>';	 
+	str+='</center></div>';	 
+  document.getElementById("showNewsDiv").innerHTML= str;
+	
+ }
+ function showDates(){
+    
+   if(document.getElementById("betweendates").checked == true)
+     document.getElementById("showDates").style.display = "block";
+   else
+     document.getElementById("showDates").style.display = "none";
+ }
+ function toggleOption(){
+    document.getElementById("source").value ="0";
+	document.getElementById("category").value ="0";
+	document.getElementById("language").value ="0";
+	document.getElementById("importance").value ="0";
+   $("#newsSearch").slideToggle("slow");
+ }
+ function newsSearch(){
+ 
+   var sourceEle =   document.getElementById("source");
+   var  source = sourceEle.options[sourceEle.selectedIndex].value;
+	 if(source == 0)
+	 source ="";
+   var categoryEle =  document.getElementById("category");
+   var  category = categoryEle.options[categoryEle.selectedIndex].value;
+   if(category == 0)
+	 category ="";
+   var languageEle =  document.getElementById("language");
+   var  language = languageEle.options[languageEle.selectedIndex].value;
+   if(language == 0)
+	 language ="";
+   var importanceEle =  document.getElementById("importance");
+   var  importance = importanceEle.options[importanceEle.selectedIndex].value;
+   if(importance == 0)
+	 importance ="";
+	
+ if(document.getElementById("today").checked == true)
+   {
+      getNews('byTodayDate','getCount','All','','','','','','','','','');
+	  getNews('byTodayDate','getNews','All',source,language,category,importance,'','','Today','','');
+   }
+ if(document.getElementById("thisweek").checked == true)
+  {
+     getNews('byThisWeek','getCount','All','','','','','','','','','');
+	 getNews('byThisWeek','getNews','All',source,language,category,importance,'','','This Week','','');
+   }
+ if(document.getElementById("thismonth").checked == true)
+  {
+    getNews('byThisMonth','getCount','All','','','','','','','','','');
+	getNews('byThisMonth','getNews','All',source,language,category,importance,'','','This Month','','');
+   }
+ if(document.getElementById("betweendates").checked == true)
+  {
+   var fromDate = "";
+   var toDate = "";
+
+     fromDate = document.getElementById("fromDate").value;
+     toDate =  document.getElementById("toDate").value;
+  var title = 'Between Dates '+fromDate+' and '+toDate;
+   getNews("betweendates","getCount","All","","","","","","","",fromDate,toDate);
+   getNews("betweendates","getNews","All",source,language,category,importance,"","",title,fromDate,toDate);
+   
+  }
+  }
+  function clearAll(){
+  
+   document.getElementById("newsSearch").style.display = "none";
+    document.getElementById("source").value ="0";
+	document.getElementById("category").value ="0";
+	document.getElementById("language").value ="0";
+	document.getElementById("importance").value ="0";
+    document.getElementById("fromDate").value = "";
+    document.getElementById("toDate").value = "";
+ }
 </script>
 </head>
 <body>
-    <table align="center">
+<div style="background-color:width:900px;" class="rounded">
+<fieldset class="f3">
+<body>
+<center>
+	<div style="margin:15px;color:white;">
+		<table border="0" cellpadding="0" cellspacing="0">          
+			<tr>
+			   <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
+			   <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">News Details</span></div></td>
+			   <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
+			 </tr>
+		</table>
+	</div>
+</center>
+<div id="newsSearch_head">
+    <table align="center" style="padding-top:15px;padding-bottom:10px;">
 	   <tr>
-	      <td><input type="radio" name="dates" checked="true" value="today" onclick="getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');"><font color="navy"><b>Today</b></font></input></td>
-		  <td><input type="radio" name="dates"  value="thisweek" onclick="getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');"><font color="navy"><b>This Week</b></font></input></td>
-		  <td><input type="radio" name="dates"  value="thismonth" onclick="getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');"><font color="navy"><b>This Month</b></font></input></td>
+	      <td><input type="radio" name="dates" checked="true" value="today" id="today" onclick=" showDates();"><font color="navy"><b>&nbsp;Today</b></font></input></td>
+		  <td style="padding-left:10px;"><input type="radio" name="dates" id="thisweek" value="thisweek" onclick="showDates();"><font color="navy"><b>&nbsp;This Week</b></font></input></td>
+		  <td style="padding-left:10px;"><input type="radio" name="dates" id="thismonth" value="thismonth" onclick="showDates();"><font color="navy"><b>&nbsp;This Month</b></font></input></td>
+		  <td style="padding-left:10px;"><input type="radio" name="dates" id="betweendates" value="betweendates" onclick="showDates();"><font color="navy"><b>&nbsp;Between Dates</b></font></input></td>
 	   </tr>
+	</table>
+	<div id="showDates" style="display:none;">
+	<table style="padding-bottom:10px;">
+	   <tr>	<td style="padding-left:240px;color:#4B74C6;"><b>From Date</b></td>														
+					<td>											
+						<input type="text" value=""  READONLY="READONLY" name ="fromDate" id="fromDate" size="15"/>										
+						<div class="yui-skin-sam"><div id="fromDate_Div" class="tinyDateCal"></div></div>										
+					</td>										
+					<td valign="top">										
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('fromDate_Div','fromDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
+					</td>														
+															
+					<td style="padding-left:50px;color:#4B74C6;"><b>To Date</b></td>									
+					<td>										
+						<input type="text" READONLY="READONLY" name ="toDate" id="toDate" size="15"/>										
+						<div class="yui-skin-sam"><div id="toDate_Div" class="tinyDateCal"></div></div>										
+					</td>														
+					<td valign="top">										
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('toDate_Div','toDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
+					</td>
+       </tr>					
     </table>
-<div id="showNewsCount"></div>
-<div id="showNews" class="yui-skin-sam" style="width:900px;" ></div>
+    </div>
+	<div style="padding-top:5px;">
+	   <center><b>Select Options To Filter Results</b><input type="button" value="Options" onclick="toggleOption();"></input></center>
+	</div>
+<div id="newsSearch" style="padding-bottom:5px;padding-top:10px;">	   
+	   <table align="center">
+			<tr>									
+					
+                    <td style="padding-left:10px;color:#4B74C6;"><b>Source</b></td>
+                    <td><select style="width:90px;" id="source"><option value="0">All</option></select></td>	
+
+					<td style="padding-left:10px;color:#4B74C6;"><b>Category</b></td>
+                    <td><select style="width:90px;" id="category"><option value="0">All</option></select></td>	
+					
+					<td style="padding-left:10px;color:#4B74C6;"><b>Language</b></td>
+                    <td><select style="width:90px;" id="language"><option value="0">All</option></select></td>	
+					
+					<td style="padding-left:10px;color:#4B74C6;"><b>Importance</b></td>
+                    <td><select style="width:90px;" id="importance"><option value="0">All</option></select></td>	
+				</tr>										
+														
+		</table>		
+</div>
+<div style="padding-top:15px;">
+ <center>
+ <a href="javascript:{}" onclick="newsSearch();" ><img src="images/search_button.jpg" /></a>
+ <a href="javascript:{}" onclick="clearAll();" style="padding-left:10px;" ><img src="images/clear_all_buttom.jpg" ></a>
+ </center>
+</div>
+</div>
+<table  align="center">
+  <tr><td><div id="showNewsCount"></div></td></tr>
+  
+ <tr> 
+   <td>
+	<table width="100%" style="padding-top:15px;">
+	<tr>
+		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
+	   <td><div class="widgetHeader"><span class="widgetHeaderSpan"> <div id="newsHeading"></div> </span></div></td>
+	   <td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>
+	</tr>
+    </table>
+   </td>
+ </tr> 
+  
+  
+  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:900px;" ></div></td></tr>
+  <tr><td>
+     <div id="showNewsOuterDiv">
+           <div id="showNewsDiv"></div>
+     </div>
+  </td></tr>
+</table>
+</fieldset>
+</div>
 <script type="text/javascript">
-getNews("byTodayDate","getCount","Public","","","","","","");
-getNews("byTodayDate","getNews","Public","","","","","","");
+getNews("byTodayDate","getCount","All","","","","","","","","","");
+getNews("byTodayDate","getNews","All","","","","","","","Today","","");
+getNews("","getAllSourceDetails","","","","","","","","","","");
+getNews("","getAllCategoryDetails","","","","","","","","","","");
+getNews("","getAllSourceLanguageDetails","","","","","","","","","","");
+getNews("","getAllNewsImportanceDetails","","","","","","","","","","");
 </script>
 </body>
 </html>
