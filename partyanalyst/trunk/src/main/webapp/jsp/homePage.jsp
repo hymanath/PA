@@ -117,7 +117,10 @@ function openAddNewProblemWindow()
 	font-size:11px;
 	text-align:left;
 }
-
+.scrollDataStyle{
+	font-family : verdana;
+	font-weight : bold;
+}
 
 
 </style>
@@ -292,7 +295,7 @@ function openAddNewProblemWindow()
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
          <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180" >
-          <font class="scrollDataStyle"><u>News</u> :<a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
+          <font class="scrollDataStyle" color="blue"><u>News</u> : Now You Can View/Analyse <a href="electionDetailsReportAction.action?electionId=136&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Punjab</a>, <a href="electionDetailsReportAction.action?electionId=158&stateID=27&stateName=Uttar Pradesh&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Uttar Pradesh</a>, <a href="electionDetailsReportAction.action?electionId=134&stateID=26&stateName=Uttaranchal&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Uttaranchal</a>, <a href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Manipur</a>, <a href="electionDetailsReportAction.action?electionId=165&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Goa</a>, <a href="electionDetailsReportAction.action?electionId=126&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2007" class="scrollDataStyle">Gujarat</a> States Previous Election Results to Estimate Current Election Results, <a href="javascript:{}" class="scrollDataStyle" onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}" class="scrollDataStyle" onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a>
 		</font>
           </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
