@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.Format;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -92,6 +92,13 @@ public class NewsDisplayAction implements ServletRequestAware{
 			   fileVO.setExistingFrom(getStartDayOfMonth());
 			   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
 			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("betweendates"))
+			{
+			   if(jObj.getString("fromDate").trim().length() > 0)
+			     fileVO.setExistingFrom(getDate(jObj.getString("fromDate").trim()));
+			   if(jObj.getString("toDate").trim().length() > 0)
+			     fileVO.setIdentifiedOn(getDate(jObj.getString("toDate").trim()));
+			}
 			
 			if(regVO!=null)
 				fileVO.setCandidateId(regVO.getRegistrationID());
@@ -127,6 +134,32 @@ public class NewsDisplayAction implements ServletRequestAware{
 			{
 			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfMonth(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
 			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("betweendates"))
+			{
+				Date from = null;
+				Date to = null;
+			   if(jObj.getString("fromDate").trim().length() > 0)
+			     from = getDate(jObj.getString("fromDate").trim());
+			   if(jObj.getString("toDate").trim().length() > 0)
+			     to = getDate(jObj.getString("toDate").trim());
+			   returnVal = newsMonitoringService.getAllCountDetails(from,to,jObj.getString("fileType"),regVO.getRegistrationID());
+			}
+		}
+		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllSourceDetails"))
+		{
+			returnVal = newsMonitoringService.getAllSourceDetails();
+		}
+		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllCategoryDetails"))
+		{
+			returnVal = newsMonitoringService.getAllCategoryDetails();
+		}
+		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllSourceLanguageDetails"))
+		{
+			returnVal = newsMonitoringService.getAllSourceLanguageDetails();
+		}
+		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllNewsImportanceDetails"))
+		{
+			returnVal = newsMonitoringService.getAllNewsImportanceDetails();
 		}
 	 }
 	 catch(Exception e){
@@ -134,7 +167,21 @@ public class NewsDisplayAction implements ServletRequestAware{
 	 }
 	 return Action.SUCCESS;
 	}
-	
+	public Date getCurrentDate(){
+		try {
+		java.util.Date now = new java.util.Date();
+        String DATE_FORMAT = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+        String strDateNew = sdf.format(now);        
+			now = sdf.parse(strDateNew);
+			System.out.println("todayDate = "+now);
+			return now;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
   public Date getStartDayOfWeek(){
 	 try{
 	  Date currentDate = dateUtilService.getCurrentDateAndTime();
@@ -163,4 +210,14 @@ public class NewsDisplayAction implements ServletRequestAware{
 				return null;
 			}
 	  }
+  public Date getDate(String dateStr){
+	  Date date = null; 
+	  DateFormat formatter = null;
+	 try {	  
+	  formatter = new SimpleDateFormat("yyyy-mm-dd");
+	  date = (Date)formatter.parse(dateStr);  
+	 } catch (ParseException e)
+	  {System.out.println("Exception :"+e);  }  
+	 return date;
+  }
 }
