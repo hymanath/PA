@@ -179,6 +179,9 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		if(session.getAttribute(IConstants.USER) != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
 			return ERROR;
 		
+		if(session.getAttribute(IConstants.USER) == null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+			return ERROR;
+		
 		return Action.SUCCESS;
 		
 	}
