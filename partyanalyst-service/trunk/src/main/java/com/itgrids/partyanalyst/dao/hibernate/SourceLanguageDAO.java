@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
@@ -11,5 +13,7 @@ public class SourceLanguageDAO extends
 	public SourceLanguageDAO() {
 		super(SourceLanguage.class);
 	}
-	
+	public List<Object[]> getSourceLanguageDetails(){
+		   return getHibernateTemplate().find("select model.languageId,model.language from SourceLanguage  model order by model.language ");
+	   }
 }
