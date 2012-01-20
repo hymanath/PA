@@ -19,7 +19,15 @@
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
-
+<style>
+.container {
+    	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    	background-color: #FFFFFF;
+    	margin: 9px auto 40px;
+    	max-width: 800px;
+    	padding: 10px;
+	}
+	</style>
 <script type="text/javascript">
 
 var specialPageId = '${specialPageId}';
