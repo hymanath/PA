@@ -130,6 +130,11 @@ font-size:14px;
     cursor: move;
     padding: 0 12px;
 }
+.ui-widget-content a{
+	color:blue;
+
+}
+
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -220,7 +225,7 @@ function callAjax(param,jsObj,url){
 											subRegionsDiv.innerHTML='';
 										</c:if>
 									<c:if test="${hasDeatiledAnalysis == false}">
-										showAlertMsg();
+										showAlertMsg("accessDiv");
 										</c:if>
 
                                         if(electionType != 'Parliament'){
@@ -254,12 +259,12 @@ function callAjax(param,jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function showAlertMsg(){
+function showAlertMsg(divElmt){
 
-		var accessDivElmt = document.getElementById("accessDiv");
+		var accessDivElmt = document.getElementById(divElmt);
 		var str='';
 
-	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>';
+	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;';
 	str+='<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;">'; 
 	str+='Sorry, You Don\'t have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>';
 	str+='<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
@@ -1403,8 +1408,8 @@ function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 	</c:if>
 	
 	<c:if test="${hasDeatiledAnalysis == false}">
-		$("#accessDiv").css("width","474px");
-			$("#accessDiv").dialog({ stack: false,
+		
+			$("#candidateResultAccessDiv").dialog({ stack: false,
 							    height: 'auto',
 								width: 500,
 								position:'center',								
@@ -1412,7 +1417,7 @@ function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 								title:'<font color="#ffffff">ALERT</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 				});
-		showAlertMsg();
+		showAlertMsg("candidateResultAccessDiv");
 		</c:if>
 }
 
@@ -1819,23 +1824,40 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 }
 function openPreYearDistAnalysisWindow()
 {
-
-	var currentElectionyear=${year};	
-	var selectYearEl = document.getElementById("selectYearDistrictwise");
-	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
-	var yearAlertEl = document.getElementById("yearAlert");
-	var browser1;
-	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
-	if(selectedElectionYear == 'Select Year') 
-	{
-		yearAlertEl.style.display ='block';
-		yearAlertEl.innerHTML = "Please Select A Year!";
-		return;
-	}
-	else {yearAlertEl.style.display ='none';} 
 	
-	browser1 = window.open(urlStr,"distcomparisioinElectioneport","scrollbars=yes,height=600,width=1000,left=200,top=200");
-	browser1.focus();
+  <c:if test="${hasDeatiledAnalysis}">
+		var currentElectionyear=${year};	
+		var selectYearEl = document.getElementById("selectYearDistrictwise");
+		var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+		var yearAlertEl = document.getElementById("yearAlert");
+		var browser1;
+		var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
+		if(selectedElectionYear == 'Select Year') 
+		{
+			yearAlertEl.style.display ='block';
+			yearAlertEl.innerHTML = "Please Select A Year!";
+			return;
+		}
+		else {yearAlertEl.style.display ='none';} 
+		
+		browser1 = window.open(urlStr,"distcomparisioinElectioneport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+		browser1.focus();
+	</c:if>
+	<c:if test="${hasDeatiledAnalysis == false}">
+		/*$("#accessDiv").css("width","474px");
+		$("#accessDiv").css("border","0px");*/
+
+			$("#districtAccessPopupDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#ffffff">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								
+								});
+		showAlertMsg("districtAccessPopupDiv");
+	</c:if>
 }
 function openPreYearStatewiseAnalysisWindow()
 {
@@ -2159,6 +2181,8 @@ callAjax(rparam,jsObj,url);
 <BODY>
 <center>
 <DIV id="sampleDiv"></DIV>
+<div id="candidateResultAccessDiv"></div>
+<div id="districtAccessPopupDiv"></div>
 
  <div class="main-mbg"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if>
 <c:if test="${electionType == 'Parliament'}">${electionType} Election Results ${year}</c:if>
