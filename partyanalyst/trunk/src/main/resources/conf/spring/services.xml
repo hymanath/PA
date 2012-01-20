@@ -982,6 +982,10 @@
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
 		<property name="fileGallaryDAO" ref="fileGallaryDAO"/>
 		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+		<property name="sourceDAO" ref="sourceDAO" />
+		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
+		<property name="categoryDAO" ref="categoryDAO" />
+		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
 	</bean>
 </beans>		
 		
