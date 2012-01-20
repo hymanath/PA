@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
@@ -10,6 +12,8 @@ public class CategoryDAO extends GenericDaoHibernate<Category, Long> implements 
 	public CategoryDAO() {
 		super(Category.class);
 	}
-	
+	public List<Object[]> getCategoryDetails(){
+		   return getHibernateTemplate().find("select model.categoryId,model.categoryType from Category  model order by model.categoryType ");
+	   }
 
 }
