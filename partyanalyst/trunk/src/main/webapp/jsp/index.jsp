@@ -116,31 +116,62 @@
 	#newsHeading{
 		color: #FFFFFF;
     	font-weight: bold;
-    	padding: 19px 4px 0 12px;
+    	height:25px;
+		padding:5px;
+		background:#0099ff;
   	}
+	.pa_reports_head {
+    background-color: #3D3D3D;
+	background-image:url();
+}
+.dashboardBar{
+width:960px;
+background:#3d3d3d;
+height:30px;
+border-radius:5px 5px 0px 0px;
+}
+.dashboardHeader{
+color:#d3d3d3;float:left;padding:7px 0px 0px 10px;font-weight:bold;font-family:Arial;
+}
+.dashboardTimeStamp{
+color:#fff;float:right;padding:8px 0px 0px 5px;font-family:arial;font-size:11px;margin-right:10px;
+}
+#todayDate{
+color:#fff;float:right;padding:8px 0px 0px 5px;font-family:arial;font-size:11px;margin-right:10px;
+}
+.edit {
+    background-color: #335291;
+    color: #FFFFFF;
+}
+
+.profileAnc{
+display:block;
+padding:5px;
+background:#a3a3a3;
+color:#3d3d3d;
+border:1px ridge #fff;
+width:150px;
+}
+.profileAnc:hover{
+background:#3d3d3d;
+color:#d3d3d3;
+text-decoration:none;
+}
+#noticeBoard_new span{display:block;margin:3px;}
+#humanImgDiv a span{display:inline-block;height:25px;width:30px;background:#fff;border:1px solid #3d3d3d;margin-right:10px;}
+#humanImgDiv a span img{width:25px;height:25px;}
    </style>
 </head>
 	<body>
 	<div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
 	<div id="dashBoardCenterlayout_header" style="margin: 0px 21px;"><center><div style="width:960px;">		
-    	<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			<tr>
-			<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-			<td class="centerSwasthicImage" style="vertical-align: middle;">	
-				<table width="100%">
-					<tr>
-						<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
-						<td align="right">
-							<!--<img src="images/icons/indexPage/clock.png" height="25px"/>-->
-							<div id="todayDate"></div>
-						</td>
-					</tr>
-				</table>						
-
-					</td>
-					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
-	</div></center></table>
+    	
+				
+                 <div class="dashboardBar">
+<span class="dashboardHeader">DASHBOARD</span>		
+<span class="dashboardTimeStamp" id="todayDate"></span>		
+</div>				
 	</div>
 
 		<div id="dashboard_main">
@@ -153,49 +184,25 @@
 	
 	<div id="uploadPic_window"><div id="uploadPic_window_inner"></div></div>
 			
-			<div id="dashBoardLeftlayoutDiv">
-				<div id="humanImgDiv">
-					<table>
-						<tr><td colspan="4"><div><img src="images/icons/indexPage/human.jpg" style="margin-top: 28px;" /></div></td></tr>	
-						<tr>	
-							<td width="25%" id="uploadPhotoImage"></td>
-							<td><a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()">Upload Photo</a></td>
-						</tr>
-						<tr>
-							<td id=""><img src="images/usergroups/search.gif" style="padding-left:10px;"/></td>
-							<td><a href="javascript:{}" class="profileAnc">View Profile</a></td> 
-						</tr>
-
-						<tr>
-							<td id=""><img src="images/icons/cadreReport/addCadre.png" width="21px" style="padding-left:10px;"/></td>
-							<td><a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc">Add Sub User</a></td> 
-						</tr>
-										
-						<tr>					
-							<td id=""><img src="images/icons/constituencyPage/groups.png" width="21px" style="padding-left:10px;"/></td>		
-							<td><a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >DashBoard</a></td> 
-						</tr>
-						<tr>
-							<td id=""><img src="images/icons/callCenter.png" style="padding-left:4px;width: 35px; height: 30px;"/></td>
-							<td><a href="callCenterAction.action" class="profileAnc">Call Center</a></td> 
-						</tr>
- 
-                         <tr>
-							<td id=""><img src="images/icons/profile.png" style="padding-left:4px;width: 38px; height: 30px;"/></td>
-							<td><a href="profileManagePageAction.action" class="profileAnc">Manage Profile</a></td> 
-						 </tr>
-						
-					</table>					
+			<div id="dashBoardLeftlayoutDiv" style="background:#e2e2e2;text-align:center;">
+				<div id="humanImgDiv" style="height:450px;padding-bottom:20px;margin-left:auto;margin-right:auto;display:block;text-align:left;">
+				<img src="images/icons/indexPage/human_DashBoard.png" style="margin-top: 28px;" />
+					<a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()"><span><img src="images/icons/total_index_icons.png" /></span>Upload Photo</a>
+							<a href="javascript:{}" class="profileAnc"><span><img src="images/icons/view.png" /></span>View Profile</a>
+							<a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc"><span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a>
+							<a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" ><span><img src="images/icons/constituencyPage/groups.png" /></span>DashBoard</a>
+							<a href="callCenterAction.action" class="profileAnc"><span><img src="images/icons/callCenter.png" /></span>Call Center</a>
+							<a href="profileManagePageAction.action" class="profileAnc"><span><img src="images/icons/profile.png" /></span>Manage Profile</a>
+							
+						<c:if test="${hasNewsMonitoring == true}">
+						  <a href="javascript:{};" onclick="openShowNews();" class="profileAnc"><span><img src="images/graph.png" /></span>News Analyse</a>
+					   </c:if>					
 				</div>		
-				<div id="noticeBoard">
-					<div id="noticeBoard_head">Announcements</div><BR>
-					<div style="padding-left:10px;">
-						<Table>
-						<tr><td><img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openNewAnnouncementPopup()">Add New Announcement</a></td></tr>
-					    <tr><td><img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></td></tr>
-						</Table>
-					</div>
-					<div id="noticeBoard_footer"></div>
+				<div id="noticeBoard_new" style="width:95%;border:1px solid #3d3d3d;margin-right:auto;margin-left:auto;margin-top:15px;background:#fff;">
+				<h4 style="width:100%;height:25px;color:#fff;background:#3d3d3d;">Announcements</h4>
+					<span><img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openNewAnnouncementPopup()">Add New Announcement</a></span><span>
+					    <img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></span>
+						
 				</div>
 				
 			
@@ -225,18 +232,21 @@
 				%>
 		<c:if test="${hasNewsMonitoring == true}">
 	      <div id="newsHeading">
-			<span style="background-color: SteelBlue; padding: 9px; -moz-border-radius: 5px 5px 5px 5px; border-radius: 4px 4px 4px 4px; ">News Overview</span></div>
+			<span>News Overview</span></div>
 			<table align="center" style="margin-top: 14px;" >
 			  <tr>
-	      		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
+	      		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="showajaxImg();getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
 		 		  <font color="navy"><b>Today</b></font></input></td>
-		  		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
+		  		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="showajaxImg();getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
 		  		 <font color="navy"><b>This Week</b></font></input></td>
-		  		<td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
+		  		<td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="showajaxImg();getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
 		  		 <font color="navy"><b>This Month</b></font></input></td>
+				<td><div id="ajaxImg" style="display:none;"><img style="width:25px;" src="images/icons/loading.gif"/></div></td>
 	   		  </tr>
     		</table>
-		<div id="showNewsCount" style="margin-top: 25px;"></div>	
+		<input type="button" class="edit" style="width:111px;" onclick="hideShowNewsCount();" id="togglebutton" value="Show Summary"></input>	
+		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
+		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
 		<div id="showNewsOuterDiv">
 		 <div id="showNewsDiv"></div>
 			</div>
@@ -1584,6 +1594,23 @@ var str='';
 str+='</s:iterator>';
 
 	
+}
+function hideShowNewsCount(){
+
+var textmsg=$("#togglebutton").val();
+var settext;
+
+if(textmsg=="Show Summary")
+settext="Hide Summary";
+else
+settext="Show Summary";
+
+$("#togglebutton").val(settext);
+  $("#showNewsCount").slideToggle("slow");
+  
+}
+function showajaxImg(){
+  document.getElementById("ajaxImg").style.display="block";
 }
 </script>
 </body>
