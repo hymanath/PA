@@ -108,7 +108,7 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "saveDiscription")
 			{
-           showDiscriptionStatus(myResults);  
+				 showDescriptionStatus(myResults);  
 			}	
 			else if(jsObj.task == "updateProfileDiscription")
 			{
@@ -130,7 +130,7 @@ function callAjax(jsObj,url){
 			
 			else if(jsObj.task == "getSource")
 			{ 
-               clearOptionsListForSelectElmtId('source');
+			   clearOptionsListForSelectElmtId('source');
 			   createOptionsForSelectElmtId('source',myResults);
 			}
 			else if(jsObj.task == "getLanguage")
@@ -159,6 +159,38 @@ function callAjax(jsObj,url){
 			{
 				showSuccessOfCreateNew(myResults);
 			}
+			else if(jsObj.task == 'eventVideoGallariesForUpload')
+			{
+				showSuccessOfUploadedFile(myResults);
+			}
+			else if(jsObj.task == "getStates")
+			{ 
+               buildResults(myResults,"stateDiv");
+			}
+			else if(jsObj.task == "getDistrictsByStateId")
+			{ 
+               buildResults(myResults,"districtDiv");
+			}
+			else if(jsObj.task == "constituenciesInDistrict")
+			{ 
+               buildResults(myResults,"constituencyDiv");
+			}
+			else if(jsObj.task == "getConstNotInGivenAreaType")
+			{ 
+               buildResults(myResults,"constituencyDiv");
+			}
+			else if(jsObj.task == "subRegionsInConstituency")
+			{ 
+               buildResults(myResults,"mandalDiv");
+			}
+			else if(jsObj.task == "hamletsOrWardsInRegion")
+			{ 
+               buildResults(myResults,"villageDiv");
+			}
+			else if(jsObj.task == "boothsInTehsilOrMunicipality")
+			{ 
+               buildResults(myResults,"villageDiv");
+			}
 
 	}
 		catch(e)
@@ -175,6 +207,21 @@ function callAjax(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function showSuccessOfUploadedFile(result){
+
+	var fileSuccessDivEle = document.getElementById('fileSuccessDiv');
+	var str = '';
+
+	if(result.resultCode == 0)
+	{
+		str += '<font color="Green"><strong>File Uploaded SuccessFully</strong></font>';
+		
+	}
+	else 
+		str += '<font color="red"><strong>Error Occured, Try Again</strong></font>';
+	fileSuccessDivEle.innerHTML = str;
+
+}
 function showEventDescription(myResults)
 {
 	var listSize = myResults.length;
@@ -284,14 +331,14 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
     
  }
 
- function showDiscriptionStatus(myResult)  
+ function showDescriptionStatus(myResult)  
  {
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
 	if(myResult.resultCode == 0)
 	{
 		cleardescriptionFields();
-		str += '<font color="green"><b>Profile Discription saved Successfully.</b>';
+		str += '<font color="green"><b>Description Saved Successfully.</b>';
 
 	}
 	else if(myResult.resultCode == 1) 
@@ -301,13 +348,7 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	
 	errorDivEle.innerHTML = str;
 }
-function cleardescriptionFields()
-{
-	document.getElementById('profileDescId').value='';
-
-}
-
-	function updateProfileDiscription(){
+function updateProfileDiscription(){
 	var specialPageId = document.getElementById('specialPageId').value;
 	var orderNoArr = [];
 	var descriptionArr = [];
@@ -524,6 +565,7 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
+	str+=  '<div id="fileSuccessDiv"></div>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
     str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
@@ -669,7 +711,7 @@ function uploadVideoGallary(){
 			languageId  : languageId,
 			fileDate	: fileDate,
 			visibility	: makeThis,
-		   	task		: "eventVideoGallariesForUplaod"
+		   	task		: "eventVideoGallariesForUpload"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -905,7 +947,7 @@ if(eFlag)
 	desc : newsCatrgoryDesc,
 	visibility : makeThis,
 	createOrUpdate:'Create',
-	specialPageId : 1,
+	specialPageId : specialPageId,
 	contentType : 'News Gallary',
 	task : "createEventNewGallary"
 
@@ -1006,7 +1048,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" /></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -1058,6 +1100,107 @@ function uploadNews()
 	}
 	else
 		return;
+}
+
+function showNewsUploadStatus(myResult)
+{
+	var result = (String)(myResult);
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var str = '';
+
+	if(result.search('success') != -1)
+	{
+		clearNewsUploadFileFields();
+		str += '<font color="green"><b>News Uploaded Successfully.</b>';
+	}
+	else if(result.search('fail') != -1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	else
+	{
+		str += '<font color="red"><b>'+result+'</b>';
+	}
+	errorDivEle.innerHTML = str;
+}
+
+function clearNewsUploadFileFields()
+{
+	document.getElementById('fileTitle').value = '';
+	document.getElementById('fileDescription').value = '';
+	document.getElementById('keywords').value = '';
+	document.getElementById('existingFromText').value = '';
+	document.getElementById('source').value = '';
+	document.getElementById('newsFileId').value = '';	
+	document.getElementById('publicRadioId').checked = true;
+	getScopes();
+}
+
+function validateNewsFileUpload()
+{
+	debugger;
+	var fileTitle = document.getElementById('fileTitle').value;
+	var fileDesc = document.getElementById('fileDescription').value;
+	var fileVal = document.getElementById("newsFileId").value;
+	var source = document.getElementById("source").value;
+	var languageId = document.getElementById("language").value;
+    //var categoryId = document.getElementById("category").value;
+    var keywords = document.getElementById("keywords").value;
+	var flag = true;
+
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var str = '<font color="red">';
+
+	if(fileTitle.length == 0)
+	{
+		str += ' Title Is Required.<br>';
+		flag = false;
+	}
+	if(fileTitle.length >50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
+		flag = false;
+	}
+	if(fileDesc.length == 0)
+	{
+		str += 'Description is Required.<br>';
+		flag = false;
+	}
+	if(fileDesc.length > 200)
+	{
+		str += 'Description Should not exceed 200 Characters.<br>';
+		flag = false;
+	}
+	if(fileVal.length == 0)
+	{
+		str += 'File Is Required.<br>';
+		flag = false;
+	}
+	if(source.length == 0)
+	{
+		str += 'Source Is Required.<br>';
+		flag = false;
+	}
+	if(languageId.length == 0)
+	{
+		str += 'Language Is Required.<br>';
+		flag = false;
+	}
+	/*if(categoryId.length == 0)
+	{
+		str += 'Category Is Required.<br>';
+		flag = false;
+	}*/
+	if(keywords.length >200)
+	{
+		str += 'Keywords should be less than 200 Characters<br>';
+		flag = false;
+	}
+	
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+
+	return flag;
 }
 
 function getScopes(){
@@ -1311,7 +1454,7 @@ function setDefaultImage(img)
 
 function cleardescriptionFields()
   {
-	document.getElementById('emailId').value = '';
+	document.getElementById('profileDescId').value = '';
 }
 
 function photoGallaryPopUp(){
@@ -1844,7 +1987,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 str+='             <td><div class="container"><img alt="" style="max-width:780px;max-length:800px;" src="'+results[0].path+'" /></div></td>';
 	 }
 	 if(currentSize+1 <= (arraySize-1))
 	 {
@@ -1882,7 +2025,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 str+='             <td><div class="container"><img alt="" style="max-width:780px;max-length:800px;" src="'+results[0].path+'" /></div></td>';
 	 }
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
 	 {
@@ -2321,12 +2464,362 @@ function showStatusForEmailSubscription(results)
 	var str='';
 	if(results.resultCode == 0)
 	{
-		cleardescriptionFields();
+		clearEmailFields();
 		document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
 	}
 }
+function clearEmailFields(){
+alert("hjhjhj");
+document.getElementById('emailId').value = ' ';
 
-function cleardescriptionFields()
-{
-	document.getElementById('emailId').value='';
 }
+
+function getLocations(id){
+   if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr><td></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr><td></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" name="locationValue"/></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==3)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==4)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+    var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
+  str +='	   <td><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+  else if(id==9)
+  {
+     var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">State :</td>';
+  str +='	   <td><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">District :</td>';
+  str +='	   <td><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
+  str +='	   <td><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
+  str +='	   <td><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   getStates();
+  }
+}
+
+function getStates()
+{
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function buildResults(results,divId){
+  var elmt = document.getElementById(divId);
+         if(divId=='scopeDiv')
+		 {
+		    var option1 = document.createElement('option');
+		 option1.value= 0;
+		option1.text= "Select Scope";
+		 }
+		 else
+		 {
+	     var option1 = document.createElement('option');
+		 option1.value= 0;
+		option1.text= "Select Location";
+		}
+		try
+		{
+			elmt.add(option1,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option1); // IE only
+		}
+		for(var i in results)
+	  {
+		var option = document.createElement('option');
+		if(divId =="scopeDiv")
+		  {
+		  option.value=results[i].locationScope;
+		  option.text=results[i].locationScopeValue;
+		  }
+		else if(divId =="stateDiv" || divId =="districtDiv")
+		{
+		  option.value=results[i].ids;
+		  option.text=results[i].names;
+		}
+		else 
+		{
+		  if(results[i].id!=0)
+		  {
+		  option.value=results[i].id;
+		  option.text=results[i].name;
+		  }
+		}
+		if(results[i].id!=0)
+		  {
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+		}
+	  }
+ 
+}
+
+function clearAllForSelect(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=1;i--)
+	{
+		elmt.remove(i);
+	}	
+   }
+function clearAll(elmtId)
+   {
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+   }
+function clearAllElmts(scopeId,value){
+ if(scopeId==4)
+ { 
+    if(value==1)
+	clearAllForSelect("constituencyDiv");
+	
+ }
+ if(scopeId==5)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	}
+   if(value==2)
+	clearAllForSelect("mandalDiv");
+ }
+ if(scopeId==6)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==2)
+	{
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==3)
+	clearAllForSelect("villageDiv");
+ }
+ if(scopeId==9)
+ {
+   if(value==1)
+   {
+	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==2)
+	{
+	clearAllForSelect("mandalDiv");
+	clearAllForSelect("villageDiv");
+	}
+	if(value==3)
+	clearAllForSelect("villageDiv");
+ }
+
+}
+
+function getDistricts1(stateId){
+  var jsObj =
+		{ 
+            time : timeST,
+			stateId : stateId,
+			task:"getDistrictsByStateId"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+
+ function getAllDetails(id,task,areaType,constId)
+   {
+        var jsObj =
+		{ 
+            time : timeST,
+			id:id,
+			task:task,
+			taskType:"",
+			selectElementId:"",
+			address:"",
+			areaType:areaType,
+			constId:constId
+		};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	 callAjax(jsObj,url);
+   }
