@@ -2,7 +2,10 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -296,4 +299,202 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	 }
 	return returnFileVOList;
   }
+	 public List<FileVO> getCategoryCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+		  if(log.isDebugEnabled())
+		    log.debug("Enter into getCategoryCountDetailsForGraph Method of NewsMonitoringService ");
+		  List<FileVO> returnVal = new ArrayList<FileVO>();
+		  List<Category> catgryList = categoryDAO.getAll();
+		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
+	   try{
+		  List<Object[]>  cateDetailsList = fileGallaryDAO.getDetailsForCategory(fromDate,toDate,fileType,regId);
+		  for(Object[] categRecord: cateDetailsList)
+		    {
+			   if(categRecord[0] != null)
+			    {
+				   if(completeData.get(categRecord[0].toString()) != null)
+				    {
+					   Map<Long,FileVO> singleCateg = completeData.get(categRecord[0].toString());
+					   FileVO fileVO = singleCateg.get((Long)categRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+				    }
+				   else
+				    {
+					   Map<Long,FileVO> singleCateg = new LinkedHashMap<Long,FileVO>();
+					   FileVO fileVO = null;
+					   for(Category categ: catgryList)
+					    {
+						   fileVO = new FileVO();
+						   fileVO.setCategoryId(categ.getCategoryId());
+						   fileVO.setCandidateName(categ.getCategoryType());
+						   singleCateg.put(categ.getCategoryId(), fileVO);
+					    }
+					   fileVO = singleCateg.get((Long)categRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+					   completeData.put(categRecord[0].toString(), singleCateg);
+				    }
+			   }
+		   }
+		   convertMapToList(completeData,returnVal);
+	   }
+	   catch(Exception e){
+		   log.debug("Exception rised in getCategoryCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   e.printStackTrace();
+	   }
+		 return returnVal;
+	 }
+	 
+	 private void convertMapToList(Map<String,Map<Long,FileVO>> completeData,List<FileVO> returnVal){
+		 Set<String> mapKeys = completeData.keySet();
+		 FileVO retVO = null;
+		 List<FileVO> fileVOList = null;
+		 
+		 for(String mapKey: mapKeys)
+		 {
+			 retVO = new FileVO();
+			 fileVOList = new ArrayList<FileVO>();
+			 Map<Long,FileVO> catObjs = completeData.get(mapKey);
+			 Set<Long> catObjsKeys = catObjs.keySet();
+			 for(Long catObjsKey: catObjsKeys)
+			 {
+				 FileVO fileVO = catObjs.get(catObjsKey);
+				 fileVOList.add(fileVO);
+			 }
+			 retVO.setFileVOList(fileVOList);
+			 retVO.setFileDate(mapKey);
+			 returnVal.add(retVO);
+		 }
+		 
+		 
+	 }
+	 public List<FileVO> getSourceCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+		  if(log.isDebugEnabled())
+		    log.debug("Enter into getSourceCountDetailsForGraph Method of NewsMonitoringService ");
+		  List<FileVO> returnVal = new ArrayList<FileVO>();
+		  List<Source> sourceList = sourceDAO.getAll();
+		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
+	   try{
+		  List<Object[]>  sourceDetailsList = fileGallaryDAO.getDetailsForSource(fromDate,toDate,fileType,regId);
+		  for(Object[] sourceRecord: sourceDetailsList)
+		    {
+			   if(sourceRecord[0] != null)
+			    {
+				   if(completeData.get(sourceRecord[0].toString()) != null)
+				    {
+					   Map<Long,FileVO> singleCateg = completeData.get(sourceRecord[0].toString());
+					   FileVO fileVO = singleCateg.get((Long)sourceRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+				    }
+				   else
+				    {
+					   Map<Long,FileVO> singleCateg = new LinkedHashMap<Long,FileVO>();
+					   FileVO fileVO = null;
+					   for(Source source: sourceList)
+					    {
+						   fileVO = new FileVO();
+						   fileVO.setCategoryId(source.getSourceId());
+						   fileVO.setCandidateName(source.getSource());
+						   singleCateg.put(source.getSourceId(), fileVO);
+					    }
+					   fileVO = singleCateg.get((Long)sourceRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+					   completeData.put(sourceRecord[0].toString(), singleCateg);
+				    }
+			   }
+		   }
+		   convertMapToList(completeData,returnVal);
+	   }
+	   catch(Exception e){
+		   log.debug("Exception rised in getSourceCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   e.printStackTrace();
+	   }
+		 return returnVal;
+	 }
+	 
+	 public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+		  if(log.isDebugEnabled())
+		    log.debug("Enter into getLanguageCountDetailsForGraph Method of NewsMonitoringService ");
+		  List<FileVO> returnVal = new ArrayList<FileVO>();
+		  List<SourceLanguage> langugeList = sourceLanguageDAO.getAll();
+		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
+	   try{
+		  List<Object[]>  langugeDetailsList = fileGallaryDAO.getDetailsForLanguage(fromDate,toDate,fileType,regId);
+		  for(Object[] langugeRecord: langugeDetailsList)
+		    {
+			   if(langugeRecord[0] != null)
+			    {
+				   if(completeData.get(langugeRecord[0].toString()) != null)
+				    {
+					   Map<Long,FileVO> singleCateg = completeData.get(langugeRecord[0].toString());
+					   FileVO fileVO = singleCateg.get((Long)langugeRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+				    }
+				   else
+				    {
+					   Map<Long,FileVO> singleCateg = new LinkedHashMap<Long,FileVO>();
+					   FileVO fileVO = null;
+					   for(SourceLanguage languge: langugeList)
+					    {
+						   fileVO = new FileVO();
+						   fileVO.setCategoryId(languge.getLanguageId());
+						   fileVO.setCandidateName(languge.getLanguage());
+						   singleCateg.put(languge.getLanguageId(), fileVO);
+					    }
+					   fileVO = singleCateg.get((Long)langugeRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+					   completeData.put(langugeRecord[0].toString(), singleCateg);
+				    }
+			   }
+		   }
+		   convertMapToList(completeData,returnVal);
+	   }
+	   catch(Exception e){
+		   log.debug("Exception rised in getLanguageCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   e.printStackTrace();
+	   }
+		 return returnVal;
+	 }
+	 
+	 public List<FileVO> getNewsImpCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+		  if(log.isDebugEnabled())
+		    log.debug("Enter into getNewsImpCountDetailsForGraph Method of NewsMonitoringService ");
+		  List<FileVO> returnVal = new ArrayList<FileVO>();
+		  List<NewsImportance> newsImpList = newsImportanceDAO.getAll();
+		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
+	   try{
+		  List<Object[]>  newsImpDetailsList = fileGallaryDAO.getDetailsForNewsImportance(fromDate,toDate,fileType,regId);
+		  for(Object[] newsImpRecord: newsImpDetailsList)
+		    {
+			   if(newsImpRecord[0] != null)
+			    {
+				   if(completeData.get(newsImpRecord[0].toString()) != null)
+				    {
+					   Map<Long,FileVO> singleCateg = completeData.get(newsImpRecord[0].toString());
+					   FileVO fileVO = singleCateg.get((Long)newsImpRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+				    }
+				   else
+				    {
+					   Map<Long,FileVO> singleCateg = new LinkedHashMap<Long,FileVO>();
+					   FileVO fileVO = null;
+					   for(NewsImportance newsImp: newsImpList)
+					    {
+						   fileVO = new FileVO();
+						   fileVO.setCategoryId(newsImp.getNewsImportanceId());
+						   fileVO.setCandidateName(newsImp.getImportance());
+						   singleCateg.put(newsImp.getNewsImportanceId(), fileVO);
+					    }
+					   fileVO = singleCateg.get((Long)newsImpRecord[2]);
+					   fileVO.setCount(fileVO.getCount()+1);
+					   completeData.put(newsImpRecord[0].toString(), singleCateg);
+				    }
+			   }
+		   }
+		   convertMapToList(completeData,returnVal);
+	   }
+	   catch(Exception e){
+		   log.debug("Exception rised in getNewsImpCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   e.printStackTrace();
+	   }
+		 return returnVal;
+	 }
 }

@@ -56,4 +56,12 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId);
     
     public List<Object[]> getCountDetailsForLocationScopeValue(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId);
+    
+    public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId);
 }
