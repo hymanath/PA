@@ -7,6 +7,7 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js">
 </script>
 <script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -140,14 +141,112 @@ var jsObj=
       var url = "getNewsToDisplayAction.action?"+rparam;						
       callAjax(jsObj,url);
 }
+function drawChart(result,obj){
+
+ document.getElementById("categoryGraphDiv").innerHTML="";
+ document.getElementById("sourceGraphDiv").innerHTML="";
+ document.getElementById("languageGraphDiv").innerHTML="";
+ document.getElementById("newsImportantGraphDiv").innerHTML="";
+   
+ document.getElementById("showTypes").innerHTML="";
+ var str = '<b>Select Other Options   </b>';
+str+='<select style="width:90px;" id="graphType" onchange="getOtherGraphs(\''+obj.task+'\',\''+obj.fromDate+'\',\''+obj.toDate+'\');"><option value="1">Category</option>';
+str+='<option value="2">Source</option>';
+str+='<option value="3">Language</option>';
+str+='<option value="4">News Importance</option>';
+str+='</select>';
+document.getElementById("showTypes").innerHTML = str;
+ if(result.length > 0)
+ {
+  var data = new google.visualization.DataTable();
+	 data.addColumn('string', 'Date');
+	 for(var i in result[0].fileVOList){
+	 data.addColumn('number',result[0].fileVOList[i].candidateName );
+	 }
+	 for(var i in result)
+	 {
+	     var array = new Array();
+	     array.push(result[i].fileDate);
+	     for(var j in result[i].fileVOList)
+	      {
+		    array.push(result[i].fileVOList[j].count);
+		  }
+		  data.addRow(array);
+	 }  
+	 var chartResultDiv = document.getElementById(obj.id);
+	 if(obj.id == "categoryGraphDiv")
+	  {
+	    ctitle = "Category Wise News Comparison";
+		document.getElementById("graphType").value = 1;
+	  }
+	 else if(obj.id == "sourceGraphDiv")
+	 {
+	   ctitle = "Source Wise News Comparison";
+	   document.getElementById("graphType").value = 2;
+	  }
+	 else if(obj.id == "languageGraphDiv")
+	 {
+	  ctitle = "Language Wise News Comparison";
+	  document.getElementById("graphType").value = 3;
+	  }
+	 else if(obj.id == "newsImportantGraphDiv")
+	 {
+	  ctitle = "News Importance Wise Comparison";
+	  document.getElementById("graphType").value = 4;
+	  }
+	  
+	 new google.visualization.LineChart(chartResultDiv).
+		  draw(data, {curveType: "function",width: 800, height: 300,title:ctitle,pointSize: 4,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		
+		  $('#'+obj.id+'').css('position','inherit');
+ }
+}
+function getOtherGraphs(task,fromDate,toDate){
+   var graphTypeEle =   document.getElementById("graphType");
+   var  graphType = graphTypeEle.options[graphTypeEle.selectedIndex].value;
+   if(graphType == 1)
+   {
+     getGraphDetails(task,"categoryDetailsForGraph",fromDate,toDate,"categoryGraphDiv");
+   }
+   else if(graphType == 2)
+   {
+     getGraphDetails(task,"sourceDetailsForGraph",fromDate,toDate,"sourceGraphDiv");
+   }
+   else if(graphType == 3)
+   {
+     getGraphDetails(task,"languageDetailsForGraph",fromDate,toDate,"languageGraphDiv");
+   }
+   else if(graphType == 4)
+   {
+     getGraphDetails(task,"newsImpDetailsForGraph",fromDate,toDate,"newsImportantGraphDiv");
+   }
+}
+function getGraphDetails(task,queryType,fromDate,toDate,id){
+var jsObj=
+	      { 
+		  fromDate:fromDate,
+		  toDate:toDate,
+		  fileType:"All",
+		  task:task,
+		  id:id,
+		  queryType:queryType
+     }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "getNewsToDrawAction.action?"+rparam;						
+      callAjax(jsObj,url);
+}
+google.load("visualization", "1", {packages:["corechart"]});
 function callAjax(jsObj,url){
 var myResults;	
 var callback = {			
     success : function( o ) {
 		try {												
 			myResults = YAHOO.lang.JSON.parse(o.responseText);	
-			   
-			 if(jsObj.queryType == "getCount")
+			 if(jsObj.queryType == "categoryDetailsForGraph" || jsObj.queryType == "sourceDetailsForGraph" || jsObj.queryType == "languageDetailsForGraph" || jsObj.queryType == "newsImpDetailsForGraph")
+			 {
+			   drawChart(myResults,jsObj);
+			 }  
+			 else if(jsObj.queryType == "getCount")
 			 {
 			   showNewsCountDetails(myResults,jsObj);
 			 }
@@ -390,16 +489,19 @@ function showNews(source,title,path,description,fileDate)
  if(document.getElementById("today").checked == true)
    {
       getNews('byTodayDate','getCount','All','','','','','','','','','');
+	  getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv");
 	  getNews('byTodayDate','getNews','All',source,language,category,importance,'','','Today','','');
    }
  if(document.getElementById("thisweek").checked == true)
   {
      getNews('byThisWeek','getCount','All','','','','','','','','','');
+	 getGraphDetails("byThisWeek","categoryDetailsForGraph","","","categoryGraphDiv");
 	 getNews('byThisWeek','getNews','All',source,language,category,importance,'','','This Week','','');
    }
  if(document.getElementById("thismonth").checked == true)
   {
     getNews('byThisMonth','getCount','All','','','','','','','','','');
+	getGraphDetails("byThisMonth","categoryDetailsForGraph","","","categoryGraphDiv");
 	getNews('byThisMonth','getNews','All',source,language,category,importance,'','','This Month','','');
    }
  if(document.getElementById("betweendates").checked == true)
@@ -411,6 +513,7 @@ function showNews(source,title,path,description,fileDate)
      toDate =  document.getElementById("toDate").value;
   var title = 'Between Dates '+fromDate+' and '+toDate;
    getNews("betweendates","getCount","All","","","","","","","",fromDate,toDate);
+   getGraphDetails("betweendates","categoryDetailsForGraph",fromDate,toDate,"categoryGraphDiv");
    getNews("betweendates","getNews","All",source,language,category,importance,"","",title,fromDate,toDate);
    
   }
@@ -503,7 +606,14 @@ function showNews(source,title,path,description,fileDate)
 </div>
 </div>
 <table  align="center">
+
   <tr><td><div id="showNewsCount"></div></td></tr>
+  
+  <center><div id="showTypes"></div></center>
+  <center><div id="categoryGraphDiv" style="position:inherit;"></div></center>
+  <center><div id="sourceGraphDiv" style="position:inherit;"></div></center>
+  <center><div id="languageGraphDiv" style="position:inherit;"></div></center>
+  <center><div id="newsImportantGraphDiv" style="position:inherit;"></div></center>
   
  <tr> 
    <td>
@@ -527,9 +637,11 @@ function showNews(source,title,path,description,fileDate)
 </table>
 </fieldset>
 </div>
+
 <script type="text/javascript">
 getNews("byTodayDate","getCount","All","","","","","","","","","");
 getNews("byTodayDate","getNews","All","","","","","","","Today","","");
+getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv");
 getNews("","getAllSourceDetails","","","","","","","","","","");
 getNews("","getAllCategoryDetails","","","","","","","","","","");
 getNews("","getAllSourceLanguageDetails","","","","","","","","","","");
