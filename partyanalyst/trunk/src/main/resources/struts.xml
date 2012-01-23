@@ -2943,6 +2943,12 @@
            		<param name="root">partyElectionResultVO</param>
         	</result>		
 		</action>
+		
+		<action name="getNewsToDrawAction" class="newsDisplayAction" method="getDetails">
+			<result type="json" name="success">
+				<param name="root">returnVal</param>
+			</result>
+		</action>
 				
 	</package>
 </struts>      
