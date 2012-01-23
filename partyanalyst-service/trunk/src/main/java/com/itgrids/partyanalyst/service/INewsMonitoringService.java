@@ -12,4 +12,9 @@ public interface INewsMonitoringService {
 	public List<FileVO> getAllCategoryDetails();
 	public List<FileVO> getAllSourceLanguageDetails();
 	public List<FileVO> getAllNewsImportanceDetails();
+	public List<FileVO> getCategoryCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId);
+	public List<FileVO> getSourceCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId);
+	public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId);
+	public List<FileVO> getNewsImpCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId);
+	 	 
 }

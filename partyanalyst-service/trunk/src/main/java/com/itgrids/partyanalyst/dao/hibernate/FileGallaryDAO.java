@@ -592,4 +592,128 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
   		return queryObject.list(); 
      }
+     public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  date(model.createdDate),model.file.category.categoryType,model.file.category.categoryId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  		
+  		if(fromDate != null)
+ 			query.append(" and date(model.createdDate) >= :fromDate");
+ 			
+ 		if(toDate != null)
+ 			query.append(" and date(model.createdDate) <= :toDate");
+ 		
+ 		if(fileType.trim().equalsIgnoreCase("Public"))
+			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(fileType.trim().equalsIgnoreCase("Private"))
+			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+		
+ 		
+  		query.append(" order by  model.createdDate   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select date(model.createdDate),model.file.sourceObj.source,model.file.sourceObj.sourceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.createdDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.createdDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		 		
+ 		query.append(" order by  model.createdDate   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  date(model.createdDate),model.file.language.language,model.file.language.languageId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.createdDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.createdDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		 		
+ 		query.append(" order by  model.createdDate   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
+     public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId){
+    	 StringBuilder query = new StringBuilder();
+  		 query.append("select  date(model.createdDate),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+   		
+   		if(fromDate != null)
+  			query.append(" and date(model.createdDate) >= :fromDate");
+  			
+  		if(toDate != null)
+  			query.append(" and date(model.createdDate) <= :toDate");
+  		
+  		if(fileType.trim().equalsIgnoreCase("Public"))
+ 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+ 			
+ 		if(fileType.trim().equalsIgnoreCase("Private"))
+ 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+ 		
+  		  		
+ 		query.append(" order by  model.createdDate   ");
+  		Query queryObject = getSession().createQuery(query.toString());
+  		queryObject.setLong("registrationId", regId);
+  		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
+  		if(fromDate != null)
+		    queryObject.setDate("fromDate", fromDate);
+		
+		if(toDate != null)
+			queryObject.setDate("toDate",toDate);
+		
+  		return queryObject.list(); 
+     }
 }

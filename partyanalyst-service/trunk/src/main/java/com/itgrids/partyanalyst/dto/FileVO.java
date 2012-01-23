@@ -55,6 +55,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long newsImportanceId;
 	private int startIndex;
 	private int maxResult;
+	private int count;
 	
 	public String getCategoryType() {
 		return categoryType;
@@ -501,6 +502,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setFileVOList(List<FileVO> fileVOList) {
 		this.fileVOList = fileVOList;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
     
 
