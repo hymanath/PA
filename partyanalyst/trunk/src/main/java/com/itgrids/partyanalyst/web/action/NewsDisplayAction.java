@@ -220,4 +220,59 @@ public class NewsDisplayAction implements ServletRequestAware{
 	  {System.out.println("Exception :"+e);  }  
 	 return date;
   }
+  public String getDetails(){
+		if(log.isDebugEnabled())
+		log.debug("Enter into getGraphDetails Method of NewsDisplayAction ");
+	  try{ 
+		 jObj = new JSONObject(getTask());
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		 Date fromDate = null;
+		 Date toDate = null;
+		 String fileType  = jObj.getString("fileType");
+		 Long regId  = regVO.getRegistrationID();
+		 
+		    if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
+			{
+		    	fromDate = dateUtilService.getCurrentDateAndTime();
+		    	toDate = dateUtilService.getCurrentDateAndTime();
+			  
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
+			{
+				fromDate = getStartDayOfWeek();
+		    	toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
+			{
+				fromDate = getStartDayOfMonth();
+		    	toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("betweendates"))
+			{
+				
+			   if(jObj.getString("fromDate").trim().length() > 0)
+				   fromDate = getDate(jObj.getString("fromDate").trim());
+			   if(jObj.getString("toDate").trim().length() > 0)
+				   toDate = getDate(jObj.getString("toDate").trim());
+			   
+			}
+		 if(jObj.getString("queryType").trim().equalsIgnoreCase("categoryDetailsForGraph")){
+			 returnVal = newsMonitoringService.getCategoryCountDetailsForGraph(fromDate,toDate,fileType,regId);
+		 }
+		 else if(jObj.getString("queryType").trim().equalsIgnoreCase("sourceDetailsForGraph")){
+			 returnVal = newsMonitoringService.getSourceCountDetailsForGraph(fromDate,toDate,fileType,regId);
+		 }
+		 else if(jObj.getString("queryType").trim().equalsIgnoreCase("languageDetailsForGraph")){
+			 returnVal = newsMonitoringService.getLanguageCountDetailsForGraph(fromDate,toDate,fileType,regId); 
+		 }
+         else if(jObj.getString("queryType").trim().equalsIgnoreCase("newsImpDetailsForGraph")){
+        	 returnVal = newsMonitoringService.getNewsImpCountDetailsForGraph(fromDate,toDate,fileType,regId);
+		 }
+	  }
+	  catch(Exception e){
+		  log.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
+	  }
+		 return Action.SUCCESS;
+	 }
 }
