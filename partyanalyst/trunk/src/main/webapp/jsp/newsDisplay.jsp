@@ -322,8 +322,9 @@ document.getElementById("showNewsCount").innerHTML='';
   var str = "";
   str+= '<table border="1px" CELLSPACING="0" align="center">';
   str+= '     <tr style="text-align:center">';
-   str+= '       <th style="color:#AE6623;">CATEGORY</th><th style="color:#AE6623;">SOURCE</th><th style="color:#AE6623;">LANGUAGE</th><th style="color:#AE6623;">NEWS IMPORTANCE</th><th style="color:#AE6623;">IMPACT LEVEL</th><th  style="color:#AE6623;">LOCATION</th>';
-   str+= '     </tr>';
+ /* str+= '       <th style="color:#AE6623;">CATEGORY</th><th style="color:#AE6623;">SOURCE</th><th style="color:#AE6623;">LANGUAGE</th><th style="color:#AE6623;">NEWS IMPORTANCE</th><th style="color:#AE6623;">IMPACT LEVEL</th><th  style="color:#AE6623;">LOCATION</th>'; */
+  str+= '       <th style="color:#AE6623;">CATEGORY</th><th style="color:#AE6623;">SOURCE</th><th style="color:#AE6623;">LANGUAGE</th><th style="color:#AE6623;">NEWS IMPORTANCE</th><th style="color:#AE6623;">IMPACT LEVEL</th>';
+  str+= '     </tr>';
   for(i=0 ; i < maxCount ; i++)
    {
    str+= '<tr style="text-align:center">';
@@ -347,13 +348,13 @@ document.getElementById("showNewsCount").innerHTML='';
 	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\',\''+result[4].fileVOList[i].locationScopeValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[4].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
-	  if(result[5].fileVOList[i] != null)
+	 /* if(result[5].fileVOList[i] != null)
 	      if(result[5].fileVOList[i].location != null)
 	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\',\''+result[5].fileVOList[i].locationValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[5].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	      else
 		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\',\''+result[5].fileVOList[i].locationValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[5].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
-	   str+= '<td>--</td>';
+	   str+= '<td>--</td>'; */
 	str+= '	  </tr>';
    }
   
