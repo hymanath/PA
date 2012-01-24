@@ -119,6 +119,8 @@
     	height:25px;
 		padding:5px;
 		background:#0099ff;
+		width:50%;
+		text-align:center;
   	}
 	.pa_reports_head {
     background-color: #3D3D3D;
@@ -160,9 +162,30 @@ text-decoration:none;
 #noticeBoard_new span{display:block;margin:3px;}
 #humanImgDiv a span{display:inline-block;height:25px;width:30px;background:#fff;border:1px solid #3d3d3d;margin-right:10px;}
 #humanImgDiv a span img{width:25px;height:25px;}
+.dashBoardtabsDiv {
+    -moz-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #F9F9DA;
+    padding: 7px;
+	border:1px solid #cdcdcd;
+	border-bottom:3px solid #9D5CB2;
+}
+
+.dashBoardtabsDivSelected
+	{
+	background :#F5E4FA; color: #9D5CB2;border-bottom:1px solid #F5E4FA;
+	}
+.dashBoardtabsDiv a {
+    color: #000000;
+    cursor: pointer;
+    font: 14px trebuchet MS;
+    padding: 16px;
+	padding-bottom:6px;
+    text-decoration: none;
+}
    </style>
 </head>
-	<body>
+	<body onload="menuSlider.init('menu','slide')">
 	<div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
 	<div id="dashBoardCenterlayout_header" style="margin: 0px 21px;"><center><div style="width:960px;">		
@@ -185,18 +208,32 @@ text-decoration:none;
 	<div id="uploadPic_window"><div id="uploadPic_window_inner"></div></div>
 			
 			<div id="dashBoardLeftlayoutDiv" style="background:#e2e2e2;text-align:center;">
-				<div id="humanImgDiv" style="height:450px;padding-bottom:20px;margin-left:auto;margin-right:auto;display:block;text-align:left;">
+				<div id="humanImgDiv" style="height:auto;padding-bottom:20px;margin-left:auto;margin-right:auto;display:block;text-align:left;">
 				<img src="images/icons/indexPage/human_DashBoard.png" style="margin-top: 28px;" />
 					<a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()"><span><img src="images/icons/total_index_icons.png" /></span>Upload Photo</a>
 							<a href="javascript:{}" class="profileAnc"><span><img src="images/icons/view.png" /></span>View Profile</a>
-							<a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc"><span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a>
-							<a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" ><span><img src="images/icons/constituencyPage/groups.png" /></span>DashBoard</a>
-							<a href="callCenterAction.action" class="profileAnc"><span><img src="images/icons/callCenter.png" /></span>Call Center</a>
-							<a href="profileManagePageAction.action" class="profileAnc"><span><img src="images/icons/profile.png" /></span>Manage Profile</a>
 							
+							<c:if test="${hasSubUserEntitlement}"><a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc">
+							<span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a></c:if>
+							<c:if test="${hasSubUserEntitlement == false}"><a href="javascript:{}" onclick="showAlertMsg('noticeBoard_new')" class="profileAnc"><span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a></c:if>
+							<a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" ><span><img src="images/icons/constituencyPage/groups.png" /></span>DashBoard</a>
+							<c:if test="${hasCallCenterEntitlment}">
+							<a href="callCenterAction.action" class="profileAnc" ><span><img src="images/icons/callCenter.png" /></span>Call Center</a>
+							</c:if>
+							<c:if test="${hasCallCenterEntitlment == false}">
+							<a onclick="showAlertMsg('noticeBoard_new')" class="profileAnc" onclick=""><span><img src="images/icons/callCenter.png" /></span>Call Center</a>
+							</c:if>
+							<c:if test="${hasProfileManagement}">
+							<a href="profileManagePageAction.action" class="profileAnc"><span><img src="images/icons/profile.png" /></span>Manage Profile</a>
+							</c:if>	
+							<c:if test="${hasProfileManagement == false}">
+							<a onclick="showAlertMsg('noticeBoard_new')" class="profileAnc"><span><img src="images/icons/profile.png" /></span>Manage Profile</a>
+							</c:if>	
 						<c:if test="${hasNewsMonitoring == true}">
 						  <a href="javascript:{};" onclick="openShowNews();" class="profileAnc"><span><img src="images/graph.png" /></span>News Analyse</a>
-					   </c:if>					
+					   </c:if>
+					   <a class="profileAnc" href="userGroupAction.action">
+					   <span><img src="images/icons/indexPage/group_icon.png"/></span>User Groups</a>
 				</div>		
 				<div id="noticeBoard_new" style="width:95%;border:1px solid #3d3d3d;margin-right:auto;margin-left:auto;margin-top:15px;background:#fff;">
 				<h4 style="width:100%;height:25px;color:#fff;background:#3d3d3d;">Announcements</h4>
@@ -204,10 +241,6 @@ text-decoration:none;
 					    <img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></span>
 						
 				</div>
-				
-			
-			</div>
-
 			<div id="dashBoardCenterlayoutDiv">
 			<%
 			/*<div id="dashBoardCenterlayout_header">		
@@ -230,40 +263,23 @@ text-decoration:none;
 					</table>
 				</div>*/
 				%>
-		<c:if test="${hasNewsMonitoring == true}">
-	      <div id="newsHeading">
-			<span>News Overview</span></div>
-			<table align="center" style="margin-top: 14px;" >
-			  <tr>
-	      		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates" checked="true" value="today" onclick="showajaxImg();getNews('byTodayDate','getCount','Public','','','','','','');getNews('byTodayDate','getNews','Public','','','','','','');">
-		 		  <font color="navy"><b>Today</b></font></input></td>
-		  		<td style="padding: 2px 17px 5px 0px;"><input type="radio" name="dates"  value="thisweek" onclick="showajaxImg();getNews('byThisWeek','getCount','Public','','','','','','');getNews('byThisWeek','getNews','Public','','','','','','');">
-		  		 <font color="navy"><b>This Week</b></font></input></td>
-		  		<td style="padding: 2px 17px 5px 0px;"> <input type="radio" name="dates"  value="thismonth" onclick="showajaxImg();getNews('byThisMonth','getCount','Public','','','','','','');getNews('byThisMonth','getNews','Public','','','','','','');">
-		  		 <font color="navy"><b>This Month</b></font></input></td>
-				<td><div id="ajaxImg" style="display:none;"><img style="width:25px;" src="images/icons/loading.gif"/></div></td>
-	   		  </tr>
-    		</table>
-		<input type="button" class="edit" style="width:111px;" onclick="hideShowNewsCount();" id="togglebutton" value="Show Summary"></input>	
-		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
-		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
-		<div id="showNewsOuterDiv">
-		 <div id="showNewsDiv"></div>
-			</div>
-		<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
-		<div id="showNews" class="yui-skin-sam" style="width:900px;" ></div>
-
-</c:if>
-  <c:if test="${hasNewsMonitoring == false}">	
-			<div id="dashBoardCenterlayout_body" class="yui-skin-sam">
-			</c:if>
-					<table width="100%" style="width:100%;height:100%">
+		
+<div class="dashBoardtabsDiv">
+<c:if test="${hasNewsMonitoring == true}">
+	<a onclick="tabsDiv('dashBoardNews_Main',this.id)" id="newsTabId">News</a>
+	</c:if>
+	<a onclick="tabsDiv('impDatesDiv_main',this.id)" id="impDateId">Important Dates</a>
+	<a onclick="tabsDiv('impEventsDiv_main',this.id)" id="impEventsId">Events</a>
+	<a onclick="tabsDiv('cadresDiv_main',this.id)" id="cadresInfoId">Cadres Info</a>
+</div>
+			<div id="dashBoardCenterlayout_body_up" class="yui-skin-sam">
+				<table width="100%" style="height:100%">
 						<tr>
 							<td style="vertical-align:top;width:70%;">
-								<table width="100%" style="width:100%;">
+								<table width="100%" style="padding:10px;">
 									<tr>
 										<td>
-											<div id="impEventsDiv_main">
+											<div id="impEventsDiv_main" style="display:none">
 												<div id="impEventsDiv_head">
 													<table><tr>
 														<td><img src="images/icons/indexPage/cal.png"/></span></td>
@@ -290,12 +306,10 @@ text-decoration:none;
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<td><div></div></td>
-									</tr>
+									
 									<tr>
 										<td>
-											<div id="impDatesDiv_main">
+											<div id="impDatesDiv_main" style="display:none">
 												<div id="impDatesDiv_head">
 													<table><tr>
 														<td><img src="images/icons/indexPage/cal.png"/></span></td>
@@ -323,7 +337,7 @@ text-decoration:none;
 									</tr>	
 									<tr>
 										<td>
-											<div id="cadresDiv_main">
+											<div id="cadresDiv_main" style="display:none">
 												<div id="cadresDiv_head">
 													<table><tr>
 														<td><img src="images/icons/indexPage/group_icon.png"/></span></td>
@@ -352,10 +366,28 @@ text-decoration:none;
 											</div>
 										</td>
 									</tr>
+									<tr><td>
+									<div id="dashBoardNews_Main"  style="display:none">
+									<c:if test="${hasNewsMonitoring == true}">
+		
+	      <div id="newsHeading" align="top">
+			<span>News Overview</span></div>
+		
+		
+		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
+		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
+		
+		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
+		
+
+</c:if>
+
+</div>
+</td></tr>
 								</table>
 							</td>
 							
-							<td style="vertical-align:top;border-left:1px solid #cdcdcd;">
+							<td style="vertical-align:top;">
 
 								<div id="staticDataView_main" class="yui-skin-sam">
 									<div id="staticDataView_head"></div>
@@ -371,32 +403,17 @@ text-decoration:none;
 									<div id="staticDataView_footer"></div>
 								</div>-->
 
-								<div id="usergroups_main">
-									<div id="usergroups_head">
-										<table><tr>
-											<td><img src="images/icons/indexPage/group_icon.png"/></span></td>
-											<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">User Groups</span></td>
-										</tr></table>
-									</div>
-									<div id="usergroups_body">
-										<font style="color:#4B74C6;padding-left:22px;">Total Groups Created : <c:out value= "${userGroups + systemGroups}" />  </font>
-										<ul class="dashBoardContentList">
-											<li> System Groups - ${systemGroups} </li>
-											<li> User Groups - ${userGroups}</li>
-										</ul>
-									</div>
-									<div id="usergroups_footer" style="text-align:right">
-										<span class="dashBoardLinks"><a class="indexPageAnc" href="userGroupAction.action">View All</a></span>
-										<span class="dashBoardLinks"><a href="javascript:{}" class="indexPageAnc">Create</a></span>
-									</div>
-								</div>
 							</td>
 						</tr>
 					</table>
-				</div>
+					
+				</td>	
+				</tr>
+				</table>
+					
+		<!--
 			</div>
-
-			<div id="dashboard_reportsNav_main" style="margin-left:10px;"><center><div style="width:970px;">
+		<div id="dashboard_reportsNav_main" style="margin-left:10px;"><center><div style="width:970px;">
 				<table id="dashboard_main_table" style="width:960px;" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td style="vertical-align:top;width:250px;">
@@ -471,7 +488,7 @@ text-decoration:none;
 					</tr>
 				</table></center>
 				</div>
-			</div>
+			</div>-->
 		</div>
 
 <div id="newsPopUpDiv">
@@ -479,6 +496,10 @@ text-decoration:none;
 </div>
 		
 		<script type="text/javascript">
+		
+		$(document).ready(function() {
+    $("#tabs").tabs();
+		});
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 function showDetailsForAvailability(myresults){
@@ -504,6 +525,56 @@ var result = document.getElementById("feedback_window_errorMsg");
 	result.innerHTML = str;
 
 }
+
+<c:if test="${hasNewsMonitoring == true}">
+	//buildNews();
+	getNews("byTodayDate","getCount","Public","","","","","","");
+	tabsDiv('dashBoardNews_Main','newsTabId');
+	//getNews("byTodayDate","getNews","Public","","","","","","");
+</c:if>
+
+function tabsDiv(divElmt,selectedTabId){
+	
+	if(divElmt)
+		document.getElementById(divElmt).style.display ='block';
+
+	$("#"+selectedTabId).css("color", "#9D5CB2"); $("#"+selectedTabId).addClass("dashBoardtabsDivSelected");
+	var newsHeadingElmt = document.getElementById("dashBoardNews_Main");
+	var cadresDivmainElmt = document.getElementById("cadresDiv_main");
+	var impEventsDivMainElmt = document.getElementById("impEventsDiv_main");
+	var impDatesDivMainElmt = document.getElementById("impDatesDiv_main");
+	
+	if(divElmt !='cadresDiv_main'){
+		
+	if(cadresDivmainElmt.style.display == 'block'){
+		$("#cadresInfoId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+		cadresDivmainElmt.style.display ='none';
+	 }
+	}
+	 if(divElmt != 'impEventsDiv_main'){
+		
+		if(impEventsDivMainElmt.style.display =='block'){
+			 $("#impEventsId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+			impEventsDivMainElmt.style.display ='none';
+		 }
+		}
+		if(divElmt != 'impDatesDiv_main'){
+			 
+		 if(impDatesDivMainElmt.style.display =='block'){
+		$("#impDateId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+			 impDatesDivMainElmt.style.display ='none';
+		 }
+		}
+		if(divElmt != 'dashBoardNews_Main'){
+			
+		 if(newsHeadingElmt.style.display =='block'){
+			 $("#newsTabId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+			 newsHeadingElmt.style.display ='none';
+		 }
+		}
+
+}
+showTabs();
 function showDetails(myresults)
 {
 	
@@ -1499,11 +1570,6 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 //var fileList = '${fileVOList}';
 //var hasNewsMonitoringentitlement ='${hasNewsMonitoring}' ; 
 //alert(hasNewsMonitoringentitlement);
-<c:if test="${hasNewsMonitoring == true}">
-	//buildNews();
-	getNews("byTodayDate","getCount","Public","","","","","","");
-	getNews("byTodayDate","getNews","Public","","","","","","");
-</c:if>
 
 function getPreviousNews(fileId){
 
@@ -1595,6 +1661,31 @@ str+='</s:iterator>';
 
 	
 }
+function showAlertMsg(divElmt){
+
+$("#"+divElmt).dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000000" style="font-size:11px">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								
+								});
+		
+		var accessDivElmt = document.getElementById(divElmt);
+		var str='';
+
+	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;';
+	str+='<h3 style="font: bold 13px Trebuchet MS,Arial,Helvetica,sans-serif;color:#ff0000;display:inline;position:relative;top:-10px;">'; 
+	str+='Sorry, You Don\'t have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>';
+	str+='<span style="font: bold 13px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
+	str+='Phone No:+91 40 40124153 / +91 096766 96760<br />';
+	str+='Email: <a href="mailTo:info@partyanalyst.com">info@itgrids.com</a></span>';
+	
+	accessDivElmt.innerHTML=str;
+}
+
 function hideShowNewsCount(){
 
 var textmsg=$("#togglebutton").val();
@@ -1611,6 +1702,10 @@ $("#togglebutton").val(settext);
 }
 function showajaxImg(){
   document.getElementById("ajaxImg").style.display="block";
+}
+function showTabs(){
+if(document.getElementById("dashBoardNews_Main").style.display == 'none')
+	tabsDiv('impDatesDiv_main','impDateId');
 }
 </script>
 </body>
