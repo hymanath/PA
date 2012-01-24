@@ -372,8 +372,7 @@ text-decoration:none;
 		
 	      <div id="newsHeading" align="top">
 			<span>News Overview</span></div>
-		
-		
+		<a href="javascript:{};" onclick="openShowNews();"><span style="font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;">News Analyse</span></a>
 		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
 		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
 		
@@ -1571,6 +1570,7 @@ function showNewsPopUp(count,title,fileId,scope,description,pathOfFile,fileDate)
 //var hasNewsMonitoringentitlement ='${hasNewsMonitoring}' ; 
 //alert(hasNewsMonitoringentitlement);
 
+
 function getPreviousNews(fileId){
 
 var newsInnerContetDivElmt = document.getElementById("newsInnerContetDiv");
@@ -1707,6 +1707,7 @@ function showTabs(){
 if(document.getElementById("dashBoardNews_Main").style.display == 'none')
 	tabsDiv('impDatesDiv_main','impDateId');
 }
+
 </script>
 </body>
 </html>
