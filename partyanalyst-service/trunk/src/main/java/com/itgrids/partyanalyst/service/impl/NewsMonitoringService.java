@@ -194,7 +194,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		returnFileVOList.add(scopeFileVO);
 	    		
 	    		
-	    		List<Object[]> locationScopeValue = fileGallaryDAO.getCountDetailsForLocationScopeValue(fromDate,toDate,fileType,regId);
+	    		/*List<Object[]> locationScopeValue = fileGallaryDAO.getCountDetailsForLocationScopeValue(fromDate,toDate,fileType,regId);
 	    		FileVO valueFileVO = new FileVO();
 	    		List<FileVO> valueFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:locationScopeValue){
@@ -207,7 +207,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    			valueFileVOList.add(fileVO);
 	    		}
 	    		valueFileVO.setFileVOList(valueFileVOList);
-	    		returnFileVOList.add(valueFileVO);
+	    		returnFileVOList.add(valueFileVO);*/
 	    		
 	    	}
 	    	catch(Exception e){
