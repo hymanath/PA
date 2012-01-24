@@ -63,18 +63,45 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private int eventCount;
 	private int impDateCount;
 	private EntitlementsHelper entitlementsHelper;
-	private boolean hasNewsMonitoring;
+	private boolean hasNewsMonitoring = false;;
+	private boolean hasSubUserEntitlement = false;
+	private boolean hasCallCenterEntitlment = false;
 	private static final long serialVersionUID = 1L;
 	
 	private IUserCadreManagementService userCadreManagementService;
 	private CadreManagementVO cadreManagementVO = null;
 	private RegistrationVO user = null;
 	private String changedUserName = "false";
-	private String loginUserProfilePic;	
+	private String loginUserProfilePic;
+	private boolean hasProfileManagement = false;	
 	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
 
 	
 	
+	public void setHasSubUserEntitlement(boolean hasSubUserEntitlement) {
+		this.hasSubUserEntitlement = hasSubUserEntitlement;
+	}
+
+	public boolean isHasSubUserEntitlement() {
+		return hasSubUserEntitlement;
+	}
+
+	public void setHasCallCenterEntitlment(boolean hasCallCenterEntitlment) {
+		this.hasCallCenterEntitlment = hasCallCenterEntitlment;
+	}
+
+	public boolean isHasCallCenterEntitlment() {
+		return hasCallCenterEntitlment;
+	}
+
+	public void setHasProfileManagement(boolean hasProfileManagement) {
+		this.hasProfileManagement = hasProfileManagement;
+	}
+
+	public boolean isHasProfileManagement() {
+		return hasProfileManagement;
+	}
+
 	public void setFileVOList(List<FileVO> fileVOList) {
 		this.fileVOList = fileVOList;
 	}
@@ -254,9 +281,16 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
         	hasNewsMonitoring = true;
         	fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
         }
-       else
-    	   hasNewsMonitoring = false;
-		
+             
+       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.ADD_SUBUSER_ENTITLEMENT)){
+    	   hasSubUserEntitlement = true;
+       }
+       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CALL_CENTER_ENTITLEMENT)){
+    	   hasCallCenterEntitlment = true;
+       }
+       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
+    	   hasProfileManagement = true;
+       
         return SUCCESS;
     }
 }
