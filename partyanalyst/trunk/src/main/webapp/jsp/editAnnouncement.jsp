@@ -414,7 +414,7 @@ $(function()
 			</table>
          
 	</div>
+	<div id="searchResult" class="yui-skin-sam"></div>
    </center>
-<div id="searchResult" class="yui-skin-sam"></div>
 </body>
 </html>
