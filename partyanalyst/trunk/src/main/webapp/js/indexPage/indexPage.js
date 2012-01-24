@@ -1532,8 +1532,9 @@ function showNewsCountDetails(result,jsObj){
   if(maxCount >0){
   str+= '<table border="1px" align="center">';
   str+= '     <tr style="text-align:center">';
-   str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>';
-   str+= '     </tr>';
+  str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
+ /* str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>'; */
+  str+= '     </tr>';
   for(i=0 ; i < maxCount ; i++)
    {
    str+= '<tr style="text-align:center">';
@@ -1557,13 +1558,13 @@ function showNewsCountDetails(result,jsObj){
 	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\');">'+ result[4].fileVOList[i].sizeOfGallary+'</a></td>';
 	  else
 	    str+= '<td>--</td>';
-	  if(result[5].fileVOList[i] != null)
+	  /*if(result[5].fileVOList[i] != null)
 	      if(result[5].fileVOList[i].location != null)
 	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
 	      else
 		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
 	  else
-	   str+= '<td>--</td>';
+	   str+= '<td>--</td>'; */
 	str+= '	  </tr>';
    }
   
