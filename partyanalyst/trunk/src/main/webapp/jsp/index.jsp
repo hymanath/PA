@@ -76,6 +76,8 @@
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	
+
  <style>
 	.yui-skin-sam thead{
 		background: #dddddd;
@@ -241,6 +243,10 @@ text-decoration:none;
 					    <img src="images/icons/homePage_new/widgetHeaderIcon.jpg" alt="listIcon"/>&nbsp;<a href="javascript:{}" onclick = "openEditAnnouncement()">View All Announcements</a></span>
 						
 				</div>
+				
+			
+			
+
 			<div id="dashBoardCenterlayoutDiv">
 			<%
 			/*<div id="dashBoardCenterlayout_header">		
@@ -372,10 +378,11 @@ text-decoration:none;
 		
 	      <div id="newsHeading" align="top">
 			<span>News Overview</span></div>
-		<a href="javascript:{};" onclick="openShowNews();"><span style="font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;">News Analyse</span></a>
+		
+		
 		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
 		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
-		
+		<a href="javascript:{};" onclick="openShowNews();"><span style="-moz-border-radius:15px;border-radius:15px;font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;">News Analyze</span></a>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
 		
 
