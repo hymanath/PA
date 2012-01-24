@@ -296,34 +296,9 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
 
+ <!-- VIDEOS SECTION END--> 
 
-
-       <!-- VIDEOS SECTION END--> 
-          
-          <!--SEND MESSAGE TO POLITICIAN SECTION START-->
-
-			<div class="pr-sub-fields-sec" style="margin-top:15px;">
-				<h1 class="pr-title">send a message to Party Analyst <span
-			class="or-down-arrow"><img src="images/icons/or-down-arrow.png"
-				alt="" /></span></h1>
-			<ul class="cbn-fields-sec">
-				<li><label>Name :</label>
-			<div class="text-fields-sec"><input name="" type="text"
-			class="text-fields" /></div>
-			</li>
-			<li><label>location :</label>
-			<div class="text-fields-sec"><input name="" type="text"
-			class="text-fields" /></div>
-			</li>
-		<li><label>Message</label>
-		<div class="text-fields-sec"><textarea name="" cols="" rows=""></textarea>
-		</div>
-		</li>
-		<li><input name="" type="submit" value="" class="send-but" /></li>
-	</ul> 
-   </div> 
-   
-   <s:if test="customPages != null && customPages.size() > 0">
+	<s:if test="customPages != null && customPages.size() > 0">
 		<s:iterator value="customPages" var="custom"> 
 			<s:if test="#custom.type == 'right_navigation'">
 				<div style="width:300px;">
