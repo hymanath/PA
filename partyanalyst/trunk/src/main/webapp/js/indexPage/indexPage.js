@@ -1526,8 +1526,11 @@ function getMaxCount(result)
 }
 function showNewsCountDetails(result,jsObj){
 
- document.getElementById("showNewsCount").innerHTML='';
+	if(document.getElementById("showNewsCount"))
+	 document.getElementById("showNewsCount").innerHTML='';
+	
   var maxCount = getMaxCount(result);
+  document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total News Count : </b></font>'+maxCount;
   var str = "";
   if(maxCount >0){
   str+= '<table border="1px" align="center">';
@@ -1681,4 +1684,4 @@ function showNews(i)
 	str+='</center></div>';	 
   document.getElementById("showNewsDiv").innerHTML= str;
  }
-
+ 
