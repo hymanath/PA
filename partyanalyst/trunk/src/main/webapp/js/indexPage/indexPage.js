@@ -1526,15 +1526,15 @@ function getMaxCount(result)
 }
 function showNewsCountDetails(result,jsObj){
 
-	if(document.getElementById("showNewsCount"))
-	 document.getElementById("showNewsCount").innerHTML='';
+	if(document.getElementById("showNewsCountTable"))
+	 document.getElementById("showNewsCountTable").innerHTML='';
 	
   var maxCount = getMaxCount(result);
-  document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total News Count : </b></font>'+maxCount;
+  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+maxCount;
   var str = "";
   if(maxCount >0){
-  str+= '<table border="1px" align="center">';
-  str+= '     <tr style="text-align:center">';
+  str+= '<strong>Total News Overview :</strong> <table cellspacing="2px" cellpadding="3px" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
+  str+= '    <tr style="text-align:center">';
   str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
  /* str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>'; */
   str+= '     </tr>';
@@ -1542,23 +1542,23 @@ function showNewsCountDetails(result,jsObj){
    {
    str+= '<tr style="text-align:center">';
       if(result[0].fileVOList[i] != null)
-       str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\');"> '+result[0].fileVOList[i].sizeOfGallary+'</a></td>';
+       str+= '<td>'+result[0].fileVOList[i].categoryType+' -   '+result[0].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	   str+= '<td style="text-align:center">--</td>';
 	  if(result[1].fileVOList[i] != null)
-	    str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\');"> '+result[1].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[1].fileVOList[i].source+' -   '+result[1].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[2].fileVOList[i] != null)
-	   str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\');">'+ result[2].fileVOList[i].sizeOfGallary+'</a></td>';
+	   str+= '<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[3].fileVOList[i] != null)
-	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\');">'+result[3].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	   str+= '<td>--</td>';
 	  if(result[4].fileVOList[i] != null)	
-	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\');">'+ result[4].fileVOList[i].sizeOfGallary+'</a></td>';
+	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   '+ result[4].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	    str+= '<td>--</td>';
 	  /*if(result[5].fileVOList[i] != null)
@@ -1573,7 +1573,7 @@ function showNewsCountDetails(result,jsObj){
   
   str+= '<table>';
   
- document.getElementById("showNewsCount").innerHTML = str;
+ document.getElementById("showNewsCountTable").innerHTML = str;
   }
 }
 function showNewsDetails(result){
