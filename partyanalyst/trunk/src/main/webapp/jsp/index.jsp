@@ -119,7 +119,7 @@
 		color: #FFFFFF;
     	font-weight: bold;
     	height:25px;
-		padding:5px;
+		padding:3px;
 		background:#0099ff;
 		width:50%;
 		text-align:center;
@@ -167,23 +167,42 @@ text-decoration:none;
 .dashBoardtabsDiv {
     -moz-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
-    background: none repeat scroll 0 0 #F9F9DA;
+    background: none repeat scroll 0 0 #A3A3A3;
     padding: 7px;
 	border:1px solid #cdcdcd;
-	border-bottom:3px solid #9D5CB2;
+	border-bottom:5px solid skyBlue;
+	font-weight:bold;
+	font-family:verdana
 }
-
 .dashBoardtabsDivSelected
 	{
-	background :#F5E4FA; color: #9D5CB2;border-bottom:1px solid #F5E4FA;
+	background :skyBlue; color: #000000;
 	}
 .dashBoardtabsDiv a {
     color: #000000;
     cursor: pointer;
-    font: 14px trebuchet MS;
+    font-weight:bold;
+	font-family:verdana;
     padding: 16px;
-	padding-bottom:6px;
+	padding-bottom:10px;
     text-decoration: none;
+}
+.tempstyle
+		{
+			display:inline-block;
+			padding-top:15px;
+			color:navy;
+			font-weight:bold;
+			font-family: verdana; font-size: 12px;
+		}
+
+#showNewsCountTable th{
+	background:#cdcdcd;
+	border-right:1px solid #cdcdcd;
+}
+#showNewsCountTable td{
+
+	border-right:1px solid #cdcdcd;
 }
    </style>
 </head>
@@ -248,32 +267,11 @@ text-decoration:none;
 			
 
 			<div id="dashBoardCenterlayoutDiv">
-			<%
-			/*<div id="dashBoardCenterlayout_header">		
-					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
-					<tr>
-					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
-					<td class="centerSwasthicImage" style="vertical-align: middle;">	
-						<table width="100%" style="width:100%;">
-							<tr>
-								<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
-								<td align="right">
-									<!--<img src="images/icons/indexPage/clock.png" height="25px"/>
-									<div id="todayDate"></div>
-								</td>
-							</tr>
-						</table>						
-
-					</td>
-					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
-					</table>
-				</div>*/
-				%>
 		
 <div class="dashBoardtabsDiv">
 <c:if test="${hasNewsMonitoring == true}">
 	<a onclick="tabsDiv('dashBoardNews_Main',this.id)" id="newsTabId">News</a>
-	</c:if>
+</c:if>
 	<a onclick="tabsDiv('impDatesDiv_main',this.id)" id="impDateId">Important Dates</a>
 	<a onclick="tabsDiv('impEventsDiv_main',this.id)" id="impEventsId">Events</a>
 	<a onclick="tabsDiv('cadresDiv_main',this.id)" id="cadresInfoId">Cadres Info</a>
@@ -376,13 +374,16 @@ text-decoration:none;
 									<div id="dashBoardNews_Main"  style="display:none">
 									<c:if test="${hasNewsMonitoring == true}">
 		
-	      <div id="newsHeading" align="top">
-			<span>News Overview</span></div>
-		
-		
-		<div id="showNewsCount" style="margin-top:25px;display:none;"></div>
-		<table><tr><td><div id="newsCount" style="padding-left:5px;padding-bottom:5px;padding-top:15px;float:left;width:100%"></div></td></tr></table>
-		<a href="javascript:{};" onclick="openShowNews();"><span style="-moz-border-radius:15px;border-radius:15px;font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;">News Analyze</span></a>
+	      
+		<div id="newsCount" style="padding-left: 5px; padding-bottom: 5px; padding-top: 15px; float: left; font-family: verdana; font-size: 12px;">
+		</div>
+		<div id="newsAnalyze" style="padding-left:5px;float:right;">
+		<span class="tempstyle">View News Articels :</span>
+		<a href="javascript:{};" onclick="openShowNews();"><span style="-moz-border-radius:5px;border-radius:5px;font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;margin-top:4px;padding-left:11px;">
+		News Analyze</span></a>
+		</div>
+
+		<div id="showNewsCountTable" style="padding-top:50px"></div>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
 		
 
@@ -544,7 +545,7 @@ function tabsDiv(divElmt,selectedTabId){
 	if(divElmt)
 		document.getElementById(divElmt).style.display ='block';
 
-	$("#"+selectedTabId).css("color", "#9D5CB2"); $("#"+selectedTabId).addClass("dashBoardtabsDivSelected");
+	 $("#"+selectedTabId).addClass("dashBoardtabsDivSelected");
 	var newsHeadingElmt = document.getElementById("dashBoardNews_Main");
 	var cadresDivmainElmt = document.getElementById("cadresDiv_main");
 	var impEventsDivMainElmt = document.getElementById("impEventsDiv_main");
@@ -560,21 +561,21 @@ function tabsDiv(divElmt,selectedTabId){
 	 if(divElmt != 'impEventsDiv_main'){
 		
 		if(impEventsDivMainElmt.style.display =='block'){
-			 $("#impEventsId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+			 $("#impEventsId").removeClass("dashBoardtabsDivSelected");
 			impEventsDivMainElmt.style.display ='none';
 		 }
 		}
 		if(divElmt != 'impDatesDiv_main'){
 			 
 		 if(impDatesDivMainElmt.style.display =='block'){
-		$("#impDateId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+		$("#impDateId").removeClass("dashBoardtabsDivSelected");
 			 impDatesDivMainElmt.style.display ='none';
 		 }
 		}
 		if(divElmt != 'dashBoardNews_Main'){
 			
 		 if(newsHeadingElmt.style.display =='block'){
-			 $("#newsTabId").css("color", "#000000").removeClass("dashBoardtabsDivSelected");
+			 $("#newsTabId").removeClass("dashBoardtabsDivSelected");
 			 newsHeadingElmt.style.display ='none';
 		 }
 		}
