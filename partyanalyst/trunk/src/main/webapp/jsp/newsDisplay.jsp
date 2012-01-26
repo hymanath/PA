@@ -117,10 +117,24 @@ position:absolute;
     margin-bottom: 15px;
     padding: 5px;
 }
+
+.newsNavigationImage {
+    height: 53px;
+    width: 29px;
+}
+
+.container {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    margin: 9px auto 20px;
+    max-width: 840px;
+    padding: 10px;
+}
 </style>
 <script type="text/javascript">
 
 var ajaxCount = 0;
+var newsDetails = null;
 
 $(document).ready(function(){
   $("#newsSearch").slideUp("fast");
@@ -409,15 +423,9 @@ function showNewsDetails(jsObj,result){
   YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
   {
 	var user = oData;
-	
-	var source = oRecord.getData("source");
 	var title = oRecord.getData("fileTitle1");
-	var path = oRecord.getData("path");
-	var description = oRecord.getData("description");
-	var fileDate = oRecord.getData("fileDate");
-	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+source+"\",\""+title+"\",\""+path+"\",\""+description+"\",\""+fileDate+"\")'>"+title+"</a>";
-	
-		
+	var fileId = oRecord.getData("fileId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+fileId+"\")'>"+title+"</a>";
   };
   var newsResultColumnDefs = [ 		    	             
 		    	            
@@ -445,15 +453,15 @@ function showNewsDetails(jsObj,result){
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate"]
+						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate","fileId"]
 					};
 
 		var newsResultDataSource = new YAHOO.widget.DataTable("showNews", newsResultColumnDefs,myDataSource, myConfigs);
 }
-function showNews(source,title,path,description,fileDate)
+
+function showNews(fileId)
 {	
-	debugger;
-	  $.fx.speeds._default = 1000;
+	 $.fx.speeds._default = 1000;
 	  $("#showNewsOuterDiv").dialog({ stack: false,
 								height: 'auto',
 								width: 950,
@@ -463,36 +471,62 @@ function showNews(source,title,path,description,fileDate)
 								hide: "explode",
 								modal: true,
 								maxWidth : 950,
-								title:'<center><font color="Navy">'+title+'</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 	$("#showNewsOuterDiv").dialog();
-	
-	var str ='<div><center>';
-	  str+=' <table>';
-	 str+='     <tr>';
-	 str+='       <td>';
-	 str+='        <B>Source</B> : <font color="#FF4500">'+source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+fileDate+'</font>';
-	 str+='       </td>';
-	 str+='     </tr>';
-	 str+='     </table>';
-	
-	 str+='     <table>';
-	 str+='			<tr>';
-	 
-		str+='<td><div class="container"><img alt="'+title+'" src="'+path+'" title="'+description+'" style="max-width:780px;max-length:800px;"/></div></td>';
-	
-	 str+='	</tr></table>';	  
-     str += '<table><tr>';
-	str+='       <td>';
-	str+='        '+description+'';
-	str+='       </td>';
-	str+='     </tr>';
-	str+='<table>';	 
-	str+='</center></div>';	 
-  document.getElementById("showNewsDiv").innerHTML= str;
-	
+
+	displayNews(fileId);
+}	
+
+function displayNews(fileId)
+{
+	for(var i=0;i<newsDetails.length;i++)
+	{
+	if(newsDetails[i].fileId == fileId)
+	{
+		document.getElementById('ui-dialog-title-showNewsOuterDiv').
+			innerHTML = '<center><font color="Navy">'+newsDetails[i].fileTitle1+'</font><center>';
+		 var str ='<div><center>';
+		 str += ' <table>';
+		 str += '     <tr>';
+		 str += '       <td>';
+		 str += '		 <B>Total News Aricles : <font color="#FF4500">'+newsDetails.length+'</font> &nbsp;&nbsp;&nbsp;';
+		 str += '		 <B>Present Article is : <font color="#FF4500">'+(i+1)+'</font> &nbsp;&nbsp;&nbsp;';
+		 str += '        <B>Source</B> : <font color="#FF4500">'+newsDetails[i].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+newsDetails[i].fileDate+'</font>';
+		 str += '       </td>';
+		 str += '     </tr>';
+		 str += '     </table>';
+		
+		 str += '     <table>';
+		 str += '			<tr>';
+		 str += '<td width="5%">';
+		
+		 if(i != 0)
+		 {
+			str += '<a onclick="displayNews('+newsDetails[i-1].fileId+')" href="javascript:{}"><img class="newsNavigationImage" src="images/icons/jQuery/previous.png" alt=""></a>';
+		 }
+		 str += '</td>';
+		 str += '<td><div class="container"><img alt="'+newsDetails[i].fileTitle1+'" src="'+newsDetails[i].path+'" title="'+newsDetails[i].description+'" style="max-width:820px;max-length:800px;"/></div></td>';
+		 str += '<td width="5%">';
+		 if(i != (newsDetails.length - 1))
+		 {
+			str += '<a onclick="displayNews('+newsDetails[i+1].fileId+')" href="javascript:{}"><img class="newsNavigationImage" src="images/icons/jQuery/next.png" alt=""></a>';
+		 }
+		 str += '</td>';
+		 str += '	</tr></table>';	 
+		 
+		 str += '<table><tr>';
+		 str += '       <td>';
+		 str += '        '+newsDetails[i].description+'';
+		 str += '       </td>';
+		 str += '     </tr>';
+		 str += '<table>';	 
+		 str += '</center></div>';	 
+		 document.getElementById("showNewsDiv").innerHTML= str;
+		}
+	}
  }
+
  function showDates(){
     
    if(document.getElementById("betweendates").checked == true)
@@ -695,7 +729,7 @@ function showNews(source,title,path,description,fileDate)
  </tr> 
   
   
-  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:900px;" ></div></td></tr>
+  <tr><td align="center"><div id="showNews" class="yui-skin-sam" style="width:950px;" ></div></td></tr>
   <tr><td>
      <div id="showNewsOuterDiv">
            <div id="showNewsDiv"></div>
