@@ -406,7 +406,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 						
 		return queryObject.list(); 
 	}
-     public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.category.categoryType,model.file.category.categoryId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -423,11 +427,23 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(fileType.trim().equalsIgnoreCase("Private"))
 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
 		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
  		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 			
   		query.append(" group by  model.file.category.categoryType   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
   		queryObject.setString("type", IConstants.NEWS_GALLARY);
+  		
   		
   		if(fromDate != null)
 		    queryObject.setDate("fromDate", fromDate);
@@ -435,9 +451,24 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.sourceObj.source,model.file.sourceObj.sourceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -454,7 +485,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		 		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
   		query.append(" group by  model.file.sourceObj.source   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -466,9 +508,25 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.language.language,model.file.language.languageId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -485,7 +543,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		 		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
   		query.append(" group by  model.file.language.language   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -497,9 +566,25 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -516,7 +601,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		  		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
   		query.append(" group by  model.file.newsImportance.importance   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -528,10 +624,26 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId){
-    	 StringBuilder query = new StringBuilder();
+     public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	
+    	if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
+    	StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
@@ -547,7 +659,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		  		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
   		query.append(" group by  model.file.regionScopes.regionScopesId   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -558,6 +681,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
+		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
 		
   		return queryObject.list(); 
      }
@@ -592,7 +727,11 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
   		return queryObject.list(); 
      }
-     public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  date(model.createdDate),model.file.category.categoryType,model.file.category.categoryId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -609,6 +748,17 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(fileType.trim().equalsIgnoreCase("Private"))
 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
 		
+		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
  		
   		query.append(" order by  model.createdDate   ");
   		Query queryObject = getSession().createQuery(query.toString());
@@ -621,9 +771,25 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select date(model.createdDate),model.file.sourceObj.source,model.file.sourceObj.sourceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -640,7 +806,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		 		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
  		query.append(" order by  model.createdDate   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -652,9 +829,25 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	 
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  date(model.createdDate),model.file.language.language,model.file.language.languageId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -671,7 +864,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		 		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
  		query.append(" order by  model.createdDate   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -683,9 +887,25 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
 		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
+		
   		return queryObject.list(); 
      }
-     public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId){
+     public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
+    	
+    	 if(fileVO == null)
+    		 fileVO = new FileVO();
+    	 
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  date(model.createdDate),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
   				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
@@ -702,7 +922,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileType.trim().equalsIgnoreCase("Private"))
  			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
  		
-  		  		
+ 		if(fileVO.getSourceId() != null)
+ 			query.append(" and model.file.sourceObj.sourceId = :sourceId ");
+ 		
+ 		if(fileVO.getLanguegeId() != null)
+ 			query.append(" and model.file.language.languageId = :languageId ");
+ 		
+ 		if(fileVO.getCategoryId() != null)
+ 			query.append(" and model.file.category.categoryId = :categoryId ");
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId ");
+ 		
  		query.append(" order by  model.createdDate   ");
   		Query queryObject = getSession().createQuery(query.toString());
   		queryObject.setLong("registrationId", regId);
@@ -713,6 +944,18 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		if(toDate != null)
 			queryObject.setDate("toDate",toDate);
+		
+		if(fileVO.getSourceId() != null)
+			queryObject.setLong("sourceId", fileVO.getSourceId());
+		
+		if(fileVO.getLanguegeId() != null)
+			queryObject.setLong("languageId", fileVO.getLanguegeId());
+			
+		if(fileVO.getCategoryId() != null)
+			queryObject.setLong("categoryId", fileVO.getCategoryId());
+ 		
+ 		if(fileVO.getNewsImportanceId() != null)
+ 			queryObject.setLong("newsImportanceId", fileVO.getNewsImportanceId());
 		
   		return queryObject.list(); 
      }
