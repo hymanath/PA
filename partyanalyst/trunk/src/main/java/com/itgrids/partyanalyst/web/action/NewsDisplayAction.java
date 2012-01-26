@@ -122,17 +122,27 @@ public class NewsDisplayAction implements ServletRequestAware{
 		}
 		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getCount"))
 		{
+			FileVO fileVO = new FileVO();
+			if(jObj.getString("sourceId") !=null && jObj.getString("sourceId").trim().length()>0)
+				fileVO.setSourceId(jObj.getLong("sourceId"));
+		    if(jObj.getString("languegeId") !=null && jObj.getString("languegeId").trim().length()>0)
+			    fileVO.setLanguegeId(jObj.getLong("languegeId"));
+		    if(jObj.getString("categoryId") !=null && jObj.getString("categoryId").trim().length()>0)
+			    fileVO.setCategoryId(jObj.getLong("categoryId"));
+		    if(jObj.getString("newsImportanceId") !=null && jObj.getString("newsImportanceId").trim().length()>0)
+		    	fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
+		    
 			if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
 			{
-			   returnVal = newsMonitoringService.getAllCountDetails(dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			   returnVal = newsMonitoringService.getAllCountDetails(dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID(),fileVO);
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisWeek"))
 			{
-			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfWeek(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfWeek(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID(),fileVO);
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("byThisMonth"))
 			{
-			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfMonth(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID());
+			   returnVal = newsMonitoringService.getAllCountDetails(getStartDayOfMonth(),dateUtilService.getCurrentDateAndTime(),jObj.getString("fileType"),regVO.getRegistrationID(),fileVO);
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("betweendates"))
 			{
@@ -142,8 +152,9 @@ public class NewsDisplayAction implements ServletRequestAware{
 			     from = getDate(jObj.getString("fromDate").trim());
 			   if(jObj.getString("toDate").trim().length() > 0)
 			     to = getDate(jObj.getString("toDate").trim());
-			   returnVal = newsMonitoringService.getAllCountDetails(from,to,jObj.getString("fileType"),regVO.getRegistrationID());
+			   returnVal = newsMonitoringService.getAllCountDetails(from,to,jObj.getString("fileType"),regVO.getRegistrationID(),fileVO);
 			}
+			
 		}
 		else if(jObj.getString("queryType").trim().equalsIgnoreCase("getAllSourceDetails"))
 		{
@@ -231,6 +242,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		 Date toDate = null;
 		 String fileType  = jObj.getString("fileType");
 		 Long regId  = regVO.getRegistrationID();
+		 FileVO fileVO = new FileVO();
 		 
 		    if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
 			{
@@ -257,17 +269,30 @@ public class NewsDisplayAction implements ServletRequestAware{
 				   toDate = getDate(jObj.getString("toDate").trim());
 			   
 			}
+		   
+			if(jObj.getString("sourceId") !=null && jObj.getString("sourceId").trim().length()>0)
+				fileVO.setSourceId(jObj.getLong("sourceId"));
+			
+		    if(jObj.getString("languegeId") !=null && jObj.getString("languegeId").trim().length()>0)
+			    fileVO.setLanguegeId(jObj.getLong("languegeId"));
+		    
+		    if(jObj.getString("categoryId") !=null && jObj.getString("categoryId").trim().length()>0)
+			    fileVO.setCategoryId(jObj.getLong("categoryId"));
+		    
+		    if(jObj.getString("newsImportanceId") !=null && jObj.getString("newsImportanceId").trim().length()>0)
+		    	fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
+		    
 		 if(jObj.getString("queryType").trim().equalsIgnoreCase("categoryDetailsForGraph")){
-			 returnVal = newsMonitoringService.getCategoryCountDetailsForGraph(fromDate,toDate,fileType,regId);
+			 returnVal = newsMonitoringService.getCategoryCountDetailsForGraph(fromDate,toDate,fileType,regId,fileVO);
 		 }
 		 else if(jObj.getString("queryType").trim().equalsIgnoreCase("sourceDetailsForGraph")){
-			 returnVal = newsMonitoringService.getSourceCountDetailsForGraph(fromDate,toDate,fileType,regId);
+			 returnVal = newsMonitoringService.getSourceCountDetailsForGraph(fromDate,toDate,fileType,regId,fileVO);
 		 }
 		 else if(jObj.getString("queryType").trim().equalsIgnoreCase("languageDetailsForGraph")){
-			 returnVal = newsMonitoringService.getLanguageCountDetailsForGraph(fromDate,toDate,fileType,regId); 
+			 returnVal = newsMonitoringService.getLanguageCountDetailsForGraph(fromDate,toDate,fileType,regId,fileVO); 
 		 }
          else if(jObj.getString("queryType").trim().equalsIgnoreCase("newsImpDetailsForGraph")){
-        	 returnVal = newsMonitoringService.getNewsImpCountDetailsForGraph(fromDate,toDate,fileType,regId);
+        	 returnVal = newsMonitoringService.getNewsImpCountDetailsForGraph(fromDate,toDate,fileType,regId,fileVO);
 		 }
 	  }
 	  catch(Exception e){
