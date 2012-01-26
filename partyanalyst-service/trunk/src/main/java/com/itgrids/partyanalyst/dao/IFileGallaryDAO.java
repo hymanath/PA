@@ -45,23 +45,23 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
 	public List<File> getNewsForRegisterUsers(FileVO fileVO);
 	
-    public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getCountDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getCountDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getCountDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getCountDetailsForLocationScope(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
     public List<Object[]> getCountDetailsForLocationScopeValue(Date fromDate,Date toDate,String fileType,Long regId);
     
-    public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getDetailsForSource(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
-    public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId);
+    public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
 }

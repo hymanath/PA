@@ -119,12 +119,12 @@ public class NewsMonitoringService implements INewsMonitoringService {
     	}
     	  return fileVOList;
       }
-	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId){
+	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		log.debug("Enter into getAllCountDetails Method of NewsMonitoringService ");
 	       List<FileVO> returnFileVOList = new ArrayList<FileVO>();
 	       FileVO fileVO = null;
 	    	try{ 
-	    		List<Object[]> category = fileGallaryDAO.getCountDetailsForCategory(fromDate,toDate,fileType,regId);
+	    		List<Object[]> category = fileGallaryDAO.getCountDetailsForCategory(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO categoryFileVO = new FileVO();
 	    		List<FileVO> categoryFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:category){
@@ -138,7 +138,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		returnFileVOList.add(categoryFileVO);
 	    		
 	    		
-	    		List<Object[]> source = fileGallaryDAO.getCountDetailsForSource(fromDate,toDate,fileType,regId);
+	    		List<Object[]> source = fileGallaryDAO.getCountDetailsForSource(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO sourceFileVO = new FileVO();
 	    		List<FileVO> sourceFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:source){
@@ -152,7 +152,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		returnFileVOList.add(sourceFileVO);
 	    		
 	    		
-	    		List<Object[]> language = fileGallaryDAO.getCountDetailsForLanguage(fromDate,toDate,fileType,regId);
+	    		List<Object[]> language = fileGallaryDAO.getCountDetailsForLanguage(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO languageFileVO = new FileVO();
 	    		List<FileVO> languageFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:language){
@@ -166,7 +166,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		returnFileVOList.add(languageFileVO);
 	    		
 	    		
-	    		List<Object[]> newsImportance = fileGallaryDAO.getCountDetailsForNewsImportance(fromDate,toDate,fileType,regId);
+	    		List<Object[]> newsImportance = fileGallaryDAO.getCountDetailsForNewsImportance(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO importanceFileVO = new FileVO();
 	    		List<FileVO> importanceFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:newsImportance){
@@ -180,7 +180,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		returnFileVOList.add(importanceFileVO);
 	    		
 	    		
-	    		List<Object[]> locationScope = fileGallaryDAO.getCountDetailsForLocationScope(fromDate,toDate,fileType,regId);
+	    		List<Object[]> locationScope = fileGallaryDAO.getCountDetailsForLocationScope(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO scopeFileVO = new FileVO();
 	    		List<FileVO> scopeFileVOList = new ArrayList<FileVO>();
 	    		for(Object[] data:locationScope){
@@ -299,14 +299,14 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	 }
 	return returnFileVOList;
   }
-	 public List<FileVO> getCategoryCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+	 public List<FileVO> getCategoryCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		  if(log.isDebugEnabled())
 		    log.debug("Enter into getCategoryCountDetailsForGraph Method of NewsMonitoringService ");
 		  List<FileVO> returnVal = new ArrayList<FileVO>();
 		  List<Category> catgryList = categoryDAO.getAll();
 		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
 	   try{
-		  List<Object[]>  cateDetailsList = fileGallaryDAO.getDetailsForCategory(fromDate,toDate,fileType,regId);
+		  List<Object[]>  cateDetailsList = fileGallaryDAO.getDetailsForCategory(fromDate,toDate,fileType,regId,fileInputVO);
 		  for(Object[] categRecord: cateDetailsList)
 		    {
 			   if(categRecord[0] != null)
@@ -366,14 +366,14 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 
 		 
 	 }
-	 public List<FileVO> getSourceCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+	 public List<FileVO> getSourceCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		  if(log.isDebugEnabled())
 		    log.debug("Enter into getSourceCountDetailsForGraph Method of NewsMonitoringService ");
 		  List<FileVO> returnVal = new ArrayList<FileVO>();
 		  List<Source> sourceList = sourceDAO.getAll();
 		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
 	   try{
-		  List<Object[]>  sourceDetailsList = fileGallaryDAO.getDetailsForSource(fromDate,toDate,fileType,regId);
+		  List<Object[]>  sourceDetailsList = fileGallaryDAO.getDetailsForSource(fromDate,toDate,fileType,regId,fileInputVO);
 		  for(Object[] sourceRecord: sourceDetailsList)
 		    {
 			   if(sourceRecord[0] != null)
@@ -410,14 +410,14 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 return returnVal;
 	 }
 	 
-	 public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+	 public List<FileVO> getLanguageCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		  if(log.isDebugEnabled())
 		    log.debug("Enter into getLanguageCountDetailsForGraph Method of NewsMonitoringService ");
 		  List<FileVO> returnVal = new ArrayList<FileVO>();
 		  List<SourceLanguage> langugeList = sourceLanguageDAO.getAll();
 		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
 	   try{
-		  List<Object[]>  langugeDetailsList = fileGallaryDAO.getDetailsForLanguage(fromDate,toDate,fileType,regId);
+		  List<Object[]>  langugeDetailsList = fileGallaryDAO.getDetailsForLanguage(fromDate,toDate,fileType,regId,fileInputVO);
 		  for(Object[] langugeRecord: langugeDetailsList)
 		    {
 			   if(langugeRecord[0] != null)
@@ -454,14 +454,14 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 return returnVal;
 	 }
 	 
-	 public List<FileVO> getNewsImpCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId){
+	 public List<FileVO> getNewsImpCountDetailsForGraph(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileInputVO){
 		  if(log.isDebugEnabled())
 		    log.debug("Enter into getNewsImpCountDetailsForGraph Method of NewsMonitoringService ");
 		  List<FileVO> returnVal = new ArrayList<FileVO>();
 		  List<NewsImportance> newsImpList = newsImportanceDAO.getAll();
 		  Map<String,Map<Long,FileVO>> completeData = new LinkedHashMap<String,Map<Long,FileVO>>();
 	   try{
-		  List<Object[]>  newsImpDetailsList = fileGallaryDAO.getDetailsForNewsImportance(fromDate,toDate,fileType,regId);
+		  List<Object[]>  newsImpDetailsList = fileGallaryDAO.getDetailsForNewsImportance(fromDate,toDate,fileType,regId,fileInputVO);
 		  for(Object[] newsImpRecord: newsImpDetailsList)
 		    {
 			   if(newsImpRecord[0] != null)
