@@ -1339,7 +1339,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return opts;
 	}
 	
-	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
+	public RegistrationVO getDetailsOfUserByUserId(Long registrationId)
+	{
+		try{
 		RegistrationVO registrationVO = new RegistrationVO();
 		AnanymousUser registration = ananymousUserDAO.get(registrationId);
 		List<Long> userOpts = new ArrayList<Long>();
@@ -1373,6 +1375,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 		
 		return registrationVO;
+	  }catch (Exception e) {
+		  log.error("Exception Encounted, check log Details - "+e);
+		  return null;
+	  }
 	}
 	
 	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long registrationId)
