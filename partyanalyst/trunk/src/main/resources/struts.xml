@@ -1876,7 +1876,8 @@
 		
 		<action name="connectPeopleAction" class="connectPeopleAction">
 			<result name="success">/jsp/connectPeoplePage.jsp</result>
-			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>			
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="uploadPicAction" class="connectPeopleAction" method="uploadUserPic">			
