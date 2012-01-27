@@ -375,15 +375,17 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public String execute() throws Exception
 	{
 		session = request.getSession();
-		Object regVO = session.getAttribute(IConstants.USER);
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(regVO == null || ((RegistrationVO)regVO).getRegistrationID() == null){
+		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
 			log.error(" No User Log In .....");			
 			return IConstants.NOT_LOGGED_IN;
 		}
 		
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
+		if(user.getUserStatus().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER) && 
+				ananymousUserService.getDetailsOfUserByUserId(user.getRegistrationID()) == null)
+			return ERROR;
+			
 		List<Long> userId = new ArrayList<Long>(0);
 		loginUserId = user.getRegistrationID();
 		loginUserName = user.getFirstName()+" "+user.getLastName();
