@@ -235,6 +235,13 @@ background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
 -moz-border-radius:5px;
 }
+
+.layoutDiv
+{
+	width : auto;
+	height : auto;
+	background- color : red;
+}
    </style>
 </head>
 	<body onload="menuSlider.init('menu','slide')">
@@ -564,6 +571,11 @@ var result = document.getElementById("feedback_window_errorMsg");
 
 }
 
+function hideScrolling()
+{
+	$("#dashBoardCenterlayoutDiv").parent().css("width",'780px');
+	$("#dashBoardCenterlayoutDiv").parent().css("height",'710px');
+}
 <c:if test="${hasNewsMonitoring == true}">
 	//buildNews();
 	getNews("byTodayDate","getCount","Public","","","","","","");
@@ -822,7 +834,8 @@ $("#username_change_window").dialog({
 					};
 			indexPageMainObj.mpContituencies.push(ob);	
 		</c:forEach>
-		// for integrating cadre sms					
+
+	// for integrating cadre sms					
 		function callAjax(jsObj,url)
 		{		
 			
@@ -1625,7 +1638,6 @@ if(fileListId == fileId){
 	str+='<div id="content">';
 	str+='<table width="100%">';
 	str+='<tr>';
-	alert(count);
 	str+='<td><s:property value="fileVOList[#stat.index-1].scope"/></td>';
 	str+='<td><s:property value="fileVOList[#stat.index-1].fileDate"/></td>';
 	str+='</tr><tr>';
@@ -1746,7 +1758,6 @@ function showTabs(){
 if(document.getElementById("dashBoardNews_Main").style.display == 'none')
 	tabsDiv('impDatesDiv_main','impDateId');
 }
-
 </script>
 </body>
 </html>

@@ -1494,6 +1494,7 @@ var callback = {
 			 if(jsObj.queryType == "getCount")
 			 {
 			   showNewsCountDetails(myResults,jsObj);
+			   hideScrolling();
 			 }
 			 else if(jsObj.queryType == "getNews")
 			 {	
@@ -1559,7 +1560,7 @@ function showNewsCountDetails(result,jsObj){
 		  if(result[3].fileVOList[i].importance == 'Medium')
 			str+= '<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
 		  if(result[3].fileVOList[i].importance == 'Low')
-			str+= '<td><b><span style="color:yellow">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+			str+= '<td><b><span style="color:ActiveCaption">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
 	  }
 	  else
 	   str+= '<td>--</td>';
