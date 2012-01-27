@@ -174,6 +174,7 @@ text-decoration:none;
 	font-weight:bold;
 	font-family:verdana
 }
+
 .dashBoardtabsDivSelected
 	{
 	background :skyBlue; color: #000000;
@@ -187,22 +188,52 @@ text-decoration:none;
 	padding-bottom:10px;
     text-decoration: none;
 }
-.tempstyle
-		{
-			display:inline-block;
-			padding-top:15px;
-			color:navy;
-			font-weight:bold;
-			font-family: verdana; font-size: 12px;
-		}
+.tempstyle {
+    color: #666666;
+    display: inline-block;
+    font-family: verdana;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 12px;
+    padding-top: 15px;
+}
 
 #showNewsCountTable th{
 	background:#cdcdcd;
 	border-right:1px solid #cdcdcd;
 }
-#showNewsCountTable td{
+/*#showNewsCountTable td{
 
 	border-right:1px solid #cdcdcd;
+}*/
+div#newsAnalyse {
+    
+    float: right;
+    margin-left: 412px;
+    margin-top: -53px;
+    padding: 15px;
+    width: 274px;
+}
+#newsAnalyse {
+    background-color: #CADEF4;
+    border: 1px solid #CCCCCC;
+    direction: ltr;
+    line-height: 1.2;
+    max-width: 795px;
+    overflow: visible;
+    padding: 10px;
+    text-align: center;
+    width: 20em;
+}
+.grad{background: #0f4b93; border-radius:5px;/* Old browsers */
+background: -moz-linear-gradient(top,  #5189c6 0%, #0f4b93 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5189c6), color-stop(100%,#0f4b93)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* IE10+ */
+background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
+-moz-border-radius:5px;
 }
    </style>
 </head>
@@ -377,12 +408,12 @@ text-decoration:none;
 	      
 		<div id="newsCount" style="padding-left: 5px; padding-bottom: 5px; padding-top: 15px; float: left; font-family: verdana; font-size: 12px;">
 		</div>
-		<div id="newsAnalyze" style="padding-left:5px;float:right;">
-		<span class="tempstyle">View News Articels :</span>
-		<a href="javascript:{};" onclick="openShowNews();"><span style="-moz-border-radius:5px;border-radius:5px;font-weight:bold;background:#3d3d3d;text-decoration:none;color:#ffffff;float:right;padding:10px;margin-top:4px;padding-left:11px;">
+		
+	<div id="newsAnalyse"><span class="grad" style="padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News</span>
+		<span class="tempstyle">View News Articels and Analyze News</span>
+		<a href="javascript:{};" onclick="openShowNews();"><span style=" text-align: center; -moz-border-radius: 5px 5px 5px 5px; font-weight: bold;margin-top: 4px; padding: 10px; color: rgb(0, 131, 200);">
 		News Analyze</span></a>
 		</div>
-
 		<div id="showNewsCountTable" style="padding-top:50px"></div>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
 		
