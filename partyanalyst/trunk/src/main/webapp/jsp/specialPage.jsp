@@ -27,6 +27,51 @@
     	max-width: 800px;
     	padding: 10px;
 	}
+	.main-mbg {
+    -moz-border-radius: 6px 6px 6px 6px;
+	border-radius :6px;
+    background-color: #06ABEA;
+    clear: both;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 35px;
+    margin-bottom: 5px;
+    padding-left: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 974px;
+}
+.profile-left-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    float: left;
+    margin-right: 2px;
+    padding-top: 5px;
+    width: 206px;
+}
+.profile-mid-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+    position: relative;
+    width: 453px;
+}
+.profile-right-sec {
+    background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -683px top transparent;
+    float: left;
+    margin-left: 2px;
+    padding-top: 5px;
+    width: 326px;
+}
+#contenttable {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    width: 975px;
+}
 	</style>
 <script type="text/javascript">
 
@@ -131,7 +176,7 @@ var specialPageId = '${specialPageId}';
 <body>
 <!--CONTENT MAIN SECTION START-->
 <!--PROFILE LEFT CONENT SECTION START-->
-<div class="main-title-sec">
+
 <div class="main-mbg">${specialPageVO.heading}
 <span style="margin-top:10px;margin-right:18px;float:right">
 <a name="fb_share" type="button_count" 
@@ -139,8 +184,6 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 </span>
 </div>
-<div class="main-bbg"></div></div><br>
-
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
@@ -159,12 +202,12 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
           <div class="clear"></div>
           <div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
             <ul>
-              <li><a href="#">About</a><span></span></li>
+             <!-- <li><a href="#">About</a><span></span></li> -->
               <li><a href="#">News and events</a><span></span></li>
               <li><a href="#">videos</a><span></span></li>
               <li><a href="#">photo gallery</a><span></span></li>
-              <li><a href="#">elections</a><span></span></li>
-              <li><a href="#">Developments</a><span></span></li>
+               <!--<li><a href="#">elections</a><span></span></li>
+              <li><a href="#">Developments</a><span></span></li> -->
             </ul>
           </div>
           <div class="clear"></div>
@@ -292,7 +335,7 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
     </div>
   </s:if>
     <s:if test="fileVOList != null && fileVOList.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp(fileVOList);" href="javascript:{};">More</a></div>
+	 <div class="more"><a onClick="videoGallaryPopUp(<s:property value ='fileVOList.size'/>);" href="javascript:{};">More</a></div>
 	 </s:if>
 	<div id="videoGallaryPopUpDiv"></div>
 
