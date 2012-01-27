@@ -135,7 +135,7 @@ function buildSMSPopup()
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:650,
+	height:670,
 	units: [			
 			{ 
 				position: 'left', 
@@ -1520,7 +1520,7 @@ function getMaxCount(result)
   for(var i in result){
    if(result[i].fileVOList !=null && result[i].fileVOList.length > 0)
       if(result[i].fileVOList.length > count)
-         count = result[i].fileVOList.length;
+         count+= result[i].fileVOList.length;
 	}
    return count;
 }
@@ -1530,10 +1530,10 @@ function showNewsCountDetails(result,jsObj){
 	 document.getElementById("showNewsCountTable").innerHTML='';
 	
   var maxCount = getMaxCount(result);
-  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+maxCount;
+  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>4';
   var str = "";
   if(maxCount >0){
-  str+= '<strong>Total News Overview :</strong> <table cellspacing="2px" cellpadding="3px" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
+  str+= '<strong>Today\' s  Total News Overview :</strong> <table cellspacing="2px" cellpadding="6px" width="100%" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
   str+= '    <tr style="text-align:center">';
   str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
  /* str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>'; */
@@ -1553,8 +1553,14 @@ function showNewsCountDetails(result,jsObj){
 	   str+= '<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>';
 	  else
 	    str+= '<td>--</td>';
-	  if(result[3].fileVOList[i] != null)
-	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</td>';
+	  if(result[3].fileVOList[i] != null){
+		  if(result[3].fileVOList[i].importance == 'High')
+			str+= '<td><b><span style="color:red">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+		  if(result[3].fileVOList[i].importance == 'Medium')
+			str+= '<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+		  if(result[3].fileVOList[i].importance == 'Low')
+			str+= '<td><b><span style="color:yellow">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+	  }
 	  else
 	   str+= '<td>--</td>';
 	  if(result[4].fileVOList[i] != null)	
