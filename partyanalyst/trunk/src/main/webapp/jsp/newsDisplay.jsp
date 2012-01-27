@@ -568,7 +568,7 @@ function displayNews(fileId)
  if(document.getElementById("today").checked == true)
    {
       getNews('byTodayDate','getCount','All',source,language,category,importance,'','','','','');
-	  getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv");
+	  getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv",source,language,category,importance);
 	  getNews('byTodayDate','getNews','All',source,language,category,importance,'','','Today','','');
    }
  if(document.getElementById("thisweek").checked == true)

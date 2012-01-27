@@ -270,7 +270,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 			   
 			}
 		   
-			if(jObj.getString("sourceId") !=null && jObj.getString("sourceId").trim().length()>0)
+			if(jObj.getString("sourceId") != null && jObj.getString("sourceId").trim().length()>0)
 				fileVO.setSourceId(jObj.getLong("sourceId"));
 			
 		    if(jObj.getString("languegeId") !=null && jObj.getString("languegeId").trim().length()>0)
