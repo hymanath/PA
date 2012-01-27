@@ -822,5 +822,9 @@
 	
 	<bean id="newsDisplayAction" class="com.itgrids.partyanalyst.web.action.NewsDisplayAction" singleton="false">
 		<property name="newsMonitoringService" ref="newsMonitoringService"/>		
-	</bean>		
+	</bean>	
+	
+	<bean id="contentManagementAction" class="com.itgrids.partyanalyst.web.action.ContentManagementAction" singleton="false">
+		<property name="contentManagementService" ref="contentManagementService"/>		
+	</bean>	
 </beans>	
