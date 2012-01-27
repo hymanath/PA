@@ -1530,7 +1530,7 @@ function showNewsCountDetails(result,jsObj){
 	 document.getElementById("showNewsCountTable").innerHTML='';
 	
   var maxCount = getMaxCount(result);
-  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>4';
+  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'';
   var str = "";
   if(maxCount >0){
   str+= '<strong>Today\' s  Total News Overview :</strong> <table cellspacing="2px" cellpadding="6px" width="100%" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
