@@ -2949,6 +2949,10 @@
 				<param name="root">returnVal</param>
 			</result>
 		</action>
+		
+		<action name="contentManagementAction" class="contentManagementAction">
+			<result name="success">/jsp/contentManagement.jsp</result> 
+		</action>
 				
 	</package>
 </struts>      
