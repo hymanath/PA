@@ -128,10 +128,10 @@ public class SpecialPageAction extends ActionSupport implements
 
 	public String execute() {
 	
-		descriptions = specialPageService.getSpecialPageDescription(specialPageId);
+		descriptions  = specialPageService.getSpecialPageDescription(specialPageId);
 		specialPageVO = specialPageService.getSpecialPageBasicDetails(specialPageId);
-		fileVOList = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
-		customPages = specialPageService.getCustomPagesOfASpecialPage(specialPageId);
+		fileVOList    = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
+		customPages   = specialPageService.getCustomPagesOfASpecialPage(specialPageId);
 	return SUCCESS;
 	}
 
