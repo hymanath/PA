@@ -338,9 +338,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
         else 
 		{	
         	regVO = ananymousUserService.getDetailsOfUserByUserId(registrationId);
-        	this.registrationId = registrationId;
-        	prepopulate = true;
-        	prepopulateLocations(regVO);
+        	
+        	if(regVO != null)
+        	{
+        		prepopulate = true;
+        		prepopulateLocations(regVO);
+        	}
         }        
 	}    
 
