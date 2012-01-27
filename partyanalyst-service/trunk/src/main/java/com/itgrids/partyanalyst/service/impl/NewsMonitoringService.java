@@ -124,6 +124,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	       List<FileVO> returnFileVOList = new ArrayList<FileVO>();
 	       FileVO fileVO = null;
 	    	try{ 
+	    		Long totalCount = 0L; 
 	    		List<Object[]> category = fileGallaryDAO.getCountDetailsForCategory(fromDate,toDate,fileType,regId,fileInputVO);
 	    		FileVO categoryFileVO = new FileVO();
 	    		List<FileVO> categoryFileVOList = new ArrayList<FileVO>();
@@ -147,6 +148,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    			fileVO.setSource(data[1].toString());
 	    			fileVO.setSourceId((Long)data[2]);
 	    			sourceFileVOList.add(fileVO);
+	    			totalCount += (Long)data[0];
 	    		}
 	    		sourceFileVO.setFileVOList(sourceFileVOList);
 	    		returnFileVOList.add(sourceFileVO);
@@ -209,6 +211,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    		valueFileVO.setFileVOList(valueFileVOList);
 	    		returnFileVOList.add(valueFileVO);*/
 	    		
+	    		if(returnFileVOList != null && returnFileVOList.size() > 0)
+	    			returnFileVOList.get(0).setCount(totalCount.intValue());
 	    	}
 	    	catch(Exception e){
 	    		log.error("Exception rised in  getAllCountDetails Method of NewsMonitoringService", e);
