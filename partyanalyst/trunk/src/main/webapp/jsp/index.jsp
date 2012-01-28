@@ -415,11 +415,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	      
 		<div id="newsCount" style="padding-left: 5px; padding-bottom: 5px; padding-top: 15px; float: left; font-family: verdana; font-size: 12px;">
 		</div>
+	<div id="newsAnalyse"><a href="javascript:{};" onclick="openShowNews();" class="grad" style="text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News Articles</a>
 		
-	<div id="newsAnalyse"><span class="grad" style="padding:5px;font-weight:bold;text-align:center;color:#ffffff">Access News</span>
-		<span class="tempstyle">View News Articels and Analyze News</span>
-		<a href="javascript:{};" onclick="openShowNews();"><span style=" text-align: center; -moz-border-radius: 5px 5px 5px 5px; font-weight: bold;margin-top: 4px; padding: 10px; color: rgb(0, 131, 200);">
-		News Analyze</span></a>
+		<span class="tempstyle">View and Analyze News Articels</span>
+		<!--<a href="javascript:{};" onclick="openShowNews();"><span style=" text-align: center; -moz-border-radius: 5px 5px 5px 5px;text-decoration:none; font-weight: bold;margin-top: 4px; padding: 8px; color: rgb(0, 131, 200);">
+		News Analyze</span></a>-->
 		</div>
 		<div id="showNewsCountTable" style="padding-top:50px"></div>
 		<div id="dashBoardCenterlayout_body" class="yui-skin-sam"></div>
