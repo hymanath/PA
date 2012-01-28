@@ -1398,7 +1398,7 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
 			   buildVideoGallaryDiv(myResults);
 			}
-		else if(jsObj.task == "videoGalleriesForASpecialPage")
+		else if(jsObj.task == "getSpecialPageGallaryDetail")
 			{
 			     buildVideoGallaries(myResults);
 		    }
@@ -1741,7 +1741,7 @@ function showFirstFourNewsRecords(results)
      str+='       <td colspan="2"><div id="showScopeWiseNewsCount" /></td>';
      str+='     </tr>';
 	 str+='   </table>';
-     str+='  <table style="width:98%">'; 
+     str+='  <table style="width: 100%; font-family: trebuchet MS; font-size: 13px;">'; 
   for(var i in results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
@@ -2198,12 +2198,8 @@ function buildVideoGallaryDiv(result)
 }
 
 
-function videoGallaryPopUp(fileVOList)
+function videoGallaryPopUp()
 {
-  if(fileVOList == null || fileVOList.size() < 4) 
-    return;
-  
-  
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
 							    height: 350,
 								width: 520,
@@ -2223,7 +2219,7 @@ function showAllVideoGalleries(){
 			   specialPageId : specialPageId,
 			   startRecord:0,
 			   maxRecord:20,
-			   task:"videoGalleriesForASpecialPage"
+			   task:"getSpecialPageGallaryDetail"
             };
 
     var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2269,7 +2265,6 @@ function buildAllVideosInGallary(results){
  var str ='';
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
-		
 		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
 		
 		str+='<table style="width:100%;">';
@@ -2288,12 +2283,12 @@ function buildAllVideosInGallary(results){
 			str+='</td>';
 			str+='</tr>';
 			str+='	<tr >';
-			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
+			str+='<td>';
 			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
+			str+='<img style="border: 2px solid #CCCCCC;padding:5px;" src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
 			str+='</tr>';
 			str+='<tr>';
-			str+='<td>'+results[i].description+'';
+			str+='<td width="30%">'+results[i].description+'';
 			str+='</td>';
 			str+='</table>';
 			
