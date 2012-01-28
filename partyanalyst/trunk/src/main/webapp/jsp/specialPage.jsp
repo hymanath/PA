@@ -72,6 +72,20 @@
     padding: 0;
     width: 975px;
 }
+.imageButton{
+	
+	-moz-border-radius: 4px 4px 4px 4px;
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
 	</style>
 <script type="text/javascript">
 
@@ -203,8 +217,8 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
           <div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
             <ul>
              <!-- <li><a href="#">About</a><span></span></li> -->
-              <li><a href="#">News and events</a><span></span></li>
-              <li><a href="#">videos</a><span></span></li>
+              <li><a href="javascript:{getTotalNews('totalNews')}">News and events</a><span></span></li>
+              <li><a href="javascript:{videoGallaryPopUp();}">videos</a><span></span></li>
               <li><a href="#">photo gallery</a><span></span></li>
                <!--<li><a href="#">elections</a><span></span></li>
               <li><a href="#">Developments</a><span></span></li> -->
