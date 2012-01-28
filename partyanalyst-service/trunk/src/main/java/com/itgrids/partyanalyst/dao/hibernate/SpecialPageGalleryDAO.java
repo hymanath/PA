@@ -20,7 +20,7 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 	public List<Object[]> getSpecialPageGallaryDetails(Long specialPageId,String contentType) {
 		
 		Query query = getSession().createQuery("select model.gallary.gallaryId , model.gallary.name , model.gallary.description " +
-				" from SpecialPageGallery model where model.gallary.contentType.contentType =:contentType and model.specialPage.specialPageId =:specialPageId");
+				" from SpecialPageGallery model where model.gallary.contentType.contentType =:contentType and model.specialPage.specialPageId =:specialPageId order by model.createdDate desc");
 		query.setParameter("specialPageId", specialPageId);
 		query.setParameter("contentType", contentType);
 		
@@ -34,7 +34,7 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 		
 		Query query = getSession().createQuery("select model.gallary.gallaryId , model.gallary.name,model.gallary.description,model.gallary.createdDate," +
 				"model.gallary.updateddate from SpecialPageGallery model where model.gallary.contentType.contentType =:type and model.gallary.isDelete =:isDelete " +
-				"and model.gallary.isPrivate =:isPrivate and model.specialPage.specialPageId =:specialPageId");
+				"and model.gallary.isPrivate =:isPrivate and model.specialPage.specialPageId =:specialPageId order by model.createdDate desc");
 		
 		query.setParameter("specialPageId", specialPageId);
 		query.setParameter("type", type);
@@ -53,7 +53,7 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 		
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in (select model1.gallary.gallaryId from SpecialPageGallery model1" +
 				" where model1.gallary.contentType.contentType =:contentType and model1.gallary.isDelete =:isDelete " +
-				" and model1.gallary.isPrivate =:isPrivate and model1.specialPage.specialPageId =:specialPageId)");
+				" and model1.gallary.isPrivate =:isPrivate and model1.specialPage.specialPageId =:specialPageId order by model.createdDate desc)");
 		
 		query.setParameter("specialPageId", specialPageId);
 		query.setParameter("contentType", contentType);
