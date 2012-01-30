@@ -968,8 +968,8 @@ function overallResultsForYearOne()
    str+='<div id="yearOneResults_head">';
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
-	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right">&nbsp;<font color="green">Total Seats Won : '+totalSeatsWonYearOne+'</font><span></span></div></td>';
+	str+='	<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+	str+='	<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right">&nbsp;<font color="green">Total Seats Won : '+totalSeatsWonYearOne+'</font><span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
 	
@@ -989,12 +989,16 @@ function overallResultsForYearOne()
    str+='</tr>';
    <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
    str+='<tr>';
-   if('${partyPositions.partyId}' != electionObject.selectedParty)
-   str+='<td align="center">'+"${partyPositions.partyName}"+'</td>';
-   if('${partyPositions.partyId}' == electionObject.selectedParty)
-   str+='<td align="center" style="color:red;">'+"${partyPositions.partyName}"+'</td>';
+   
+   if('${partyPositions.partyId}' != electionObject.selectedParty){
+	   
+	   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   }
+   if('${partyPositions.partyId}'== electionObject.selectedParty){
+	   
+   str+='<td align="center" style="color:red;"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
-
+   }
 
    if("${partyPositions.totalSeatsWon}"!="0"){
 	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
@@ -1063,10 +1067,12 @@ function overallResultsForYearTwo()
    str+='</tr>';
    <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
    str+='<tr>';
-   if('${partyPositions.partyId}' != electionObject.selectedParty)
-   str+='<td align="center">'+"${partyPositions.partyName}"+'</td>';
-   if('${partyPositions.partyId}' == electionObject.selectedParty)
-   str+='<td align="center" style="color:red;">'+"${partyPositions.partyName}"+'</td>';
+   if('${partyPositions.partyId}' != electionObject.selectedParty){
+   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   }
+   if('${partyPositions.partyId}' == electionObject.selectedParty){
+   str+='<td align="center" style="color:red;"><a href="partypageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   }
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';  
    if("${partyPositions.totalSeatsWon}"!="0"){
 	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
