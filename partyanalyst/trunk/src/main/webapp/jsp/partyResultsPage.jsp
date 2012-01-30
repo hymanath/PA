@@ -73,12 +73,24 @@ var labelResources = { <%
 	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
 	<c:if test="${partyResultInfoVO.partyInfoVO != null}">	
 	<tr>
+
 		<td align="center"><c:out value="${partyResultInfoVO.partyInfoVO.electionYear}"/></td>
-		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.partyShortName}"/></font></td>
+		<td align="center"><font color="red">
+
+		<c:if test="${partyResultInfoVO.partyInfoVO.partyShortName != 'IND'}">
+		<a href="partyPageAction.action?partyId=${partyResultInfoVO.partyInfoVO.partyId}" style="color:red"><c:out value="${partyResultInfoVO.partyInfoVO.partyShortName}"/></a>
+		</c:if>
+
+		<c:if test="${partyResultInfoVO.partyInfoVO.partyShortName == 'IND'}">
+		<c:out value="${partyResultInfoVO.partyInfoVO.partyShortName}"/>
+		</c:if>
+
+		</font></td>
+
 		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsParticipated}"/></font></td>
 		<td align="center" ><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsWin}"/></font></td>
 		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.percentageOfVotes}"/></font></td>
-		<td align="center"><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">   View Opposition Details   </a></td>
+		<td align="center"><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">  View Opposition Details   </a></td>
 	</tr>
 	</c:if>	
 	
@@ -86,7 +98,18 @@ var labelResources = { <%
 	<c:forEach var="alliancParty" items="${partyResultInfoVO.alliancePartysInfo}" >
 	<tr id="${partyResultInfoVO.partyInfoVO.electionYear}_alliance">
 		<td>&nbsp;</td>
-		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.partyShortName}"/></font></td>
+		<td align="center"><font color="#896ADE">
+		
+		<c:if test="${alliancParty.partyShortName == 'IND'}">
+		<c:out value="${alliancParty.partyShortName}"/>
+		</c:if>
+
+		<c:if test="${alliancParty.partyShortName != 'IND'}">
+		<a href="partyPageAction.action?partyId=${alliancParty.partyId}">
+		<c:out value="${alliancParty.partyShortName}"/></a>
+		</c:if>
+		
+		</font></td>
 		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.seatsParticipated}"/></font></td>
 		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.seatsWin}"/></font></td>
 		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.percentageOfVotes}"/></font></td>
@@ -96,7 +119,17 @@ var labelResources = { <%
 	<c:forEach var="oppParty" items="${partyResultInfoVO.oppositionPartyInfo}" >
 	<tr id="${partyResultInfoVO.partyInfoVO.electionYear}_opposition" style="display:none;">
 		<td>&nbsp;</td>
-		<td align="center"><c:out value="${oppParty.partyShortName}"/></td>
+		<td align="center">
+
+		<c:if test="${oppParty.partyShortName == 'IND'}">
+		<c:out value="${oppParty.partyShortName}"/>
+		</c:if>
+
+		<c:if test="${oppParty.partyShortName != 'IND'}">
+		<a href="partyPageAction.action?partyId=${oppParty.partyId}">
+		<c:out value="${oppParty.partyShortName}"/></a>
+		</c:if>
+		</td>
 		<td align="center"><c:out value="${oppParty.seatsParticipated}"/></td>
 		<td align="center"><c:out value="${oppParty.seatsWin}"/></td>
 		<td align="center"><c:out value="${oppParty.percentageOfVotes}"/></td>
@@ -116,8 +149,5 @@ var labelResources = { <%
 			</tr>
 		</table>
 </div>
-
-
-
 </body>
 </html>
