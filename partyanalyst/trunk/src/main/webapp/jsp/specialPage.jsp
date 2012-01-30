@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
 <style>
