@@ -213,7 +213,9 @@ function buildDataForConstituencyResults()
 			         candidateId:'${oppCandResults.candidateId}',
 			         candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${oppCandResults.candidateId}" onclick="window.opener.location.href=this.href;window.blur();return false;"> ${oppCandResults.candidateLastName}</a>',	
 					 partyId:'${oppCandResults.partyElectionDetails.partyId}',
-			         partyName:'${oppCandResults.partyElectionDetails.partyShortName}',
+			         partyName:
+					
+					 '<c:if test="${oppCandResults.partyElectionDetails.partyShortName != \'IND\'}"><a href="partyPageAction.action?partyId=${oppCandResults.partyElectionDetails.partyId}" onclick="window.opener.location.href=this.href;window.blur();return false;">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if><c:if test="${oppCandResults.partyElectionDetails.partyShortName == \'IND\'}"><a href="javascript:{}">${oppCandResults.partyElectionDetails.partyShortName}</a></c:if>',
 					 partyFlag:partyFlg,
 			         votesEarned:'${oppCandResults.candidateVotesEarned}',
 			         votesPercent:'${oppCandResults.votesPercentAsString}',
@@ -314,7 +316,19 @@ function displayConstituencyElectionResults()
 
 		str+='<tr>';
 		str+='<th>Party</th>';
-		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.partyName+'</td>';	
+
+		str+='<td>';
+		
+		if(constituencyElecMainObj.wonCandidateInfo.partyName != 'IND')
+		{
+			str += '<a href="partyPageAction.action?partyId='+constituencyElecMainObj.wonCandidateInfo.partyId+'"  onclick="window.opener.location.href=this.href;window.blur();return false;"style="text-decoration: none;color: #247CD4;">'+constituencyElecMainObj.wonCandidateInfo.partyName+'</a>';
+		}
+		
+		else
+			str += ''+constituencyElecMainObj.wonCandidateInfo.partyName+'';
+
+		str += '</td>';	
+
 		str+='<th>Votes Margin Gained</th>';
 		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesMargin+'</td>'
 		str+='</tr>';
