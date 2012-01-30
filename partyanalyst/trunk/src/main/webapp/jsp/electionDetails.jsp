@@ -868,7 +868,8 @@ function showPartywiseDetailsDataTable(results)
 	var assignToPartywiseResultsArr = new Array();	
 	for(var i in  partywiseResultsArr){
 		var partywiseResultsObj = { 
-				party: partywiseResultsArr[i].partyName, 
+				party: partywiseResultsArr[i].partyName,
+				partyId :partywiseResultsArr[i].partyId,
 				totalParticipated: partywiseResultsArr[i].totalConstiParticipated, 
 				seatsWon: partywiseResultsArr[i].totalSeatsWon,
 				second: partywiseResultsArr[i].secondPosWon,
@@ -1093,8 +1094,23 @@ function showPartyResultsWithoutAlliance(chartId)
 
 function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
+	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+	elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML =Party;
+	};
+
 	var partywiseResultsColumnDefs = [
-								{key: "party", label: "<%=party%>", sortable:true},		
+								{key: "party", label: "Party", sortable:true,
+								formatter:YAHOO.widget.DataTable.partyLink},		
 								{key: "totalParticipated", label: "TP*", sortable:true},	
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
@@ -1115,7 +1131,8 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},
+								  {key: "partyId", parser:"number"}] 
         		};
 
 		var myConfigs = { 
@@ -1134,10 +1151,26 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
       };	     	
 	
 }
+
 function buildGenderCountResultsDataTable(divId,dtSourceArray)
 {	
+	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var Party = oRecord.getData("partyName");
+		var partyIds = oRecord.getData("partyId");
+		if(oData !='IND' && partyIds!=null){
+		elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML =Party;
+			
+	};
 	var partywiseResultsWithGenderColumnDefs = [
-								{key: "partyName", label: "<%=party%>", sortable:true},		
+								{key: "partyName", label: "Party", sortable:true,
+								formatter:YAHOO.widget.DataTable.partyLink},		
 								{key: "totalParticipated", label: "TP*", sortable:true},	
 		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "completeVotesPercent", label: "Complete Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
@@ -1162,7 +1195,9 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 								  {key: "MVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
                          		  {key: "femalePerticipated", parser:"number"},
 								  {key: "femaleWon", parser:"number"},
-                         		  {key: "FVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+								  {key: "FVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+								{key: "partyId", parser:"number"}
+									] 
         		};
 
 		var myConfigs = { 
@@ -1183,12 +1218,13 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 }
 function showAllianceDetails(results)
 {	
+
 	var allianceResultsArr = results.electionBasicResultsVO.alliancePartiesList;
 	allianceResults = allianceResultsArr;
 	var assignToAllianceResultsArr = new Array();
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
-	var allianceGrpName;	
 	
+	var allianceGrpName;	
 	allianceResultsDataTableEl.innerHTML = '';
 
 	for(var i in  allianceResultsArr){
@@ -1210,7 +1246,9 @@ function showAllianceDetails(results)
 					fourthPosWon: allianceResultsArr[i].partiesInAlliance[j].fourthPosWon,
 					nthPosWon: allianceResultsArr[i].partiesInAlliance[j].nthPosWon,
 					votesPercentage: allianceResultsArr[i].partiesInAlliance[j].votesPercentage,
-					completeVotesPercent: allianceResultsArr[i].partiesInAlliance[j].completeVotesPercent
+					completeVotesPercent: allianceResultsArr[i].partiesInAlliance[j].completeVotesPercent,
+					partyId:
+					allianceResultsArr[i].partiesInAlliance[j].partyId
 					//comments:'<A href="javascript:{}" onclick="showCommentsDialog('+allianceResultsArr[i].partiesInAlliance[j].partyId+',\'party\',\'null\',\'null\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>' 
 						
 				};
@@ -1353,9 +1391,22 @@ function showAllianceGraph(chartId, chartName)
 }
 function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 {	
+
+	  YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var id= oRecord.getData("partyId");
+	if(id!=null && oData!='IND'){
+	elLiner.innerHTML ="<a href='partyPageAction.action?partyId="+id+"'>"+oData+"</a>";
+	}
+	else
+		elLiner.innerHTML =oData;
+
+  };
+
 	
 	var allianceResultsColumnDefs = [
-								{key: "partyName", label: "<%=party%>", sortable:true},		
+								{key: "partyName", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.edit},		
 								{key: "totalConstiParticipated", label: "TP*",formatter:"number", sortable:true},	
 		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "secondPosWon", label: "2nd",formatter:"number", sortable:true},
@@ -1377,7 +1428,8 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
                 					  {key:  "fourthPosWon", parser:"number"},
                 					  {key: "nthPosWon", parser:"number"},
                 					  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
-                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"comments"] 
+                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"comments",
+									  {key: "partyId", parser:"number"}] 
         		};
 
 		var myConfigs = { 
