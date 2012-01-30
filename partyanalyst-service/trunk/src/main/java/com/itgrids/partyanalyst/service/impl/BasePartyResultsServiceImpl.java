@@ -266,6 +266,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 				PartyInfoVO partyInfoVO;
 				if(partyAndCompetetorsInfo.get(partyShortName)==null){
 					partyInfoVO = new PartyInfoVO();
+					partyInfoVO.setPartyId((Long)nominationObj[10]); 
 					partyInfoVO.setPartyShortName(partyShortName);
 					partyInfoVO.setPartyLongName(partyLongName);
 					partyInfoVO.setElectionYear(electionYear);
