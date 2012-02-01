@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <div style="background:#ffffff; width: 982px;margin-left: 3px;">
-<img src="images/specialPage/panjab2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
+<img src="images/specialPage/manipur2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%">
 
