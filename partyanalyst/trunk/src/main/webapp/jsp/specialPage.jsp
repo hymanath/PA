@@ -87,6 +87,22 @@
     text-decoration: none;
     white-space: nowrap;
 }
+.view-results a {
+    background: url("images/icons/homePage_new/b3.jpg") no-repeat scroll 0 0 transparent;
+    border: medium none;
+    cursor: pointer;
+    display: block;
+    height: 27px;
+    margin: 11px 0 15px 113px;
+    text-indent: -9999px;
+    width: 94px;
+}
+.selectBoxWidth{
+	padding:3px;
+	width:188px;
+	margin-top:6px;
+
+}
 	</style>
 <script type="text/javascript">
 
@@ -156,6 +172,12 @@ var specialPageId = '${specialPageId}';
    
     
  }
+
+ function openFile(filePath){
+
+	window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+ }
+
 	function callAjax(jsObj,url)
 	{
 	
@@ -184,7 +206,36 @@ var specialPageId = '${specialPageId}';
 
 		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	 
+	function navigateToConstituencyPage()
+{
+ var constSelectEl = document.getElementById("constituency");
+ var alertEl = document.getElementById("alertMessage");
+ var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
+ alertEl.innerHTML = '';
+ if(constSelectElVal == 0)
+ {
+	 alertEl.innerHTML = 'Please Select Constituency';
+	 return;
+ }
+ window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
+
+} 
+function navigateToDistrictPage()
+{
+ var distSelectEl = document.getElementById("districtList_d");
+ var alertEl = document.getElementById("alertMessage_district");
+ var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
+ var distSelectElText = distSelectEl.options[distSelectEl.selectedIndex].text;
+if(distSelectElVal == 0)
+ {
+ alertEl.innerHTML = 'Please Select District';
+ return;
+ }
+ else
+ alertEl.innerHTML = '';
+ window.location="districtPageAction.action?districtId="+distSelectElVal+"&districtName="+distSelectElText;
+
+} 
 </script>
 </head>
 
@@ -193,6 +244,25 @@ var specialPageId = '${specialPageId}';
 <!--PROFILE LEFT CONENT SECTION START-->
 
 <div class="main-mbg">${specialPageVO.heading}
+<span style="margin-top:10px;margin-right:30px;float:right">
+<g:plusone size="medium"></g:plusone>
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+</span>
+
+<span style="margin-top:10px;float:right">
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}">
+Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+</script>
+</span>
+
 <span style="margin-top:10px;margin-right:18px;float:right">
 <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specialPageId}">Share in Facebook</a> 
@@ -218,15 +288,24 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
           <div class="pl-sub-fields"> <span style="margin-left:14px;"></span>
             <ul>
              <!-- <li><a href="#">About</a><span></span></li> -->
-              <li><a href="javascript:{getTotalNews('totalNews')}">News and events</a><span></span></li>
-              <li><a href="javascript:{videoGallaryPopUp();}">videos</a><span></span></li>
-              <li><a href="#">photo gallery</a><span></span></li>
+              <li><a href="javascript:{getTotalNews('totalNews')}">News and Events</a><span></span></li>
+              <li><a href="javascript:{videoGallaryPopUp();}">Videos</a><span></span></li>
+              <li><a href="#">Photo Gallery</a><span></span></li>
                <!--<li><a href="#">elections</a><span></span></li>
               <li><a href="#">Developments</a><span></span></li> -->
             </ul>
           </div>
           <div class="clear"></div>
           
+		<s:if test="customPages != null && customPages.size() > 0">
+		    <s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'left_navigation'">
+				<div style="width:200px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+			</s:iterator>
+		</s:if>
           <!--EMAIL ALERT SECTION START-->
 
              <div class="ea-fc-sec">
@@ -243,16 +322,6 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 
 		</div>
 		</div>
-
-<s:if test="customPages != null && customPages.size() > 0">
-<s:iterator value="customPages" var="custom"> 
-	<s:if test="#custom.type == 'left_navigation'">
-		<div style="width:200px;">
-			<jsp:include page='${custom.name}' flush="true"/> 
-		</div>
-	</s:if>
-</s:iterator>
-</s:if>
 
 <!--EMAIL ALERT SECTION END--></div>
 </div>
@@ -284,18 +353,23 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 				</s:if>
 			</s:iterator>
 			</s:if>
-          <!--ELECTION PROFILE SECTION END--> 
+			<!--ELECTION PROFILE SECTION START--> 
+
+		 
+            <!--ELECTION PROFILE SECTION END--> 
           
-          <!--PHOTO GALLERY SECTION START-->
+            <!--PHOTO GALLERY SECTION START-->
           
-          <div class="pm-inner-cont-sec">
+            <!--<div class="pm-inner-cont-sec">
            
              <div id="photoGallaryDiv"> </div>
             
-          </div>
+            </div>-->
           
-          <!--PHOTO GALLERY SECTION END-->
+            <!--PHOTO GALLERY SECTION END-->
           
+		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430"></div>
+		  </div>
           <div class="clear"></div>
           <p></p>
           
@@ -376,7 +450,7 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 <script type="text/javascript">
   
 getTotalNews('getFirstFourNewsRecordsToDisplay');
-getFirstThreePhotoRecords();
+//getFirstThreePhotoRecords();
 displayProfile();
 
 </script>
