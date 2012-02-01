@@ -179,7 +179,13 @@ function buildElectionTypesAndYearsCarousel(divId,arr)
 				break;
 			var dt = arr[i].partyResultsVO[k];
 			str+='  <tr>';
-			str+='  <td width="70%" style="width:70%;">'+dt.partyName+'</td>';
+			str+='  <td width="70%" style="width:70%;">';
+			if(dt.partyName != 'INDEPENDENT')
+				str += '<a href="partyPageAction.action?partyId='+dt.partyId+'">'+dt.partyName+'</a>';
+			else
+				str += '<a href="javascript:{}">'+dt.partyName+'</a>';
+			
+			str += '</td>';
 			str+='  <td width="10%" style="width:10%;text-align:center;">'+dt.totalSeatsWon+'</td>';
 			if(dt.partyFlag)
 				str+='  <td style="text-align:center;"><img src="images/party_flags/'+dt.partyFlag+'" height="30" width="40"/></td>';
