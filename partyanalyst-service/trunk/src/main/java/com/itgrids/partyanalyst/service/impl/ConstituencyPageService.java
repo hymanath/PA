@@ -4655,6 +4655,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			detailsVO.setCandidateId((Long)values[7]);
 			detailsVO.setCandidateName((String)values[9]);
 			detailsVO.setParty((String)values[2]);
+			detailsVO.setPartyId((Long)values[1]);
 			detailsVO.setGender((String)values[10]);
 			detailsVO.setEducation((String)values[11]);
 			
