@@ -56,9 +56,12 @@
  color:Maroon;
 font-family:trebuchet MS;
 font-size:14px;
- 
+ margin-top:19px;
 }
-
+#contenttable {
+padding: 0px;
+background:#ffffff;
+}
 .resultsTable {
 	border-collapse	:collapse;
 	border-color	:#666666;
@@ -116,8 +119,15 @@ font-size:14px;
 		border-radius:7px;
 
 }
-.ui-widget-header{
-		font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+#candidateResultAccessDiv .ui-widget-header{
+	background: #06ABEA;
+	border :0px;
+	font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+#districtAccessPopupDiv .ui-widget-header{
+	background: #06ABEA;
+	border :0px;
+	font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 .ui-dialog .ui-dialog-title {
     float: left;
@@ -1458,7 +1468,7 @@ function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 	
 	<c:if test="${hasDeatiledAnalysis == false}">
 		
-			$("#candidateResultAccessDiv").dialog({ stack: false,
+		     $("#candidateResultAccessDiv").dialog({ stack: false,
 							    height: 'auto',
 								width: 500,
 								position:'center',								
@@ -1893,9 +1903,7 @@ function openPreYearDistAnalysisWindow()
 		browser1.focus();
 	</c:if>
 	<c:if test="${hasDeatiledAnalysis == false}">
-		/*$("#accessDiv").css("width","474px");
-		$("#accessDiv").css("border","0px");*/
-
+		
 			$("#districtAccessPopupDiv").dialog({ stack: false,
 							    height: 'auto',
 								width: 500,
@@ -2242,7 +2250,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </script>
 </span>
 </div>
- <div class="clear"></div>
+<div class="clear"></div>
 
 <div id="stateResults">
 </div>
@@ -2286,7 +2294,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 
 <DIV style="padding:10px;">
 	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
-	 <TR>
+		<TR>
 			<TD align="left"><IMG src="images/icons/infoicon.png" border="none" /></TD>
 			<TD align="center" style="color:#606060;font-size:12px;">Click Here To Access Candidates Results</TD>
 			<TD align="left"><DIV><A href="javascript:{}" class="viewChartsForResults1" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV></TD>
