@@ -915,7 +915,8 @@ function showPartywiseDetailsDataTable(results)
 	
 	for(var j in  partywiseResultsWithoutAlliance){
 		var partywiseResultsObj = { 
-				party: partywiseResultsWithoutAlliance[j].partyName, 
+				party: partywiseResultsWithoutAlliance[j].partyName,
+				partyId : partywiseResultsWithoutAlliance[j].partyId,
 				totalParticipated: partywiseResultsWithoutAlliance[j].totalConstiParticipated, 
 				seatsWon: partywiseResultsWithoutAlliance[j].totalSeatsWon,
 				second: partywiseResultsWithoutAlliance[j].secondPosWon,
@@ -1109,13 +1110,13 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 	{
 		var Party = oRecord.getData("party");
 		var partyIds = oRecord.getData("partyId");
-		if(oData != 'IND' && partyIds != null){
+		if(Party != 'IND' && partyIds != null){
 		
-	elLiner.innerHTML =
+		elLiner.innerHTML =
 		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
 		}
 		else
-			elLiner.innerHTML =Party;
+			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
 	};
 
 	var partywiseResultsColumnDefs = [
