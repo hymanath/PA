@@ -1069,6 +1069,7 @@ public class CommentsDataService implements ICommentsDataService {
 				candidate.setElectionId((Long) params[7]);
 				candidate.setElectionType(params[8].toString());
 				candidate.setYear(params[9].toString());
+				candidate.setPartyId((Long) params[10]);
 				
 				candidates.add(candidate);
 			}
