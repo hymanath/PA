@@ -720,7 +720,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	public List getPartysInfoForAParticularElectionYear(String electionType,String electionYear,Long districtId){
 		Object[] params = {electionType,electionYear,districtId};
-		return getHibernateTemplate().find("select model.party.shortName,count(model.party.partyId),sum(model.candidateResult.votesEarned)," +
+		return getHibernateTemplate().find("select model.party.shortName,count(model.party.partyId),sum(model.candidateResult.votesEarned),model.party.partyId," +
 				" sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 				" from Nomination model where model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.district.districtId = ? group by model.party.partyId",params);
@@ -1628,7 +1628,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List getPartysInfoForAMuncipalityForAnElectionYear(String electionType,String muncipalityIds,String electionYear){
 		Object[] params = {electionType,electionYear};
-		return getHibernateTemplate().find("select model.party.shortName,count(model.party.partyId),sum(model.candidateResult.votesEarned)" +
+		return getHibernateTemplate().find("select model.party.shortName,count(model.party.partyId),sum(model.candidateResult.votesEarned) ,model.party.partyId" +
 				" from Nomination model where model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?" +
 				" and model.constituencyElection.constituency.localElectionBody.localElectionBodyId in ( "+ muncipalityIds+
 				" ) and model.constituencyElection.election.electionYear = ? group by model.party.partyId",params);
