@@ -609,6 +609,19 @@ function buildAssetsAndLiabilities(myResults)
 		elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"'>"+candidateName+"</a>";		
 	};
 
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{		
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+		elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
+	};
+
    if(myResults.candidateNominations != null && myResults.candidateNominations.length > 0)
    {
 	  var headStr = '';
@@ -624,13 +637,12 @@ function buildAssetsAndLiabilities(myResults)
 					        {	key : "education"},
 					        {	key : "assets"},
 					        {	key : "liabilities"},
-							
-						]
+							{key: "partyId", parser:"number"}]
 			}; 
 	
 	 var myColumnDefs = [ 
 				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true , formatter:YAHOO.widget.DataTable.problemLink}, 
-				{key:"party", label:'Party',sortable:true, resizeable:true},
+				{key:"party", label:'Party',sortable:true, resizeable:true,formatter:YAHOO.widget.DataTable.partyLink},
 				{key:"gender", label:'Gender', sortable:true, resizeable:true}, 
 		        {key:"education", label:'Education', sortable:true, resizeable:true}, 
 		        {key:"assets", label:'Assets', sortable:true, resizeable:true}, 
@@ -1426,6 +1438,7 @@ function buildZptcResults(results){
 	{		
 		var problemObj=		
 		 {		
+				partyId:results[i].partyId,
 				partyName:results[i].partyName,
 				participatedSeats:results[i].participatedSeats,
 				seatsWonByParty:results[i].seatsWonByParty,
@@ -1465,6 +1478,7 @@ function buildMptcResults(results){
 	{		
 		var problemObj=		
 		 {		
+				partyId:results[i].partyId,
 				partyName:results[i].partyName,
 				participatedSeats:results[i].participatedSeats,
 				seatsWonByParty:results[i].seatsWonByParty,
@@ -1503,13 +1517,30 @@ function initializeResultsTableForParty(){
 			key : "seatsWonByParty"
 		}, {
 			key : "percentageOfVotesWonByParty"
+		}, {
+			key : "partyId"
 		}]
+	};
+
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+	elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ="<a href='javascript:{}'>"+oData+"</a>";
 	};
 
 	var resultsColumnDefsForTehsil = [ {
 		key : "partyName",
 		label : "Party",
-		sortable : true
+		sortable : true,
+        formatter:YAHOO.widget.DataTable.partyLink 
 	}, {
 		key : "participatedSeats",
 		label : "Seats",
@@ -1551,13 +1582,29 @@ function initializeMptcResultsTableForParty(){
 			key : "seatsWonByParty"
 		}, {
 			key : "percentageOfVotesWonByParty"
+		},{
+			key : "partyId"
 		}]
+	};
+		
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+		{
+			var Party = oRecord.getData("party");
+			var partyIds = oRecord.getData("partyId");
+			if(oData != 'IND' && partyIds != null){
+		
+			elLiner.innerHTML =
+			"<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ="<a href='javascript:{}'>"+oData+"</a>";
 	};
 
 	var resultsColumnDefsForTehsil = [ {
 		key : "partyName",
 		label : "Party",
-		sortable : true
+		sortable : true,
+		formatter:YAHOO.widget.DataTable.partyLink 
 	}, {
 		key : "participatedSeats",
 		label : "Seats",
