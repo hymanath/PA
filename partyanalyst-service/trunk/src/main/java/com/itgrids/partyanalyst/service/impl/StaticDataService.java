@@ -2839,6 +2839,7 @@ public class StaticDataService implements IStaticDataService {
 					teshilPartyInfoVo.setPartyName(parms[0].toString());
 					teshilPartyInfoVo.setParticipatedSeats(Long
 							.parseLong(parms[1].toString()));
+					teshilPartyInfoVo.setPartyId(new Long(parms[3].toString()));
 					percentage = new BigDecimal((Float.parseFloat(parms[2]
 							.toString()) / totalVotes) * 100).setScale(2,
 							BigDecimal.ROUND_HALF_UP);
@@ -4716,6 +4717,7 @@ public class StaticDataService implements IStaticDataService {
 			allMuncipalitiesVO.setTotalWards(Long.parseLong(parmss[2]
 					.toString()));
 			allMuncipalitiesVO.setTotalVoters((Double) parmss[3]);
+			
 			if (parmss.length == 6) {
 				allMuncipalitiesVO.setStateId(Long.parseLong(parmss[4]
 						.toString()));
@@ -4761,6 +4763,7 @@ public class StaticDataService implements IStaticDataService {
 			for (int i = 0; i < allPartyInfo.size(); i++) {
 				Object[] parms = (Object[]) allPartyInfo.get(i);
 				TeshilPartyInfoVO teshilPartyInfoVo = new TeshilPartyInfoVO();
+				teshilPartyInfoVo.setPartyId(new Long(parms[3].toString()));
 				teshilPartyInfoVo.setPartyName(parms[0].toString());
 				teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1]
 						.toString()));
