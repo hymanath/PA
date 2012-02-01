@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -222,14 +221,10 @@ public class NewsDisplayAction implements ServletRequestAware{
 			}
 	  }
   public Date getDate(String dateStr){
-	  Date date = null; 
-	  DateFormat formatter = null;
-	 try {	  
-	  formatter = new SimpleDateFormat("yyyy-mm-dd");
-	  date = (Date)formatter.parse(dateStr);  
-	 } catch (ParseException e)
-	  {System.out.println("Exception :"+e);  }  
-	 return date;
+	  String[] dateArray =  dateStr.split("-");
+	  Calendar cal = Calendar.getInstance(); 
+	  cal.set(Integer.parseInt(dateArray[0]),Integer.parseInt(dateArray[1])-1, Integer.parseInt(dateArray[2]));
+	  return cal.getTime();
   }
   public String getDetails(){
 		if(log.isDebugEnabled())
