@@ -228,6 +228,7 @@ function showPartywiseDetailsDataTable(results)
 	var assignToPartywiseResultsArr = new Array();	
 	for(var i in  partywiseResultsArr){
 		var partywiseResultsObj = { 
+				partyId: partywiseResultsArr[i].partyId,
 				party: partywiseResultsArr[i].partyName, 
 				totalParticipated: partywiseResultsArr[i].totalConstiParticipated, 
 				seatsWon: partywiseResultsArr[i].totalSeatsWon,
@@ -291,8 +292,22 @@ function showPartywiseDetailsDataTable(results)
 }
 function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
+	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+	elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"'>"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
+	};
+
 	var partywiseResultsColumnDefs = [
-								{key: "party", label: "<%=party%>", sortable:true},		
+								{key: "party", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.partyLink},		
 								//{key: "totalParticipated", label: "TP*", formatter:"number", sortable:true},	
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
@@ -313,7 +328,8 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},
+								  {key: "partyId", parser:"number"}] 
         		};
 
 		var myConfigs = { 
