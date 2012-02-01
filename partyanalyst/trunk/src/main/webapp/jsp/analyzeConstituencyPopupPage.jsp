@@ -564,10 +564,9 @@ if(category == "candidate")
 			elmtBody.innerHTML = 'No Candidate Results found.';
 			return;
 		}
-
 		var jsArray =new Array();
-		
-		electionId = results[0].electionId;
+
+		electionId =results[0].electionId;
 		electionType = results[0].electionType;
 		year = results[0].year;
 		var candidateProfileId = <%=request.getParameter("candidateId")%>;
@@ -580,51 +579,65 @@ if(category == "candidate")
 			else
 				rankStatus = "Lost";
 			if(i == 0){
-				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+			  candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
 				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			}
 			else if(results[i].status == 1 && candidateProfileId != null){
-				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+         		 candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
 				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			}
 			
 			else if(results[i].status == 1 && candidateProfileId == null){
-				candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
+			  candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
 
 				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			}
 			
 			else if(results[i].id == candidateProfileId && candidateProfileId!=null){
-				
 			candidateId=results[i].id;candidateName=results[i].candidateName;status = results[i].status;party = results[i].party;electionType=results[i].electionType; year = results[i].year;
 			
 				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+candidateId+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			}
 			else
 				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
-			var obj =	{
+			var obj =	{	
+
 							radio: radioStr,
 							candidateName:results[i].candidateName,
 							party:results[i].party,
 							status:results[i].status,
+							partyId:results[i].partyId,						
 							rankStatus:rankStatus,							
 							comment: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+results[i].id+'\',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>'
 						};
 			jsArray.push(obj);
 		}
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+			
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+	elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
+	};
 
 		var myColumnDefs = [
 			{key:"radio",  sortable:false, label:"Select", resizeable:false},
             {key:"candidateName", sortable:true, label:"Canidate Name", resizeable:true},
-            {key:"party",  sortable:true, label:"Party", resizeable:true},
+            {key:"party",  sortable:true, label:"Party", resizeable:true,formatter:YAHOO.widget.DataTable.partyLink},
             {key:"status", formatter:YAHOO.widget.DataTable.formatNumber, label:"Rank", sortable:true, resizeable:true},
-            {key:"rankStatus",  sortable:true, label:"Status", resizeable:true}
+            {key:"rankStatus",  sortable:true, label:"Status", resizeable:true},
         ];
 
         var myDataSource = new YAHOO.util.DataSource(jsArray);
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         myDataSource.responseSchema = {
-            fields: ["radio","candidateName","party","status","rankStatus"]
+            fields: ["radio","candidateName","party","status","rankStatus","partyId"]
         };
 
         var myDataTable = new YAHOO.widget.DataTable("candidateResults_body",
