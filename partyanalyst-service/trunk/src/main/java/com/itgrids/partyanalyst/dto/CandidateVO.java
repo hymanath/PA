@@ -31,7 +31,16 @@ public class CandidateVO {
 	private String electionType;
 	private String gender;
 	private String education;
+	private Long partyId;
 	
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
 	public Long getElectionId() {
 		return electionId;
 	}
