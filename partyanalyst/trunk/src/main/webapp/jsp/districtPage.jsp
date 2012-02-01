@@ -188,6 +188,20 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	
 	function initializeResultsTableForParty(){
+	
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	     {
+		  var Party = oRecord.getData("party");
+		  var partyIds = oRecord.getData("partyId");
+		   if(oData != 'IND' && partyIds != null){
+		
+	       elLiner.innerHTML =
+		  "<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+oData+'</a>';
+	};
+
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSourceForTehsil.responseSchema = {
@@ -199,13 +213,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				key : "seatsWonByParty"
 			}, {
 				key : "percentageOfVotesWonByParty"
-			}]
+			},{key: "partyId", parser:"number"}]
 		};
 	
 		var resultsColumnDefsForTehsil = [ {
 			key : "partyName",
 			label : "Party Name",
-			sortable : true
+			sortable : true,formatter:YAHOO.widget.DataTable.partyLink
 		}, {
 			key : "participatedSeats",
 			label : "Participated Seats",
@@ -233,6 +247,20 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function initializeMptcResultsTableForParty(){
 		
+
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	    {
+		 var Party = oRecord.getData("party");
+		 var partyIds = oRecord.getData("partyId");
+		 if(oData != 'IND' && partyIds != null){
+		
+			elLiner.innerHTML =
+		 "<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+oData+'</a>';
+		};
+
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyMptcArray);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSourceForTehsil.responseSchema = {
@@ -244,13 +272,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				key : "seatsWonByParty"
 			}, {
 				key : "percentageOfVotesWonByParty"
-			}]
+			},{key: "partyId", parser:"number"}]
 		};
 	
 		var resultsColumnDefsForTehsil = [ {
 			key : "partyName",
 			label : "Party Name",
-			sortable : true
+			sortable : true,formatter:YAHOO.widget.DataTable.partyLink
 		}, {
 			key : "participatedSeats",
 			label : "Participated Seats",
@@ -414,6 +442,20 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 	{
+
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+		{
+			var Party = oRecord.getData("party");
+			var partyIds = oRecord.getData("partyId");
+			if(oData != 'IND' && partyIds != null){
+		
+			elLiner.innerHTML =
+			"<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}">'+oData+'</a>';
+	 };
+
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSourceForTehsil.responseSchema = {
@@ -425,11 +467,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				key : "seatsWonByParty"
 			}, {
 				key : "percentageOfVotesWonByParty"
-			}]	
+			},{key: "partyId", parser:"number"}]	
 		};
 		
 		var resultsColumnDefsForTehsil = [ 
-				{key:"partyName",label : "Party Name",sortable:true, resizeable:true}, 
+				{key:"partyName",label : "Party Name",sortable:true, resizeable:true,formatter:YAHOO.widget.DataTable.partyLink}, 
 				{key:"participatedSeats",label : "Participated Seats",sortable:true,resizeable:true}, 
 				{key:"seatsWonByParty",label : "Seats Won",sortable:true, resizeable:true}, 
 				{key:"percentageOfVotesWonByParty",label : "Votes %", sortable:true, resizeable:true}	           
@@ -490,7 +532,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		corporation.innerHTML = corporationDiv;
 	}
 	function showMuncipalDetailsForLatestElectionYear(result,electionType){		
-		
+
 		var muncipalityDIV = '';
 		if(electionType == muncipalityElectionType){
 			localBodyArray = tehsilDetails.partyMuncipalArray;
@@ -573,6 +615,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			{					
 				var muncipalObj =
 				 {		
+						partyId: result[i].muncipalityVO[j].partyId,
 						partyName:result[i].muncipalityVO[j].partyName,
 						participatedSeats:result[i].muncipalityVO[j].participatedSeats,
 						seatsWonByParty:result[i].muncipalityVO[j].seatsWonByParty,
@@ -725,6 +768,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		{		
 			var problemObj=		
 			 {		
+					partyId:results[i].partyId,
 					partyName:results[i].partyName,
 					participatedSeats:results[i].participatedSeats,
 					seatsWonByParty:results[i].seatsWonByParty,
@@ -749,6 +793,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		{		
 			var problemObj=		
 			 {		
+				
+					partyId:results[i].partyId,
 					partyName:results[i].partyName,
 					participatedSeats:results[i].participatedSeats,
 					seatsWonByParty:results[i].seatsWonByParty,
@@ -799,6 +845,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		{		
 			var problemObj=
 			 {		
+					partyId:results[i].partyId, 
 					partyName:results[i].partyName,
 					participatedSeats:results[i].participatedSeats,
 					seatsWonByParty:results[i].seatsWonByParty,
@@ -833,6 +880,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		{		
 			var problemObj=		
 			 {		
+					partyId:results[i].partyId,
 					partyName:results[i].partyName,
 					participatedSeats:results[i].participatedSeats,
 					seatsWonByParty:results[i].seatsWonByParty,
