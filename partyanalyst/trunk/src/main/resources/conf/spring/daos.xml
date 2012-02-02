@@ -741,4 +741,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="specialPageMetaInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageMetaInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

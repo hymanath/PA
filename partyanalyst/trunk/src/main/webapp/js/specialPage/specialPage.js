@@ -80,7 +80,7 @@ function updateDescriptionDiv(){
 var specialPageId = document.getElementById("specialPageId").value;
 var jsObj = {
 	
-	specialPageId : 1,
+	specialPageId : specialPageId,
 
 	task : "eventDescriptionUpdate"
 
@@ -190,6 +190,10 @@ function callAjax(jsObj,url){
 			else if(jsObj.task == "boothsInTehsilOrMunicipality")
 			{ 
                buildResults(myResults,"villageDiv");
+			}
+			else if(jsObj.task == "addMetaInformation")
+			{ 
+				showSuccessOfAddMetaInfo(myResults);
 			}
 
 	}
@@ -405,6 +409,9 @@ if(document.getElementById('newsGallaryDiv').style.display = 'block')
 
 if(document.getElementById('createNewDiv').style.display = 'block')
 	document.getElementById('createNewDiv').style.display = 'none';
+
+if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
 
 if(document.getElementById("videoGallaryDiv").style.display = 'none')
 	document.getElementById("videoGallaryDiv").style.display = 'block' ;
@@ -837,6 +844,9 @@ if(document.getElementById('descriptionDiv').style.display = 'block')
 
 if(document.getElementById('createNewDiv').style.display = 'block')
 	document.getElementById('createNewDiv').style.display = 'none';
+
+if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
 
 if(document.getElementById('newsGallaryDiv').style.display = 'none')
 	document.getElementById('newsGallaryDiv').style.display = 'block';
@@ -2316,6 +2326,9 @@ function buildCreateNewDiv()
 	if(document.getElementById("createNewDiv").style.display = 'none')
 		document.getElementById("createNewDiv").style.display = 'block' ;
 
+	if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
+
 	
 	var createNewDivElmt = document.getElementById("createNewDiv");
 	var str ='';
@@ -2802,19 +2815,129 @@ function getDistricts1(stateId){
 }
 
  function getAllDetails(id,task,areaType,constId)
-   {
-        var jsObj =
+{
+	var jsObj =
+	{ 
+		time : timeST,
+		id:id,
+		task:task,
+		taskType:"",
+		selectElementId:"",
+		address:"",
+		areaType:areaType,
+		constId:constId
+	};
+ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+ var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+ callAjax(jsObj,url);
+}
+
+function buildMetaInfoDiv()
+{
+
+	if(document.getElementById('descriptionDiv').style.display = 'block')
+		document.getElementById('descriptionDiv').style.display = 'none' ;
+
+	if(document.getElementById('newsGallaryDiv').style.display = 'block')
+	document.getElementById('newsGallaryDiv').style.display = 'none';
+
+	if(document.getElementById("videoGallaryDiv").style.display = 'block')
+		document.getElementById("videoGallaryDiv").style.display = 'none' ;
+
+	if(document.getElementById("createNewDiv").style.display = 'block')
+		document.getElementById("createNewDiv").style.display = 'none' ;
+
+	if(document.getElementById("metaInfoDiv").style.display = 'none')
+		document.getElementById("metaInfoDiv").style.display = 'block' ;
+
+	
+	var metaInfoDivElmt = document.getElementById("metaInfoDiv");
+	var str ='';
+	str +='<div id="content" style="width:650px;">';
+		
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<h2 align="center">Add Meta Information</h2>';
+	
+	str += '<div id="metaInfoInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
+	
+	str += '<table align="left" class="paddingCss"><tr><td><div id="metaInfoErrorMsgDivId"></div></td></tr></table>';
+
+	str += '<table width="95%">';
+	str += '<tr><td><b><font color="#4B74C6">Meta Keywords<font class="requiredFont">*</font></font></b></td><td><textarea id="metaKeywordsId" cols="25" rows="5" name="requirement"></textarea></td></tr>';
+
+	str += '<tr><td><b><font color="#4B74C6">Meta Description<font class="requiredFont">*</font></font></b></td><td><textarea id="metaDescriptionId" cols="25" rows="5" name="requirement"></textarea></td></tr>';
+
+	str += '<table><tr><td style="padding-right:10px"><input type="button" class="imageButton" value="Add Meta Info" style="background-color:#57B731" onClick="addMetaInfo()"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearFieldsOfMetaInfoDiv()" style="background-color:#CF4740"></td></tr></table>';
+	
+	str += '</fieldset>';
+	str +='</div>';
+	
+	metaInfoDivElmt.innerHTML = str;
+}
+
+function addMetaInfo()
+{
+	var keywords	= document.getElementById('metaKeywordsId').value;
+	var description	= document.getElementById('metaDescriptionId').value;
+	var specialPageId = document.getElementById("specialPageId").value;
+	var errorDivEle = document.getElementById('metaInfoErrorMsgDivId');
+	var eFlag = false;
+
+	var str = '<font color="red">';
+
+	if(specialPageId.length == 0)
+	{
+		str += 'Special Page Id Required<br>';
+		eFlag = true;
+	}
+	if(keywords.length == 0)
+	{
+		str += 'Meta Keywords are Required<br>';
+		eFlag = true;
+	}
+	if(description.length == 0)
+	{
+		str += 'Meta Description Required<br>';
+		eFlag = true;
+	}
+		
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	
+	if(eFlag)
+		return;
+	
+	var jsObj =
 		{ 
-            time : timeST,
-			id:id,
-			task:task,
-			taskType:"",
-			selectElementId:"",
-			address:"",
-			areaType:areaType,
-			constId:constId
+            keywords	: keywords,
+		    description	: description,
+			specialPageId : specialPageId,
+			task		: "addMetaInformation"
 		};
-	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
-	 callAjax(jsObj,url);
-   }
+
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "createNewEventGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function showSuccessOfAddMetaInfo(result)
+{
+	var errorDivEle = document.getElementById('metaInfoErrorMsgDivId');
+	var str = '';
+
+	if(result.resultCode == 0)
+	{
+		str += '<font color="Green">Meta Information Added SuccessFully</font>';
+		clearFieldsOfMetaInfoDiv();
+	}
+	else 
+		str += '<font color="red">Meta Information Not Added, Try Again</font>';
+	errorDivEle.innerHTML = str;
+}
+
+function clearFieldsOfMetaInfoDiv()
+{
+	document.getElementById('metaKeywordsId').value = '';
+	document.getElementById('metaDescriptionId').value = '';
+}

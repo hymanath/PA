@@ -7,6 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${specialPageVO.title}</title>
+<s:if test="metaInfoVO != null && metaInfoVO.keywords != null">
+<META NAME="Keywords" CONTENT="${metaInfoVO.keywords}"/>
+</s:if>
+<s:if test="metaInfoVO != null && metaInfoVO.description != null">
+<meta name="description" content="${metaInfoVO.description}"/>
+</s:if>
+<meta property="fb:app_id" content="167844749984003"/>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
 <style type="text/css">#videogallery a#videolb{display:none}</style>

@@ -189,7 +189,6 @@ font-size:18px;
 	width : 230px;
 }
 </style>
-
 </head>
 <body>
 	<div id='profileManagementMainOuterDiv'>
@@ -234,7 +233,7 @@ font-size:18px;
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick=""></b></td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Development Activity" id="developmentGalleryId" onClick=""></b> </td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Event Description" id="profileGalleryId" onClick="insertProfileDiscription()"></b> </td>
 					 </tr>
 					</table>
@@ -300,6 +299,9 @@ font-size:18px;
 	</div>
 
 	<div id='createNewDiv' class="divInfo">
+	</div>
+
+	<div id='metaInfoDiv' class="divInfo">
 	</div>
 
 	<!-- for  body 2 end    result  -->
