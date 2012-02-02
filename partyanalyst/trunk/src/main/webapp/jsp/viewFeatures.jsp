@@ -65,6 +65,8 @@
 <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
 
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
