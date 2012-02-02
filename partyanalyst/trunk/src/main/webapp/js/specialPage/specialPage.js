@@ -1657,8 +1657,8 @@ function showFirstFourNewsRecords(results)
      initialFileIdArray[i]=results[i].fileId;
      str+='<a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
 	 
-	 if(results[i].fileTitle1.length > 30)
-		str +='<li><strong>'+results[i].fileTitle1.substring(0,30)+'..</strong>';
+	 if(results[i].fileTitle1.length > 40)
+		str +='<li><strong>'+results[i].fileTitle1.substring(0,40)+'..</strong>';
 	 else
 		str +='<li><strong>'+results[i].fileTitle1+'</strong>';;
 
@@ -2432,13 +2432,13 @@ function validateEmailField()
 	 if(!emailIdVal.match(emailExp))
 	 {
 
-		document.getElementById("alertMsg").innerHTML = '<font color="red">Please enter valid Email</font>';
+		document.getElementById("alertMsg").innerHTML = '<font color="red">Please Enter Valid Email</font>';
 		return;
 	 }
  }
  else
  {
-	document.getElementById("alertMsg").innerHTML ='<font color="red">Please enter Email id</font>';  
+	document.getElementById("alertMsg").innerHTML ='<font color="red">Please Enter Valid Email</font>';  
 	return;
  }
 
