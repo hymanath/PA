@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -127,4 +128,10 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getNewsGalleryByUserIdFromUserGallery(Long userId);
 	 	 
 	 public String getLocationDetails(Long scope,Long locationValue);
+	 
+	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate);
+	 
+	 public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType);
+	 
+	 public List<CandidateCommentsVO> getUserMessages(Long candidateId);
 }
