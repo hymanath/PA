@@ -37,6 +37,7 @@ public class SpecialPage extends BaseModel implements java.io.Serializable{
 	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
 	private Set<SpecialPageUpdatesEmail> specialPageUpdatesEmails = new HashSet<SpecialPageUpdatesEmail>(0);
 	private Set<SpecialPageCustomPages> specialPageCustomPages = new HashSet<SpecialPageCustomPages>(0);
+	private Set<SpecialPageMetaInfo> specialPageMetaInfo = new HashSet<SpecialPageMetaInfo>(0);
 	
 	public SpecialPage()
 	{}
@@ -166,6 +167,16 @@ public class SpecialPage extends BaseModel implements java.io.Serializable{
 	public void setSpecialPageCustomPages(
 			Set<SpecialPageCustomPages> specialPageCustomPages) {
 		this.specialPageCustomPages = specialPageCustomPages;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specialPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<SpecialPageMetaInfo> getSpecialPageMetaInfo() {
+		return specialPageMetaInfo;
+	}
+
+	public void setSpecialPageMetaInfo(Set<SpecialPageMetaInfo> specialPageMetaInfo) {
+		this.specialPageMetaInfo = specialPageMetaInfo;
 	}
 	
 }
