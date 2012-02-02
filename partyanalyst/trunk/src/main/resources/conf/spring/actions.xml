@@ -827,4 +827,8 @@
 	<bean id="contentManagementAction" class="com.itgrids.partyanalyst.web.action.ContentManagementAction" singleton="false">
 		<property name="contentManagementService" ref="contentManagementService"/>		
 	</bean>	
+	
+	<bean id="approveMessageAction" class="com.itgrids.partyanalyst.web.action.ApproveMessageAction" singleton="false">
+			<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	</bean>		
 </beans>	
