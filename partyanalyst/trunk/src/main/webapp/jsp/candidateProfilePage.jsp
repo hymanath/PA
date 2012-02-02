@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS</title>
-<META NAME="Keywords" CONTENT="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
-<meta name="description" content="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS">
+<META NAME="Keywords" CONTENT="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS"/>
+<meta name="description" content="${candidateVO.candidateName}'S PROFILE, NEWS, PHOTOS, CONSTITUENCY, ELECTION DETAILS AND ELECTION RESULTS WITH ANALYSIS"/>
 <meta property="fb:app_id" content="167844749984003"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
