@@ -9,6 +9,7 @@
 <script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
@@ -791,6 +792,7 @@ function editNewsDetails(fileId){
  function updateDeleteNews(task,fileId){
  document.getElementById("newsDeleteMessage").innerHTML = "";	
  var timeST = new Date().getTime();	
+   var title ="";
    var description ="" ;
    var sourceId =""  ;
    var languegeId ="" ;
@@ -798,8 +800,12 @@ function editNewsDetails(fileId){
    var newsImportanceId ="" ;
   if(task == "Update")
   {
-   var title  = document.getElementById("fileTitle").value;
+   title  = document.getElementById("fileTitle").value;
    description  = document.getElementById("fileDescription").value;
+   
+   title = removeAllUnwantedCharacters(title);
+   
+   description = removeAllUnwantedCharacters(description);
    
    var sourceEle  = document.getElementById("sourceEdit");
    sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
