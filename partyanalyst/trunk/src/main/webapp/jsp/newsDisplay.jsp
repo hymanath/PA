@@ -130,6 +130,38 @@ position:absolute;
     max-width: 840px;
     padding: 10px;
 }
+textarea {
+    background-color: #FFFFFF;
+    border: 1px solid #5D75A6;
+    color: #000000;
+    font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 78px;
+    padding: 5px 0 5px 0;
+    width: 220px;
+}
+.tdWidth{
+    color: #4B74C6;
+    font-weight: bold;
+	padding-left: 60px;
+}
+.requiredFont {
+    color: red;
+    font-size: 18px;
+}
+
+.imageButton {
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
 </style>
 <script type="text/javascript">
 
@@ -140,7 +172,8 @@ $(document).ready(function(){
   $("#newsSearch").slideUp("fast");
 });
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
-    
+    document.getElementById("newsDeleteMessage").innerHTML = "";
+    var timeST = new Date().getTime();	
 var jsObj=
 	      { 
 		    queryType	:queryType,
@@ -154,6 +187,7 @@ var jsObj=
 			fromDate	:fromDate,
 			toDate		:toDate,
 			title		:title,
+			timeST      :timeST,
 			task		:task
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -264,6 +298,7 @@ function getOtherGraphs(task,fromDate,toDate){
 function getGraphDetails(task,queryType,fromDate,toDate,id,sourceId,languegeId,
 categoryId,newsImportanceId)
 {
+ var timeST = new Date().getTime();	
 	var jsObj=
 	      { 
 		  fromDate		:	fromDate,
@@ -274,7 +309,8 @@ categoryId,newsImportanceId)
 		  sourceId		:	sourceId,
 		  languegeId	:	languegeId,
 		  categoryId	:	categoryId,
-		  newsImportanceId :newsImportanceId, 
+		  newsImportanceId :newsImportanceId,
+          timeST        : timeST,		  
 		  queryType		:queryType
      }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -307,19 +343,29 @@ var callback = {
 			 }
 			else if(jsObj.queryType == "getAllSourceDetails")
 			 {	
-				bildDate(myResults,"source");
+				bildDate(myResults,jsObj.task,jsObj.fileType);
 			 }
 			 else if(jsObj.queryType == "getAllCategoryDetails")
 			 {	
-				bildDate(myResults,"category");
+				bildDate(myResults,jsObj.task,jsObj.fileType);
 			 }
 			 else if(jsObj.queryType == "getAllSourceLanguageDetails")
 			 {	
-				bildDate(myResults,"language");
+				bildDate(myResults,jsObj.task,jsObj.fileType);
 			 }
 			 else if(jsObj.queryType == "getAllNewsImportanceDetails")
 			 {	
-				bildDate(myResults,"importance");
+				bildDate(myResults,jsObj.task,jsObj.fileType);
+			 }
+			 else if(jsObj.task == "Delete")
+			 {
+			    newsSearch();
+				showDeletedMessage(myResults);
+			 }
+			 else if(jsObj.task == "Update")
+			 {
+			    newsSearch();
+				showUpdatedMessage(myResults);
 			 }
 			}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
@@ -333,12 +379,32 @@ var callback = {
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-function bildDate(optionsList,elmtId){
+
+function showDeletedMessage(result){
+  var str='';
+ if(result.resultCode == 0)
+   str += '<font color="green"><b>News Article Deleted Successfully.</b>';
+ else if(result.resultCode == 1)
+  str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+  
+  document.getElementById("newsDeleteMessage").innerHTML = str;
+}
+
+function showUpdatedMessage(result){
+  var str='';
+  if(result.resultCode == 0)
+   str += '<font color="green"><b>News Updated Successfully.</b>';
+  else if(result.resultCode == 1)
+  str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+  
+  document.getElementById("uploadNewsFileErrorDiv").innerHTML = str;
+}
+
+function bildDate(optionsList,elmtId,val){
    var elmt = document.getElementById(elmtId);
 	
 	if( !elmt || optionsList == null)
 		return;
-	
 	for(var i in optionsList)
 	{
 		var option = document.createElement('option');
@@ -352,6 +418,22 @@ function bildDate(optionsList,elmtId){
 		{
 			elmt.add(option); // IE only
 		}
+	}
+	if(elmtId == "sourceEdit")
+	{
+	  document.getElementById("sourceEdit").value = val;
+	}
+	else if(elmtId == "categoryEdit")
+	{
+	  document.getElementById("categoryEdit").value = val;
+	}
+	else if(elmtId == "languageEdit")
+	{
+	  document.getElementById("languageEdit").value = val;
+	}
+	else if(elmtId == "newsimportance")
+	{
+	  document.getElementById("newsimportance").value = val;
 	}
 }
 
@@ -427,6 +509,19 @@ function showNewsDetails(jsObj,result){
 	var fileId = oRecord.getData("fileId");
 	elLiner.innerHTML ="<a href='javascript:{}' onclick='showNews(\""+fileId+"\")'>"+title+"</a>";
   };
+  YAHOO.widget.DataTable.edit = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var user = oData;
+	var fileId= oRecord.getData("fileId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='editNewsDetails("+fileId+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+		
+  };
+  YAHOO.widget.DataTable.delet = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var fileId= oRecord.getData("fileId");
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='updateDeleteNews(\"Delete\","+fileId+");'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
+		
+  };
   var newsResultColumnDefs = [ 		    	             
 		    	            
 							{key:"categoryType", label: "NEWS CATEGORY", sortable: true},
@@ -435,8 +530,9 @@ function showNewsDetails(jsObj,result){
 							{key:"description", label: "DESCRIPTIONS", sortable: true},
 		    				{key:"locationScopeValue", label: "IMPACT AREA",sortable:true},
 							{key:"locationValue", label: "AREA NAME", sortable: true},
-							{key:"fileDate", label: "NEWS DATE", sortable: true}
-							
+							{key:"fileDate", label: "NEWS DATE", sortable: true},
+							{key:"edit", label: "EDIT",formatter:YAHOO.widget.DataTable.edit},
+							{key:"delete", label: "DELETE",formatter:YAHOO.widget.DataTable.delet}
 		    	        ]; 
 	var newsResultDataSource = new YAHOO.util.DataSource(result); 
 	
@@ -453,7 +549,7 @@ function showNewsDetails(jsObj,result){
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate","fileId"]
+						 fields : [ "categoryType","source","fileTitle1","description","locationScopeValue","locationValue","fileDate","fileId","edit","delete"]
 					};
 
 		var newsResultDataSource = new YAHOO.widget.DataTable("showNews", newsResultColumnDefs,myDataSource, myConfigs);
@@ -463,7 +559,7 @@ function showNews(fileId)
 {	
 	 $.fx.speeds._default = 1000;
 	  $("#showNewsOuterDiv").dialog({ stack: false,
-								height: 'auto',
+								height: 500,
 								width: 950,
 								closeOnEscape: true,
 								position:[30,30],
@@ -628,7 +724,119 @@ function displayNews(fileId)
 		ajaxCount = 0;
 	}
  }
-
+function editNewsDetails(fileId){
+  $("#editNewsOuter").dialog({ stack: false,
+							    height: 380,
+								width: 700,
+								position:[150,120],								
+								modal: true,
+								title:'Edit News Details',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#editNewsOuter").dialog();
+	var str= '';
+	
+	var str ='';
+	str+='<div>';
+	str += '<fieldset>';
+	
+	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"  style="padding-left:40px;" /></td></tr></table>';
+	str += '<table>';
+    str += '   <tr>';
+	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
+	str += '       <td><input type="text" id="fileTitle" size="25" maxlength="100"></text></td>'; 
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
+	str += '       <td><textarea id="fileDescription" cols="20" rows="3"></textarea></td>';
+	str += '   </tr>';
+	
+	str += '   <tr>';
+	str += '       <td class="tdWidth">Source<font class="requiredFont">*</font></td>';
+	str += '  <td><select id="sourceEdit" style="width:222px;"></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth">Language<font class="requiredFont">*</font></td>';
+	str += '  <td><select id="languageEdit" style="width:222px;"></select></td>';
+	str += '   </tr>';
+	str += '       <td class="tdWidth">Category<font class="requiredFont">*</font></td>';
+	str += '  <td><select id="categoryEdit" style="width:222px;"></select></td>';
+	str += '   </tr>';
+	str += '   </tr>';
+	str += '       <td class="tdWidth">News Importance<font class="requiredFont">*</font></td>';
+	str += '       <td><select id="newsimportance" style="width:222px;"></select></td>';
+	str += '   </tr>';
+	str += '</table>';
+	str += '<div style="padding-left:223px;padding-top:10px;"> <input type="button" value="Update" class="imageButton" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
+	str += '</fieldset>';
+	str+='</div>';
+	document.getElementById("editNewsInner").innerHTML = str;
+		
+	
+	
+	for(var i in newsDetails){
+	  if(newsDetails[i].fileId == fileId)
+	  {
+	    document.getElementById("fileTitle").value = newsDetails[i].fileTitle1;
+		document.getElementById("fileDescription").value = newsDetails[i].description;
+		getNews("sourceEdit","getAllSourceDetails",newsDetails[i].sourceId,"","","","","","","","","");
+        getNews("categoryEdit","getAllCategoryDetails",newsDetails[i].categoryId,"","","","","","","","","");
+        getNews("languageEdit","getAllSourceLanguageDetails",newsDetails[i].languegeId,"","","","","","","","","");
+        getNews("newsimportance","getAllNewsImportanceDetails",newsDetails[i].newsImportanceId,"","","","","","","","","");
+		
+	  }
+	}
+ }
+ 
+ function updateDeleteNews(task,fileId){
+ document.getElementById("newsDeleteMessage").innerHTML = "";	
+ var timeST = new Date().getTime();	
+   var description ="" ;
+   var sourceId =""  ;
+   var languegeId ="" ;
+   var categoryId ="" ;
+   var newsImportanceId ="" ;
+  if(task == "Update")
+  {
+   var title  = document.getElementById("fileTitle").value;
+   description  = document.getElementById("fileDescription").value;
+   
+   var sourceEle  = document.getElementById("sourceEdit");
+   sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
+   
+   var languegeEle = document.getElementById("languageEdit");
+   languegeId = languegeEle.options[languegeEle.selectedIndex].value;
+   
+   var categoryEle = document.getElementById("categoryEdit");
+   categoryId = categoryEle.options[categoryEle.selectedIndex].value;
+   
+   var newsImportanceEle = document.getElementById("newsimportance");
+   newsImportanceId = newsImportanceEle.options[newsImportanceEle.selectedIndex].value;
+  }
+  if(task == "Delete")
+  {
+    var r = confirm("Do you want to delete this news article");
+      if (r == false)
+       return;  
+  
+  }
+   var jsObj=
+	      { 
+		  title		       :	title,
+		  description	   :	description,
+		  task			   :	task,
+		  sourceId		   :	sourceId,
+		  languegeId	   :	languegeId,
+		  categoryId	   :	categoryId,
+		  fileId           :    fileId,
+		  timeST           :    timeST,
+		  newsImportanceId :    newsImportanceId
+     }
+	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+      var url = "updateDeleteNewsAction.action?"+rparam;						
+      callAjax(jsObj,url);
+ 
+ }
 </script>
 </head>
 <body>
@@ -715,7 +923,9 @@ function displayNews(fileId)
   <center><div id="sourceGraphDiv" style="position:inherit;"></div></center>
   <center><div id="languageGraphDiv" style="position:inherit;"></div></center>
   <center><div id="newsImportantGraphDiv" style="position:inherit;"></div></center>
-  
+  <tr><td>
+  <div id="newsDeleteMessage"></div>
+  </td></tr>
  <tr> 
    <td>
 	<table width="100%" style="padding-top:15px;" cellpadding="0" cellspacing="0">
@@ -738,15 +948,17 @@ function displayNews(fileId)
 </table>
 </fieldset>
 </div>
-
+<div id="editNewsOuter">
+  <div id="editNewsInner"></div>
+</div>
 <script type="text/javascript">
 getNews("byTodayDate","getCount","All","","","","","","","","","");
 getNews("byTodayDate","getNews","All","","","","","","","Today","","");
 getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv","","","","");
-getNews("","getAllSourceDetails","","","","","","","","","","");
-getNews("","getAllCategoryDetails","","","","","","","","","","");
-getNews("","getAllSourceLanguageDetails","","","","","","","","","","");
-getNews("","getAllNewsImportanceDetails","","","","","","","","","","");
+getNews("source","getAllSourceDetails","","","","","","","","","","");
+getNews("category","getAllCategoryDetails","","","","","","","","","","");
+getNews("language","getAllSourceLanguageDetails","","","","","","","","","","");
+getNews("importance","getAllNewsImportanceDetails","","","","","","","","","","");
 </script>
 </body>
 </html>
