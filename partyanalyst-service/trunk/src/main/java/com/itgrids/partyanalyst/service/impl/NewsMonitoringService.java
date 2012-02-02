@@ -14,7 +14,10 @@ import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.NewsImportance;
@@ -22,6 +25,7 @@ import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class NewsMonitoringService implements INewsMonitoringService {
 	
@@ -32,7 +36,8 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ICategoryDAO categoryDAO;
     private ISourceLanguageDAO sourceLanguageDAO;
     private INewsImportanceDAO newsImportanceDAO;
-      
+    private FileDAO fileDAO;
+    
     public IFileGallaryDAO getFileGallaryDAO() {
 	          return fileGallaryDAO;
       }
@@ -81,6 +86,14 @@ public class NewsMonitoringService implements INewsMonitoringService {
 
 	public void setSourceLanguageDAO(ISourceLanguageDAO sourceLanguageDAO) {
 		this.sourceLanguageDAO = sourceLanguageDAO;
+	}
+
+	public FileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(FileDAO fileDAO) {
+		this.fileDAO = fileDAO;
 	}
 
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs){
@@ -341,7 +354,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		   convertMapToList(completeData,returnVal);
 	   }
 	   catch(Exception e){
-		   log.debug("Exception rised in getCategoryCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   log.error("Exception rised in getCategoryCountDetailsForGraph Method of NewsMonitoringService ",e);
 		   e.printStackTrace();
 	   }
 		 return returnVal;
@@ -408,7 +421,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		   convertMapToList(completeData,returnVal);
 	   }
 	   catch(Exception e){
-		   log.debug("Exception rised in getSourceCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   log.error("Exception rised in getSourceCountDetailsForGraph Method of NewsMonitoringService ",e);
 		   e.printStackTrace();
 	   }
 		 return returnVal;
@@ -452,7 +465,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		   convertMapToList(completeData,returnVal);
 	   }
 	   catch(Exception e){
-		   log.debug("Exception rised in getLanguageCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   log.error("Exception rised in getLanguageCountDetailsForGraph Method of NewsMonitoringService ",e);
 		   e.printStackTrace();
 	   }
 		 return returnVal;
@@ -496,9 +509,47 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		   convertMapToList(completeData,returnVal);
 	   }
 	   catch(Exception e){
-		   log.debug("Exception rised in getNewsImpCountDetailsForGraph Method of NewsMonitoringService ",e);
+		   log.error("Exception rised in getNewsImpCountDetailsForGraph Method of NewsMonitoringService ",e);
 		   e.printStackTrace();
 	   }
 		 return returnVal;
+	 }
+	 
+	 public ResultStatus updateDeleteNews(FileVO fileVO,String task){
+		 if(log.isDebugEnabled())
+			 log.debug("Enter into updateDeleteNews Method of NewsMonitoringService ");
+		 ResultStatus resultStatus = new ResultStatus();
+	  try{ 
+		 if(task.equalsIgnoreCase("Update")){
+			 File file = fileDAO.get(fileVO.getFileId());
+			 Source source = sourceDAO.get(fileVO.getSourceId());
+			 Category category = categoryDAO.get(fileVO.getCategoryId());
+			 SourceLanguage sourceLanguage = sourceLanguageDAO.get(fileVO.getLanguegeId());
+			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
+			 
+			 file.setFileTitle(fileVO.getTitle());
+			 file.setFileDescription(fileVO.getDescription());
+			 file.setSourceObj(source);
+			 file.setCategory(category);
+			 file.setLanguage(sourceLanguage);
+			 file.setNewsImportance(newsImportance);
+			 
+			 fileDAO.save(file);
+			 DateUtilService dateUtilService = new DateUtilService();
+			 fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
+			 
+		 }
+		 else if(task.equalsIgnoreCase("Delete")){
+			 fileGallaryDAO.deleteFile(fileVO.getFileId());
+		 }
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	  }
+	  catch(Exception e){
+		  log.error("Exception rised in updateDeleteNews Method of NewsMonitoringService ",e);
+		   e.printStackTrace();
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	  }
+	  
+	  return resultStatus;
 	 }
 }
