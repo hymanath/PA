@@ -61,7 +61,7 @@
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 98%;">
 Punjab Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><b>Major Parties In the State  :</b><br>
+<td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br>
 		   
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=794">SAD</a> &nbsp;&nbsp;
@@ -75,7 +75,7 @@ Punjab Assembly Previous Election Results</h3>
 
 
 <tr><td colspan="7"> <br />
-<b>Previous Punjab Assembly Elections Results :</b><br /><br />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Punjab Assembly Elections Results </span></b><br /><br />
 <img src="images/icons/diamond.png">
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=136&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -98,7 +98,7 @@ Punjab Assembly Previous Election Results</h3>
 
 <tr><td colspan="7">
 <BR />
-<b>2012 PUNJAB ASSEMBLY SURVEY RESULTS:</b><BR />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><BR />
 <table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
             <tbody><tr>
 			<td>Source</td>

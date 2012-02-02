@@ -2,9 +2,14 @@
     pageEncoding="ISO-8859-1"%>
 
 	
-<div style="font-size:13px;font-weight:bold;"> Select District :</div>
+<div class="selectHeading">
+	<span class="selectDivStyle">UttarPradesh Districts</span>
+	<span style="margin-left: 12px;">Know About Your District</span>
+
 <select class="selectBoxWidth" id="districtList_d" name="district">
-<option value="185">Agra </option><option value="182">Aligarh</option>
+<option value="0">Select  District</option>
+<option value="185">Agra </option>
+<option value="182">Aligarh</option>
 <option value="215">Allahabad</option>
  <option value="218">Ambedkar Nagar</option>
  <option value="202">Auraiya</option>
@@ -17,15 +22,74 @@
  <option value="216">Barabanki</option>
  <option value="190">Bareilly</option>
  <option value="225">Basti</option>
- 
- <option value="173">Bijnor</option>
- <option value="189">Budaun</option><option value="181">Bulandshahar</option><option value="236">Chandauli</option><option value="211">Chitrakoot</option><option value="230">Deoria</option><option value="187">Etah</option><option value="201">Etawah</option><option value="217">Faizabad</option><option value="199">Farrukhabad</option><option value="212">Fatehpur</option><option value="186">Firozabad</option><option value="180">Gautam Buddha Nagar</option><option value="179">Ghaziabad</option><option value="235">Ghazipur</option><option value="223">Gonda</option><option value="228">Gorakhpur</option><option value="208">Hamirpur</option><option value="195">Hardoi</option><option value="183">Hathras</option><option value="205">Jalaun</option><option value="234">Jaunpur</option><option value="206">Jhansi</option><option value="176">Jyotiba Phule Nagar</option><option value="200">Kannauj</option><option value="203">Kanpur Dehat</option><option value="204">Kanpur Nagar</option><option value="214">Kaushambi</option><option value="193">Kheri</option><option value="229">Kushinagar</option><option value="207">Lalitpur</option><option value="197">Lucknow</option><option value="209">Mahoba</option><option value="227">Mahrajganj</option><option value="188">Mainpuri</option><option value="184">Mathura</option><option value="232">Mau</option><option value="177">Meerut</option><option value="239">Mirzapur</option><option value="174">Moradabad</option><option value="172">Muzaffarnagar</option><option value="191">Pilibhit</option><option value="213">Pratapgarh</option><option value="198">Rae Bareli</option><option value="175">Rampur</option><option value="171">Saharanpur</option><option value="226">Sant Kabir Nagar</option><option value="238">Sant Ravidas Nagar Bhadohi</option><option value="192">Shahjahanpur</option><option value="221">Shrawasti</option><option value="224">Siddharthnagar</option><option value="194">Sitapur</option><option value="240">Sonbhadra</option><option value="219">Sultanpur</option><option value="196">Unnao</option><option value="237">Varanasi</option></select>
+  <option value="173">Bijnor</option>
+ <option value="189">Budaun</option>
+ <option value="181">Bulandshahar</option>
+<option value="236">Chandauli</option>
+<option value="211">Chitrakoot</option>
+<option value="230">Deoria</option>
+<option value="187">Etah</option>
+<option value="201">Etawah</option>
+<option value="217">Faizabad</option>
+<option value="199">Farrukhabad</option>
+<option value="212">Fatehpur</option>
+<option value="186">Firozabad</option>
+<option value="180">Gautam Buddha Nagar</option>
+<option value="179">Ghaziabad</option>
+<option value="235">Ghazipur</option>
+<option value="223">Gonda</option>
+<option value="228">Gorakhpur</option>
+<option value="208">Hamirpur</option>
+<option value="195">Hardoi</option>
+<option value="183">Hathras</option>
+<option value="205">Jalaun</option>
+<option value="234">Jaunpur</option>
+<option value="206">Jhansi</option>
+<option value="176">Jyotiba Phule Nagar</option>
+<option value="200">Kannauj</option>
+<option value="203">Kanpur Dehat</option>
+<option value="204">Kanpur Nagar</option>
+<option value="214">Kaushambi</option>
+<option value="193">Kheri</option>
+<option value="229">Kushinagar</option>
+<option value="207">Lalitpur</option>
+<option value="197">Lucknow</option>
+<option value="209">Mahoba</option>
+<option value="227">Mahrajganj</option>
+<option value="188">Mainpuri</option>
+<option value="184">Mathura</option>
+<option value="232">Mau</option>
+<option value="177">Meerut</option>
+<option value="239">Mirzapur</option>
+<option value="174">Moradabad</option>
+<option value="172">Muzaffarnagar</option>
+<option value="191">Pilibhit</option>
+<option value="213">Pratapgarh</option>
+<option value="198">Rae Bareli</option>
+<option value="175">Rampur</option>
+<option value="171">Saharanpur</option>
+<option value="226">Sant Kabir Nagar</option>
+<option value="238">Sant Ravidas Nagar Bhadohi</option>
+<option value="192">Shahjahanpur</option>
+<option value="221">Shrawasti</option>
+<option value="224">Siddharthnagar</option>
+<option value="194">Sitapur</option>
+<option value="240">Sonbhadra</option>
+<option value="219">Sultanpur</option>
+<option value="196">Unnao</option>
+<option value="237">Varanasi</option>
+</select>
+<div id="alertMessage_district"></div>
 
 <div class="view-results"><a onclick="navigateToDistrictPage()" href="javascript:{}">view results</a></div>
 
-
-<div style="font-size:13px;font-weight:bold;">
-Select Constituency : <select class="selectBoxWidth" id="constituency" name="constituency">
+</div>
+<div class="selectHeading">
+	<span class="selectDivStyle">UttarPradesh Constituencies</span>
+	<span style="margin-left: 12px;">Know About Your Constituency</span>
+	
+	<select class="selectBoxWidth" id="constituency" name="constituency">
+<option value="0">Select Constituency</option>
 <option value="38933">Afzalgarh</option>
 <option value="39297">Agota</option>
 <option value="39271">Agra Cantonment</option>
@@ -453,6 +517,8 @@ Select Constituency : <select class="selectBoxWidth" id="constituency" name="con
 <option value="39143">Zahoorabad</option>
 <option value="39146">Zamania</option></select>
 
-<div class="view-results"><a onclick="navigateToConstituencyPage()" href="javascript:{}">view results</a></div>
-</div>
 <div id="alertMessage"></div>
+
+<div class="view-results">
+<a onclick="navigateToConstituencyPage()" href="javascript:{}">view results</a></div>
+</div>
