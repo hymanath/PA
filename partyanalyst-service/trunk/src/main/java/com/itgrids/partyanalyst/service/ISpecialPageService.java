@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
@@ -57,4 +58,8 @@ public interface ISpecialPageService {
 	public ResultStatus createNewSpecialPage(GallaryVO gallaryVO);
 	
 	public List<FileVO> getSpecialPageGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type);
+	
+	public MetaInfoVO getMetaInfoForASpecialPage(Long specialPageId);
+	
+	public ResultStatus saveMetaInfoForASpecialPage(MetaInfoVO metaInfoVO);
 }

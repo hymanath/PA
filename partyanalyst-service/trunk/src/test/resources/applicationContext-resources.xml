@@ -242,12 +242,17 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
 				<value>com.itgrids.partyanalyst.model.Category</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="specialPageMetaInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageMetaInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="partyElectionResultsWithGenderAnalysisDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultsWithGenderAnalysisDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
