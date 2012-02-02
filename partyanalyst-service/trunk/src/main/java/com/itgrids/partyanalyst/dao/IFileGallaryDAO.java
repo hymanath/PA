@@ -64,4 +64,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getDetailsForLanguage(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
     
     public List<Object[]> getDetailsForNewsImportance(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
+    
+    public void updateFileDate(Date updateDt,Long fileId);
+    
+    public void deleteFile(Long fileId);
 }
