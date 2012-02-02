@@ -186,6 +186,11 @@
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="specialPageManageAction"/>'><b>Special Page Management</b></a></h4></center>
                                     </fieldset>
                                 </td>
+								 <td> <fieldset class="f2">
+                                    <legend class="l2">Candidate Message Approve</legend>
+                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="approveMessageAction"/>'><b>Approve Message</b></a></h4></center>
+                                    </fieldset>
+                                </td>
 							<tr>
 
 							</tr>
