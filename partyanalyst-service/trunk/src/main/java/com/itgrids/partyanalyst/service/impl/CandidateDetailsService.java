@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -1226,6 +1227,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		candidate.setName(gallaryVO.getGallaryName());
 		candidate.setCandidate(candidate2);
 		candidate.setConstituency(constituency);
+		candidate.setIsApproved(IConstants.FALSE);
+		candidate.setIsDelete(IConstants.FALSE);
+		candidate.setTime(dateUtilService.getCurrentDateAndTime());
 		candidate.setMessage(gallaryVO.getDescription());
 			messageToCandidateDAO.save(candidate);
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -2124,4 +2128,127 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 }
 	    return " ";
    }
+ public List<CandidateCommentsVO> getMessages(String fromDate, String toDate)
+ {
+	 List<CandidateCommentsVO> candidateComments = null;
+	 if(log.isDebugEnabled())
+		 log.debug("getMessages()method ......");
+		try{
+			candidateComments = new ArrayList<CandidateCommentsVO>();
+			
+			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			List comments = messageToCandidateDAO.getAllOpenedMessages(firstDate, secondDate);			
+			
+			return commentsDetailsFromList(comments);
+			
+		}catch(Exception e){				
+			return candidateComments;
+		}
+ }
+ public List<CandidateCommentsVO> commentsDetailsFromList(List comments)
+	{
+		List<CandidateCommentsVO> commentsList = null;
+		 if(log.isDebugEnabled())
+			 log.debug("commentsDetailsFromList()method ......");
+		
+		if(comments != null || comments.size() > 0)
+		{
+			commentsList = new ArrayList<CandidateCommentsVO>();
+			for (int i = 0; i < comments.size(); i++)
+			{
+				CandidateCommentsVO comment = new CandidateCommentsVO();
+				Object[] params = (Object[])comments.get(i);
+				comment.setCandidate(params[0].toString());
+				comment.setPostedBY(params[1].toString());
+				comment.setMessage(params[2].toString());
+				comment.setConstituency(params[3].toString());
+				if(params[4].toString().equalsIgnoreCase(IConstants.TRUE))
+					comment.setStatus(IConstants.APPROVED);
+				if(params[4].toString().equalsIgnoreCase(IConstants.FALSE))
+					comment.setStatus(IConstants.NEW);
+				if(params[4] == null)
+					comment.setStatus(IConstants.REJECT);
+				comment.setMessageToCandidateId((Long)params[5]);
+				
+	            commentsList.add(comment);
+				
+			}
+		}			
+		
+		return commentsList;
+	}
+ public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType)
+ {
+		String isApproved = IConstants.FALSE;
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try {
+			if(log.isDebugEnabled())
+				log.debug("Enterd into controlMessages in candidate details service");
+			
+			if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+				isApproved = IConstants.TRUE;
+			
+			else if(actionType.equalsIgnoreCase(IConstants.REJECTED))
+				isApproved = IConstants.FALSE;
+			
+           for(int i=0; i<VO.size();i++)
+           {
+        	   CandidateCommentsVO ccv = (CandidateCommentsVO)VO.get(i);
+        	   Long id = ccv.getMessageToCandidateId();
+        	   String message = ccv.getMessage();
+        	   messageToCandidateDAO.controlMessages(id, message, isApproved);
+        	   
+        	   
+           }
+           resultStatus.setResultState(1l);
+			
+		} catch (Exception e) {
+			if(log.isDebugEnabled())
+				log.error("Exception in controlMessages in candidate details service");
+			 resultStatus.setResultState(0l);
+			 resultStatus.setExceptionEncountered(e);
+		}
+		return resultStatus;
+ }
+ 
+		public List<CandidateCommentsVO> getUserMessages(Long candidateId)
+		{
+		
+
+		   try{
+			   if(log.isDebugEnabled())
+				   log.debug("entered into getUserMessages()in CandidateDetailsService");
+			   List<Object[]> list= messageToCandidateDAO.getUserMessages(candidateId);
+			   List<CandidateCommentsVO> userlist=null;
+			   if(list!=null && list.size()>0)
+			   {
+
+                     userlist= new ArrayList<CandidateCommentsVO>(0);
+                     CandidateCommentsVO candidateCommentsVO = null;
+                     for(Object[] params:list)
+                     {
+                    	 candidateCommentsVO = new CandidateCommentsVO();
+                    	 
+                    	 candidateCommentsVO.setUserName(params[0].toString());
+                    	 candidateCommentsVO.setMessage(params[1].toString());
+                    	 candidateCommentsVO.setConstituency(params[2].toString());
+                    	 candidateCommentsVO.setTime(params[3].toString().substring(0,19));
+                    	 userlist.add(candidateCommentsVO);
+                     }
+                     
+			   }
+			   return userlist;
+			   
+		   }catch(Exception e){
+			   log.error("Exception in getUserMessages()of CandidateDetailsService");
+			   return null;
+			   
+		   }
+		}
+	 
 }
+	
+ 
+
