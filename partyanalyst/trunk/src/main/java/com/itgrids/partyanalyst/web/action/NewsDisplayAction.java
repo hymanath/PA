@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
@@ -30,6 +32,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private JSONObject jObj;
 	private List<FileVO> returnVal;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private ResultStatus resultStatus;
 	
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
@@ -60,9 +63,16 @@ public class NewsDisplayAction implements ServletRequestAware{
 
 	public void setTask(String task) {
 		this.task = task;
+	}	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
 	}
-	
-	
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public String execute(){
 		
 		return Action.SUCCESS;
@@ -295,4 +305,30 @@ public class NewsDisplayAction implements ServletRequestAware{
 	  }
 		 return Action.SUCCESS;
 	 }
+   public String updateDeleteNews(){
+	   if(log.isDebugEnabled())
+			log.debug("Enter into updateDeleteNews Method of NewsDisplayAction ");
+	   try{ 
+		    jObj = new JSONObject(getTask()); 
+		   FileVO fileVO = new FileVO();
+		   if(jObj.getString("task").trim().equalsIgnoreCase("Update"))
+		   { 
+		    fileVO.setTitle(jObj.getString("title"));
+		    fileVO.setDescription(jObj.getString("description"));
+		    fileVO.setSourceId(jObj.getLong("sourceId"));
+		    fileVO.setLanguegeId(jObj.getLong("languegeId"));
+		    fileVO.setCategoryId(jObj.getLong("categoryId"));
+		    fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
+		   } 
+		    
+		    fileVO.setFileId(jObj.getLong("fileId"));
+		    resultStatus = newsMonitoringService.updateDeleteNews(fileVO,jObj.getString("task").trim());
+	    }
+	   catch(Exception e){
+		   log.error("Exception rised in updateDeleteNews Method of NewsDisplayAction ",e); 
+		   resultStatus = new ResultStatus();
+		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	   }
+	   return Action.SUCCESS;
+   }
 }
