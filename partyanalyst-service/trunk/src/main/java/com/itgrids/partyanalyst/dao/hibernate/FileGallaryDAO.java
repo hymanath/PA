@@ -948,4 +948,19 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
   		return queryObject.list(); 
      }
+     public void updateFileDate(Date updateDt,Long fileId){
+    	 Query queryObject = getSession().createQuery("update FileGallary model set model.updateddate = :updateDt where model.file.fileId =:fileId ");
+ 		  queryObject.setDate("updateDt", updateDt);
+ 		  queryObject.setLong("fileId", fileId);
+ 		
+ 		queryObject.executeUpdate();
+     }
+     
+     public void deleteFile(Long fileId){
+    	 Query queryObject = getSession().createQuery("update FileGallary model set model.isDelete = :delInd where model.file.fileId =:fileId ");
+ 		  queryObject.setString("delInd", "true");
+ 		  queryObject.setLong("fileId", fileId);
+ 		
+ 		queryObject.executeUpdate();
+     }
 }
