@@ -98,9 +98,40 @@
     width: 94px;
 }
 .selectBoxWidth{
-	padding:3px;
-	width:188px;
-	margin-top:6px;
+	margin-left: 4px;
+    margin-top: 26px;
+    padding-left: 3px;
+    width: 179px;
+}
+.selectDivStyle {
+   
+    background-color: #21B2ED;
+    color: #FFFFFF;
+    float: left;
+    padding: 4px;
+    width: 179px;
+	 font-weight: bold;
+	 margin-bottom:10px;
+}
+.flagStyle  
+{
+	background:#f0f0f0;float: left;
+	width: 60px;
+	text-align: center;
+	left: 0px;
+	clear:both;
+	bottom: 0px;
+	height: 21px;
+	color: #2A4F97;
+	font-size: 12px;
+    font-weight: bold;
+	font-size: 11px;
+	line-height: 21px;
+
+}
+.selectHeading{
+font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); border-left: 1px solid rgb(205, 205, 205); border-bottom: 1px solid rgb(205, 205, 205); margin-bottom: 16px;
+
 
 }
 	</style>
@@ -214,7 +245,7 @@ var specialPageId = '${specialPageId}';
  alertEl.innerHTML = '';
  if(constSelectElVal == 0)
  {
-	 alertEl.innerHTML = 'Please Select Constituency';
+	 alertEl.innerHTML = '<font color="red">Please Select Constituency</font>';
 	 return;
  }
  window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
@@ -228,7 +259,7 @@ function navigateToDistrictPage()
  var distSelectElText = distSelectEl.options[distSelectEl.selectedIndex].text;
 if(distSelectElVal == 0)
  {
- alertEl.innerHTML = 'Please Select District';
+ alertEl.innerHTML = '<font color="red">Please Select District</font>';
  return;
  }
  else
@@ -311,14 +342,14 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
              <div class="ea-fc-sec">
               <h2 class="ea-fc-title">email alert <span class="blue-down-arrow">
                <img	src="images/icons/candidatePage/blue-down-arrow.png" alt="" /></span></h2>
-                  <div class="ea-fc-cont-sec">Set an email elert to get<br />
+                  <div class="ea-fc-cont-sec">Subscribe an email alert to get<br />
                          updates of<br />
                   <span class="li-red">Event</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
 					onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value=''; document.getElementById('alertMsg').innerHTML = '';" />
 
 			<div id="alertMsg" style="dispaly: none"></div>
 			<div class="pl-sub-but"><a onclick="validateEmailField()"
-				href="javascript:{};"><strong>Set alert</strong></a></div>
+				href="javascript:{};"><strong>Subscribe Alert</strong></a></div>
 
 		</div>
 		</div>
@@ -367,8 +398,8 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
             </div>-->
           
             <!--PHOTO GALLERY SECTION END-->
-          
-		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430"></div>
+          <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On 2012 Assembly Elections</span>
+		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
 		  </div>
           <div class="clear"></div>
           <p></p>
