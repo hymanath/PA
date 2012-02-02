@@ -28,6 +28,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -98,8 +99,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long category;
 	private IPartyDetailsService partyDetailsService;
 	private Long newsimportance;
+	private List<CandidateCommentsVO> candidateCommentsVO;
 	
-	
+	public List<CandidateCommentsVO> getCandidateCommentsVO() {
+		return candidateCommentsVO;
+	}
+
+	public void setCandidateCommentsVO(List<CandidateCommentsVO> candidateCommentsVO) {
+		this.candidateCommentsVO = candidateCommentsVO;
+	}
+
 	public Long getCategory() {
 		return category;
 	}
@@ -721,6 +730,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 {
 			selectOptionList = candidateDetailsService.getNewsImportance();
 		 }
+		else if(jObj.getString("task").equalsIgnoreCase("getUserMessages"))
+		{
+			candidateCommentsVO = candidateDetailsService.getUserMessages(jObj.getLong("candidateId"));
+		}
 		return Action.SUCCESS;
 	}
 	
