@@ -21,11 +21,13 @@ import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageMetaInfoDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -42,6 +44,7 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageDescription;
 import com.itgrids.partyanalyst.model.SpecialPageGallery;
+import com.itgrids.partyanalyst.model.SpecialPageMetaInfo;
 import com.itgrids.partyanalyst.model.SpecialPageUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -81,8 +84,18 @@ public class SpecialPageService implements ISpecialPageService{
 	private List<SelectOptionVO> gallarySelectList;
 	private ICandidateDetailsService candidateDetailsService;
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
+	private ISpecialPageMetaInfoDAO specialPageMetaInfoDAO;
 	
 	
+	public ISpecialPageMetaInfoDAO getSpecialPageMetaInfoDAO() {
+		return specialPageMetaInfoDAO;
+	}
+
+	public void setSpecialPageMetaInfoDAO(
+			ISpecialPageMetaInfoDAO specialPageMetaInfoDAO) {
+		this.specialPageMetaInfoDAO = specialPageMetaInfoDAO;
+	}
+
 	public ISpecialPageCustomPagesDAO getSpecialPageCustomPagesDAO() {
 		return specialPageCustomPagesDAO;
 	}
@@ -898,6 +911,50 @@ public class SpecialPageService implements ISpecialPageService{
 		log.error("Ecxeption Occured in createNewSpecialPage(), Exception is - "+e);
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		return resultStatus;
+		}
+	}
+	
+	public MetaInfoVO getMetaInfoForASpecialPage(Long specialPageId)
+	{
+		MetaInfoVO metaInfoVO = null;
+		try
+		{
+			List<Object[]> list = specialPageMetaInfoDAO.getMetaInfoForASpecialPage(specialPageId);
+			
+			if(list != null && list.size() > 0)
+			{
+				metaInfoVO = new MetaInfoVO();
+				metaInfoVO.setKeywords(list.get(0)[0] != null ? list.get(0)[0].toString() : "");
+				metaInfoVO.setDescription(list.get(0)[1] != null ? list.get(0)[1].toString() : "");
+			}
+			return metaInfoVO;
+		}catch (Exception e) {
+			log.error("Exception Encountered in getMetaInfoForASpecialPage() Method,- "+e);
+			return null;
+		}
+	}
+	
+	public ResultStatus saveMetaInfoForASpecialPage(MetaInfoVO metaInfoVO)
+	{
+		log.debug("Entered into saveMetaInfoForASpecialPage() Method");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			SpecialPageMetaInfo specialPageMetaInfo = new SpecialPageMetaInfo();
+			specialPageMetaInfo.setSpecialPage(specialPageDAO.get(metaInfoVO.getSpecialPageId()));
+			specialPageMetaInfo.setKeywords(metaInfoVO.getKeywords());
+			specialPageMetaInfo.setDescription(metaInfoVO.getDescription());
+			
+			specialPageMetaInfo = specialPageMetaInfoDAO.save(specialPageMetaInfo);
+			
+			if(specialPageMetaInfo != null)
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception encountered in saveMetaInfoForASpecialPage() Method - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
 		}
 	}
 	
