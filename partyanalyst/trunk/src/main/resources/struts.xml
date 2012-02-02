@@ -2953,7 +2953,32 @@
 		
 		<action name="contentManagementAction" class="contentManagementAction">
 			<result name="success">/jsp/contentManagement.jsp</result> 
+		</action>		
+		<action name="approveMessageAction" class="approveMessageAction">
+			<result name="success">/jsp/ApproveMessage.jsp</result> 
 		</action>
+		 <action name="getAllMessages" class="approveMessageAction" method="getMessages">
+        	<result type="json" name="success">
+			<param name="root">candidateCommentsList</param>				
+			</result>
+        </action>
+          <action name="controlMessagesAction" class="approveMessageAction" method="controlMessages">
+        	<result type="json" name="success">
+				<param name="root">resultStatus</param>		
+			</result>
+        </action>
+        
+		<action name="candidateMessagesAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">candidateCommentsVO</param>				
+			</result>		
+		</action>
+		
+        <action name="updateDeleteNewsAction" class="newsDisplayAction" method="updateDeleteNews">
+        	<result type="json" name="success">
+				<param name="root">resultStatus</param>		
+			</result>
+        </action>
 				
 	</package>
 </struts>      
