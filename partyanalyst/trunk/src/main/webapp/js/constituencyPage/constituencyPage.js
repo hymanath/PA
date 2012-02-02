@@ -600,7 +600,8 @@ function showCandidateNominationsInRecentElections(myResults)
 
 function buildAssetsAndLiabilities(myResults)
 {
-   var HeadElmt = document.getElementById('constituencyPageCandidateAssets_Head');
+	
+	var HeadElmt = document.getElementById('constituencyPageCandidateAssets_Head');
    
    YAHOO.widget.DataTable.problemLink = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -610,12 +611,13 @@ function buildAssetsAndLiabilities(myResults)
 	};
 
 	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
-	{		
+	{
+		
 		var Party = oRecord.getData("party");
 		var partyIds = oRecord.getData("partyId");
 		if(oData != 'IND' && partyIds != null){
 		
-		elLiner.innerHTML =
+	elLiner.innerHTML =
 		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
 		}
 		else
@@ -1434,8 +1436,10 @@ function buildZptcResults(results){
 	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
+	
 	for(var i in results)
 	{		
+
 		var problemObj=		
 		 {		
 				partyId:results[i].partyId,
@@ -1505,7 +1509,9 @@ function buildMptcResults(results){
 	}
     initializeMptcResultsTableForParty(); 
 }
+
 function initializeResultsTableForParty(){
+
 	var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
 	resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSourceForTehsil.responseSchema = {
@@ -1588,13 +1594,13 @@ function initializeMptcResultsTableForParty(){
 	};
 		
 		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
-		{
-			var Party = oRecord.getData("party");
-			var partyIds = oRecord.getData("partyId");
-			if(oData != 'IND' && partyIds != null){
+	{
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
 		
-			elLiner.innerHTML =
-			"<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
+	elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+oData+"</a>";
 		}
 		else
 			elLiner.innerHTML ="<a href='javascript:{}'>"+oData+"</a>";
