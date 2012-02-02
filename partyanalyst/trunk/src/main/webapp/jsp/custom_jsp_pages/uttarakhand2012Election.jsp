@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <div style="background:#ffffff; width: 982px;margin-left: 3px;">
-<img src="images/specialPage/uttarakhand2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
+<img src="images/specialPage/panjab2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%">
 
@@ -61,7 +61,7 @@
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 98%;">
 Uttarakhand Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><b>Major Parties In the State  :</b><br>
+<td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State</span></b><br /><br />
 		   
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=895">UKKD</a> &nbsp;&nbsp;
@@ -75,7 +75,7 @@ Uttarakhand Assembly Previous Election Results</h3>
 
 
 <tr><td colspan="7"> <br />
-<b>Previous Uttarakhand Assembly Elections Results :</b><br /><br />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Uttarakhand Assembly Elections Results </span></b><br /><br />
 &nbsp;<img src="images/icons/diamond.png">
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=134&stateID=26&stateName=Uttaranchal&electionType=Assembly&electionTypeId=2&year=2007">2007</a></li>
 
@@ -88,13 +88,13 @@ Uttarakhand Assembly Previous Election Results</h3>
 
 <tr><td colspan="7">
 <BR />
-<b>2012 Uttarakhand ASSEMBLY SURVEY RESULTS:</b><BR />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Uttarakhand Assembly Survey Results</span></b><br /><br />
 <table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
             <tbody><tr>
-			<td>Source</td>
-              <td>INC</td>
-              <td>BJP</td>
-              <td>OTHERS</td>
+			<td><b>Source</b></td>
+              <td><b>INC</b></td>
+              <td><b>BJP</b></td>
+              <td><b>OTHERS</b></td>
             </tr>
 			<tr><td>Star News</td><td>29</td><td>39</td><td>2</td></tr>
 </table>

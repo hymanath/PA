@@ -61,22 +61,22 @@
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 98%;">
 Manipur Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><b>Major Parties In the State  :</b><br>
-		   
+<td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  :</span></b><br>
+  <div style="margin-top: 15px;">
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=579">NCP</a> <img src="images/party_flags/NCP.png" height="40px" width="60px">&nbsp; 
-<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=562" align="top">MPP</a>&nbsp;<img src="images/party_flags/MPP.png" height="40px" width="60px">&nbsp;
-<img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=362" align="top">INC</a>&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=265" align="top">CPI</a>&nbsp;<img src="images/party_flags/CPI.png" height="40px" width="60px">&nbsp;<br /><br />
+<a href="partyPageAction.action?partyId=265" align="top">CPI</a>&nbsp;<img src="images/party_flags/CPI.png" height="40px" width="60px">&nbsp;<br />
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=713" align="top">RJD</a>&nbsp;<img src="images/party_flags/RJD.png" height="40px" width="60px">&nbsp;<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=600" align="top">NPP</a>&nbsp;<img src="images/party_flags/NPP.png" height="40px" width="60px">&nbsp;
-
+<a href="partyPageAction.action?partyId=713" align="top">RJD</a>&nbsp;<img src="images/party_flags/RJD.png" height="40px" width="60px">&nbsp;
+<img src="images/icons/diamond.png">
+<a href="partyPageAction.action?partyId=562" align="top">MPP</a>&nbsp;&nbsp;
+<img src="images/icons/diamond.png">
+<a href="partyPageAction.action?partyId=600" align="top">NPP</a>&nbsp;
+</div>
 <tr><td colspan="7"> <br />
-<b>Previous Manipur Assembly Elections Results :</b><br /><br />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Manipur Assembly Elections Results :</span></b><br /><br />
 <img src="images/icons/diamond.png">
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -98,15 +98,15 @@ Manipur Assembly Previous Election Results</h3>
 
 <tr><td colspan="7">
 <BR />
-<b>2012 Manipur ASSEMBLY SURVEY RESULTS:</b><BR />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Manipur Assembly Survey Results</span></b><BR />
 <table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
             <tbody><tr>
-			<td>Source</td>
-              <td>INC</td>
-              <td>NCP</td>
-			  <td>MPP</td>
-			  <td>RJD</td>
-              <td>OTHERS</td>
+			<td><b>Source</b></td>
+              <td><b>INC</b></td>
+              <td><b>NCP</b></td>
+			  <td><b>MPP</b></td>
+			  <td><b>RJD</b></td>
+              <td><b>OTHERS</b></td>
             </tr>
 			<tr><TD>NDTV</TD><td>30</td><td>5</td><td>5</td><td>3</td><td>17</td></tr>
 </table>
