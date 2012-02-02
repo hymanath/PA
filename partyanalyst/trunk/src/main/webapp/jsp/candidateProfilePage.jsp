@@ -154,6 +154,42 @@
     max-width: 800px;
     padding: 10px;
 }
+
+.layoutHeadersClass {
+    color: #89745D;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: left;
+    background: none repeat scroll 0 0 #06ABEA;
+	color: #FFFFFF;
+}
+.annDivId{
+		-moz-border-radius : 5px 5px 5px 5px;
+		background : none repeat scroll 0 0 #E0F2F8;
+		margin : 15px 10px;
+		overflow : hidden;
+		padding : 14px 18px 14px 9px;
+		text-align : left;
+		padding-bottom : 9px;
+		padding-top : 9px;
+}
+.annHeaderFont {
+    color: #0053B2;
+    font-size: 11px;
+	
+}
+#constituencyPageCenterInfoDiv .rounded {
+    width: 620px;
+}
+
+.rounded {
+    background-color: #FFFFFF;
+    margin: 10px 0;
+    padding: 10px;
+    position: relative;
+}
+	
 </style>
 
 </head>
@@ -261,15 +297,14 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 			 <div class="clear"></div>
 			
 			 <div id="analyzeCandidateDiv_Body"></div>
-		 <!--FACE BOOK COMMENTS SECTION START --> 
-          
+		         
           <div class="fleft"> 
-		  <!--<img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/>--> 
 		  <div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}" data-num-posts="500" data-width="430"></div>
 		  </div> 
-          
-         <!--FACE BOOK COMMENTS SECTION END--> 
-     			  
+		  
+		  <div id="commentBoxDiv" class="constituencyPageCenterInfoDiv .rounded">
+		  </div>
+                    			  
 	</div>
    </div>
           
@@ -550,6 +585,17 @@ function showAssemblyData()
    var url = "getAllConstituenciesInState.action?"+rparam;						
    callAjax(jsObj,url);
  }
+ function getUserDetails()
+ {
+	 var jsObj =
+		{ 
+		    candidateId : candidateId,
+			task:"getUserMessages"
+		};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "candidateMessagesAction.action?"+rparam;						
+	 callAjax(jsObj,url);
+ }
 function getStates()
  {
   var timeST = new Date().getTime();
@@ -746,8 +792,13 @@ function callAjax(jsObj,url)
 		else if(jsObj.task == "getNewsByNewsImportance")
           {
 		   showTotalNews(myResults);
-		   }	
+		   }
+		else if(jsObj.task ="getUserMessages")	
+		{
+			dislayUserDetails(myResults);
 		}
+			
+	  }
 		catch(e)
 		{   
 		 alert("Invalid JSON result" + e);   
@@ -761,6 +812,32 @@ function callAjax(jsObj,url)
   };
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function dislayUserDetails(result)
+{
+	if(result == null || result.length == 0)
+	return;
+    var resultDiv = document.getElementById('commentBoxDiv');
+    var str = '';
+
+    str += '<Div class="layoutHeadersClass">Messages From Followers</DIv>';
+
+    for(var i=0;i<result.length;i++)
+    {
+	   
+
+	   str += '<div class="annDivId">'
+	   str += '<Table>';
+	   str += '<tr class="annHeaderFont"><th>'+result[i].userName+'&nbsp;&nbsp;</th><th>'+result[i].time+'&nbsp;&nbsp;</th><th>CONSTITUENCY:<td class=""><font color="black">'+result[i].constituency+'</font></td></th><tr>';
+	   str += '</Table>';
+	   str += '<Table style="width:auto;">';
+	   str += '<tr class="annHeaderFont"><th>DESCRIPTION</th></tr>';
+	   str += '<tr><td>'+result[i].message+'</td></tr>';
+	   str += '</Table>';
+	   str += '</div>'
+    }
+resultDiv.innerHTML = str;
+
 }
 function showStatusForEmailSubscription(results){
 
@@ -2057,6 +2134,7 @@ buildCandidateElectionInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 buildAnalyzeConstituencyWindow();
+getUserDetails();
 </script>
 </body>
 </html>
