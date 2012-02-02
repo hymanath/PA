@@ -40,7 +40,65 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long notConsideredReasonsCount;
 	private Long totalPostedReasonsCount;
 	private Long postedReasonsCountByOtherUsers;
+	private String postedBY;
+	private String constituency;
+	private String status;
+	private List<Long> longList;
+	private List<String> stringList;
+	private Long messageToCandidateId;
+	private String message;
+	private String time;
 	
+	
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public Long getMessageToCandidateId() {
+		return messageToCandidateId;
+	}
+	public void setMessageToCandidateId(Long messageToCandidateId) {
+		this.messageToCandidateId = messageToCandidateId;
+	}
+	public List<Long> getLongList() {
+		return longList;
+	}
+	public void setLongList(List<Long> longList) {
+		this.longList = longList;
+	}
+	public List<String> getStringList() {
+		return stringList;
+	}
+	public void setStringList(List<String> stringList) {
+		this.stringList = stringList;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getPostedBY() {
+		return postedBY;
+	}
+	public void setPostedBY(String postedBY) {
+		this.postedBY = postedBY;
+	}
+	
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
 	public Long getPostedReasonsCountByOtherUsers() {
 		return postedReasonsCountByOtherUsers;
 	}
