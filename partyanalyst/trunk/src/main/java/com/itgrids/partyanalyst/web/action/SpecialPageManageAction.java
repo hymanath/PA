@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -371,6 +372,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 			gallary.setContentType(jobj.getString("heading"));
 			
 			result = specialPageService.createNewSpecialPage(gallary);
+		}
+		
+		else if(jobj.getString("task").equalsIgnoreCase("addMetaInformation"))
+		{
+			MetaInfoVO metaInfoVO = new MetaInfoVO();
+			metaInfoVO.setSpecialPageId(jobj.getLong("specialPageId"));
+			metaInfoVO.setKeywords(jobj.getString("keywords"));
+			metaInfoVO.setDescription(jobj.getString("description"));
+			
+			result = specialPageService.saveMetaInfoForASpecialPage(metaInfoVO);
 		}
 		
 		return Action.SUCCESS;
