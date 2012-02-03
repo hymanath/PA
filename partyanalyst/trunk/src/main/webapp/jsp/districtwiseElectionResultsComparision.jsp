@@ -430,7 +430,8 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 			{
 				
 				var obj = {
-							district:innerObj[i].partyResultsInDistricts[j].districtName,
+						    partyId:innerObj[i].partyId,
+						    district:innerObj[i].partyResultsInDistricts[j].districtName,
 							party:innerObj[i].partyName,
 							seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 							second:innerObj[i].partyResultsInDistricts[j].secondPos,
@@ -495,7 +496,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 				if(districtName == innerObj[i].partyResultsInDistricts[j].districtName)
 				{
 					var obj = {
-								district:innerObj[i].partyResultsInDistricts[j].districtName,
+			   				    district:innerObj[i].partyResultsInDistricts[j].districtName,
 								party:innerObj[i].partyName,
 								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 								second:innerObj[i].partyResultsInDistricts[j].secondPos,
@@ -519,9 +520,24 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 		}
 	}	
 
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var Party = oRecord.getData("party");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+		elLiner.innerHTML =
+		 "<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none;'>"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
+	};
+
+
 	var allDistrictResultsColumnDefs = [
 								{key: "district", label: "District", sortable:true},		
-								{key: "party", label: "<%=party%>", sortable:true},										
+								{key: "party", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.partyLink },										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -542,7 +558,8 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc",parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key:"partyId",parser:"number"} ] 
                 					   
         		};
 
@@ -693,6 +710,7 @@ function buildAllianceDistrictResultsDataTable(results)
 			for(var k in innerObj[i].partiesInAlliance[j].partyResultsInDistricts)
 			{
 				var obj = {
+ 							partyId:innerObj[i].partiesInAlliance[j].partyId,
 							district:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].districtName,
 							party:innerObj[i].partiesInAlliance[j].partyName,
 							seatsWon:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].seatsWon,
@@ -708,9 +726,21 @@ function buildAllianceDistrictResultsDataTable(results)
 			}
 		}
 		
+		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	     {
+		    var Party = oRecord.getData("party");
+			var partyIds = oRecord.getData("partyId");
+			if(oData != 'IND' && partyIds != null){
+		
+	   		 elLiner.innerHTML =
+				"<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none;'>"+Party+"</a>";
+			}
+			else
+			 elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
+	    };
 		var allianceDistrictResultsColumnDefs = [
 								{key: "district", label: "District", sortable:true},		
-								{key: "party", label: "<%=party%>", sortable:true},										
+								{key: "party", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.partyLink },										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -731,7 +761,8 @@ function buildAllianceDistrictResultsDataTable(results)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "partyId",parser:"number"} ] 
                 					   
         		};
 		var myConfigs = { 
