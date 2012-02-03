@@ -349,9 +349,9 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
              <div class="ea-fc-sec">
               <h2 class="ea-fc-title">email alert <span class="blue-down-arrow">
                <img	src="images/icons/candidatePage/blue-down-arrow.png" alt="" /></span></h2>
-                  <div class="ea-fc-cont-sec">Subscribe an email alert to get<br />
-                         updates of<br />
-                  <span class="li-red">Event</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
+                  <div class="ea-fc-cont-sec">Subscribe an email alert to get
+                         updates of <br />
+                  <span class="li-red">${specialPageVO.heading}</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
 					onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value=''; document.getElementById('alertMsg').innerHTML = '';" />
 
 			<div id="alertMsg" style="dispaly: none"></div>
