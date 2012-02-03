@@ -24,7 +24,7 @@
 }
 </style>
 
-<div style="background:#ffffff; width: 982px;">
+<div style="background:#ffffff; width: 979px;">
 <img src="images/specialPage/up2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="UttarPradesh 2012 Election" title="UttarPradesh 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-center: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" >

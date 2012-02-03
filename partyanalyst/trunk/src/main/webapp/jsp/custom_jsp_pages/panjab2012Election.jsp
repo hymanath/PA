@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
-<div style="background:#ffffff; width: 982px;margin-left: 3px;">
+<div style="background:#ffffff; width: 979px;margin-left: 3px;">
 <img src="images/specialPage/panjab2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%">
@@ -98,7 +98,7 @@ Punjab Assembly Previous Election Results</h3>
 
 <tr><td colspan="7">
 <BR />
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><BR />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br />
 <table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
             <tbody><tr>
 			<td>Source</td>
