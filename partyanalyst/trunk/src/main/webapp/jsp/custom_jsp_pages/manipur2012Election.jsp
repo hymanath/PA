@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
-<div style="background:#ffffff; width: 982px;margin-left: 3px;">
+<div style="background:#ffffff;width: 979px;margin-left: 3px;">
 <img src="images/specialPage/manipur2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%">
 
 <table cellspacing="0" cellpadding="2" border="0" style="border-collapse: collapse;width:100%">
-
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For Manipur</h3>
 <tr><td>
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For Manipur</h3>
+
 <table  bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse;font-size:12px " width="100%">
             <tbody><tr  style="background: #d2e888">
               <td width="81" class="TABLE_HEADER4">S. No.</td>
@@ -98,7 +98,7 @@ Manipur Assembly Previous Election Results</h3>
 
 <tr><td colspan="7">
 <BR />
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Manipur Assembly Survey Results</span></b><BR />
+<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Manipur Assembly Survey Results :</span></b><br /><br />
 <table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
             <tbody><tr>
 			<td><b>Source</b></td>
