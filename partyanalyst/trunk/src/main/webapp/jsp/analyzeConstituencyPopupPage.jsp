@@ -613,18 +613,18 @@ if(category == "candidate")
 			jsArray.push(obj);
 		}
 		YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
-	{
+	      {
 			
-		var Party = oRecord.getData("party");
-		var partyIds = oRecord.getData("partyId");
-		if(oData != 'IND' && partyIds != null){
+			var Party = oRecord.getData("party");
+			var partyIds = oRecord.getData("partyId");
+			if(oData != 'IND' && partyIds != null){
 		
-	elLiner.innerHTML =
-		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
-		}
-		else
-			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
-	};
+			elLiner.innerHTML =
+			  "<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none'>"+Party+"</a>";
+		    }
+		    else
+			 elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none">'+Party+'</a>';
+	   };
 
 		var myColumnDefs = [
 			{key:"radio",  sortable:false, label:"Select", resizeable:false},
