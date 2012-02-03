@@ -325,10 +325,23 @@ function displayComparedResults(jsObj,data)
     str+='<th align="center" class="head"><%=overAll%></th>';
 	for(i in data.positionsYearOne){
 	str+='<tr>';
-	if(data.positionsYearOne[i].partyId == partyId)
-    str+='<td align="center" class="middle" style="color:red;">'+data.positionsYearOne[i].partyName+'</td>';
+	if(data.positionsYearOne[i].partyId == partyId){
+    	str+='<td align="center" class="middle" style="color:red;">';
+	if(data.positionsYearOne[i].partyName != 'IND' && data.positionsYearOne[i].partyId != null )
+      str+='<a href="partyPageAction.action?partyId='+data.positionsYearOne[i].partyId+'" style="text-decoration:none;">'+data.positionsYearOne[i].partyName+'</a>';
 	else
-	str+='<td align="center" class="middle">'+data.positionsYearOne[i].partyName+'</td>';
+		str+='<a href="javascript:{}" style="text-decoration:none;">'+data.positionsYearOne[i].partyName+'</a>';
+	str +='</td>';
+  }
+	else
+	{
+	  str+='<td align="center" class="middle" style="color:red;">';
+	if(data.positionsYearOne[i].partyName != 'IND' && data.positionsYearOne[i].partyId != null )
+    	str+='<a href="partyPageAction.action?partyId='+data.positionsYearOne[i].partyId+'" style="text-decoration:none;">'+data.positionsYearOne[i].partyName+'</a>';
+	else
+		str+='<a href="javascript:{}" style="text-decoration:none;">'+data.positionsYearOne[i].partyName+'';
+	    str+='</a></td>';
+	}
 	str+='<td align="center" class="middle">'+data.positionsYearOne[i].totalConstiParticipated+'</td>';
 	str+='<td align="center" class="middle">'+data.positionsYearOne[i].totalSeatsWon+'</td>';
 	str+='<td align="center" class="middle">'+data.positionsYearOne[i].secondPosWon+'</td>';
@@ -363,10 +376,23 @@ function displayComparedResults(jsObj,data)
     str+='<th align="center" class="head"><%=overAll%></th>';
 	for(i in data.positionsYearTwo){
 	str+='<tr>';
-	if(data.positionsYearTwo[i].partyId == partyId)
-    str+='<td align="center" style="color:red;" class="middle">'+data.positionsYearTwo[i].partyName+'</td>';
+	if(data.positionsYearTwo[i].partyId == partyId){
+     str+='<td align="center" style="color:red;" class="middle">';
+	  if(data.positionsYearTwo[i].partyId != null && data.positionsYearTwo[i].partyName != 'IND')
+		str+='<a href="partyPageAction.action?partyId='+data.positionsYearTwo[0].partyId+'" style="text-decoration:none">'+data.positionsYearTwo[i].partyName+'</a>';
+	  else
+		str+='<a href="javascript:{}" style="text-decoration:none;">'+data.positionsYearTwo[i].partyName+'</a>';
+	 str+='</td>';
+	}
 	else
-	str+='<td align="center" class="middle">'+data.positionsYearTwo[i].partyName+'</td>';
+	 {
+		str+='<td align="center" class="middle">';
+	  if(data.positionsYearTwo[i].partyId != null && data.positionsYearTwo[i].partyName != 'IND')
+		str+='<a href="partyPageAction.action?partyId='+data.positionsYearTwo[0].partyId+'" onclick="window.opener.location.href=this.href;window.blur();return false;" style="text-decoration:none;">'+data.positionsYearTwo[i].partyName+'</a>';
+	  else
+		str+='<a href="javascript:{}">'+data.positionsYearTwo[i].partyName+'</a>';
+		str+='</td>';
+	}
 	str+='<td align="center" class="middle">'+data.positionsYearTwo[i].totalConstiParticipated+'</td>';
 	str+='<td align="center" class="middle">'+data.positionsYearTwo[i].totalSeatsWon+'</td>';
 	str+='<td align="center" class="middle">'+data.positionsYearTwo[i].secondPosWon+'</td>';
@@ -445,12 +471,24 @@ function displayComparedResults(jsObj,data)
 	str+='</div>';
 	elmt.innerHTML = str;
 	buildDataTable("votesPercentageIncDiv",data.votesPercentGainedResults,data.yearOne,data.yearTwo);
-	buildDataTable("votesPercentageDecDiv",data.votesPercentLostResults,data.yearOne,data.yearTwo);
+    buildDataTable("votesPercentageDecDiv",data.votesPercentLostResults,data.yearOne,data.yearTwo);
 	buildYearDataTable("notConsYearOneDiv",data.notConsideredYearOneResults);
 	buildYearDataTable("notConsYearTwoDiv",data.notConsideredYearTwoResults);
 }
 function buildYearDataTable(divId,data)
 {
+	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		if(oData != 'IND' ){
+		 elLiner.innerHTML =
+		  "<a href='partyPageAction.action?partyId="+partyId+"' style='text-decoration:none;'>"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
+	};
+	
 	var resultsDataSource = new YAHOO.util.DataSource(data);
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSource.responseSchema = {
@@ -486,7 +524,7 @@ function buildYearDataTable(divId,data)
 	{
 		key : "partyName",
 		label : "<%=party%>",
-		sortable : true
+		sortable : true,formatter:YAHOO.widget.DataTable.partyLink
 	},
 	{
 		key : "votesEarned",
@@ -528,7 +566,16 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 		arr[i].viewResultsOne = '<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+arr[i].constituencyId+'\',\''+arr[i].electionType+'\',\''+elecYear1+'\')">View</a>';
 		arr[i].viewResultsTwo = '<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+arr[i].constituencyId+'\',\''+arr[i].electionType+'\',\''+elecYear2+'\')">View</a>';
 	}
-	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		if(oData != 'IND'){
+		 elLiner.innerHTML =
+		 "<a href='partyPageAction.action?partyId="+partyId+"' style='text-decoration:none;'>"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
+	};
 
     var colorClass = '';
 	if(divId == "votesPercentageIncDiv")
@@ -591,7 +638,7 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					{
 						key : "partyName",
 						label : "<%=party%>",
-						sortable : true
+						sortable : true,formatter:YAHOO.widget.DataTable.partyLink
 					},
 					{
 						key : "rank",
