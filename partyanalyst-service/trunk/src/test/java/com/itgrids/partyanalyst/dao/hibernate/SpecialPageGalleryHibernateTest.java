@@ -19,7 +19,7 @@ public class SpecialPageGalleryHibernateTest extends BaseDaoTestCase {
 	/*public void test()
 	{
 		specialPageGalleryDAO.getAll();
-	}*/
+	}
 
 	public void testgetGallariesBySpecialPageId() {
 		List<Object[]> list = specialPageGalleryDAO
@@ -41,11 +41,12 @@ public class SpecialPageGalleryHibernateTest extends BaseDaoTestCase {
 			System.out.println(listObj[2].toString());
 			//System.out.println(listObj[3].toString());
 		}
-	}
+	}*/
 	
 	public void testgetGalleryBasedOnSpecialPageId(){
-		List<File> result = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(1l,1, 2, IConstants.VIDEO_GALLARY);
-		
-		System.out.println(result.size());
+		List<File> result = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(3l,0, 20, IConstants.NEWS_GALLARY);
+		for(File file : result){
+		System.out.println(file.getFileDate());
+		}
 	}
 }
