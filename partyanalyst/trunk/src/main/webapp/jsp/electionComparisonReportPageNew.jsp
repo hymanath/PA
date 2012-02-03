@@ -991,12 +991,12 @@ function overallResultsForYearOne()
    str+='<tr>';
    
    if('${partyPositions.partyId}' != electionObject.selectedParty){
-	   
-	   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   
+	   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}" style="text-decoration:none;">${partyPositions.partyName}</a></td>';
    }
    if('${partyPositions.partyId}'== electionObject.selectedParty){
 	   
-   str+='<td align="center" style="color:red;"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   str+='<td align="center" style="color:red;"><a href="partyPageAction.action?partyId=${partyPositions.partyId}" style="text-decoration:none;">${partyPositions.partyName}</a></td>';
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    }
 
@@ -1068,10 +1068,10 @@ function overallResultsForYearTwo()
    <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
    str+='<tr>';
    if('${partyPositions.partyId}' != electionObject.selectedParty){
-   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   str+='<td align="center"><a href="partyPageAction.action?partyId=${partyPositions.partyId}" style="text-decoration:none;">${partyPositions.partyName}</a></td>';
    }
    if('${partyPositions.partyId}' == electionObject.selectedParty){
-   str+='<td align="center" style="color:red;"><a href="partypageAction.action?partyId=${partyPositions.partyId}">${partyPositions.partyName}</a></td>';
+   str+='<td align="center" style="color:red;"><a href="partypageAction.action?partyId=${partyPositions.partyId}" style="text-decoration:none;">${partyPositions.partyName}</a></td>';
    }
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';  
    if("${partyPositions.totalSeatsWon}"!="0"){
