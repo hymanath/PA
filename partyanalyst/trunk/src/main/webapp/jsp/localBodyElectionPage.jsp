@@ -179,8 +179,12 @@
 							<display:table id="localBodyElectionResultsTable" name="${localBodyElectionResults.muncipalityVO}"
 								defaultorder="ascending" defaultsort="4"
 								style="width:100%;margin-right:20px;">
-								<display:column style="text-align: center;" title="Party Name"
-									property="partyName" />
+								<c:if test="${localBodyElectionResultsTable.partyName != 'IND'}">
+								<display:column title="Party Name"><a href="partyPageAction.action?partyId=${localBodyElectionResultsTable.partyId}" style="text-align:center; text-decoration:none;">${localBodyElectionResultsTable.partyName}</a></display:column>
+    							</c:if>
+								<c:if test="${localBodyElectionResultsTable.partyName == 'IND'}">
+								<display:column title="Party Name"><a href="javascript:{}" style="text-align:center; text-decoration:none;">${localBodyElectionResultsTable.partyName}</a></display:column>
+								</c:if>
 								<display:column style="text-align: left;" title="Participated Seats"
 									property="participatedSeats" />
 								<display:column style="text-align: center;" title="Won Seats"
