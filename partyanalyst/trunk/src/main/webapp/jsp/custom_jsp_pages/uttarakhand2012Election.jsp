@@ -58,7 +58,7 @@
 	<td width="2%"></td>
 	<td width="43%" valign="top">
 <table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 98%;">
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
 Uttarakhand Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
 <td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State</span></b><br /><br />
