@@ -1218,6 +1218,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			}
 			mandalAllElectionDetailsVO.setPartyShortName(obj[6].toString());
 			mandalAllElectionDetailsVO.setCandidateName(name.toString());
+			mandalAllElectionDetailsVO.setPartyId(new Long(obj[5].toString()));
 			Long totalPartyVotes = new Long(obj[4].toString());
 			String partyPercentage = calculateVotesPercengate(mandalAllElectionDetailsVO.getValidVoters(),totalPartyVotes);//getTotalVoters();
 			mandalAllElectionDetailsVO.setPartyVotesPercentage(partyPercentage);
