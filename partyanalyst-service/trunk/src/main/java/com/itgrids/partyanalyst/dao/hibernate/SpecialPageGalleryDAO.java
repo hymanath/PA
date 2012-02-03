@@ -53,7 +53,7 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 		
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in (select model1.gallary.gallaryId from SpecialPageGallery model1" +
 				" where model1.gallary.contentType.contentType =:contentType and model1.gallary.isDelete =:isDelete " +
-				" and model1.gallary.isPrivate =:isPrivate and model1.specialPage.specialPageId =:specialPageId order by model.file.fileDate,model.createdDate desc)");
+				" and model1.gallary.isPrivate =:isPrivate and model1.specialPage.specialPageId =:specialPageId ) order by model.file.fileDate desc");
 		
 		query.setParameter("specialPageId", specialPageId);
 		query.setParameter("contentType", contentType);
