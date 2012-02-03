@@ -59,6 +59,7 @@ function buildWardWiseElectionResults(jsObj,results)
 		for(var j in results[i].partyElectionResultsVO)
 		{
 			var obj = {
+						partyId:results[i].partyElectionResultsVO[j].partyId,
 						candidateName:results[i].partyElectionResultsVO[j].candidateName,
 						constituencyName:results[i].constituencyName,
 						partyName:results[i].partyElectionResultsVO[j].partyName,
@@ -72,6 +73,19 @@ function buildWardWiseElectionResults(jsObj,results)
 		}
 	}
 
+
+  YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oRecord.getData("partyName");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+		
+		elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none;'>"+oData+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+oData+'</a>';
+	};
 	var resultsDataSource = new YAHOO.util.DataSource(wardResults);
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSource.responseSchema = {
@@ -87,6 +101,8 @@ function buildWardWiseElectionResults(jsObj,results)
 				key : "votesEarned",parser:"number"
 			}, {
 				key : "votesPercentage",parser:"number"
+			}, {
+				key : "partyId",parser:"number"
 			}, {
 				key : "rank",parser:"number"
 			}, {
@@ -105,7 +121,7 @@ function buildWardWiseElectionResults(jsObj,results)
 		}, {
 			key : "partyName",
 			label : "Party",
-			sortable : true
+			sortable : true,formatter:YAHOO.widget.DataTable.partyLink
 		}, {
 			key : "totalVoters",
 			parser:"number",
