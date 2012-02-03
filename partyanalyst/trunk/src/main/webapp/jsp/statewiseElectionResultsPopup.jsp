@@ -132,8 +132,20 @@ function showAllianceDetails(results)
 function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 {	
 	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var Party = oRecord.getData("partyName");
+		var partyIds = oRecord.getData("partyId");
+		if(oData != 'IND' && partyIds != null){
+			elLiner.innerHTML =
+		    "<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none;'>"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
+	};
+
 	var allianceResultsColumnDefs = [
-								{key: "partyName", label: "<%=party%>", sortable:true},		
+								{key: "partyName", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.partyLink },		
 								{key: "totalConstiParticipated", label: "TP*",formatter:"number", sortable:true},	
 		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "secondPosWon", label: "2nd",formatter:"number", sortable:true},
@@ -154,7 +166,8 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
                 					  {key:  "fourthPosWon", parser:"number"},
                 					  {key: "nthPosWon", parser:"number"},
                 					  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
-                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                					  {key:"partyId",parser:"number"	}] 
         		};
 
 		var myConfigs = { 
@@ -256,6 +269,7 @@ function showPartywiseDetailsDataTable(results)
 	
 	for(var j in  partywiseResultsWithoutAlliance){
 		var partywiseResultsObj = { 
+				partyId:partywiseResultsWithoutAlliance[j].partyId,
 				party: partywiseResultsWithoutAlliance[j].partyName, 
 				totalParticipated: partywiseResultsWithoutAlliance[j].totalConstiParticipated, 
 				seatsWon: partywiseResultsWithoutAlliance[j].totalSeatsWon,
@@ -298,12 +312,11 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 		var Party = oRecord.getData("party");
 		var partyIds = oRecord.getData("partyId");
 		if(oData != 'IND' && partyIds != null){
-		
-	elLiner.innerHTML =
-		"<a href='partyPageAction.action?partyId="+partyIds+"'>"+Party+"</a>";
+			elLiner.innerHTML =
+		 "<a href='partyPageAction.action?partyId="+partyIds+"' style='text-decoration:none;'>"+Party+"</a>";
 		}
 		else
-			elLiner.innerHTML ='<a href="javascript:{}">'+Party+'</a>';
+			elLiner.innerHTML ='<a href="javascript:{}" style="text-decoration:none;">'+Party+'</a>';
 	};
 
 	var partywiseResultsColumnDefs = [
