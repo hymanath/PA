@@ -1358,6 +1358,7 @@ public class ElectionReportService implements IElectionReportService {
 				
 				else
 				{
+					deleteRecordsFromPartyElectionResultsWithAreaTypeForAElection(electionId);
 					ResultStatus resultStatus = populateConstituencyAreaTypeWiseElectionResultOfParties(electionId);
 					
 					if(resultStatus.getResultCode() == ResultCodeMapper.SUCCESS)
@@ -1704,6 +1705,23 @@ public class ElectionReportService implements IElectionReportService {
 				resultStatus.setExceptionEncountered(e);
 				return resultStatus;
 			}
+	}
+	
+	public Integer deleteRecordsFromPartyElectionResultsWithAreaTypeForAElection(final Long electionId)
+	{
+		log.debug("Entered into deleteRecordsFromPartyElectionResultsWithAreaTypeForAElection");
+		try{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status)
+				{
+					partyElectionResultsWithAreaTypeDAO.deleteRecordsForAElection(electionId);
+				}
+			});
+			return ResultCodeMapper.SUCCESS;
+		}catch (Exception e) {
+			log.error("Exception occured in deleteRecordsFromPartyElectionResultsWithAreaTypeForAElection() Method, Exception is - "+e);
+			return ResultCodeMapper.FAILURE;
+		}
 	}
 	
 	List<PartyElectionResultVO> getGenderWiseElectionResultOfParties(List<PartyElectionResultVO> partyResult,Long electionId,List<Long> partiesList)

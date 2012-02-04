@@ -34,4 +34,11 @@ public class PartyElectionResultsWithAreaTypeDAO extends GenericDaoHibernate<Par
 		query.setParameterList("partiesList", partiesList);
 		return query.list();
 	}
+	
+	public Integer deleteRecordsForAElection(Long electionId)
+	{
+		Query query = getSession().createQuery("delete from PartyElectionResultsWithAreaType model where model.election.electionId = ?");
+		query.setParameter(0, electionId);
+		return query.executeUpdate();
+	}
 }
