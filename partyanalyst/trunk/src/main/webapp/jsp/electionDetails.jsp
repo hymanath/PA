@@ -141,6 +141,14 @@ background:#ffffff;
 	color:blue;
 
 }
+.partyperformance {
+    background: none repeat scroll 0 0 #EFF3F7;
+    border-left: 1px solid #102D66;
+    border-right: 1px solid #102D66;
+    color: #606060;
+    padding-top: 5px;
+    width: 898px;
+}
 
 </style>
 <SCRIPT type="text/javascript">
@@ -250,7 +258,10 @@ function callAjax(param,jsObj,url){
 									  }
 									} 
                                     else if(jsObj.task == "getPartyGenderInfo") {
-									  buildGenderCountResultsDataTable('genderWiseResultsDataTable',myResults);
+									  buildGenderCountResultsDataTable("genderWiseResultsDataTable",myResults);
+									}
+									else if(jsObj.task == "getConstituencyAreaTypeWiseResult") {
+									  buildPartyPerfRulUrbanDataTable('partyPerfResultsDataTable',myResults);
 									}
 								}
 							catch (e) {   
@@ -411,8 +422,21 @@ function showRegionWiseResults()
 function getPartyGenderInfo()
 {
 	var jsObj = {
+	            time:new Date().getTime(),
 				electionId:electionId,
 				task:"getPartyGenderInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
+function getConstituencyAreaTypeWiseResult()
+{
+	var jsObj = {
+	            time:new Date().getTime(),
+				electionId:electionId,
+				task:"getConstituencyAreaTypeWiseResult"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
@@ -1183,14 +1207,14 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 								formatter:YAHOO.widget.DataTable.partyLink},		
 								{key: "totalParticipated", label: "TP*", sortable:true},	
 		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "Complete Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "Participated Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "CV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "PV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 		              	 	 	{key: "malePerticipated", label: "Male Participants",formatter:"number", sortable:true},
 		              	 	 	{key: "maleWon", label: "Male Won",formatter:"number", sortable:true}, 
 								{key: "MVotesPercent", label: "Male Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
 		              	 	 	{key: "femalePerticipated", label:"Female Participants", formatter:"number",sortable: true},
 		              	 	 	{key: "femaleWon", label:"Female Won",formatter:"number", sortable: true},
-								{key: "FVotesPercent", label: "Female Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+								{key: "FVotesPercent", label: "Female Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
 		              	 	    ];                	 	    
 
 		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -1226,6 +1250,72 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
       };	     	
 	
 }
+
+function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
+{	
+	
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var Party = oRecord.getData("partyName");
+		var partyIds = oRecord.getData("partyId");
+		if(oData !='IND' && partyIds!=null){
+		elLiner.innerHTML =
+		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		}
+		else
+			elLiner.innerHTML =Party;
+			
+	};
+	var partyPerfRurlUrbnColDefs = [
+								{key: "partyName", label: "Party", sortable:true,
+								formatter:YAHOO.widget.DataTable.partyLink},		
+								{key: "totalParticipated", label: "TP*", sortable:true},	
+		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "CV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "PCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "ruralParticipated", label: "RCP*",formatter:"number", sortable:true},
+		              	 	 	{key: "ruralWon", label: "Won in RC*",formatter:"number", sortable:true}, 
+								{key: "ruralVotesPercent", label: "RCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+		              	 	 	{key: "urbanParticipated", label:"UCP*", formatter:"number",sortable: true},
+		              	 	 	{key: "urbanWon", label:"Won in UC*",formatter:"number", sortable: true},
+								{key: "urbanVotesPercent", label: "UCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+                                {key: "ruralUrbanParticipated", label:"RUCP*", formatter:"number",sortable: true},
+		              	 	 	{key: "ruralUrbanWon", label:"Won in RUC*",formatter:"number", sortable: true},
+								{key: "ruralUrbanVotesPercent", label: "RUCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true} 								
+		              	 	    ];                	 	    
+
+		var partyPerfRurlUrbnDataSource = new YAHOO.util.DataSource(dtSourceArray); 
+		partyPerfRurlUrbnDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		partyPerfRurlUrbnDataSource.responseSchema = {
+                fields: ["partyName", {key: "totalParticipated", parser:"number"},
+                         		  {key: "totalSeatsWon", parser:"number"},
+                         		  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key:  "PVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key:  "ruralParticipated", parser:"number"},
+                         		  {key: "ruralWon", parser:"number"},
+								  {key: "ruralVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "urbanParticipated", parser:"number"},
+								  {key: "urbanWon", parser:"number"},
+								  {key: "urbanVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+								  {key: "ruralUrbanParticipated", parser:"number"},
+								  {key: "ruralUrbanWon", parser:"number"},
+								  {key: "ruralUrbanVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+								{key: "partyId", parser:"number"}
+									] 
+        		};
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15			        
+			    }),
+			    caption:"Party Performance In Rural/Urban Constituencies" 
+				};
+		
+		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable(divId, partyPerfRurlUrbnColDefs, partyPerfRurlUrbnDataSource,myConfigs);
+	    	
+}
+
 function showAllianceDetails(results)
 {	
 
@@ -2405,13 +2495,43 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV class="graphBottom"></DIV>
 </DIV>
 <DIV class="yui-skin-sam" >
-	<TABLE border="0" width="95%" >
+<c:if test="${hasDeatiledAnalysis}">
+<DIV class="graphTop"> Party Performance In Different Aspects</DIV>
+<div class="partyperformance">
+</c:if>
+	<TABLE border="0" style="width:850px;" >
 		<TR>
-			<TD valign="top" align="left">
+			<TD valign="top" align="center">
 				<DIV id="genderWiseResultsDataTable"></DIV>
 			</TD>
-		</TR>		
-	</TABLE>	
+		</TR>
+        <TR>
+			<TD valign="top" align="center">
+				<DIV id="partyPerfResultsDataTable"></DIV>
+			</TD>
+		</TR>			
+	</TABLE>
+	<c:if test="${hasDeatiledAnalysis}">
+	<table>
+	  <tr>
+	    <td><b>TP* = Total Participation , CV* % = Complete Votes Percentage , PV* % = Participated Votes Percentage</b></td>
+	  </tr>
+	  <tr>
+	    <td><b>PCV* % = Participated Constituency Votes Percentage , RCP* = Rural Constituency Participated , RC* = Rural Constituency</b></td>
+	  </tr>
+	  <tr>
+	    <td><b>RCV* % = Rural Constituency Votes Percentage , UCP* = Urban Constituency Participated , UC* = Urban Constituency</b></td>
+	  </tr>
+	  <tr>
+	    <td><b>UCV* % = Urban Constituency Votes Percentage , RUCP* = Rural Urban Constituency Participated , RUC* = Rural Urban Constituency</b></td>
+	  </tr>
+	  <tr>
+	    <td><b>RUCV* % = Rural Urban Constituency Votes Percentage </b></td>
+	  </tr>
+	</table>
+</div>
+<DIV class="graphBottom"></DIV>	
+</c:if>
 </DIV>
 <div class="clear"></div>
 <DIV id="analysisToolsDataDiv">
@@ -2564,6 +2684,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 getResultsForAnElection(stateID,electionType,year);
 <c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
+getConstituencyAreaTypeWiseResult();
 </c:if>
 </SCRIPT>
 </center>
