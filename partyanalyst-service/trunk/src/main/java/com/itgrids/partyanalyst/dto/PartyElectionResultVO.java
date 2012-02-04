@@ -10,7 +10,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class PartyElectionResultVO implements Serializable {
+public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Serializable {
 
 	/**
 	 * 

@@ -903,12 +903,26 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetGenderWiseElectionResultOfParties()
+	/*public void testGetGenderWiseElectionResultOfParties()
 	{
 		List<Long> partiesList = new ArrayList<Long>(0);
 		partiesList.add(362l);
 		partiesList.add(872l);
 		List<Object[]> list = nominationDAO.getGenderWiseElectionResultOfParties(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params:list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetConstituencyAreaTypeWiseElectionResultOfParties()
+	{
+		List<Object[]> list = nominationDAO.getConstituencyAreaTypeWiseElectionResultOfParties(38l);
 		
 		System.out.println(list.size());
 		
