@@ -354,7 +354,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		}
 		if (jObj.getString("task").equalsIgnoreCase("getPartyGenderInfo")) {
 			partyElectionResultVO = electionReportService.getPartyBasicDetailsWithGenderInfoForAnElection(jObj.getLong("electionId"));
-			//partyElectionResultVO = electionReportService.getPartyElectionResultWithConstituencyAreaType(jObj.getLong("electionId"));
+		}
+		if (jObj.getString("task").equalsIgnoreCase("getConstituencyAreaTypeWiseResult")) {
+			partyElectionResultVO = electionReportService.getPartyElectionResultWithConstituencyAreaType(jObj.getLong("electionId"));
+		}
+		if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc")) {
+			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim());
+			
 		}
 		return Action.SUCCESS;
 
