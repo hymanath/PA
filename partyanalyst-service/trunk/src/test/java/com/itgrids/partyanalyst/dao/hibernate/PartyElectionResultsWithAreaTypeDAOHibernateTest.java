@@ -31,7 +31,7 @@ public class PartyElectionResultsWithAreaTypeDAOHibernateTest extends BaseDaoTes
 		System.out.println(object);
 	}*/
 	
-	public void testGetPartiesElectionResultInConstituencyAreaTypes()
+	/*public void testGetPartiesElectionResultInConstituencyAreaTypes()
 	{
 		List<Long> partiesList = new ArrayList<Long>(0);
 		partiesList.add(362l);
@@ -40,5 +40,12 @@ public class PartyElectionResultsWithAreaTypeDAOHibernateTest extends BaseDaoTes
 		List<Object[]> list = partyElectionResultsWithAreaTypeDAO.getPartiesElectionResultInConstituencyAreaTypes(38l,partiesList);
 		
 		System.out.println(list.size());
+	}*/
+	
+	public void testDeleteRecordsForAElection()
+	{
+		int records = partyElectionResultsWithAreaTypeDAO.deleteRecordsForAElection(38l);
+		
+		System.out.println(records + " Records deleted");
 	}
 }

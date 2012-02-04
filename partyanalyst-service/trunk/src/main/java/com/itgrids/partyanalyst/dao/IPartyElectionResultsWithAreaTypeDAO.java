@@ -10,4 +10,6 @@ public interface IPartyElectionResultsWithAreaTypeDAO extends GenericDao<PartyEl
 	public Object getCountOfPartiesInAElection(Long electionId,List<Long>partiesList);
 	
 	public List<Object[]> getPartiesElectionResultInConstituencyAreaTypes(Long electionId,List<Long>partiesList);
+	
+	public Integer deleteRecordsForAElection(Long electionId);
 }
