@@ -3134,5 +3134,51 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameter(0,electionId);
 		return query.list();
 	}
+		
+	public List<Object[]> getTopVotesGainedCandidates(Long electionId,int maxResult){
+		StringBuilder query = new StringBuilder();
+		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.candidateResult.votesEarned,model.constituencyElection.constituency.constituencyId," +
+		" model.constituencyElection.constituency.name ,model.candidateResult.votesPercengate from Nomination model where model.constituencyElection.election.electionId = :electionId ");
+		
+		query.append("  order by model.candidateResult.votesEarned desc ");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong("electionId",electionId);		
+		
+		queryObject.setMaxResults(maxResult);
+         return queryObject.list();
+	}	
+	
+	public List<Object[]> getHighestLowestMarginVotesInanElection(Long electionId,int maxResult,String type)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName, (model.candidateResult.votesEarned - model2.candidateResult.votesEarned)," +
+				" model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination model,Nomination model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and model2.candidateResult.rank = 2 ");
+		
+		if(type.equalsIgnoreCase("HighestMarginGained"))
+            query.append("  order by (model.candidateResult.votesEarned - model2.candidateResult.votesEarned) desc ");	
+		else if(type.equalsIgnoreCase("LowestMarginGained"))
+            query.append("  order by (model.candidateResult.votesEarned - model2.candidateResult.votesEarned) asc ");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0,electionId);		
+		
+		queryObject.setMaxResults(maxResult);
+         return queryObject.list();
+	}
+	public List<Object[]> getTopVotesGainedPercentage(Long electionId,int maxResult){
+		StringBuilder query = new StringBuilder();
+		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName, (model.candidateResult.votesEarned / model.constituencyElection.constituencyElectionResult.validVotes *100)," +
+				" model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination model where model.constituencyElection.election.electionId = ? ");
+				
+            query.append("  order by (model.candidateResult.votesEarned / model.constituencyElection.constituencyElectionResult.validVotes *100) desc ");	
+				
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0,electionId);		
+		
+		queryObject.setMaxResults(maxResult);
+         return queryObject.list();
+	}
 	
 }
