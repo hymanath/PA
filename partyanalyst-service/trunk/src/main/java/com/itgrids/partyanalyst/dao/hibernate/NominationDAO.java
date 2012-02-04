@@ -3126,4 +3126,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyAreaTypeWiseElectionResultOfParties(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model.constituencyElection.constituency.areaType,model.candidateResult.rank,model.candidateResult.votesEarned," +
+				" model.constituencyElection.constituencyElectionResult.validVotes from Nomination model where model.constituencyElection.election.electionId = ? order by model.party.shortName");
+		query.setParameter(0,electionId);
+		return query.list();
+	}
+	
 }

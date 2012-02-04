@@ -23,4 +23,6 @@ public interface IElectionReportService {
 	
 	public List<PartyElectionResultVO> getPartyBasicDetailsWithGenderInfoForAnElection(Long electionId);
 	
+	public List<PartyElectionResultVO> getPartyElectionResultWithConstituencyAreaType(Long electionId);
+	
 }
