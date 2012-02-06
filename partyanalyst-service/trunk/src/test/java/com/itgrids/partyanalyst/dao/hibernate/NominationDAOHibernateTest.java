@@ -920,7 +920,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetConstituencyAreaTypeWiseElectionResultOfParties()
+	/*public void testGetConstituencyAreaTypeWiseElectionResultOfParties()
 	{
 		List<Object[]> list = nominationDAO.getConstituencyAreaTypeWiseElectionResultOfParties(38l);
 		
@@ -932,6 +932,44 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
+	}*/
+	
+	/*public void testGetCandidates()
+	{
+		List<Object[]> list = nominationDAO.getCandidates();
+		
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+		
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetConstituencyAreaTypePercentageWiseElectionResultOfParties()
+	{
+		List<Long> partiesList = new ArrayList<Long>(0);
+		partiesList.add(362l);
+		partiesList.add(872l);
+		List<Object[]> list = nominationDAO.getConstituencyAreaTypePercentageWiseElectionResultOfParties(38l,"2001",partiesList);
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+		
+		System.out.println(list.size());
+	}*/
+	
+	public void test()
+	{
+		Double d = new Double(43086.0);
+		System.out.println(d.longValue());
 	}
 }
 	
