@@ -307,7 +307,7 @@ public class ElectionService implements IElectionService{
 		}catch(Exception ex)
 		{
 			log.debug("Exception Occured In the ElectionService.getConstituencyCensusDetails().... ");
-			log.error("Exception raised please check the log for details"+ex);
+			log.error("Exception raised please check the log for details "+ex);
 			return null;
 		}
 	}
