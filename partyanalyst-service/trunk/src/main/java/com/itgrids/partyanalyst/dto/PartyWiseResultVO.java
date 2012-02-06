@@ -21,7 +21,29 @@ public class PartyWiseResultVO implements java.io.Serializable{
 	private Long votesEarned;
 	private String percentage;
 	private Long totalSeatsWon;
+	private Double urbanPercentage;
+	private Double votesPercentage;
+	private Long rank;
+	private Long validVotes;
 	
+	public Long getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(Long validVotes) {
+		this.validVotes = validVotes;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public Double getUrbanPercentage() {
+		return urbanPercentage;
+	}
+	public void setUrbanPercentage(Double urbanPercentage) {
+		this.urbanPercentage = urbanPercentage;
+	}
 	//getters and setters
 	public Long getPartyId() {
 		return partyId;
@@ -64,5 +86,11 @@ public class PartyWiseResultVO implements java.io.Serializable{
 	}
 	public void setTotalSeatsWon(Long totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
+	}
+	public Double getVotesPercentage() {
+		return votesPercentage;
+	}
+	public void setVotesPercentage(Double votesPercentage) {
+		this.votesPercentage = votesPercentage;
 	}
 }
