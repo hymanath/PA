@@ -1826,18 +1826,14 @@ public class ElectionReportService implements IElectionReportService {
 			partyElectionResultVO.setCandidateName(data[1] != null?data[1].toString():"");
 			partyElectionResultVO.setPartyId((Long)data[2]);
 			partyElectionResultVO.setPartyName(data[3] != null?data[3].toString():"");
-			
-			if(type.trim().equalsIgnoreCase("TopVotesGained"))
-			   partyElectionResultVO.setVotesEarned(Math.round((Double)data[4]));
+			partyElectionResultVO.setVotesEarned(Math.round((Double)data[4]));
+			partyElectionResultVO.setValidVotes(Math.round((Double)data[5]));
+            partyElectionResultVO.setConstiId((Long)data[6]);
+			partyElectionResultVO.setConstiName(data[7] != null?data[7].toString():"");		
+			if(type.trim().equalsIgnoreCase("TopVotesGained") || type.trim().equalsIgnoreCase("TopVotesGainedPerc"))
+			  partyElectionResultVO.setVotesPercentage(data[8] != null?data[8].toString():"");
 			else
-			  partyElectionResultVO.setVotesPercentage(new BigDecimal((Double)data[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-			
-			partyElectionResultVO.setConstiId((Long)data[5]);
-			partyElectionResultVO.setConstiName(data[6] != null?data[6].toString():"");
-			
-			if(type.trim().equalsIgnoreCase("TopVotesGained"))
-			  partyElectionResultVO.setVotesPercentage(data[7] != null?data[7].toString():"");
-		
+			  partyElectionResultVO.setTotalVotes(Math.round((Double)data[8]));
 			returnList.add(partyElectionResultVO);
 		}
 	}
