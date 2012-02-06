@@ -226,6 +226,7 @@
 				<value>com.itgrids.partyanalyst.model.SpecialPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
 				<value>com.itgrids.partyanalyst.model.Category</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>

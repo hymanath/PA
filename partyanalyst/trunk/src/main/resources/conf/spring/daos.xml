@@ -749,4 +749,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="constituencyUrbanPercentageDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyUrbanPercentageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
