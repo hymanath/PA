@@ -350,6 +350,11 @@ function callAjax(param,jsObj,url){
 									else if(jsObj.task == "LowestMarginGained") {
 									  buildTopStoriesTable(myResults,"lowestMarginGained");
 									}
+									else if(jsObj.task == "getPartiesConstituencyUbanPercentage")
+									{
+										buildUbanPercentageWisePartyDetailsGraph(myResults);
+									}
+
 								}
 							catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -648,6 +653,61 @@ function getConstituencyAreaTypeWiseResult()
 	callAjax(param,jsObj,url);
 
 }
+
+function getPartiesConstituencyUbanPercentage()
+{
+	var jsObj = {
+	            time:new Date().getTime(),
+				electionId:electionId,
+				task:"getPartiesConstituencyUbanPercentage"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "electionDetailsReportWithConstituencyUrbanPercentageAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
+function buildUbanPercentageWisePartyDetailsGraph(results)
+{
+	if(results == null || results.length == 0)
+		return;
+
+	var ctitle = 'All Parties Performance By Urban Population Increase Based On Voting Percentage';
+
+	var partiesArray = new Array();
+
+	for(var i=0; i<results[0].partyResults.length; i++)
+			partiesArray.push(results[0].partyResults[i].partyName);
+
+	var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+	var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Range');
+
+	for(var i=0; i<results[0].partyResults.length; i++)
+	        data.addColumn('number', results[0].partyResults[i].partyName);
+
+	var resultsVar = new Array();
+	
+	for(var i=0; i<results.length; i++)
+	{
+		resultsVar.push(results[i]);
+	}
+
+	data.addRows(resultsVar.length);
+
+	for(var i=0; i<resultsVar.length; i++)
+	{
+		data.setValue(i, 0, resultsVar[i].range);
+
+		for(var j=0; j<resultsVar[i].partyResults.length; j++)
+				data.setValue(i, j+1,resultsVar[i].partyResults[j].votesPercentage);
+	}
+
+	 var chart = new google.visualization.LineChart(document.getElementById('UbanPercentageWiseGraph'));
+        chart.draw(data,{curveType: "function",width:880, height: 430,pointSize: 4, title:ctitle ,colors:staticColors,slantedText:true,slantedTextAngle:35,titleTextStyle:{color:'#DC1CF2'}});
+
+}
+
 function showDistrictWiseResultsLineGraph(results)
 {
 
@@ -1460,7 +1520,9 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 
 function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 {	
-	
+	if(dtSourceArray == null || dtSourceArray.length == 0)
+		return;
+
 	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
@@ -2757,6 +2819,10 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 	<c:if test="${hasDeatiledAnalysis}">
 	<table>
+
+	<div id="UbanPercentageWiseGraph">
+		
+	</div>
 	  <tr>
 	    <td><b>TP* = Total Participation , CV* % = Complete Votes Percentage , PV* % = Participated Votes Percentage</b></td>
 	  </tr>
@@ -2929,6 +2995,7 @@ getResultsForAnElection(stateID,electionType,year);
 <c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
 getConstituencyAreaTypeWiseResult();
+getPartiesConstituencyUbanPercentage();
 </c:if>
 getAllTopStories(3,"TopVotesGained");
 $("#top3Id").addClass("dashBoardtabsDivSelected boxshawdow");
