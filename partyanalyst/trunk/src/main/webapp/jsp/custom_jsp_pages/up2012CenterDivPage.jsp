@@ -56,7 +56,7 @@
 <div class="next" style="right:-15px;top:70px;"></div></div>
 
 <div id="wrap1">
-	 <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px; clear: both; display: block;margin-top: 135px;margin-right: 112px;">View PoliticalProfile Photo's,News And Video's </span>
+	 <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px; clear: both; display: block;margin-top: 135px;margin-right: 93px;">View PoliticalProfile Photo's,News And Video's </span>
 		<div id="list" style="margin-top:12px;width:400px;">
                 <div class="prev1" style="top:76Px;left:-20px;"></div>
 		<div class="slider1">
