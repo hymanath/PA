@@ -1947,9 +1947,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List<Election> findByElectionScopeIdAndPartyId(Long electionScopeId,
 			String electionSubtypes,Long partyId){
 		//String isPartial="0";
-		Object params[] = {electionScopeId, partyId};
+		Object params[] = {electionScopeId, partyId ,electionSubtypes};
 		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear from Nomination model where model.constituencyElection.election.electionScope.electionScopeId = ? " +
-				"and model.party.partyId = ? and model.constituencyElection.election.isPartial is null order by model.constituencyElection.election.electionYear desc", params);
+				"and model.party.partyId = ? and model.constituencyElection.election.elecSubtype = ? and model.constituencyElection.election.isPartial is null order by model.constituencyElection.election.electionYear desc", params);
 	}
 	
 	@SuppressWarnings("unchecked")
