@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ConstituencyUrbanDetailsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
@@ -26,5 +27,7 @@ public interface IElectionReportService {
 	public List<PartyElectionResultVO> getPartyElectionResultWithConstituencyAreaType(Long electionId);
 		
 	public List<PartyElectionResultVO> getTopVotesMarginVotesDetails(Long electionId,int maxResult,String type);
+	
+	public List<ConstituencyUrbanDetailsVO> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String censusYear,List<Long> partiesList);
 	
 }
