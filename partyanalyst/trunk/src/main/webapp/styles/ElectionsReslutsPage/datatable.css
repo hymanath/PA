@@ -19,21 +19,21 @@ version: 2.8.0r4
 th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .yui-dt-resizer{display:none;}
 .yui-dt-editor{position:absolute;z-index:9000;}
 .yui-skin-sam .yui-dt table {
-	border:2px solid #9696C0;
-	border-collapse:separate;
+	border:1px solid #d3d3d3;
+	border-collapse:collapse;
 	border-spacing:0;
-	color:CornflowerBlue;
-	font-family:Times New Roman;
-	font-size:13px;
-	font-weight:bold;
+	color:#3d3d3d;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:normal;
 	margin:0;
 	padding:0;
 	width:100%;
 }
+.yui-skin-sam .yui-dt table * a{font-weight:bold;}
 .yui-skin-sam .yui-dt thead{border-spacing:0;}
 .yui-skin-sam .yui-dt caption {
-	background-image:url(../../images/icons/electionResultsReport/table_head.png);
-	color:DimGray;
+	color:#fff;
 	font-family:Trebuchet MS;
 	font-size:15px;
 	font-weight:bold;
@@ -41,6 +41,8 @@ th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .
 	line-height:1;
 	padding:0.5em 0;
 	text-align:center;
+	font-style:normal;
+	padding-top:5px;
 }
 .yui-skin-sam .yui-dt th{
 	background:#B7D3FC;
