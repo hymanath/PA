@@ -41,13 +41,14 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CensusYear extends BaseModel implements java.io.Serializable{
 	
-	private static final long serialVersionUID = 3549111216847400674L;
-	private Long censusYearId;
+	 private static final long serialVersionUID = 3549111216847400674L;
+	 private Long censusYearId;
 	 private Country country;
 	 private String year;
 	 private String description;
 	 private Date updatedDate;
 	 private Set<DelimitationConstituency> delimitationConstituency = new HashSet<DelimitationConstituency>(0);
+	 private Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage = new HashSet<ConstituencyUrbanPercentage>(0);
 	 
 	 /** default constructor */  
 		
@@ -123,6 +124,17 @@ public class CensusYear extends BaseModel implements java.io.Serializable{
 	public void setDelimitationConstituency(
 			Set<DelimitationConstituency> delimitationConstituency) {
 		this.delimitationConstituency = delimitationConstituency;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "censusYear")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ConstituencyUrbanPercentage> getConstituencyUrbanPercentage() {
+		return constituencyUrbanPercentage;
+	}
+
+	public void setConstituencyUrbanPercentage(
+			Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage) {
+		this.constituencyUrbanPercentage = constituencyUrbanPercentage;
 	}
 	 	
  	

@@ -72,6 +72,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private LocalElectionBodyWard localElectionBodyWard;
 	private Set<UserConstituencyScope> userConstituencyScope = new HashSet<UserConstituencyScope>(0);
 	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
+	private Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage = new HashSet<ConstituencyUrbanPercentage>(0);
 	// Constructors
 
 	
@@ -377,7 +378,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.userConstituencyScope = userConstituencyScope;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<MessageToParty> getMessageToParty() {
 		return messageToParty;
 	}
@@ -385,14 +386,17 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setMessageToParty(Set<MessageToParty> messageToParty) {
 		this.messageToParty = messageToParty;
 	}
-	
-	
-	
-	
-	
 
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ConstituencyUrbanPercentage> getConstituencyUrbanPercentage() {
+		return constituencyUrbanPercentage;
+	}
 
+	public void setConstituencyUrbanPercentage(
+			Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage) {
+		this.constituencyUrbanPercentage = constituencyUrbanPercentage;
+	}
 	
-
+	
 }
