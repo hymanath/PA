@@ -42,20 +42,27 @@
 }
 .graphTop
 {
-	background-image:url(../../images/icons/electionResultsReport/top_image.png);
+	background-image:url(../../images/icons/electionResultsReport/Graybg.png);
 	color:#FFFFFF;
-	font-family:Times New Roman;
-	font-size:20px;
+	font-family:'Asap',Arial;
+	font-size:18px;
 	font-weight:bold;
 	height:30px;
-	width:900px;	
+	width:1000px;	
+	border-radius:5px 5px 0px 0px;
+	-moz-border-radius:5px 5px 0px 0px;
+	text-shadow:0 1px 0 #151515;
+	padding-top:5px;
+	margin-top:20px;
 }
 #statewiseGraph
 {
-	background:#EFF3F7 none repeat scroll 0 0;	
-	border-left:1px solid #102D66;
-	border-right:1px solid #102D66;	
-	width:898px;		
+	background:#f5f5f5 none repeat scroll 0 0;	
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;	
+	border-bottom:1px solid #d3d3d3;	
+	width:998px;		
+	margin-bottom:10px;
 }
 .graphBottom
 {
@@ -64,24 +71,31 @@
 	width:900px;
 	border-bottom:0px none none;
 	margin-bottom:10px;	
+	display:none;
 }
 #distwiseGraph
 {
-	background:#EFF3F7 none repeat scroll 0 0;	
-	border-left:1px solid #102D66;
-	border-right:1px solid #102D66;
+	background:#f5f5f5 none repeat scroll 0 0;	
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;
+	border-bottom:1px solid #d3d3d3;
 	color:#606060;	
 	padding-top:5px;
 	text-align:left;
-	width:898px;
+	width:998px;
+	margin-bottom:10px;	
 
 }
 #toolsDiv
 {
-	border-left:1px solid #102D66;
-	border-right:1px solid #102D66;
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;
+	border-bottom:1px solid #d3d3d3;
 	height:250px;
-	width:898px;
+	width:998px;
+	margin-bottom:5px;
+	background:#f5f5f5;
+	
 	
 }
 .toolsTable
@@ -96,20 +110,46 @@
 }
 .toolsDisplay
 {
-	background:#EBE4F2 none repeat scroll 0 0;
-	border-color:#B7D3FC;
-	border-style:solid;
-	border-width:1px 1px 1px 10px;
+
+	border:1px solid #d3d3d3;
 	color:#006221;
 	font-family:Ms sans-serif;
-	height:250px;
-	padding:5px;
+	height:200px;
+	padding:10px;
 	width:200px;
-}	
-h3{
+	margin:10px;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	
+	background: #deefff; /* Old browsers */
+background: -moz-linear-gradient(top,  #deefff 0%, #98bede 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#deefff), color-stop(100%,#98bede)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #deefff 0%,#98bede 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #deefff 0%,#98bede 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #deefff 0%,#98bede 100%); /* IE10+ */
+background: linear-gradient(top,  #deefff 0%,#98bede 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#deefff', endColorstr='#98bede',GradientType=0 ); /* IE6-9 */
+}
+
+.toolsTable  td:nth-child(odd) .toolsDisplay{
+background: #e4efc0; /* Old browsers */
+background: -moz-linear-gradient(top,  #e4efc0 0%, #abbd73 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4efc0), color-stop(100%,#abbd73)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* IE10+ */
+background: linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4efc0', endColorstr='#abbd73',GradientType=0 ); /* IE6-9 */
+
+}
+	
+.toolsDisplay * input{margin-right:5px;}	
+.toolsDisplay * table{font-family:Arial;font-size:11px;}	
+.toolsDisplay h3{
 	border-bottom:1px dotted #006221;
 	font-family:Trebuchet MS;
 	font-size:15px;
+	font-weight:bold;
 	margin-top:0;
 }
 .link {
@@ -126,18 +166,19 @@ text-decoration:none;
 }
 
 .viewChartsForResults {
-	background-image:url(../../images/icons/electionResultsReport/table_head.png);
-	border-left:1px solid #9999CC;
-	border-right:1px solid #9999CC;
-	color:DimGray;
+	background-image:url(../../images/icons/electionResultsReport/Bluebg.png);
+	color:#fff;
 	font-family:Verdana;
 	font-size:12px;
 	font-weight:lighter;
 	margin-left:10px;
 	padding:5px;
 	text-decoration:none;
+	margin:10px;
+	border-radius:5px;
+	-moz-border-radius:5px;
 }
-
+.viewChartsForResults:hover{ background:#3d3d3d !important;text-decoration:none !important;}
 #withoutAllianceDiv_Datatable table
 {
 	width:100%;
@@ -203,7 +244,7 @@ margin:1px;
 
 #stateRegionsDiv
 {
-    font-family: verdana;
+    font-family: Arial;
     font-size: 14px;
     font-weight: bold;
     padding: 10px;
