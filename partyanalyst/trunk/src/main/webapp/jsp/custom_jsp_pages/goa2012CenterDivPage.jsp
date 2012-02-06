@@ -65,7 +65,7 @@
 			<ul>
 				<li style="width:125px;">
 				 <a href="candidateElectionResultsAction.action?
-					candidateId=261174" title="Pratapsingh Rane"><img src="./images/candidates/PARKASH SINGH BADAL.jpeg" alt="Pratapsingh Rane"/> <span>Pratapsingh Rane</span> </a>
+					candidateId=261174" title="Pratapsingh Rane"><img src="./images/candidates/RANE PRATAPSINGH RAOJIRAO.jpeg" alt="Pratapsingh Rane"/> <span>Pratapsingh Rane</span> </a>
 				 </li>
 				<li style="width:125px;">
 				 <a href="candidateElectionResultsAction.action?
