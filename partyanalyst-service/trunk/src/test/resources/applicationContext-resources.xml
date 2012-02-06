@@ -243,6 +243,7 @@
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
 				<value>com.itgrids.partyanalyst.model.Category</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
 			</list>
@@ -250,6 +251,10 @@
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="constituencyUrbanPercentageDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyUrbanPercentageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="partyElectionResultsWithAreaTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultsWithAreaTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
