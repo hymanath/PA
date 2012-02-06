@@ -472,4 +472,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Object[]> getHighestLowestMarginVotesInanElection(Long electionId,int maxResult,String type);
 	
 	public List<Object[]> getTopVotesGainedPercentage(Long electionId,int maxResult);
+	
+	public List<Object[]> getCandidates();
+	
+	public List<Object[]> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String year,List<Long> partiesList);
 }
