@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyUrbanDetailsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
@@ -70,7 +71,17 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private List<PartyElectionResultVO> partyElectionResultVO;
 	private Boolean hasDeatiledAnalysis = false;
 	private EntitlementsHelper entitlementsHelper;
+	private List<ConstituencyUrbanDetailsVO> urbanDetailsList;
 	
+	public List<ConstituencyUrbanDetailsVO> getUrbanDetailsList() {
+		return urbanDetailsList;
+	}
+
+	public void setUrbanDetailsList(
+			List<ConstituencyUrbanDetailsVO> urbanDetailsList) {
+		this.urbanDetailsList = urbanDetailsList;
+	}
+
 	public Boolean getHasDeatiledAnalysis() {
 		return hasDeatiledAnalysis;
 	}
@@ -357,6 +368,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		}
 		if (jObj.getString("task").equalsIgnoreCase("getConstituencyAreaTypeWiseResult")) {
 			partyElectionResultVO = electionReportService.getPartyElectionResultWithConstituencyAreaType(jObj.getLong("electionId"));
+		}
+		if(jObj.getString("task").equalsIgnoreCase("getPartiesConstituencyUbanPercentage"))
+		{
+			urbanDetailsList = electionReportService.getConstituencyAreaTypePercentageWiseElectionResultOfParties(jObj.getLong("electionId"),"2001",null);
 		}
 		if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc")) {
 			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim());
