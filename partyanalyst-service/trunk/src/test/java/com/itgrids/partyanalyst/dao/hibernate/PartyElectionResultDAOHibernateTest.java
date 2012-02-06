@@ -58,7 +58,7 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 	 }
 	}*/
 	
-	public void testGetPartyBasicResultForAnElection()
+	/*public void testGetPartyBasicResultForAnElection()
 	{
 		List<Object[]> list = partyElectionResultDAO.getPartyBasicResultForAnElection(38l);
 		
@@ -69,6 +69,18 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println();
 			for(Object obj : params)
 				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void test()
+	{
+		List<Object[]> list = partyElectionResultDAO.getBasicPartiesForAnElection(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object params : list)
+		{
+			System.out.println(params);
 		}
 	}
 	
