@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IStateRegionDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyUrbanDetailsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsInAllDistrictsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
@@ -45,6 +47,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
+import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -1366,6 +1369,7 @@ public class ElectionReportService implements IElectionReportService {
 					else 
 						partyResult = null;
 				}
+				
 			}
 			return partyResult;
 		}catch (Exception e) {
@@ -1625,17 +1629,33 @@ public class ElectionReportService implements IElectionReportService {
 				Double urbanPer = 0.0D;
 				Double ruralUrbanPer = 0.0D;
 				try{
-				ruralPer = (Double.parseDouble(partyElectionResultVO.getRuralVotesPolled().toString())*100)/
-									Double.parseDouble(partyElectionResultVO.getRuralVoters().toString());
-				partyElectionResultVO.setRuralVotesPercent(new BigDecimal(ruralPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				
-				urbanPer = (Double.parseDouble(partyElectionResultVO.getUrbanVotesPolled().toString())*100)/
-				Double.parseDouble(partyElectionResultVO.getUrbanVoters().toString());
-				partyElectionResultVO.setUrbanVotesPercent(new BigDecimal(urbanPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-
-				ruralUrbanPer = (Double.parseDouble(partyElectionResultVO.getRuralUrbanVotesPolled().toString())*100)/
-				Double.parseDouble(partyElectionResultVO.getRuralUrbanVoters().toString());
-				partyElectionResultVO.setRuralUrbanVotesPercent(new BigDecimal(ruralUrbanPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				if(partyElectionResultVO.getRuralVotesPolled() != null && partyElectionResultVO.getRuralVotesPolled() > 0)
+				{
+					ruralPer = (Double.parseDouble(partyElectionResultVO.getRuralVotesPolled().toString())*100)/
+										Double.parseDouble(partyElectionResultVO.getRuralVoters().toString());
+					partyElectionResultVO.setRuralVotesPercent(new BigDecimal(ruralPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+				else
+					partyElectionResultVO.setRuralVotesPercent("0.0");
+				
+				if(partyElectionResultVO.getUrbanVotesPolled() != null && partyElectionResultVO.getUrbanVotesPolled() > 0)
+				{
+					urbanPer = (Double.parseDouble(partyElectionResultVO.getUrbanVotesPolled().toString())*100)/
+					Double.parseDouble(partyElectionResultVO.getUrbanVoters().toString());
+					partyElectionResultVO.setUrbanVotesPercent(new BigDecimal(urbanPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+				else
+					partyElectionResultVO.setUrbanVotesPercent("0.0");
+				
+				if(partyElectionResultVO.getRuralUrbanVotesPolled() != null && partyElectionResultVO.getRuralUrbanVotesPolled() > 0)
+				{
+					ruralUrbanPer = (Double.parseDouble(partyElectionResultVO.getRuralUrbanVotesPolled().toString())*100)/
+					Double.parseDouble(partyElectionResultVO.getRuralUrbanVoters().toString());
+					partyElectionResultVO.setRuralUrbanVotesPercent(new BigDecimal(ruralUrbanPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+				else
+					partyElectionResultVO.setRuralUrbanVotesPercent("0.0");
 
 				}catch (Exception ex) {
 					partyElectionResultVO.setRuralVotesPercent(new BigDecimal(ruralPer).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1837,4 +1857,241 @@ public class ElectionReportService implements IElectionReportService {
 			returnList.add(partyElectionResultVO);
 		}
 	}
+	
+	
+	public List<ConstituencyUrbanDetailsVO> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String censusYear,List<Long> partiesList)
+	{
+		log.debug("Entered into getConstituencyAreaTypePercentageWiseElectionResultOfParties() Method");
+		try{
+			List<ConstituencyUrbanDetailsVO> constituencyUrbanDetailsVOList = null;
+			ConstituencyUrbanDetailsVO constituencyUrbanDetailsVO = null;
+			partiesList = new ArrayList<Long>(0);
+			Map<Long,String> partiesMap = new HashMap<Long, String>();
+			
+			List<Object[]> partyObj = partyElectionResultDAO.getBasicPartiesForAnElection(electionId);
+			
+			
+			for(Object[] params : partyObj)
+			{
+				partiesList.add((Long)params[0]);
+				partiesMap.put((Long)params[0],params[1].toString());
+			}
+			
+			List<Object[]> list = nominationDAO.getConstituencyAreaTypePercentageWiseElectionResultOfParties(electionId,censusYear,partiesList);
+			
+			if(list != null && list.size() > 0)
+			{
+				Map<String,List<PartyWiseResultVO>> resultMap = new LinkedHashMap<String,List<PartyWiseResultVO>>();
+				PartyWiseResultVO partyWiseResultVO = null;
+				constituencyUrbanDetailsVOList = new ArrayList<ConstituencyUrbanDetailsVO>(0);
+				
+				resultMap.put("0-10", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("10-20", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("20-30", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("30-40", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("40-50", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("50-60", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("60-70", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("70-80", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("80-90", new ArrayList<PartyWiseResultVO>(0));
+				resultMap.put("90-100", new ArrayList<PartyWiseResultVO>(0));
+				
+				for(Object[] params : list)
+				{
+					Double percentage = (Double)params[2];
+					partyWiseResultVO = new PartyWiseResultVO();
+					partyWiseResultVO.setPartyId((Long)params[0]);
+					partyWiseResultVO.setPartyName(params[1] != null ? params[1].toString() : "");
+					partyWiseResultVO.setUrbanPercentage(percentage);
+					partyWiseResultVO.setRank((Long)params[3]);
+					partyWiseResultVO.setVotesEarned(((Double)params[4]).longValue());
+					partyWiseResultVO.setValidVotes(((Double)params[5]).longValue());
+					
+					if(percentage >= 0 && percentage <= 10)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("0-10");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("0-10", partyWiseResultVOList);
+					}
+					else if(percentage > 10 && percentage <= 20)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("10-20");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("10-20", partyWiseResultVOList);
+					}
+					else if(percentage > 20 && percentage <= 30)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("20-30");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("20-30", partyWiseResultVOList);
+					}
+					else if(percentage > 30 && percentage <= 40)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("30-40");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("30-40", partyWiseResultVOList);
+					}
+					else if(percentage > 40 && percentage <= 50)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("40-50");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("40-50", partyWiseResultVOList);
+					}
+					else if(percentage > 50 && percentage <= 60)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("50-60");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("50-60", partyWiseResultVOList);
+					}
+					else if(percentage > 60 && percentage <= 70)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("60-70");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("60-70", partyWiseResultVOList);
+					}
+					else if(percentage > 70 && percentage <= 80)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("70-80");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("70-80", partyWiseResultVOList);
+					}
+					else if(percentage > 80 && percentage <= 90)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("80-90");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("80-90", partyWiseResultVOList);
+					}
+					else if(percentage > 90 && percentage <= 100)
+					{
+						List<PartyWiseResultVO> partyWiseResultVOList = resultMap.get("90-100");
+						partyWiseResultVOList.add(partyWiseResultVO);
+						resultMap.put("90-100", partyWiseResultVOList);
+					}
+					
+				}
+				
+				for(Map.Entry<String,List<PartyWiseResultVO>> entry : resultMap.entrySet())
+				{
+					constituencyUrbanDetailsVO = new ConstituencyUrbanDetailsVO();
+					constituencyUrbanDetailsVO.setRange(entry.getKey());
+					constituencyUrbanDetailsVO.setPartyResults(processPartyWiseResultVOList(entry.getValue(),partiesList,partiesMap));
+					constituencyUrbanDetailsVOList.add(constituencyUrbanDetailsVO);
+				}
+			}
+			return constituencyUrbanDetailsVOList;
+		}catch (Exception e) {
+			log.error("Exception occured in getConstituencyAreaTypePercentageWiseElectionResultOfParties() Method - "+e);
+			return null;
+		}
+	}
+	
+	public List<PartyWiseResultVO> processPartyWiseResultVOList(List<PartyWiseResultVO> list,List<Long>partiesList,Map partiesMap)
+	{
+		try
+		{
+			List<PartyWiseResultVO> partyWiseResultVOList = new ArrayList<PartyWiseResultVO>(0);
+			List<PartyWiseResultVO> resultList = new ArrayList<PartyWiseResultVO>(0);
+			PartyWiseResultVO partyWiseResultVONew = null; 
+			for(PartyWiseResultVO partyWiseResultVO : list)
+			{
+				partyWiseResultVONew = getPartyWiseResultVO(partyWiseResultVOList,partyWiseResultVO.getPartyId());
+				boolean isNew = false;
+				
+				if(partyWiseResultVONew == null)
+				{
+					isNew = true;
+					partyWiseResultVONew = new PartyWiseResultVO();
+					partyWiseResultVONew.setPartyId(partyWiseResultVO.getPartyId());
+					partyWiseResultVONew.setPartyName(partyWiseResultVO.getPartyName());
+					partyWiseResultVONew.setSeatsParticipated(1);
+					partyWiseResultVONew.setVotesEarned(partyWiseResultVO.getVotesEarned());
+					partyWiseResultVONew.setValidVotes(partyWiseResultVO.getValidVotes());
+					
+					if(partyWiseResultVO.getRank().longValue() == 1L)
+						partyWiseResultVONew.setTotalSeatsWon(1L);
+				}
+				else
+				{
+					partyWiseResultVONew.setSeatsParticipated(partyWiseResultVONew.getSeatsParticipated() + 1);
+					partyWiseResultVONew.setVotesEarned(partyWiseResultVONew.getVotesEarned() != null ? 
+						partyWiseResultVONew.getVotesEarned() + partyWiseResultVO.getVotesEarned() : partyWiseResultVO.getVotesEarned());
+					partyWiseResultVONew.setValidVotes(partyWiseResultVONew.getValidVotes() != null ?
+							partyWiseResultVONew.getValidVotes() + partyWiseResultVO.getValidVotes() : partyWiseResultVO.getValidVotes());
+					
+					if(partyWiseResultVO.getRank().longValue() == 1L)
+						partyWiseResultVONew.setTotalSeatsWon(partyWiseResultVONew.getTotalSeatsWon() != null ?
+								partyWiseResultVONew.getTotalSeatsWon() + 1L : 1L);
+				}
+				
+				if(isNew)
+					partyWiseResultVOList.add(partyWiseResultVONew);
+			}
+			
+			for(PartyWiseResultVO partyWiseResultVO : partyWiseResultVOList)
+			{
+				if(partyWiseResultVO.getTotalSeatsWon() == null)
+					partyWiseResultVO.setTotalSeatsWon(0L);
+				Double votesPer = 0.0D;
+				try{
+					if(partyWiseResultVO.getVotesEarned() != null && partyWiseResultVO.getVotesEarned() > 0)
+						votesPer = Double.parseDouble((new BigDecimal((partyWiseResultVO.getVotesEarned().doubleValue() * 100)/partyWiseResultVO.getValidVotes().doubleValue()).
+						setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+					
+						partyWiseResultVO.setVotesPercentage(votesPer);
+					
+					}catch (Exception e) {
+						partyWiseResultVO.setVotesPercentage(votesPer);
+					}
+			}
+			
+			for(Long partyId : partiesList)
+			{
+				boolean flag = false;
+				for(PartyWiseResultVO PartyWiseResultVO : partyWiseResultVOList)
+				{
+					if(PartyWiseResultVO.getPartyId().longValue() == partyId)
+						flag = true;
+				}
+				
+				if(!flag)
+				{
+					PartyWiseResultVO partyWiseResultVO = new PartyWiseResultVO();
+					partyWiseResultVO.setPartyId(partyId);
+					partyWiseResultVO.setPartyName(partiesMap.get(partyId).toString());
+					partyWiseResultVO.setSeatsParticipated(0);
+					partyWiseResultVO.setVotesPercentage(0.0);
+					partyWiseResultVO.setTotalSeatsWon(0L);
+					partyWiseResultVOList.add(partyWiseResultVO);
+				}
+			}
+			
+			for(Long partyId : partiesList)
+			{
+				for(PartyWiseResultVO partyWiseResultVO :partyWiseResultVOList)
+				{
+					if(partyWiseResultVO.getPartyId().longValue() == partyId)
+						resultList.add(partyWiseResultVO);
+				}
+			}
+			
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Occured in processPartyWiseResultVOList() Method - "+e);
+			return null;
+		}
+	}
+	
+	public PartyWiseResultVO getPartyWiseResultVO(List<PartyWiseResultVO> partyWiseResultVOList, Long partyId)
+	{
+		try{
+			for(PartyWiseResultVO partyWiseResultVO : partyWiseResultVOList)
+				if(partyWiseResultVO.getPartyId().longValue() == partyId.longValue())
+					return partyWiseResultVO;
+			return null;
+		}catch (Exception e) {
+			log.error("Exception occured in getPartyWiseResultVO() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
 }
