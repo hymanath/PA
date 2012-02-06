@@ -175,6 +175,55 @@ margin-right:auto;
 #districtResults{background:#f9f9f9;padding:5px;}
 #MahaKutami{background:#fff8e5;padding:5px;}
 
+.dashBoardtabsDiv {
+    background: none repeat scroll 0 0 #A3A3A3;
+    border: 1px solid #CDCDCD;
+    border-radius: 5px 5px 5px 5px;
+    font-family: verdana;
+    font-weight: bold;
+    padding: 10px 7px 10px;
+    text-align: left;
+    width: 79%;
+}
+
+.dashBoardtabsDivSelected
+	{
+	background :skyBlue; color: #000000;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	}
+.dashBoardtabsDiv a {
+    color: #000000;
+    cursor: pointer;
+    font-family: verdana;
+    font-weight: bold;
+    padding: 5px 16px 5px;
+    text-decoration: none;
+}
+.buttonClass {
+    background-color: #F52B43;
+    border-radius: 6px 6px 6px 6px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 4px;
+}
+.topStories {
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+	border-bottom: 1px solid #d3d3d3;
+    color: #606060;
+    padding-top: 5px;
+    width: 998px;
+	padding-bottom: 10px;
+	margin-bottom:5px;
+	background:#f5f5f5;
+}
+.boxshawdow{
+    	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+}
+table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable * th{border:1px solid #d3d3d3;border-color:#d3d3d3 !important;}
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -183,6 +232,7 @@ var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
 var electionTypeId = '${electionTypeId}';
+var chkSize= 3;
 var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[],
@@ -288,6 +338,18 @@ function callAjax(param,jsObj,url){
 									else if(jsObj.task == "getConstituencyAreaTypeWiseResult") {
 									  buildPartyPerfRulUrbanDataTable('partyPerfResultsDataTable',myResults);
 									}
+									else if(jsObj.task == "TopVotesGained") {
+									  buildTopStoriesTable(myResults,"topVotesGained");
+									}
+									else if(jsObj.task == "TopVotesGainedPerc") {
+									  buildTopStoriesTable(myResults,"topVotesGainedPerc");
+									}
+									else if(jsObj.task == "HighestMarginGained") {
+									  buildTopStoriesTable(myResults,"highestMarginGained");
+									}
+									else if(jsObj.task == "LowestMarginGained") {
+									  buildTopStoriesTable(myResults,"lowestMarginGained");
+									}
 								}
 							catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -301,7 +363,102 @@ function callAjax(param,jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+function buildTopStoriesTable(result,id){
+   document.getElementById("searchAjaxImgSpan").style.display = "none";
+   if(result != null && result.length >0 )
+   {
+   var value='';
+   <c:if test="${electionType != 'Parliament'}">
+       value = '${stateName} ${electionType} Election ${year}'; 
+   </c:if>
+   <c:if test="${electionType == 'Parliament'}">
+    value+= ' ${electionType} Election ${year} ';
+  </c:if>
+  
+     var str = '';
+	 str+='<div style="padding-top:10px;">';
+	 if(id == "topVotesGained")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Highest Votes Earned By Candidates In '+value+'</td></tr></table>';
+	 if(id == "topVotesGainedPerc")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td>Highest Votes Percentage Earned By Candidates In '+value+'</td></tr></table>';
+	 if(id == "highestMarginGained")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td>Highest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
+	 if(id == "lowestMarginGained")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Lowest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
+	 
+	 str+= '<table class="searchresultsTable" style="width:91%;padding-top:10px;">';
+	 str+= '<tr><th style="background-color : #C4DEFF">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
+	 if(id == "topVotesGained")
+	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th></tr>';
+	 else if(id == "topVotesGainedPerc")
+	   str+= '<th style="background-color : #C4DEFF">Votes Percentage</th></tr>';
+	 else
+	   str+= '<th style="background-color : #C4DEFF">Margin Votes</th></tr>';
+	 for(var i in result)
+	 {
+	    str+= '<tr>';
+	    str+= '     <td style="background-color : #FFFFFF"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
+		str+= '		<td style="background-color : #FFFFFF"><a href="constituencyPageAction.action?constituencyId='+result[i].constiId+' ">'+result[i].constiName+'</a></td>';
+		if(result[i].partyName != 'IND')
+		str+= '		<td style="background-color : #FFFFFF"><a href="partyPageAction.action?partyId='+result[i].partyId+' ">'+result[i].partyName+'</a></td>';
+		else
+		str+= '		<td style="background-color : #FFFFFF">'+result[i].partyName+'</td>';
+		str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>';
+		str+= '     <td style="background-color : #FFFFFF">'+result[i].votesEarned+'</td>'; 
+       if(id == "topVotesGained" || id == "topVotesGainedPerc")		
+		str+= '	    <td style="background-color : #FFFFFF">'+result[i].votesPercentage+'</td>';
+	   else
+		str+= '	    <td style="background-color : #FFFFFF">'+result[i].totalVotes+'</td>';
+		
+		str+= '</tr>';
+	 }
+	 
+	 str+= '</table>';
+	 str+= '</div>';
+   }
+   document.getElementById(id).innerHTML = str;
+}
+function toggleOption(id){//year
+ if(document.getElementById(id).value == "Hide Highlights Of ${year} Election Results")
+   document.getElementById(id).value = "Show Highlights Of ${year} Election Results";
+ else
+   document.getElementById(id).value = "Hide Highlights Of ${year} Election Results";
+   $("#topStoriesDIV").slideToggle("slow");
+ }
+function getTopStories(id,size){
+  
+  if(size !=3)
+   {
+     <c:if test="${hasDeatiledAnalysis == false}">
+		
+			  $("#candidateResultAccessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000000">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+				});
+		showAlertMsg("candidateResultAccessDiv");
+		return ;
+		</c:if>
+   }
+  chkSize = size;
 
+  $("#top3Id").removeClass("dashBoardtabsDivSelected");
+  $("#top5Id").removeClass("dashBoardtabsDivSelected");
+  $("#top10Id").removeClass("dashBoardtabsDivSelected");
+  $("#"+id).addClass("dashBoardtabsDivSelected");
+  
+  if(document.getElementById("topVotes").checked == true)
+    getAllTopStories(size,"TopVotesGained");
+  if(document.getElementById("topPercVotes").checked == true)
+    getAllTopStories(size,"TopVotesGainedPerc");
+  if(document.getElementById("topMargin").checked == true)
+    getAllTopStories(size,"HighestMarginGained");
+  if(document.getElementById("lowMargin").checked == true)
+    getAllTopStories(size,"LowestMarginGained");
+}
 function showAlertMsg(divElmt){
 
 	$("#accessDiv").css("display","block");
@@ -457,8 +614,30 @@ function getPartyGenderInfo()
 	callAjax(param,jsObj,url);
 
 }
+function getAllTopStories(maxResult,task)
+{
+   document.getElementById("searchAjaxImgSpan").style.display = "block";
+   document.getElementById("topVotesGained").innerHTML = "";
+   document.getElementById("topVotesGainedPerc").innerHTML =  "";
+   document.getElementById("highestMarginGained").innerHTML = "";
+   document.getElementById("lowestMarginGained").innerHTML =  "";
+	var jsObj = {
+	            time:new Date().getTime(),
+				maxResult:maxResult,
+				electionId:electionId,
+				task:task
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
 function getConstituencyAreaTypeWiseResult()
 {
+   document.getElementById("topVotesGained").innerHTML = "";
+  document.getElementById("topVotesGainedPerc").innerHTML =  "";
+  document.getElementById("highestMarginGained").innerHTML = "";
+  document.getElementById("lowestMarginGained").innerHTML =  "";
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -2399,7 +2578,43 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </script>
 </span>
 </div>
+<div style="padding: 5px 60px 5px 0px;text-align:right;">
+  <input type="button" class="buttonClass" id="buttonId" onclick="toggleOption(this.id);" value="Show Highlights Of ${year} Election Results">
+</div>
 <div class="clear"></div>
+
+<div id="topStoriesDIV" style="display:none;">
+<DIV class="graphTop"> Highlights Of ${year} Elections</DIV>
+<div class="topStories">
+ <div id="topStoriesMenu" style="width:100%;">
+  <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">
+     <input type="radio" checked="true" name="topStoriesRadio" id="topVotes" onclick="getAllTopStories(chkSize,'TopVotesGained');" />&nbsp;<b style="font-size11px;">Highest Votes Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio"  id="topPercVotes" onclick="getAllTopStories(chkSize,'TopVotesGainedPerc');" />&nbsp;<b style="font-size11px;">Highest Votes Percentage Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="topMargin"  onclick="getAllTopStories(chkSize,'HighestMarginGained');"/>&nbsp;<b style="font-size11px;">Highest Margin Votes Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="lowMargin"  onclick="getAllTopStories(chkSize,'LowestMarginGained');"/>&nbsp;<b style="font-size11px;">Lowest Margin Votes Earned</b> &nbsp;&nbsp;&nbsp;
+  </div>
+ <table style="width:100%;"><tr><td style="width:70%">
+ <div style="padding-left:300px;">
+  <div class="dashBoardtabsDiv" style="align:left;">
+	<a onclick="getTopStories(this.id,3);" id="top3Id">Top 3</a>
+	<a onclick="getTopStories(this.id,5);" id="top5Id">Top 5</a>
+	<a onclick="getTopStories(this.id,10);" id="top10Id">Top 10</a>
+</div>
+</div>
+ </td>
+ <td>
+<div style="width:10%:text-align:left;">
+  <div id="searchAjaxImgSpan" style="display:none;">
+     <img src="images/icons/search.gif">
+  </div>
+</div>
+</td></tr>
+</table>
+ </div>
+  <div id="topVotesGained"></div>
+  <div id="topVotesGainedPerc"></div>
+  <div id="highestMarginGained"></div>
+  <div id="lowestMarginGained"></div>
+  </div>
+  <DIV class="graphBottom"></DIV>
+</div>
 
 <div id="stateResults">
 </div>
@@ -2715,6 +2930,8 @@ getResultsForAnElection(stateID,electionType,year);
 getPartyGenderInfo();
 getConstituencyAreaTypeWiseResult();
 </c:if>
+getAllTopStories(3,"TopVotesGained");
+$("#top3Id").addClass("dashBoardtabsDivSelected boxshawdow");
 </SCRIPT>
 </center>
 </BODY>
