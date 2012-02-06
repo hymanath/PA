@@ -3135,6 +3135,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return query.list();
 	}
 		
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getTopVotesGainedCandidates(Long electionId,int maxResult){
 		StringBuilder query = new StringBuilder();
 		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned,model.constituencyElection.constituency.constituencyId," +
@@ -3149,6 +3150,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
          return queryObject.list();
 	}	
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getHighestLowestMarginVotesInanElection(Long electionId,int maxResult,String type)
 	{
 		StringBuilder query = new StringBuilder();
@@ -3167,6 +3169,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setMaxResults(maxResult);
          return queryObject.list();
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getTopVotesGainedPercentage(Long electionId,int maxResult){
 		StringBuilder query = new StringBuilder();
 		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned," +
@@ -3179,6 +3182,26 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 		queryObject.setMaxResults(maxResult);
          return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidates()
+	{
+		return getHibernateTemplate().find("select distinct model.candidate.candidateId,model.candidate.lastname from Nomination model where model.constituencyElection.election.electionScope.electionType.electionTypeId not in (1,2)" +
+				" and model.candidate.candidateId not in (select model2.candidate.candidateId from Nomination model2 where model2.constituencyElection.election.electionScope.electionType.electionTypeId in (1,2))");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String year,List<Long> partiesList)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model2.urbanPercentage,model.candidateResult.rank,model.candidateResult.votesEarned," +
+		" model.constituencyElection.constituencyElectionResult.validVotes from Nomination model,ConstituencyUrbanPercentage model2 where model.constituencyElection.election.electionId = ? " +
+		" and model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and model2.censusYear.year = ? and model.party.partyId in (:partiesList) order by model.party.shortName");
+		query.setParameter(0,electionId);
+		query.setParameter(1,year);
+		query.setParameterList("partiesList",partiesList);
+		
+		return query.list();
 	}
 	
 }
