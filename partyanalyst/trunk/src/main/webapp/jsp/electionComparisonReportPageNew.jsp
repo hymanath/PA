@@ -437,6 +437,15 @@
 		border-left:1px solid #E0E0D6;
 		border-right:1px solid #E0E0D6;
 	}
+#accessDiv{
+	background: none repeat scroll 0 0 #FFF8E5;
+    border: 1px solid #06ABEA;
+    border-radius: 7px 7px 7px 7px;
+    height: auto;
+    padding: 10px;
+    text-align: center;
+    width: 577px;
+}
 
 </style>
 <script type="text/javascript">	
@@ -2015,10 +2024,20 @@ function createCoulmnChart()
 </tr>
 </table> 
 </c:if>
-<div class="yui-skin-sam">
-	<div id="comparedResultsPanel"></div>
+<c:if test="${hasECRPage == false}">
+<br/>
+<div id="accessDiv">
+<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;
+	<h3 style="color:#ff0000;display:inline;position:relative;top:-10px; font-weight: bold;font-family: verdana;">
+	Sorry, You Don't have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>
+	<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">
+	Phone No:+91 40 40124153 / +91 096766 96760<br />
+	Email: <a href="mailTo:info@partyanalyst.com">info@itgrids.com</a></span>
+</c:if></div>
 </div>
 
+<div class="yui-skin-sam">
+	<div id="comparedResultsPanel"></div>
 </div>
 
 <script type="text/javascript">	
