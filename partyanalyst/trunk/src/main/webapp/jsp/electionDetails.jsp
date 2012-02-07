@@ -391,8 +391,8 @@ function buildTopStoriesTable(result,id){
 	 if(id == "lowestMarginGained")
 	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Lowest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
 	 
-	 str+= '<table class="searchresultsTable" style="width:96%;padding-top:10px;">';
-	 str+= '<tr><th style="background-color : #C4DEFF">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
+	 str+= '<table class="searchresultsTable" style="width:94%;padding-top:10px;">';
+	 str+= '<tr><th style="background-color : #C4DEFF;width:220px;">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Polled Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
 	 if(id == "topVotesGained")
 	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th></tr>';
 	 else if(id == "topVotesGainedPerc")
