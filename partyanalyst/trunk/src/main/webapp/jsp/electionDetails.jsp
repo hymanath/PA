@@ -409,11 +409,19 @@ function buildTopStoriesTable(result,id){
 		else
 		str+= '		<td style="background-color : #FFFFFF">'+result[i].partyName+'</td>';
 		str+= '     <td style="background-color : #FFFFFF">'+result[i].votesEarned+'</td>';
-		str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
-       if(id == "topVotesGained" || id == "topVotesGainedPerc")		
-		str+= '	    <td style="background-color : #FFFFFF">'+result[i].votesPercentage+'</td>';
+	   if(id == "topVotesGained")
+		str+= '     <td style="background-color : #F3F3F3">'+result[i].validVotes+'</td>'; 
 	   else
-		str+= '	    <td style="background-color : #FFFFFF">'+result[i].totalVotes+'</td>';
+	    str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
+       if(id == "topVotesGained" || id == "topVotesGainedPerc")	
+        {	 
+         if(id == "topVotesGainedPerc")		
+		  str+= '	    <td style="background-color : #F3F3F3">'+result[i].votesPercentage+'</td>';
+		 else
+		  str+= '	    <td style="background-color : #FFFFFF">'+result[i].votesPercentage+'</td>';
+		}
+	   else
+		str+= '	    <td style="background-color : #F3F3F3">'+result[i].totalVotes+'</td>';
 		
 		str+= '</tr>';
 	 }
@@ -1505,7 +1513,7 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 15			        
 			    }),
-			    caption:"Partywise Male And Female Candidate Election Results" 
+			    caption:"Partywise Male And Female Candidates Participation And Results" 
 				};
 		
 		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable(divId, partywiseResultsWithGenderColumnDefs, partywiseResultsWithGenderDataSource,myConfigs);
@@ -2998,7 +3006,7 @@ getConstituencyAreaTypeWiseResult();
 getPartiesConstituencyUbanPercentage();
 </c:if>
 getAllTopStories(3,"TopVotesGained");
-$("#top3Id").addClass("dashBoardtabsDivSelected boxshawdow");
+$("#top3Id").addClass("dashBoardtabsDivSelected");
 </SCRIPT>
 </center>
 </BODY>
