@@ -408,8 +408,8 @@ function buildTopStoriesTable(result,id){
 		str+= '		<td style="background-color : #FFFFFF"><a href="partyPageAction.action?partyId='+result[i].partyId+' ">'+result[i].partyName+'</a></td>';
 		else
 		str+= '		<td style="background-color : #FFFFFF">'+result[i].partyName+'</td>';
-		str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>';
-		str+= '     <td style="background-color : #FFFFFF">'+result[i].votesEarned+'</td>'; 
+		str+= '     <td style="background-color : #FFFFFF">'+result[i].votesEarned+'</td>';
+		str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
        if(id == "topVotesGained" || id == "topVotesGainedPerc")		
 		str+= '	    <td style="background-color : #FFFFFF">'+result[i].votesPercentage+'</td>';
 	   else
