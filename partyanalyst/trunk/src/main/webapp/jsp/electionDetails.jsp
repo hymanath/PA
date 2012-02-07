@@ -826,7 +826,7 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	  if(staticColors != null && staticColors.length > 0)
 	  {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 991, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 	  else
@@ -920,7 +920,7 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	   if(staticColors != null && staticColors.length > 0)
 	   {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 991, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	   }
 	   else
@@ -2702,7 +2702,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV id="statewiseGraph">
  <DIV id="stateRegionsDiv"></DIV>
 
-<DIV id="graphImage" class="yui-skin-sam" style="width:991px;overflow:hidden;margin:auto;"></DIV>
+<DIV id="graphImage" class="yui-skin-sam" style="width:970px;overflow:hidden;margin:auto;"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" class="container" >
 		<TR>
@@ -2859,7 +2859,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		<TD class="td">
 			<DIV class="toolsDisplay">
 				<c:if test="${electionType != 'Parliament'}">
-					<h3 align="left">Statewise Analysis</h3>
+					<h3 align="left" style="color:crimson;">Statewise Analysis</h3>
 					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Statewise.</P>
 				</c:if>
 				<c:if test="${electionType == 'Parliament'}">
@@ -2890,7 +2890,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 			<TD class="td">
 				<DIV class="toolsDisplay">
 					<c:if test="${electionType != 'Parliament'}">
-						<h3 align="left">District wise Analysis</h3>
+						<h3 align="left" style="color:#827839;">District wise Analysis</h3>
 						<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Districtwise.</P>
 					</c:if>
 					<c:if test="${electionType == 'Parliament'}">
@@ -2921,7 +2921,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 			<c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">
 			<TD class="td">
 				<DIV class="toolsDisplay">
-					<h3 align="left">Party Performance</h3>
+					<h3 align="left" style="color:crimson;">Party Performance</h3>
 					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare a party's performance for selected election year.</P>
 					<DIV style="font-weight:bold">
 						<TABLE width="100%">
@@ -2955,7 +2955,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 			<c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">		
 			<TD class="td">
 				<DIV id="comparePrevElection" class="toolsDisplay">
-					<h3 align="left">Elections Comparison</h3>
+					<h3 align="left" style="color:#827839;">Elections Comparison</h3>
 					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare current election results with selected election results for a party.</P>
 					<DIV style="font-weight:bold">
 						<TABLE width="100%">
