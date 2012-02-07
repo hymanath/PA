@@ -391,8 +391,8 @@ function buildTopStoriesTable(result,id){
 	 if(id == "lowestMarginGained")
 	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Lowest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
 	 
-	 str+= '<table class="searchresultsTable" style="width:91%;padding-top:10px;">';
-	 str+= '<tr><th style="background-color : #C4DEFF">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
+	 str+= '<table class="searchresultsTable" style="width:96%;padding-top:10px;">';
+	 str+= '<tr><th style="background-color : #C4DEFF">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
 	 if(id == "topVotesGained")
 	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th></tr>';
 	 else if(id == "topVotesGainedPerc")
@@ -407,21 +407,21 @@ function buildTopStoriesTable(result,id){
 		if(result[i].partyName != 'IND')
 		str+= '		<td style="background-color : #FFFFFF"><a href="partyPageAction.action?partyId='+result[i].partyId+' ">'+result[i].partyName+'</a></td>';
 		else
-		str+= '		<td style="background-color : #FFFFFF">'+result[i].partyName+'</td>';
-		str+= '     <td style="background-color : #FFFFFF">'+result[i].votesEarned+'</td>';
+		str+= '		<td style="background-color:#FFFFFF">'+result[i].partyName+'</td>';
+		str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].votesEarned+'</td>';
 	   if(id == "topVotesGained")
-		str+= '     <td style="background-color : #F3F3F3">'+result[i].validVotes+'</td>'; 
+		str+= '     <td style="text-align:center;background-color : #F3F3F3">'+result[i].validVotes+'</td>'; 
 	   else
-	    str+= '     <td style="background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
+	    str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
        if(id == "topVotesGained" || id == "topVotesGainedPerc")	
         {	 
          if(id == "topVotesGainedPerc")		
-		  str+= '	    <td style="background-color : #F3F3F3">'+result[i].votesPercentage+'</td>';
+		  str+= '	    <td style="text-align:center;background-color:#F3F3F3">'+result[i].votesPercentage+'</td>';
 		 else
-		  str+= '	    <td style="background-color : #FFFFFF">'+result[i].votesPercentage+'</td>';
+		  str+= '	    <td style="text-align:center;background-color:#FFFFFF">'+result[i].votesPercentage+'</td>';
 		}
 	   else
-		str+= '	    <td style="background-color : #F3F3F3">'+result[i].totalVotes+'</td>';
+		str+= '	    <td style="text-align:center;background-color : #F3F3F3">'+result[i].totalVotes+'</td>';
 		
 		str+= '</tr>';
 	 }
