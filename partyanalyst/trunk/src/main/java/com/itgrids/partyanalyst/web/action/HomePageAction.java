@@ -236,6 +236,11 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
+		if(session.getAttribute("loadingFirstTime")== null)
+			   session.setAttribute("loadingFirstTime", "true");
+		else
+			session.setAttribute("loadingFirstTime", "false");
+		
 		if(user==null){
 			loginStatus = "false";
 		}
