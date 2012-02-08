@@ -33,6 +33,7 @@
 <meta name="expires" content="Never" />
 
 <!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="styles/combo.css" /> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
 <!-- Combo-handled YUI JS files: --> 
 
@@ -477,13 +478,22 @@ function openAddNewProblemWindow()
     </div>
   </div>
 </div>
+<div id="popupDiv" style="display: block; margin-left: auto; margin-right: auto; width: 850px;">
+<c:if test='${sessionScope.loadingFirstTime == true}'>
+	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -499px;">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
+	</c:if>
+
+</div>	
 
 <!--CONTENT MAIN SECTION END--> 
-
+ 
 <script type="text/javascript">
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
+var loadingFirstTime = '${sessionScope.loadingFirstTime}';
 buildHOmePageChartsSlider();
 	initializeHomePage();
 	getElectionTypeValue(1);
