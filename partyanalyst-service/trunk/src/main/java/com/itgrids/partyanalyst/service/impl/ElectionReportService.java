@@ -1805,26 +1805,26 @@ public class ElectionReportService implements IElectionReportService {
 		}
 	}
 	
-	public List<PartyElectionResultVO> getTopVotesMarginVotesDetails(Long electionId,int maxResult,String type)
+	public List<PartyElectionResultVO> getTopVotesMarginVotesDetails(Long electionId,int maxResult,String type,Long partyId)
 	{    
 		List<PartyElectionResultVO> returnList = new ArrayList<PartyElectionResultVO>();
 		 if(log.isDebugEnabled())
 		  log.debug("Enterd into getTopVotesMarginVotesDetails() Method");
 		 try
 		 {
-		  if(type.trim().equalsIgnoreCase("TopVotesGained"))
+		  if(type.trim().equalsIgnoreCase("TopVotesGained") || type.trim().equalsIgnoreCase("HighestAssets"))
 		  {
-			 List<Object[]> topVotesList = nominationDAO.getTopVotesGainedCandidates(electionId,maxResult);
+			 List<Object[]> topVotesList = nominationDAO.getTopVotesGainedCandidates(electionId,maxResult,type,partyId);
 			 populateDataToVO(returnList,topVotesList,type);
 		  }
 		  else if(type.trim().equalsIgnoreCase("HighestMarginGained") || type.trim().equalsIgnoreCase("LowestMarginGained"))
 		  {
-			 List<Object[]> marginVotesList = nominationDAO.getHighestLowestMarginVotesInanElection(electionId,maxResult,type);
+			 List<Object[]> marginVotesList = nominationDAO.getHighestLowestMarginVotesInanElection(electionId,maxResult,type,partyId);
 			 populateDataToVO(returnList,marginVotesList,type);
 		  }
 		  else if(type.trim().equalsIgnoreCase("TopVotesGainedPerc"))
 		  {
-			 List<Object[]> topVotesPercList = nominationDAO.getTopVotesGainedPercentage(electionId,maxResult);
+			 List<Object[]> topVotesPercList = nominationDAO.getTopVotesGainedPercentage(electionId,maxResult,partyId);
 			 populateDataToVO(returnList,topVotesPercList,type);
 		  }
 		 }
@@ -1849,12 +1849,17 @@ public class ElectionReportService implements IElectionReportService {
 			partyElectionResultVO.setVotesEarned(Math.round((Double)data[4]));
 			partyElectionResultVO.setValidVotes(Math.round((Double)data[5]));
             partyElectionResultVO.setConstiId((Long)data[6]);
-			partyElectionResultVO.setConstiName(data[7] != null?data[7].toString():"");		
-			if(type.trim().equalsIgnoreCase("TopVotesGained") || type.trim().equalsIgnoreCase("TopVotesGainedPerc"))
+			partyElectionResultVO.setConstiName(data[7] != null?data[7].toString():"");	
+			
+			if(type.trim().equalsIgnoreCase("TopVotesGained") || type.trim().equalsIgnoreCase("TopVotesGainedPerc") || type.trim().equalsIgnoreCase("HighestAssets"))
 			  partyElectionResultVO.setVotesPercentage(data[8] != null?data[8].toString():"");
 			else
 			  partyElectionResultVO.setTotalVotes(Math.round((Double)data[8]));
+			
+			partyElectionResultVO.setRank((Long)data[9]);
 			returnList.add(partyElectionResultVO);
+			if(type.trim().equalsIgnoreCase("HighestAssets"))
+				partyElectionResultVO.setAssets(new BigDecimal((Double)data[10])); 
 		}
 	}
 	
