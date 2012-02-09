@@ -52,6 +52,7 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	private String fVotesPercent;
 	public Long mVotesPolled;
 	public Long fVotesPolled;
+	private BigDecimal assets;
 	
 	public Long getMVotesPolled() {
 		return mVotesPolled;
@@ -263,6 +264,12 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	}
 	public void setVotesPercent(BigDecimal votesPercent) {
 		this.votesPercent = votesPercent;
+	}
+	public BigDecimal getAssets() {
+		return assets;
+	}
+	public void setAssets(BigDecimal assets) {
+		this.assets = assets;
 	}
 	
 	
