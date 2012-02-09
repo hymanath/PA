@@ -373,8 +373,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		{
 			urbanDetailsList = electionReportService.getConstituencyAreaTypePercentageWiseElectionResultOfParties(jObj.getLong("electionId"),"2001",null);
 		}
-		if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc")) {
-			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim());
+		if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc") || jObj.getString("task").trim().equalsIgnoreCase("HighestAssets")) {
+			 Long partyId = null;
+			if(jObj.getString("partyId").trim().length()>0)
+				partyId = jObj.getLong("partyId");
+			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim(),partyId);
 			
 		}
 		return Action.SUCCESS;
