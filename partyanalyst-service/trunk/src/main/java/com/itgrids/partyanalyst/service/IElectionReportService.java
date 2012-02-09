@@ -26,7 +26,7 @@ public interface IElectionReportService {
 	
 	public List<PartyElectionResultVO> getPartyElectionResultWithConstituencyAreaType(Long electionId);
 		
-	public List<PartyElectionResultVO> getTopVotesMarginVotesDetails(Long electionId,int maxResult,String type);
+	public List<PartyElectionResultVO> getTopVotesMarginVotesDetails(Long electionId,int maxResult,String type,Long partyId);
 	
 	public List<ConstituencyUrbanDetailsVO> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String censusYear,List<Long> partiesList);
 	
