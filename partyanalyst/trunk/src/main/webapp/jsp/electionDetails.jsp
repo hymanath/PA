@@ -183,7 +183,7 @@ margin-right:auto;
     font-weight: bold;
     padding: 10px 7px 10px;
     text-align: left;
-    width: 79%;
+    width: 65%;
 }
 
 .dashBoardtabsDivSelected
@@ -207,6 +207,11 @@ margin-right:auto;
     cursor: pointer;
     font-weight: bold;
     padding: 4px;
+}
+.partyNames{
+   height:26px;
+   padding:3px;
+   width:121px;
 }
 .topStories {
     border-left: 1px solid #d3d3d3;
@@ -233,6 +238,8 @@ var stateName = '${stateName}';
 var year = '${year}';
 var electionTypeId = '${electionTypeId}';
 var chkSize= 3;
+var checkedId = "topVotes"; 
+
 var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[],
@@ -350,6 +357,9 @@ function callAjax(param,jsObj,url){
 									else if(jsObj.task == "LowestMarginGained") {
 									  buildTopStoriesTable(myResults,"lowestMarginGained");
 									}
+									else if(jsObj.task == "HighestAssets") {
+									  buildTopStoriesTable(myResults,"highestAssetsDetails");
+									}
 									else if(jsObj.task == "getPartiesConstituencyUbanPercentage")
 									{
 										buildUbanPercentageWisePartyDetailsGraph(myResults);
@@ -369,6 +379,8 @@ function callAjax(param,jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 function buildTopStoriesTable(result,id){
+
+   var str = '';
    document.getElementById("searchAjaxImgSpan").style.display = "none";
    if(result != null && result.length >0 )
    {
@@ -380,7 +392,6 @@ function buildTopStoriesTable(result,id){
     value+= ' ${electionType} Election ${year} ';
   </c:if>
   
-     var str = '';
 	 str+='<div style="padding-top:10px;">';
 	 if(id == "topVotesGained")
 	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Highest Votes Earned By Candidates In '+value+'</td></tr></table>';
@@ -390,38 +401,62 @@ function buildTopStoriesTable(result,id){
 	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td>Highest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
 	 if(id == "lowestMarginGained")
 	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Lowest Margin Votes Earned By Candidates In '+value+'</td></tr></table>';
+     if(id == "highestAssetsDetails")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144); "><td> Candidates With Highest Assets In '+value+'</td></tr></table>';
+		 
+	 str+= '<table class="searchresultsTable" style="width:96%;padding-top:10px;">';
+	 str+= '<tr><th style="background-color : #C4DEFF;width:200px;">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Polled Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
 	 
-	 str+= '<table class="searchresultsTable" style="width:94%;padding-top:10px;">';
-	 str+= '<tr><th style="background-color : #C4DEFF;width:220px;">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Polled Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
-	 if(id == "topVotesGained")
-	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th></tr>';
+	 if(id == "topVotesGained" || id == "highestAssetsDetails")
+	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th>';
 	 else if(id == "topVotesGainedPerc")
-	   str+= '<th style="background-color : #C4DEFF">Votes Percentage</th></tr>';
-	 else
-	   str+= '<th style="background-color : #C4DEFF">Margin Votes</th></tr>';
+	   str+= '<th style="background-color : #C4DEFF">Votes Percentage</th>';
+	 else if(id == "highestMarginGained" || id == "lowestMarginGained")
+	   str+= '<th style="background-color : #C4DEFF">Margin Votes</th>';
+	  	 
+	 if(id == "highestAssetsDetails")
+	  str+= '<th style="background-color : #C4DEFF">Assets</th>';
+	 
+	 str+= '<th style="background-color : #C4DEFF">Rank</th></tr>';
 	 for(var i in result)
 	 {
 	    str+= '<tr>';
 	    str+= '     <td style="background-color : #FFFFFF"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
-		str+= '		<td style="background-color : #FFFFFF"><a href="constituencyPageAction.action?constituencyId='+result[i].constiId+' ">'+result[i].constiName+'</a></td>';
+		
+		if(electionType != "Muncipality" && electionType != "Greater Municipal Corp"  && electionType != "Corporation")
+		   str+= '		<td style="background-color : #FFFFFF"><a href="constituencyPageAction.action?constituencyId='+result[i].constiId+' ">'+result[i].constiName+'</a></td>';
+        else
+		   str+= '		<td style="background-color : #FFFFFF">'+result[i].constiName+'</td>';
+		   
 		if(result[i].partyName != 'IND')
-		str+= '		<td style="background-color : #FFFFFF"><a href="partyPageAction.action?partyId='+result[i].partyId+' ">'+result[i].partyName+'</a></td>';
+		   str+= '		<td style="background-color : #FFFFFF"><a href="partyPageAction.action?partyId='+result[i].partyId+' ">'+result[i].partyName+'</a></td>';
 		else
-		str+= '		<td style="background-color:#FFFFFF">'+result[i].partyName+'</td>';
+		   str+= '		<td style="background-color:#FFFFFF">'+result[i].partyName+'</td>';
+		   
 		str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].votesEarned+'</td>';
-	   if(id == "topVotesGained")
-		str+= '     <td style="text-align:center;background-color : #F3F3F3">'+result[i].validVotes+'</td>'; 
-	   else
-	    str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
-       if(id == "topVotesGained" || id == "topVotesGainedPerc")	
-        {	 
-         if(id == "topVotesGainedPerc")		
-		  str+= '	    <td style="text-align:center;background-color:#F3F3F3">'+result[i].votesPercentage+'</td>';
-		 else
-		  str+= '	    <td style="text-align:center;background-color:#FFFFFF">'+result[i].votesPercentage+'</td>';
-		}
-	   else
-		str+= '	    <td style="text-align:center;background-color : #F3F3F3">'+result[i].totalVotes+'</td>';
+
+		if(id == "topVotesGained")
+		  str+= '     <td style="text-align:center;background-color : #F3F3F3">'+result[i].validVotes+'</td>'; 
+	    else
+	      str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].validVotes+'</td>'; 
+ 
+        if(id == "topVotesGained" || id == "topVotesGainedPerc" || id == "highestAssetsDetails")	
+         {	 
+           if(id == "topVotesGainedPerc")		
+		     str+= '	    <td style="text-align:center;background-color:#F3F3F3">'+result[i].votesPercentage+'</td>';
+		   else
+		     str+= '	    <td style="text-align:center;background-color:#FFFFFF">'+result[i].votesPercentage+'</td>';
+		 }
+	    else
+		   str+= '	    <td style="text-align:center;background-color : #F3F3F3">'+result[i].totalVotes+'</td>';
+		   
+		if(id == "highestAssetsDetails")
+		  str+= '	    <td style="text-align:center;background-color:#F3F3F3">'+result[i].assets+'</td>';
+		
+		if(result[i].rank == 1)
+		  str+= '     <td style="text-align:center;color:green;background-color : #FFFFFF">Won</td>'; 
+	    else
+	      str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].rank+'</td>'; 
 		
 		str+= '</tr>';
 	 }
@@ -429,7 +464,32 @@ function buildTopStoriesTable(result,id){
 	 str+= '</table>';
 	 str+= '</div>';
    }
+   else
+   {
+     str+= '<b>No Records Found</b>';
+   }
    document.getElementById(id).innerHTML = str;
+}
+function setId(id)
+{
+   checkedId = id;
+}
+function checkUserStatus(){
+       <c:if test="${hasDeatiledAnalysis == false}">
+		
+			  $("#candidateResultAccessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000000">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+				});
+		showAlertMsg("candidateResultAccessDiv");
+		document.getElementById(checkedId).checked= true;
+		return ;
+		</c:if>
+    getAllTopStories(chkSize,'HighestAssets');
 }
 function toggleOption(id){//year
  if(document.getElementById(id).value == "Hide Highlights Of ${year} Election Results")
@@ -437,6 +497,32 @@ function toggleOption(id){//year
  else
    document.getElementById(id).value = "Hide Highlights Of ${year} Election Results";
    $("#topStoriesDIV").slideToggle("slow");
+ }
+ function getTopStoriesForParty(id){
+   <c:if test="${hasDeatiledAnalysis == false}">
+		
+			  $("#candidateResultAccessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000000">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+				});
+		showAlertMsg("candidateResultAccessDiv");
+		document.getElementById(id).value = 0;
+		return ;
+		</c:if>
+  if(document.getElementById("topVotes").checked == true)
+    getAllTopStories(chkSize,"TopVotesGained");
+  if(document.getElementById("topPercVotes").checked == true)
+    getAllTopStories(chkSize,"TopVotesGainedPerc");
+  if(document.getElementById("topMargin").checked == true)
+    getAllTopStories(chkSize,"HighestMarginGained");
+  if(document.getElementById("lowMargin").checked == true)
+    getAllTopStories(chkSize,"LowestMarginGained");
+  if(document.getElementById("highestAssets").checked == true)
+    getAllTopStories(chkSize,"HighestAssets");
  }
 function getTopStories(id,size){
   
@@ -471,6 +557,8 @@ function getTopStories(id,size){
     getAllTopStories(size,"HighestMarginGained");
   if(document.getElementById("lowMargin").checked == true)
     getAllTopStories(size,"LowestMarginGained");
+  if(document.getElementById("highestAssets").checked == true)
+    getAllTopStories(size,"HighestAssets");
 }
 function showAlertMsg(divElmt){
 
@@ -629,15 +717,40 @@ function getPartyGenderInfo()
 }
 function getAllTopStories(maxResult,task)
 {
+    var partyId= 0 ;
    document.getElementById("searchAjaxImgSpan").style.display = "block";
    document.getElementById("topVotesGained").innerHTML = "";
    document.getElementById("topVotesGainedPerc").innerHTML =  "";
    document.getElementById("highestMarginGained").innerHTML = "";
    document.getElementById("lowestMarginGained").innerHTML =  "";
+   document.getElementById("highestAssetsDetails").innerHTML =  "";
+   if(electionType == 'Assembly')
+   {
+     if(document.getElementById("partyTopStories") != null)
+	 {
+       var partyIdEle = document.getElementById("partyTopStories");
+       partyId  = partyIdEle.options[partyIdEle.selectedIndex].value;
+	 }
+   }
+   else
+   {
+     if(document.getElementById("partiesNames") != null)
+	 {
+       var partyIdEle = document.getElementById("partiesNames");
+       partyId  = partyIdEle.options[partyIdEle.selectedIndex].value;
+	 }
+   }
+   <c:if test="${!hasDeatiledAnalysis}">
+      partyId = 0;
+	  maxResult = 3;
+	  if(task == "HighestAssets")
+	   return;
+   </c:if>
 	var jsObj = {
 	            time:new Date().getTime(),
 				maxResult:maxResult,
 				electionId:electionId,
+				partyId:partyId,
 				task:task
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2055,6 +2168,7 @@ function buildAllDistrictResultsDataTable(results)
 	electionResultsObj.districtWiseResultsWithoutAllianceArr = results.electionResultsInDistricts.allPartiesResultsWithoutGroupingOfAllianc;
 	var distSelectElmt = document.getElementById("distSelectBox");
 	var partySelectElmt = document.getElementById("partySelectBox");
+	var partyNamesElmt = document.getElementById("partiesNames");
 	
 	for(var i in participatedPartiesList)
 	{			
@@ -2071,7 +2185,24 @@ function buildAllDistrictResultsDataTable(results)
 				partySelectElmt.add(opElmt); // IE only
 			}			
 	}
-
+  if(partyNamesElmt != null)
+  {
+	for(var l in participatedPartiesList)
+	{			
+		var opElmt=document.createElement('option');
+		opElmt.value=participatedPartiesList[l].id;
+		opElmt.text=participatedPartiesList[l].name;
+	
+		try
+			{
+				partyNamesElmt.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+				partyNamesElmt.add(opElmt); // IE only
+			}			
+	}
+  }
 	for(var j in districtsList)
 	{			
 		var opElmt=document.createElement('option');
@@ -2654,36 +2785,69 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <div class="clear"></div>
 
 <div id="topStoriesDIV" style="display:none;">
-<DIV class="graphTop"> Highlights Of ${year} Elections</DIV>
-<div class="topStories">
- <div id="topStoriesMenu" style="width:100%;">
-  <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">
-     <input type="radio" checked="true" name="topStoriesRadio" id="topVotes" onclick="getAllTopStories(chkSize,'TopVotesGained');" />&nbsp;<b style="font-size11px;">Highest Votes Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio"  id="topPercVotes" onclick="getAllTopStories(chkSize,'TopVotesGainedPerc');" />&nbsp;<b style="font-size11px;">Highest Votes Percentage Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="topMargin"  onclick="getAllTopStories(chkSize,'HighestMarginGained');"/>&nbsp;<b style="font-size11px;">Highest Margin Votes Earned</b> &nbsp;&nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="lowMargin"  onclick="getAllTopStories(chkSize,'LowestMarginGained');"/>&nbsp;<b style="font-size11px;">Lowest Margin Votes Earned</b> &nbsp;&nbsp;&nbsp;
-  </div>
- <table style="width:100%;"><tr><td style="width:70%">
- <div style="padding-left:300px;">
-  <div class="dashBoardtabsDiv" style="align:left;">
-	<a onclick="getTopStories(this.id,3);" id="top3Id">Top 3</a>
-	<a onclick="getTopStories(this.id,5);" id="top5Id">Top 5</a>
-	<a onclick="getTopStories(this.id,10);" id="top10Id">Top 10</a>
-</div>
-</div>
- </td>
- <td>
-<div style="width:10%:text-align:left;">
-  <div id="searchAjaxImgSpan" style="display:none;">
-     <img src="images/icons/search.gif">
-  </div>
-</div>
-</td></tr>
-</table>
- </div>
-  <div id="topVotesGained"></div>
-  <div id="topVotesGainedPerc"></div>
-  <div id="highestMarginGained"></div>
-  <div id="lowestMarginGained"></div>
-  </div>
-  <DIV class="graphBottom"></DIV>
+   <DIV class="graphTop"> Highlights Of ${year} Elections</DIV>
+   <div class="topStories">
+       <div id="topStoriesMenu" style="width:100%;">
+          <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">
+              <input type="radio" checked="true" name="topStoriesRadio" id="topVotes" onclick="setId(this.id);getAllTopStories(chkSize,'TopVotesGained');" />&nbsp;<b style="font-size11px;">Highest Votes Earned</b> &nbsp;&nbsp;<input type="radio" name="topStoriesRadio"  id="topPercVotes" onclick="setId(this.id);getAllTopStories(chkSize,'TopVotesGainedPerc');" />&nbsp;<b style="font-size11px;">Highest Votes Percentage Earned</b> &nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="topMargin"  onclick="setId(this.id);getAllTopStories(chkSize,'HighestMarginGained');"/>&nbsp;<b style="font-size11px;">Highest Margin Votes Earned</b> &nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="lowMargin"  onclick="setId(this.id);getAllTopStories(chkSize,'LowestMarginGained');"/>&nbsp;<b style="font-size11px;">Lowest Margin Votes Earned</b> &nbsp;&nbsp;<input type="radio" name="topStoriesRadio" id="highestAssets"  onclick="checkUserStatus();"/>&nbsp;<b style="font-size11px;">Highest Assets</b>
+          </div>
+            <c:if test="${hasDeatiledAnalysis}">
+             <table style="width:100%;"><tr>
+               <td style="width:16%;padding-left:70px;"><b style="font-size11px;">Select Party: </b></td>
+               <c:if test="${electionType == 'Assembly'}">
+                   <td style="width:15%;"><s:select id="partyTopStories" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name" cssClass ="partyNames" onchange="getTopStoriesForParty(this.id);" />	</td>
+               </c:if>
+               <c:if test="${electionType != 'Assembly'}">
+                   <td style="width:15%;"><select id="partiesNames" class="partyNames" onchange="getTopStoriesForParty(this.id);"  ><option value="0">Select A Party</option></select>	</td>
+               </c:if>
+               <td style="width:40%">
+                  <div>
+                     <div class="dashBoardtabsDiv" style="align:left;">
+	                    <a onclick="getTopStories(this.id,3);" id="top3Id">Top 3</a>
+	                    <a onclick="getTopStories(this.id,5);" id="top5Id">Top 5</a>
+	                    <a onclick="getTopStories(this.id,10);" id="top10Id">Top 10</a>
+                     </div>
+                  </div>
+               </td>
+               <td>
+                  <div style="width:10%:text-align:left;">
+                     <div id="searchAjaxImgSpan" style="display:none;">
+                         <img src="images/icons/search.gif">
+                     </div>
+                  </div>
+               </td></tr>
+             </table>
+            </c:if>
+			<c:if test="${!hasDeatiledAnalysis}">
+			 <table style="width:100%;">
+			  <tr>
+			    <td style="width:70%">
+                  <div style="padding-left:300px;">
+                    <div class="dashBoardtabsDiv" style="align:left;">
+	                  <a onclick="getTopStories(this.id,3);" id="top3Id">Top 3</a>
+	                  <a onclick="getTopStories(this.id,5);" id="top5Id">Top 5</a>
+	                  <a onclick="getTopStories(this.id,10);" id="top10Id">Top 10</a>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div style="width:10%:text-align:left;">
+                    <div id="searchAjaxImgSpan" style="display:none;">
+                       <img src="images/icons/search.gif">
+                    </div>
+                  </div>
+                </td>
+			  </tr>
+             </table>
+			</c:if>
+       </div>
+       <div id="topVotesGained"></div>
+       <div id="topVotesGainedPerc"></div>
+       <div id="highestMarginGained"></div>
+       <div id="lowestMarginGained"></div>
+	   <div id="highestAssetsDetails"></div>
+   </div>
+   <DIV class="graphBottom"></DIV>
 </div>
 
 <div id="stateResults">
