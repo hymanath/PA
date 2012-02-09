@@ -3136,27 +3136,39 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 		
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTopVotesGainedCandidates(Long electionId,int maxResult){
+	public List<Object[]> getTopVotesGainedCandidates(Long electionId,int maxResult,String type,Long partyId){
 		StringBuilder query = new StringBuilder();
 		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned,model.constituencyElection.constituency.constituencyId," +
-		" model.constituencyElection.constituency.name ,model.candidateResult.votesPercengate from Nomination model where model.constituencyElection.election.electionId = :electionId ");
+		" model.constituencyElection.constituency.name ,model.candidateResult.votesPercengate,model.candidateResult.rank,model.assets  from Nomination model where model.constituencyElection.election.electionId = :electionId ");
 		
-		query.append("  order by model.candidateResult.votesEarned desc ");	
+		if(partyId!=null && partyId >0L)
+			query.append("  and model.party.partyId =:partyId ");
+		
+		if(type.equalsIgnoreCase("HighestAssets"))
+			query.append(" and model.assets is not null order by model.assets desc ");	
+		else	
+		    query.append("  order by model.candidateResult.votesEarned desc ");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setLong("electionId",electionId);		
+		queryObject.setLong("electionId",electionId);
+		
+		if(partyId!=null && partyId >0L)
+		queryObject.setLong("partyId",partyId);
 		
 		queryObject.setMaxResults(maxResult);
          return queryObject.list();
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getHighestLowestMarginVotesInanElection(Long electionId,int maxResult,String type)
+	public List<Object[]> getHighestLowestMarginVotesInanElection(Long electionId,int maxResult,String type,Long partyId)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned," +
-				" model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name ,(model.candidateResult.votesEarned - model2.candidateResult.votesEarned) from Nomination model,Nomination model2 " +
+				" model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name ,(model.candidateResult.votesEarned - model2.candidateResult.votesEarned),model.candidateResult.rank  from Nomination model,Nomination model2 " +
 				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and model2.candidateResult.rank = 2 ");
+		
+		if(partyId!=null && partyId >0L)
+			query.append("  and model.party.partyId =:partyId ");
 		
 		if(type.equalsIgnoreCase("HighestMarginGained"))
             query.append("  order by (model.candidateResult.votesEarned - model2.candidateResult.votesEarned) desc ");	
@@ -3166,19 +3178,28 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0,electionId);		
 		
+		if(partyId!=null && partyId >0L)
+			queryObject.setLong("partyId",partyId);
+		
 		queryObject.setMaxResults(maxResult);
          return queryObject.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getTopVotesGainedPercentage(Long electionId,int maxResult){
+	public List<Object[]> getTopVotesGainedPercentage(Long electionId,int maxResult,Long partyId){
 		StringBuilder query = new StringBuilder();
-		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned," +
-				" model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name ,(model.candidateResult.votesEarned / model.constituencyElection.constituencyElectionResult.validVotes *100) from Nomination model where model.constituencyElection.election.electionId = ? ");
+		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesEarned,model.constituencyElection.constituency.constituencyId, " +
+				" model.constituencyElection.constituency.name ,(model.candidateResult.votesEarned / model.constituencyElection.constituencyElectionResult.validVotes *100),model.candidateResult.rank from Nomination model where model.constituencyElection.election.electionId = ? ");
 				
+		if(partyId!=null && partyId >0L)
+			query.append("  and model.party.partyId =:partyId ");
+		
             query.append("  order by (model.candidateResult.votesEarned / model.constituencyElection.constituencyElectionResult.validVotes *100) desc ");	
 				
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0,electionId);		
+		
+		if(partyId!=null && partyId >0L)
+			queryObject.setLong("partyId",partyId);
 		
 		queryObject.setMaxResults(maxResult);
          return queryObject.list();
