@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.MessageToCandidate;
 public interface IMessageToCandidateDAO extends GenericDao<MessageToCandidate, Long>{
 	
 
-	 public List getAllOpenedMessages(Date firstDate, Date secondDate);
+	 public  List getAllOpenedMessages(Date firstDate, Date secondDate,String selectstatus);
 	 public Integer controlMessages(Long id,String message, String isApproved);
 	 public List<Object[]> getUserMessages(Long candidateId);
 }
