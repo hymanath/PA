@@ -445,6 +445,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		session = request.getSession();
 		
+		if(session.getAttribute("loadingFirstTime")== null)
+			   session.setAttribute("loadingFirstTime", "true");
+		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO != null)
