@@ -2961,9 +2961,10 @@
 			<result name="success">/jsp/contentManagement.jsp</result> 
 		</action>		
 		<action name="approveMessageAction" class="approveMessageAction">
-			<result name="success">/jsp/ApproveMessage.jsp</result> 
+			<result name="success">/jsp/ApproveMessage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result> 
 		</action>
-		 <action name="getAllMessages" class="approveMessageAction" method="getMessages">
+		 <action name="getAllMessagesAction" class="approveMessageAction" method="getMessages">
         	<result type="json" name="success">
 			<param name="root">candidateCommentsList</param>				
 			</result>
