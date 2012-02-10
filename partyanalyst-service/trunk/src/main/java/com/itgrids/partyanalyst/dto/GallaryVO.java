@@ -25,7 +25,15 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private Long userId;
 	private Long orderNo;
 	private Long PartyProfileDescriptionId;
+	private String isPrivate;
 	
+	
+	public String getIsPrivate() {
+		return isPrivate;
+	}
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 	public Long getPartyProfileDescriptionId() {
 		return PartyProfileDescriptionId;
 	}
