@@ -45,7 +45,16 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	private IStaticDataService staticDataService; 
 	private IElectionAnalyzeService electionAnalyzeService;
 	private EntitlementsHelper entitlementsHelper;
+	private Boolean hasDeatiledAnalysis = false;
 	private Boolean reasonPostingEntitlement;
+	
+	public Boolean getHasDeatiledAnalysis() {
+		return hasDeatiledAnalysis;
+	}
+
+	public void setHasDeatiledAnalysis(Boolean hasDeatiledAnalysis) {
+		this.hasDeatiledAnalysis = hasDeatiledAnalysis;
+	}
 	
 	public HttpSession getSession() {
 		return session;
@@ -201,6 +210,10 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			reasonPostingEntitlement = true;
 		else
 			reasonPostingEntitlement = false;
+		
+		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+			hasDeatiledAnalysis = true;
+		
 		Long stateId = new Long(stateID);
 		statesListObj = staticDataService.getAllStatesInCountry();
 		districtsList = staticDataService.getDistricts(stateId);
