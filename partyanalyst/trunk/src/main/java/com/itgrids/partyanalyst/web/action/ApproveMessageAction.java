@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -28,8 +30,16 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 	private ICandidateDetailsService candidateDetailsService; 
 	private List<CandidateCommentsVO> candidateCommentsList;
 	private ResultStatus resultStatus;
+	private EntitlementsHelper entitlementsHelper;
+	
 	
     
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -70,20 +80,32 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 	}
 	
 	@Override
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 		
 	}
 	
 	public String execute()throws Exception
 	{
+		session = request.getSession();
+		RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		if (registrationVO != null) 
+		{
+			if (!registrationVO.getIsAdmin().equals("true"))
+				  return ERROR;
+		} 
+		else
+			return ERROR;
+		
 		return Action.SUCCESS;
+		
 	}
 	public String getMessages()
 	{
 		String fromDate = null;
 		String toDate = null;
 		String task = null;
+		String selectstatus=null;
 		
 		if(Log.isDebugEnabled())
 			Log.debug("getMessages()..............");
@@ -97,9 +119,10 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		fromDate = jObj.getString("fromDate");
 		toDate = jObj.getString("toDate");
 		task = jObj.getString("task");
+		selectstatus = jObj.getString("selectstaus");
 		if(task.equalsIgnoreCase("getAllNewPostedReasons") || task.equalsIgnoreCase("getAllNewPostedReasonsBetweenDates"))
 		{
-			candidateCommentsList = candidateDetailsService.getMessages(fromDate, toDate);
+			candidateCommentsList = candidateDetailsService.getMessages(fromDate, toDate,selectstatus);
 		}
 		
 		return Action.SUCCESS;
