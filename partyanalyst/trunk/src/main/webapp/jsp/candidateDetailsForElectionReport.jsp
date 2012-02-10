@@ -484,23 +484,42 @@ function allCandidates()
 
 	if(elmt.style.display == 'none')
 		elmt.style.display = 'block';
-	
-	if(partywiseCheckBoxEl.checked == true)
-	{
+
+	if(partywiseCheckBoxEl !=null){
+	  if(partywiseCheckBoxEl.checked == true)
+		{
 		partyId = selectPartyEl.value;
-	} else{
+	}
+	 else{
 		partyId = 0;
 		}
- 	
+}      
+ else{
+		partyId = 0;
+		}
+
+ 	if(allCandidatesRadioEl){ 
+
 	if(allCandidatesRadioEl.checked == true)
 	{
+		
 		resultsCategory = allCandidatesRadioEl.value;
-	} else if (lostCandidatesRadioEl.checked == true){
+	} 
+	else{
+	resultsCategory = allCandidatesRadioEl.value;	
+
+	}
+	}else if (lostCandidatesRadioEl !=null && lostCandidatesRadioEl.checked == true){
 		resultsCategory = lostCandidatesRadioEl.value;
 	} else if (wonCandidatesRadioEl.checked == true)
 	{
 		resultsCategory = wonCandidatesRadioEl.value;
-	}	
+	}
+	else if(allCandidatesRadioEl.checked == true)
+	{
+		
+		resultsCategory = allCandidatesRadioEl.value;
+	} 
 
 	if(electionType == 'Assembly')
 	{
@@ -510,12 +529,18 @@ function allCandidates()
 			stateId = stateID;
 			locationId = 0;
 		} 
+		if(distLevelAEl!= null){
 		if(distLevelAEl.checked == true)
 		{   
 			electionLevel =distLevelAEl.value;
 			locationId=selectdistrictAEl.value;
 			stateId = stateID;
-		}		
+		}
+	  }
+		else{
+
+			locationId=0;
+		}
 	}
 	if(electionType == 'Parliament')
 	{
@@ -526,30 +551,35 @@ function allCandidates()
 			locationId = "1";
 			stateId = 0;
 		} 
+		if(stateLevelPEl){
 		if(stateLevelPEl.checked == true)
 		{   
 			
 			electionLevel =stateLevelPEl.value;
 			stateId=selectStatePEl.value;
 			locationId = "0";
-		}		
+		}
+	  }	
 	}
-	if(electionType == 'ZPTC')
+	if(electionType == 'Zptc')
 	{
+		
 		if(stateLevelZEl.checked == true)
 		{
 			electionLevel = "stateWiseZptc";
 			locationId = 0;
 			stateId = stateID;
 		}
+		if(distLevelZEl){
 		if(distLevelZEl.checked == true)
 		{
 			electionLevel = "districtWiseZptc";
 			locationId = selectdistrictZEl.value;
 			stateId = stateID;
-		}					
+		}	
+		}
 	}
-	if(electionType == 'MPTC')
+	if(electionType == 'Mptc')
 	{
 		if(stateLevelMEl.checked == true)
 		{
@@ -557,15 +587,17 @@ function allCandidates()
 			locationId = 0;
 			stateId = stateID;
 		}
+		if(distLevelMEl){
 		if(distLevelMEl.checked == true)
 		{
 			electionLevel = "districtWiseMptc";
 			locationId = selectdistrictMEl.value;
 			stateId = stateID;
-		}	
+		}
+	}	
 							
 	}
-	if(electionType == 'MUNCIPALITY' || electionType == 'CORPORATION' || electionType == 'Greater Municipal Corp')
+	if(electionType == 'Muncipality' || electionType == 'Corporation' || electionType == 'Greater Municipal Corp')
 	{
 		if(stateLevelAEl.checked == true)
 		{
@@ -573,12 +605,14 @@ function allCandidates()
 			locationId = 0;
 			stateId = stateID;
 		}
+		if(distLevelAEl)
 		if(distLevelAEl.checked == true)
 		{
 			electionLevel = "districtwiseAssembly";
 			locationId = selectdistrictAEl.value;
 			stateId = stateID;
-		}					
+		}
+		
 	}
 	
 	var jsObj=		
@@ -641,6 +675,7 @@ function buildDataTable(rparam)
 		var partyName = oRecord.getData("partyName");		
 		elLiner.innerHTML ='<A href="javascript:{}" title="Click To View/Add Reasons" onclick="checkForEntitlement(\''+candidateId+'\',\''+candidateName+'\',\'candidate\',\''+rank+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+partyName+'\',\''+1+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>';			
 	  };
+	<c:if test="${hasDeatiledAnalysis}">
 	  
 	var candidateDetails = [ 
 	       							{key:"candidateName", label: "Name",sortable: true} ,
@@ -656,6 +691,23 @@ function buildDataTable(rparam)
 	       							{key:"commentsCount", label: "Comments Count",formatter:YAHOO.widget.DataTable.commentsCount},
 	       							{key:"comments", label: "Reasons",formatter:YAHOO.widget.DataTable.comments}
 	       		    	        ]; 
+								</c:if>
+
+								<c:if test="${!hasDeatiledAnalysis}">
+
+										var candidateDetails = [ 
+	       							{key:"candidateName", label: "Name",sortable: true} ,
+	       		    	            {key:"constituencyName", label: "Constituency", sortable: true}, 
+	       		    	           	{key:"partyName", label: "Party Name", sortable: true},
+	       							{key:"partyFlag", label: "Party Flag",sortable:true,formatter:YAHOO.widget.DataTable.partyFlag},
+	       		    				{key:"votesEarned", label: "Votes Earned",sortable:true},
+	       							
+	       		  
+	       							{key:"details", label: "More Details",formatter:YAHOO.widget.DataTable.moreDetails},
+	       							
+	       							{key:"comments", label: "Reasons",formatter:YAHOO.widget.DataTable.comments}
+	       		    	        ]; </c:if>
+
 	       	var candidateDetailsDataSource = new YAHOO.util.DataSource("candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden+"&"); 
 	       	candidateDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
 	       	
@@ -740,7 +792,7 @@ function showCandidates(results,jsObj)
 			var partyFlag = results.candidateDetails[i].partyFlag;
 			count = count + 1;
 			var constituencyName='';
-			if((electionType=='MPTC') || (electionType=='ZPTC')){
+			if((electionType=='Mptc') || (electionType=='Zptc')){
 				constituencyName = candidateDetails[i].localBodyElectionsConstituencyName;
 			}else{
 				constituencyName = candidateDetails[i].constituencyName;
@@ -992,57 +1044,73 @@ function handleAddCommentsCancel(task,status)
 </HEAD>
 <BODY class="yui-skin-sam">
 <CENTER>
-<H3>${year} ${electionType} Election Candidates Details</H3>
+<c:if test="${hasDeatiledAnalysis}">
+<H3>${year} ${electionType} Election Candidates Details</H3></c:if>
+<c:if test="${!hasDeatiledAnalysis}">
+<h3>${year} ${electionType} Election Won Candidates Details in StateLevel</h3>
+</c:if>
 <DIV id="electionPageAjaxImgDiv">
 	<DIV> Loading Candidate Details! Please Wait..</DIV>
 	<IMG src="images/icons/barloader.gif"/>
 </DIV>
+<c:if test="${hasDeatiledAnalysis}">
+<DIV id="optionsDiv" class="optionsDiv"></c:if>
+<c:if test="${!hasDeatiledAnalysis}">
+<DIV id="optionsDiv" class="optionsDiv" style="display:none;"></c:if>
+<c:if test="${hasDeatiledAnalysis}">
+	<P class="paraText">To View Candidates Details for a particular party, please select the "Partywise Candidate Details" check box and select a party from drop down list and select the options provided below. </P></c:if>
 
-<DIV id="optionsDiv" class="optionsDiv">
-	<P class="paraText">To View Candidates Details for a particular party, please select the "Partywise Candidate Details" check box and select a party from drop down list and select the options provided below. </P>
 	<TABLE  class="optionsTable" width="80%" border="0">
-	<TR>
+	<TR><c:if test="${hasDeatiledAnalysis}">
 		<TD align="left" class="td" style="width:20%;"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates</TD>
 		<TD align="left" colspan="1" style="width:20%;"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" style="display:none;" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
 		<TD align="left" colspan="1" style="width:20%;"></TD>
-		<TD align="left" colspan="1" style="width:20%;"></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD></c:if>
 	</TR>	
 	<TR>
 		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
+
+		<c:if test="${hasDeatiledAnalysis}">
 		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="lostCandidates" value="lostCandidatesOnly" onClick="lostCandidatesClickHandler()"/>Lost Candidates</TD>
 		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Contested Candidates</TD>	
-		<TD align="left" colspan="1" style="width:20%;"></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD></c:if>
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
 		<TR id="regionalOptionsRow">
-			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Country Level</TD>		
+			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Country Level</TD>	
+			<c:if test="${hasDeatiledAnalysis}">
 			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>State Level</TD>
 			<TD style="width:20%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
 			<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
-	</c:if>	
-	 <c:if test="${electionType == 'Assembly' || electionType == 'MUNCIPALITY' || electionType == 'CORPORATION' ||  electionType == 'Greater Municipal Corp'}" >  
+	</c:if>	</c:if>
+	 <c:if test="${electionType == 'Assembly' || electionType == 'Muncipality' || electionType == 'Corporation' ||  electionType == 'Greater Municipal Corp'}" >  
 		<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>
+
+		<c:if test="${hasDeatiledAnalysis}">
 		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
 		<TD align="left" colspan="1" style="width:20%;"></TD>
+		</c:if>
 		</TR>
 	</c:if>		
-	<c:if test="${electionType == 'ZPTC'}">  
+	<c:if test="${electionType == 'Zptc'}">  
 	<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>	
+		<c:if test="${hasDeatiledAnalysis}">
 		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelZ" value="districtwiseZptc" onClick="distLevelZClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictZ" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
-		<TD align="left" colspan="1" style="width:20%;"></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD></c:if>
 		</TR>
 	</c:if>
-	<c:if test="${electionType == 'MPTC'}">  
+	<c:if test="${electionType == 'Mptc'}">  
 	<TR>
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>	
+		<c:if test="${hasDeatiledAnalysis}">
 		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictM" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
-		<TD align="left" colspan="1" style="width:20%;"></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD></c:if>
 	</TR>	
 	</c:if>
 	</TABLE>
