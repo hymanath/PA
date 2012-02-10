@@ -200,6 +200,13 @@
 
 </head>
 <body>
+<div id="popupDiv" style="display: block; margin-left: auto; margin-right: auto; width: 850px;">
+<c:if test='${sessionScope.loadingFirstTime == true}'>
+	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -499px;">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
+	</c:if>
+</div>	
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -210,7 +217,8 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td><div class="ppc-title">
+<tr><td>
+<div class="ppc-title">
 <s:if test="candidateElectionDetails[0].stateId !=null">State: 
 <a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
 <s:property value="candidateElectionDetails[0].stateName"/></strong></a>
