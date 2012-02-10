@@ -103,6 +103,8 @@
 var day = new Date().getDate();
 var month = new Date().getMonth()+1;
 var year = new Date().getFullYear();
+var queryType = "";
+var res = "";
 
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 var textBoxDivId;
@@ -165,10 +167,11 @@ function callAjax(jsObj,url)
 					if(jsObj.task == "getAllNewPostedReasons" || jsObj.task == "getAllNewPostedReasonsBetweenDates")
 					{	
 						showNewPostedReasons(jsObj,results);	
-					} else if(jsObj.task == "approved" || jsObj.task == "rejected")
-					{
+					} 
+					else if(jsObj.task == "approved" || jsObj.task == "rejected")
+					{						
+					 getAllProblemsBetweenDates(queryType);
 						checkingData(results);
-						
 					}	
 					
 			}catch (e) {   		
@@ -196,19 +199,33 @@ function showNewPostedReasons(jsObj,results)
 		
 		
 		
+		str +='<div id="" style="text-align:left;padding:10px;">';
+		str +='		<table width="100%" style="border:0px; ">';
+		str +='			<tr>';
+		str +='				<td width="25%"   style="border:0px; border:0px;background-color: #EEF2F3; ">';
+		str +='                <input  class="buttonClass" type="button" value="Select All" onclick="selectAll(\'selectValue\');"/ >';
+	    str +='                <input class="buttonClass" type="button" value="UnSelect All" onclick="selectAll(\'unselectValue\');"/ >';
+		str +='				</td>';
+		str +='		       <td width="80%"  style="border:0px;background-color: #EEF2F3; " ><div id="commentsDisplay" ></div></td>';	
+		str +='			</tr>';
+		str +='		</table>';
+		str +='</div>';
+	
+	    
 	    str += '<table border="1px" CELLSPACING="0" align="left">';
         str += '     <tr style="text-align:center">';
-	    str += '       <th style="color:#643918;">SELECT</th><th style="color:#643918;">CANDIDATE</th><th style="color:#643918;">POSTED BY</th><th style="color:#643918;">MESSAGE</th><th style="color:#643918;">CONSTITUENCY</th><th  style="color:#643918;">STATUS</th>';
+	    str += '       <th style="color:#643918;">SELECT</th><th style="color:#643918;">CANDIDATE</th><th style="color:#643918;">POSTED BY</th><th style="color:#643918;">MESSAGE</th><th style="color:#643918;">CONSTITUENCY</th><th  style="color:#643918;">STATUS</th><th  style="color:#643918;">VISIBILITY</th>';
         str += '     </tr>';
 		for(i=0 ; i < results.length ; i++)
         {
 			str += '<tr style="text-align:center">';
-			str += '<td> <form><input type="checkbox" name="check" value='+results[i].messageToCandidateId+' /></form> </td>';
-			str += '<td>'+results[i].candidate+'</td>';
+			str += '<td> <form><input type="checkbox" name="check"  value='+results[i].messageToCandidateId+' /></form> </td>';
+			str += '<td><a href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+' ">'+results[i].candidate+'</a></td>';
 			str += '<td>'+results[i].postedBY+'</td>';
 			str += '<td><textarea cols="20" id="userMessageId'+i+'" value='+results[i].message+'>'+results[i].message+'</textarea></td>';
-			str += '<td>'+results[i].constituency+'</td>';
+			str += '<td><a href="constituencyPageAction.action?constituencyId='+results[i].consituencyId+' ">'+results[i].constituency+'</a></td>'; 
 			str += '<td>'+results[i].status+'</td>';
+			str += '<td>'+results[i].visibility+'</td>';
 			str += '</tr>';
 		} 
 		str+= '</table>';
@@ -218,8 +235,30 @@ function showNewPostedReasons(jsObj,results)
 		str += 'No Comments has been Posted';
 	}
 	elmt.innerHTML = str;
-	 
+      if(document.getElementById('commentsDisplay') != null)
+	    document.getElementById('commentsDisplay').innerHTML = res;
  }
+
+ function selectAll(varify)
+ {
+	 var ele = document.getElementsByName("check");
+	 if(varify=="selectValue")
+	 {
+	    for(var i=0;i<ele.length;i++)
+	   {
+		 ele[i].checked=true;
+	   }
+    
+	 }
+	if(varify=="unselectValue")
+	{
+	   for(var i=0;i<ele.length;i++)
+	   {
+		 ele[i].checked=false;
+	   }
+	}
+ }
+
  function checkingData(results)
  {
     var errorDivEle = document.getElementById('commentsDisplay');
@@ -235,6 +274,7 @@ function showNewPostedReasons(jsObj,results)
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
 	}
 	errorDivEle.innerHTML = str;
+	res = str;
  
  }
 function controlSelectedReasons(task)
@@ -258,15 +298,15 @@ function controlSelectedReasons(task)
 	  
 	}
 
-	   if(checkedElmts.length == 0)
-	   {
-	 	errorElmt.innerHTML = 'Atleast one reason has to be selected to perform some action';
+   if(checkedElmts.length == 0)
+   {
+	  errorElmt.innerHTML = 'Atleast one reason has to be selected to perform some action';
 		return;
-	   }
-	else
-	{
-		errorElmt.innerHTML = '';
-	}
+   }
+   else
+   {
+	 errorElmt.innerHTML = '';
+   }
 		
 	var jsObj=
 	{		
@@ -284,14 +324,18 @@ function getAllProblemsBetweenDates(task)
 {
 	var startDate = '';
 	var endDate = '';
+	var selectstatusEle=document.getElementById("select_staus");
+	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
 
 	if(task == "getAllNewPostedReasons")
 	{
+		queryType =  task;
 		startDate = year+'/'+month+'/'+day;
 		endDate = year+'/'+month+'/'+day;
 	}
 	else
 	{
+        queryType = task;
 		startDate = document.getElementById("identifiedFromText").value;
 		endDate = document.getElementById("reportedFromText").value;
 	}
@@ -301,12 +345,13 @@ function getAllProblemsBetweenDates(task)
 	{		
 			
 			fromDate:startDate,
-			toDate:endDate,					
+			toDate:endDate,	
+			selectstaus:selectstatus,
 			task:task						
 	};
 		
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllMessages.action?"+rparam;					
+	var url = "getAllMessagesAction.action?"+rparam;					
 	callAjax(jsObj,url);
 }
 
@@ -319,20 +364,22 @@ function showAllNewPostedReasons()
 	
 	var str = '';
 	str += '<div id="openedReasonsDateDiv" style="font-size:13px;font-weight:bold;">';
-	str += 'Showing all messages posted today - '+day+'/'+month+'/'+year;
-	str += '<input type="button" class="buttonClass" value="Change" onclick="animateShowdiv(\'openedReasonsDateSelectDiv\')">';
+	str += 'Showing all messages posted today - '+day+'/'+month+'/'+year ;
+	
+	str += '<input type="button" class="buttonClass" value="Change" onclick="animateShowdiv(\'openedReasonsDateSelectDiv\')">&nbsp;&nbsp;&nbsp;Select Status<select id="select_staus" name="selectstatus" style="width:125px;"><option value="All">All</option><option value="New">New</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select>';
+
 	str +'</div>';
 	str += '<div id="openedReasonsDateSelectDiv" style="font-size:13px;font-weight:bold;display:none;">';
 	str += '<table>';
 	str += '<tr>';
-	str += '	<th>View posted reasons between</th>';
+	str += '	<th>View posted reasons between </th>';
 	str += '	<td><font class="requiredFont"> * </font></td>	';
 	str += '	<td>';
 	str += '		<input type="text"  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" size="25"/>';
 	str += '		<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>';
 	str += '	</td>';
 	str += '	<td valign="top">';
-	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'identifiedFromText_Div\',\'identifiedFromText\',\'9/2010\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
+	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'identifiedFromText_Div\',\'identifiedFromText\',\''+month+'/'+year+'\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
 	str += '	</td>';				
 		
 	str += '	<td><font class="requiredFont"> * </font></td>';
@@ -341,7 +388,7 @@ function showAllNewPostedReasons()
 	str += '		<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>';
 	str += '	</td>';				
 	str += '	<td valign="top">';
-	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'reportedFromText_Div\',\'reportedFromText\',\'9/2010\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
+	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'reportedFromText_Div\',\'reportedFromText\',\''+month+'/'+year+'\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
 	str += '	</td>';
 	str += '	<td>';
 	str += '	<input type="button" class="buttonClass" value="view" onclick="getAllProblemsBetweenDates(\'getAllNewPostedReasonsBetweenDates\')">';
@@ -354,8 +401,6 @@ function showAllNewPostedReasons()
 
 	getAllProblemsBetweenDates("getAllNewPostedReasons");
 }
-
-
 
 </script>
 
@@ -378,9 +423,9 @@ function showAllNewPostedReasons()
 			<div id="openedReasons_dates" class="reasonsAdminPanels_content">
 				
 			</div>
+			
 			<div id="commentsData_outer" class="reasonsAdminPanels_content yui-skin-sam">
-			    <div id="commentsDisplay"></div>
-				<div id="commentsData"></div>
+			  <div id="commentsData"></div>
 			</div>
 			<div id="reasonsApprovediv" style="text-align:right;padding:10px;">
 				<table width="100%">
@@ -401,7 +446,7 @@ function showAllNewPostedReasons()
 	</div>
 
 		<script type="text/javascript">
-			showAllNewPostedReasons();			
+			showAllNewPostedReasons();	
 		</script>
 	
 </body>
