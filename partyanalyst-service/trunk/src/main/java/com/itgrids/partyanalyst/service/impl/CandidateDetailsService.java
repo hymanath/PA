@@ -1231,6 +1231,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		candidate.setIsDelete(IConstants.FALSE);
 		candidate.setTime(dateUtilService.getCurrentDateAndTime());
 		candidate.setMessage(gallaryVO.getDescription());
+		if(gallaryVO.getIsPrivate().equalsIgnoreCase(IConstants.TRUE))
+			candidate.setIsPrivate(IConstants.TRUE);
+		if(gallaryVO.getIsPrivate().equalsIgnoreCase(IConstants.FALSE))
+			candidate.setIsPrivate(IConstants.FALSE);
 			messageToCandidateDAO.save(candidate);
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		return resultStatus;
@@ -2128,7 +2132,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 }
 	    return " ";
    }
- public List<CandidateCommentsVO> getMessages(String fromDate, String toDate)
+ public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus)
  {
 	 List<CandidateCommentsVO> candidateComments = null;
 	 if(log.isDebugEnabled())
@@ -2138,11 +2142,12 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			
 			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
-			List comments = messageToCandidateDAO.getAllOpenedMessages(firstDate, secondDate);			
+			List comments = messageToCandidateDAO.getAllOpenedMessages(firstDate, secondDate,selectstatus);			
 			
 			return commentsDetailsFromList(comments);
 			
-		}catch(Exception e){				
+		}catch(Exception e){
+			log.error("Exception in getMessages in candidate details service",e);
 			return candidateComments;
 		}
  }
@@ -2163,15 +2168,22 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				comment.setPostedBY(params[1].toString());
 				comment.setMessage(params[2].toString());
 				comment.setConstituency(params[3].toString());
-				if(params[4].toString().equalsIgnoreCase(IConstants.TRUE))
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.TRUE))
 					comment.setStatus(IConstants.APPROVED);
-				if(params[4].toString().equalsIgnoreCase(IConstants.FALSE))
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
 					comment.setStatus(IConstants.NEW);
 				if(params[4] == null)
-					comment.setStatus(IConstants.REJECT);
+					comment.setStatus(IConstants.REJECTED);
 				comment.setMessageToCandidateId((Long)params[5]);
+				comment.setCandidateId((Long)params[6]);
+				comment.setConsituencyId((Long)params[7]);
+				if(params[8]!=null && params[8].toString().equalsIgnoreCase(IConstants.FALSE) )
+				   comment.setVisibility(IConstants.PUBLIC);
+				if(params[8]!=null && params[8].toString().equalsIgnoreCase(IConstants.TRUE) )
+					   comment.setVisibility(IConstants.PRIVATE);
+					
 				
-	            commentsList.add(comment);
+				commentsList.add(comment);
 				
 			}
 		}			
@@ -2191,7 +2203,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				isApproved = IConstants.TRUE;
 			
 			else if(actionType.equalsIgnoreCase(IConstants.REJECTED))
-				isApproved = IConstants.FALSE;
+				//isApproved = IConstants.FALSE;
+				isApproved = null;
 			
            for(int i=0; i<VO.size();i++)
            {

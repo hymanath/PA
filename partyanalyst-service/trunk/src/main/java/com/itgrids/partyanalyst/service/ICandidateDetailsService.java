@@ -129,7 +129,7 @@ public interface ICandidateDetailsService {
 	 	 
 	 public String getLocationDetails(Long scope,Long locationValue);
 	 
-	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate);
+	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus);
 	 
 	 public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType);
 	 
