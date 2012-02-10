@@ -48,8 +48,16 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long messageToCandidateId;
 	private String message;
 	private String time;
+	private Long consituencyId;
+	private String visibility;
 	
 	
+	public Long getConsituencyId() {
+		return consituencyId;
+	}
+	public void setConsituencyId(Long consituencyId) {
+		this.consituencyId = consituencyId;
+	}
 	public String getTime() {
 		return time;
 	}
@@ -246,6 +254,13 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	public void setReasonScore(Float reasonScore) {
 		this.reasonScore = reasonScore;
 	}
+	public String getVisibility() {
+		return visibility;
+	}
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+	
 	
 	
 }
