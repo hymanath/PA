@@ -163,6 +163,11 @@
     text-align: left;
     background: none repeat scroll 0 0 #06ABEA;
 	color: #FFFFFF;
+	 border: 1.7px solid #D1D1D1;
+    margin-bottom: 10px;
+	
+
+
 }
 .annDivId{
 		-moz-border-radius : 5px 5px 5px 5px;
@@ -181,6 +186,7 @@
 }
 #constituencyPageCenterInfoDiv .rounded {
     width: 620px;
+	
 }
 
 .rounded {
@@ -474,6 +480,7 @@ function openAnalyzeConstituencyWindow(type)
 
 function sendMessage()
 {
+	var isprivate='';
   var name = document.getElementById("name").value;
   var stateSelect=document.getElementById("stateSelect").value;
   var constituencySelect=document.getElementById("constituencySelect").value;
@@ -482,6 +489,11 @@ function sendMessage()
     document.getElementById('fileUploadErrorMsgDivId').innerHTML = '';
   var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
+
+	if(document.getElementById("check1").checked==true)
+         isprivate=false;
+	else
+		isprivate=true;
 
 	var str = '<font color="red">';
 
@@ -519,6 +531,7 @@ function sendMessage()
 			stateSelect : stateSelect,
 			constituencySelect : constituencySelect,
 			message : message,
+            isprivate : isprivate, 
 		   	task : "saveMessage"
 		};
 
@@ -553,6 +566,9 @@ function showAssemblyData()
    str+='       <select id="constituencySelect" style = "width:192px; background-color:#EBE8E8; border:1px solid #ffffff; "/>';
    str+='     </td>';
    str+='   </tr>';
+   str+=' <tr>';
+   str+='<td colspan="2"><input type="checkbox" id="check1"  checked>&nbsp Show message to public</input></td>'
+   str+=' </tr>';
    str+=' <tr>  <td >Message <font class="requiredFont"> * </font></td>';
    str+=' <td style="padding-top: 5px;"> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
    str+=' border: 1px solid #ffffff;';
@@ -560,9 +576,9 @@ function showAssemblyData()
    str+=' font: 12px/17px "Trebuchet MS",Arial,Helvetica,sans-serif;';
    str+=' padding: 0px 0 0px 0px;"></textarea></td>';
    str+= '</tr>';
-   str += '<tr>';
-   str += '<td></td><td style="padding-top: 5px;"> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
-   str += '</tr>';
+   str+= '<tr>';
+   str+= '<td></td><td style="padding-top: 5px;"> <a href="javascript:{}" onClick="sendMessage()"> <img src="images/icons/send_btn.jpg"/></a> </td>';
+   str+= '</tr>';
    str+=' <table>';
    document.getElementById("constituencySelectDiv").innerHTML=str;
    getStates();
@@ -820,22 +836,23 @@ function dislayUserDetails(result)
     var resultDiv = document.getElementById('commentBoxDiv');
     var str = '';
 
-    str += '<Div class="layoutHeadersClass">Messages From Followers</DIv>';
-
+    str += '<Div class="layoutHeadersClass" style=" margin-bottom:0px;"> Messages From Followers </DIv>';
+      str += '<fieldset>';
     for(var i=0;i<result.length;i++)
     {
 	   
 
 	   str += '<div class="annDivId">'
 	   str += '<Table>';
-	   str += '<tr class="annHeaderFont"><th>'+result[i].userName+'&nbsp;&nbsp;</th><th>'+result[i].time+'&nbsp;&nbsp;</th><th>CONSTITUENCY:<td class=""><font color="black">'+result[i].constituency+'</font></td></th><tr>';
+	   str += '<tr class="annHeaderFont"><th>'+result[i].userName+'&nbsp;&nbsp;</th><th>'+result[i].time+'&nbsp;&nbsp;</th><th>Location:<td class=""><font color="black">'+result[i].constituency+'</font></td></th><tr>';
 	   str += '</Table>';
 	   str += '<Table style="width:auto;">';
-	   str += '<tr class="annHeaderFont"><th>DESCRIPTION</th></tr>';
+	   str += '<tr class="annHeaderFont"><th>Message</th></tr>';
 	   str += '<tr><td>'+result[i].message+'</td></tr>';
 	   str += '</Table>';
 	   str += '</div>'
     }
+	 str += '</fieldset>';
 resultDiv.innerHTML = str;
 
 }
