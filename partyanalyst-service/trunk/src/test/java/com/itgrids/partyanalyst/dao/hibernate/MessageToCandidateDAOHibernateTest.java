@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
-import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.service.impl.DateService;
 
 
 public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -26,10 +25,10 @@ public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
 	{
 		System.out.println();
 		List list = messageToCandidateDAO.getAllOpenedMessages(DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"),
-				DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"));
+				DateService.convertStringToDate("2012-2-7", "yyyy-MM-dd"),"Approved");
 		System.out.println(list.size());
-	}*/
-  
+	}
+  */
 		
 	
 	/*public void testControlMessages()
@@ -38,6 +37,7 @@ public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result);
 		
 	}*/
+    
 	/*public void testgetUserMessages()
 	{
        List<Object[]> list = messageToCandidateDAO.getUserMessages(13889l);

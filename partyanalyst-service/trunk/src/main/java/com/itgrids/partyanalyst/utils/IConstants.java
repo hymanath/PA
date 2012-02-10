@@ -320,7 +320,7 @@ public interface IConstants {
 	public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
 	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
-    public static final String REJECTED = "rejected";
+    public static final String REJECTED = "Rejected";
     public static final Long MAX_PROBLEMS_DISPLAY = 20L;
     public static final Long MAX_ANONYMOUS_USER_DISPLAY = 20L;
     public static final Long ALL_CONNECTED_USER_DISPLAY = 100L;
@@ -474,5 +474,7 @@ public interface IConstants {
     
     public static final String MALE = "M";
     public static final String FEMALE = "F";
+    public static final String PUBLIC = "Public";
+    public static final String PRIVATE = "Private";
 
 }
