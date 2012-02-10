@@ -1939,25 +1939,9 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 }
 function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 {
-	<c:if test="${hasDeatiledAnalysis}">
-		var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
+	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
 	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
-	
-	browser1.focus();
-	</c:if>
-	
-	<c:if test="${hasDeatiledAnalysis == false}">
-		
-			  $("#candidateResultAccessDiv").dialog({ stack: false,
-							    height: 'auto',
-								width: 500,
-								position:'center',								
-								modal: true,
-								title:'<font color="#000000">ALERT</font>',
-								overlay: { opacity: 0.5, background: 'black'}
-				});
-		showAlertMsg("candidateResultAccessDiv");
-		</c:if>
+	 browser1.focus();
 }
 
 
