@@ -14,14 +14,25 @@ public class MessageToCandidateDAO extends GenericDaoHibernate<MessageToCandidat
 	public MessageToCandidateDAO() {
 		super(MessageToCandidate.class);
 	}
-    public List getAllOpenedMessages(Date firstDate, Date secondDate){
+    public List getAllOpenedMessages(Date firstDate, Date secondDate,String selectstatus){
     	Object[] params = {firstDate, secondDate };
     	
     	StringBuilder query = new StringBuilder();
-    	query.append("select model.candidate.lastname,model.name,model.message,model.constituency.name,model.isApproved,model.messageToCandidateId from MessageToCandidate model where  date(model.time) >= ? and date(model.time) <= ?");
+    	query.append("select model.candidate.lastname,model.name,model.message,model.constituency.name,model.isApproved,model.messageToCandidateId,model.candidate.candidateId,model.constituency.constituencyId,model.isPrivate from MessageToCandidate model where  date(model.time) >= ? and date(model.time) <= ? ");
+    	if(!selectstatus.equals("All")){
+    		if(selectstatus.equals("New"))
+    		    query.append("and model.isApproved ='false'");
+    		else if(selectstatus.equals("Approved"))
+        		query.append("and model.isApproved ='true'");
+    		else if(selectstatus.equals("Rejected"))
+        		query.append("and model.isApproved is null");
+    	}
+    	
+    	query.append(" order by model.time desc ");
     	Query queObject = getSession().createQuery(query.toString());
     	queObject.setDate(0,firstDate);
     	queObject.setDate(1,secondDate);
+    	
     	return queObject.list();
     	
     	/*return getHibernateTemplate().find("select model.candidate.lastname,model.name,model.message,"+
@@ -40,13 +51,7 @@ public class MessageToCandidateDAO extends GenericDaoHibernate<MessageToCandidat
 	}
     @SuppressWarnings("unchecked")
 	public List<Object[]> getUserMessages(Long candidateId){		
-		return getHibernateTemplate().find("select model.name , model.message ,model.constituency.name, model.time from MessageToCandidate model where model.candidate.candidateId=? and model.isApproved = 'true' and model.isDelete = 'false'",candidateId);
+		return getHibernateTemplate().find("select model.name , model.message ,model.constituency.name, model.time from MessageToCandidate model where model.candidate.candidateId=? and model.isApproved = 'true' and model.isDelete = 'false'and model.isPrivate = 'false' order by model.time desc ",candidateId);
 	}
 	
-    
-	
-	
-    
-    
-
 }
