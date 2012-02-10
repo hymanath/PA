@@ -691,6 +691,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setGallaryId(jObj.getLong("stateSelect"));
 			gallaryVO.setUserId(jObj.getLong("constituencySelect"));
 			gallaryVO.setDescription(jObj.getString("message"));
+			gallaryVO.setIsPrivate(jObj.getString("isprivate"));
 			result = candidateDetailsService.saveMessage(gallaryVO);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("saveMessageToParty"))
