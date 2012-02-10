@@ -47,6 +47,7 @@ public class MessageToCandidate extends BaseModel implements
 	private String isDelete;
 	private String isApproved;
 	private Date time;
+	private String isPrivate;
 
 	/** default constructor */
 	public MessageToCandidate() {
@@ -56,13 +57,14 @@ public class MessageToCandidate extends BaseModel implements
 	/** full constructor */
 	public MessageToCandidate(Long messageToCandidate_id, String name,
 			Constituency constituency, String message, Candidate candidate,
-			String isDelete) {
+			String isDelete,String isPrivate) {
 		this.messageToCandidateId = messageToCandidateId;
 		this.name = name;
 		this.constituency = constituency;
 		this.message = message;
 		this.candidate = candidate;
 		this.isDelete = isDelete;
+		this.isPrivate = isPrivate;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -134,9 +136,19 @@ public class MessageToCandidate extends BaseModel implements
 	public Date getTime() {
 		return time;
 	}
-
+	
 	public void setTime(Date time) {
 		this.time = time;
 	}
+	
+	@Column(name = "is_private")
+	public String getIsPrivate() {
+		return isPrivate;
+	}
+
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
 
 }
