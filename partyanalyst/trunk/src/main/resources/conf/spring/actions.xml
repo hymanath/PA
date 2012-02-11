@@ -830,5 +830,10 @@
 	
 	<bean id="approveMessageAction" class="com.itgrids.partyanalyst.web.action.ApproveMessageAction" singleton="false">
 			<property name="candidateDetailsService" ref="candidateDetailsService"/>
-	</bean>		
+	</bean>
+	<bean id="assignCandidateToElectionAction" class="com.itgrids.partyanalyst.web.action.AssignCandidateToElectionAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	</bean>
+			
 </beans>	
