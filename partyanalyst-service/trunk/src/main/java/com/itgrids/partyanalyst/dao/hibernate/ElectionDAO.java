@@ -617,4 +617,29 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.state.stateId = ? and " +
 				" model.electionScope.electionType.electionTypeId = ? and model.elecSubtype = ? order by model.electionYear desc",params);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionYearsBasedOnElectionTypeId(Long electionTypeId) {
+		 Query query = getSession().createQuery("Select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId =:electionTypeId" +
+		 		" and model.elecSubtype =:type ");
+		 
+		 query.setParameter("electionTypeId", electionTypeId);
+		 query.setParameter("type", IConstants.ELECTION_SUBTYPE_MAIN);
+		 
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStatesBasedOnElectionTypeId(Long electionTypeId,String electionType){
+		
+		StringBuilder queryStr = new StringBuilder();
+		if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			 queryStr.append("Select model.country.countryId ,model.country.countryName");
+		}
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			queryStr.append("Select model.state.stateId ,model.state.stateName");
+		}
+		return getHibernateTemplate().find(queryStr.toString().concat("  from ElectionScope model where model.electionType.electionTypeId = ?"),electionTypeId);
+		
+	}
 }
