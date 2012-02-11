@@ -2260,6 +2260,32 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			   
 		   }
 		}
+		/**
+		 * 
+		 * @param electionId
+		 * @return selectOptionList
+		 * @author Swathi
+		 */
+		public List<SelectOptionVO> getCandidatesBasedOnElectionId(Long electionId){
+			List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(0);
+			SelectOptionVO optionVO = new SelectOptionVO();
+			List<Object[]> candidatesList = nominationDAO.getCandidatesBasedOnElectionId(electionId);
+			try{
+				if(candidatesList!=null){
+					for(Object[] params : candidatesList){
+				optionVO = new SelectOptionVO();
+				optionVO.setId(new Long(params[0].toString()));
+				optionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
+				selectOptionList.add(optionVO);
+			}
+		}
+			 return selectOptionList;
+		}catch(Exception e){
+			e.printStackTrace();
+			return selectOptionList;
+		}
+			
+	}
 	 
 }
 	
