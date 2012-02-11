@@ -2555,6 +2555,7 @@ function allDistResultsRadioClickHandler(results,results1)
 }
 function partywiseRadioClickHandler()
 {
+    unSelectAll();
 	var partySelectBoxEl = document.getElementById("partySelectBox");
 	var distSelectBoxEl = document.getElementById("distSelectBox");
 	var stateSelectBoxEl = document.getElementById("stateSelectBox");
@@ -2621,6 +2622,12 @@ function updateResultsStatewise(distName,results)
 		}
 		else return;	
 	
+}
+function unSelectAll(){
+  var selObj = document.getElementById('partySelectBox');
+  for (var i=0; i<selObj.options.length; i++) {
+        selObj.options[i].selected = false;
+    }
 }
 function getAllSelParties(){
   var selObj = document.getElementById('partySelectBox');
@@ -2708,11 +2715,11 @@ function getDistrictResultsInteractiveChartSeatsWonForMultParties(results,partyN
 	  }
 	  var locStr = '';
 	  if(electionType == 'Parliament')
-		locStr = ' State ';
+		locStr = ' State Wise';
 	  else if(electionType == 'Assembly')
-		locStr = ' District ';
+		locStr = ' District Wise';
 
-      var ctitle=''+locStr+' Wise Selected Parties Results By Seats Won';
+      var ctitle=''+locStr+' Selected Parties Results By Seats Won';
 	  
 	   var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 	   if(staticColors != null && staticColors.length > 0)
@@ -2773,11 +2780,11 @@ function getDistrictResultsInteractiveChartVotesPercentForMultParties(results,pa
 	  }
 	  var locStr = '';
 	  if(electionType == 'Parliament')
-		locStr = ' State ';
+		locStr = ' State Wise';
 	  else if(electionType == 'Assembly')
-		locStr = ' District ';
+		locStr = ' District Wise';
 
-      var ctitle=''+locStr+' Wise Selected Parties Results By Votes Percentage';
+      var ctitle=''+locStr+' Selected Parties Results By Votes Percentage';
 	  
 	   var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 	   if(staticColors != null && staticColors.length > 0)
@@ -3146,7 +3153,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 			<TD style="width:10%;"><INPUT type="radio" name="distResultsOption" id="allDistResultsRadio" value="all" onClick="allDistResultsRadioClickHandler(resultsGlobal,allianceResultsGlobal)" checked="true"/>All</TD>
 			<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="partywiseRadio" value="partywise" onClick="partywiseRadioClickHandler()"/>Partywise</TD>
 			<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="partySelectBox"  name="selectBox" multiple="multiple"  style="display:none;"></SELECT></TD>
-			<td style="width:10%;display:none;" id="showHidButton"><input type="button" class="buttonClass" value="Go" onclick="getAllSelParties();" /></td>
+			<td style="width:10%;display:none;" id="showHidButton"><input type="button" class="buttonClass" value="View" onclick="getAllSelParties();" /></td>
 				<c:if test="${electionType != 'Parliament'}">
 					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
 					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal,allianceResultsGlobal)" style="display:none;">
