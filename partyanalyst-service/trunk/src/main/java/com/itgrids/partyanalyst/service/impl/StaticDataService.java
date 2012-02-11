@@ -7282,7 +7282,57 @@ public class StaticDataService implements IStaticDataService {
 
 		return problemStatus;
 	}
-	
+	/**
+	 * 
+	 * @param electionTypeId
+	 * @return SelectOptionVOList
+	 * @author Swathi
+	 */
+	public List<SelectOptionVO> getElectionYearsBasedOnElectionType(Long electionTypeId){
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO optionVO = new SelectOptionVO();
+		List<Object[]> electionYears = electionDAO.getElectionYearsBasedOnElectionTypeId(electionTypeId);
+		
+		for(Object[] params : electionYears){
+			 optionVO = new SelectOptionVO();
+			 optionVO.setId(new Long(params[0].toString()));
+			 optionVO.setName(params[1].toString());
+			 selectOptionVOList.add(optionVO);
+		}
+		return selectOptionVOList;
+	}
+	/**
+	 * 
+	 * @param electionTypeId
+	 * @return selectOptionVOList
+	 */
+	public List<SelectOptionVO> getStatesAndCountryBasedOnElectionType(Long electionTypeId){
+		
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO optionVO = new SelectOptionVO();
+		List<Object[]> resultList;
+		
+	try{
+		if(electionTypeId == 1l){
+			resultList = electionDAO.getStatesBasedOnElectionTypeId(electionTypeId, IConstants.PARLIAMENT_ELECTION_TYPE);
+		}
+		else {
+			resultList = electionDAO.getStatesBasedOnElectionTypeId(electionTypeId, IConstants.ASSEMBLY_ELECTION_TYPE);
+		}
+		if(resultList !=null){
+			for(Object[] params : resultList){
+				 optionVO = new SelectOptionVO();
+				 optionVO.setId(new Long(params[0].toString()));
+				 optionVO.setName(params[1].toString());
+				 selectOptionVOList.add(optionVO);
+			}
+		}
+		return selectOptionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return selectOptionVOList;
+		}
+	}
 }
 
 
