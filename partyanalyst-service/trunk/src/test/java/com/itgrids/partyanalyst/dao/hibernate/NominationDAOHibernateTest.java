@@ -966,10 +966,22 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		Double d = new Double(43086.0);
 		System.out.println(d.longValue());
+	}*/
+	public void testgetCandidatesBasedOnElectionId(){
+		
+		List<Object[]> candidates = nominationDAO.getCandidatesBasedOnElectionId(38l);
+		
+		System.out.println(candidates.size());
+		
+		for(Object[] params : candidates){
+			System.out.println(new Long(params[0].toString()));
+			System.out.println(params[1].toString());
+			
+		}
 	}
 }
 	
