@@ -2986,6 +2986,15 @@
 				<param name="root">resultStatus</param>		
 			</result>
         </action>
-				
+			<action name="assignCandidateToElectionAction" class="assignCandidateToElectionAction">
+			<result name="success">/jsp/assignCandidateToElection.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result> 
+		</action>	
+		<action name="getElectionYearsBasedOnElectionTypeAction" class="assignCandidateToElectionAction" method="ajaxCallHandlerForAssignCandidateToElection">
+			<result type="json" name="success">
+				<param name="root">optionVOList</param>
+			</result>
+	 	</action>	
+		
 	</package>
 </struts>      
