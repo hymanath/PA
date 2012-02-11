@@ -2996,5 +2996,8 @@
 			</result>
 	 	</action>	
 		
+		<action name="ministerAnalysisAction" class="ministerAnalysisAction">
+			<result name="success">/jsp/ministerAnalysisReport.jsp</result> 
+		</action>		
 	</package>
 </struts>      
