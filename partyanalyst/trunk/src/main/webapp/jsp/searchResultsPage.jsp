@@ -265,9 +265,9 @@ function buildCandidateSearchResultDataTable()
 {
   YAHOO.widget.DataTable.formatEmail = function(elLiner, oRecord, oColumn, oData) 
   {
-	var user = oData;
+	var user = oRecord.getData("candidateName");
 	var id= oRecord.getData("candidateId");
-	elLiner.innerHTML ="<a href=\"candidateElectionResultsAction.action?candidateId="+id+">"+user+"</a>";
+	elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+id+" '>"+user+"</a>";
 		
   };
 			
