@@ -134,4 +134,6 @@ public interface ICandidateDetailsService {
 	 public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType);
 	 
 	 public List<CandidateCommentsVO> getUserMessages(Long candidateId);
+	 
+	 public List<SelectOptionVO> getCandidatesBasedOnElectionId(Long electionId);
 }
