@@ -994,5 +994,8 @@
 	
 	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
 	</bean>
+	
+	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
+	</bean>
 </beans>		
 		
