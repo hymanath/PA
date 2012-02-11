@@ -343,8 +343,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			Long electionId = jObj.getLong("electionId");
 
 			electionCompleteDetailsVO = electionReportService
-					.getBasicResultsForAnElection(electionType, year, stateId,
-							IConstants.VOTES_PERCENT_MARGIN);
+					.getBasicResultsForAnElection(electionType, year, stateId,"0.4");
 			
 			electionCompleteDetailsVO.setElectionBasicVotersData(electionReportService.getVotersDataOfTwoElections(electionId));
 			if (electionCompleteDetailsVO != null) {
