@@ -836,4 +836,8 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 	</bean>
 			
+	<bean id="ministerAnalysisAction" class="com.itgrids.partyanalyst.web.action.MinisterAnalysisAction" singleton="false">
+			<property name="ministerAnalysisService" ref="ministerAnalysisService"/>
+			<property name="staticDataService" ref="staticDataService"/>
+	</bean>		
 </beans>	
