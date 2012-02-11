@@ -92,6 +92,7 @@
 		<pattern>/newsDisplayAction*</pattern>
 		<!--<pattern>/districtPageAction*</pattern>-->
 		<pattern>/electionDetailsReportAction*</pattern>
+		<pattern>/ministerAnalysisAction*</pattern>
     </decorator>
 
 </decorators>
