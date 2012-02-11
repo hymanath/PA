@@ -173,7 +173,7 @@ margin-right:auto;
 
 .yui-dt-data > tr td:first-child{padding-left:5px;}
 #districtResults{background:#f9f9f9;padding:5px;}
-#MahaKutami{background:#fff8e5;padding:5px;}
+#MahaKutami{background:#F9F9F9;padding:5px;}
 
 .dashBoardtabsDiv {
     background: none repeat scroll 0 0 #A3A3A3;
@@ -239,7 +239,9 @@ var year = '${year}';
 var electionTypeId = '${electionTypeId}';
 var chkSize= 3;
 var checkedId = "topVotes"; 
-
+var maleFemale =false;
+var ruralUrban =false;
+var ruralUrbanChart = false;
 var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[],
@@ -408,7 +410,7 @@ function buildTopStoriesTable(result,id){
 	 str+= '<tr><th style="background-color : #C4DEFF;width:200px;">Candidate Name</th><th style="background-color : #C4DEFF">Constituency Name</th><th style="background-color : #C4DEFF">Party Name</th><th style="background-color : #C4DEFF">Total Valid Polled Votes</th><th style="background-color : #C4DEFF">Votes Earned</th>';
 	 
 	 if(id == "topVotesGained" || id == "highestAssetsDetails")
-	   str+= '<th style="background-color : #C4DEFF">Votes Earned Percentage</th>';
+	   str+= '<th style="background-color : #C4DEFF">Votes Percentage</th>';
 	 else if(id == "topVotesGainedPerc")
 	   str+= '<th style="background-color : #C4DEFF">Votes Percentage</th>';
 	 else if(id == "highestMarginGained" || id == "lowestMarginGained")
@@ -417,7 +419,7 @@ function buildTopStoriesTable(result,id){
 	 if(id == "highestAssetsDetails")
 	  str+= '<th style="background-color : #C4DEFF">Assets</th>';
 	 
-	 str+= '<th style="background-color : #C4DEFF">Rank</th></tr>';
+	 str+= '<th style="background-color : #C4DEFF">Result(Rank)</th></tr>';
 	 for(var i in result)
 	 {
 	    str+= '<tr>';
@@ -454,9 +456,9 @@ function buildTopStoriesTable(result,id){
 		  str+= '	    <td style="text-align:center;background-color:#F3F3F3">'+result[i].assets+'</td>';
 		
 		if(result[i].rank == 1)
-		  str+= '     <td style="text-align:center;color:green;background-color : #FFFFFF">Won</td>'; 
+		  str+= '     <td style="text-align:center;background-color : #FFFFFF"><font style="color:green">Won</font>('+result[i].rank+')</td>'; 
 	    else
-	      str+= '     <td style="text-align:center;background-color : #FFFFFF">'+result[i].rank+'</td>'; 
+	      str+= '     <td style="text-align:center;background-color : #FFFFFF"><font style="color:red">Lost</font>('+result[i].rank+')</td>'; 
 		
 		str+= '</tr>';
 	 }
@@ -788,9 +790,11 @@ function getPartiesConstituencyUbanPercentage()
 }
 
 function buildUbanPercentageWisePartyDetailsGraph(results)
-{
-	if(results == null || results.length == 0)
-		return;
+{ 
+	if(results != null && results.length >0)
+   {
+    ruralUrbanChart =true;
+	document.getElementById("partyperformance").style.display = "block";
 
 	var ctitle = 'All Parties Performance By Urban Population Increase Based On Voting Percentage';
 
@@ -826,7 +830,15 @@ function buildUbanPercentageWisePartyDetailsGraph(results)
 
 	 var chart = new google.visualization.LineChart(document.getElementById('UbanPercentageWiseGraph'));
         chart.draw(data,{curveType: "function",width:880, height: 430,pointSize: 4, title:ctitle ,colors:staticColors,slantedText:true,slantedTextAngle:35,titleTextStyle:{color:'#DC1CF2'}});
-
+  }  
+  else
+  {
+     ruralUrbanChart =false;
+     if(maleFemale == true || ruralUrban == true || ruralUrbanChart == true)
+	  document.getElementById("partyperformance").style.display = "block";
+	 else
+	  document.getElementById("partyperformance").style.display = "none";
+  }  
 }
 
 function showDistrictWiseResultsLineGraph(results)
@@ -1576,7 +1588,10 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 
 function buildGenderCountResultsDataTable(divId,dtSourceArray)
 {	
-	
+  if(dtSourceArray != null && dtSourceArray.length >0)
+   {
+    maleFemale =true;
+	document.getElementById("partyperformance").style.display = "block";
 	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
@@ -1636,14 +1651,24 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
             oDT: partywiseResultsWithGenderDataTable 
            
       };	     	
-	
+  }
+  else
+  {
+     maleFemale =false;
+     if(maleFemale == true || ruralUrban == true || ruralUrbanChart == true)
+	  document.getElementById("partyperformance").style.display = "block";
+	 else
+	  document.getElementById("partyperformance").style.display = "none";
+  }
 }
 
 function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 {	
-	if(dtSourceArray == null || dtSourceArray.length == 0)
-		return;
-
+   if(dtSourceArray != null && dtSourceArray.length >0)
+   {
+    ruralUrban =true;
+	document.getElementById("partyperformance").style.display = "block";
+	
 	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		
@@ -1703,7 +1728,15 @@ function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 				};
 		
 		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable(divId, partyPerfRurlUrbnColDefs, partyPerfRurlUrbnDataSource,myConfigs);
-	    	
+  }  
+    else
+  {
+     ruralUrban =false;
+     if(maleFemale == true || ruralUrban == true || ruralUrbanChart == true)
+	  document.getElementById("partyperformance").style.display = "block";
+	 else
+	  document.getElementById("partyperformance").style.display = "none";
+  }  
 }
 
 function showAllianceDetails(results)
@@ -2039,7 +2072,48 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 			}
 		}
 	}
-
+     if(type == "partyArray")
+	{
+		for(var i in innerObj)
+		{
+			for(var j in innerObj[i].partyResultsInDistricts)
+			{
+			  for(var k in selectPartyName)
+				if(selectPartyName[k] == innerObj[i].partyName)
+				{
+					var obj = {
+							    partyId:innerObj[i].partyId,
+							    district:innerObj[i].partyResultsInDistricts[j].districtName,
+								party:innerObj[i].partyName,
+								totalParticipated: innerObj[i].partyResultsInDistricts[j].totalConstiParticipated,
+								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
+								second:innerObj[i].partyResultsInDistricts[j].secondPos,
+								third:innerObj[i].partyResultsInDistricts[j].thirdPos,
+								fourth:innerObj[i].partyResultsInDistricts[j].fourthPos,
+								nth:innerObj[i].partyResultsInDistricts[j].nthPos,
+								pc:innerObj[i].partyResultsInDistricts[j].votesPercentage,
+								overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
+							  }
+					if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+					{
+							for(k in electionResultsObj.allianceGroupNamesArray)
+							{
+								if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+								{
+									obj.pc = '';
+									obj.totalParticipated='';
+								}
+							}
+					}
+					if(innerObj[i].partyName == 'IND')
+					{
+						obj.totalParticipated='';
+					}
+					dtSource.push(obj);
+				}	
+			}
+		}
+	}
 	if(type == "district")
 	{
 		tableCaption = "Partywise Results In "+districtName;
@@ -2457,6 +2531,8 @@ function openPreYearStatewiseAnalysisWindow()
 }
 function allDistResultsRadioClickHandler(results,results1)
 {
+    document.getElementById("showHidText").style.display="none";
+	document.getElementById("showHidButton").style.display="none";
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	var selectBoxEl = document.getElementsByName("selectBox");
 	var allianceDistResultsEl = document.getElementById("allianceDistResults");
@@ -2486,7 +2562,8 @@ function partywiseRadioClickHandler()
 	if(partySelectBoxEl.style.display == "none")			
 	{
 		partySelectBoxEl.style.display = 'block';
-		partySelectBoxEl.selectedIndex = '0';
+		document.getElementById("showHidText").style.display = 'block';
+		document.getElementById("showHidButton").style.display = 'block';
 	}
 	if(distSelectBoxEl)
 	{	
@@ -2505,6 +2582,8 @@ function partywiseRadioClickHandler()
 }
 function districtwiseRadioClickHandler()
 {
+    document.getElementById("showHidText").style.display="none";
+	document.getElementById("showHidButton").style.display="none";
 	var partySelectBoxEl = document.getElementById("partySelectBox");
 	var distSelectBoxEl = document.getElementById("distSelectBox");
 	if(partySelectBoxEl.style.display == "block")			
@@ -2521,6 +2600,8 @@ function districtwiseRadioClickHandler()
 
 function  statewiseRadioClickHandler()
 {
+    document.getElementById("showHidText").style.display="none";
+	document.getElementById("showHidButton").style.display="none";
 	var stateSelectBoxEl = document.getElementById("stateSelectBox");
 	stateSelectBoxEl.style.display = 'block';
 
@@ -2541,34 +2622,179 @@ function updateResultsStatewise(distName,results)
 		else return;	
 	
 }
-
+function getAllSelParties(){
+  var selObj = document.getElementById('partySelectBox');
+  var partyN = new Array();
+  for (var i=0; i<selObj.options.length; i++) {
+    if (selObj.options[i].selected) {
+      partyN.push(selObj.options[i].text);     
+    }
+   }
+   if(partyN.length > 0)
+	updateDistResultsPartywise(partyN,resultsGlobal);
+}
 function updateDistResultsPartywise(partyName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	var allianceDistResultsEl = document.getElementById("allianceDistResults");
-	if(partyName != 'Select Party')
-		{
-		buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");
+
+		buildAllDistrictDatatable(innerObj,"districtResults","partyArray",partyName,"null");
 		//buildAllianceDistrictResultsDataTable(results1,"district", distName);
-		getDistrictResultsInteractiveChartVotesPercent(results,partyName);
-	    getDistrictResultsInteractiveChartSeatsWon(results,partyName);
- 
+		//getDistrictResultsInteractiveChartVotesPercent(results,partyName);
+	    //getDistrictResultsInteractiveChartSeatsWon(results,partyName);
+        getDistrictResultsInteractiveChartVotesPercentForMultParties(results,partyName);
+		getDistrictResultsInteractiveChartSeatsWonForMultParties(results,partyName);
 		if(electionResultsObj.allianceGroupNamesArray != null && electionResultsObj.allianceGroupNamesArray.length != 0)
 			{
-
-				for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
+			  for (j=0; j<allianceDistResultsEl.childNodes.length; j++)
 					
-					if(allianceDistResultsEl.childNodes[j].id != partyName)
 					{	
 						allianceDistResultsEl.childNodes[j].style.display='none';						
-					}else {allianceDistResultsEl.childNodes[j].style.display='block'}
-				}				
+					}
+					
+              for(var k in partyName)
+			  {
+				for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
+					if(allianceDistResultsEl.childNodes[j].id == partyName[k])
+					{	
+						allianceDistResultsEl.childNodes[j].style.display='block';						
+					}
+				}	
+              }				
 			}
 		
-		}
-	
-	else return;
 }
+function getDistrictResultsInteractiveChartSeatsWonForMultParties(results,partyN)
+{
+	 var districtWiseGraphEl = document.getElementById("districtWiseSeatsGraph");
+	 var chartColumns = results.partiesDistLevel;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
+	 var data = new google.visualization.DataTable();
+	 var partiesArray = new Array();
+	
+	 data.addColumn('string', 'Party');
+      //for columns
+	  for(var i in partyN){
+			data.addColumn('number', partyN[i]);
+            partiesArray.push(partyN[i]);
+	  }
+
+     
+	  for(var j in chartRows)
+	  {
+		  
+		var partyCount = 0;
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+        for(var l in partyN)
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+		  
+
+		  
+			  if(chartRows[j].partyResultsInDistricts[k].districtName == partyN[l])
+			  {
+				   var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+				   array.push(seatsWon);
+			  }
+            
+		  
+		  
+		}
+
+        data.addRow(array);
+       
+	  }
+	  var locStr = '';
+	  if(electionType == 'Parliament')
+		locStr = ' State ';
+	  else if(electionType == 'Assembly')
+		locStr = ' District ';
+
+      var ctitle=''+locStr+' Wise Selected Parties Results By Seats Won';
+	  
+	   var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+	   if(staticColors != null && staticColors.length > 0)
+	   {
+		  new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	   }
+	   else
+	  {
+         new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	  }
+		
+ }
+function getDistrictResultsInteractiveChartVotesPercentForMultParties(results,partyN)
+ {
+	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
+	 var chartColumns = results.partiesDistLevel;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
+	 var data = new google.visualization.DataTable();
+	 var partiesArray = new Array();
+	
+	 data.addColumn('string', 'Party');
+      //for columns
+	  for(var i in partyN){
+			data.addColumn('number', partyN[i]);
+            partiesArray.push(partyN[i]);
+	  }
+
+     
+	  for(var j in chartRows)
+	  {
+		  
+		var partyCount = 0;
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+        for(var l in partyN)
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+		  
+
+		  
+			  if(chartRows[j].partyResultsInDistricts[k].districtName == partyN[l])
+			  {
+				   var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+				   array.push(seatsWon);
+			  }
+            
+		  
+		  
+		}
+
+        data.addRow(array);
+       
+	  }
+	  var locStr = '';
+	  if(electionType == 'Parliament')
+		locStr = ' State ';
+	  else if(electionType == 'Assembly')
+		locStr = ' District ';
+
+      var ctitle=''+locStr+' Wise Selected Parties Results By Votes Percentage';
+	  
+	   var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+	   if(staticColors != null && staticColors.length > 0)
+	   {
+		  new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 972, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	   }
+	   else
+	  {
+         new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 1002, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	  }
+		
+ }
+
 function updateDistResultsDistwise(distName,results,results1)
 {
 	
@@ -2744,7 +2970,21 @@ callAjax(rparam,jsObj,url);
 	addCommentsDialog.hide();
 	
 }
-
+function removeOptionSelected()
+{
+ if(document.getElementById('partyTopStories') != null)
+ {
+  var elSel = document.getElementById('partyTopStories');
+  var i;
+  for (i = elSel.length - 1; i>=0; i--) {
+    if (elSel.options[i].value == 0) {
+      elSel.remove(i);
+	  $("#partyTopStories").prepend("<option value='0'>All Parties</option>");
+	  document.getElementById('partyTopStories').value = 0;
+    }
+  }
+ }
+}
 </SCRIPT>
 </HEAD>
 
@@ -2782,7 +3022,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
                    <td style="width:15%;"><s:select id="partyTopStories" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name" cssClass ="partyNames" onchange="getTopStoriesForParty(this.id);" />	</td>
                </c:if>
                <c:if test="${electionType != 'Assembly'}">
-                   <td style="width:15%;"><select id="partiesNames" class="partyNames" onchange="getTopStoriesForParty(this.id);"  ><option value="0">Select A Party</option></select>	</td>
+                   <td style="width:15%;"><select id="partiesNames" class="partyNames" onchange="getTopStoriesForParty(this.id);"  ><option value="0">All Parties</option></select>	</td>
                </c:if>
                <td style="width:40%">
                   <div>
@@ -2901,13 +3141,12 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV id="detailedGraph" style="text-align:right;padding:15px;"></DIV>
 <DIV id="distResultsViewOptionsDiv">
 	<TABLE width="100%">	
-		<TR>
+		<tr><td colspan="6"><div id="showHidText" style="padding-left:80px;display:none;" ><b>Press Ctrl Key To Select Multiple Parties</b></div></td></tr>		
+		<TR style="vertical-align:top">
 			<TD style="width:10%;"><INPUT type="radio" name="distResultsOption" id="allDistResultsRadio" value="all" onClick="allDistResultsRadioClickHandler(resultsGlobal,allianceResultsGlobal)" checked="true"/>All</TD>
 			<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="partywiseRadio" value="partywise" onClick="partywiseRadioClickHandler()"/>Partywise</TD>
-			<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="partySelectBox"  name="selectBox"  onchange="updateDistResultsPartywise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">
-				<OPTION id="0" >Select Party</OPTION>
-				</SELECT>
-			</TD>
+			<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="partySelectBox"  name="selectBox" multiple="multiple"  style="display:none;"></SELECT></TD>
+			<td style="width:10%;display:none;" id="showHidButton"><input type="button" class="buttonClass" value="Go" onclick="getAllSelParties();" /></td>
 				<c:if test="${electionType != 'Parliament'}">
 					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
 					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal,allianceResultsGlobal)" style="display:none;">
@@ -2957,6 +3196,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV class="graphBottom"></DIV>
 </DIV>
 <DIV class="yui-skin-sam" >
+<div id="partyperformance" >
 <c:if test="${hasDeatiledAnalysis}">
 <DIV class="graphTop"> Party Performance In Different Aspects</DIV>
 <div class="partyperformance">
@@ -2998,6 +3238,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </div>
 <DIV class="graphBottom"></DIV>	
 </c:if>
+</div>
 </DIV>
 <div class="clear"></div>
 <DIV id="analysisToolsDataDiv">
@@ -3140,7 +3381,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	</TABLE>
 </DIV>
 <DIV class="graphBottom"></DIV>
-<DIV class = "yui-skin-sam"><div id="panel" style="left:69px;top:-180px;"></DIV></DIV>
+<DIV class = "yui-skin-sam"><div id="panel" style="left:15px;top:-180px;"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="detailedResultsPanel"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
 </DIV>
@@ -3155,6 +3396,7 @@ getPartiesConstituencyUbanPercentage();
 </c:if>
 getAllTopStories(3,"TopVotesGained");
 $("#top3Id").addClass("dashBoardtabsDivSelected");
+removeOptionSelected();
 </SCRIPT>
 </center>
 </BODY>
