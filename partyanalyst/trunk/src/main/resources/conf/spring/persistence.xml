@@ -228,6 +228,9 @@
 				<value>com.itgrids.partyanalyst.model.Category</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
+				<value>com.itgrids.partyanalyst.model.Ministry</value>
+				<value>com.itgrids.partyanalyst.model.MinistryScope</value>
+				<value>com.itgrids.partyanalyst.model.ElectionMinisters</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
 			</list>
