@@ -243,6 +243,9 @@
 				<value>com.itgrids.partyanalyst.model.NewsImportance</value>
 				<value>com.itgrids.partyanalyst.model.Category</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageMetaInfo</value>
+				<value>com.itgrids.partyanalyst.model.Ministry</value>
+				<value>com.itgrids.partyanalyst.model.MinistryScope</value>
+				<value>com.itgrids.partyanalyst.model.ElectionMinisters</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
@@ -251,6 +254,18 @@
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="electionMinistersDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionMinistersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ministryScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MinistryScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ministryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MinistryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="constituencyUrbanPercentageDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyUrbanPercentageDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
