@@ -23,7 +23,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
-	
+/**
+ * opinion_poll entity. 
+ * @author <a href="mailto:kamalakardandu@gmail.com">Kamalakar Dandu</a>
+ */
+
 @Entity
 @Table(name="opinion_poll")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

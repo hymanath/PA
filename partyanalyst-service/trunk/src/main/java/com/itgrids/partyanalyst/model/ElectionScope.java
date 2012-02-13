@@ -48,6 +48,7 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 	private Country country;
 	private Set<Election> elections = new HashSet<Election>(0);
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
+	private Set<MinistryScope> ministryScopes = new HashSet<MinistryScope>(0);
 
 	// Constructors
 
@@ -132,6 +133,16 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 
 	public void setConstituencies(Set<Constituency> constituencies) {
 		this.constituencies = constituencies;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "electionScope")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<MinistryScope> getMinistryScopes() {
+		return ministryScopes;
+	}
+
+	public void setMinistryScopes(Set<MinistryScope> ministryScopes) {
+		this.ministryScopes = ministryScopes;
 	}
 
 }

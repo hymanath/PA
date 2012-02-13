@@ -62,6 +62,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 	private Set<PartyElectionResultsWithGenderAnalysis> partyElectionResultsWithGenderAnalysis = new HashSet<PartyElectionResultsWithGenderAnalysis>(0);
 	private String isPartial;
+	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
 
 	// Constructors
 
@@ -245,6 +246,16 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setPartyElectionResultsWithGenderAnalysis(
 			Set<PartyElectionResultsWithGenderAnalysis> partyElectionResultsWithGenderAnalysis) {
 		this.partyElectionResultsWithGenderAnalysis = partyElectionResultsWithGenderAnalysis;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ElectionMinisters> getElectionMinisters() {
+		return electionMinisters;
+	}
+
+	public void setElectionMinisters(Set<ElectionMinisters> electionMinisters) {
+		this.electionMinisters = electionMinisters;
 	}
 	
 }
