@@ -753,4 +753,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="ministryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MinistryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ministryScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MinistryScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="electionMinistersDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionMinistersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
