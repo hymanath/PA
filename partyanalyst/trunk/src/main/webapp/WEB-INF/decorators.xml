@@ -93,7 +93,7 @@
 		<!--<pattern>/districtPageAction*</pattern>-->
 		<pattern>/electionDetailsReportAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
-		<pattern>/constituencyPageAction*</pattern>
+		<pattern>/constituencyPageAction2*</pattern>
     </decorator>
 
 </decorators>
