@@ -9,8 +9,8 @@
 
 	<title><c:out value='${constituencyDetails.constituencyName}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
-	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script> 
-	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
+	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 
+	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 	
@@ -26,7 +26,7 @@
 
 	<!-- Combo-handled YUI JS files: --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js"></script> 
-	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	</link>
+	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css">	</link>
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
