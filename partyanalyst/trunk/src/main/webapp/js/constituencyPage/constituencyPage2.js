@@ -614,7 +614,8 @@ function buildAssetsAndLiabilities(myResults)
    if(myResults.candidateNominations != null && myResults.candidateNominations.length > 0)
    {
 	  var headStr = '';
-	   headStr+='<span class="layoutHeadersClass">Candidates Affidavit Summary for ' + myResults.electionType + ' '+myResults.electionYear+' '+myResults.candidateId+'</span>';
+	  headStr+='<span class="layoutHeadersClass">Candidates Affidavit Summary for ' + myResults.electionType + ' '+myResults.electionYear+' </span>';
+		 
 	 var myDataSource = new YAHOO.util.DataSource(myResults.candidateNominations); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
