@@ -765,4 +765,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="constituencyLeadCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyLeadCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
