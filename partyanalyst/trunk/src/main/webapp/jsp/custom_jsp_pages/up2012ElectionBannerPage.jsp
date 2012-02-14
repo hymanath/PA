@@ -35,8 +35,8 @@
  <table bordercolor="#d2e888" cellspacing="0" cellpadding="0" border="1" align="center"  style="border-collapse: collapse;font-size:12px;" width="100%">
 
  <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3>
-      <tr><td>
-	 	 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px; margin-top:10px;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" > View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
+      <tr><td><br>
+	 	 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" > View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
 
 <tr><td>
 
@@ -124,7 +124,7 @@
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
 UttarPradesh Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br /><br />
+<td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br /><br />
 		   
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=239">BSP<img src="images/party_flags/BSP.png" height="40px" width="60px">

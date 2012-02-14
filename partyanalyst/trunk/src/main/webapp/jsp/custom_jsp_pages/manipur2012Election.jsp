@@ -61,7 +61,7 @@
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
 Manipur Assembly Previous Election Results</h3>
 <tr style="margin-left: 10px; margin-top: 5px;">
-<td colspan="7"><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  :</span></b><br>
+<td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  :</span></b><br>
   <div style="margin-top: 15px;">
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=579">NCP</a> <img src="images/party_flags/NCP.png" height="40px" width="60px">&nbsp; 
