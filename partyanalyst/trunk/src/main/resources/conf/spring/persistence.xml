@@ -233,6 +233,7 @@
 				<value>com.itgrids.partyanalyst.model.ElectionMinisters</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyLeadCandidate</value>
 			</list>
 		</property>
 	</bean>
