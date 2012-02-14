@@ -56,6 +56,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private ConstituencyElectionResult constituencyElectionResult;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
+	private Set<ConstituencyLeadCandidate> constituencyLeadCandidates = new HashSet<ConstituencyLeadCandidate>(0);
 	
 	private String hasResults;
 
@@ -185,6 +186,16 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 
 	public void setHasResults(String hasResults) {
 		this.hasResults = hasResults;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituencyElection")
+	public Set<ConstituencyLeadCandidate> getConstituencyLeadCandidates() {
+		return constituencyLeadCandidates;
+	}
+
+	public void setConstituencyLeadCandidates(
+			Set<ConstituencyLeadCandidate> constituencyLeadCandidates) {
+		this.constituencyLeadCandidates = constituencyLeadCandidates;
 	}
 
 	
