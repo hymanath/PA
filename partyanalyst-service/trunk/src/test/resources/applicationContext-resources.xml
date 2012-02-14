@@ -249,6 +249,7 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyUrbanPercentage</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithAreaType</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyLeadCandidate</value>
 			</list>
 		</property>
 	</bean>
@@ -1342,6 +1343,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	<bean id="categoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="constituencyLeadCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyLeadCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 		
