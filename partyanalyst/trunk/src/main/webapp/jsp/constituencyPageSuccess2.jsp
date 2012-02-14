@@ -357,7 +357,7 @@
 		
             
             <p class="detailed-ele-inf" style="display:block"> <span class="fleft" style="font-weight:bold;">Detailed Election Information</span><span>click here</span>
-			<span id="minusPlusDiv"><a  onclick="detailedElectionResult()"> <img src="images/pages/costpage/ei-plus.gif" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a></p>
+			<span id="minusPlusDiv"><a  onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a></p>
 			<div id="detailedElectionInfoDiv_Body"></div>
           </div>
           
