@@ -124,7 +124,7 @@
 	#censusSelect{
     margin-right: auto;
     padding-right: 0;
-    width: 120px;}
+    width: 149px;}
 	#announcementsInConstituencyDiv > table{border-collapse:collapse;border-bottom:1px solid #d3d3d3;width:100%;}
 	.cp-cont-sub-fields li{border:none;}
 
@@ -1809,42 +1809,42 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 }
 
 	function detailedElectionResult(){
-	
-	var BodyElmt = document.getElementById('detailedElectionInfoDiv_Body');
-	
-	var minusPlusDivElmt = document.getElementById("minusPlusDiv");
-	var elecStr = '';
-	var str = '';
-		str+='<a  onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
-	minusPlusDivElmt.innerHTML = str;
-
-	for(var i in constituencyPageMainObj.constituencyElectionInfo)
-	{
-		var data = constituencyPageMainObj.constituencyElectionInfo[i];
-		var info = constituencyPageMainObj.constituencyInfo;
-		elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" onclick="showDetailedElectionResult(this.id)">';
-		elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
-		elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' votes %</span>';		
-		elecStr+='</div>';
-	}
-	
-	if(BodyElmt)
 		
-		BodyElmt.innerHTML=elecStr;
-	document.getElementById('detailedElectionInfoDiv_Body').style.display ='block';
-	
-	}
+		var BodyElmt = document.getElementById('detailedElectionInfoDiv_Body');
+		
+		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
+		var elecStr = '';
+		var str = '';
+			str+='<a  onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
+		minusPlusDivElmt.innerHTML = str;
 
-	function hideDetailedElectionResultDiv(divElmt)
-	{
-	document.getElementById(divElmt).style.display ='none';
-	var minusPlusDivElmt = document.getElementById("minusPlusDiv");
-	var str = '';
+		for(var i in constituencyPageMainObj.constituencyElectionInfo)
+		{
+			var data = constituencyPageMainObj.constituencyElectionInfo[i];
+			var info = constituencyPageMainObj.constituencyInfo;
+			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" onclick="showDetailedElectionResult(this.id)">';
+			elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
+			elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' votes %</span>';		
+			elecStr+='</div>';
+		}
+		
+		if(BodyElmt)
+			
+			BodyElmt.innerHTML=elecStr;
+		document.getElementById('detailedElectionInfoDiv_Body').style.display ='block';
+		
+		}
 
-	str+='<a  onclick="detailedElectionResult()"> <img src="images/pages/costpage/ei-plus.gif" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
+		function hideDetailedElectionResultDiv(divElmt)
+		{
+		document.getElementById(divElmt).style.display ='none';
+		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
+		var str = '';
 
-	minusPlusDivElmt.innerHTML = str;
-	}
+		str+='<a  onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
+
+		minusPlusDivElmt.innerHTML = str;
+		}
 	 function buildElectionYearsWithAssets(myResults)
 		{
 		
