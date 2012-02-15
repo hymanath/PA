@@ -46,7 +46,7 @@
 <ul class="splpagewarhead">
 
 <li>
-<b><span class="stateprevious">UttarPradesh Previous Assembly Elections Results </span></b>
+<b><span class="stateprevious">UttarPradesh Previous Assembly Election Results </span></b>
 <img src="images/icons/diamond.png" />
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=158&stateID=27&stateName=Uttar%20Pradesh&electionType=Assembly&electionTypeId=2&year=2007"> 2007</a>
 &nbsp;
@@ -69,7 +69,7 @@
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=164&stateID=27&stateName=Uttar%20Pradesh&electionType=Assembly&electionTypeId=2&year=1985"> 1985</a>
 &nbsp;
 </li><li>
-<b><span class="stateprevious">Punjab Previous Assembly Elections Results </span></b>
+<b><span class="stateprevious">Punjab Previous Assembly Election Results </span></b>
 <img src="images/icons/diamond.png">
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=136&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -91,7 +91,7 @@
 
 
 </li><li>
-<b><span class="stateprevious">Uttarakhand Previous Assembly Elections Results </span></b>
+<b><span class="stateprevious">Uttarakhand Previous Assembly Election Results </span></b>
 &nbsp;<img src="images/icons/diamond.png">
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=134&stateID=26&stateName=Uttaranchal&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -100,7 +100,7 @@
 
 
 </li><li>
-<b><span class="stateprevious">Goa Previous Assembly Elections Results </span></b>
+<b><span class="stateprevious">Goa Previous Assembly Election Results </span></b>
 <img src="images/icons/diamond.png" />
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=165&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 &nbsp;
@@ -121,7 +121,7 @@
 
 </li><li>
 
-<b><span class="stateprevious">Manipur Previous Assembly Elections Results :</span></b>
+<b><span class="stateprevious">Manipur Previous Assembly Election Results :</span></b>
 <img src="images/icons/diamond.png">
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -151,24 +151,24 @@
 				<ul>
 			
 			<li>
-				 <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>UttarPradesh 2012 Elections Specials</span></a>
+				 <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>UttarPradesh 2012 Election Specials</span></a>
 				 </li>
 				 
 				 <li >
-				 <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>Punjab 2012 Elections Specials</span> </a>
+				 <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>Punjab 2012 Election Specials</span> </a>
 				 </li>
 				 
 				 <li>
-				 <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>Uttarakhand 2012 Elections Specials</span> </a>
+				 <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><span style="font-weight: bold;">Click Here To View<br/>Uttarakhand 2012 Election Specials</span> </a>
 				 </li>
 				 
 				<li> 
-					<a href="specialPageAction.action?specialPageId=7" title="Goa 2012 Election"> <span style="font-weight: bold;">Click Here To View<br/>Goa 2012 Elections Specials</span> </a>
+					<a href="specialPageAction.action?specialPageId=7" title="Goa 2012 Election"> <span style="font-weight: bold;">Click Here To View<br/>Goa 2012 Election Specials</span> </a>
 				</li>
 				
 				
 				 <li>
-				 <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"> <span style="font-weight: bold;text-align:center;">Click Here To View<br/>Manipur 2012 Elections Specials</span> </a>
+				 <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"> <span style="font-weight: bold;text-align:center;">Click Here To View<br/>Manipur 2012 Election Specials</span> </a>
 				 </li>
 				
 				</ul>
