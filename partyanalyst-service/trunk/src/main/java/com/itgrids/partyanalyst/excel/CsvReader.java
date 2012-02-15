@@ -264,9 +264,14 @@ public class CsvReader implements IExcelReader{
 		//end
 		if(constituencyName!=null && constituencyName.length()>0){
 			String str[]=StringUtils.split(constituencyName+"(PA)", ".()");
-			String constiName[] = str[1].split("-");
+			//String constiName[] = str[1].split("-");
+			String constiName[] = str[0].split("-");
 			if(constiName.length > 1)
-				constituencyBlock.setConstituencyName(constiName[0].trim());
+			{
+				// updated by kamalakar
+				//constituencyBlock.setConstituencyName(constiName[0].trim());
+				constituencyBlock.setConstituencyName(constiName[1].trim());
+			}
 			else
 			    constituencyBlock.setConstituencyName(str[1].trim());
 			if(str.length>2 && !str[2].equalsIgnoreCase("PA")){
