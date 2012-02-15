@@ -36,7 +36,7 @@
 
  <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3>
       <tr><td><br>
-	 	 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" > View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
+	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
 
 <tr><td>
 
