@@ -386,12 +386,12 @@ function openAddNewProblemWindow()
                 <div class="prev"><img src="./images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div>
                 <div class="slider">
                   <ul>
+				  <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
+				  <li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
+				  <li> <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><img src="./images/new_homepage/uttaranchal.png" alt="Uttarakhand 2012 Election"/> <span>Uttarakhand</span> </a></li>
 				  <li> <a href="specialPageAction.action?specialPageId=7" title="Goa 2012 Election"><img src="./images/new_homepage/goa.jpg" alt="Goa 2012 Election"/> <span>Goa</span> </a></li>
-                   <li> <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"><img src="./images/new_homepage/manipur.png" alt="Manipur 2012 Election" /> <span>Manipur</span> </a></li>
-					<li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
-					 <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
-					 <li> <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><img src="./images/new_homepage/uttaranchal.png" alt="Uttarakhand 2012 Election"/> <span>Uttarakhand</span> </a></li>
-                  </ul>
+                  <li> <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"><img src="./images/new_homepage/manipur.png" alt="Manipur 2012 Election" /> <span>Manipur</span> </a></li>
+				</ul>
                 </div>
                 <div class="next" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
               </div>
