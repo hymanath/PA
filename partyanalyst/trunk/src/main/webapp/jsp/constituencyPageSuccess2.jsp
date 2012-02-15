@@ -1989,18 +1989,20 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 			
 		}
 		function redirectMptcCandidateLink(){
-		
-		 var browser2 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
-		 browser2.focus();
+			 
+			 var browser2 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+${constituencyId}+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
+			 browser2.focus();
 		}
 
-	function redirectZptcCandidateLink(){	
 
-													
-		
-		 var browser1 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
-		 browser1.focus();
-	}
+
+		function redirectZptcCandidateLink(){	
+
+			
+			 
+			 var browser1 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+${constituencyId}+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+			 browser1.focus();
+		}
 		
 
 
