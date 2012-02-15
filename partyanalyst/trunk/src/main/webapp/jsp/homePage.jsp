@@ -480,7 +480,7 @@ function openAddNewProblemWindow()
 </div>
 <div id="popupDiv" style="display: block; margin-left: auto; margin-right: auto; width: 850px;">
 <c:if test='${sessionScope.loadingFirstTime == true}'>
-	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -499px;">
+	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -560px;">
 	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
 	</div>
 	</c:if>
