@@ -36,12 +36,12 @@
 
  <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3>
       <tr><td><br>
-	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
+	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;margin-left: 14px;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>
 
 <tr><td>
 
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 UttarPradesh Assembly Survey Results</span></b><br /><br />
-<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong>Bundelkhand (19 Seats)</strong>
+<br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888; margin-left: 10px;">2012 UttarPradesh Assembly Survey Results</span></b><br /><br />
+<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong style="padding-left: 176px;">Bundelkhand (19 Seats)</strong>
             <tbody><tr>
 			  <td><b>Source</b></td>
               <td><b>BSP</b></td>
@@ -59,7 +59,7 @@
 				<td>0</td>
 			</tr>
 </table>
-<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong>Awadh (63 Seats)</strong>
+<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong style="padding-left: 192px;">Awadh (63 Seats)</strong>
             <tbody><tr>
 			  <td><b>Source</b></td>
               <td><b>BSP</b></td>
@@ -95,7 +95,7 @@
 				<td>10</td>
 			</tr>
 </table>
-<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong>Purvanchal (176 Seats)</strong>
+<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%"><strong style="padding-left: 178px;">Purvanchal (176 Seats)</strong>
             <tbody><tr>
 			  <td><b>Source</b></td>
               <td><b>BSP</b></td>
