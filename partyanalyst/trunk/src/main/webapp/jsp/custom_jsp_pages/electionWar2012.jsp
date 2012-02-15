@@ -11,6 +11,11 @@
 .splpage2012action ul li a{display:block;padding:10px;color:#fff;background:#d2e888;border-radius:5px;-moz-border-radius:5px;margin-top:20px;display:block;margin-left:auto;margin-right:auto;width:300px;color:#3d3d3d;}
 .splpage2012action ul li a:hover{background:#21B2ED;text-decoration:none;color:#FFFFFF;}
 #previousElectionresultsDiv{width:988px;float:left;display:block;clear:both;background:#fff;margin-top:5px;}
+
+
+.splpagewarhead li a:hover{
+background:red !important;
+}
 </style>
 <div>
 <img src="images/specialPage/main.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Election War 2012" title="Election War 2012" />
