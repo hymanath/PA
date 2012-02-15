@@ -238,6 +238,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		if(session.getAttribute("loadingFirstTime")== null)
 			   session.setAttribute("loadingFirstTime", "true");
+		else 
+			session.setAttribute("loadingFirstTime", "false");
 		
 		if(user==null){
 			loginStatus = "false";
