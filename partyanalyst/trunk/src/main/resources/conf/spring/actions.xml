@@ -839,5 +839,11 @@
 	<bean id="ministerAnalysisAction" class="com.itgrids.partyanalyst.web.action.MinisterAnalysisAction" singleton="false">
 			<property name="ministerAnalysisService" ref="ministerAnalysisService"/>
 			<property name="staticDataService" ref="staticDataService"/>
-	</bean>		
+	</bean>
+	
+	<bean id="electionResultsUpdateAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsUpdateAction" singleton="false">
+			<property name="electionResultsUpdationService" ref="electionResultsUpdationService"/>
+			<property name="staticDataService" ref="staticDataService"/>
+			<property name="entitlementsHelper" ref="entitlementsHelper"/>
+	</bean>			
 </beans>	
