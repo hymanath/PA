@@ -971,7 +971,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		Double d = new Double(43086.0);
 		System.out.println(d.longValue());
 	}*/
-	public void testgetCandidatesBasedOnElectionId(){
+	/*public void testgetCandidatesBasedOnElectionId(){
 		
 		List<Object[]> candidates = nominationDAO.getCandidatesBasedOnElectionId(38l);
 		
@@ -981,6 +981,19 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(new Long(params[0].toString()));
 			System.out.println(params[1].toString());
 			
+		}
+	}*/
+     public void testGetCandidateDetails(){
+		
+		List<Object[]> candidates = nominationDAO.getCandidateDetails("Parliament",461l,1l,"2009");
+		
+		System.out.println(candidates.size());
+		
+		for(Object[] params : candidates)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
 		}
 	}
 }
