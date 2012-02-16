@@ -2682,7 +2682,8 @@ public class StaticDataService implements IStaticDataService {
 				Object[] parms = (Object[]) result.get(i);
 				SelectOptionVO vo = new SelectOptionVO();
 				vo.setId((Long) parms[0]);
-				vo.setName(parms[0].toString());
+				vo.setName(parms[1].toString());
+				data.add(vo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
