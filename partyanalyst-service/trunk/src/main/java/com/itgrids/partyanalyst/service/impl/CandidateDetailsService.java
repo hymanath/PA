@@ -2266,10 +2266,10 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		 * @return selectOptionList
 		 * @author Swathi
 		 */
-		public List<SelectOptionVO> getCandidatesBasedOnElectionId(Long electionId){
+		public List<SelectOptionVO> getCandidatesBasedOnSelection(String candidateName,Long partyId,Long electionId){
 			List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(0);
 			SelectOptionVO optionVO = new SelectOptionVO();
-			List<Object[]> candidatesList = nominationDAO.getCandidatesBasedOnElectionId(electionId);
+			List<Object[]> candidatesList = nominationDAO.getCandidatesBasedOnElectionId(candidateName,partyId,electionId);
 			try{
 				if(candidatesList!=null){
 					for(Object[] params : candidatesList){
