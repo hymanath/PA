@@ -973,7 +973,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	}*/
 	/*public void testgetCandidatesBasedOnElectionId(){
 		
-		List<Object[]> candidates = nominationDAO.getCandidatesBasedOnElectionId(38l);
+		List<Object[]> candidates = nominationDAO.getCandidatesBasedOnElectionId("har",0l,38l);
 		
 		System.out.println(candidates.size());
 		
