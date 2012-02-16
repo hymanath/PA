@@ -197,6 +197,14 @@
                                     </fieldset>
                                 </td>
 							<tr>
+							</tr>
+								 <td> <fieldset class="f2">
+                                    <legend class="l2">Election Results Updation</legend>
+                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="electionResultsUpdateAction"/>'><b>Update Election Results</b></a></h4></center>
+                                    </fieldset>
+                                </td>
+							<tr>
+
 
 							</tr>
                         </table>
