@@ -997,5 +997,13 @@
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">
 	</bean>
+	
+	<bean name="electionResultsUpdationService" class="com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService">
+	   <property name="nominationDAO" ref="nominationDAO" />
+	   <property name="constituencyLeadCandidateDAO" ref="constituencyLeadCandidateDAO" />
+	   <property name="candidateDAO" ref="candidateDAO" />
+	   <property name="electionDAO" ref="electionDAO" />
+	   <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	</bean>
 </beans>		
 		
