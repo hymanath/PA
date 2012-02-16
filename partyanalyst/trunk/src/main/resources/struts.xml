@@ -3007,5 +3007,23 @@
             <interceptor-ref name="basicStack"/>
 			<result name="success">/jsp/constituencyPageSuccess2.jsp</result>
 		</action>
+		
+		<action name="electionResultsUpdateAction" class="electionResultsUpdateAction">
+			<result name="success">/jsp/electionResultUpdationPage.jsp</result> 
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
+		<action name="saveUpdateElectionResultsAction" class="electionResultsUpdateAction" method="getUpdateElectionResults">
+			<result type="json" name="success">
+				<param name="root">partyElectionResultsVOList</param>
+			</result>
+		</action>
+		
+		<action name="getConstituenciesOrYearsAction" class="electionResultsUpdateAction" method="getConstituenciesOrYears">
+			<result type="json" name="success">
+				<param name="root">selectOptionsList</param>
+			</result>
+		</action>				
 	</package>
 </struts>      
