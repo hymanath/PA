@@ -3226,10 +3226,22 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getCandidatesBasedOnElectionId(Long electionId) {
-		Query query = getSession().createQuery("Select distinct model.candidate.candidateId,model.candidate.lastname from Nomination model" +
-				"  where model.constituencyElection.election.electionId =:electionId and model.candidateResult.rank = 1");
+	public List<Object[]> getCandidatesBasedOnElectionId(String candidateName,Long partyId,Long electionId) {
 		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("Select distinct model.candidate.candidateId,model.candidate.lastname from Nomination model" +
+				"  where model.constituencyElection.election.electionId =:electionId " +
+				" and model.candidate.lastname like :candidateName and model.candidateResult.rank = 1");
+		
+		if(partyId != null && partyId > 0l)
+		queryStr.append("and model.party.partyId=:partyId");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(partyId != null && partyId > 0l)
+		query.setParameter("partyId", partyId);
+		
+		query.setParameter("candidateName","%"+ candidateName+"%");
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
@@ -3256,5 +3268,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			  queryObject.setLong("stateId",stateId);
 		  
 		  return queryObject.list();
+	}
+	
+	public List<Object[]> getCandidatesBasedOnElectionId(Long electionId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
