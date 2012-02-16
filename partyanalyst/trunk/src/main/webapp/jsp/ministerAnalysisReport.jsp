@@ -123,7 +123,7 @@
 </head>
 <body>
    <div style="padding-left:5px;"><div class="main-mbg"></div></div>
-   <div style="padding-top:10px;padding-left:350px;width:100%;text-align:center;">
+   <div style="padding-top:10px;padding-left:350px;width:65%;text-align:center;">
      <table>  
 	  <tr>
 	      <td><input type="radio" name="selectScope" checked="true" onclick="showHidsState();" />&nbsp;&nbsp;<b>Country</b>&nbsp;&nbsp;</td>
