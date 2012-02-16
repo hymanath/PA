@@ -94,6 +94,7 @@
 		<pattern>/electionDetailsReportAction*</pattern>
 		<pattern>/ministerAnalysisAction*</pattern>
 		<pattern>/constituencyPageAction2*</pattern>
+		<pattern>/electionResultsUpdateAction*</pattern>
     </decorator>
 
 </decorators>
