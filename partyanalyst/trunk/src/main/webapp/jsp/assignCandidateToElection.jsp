@@ -7,15 +7,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Assign Candidate To Election</title>
+<title>Assign Candidate To Ministry</title>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<script
+	src="js/jQuery/jquery-ui.min.js">
+</script>
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/jquery-ui-1.8.14.custom.css" />
+<link type="text/css" rel="stylesheet" href="styles/jQuery/datepicker/demos.css" />
 <style>
 
 .mainDiv{
 	margin-top:60px;
 	padding:5px;
-	border:1px solid blue;
-	width:550px;
 }
 .selectDivStyle{
 	font: bold 12px verdana;
@@ -31,10 +35,10 @@
 </head>
 <body>
 <div  class="mainDiv">
-  <span class="heading"> Assign Candidates To Election</span>
+  <span class="heading"> Assign Candidates To Ministry</span>
   <div class="selectDivStyle">
 Select Election Type :         
-<select style="margin-left: 19px;" id="electionTypeId" onchange="getStates(this,this.options[this.selectedIndex].value)">
+<select style="margin-left: 1px;" id="electionTypeId" onchange="getStates(this,this.options[this.selectedIndex].value)">
 <option value="0">Select Election Type</option>
 <option value="2">Assembly</option>
 <option value="1">Parliament</option>
@@ -43,32 +47,66 @@ Select Election Type :
 </div>
 
 <div class="selectDivStyle">
-Select State :<select id ="stateId" style="margin-left: 76px; width: 150px;" onchange="getElectionYears()">
+Select State :<select id ="stateId" style="width: 150px; margin-left: 58px;" onchange="getElectionYears()">
 <option value="0">Select State</option>
 </select>
 </div>
 
 <div class="selectDivStyle">
-Selection Election Year :
-<select id="electionYearId" style="width: 150px;" onchange="getCandidates()" >
+Select Election Year :
+<select id="electionYearId" style="width: 150px;" onchange="getParties()" >
 <option value="0">Select Election Year</option></select>
 </div>
 <div class="selectDivStyle">
-Candidate Name :<select id="candidateId" style="width: 150px;">
-<option value="0">Select Candidate</option></select>
+Select Party  :
+<select id="partyId" style="width: 150px; margin-left: 50px;">
+</select>
+</div>
+<div class="selectDivStyle">
+Candidate Name :<input type="text" id="candidateSearchBoxId" style="margin-left: 25px;"><input type="button" style="margin-left: 18px; background: none repeat scroll 0% 0% green; color: rgb(255, 255, 255); font-weight: bold; padding-top: 3px; padding-bottom: 3px;" value="Search Candidate" onclick="getCandidates()">
 </div>
 <div align="center" class="selectDivStyle">
-<input type="button" value="Assign Candidate" onclick="assignCandidates()">
+
 </div>
+<div id="selectCandidateDiv" class="selectDivStyle" style="display:none">
+Select Candidate To Assign :
+<select id="candidateId" style="width: 150px; margin-top: -14px;" onchange="viewProfileLink()">
+</select><span id="viewProlinkId">
+</div>
+<div id="assignCandidateDiv"></div>
 </div>
 
 <script type="text/javascript">
 
-	function getStates(elmt,id)
-		{	
-		      if(id!=0){	
-				showBusyImgWithId(elmt.id);
-				var jObj=
+function viewProfileLink(){
+
+	var	viewProlinkIdElmt = document.getElementById("viewProlinkId");
+	var str='';
+	var candidateId = document.getElementById("candidateId").value;
+  if(candidateId != 0){
+	 str+='<a style="background: green;color: #fff;padding: 3px;margin: 8px; text-decoration: none;" target="_blank"          href="candidateElectionResultsAction.action?candidateId='+candidateId+'">View Profile</a>';
+	 str+='<a href="javascript:{}" onclick="assignCandidate()">Assign Candidate</a>';
+	viewProlinkIdElmt.innerHTML = str;
+}
+else
+	viewProlinkIdElmt.innerHTML = str;
+}
+
+function assignCandidate(){
+
+	assignCandidateDivElmt = document.getElementById("assignCandidateDiv");
+	var str='';
+	str+='<select id="ministryId"></select>';
+	str+='<s:textfield name="fromDate" value="From Date" id="fromDate"  cssClass="formbg12" onfocus="showCalendar(this.id)" theme="simple"/>'
+
+	str+='<s:textfield name="endDate" value="To Date" id="endDate" cssClass="formbg13" style="margin-left: 20px;" onfocus="showCalendar(this.id)" theme="simple"/>';
+	str+='<input type="text" id="fromDate">';
+	str+='<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal("fromDate","reportedFromText",new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
+
+}
+function getStates(elmt,id)
+	{	
+		var jObj=
 				{
 						electionTypeId:id,
 						task:"getStates"						
@@ -77,8 +115,8 @@ Candidate Name :<select id="candidateId" style="width: 150px;">
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
 				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 				callAjaxForAdmin(url,jObj);
-			}	
-}
+    }	
+
 function hideBusyImgWithId(elmtId)
 		{
 			var spanElmt = document.getElementById(elmtId+"_ImgSpan");
@@ -110,7 +148,7 @@ function hideBusyImgWithId(elmtId)
  
  function callAjaxForAdmin(url,jObj){
 	
- var callback = {
+  var callback = {
 	 success : function(o){
 	 try {
 		 myResults = YAHOO.lang.JSON.parse(o.responseText);
@@ -124,9 +162,18 @@ function hideBusyImgWithId(elmtId)
 			createOptionsForSelectElmtIdWithSelectOption("stateId",myResults);
 
 		 }
-		 else if(jObj.task == "getCandidatesBasedOnElectionId"){
-				clearOptionsListForSelectElmtId("candidateId");
+		 else if(jObj.task == "getCandidates"){
+			
+			document.getElementById("selectCandidateDiv").style.display = 'block';
+			
+			clearOptionsListForSelectElmtId("candidateId");
 				createOptionsForSelectElmtIdWithSelectOption("candidateId",myResults);
+
+			 }
+			 else if(jObj.task == "getPartiesParticipatedInElection"){
+
+				clearOptionsListForSelectElmtId("partyId");
+				createOptionsForSelectElmtIdWithSelectOption("partyId",myResults);
 
 			 }
 
@@ -149,17 +196,33 @@ function hideBusyImgWithId(elmtId)
 function getCandidates(){
 
 	var electionId = document.getElementById("electionYearId").value;
-	
+	var partyId = document.getElementById("partyId").value;
+	var candidateName = document.getElementById("candidateSearchBoxId").value;
+
 	var jObj = {
+				partyId :partyId,
+				candidateName :candidateName,
 				electionId : electionId,
-				task : "getCandidatesBasedOnElectionId"
+				task : "getCandidates"
 			}
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
 	
 	callAjaxForAdmin(url,jObj);
 }
+function getParties(){
+	
+	var electionId = document.getElementById("electionYearId").value;
+	var jObj = {
+				electionId : electionId,
+				task : "getPartiesParticipatedInElection"
+			}
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
+	
+	callAjaxForAdmin(url,jObj);
 
+}
 </script>
 </body>
 </html>
