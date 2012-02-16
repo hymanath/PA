@@ -7334,6 +7334,30 @@ public class StaticDataService implements IStaticDataService {
 			return selectOptionVOList;
 		}
 	}
+	
+	public List<SelectOptionVO> getPartiesForAGivenElectionYear(Long electionId){
+		
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO optionVO = new SelectOptionVO();
+		try {
+			List<Object[]> partiesList = nominationDAO.getPartyIdAndShortNameForThatParticipatedInAElection(electionId);
+			
+			if(partiesList !=null){
+				selectOptionVOList.add(0,new SelectOptionVO(0l,"All"));
+				for(Object[] params :partiesList){
+					optionVO = new SelectOptionVO();
+					optionVO.setId((Long)params[0]);
+					optionVO.setName(params[1].toString());
+					selectOptionVOList.add(optionVO);
+				}
+			}
+		return selectOptionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return selectOptionVOList;
+		}
+		
+	}
 }
 
 
