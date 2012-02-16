@@ -3233,5 +3233,28 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
-	
+
+	public List<Object[]> getCandidateDetails(String electionType,Long constituencyId,Long stateId,String electionYear){
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName,model.constituencyElection.constiElecId from Nomination model where model.constituencyElection.election.electionScope.electionType.electionType = :electionType " +
+		"   and model.constituencyElection.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionYear = :electionYear"); 
+		
+		  if(electionType.trim().equalsIgnoreCase("Assembly"))
+		     query.append(" and model.constituencyElection.election.electionScope.state.stateId = :stateId ");
+		
+		  Query queryObject = getSession().createQuery(query.toString());
+		  
+		  queryObject.setString("electionType",electionType );
+		  
+		  queryObject.setLong("constituencyId",constituencyId );
+		  
+		  queryObject.setString("electionYear",electionYear );
+		  
+		  if(electionType.trim().equalsIgnoreCase("Assembly"))
+			  queryObject.setLong("stateId",stateId);
+		  
+		  return queryObject.list();
+	}
 }
