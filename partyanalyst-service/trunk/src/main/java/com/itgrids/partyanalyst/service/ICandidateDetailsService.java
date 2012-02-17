@@ -135,5 +135,5 @@ public interface ICandidateDetailsService {
 	 
 	 public List<CandidateCommentsVO> getUserMessages(Long candidateId);
 	 
-	 public List<SelectOptionVO> getCandidatesBasedOnElectionId(Long electionId);
+	 public List<SelectOptionVO> getCandidatesBasedOnSelection(String candidateName,Long partyId,Long electionId);
 }
