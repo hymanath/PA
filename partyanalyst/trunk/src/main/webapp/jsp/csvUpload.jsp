@@ -30,6 +30,11 @@
 				<option value="Assam">Assam</option>
 				<option value="Kerala">Kerala</option>
 				<option value="Puducherry">Puducherry</option>
+				<option value="Punjab">Punjab</option>
+				<option value="Uttar Pradesh">Uttar Pradesh</option>
+				<option value="Uttaranchal">Uttaranchal</option>
+				<option value="Manipur">Manipur</option>
+				<option value="Goa">Goa</option>
 			</select></td>
 		</tr>
 		<tr>
