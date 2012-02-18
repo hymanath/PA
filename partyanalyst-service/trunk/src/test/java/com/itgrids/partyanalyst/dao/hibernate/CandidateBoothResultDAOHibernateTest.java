@@ -423,7 +423,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		try
 		{
@@ -435,6 +435,20 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 
+	}*/
+	
+	public void testGetPanchayatWisePartiesResultForAElectionInATehsil()
+	{
+		List<Object[]> list = candidateBoothResultDAO.getPanchayatWisePartiesResultForAElectionInATehsil(844l,38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
 	}
 
 }
