@@ -872,4 +872,15 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"and model.boothConstituencyElection.constituencyElection.election.electionYear = ?",params);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatWisePartiesResultForAElectionInATehsil(Long tehsilId,Long electionId)
+	{
+		Object[] params = {electionId,tehsilId};
+		return getHibernateTemplate().find("select P.panchayat.panchayatName,CBR.nomination.party.shortName,sum(CBR.votesEarned) from CandidateBoothResult CBR, " +
+				" HamletBoothElection HBE,PanchayatHamlet P where CBR.boothConstituencyElection.boothConstituencyElectionId = HBE.boothConstituencyElection.boothConstituencyElectionId and " +
+				" HBE.hamlet.hamletId = P.hamlet.hamletId and CBR.boothConstituencyElection.constituencyElection.election.electionId = ? and " +
+				" P.panchayat.tehsil.tehsilId = ? group by P.panchayat.panchayatId,CBR.nomination.party.partyId ",params);
+	}
+	
 }
