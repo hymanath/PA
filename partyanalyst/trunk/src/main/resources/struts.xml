@@ -3008,6 +3008,20 @@
 			<result name="success">/jsp/constituencyPageSuccess2.jsp</result>
 		</action>
 		
+		<action name="electionLiveResultsAnalysisAction" class="electionLiveResultsAnalysisAction">
+			<result name="success">/jsp/electionLiveResultsAnalysis.jsp</result> 
+		</action>
+		<action name="getResultsAjaxAction" class="electionLiveResultsAnalysisAction" method="ajaxCallHandlerElectionLiveResults">
+			<result type="json" name="success">
+				<param name="root">electionLiveResultVO</param>
+			</result>
+	 	</action>
+	 	<action name="getPartyWonOrLeadConstituenciesCountAction" class="electionLiveResultsAnalysisAction" method="getPartyWinningOrLeadingConstituenciesCount">
+	 	<result type="json" name="success">
+				<param name="root">electionLiveResultVOList</param>
+			</result>
+	 	</action>	
+		
 		<action name="electionResultsUpdateAction" class="electionResultsUpdateAction">
 			<result name="success">/jsp/electionResultUpdationPage.jsp</result> 
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
