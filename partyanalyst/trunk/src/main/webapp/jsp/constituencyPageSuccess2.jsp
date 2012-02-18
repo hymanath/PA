@@ -198,14 +198,29 @@
 		</p>
          
 
-<!--add-->
+<!-- Constituency Details -->
+<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
 <div class="cl-sub-fields-sec">
-<h1 class="org-title"><span>${constituencyDetails.constituencyName}Assembly Constituency Details </span></h1>
+
+<h1 class="org-title"><span>${constituencyDetails.constituencyName} Assembly Constituency Details </span></h1>
 										<div id="constituencyInfoDiv">
 										<div id="constituencyInfoDiv_Head"></div>
 										<div id="constituencyInfoDiv_Body" style="text-align:left;padding:5px;padding-left:34px;margin-left:20px;"></div>
 									</div>	
-      </div>    
+      </div> 
+	  </c:if>
+
+
+
+	  <div class="cl-sub-fields-sec">
+<c:if test="${constituencyDetails.constituencyType == 'Parliament'}">
+<h1 class="org-title"><span>${constituencyDetails.constituencyName} Parliament Constituency Details </span></h1>
+										<div id="constituencyInfoDiv">
+										<div id="constituencyInfoDiv_Head"></div>
+										<div id="constituencyInfoDiv_Body" style="text-align:left;padding:5px;padding-left:34px;margin-left:20px;"></div>
+									</div>	
+      </div> 
+	  </c:if>   
           <!--ELECTED CANDIDATE INFO SECTION START-->
           
           <div class="cl-sub-fields-sec">
@@ -2643,7 +2658,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	{
           imgElmt.style.display = "block";
 	}
-
+	
 	var electionSelectEle = document.getElementById("electionYearSelect");
 	var electionYear      = electionSelectEle.options[electionSelectEle.selectedIndex].text;
 	var constituencyType  = '${constituencyDetails.constituencyType}';
