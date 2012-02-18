@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
+<style type="text/css">
+a:hover{
+text-decoration:none;
+</style>
+
 <div style="background:#ffffff;width: 979px;margin-left: 3px;">
 <img src="images/specialPage/manipur2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
@@ -64,12 +69,12 @@ Manipur Assembly Previous Election Results</h3>
 <td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  :</span></b><br>
   <div style="margin-top: 15px;">
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=579">NCP</a> <img src="images/party_flags/NCP.png" height="40px" width="60px">&nbsp; 
-<a href="partyPageAction.action?partyId=362" align="top">INC</a>&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;
+<a href="partyPageAction.action?partyId=579">NCP<img src="images/party_flags/NCP.png" height="40px" width="60px"></a> &nbsp; 
+<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px"></a>&nbsp;
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=265" align="top">CPI</a>&nbsp;<img src="images/party_flags/CPI.png" height="40px" width="60px">&nbsp;<br />
+<a href="partyPageAction.action?partyId=265" align="top">CPI&nbsp;<img src="images/party_flags/CPI.png" height="40px" width="60px"></a>&nbsp;<br />
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=713" align="top">RJD</a>&nbsp;<img src="images/party_flags/RJD.png" height="40px" width="60px">&nbsp;
+<a href="partyPageAction.action?partyId=713" align="top">RJD&nbsp;<img src="images/party_flags/RJD.png" height="40px" width="60px"></a>&nbsp;
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=562" align="top">MPP</a>&nbsp;&nbsp;
 <img src="images/icons/diamond.png">
@@ -81,19 +86,19 @@ Manipur Assembly Previous Election Results</h3>
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
 &nbsp;<img src="images/icons/diamond.png">
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2002</a>
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=174&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2002">2002</a>
 &nbsp; <img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2000</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=175&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2000">2000</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1995</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=176&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1995">1995</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1990</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=177&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1990">1990</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1984</a><br /><br />
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=178&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1984">1984</a><br /><br />
 <img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1980</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=180&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1980">1980</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;;padding-top:3px" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1974</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;;padding-top:3px" href="electionDetailsReportAction.action?electionId=179&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1974">1974</a>
 </td></tr>
 
 <tr><td colspan="7">
