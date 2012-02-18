@@ -840,6 +840,11 @@
 			<property name="ministerAnalysisService" ref="ministerAnalysisService"/>
 			<property name="staticDataService" ref="staticDataService"/>
 	</bean>
+	<bean id="electionLiveResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionLiveResultsAnalysisAction" singleton="false">
+			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
+			<property name="staticDataService" ref="staticDataService"/>
+	</bean>		
+	
 	
 	<bean id="electionResultsUpdateAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsUpdateAction" singleton="false">
 			<property name="electionResultsUpdationService" ref="electionResultsUpdationService"/>
