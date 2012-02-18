@@ -233,7 +233,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	@Test
 	public void testGetLatestElectionHappenedInConstituency(){
@@ -250,4 +250,20 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
+	public void testGetCountOfOldConstituencies(){
+		
+		List result = constituencyElectionDAO.getCountOfOldConstituencies(38l);
+		System.out.println("Old Constituencies --------"+result.get(0));
+	}
+	
+	public void testGetCountOfNewConstituencies(){
+		
+		List result = constituencyElectionDAO.getCountOfDelimitedConstituencies(38l);
+		System.out.println("New Constituencies --------------"+result.get(0));
+	}*/
+	public void testGetPartyWinningConstituenciesCount(){
+		
+		List<Object[]> list = constituencyElectionDAO.getPartyWinningConstituenciesCount(38l);
+		System.out.println(list.size());
+	}
 }
