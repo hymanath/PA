@@ -441,6 +441,40 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 										   "and model1.constituency.constituencyId = ? "+ 
 										   "ORDER BY model1.election.electionYear desc",params);
 	}*/
+	
+	
+	public List getLeadingConstituenciesCount(Long electionId){
+		
+		 return getHibernateTemplate().find("select count(model.constituency.constituencyId) from ConstituencyElection model where " +
+		 		" model.constiElecId in (select model1.constiElecId from ConstituencyLeadCandidate model1 " +
+		 		" where model.election.electionId = ?",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCountOfOldConstituencies(Long electionId){
+		
+		Object[] params ={electionId};
+		return getHibernateTemplate().find("select count(model.constituency.constituencyId) from ConstituencyElection model " +
+				" where model.election.electionId =? and model.constituency.startDate is null and model.constituency.deformDate is null",params );
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getCountOfDelimitedConstituencies(Long electionId){
+		
+		Object[] params ={electionId};
+		return getHibernateTemplate().find("select count(model.constituency.constituencyId) from ConstituencyElection model " +
+				" where model.election.electionId =? and model.constituency.startDate is not null and model.constituency.deformDate is null",params );
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyWinningConstituenciesCount(Long electionId) {
+	
+	return getHibernateTemplate().find("Select nModel.constituencyElection.constituency.startDate,count(nModel.constituencyElection.constituency.constituencyId), nModel.party.shortName " +
+			" from Nomination nModel ,CandidateResult crModel where " +
+			" nModel.nominationId = crModel.nomination.nominationId and" +
+			" nModel.constituencyElection.election.electionId = ? and crModel.rank = 1 group by nModel.party.shortName,nModel.constituencyElection.constituency.startDate",electionId);
+    }
 }
 
 
