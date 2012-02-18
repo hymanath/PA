@@ -123,6 +123,11 @@ background:red !important;
 &nbsp;
 <img src="images/icons/diamond.png" />
 <a style="color: rgb(255,255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=170&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1984"> 1984</a>
+<img src="images/icons/diamond.png" />
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=171&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1980"> 1980</a>
+&nbsp;
+<img src="images/icons/diamond.png" />
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=172&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1977"> 1977</a>
 
 </li><li>
 
@@ -131,19 +136,19 @@ background:red !important;
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
 &nbsp;<img src="images/icons/diamond.png">
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2002</a>
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=174&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2002">2002</a>
 &nbsp; <img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">2000</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=175&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2000">2000</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1995</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=176&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1995">1995</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1990</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=177&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1990">1990</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1984</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=178&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1984">1984</a>
 <img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1980</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=180&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1980">1980</a>
 &nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;;padding-top:3px" href="electionDetailsReportAction.action?electionId=173&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2007">1974</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;;padding-top:3px" href="electionDetailsReportAction.action?electionId=179&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=1974">1974</a>
 
 </li></ul>
 </div>
