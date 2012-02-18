@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
+<style type="text/css">
+a:hover{
+text-decoration:none;
+</style>
 <div style="background:#ffffff; width: 979px;margin-left: 3px;">
 <img src="images/specialPage/uttarakhand2012election.png" style="align:center;width:982px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
@@ -64,13 +67,13 @@ Uttarakhand Assembly Previous Election Results</h3>
 <td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State</span></b><br /><br />
 		   
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=895">UKKD</a> &nbsp;&nbsp;
+<a href="partyPageAction.action?partyId=895">UKKD &nbsp;&nbsp;
+<img src="images/icons/diamond.png"></a>
+<a href="partyPageAction.action?partyId=163" align="top">BJP&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px"></a>&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=163" align="top">BJP</a>&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
+<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px"></a>&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=362" align="top">INC</a>&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
-<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=239" align="top">BSP</a>&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px">&nbsp;&nbsp;
+<a href="partyPageAction.action?partyId=239" align="top">BSP&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
 
 
 
