@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
+<style type="text/css">
+a:hover{
+text-decoration:none;
+</style>
 <div style="background:#ffffff;width: 979px;margin-left: 3px;">
 <img src="images/specialPage/goa2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
@@ -64,11 +68,11 @@ Goa Assembly Previous Election Results</h3>
 <td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br /><br />
 		   
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=579">NCP</a> <img src="images/party_flags/NCP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
+<a href="partyPageAction.action?partyId=579">NCP <img src="images/party_flags/NCP.png" height="40px" width="60px"></a>&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=163" align="top">BJP</a>&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
+<a href="partyPageAction.action?partyId=163" align="top">BJP&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px"></a>&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=362" align="top">INC</a>&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px"> <br /><br />
+<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px"></a> <br /><br />
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=812" align="top">SGF</a>&nbsp;
 <img src="images/icons/diamond.png">
@@ -97,7 +101,7 @@ Goa Assembly Previous Election Results</h3>
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=170&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1984"> 1984</a>
 &nbsp;<br /><br />
 <img src="images/icons/diamond.png" />
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=171&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=2007"> 1980</a>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=171&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1980"> 1980</a>
 &nbsp;
 <img src="images/icons/diamond.png" />
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=172&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=1977"> 1977</a>
