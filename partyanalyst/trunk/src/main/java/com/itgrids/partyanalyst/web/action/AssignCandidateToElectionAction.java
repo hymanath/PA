@@ -117,10 +117,17 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 				else
 					optionVOList = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(new Long(jObj.getString("stateId")),electionTypeId);
 			}
-			else if(jObj.getString("task").equalsIgnoreCase("getCandidatesBasedOnElectionId")){
+			else if(jObj.getString("task").equalsIgnoreCase("getPartiesParticipatedInElection")){
 				
 				Long electionId = new Long(jObj.getString("electionId"));
-				optionVOList = candidateDetailsService.getCandidatesBasedOnElectionId(electionId);
+				optionVOList = staticDataService.getPartiesForAGivenElectionYear(electionId);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCandidates")){
+				
+				 String candidateName = jObj.getString("candidateName");
+				Long partyId = new Long(jObj.getString("partyId"));
+				Long electionId = new Long(jObj.getString("electionId"));
+				optionVOList = candidateDetailsService.getCandidatesBasedOnSelection(candidateName,partyId,electionId);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
