@@ -95,11 +95,11 @@ function callAjaxForElectionResultPage(url,jObj){
 
 			 }
 			 else if(jObj.task =="getConstituenciesCount"){
-				showOverView(myResults);
+				//showOverView(myResults);
 			}
 			  else if(jObj.task == "getPartyWonOrLeadConstituenciesCount"){
-				  console.log(myResults[0].partialResult);
-				  if(myResults[0].partialResult)
+				  
+				  if(myResults[0] !=null && myResults[0].partialResult)
 					buildPartyWonOrLeadConstituenciesCount(myResults);
 				  else
 					  buildPartyWonConstituenciesTable(myResults);
@@ -142,13 +142,14 @@ function buildPartyWonOrLeadConstituenciesCount(myResults){
 
 	
 	}
+	showOverView(myResults);
 	buildOldDataTable(myResults,oldConstituencyArray);
 	buildNewDataTable(myResults,newConstituencyArray);
 	
 }
 
 function buildNewDataTable(myResults,newConstituencyArray,divElmt){
-debugger;
+
 document.getElementById("partyNewResultsDiv").innerHTML = '';
 			var resultsColumnDefs = [ 	
 				{
@@ -193,7 +194,7 @@ document.getElementById("partyNewResultsDiv").innerHTML = '';
 
 }
 function buildOldDataTable(myResults,oldConstituencyArray,divElmt){
-debugger;
+
 document.getElementById("partyOldResultsDiv").innerHTML = '';
 
 			var resultsColumnDefs = [ 	
@@ -239,7 +240,7 @@ document.getElementById("partyOldResultsDiv").innerHTML = '';
 
 }
 function buildPartyWonConstituenciesTable(myResults){
-	debugger;
+	
 		document.getElementById("partyNewResultsDiv").innerHTML = '';
 	document.getElementById("partyOldResultsDiv").innerHTML = '';
 		document.getElementById("partyWonResultsDiv").innerHTML = '';
@@ -308,7 +309,7 @@ if(myResults[0].countOfWinningConstituencies !=null){
 
 }
 function buildDataTableForNewResults(newConstituencyArray){
-	debugger;
+	
 
 var resultsColumnDefs = [ 	
 				{
@@ -441,17 +442,20 @@ function getPartyWinningOrLeadingConstituenciesCount(){
 	
 }
 function showOverView(results){
-	
+	for(var i in results){
 	var overViewDiv=document.getElementById("overViewDiv");
 	var str='';
-	str +='<div style="margin-top: 32px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; padding-right: 310px;">Total Seats - '+results.totalSeats+'</div>';
-	if(results.countOfLeadConstituences !=0){
-	str +='<div style="margin: -18px 0px 0px 276px; border-right-width: 0px;">Known Result/Leading Constituencies - '+results.countOfLeadConstituences+'</div>';
+	if(results[i].totalSeats != null){
+	str +='<div style="margin-top: 32px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; padding-right: 310px;">          Total Seats - '+results[i].totalSeats+'</div>';
+	if(results[i].countOfLeadConstituences !=0){
+	str +='<div style="margin: -18px 0px 0px 276px; border-right-width: 0px;">Known Result/Leading Constituencies - '+results[i].countOfLeadConstituences+'</div>';
 	}
-	str +='<div style="margin: 20px 344px 0px 0px;">Old Constituencies - '+results.oldConstituenciesCount+'</div>';
-	str +='<div style="margin: -20px 0px 0px 333px;">New Constituencies - '+results.newConstituenciesCount+'</div>';
+	str +='<div style="margin: 20px 344px 0px 0px;">Old Constituencies - '+results[i].oldConstituenciesCount+'</div>';
+	str +='<div style="margin: -20px 0px 0px 333px;">New Constituencies - '+results[i].newConstituenciesCount+'</div>';
 
 	overViewDiv.innerHTML = str;
+	}
+  }
 
 }
 </script>
