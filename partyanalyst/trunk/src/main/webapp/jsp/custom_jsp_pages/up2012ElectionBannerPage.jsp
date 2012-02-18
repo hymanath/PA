@@ -22,6 +22,9 @@
 	font-size: 11px;
 	line-height: 21px;
 }
+a:hover{
+text-decoration:none;
+}
 </style>
 
 <div style="background:#ffffff; width: 979px;">
@@ -130,11 +133,11 @@ UttarPradesh Assembly Previous Election Results</h3>
 <a href="partyPageAction.action?partyId=239">BSP<img src="images/party_flags/BSP.png" height="40px" width="60px">
 <span></span></a>&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=163" align="top">BJP</a>&nbsp;<img src="images/party_flags/BJP.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
+<a href="partyPageAction.action?partyId=163" align="top">BJP<img src="images/party_flags/BJP.png" height="40px" width="60px"> 
+<img src="images/icons/diamond.png"><span></span></a>&nbsp;&nbsp;&nbsp;
+<a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px"></a>&nbsp;&nbsp;&nbsp; <BR /><BR />
 <img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=362" align="top">INC</a>&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; <BR /><BR />
-<img src="images/icons/diamond.png">
-<a href="partyPageAction.action?partyId=839">SP</a>&nbsp;<img src="images/party_flags/SP.png" height="40px" width="60px">&nbsp;&nbsp;
+<a href="partyPageAction.action?partyId=839">SP&nbsp;<img src="images/party_flags/SP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
 <img src="images/icons/diamond.png">
 <a href="partyPageAction.action?partyId=729">RLD</a>&nbsp;<br></br>
 
