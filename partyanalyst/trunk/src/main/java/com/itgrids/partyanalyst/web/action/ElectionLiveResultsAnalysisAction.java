@@ -128,6 +128,11 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 				Long electionId = new Long(jObj.getString("electionId"));
 				electionLiveResultVOList = electionLiveResultsAnalysisService.getLeadingOrWinningContituenciesForAParty(electionId);
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getPartiesGainAndLossInfo"))
+			{
+				Long electionId = new Long(jObj.getString("electionId"));
+				electionLiveResultVOList = electionLiveResultsAnalysisService.getPartiesGainAndLossInfo(electionId);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
