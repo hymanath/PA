@@ -247,15 +247,15 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	/*public void testGetPreviousElectionId()
+	public void testGetPreviousElectionId()
 	{
-		List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(81l);
+		List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(18l);
 		
 		System.out.println(list.get(0)[0]);
 		System.out.println(list.get(0)[1]);
 	}
 	
-	public void testGetElectionYearsBasedOnElectionTypeAndState()
+	/*public void testGetElectionYearsBasedOnElectionTypeAndState()
 	{
 		List<Object[]> list = electionDAO.getElectionYearsBasedOnElectionTypeAndState(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
 		
@@ -270,12 +270,12 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		List<Object[]> statesList = electionDAO.getStatesBasedOnElectionTypeId(2l, IConstants.ASSEMBLY_ELECTION_TYPE);
 		System.out.println(statesList.size());
 	}*/
-public void testGetStatesBasedOnElectionTypeId(){
+	/*public void testGetStatesBasedOnElectionTypeId(){
 		
 		List<Object[]> statesList = electionDAO.getElectionYears(27l, IConstants.PARLIAMENT_ELECTION_TYPE);
 		System.out.println(statesList.size());
 		System.out.println(statesList.get(1)[1].toString());
-	}
+	}*/
 	
 }
 

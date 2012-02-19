@@ -3274,4 +3274,33 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiwiseParticipatedCountInAElection(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.party.partyId,count(model.candidate.candidateId) from Nomination model " +
+				" where model.constituencyElection.election.electionId = ? group by model.party.partyId",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartywiseWonCount(Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.party.shortName,count(model.candidateResult.rank) from Nomination model " +
+				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId in (:constituenciesList) and " +
+				" model.candidateResult.rank = 1 group by model.party.partyId");
+		query.setParameter(0,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesWonInfo(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.constituencyElection.constituency.constituencyId," +
+				" model.constituencyElection.constituency.name, model.constituencyElection.constituency.startDate,model.candidateResult.rank from " +
+				" Nomination model where model.constituencyElection.election.electionId = ?  and model.candidateResult.rank = 1 order by model.party.shortName," +
+				" model.constituencyElection.constituency.name",electionId);
+	}
 }

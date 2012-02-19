@@ -58,8 +58,21 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 			
 		}
 	}*/
-	public void testgetElectionIds(){
+	/*public void testgetElectionIds(){
 		List list = constituencyLeadCandidateDAO.getElectionIds(81l);
 		System.out.println(list.size());
+	}*/
+	
+	public void test()
+	{
+		List<Object[]> list = constituencyLeadCandidateDAO.getPartiesLeadingInfo(38l);
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+			System.out.print("\t"+obj);
+			
+		}
 	}
 }

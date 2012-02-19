@@ -1,11 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class ElectionLiveResultVO {
 
 	private Long totalSeats;
 	private Long countOfLeadConstituences;
 	private Long oldConstituenciesCount;
 	private Long newConstituenciesCount;
+	private Long partyId;
 	private String partyName;
 	private Long countOfWinningConstituencies;
 	private String leadingPartyName;
@@ -15,7 +18,49 @@ public class ElectionLiveResultVO {
 	private Long wonCountInOld;
 	private Long leadCountInNew;
 	private Long wonCountInNew;
+	private Long wonOrLeadCount;
+	private Long retainedCount;
+	private List<SelectOptionVO> wonFromOtherParties;
+	private List<SelectOptionVO> lostToOtherParties;
+	private List<Long> constituencyIdsList;
+	private Long totalSeatsParticipated;
 		
+	public Long getTotalSeatsParticipated() {
+		return totalSeatsParticipated;
+	}
+	public void setTotalSeatsParticipated(Long totalSeatsParticipated) {
+		this.totalSeatsParticipated = totalSeatsParticipated;
+	}
+	public List<Long> getConstituencyIdsList() {
+		return constituencyIdsList;
+	}
+	public void setConstituencyIdsList(List<Long> constituencyIdsList) {
+		this.constituencyIdsList = constituencyIdsList;
+	}
+	public Long getWonOrLeadCount() {
+		return wonOrLeadCount;
+	}
+	public void setWonOrLeadCount(Long wonOrLeadCount) {
+		this.wonOrLeadCount = wonOrLeadCount;
+	}
+	public Long getRetainedCount() {
+		return retainedCount;
+	}
+	public void setRetainedCount(Long retainedCount) {
+		this.retainedCount = retainedCount;
+	}
+	public List<SelectOptionVO> getWonFromOtherParties() {
+		return wonFromOtherParties;
+	}
+	public void setWonFromOtherParties(List<SelectOptionVO> wonFromOtherParties) {
+		this.wonFromOtherParties = wonFromOtherParties;
+	}
+	public List<SelectOptionVO> getLostToOtherParties() {
+		return lostToOtherParties;
+	}
+	public void setLostToOtherParties(List<SelectOptionVO> lostToOtherParties) {
+		this.lostToOtherParties = lostToOtherParties;
+	}
 	public Long getTotalSeats() {
 		return totalSeats;
 	}
@@ -94,5 +139,11 @@ public class ElectionLiveResultVO {
 	}
 	public void setWonCountInNew(Long wonCountInNew) {
 		this.wonCountInNew = wonCountInNew;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 }

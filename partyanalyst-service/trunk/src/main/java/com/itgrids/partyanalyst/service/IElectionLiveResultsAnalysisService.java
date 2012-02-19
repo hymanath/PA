@@ -9,4 +9,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId);
 	
 	public List<ElectionLiveResultVO> getLeadingOrWinningContituenciesForAParty(Long electionId);
+	
+	public List<ElectionLiveResultVO> getPartiesGainAndLossInfo(Long electionId);
 }
