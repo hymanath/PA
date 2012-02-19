@@ -58,7 +58,7 @@ background: none repeat scroll 0 0 #F9F9F9;
 <option value="0">Select State</option>
 </select>
 Select Election Year : 
-<select id="electionYearId" onchange="getConstituenciesCount();getPartyWinningOrLeadingConstituenciesCount();" width="150px">
+<select id="electionYearId" onchange="getConstituenciesCount();getPartyWinningOrLeadingConstituenciesCount();getPartiesGainAndLossInfo()" width="150px">
 <option value="0">Select Election Year</option>
 </select>
 </div>
@@ -458,6 +458,21 @@ function showOverView(results){
   }
 
 }
+
+function getPartiesGainAndLossInfo()
+{
+	var electionId = document.getElementById("electionYearId").value;
+	var jObj=
+	{
+		electionId:electionId,
+		task:"getPartiesGainAndLossInfo"						
+	};
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getPartyWonOrLeadConstituenciesCountAction.action?"+rparam;						
+	callAjaxForElectionResultPage(url,jObj);
+}
+
 </script>
 </body>
 </html>
