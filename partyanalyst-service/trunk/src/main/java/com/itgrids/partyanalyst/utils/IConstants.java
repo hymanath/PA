@@ -477,5 +477,8 @@ public interface IConstants {
     public static final String FEMALE = "F";
     public static final String PUBLIC = "Public";
     public static final String PRIVATE = "Private";
+    
+    public static final String LEAD = "Lead";
+    public static final String WON = "Won";
 
 }

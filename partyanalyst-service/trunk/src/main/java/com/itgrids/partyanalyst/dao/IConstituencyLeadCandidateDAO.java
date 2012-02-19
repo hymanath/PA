@@ -24,4 +24,6 @@ public interface IConstituencyLeadCandidateDAO  extends GenericDao<ConstituencyL
 	public List<Object> checkCandidateResultExist(Long constiElecId);
 	
 	public List getElectionIds(Long electionId);
+	
+	public List<Object[]> getPartiesLeadingInfo(Long electionId);
 }

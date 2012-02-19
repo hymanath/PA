@@ -983,13 +983,57 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			
 		}
 	}*/
-     public void testGetCandidateDetails(){
+    /* public void testGetCandidateDetails(){
 		
 		List<Object[]> candidates = nominationDAO.getCandidateDetails("Parliament",461l,1l,"2009");
 		
 		System.out.println(candidates.size());
 		
 		for(Object[] params : candidates)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	/*public void test()
+	{
+		List<Object[]> list = nominationDAO.getPartiwiseParticipatedCountInAElection(38l);
+		
+		System.out.println(list);
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	
+	/*public void testGetPartywiseWonCount()
+	{
+		List<Long> cList = new ArrayList<Long>(0);
+		cList.add(1l);
+		cList.add(2l);
+		List<Object[]> list = nominationDAO.getPartywiseWonCount(38l,cList);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetPartiesWonInfo()
+	{
+		List<Object[]> list = nominationDAO.getPartiesWonInfo(38l);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
 		{
 			System.out.println();
 			for(Object obj : params)
