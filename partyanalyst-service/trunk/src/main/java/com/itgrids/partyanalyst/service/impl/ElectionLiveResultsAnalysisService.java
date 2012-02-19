@@ -246,6 +246,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			log.debug("Entered into getPartiesGainAndLossInfo() Method");
 			List<ElectionLiveResultVO> resultList = null;
 			Boolean isPartial = null;
+			List<Object[]> list = null;
 			
 			Election election = electionDAO.get(electionId);
 			Long prevElectionId = getPreviousElectionId(electionId);
@@ -259,37 +260,39 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				isPartial = false;
 			
 			if(isPartial)
-			{
-				List<Object[]> list = constituencyLeadCandidateDAO.getPartiesLeadingInfo(electionId);
+				list = constituencyLeadCandidateDAO.getPartiesLeadingInfo(electionId);
+			else
+				list = nominationDAO.getPartiesWonInfo(electionId);
 				
-				if(list != null && list.size() > 0)
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<ElectionLiveResultVO>(0);
+				ElectionLiveResultVO resultVO = null;
+				Map<Long,Long> pariiesPCMap = getPartiesParticipatedCount(electionId);
+				
+				for(Object[] params : list)
 				{
-					resultList = new ArrayList<ElectionLiveResultVO>(0);
-					ElectionLiveResultVO resultVO = null;
-					Map<Long,Long> pariiesPCMap = getPartiesParticipatedCount(electionId);
+					Long partyId = (Long)params[0];
+					boolean isNew = false;
+					resultVO = getElectionLiveResultVOFromList(resultList,partyId);
 					
-					for(Object[] params : list)
+					if(resultVO == null)
 					{
-						Long partyId = (Long)params[0];
-						boolean isNew = false;
-						resultVO = getElectionLiveResultVOFromList(resultList,partyId);
+						isNew = true;
+						resultVO = new ElectionLiveResultVO();
+						List<Long> constituencyIdsList = new ArrayList<Long>(0);
+						resultVO.setPartyId(partyId);
+						resultVO.setPartyName(params[1].toString());
+						resultVO.setWonOrLeadCount(1L);
+						resultVO.setTotalSeatsParticipated(pariiesPCMap.get(partyId));
 						
-						if(resultVO == null)
+						if(params[4] == null)
+							constituencyIdsList.add((Long)params[2]);
+						
+						resultVO.setConstituencyIdsList(constituencyIdsList);
+						
+						if(isPartial)
 						{
-							isNew = true;
-							resultVO = new ElectionLiveResultVO();
-							List<Long> constituencyIdsList = new ArrayList<Long>(0);
-							resultVO.setPartyId(partyId);
-							resultVO.setPartyName(params[1].toString());
-							resultVO.setWonOrLeadCount(1L);
-							resultVO.setTotalSeatsParticipated(pariiesPCMap.get(partyId));
-							
-							if(params[4] == null)
-								constituencyIdsList.add((Long)params[2]);
-							
-							resultVO.setConstituencyIdsList(constituencyIdsList);
-							
-							
 							if(params[4] == null)
 							{
 								if(params[5].toString().equalsIgnoreCase(IConstants.LEAD))
@@ -304,19 +307,30 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 								else
 									resultVO.setWonCountInNew(1L);
 							}
-							
 						}
-						
 						else
 						{
-							List<Long> constituencyIdsList = resultVO.getConstituencyIdsList();
-							
 							if(params[4] == null)
-								constituencyIdsList.add((Long)params[2]);
+								resultVO.setWonCountInOld(1L);
 							
-							resultVO.setConstituencyIdsList(constituencyIdsList);
-							resultVO.setWonOrLeadCount(resultVO.getWonOrLeadCount() + 1L);
-							
+							else
+								resultVO.setWonCountInNew(1L);
+						}
+						
+					}
+					
+					else
+					{
+						List<Long> constituencyIdsList = resultVO.getConstituencyIdsList();
+						
+						if(params[4] == null)
+							constituencyIdsList.add((Long)params[2]);
+						
+						resultVO.setConstituencyIdsList(constituencyIdsList);
+						resultVO.setWonOrLeadCount(resultVO.getWonOrLeadCount() + 1L);
+						
+						if(isPartial)
+						{
 							if(params[4] == null)
 							{
 								if(params[5].toString().equalsIgnoreCase(IConstants.LEAD))
@@ -336,53 +350,37 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 											resultVO.getWonCountInNew() + 1L : 1L);
 							}
 						}
-							
-						if(isNew)
-							resultList.add(resultVO);
-					}
-					
-					for(ElectionLiveResultVO electionLiveResultVO : resultList)
-					{
-						List<SelectOptionVO> rList = getPartywiseWonCount(prevElectionId,electionLiveResultVO.getConstituencyIdsList());
-						List<SelectOptionVO> prevResult = new ArrayList<SelectOptionVO>();
-						if(rList != null && rList.size() > 0)
+						else
 						{
-							for(SelectOptionVO optionVO : rList)
-							{
-								if(optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
-									electionLiveResultVO.setRetainedCount(optionVO.getId());
-								else
-									prevResult.add(optionVO);
-							}
+							if(params[4] == null)
+								resultVO.setWonCountInOld(resultVO.getWonCountInOld() != null ?
+											resultVO.getWonCountInOld() + 1L : 1L);
+							else
+								resultVO.setWonCountInNew(resultVO.getWonCountInNew() != null ? 
+											resultVO.getWonCountInNew() + 1L : 1L);
 						}
-						electionLiveResultVO.setWonFromOtherParties(prevResult);
 					}
-				}
-			}
-			else
-			{
-				List<Object[]> list = nominationDAO.getPartiesWonInfo(electionId);
-				
-				if(list != null && list.size() > 0)
-				{
-					resultList = new ArrayList<ElectionLiveResultVO>(0);
-					ElectionLiveResultVO resultVO = null;
-					Map<Long,Long> pariiesPCMap = getPartiesParticipatedCount(electionId);
-					
-					for(Object[] params : list)
-					{
-						Long partyId = (Long)params[0];
-						boolean isNew = false;
-						resultVO = getElectionLiveResultVOFromList(resultList,partyId);
 						
-						if(isNew)
-							resultList.add(resultVO);
-					}
-					
-					
-					
+					if(isNew)
+						resultList.add(resultVO);
 				}
-
+				
+				for(ElectionLiveResultVO electionLiveResultVO : resultList)
+				{
+					List<SelectOptionVO> rList = getPartywiseWonCount(prevElectionId,electionLiveResultVO.getConstituencyIdsList());
+					List<SelectOptionVO> prevResult = new ArrayList<SelectOptionVO>();
+					if(rList != null && rList.size() > 0)
+					{
+						for(SelectOptionVO optionVO : rList)
+						{
+							if(optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
+								electionLiveResultVO.setRetainedCount(optionVO.getId());
+							else
+								prevResult.add(optionVO);
+						}
+					}
+					electionLiveResultVO.setWonFromOtherParties(prevResult);
+				}
 			}
 			return resultList;
 		}catch (Exception e){
