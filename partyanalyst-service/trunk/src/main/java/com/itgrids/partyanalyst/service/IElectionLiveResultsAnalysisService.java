@@ -6,7 +6,7 @@ import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 
 public interface IElectionLiveResultsAnalysisService {
 
-	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId);
+	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId , String electionIsPartial);
 	
 	public List<ElectionLiveResultVO> getLeadingOrWinningContituenciesForAParty(Long electionId);
 	
