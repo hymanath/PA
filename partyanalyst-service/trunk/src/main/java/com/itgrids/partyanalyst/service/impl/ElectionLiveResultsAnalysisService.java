@@ -269,12 +269,15 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				resultList = new ArrayList<ElectionLiveResultVO>(0);
 				ElectionLiveResultVO resultVO = null;
 				Map<Long,Long> pariiesPCMap = getPartiesParticipatedCount(electionId);
+				Map<Long,List<SelectOptionVO>> partiesPCinfoMap = getpartiesPCinfo(electionId);
+				List<Long> knownConstituencyIds = new ArrayList<Long>(0);
 				
 				for(Object[] params : list)
 				{
 					Long partyId = (Long)params[0];
 					boolean isNew = false;
 					resultVO = getElectionLiveResultVOFromList(resultList,partyId);
+					knownConstituencyIds.add((Long)params[2]);
 					
 					if(resultVO == null)
 					{
@@ -285,6 +288,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 						resultVO.setPartyName(params[1].toString());
 						resultVO.setWonOrLeadCount(1L);
 						resultVO.setTotalSeatsParticipated(pariiesPCMap.get(partyId));
+						resultVO.setParticipatedConstituencies(partiesPCinfoMap.get(partyId));
 						
 						if(params[4] == null)
 							constituencyIdsList.add((Long)params[2]);
@@ -381,6 +385,11 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 					}
 					electionLiveResultVO.setWonFromOtherParties(prevResult);
 				}
+				
+				for(ElectionLiveResultVO electionLiveResultVO : resultList)
+				{
+					electionLiveResultVO = getPartiesLostInfo(electionId,electionLiveResultVO,isPartial);
+				}
 			}
 			return resultList;
 		}catch (Exception e){
@@ -439,6 +448,38 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		}
 	}
 	
+	public Map<Long,List<SelectOptionVO>> getpartiesPCinfo(Long electionId)
+	{
+		log.debug("Entered into getpartiesPCinfo() Method");
+		try{
+			Map<Long,List<SelectOptionVO>> resultMap = null;
+			List<Object[]> list = nominationDAO.getpartiesPCinfo(electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				resultMap = new HashMap<Long, List<SelectOptionVO>>();
+				List<SelectOptionVO> constInfo = null;
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params :list)
+				{
+					Long partyId = (Long)params[0];
+					constInfo = resultMap.get(partyId);
+					
+					if(constInfo == null)
+						constInfo = new ArrayList<SelectOptionVO>(0);
+					
+					selectOptionVO = new SelectOptionVO((Long)params[1],params[2].toString());
+					constInfo.add(selectOptionVO);
+					resultMap.put(partyId,constInfo);
+				}
+			}
+			return resultMap;
+		}catch(Exception e) {
+			log.error("Exception occured in getpartiesPCinfo() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
 	public List<SelectOptionVO> getPartywiseWonCount(Long electionId,List<Long> constituenciesList)
 	{
 		try{
@@ -462,6 +503,67 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			return partiesResult;
 		}catch (Exception e) {
 			log.error("Exception occured in getPartywiseWonCount() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
+	public ElectionLiveResultVO getPartiesLostInfo(Long electionId,ElectionLiveResultVO electionLiveResultVO,boolean isPartial)
+	{
+		try{
+			List<Long> cIdList = new ArrayList<Long>(0);
+			
+			for(SelectOptionVO optionVO : electionLiveResultVO.getParticipatedConstituencies())
+				cIdList.add(optionVO.getId());
+			
+			if(isPartial)
+				electionLiveResultVO.setLostToOtherParties(getPartiesinfoInSpecifiedConstituencies(electionId,electionLiveResultVO.getPartyName(),cIdList));
+			else
+			{
+				List<SelectOptionVO> rList = getPartywiseWonCount(electionId,cIdList);
+				List<SelectOptionVO> otherPartiesList = null;
+				if(rList != null)
+				{
+					otherPartiesList = new ArrayList<SelectOptionVO>(0);
+					for(SelectOptionVO optionVO : rList)
+						if(!optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
+							otherPartiesList.add(optionVO);
+				}
+				electionLiveResultVO.setLostToOtherParties(otherPartiesList);
+			}
+			Long lostCount = 0L;
+			for(SelectOptionVO optionVO :electionLiveResultVO.getLostToOtherParties())
+				lostCount += optionVO.getId();
+			
+			electionLiveResultVO.setLostCount(lostCount);
+			
+			return electionLiveResultVO;
+		}catch (Exception e) {
+			log.error("Exception occured in getPartiesLostInfo() Method, Exception is - "+e);
+			return electionLiveResultVO;
+		}
+	}
+	
+	public List<SelectOptionVO> getPartiesinfoInSpecifiedConstituencies(Long electionId,String partyName,List<Long> constituenciesList)
+	{
+		try{
+			List<SelectOptionVO> resultList = null;
+			List<Object[]> list = constituencyLeadCandidateDAO.getPartiesWonCountInSpecifiedConstituencies(electionId, constituenciesList);
+			
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+					if(!partyName.equalsIgnoreCase(params[1].toString()))
+					{
+						selectOptionVO = new SelectOptionVO((Long)params[0],params[1].toString());
+						resultList.add(selectOptionVO);
+					}
+					
+			}
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception occured in getPartiesLostInfo() Method, Exception is - "+e);
 			return null;
 		}
 	}

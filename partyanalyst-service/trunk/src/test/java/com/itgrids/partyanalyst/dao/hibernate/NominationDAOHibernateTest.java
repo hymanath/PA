@@ -1028,9 +1028,22 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetPartiesWonInfo()
+	/*public void testGetPartiesWonInfo()
 	{
 		List<Object[]> list = nominationDAO.getPartiesWonInfo(38l);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetpartiesPCinfo()
+	{
+		List<Object[]> list = nominationDAO.getpartiesPCinfo(38l);
 		
 		System.out.println(list.size());
 		for(Object[] params : list)
