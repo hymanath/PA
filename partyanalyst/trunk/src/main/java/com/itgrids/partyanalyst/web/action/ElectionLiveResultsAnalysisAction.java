@@ -109,7 +109,7 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getConstituenciesCount")){
 				Long electionId = new Long (jObj.getString("electionId"));
-				electionLiveResultVO = electionLiveResultsAnalysisService.getCountOfConstituenciesForAElection(electionId);
+			//	electionLiveResultVO = electionLiveResultsAnalysisService.getCountOfConstituenciesForAElection(electionId);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
