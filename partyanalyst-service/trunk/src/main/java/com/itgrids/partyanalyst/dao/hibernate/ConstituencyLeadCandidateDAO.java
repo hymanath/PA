@@ -90,4 +90,35 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 				" Nomination model, ConstituencyLeadCandidate model2 where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and " +
 				" model2.constituencyElection.election.electionId = ? and model.candidate.candidateId = model2.candidate.candidateId order by model.party.shortName,model2.constituencyElection.constituency.name",electionId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesinfoInSpecifiedConstituencies(Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model2.constituencyElection.constituency.constituencyId," +
+				" model2.constituencyElection.constituency.name, model2.constituencyElection.constituency.startDate,model2.status from " +
+				" Nomination model, ConstituencyLeadCandidate model2 where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and " +
+				" model2.constituencyElection.election.electionId = ? and model.candidate.candidateId = model2.candidate.candidateId and " +
+				" model2.constituencyElection.constituency.constituencyId in (:constituenciesList) order by model.party.shortName,model2.constituencyElection.constituency.name");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesWonCountInSpecifiedConstituencies(Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.party.shortName,count(model.party.partyId) from Nomination model, ConstituencyLeadCandidate model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
+				" model.candidate.candidateId = model2.candidate.candidateId and model2.constituencyElection.constituency.constituencyId in (:constituenciesList) " +
+				" group by model.party.partyId order by model.party.shortName");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+		
+	}
 }

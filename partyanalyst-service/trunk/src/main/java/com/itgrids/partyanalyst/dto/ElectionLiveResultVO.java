@@ -22,9 +22,17 @@ public class ElectionLiveResultVO {
 	private Long retainedCount;
 	private List<SelectOptionVO> wonFromOtherParties;
 	private List<SelectOptionVO> lostToOtherParties;
+	private List<SelectOptionVO> participatedConstituencies;
 	private List<Long> constituencyIdsList;
 	private Long totalSeatsParticipated;
+	private Long lostCount;
 		
+	public Long getLostCount() {
+		return lostCount;
+	}
+	public void setLostCount(Long lostCount) {
+		this.lostCount = lostCount;
+	}
 	public Long getTotalSeatsParticipated() {
 		return totalSeatsParticipated;
 	}
@@ -145,5 +153,12 @@ public class ElectionLiveResultVO {
 	}
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
+	}
+	public List<SelectOptionVO> getParticipatedConstituencies() {
+		return participatedConstituencies;
+	}
+	public void setParticipatedConstituencies(
+			List<SelectOptionVO> participatedConstituencies) {
+		this.participatedConstituencies = participatedConstituencies;
 	}
 }
