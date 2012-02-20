@@ -371,19 +371,22 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				
 				for(ElectionLiveResultVO electionLiveResultVO : resultList)
 				{
-					List<SelectOptionVO> rList = getPartywiseWonCount(prevElectionId,electionLiveResultVO.getConstituencyIdsList());
-					List<SelectOptionVO> prevResult = new ArrayList<SelectOptionVO>();
-					if(rList != null && rList.size() > 0)
+					if(electionLiveResultVO.getConstituencyIdsList() != null && electionLiveResultVO.getConstituencyIdsList().size() > 0)
 					{
-						for(SelectOptionVO optionVO : rList)
+						List<SelectOptionVO> rList = getPartywiseWonCount(prevElectionId,electionLiveResultVO.getConstituencyIdsList());
+						List<SelectOptionVO> prevResult = new ArrayList<SelectOptionVO>();
+						if(rList != null && rList.size() > 0)
 						{
-							if(optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
-								electionLiveResultVO.setRetainedCount(optionVO.getId());
-							else
-								prevResult.add(optionVO);
+							for(SelectOptionVO optionVO : rList)
+							{
+								if(optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
+									electionLiveResultVO.setRetainedCount(optionVO.getId());
+								else
+									prevResult.add(optionVO);
+							}
 						}
+						electionLiveResultVO.setWonFromOtherParties(prevResult);
 					}
-					electionLiveResultVO.setWonFromOtherParties(prevResult);
 				}
 				
 				for(ElectionLiveResultVO electionLiveResultVO : resultList)
@@ -554,9 +557,9 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				resultList = new ArrayList<SelectOptionVO>(0);
 				SelectOptionVO selectOptionVO = null;
 				for(Object[] params : list)
-					if(!partyName.equalsIgnoreCase(params[1].toString()))
+					if(!partyName.equalsIgnoreCase(params[0].toString()))
 					{
-						selectOptionVO = new SelectOptionVO((Long)params[0],params[1].toString());
+						selectOptionVO = new SelectOptionVO((Long)params[1],params[0].toString());
 						resultList.add(selectOptionVO);
 					}
 					
