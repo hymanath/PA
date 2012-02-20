@@ -61,24 +61,39 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		return constituencyLeadCandidateDAO;
 	}
 
-	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId) {
+	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId, String electionIsPartial) {
 		
 		ElectionLiveResultVO electionLiveResultVO = new ElectionLiveResultVO();
-		try {
+		List oldConstituenciesCount;
+		List countOfLeadConstituences ;
+		List newCostituenciesCount;
+		try 
+		 {
 			if(log.isDebugEnabled())
 				log.debug("Entered Into getCountOfConstituenciesForAElection()");
 			
 		List totalSeats = constituencyElectionDAO.findConstituenciesCountInAnElection(electionId);
 			electionLiveResultVO.setTotalSeats((Long)totalSeats.get(0));
-		
-		List countOfLeadConstituences = constituencyLeadCandidateDAO.getLeadingConstituenciesCount(electionId);
-			electionLiveResultVO.setCountOfLeadConstituences((Long)countOfLeadConstituences.get(0));
-		
-		List oldConstituenciesCount = constituencyLeadCandidateDAO.getCountOfOldConstituenciesInAElection(electionId);
-			electionLiveResultVO.setOldConstituenciesCount((Long)oldConstituenciesCount.get(0));
-		
-		List newCostituenciesCount = constituencyLeadCandidateDAO.getCountOfDelimitedConstituenciesInAElection(electionId);
-			electionLiveResultVO.setNewConstituenciesCount((Long)newCostituenciesCount.get(0));
+		if(electionIsPartial.equalsIgnoreCase("true"))
+		{
+			
+			 countOfLeadConstituences = constituencyLeadCandidateDAO.getLeadingConstituenciesCount(electionId);
+				electionLiveResultVO.setCountOfLeadConstituences((Long)countOfLeadConstituences.get(0));
+			
+			oldConstituenciesCount = constituencyLeadCandidateDAO.getCountOfOldConstituenciesInAElection(electionId);
+				electionLiveResultVO.setOldConstituenciesCount((Long)oldConstituenciesCount.get(0));
+			
+			newCostituenciesCount = constituencyLeadCandidateDAO.getCountOfDelimitedConstituenciesInAElection(electionId);
+				electionLiveResultVO.setNewConstituenciesCount((Long)newCostituenciesCount.get(0));
+		}
+		else if(electionIsPartial.equalsIgnoreCase("false"))
+		{
+			oldConstituenciesCount = constituencyElectionDAO.getCountOfOldConstituencies(electionId);
+				electionLiveResultVO.setOldConstituenciesCount((Long)oldConstituenciesCount.get(0));
+			newCostituenciesCount = constituencyElectionDAO.getCountOfDelimitedConstituencies(electionId);
+				electionLiveResultVO.setNewConstituenciesCount((Long)newCostituenciesCount.get(0));
+		}
+			
 		
 			return electionLiveResultVO;
 		}
@@ -100,6 +115,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				
 				 if(election.getIsPartial()!=null && election.getIsPartial().equalsIgnoreCase("1"))
 				 {
+					String electionIsPartial = "true";
 					 List<Object[]> list = constituencyLeadCandidateDAO.getPartyLeadingOrWinningConstituencies(electionId);
 					 
 					if(list != null && list.size() > 0)
@@ -144,22 +160,35 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 							
 						}
 					}
-					
+					electionLiveResultVO = getCountOfConstituenciesForAElection(electionId,electionIsPartial);
+					electionLiveResultVOList.add(electionLiveResultVO);
 					electionLiveResultVOList.get(0).setPartialResult(true);
 					 
 					 
 					
 				 }
 				 else {
-					 
 					 List<Object[]> winningConstituencies = constituencyElectionDAO.getPartyWinningConstituenciesCount(electionId);
-					 List electionIds = electionDAO.getElectionIdsBasedOnStateId(election.getElectionScope().getState().getStateId());
+					 String elecYear = election.getElectionYear();
+					 List electionIds = new ArrayList<Long>(0);
+					 if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+						 electionIds = electionDAO.getElectionIdsBasedOnStateId(election.getElectionScope().getState().getStateId(),elecYear);
+					 }
 					 
+					 List<Long> elecIdsList =new ArrayList<Long>(0) ;
+					 if(electionIds.size()>0){
+					 for(int i=0;i<electionIds.size();i++){
+						 Long elecId  =(Long) electionIds.get(i);
+						 elecIdsList.add(elecId);
+					 	}
+					 }
 					 Map<String,ElectionLiveResultVO> partyMap = new HashMap<String,ElectionLiveResultVO>(0);
 						ElectionLiveResultVO countVO = null;
+						
 						for(Object[] params : winningConstituencies)
 						{
-							if(electionIds.size()==1){
+							if(elecIdsList.size()==1){
+								String electionIsPartial = "false";
 							String party = params[2].toString();
 							countVO = partyMap.get(party);
 							
@@ -176,8 +205,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 							}
 							partyMap.put(party,countVO);
 						 }
-							else if(electionIds.size()>1) {
-								
+							else if(elecIdsList.size()==0 || elecIdsList.size()>1) {
+								String electionIsPartial = "";
 								String party = params[2].toString();
 								countVO = partyMap.get(party);
 								
@@ -202,7 +231,14 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 							electionLiveResultVO.setCountOfWinningConstituencies(entry.getValue().getCountOfWinningConstituencies());
 							electionLiveResultVOList.add(electionLiveResultVO);
 							}
-							
+						if(electionLiveResultVOList.get(0).getCountOfWinningConstituencies()!=null && electionLiveResultVOList.get(0).getCountOfWinningConstituencies()>0){
+							electionLiveResultVO = getCountOfConstituenciesForAElection(electionId,"");
+						}
+						else
+							electionLiveResultVO = getCountOfConstituenciesForAElection(electionId,"false");
+						
+						electionLiveResultVOList.add(electionLiveResultVO);
+						electionLiveResultVOList.get(0).setPartialResult(false);
 						}
 				 
 				 /*  for(Object[] params:winningConstituencies){
