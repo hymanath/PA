@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> implements IElectionScopeDAO{
 
@@ -100,6 +101,17 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 				"from ElectionScope model where model.electionType.electionType = ? order by model.state.stateId asc",electionType);
 	}
 	
+	public List<ElectionScope> findByTypeIdStateId(Long typeId,Long stateID){
+		StringBuilder query = new StringBuilder();
+		query.append(" from ElectionScope as model where model.electionType.electionTypeId = :typeId ");
+		if(stateID != null && stateID >0l)
+			query.append(" and model.state.stateId = :stateID ");	
+		Query queryObject = getSession().createQuery(query.toString());		
+		queryObject.setLong("typeId",typeId);
+		if(stateID != null && stateID >0l)
+		queryObject.setLong("stateID", stateID);
+		return queryObject.list();		
+	}
 }
  
 
