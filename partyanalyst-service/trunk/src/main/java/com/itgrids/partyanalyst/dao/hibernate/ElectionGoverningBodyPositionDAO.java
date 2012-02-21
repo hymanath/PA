@@ -19,4 +19,11 @@ public class ElectionGoverningBodyPositionDAO extends GenericDaoHibernate<Electi
 		return getHibernateTemplate().find("from ElectionGoverningBodyPosition model where model.governingBodyPosition = ?", position);
 	}
 	
+	public List<Object[]> getAllPositions() {
+		return getHibernateTemplate().find("select model.governingBodyPositionId ,model.governingBodyPosition from ElectionGoverningBodyPosition model");
+	}
+	public List<ElectionGoverningBodyPosition> getPositionsByValue(String position) {
+		Object[] data = {position};
+		return getHibernateTemplate().find("select model from ElectionGoverningBodyPosition model where model.governingBodyPosition = ?  ",data);
+	}
 }
