@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
@@ -489,5 +490,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Object[]> getPartiesWonInfo(Long electionId);
 	
 	public List<Object[]> getpartiesPCinfo(Long electionId);
+		
+	public List<Object[]> getCandidatesDetailsByGivenDetails(PositionManagementVO positionManagementVO);
 	
 }
