@@ -736,8 +736,12 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getElectionYearsForAState'){
 								buildElectionYearsSelect(myResults);
 							}
-							
-
+							if(jsObj.task == 'getPhotosNewsVideosUpdateForACandidate')
+							{
+								homePageUpdates = myResults;
+								buildPhotoGallary();
+								
+							}
 						}
 						catch(e)
 						{   
@@ -2329,4 +2333,16 @@ function hideBusyImgWithId(elmtId)
 	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
 	if(spanElmt)
 		spanElmt.style.display = "none";
+}
+
+function photosNewsVideosUpdateForACandidate()
+{
+	var jObj=
+         {
+			task : "getPhotosNewsVideosUpdateForACandidate"
+		 };
+	 var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+     var url = "homePageUpdates.action?"+rparam;
+	 callHomePageAjax(jObj,url);
+
 }
