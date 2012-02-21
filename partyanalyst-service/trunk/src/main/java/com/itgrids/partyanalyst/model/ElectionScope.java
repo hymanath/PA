@@ -49,6 +49,7 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 	private Set<Election> elections = new HashSet<Election>(0);
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<MinistryScope> ministryScopes = new HashSet<MinistryScope>(0);
+	private Set<PositionScope> positionScope = new HashSet<PositionScope>(0);
 
 	// Constructors
 
@@ -143,6 +144,15 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 
 	public void setMinistryScopes(Set<MinistryScope> ministryScopes) {
 		this.ministryScopes = ministryScopes;
+	}   
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "electionScope")
+	public Set<PositionScope> getPositionScope() {
+		return positionScope;
 	}
 
+	public void setPositionScope(Set<PositionScope> positionScope) {
+		this.positionScope = positionScope;
+	}
+    
 }
