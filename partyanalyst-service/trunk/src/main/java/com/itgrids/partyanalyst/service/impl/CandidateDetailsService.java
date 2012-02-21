@@ -1923,6 +1923,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
+			 fileVO.setCandidateId(result.get(i).getGallary().getCandidate().getCandidateId());
 			 fileVOs.add(fileVO);
 		 }
 	}
