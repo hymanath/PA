@@ -366,6 +366,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	
 	public String getRecentlyUpdatePhotosVideosNewsForACandidate(){
 		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(1 ,10);
 		
 		return SUCCESS;
