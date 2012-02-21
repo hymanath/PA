@@ -3044,6 +3044,12 @@
 			<result type="json" name="success">
 				<param name="root">selectOptionsList</param>
 			</result>
-		</action>				
+		</action>	
+		<action name="homePageUpdates" class="homePageAction" method="getRecentlyUpdatePhotosVideosNewsForACandidate">
+			<result type="json" name="success">
+				<param name="root">resultMap</param>				
+			</result>		
+		</action>
+				
 	</package>
 </struts>      
