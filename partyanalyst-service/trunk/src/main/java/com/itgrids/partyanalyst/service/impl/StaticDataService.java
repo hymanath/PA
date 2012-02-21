@@ -819,7 +819,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
 		ElectionType electionTypeObj = electionTypeDAO.get(electionType);
 		List resultsList;
-		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType())|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType())) {
+		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType())|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.GREATER_ELECTION_TYPE.equals(electionTypeObj.getElectionType())) {
 			resultsList = electionDAO.findStatesByElectionType(electionType);
 		} else {
 			resultsList = constituencyElectionDAO
