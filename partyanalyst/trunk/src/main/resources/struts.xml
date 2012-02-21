@@ -2988,11 +2988,17 @@
         </action>
 			<action name="assignCandidateToElectionAction" class="assignCandidateToElectionAction">
 			<result name="success">/jsp/assignCandidateToElection.jsp</result>
-			<result name="error">/jsp/loginForm.jsp</result> 
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>	
 		<action name="getElectionYearsBasedOnElectionTypeAction" class="assignCandidateToElectionAction" method="ajaxCallHandlerForAssignCandidateToElection">
 			<result type="json" name="success">
 				<param name="root">optionVOList</param>
+			</result>
+	 	</action>
+	 	<action name="updateElectionInformationAction" class="assignCandidateToElectionAction" method="updateElectionInformation">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
 			</result>
 	 	</action>	
 		
