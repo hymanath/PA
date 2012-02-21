@@ -23,7 +23,7 @@ public class ElectionGoverningBodyPositionDAOHibernateTest extends BaseDaoTestCa
 	}
 
 
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.getAll();
 		assertEquals(list.size() >= 0, true);
 	}
@@ -31,6 +31,14 @@ public class ElectionGoverningBodyPositionDAOHibernateTest extends BaseDaoTestCa
 	public void testFindByPosition(){
 		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.findByPosition("CHAIRPERSON");
 		assertEquals(list.size(), 1);
-	}
+	}*/
 	
+	/*public void testGetAllPositions(){
+		List<Object[]> list = electionGoverningBodyPositionDAO.getAllPositions();
+		System.out.println(list.size());
+	}*/
+	public void testGetPositionsByValue(){
+		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.getPositionsByValue("chief mInistEr");
+		System.out.println(list.size());
+	}
 }
