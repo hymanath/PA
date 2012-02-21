@@ -192,7 +192,7 @@
                                     </fieldset>
                                 </td>
 								<td> <fieldset class="f2">
-                                    <legend class="l2">Assign Candidate To Ministry</legend>
+                                    <legend class="l2">Assign Governing Body Positions</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="assignCandidateToElectionAction"/>'><b>Assign Candidate</b></a></h4></center>
                                     </fieldset>
                                 </td>
