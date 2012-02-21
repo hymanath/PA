@@ -20,6 +20,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
+import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
@@ -3309,5 +3310,67 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	{
 		return getHibernateTemplate().find("select model.party.partyId,model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name "+
 				" from Nomination model where model.constituencyElection.election.electionId = ? order by model.party.shortName,model.constituencyElection.constituency.name",electionId);
+	}	
+	
+	public List<Object[]> getCandidatesDetailsByGivenDetails(PositionManagementVO positionManagementVO)
+	{
+        StringBuilder query = new StringBuilder();
+		
+		query.append("select model.candidate.candidateId,model.candidate.lastname from Nomination model where   model.constituencyElection.election.electionYear = :electionYear " +
+				" and model.party.partyId = :partyId "); 
+		
+		if(positionManagementVO.getCandidateName() != null && positionManagementVO.getCandidateName().trim().length() >0)
+		{
+			query.append(" and model.candidate.lastname like '%"+positionManagementVO.getCandidateName()+"%' ");
+		}
+		if(positionManagementVO.getResult().equalsIgnoreCase("won"))
+		{
+			query.append(" and model.candidateResult.rank = :rank ");
+		}
+		
+		if(positionManagementVO.getElectionTypeId() == 2l)
+			query.append("  and model.constituencyElection.constituency.state.stateId = :stateId ");
+		
+		if(positionManagementVO.getElectionTypeId() == 3l)
+			query.append(" and model.constituencyElection.constituency.state.stateId = :stateId and model.constituencyElection.constituency.district.districtId =:districtId and model.constituencyElection.constituency.tehsil.tehsilId = :tehsilId ");
+		
+		if(positionManagementVO.getElectionTypeId() == 4l)
+			query.append(" and model.constituencyElection.constituency.state.stateId = :stateId  and model.constituencyElection.constituency.district.districtId =:districtId ");
+		
+		if(positionManagementVO.getElectionTypeId() == 5l || positionManagementVO.getElectionTypeId() == 6l || positionManagementVO.getElectionTypeId() == 7l)
+			query.append(" and model.constituencyElection.constituency.localElectionBody.localElectionBodyId  = :localElectionBodyId ");
+		
+		query.append(" order by model.candidate.lastname ");
+		
+		 Query queryObject = getSession().createQuery(query.toString());
+		
+		 queryObject.setString("electionYear",positionManagementVO.getYear() );
+		
+		 queryObject.setLong("partyId", positionManagementVO.getPartyId());
+		 
+		 if(positionManagementVO.getResult().equalsIgnoreCase("won"))
+		 {
+			 queryObject.setLong("rank", 1l);
+		 }
+		 
+		 if(positionManagementVO.getElectionTypeId() == 2l || positionManagementVO.getElectionTypeId() == 3l || positionManagementVO.getElectionTypeId() == 4l)
+		 {
+			 queryObject.setLong("stateId", positionManagementVO.getStateId());
+		 }
+		 if(positionManagementVO.getElectionTypeId() == 3l)
+		 {
+			 queryObject.setLong("districtId", positionManagementVO.getDistrictId());
+			 queryObject.setLong("tehsilId", positionManagementVO.getTehilId());
+			 
+		 }
+		 if(positionManagementVO.getElectionTypeId() == 4l)
+		 {
+			 queryObject.setLong("districtId", positionManagementVO.getDistrictId());
+		 }
+		 if(positionManagementVO.getElectionTypeId() == 5l || positionManagementVO.getElectionTypeId() == 6l || positionManagementVO.getElectionTypeId() == 7l)
+		 {
+			 queryObject.setLong("localElectionBodyId", positionManagementVO.getLocalElecBodyId());
+		 }
+		 return queryObject.list();
 	}
 }
