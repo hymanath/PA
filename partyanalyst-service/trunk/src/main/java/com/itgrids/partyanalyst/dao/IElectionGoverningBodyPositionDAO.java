@@ -9,5 +9,9 @@ import com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition;
 public interface IElectionGoverningBodyPositionDAO extends GenericDao<ElectionGoverningBodyPosition, Long>{
 
 	public List<ElectionGoverningBodyPosition> findByPosition(String position);
+	
+	public List<Object[]> getAllPositions();
+	
+	public List<ElectionGoverningBodyPosition> getPositionsByValue(String position);
 
 }
