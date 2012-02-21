@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -28,6 +32,13 @@ public class ElectionGoverningBody {
 	private Election election;
 	private ElectionGoverningBodyPosition electionGoverningBodyPosition;
 	private Party party;
+	private Tehsil tehsil;
+	private District district;
+	private PositionScope positionScope;
+	private Date fromDate;
+	private Date toDate;
+	private String status;
+	
 	
 	public ElectionGoverningBody(){
 		
@@ -126,6 +137,71 @@ public class ElectionGoverningBody {
 
 	public void setParty(Party party) {
 		this.party = party;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tehsil_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Tehsil getTehsil() {
+		return tehsil;
+	}
+
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "district_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "position_scope_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PositionScope getPositionScope() {
+		return positionScope;
+	}
+
+	public void setPositionScope(PositionScope positionScope) {
+		this.positionScope = positionScope;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "from_date", length = 10)
+	public Date getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "to_date", length = 10)
+	public Date getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	@Column(name = "status", length = 20)
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	
