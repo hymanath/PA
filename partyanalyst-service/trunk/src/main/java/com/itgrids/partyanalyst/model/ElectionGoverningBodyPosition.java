@@ -1,10 +1,16 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -17,6 +23,7 @@ public class ElectionGoverningBodyPosition {
 
 	private Long governingBodyPositionId;
 	private String governingBodyPosition;
+	private Set<PositionScope> positionScope = new HashSet<PositionScope>(0);
 	
 	public ElectionGoverningBodyPosition(){
 		
@@ -50,6 +57,15 @@ public class ElectionGoverningBodyPosition {
 	
 	public void setGoverningBodyPosition(String governingBodyPosition) {
 		this.governingBodyPosition = governingBodyPosition;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "electionGoverningBodyPosition")
+	public Set<PositionScope> getPositionScope() {
+		return positionScope;
+	}
+
+	public void setPositionScope(Set<PositionScope> positionScope) {
+		this.positionScope = positionScope;
 	}
 	
 	
