@@ -769,4 +769,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="positionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PositionScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
