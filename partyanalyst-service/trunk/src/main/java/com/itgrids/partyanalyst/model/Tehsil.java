@@ -54,6 +54,7 @@ public class Tehsil implements java.io.Serializable {
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<Panchayat> pachayats = new HashSet<Panchayat>(0);
+	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
 
 	// Constructors
 
@@ -184,6 +185,18 @@ public class Tehsil implements java.io.Serializable {
 
 	public void setPachayats(Set<Panchayat> pachayats) {
 		this.pachayats = pachayats;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tehsil")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ElectionGoverningBody> getElectionGoverningBody() {
+		return electionGoverningBody;
+	}
+
+	public void setElectionGoverningBody(
+			Set<ElectionGoverningBody> electionGoverningBody) {
+		this.electionGoverningBody = electionGoverningBody;
 	}	
 
+	
 }
