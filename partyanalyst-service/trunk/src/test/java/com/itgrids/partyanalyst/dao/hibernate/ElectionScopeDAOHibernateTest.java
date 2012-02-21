@@ -45,12 +45,17 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetData(){
+	/*public void testGetData(){
 		
 		List list = electionScopeDAO.getAllStatesAndTheirIds(IConstants.ASSEMBLY_ELECTION_TYPE);
 		for(int i=0;i<list.size();i++){
 			Object[] parms = (Object[])list.get(i);
 			System.out.println(parms[0]+"\t\t"+parms[1]);
 		}
+	}*/
+public void testGetData(){
+		
+	List<ElectionScope> list = electionScopeDAO.findByTypeIdStateId(2l,3l);
+	System.out.println(list.size());
 	}
 }
