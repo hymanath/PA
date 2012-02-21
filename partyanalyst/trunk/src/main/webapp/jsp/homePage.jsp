@@ -41,7 +41,7 @@
 
   
 <script type="text/javascript">
-
+var homePageUpdates = null;
 function openAddNewProblemWindow()
 {	
 	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
@@ -121,6 +121,12 @@ function openAddNewProblemWindow()
 .scrollDataStyle{
 	font-family : verdana;
 	font-weight : bold;
+}
+#allGallariesDisplay a:hover{
+	text-decoration:none;
+}
+.pft-sec a:hover{
+text-decoration:none;
 }
 
 
@@ -427,7 +433,7 @@ function openAddNewProblemWindow()
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
-        <div class="sneak-peak-sec">
+        <div class="sneak-peak-sec" style="width:630px;">
           <h1 class="title tc-tf">Sneak Peak @Party Analyst</h1>
 		  <div class="homePageContentWidget_body" style="width:650px; border: 0px solid #DDDDDD;">
 
@@ -447,22 +453,31 @@ function openAddNewProblemWindow()
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
         
         <!--PPPM AND FT ICONS SECTION START-->
-        
-        <div class="pft-social-sec">
-          <div class="pft-sec" style="font-size: 13px; padding-left: 7px;width:291px;"> 
-          <!--<s:iterator value="fileVO" status="stat">
-           <ul>
-            <li><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}"><s:property value="gallaryName" /> of <s:property value="contentType"/> is Updated For
-            <s:property value="candidateName" /></a></li>
-            </ul>
-          </s:iterator> -->
-            <img src="./images/new_homepage/pft.jpg" alt=""/>
+		
+        <div class="pft-social-sec" style="width:308px;">
+          <div class="pft-sec"  style="font-size: 13px; padding-left: 7px;width:291px;">
+		  <strong style="color: #0D0E3B;font-size: 18px;line-height: 18px; padding-bottom: 20px;">Updates From Party Analyst</strong>
+		  <ul>
+		  <div style="width:303px;">
+		  <li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;
+		  <a style="color:#777777;margin-right: -12px;" href="javascript:{}" onclick="buildPhotoGallary()"><span class="photogallarySpan" id="photogallarySpan" style=" border-radius: 3px;">Photo Gallary</span></a></li>
+			&nbsp;&nbsp;
+		  <li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}" onclick="buildNewsGallary()">
+			<span class="newsgallarySpan" id="newsgallarySpan" style=" border-radius: 3px;">News Gallary</span></a></li>
+			&nbsp;
+		<li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}" onclick="buildVideoGallary()"><span class="videogallarySpan" id="videogallarySpan" style=" border-radius: 3px;">Video Gallary</span></a>
+		</li>
+		</div></ul>
+          </div>
+			<div style="height: 200px; overflow-x: hidden; overflow-y: scroll; width: 305px; margin-top: 0px; margin-right: 30px; margin-left: 0px; border-right-width: 17px; padding-left: 0px; padding-right: 0px;"><div id="allGallariesDisplay"  style="width: 300px; clear: both; margin-right: 9px; margin-left: -9px;"></div>
+			</div>
+            <!--<img src="./images/new_homepage/pft.jpg" alt=""/>
             <div class="clear"></div>
             <p></p>
             <span class="gray">Are you a</span> <strong>Politician<span class="orange">/</span>Political Party<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with <span class="orange">PartyAnalyst</span> ?
             <div class="clear"></div>
             <div class="clickhere-button"><a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
-          </div>
+          </div>-->
           <div class="social-icons"> <strong>We are SOCIAL</strong>
             <div class="clear"></div>
             <div class="social-io"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img src="./images/new_homepage/facebook-io.jpg" alt=""/></a> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none" target="_blank"><img src="./images/new_homepage/twitter-io.jpg" alt=""/></a> <a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank"><img src="./images/new_homepage/in.jpg" alt=""/></a> <a href="http://www.youtube.com/partyanalyst" target="_blank"><img src="./images/new_homepage/youtube.jpg" alt=""/></a> </div>
@@ -740,6 +755,122 @@ $(function() {
 			});
 		});
 
+	function buildPhotoGallary()
+	{
+		$(".photogallarySpan").css("background-color","red");
+		$(".photogallarySpan").css("color","#FFFFFF");
+		$("#videogallarySpan").css("background-color","#0063DC");
+		$("#newsgallarySpan").css("background-color","#0063DC");
+		if(homePageUpdates == null)
+			return;
+		var str ='';
+		for(var i in homePageUpdates.photogallary)
+		{
+			str +='<table>';
+			str += '<tr>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'">';
+			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:75px;height:60px"/>';
+			str += '</td>';
+			str +='</a>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'" style="color:#5CB275;">';
+			str += 'New Photo Added to';
+			str +='\t';
+			str +=''+homePageUpdates.photogallary[i].candidateName+'';
+			str +='\t';
+			str += ''+homePageUpdates.photogallary[i].gallaryName+'';
+			str +='\t';
+			str +='Photo Gallary';
+			str += '</td>';
+			str +='</a>';
+			str +='</tr>';
+			str += '</table>';
+			str +='</div>';
+			document.getElementById("allGallariesDisplay").innerHTML = str;
+		} 
+			
+	}
+
+	function buildVideoGallary()
+	{	
+		$(".videogallarySpan").css("background-color","red");
+		$(".videogallarySpan").css("color","#FFFFFF");
+		$("#photogallarySpan").css("background-color","#0063DC");
+		$("#newsgallarySpan").css("background-color","#0063DC");
+		if(homePageUpdates == null)
+			return;
+
+		var str ='';
+		for(var i in homePageUpdates.VideoGallary)
+		{
+			str +='<table>';
+			str += '<tr>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'">';
+			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:75px;height:60px"/>';
+			str += '</td>';
+			str +='</a>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'" style="color:#5CB275;">';
+			str += 'New Video Added to';
+			str +='\t';
+			str +=''+homePageUpdates.VideoGallary[i].candidateName+'';
+			str +='\t';
+			str += ''+homePageUpdates.VideoGallary[i].gallaryName+'';
+			str +='\t';
+			str +='Video Gallary';
+			str +='</a>';
+			str += '</td>';
+			str +='</tr>';
+			str += '</table>';
+			document.getElementById("allGallariesDisplay").innerHTML = str;
+		}
+	}
+
+	function buildNewsGallary()
+	{
+		$("#photogallarySpan").css("background-color","#0063DC");
+		$("#videogallarySpan").css("background-color","#0063DC");
+		$("#newsgallarySpan").css("background-color","red");
+		$("#newsgallarySpan").css("color","#FFFFFF");
+		
+		if(homePageUpdates == null)
+			return;
+		var str ='';
+		
+		for(var i in homePageUpdates.NewsGallary)
+		{
+			str +='<table>';
+			str += '<tr>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'">';
+			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:75px;height:60px"/>';
+			str += '</td>';
+			str +='</a>';
+			str += '<td>';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color:#5CB275;">';
+			str += 'New News Added to';
+			str +='\t';
+			str +=''+homePageUpdates.NewsGallary[i].candidateName+'';
+			str +='\t';
+			str += ''+homePageUpdates.NewsGallary[i].gallaryName+'';
+			str +='\t';
+			str +='News Gallary';
+			str +='</a>';
+			str += '</td>';
+			str +='</tr>';
+			str += '</table>';
+			document.getElementById("allGallariesDisplay").innerHTML = str;
+			}
+		}
+photosNewsVideosUpdateForACandidate();
+$(".photogallarySpan").css("background-color","red");
+$(".photogallarySpan").css("color","#FFFFFF");
+$("#newsgallarySpan").css("background-color","#0063DC");
+$("#videogallarySpan").css("background-color","#0063DC");
+$("#newsgallarySpan").css("color","#FFFFFF");
+$("#videogallarySpan").css("color","#FFFFFF");
 	</script>
 	
 </body>
