@@ -278,6 +278,7 @@ public interface IConstants {
     public static final String ADD_USER_ENTITLEMENT = "ADD_USER_ENTITLEMENT";
     public static final String ADD_SUBUSER_ENTITLEMENT = "ADD_SUBUSER_ENTITLEMENT";
     public static final String LIVE_RESULTS_ANALYSIS_ENTITLEMENT = "LIVE_RESULTS_ANALYSIS_ENTITLEMENT";
+    public static final String ASSIGN_A_ELECTION_GOVERNING_BODY = "ASSIGN_A_ELECTION_GOVERNING_BODY";
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
