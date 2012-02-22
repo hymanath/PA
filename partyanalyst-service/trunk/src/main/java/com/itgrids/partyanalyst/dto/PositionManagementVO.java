@@ -1,11 +1,17 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class PositionManagementVO implements Serializable {
 
-	  private Long candidateId;
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long candidateId;
 	  private String candidateName;
 	  private Long electionScopeId;
 	  private String electionType;
@@ -13,18 +19,28 @@ public class PositionManagementVO implements Serializable {
 	  private Long stateId;
 	  private String year;
 	  private Long partyId;
+	  private String partyName;
 	  private Long tehilId;
 	  private Long districtId;
 	  private Long positionScopeId;
 	  private Long electionGovBodyPosId;
+	  private String positionName;
 	  private Date fromDate;
 	  private Date toDate;
 	  private String status;
 	  private String type;
 	  private String gender;
 	  private Long constituencyId;
+	  private String constituencyName;
+	  private String votesPercengate;
+	  private Long rank;
+	  private BigDecimal votesEarned;
 	  private Long localElecBodyId;
 	  private String result;
+	  private PositionManagementVO currentResult;
+	  private PositionManagementVO previousResult;
+	  private List<PositionManagementVO> positionManagementVOList;
+	  private Long isPartial;
 	  
 	public String getGender() {
 		return gender;
@@ -145,6 +161,67 @@ public class PositionManagementVO implements Serializable {
 	}
 	public void setResult(String result) {
 		this.result = result;
+	}
+	public PositionManagementVO getCurrentResult() {
+		return currentResult;
+	}
+	public void setCurrentResult(PositionManagementVO currentResult) {
+		this.currentResult = currentResult;
+	}
+	public PositionManagementVO getPreviousResult() {
+		return previousResult;
+	}
+	public void setPreviousResult(PositionManagementVO previousResult) {
+		this.previousResult = previousResult;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	public Long getIsPartial() {
+		return isPartial;
+	}
+	public void setIsPartial(Long isPartial) {
+		this.isPartial = isPartial;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getVotesPercengate() {
+		return votesPercengate;
+	}
+	public void setVotesPercengate(String votesPercengate) {
+		this.votesPercengate = votesPercengate;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public BigDecimal getVotesEarned() {
+		return votesEarned;
+	}
+	public void setVotesEarned(BigDecimal votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+	public List<PositionManagementVO> getPositionManagementVOList() {
+		return positionManagementVOList;
+	}
+	public void setPositionManagementVOList(
+			List<PositionManagementVO> positionManagementVOList) {
+		this.positionManagementVOList = positionManagementVOList;
 	}
 	  
 	  
