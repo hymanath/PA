@@ -3312,6 +3312,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" from Nomination model where model.constituencyElection.election.electionId = ? order by model.party.shortName,model.constituencyElection.constituency.name",electionId);
 	}	
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidatesDetailsByGivenDetails(PositionManagementVO positionManagementVO)
 	{
         StringBuilder query = new StringBuilder();
@@ -3372,5 +3373,30 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			 queryObject.setLong("localElectionBodyId", positionManagementVO.getLocalElecBodyId());
 		 }
 		 return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyRankConstituenciesInAElection(Long partyId,Long electionId,List<Long>constituenciesList) 
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.candidateResult.rank " +
+				" from Nomination model where model.party.partyId = ? and model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId in(:constituenciesList)");
+		
+		query.setParameter(0,partyId);
+		query.setParameter(1,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyLostConstituencies(Long partyId,Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination " +
+				" model where model.party.partyId = ? and model.constituencyElection.election.electionId = ? and model.candidateResult.rank != 1 and " +
+				" model.constituencyElection.constituency.constituencyId in(:constituenciesList)");
+		
+		query.setParameter(0,partyId);
+		query.setParameter(1,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		return query.list();
 	}
 }
