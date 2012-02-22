@@ -1005,6 +1005,7 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="staticDataService" ref="staticDataService"/>
+		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 	</bean>
 	
 	<bean name="electionResultsUpdationService" class="com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService">
