@@ -203,6 +203,11 @@
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="electionResultsUpdateAction"/>'><b>Update Election Results</b></a></h4></center>
                                     </fieldset>
                                 </td>
+                                <td> <fieldset class="f2">
+                                    <legend class="l2">Election Live Results Analysis</legend>
+                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="ministerAnalysisAction"/>'><b>Ministers Analysis</b></a></h4></center>
+                                    </fieldset>
+                                </td>
 							<tr>
 
 
