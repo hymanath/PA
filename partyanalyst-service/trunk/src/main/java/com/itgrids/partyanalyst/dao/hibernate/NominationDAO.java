@@ -3399,4 +3399,18 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameterList("constituenciesList",constituenciesList);
 		return query.list();
 	}
+	
+	public List<Object[]> getCandidateResultsForNormal(Long candidateId,Long electionId)
+	{
+		Object[] data = {candidateId,electionId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate, " +
+				"  model.candidateResult.rank,model.party.partyId,model.party.shortName from Nomination model where model.candidate.candidateId = ? and model.constituencyElection.election.electionId = ?",data);
+	}
+	public List<Object[]> getConstituencyDetails(Long candidateId,Long electionId)
+	{
+		Object[] data = {candidateId,electionId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.party.partyId,model.party.shortName  " +
+				"   from Nomination model where model.candidate.candidateId = ? and model.constituencyElection.election.electionId = ?",data);
+	}
+
 }
