@@ -96,6 +96,7 @@
 		<pattern>/constituencyPageAction2*</pattern>
 		<pattern>/electionResultsUpdateAction*</pattern>
 		<pattern>/electionLiveResultsAnalysisAction*</pattern>
+		<pattern>/districtPageAction*</pattern>
 		<pattern>/assignCandidateToElectionAction*</pattern>
     </decorator>
 
