@@ -1,16 +1,35 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
+
+import com.itgrids.partyanalyst.dto.PositionManagementVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IMinisterAnalysisService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class MinisterAnalysisAction {
+public class MinisterAnalysisAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> statesList;
 	private IStaticDataService staticDataService;
 	private IMinisterAnalysisService ministerAnalysisService;
+	private HttpServletRequest request;
+	private JSONObject jObj;
+	private String task;
+	private List<PositionManagementVO> results;
+	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
+	private EntitlementsHelper entitlementsHelper;
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -35,10 +54,74 @@ public class MinisterAnalysisAction {
 			IMinisterAnalysisService ministerAnalysisService) {
 		this.ministerAnalysisService = ministerAnalysisService;
 	}
+    
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+    
+	public List<PositionManagementVO> getResults() {
+		return results;
+	}
+
+	public void setResults(List<PositionManagementVO> results) {
+		this.results = results;
+	}
+    
+	public IElectionLiveResultsAnalysisService getElectionLiveResultsAnalysisService() {
+		return electionLiveResultsAnalysisService;
+	}
+
+	public void setElectionLiveResultsAnalysisService(
+			IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService) {
+		this.electionLiveResultsAnalysisService = electionLiveResultsAnalysisService;
+	}
+	
 
 	public String execute(){
 		
-		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
+			return IConstants.NOT_LOGGED_IN;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
+			return ERROR;
+			statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
+			
+			return SUCCESS;
+	}
+	
+	public String getMinisterData()
+	{
+		try 
+		  {
+			jObj = new JSONObject(getTask());
+			results = electionLiveResultsAnalysisService.getCurrentMinistersDetailsForCurrentAndPrevEle(1l, 1l, "", jObj.getLong("electionId"));
+			
+		  }
+		  catch (ParseException e) {
+			e.printStackTrace();
+		  }
+		
 		return Action.SUCCESS;
 	}
+
+	@Override
+	public void setServletRequest(HttpServletRequest arg0) {
+		// TODO Auto-generated method stub
+		request = arg0;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	
 }
