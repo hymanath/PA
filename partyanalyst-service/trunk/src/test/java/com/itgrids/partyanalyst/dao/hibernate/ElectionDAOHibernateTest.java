@@ -247,13 +247,13 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetPreviousElectionId()
+	/*public void testGetPreviousElectionId()
 	{
 		List<Object[]> list = electionDAO.getPreviousElectionIdAndYear(18l);
 		
 		System.out.println(list.get(0)[0]);
 		System.out.println(list.get(0)[1]);
-	}
+	}*/
 	
 	/*public void testGetElectionYearsBasedOnElectionTypeAndState()
 	{
@@ -276,9 +276,15 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(statesList.size());
 		System.out.println(statesList.get(1)[1].toString());
 	}*/
-	public void testgetElectionIdsBasedOnStateId(){
+	/*public void testgetElectionIdsBasedOnStateId(){
 		List lst = electionDAO.getElectionIdsBasedOnStateId(24l, "2001");
 		System.out.println(lst.size());
+	}*/
+	
+	public void testGetCountOfElectionsAfterDelimitation()
+	{
+		Object obj = electionDAO.getCountOfElectionsAfterDelimitation(20l);
+		System.out.println(obj);
 	}
 }
 

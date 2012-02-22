@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +13,11 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsAnalysisService{
@@ -29,7 +29,16 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	private IElectionDAO electionDAO;
 	private INominationDAO nominationDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IStaticDataService staticDataService;
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -296,7 +305,9 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			
 			Election election = electionDAO.get(electionId);
 			Long prevElectionId = getPreviousElectionId(electionId);
-			
+			String electionType = election.getElectionScope().getElectionType().getElectionType();
+			Long stateId = election.getElectionScope().getState().getStateId();
+			boolean isFirstElectionAfterDelimtation = getIsFirstElectionAfterDelimtation(election.getElectionScope().getElectionScopeId(),Long.parseLong(election.getElectionYear()));
 			if(prevElectionId == null)
 				return null;
 			
@@ -317,6 +328,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				Map<Long,Long> pariiesPCMap = getPartiesParticipatedCount(electionId);
 				Map<Long,List<SelectOptionVO>> partiesPCinfoMap = getpartiesPCinfo(electionId);
 				List<Long> knownConstituencyIds = new ArrayList<Long>(0);
+				List<SelectOptionVO> staticParties = getStaticParties(electionType,stateId);
 				
 				for(Object[] params : list)
 				{
@@ -335,11 +347,17 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 						resultVO.setWonOrLeadCount(1L);
 						resultVO.setTotalSeatsParticipated(pariiesPCMap.get(partyId));
 						resultVO.setParticipatedConstituencies(partiesPCinfoMap.get(partyId));
+						resultVO.setIsFirstElectionAfterDelimtation(isFirstElectionAfterDelimtation);
 						
 						if(params[4] == null)
 							constituencyIdsList.add((Long)params[2]);
 						
 						resultVO.setConstituencyIdsList(constituencyIdsList);
+						
+						if(isFirstElectionAfterDelimtation)
+						{
+							resultVO = setNewAndOldPatricipatedConstituenciesAndCount(resultVO);
+						}
 						
 						if(isPartial)
 						{
@@ -413,6 +431,26 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 						
 					if(isNew)
 						resultList.add(resultVO);
+					
+					if(isPartial)
+					{
+						for(SelectOptionVO selectOptionVO : staticParties)
+							if(getElectionLiveResultVOFromList(resultList,selectOptionVO.getId()) == null)
+							{
+								ElectionLiveResultVO electionLiveResultVO = new ElectionLiveResultVO();
+								electionLiveResultVO.setPartyId(selectOptionVO.getId());
+								electionLiveResultVO.setPartyName(selectOptionVO.getName());
+								electionLiveResultVO.setWonOrLeadCount(0L);
+								electionLiveResultVO.setTotalSeatsParticipated(pariiesPCMap.get(selectOptionVO.getId()));
+								electionLiveResultVO.setParticipatedConstituencies(partiesPCinfoMap.get(selectOptionVO.getId()));
+								electionLiveResultVO.setConstituencyIdsList(new ArrayList<Long>(0));
+								electionLiveResultVO.setLeadCountInOld(0L);
+								electionLiveResultVO.setWonCountInOld(0L);
+								electionLiveResultVO.setLeadCountInNew(0L);
+								electionLiveResultVO.setWonCountInNew(0L);
+								resultList.add(electionLiveResultVO);
+							}
+					}
 				}
 				
 				for(ElectionLiveResultVO electionLiveResultVO : resultList)
@@ -437,6 +475,31 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				
 				for(ElectionLiveResultVO electionLiveResultVO : resultList)
 				{
+					resultVO.setTotalKnownCount(getKnownCount(
+							getSelectOptionVOListIds(resultVO.getParticipatedConstituencies()),knownConstituencyIds));
+					resultVO.setWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCount().doubleValue()*100)/
+							resultVO.getTotalKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+					if(isFirstElectionAfterDelimtation)
+					{
+						resultVO.setOldKnownCount(getKnownCount(
+								getSelectOptionVOListIds(resultVO.getOldConstituenciesParticipated()),knownConstituencyIds));
+						resultVO.setOldKnownCount(getKnownCount(
+								getSelectOptionVOListIds(resultVO.getNewConstituenciesParticipated()),knownConstituencyIds));
+						
+						resultVO.setWonOrLeadCountInOld(
+								(resultVO.getLeadCountInOld() != null ? resultVO.getLeadCountInOld(): 0L) + 
+								(resultVO.getWonCountInOld() != null ? resultVO.getWonCountInOld() : 0L));
+						resultVO.setWonOrLeadCountInNew(
+								(resultVO.getLeadCountInNew() != null ? resultVO.getLeadCountInNew(): 0L) + 
+								(resultVO.getWonCountInNew() != null ? resultVO.getWonCountInNew() : 0L));
+						
+						resultVO.setOldWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCountInOld().doubleValue()*100)/
+								resultVO.getOldKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+						
+						resultVO.setNewWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCountInNew().doubleValue()*100)/
+								resultVO.getNewKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+					}
+					
 					if(electionLiveResultVO.getParticipatedConstituencies() != null && 
 							electionLiveResultVO.getParticipatedConstituencies().size() > 0)
 						electionLiveResultVO = getPartiesLostInfo(electionId,prevElectionId,electionLiveResultVO,isPartial);
@@ -752,6 +815,116 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				return true;
 		}
 		return false;
+	}
+	
+	public List<SelectOptionVO> getStaticParties(String electionType,Long stateId)
+	{
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>(0);
+		try{
+			if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				for(SelectOptionVO selectOptionVO : staticDataService.getAllNationalParties())
+					parties.add(selectOptionVO);
+			else if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				for(SelectOptionVO selectOptionVO : staticDataService.getStaticPartiesListForAState(stateId))
+					parties.add(selectOptionVO);
+			
+			return parties;
+		}catch (Exception e) {
+			log.error("Exception Occured in getStaticParties() Method - "+e);
+			return parties;
+		}
+	}
+	
+	public boolean getIsFirstElectionAfterDelimtation(Long electionScopeId, Long year)
+	{
+		try{
+			if(year.longValue() >= IConstants.DELIMITATION_YEAR)
+			{
+				Long count = (Long)electionDAO.getCountOfElectionsAfterDelimitation(electionScopeId);
+				
+				if(count.longValue() == 1L)
+					return true;
+				else
+					return false;
+			}
+			else
+				return false;
+		}catch (Exception e) {
+			log.error("Exception Occured in getIsFirstElectionAfterDelimtation() Method - "+e);
+			return false;
+		}
+	}
+	
+	
+	public ElectionLiveResultVO setNewAndOldPatricipatedConstituenciesAndCount(ElectionLiveResultVO electionLiveResultVO)
+	{
+		try{
+			List<SelectOptionVO> oldConstituenciesParticipated = new ArrayList<SelectOptionVO>(0);
+			List<SelectOptionVO> newConstituenciesParticipated = new ArrayList<SelectOptionVO>(0);
+			Long oldConstituencyParticipatedCount = 0L;
+			Long newConstituencyParticipatedCount = 0L;
+			
+			if(electionLiveResultVO.getParticipatedConstituencies() != null && electionLiveResultVO.getParticipatedConstituencies().size() > 0)
+			{
+				List<Object[]> list = constituencyDAO.getConstituencyInfoWithStartDateByConstituencyIdList(
+						getSelectOptionVOListIds(electionLiveResultVO.getParticipatedConstituencies()));
+				
+				if(list != null && list.size() > 0)
+				{
+					SelectOptionVO selectOptionVO = null;
+					for(Object[] params : list)
+					{
+						selectOptionVO = new SelectOptionVO((Long)params[0],params[1].toString());
+						if(params[2] == null)
+							oldConstituenciesParticipated.add(selectOptionVO);
+						else
+							newConstituenciesParticipated.add(selectOptionVO);
+					}
+					
+					oldConstituencyParticipatedCount = (long)oldConstituenciesParticipated.size();
+					newConstituencyParticipatedCount = (long)newConstituenciesParticipated.size();
+				}
+			}
+			
+			electionLiveResultVO.setOldConstituenciesParticipated(oldConstituenciesParticipated);
+			electionLiveResultVO.setNewConstituenciesParticipated(newConstituenciesParticipated);
+			electionLiveResultVO.setOldConstituencyParticipatedCount(oldConstituencyParticipatedCount);
+			electionLiveResultVO.setNewConstituencyParticipatedCount(newConstituencyParticipatedCount);
+			
+			return electionLiveResultVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in setNewAndOldPatricipatedCount() Method - "+e);
+			return electionLiveResultVO;
+		}
+	}
+	
+	public List<Long> getSelectOptionVOListIds(List<SelectOptionVO> list)
+	{
+		List<Long> ids = new ArrayList<Long>(0);
+		try{
+			if(list != null && list.size() > 0)
+				for(SelectOptionVO optionVO : list)
+					ids.add(optionVO.getId());
+			return ids;
+		}catch (Exception e) {
+			return ids;
+		}
+	}
+	
+	public Long getKnownCount(List<Long> list1,List<Long> list2)
+	{
+		Long count = 0L;
+		try{
+			if(list1 != null && list2 != null)
+			{
+				for(Long id : list1)
+					if(list2.contains(id))
+						count++;
+			}
+			return count;
+		}catch (Exception e) {
+			return count;
+		}
 	}
 
 }
