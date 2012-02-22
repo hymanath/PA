@@ -135,4 +135,11 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		
 		return query.list();
 	}
+		
+	public List<Object[]> getCandidateResultsForPartialElec(Long constituencyId,Long electionId)
+	{
+		Object[] data = {constituencyId,electionId};
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.status from ConstituencyLeadCandidate model where  model.constituencyElection.constiElecId in " +
+				" (select model1.constituencyElection.constiElecId from Nomination model1  where model1.constituencyElection.constituency.constituencyId = ? and model1.constituencyElection.election.electionId = ?)",data);
+	}
 }
