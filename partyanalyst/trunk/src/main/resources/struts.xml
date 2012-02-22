@@ -3004,6 +3004,8 @@
 		
 		<action name="ministerAnalysisAction" class="ministerAnalysisAction">
 			<result name="success">/jsp/ministerAnalysisReport.jsp</result> 
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="constituencyPageAction2" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction">
@@ -3051,5 +3053,10 @@
 			</result>		
 		</action>
 				
+		<action name="getministersDetailsAction" class="ministerAnalysisAction" method="getMinisterData">
+			<result type="json" name="success">
+				<param name="root">results</param>
+			</result>
+		</action>				
 	</package>
 </struts>      
