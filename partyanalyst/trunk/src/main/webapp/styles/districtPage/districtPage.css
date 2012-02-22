@@ -118,8 +118,8 @@
 
 .districtPageRoundedHeaders_center
 {
-	background-image:url("../../images/icons/districtPage/header_body.png");
-	color:#4B74C6;
+	/*background-image:url("../../images/icons/districtPage/header_body.png");*/
+	background-color:#72CAED;
 	font-weight:bold;
 	padding:11px;
 	height:14px;
@@ -138,9 +138,9 @@
 }
 #mandalsDiv_body
 {
-	border-left:1px solid #E0E0D6;
-	border-right:1px solid #E0E0D6;
-	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #ffffff;
+	border-right:1px solid #ffffff;
+	border-bottom:1px solid #ffffff;
 	width:313px;
 	overflow:auto;
 	height:310px;
@@ -169,7 +169,7 @@
 	margin-bottom:10px;
 }
 
-
+/*
 #delimitMandalsDiv_body
 {
 	border-left:1px solid #E0E0D6;
@@ -189,7 +189,7 @@
 	width:272px;
 	overflow:auto;
 	height:100px;
-}
+}*/
 
 #stateCensusDiv_body
 {
@@ -209,14 +209,14 @@
 	margin-top:20px;
 }
 
-#districtMap_body
+/*#districtMap_body
 {
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
 	overflow:auto;
 	height:440px;
-}
+}*/
 
 #zptc_body,#mptc_body
 {
@@ -253,7 +253,8 @@
 
 #mp_body table
 {
-	width:100%;
+	/*width:100%;*/
+	width:91%;
 }
 
 #mptc_zptc_div_main a
@@ -377,13 +378,13 @@
 	margin-right:20px*/
 }
 
-#districtPeopleConnect_body
+/*#districtPeopleConnect_body
 {
 	border-bottom:1px solid #E0E0D6;
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	height:313px
-}
+}*/
 
 #connectPeoplePopup_outer .yui-panel
 {
@@ -533,3 +534,5 @@ height:189px;
 padding-right:0px;
 width:254px;
 }
+
+
