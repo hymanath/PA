@@ -121,4 +121,18 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartyWinConstituencies(Long partyId,Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination model, ConstituencyLeadCandidate model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
+				" model.candidate.candidateId = model2.candidate.candidateId and model.party.partyId = ? and model2.constituencyElection.constituency.constituencyId in (:constituenciesList)");
+		
+		query.setParameter(0,electionId);
+		query.setParameter(1,partyId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+	}
 }

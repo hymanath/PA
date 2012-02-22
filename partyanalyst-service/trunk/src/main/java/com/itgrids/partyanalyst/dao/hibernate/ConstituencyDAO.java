@@ -418,6 +418,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				" order by model.name",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyInfoByConstituencyIdList(List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.constituencyId, model.name from Constituency model where model.constituencyId in(:constituenciesList)");
+		query.setParameterList("constituenciesList",constituenciesList);
+		return query.list();
+	}
+	
 	public void flushAndclearSession(){
 		getSession().flush();
 		getSession().clear();

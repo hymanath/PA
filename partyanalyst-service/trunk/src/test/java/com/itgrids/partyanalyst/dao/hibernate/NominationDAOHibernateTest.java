@@ -1041,9 +1041,49 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetpartiesPCinfo()
+	/*public void testGetpartiesPCinfo()
 	{
 		List<Object[]> list = nominationDAO.getpartiesPCinfo(38l);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	/*public void testGetPartyWinConstituenciesInAElection()
+	{
+		List<Long>constituenciesList = new ArrayList<Long>(0);
+		constituenciesList.add(1l);
+		constituenciesList.add(2l);
+		constituenciesList.add(3l);
+		constituenciesList.add(4l);
+		constituenciesList.add(5l);
+		
+		List<Object[]> list = nominationDAO.getPartyRankConstituenciesInAElection(362l,38l, constituenciesList);
+		
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetPartyLostConstituencies()
+	{
+		List<Long>constituenciesList = new ArrayList<Long>(0);
+		constituenciesList.add(1l);
+		constituenciesList.add(2l);
+		constituenciesList.add(3l);
+		constituenciesList.add(4l);
+		constituenciesList.add(5l);
+		
+		List<Object[]> list = nominationDAO.getPartyLostConstituencies(362l,38l, constituenciesList);
 		
 		System.out.println(list.size());
 		for(Object[] params : list)

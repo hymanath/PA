@@ -23,10 +23,60 @@ public class ElectionLiveResultVO {
 	private List<SelectOptionVO> wonFromOtherParties;
 	private List<SelectOptionVO> lostToOtherParties;
 	private List<SelectOptionVO> participatedConstituencies;
+	private List<SelectOptionVO> lostSeatsInPrevWonToOtherParties;
+	private List<SelectOptionVO> lostSeatsInPrevLostToOtherParties;
+	private List<SelectOptionVO> prevWonConstituenciesList;
+	private List<SelectOptionVO> prevLostConstituenciesList;
+	private List<SelectOptionVO> lostConstituenciesList;
 	private List<Long> constituencyIdsList;
+	private List<Long> prevLostConstIds;
+	private List<Long> prevWonConstIds;
+	private List<Long> lostConstIdsList;
 	private Long totalSeatsParticipated;
 	private Long lostCount;
+	private Long lostCountInPrevWon;
+	private Long lostCountInPrevLost;
+	
 		
+	public List<Long> getLostConstIdsList() {
+		return lostConstIdsList;
+	}
+	public void setLostConstIdsList(List<Long> lostConstIdsList) {
+		this.lostConstIdsList = lostConstIdsList;
+	}
+	public List<SelectOptionVO> getLostConstituenciesList() {
+		return lostConstituenciesList;
+	}
+	public void setLostConstituenciesList(
+			List<SelectOptionVO> lostConstituenciesList) {
+		this.lostConstituenciesList = lostConstituenciesList;
+	}
+	public List<Long> getPrevLostConstIds() {
+		return prevLostConstIds;
+	}
+	public void setPrevLostConstIds(List<Long> prevLostConstIds) {
+		this.prevLostConstIds = prevLostConstIds;
+	}
+	public List<Long> getPrevWonConstIds() {
+		return prevWonConstIds;
+	}
+	public void setPrevWonConstIds(List<Long> prevWonConstIds) {
+		this.prevWonConstIds = prevWonConstIds;
+	}
+	public List<SelectOptionVO> getPrevWonConstituenciesList() {
+		return prevWonConstituenciesList;
+	}
+	public void setPrevWonConstituenciesList(
+			List<SelectOptionVO> prevWonConstituenciesList) {
+		this.prevWonConstituenciesList = prevWonConstituenciesList;
+	}
+	public List<SelectOptionVO> getPrevLostConstituenciesList() {
+		return prevLostConstituenciesList;
+	}
+	public void setPrevLostConstituenciesList(
+			List<SelectOptionVO> prevLostConstituenciesList) {
+		this.prevLostConstituenciesList = prevLostConstituenciesList;
+	}
 	public Long getLostCount() {
 		return lostCount;
 	}
@@ -160,5 +210,31 @@ public class ElectionLiveResultVO {
 	public void setParticipatedConstituencies(
 			List<SelectOptionVO> participatedConstituencies) {
 		this.participatedConstituencies = participatedConstituencies;
+	}
+	public List<SelectOptionVO> getLostSeatsInPrevWonToOtherParties() {
+		return lostSeatsInPrevWonToOtherParties;
+	}
+	public void setLostSeatsInPrevWonToOtherParties(
+			List<SelectOptionVO> lostSeatsInPrevWonToOtherParties) {
+		this.lostSeatsInPrevWonToOtherParties = lostSeatsInPrevWonToOtherParties;
+	}
+	public List<SelectOptionVO> getLostSeatsInPrevLostToOtherParties() {
+		return lostSeatsInPrevLostToOtherParties;
+	}
+	public void setLostSeatsInPrevLostToOtherParties(
+			List<SelectOptionVO> lostSeatsInPrevLostToOtherParties) {
+		this.lostSeatsInPrevLostToOtherParties = lostSeatsInPrevLostToOtherParties;
+	}
+	public Long getLostCountInPrevWon() {
+		return lostCountInPrevWon;
+	}
+	public void setLostCountInPrevWon(Long lostCountInPrevWon) {
+		this.lostCountInPrevWon = lostCountInPrevWon;
+	}
+	public Long getLostCountInPrevLost() {
+		return lostCountInPrevLost;
+	}
+	public void setLostCountInPrevLost(Long lostCountInPrevLost) {
+		this.lostCountInPrevLost = lostCountInPrevLost;
 	}
 }
