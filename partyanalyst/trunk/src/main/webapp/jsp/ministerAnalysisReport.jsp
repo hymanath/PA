@@ -8,7 +8,6 @@
 <title>Ministers Analysis</title>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-
 <style type="text/css">
 .main-mbg {
     background-color: #06ABEA;
@@ -21,18 +20,304 @@
     text-transform: uppercase;
     width: 977px;
 }
-
-
+table.searchresultsTable {
+    border-collapse: collapse;
+    border-color: #666666;
+    border-width: 1px;
+    color: #333333;
+    font-family: verdana,arial,sans-serif;
+    font-size: 11px;
+    margin-top: 10px;
+}
+table.searchresultsTable th {
+    background-color: #C4DEFF;
+    border-color: #666666;
+    border-style: solid;
+    border-width: 1px;
+}
+table.searchresultsTable td {
+    background-color: #FFFFFF;
+    border-color: #666666;
+    border-style: solid;
+    border-width: 1px;
+}
+table.searchresultsTable, table.searchresultsTable * td, table.searchresultsTable * th {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #D3D3D3 !important;
+    border-style: solid;
+    border-width: 1px;
+}
 </style>
 <script type="text/javascript">
+function getElectionYears(electionType)
+{
+   stateId = 1;
+   if(electionType == "Assembly")
+   {
+	var stateEle = document.getElementById("stateListId");
+    stateId = stateEle.options[stateEle.selectedIndex].value;
+   }
+	removeData("yearSelId");
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callAjax(jObj,url);
+}
   function showHidsState()
     {
       if(document.getElementById("state").checked == true)
-	      document.getElementById("stateListId").style.display ="block";
+	      document.getElementById("showHideState").style.display ="block";
 	  else
-	      document.getElementById("stateListId").style.display ="none";
+	      document.getElementById("showHideState").style.display ="none";
     }
- function callAjax(param,jsObj,url)
+	function getAllStates()
+   {
+    
+      
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			eleType: 2,
+			task:"getStatesForAssign"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function buildDataTable(result)
+  {
+     var str = '';
+	 if(result.length > 0)
+	 {
+	   str+='<table class="searchresultsTable" style="width:975px;margin-left:10px;text-align:center;">';
+	   str+='   <tr style="width:100%;">';
+	   str+='      <th style="width:13%;">Candidate Name</th>';
+	   str+='      <th style="width:13%;">Ministry</th>';
+	  if(result[0].currentResult.isPartial == 1)
+	  {
+	   str+='      <th  style="width:35%;">';
+	   str+='         <table style="width:100%;">';
+	   str+='             <tr style="width:100%;"><th colspan="3" style="width:100%;border:0px;">'+result[0].currentResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;">';
+	   str+='                  <th style="width:13%;border:0px;">Party</th>';
+	   str+='                  <th style="width:33%;border:0px;">Constituency</th>';
+	   str+='                  <th style="width:33%;border:0px;">Status</th>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </th>';
+	  }
+	  else
+	  {
+	   str+='      <th style="width:40%;">';
+	   str+='         <table  style="width:100%;" >';
+	   str+='             <tr style="width:100%;"><th colspan="5"  style="width:100%;border:0px;">'+result[0].currentResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;">';
+	   str+='                  <th  style="width:13%;border:0px;">Party</th>';
+	   str+='                  <th  style="width:25%;border:0px;">Constituency</th>';
+	   str+='                  <th  style="width:15%;border:0px;">Votes Earned</th>';
+	   str+='                  <th  style="width:15%;border:0px;">Votes Percentage</th>';
+	   str+='                  <th  style="width:20%;border:0px;">Result</th>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </th>';
+	  }
+      if(result[0].previousResult.isPartial == 1)
+	  {
+	   str+='      <th style="width:35%;">';
+	   str+='         <table style="width:100%;">';
+	   str+='             <tr  style="width:100%;"><th colspan="3" style="width:100%;border:0px;">'+result[0].previousResult.year+'</th></tr>';
+	   str+='             <tr  style="width:100%;">';
+	   str+='                  <th style="width:13%;border:0px;">Party</th>';
+	   str+='                  <th style="width:33%;border:0px;">Constituency</th>';
+	   str+='                  <th style="width:33%;border:0px;">Status</th>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </th>';
+	  }
+	  else
+	  {
+	   str+='      <th style="width:35%;">';
+	   str+='         <table style="width:100%;">';
+	   str+='             <tr style="width:100%;"><th colspan="5" style="width:100%;border:0px;">'+result[0].previousResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;">';
+	   str+='                  <th style="width:13%;border:0px;">Party</th>';
+	   str+='                  <th style="width:25%;border:0px;">Constituency</th>';
+	   str+='                  <th style="width:15%;border:0px;">Votes Earned</th>';
+	   str+='                  <th style="width:15%;border:0px;">Votes Percentage</th>';
+	   str+='                  <th style="width:20%;border:0px;">Result</th>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </th>';
+	  }	   	  
+	  str+='   </tr>';
+	  
+	  
+	  for(var i in result)
+	   {
+	    
+	   str+='   <tr style="width:100%;">';
+	   str+='      <td style="width:13%;"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
+	   str+='      <td style="width:13%;">'+result[i].positionName+'</td>';
+	 if(result[i].currentResult.positionManagementVOList.length >0)
+	 {
+	  if(result[0].currentResult.isPartial == 1)
+	  {
+	   str+='      <td style="width:35%;">';
+	   str+='         <table style="width:100%;">';
+	   for(var j in result[i].currentResult.positionManagementVOList)
+	     {
+	      str+='             <tr style="width:100%;">';
+	      str+='                  <td style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
+	      str+='                  <td style="width:33%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td style="width:33%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].result+'</td>';
+	      str+='             </tr>';
+		 }
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	  else
+	  {
+	   str+='      <td style="width:45%;">';
+	   str+='         <table style="width:100%;">';
+	  for(var j in result[i].currentResult.positionManagementVOList)
+	    {
+	     str+='             <tr style="width:100%;">';
+	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesEarned+'</td>';
+	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesPercengate+'</td>';
+		 if(result[i].currentResult.positionManagementVOList[j].rank == 1)
+	        str+='                  <td  style="width:20%;border:0px;">Won</td>';
+		 else
+		    str+='                  <td  style="width:20%;border:0px;">Lost</td>';
+	     str+='             </tr>';
+	    }
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	 }
+	 else
+	 {
+	   if(result[0].currentResult.isPartial == 1)
+	  {
+	   str+='      <td  style="width:35%;">';
+	   str+='         <table  style="width:100%;">';
+	   str+='             <tr  style="width:100%;">';
+	   str+='                  <td  style="width:33%;border:0px;">--</td>';
+	   str+='                  <td style="width:33%;border:0px;">--</td>';
+	   str+='                  <td style="width:33%;border:0px;">--</td>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	  else
+	  {
+	   str+='      <td  style="width:45%;">';
+	   str+='         <table  style="width:100%;">';
+	   str+='             <tr  style="width:100%;">';
+	   str+='                  <td  style="width:25%;border:0px;">--</td>';
+	   str+='                  <td style="width:25%;border:0px;">--</td>';
+	   str+='                  <td style="width:15%;border:0px;">--</td>';
+	   str+='                  <td style="width:15%;border:0px;">--</td>';
+	   str+='                  <td style="width:20%;border:0px;">--</td>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	 
+	 }
+	 
+	 if(result[i].previousResult.positionManagementVOList.length >0)
+	 {
+	  if(result[0].previousResult.isPartial == 1)
+	  {
+	   str+='      <td  style="width:35%;">';
+	   str+='         <table  style="width:100%;">';
+	   for(var j in result[i].previousResult.positionManagementVOList)
+	     {
+	      str+='             <tr  style="width:100%;">';
+	      str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
+	      str+='                  <td  style="width:33%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td  style="width:33%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].result+'</td>';
+	      str+='             </tr>';
+		 }
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	  else
+	  {
+	   str+='      <td  style="width:45%;">';
+	   str+='         <table  style="width:100%;">';
+	  for(var j in result[i].previousResult.positionManagementVOList)
+	    {
+	     str+='             <tr  style="width:100%;">';
+	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesEarned+'</td>';
+	     str+='                  <td style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesPercengate+'</td>';
+		 if(result[i].previousResult.positionManagementVOList[j].rank == 1)
+	        str+='                  <td style="width:20%;border:0px;">Won</td>';
+		 else
+		    str+='                  <td style="width:20%;border:0px;">Lost</td>';
+	     str+='             </tr>';
+	    }
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	 }
+	 else
+	 {
+	   if(result[0].previousResult.isPartial == 1)
+	  {
+	   str+='      <td  style="width:35%;">';
+	   str+='         <table  style="width:100%;">';
+	   str+='             <tr  style="width:100%;">';
+	   str+='                  <td  style="width:33%;border:0px;">--</td>';
+	   str+='                  <td  style="width:33%;border:0px;">--</td>';
+	   str+='                  <td  style="width:33%;border:0px;">--</td>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	  else
+	  {
+	   str+='      <td  style="width:45%;">';
+	   str+='         <table  style="width:100%;">';
+	   str+='             <tr style="width:100%;">';
+	   str+='                  <td style="width:25%;border:0px;">--</td>';
+	   str+='                  <td style="width:25%;border:0px;">--</td>';
+	   str+='                  <td style="width:15%;border:0px;">--</td>';
+	   str+='                  <td style="width:15%;border:0px;">--</td>';
+	   str+='                  <td style="width:20%;border:0px;">--</td>';
+	   str+='             </tr>';
+	   str+='         </table>';
+	   str+='      </td>';
+	  }
+	 
+	 }   	  
+	  str+='   </tr>';
+		
+	   
+	   }
+	   str+='</table>';
+	 }
+	 else
+	 {
+	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
+	 }
+     document.getElementById("showData").innerHTML = str; 
+  }
+ function callAjax(jsObj,url)
    {
 		var myResults;
  					
@@ -41,11 +326,19 @@
 							try {												
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
-									if(jsObj.task == "getRegionWisePartyElectionResults")
-									{
-										
-									}
 									
+									if(jsObj.task == "getElectionYearsForAState")
+									{
+									      buildData(myResults,"yearSelId");
+									}
+									else if(jsObj.task == "getStatesForAssign")
+									{
+									      buildData(myResults,"stateListId");
+									}
+									else if(jsObj.task == "getdetails")
+									{
+									      buildDataTable(myResults);
+									}
 								}
 							catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -59,79 +352,82 @@
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
   }
- function buildGenderCountResultsDataTable(dtSourceArray)
-   {	
-  
-	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
-	{
+ function buildData(results,id)
+ {
+   var elmt = document.getElementById(id);
+   
+       for(var i in results)
+	  {
+		var option = document.createElement('option');     
 		
-		var Party = oRecord.getData("partyName");
-		var partyIds = oRecord.getData("partyId");
-		if(oData !='IND' && partyIds!=null){
-		elLiner.innerHTML =
-		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
+		    option.value=results[i].id;
+		    option.text=results[i].name;       
+        
+		try
+		{
+			elmt.add(option,null); // standards compliant
 		}
-		else
-			elLiner.innerHTML ='<a href="javascript:{}">'+Party+"</a>";
-			
-	};
-	var partywiseResultsWithGenderColumnDefs = [
-								{key: "partyName", label: "Party", sortable:true,
-								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "TP*", sortable:true},	
-		              	 	    {key: "totalSeatsWon", label: "Seat Won",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "CV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "PV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "malePerticipated", label: "Male Participants",formatter:"number", sortable:true},
-		              	 	 	{key: "maleWon", label: "Male Won",formatter:"number", sortable:true}, 
-								{key: "MVotesPercent", label: "Male Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
-		              	 	 	{key: "femalePerticipated", label:"Female Participants", formatter:"number",sortable: true},
-		              	 	 	{key: "femaleWon", label:"Female Won",formatter:"number", sortable: true},
-								{key: "FVotesPercent", label: "Female Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
-		              	 	    ];                	 	    
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	
+	  } 
+ }
+ function showOthers()
+ {
+    document.getElementById("stateListId").value = 0;
+	removeData("yearSelId");
+ }
+ function getDetails()
+ {
+     yearEle =  document.getElementById("yearSelId");
+	 eleId = yearEle.options[yearEle.selectedIndex].value;
+	 var jsObj =
+		{ 
+            time : new Date().getTime(),
+			electionId: eleId,
+			task:"getdetails"
+		};
 
-		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
-		partywiseResultsWithGenderDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		partywiseResultsWithGenderDataSource.responseSchema = {
-                fields: ["partyName", {key: "totalParticipated", parser:"number"},
-                         		  {key: "totalSeatsWon", parser:"number"},
-                         		  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key:  "PVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key:  "malePerticipated", parser:"number"},
-                         		  {key: "maleWon", parser:"number"},
-								  {key: "MVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "femalePerticipated", parser:"number"},
-								  {key: "femaleWon", parser:"number"},
-								  {key: "FVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
-								{key: "partyId", parser:"number"}
-									] 
-        		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getministersDetailsAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ }
+ function removeData(elmtId)
+ {
+ var elmt = document.getElementById(elmtId);
 
-		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15			        
-			    }),
-			    caption:"Partywise Male And Female Candidates Participation And Results" 
-				};
-		
-		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable("showData", partywiseResultsWithGenderColumnDefs, partywiseResultsWithGenderDataSource,myConfigs);
-					   	
- 
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
 }
-
 </script>
 </head>
 <body>
-   <div style="padding-left:5px;"><div class="main-mbg"></div></div>
-   <div style="padding-top:10px;padding-left:350px;width:65%;text-align:center;">
+<div style="width:998px;padding-left:5px;">
+   <div style="padding-left:5px;"><div class="main-mbg">Results Analysis For Ministers</div></div>
+   <div style="background-color:#F5F5F5;min-height:360px;">
+   <div style="padding-top:10px;padding-left:250px;width:65%;text-align:center;">
      <table>  
 	  <tr>
-	      <td><input type="radio" name="selectScope" checked="true" onclick="showHidsState();" />&nbsp;&nbsp;<b>Country</b>&nbsp;&nbsp;</td>
-	      <td><input type="radio" id="state" name="selectScope" onclick="showHidsState();" />&nbsp;&nbsp;<b>State</b>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-	      <td><s:select theme="simple"  id="stateListId" list="statesList" listKey="id" listValue="name" style="display:none;" onchange=""/></td>
+	      <td><input type="radio" name="selectScope" checked="true" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
+	      <td><input type="radio" id="state" name="selectScope" onclick="showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
+		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
+		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDetails();" ></select></td>
       </tr>
 	 </table>
    </div>
-   <div id="showData" />
+   <div style="width:980px;" id="showData" />
+   </div>
+<div>
+   <script type="text/javascript">
+     getElectionYears("Parliament");
+	 getAllStates();
+   </script>
 </body>
 </html>
