@@ -71,6 +71,7 @@ function buildMandalsListCarousel()
 
 function buildDistrictLatestNews()
 {	
+
 	var options = {
     "format" : "300x250",
 	"queryList" : [
@@ -121,8 +122,8 @@ function buildDistrictLevelProblemWindow()
 	
 
 	var str='';
-	str+='<fieldset id="problemViewingFieldSet" style="width:292px">';
-	str+='<legend style="font-weight:bold;"> View Your District Problems</legend>';
+	str+='<fieldset id="problemViewingFieldSet" style="width:285px;">';
+	str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
@@ -238,26 +239,28 @@ function handleCancel()
 	this.cancel();
 }
 
-
+/*
 function openAddNewProblemWindow()
 {	
 	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
-}
+}*/
 
 function buildProblemPostingWindowForDistrict()
 {
+	
+		
 	var headElmt = document.getElementById('problemPostingDiv_Head');
 	var bodyElmt = document.getElementById('problemPostingDiv_Body');
 	var str='';
-	str+='<fieldset id="ProblemPostingFieldSet">';
-	str+='<legend style="font-weight:bold;"> Post Your District Problem</legend>';
+	str+='<fieldset id="ProblemPostingFieldSet" style="width:265px;">';
+	str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> Post Your District Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your district problem and bring it to the all people notice.</div>';	
 	if(userLoginStatus=="true"){		
-		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()">POST</a></div>';	
+		str+='<div id="problemPostingButtonDiv" class="view-all"><a type="button" id="postButton" value = "Post" style="-moz-border-radius:3px;" onclick="openAddNewProblemWindow()">POST</a></div>';	
 	}else{
-		str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';	
+		str+='<div id="problemPostingButtonDiv" class="view-all"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';	
 	}
 	str+='</div>';
 	str+='</fieldset>';
@@ -270,6 +273,8 @@ function buildProblemPostingWindowForDistrict()
 }
 function buildDistrictConnectPeopleWindow()
 {	
+debugger;
+
 	var bodyElmt = document.getElementById('districtPeopleConnectData_body');
 	
 	if(connectedPeople.length == 0 && userLoginStatus == "false")
@@ -298,7 +303,7 @@ function buildDistrictConnectPeopleWindow()
 	buildConnectUsersContent(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
 }
 
-function initializeDistrictPage()
+/*function initializeDistrictPage()
 {
 	buildProblemPostingWindowForDistrict();
 	buildDistrictPageLayout();
@@ -307,3 +312,4 @@ function initializeDistrictPage()
 	buildDistrictConnectPeopleWindow();
 	
 }
+*/
