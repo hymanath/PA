@@ -12,8 +12,10 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
+import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
@@ -30,6 +32,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	private INominationDAO nominationDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IStaticDataService staticDataService;
+	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -78,6 +81,15 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 
 	public IConstituencyLeadCandidateDAO getConstituencyLeadCandidateDAO() {
 		return constituencyLeadCandidateDAO;
+	}
+
+	public IElectionGoverningBodyDAO getElectionGoverningBodyDAO() {
+		return electionGoverningBodyDAO;
+	}
+
+	public void setElectionGoverningBodyDAO(
+			IElectionGoverningBodyDAO electionGoverningBodyDAO) {
+		this.electionGoverningBodyDAO = electionGoverningBodyDAO;
 	}
 
 	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId, String electionIsPartial) {
@@ -925,6 +937,174 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		}catch (Exception e) {
 			return count;
 		}
-	}
-
+	}	
+  public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId)
+    {   
+	     if(log.isDebugEnabled())
+	    	 log.debug("Enter into getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService");
+	    Long prevElectionId = getPreviousElectionId(elecId);
+	    List<PositionManagementVO> listData = new ArrayList<PositionManagementVO>();
+	  try
+	  {
+	    List<Object[]> candidates = electionGoverningBodyDAO.getAllMinistersIdsAndMinistry(prevElectionId);
+	    PositionManagementVO positionManagementVO = null;
+	    for(Object[] candDetails :candidates)
+	    {
+	    	positionManagementVO = new PositionManagementVO();
+	    	positionManagementVO.setCandidateId((Long)candDetails[0]);
+	    	positionManagementVO.setCandidateName(candDetails[1] != null?candDetails[1].toString():"");
+	    	positionManagementVO.setPositionName(candDetails[2] != null?candDetails[2].toString():"");
+	    	// current election
+	    	Election election = electionDAO.get(elecId);
+	    	
+	    	  PositionManagementVO currentResult = new PositionManagementVO();
+	    	  List<PositionManagementVO> currentResultList = new ArrayList<PositionManagementVO>();
+	    	  PositionManagementVO currentResultData = null;
+		      if(election.getIsPartial() != null && election.getIsPartial().trim().equalsIgnoreCase("1"))
+		      {
+		    	 List<Object[]> constiList = nominationDAO.getConstituencyDetails((Long)candDetails[0], elecId);
+		       for(Object[] constis : constiList)
+		       {
+		    	   List<Object[]> currentResultsList = constituencyLeadCandidateDAO.getCandidateResultsForPartialElec((Long)constis[0],elecId);
+		    	   currentResultData = new PositionManagementVO();
+		    	  if(currentResultsList.size() >0)
+		    	  {
+		    		  Object[] result =  currentResultsList.get(0);
+		    		  
+		    		  if(((Long)result[0]) ==  (Long)candDetails[0])
+		    		  {
+		    			  currentResultData.setResult(result[1].toString());
+		    		  }
+		    		  else
+		    		  {
+		    			  currentResultData.setResult("Preceed");
+		    		  }
+		    		  
+		    	  }
+		    	  else
+		    	  {
+		    		  currentResultData.setResult("Results Not Known");
+		    	  }
+		    	  
+		    	  currentResultData.setConstituencyId((Long)constis[0]);
+		    	  currentResultData.setConstituencyName(constis[1] != null?constis[1].toString():"");
+		    	  currentResultList.add(currentResultData);
+		       }
+		       currentResult.setYear(election.getElectionYear());
+		          currentResult.setIsPartial(1L);
+		          currentResult.setPositionManagementVOList(currentResultList);
+		         if(constiList.size() > 0)
+		         {
+		            Object[] partyDetails = constiList.get(0);
+		            currentResult.setPartyId((Long)partyDetails[2]);
+		            currentResult.setPartyName(partyDetails[3] != null?partyDetails[3].toString():"");
+		         }
+		    	  positionManagementVO.setCurrentResult(currentResult);
+		      }
+		      else
+		      {
+		    	  List<Object[]> currentResultsList = nominationDAO.getCandidateResultsForNormal((Long)candDetails[0],elecId);
+		    	  for(Object[] currentResults:currentResultsList)
+		    	  {
+		    		  currentResultData = new PositionManagementVO();
+		    		  currentResultData.setConstituencyId((Long)currentResults[0]);
+		    		  currentResultData.setConstituencyName(currentResults[1] != null?currentResults[1].toString():"");
+		    		  currentResultData.setVotesEarned(new BigDecimal((Double)currentResults[2]));
+		    		  currentResultData.setVotesPercengate(currentResults[3] != null?currentResults[3].toString():"");
+		    		  currentResultData.setRank((Long)currentResults[4]);
+		    		  currentResultList.add(currentResultData);
+		    	  }
+		    	  currentResult.setYear(election.getElectionYear());
+		    	  currentResult.setIsPartial(0L);
+		    	  currentResult.setPositionManagementVOList(currentResultList);
+		    	  if(currentResultsList.size() > 0)
+		    	  {
+		    		    Object[] partyDetails = currentResultsList.get(0);
+		    		    currentResult.setPartyId((Long)partyDetails[5]);
+		    		    currentResult.setPartyName(partyDetails[6] != null?partyDetails[6].toString():""); 
+		    	  }
+		    	  positionManagementVO.setCurrentResult(currentResult);
+		      }
+		      
+		   // previous election
+		    	Election electionPrev = electionDAO.get(prevElectionId);
+		    	
+		    	  PositionManagementVO prevResult = new PositionManagementVO();
+		    	  List<PositionManagementVO> prevResultList = new ArrayList<PositionManagementVO>();
+		    	  PositionManagementVO prevResultData = null;
+			      if(electionPrev.getIsPartial() != null && electionPrev.getIsPartial().trim().equalsIgnoreCase("1"))
+			      {
+			    	 List<Object[]> constiList = nominationDAO.getConstituencyDetails((Long)candDetails[0], prevElectionId);
+			       for(Object[] constis : constiList)
+			       {
+			    	   List<Object[]> prevResultsList = constituencyLeadCandidateDAO.getCandidateResultsForPartialElec((Long)constis[0],prevElectionId);
+			    	   prevResultData = new PositionManagementVO();
+			    	  if(prevResultsList.size() >0)
+			    	  {
+			    		  Object[] result =  prevResultsList.get(0);
+			    		  
+			    		  if(((Long)result[0]) ==  (Long)candDetails[0])
+			    		  {
+			    			  prevResultData.setResult(result[1].toString());
+			    		  }
+			    		  else
+			    		  {
+			    			  prevResultData.setResult("Preceed");
+			    		  }
+			    		  
+			    	  }
+			    	  else
+			    	  {
+			    		  prevResultData.setResult("Results Not Known");
+			    	  }
+			    	  
+			    	  prevResultData.setConstituencyId((Long)constis[0]);
+			    	  prevResultData.setConstituencyName(constis[1] != null?constis[1].toString():"");
+			    	  prevResultList.add(prevResultData);
+			       }
+			       prevResult.setYear(election.getElectionYear());
+			          prevResult.setIsPartial(1L);
+			          prevResult.setPositionManagementVOList(prevResultList);
+			          if(constiList.size() > 0)
+				         {
+				            Object[] partyDetails = constiList.get(0);
+				            prevResult.setPartyId((Long)partyDetails[2]);
+				            prevResult.setPartyName(partyDetails[3] != null?partyDetails[3].toString():"");
+				         }
+			    	  positionManagementVO.setPreviousResult(prevResult);
+			      }
+		      else
+		      {
+		    	  List<Object[]> prevResultsList = nominationDAO.getCandidateResultsForNormal((Long)candDetails[0],prevElectionId);
+		    	  
+		    	  for(Object[] prevResults:prevResultsList)
+		    	  {
+		    	    prevResultData = new PositionManagementVO();
+		    	    prevResultData.setConstituencyId((Long)prevResults[0]);
+		    	    prevResultData.setConstituencyName(prevResults[1] != null?prevResults[1].toString():"");
+		    	    prevResultData.setVotesEarned(new BigDecimal((Double)prevResults[2]));
+		    	    prevResultData.setVotesPercengate(prevResults[3] != null?prevResults[3].toString():"");
+		    	    prevResultData.setRank((Long)prevResults[4]);
+		    	    prevResultList.add(prevResultData);
+		    	  }
+		    	  prevResult.setIsPartial(0L);
+		    	  prevResult.setYear(electionPrev.getElectionYear());
+		    	  prevResult.setPositionManagementVOList(prevResultList);
+		    	  if(prevResultsList.size() > 0)
+		    	  {
+		    		    Object[] partyDetails = prevResultsList.get(0);
+			            prevResult.setPartyId((Long)partyDetails[5]);
+			            prevResult.setPartyName(partyDetails[6] != null?partyDetails[6].toString():""); 
+		    	  }
+		    	  positionManagementVO.setPreviousResult(prevResult);
+		      }
+	    	listData.add(positionManagementVO);	 
+	      }
+	    }
+	    catch(Exception e)
+	    {
+	    	log.debug("Exception rised in getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService",e);
+	    }
+	    return listData;
+	  }	      
 }
