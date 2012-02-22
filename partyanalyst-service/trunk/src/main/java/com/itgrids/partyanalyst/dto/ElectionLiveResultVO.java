@@ -20,6 +20,7 @@ public class ElectionLiveResultVO {
 	private Long wonCountInNew;
 	private Long wonOrLeadCount;
 	private Long retainedCount;
+	private Boolean isFirstElectionAfterDelimtation;
 	private List<SelectOptionVO> wonFromOtherParties;
 	private List<SelectOptionVO> lostToOtherParties;
 	private List<SelectOptionVO> participatedConstituencies;
@@ -28,6 +29,8 @@ public class ElectionLiveResultVO {
 	private List<SelectOptionVO> prevWonConstituenciesList;
 	private List<SelectOptionVO> prevLostConstituenciesList;
 	private List<SelectOptionVO> lostConstituenciesList;
+	private List<SelectOptionVO> oldConstituenciesParticipated;
+	private List<SelectOptionVO> newConstituenciesParticipated;
 	private List<Long> constituencyIdsList;
 	private List<Long> prevLostConstIds;
 	private List<Long> prevWonConstIds;
@@ -36,8 +39,94 @@ public class ElectionLiveResultVO {
 	private Long lostCount;
 	private Long lostCountInPrevWon;
 	private Long lostCountInPrevLost;
+	private Long oldConstituencyParticipatedCount;
+	private Long newConstituencyParticipatedCount;
+	private String winOrLeadPercent;
+	private String oldWinOrLeadPercent;
+	private String newWinOrLeadPercent;
+	private Long totalKnownCount;
+	private Long oldKnownCount;
+	private Long newKnownCount;
+	private Long wonOrLeadCountInOld;
+	private Long wonOrLeadCountInNew;
 	
 		
+	public String getNewWinOrLeadPercent() {
+		return newWinOrLeadPercent;
+	}
+	public void setNewWinOrLeadPercent(String newWinOrLeadPercent) {
+		this.newWinOrLeadPercent = newWinOrLeadPercent;
+	}
+	public Long getWonOrLeadCountInOld() {
+		return wonOrLeadCountInOld;
+	}
+	public void setWonOrLeadCountInOld(Long wonOrLeadCountInOld) {
+		this.wonOrLeadCountInOld = wonOrLeadCountInOld;
+	}
+	public Long getWonOrLeadCountInNew() {
+		return wonOrLeadCountInNew;
+	}
+	public void setWonOrLeadCountInNew(Long wonOrLeadCountInNew) {
+		this.wonOrLeadCountInNew = wonOrLeadCountInNew;
+	}
+	public Long getTotalKnownCount() {
+		return totalKnownCount;
+	}
+	public void setTotalKnownCount(Long totalKnownCount) {
+		this.totalKnownCount = totalKnownCount;
+	}
+	public Long getOldKnownCount() {
+		return oldKnownCount;
+	}
+	public void setOldKnownCount(Long oldKnownCount) {
+		this.oldKnownCount = oldKnownCount;
+	}
+	public Long getNewKnownCount() {
+		return newKnownCount;
+	}
+	public void setNewKnownCount(Long newKnownCount) {
+		this.newKnownCount = newKnownCount;
+	}
+	public List<SelectOptionVO> getOldConstituenciesParticipated() {
+		return oldConstituenciesParticipated;
+	}
+	public void setOldConstituenciesParticipated(
+			List<SelectOptionVO> oldConstituenciesParticipated) {
+		this.oldConstituenciesParticipated = oldConstituenciesParticipated;
+	}
+	public List<SelectOptionVO> getNewConstituenciesParticipated() {
+		return newConstituenciesParticipated;
+	}
+	public void setNewConstituenciesParticipated(
+			List<SelectOptionVO> newConstituenciesParticipated) {
+		this.newConstituenciesParticipated = newConstituenciesParticipated;
+	}
+	public Long getOldConstituencyParticipatedCount() {
+		return oldConstituencyParticipatedCount;
+	}
+	public void setOldConstituencyParticipatedCount(
+			Long oldConstituencyParticipatedCount) {
+		this.oldConstituencyParticipatedCount = oldConstituencyParticipatedCount;
+	}
+	public Long getNewConstituencyParticipatedCount() {
+		return newConstituencyParticipatedCount;
+	}
+	public void setNewConstituencyParticipatedCount(
+			Long newConstituencyParticipatedCount) {
+		this.newConstituencyParticipatedCount = newConstituencyParticipatedCount;
+	}
+	public String getWinOrLeadPercent() {
+		return winOrLeadPercent;
+	}
+	public void setWinOrLeadPercent(String winOrLeadPercent) {
+		this.winOrLeadPercent = winOrLeadPercent;
+	}
+	public String getOldWinOrLeadPercent() {
+		return oldWinOrLeadPercent;
+	}
+	public void setOldWinOrLeadPercent(String oldWinOrLeadPercent) {
+		this.oldWinOrLeadPercent = oldWinOrLeadPercent;
+	}
 	public List<Long> getLostConstIdsList() {
 		return lostConstIdsList;
 	}
@@ -88,6 +177,13 @@ public class ElectionLiveResultVO {
 	}
 	public void setTotalSeatsParticipated(Long totalSeatsParticipated) {
 		this.totalSeatsParticipated = totalSeatsParticipated;
+	}
+	public Boolean getIsFirstElectionAfterDelimtation() {
+		return isFirstElectionAfterDelimtation;
+	}
+	public void setIsFirstElectionAfterDelimtation(
+			Boolean isFirstElectionAfterDelimtation) {
+		this.isFirstElectionAfterDelimtation = isFirstElectionAfterDelimtation;
 	}
 	public List<Long> getConstituencyIdsList() {
 		return constituencyIdsList;

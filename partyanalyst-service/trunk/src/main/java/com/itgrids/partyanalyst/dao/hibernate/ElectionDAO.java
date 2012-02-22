@@ -654,4 +654,14 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Object[] params = {stateId,year};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.state.stateId = ? and model.electionYear >=?",params);
 	}
+	
+	public Object getCountOfElectionsAfterDelimitation(Long electionScopeId)
+	{
+		Query query = getSession().createQuery("select count(model.electionId) from Election model where model.electionScope.electionScopeId = ? and model.electionYear >= ? and model.elecSubtype = ? ");
+		query.setParameter(0,electionScopeId);
+		query.setParameter(1,IConstants.DELIMITATION_YEAR.toString());
+		query.setParameter(2,IConstants.ELECTION_SUBTYPE_MAIN);
+		
+		return query.uniqueResult();
+	}
 }
