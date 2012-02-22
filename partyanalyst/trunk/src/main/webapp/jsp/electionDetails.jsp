@@ -3398,8 +3398,10 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 getResultsForAnElection(stateID,electionType,year);
 <c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
-getConstituencyAreaTypeWiseResult();
-getPartiesConstituencyUbanPercentage();
+<c:if test="${year >= '2009'}">
+	getConstituencyAreaTypeWiseResult();
+	getPartiesConstituencyUbanPercentage();
+</c:if>
 </c:if>
 getAllTopStories(3,"TopVotesGained");
 $("#top3Id").addClass("dashBoardtabsDivSelected");
