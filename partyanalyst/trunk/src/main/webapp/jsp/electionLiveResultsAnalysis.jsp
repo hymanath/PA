@@ -311,7 +311,7 @@ function buildCompareResultForWonorLead(myResults)
 		str += '</div>';
 	 }
 	partyWonOrLeadResultElmt.innerHTML = str;
-	debugger;
+
 	var parties = new Array();
 	
 	for(var i=0;i<myResults.length;i++)
