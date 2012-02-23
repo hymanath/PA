@@ -501,4 +501,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Object[]> getConstituencyDetails(Long candidateId,Long electionId);
 	
+	public List<Object[]> getConstituencyWiseCandidatesStates(Long electionId);
+	
 }
