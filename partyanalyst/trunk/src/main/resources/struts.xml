@@ -3017,7 +3017,9 @@
 		</action>
 		
 		<action name="electionLiveResultsAnalysisAction" class="electionLiveResultsAnalysisAction">
-			<result name="success">/jsp/electionLiveResultsAnalysis.jsp</result> 
+			<result name="success">/jsp/electionLiveResultsAnalysis.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result> 
 		</action>
 		<action name="getResultsAjaxAction" class="electionLiveResultsAnalysisAction" method="ajaxCallHandlerElectionLiveResults">
 			<result type="json" name="success">
@@ -3056,6 +3058,11 @@
 		<action name="getministersDetailsAction" class="ministerAnalysisAction" method="getMinisterData">
 			<result type="json" name="success">
 				<param name="root">results</param>
+			</result>
+		</action>
+		<action name="getCandidatesStatusAction" class="electionLiveResultsAnalysisAction" method="getConstituencyWiseCandidatesStatus">
+		   <result type="json" name="success">
+				<param name="root">candidatesList</param>
 			</result>
 		</action>				
 	</package>
