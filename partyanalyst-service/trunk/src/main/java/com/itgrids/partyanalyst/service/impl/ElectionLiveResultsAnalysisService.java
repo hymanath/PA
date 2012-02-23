@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -335,7 +336,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				{
 					electionResultVO = new ConstituencyElectionResultVO();
 					electionResultVO.setConstituencyId((Long)params[0]);
-					electionResultVO.setConstituencyName(params[1].toString());
+					electionResultVO.setConstituencyName(WordUtils.capitalize(params[1].toString().toLowerCase()));
 					electionResultVO.setDistrictId((Long)params[2]);
 					electionResultVO.setDistrictName(params[3].toString());
 					electionResultVO.setCandidateId((Long)params[4]);
