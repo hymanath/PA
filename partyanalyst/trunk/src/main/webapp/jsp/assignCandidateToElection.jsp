@@ -136,11 +136,11 @@ width:591px;
   <table style="text-align:left;">
      <tr>
 	    <td class="headingCss">Select Position<font class="requiredFont">*</font> :</td>
-		<td><select style="margin-left: 0px;width: 125px;" id="positionSelId" /></td>
+		<td><select style="margin-left: 0px;width: 125px;" id="positionSelId"  onchange="getPositionTypeDetails();"  /></td>
 	 </tr>
 	 <tr>	
         <td class="headingCss">Type<font class="requiredFont">*</font> :</td>
-		<td><select id="positionType" style="width: 125px;"><option value="0">Select Type</option><option value="1">Main</option><option value="2">Sub</option></select></td>          
+		<td><select id="positionType" style="width: 125px;" onchange="getElectionTypeDetails();" ><option value="0">Select Type</option></select></td>          
 	</tr>
 	<tr>
 	    <td class="headingCss">From Date<font class="requiredFont">*</font> :</td>
@@ -153,13 +153,16 @@ width:591px;
 		</td>
 	 </tr>
 	  <tr>
-	    <td class="headingCss">To Date<font class="requiredFont">*</font> :</td>
+	    <td class="headingCss">To Date :</td>
 		<td>										
 			<input type="text" style="width: 121px;" READONLY="READONLY" name ="toDate" id="toDate" size="15"/>										
 			<div class="yui-skin-sam"><div id="toDate_Div" class="tinyDateCal"></div></div>										
 		</td>														
 		<td valign="top">										
 			<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('toDate_Div','toDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
+		</td>
+		<td>
+		   <input type="button" onclick="clearDate()"  class="buttonStyle" style="padding: 1px 6px;"  value="Clear" />
 		</td>
 	 </tr>
 	  <tr>
@@ -168,7 +171,7 @@ width:591px;
 	 </tr>
 	 <tr>
 	    <td class="headingCss">Select Election Type<font class="requiredFont">*</font> :</td>
-		<td><select style="margin-left: 0px;width: 125px;" id="electionTypeId" onchange="showRemainingDetails();" /></td>
+		<td><select style="margin-left: 0px;width: 125px;" id="electionTypeId" onchange="showRemainingDetails();clearData('yearAssSelId');" ><option value="0">select</option></select></td>
 	 </tr>
 	</table>
 	<div id="showRemaining"></div>
@@ -195,10 +198,14 @@ width:591px;
    </table>
        <div style="padding-left:200px;padding-top:5px;"><input type="button"  class="buttonStyle" value="Search Candidate" onclick="getCandidates();" /><span id="searchCand_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif" /></span></div>
 	   <div style="padding-left:70px;" class="yui-skin-sam" id="searchCandidate"></div>
-	   <div style="padding-left:200px;padding-top:5px;"><input type="button"  class="buttonStyle" value="Assign Candidate" onclick="assignCandidateToPosition();" /><span id="assgCand_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif" /></span></div>
+	   <div style="padding-left:200px;padding-top:5px;"><input type="button"  class="buttonStyle" value="Assign Candidate" onclick="assignCandidateToPosition();" id="assignCandButton" style="display:none;" /><span id="assgCand_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif" /></span></div>
 </fieldset>
 </div>
 <script type="text/javascript">
+function clearDate()
+{
+  document.getElementById("toDate").value="";
+}
 function showRemainingDetails()  
 {
    document.getElementById("showRemaining").innerHTML = "";
@@ -215,18 +222,18 @@ function showRemainingDetails()
 	      str +='<table>';
 		  str +='    <tr>';
 	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 54px;width: 125px;" id="stateId" onchange="getElectionYear();getStaticParties();" /></td>';
+		   str +='      <td><select style="margin-left: 53px;width: 125px;" id="stateId" onchange="getElectionYear();getStaticParties();" ><option value="0">select</option></select></td>';
 	       str +='   </tr>';
 		  str +='</table>';
 		   document.getElementById("showRemaining").innerHTML = str;
-		   getAllStatesForAssign();
+		   getStateDetails();
 	   }
 	   else if(electionTypeId == 5 || electionTypeId == 6 || electionTypeId == 7 )
 	   {
 	       str +='<table>';
 		   str +='    <tr>';
 	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 33px;width: 125px;" id="stateId" onchange="getSelectElmtForLocalBody();" /></td>';
+		   str +='      <td><select style="margin-left: 33px;width: 125px;" id="stateId" onchange="getSelectElmtForLocalBody();" ><option value="0">select</option></select></td>';
 	       str +='   </tr>';
 		   str +='    <tr>';
 	       str +='      <td class="headingCss"> Select Location<font class="requiredFont">*</font> :</td>';
@@ -234,33 +241,33 @@ function showRemainingDetails()
 	       str +='   </tr>';
 		   str +='</table>';
 		   document.getElementById("showRemaining").innerHTML = str;
-		   getAllStatesForAssign();
+		   getStateDetails();
 	   }
 	   else if(electionTypeId == 3 )
 	   {
 		   str +='<table>';
 		  str +='    <tr>';
 	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 41px;width: 125px;" id="stateId" onchange="getDistricts(this.options[this.selectedIndex].value)" /></td>';
+		   str +='      <td><select style="margin-left: 40px;width: 125px;" id="stateId" onchange="getDistricts(this.options[this.selectedIndex].value)" ><option value="0">select</option></select></td>';
 	       str +='   </tr>';
 		   str +='    <tr>';
 	       str +='      <td class="headingCss"> Select District<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 41px;width: 125px;" id="districtId"  onchange="getAllMandalsInDistrict(this.options[this.selectedIndex].value);" /></td>';
+		   str +='      <td><select style="margin-left: 40px;width: 125px;" id="districtId"  onchange="getAllMandalsInDistrict(this.options[this.selectedIndex].value);" /></td>';
 	       str +='   </tr>';
 		   str +='    <tr>';
 	       str +='      <td class="headingCss"> Select Mandal<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 41px;width: 125px;" id="mandalId"  onchange="getElectionYear();getStaticParties();"  /></td>';
+		   str +='      <td><select style="margin-left: 40px;width: 125px;" id="mandalId"  onchange="getElectionYear();getStaticParties();"  /></td>';
 	       str +='   </tr>';
 		  str +='</table>';
 		   document.getElementById("showRemaining").innerHTML = str;
-		   getAllStatesForAssign();
+		   getStateDetails();
 	   }
 	   else if(electionTypeId == 4 )
 	   {
 		   str +='<table>';
 		  str +='    <tr>';
 	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 41px;width: 125px;" id="stateId" onchange="getDistricts(this.options[this.selectedIndex].value);" /></td>';
+		   str +='      <td><select style="margin-left: 41px;width: 125px;" id="stateId" onchange="getDistricts(this.options[this.selectedIndex].value);" ><option value="0">select</option></select></td>';
 	       str +='   </tr>';
 		   str +='    <tr>';
 	       str +='      <td class="headingCss"> Select District<font class="requiredFont">*</font> :</td>';
@@ -268,7 +275,7 @@ function showRemainingDetails()
 	       str +='   </tr>';
 		  str +='</table>';
 		   document.getElementById("showRemaining").innerHTML = str;
-		   getAllStatesForAssign();
+		   getStateDetails();
 	   }
 	  
 }
@@ -524,7 +531,6 @@ function hideBusyImgWithId(elmtId)
           }
 		 else if(jObj.task == "getAllElectionTypes"){
 			createOptionsForSelectElmtIdWithSelectOption("electionType",myResults);
-			createOptionsForSelectElmtIdWithSelectOption("electionTypeId",myResults);
           }
 		  else if(jObj.task == "getDistrictsByStateId"){
 		   clearOptionsListForSelectElmtId("districtId");
@@ -553,11 +559,30 @@ function hideBusyImgWithId(elmtId)
 		  {
 		    document.getElementById("searchCand_ImgSpan").style.display="none";
 		    buildCandidates(myResults);
+			document.getElementById("assignCandButton").style.display="block";
 		  }
 		  else if(jObj.task == "assignCandidateToPosition")
 		  {
 		    showErrorMessage(myResults,"addCandidErrMsg","Candidate Assigned Successfully");
 			document.getElementById("assgCand_ImgSpan").style.display="none";
+			document.getElementById("searchCandidate").innerHTML = "";
+			document.getElementById("assignCandButton").style.display="none";
+		  }
+		   else if(jObj.task == "getElectionTypeDetails")
+		  {
+		    clearOptionsListForSelectElmtId("electionTypeId");
+			createOptionsForSelectElmtIdWithSelectOption("electionTypeId",myResults);
+		  }
+		   else if(jObj.task == "getPositionTypeDetails")
+		  {
+		    clearOptionsListForSelectElmtId("positionType");
+			createOptionsForSelectElmtIdWithSelectOption("positionType",myResults);
+		    
+		  }
+		   else if(jObj.task == "getStateDetails")
+		  {
+		    clearOptionsListForSelectElmtId("stateId");
+			createOptionsForSelectElmtIdWithSelectOption("stateId",myResults);
 		  }
 	   }
      catch(e)
@@ -903,7 +928,7 @@ valid = false;
  if(partyId == 0)
   {
     valid = true;
-	str+='<b><font style="color:red;font-size:12px;">Please Select Select Party </font></b><br />';
+	str+='<b><font style="color:red;font-size:12px;">Please Select Party </font></b><br />';
   }
   if(document.getElementById("districtId") != null)
  {
@@ -1139,12 +1164,27 @@ if(trim(fromDate).length == 0)
 	str+='<b><font style="color:red;font-size:12px;">From Date is Required </font></b><br />';
   }  
 var toDate   = document.getElementById("toDate").value;
-if(trim(toDate).length == 0)
-  {
-    valid = true;
-	str+='<b><font style="color:red;font-size:12px;">To Date is Required </font></b><br />';
-  }  
  
+ if(fromDate.length > 0 && toDate.length > 0 )
+	{    
+      var fromDateSplit = fromDate.split("-");
+	  var todateSplit =  toDate.split("-");
+	  
+	  var dt1  = parseInt(fromDateSplit[2]);
+      var mon1 = parseInt(fromDateSplit[1]);
+      var yr1  = parseInt(fromDateSplit[0]);
+      var dt2  = parseInt(todateSplit[2]);
+      var mon2 = parseInt(todateSplit[1]);
+      var yr2  = parseInt(todateSplit[0]);
+      var date1 = new Date(yr1, mon1, dt1);
+      var date2 = new Date(yr2, mon2, dt2);
+	  if(date1 > date2)
+	  {
+	    valid = true;
+	   str+='<b><font style="color:red;font-size:12px;">To Date Must Greater Than From Date </font></b><br />';
+	  }
+   }
+
  if(electionTypeId !=0 && electionTypeId != 1)
   {
      if(stateId == 0)
@@ -1207,6 +1247,100 @@ if(trim(toDate).length == 0)
    callAjaxForAdmin(url,jsObj);
 
 
+}
+function getStateDetails()
+  { 
+     var str ='';
+     var valid = false;
+	 var electionGovBodyPosEle = document.getElementById("positionSelId");
+     var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
+	 var positionTypeEle = document.getElementById("positionType");
+	 var positionType  = positionTypeEle.options[positionTypeEle.selectedIndex].text;
+     var positionTypeId  = positionTypeEle.options[positionTypeEle.selectedIndex].value;
+	 if(elecGovPosId == 0)
+	 {
+	   valid = true;
+	  str+='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
+	  
+	 }
+	  if(positionTypeId == 0)
+	  {
+	     valid = true;
+	    str+='<b><font style="color:red;font-size:12px;">Please Select Type </font></b><br />';
+	  }
+	 
+	 if(valid)
+	 {
+	     document.getElementById("addCandidErrMsg").innerHTML = str;
+		 return;
+	 }
+		var jObj=
+				{
+				         positionType:positionType,
+				        elecGovPosId: elecGovPosId,
+						task:"getStateDetails"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+				callAjaxForAdmin(url,jObj);
+  }
+function getPositionTypeDetails()
+   {
+  
+    var electionGovBodyPosEle = document.getElementById("positionSelId");
+     var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
+	 if(elecGovPosId == 0)
+	    return;
+		var jObj=
+				{
+				        elecGovPosId: elecGovPosId,
+						task:"getPositionTypeDetails"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+				callAjaxForAdmin(url,jObj);
+    }
+function getElectionTypeDetails()
+   {
+
+     var electionGovBodyPosEle = document.getElementById("positionSelId");
+     var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
+	 
+	 var positionTypeEle = document.getElementById("positionType");
+	 var positionType  = positionTypeEle.options[positionTypeEle.selectedIndex].text;
+     var positionTypeId  = positionTypeEle.options[positionTypeEle.selectedIndex].value;
+	  if(positionTypeId == 0)
+	   return;
+	   
+	 if(elecGovPosId == 0)
+	  {
+	  document.getElementById("addCandidErrMsg").innerHTML ='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
+	  return;
+	 }
+		var jObj=
+				{ 
+				        positionType:positionType,
+				        elecGovPosId: elecGovPosId,
+						task:"getElectionTypeDetails"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+				callAjaxForAdmin(url,jObj);
+    }
+function clearData(elmtId)
+{
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>0;i--)
+	{
+		elmt.remove(i);
+	}	
 }
 getAllPositions();
 getAllElectionTypes();
