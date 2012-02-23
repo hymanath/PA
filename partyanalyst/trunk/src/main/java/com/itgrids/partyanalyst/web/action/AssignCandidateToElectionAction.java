@@ -203,6 +203,18 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 				positionManagementVO.setResult(jObj.getString("result").trim());
 				optionVOList = electionResultsUpdationService.getCandidates(positionManagementVO);
 			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getElectionTypeDetails"))
+			{
+				optionVOList = electionResultsUpdationService.getElectionTypeDetails(jObj.getLong("elecGovPosId"),jObj.getString("positionType").trim());
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getPositionTypeDetails"))
+			{
+				optionVOList = electionResultsUpdationService.getPositionTypeDetails(jObj.getLong("elecGovPosId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getStateDetails"))
+			{
+				optionVOList = electionResultsUpdationService.getStateDetails(jObj.getLong("elecGovPosId"),jObj.getString("positionType").trim());
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -237,6 +249,7 @@ public String updateElectionInformation(){
 				positionManagementVO.setElectionGovBodyPosId(jObj.getLong("electionGovBodyPosId"));
 				positionManagementVO.setType(jObj.getString("type").trim());
 				positionManagementVO.setFromDate(getDate(jObj.getString("fromDate").trim()));
+				if(jObj.getString("toDate").trim() != null && jObj.getString("toDate").trim().length() >0)
 				positionManagementVO.setToDate(getDate(jObj.getString("toDate").trim()));
 				positionManagementVO.setStatus(jObj.getString("status").trim());
 				resultStatus = electionResultsUpdationService.assignCandidateToAPosition(positionManagementVO);
