@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -307,6 +308,56 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		
 	}
 	
+	public List<ConstituencyElectionResultVO> getConstituencyWiseCandidatesStates(Long electionId)
+	{
+		log.debug("Entered into getConstituencyWiseCandidatesStates() Method");
+		try{
+			List<ConstituencyElectionResultVO> resultList = null;
+			Election election = electionDAO.get(electionId);
+			Boolean isPartial = null;
+			List<Object[]> list = null;
+			
+			if(election.getIsPartial() != null && election.getIsPartial().equalsIgnoreCase("1"))
+				isPartial = true;
+			else
+				isPartial = false;
+			
+			if(isPartial)
+				list = constituencyLeadCandidateDAO.getConstituencyWiseCandidatesStates(electionId);
+			else
+				list = nominationDAO.getConstituencyWiseCandidatesStates(electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<ConstituencyElectionResultVO>(0);
+				ConstituencyElectionResultVO electionResultVO = null;
+				for(Object[] params : list)
+				{
+					electionResultVO = new ConstituencyElectionResultVO();
+					electionResultVO.setConstituencyId((Long)params[0]);
+					electionResultVO.setConstituencyName(params[1].toString());
+					electionResultVO.setDistrictId((Long)params[2]);
+					electionResultVO.setDistrictName(params[3].toString());
+					electionResultVO.setCandidateId((Long)params[4]);
+					electionResultVO.setCandidateName(params[5].toString());
+					electionResultVO.setPartyId((Long)params[6]);
+					electionResultVO.setPartyName(params[7].toString());
+					
+					if(isPartial)
+						electionResultVO.setStatus(params[8].toString());
+					else
+						electionResultVO.setStatus(IConstants.WON);
+					
+					resultList.add(electionResultVO);
+				}
+				
+			}
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Encountered In getConstituencyWiseCandidatesStates()" +e);
+			return null;
+		}
+	}
 	public List<ElectionLiveResultVO> getPartiesGainAndLossInfo(Long electionId)
 	{
 		try{
@@ -365,11 +416,6 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 							constituencyIdsList.add((Long)params[2]);
 						
 						resultVO.setConstituencyIdsList(constituencyIdsList);
-						
-						if(isFirstElectionAfterDelimtation)
-						{
-							resultVO = setNewAndOldPatricipatedConstituenciesAndCount(resultVO);
-						}
 						
 						if(isPartial)
 						{
@@ -453,14 +499,18 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 								electionLiveResultVO.setPartyId(selectOptionVO.getId());
 								electionLiveResultVO.setPartyName(selectOptionVO.getName());
 								electionLiveResultVO.setWonOrLeadCount(0L);
-								electionLiveResultVO.setTotalSeatsParticipated(pariiesPCMap.get(selectOptionVO.getId()));
+								electionLiveResultVO.setIsFirstElectionAfterDelimtation(isFirstElectionAfterDelimtation);
+								electionLiveResultVO.setTotalSeatsParticipated(pariiesPCMap.get(selectOptionVO.getId()) != null ?
+										pariiesPCMap.get(selectOptionVO.getId()) : 0L);
 								electionLiveResultVO.setParticipatedConstituencies(partiesPCinfoMap.get(selectOptionVO.getId()));
 								electionLiveResultVO.setConstituencyIdsList(new ArrayList<Long>(0));
 								electionLiveResultVO.setLeadCountInOld(0L);
 								electionLiveResultVO.setWonCountInOld(0L);
 								electionLiveResultVO.setLeadCountInNew(0L);
 								electionLiveResultVO.setWonCountInNew(0L);
-								resultList.add(electionLiveResultVO);
+								
+								if(electionLiveResultVO.getTotalSeatsParticipated() > 0)
+									resultList.add(electionLiveResultVO);
 							}
 					}
 				}
@@ -487,29 +537,44 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 				
 				for(ElectionLiveResultVO electionLiveResultVO : resultList)
 				{
-					resultVO.setTotalKnownCount(getKnownCount(
-							getSelectOptionVOListIds(resultVO.getParticipatedConstituencies()),knownConstituencyIds));
-					resultVO.setWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCount().doubleValue()*100)/
-							resultVO.getTotalKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+					if(isFirstElectionAfterDelimtation)
+						electionLiveResultVO = setNewAndOldPatricipatedConstituenciesAndCount(electionLiveResultVO);
+					
+					electionLiveResultVO.setTotalKnownCount(getKnownCount(
+							getSelectOptionVOListIds(electionLiveResultVO.getParticipatedConstituencies()),knownConstituencyIds));
+					
+					if(electionLiveResultVO.getTotalKnownCount() != null && electionLiveResultVO.getTotalKnownCount() > 0)
+					{	electionLiveResultVO.setWinOrLeadPercent((new BigDecimal((electionLiveResultVO.getWonOrLeadCount().doubleValue()*100)/
+							electionLiveResultVO.getTotalKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+						electionLiveResultVO.setWinOrLeadPer(Double.parseDouble(electionLiveResultVO.getWinOrLeadPercent()));
+					}
 					if(isFirstElectionAfterDelimtation)
 					{
-						resultVO.setOldKnownCount(getKnownCount(
-								getSelectOptionVOListIds(resultVO.getOldConstituenciesParticipated()),knownConstituencyIds));
-						resultVO.setOldKnownCount(getKnownCount(
-								getSelectOptionVOListIds(resultVO.getNewConstituenciesParticipated()),knownConstituencyIds));
+						electionLiveResultVO.setOldKnownCount(getKnownCount(
+								getSelectOptionVOListIds(electionLiveResultVO.getOldConstituenciesParticipated()),knownConstituencyIds));
+						electionLiveResultVO.setNewKnownCount(getKnownCount(
+								getSelectOptionVOListIds(electionLiveResultVO.getNewConstituenciesParticipated()),knownConstituencyIds));
 						
-						resultVO.setWonOrLeadCountInOld(
-								(resultVO.getLeadCountInOld() != null ? resultVO.getLeadCountInOld(): 0L) + 
-								(resultVO.getWonCountInOld() != null ? resultVO.getWonCountInOld() : 0L));
-						resultVO.setWonOrLeadCountInNew(
-								(resultVO.getLeadCountInNew() != null ? resultVO.getLeadCountInNew(): 0L) + 
-								(resultVO.getWonCountInNew() != null ? resultVO.getWonCountInNew() : 0L));
+						electionLiveResultVO.setWonOrLeadCountInOld(
+								(electionLiveResultVO.getLeadCountInOld() != null ? electionLiveResultVO.getLeadCountInOld(): 0L) + 
+								(electionLiveResultVO.getWonCountInOld() != null ? electionLiveResultVO.getWonCountInOld() : 0L));
+						electionLiveResultVO.setWonOrLeadCountInNew(
+								(electionLiveResultVO.getLeadCountInNew() != null ? electionLiveResultVO.getLeadCountInNew(): 0L) + 
+								(electionLiveResultVO.getWonCountInNew() != null ? electionLiveResultVO.getWonCountInNew() : 0L));
 						
-						resultVO.setOldWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCountInOld().doubleValue()*100)/
-								resultVO.getOldKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+						if(electionLiveResultVO.getOldKnownCount() != null && electionLiveResultVO.getOldKnownCount().longValue() > 0L)
+						{
+							electionLiveResultVO.setOldWinOrLeadPercent((new BigDecimal((electionLiveResultVO.getWonOrLeadCountInOld().doubleValue()*100)/
+									electionLiveResultVO.getOldKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+							electionLiveResultVO.setOldWinOrLeadPer(Double.parseDouble(electionLiveResultVO.getOldWinOrLeadPercent()));
+						}
 						
-						resultVO.setNewWinOrLeadPercent((new BigDecimal((resultVO.getWonOrLeadCountInNew().doubleValue()*100)/
-								resultVO.getNewKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+						if(electionLiveResultVO.getNewKnownCount() != null && electionLiveResultVO.getNewKnownCount().longValue() > 0L)
+						{
+							electionLiveResultVO.setNewWinOrLeadPercent((new BigDecimal((electionLiveResultVO.getWonOrLeadCountInNew().doubleValue()*100)/
+									electionLiveResultVO.getNewKnownCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+							electionLiveResultVO.setNewWinOrLeadPer(Double.parseDouble(electionLiveResultVO.getNewWinOrLeadPercent()));
+						}
 					}
 					
 					if(electionLiveResultVO.getParticipatedConstituencies() != null && 
