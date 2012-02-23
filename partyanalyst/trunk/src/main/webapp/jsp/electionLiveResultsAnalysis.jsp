@@ -122,9 +122,9 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <div style="font-weight:bold;font-family:verdana;font-size:12px;text-align: left; margin-bottom:19px;margin-top:20px;" id="overViewDiv">
  </div>
 <div id="tableDiv"></div>
-<div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;width:100%;"></div>
-<div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
 <div id="partyWonOrLeadResult" style="text-align:left;margin-top:25px;"></div>
+<div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;margin-top:15px;width:100%;"></div>
+<div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
 <div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:25px;border:1px solid #cdcdcd;"></div>
 <div>
 <div id="partyOldResults">
@@ -147,11 +147,10 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 </div>
 
 <table width="100%" style="background: #fff;"><tr><td width="50%">
-<div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:10px;"></div>
+<div id="partyAnalysisHeading" style="margin-top:15px;margin-left:15px;margin-bottom:10px;"></div>
 
 </td>
-<td width="50%" valign="top"><div id="partyLostAnalysisHeading" style="margin-left:15px;margin-bottom:10px;"></div>
-
+<td width="50%" valign="top"><div id="partyLostAnalysisHeading" style="margin-left:15px;margin-bottom:10px;margin-top:15px;"></div>
 </td>
 </tr></table>
 <div id="partyLostAnalysisDiv"></div>
@@ -199,11 +198,8 @@ function callAjaxForElectionResultPage(url,jObj){
 					buildCompareResultForWonorLead(myResults);
 					showPartyGainedResults(myResults);
 					hideBusyImgWithId("year");
-					showPartyLossResults(myResults);
-					
-				 
-					
-			}
+					//showPartyLossResults(myResults);
+			  }
 		   }
 	     catch(e)
 		   {   
@@ -280,10 +276,10 @@ function buildCompareResultForWonorLead(myResults)
 		str += '<th>Participated Seats In Old Constituencies</th>';
 		str += '<th>Known Result In old Constituency</th>';
 		str += '<th>Won/Lead Count In Old Constituency</th>';
-		str += '<th>Won/Lead In (%) In Old Constituency</th>';
 		str += '<th>Participated Seats In New Constituencies</th>';
 		str += '<th>Known Result In New Constituency</th>';
 		str += '<th>Won/Lead Count In New Constituency</th>';
+		str += '<th>Won/Lead In (%) In Old Constituency</th>';
 		str += '<th>Won/Lead In (%) In New Constituency</th>';
 
 		str += '</tr>';
@@ -295,10 +291,10 @@ function buildCompareResultForWonorLead(myResults)
 			str += '<td>'+myResults[i].oldConstituencyParticipatedCount+'</td>';
 			str += '<td>'+myResults[i].oldKnownCount+'</td>';
 			str += '<td>'+myResults[i].wonOrLeadCountInOld+'</td>';
-			str += '<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
 			str += '<td>'+myResults[i].newConstituencyParticipatedCount+'</td>';
 			str += '<td>'+myResults[i].newKnownCount+'</td>';
 			str += '<td>'+myResults[i].wonOrLeadCountInNew+'</td>';
+			str += '<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
 			str += '<td>'+myResults[i].newWinOrLeadPercent+'</td>';
 			str += '</tr>';
 		}
@@ -937,10 +933,12 @@ function showPartyGainedResults(myResults){
 	{
 	  data = checkForWonCountInNew(myResults);
 
-	  	str+='<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
+	 str+='<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
 	for(var i in myResults)
 	{
 		
+	if(myResults[i].totalSeatsParticipated != null && 
+		myResults[i].totalSeatsParticipated > 0){
 	if(i==0)
 	{
 		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
@@ -1028,13 +1026,14 @@ function showPartyGainedResults(myResults){
 	str+='<td>'+myResults[i].lostCountInPrevWon+'</td>';
 
 	str+='</tr>';
-	
+
 	}
+   }
 	str+='</table>';
 	partyGainedAnalysisDivElmt.innerHTML =str;
 	
 	
-	}
+  }
 }
 
 function showPartyLossResults(myResults){
