@@ -114,7 +114,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <center>
 <div style="background:#fff;width: 950px;margin-top:12px;">
 <span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
-<div style="float: right;margin-top: 28px;margin-right: 10px;">
+<div style="margin-top: 28px;margin-right: 4px;margin-left: 682px;">
 <a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Minister Results Analysis</a>
 </div>
  <div style="margin-bottom: 15px;padding-top: 21px;font-family:verdana;">
