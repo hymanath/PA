@@ -847,6 +847,7 @@
 	<bean id="electionLiveResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionLiveResultsAnalysisAction" singleton="false">
 			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 			<property name="staticDataService" ref="staticDataService"/>
+			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>		
 	
 	
