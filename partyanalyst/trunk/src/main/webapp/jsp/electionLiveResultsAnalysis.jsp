@@ -86,7 +86,8 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 	font-weight: bold;
 	font-family: verdana;
 	width: 98px;
-	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 	padding-right: 10px;
 	padding-left: 10px;
 	padding-top: 6px;
@@ -126,6 +127,8 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;margin-top:15px;width:100%;"></div>
 <div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
 <div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:25px;border:1px solid #cdcdcd;"></div>
+<div id="candidatesDivHeading" style="margin: 16px;"></div>
+<div id="candidatesDiv" class="yui-skin-sam" style="width: 79%;"></div>
 <div>
 <div id="partyOldResults">
  <div id="partyOldResultsDiv" class="yui-skin-sam" style="float: left;margin-left:110px;margin-top: 18px;"></div><span id="oldResultHeading" style="font-weight:bold;float: left;font-family:verdana;margin:10px;"></span>
@@ -155,7 +158,6 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 </tr></table>
 <div id="partyLostAnalysisDiv"></div>
 </div>
-<div id="candidatesDiv"  class="yui-skin-sam"></div>
 </div>
 </div>
 </center>
@@ -186,13 +188,13 @@ function callAjaxForElectionResultPage(url,jObj){
 			}
 			  else if(jObj.task == "getPartyWonOrLeadConstituenciesCount"){
 				  
-				  /*if(myResults[0] !=null && myResults[0].partialResult)
+				  if(myResults[0] !=null && myResults[0].partialResult)
 					 {
 						buildPartyWonOrLeadConstituenciesCount(myResults);
 						
 					 }
 				  else
-					  buildPartyWonConstituenciesTable(myResults);*/
+					  buildPartyWonConstituenciesTable(myResults);
 			  }
 			  else if(jObj.task =="getPartiesGainAndLossInfo"){
 					
@@ -425,7 +427,7 @@ function showBusyImgWithId(elmtId)
 
 function buildPartyWonOrLeadConstituenciesCount(myResults){
 
-	document.getElementById("partyWonResultsDiv").innerHTML = '';
+	/*document.getElementById("partyWonResultsDiv").innerHTML = '';
 	document.getElementById("partyWonResultsChart").innerHTML = '';
 	document.getElementById('wonResultHeading').innerHTML ="";
 	$("#partyWonResults").removeClass('partyWonResults'); 
@@ -455,9 +457,9 @@ function buildPartyWonOrLeadConstituenciesCount(myResults){
 		}
 	
 	}
-	showOverView(myResults);
 	buildOldDataTable(myResults,oldConstituencyArray);
-	buildNewDataTable(myResults,newConstituencyArray);
+	buildNewDataTable(myResults,newConstituencyArray);*/
+	showOverView(myResults);
 	
 }
 
@@ -587,7 +589,8 @@ document.getElementById('oldResultHeading').innerHTML ="Partywise Results In Old
 
 }
 function buildPartyWonConstituenciesTable(myResults){
-	document.getElementById('newResultHeading').innerHTML ="";
+	
+/*	document.getElementById('newResultHeading').innerHTML ="";
 	document.getElementById('oldResultHeading').innerHTML ="";
 	document.getElementById('wonResultHeading').innerHTML =""; 
 	$("#partyWonResults").removeClass("partyWonResults");
@@ -632,7 +635,6 @@ function buildPartyWonConstituenciesTable(myResults){
 		wonResultsArray.push(wonResultObj);
 	}
 }
-	showOverView(myResults);
 	if(oldConstituencyArray.length>0)
 		buildDatatableForOldResults(oldConstituencyArray);
 
@@ -679,7 +681,7 @@ document.getElementById('wonResultHeading').innerHTML ="Partywise Results Winnin
 	
 		/**  For Chart **/
 
-	var data = new google.visualization.DataTable();
+/*	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'PartyName');
     data.addColumn('number', 'countOfWinningConstituencies');
     data.addRows(myResults.length);
@@ -691,9 +693,10 @@ document.getElementById('wonResultHeading').innerHTML ="Partywise Results Winnin
 	var chart = new google.visualization.PieChart(document.getElementById('partyWonResultsChart'));
         chart.draw(data, {width: 360, height: 250, title: 'Party Wise Winning Constituencies'});
 
-		/*End*/
+		/*End
 	
-	}
+	}*/
+	showOverView(myResults);
 
 }
 function buildDataTableForNewResults(newConstituencyArray){
@@ -1070,7 +1073,6 @@ function showPartyLossResults(myResults){
 
 	partyGainedAnalysisDivElmt.innerHTML =str;
 	 }
-	//console.log(data);
 	//CreateDetailView(myResults);
 }
 
@@ -1106,7 +1108,7 @@ function CreateDetailView(myResults) {
   }
 }
 function getConstituencyWiseCandidatesStatus(){
-	debugger;
+
 var electionId = document.getElementById("electionYearId").value;
 	var jObj=
 	{
@@ -1121,6 +1123,13 @@ var electionId = document.getElementById("electionYearId").value;
 
 function buildConstituencyWiseCandidates(myResults)
 {
+	var candidatesDivHeadingElmt = document.getElementById("candidatesDivHeading");
+
+	var headstr='';
+	headstr+='<span class="headingstyle">Constituencywise Winning Candidates </span>';
+	
+	candidatesDivHeadingElmt.innerHTML = headstr;
+
 	if(myResults != null && myResults.length >0)
 	{
 	var resultsColumnDefs = [ 	
@@ -1131,16 +1140,16 @@ function buildConstituencyWiseCandidates(myResults)
 				sortable : true,
 				
 				},
+					{
+				key : "districtName",
+				label : "District",
+				sortable : true
+				},
 				{
 				key : "constituencyName",
 				label : "Constituency",
 				sortable : true,
 				
-				},
-				{
-				key : "districtName",
-				label : "District",
-				sortable : true
 				},
 				{
 				key : "partyName",
@@ -1166,7 +1175,7 @@ function buildConstituencyWiseCandidates(myResults)
 		var myDataSource = new YAHOO.util.DataSource(myResults);
 		myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						fields : ["candidateName", "constituencyName","districtName","partyName","status"]
+						fields : ["candidateName","districtName","constituencyName","partyName","status"]
 					};
 
 	
