@@ -93,6 +93,16 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 	padding-top: 6px;
 	padding-bottom: 6px;
 }
+.grad{background: #0f4b93; border-radius:5px;/* Old browsers */
+background: -moz-linear-gradient(top,  #5189c6 0%, #0f4b93 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5189c6), color-stop(100%,#0f4b93)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* IE10+ */
+background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
+-moz-border-radius:5px;
+}
 /*#partyResultsDiv{
     border: 1px solid #cdcdcd;
     width: 55%;
@@ -104,6 +114,9 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <center>
 <div style="background:#fff;width: 950px;margin-top:12px;">
 <span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
+<div style="float: right;margin-top: 28px;margin-right: 10px;">
+<a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Minister Results Analysis</a>
+</div>
  <div style="margin-bottom: 15px;padding-top: 21px;font-family:verdana;">
   <input type="radio" value="2" name="electionTypeRadio" id="assemblyId" onclick="getStates(this.value)">&nbsp;<strong>Assembly </strong>
 	<span style="padding-left:5px;font-weight:bold;">
@@ -1132,29 +1145,59 @@ function buildConstituencyWiseCandidates(myResults)
 
 	if(myResults != null && myResults.length >0)
 	{
+		YAHOO.widget.DataTable.candidateLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var candidateName = oData;
+		var candidateId = oRecord.getData("candidateId");
+		elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"' style='text-decoration:none;color:#000;' title='click to view Candidate Profile'>"+candidateName+"</a>";
+			
+	};
+	YAHOO.widget.DataTable.districtLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var districtName = oData;
+		var districtId= oRecord.getData("districtId");
+		elLiner.innerHTML ="<a href='districtPageAction.action?districtId="+districtId+"&districtName="+districtName+"' style='text-decoration:none;color:#000;' title='click to view District page'>"+districtName+"</a>";
+			
+	};
+	YAHOO.widget.DataTable.constituencyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var constituency = oData;
+		var constituencyId= oRecord.getData("constituencyId");
+		elLiner.innerHTML ="<a href='constituencyPageAction.action?constituencyId="+constituencyId+"'style='text-decoration:none;color:#000;' title='click to view Constituency page'>"+constituency+"</a>";
+			
+	};
+	YAHOO.widget.DataTable.partyLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var party = oData;
+		var partyId= oRecord.getData("partyId");
+		elLiner.innerHTML ="<a href='partyPageAction.action?partyId="+partyId+"' style='text-decoration:none;color:#000;' title='click to view Party Profile'>"+party+"</a>";
+			
+	};
 	var resultsColumnDefs = [ 	
 				
 				{
 				key : "candidateName",
 				label : "Candidate Name",
 				sortable : true,
-				
+				formatter:YAHOO.widget.DataTable.candidateLink
 				},
 					{
 				key : "districtName",
 				label : "District",
-				sortable : true
+				sortable : true,
+				formatter:YAHOO.widget.DataTable.districtLink
 				},
 				{
 				key : "constituencyName",
 				label : "Constituency",
 				sortable : true,
-				
+				formatter:YAHOO.widget.DataTable.constituencyLink
 				},
 				{
 				key : "partyName",
 				label : "Party",
-				sortable : true
+				sortable : true,
+				formatter:YAHOO.widget.DataTable.partyLink
 				},
 				{
 				key : "status",
@@ -1175,7 +1218,7 @@ function buildConstituencyWiseCandidates(myResults)
 		var myDataSource = new YAHOO.util.DataSource(myResults);
 		myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						fields : ["candidateName","districtName","constituencyName","partyName","status"]
+						fields : ["candidateName","districtName", "constituencyName","partyName","status","candidateId","districtId","constituencyId","partyId"]
 					};
 
 	
