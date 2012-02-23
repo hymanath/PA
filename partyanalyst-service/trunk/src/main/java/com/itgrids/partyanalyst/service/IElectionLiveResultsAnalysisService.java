@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 
@@ -13,5 +14,7 @@ public interface IElectionLiveResultsAnalysisService {
 	
 	public List<ElectionLiveResultVO> getPartiesGainAndLossInfo(Long electionId);
 	
-	 public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId);
+	public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId);
+	
+	public List<ConstituencyElectionResultVO> getConstituencyWiseCandidatesStates(Long electionId);
 }
