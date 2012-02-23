@@ -34,7 +34,7 @@ background: none repeat scroll 0 0 #F9F9F9;
 #partyNewResultsDiv table tr:nth-child(2n) {
 background: none repeat scroll 0 0 #F9F9F9;
 }
-#partyWonResultsDiv table tr:nth-child(2n) {
+#candidatesDiv table tr:nth-child(2n) {
 background: none repeat scroll 0 0 #F9F9F9;
 }
 .yui-dt-sortable{
@@ -114,7 +114,7 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <option value="0">Select State</option>
 </select>
 &nbsp;&nbsp;&nbsp;&nbsp;Select Election Year : 
-<select id="electionYearId" onchange="getPartyWinningOrLeadingConstituenciesCount();getPartiesGainAndLossInfo();" style="width:150px;">
+<select id="electionYearId" onchange="getPartyWinningOrLeadingConstituenciesCount();getPartiesGainAndLossInfo();getConstituencyWiseCandidatesStatus();" style="width:150px;">
 <option value="0">Select Election Year</option>
 </select><br><br><span style="margin-top:10px;"><img id="year_ImgSpan" src="images/icons/goldAjaxLoad.gif" style="display:none;"></span>
 </div>
@@ -155,7 +155,7 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 </tr></table>
 <div id="partyLostAnalysisDiv"></div>
 </div>
-
+<div id="candidatesDiv"  class="yui-skin-sam"></div>
 </div>
 </div>
 </center>
@@ -186,20 +186,25 @@ function callAjaxForElectionResultPage(url,jObj){
 			}
 			  else if(jObj.task == "getPartyWonOrLeadConstituenciesCount"){
 				  
-				  if(myResults[0] !=null && myResults[0].partialResult)
+				  /*if(myResults[0] !=null && myResults[0].partialResult)
 					 {
 						buildPartyWonOrLeadConstituenciesCount(myResults);
 						
 					 }
 				  else
-					  buildPartyWonConstituenciesTable(myResults);
+					  buildPartyWonConstituenciesTable(myResults);*/
 			  }
 			  else if(jObj.task =="getPartiesGainAndLossInfo"){
+					
 					buildCompareResultForWonorLead(myResults);
 					showPartyGainedResults(myResults);
 					hideBusyImgWithId("year");
 					//showPartyLossResults(myResults);
-			  }
+			    }
+			else if(jObj.task =="getCandidatesStatus")
+			{
+				buildConstituencyWiseCandidates(myResults);
+			}
 		   }
 	     catch(e)
 		   {   
@@ -929,7 +934,7 @@ function showPartyGainedResults(myResults){
 	headstr+='<span class="headingstyle">Partywise Seats Gained / Lost Analysis</span>';
 	document.getElementById("partyAnalysisHeading").innerHTML =headstr;
 
-  if(myResults.length >0)
+  if(myResults !=null && myResults.length >0)
 	{
 	  data = checkForWonCountInNew(myResults);
 
@@ -1107,6 +1112,75 @@ function CreateDetailView(myResults) {
 		}
 	}
   }
+}
+function getConstituencyWiseCandidatesStatus(){
+	debugger;
+var electionId = document.getElementById("electionYearId").value;
+	var jObj=
+	{
+		electionId:electionId,
+		task:"getCandidatesStatus"						
+	};
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getCandidatesStatusAction.action?"+rparam;						
+	callAjaxForElectionResultPage(url,jObj);
+}
+
+function buildConstituencyWiseCandidates(myResults)
+{
+	if(myResults != null && myResults.length >0)
+	{
+	var resultsColumnDefs = [ 	
+				
+				{
+				key : "candidateName",
+				label : "Candidate Name",
+				sortable : true,
+				
+				},
+				{
+				key : "constituencyName",
+				label : "Constituency",
+				sortable : true,
+				
+				},
+				{
+				key : "districtName",
+				label : "District",
+				sortable : true
+				},
+				{
+				key : "partyName",
+				label : "Party",
+				sortable : true
+				},
+				{
+				key : "status",
+				label : "Status",
+				sortable : true
+				}
+						
+			];
+			var myConfigs = {    
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 50,		        
+						template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+						rowsPerPageOptions: [50,100], 
+						pageLinks:5
+						})
+						
+					};	
+		var myDataSource = new YAHOO.util.DataSource(myResults);
+		myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						fields : ["candidateName", "constituencyName","districtName","partyName","status"]
+					};
+
+	
+	var myDataTable = new YAHOO.widget.DataTable("candidatesDiv",resultsColumnDefs, myDataSource,myConfigs); 
+	}
+
 }
 </script>
 </body>
