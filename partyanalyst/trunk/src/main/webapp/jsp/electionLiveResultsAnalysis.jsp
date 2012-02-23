@@ -83,13 +83,14 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 {
 	background: #96C;
 	color: white;
-	padding: 4px;
 	font-weight: bold;
 	font-family: verdana;
 	width: 98px;
 	-webkit-border-radius: 3px;
-	padding-right: 142px;
-	padding-left: 6px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 /*#partyResultsDiv{
     border: 1px solid #cdcdcd;
@@ -101,7 +102,7 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <body>
 <center>
 <div style="background:#fff;width: 950px;margin-top:12px;">
-<span id="mainHeading" style="color:#990099;font-weight:bold;font-size:15px;margin:10px;">Live Election Results Analysis</span>
+<span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
  <div style="margin-bottom: 15px;padding-top: 21px;font-family:verdana;">
   <input type="radio" value="2" name="electionTypeRadio" id="assemblyId" onclick="getStates(this.value)">&nbsp;<strong>Assembly </strong>
 	<span style="padding-left:5px;font-weight:bold;">
@@ -112,18 +113,19 @@ background: none repeat scroll 0% 0% rgb(255, 255, 255);
 <select  id="stateId" onchange="getElectionYears()" style="width:150px;">
 <option value="0">Select State</option>
 </select>
-Select Election Year : 
+&nbsp;&nbsp;&nbsp;&nbsp;Select Election Year : 
 <select id="electionYearId" onchange="getPartyWinningOrLeadingConstituenciesCount();getPartiesGainAndLossInfo();" style="width:150px;">
 <option value="0">Select Election Year</option>
-</select><span ><img id="year_ImgSpan" src="images/icons/goldAjaxLoad.gif" style="display:none;"></span>
+</select><br><br><span style="margin-top:10px;"><img id="year_ImgSpan" src="images/icons/goldAjaxLoad.gif" style="display:none;"></span>
 </div>
 
-<div style="font-weight:bold;font-family:verdana;font-size:12px;text-align: left; margin-bottom: 19px;" id="overViewDiv">
+<div style="font-weight:bold;font-family:verdana;font-size:12px;text-align: left; margin-bottom:19px;margin-top:20px;" id="overViewDiv">
  </div>
 <div id="tableDiv"></div>
-<div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:10px;width:100%;"></div>
+<div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;width:100%;"></div>
 <div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
-<div id="partyWonOrLeadResult"></div>
+<div id="partyWonOrLeadResult" style="text-align:left;margin-top:25px;"></div>
+<div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:25px;border:1px solid #cdcdcd;"></div>
 <div>
 <div id="partyOldResults">
  <div id="partyOldResultsDiv" class="yui-skin-sam" style="float: left;margin-left:110px;margin-top: 18px;"></div><span id="oldResultHeading" style="font-weight:bold;float: left;font-family:verdana;margin:10px;"></span>
@@ -224,31 +226,27 @@ function buildCompareResultForWonorLead(myResults)
 	var str='';
 	if(myResults !=null && myResults.length >0)
 	{
-		str+='<table>';
+		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known Constituencies</span>';
+		str+='<div style="margin-top:10px;margin-bottom:20px;">'
+		str += '<table><tr><td width="45%"><div>';
+		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
+	 
 	 for(var i in myResults)
-		{
+	 {
 		if(i==0)
 		{
-		  str+='<tr>';
+		  str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 		  str+='<th>Party</th>';
-		  str+='<th>TotalParticipated Count</th>';
+		  str+='<th>Total Participated Count</th>';
 		  str+='<th>Known Result count</th>';
 		  str+='<th>Won/Lead Count</th>';
 		  str+='<th>Won/Lead In (%)</th>';
-		  str+='<th>Participated Seats In Old Constituencies</th>';
-		  str+='<th>Known Result In old Constituency</th>';
-		  str+='<th>Won/Lead Count In Old Constituency</th>';
-		  str+='<th>Won/Lead In (%) In Old Constituency</th>';
-		  str+='<th>Participated Seats In New Constituencies</th>';
-		  str+='<th>Known Result In New Constituency</th>';
-		  str+='<th>Won/Lead Count In New Constituency</th>';
-		  str+='<th>Won/Lead In (%) In New Constituency</th>';
-		 
-	
-	}
-	str+='<tr>';
-		str+='<td>'+myResults[i].partyName+'</td>';
-		str+='<td>'+myResults[i].totalSeatsParticipated+'<td>';
+		}
+
+		str+='<tr style="text-align:center;">';
+		str+='<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+		str+='<td>'+myResults[i].totalSeatsParticipated+'</td>';
+		
 		if(myResults[i].totalKnownCount !=null)
 			str+='<td>'+myResults[i].totalKnownCount+'</td>';
 		else
@@ -263,57 +261,167 @@ function buildCompareResultForWonorLead(myResults)
 			str+='<td>'+myResults[i].winOrLeadPercent+'</td>';
 		else
 			str+='<td>0</td>';
-
-		str+='<td>'+myResults[i].oldConstituencyParticipatedCount+'<td>';
-
-		if(myResults[i].oldKnownCount!=null)
-		{
-			str+='<td>'+myResults[i].oldKnownCount+'</td>';
-		}
-		else
-			str+='<td>0</td>';
-
-		if(myResults[i].wonOrLeadCountInOld!=null)
-		{
-			str+='<td>'+myResults[i].wonOrLeadCountInOld+'</td>';
-		}
-		else
-			str+='<td>0</td>';
-
-		if(myResults[i].oldWinOrLeadPercent!=null)
-		{
-			str+='<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
-		}
-
-		str+='<td>'+myResults[i].newConstituencyParticipatedCount+'<td>';
-
-		if(myResults[i].newKnownCount!=null)
-		{
-			str+='<td>'+myResults[i].newKnownCount+'</td>';
-		}
-
-		else
-			str+='<td>0</td>';
-
-		if(myResults[i].wonOrLeadCountInNew!=null)
-		{
-			str+='<td>'+myResults[i].wonOrLeadCountInNew+'</td>';
-		}
-		else
-			str+='<td>0</td>';
-
-		if(myResults[i].newWinOrLeadPercent!=null)
-		{
-			str+='<td>'+myResults[i].newWinOrLeadPercent+'</td>';
-		}
+		
 		str+='</tr>';
 	 }
-	 str+='</table>';
+	 str += '</table></div></td>';
+
+	 str += '<td width="55%"><div id="knownResultGraphDivId"></div></td></tr></table>';
+	 str += '</div>';
+	
+	 if(myResults[i].isFirstElectionAfterDelimtation)
+	 {
+		str += '<span class="headingstyle">Partywise Seats Gained/Lost Analysis In Result Known New/Old Constituencies</span>';
+		str += '<div style="margin-top:10px;">';
+		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
+		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+		
+		str += '<th>Party</th>';
+		str += '<th>Participated Seats In Old Constituencies</th>';
+		str += '<th>Known Result In old Constituency</th>';
+		str += '<th>Won/Lead Count In Old Constituency</th>';
+		str += '<th>Won/Lead In (%) In Old Constituency</th>';
+		str += '<th>Participated Seats In New Constituencies</th>';
+		str += '<th>Known Result In New Constituency</th>';
+		str += '<th>Won/Lead Count In New Constituency</th>';
+		str += '<th>Won/Lead In (%) In New Constituency</th>';
+
+		str += '</tr>';
+
+		for(var i in myResults)
+		{
+			str += '<tr style="text-align:center;">';
+			str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+			str += '<td>'+myResults[i].oldConstituencyParticipatedCount+'</td>';
+			str += '<td>'+myResults[i].oldKnownCount+'</td>';
+			str += '<td>'+myResults[i].wonOrLeadCountInOld+'</td>';
+			str += '<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
+			str += '<td>'+myResults[i].newConstituencyParticipatedCount+'</td>';
+			str += '<td>'+myResults[i].newKnownCount+'</td>';
+			str += '<td>'+myResults[i].wonOrLeadCountInNew+'</td>';
+			str += '<td>'+myResults[i].newWinOrLeadPercent+'</td>';
+			str += '</tr>';
+		}
+
+		str += '</table>';
+		str += '</div>';
+
+		str += '<div id="knownResultInOldAndNewGraphDivId" style="margin-top:15px;border:1px solid #cdcdcd;">';
+		str += '</div>';
+	 }
 	partyWonOrLeadResultElmt.innerHTML = str;
+
+	var parties = new Array();
+	
+	for(var i=0;i<myResults.length;i++)
+		if(myResults[i].partyName != 'IND')
+			parties.push(myResults[i].partyName);
+
+	var data = new google.visualization.DataTable();
+	
+	data.addColumn('string', 'Party');
+	data.addColumn('number', 'Won/Lead %');
+
+	data.addRows(parties.length);
+
+	for(var j=0;j<myResults.length;j++)
+	{
+		if(myResults[j].partyName != 'IND')
+		{
+			data.setValue(j,0,parties[j]);
+			data.setValue(j,1,myResults[j].winOrLeadPer);
+		}
+	}
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('knownResultGraphDivId'));
+		chart.draw(data, {width: 550, height: 410,legend:'right',legendTextStyle:{fontSize:12}, title:'Partywise Gain/Won % In Result Known Seats',hAxis: {title: 'Parties Participated', titleTextStyle: {color: 'red'}}
+	});
+
+
+	if(myResults[0].isFirstElectionAfterDelimtation)
+	{
+		var partiesArray = new Array();
+	
+		for(var i=0;i<myResults.length;i++)
+		if(myResults[i].partyName != 'IND')
+			partiesArray.push(myResults[i].partyName);
+
+		var data = new google.visualization.DataTable();
+		
+		data.addColumn('string', 'Party');
+		data.addColumn('number', 'Won/Lead % In Old Constituencies');
+		data.addColumn('number', 'Won/Lead % In New Constituencies');
+
+		data.addRows(partiesArray.length);
+
+		for(var j=0;j<myResults.length;j++)
+		{
+			if(myResults[j].partyName != 'IND')
+			{
+				data.setValue(j,0,partiesArray[j]);
+				data.setValue(j,1,myResults[j].oldWinOrLeadPer);
+				data.setValue(j,2,myResults[j].newWinOrLeadPer);
+			}
+		}
+
+		var chart = new google.visualization.ColumnChart(document.getElementById('knownResultInOldAndNewGraphDivId'));
+		chart.draw(data, {width: 900, height: 500,legend:'right',legendTextStyle:{fontSize:12}, title:'Partywise Gain/Won % Comparison In New & Old Result Known Constituencies',hAxis: {title: 'Parties Participated', titleTextStyle:{color:'red'}}
+		});
+
+	}
+
+  }
+}
+
+function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
+{
+	var seatsFlownDivEle = document.getElementById('partiesSeatsFlownToOtherPartiesDiv');
+	
+	if(myResults == null or myResults.length == 0)
+	{
+		seatsFlownDivEle.style.display = 'none';
+		return;
+	}
+
+	var str = '';
+	
+	str += '<div style="margin:5px;">';
+
+	var parties = new Array();
+	
+	for(var i=0;i<myResults.length;i++)
+	{
+		if(!checkForParty(myResults[i].partyName,partyArray))
+			partyArray.push(myResults[i].partyName);
 	}
 	
+	str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
+	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+		
+	str += '<th>Party</th>';
+	
+	for(var i=0;i<partyArray.length;i++)
+		str += '<th>'+partyArray[i]+'</th>';
+	str += '</tr>'
 
+	str += '<tr style="text-align:center;">'
+	str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+	str += '</tr>'
+	
+	str += '</div>';
+
+	seatsFlownDivEle.innerHTML = str;
 }
+
+function checkForParty(party,partyArray)
+{
+	for(var i=0;i<partyArray.length;i++)
+		if(party == partyArray[i])
+		return true;
+	
+	return false;
+}
+
 function hideBusyImgWithId(elmtId)
 	{
 		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
@@ -774,24 +882,24 @@ function showOverView(results){
 
  for(var i in results)
     {
-	var overViewDiv=document.getElementById("overViewDiv");
+	var overViewDiv = document.getElementById("overViewDiv");
 	var str='';
-	str+='<div style="padding:7px;">';
+	str+='<div style="padding:7px;text-align:center">';
 	if(results[i].totalSeats != null)
 	{
-		str +='<span style="padding: 9px;">Total Seats - '+results[i].totalSeats+'</span>';
+		str +='<span style="padding:14px;">Total Seats - <font color="#05A8E9">'+results[i].totalSeats+'</font></span>';
 
 	if(results[i].countOfLeadConstituences !=null && results[i].countOfLeadConstituences !=0)
 	{
-		str +='<span>Known Result/Leading Constituencies - '+results[i].countOfLeadConstituences+'</span>';
+		str +='<span style="padding:14px;">Known Result/Leading Constituencies - <font color="#05A8E9">'+results[i].countOfLeadConstituences+'</font></span>';
 	}
 	if(results[i].oldConstituenciesCount !=null && results[i].oldConstituenciesCount >0)
 	{
-		str +='<span style="padding: 8px;">Old Constituencies - '+results[i].oldConstituenciesCount+'</span>';
+		str +='<span style="padding:14px;">Old Constituencies - <font color="#05A8E9">'+results[i].oldConstituenciesCount+'</font></span>';
 	}
 	if(results[i].newConstituenciesCount !=null && results[i].newConstituenciesCount !=0)
 	{
-		str +='<span>New Constituencies - '+results[i].newConstituenciesCount+'</span>';
+		str +='<span style="padding:14px;">New Constituencies - <font color="#05A8E9">'+results[i].newConstituenciesCount+'</font></span>';
 	}
 	str+='</div>';
 	overViewDiv.innerHTML = str;
@@ -839,44 +947,49 @@ function showPartyGainedResults(myResults){
 	for(var i in myResults)
 	{
 		
-	if(i==0){
-	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
-	str+='<th>Party</th>';
-	str+='<th>No.of Seats Participated</th>';
-	str+='<th>Won/Lead Count</th>';
-	if(data.length >0){
-	str+='<th>Won/Lead in old Constituency</th>';
-	str+='<th>Won/Lead in New Constituency</th>';
-	}
-	str+='<th>Retained Seats</th>';
-	str+='<th>Lost/Trail Seats</th>';
-	str+='<th>Seats Gained From Other Parties</th>';
-	str+='<th>Lost To Other Parties</th>';
-	str+='<th>Lost Count In Prev Lost</th>';
-	str+='<th>Lost Count In Prev Won</th>';
-	str+='</tr>';
+	if(i==0)
+	{
+		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+		str+='<th>Party</th>';
+		str+='<th>No.of Seats Participated</th>';
+		str+='<th>Won/Lead Count</th>';
+		
+		if(myResults[i].isFirstElectionAfterDelimtation)
+		{
+			str+='<th>Won/Lead in old Constituency</th>';
+			str+='<th>Won/Lead in New Constituency</th>';
+		}
+
+		str+='<th>Retained Seats</th>';
+		str+='<th>Lost/Trail Seats</th>';
+		str+='<th>Seats Gained From Other Parties</th>';
+		str+='<th>Lost To Other Parties</th>';
+		str+='<th>Lost Count In Prev Lost</th>';
+		str+='<th>Lost Count In Prev Won</th>';
+		str+='</tr>';
 	}
 	str+='<tr style="text-align:center;">';
 	str+='<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
 	str+='<td>'+myResults[i].totalSeatsParticipated+'</td>';
 	str+='<td>' +myResults[i].wonOrLeadCount+'</td>';
 	
-	if(data.length >0){
-	if(myResults[i].wonCountInOld != null || myResults[i].leadCountInOld !=null)
+	if(myResults[i].isFirstElectionAfterDelimtation)
 	{
-		var wonOrLeadCountInOld = myResults[i].wonCountInOld + myResults[i].leadCountInOld;
-		str+='<td>' +wonOrLeadCountInOld+'</td>';
-	}
-	else
-		str+='<td>0</td>';
+		if(myResults[i].wonCountInOld != null || myResults[i].leadCountInOld !=null)
+		{
+			var wonOrLeadCountInOld = myResults[i].wonCountInOld + myResults[i].leadCountInOld;
+			str+='<td>' +wonOrLeadCountInOld+'</td>';
+		}
+		else
+			str+='<td>0</td>';
 
-	if(myResults[i].wonCountInNew !=null || myResults[i].leadCountInNew !=null)
-	{
-		var wonOrLeadCountInNew = myResults[i].wonCountInNew + myResults[i].leadCountInNew;
-		str+='<td>' +wonOrLeadCountInNew+'</td>';
-	}
-	else
-		str+='<td>0</td>';
+		if(myResults[i].wonCountInNew !=null || myResults[i].leadCountInNew !=null)
+		{
+			var wonOrLeadCountInNew = myResults[i].wonCountInNew + myResults[i].leadCountInNew;
+			str+='<td>' +wonOrLeadCountInNew+'</td>';
+		}
+		else
+			str+='<td>0</td>';
 	}
 	if(myResults[i].retainedCount !=null)
 	{
