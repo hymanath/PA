@@ -166,5 +166,3 @@ View Assembly Previous BYE Election Results
 </div>
 
 
-</body>
-</html>
