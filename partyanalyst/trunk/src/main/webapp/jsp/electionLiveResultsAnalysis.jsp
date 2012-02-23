@@ -311,12 +311,11 @@ function buildCompareResultForWonorLead(myResults)
 		str += '</div>';
 	 }
 	partyWonOrLeadResultElmt.innerHTML = str;
-
+	debugger;
 	var parties = new Array();
 	
 	for(var i=0;i<myResults.length;i++)
-		if(myResults[i].partyName != 'IND')
-			parties.push(myResults[i].partyName);
+		parties.push(myResults[i].partyName);
 
 	var data = new google.visualization.DataTable();
 	
@@ -327,11 +326,8 @@ function buildCompareResultForWonorLead(myResults)
 
 	for(var j=0;j<myResults.length;j++)
 	{
-		if(myResults[j].partyName != 'IND')
-		{
-			data.setValue(j,0,parties[j]);
-			data.setValue(j,1,myResults[j].winOrLeadPer);
-		}
+		data.setValue(j,0,parties[j]);
+		data.setValue(j,1,myResults[j].winOrLeadPer);
 	}
 
 	var chart = new google.visualization.ColumnChart(document.getElementById('knownResultGraphDivId'));
@@ -344,7 +340,6 @@ function buildCompareResultForWonorLead(myResults)
 		var partiesArray = new Array();
 	
 		for(var i=0;i<myResults.length;i++)
-		if(myResults[i].partyName != 'IND')
 			partiesArray.push(myResults[i].partyName);
 
 		var data = new google.visualization.DataTable();
@@ -357,12 +352,9 @@ function buildCompareResultForWonorLead(myResults)
 
 		for(var j=0;j<myResults.length;j++)
 		{
-			if(myResults[j].partyName != 'IND')
-			{
-				data.setValue(j,0,partiesArray[j]);
-				data.setValue(j,1,myResults[j].oldWinOrLeadPer);
-				data.setValue(j,2,myResults[j].newWinOrLeadPer);
-			}
+			data.setValue(j,0,partiesArray[j]);
+			data.setValue(j,1,myResults[j].oldWinOrLeadPer);
+			data.setValue(j,2,myResults[j].newWinOrLeadPer);
 		}
 
 		var chart = new google.visualization.ColumnChart(document.getElementById('knownResultInOldAndNewGraphDivId'));
