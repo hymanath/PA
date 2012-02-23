@@ -27,6 +27,12 @@ public interface IElectionResultsUpdationService {
 	 
 	public ResultStatus assignCandidateToAPosition(PositionManagementVO positionManagementVO);
 	
-	 public List<SelectOptionVO> getCandidates(PositionManagementVO positionManagementVO);
+	public List<SelectOptionVO> getCandidates(PositionManagementVO positionManagementVO);
+	 
+	public List<SelectOptionVO> getElectionTypeDetails(Long electionGoverningBodyPositionId,String positionType);
+	
+	public List<SelectOptionVO> getPositionTypeDetails(Long electionGoverningBodyPositionId);
+	
+	public List<SelectOptionVO> getStateDetails(Long electionGoverningBodyPositionId,String positionType);
 	
 }
