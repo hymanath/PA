@@ -142,4 +142,13 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		return getHibernateTemplate().find("select model.candidate.candidateId,model.status from ConstituencyLeadCandidate model where  model.constituencyElection.constiElecId in " +
 				" (select model1.constituencyElection.constiElecId from Nomination model1  where model1.constituencyElection.constituency.constituencyId = ? and model1.constituencyElection.election.electionId = ?)",data);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyWiseCandidatesStates(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.constituencyElection.constituency.district.districtId," +
+				" model.constituencyElection.constituency.district.districtName,model.candidate.candidateId, model.candidate.lastname,model.party.partyId,model.party.shortName,model2.status " +
+				" from Nomination model,ConstituencyLeadCandidate model2 where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and " +
+				" model.candidate.candidateId = model2.candidate.candidateId order by model.constituencyElection.constituency.name",electionId);
+	}
 }
