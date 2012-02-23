@@ -63,10 +63,24 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println(list.size());
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Object[]> list = constituencyLeadCandidateDAO.getPartiesLeadingInfo(38l);
 		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+			System.out.print("\t"+obj);
+			
+		}
+	}*/
+	
+	public void testGetConstituencyWiseCandidatesStates()
+	{
+		List<Object[]> list = constituencyLeadCandidateDAO.getConstituencyWiseCandidatesStates(38l);
+		System.out.println(list.size());
+		
 		for(Object[] params : list)
 		{
 			System.out.println();

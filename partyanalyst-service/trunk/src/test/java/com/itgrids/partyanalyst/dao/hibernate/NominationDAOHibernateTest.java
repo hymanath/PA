@@ -1074,7 +1074,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetPartyLostConstituencies()
+	/*public void testGetPartyLostConstituencies()
 	{
 		List<Long>constituenciesList = new ArrayList<Long>(0);
 		constituenciesList.add(1l);
@@ -1086,6 +1086,20 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List<Object[]> list = nominationDAO.getPartyLostConstituencies(362l,38l, constituenciesList);
 		
 		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	public void testGetConstituencyWiseCandidatesStates()
+	{
+		List<Object[]> list = nominationDAO.getConstituencyWiseCandidatesStates(38l);
+		
+		System.out.println(list.size());
+		
 		for(Object[] params : list)
 		{
 			System.out.println();
