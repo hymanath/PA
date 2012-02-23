@@ -1,56 +1,78 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ElectionLiveResultVO {
 
-	private Long totalSeats;
-	private Long countOfLeadConstituences;
-	private Long oldConstituenciesCount;
-	private Long newConstituenciesCount;
+	private Long totalSeats = 0L;
+	private Long countOfLeadConstituences = 0L;
+	private Long oldConstituenciesCount = 0L;
+	private Long newConstituenciesCount = 0L;
 	private Long partyId;
 	private String partyName;
-	private Long countOfWinningConstituencies;
+	private Long countOfWinningConstituencies = 0L;
 	private String leadingPartyName;
 	private String winningPartyName;
 	private boolean partialResult;
-	private Long leadCountInOld;
-	private Long wonCountInOld;
-	private Long leadCountInNew;
-	private Long wonCountInNew;
-	private Long wonOrLeadCount;
-	private Long retainedCount;
+	private Long leadCountInOld = 0L;
+	private Long wonCountInOld = 0L;
+	private Long leadCountInNew = 0L;
+	private Long wonCountInNew = 0L;
+	private Long wonOrLeadCount = 0L;
+	private Long retainedCount = 0L;
 	private Boolean isFirstElectionAfterDelimtation;
-	private List<SelectOptionVO> wonFromOtherParties;
-	private List<SelectOptionVO> lostToOtherParties;
-	private List<SelectOptionVO> participatedConstituencies;
-	private List<SelectOptionVO> lostSeatsInPrevWonToOtherParties;
-	private List<SelectOptionVO> lostSeatsInPrevLostToOtherParties;
-	private List<SelectOptionVO> prevWonConstituenciesList;
-	private List<SelectOptionVO> prevLostConstituenciesList;
-	private List<SelectOptionVO> lostConstituenciesList;
-	private List<SelectOptionVO> oldConstituenciesParticipated;
-	private List<SelectOptionVO> newConstituenciesParticipated;
-	private List<Long> constituencyIdsList;
-	private List<Long> prevLostConstIds;
-	private List<Long> prevWonConstIds;
-	private List<Long> lostConstIdsList;
-	private Long totalSeatsParticipated;
-	private Long lostCount;
-	private Long lostCountInPrevWon;
-	private Long lostCountInPrevLost;
-	private Long oldConstituencyParticipatedCount;
-	private Long newConstituencyParticipatedCount;
-	private String winOrLeadPercent;
-	private String oldWinOrLeadPercent;
-	private String newWinOrLeadPercent;
-	private Long totalKnownCount;
-	private Long oldKnownCount;
-	private Long newKnownCount;
-	private Long wonOrLeadCountInOld;
-	private Long wonOrLeadCountInNew;
+	private List<SelectOptionVO> wonFromOtherParties = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> lostToOtherParties = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> participatedConstituencies = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> lostSeatsInPrevWonToOtherParties = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> lostSeatsInPrevLostToOtherParties = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> prevWonConstituenciesList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> prevLostConstituenciesList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> lostConstituenciesList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> oldConstituenciesParticipated = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> newConstituenciesParticipated = new ArrayList<SelectOptionVO>(0);
+	private List<Long> constituencyIdsList = new ArrayList<Long>(0);
+	private List<Long> prevLostConstIds = new ArrayList<Long>(0);
+	private List<Long> prevWonConstIds = new ArrayList<Long>(0);
+	private List<Long> lostConstIdsList = new ArrayList<Long>(0);
+	private Long totalSeatsParticipated = 0L;
+	private Long lostCount = 0L;
+	private Long lostCountInPrevWon = 0L;
+	private Long lostCountInPrevLost = 0L;
+	private Long oldConstituencyParticipatedCount = 0L;
+	private Long newConstituencyParticipatedCount = 0L;
+	private String winOrLeadPercent = "0.00";
+	private String oldWinOrLeadPercent = "0.00";
+	private String newWinOrLeadPercent = "0.00";
+	private Double winOrLeadPer = 0D;
+	private Double oldWinOrLeadPer = 0D;
+	private Double newWinOrLeadPer = 0D;
+	private Long totalKnownCount = 0L;
+	private Long oldKnownCount = 0L;
+	private Long newKnownCount = 0L;
+	private Long wonOrLeadCountInOld = 0L;
+	private Long wonOrLeadCountInNew = 0L;
 	
 		
+	public Double getWinOrLeadPer() {
+		return winOrLeadPer;
+	}
+	public void setWinOrLeadPer(Double winOrLeadPer) {
+		this.winOrLeadPer = winOrLeadPer;
+	}
+	public Double getOldWinOrLeadPer() {
+		return oldWinOrLeadPer;
+	}
+	public void setOldWinOrLeadPer(Double oldWinOrLeadPer) {
+		this.oldWinOrLeadPer = oldWinOrLeadPer;
+	}
+	public Double getNewWinOrLeadPer() {
+		return newWinOrLeadPer;
+	}
+	public void setNewWinOrLeadPer(Double newWinOrLeadPer) {
+		this.newWinOrLeadPer = newWinOrLeadPer;
+	}
 	public String getNewWinOrLeadPercent() {
 		return newWinOrLeadPercent;
 	}
