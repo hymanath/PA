@@ -377,7 +377,7 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 {
 	var seatsFlownDivEle = document.getElementById('partiesSeatsFlownToOtherPartiesDiv');
 	
-	if(myResults == null or myResults.length == 0)
+	if(myResults == null || myResults.length == 0)
 	{
 		seatsFlownDivEle.style.display = 'none';
 		return;
@@ -389,12 +389,6 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 
 	var parties = new Array();
 	
-	for(var i=0;i<myResults.length;i++)
-	{
-		if(!checkForParty(myResults[i].partyName,partyArray))
-			partyArray.push(myResults[i].partyName);
-	}
-	
 	str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
 	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 		
@@ -402,11 +396,11 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	
 	for(var i=0;i<partyArray.length;i++)
 		str += '<th>'+partyArray[i]+'</th>';
-	str += '</tr>'
+	str += '</tr>';
 
 	str += '<tr style="text-align:center;">'
 	str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
-	str += '</tr>'
+	str += '</tr>';
 	
 	str += '</div>';
 
