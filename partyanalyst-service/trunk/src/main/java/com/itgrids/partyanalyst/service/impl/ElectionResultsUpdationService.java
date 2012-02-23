@@ -456,6 +456,7 @@ public class ElectionResultsUpdationService implements IElectionResultsUpdationS
 			   return resultStatus;
 	    }
 	   electionGoverningBody.setFromDate(positionManagementVO.getFromDate());
+	   if(positionManagementVO.getToDate() != null)
 	   electionGoverningBody.setToDate(positionManagementVO.getToDate());
 	   electionGoverningBody.setStatus(positionManagementVO.getStatus());
 	   
@@ -529,5 +530,79 @@ public class ElectionResultsUpdationService implements IElectionResultsUpdationS
 			log.error("Exception Rised in getCandidates method of ElectionResultsUpdationService",e);
 		}
 		return candidatesList;
+   }
+   public List<SelectOptionVO> getElectionTypeDetails(Long electionGoverningBodyPositionId,String positionType)
+   {
+	   List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getElectionTypeDetails method of ElectionResultsUpdationService");
+	   try
+	   {
+		   
+		   List<Object[]> electionTypeList = positionScopeDAO.getElectionTypeDetails(electionGoverningBodyPositionId,positionType);
+		   for(Object[] electionType : electionTypeList)
+		   {
+			   selectOptionVO = new SelectOptionVO();
+			   selectOptionVO.setId((Long)electionType[0]);
+			   selectOptionVO.setName(electionType[1]!=null?electionType[1].toString():"");
+			   returnValue.add(selectOptionVO);
+		   }
+	   }
+      catch(Exception e)
+	  {
+		log.error("Exception Rised in getElectionTypeDetails method of ElectionResultsUpdationService",e);
+	  }
+      return returnValue;
+   }
+   public List<SelectOptionVO> getPositionTypeDetails(Long electionGoverningBodyPositionId)
+   {
+	   List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getPositionTypeDetails method of ElectionResultsUpdationService");
+	   try
+	   {
+		   
+		   List<Object> positionTypeList = positionScopeDAO.getPositionTypeDetails(electionGoverningBodyPositionId);
+		   Long id = 1l;
+		   for(Object positionType : positionTypeList)
+		   {
+			   selectOptionVO = new SelectOptionVO();
+			   selectOptionVO.setId(id);
+			   selectOptionVO.setName(positionType!=null?positionType.toString():"");
+			   returnValue.add(selectOptionVO);
+			    id++;
+		   }
+	   }
+      catch(Exception e)
+	  {
+		log.error("Exception Rised in getPositionTypeDetails method of ElectionResultsUpdationService",e);
+	  }
+      return returnValue;
+   }
+   public List<SelectOptionVO> getStateDetails(Long electionGoverningBodyPositionId,String positionType)
+   {
+	   List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getStateDetails method of ElectionResultsUpdationService");
+	   try
+	   {
+		   
+		   List<Object[]> statesList = positionScopeDAO.getStateDetails(electionGoverningBodyPositionId,positionType);
+		   for(Object[] states : statesList)
+		   {
+			   selectOptionVO = new SelectOptionVO();
+			   selectOptionVO.setId((Long)states[0]);
+			   selectOptionVO.setName(states[1]!=null?states[1].toString():"");
+			   returnValue.add(selectOptionVO);
+		   }
+	   }
+      catch(Exception e)
+	  {
+		log.error("Exception Rised in getStateDetails method of ElectionResultsUpdationService",e);
+	  }
+      return returnValue;
    }
 }
