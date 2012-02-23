@@ -945,19 +945,19 @@ function showPartyGainedResults(myResults){
 		str+='<th>Party</th>';
 		str+='<th>No.of Seats Participated</th>';
 		str+='<th>Won/Lead Count</th>';
+		str+='<th>Won/Lead in old Constituency</th>';
+		str+='<th>Retained Seats</th>';
+		str+='<th>Seats Gained From Other Parties</th>';
 		
 		if(myResults[i].isFirstElectionAfterDelimtation)
-		{
-			str+='<th>Won/Lead in old Constituency</th>';
 			str+='<th>Won/Lead in New Constituency</th>';
-		}
 
-		str+='<th>Retained Seats</th>';
-		str+='<th>Lost/Trail Seats</th>';
-		str+='<th>Seats Gained From Other Parties</th>';
+		//str+='<th>Lost/Trail Seats</th>';
 		str+='<th>Lost To Other Parties</th>';
-		str+='<th>Lost Count In Prev Lost</th>';
-		str+='<th>Lost Count In Prev Won</th>';
+		//str+='<th>Lost Count In Prev Lost</th>';
+		//str+='<th>Lost Count In Prev Won</th>';
+
+		
 		str+='</tr>';
 	}
 	str+='<tr style="text-align:center;">';
@@ -965,33 +965,15 @@ function showPartyGainedResults(myResults){
 	str+='<td>'+myResults[i].totalSeatsParticipated+'</td>';
 	str+='<td>' +myResults[i].wonOrLeadCount+'</td>';
 	
-	if(myResults[i].isFirstElectionAfterDelimtation)
+	if(myResults[i].wonCountInOld != null || myResults[i].leadCountInOld !=null)
 	{
-		if(myResults[i].wonCountInOld != null || myResults[i].leadCountInOld !=null)
-		{
-			var wonOrLeadCountInOld = myResults[i].wonCountInOld + myResults[i].leadCountInOld;
-			str+='<td>' +wonOrLeadCountInOld+'</td>';
-		}
-		else
-			str+='<td>0</td>';
-
-		if(myResults[i].wonCountInNew !=null || myResults[i].leadCountInNew !=null)
-		{
-			var wonOrLeadCountInNew = myResults[i].wonCountInNew + myResults[i].leadCountInNew;
-			str+='<td>' +wonOrLeadCountInNew+'</td>';
-		}
-		else
-			str+='<td>0</td>';
-	}
-	if(myResults[i].retainedCount !=null)
-	{
-		str+='<td>'+myResults[i].retainedCount+'</td>';
+		var wonOrLeadCountInOld = myResults[i].wonCountInOld + myResults[i].leadCountInOld;
+		str+='<td>' +wonOrLeadCountInOld+'</td>';
 	}
 	else
-	{
 		str+='<td>0</td>';
-	}
-	str+='<td>' +myResults[i].lostCount+'</td>';
+
+	str+='<td>'+myResults[i].retainedCount+'</td>';
 
 	if(myResults[i].wonFromOtherParties != null)
 	{
@@ -1007,6 +989,20 @@ function showPartyGainedResults(myResults){
 	{
 		str+='<td>0</td>';
 	}
+	
+	if(myResults[i].isFirstElectionAfterDelimtation)
+	{
+		if(myResults[i].wonCountInNew !=null || myResults[i].leadCountInNew !=null)
+		{
+			var wonOrLeadCountInNew = myResults[i].wonCountInNew + myResults[i].leadCountInNew;
+			str+='<td>' +wonOrLeadCountInNew+'</td>';
+		}
+		else
+			str+='<td>0</td>';
+	}
+
+	//str+='<td>' +myResults[i].lostCount+'</td>';
+
 	if(myResults[i].lostToOtherParties != null)
 	{
 		var count=0;
@@ -1022,9 +1018,8 @@ function showPartyGainedResults(myResults){
 	{
 		str+='<td>0</td>';
 	}
-	str+='<td>'+myResults[i].lostCountInPrevLost+'</td>';
-	str+='<td>'+myResults[i].lostCountInPrevWon+'</td>';
-
+	//str+='<td>'+myResults[i].lostCountInPrevLost+'</td>';
+	//str+='<td>'+myResults[i].lostCountInPrevWon+'</td>';
 	str+='</tr>';
 
 	}
