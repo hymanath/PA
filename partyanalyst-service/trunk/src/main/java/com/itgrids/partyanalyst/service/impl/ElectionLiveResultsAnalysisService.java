@@ -9,6 +9,9 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IKeyCandidateDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
@@ -16,9 +19,15 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidateDAO;
+import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.model.KeyCandidate;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -35,7 +44,25 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	private IConstituencyDAO constituencyDAO;
 	private IStaticDataService staticDataService;
 	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
+	private IKeyCandidateDAO keyCandidateDAO;
+	private ICandidateDAO candidateDAO;
 	
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
+	public IKeyCandidateDAO getKeyCandidateDAO() {
+		return keyCandidateDAO;
+	}
+
+	public void setKeyCandidateDAO(IKeyCandidateDAO keyCandidateDAO) {
+		this.keyCandidateDAO = keyCandidateDAO;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -1186,5 +1213,53 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	    	log.debug("Exception rised in getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService",e);
 	    }
 	    return listData;
-	  }	      
+	  }	 
+  public List<SelectOptionVO> getCandidatesBasedOnSelection(String candidateName ,Long stateId , Long partyId){
+	  List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO optionVO = new SelectOptionVO();
+		List<Object[]> candidatesList = keyCandidateDAO.getCandidatesBasedOnPartyId(candidateName,stateId,partyId);
+		
+		try{
+			if(candidatesList!=null){
+				for(Object[] params : candidatesList){
+			optionVO = new SelectOptionVO();
+			optionVO.setId(new Long(params[0].toString()));
+			optionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
+			selectOptionList.add(optionVO);
+		}
+	}
+		 return selectOptionList;
+	}catch(Exception e){
+		e.printStackTrace();
+		return selectOptionList;
+	}
+	  
+  }
+  
+  public ResultStatus saveKeyCandidates(AssignKeyCandidateVO assignKeyCandidateVO){
+	  log.debug("Enter into saveKeyCandidates of ElectionLiveResultsAnalysisService");
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+	  KeyCandidate assignKeyCandidate = null;
+	  Long count = (Long)keyCandidateDAO.getCountCandidate(assignKeyCandidateVO.getKeyCandidateId());
+	  
+	  if(count.longValue() == 1L)
+		  assignKeyCandidate = keyCandidateDAO.getCandidateById(assignKeyCandidateVO.getKeyCandidateId()).get(0);
+	  else
+		  assignKeyCandidate = new KeyCandidate();
+	  assignKeyCandidate.setCandidate(candidateDAO.get(assignKeyCandidateVO.getKeyCandidateId()));
+	  assignKeyCandidate.setDescription(assignKeyCandidateVO.getDescription());
+	  keyCandidateDAO.save(assignKeyCandidate);
+  }catch(Exception e){
+	  log.error("Exception Raised :" + e);
+	  resultStatus.setExceptionEncountered(e);
+	  resultStatus.setExceptionMsg(e.getMessage());
+	  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		
+	 return resultStatus;  
+  }
+  return resultStatus;  
+  }
+
+
 }
