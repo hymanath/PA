@@ -1015,13 +1015,16 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		  List<Object[]> candidates = null ;
 		if(!(reqtype.trim().equalsIgnoreCase("ImportantCandidates")))
 		{	
+			//retrieving all the previous election ministers id's  
 	        candidates = electionGoverningBodyDAO.getAllMinistersIdsAndMinistry(prevElectionId);
 		}
 		else
 		{
+			//retrieving all the important candidates which are nominated in previous election by using previous electionId
 			candidates = nominationDAO.getimportantCandidatesDetails(prevElectionId);
 		}
 	    PositionManagementVO positionManagementVO = null;
+	    // iterating individual candidate and getting their current and previous election performance details
 	    for(Object[] candDetails :candidates)
 	    {
 	    	positionManagementVO = new PositionManagementVO();
@@ -1029,14 +1032,16 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	    	positionManagementVO.setCandidateName(candDetails[1] != null?candDetails[1].toString():"");
 	    	if(!(reqtype.trim().equalsIgnoreCase("ImportantCandidates")))
 	    	positionManagementVO.setPositionName(candDetails[2] != null?candDetails[2].toString():"");
-	    	// current election
+	    	// getting all current election performance details
 	    	Election election = electionDAO.get(elecId);
 	    	
 	    	  PositionManagementVO currentResult = new PositionManagementVO();
 	    	  List<PositionManagementVO> currentResultList = new ArrayList<PositionManagementVO>();
 	    	  PositionManagementVO currentResultData = null;
+	    	  //checking whether the result is partial or not
 		      if(election.getIsPartial() != null && election.getIsPartial().trim().equalsIgnoreCase("1"))
 		      {
+		    	  //partial result
 		    	 List<Object[]> constiList = nominationDAO.getConstituencyDetails((Long)candDetails[0], elecId);
 		       for(Object[] constis : constiList)
 		       {
@@ -1101,7 +1106,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		    	  positionManagementVO.setCurrentResult(currentResult);
 		      }
 		      
-		   // previous election
+		   // getting all previous election performance details
 		    	Election electionPrev = electionDAO.get(prevElectionId);
 		    	
 		    	  PositionManagementVO prevResult = new PositionManagementVO();
