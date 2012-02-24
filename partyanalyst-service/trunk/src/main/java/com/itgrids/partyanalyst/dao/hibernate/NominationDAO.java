@@ -3420,5 +3420,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.constituencyElection.constituency.district.districtName,model.candidate.candidateId, model.candidate.lastname,model.party.partyId,model.party.shortName,model.candidateResult.rank " +
 				" from Nomination model where model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 order by model.constituencyElection.constituency.name",electionId);
 	}
+	
+	public List<Object[]> getimportantCandidatesDetails(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname ,model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from " +
+				" Nomination model where model.candidate.candidateId in(select model1.candidate.candidateId from AssignKeyCandidate model1) and model.constituencyElection.election.electionId = ?",electionId);
+	}
 
 }
