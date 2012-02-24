@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPositionScopeDAO;
@@ -15,4 +17,22 @@ public void setPositionScopeDAO(IPositionScopeDAO positionScopeDAO) {
   {
 	  positionScopeDAO.getAll();
   }
+  public void testGetStateDetails()
+  {
+	  
+	  List<Object[]> data = positionScopeDAO.getStateDetails(5l,"Main");
+	  for(Object[] result: data)
+	  {
+		  System.out.println("id:  "+result[0].toString()+"name "+result[1].toString());
+	  }
+  }
+  /*public void testGetPositionTypeDetails()
+  {
+	  
+	  List<Object> data = positionScopeDAO.getPositionTypeDetails(5l);
+	  for(Object result: data)
+	  {
+		  System.out.println("name "+result.toString());
+	  }
+  }*/
 }
