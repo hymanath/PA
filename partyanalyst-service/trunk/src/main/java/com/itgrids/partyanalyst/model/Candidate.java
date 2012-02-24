@@ -18,7 +18,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,7 +64,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateUpdatesEmail> candidateUpdatesEmails = new HashSet<CandidateUpdatesEmail>(0);
 	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidate = new HashSet<ConstituencyLeadCandidate>(0);
-	
+	private AssignKeyCandidate assignKeyCandidate;
 	// Constructors
 
 	/** default constructor */
@@ -276,6 +278,17 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setConstituencyLeadCandidate(
 			Set<ConstituencyLeadCandidate> constituencyLeadCandidate) {
 		this.constituencyLeadCandidate = constituencyLeadCandidate;
+	}
+	
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@JoinColumn(name = "key_candidate_id")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AssignKeyCandidate getAssignKeyCandidate() {
+		return assignKeyCandidate;
+	}
+
+	public void setAssignKeyCandidate(AssignKeyCandidate assignKeyCandidate) {
+		this.assignKeyCandidate = assignKeyCandidate;
 	}
 
 	
