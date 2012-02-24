@@ -8,6 +8,7 @@
 <title>Ministers Analysis</title>
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+
 <style type="text/css">
 .main-mbg {
     background-color: #06ABEA;
@@ -51,8 +52,37 @@ table.searchresultsTable, table.searchresultsTable * td, table.searchresultsTabl
     border-style: solid;
     border-width: 1px;
 }
+.dashBoardtabsDiv {
+    background: none repeat scroll 0 0 #EBE4F2;
+    border: 1px solid #CDCDCD;
+    border-radius: 5px 5px 5px 5px;
+    font-family: verdana;
+    font-weight: bold;
+	margin-left: 247px;
+    margin-top: 13px;
+    padding: 10px 7px 10px;
+    text-align: left;
+    width: 52%;
+}
+
+.dashBoardtabsDivSelected
+	{
+	background :skyBlue; color: #000000;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	}
+.dashBoardtabsDiv a {
+    color: #000000;
+    cursor: pointer;
+    font-family: verdana;
+    font-weight: bold;
+    padding: 5px 16px 5px;
+    text-decoration: none;
+}
 </style>
 <script type="text/javascript">
+
+var qtype = "minis";
 function getElectionYears(electionType)
 {
    stateId = 1;
@@ -94,20 +124,27 @@ function getElectionYears(electionType)
 	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
 	callAjax(jsObj,url);
   }
-  function buildDataTable(result)
+  function buildDataTable(result,id)
   {
      var str = '';
+	 if(id == "showData")
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td> Ministers Performance : </td></tr></table>';
+	 else
+	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td> Important Candidates Performance : </td></tr></table>';
 	 if(result.length > 0)
 	 {
 	   str+='<table class="searchresultsTable" style="width:975px;margin-left:10px;text-align:center;">';
 	   str+='   <tr style="width:100%;">';
 	   str+='      <th style="width:13%;">Candidate Name</th>';
-	   str+='      <th style="width:13%;">Ministry</th>';
+	   if(id == "showData")
+	   {
+	     str+='      <th style="width:13%;">Ministry</th>';
+	   }
 	  if(result[0].currentResult.isPartial == 1)
 	  {
 	   str+='      <th  style="width:35%;">';
 	   str+='         <table style="width:100%;">';
-	   str+='             <tr style="width:100%;"><th colspan="3" style="width:100%;border:0px;">'+result[0].currentResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;"><th colspan="3" style="width:100%;border:0px;color: rgb(0, 87, 144);">'+result[0].currentResult.year+'</th></tr>';
 	   str+='             <tr style="width:100%;">';
 	   str+='                  <th style="width:13%;border:0px;">Party</th>';
 	   str+='                  <th style="width:33%;border:0px;">Constituency</th>';
@@ -120,7 +157,7 @@ function getElectionYears(electionType)
 	  {
 	   str+='      <th style="width:40%;">';
 	   str+='         <table  style="width:100%;" >';
-	   str+='             <tr style="width:100%;"><th colspan="5"  style="width:100%;border:0px;">'+result[0].currentResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;"><th colspan="5"  style="width:100%;border:0px;color: rgb(0, 87, 144);">'+result[0].currentResult.year+'</th></tr>';
 	   str+='             <tr style="width:100%;">';
 	   str+='                  <th  style="width:13%;border:0px;">Party</th>';
 	   str+='                  <th  style="width:25%;border:0px;">Constituency</th>';
@@ -135,7 +172,7 @@ function getElectionYears(electionType)
 	  {
 	   str+='      <th style="width:35%;">';
 	   str+='         <table style="width:100%;">';
-	   str+='             <tr  style="width:100%;"><th colspan="3" style="width:100%;border:0px;">'+result[0].previousResult.year+'</th></tr>';
+	   str+='             <tr  style="width:100%;"><th colspan="3" style="width:100%;border:0px;color: rgb(0, 87, 144);">'+result[0].previousResult.year+'</th></tr>';
 	   str+='             <tr  style="width:100%;">';
 	   str+='                  <th style="width:13%;border:0px;">Party</th>';
 	   str+='                  <th style="width:33%;border:0px;">Constituency</th>';
@@ -148,7 +185,7 @@ function getElectionYears(electionType)
 	  {
 	   str+='      <th style="width:35%;">';
 	   str+='         <table style="width:100%;">';
-	   str+='             <tr style="width:100%;"><th colspan="5" style="width:100%;border:0px;">'+result[0].previousResult.year+'</th></tr>';
+	   str+='             <tr style="width:100%;"><th colspan="5" style="width:100%;border:0px;color: rgb(0, 87, 144);">'+result[0].previousResult.year+'</th></tr>';
 	   str+='             <tr style="width:100%;">';
 	   str+='                  <th style="width:13%;border:0px;">Party</th>';
 	   str+='                  <th style="width:25%;border:0px;">Constituency</th>';
@@ -167,7 +204,10 @@ function getElectionYears(electionType)
 	    
 	   str+='   <tr style="width:100%;">';
 	   str+='      <td style="width:13%;"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
-	   str+='      <td style="width:13%;">'+result[i].positionName+'</td>';
+	   if(id == "showData")
+	   {
+	     str+='      <td style="width:13%;">'+result[i].positionName+'</td>';
+	   }
 	 if(result[i].currentResult.positionManagementVOList.length >0)
 	 {
 	  if(result[0].currentResult.isPartial == 1)
@@ -315,7 +355,7 @@ function getElectionYears(electionType)
 	 {
 	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
 	 }
-     document.getElementById("showData").innerHTML = str; 
+     document.getElementById(id).innerHTML = str; 
   }
  function callAjax(jsObj,url)
    {
@@ -337,7 +377,10 @@ function getElectionYears(electionType)
 									}
 									else if(jsObj.task == "getdetails")
 									{
-									      buildDataTable(myResults);
+									   if(jsObj.reqtype == "ImportantCandidates")
+									      buildDataTable(myResults,"keyCandidatesData");
+									   else
+									      buildDataTable(myResults,"showData");
 									}
 								}
 							catch (e) {   
@@ -376,10 +419,11 @@ function getElectionYears(electionType)
  }
  function showOthers()
  {
-    document.getElementById("stateListId").value = 0;
 	removeData("yearSelId");
+	addData("yearSelId");
+	document.getElementById("stateListId").value = 0;
  }
- function getDetails()
+ function getDetails(reqtype)
  {
      yearEle =  document.getElementById("yearSelId");
 	 eleId = yearEle.options[yearEle.selectedIndex].value;
@@ -387,6 +431,7 @@ function getElectionYears(electionType)
 		{ 
             time : new Date().getTime(),
 			electionId: eleId,
+			reqtype:reqtype,
 			task:"getdetails"
 		};
 
@@ -405,6 +450,57 @@ function getElectionYears(electionType)
 	{
 		elmt.remove(i);
 	}	
+ }
+ function addData(id)
+ {
+  
+    var elmt = document.getElementById(id);
+   
+		var option = document.createElement('option');     
+		
+		    option.value= 0;
+		    option.text= "Select Year";       
+        
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		} 
+ 
+ 
+ }
+
+function showMinisPerf(id)
+{
+   qtype = "minis";
+  $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
+  $("#minisPerf").addClass("dashBoardtabsDivSelected");
+  document.getElementById("showData").innerHTML = "";
+  document.getElementById("keyCandidatesData").innerHTML = "";
+  document.getElementById("parlSel").checked = true;  
+  document.getElementById("showHideState").style.display = "none";
+  getElectionYears("Parliament");
+}
+function showImpCandPerf(id)
+{
+   qtype = "impCand";
+  $("#minisPerf").removeClass("dashBoardtabsDivSelected");
+  $("#impCandPerf").addClass("dashBoardtabsDivSelected");
+  document.getElementById("showData").innerHTML = "";
+  document.getElementById("keyCandidatesData").innerHTML = "";
+  document.getElementById("parlSel").checked = true;
+  document.getElementById("showHideState").style.display = "none";
+  getElectionYears("Parliament");
+}
+function getDeltailForMinisImpCand()
+{
+   if(qtype == "minis")
+     getDetails('ministers');
+   else 
+    getDetails('ImportantCandidates')
 }
 </script>
 </head>
@@ -412,22 +508,33 @@ function getElectionYears(electionType)
 <div style="width:998px;padding-left:5px;">
    <div style="padding-left:5px;"><div class="main-mbg">Results Analysis For Ministers</div></div>
    <div style="background-color:#F5F5F5;min-height:360px;">
+         <div class="dashBoardtabsDiv" style="align:left;">
+	           <a  id="minisPerf" onclick="showMinisPerf(this.id);">Ministers Performance</a>
+	           <a  id="impCandPerf" onclick="showImpCandPerf(this.id);">Important Candidates Performance</a>
+         </div>
    <div style="padding-top:10px;padding-left:250px;width:65%;text-align:center;">
      <table>  
 	  <tr>
-	      <td><input type="radio" name="selectScope" checked="true" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
+	      <td><input type="radio" name="selectScope" checked="true" id="parlSel" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
 	      <td><input type="radio" id="state" name="selectScope" onclick="showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
 		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDetails();" ></select></td>
+		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDeltailForMinisImpCand();" ></select></td>
       </tr>
 	 </table>
    </div>
-   <div style="width:980px;" id="showData" />
+   <div style="padding-top:30px;">
+     <div style="width:980px;" id="showData" />
    </div>
-<div>
+   <div style="padding-bottom:30px;">
+     <div style="width:980px;" id="keyCandidatesData" />
+   </div>
+  </div>
+</div>
    <script type="text/javascript">
      getElectionYears("Parliament");
 	 getAllStates();
+	 $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
+     $("#minisPerf").addClass("dashBoardtabsDivSelected");
    </script>
 </body>
 </html>
