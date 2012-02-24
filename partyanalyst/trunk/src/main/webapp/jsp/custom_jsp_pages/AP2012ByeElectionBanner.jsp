@@ -93,14 +93,14 @@ View Assembly Previous BYE Election Results
 <img src="images/icons/diamond.png" />
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=80&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2011">2011</a>
 
-<img src="images/icons/diamond.png" />
+<img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=116&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2010"> 2010</a></div>
-<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 7px;"> Constituencies Participating In Bye Elections</h3><br>
+<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 7px;"> Constituencies Participating In Bye Election</h3><br>
 
-<img src="images/icons/diamond.png" />
-<a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy</span>
+<img src="images/icons/diamond.png" style="margin-left:3px;"/>
+<a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy.</span>
 <!--<a href="javascript:{}" onclick="ByeElectionReason()">view Reason</a>--><br><br>
-<img src="images/icons/diamond.png" />
+<img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a>,
 
 <a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a>,
@@ -109,9 +109,9 @@ View Assembly Previous BYE Election Results
 
 <a  href="constituencyPageAction.action?constituencyId=1" style="font-size:12px;font-family:verdana;">Adilabad</a>,
 
-<a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy  :              </a> <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">                 Resignation of sitting MLAs of these constituencies <br>Jupally Krishna Rao, Rajaiah, Nagam Janardhan Reddy Jogu Ramanna Gampa Goverdhan for their seats <br> and respective parties.</span>
-<!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>--><br><br><img src="images/icons/diamond.png" />
-<a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Assembly Membership of Nallapureddy Prasanna Kumar Reddy  has been cancelled under Anti Defection Law.</span><!--<a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>--><br><br><div id="KovurByeElectionInfoDiv_Body"></div>
+<a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy  :              </a> <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"><div style="margin-left:13px;">Resignation of sitting MLAs of these constituencies Jupally Krishna Rao, Rajaiah, Nagam Janardhan Reddy Jogu Ramanna Gampa Goverdhan for their seats and respective parties.</div></span><br>
+<!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>--><img src="images/icons/diamond.png" style="margin-left:3px;"/>
+<a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><!--<a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>--><br><br><div id="KovurByeElectionInfoDiv_Body"></div>
 
 </td>
 </tr>
@@ -119,7 +119,7 @@ View Assembly Previous BYE Election Results
 <div style="background:#ffffff;">
 <div style="margin-top:0px;background:#ffffff;">
 <div style="margin-top:12px;">
-<span style="background:#dddddd;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:10px;color:#000;font-family:verdana; padding: 6px 7px 7px;">Participating MLA's IN Bye Elections </span>
+<span style="background:#dddddd;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:10px;color:#000;font-family:verdana; padding: 6px 7px 7px;">Participating MLA's IN Bye Election </span>
 </div>
 <div style="margin:14px;font-weight:bold;border:1px solid #cdcdcd;padding-right:10px;background:#ffffff;">
 
