@@ -100,7 +100,7 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 		try 
 		  {
 			jObj = new JSONObject(getTask());
-			results = electionLiveResultsAnalysisService.getCurrentMinistersDetailsForCurrentAndPrevEle(1l, 1l, "", jObj.getLong("electionId"));
+			results = electionLiveResultsAnalysisService.getCurrentMinistersDetailsForCurrentAndPrevEle(1l, 1l, "", jObj.getLong("electionId"),jObj.getString("reqtype"));
 			
 		  }
 		  catch (ParseException e) {
