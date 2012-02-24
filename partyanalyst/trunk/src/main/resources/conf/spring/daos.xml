@@ -773,4 +773,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="keyCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.KeyCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

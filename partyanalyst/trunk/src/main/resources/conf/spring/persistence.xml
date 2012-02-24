@@ -235,7 +235,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyLeadCandidate</value>
 				<value>com.itgrids.partyanalyst.model.PositionScope</value>
-				<value>com.itgrids.partyanalyst.model.AssignKeyCandidate</value>
+				<value>com.itgrids.partyanalyst.model.KeyCandidate</value>
 			</list>
 		</property>
 	</bean>
