@@ -3059,11 +3059,29 @@
 			<result type="json" name="success">
 				<param name="root">results</param>
 			</result>
-		</action>
+		</action>	
+		
 		<action name="getCandidatesStatusAction" class="electionLiveResultsAnalysisAction" method="getConstituencyWiseCandidatesStatus">
 		   <result type="json" name="success">
 				<param name="root">candidatesList</param>
 			</result>
-		</action>				
-	</package>
+		</action>
+				
+		<action name="assignKeyCandidateAction" class="assignKeyCandidateAction">
+			<result name="success">/jsp/assignKeyCandidate.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
+			
+		</action>
+		<action name="getStatesBasedOnElectionTypeAction" class="assignKeyCandidateAction" method="ajaxCallHandlerForAssignKeyCandidate">
+			<result type="json" name="success">
+				<param name="root">optionVOList</param>
+			</result>
+	 	</action>
+	 	<action name="saveKeyCandidatesAction" class="assignKeyCandidateAction" method="ajaxCallHandlerForAssignKeyCandidate">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+	 	</action>
+	 	
+	 	</package>
 </struts>      

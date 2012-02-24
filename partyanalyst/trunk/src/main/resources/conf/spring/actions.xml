@@ -844,6 +844,7 @@
 			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper"/>
 	</bean>
+	
 	<bean id="electionLiveResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionLiveResultsAnalysisAction" singleton="false">
 			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 			<property name="staticDataService" ref="staticDataService"/>
@@ -855,5 +856,10 @@
 			<property name="electionResultsUpdationService" ref="electionResultsUpdationService"/>
 			<property name="staticDataService" ref="staticDataService"/>
 			<property name="entitlementsHelper" ref="entitlementsHelper"/>
+	</bean>	
+	
+	<bean id="assignKeyCandidateAction" class="com.itgrids.partyanalyst.web.action.AssignKeyCandidateAction" singleton="false">
+			<property name="staticDataService" ref="staticDataService"/>
+			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 	</bean>			
 </beans>	
