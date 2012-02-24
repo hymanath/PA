@@ -14,7 +14,7 @@ public interface IElectionLiveResultsAnalysisService {
 	
 	public List<ElectionLiveResultVO> getPartiesGainAndLossInfo(Long electionId);
 	
-	public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId);
+	public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId,String reqtype);
 	
 	public List<ConstituencyElectionResultVO> getConstituencyWiseCandidatesStates(Long electionId);
 }
