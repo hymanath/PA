@@ -251,6 +251,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultsWithGenderAnalysis</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyLeadCandidate</value>
 				<value>com.itgrids.partyanalyst.model.PositionScope</value>
+				<value>com.itgrids.partyanalyst.model.AssignKeyCandidate</value>
 			</list>
 		</property>
 	</bean>
@@ -1350,6 +1351,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="positionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PositionScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="assignKeyCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssignKeyCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 		
