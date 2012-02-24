@@ -15,27 +15,24 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "Key_candidate")
+@Table(name = "key_candidate")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AssignKeyCandidate extends BaseModel implements java.io.Serializable{
+public class KeyCandidate extends BaseModel implements java.io.Serializable{
 
+	private static final long serialVersionUID = -2235094721616290412L;
 	private Long keyCandidateId;
-	private String description;
 	private Candidate candidate;
+	private String description;
 	
 	// Constructors
 
 	/** default constructor */
-	public AssignKeyCandidate(){
+	public KeyCandidate(){
 	}
-	/** minimal constructor */
-	public AssignKeyCandidate(Long keyCandidateId){
-		this.keyCandidateId = keyCandidateId ;
-		
-	}
+	
 	/** full constructor */
-	public AssignKeyCandidate(Long keyCandidateId,String description,Candidate candidate){
-		this.keyCandidateId = keyCandidateId;
+	public KeyCandidate(String description,Candidate candidate)
+	{
 		this.description = description;
 		this.candidate = candidate;
 	}
@@ -50,7 +47,7 @@ public class AssignKeyCandidate extends BaseModel implements java.io.Serializabl
 	public void setKeyCandidateId(Long keyCandidateId) {
 		this.keyCandidateId = keyCandidateId;
 	}
-	@Column(name = "description")
+	@Column(name = "description" ,length = 500)
 	public String getDescription() {
 		return description;
 	}
