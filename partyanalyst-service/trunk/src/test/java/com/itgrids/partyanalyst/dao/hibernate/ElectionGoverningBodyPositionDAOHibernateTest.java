@@ -33,12 +33,15 @@ public class ElectionGoverningBodyPositionDAOHibernateTest extends BaseDaoTestCa
 		assertEquals(list.size(), 1);
 	}*/
 	
-	/*public void testGetAllPositions(){
+	public void testGetAllPositions(){
 		List<Object[]> list = electionGoverningBodyPositionDAO.getAllPositions();
-		System.out.println(list.size());
-	}*/
-	public void testGetPositionsByValue(){
+		for(Object[] data:list)
+		{
+		 System.out.println(data[0].toString()+"     "+data[1].toString());
+		}
+	}
+	/*public void testGetPositionsByValue(){
 		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.getPositionsByValue("chief mInistEr");
 		System.out.println(list.size());
-	}
+	}*/
 }
