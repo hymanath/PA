@@ -64,7 +64,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateUpdatesEmail> candidateUpdatesEmails = new HashSet<CandidateUpdatesEmail>(0);
 	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidate = new HashSet<ConstituencyLeadCandidate>(0);
-	private AssignKeyCandidate assignKeyCandidate;
+	private KeyCandidate keyCandidate;
 	// Constructors
 
 	/** default constructor */
@@ -283,12 +283,12 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
 	@JoinColumn(name = "key_candidate_id")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AssignKeyCandidate getAssignKeyCandidate() {
-		return assignKeyCandidate;
+	public KeyCandidate getKeyCandidate() {
+		return keyCandidate;
 	}
 
-	public void setAssignKeyCandidate(AssignKeyCandidate assignKeyCandidate) {
-		this.assignKeyCandidate = assignKeyCandidate;
+	public void setKeyCandidate(KeyCandidate keyCandidate) {
+		this.keyCandidate = keyCandidate;
 	}
 
 	
