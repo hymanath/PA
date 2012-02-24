@@ -1004,7 +1004,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			return count;
 		}
 	}	
-  public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId)
+  public List<PositionManagementVO> getCurrentMinistersDetailsForCurrentAndPrevEle(Long type,Long stateId,String year,Long elecId,String reqtype)
     {   
 	     if(log.isDebugEnabled())
 	    	 log.debug("Enter into getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService");
@@ -1012,13 +1012,22 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	    List<PositionManagementVO> listData = new ArrayList<PositionManagementVO>();
 	  try
 	  {
-	    List<Object[]> candidates = electionGoverningBodyDAO.getAllMinistersIdsAndMinistry(prevElectionId);
+		  List<Object[]> candidates = null ;
+		if(!(reqtype.trim().equalsIgnoreCase("ImportantCandidates")))
+		{	
+	        candidates = electionGoverningBodyDAO.getAllMinistersIdsAndMinistry(prevElectionId);
+		}
+		else
+		{
+			candidates = nominationDAO.getimportantCandidatesDetails(prevElectionId);
+		}
 	    PositionManagementVO positionManagementVO = null;
 	    for(Object[] candDetails :candidates)
 	    {
 	    	positionManagementVO = new PositionManagementVO();
 	    	positionManagementVO.setCandidateId((Long)candDetails[0]);
 	    	positionManagementVO.setCandidateName(candDetails[1] != null?candDetails[1].toString():"");
+	    	if(!(reqtype.trim().equalsIgnoreCase("ImportantCandidates")))
 	    	positionManagementVO.setPositionName(candDetails[2] != null?candDetails[2].toString():"");
 	    	// current election
 	    	Election election = electionDAO.get(elecId);
@@ -1037,7 +1046,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		    	  {
 		    		  Object[] result =  currentResultsList.get(0);
 		    		  
-		    		  if(((Long)result[0]) ==  (Long)candDetails[0])
+		    		  if(((Long)result[0]).longValue() ==  ((Long)candDetails[0]).longValue())
 		    		  {
 		    			  currentResultData.setResult(result[1].toString());
 		    		  }
@@ -1109,7 +1118,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			    	  {
 			    		  Object[] result =  prevResultsList.get(0);
 			    		  
-			    		  if(((Long)result[0]) ==  (Long)candDetails[0])
+			    		  if(((Long)result[0]).longValue() ==  ((Long)candDetails[0]).longValue())
 			    		  {
 			    			  prevResultData.setResult(result[1].toString());
 			    		  }
