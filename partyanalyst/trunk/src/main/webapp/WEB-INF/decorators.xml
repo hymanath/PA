@@ -98,6 +98,7 @@
 		<pattern>/electionLiveResultsAnalysisAction*</pattern>
 		<pattern>/districtPageAction*</pattern>
 		<pattern>/assignCandidateToElectionAction*</pattern>
+		<pattern>/assignKeyCandidateAction*</pattern>
     </decorator>
 
 </decorators>
