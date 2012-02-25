@@ -3417,7 +3417,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List<Object[]> getConstituencyWiseCandidatesStates(Long electionId)
 	{
 		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.constituencyElection.constituency.district.districtId," +
-				" model.constituencyElection.constituency.district.districtName,model.candidate.candidateId, model.candidate.lastname,model.party.partyId,model.party.shortName,model.candidateResult.rank " +
+				" model.constituencyElection.constituency.district.districtName, model.candidate.candidateId,model.candidate.lastname,model.party.partyId,model.party.shortName " +
+				" from Nomination model where model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 order by model.constituencyElection.constituency.name",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyWiseCandidatesParliament(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name," +
+				" model.candidate.candidateId,model.candidate.lastname, model.party.partyId, model.party.shortName " +
 				" from Nomination model where model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 order by model.constituencyElection.constituency.name",electionId);
 	}
 	
