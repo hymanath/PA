@@ -48,18 +48,20 @@ font-weight:bold;
 		
 		
 		<div style="margin-left: 238px;">
-			<input type="radio" name="electionTypeRadio" value="2" id="assemblyId" onclick="getStates(this.value)"><span class="textStyle">&nbsp;Assembly </span>&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="radio" name="electionTypeRadio" value="1" id="parliamentId" onclick="getStates(this.value)"><span class="textStyle">&nbsp;Parliament</span>
+			<input type="radio" name="electionTypeRadio" value="2" id="assemblyId" onclick="getStates(this.value),getAssemblyLabel()"><span class="textStyle">&nbsp;Assembly </span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="electionTypeRadio" value="1" id="parliamentId" onclick="getStates(this.value),getParliamentLabel()"><span class="textStyle">&nbsp;Parliament</span>
 			
 		</div>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	
 	
 	<table align="center">
 		<tr>
-			<th align="left">Select State :</th>
+			
+			<th align="left"><span id="assemblyLabel">Select State:</span>
+			<span id="parliamentLabel"></span></th>
 			<td><select id="stateId" style="width:150px;" onchange="getAllParties()">
 				<option value="0">Select State</option></select></td>
 		</tr>
@@ -144,16 +146,16 @@ font-weight:bold;
 		var str = '';
 		
 		if(stateId == 0){
-			str += '<b><font style="color:red;font-size:12px;">Pls Select State</font></b><br>';
+			str += '<b><font style="color:red;font-size:12px;">Please Select State</font></b><br>';
 			flag = true;
 		}
 		if(partyId == 0){
-			str += '<b><font style="color:red;font-size:12px;">Pls Select Party</font></b><br>';
+			str += '<b><font style="color:red;font-size:12px;">Please Select Party</font></b><br>';
 			flag = true;
 		}
 		if(candidateName.length == 0)
 		{
-			str += '<b><font style="color:red;font-size:12px;">Candidate Name is required</font></b><br>';
+			str += '<b><font style="color:red;font-size:12px;">Candidate Name is Required</font></b><br>';
 			flag = true;
 		}
 	
@@ -253,6 +255,16 @@ font-weight:bold;
 			}
 
 	}
+	function getAssemblyLabel(){
+	document.getElementById("parliamentLabel").innerHTML  = '';
+	document.getElementById("assemblyLabel").innerHTML ='Select State:';
+
+	}
+	function getParliamentLabel(){
+		document.getElementById("assemblyLabel").innerHTML  = '';
+		document.getElementById("parliamentLabel").innerHTML  = 'Select Country:';
+
+	}
 
 	function callAjaxForAssignKeyCandidatePage(url,jObj){
 		
@@ -275,10 +287,16 @@ font-weight:bold;
 
 			}
 			 else if(jObj.task == "getCandidates"){
+				 
+				 if(myResults == ''){
+					var candidateName = document.getElementById("candidateName").value; 
+					document.getElementById("errorDivElement").innerHTML = '<b><font style="color:red;font-size:12px;">No candidates are found for given "'+candidateName+'"</font></b>';
+					}
 
-			clearOptionsListForSelectElmtId("candidateId");
-			createOptionsForSelectElmtIdWithSelectOption("candidateId",myResults);
-
+			    else{
+					clearOptionsListForSelectElmtId("candidateId");
+					createOptionsForSelectElmtIdWithSelectOption("candidateId",myResults);
+				}
 			 }
 			 else if(jObj.task == "assignKeyCandidate"){
 
