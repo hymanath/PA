@@ -30,7 +30,7 @@ public class KeyCandidateDAOHibernateTest extends BaseDaoTestCase{
 	
 	/*public void testGetCountCandidate()
 	{
-		Object object = assignKeyCandidateDAO.getCountCandidate(358l);
+		Object object = keyCandidateDAO.getCountCandidate(358l);
 		System.out.println(object);
 	}*/
 
