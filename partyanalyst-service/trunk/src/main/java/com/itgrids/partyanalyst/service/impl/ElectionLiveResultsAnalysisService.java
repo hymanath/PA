@@ -556,7 +556,11 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 								if(optionVO.getName().equalsIgnoreCase(electionLiveResultVO.getPartyName()))
 									electionLiveResultVO.setRetainedCount(optionVO.getId());
 								else
+								{
 									prevResult.add(optionVO);
+									electionLiveResultVO.setWonFromOtherPartiesCount(electionLiveResultVO.getWonFromOtherPartiesCount() + 
+											optionVO.getId());
+								}
 							}
 						}
 						electionLiveResultVO.setWonFromOtherParties(prevResult);

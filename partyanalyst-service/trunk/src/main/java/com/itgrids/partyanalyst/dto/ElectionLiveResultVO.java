@@ -53,8 +53,14 @@ public class ElectionLiveResultVO {
 	private Long newKnownCount = 0L;
 	private Long wonOrLeadCountInOld = 0L;
 	private Long wonOrLeadCountInNew = 0L;
-	
+	private Long wonFromOtherPartiesCount = 0L;
 		
+	public Long getWonFromOtherPartiesCount() {
+		return wonFromOtherPartiesCount;
+	}
+	public void setWonFromOtherPartiesCount(Long wonFromOtherPartiesCount) {
+		this.wonFromOtherPartiesCount = wonFromOtherPartiesCount;
+	}
 	public Double getWinOrLeadPer() {
 		return winOrLeadPer;
 	}
