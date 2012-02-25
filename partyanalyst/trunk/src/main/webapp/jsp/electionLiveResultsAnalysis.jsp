@@ -37,6 +37,11 @@ background: none repeat scroll 0 0 #F9F9F9;
 #candidatesDiv table tr:nth-child(2n) {
 background: none repeat scroll 0 0 #F9F9F9;
 }
+
+.SeatsFlownToOtherPartiesTable td
+{
+	valign : top;
+}
 .yui-dt-sortable{
 	color:#000;
 }
@@ -139,7 +144,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <div id="partyWonOrLeadResult" style="text-align:left;margin-top:25px;"></div>
 <div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;margin-top:15px;width:100%;"></div>
 <div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
-<div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:25px;border:1px solid #cdcdcd;"></div>
+<div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:20px;width:925px;"></div>
 <div id="candidatesDivHeading" style="margin: 16px;"></div>
 <div id="candidatesDiv" class="yui-skin-sam" style="width: 79%;"></div>
 <div>
@@ -214,6 +219,7 @@ function callAjaxForElectionResultPage(url,jObj){
 					buildCompareResultForWonorLead(myResults);
 					showPartyGainedResults(myResults);
 					hideBusyImgWithId("year");
+					buildPartiesSeatsFlownToOtherPartiesDiv(myResults);
 					//showPartyLossResults(myResults);
 			    }
 			else if(jObj.task =="getCandidatesStatus")
@@ -335,18 +341,18 @@ function buildCompareResultForWonorLead(myResults)
 	var data = new google.visualization.DataTable();
 	
 	data.addColumn('string', 'Party');
-	data.addColumn('number', 'Won/Lead %');
+	data.addColumn('number', 'Won/Lead Seats');
 
 	data.addRows(parties.length);
 
 	for(var j=0;j<myResults.length;j++)
 	{
 		data.setValue(j,0,parties[j]);
-		data.setValue(j,1,myResults[j].winOrLeadPer);
+		data.setValue(j,1,myResults[j].wonOrLeadCount);
 	}
 
-	var chart = new google.visualization.ColumnChart(document.getElementById('knownResultGraphDivId'));
-		chart.draw(data, {width: 550, height: 410,legend:'right',legendTextStyle:{fontSize:12}, title:'Partywise Gain/Won % In Result Known Seats',hAxis: {title: 'Parties Participated', titleTextStyle: {color: 'red'}}
+	var chart = new google.visualization.PieChart(document.getElementById('knownResultGraphDivId'));
+		chart.draw(data, {width: 550, height: 410,legend:'right',legendTextStyle:{fontSize:12}, title:'Partywise Gain/Won Seats In Result Known Seats',hAxis: {title: 'Parties Participated', titleTextStyle: {color: 'red'}}
 	});
 
 
@@ -392,27 +398,132 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	}
 
 	var str = '';
+	str += '<span class="headingstyle" style="margin-bottom:10px;">Partywise Seats Win from other Parties in Previous Election to Present Election</span>';
 	
-	str += '<div style="margin:5px;">';
+	str += '<div style="margin-top:15px;margin-bottom:20px;">';
 
-	var parties = new Array();
-	
-	str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
+	str += '<table class="SeatsFlownToOtherPartiesTable" cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
 	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
-		
-	str += '<th>Party</th>';
 	
-	for(var i=0;i<partyArray.length;i++)
-		str += '<th>'+partyArray[i]+'</th>';
+	str += '<th width="50px">Party</th>';
+	str += '<th width="50px">Seates Gained</th>';
+	str += '<th>Gained Info</th>';
+	str += '<th>Gained Info Graph</th>';
 	str += '</tr>';
 
-	str += '<tr style="text-align:center;">'
-	str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
-	str += '</tr>';
+	for(var i in myResults)
+	{
+		if(myResults[i].wonFromOtherPartiesCount > 0)
+		{
+			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
+			str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+			str += '<td>'+myResults[i].wonFromOtherPartiesCount+'</td>';
+			str += '<td>';
+			
+			for(var j in myResults[i].wonFromOtherParties)
+			{
+				str += ''+myResults[i].wonFromOtherParties[j].name +' : '+myResults[i].wonFromOtherParties[j].id+'<br>';
+			}
+			str += '</td>';
+
+			str += '<td><div id="wonFromOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
+		}
+
+	}
+
+	str += '</table>';
+	str += '</div>';
+
+	str += '<span class="headingstyle" style="margin-bottom:10px;">Partywise Seats Lost to other Parties in Previous Election to Present Election</span>';
 	
+	str += '<div style="margin-top:15px;">';
+
+	str += '<table class="SeatsFlownToOtherPartiesTable" cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
+	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+	
+	str += '<th width="50px">Party</th>';
+	str += '<th width="50px">Seates Lost</th>';
+	str += '<th>Lost Info</th>';
+	str += '<th>Lost Info Graph</th>';
+	str += '</tr>';
+
+	for(var i=0;i<myResults.length;i++)
+	{
+		var lostSeatsCount = 0;
+
+		for(var k=0;k<myResults[i].lostSeatsInPrevWonToOtherParties.length;k++)
+		{
+			lostSeatsCount += myResults[i].lostSeatsInPrevWonToOtherParties[k].id;
+		}
+
+		if(lostSeatsCount > 0)
+		{   
+			
+			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
+			str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+			str += '<td>'+lostSeatsCount+'</td>';
+			str += '<td>';
+			
+			for(var j=0;j<myResults[i].lostSeatsInPrevWonToOtherParties.length;j++)
+			{
+				str += ''+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' : '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'<br>';
+			}
+			str += '</td>';
+
+			str += '<td><div id="lostToOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
+		}
+
+	}
+
+	str += '</table>';
 	str += '</div>';
 
 	seatsFlownDivEle.innerHTML = str;
+
+	for(var i in myResults)
+	{
+		if(myResults[i].wonFromOtherPartiesCount > 0)
+		{
+			var data = new google.visualization.DataTable();
+			data.addColumn('string','partyName');
+			data.addColumn('number','Seats Won From Other Party');
+			data.addRows(myResults[i].wonFromOtherParties.length);
+
+			for(var j=0; j<myResults[i].wonFromOtherParties.length; j++)
+			{
+				data.setValue(j,0,myResults[i].wonFromOtherParties[j].name);
+				data.setValue(j,1,myResults[i].wonFromOtherParties[j].id);
+			}
+			var chart = new google.visualization.PieChart(document.getElementById('wonFromOtherPartiesGraphdiv_'+myResults[i].partyName)); 
+			chart.draw(data,{width: 360, height: 250, title: myResults[i].partyName+' Party Won Seats From Other Parties Info'});
+		}
+	}
+
+	for(var i in myResults)
+	{
+		var lostSeatsCount = 0;
+
+		for(var k=0;k<myResults[i].lostSeatsInPrevWonToOtherParties.length;k++)
+		{
+			lostSeatsCount += myResults[i].lostSeatsInPrevWonToOtherParties[k].id;
+		}
+
+		if(lostSeatsCount > 0)
+		{
+			var data = new google.visualization.DataTable();
+			data.addColumn('string','partyName');
+			data.addColumn('number','Seats Lost To Other Party');
+			data.addRows(myResults[i].lostSeatsInPrevWonToOtherParties.length);
+
+			for(var j=0; j<myResults[i].lostSeatsInPrevWonToOtherParties.length; j++)
+			{
+				data.setValue(j,0,myResults[i].lostSeatsInPrevWonToOtherParties[j].name);
+				data.setValue(j,1,myResults[i].lostSeatsInPrevWonToOtherParties[j].id);
+			}
+			var chart = new google.visualization.PieChart(document.getElementById('lostToOtherPartiesGraphdiv_'+myResults[i].partyName)); 
+			chart.draw(data,{width: 360, height: 250, title: myResults[i].partyName+' Party Lost Seats To Other Parties Info'});
+		}
+	}
 }
 
 function checkForParty(party,partyArray)
