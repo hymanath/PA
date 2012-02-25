@@ -167,13 +167,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
  </div>
 </div>
 
-<table width="100%" style="background: #fff;"><tr><td width="50%">
-<div id="partyAnalysisHeading" style="margin-top:15px;margin-left:15px;margin-bottom:10px;"></div>
-
-</td>
-<td width="50%" valign="top"><div id="partyLostAnalysisHeading" style="margin-left:15px;margin-bottom:10px;margin-top:15px;"></div>
-</td>
-</tr></table>
 <div id="partyLostAnalysisDiv"></div>
 </div>
 </div>
@@ -386,7 +379,6 @@ function buildCompareResultForWonorLead(myResults)
 
   }
 }
-
 function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 {
 	var seatsFlownDivEle = document.getElementById('partiesSeatsFlownToOtherPartiesDiv');
@@ -1284,6 +1276,9 @@ function buildConstituencyWiseCandidates(myResults)
 		elLiner.innerHTML ="<a href='partyPageAction.action?partyId="+partyId+"' style='text-decoration:none;color:#000;' title='click to view Party Profile'>"+party+"</a>";
 			
 	};
+
+if(myResults[0].districtId!=null)
+{
 	var resultsColumnDefs = [ 	
 				
 				{
@@ -1317,6 +1312,40 @@ function buildConstituencyWiseCandidates(myResults)
 				}
 						
 			];
+}
+else
+	{
+
+	var resultsColumnDefs = [ 	
+				
+				{
+				key : "candidateName",
+				label : "Candidate Name",
+				sortable : true,
+				formatter:YAHOO.widget.DataTable.candidateLink
+				},
+				
+				{
+				key : "constituencyName",
+				label : "Constituency",
+				sortable : true,
+				formatter:YAHOO.widget.DataTable.constituencyLink
+				},
+				{
+				key : "partyName",
+				label : "Party",
+				sortable : true,
+				formatter:YAHOO.widget.DataTable.partyLink
+				},
+				{
+				key : "status",
+				label : "Status",
+				sortable : true
+				}
+						
+			];
+
+		}
 			var myConfigs = {    
 						paginator : new YAHOO.widget.Paginator({ 
 						rowsPerPage    : 50,		        
