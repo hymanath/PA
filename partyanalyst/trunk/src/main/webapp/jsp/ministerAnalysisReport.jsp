@@ -90,6 +90,14 @@ function getElectionYears(electionType)
    {
 	var stateEle = document.getElementById("stateListId");
     stateId = stateEle.options[stateEle.selectedIndex].value;
+	document.getElementById("showData").innerHTML = "";
+    document.getElementById("keyCandidatesData").innerHTML = "";
+	if(stateId == 0)
+	  {
+	    removeData("yearSelId");
+        addData("yearSelId");
+	    return ;
+	  }
    }
 	removeData("yearSelId");
 	var jObj = {
@@ -377,6 +385,7 @@ function getElectionYears(electionType)
 									}
 									else if(jsObj.task == "getdetails")
 									{
+									   document.getElementById("select_ImgSpan").style.display="none";
 									   if(jsObj.reqtype == "ImportantCandidates")
 									      buildDataTable(myResults,"keyCandidatesData");
 									   else
@@ -425,8 +434,13 @@ function getElectionYears(electionType)
  }
  function getDetails(reqtype)
  {
-     yearEle =  document.getElementById("yearSelId");
-	 eleId = yearEle.options[yearEle.selectedIndex].value;
+       document.getElementById("showData").innerHTML = "";
+       document.getElementById("keyCandidatesData").innerHTML = "";
+     var yearEle =  document.getElementById("yearSelId");
+	 var eleId = yearEle.options[yearEle.selectedIndex].value;
+	 if(eleId == 0)
+	  return;
+	 document.getElementById("select_ImgSpan").style.display="block";
 	 var jsObj =
 		{ 
             time : new Date().getTime(),
@@ -520,6 +534,11 @@ function getDeltailForMinisImpCand()
 		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDeltailForMinisImpCand();" ></select></td>
       </tr>
+	 </table>
+	 <table>
+	   <tr>
+	     <td><span id="select_ImgSpan" style="padding-left:206px;padding-top:5px;display:none;"><img src="images/icons/partypositions.gif"></span></td>
+	   </tr>
 	 </table>
    </div>
    <div style="padding-top:30px;">
