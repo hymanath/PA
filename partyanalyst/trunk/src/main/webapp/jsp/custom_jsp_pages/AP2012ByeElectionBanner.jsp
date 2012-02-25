@@ -3,10 +3,29 @@
 <html>
 <body>
 <div style="background:#fff;">
-<br /><br /><br />
+<br /><br /><br/>
+
+
+
+<span style="margin-left:13px;text-decoration:underline;"><strong>Note:</strong></span><br>
+<div>
+
+
+
+
+<span style="font-weight:normal;font-size:12px;font-family:'Trebuchet MS',Arial,Helvetica,sans-serif';">
+&nbsp;&nbsp;&nbsp;The Election Commission of India has announced bye elections schedule for the 7 Assembly constituencies in Andhra Pradesh.Out of 7 segments, 6 are in Telangana Region.
+
+&nbsp;&nbsp;&nbsp;Kovur is the only constituency out of the seven going to polls in the Seemandhra region where regional sentiments can be said to have not hit fever pitch.Local &nbsp;&nbsp;&nbsp;&nbsp;heavyweight Nallapureddy Prasanna Kumar Reddy has already started his campaign as the YSR Congress candidate.
+</span>
+
+
+
+</div>
+<br><br>
 <table width="100%">
 <tr>
-<td width="45%"><div><span style="background:#dddddd;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:20px;color:#000;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
+<td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
 </div>
 <table cellpadding="6px" cellspacing="2px" style="margin-top:12px;margin-left:12px;border:1px solid #cdcdcd; border-collapse:collapse;font-size:13px;">
  <tbody><tr style="background:#3399cc;color:#fff;">
@@ -82,20 +101,20 @@
 </div>
 </td>
 <td width="50%">
-<div style="float: right;">
-<span style="background:#dddddd;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:10px;color:#000;font-family:verdana; padding: 6px 7px 7px;">
-View Assembly Previous BYE Election Results
+<div style="float: right;margin-top:-66px;">
+<span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:14px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">
+Participating Constituencies Andhra Pradesh 2012 Bye Elections
  </span>
 
 <div  style="margin:14px;font-weight:bold;border:1px solid #cdcdcd;padding-right:10px;background:#ffffff;font-size:14px;">
-<h3 style="margin-left:10px;margin-top:6px;font-size:12px;">Bye Election Results</h3>
+<!--<h3 style="margin-left:10px;margin-top:6px;font-size:12px;">Bye Election Results</h3>-->
 <div style ="margin-left: 199px;margin-top: -16px;">
-<img src="images/icons/diamond.png" />
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=80&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2011">2011</a>
-
+<!--<img src="images/icons/diamond.png" />
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=80&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2011">2011</a>-->
+<!--
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=116&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2010"> 2010</a></div>
-<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 7px;"> Constituencies Participating In Bye Election</h3><br>
+<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=116&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2010"> 2010</a>--></div>
+<!--<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 25px;"> Constituencies Participating In Bye Election</h3>--><br>
 
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy.</span>
@@ -116,53 +135,59 @@ View Assembly Previous BYE Election Results
 </td>
 </tr>
 </table>
+
+
+
+
 <div style="background:#ffffff;">
 <div style="margin-top:0px;background:#ffffff;">
 <div style="margin-top:12px;">
-<span style="background:#dddddd;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:10px;color:#000;font-family:verdana; padding: 6px 7px 7px;">Participating MLA's IN Bye Election </span>
+<span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Participating MLA's IN Bye Election </span>
 </div>
-<div style="margin:14px;font-weight:bold;border:1px solid #cdcdcd;padding-right:10px;background:#ffffff;">
+<div style="margin:14px;font-weight:bold;border:1px solid #cdcdcd;padding-right:10px;background:#ffffff; width:947px;">
 
 <table>
 <tr>
-<td style="font-size: 13px;">
-<h4 style="margin-left:5px;"><img src="images/icons/diamond.png" />TDP</h4><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Adilabad</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Payal Shankar</span><br><br>
+<td style="font-size: 13px;padding-left:8px;">
+<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;">TDP</h4><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Payal Shankar</span><br><br>
 
-<span style="font-weight:normal;margin-left:5px;"><strong>Kamareddy</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Mettu Venugopal</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Station Ghanpur</strong>&nbsp;:&nbsp;&nbsp;&nbsp;Kadiyam Srihari</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Kollapur</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Mahaboobnagar</strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Kovur</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Somireddy Chandramohan Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Nagarkurnool</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Mettu Venugopal</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;Kadiyam Srihari</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar</a></strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Somireddy Chandramohan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
 </td>
-<td valign=top style="font-size: 13px;">
-<h4 style="margin-left:5px;"><img src="images/icons/diamond.png" />TRS</h4><br>
+<td valign=top style="font-size: 13px;padding-left:8px;">
+<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;"/>TRS</h4><br>
 
-<span style="font-weight:normal;margin-left:5px;"> <strong>Adilabad</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Jogu Ramanna</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"> <strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Jogu Ramanna</span><br><br>
 
-<span style="font-weight:normal;margin-left:5px;"> <strong>Kamareddy</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Gampa Goverdhan</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Station Ghanpur</strong>&nbsp;:&nbsp;&nbsp;&nbsp;T Rajaiah </span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Kollapur</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jupally Krishna Rao</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Mahaboobnagar</strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Sayed Ibrahim</span>
+<span style="font-weight:normal;margin-left:5px;"> <strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Gampa Goverdhan</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;T Rajaiah </span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jupally Krishna Rao</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar</a></strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Sayed Ibrahim</span>
 </td>
 
-<td style="font-size: 13px;">
+<td style="font-size: 13px;padding-left:8px;">
 
-<h4 style="margin-left:5px;"><img src="images/icons/diamond.png" />CONGRESS</h4><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Adilabad</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Rama Chandra Reddy</span><br><br>
+<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;">INC</h4><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Rama Chandra Reddy</span><br><br>
 
-<span style="font-weight:normal;margin-left:5px;"><strong>Kamareddy</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Yedla Raji Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Station Ghanpur</strong>&nbsp;:&nbsp;&nbsp;&nbsp;Pratap</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Kollapur</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vishnu Vardhan Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Mahaboobnagar</strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Muthyala Prakash</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Kovur</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Polavaram Srinivasa Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong>Nagarkurnool</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Yedla Raji Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;Pratap</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vishnu Vardhan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar</a></strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Muthyala Prakash</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Polavaram Srinivasa Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
 
 </td>
 </tr></table>
+
+
 </div>
 
+
 </div>
-
-
+</div>
