@@ -84,9 +84,9 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 	    RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 	
 	if(session.getAttribute(IConstants.USER) == null && 
-			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
+			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.UPDATE_LIVE_ELECTION_RESULTS))
 		return IConstants.NOT_LOGGED_IN;
-	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
+	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.UPDATE_LIVE_ELECTION_RESULTS))
 		return ERROR;
 	
 	return SUCCESS;

@@ -236,7 +236,7 @@ function buildAccordion()
         <c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
         <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
-                <li><a href="electionComparisonAction.action"><span >Elections Comparison Report</span></a>
+                <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a>
                  
                 </li>
                 <li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a>
@@ -265,6 +265,14 @@ function buildAccordion()
 						 <li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
                     </ul></div>
                 </li>
+				<li><a href="#" class="parent"><span>Live Results Analysis</span></a>
+					<div  style="z-index:1;text-align:left;"><ul>
+						<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
+						<li><a href="ministerAnalysisAction.action"><span>Ministers & Special Candidates Analysis</span></a></li>
+						<li><a href="electionResultsUpdateAction.action"><span>Update Live Election Results</span></a></li>
+						<li><a href="assignKeyCandidateAction.action"><span>Assign Special Candidates</span></a></li>
+					</ul></div>
+				</li>
              </ul></div>
          <li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
             <div  style="z-index:1;text-align:left;"><ul>

@@ -861,5 +861,6 @@
 	<bean id="assignKeyCandidateAction" class="com.itgrids.partyanalyst.web.action.AssignKeyCandidateAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService"/>
 			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
+			<property name="entitlementsHelper" ref="entitlementsHelper"/>
 	</bean>			
 </beans>	

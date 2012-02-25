@@ -5,14 +5,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -32,8 +35,15 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 	private IStaticDataService staticDataService; 
 	private List<SelectOptionVO> parties;
 	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
-	private AssignKeyCandidateVO assignKeyCandidateVO; 
+	private AssignKeyCandidateVO assignKeyCandidateVO;
+	private EntitlementsHelper entitlementsHelper;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public AssignKeyCandidateVO getAssignKeyCandidateVO() {
 		return assignKeyCandidateVO;
 	}
@@ -104,6 +114,20 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 	}
 	public void setParties(List<SelectOptionVO> parties) {
 		this.parties = parties;
+	}
+	
+	public String execute()
+	{
+		HttpSession session = request.getSession();
+	    RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	
+	if(session.getAttribute(IConstants.USER) == null && 
+			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT))
+		return IConstants.NOT_LOGGED_IN;
+	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT))
+		return ERROR;
+	
+	return SUCCESS;
 	}
 	
 	public String ajaxCallHandlerForAssignKeyCandidate(){

@@ -3069,14 +3069,16 @@
 				
 		<action name="assignKeyCandidateAction" class="assignKeyCandidateAction">
 			<result name="success">/jsp/assignKeyCandidate.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
-			
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		
 		<action name="getStatesBasedOnElectionTypeAction" class="assignKeyCandidateAction" method="ajaxCallHandlerForAssignKeyCandidate">
 			<result type="json" name="success">
 				<param name="root">optionVOList</param>
 			</result>
 	 	</action>
+	 	
 	 	<action name="saveKeyCandidatesAction" class="assignKeyCandidateAction" method="ajaxCallHandlerForAssignKeyCandidate">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
