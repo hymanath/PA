@@ -291,16 +291,21 @@ function buildCompareResultForWonorLead(myResults)
 		str += '<table cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;margin-top:15px;">';
 		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 		
-		str += '<th>Party</th>';
-		str += '<th>Participated Seats In Old Constituencies</th>';
-		str += '<th>Known Result In old Constituency</th>';
-		str += '<th>Won/Lead Count In Old Constituency</th>';
-		str += '<th>Participated Seats In New Constituencies</th>';
-		str += '<th>Known Result In New Constituency</th>';
-		str += '<th>Won/Lead Count In New Constituency</th>';
-		str += '<th>Won/Lead In (%) In Old Constituency</th>';
-		str += '<th>Won/Lead In (%) In New Constituency</th>';
-
+		str += '<th rowspan="2">Party</th>';
+		str += '<th colspan="4"><font color="blue">In Old Constituencies</font></th>';
+		str += '<th colspan="4"><font color="green">In New Constituencies</font></th>';
+		str += '</tr>';
+		
+		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size:11px;border:1px;">';
+		str += '<th><font color="blue">Participated Seats</font></th>';
+		str += '<th><font color="blue">Known Result</font></th>';
+		str += '<th><font color="blue">Won/Lead Count</font></th>';
+		str += '<th><font color="blue">Won/Lead (%)</font></th>';
+		str += '<th><font color="green">Won/Lead (%)</font></th>';
+		str += '<th><font color="green">Participated Seats</font></th>';
+		str += '<th><font color="green">Known Result</font></th>';
+		str += '<th><font color="green">Won/Lead Count</font></th>';
+		
 		str += '</tr>';
 
 		for(var i in myResults)
@@ -310,11 +315,11 @@ function buildCompareResultForWonorLead(myResults)
 			str += '<td>'+myResults[i].oldConstituencyParticipatedCount+'</td>';
 			str += '<td>'+myResults[i].oldKnownCount+'</td>';
 			str += '<td>'+myResults[i].wonOrLeadCountInOld+'</td>';
+			str += '<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
+			str += '<td>'+myResults[i].newWinOrLeadPercent+'</td>';
 			str += '<td>'+myResults[i].newConstituencyParticipatedCount+'</td>';
 			str += '<td>'+myResults[i].newKnownCount+'</td>';
 			str += '<td>'+myResults[i].wonOrLeadCountInNew+'</td>';
-			str += '<td>'+myResults[i].oldWinOrLeadPercent+'</td>';
-			str += '<td>'+myResults[i].newWinOrLeadPercent+'</td>';
 			str += '</tr>';
 		}
 
@@ -398,8 +403,10 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 	
 	str += '<th width="50px">Party</th>';
-	str += '<th width="50px">Seates Gained</th>';
-	str += '<th>Gained Info</th>';
+	str += '<th width="60px">Seats Participated</th>';
+	str += '<th width="75px">Retained Seats</th>';
+	str += '<th width="75px">Seats Gained</th>';
+	str += '<th align="left">Gained Info</th>';
 	str += '<th>Gained Info Graph</th>';
 	str += '</tr>';
 
@@ -409,8 +416,10 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 		{
 			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
 			str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+			str += '<td>'+myResults[i].totalSeatsParticipated+'</td>';
+			str += '<td>'+myResults[i].retainedCount+'</td>';
 			str += '<td>'+myResults[i].wonFromOtherPartiesCount+'</td>';
-			str += '<td>';
+			str += '<td align="left">';
 			
 			for(var j in myResults[i].wonFromOtherParties)
 			{
@@ -434,8 +443,9 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
 	
 	str += '<th width="50px">Party</th>';
-	str += '<th width="50px">Seates Lost</th>';
-	str += '<th>Lost Info</th>';
+	str += '<th width="60px">Seats Participated</th>';
+	str += '<th width="50px">Seats Lost</th>';
+	str += '<th align="left">Lost Info</th>';
 	str += '<th>Lost Info Graph</th>';
 	str += '</tr>';
 
@@ -453,8 +463,9 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			
 			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
 			str += '<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+			str += '<td>'+myResults[i].totalSeatsParticipated+'</td>';
 			str += '<td>'+lostSeatsCount+'</td>';
-			str += '<td>';
+			str += '<td align="left">';
 			
 			for(var j=0;j<myResults[i].lostSeatsInPrevWonToOtherParties.length;j++)
 			{
