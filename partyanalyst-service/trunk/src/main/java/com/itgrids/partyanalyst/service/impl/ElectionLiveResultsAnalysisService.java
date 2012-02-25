@@ -353,8 +353,14 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			if(isPartial)
 				list = constituencyLeadCandidateDAO.getConstituencyWiseCandidatesStates(electionId);
 			else
-				list = nominationDAO.getConstituencyWiseCandidatesStates(electionId);
-			
+			{
+				if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				{
+					list = 	nominationDAO.getConstituencyWiseCandidatesParliament(electionId);
+				}
+				else
+					list = nominationDAO.getConstituencyWiseCandidatesStates(electionId);
+			}
 			if(list != null && list.size() > 0)
 			{
 				resultList = new ArrayList<ConstituencyElectionResultVO>(0);
@@ -364,12 +370,22 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 					electionResultVO = new ConstituencyElectionResultVO();
 					electionResultVO.setConstituencyId((Long)params[0]);
 					electionResultVO.setConstituencyName(WordUtils.capitalize(params[1].toString().toLowerCase()));
-					electionResultVO.setDistrictId((Long)params[2]);
-					electionResultVO.setDistrictName(params[3].toString());
-					electionResultVO.setCandidateId((Long)params[4]);
-					electionResultVO.setCandidateName(params[5].toString());
-					electionResultVO.setPartyId((Long)params[6]);
-					electionResultVO.setPartyName(params[7].toString());
+					if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+					{
+						electionResultVO.setCandidateId((Long)params[2]);
+						electionResultVO.setCandidateName(params[3].toString());
+						electionResultVO.setPartyId((Long)params[4]);
+						electionResultVO.setPartyName(params[5].toString());
+					}
+					else
+					{
+						electionResultVO.setDistrictId((Long)params[2]);
+						electionResultVO.setDistrictName(params[3].toString());
+						electionResultVO.setCandidateId((Long)params[4]);
+						electionResultVO.setCandidateName(params[5].toString());
+						electionResultVO.setPartyId((Long)params[6]);
+						electionResultVO.setPartyName(params[7].toString());
+					}
 					
 					if(isPartial)
 						electionResultVO.setStatus(params[8].toString());
@@ -393,11 +409,13 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			List<ElectionLiveResultVO> resultList = null;
 			Boolean isPartial = null;
 			List<Object[]> list = null;
-			
+			Long stateId = 0l;
 			Election election = electionDAO.get(electionId);
 			Long prevElectionId = getPreviousElectionId(electionId);
 			String electionType = election.getElectionScope().getElectionType().getElectionType();
-			Long stateId = election.getElectionScope().getState().getStateId();
+			if(election.getElectionScope().getState()!=null){
+				stateId = election.getElectionScope().getState().getStateId();
+			}
 			boolean isFirstElectionAfterDelimtation = getIsFirstElectionAfterDelimtation(election.getElectionScope().getElectionScopeId(),Long.parseLong(election.getElectionYear()));
 			if(prevElectionId == null)
 				return null;
