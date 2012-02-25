@@ -122,7 +122,19 @@ var $j = jQuery.noConflict(true);
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
 				{ text: "Elections Vs Census", url: "censusReportAction.action" },     
-	            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }                      
+	            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" },
+				{ text: "Live Results Analysis", 
+					 submenu : {
+				     id  : "Live_Results_Analysis",
+					 itemdata : [
+						{text: "Live & Previous Results Comparison", url: "electionLiveResultsAnalysisAction.action"},
+						{text: "Ministers & Special Candidates Analysis", url: "ministerAnalysisAction.action"},
+						{text: "Update Live Election Results", url: "electionResultsUpdateAction.action"},
+						{text: "Assign Special Candidates", url: "assignKeyCandidateAction.action"}
+						
+						]
+					}
+				}
 	        ] 
 	    }, 
 	    { 
