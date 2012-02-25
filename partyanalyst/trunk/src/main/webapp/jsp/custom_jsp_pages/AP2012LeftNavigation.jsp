@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <div class="selectHeading" style="width:187px;">
-	<span class="selectDivStyle">AP Constituencies</span>
+	<span class="selectDivStyle">View your Constituencies</span>
 	<span style="margin-left: 4px;-moz-border-radius:4px;">Know About Your Constituency</span>
 	
 
