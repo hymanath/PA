@@ -83,6 +83,14 @@
 #corporationDataTable0 > table * td,#dataTable0 > table * td,#dataTable1 > table * td,#dataTable2 > table * td,#dataTable3 > table * td,#dataTable4 > table * td,#dataTable5 > table * td,#dataTable6 > table * td,#dataTable7 > table * td,#partyDetails > table * td,#mptcPartyDetails > table * td{margin-left:auto;margin-right:auto;float:none;font-family:arial;text-align:center;}
 #mlaInfoDivBody > table * td{text-align:left;}
 #dataTable0,#dataTable1,#dataTable2 ,#dataTable3 ,#dataTable4 ,#dataTable5,#dataTable6,#dataTable7,#corporationDataTable0 {margin-top:11px;}
+.districtPageRoundedHeaders_center
+{
+	/*background-image:url("../../images/icons/districtPage/header_body.png");*/
+	background-color:#72CAED;
+	font-weight:bold;
+	padding:11px;
+	height:14px;
+}
 
 
 	</style>
@@ -440,7 +448,7 @@ var corporationElectionType='${corporationElectionType}';
 					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:52px;"/></td>
 						<td>-->
-							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:874px;-moz-border-radius:6px;padding-bottom:7px;">
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:874px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">
 								<span style="float:left;color:#ffffff;font-size:14px;">Member of Parliament (MP) in the  ${districtName} District</span>
 							</div></td>
 						
@@ -493,7 +501,7 @@ var corporationElectionType='${corporationElectionType}';
 					<tr>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:0px;"/></td>
 						<td>	-->
-							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:882px;-moz-border-radius:6px;padding-bottom:7px;">
+							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:882px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">
 								<span style="float:left;color:#ffffff;">Member of Legislative Assembly (MLA) in the  ${districtName} District</span>
 							</div>
 						</td>
@@ -575,7 +583,7 @@ var corporationElectionType='${corporationElectionType}';
 								<tr>
 									<!--<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>-->	
-										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;">
+										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span>Total Number of ZPTC's : </span>
 											<span id="totalZptcCountResultDiv"></span>
 										</div>
@@ -607,7 +615,7 @@ var corporationElectionType='${corporationElectionType}';
 								<tr>
 									<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>	-->
-										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;">
+										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span style="color:#ffffff;">Total Number of MPTC's : </span>
 											<span id="totalMptcCountResultDiv"></span>
 										</div>
@@ -893,7 +901,7 @@ function corporationHeadConstruction(result){
 		var corporationDiv='';	
 		corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//corporationDiv+='<td width="30"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 897px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;">';
+		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 897px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">';
 		corporationDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		corporationDiv+='</div></td>';
 		//corporationDiv+='<td><img width="30" height="36" src="images/icons/districtPage/header_right.gif" style="clear:both;margin-right:107px;"/></td>';	
@@ -910,7 +918,7 @@ function corporationHeadConstruction(result){
 		var muncipalityDIV='';
 		muncipalityDIV+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//muncipalityDIV+='<td width="30"><img width="5" height="36" src="images/icons/districtPage/header_left.gif"/></td>';
-		muncipalityDIV+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 897px; height: 18px;-moz-border-radius:6px;color:#ffffff;">'+totalCorporations+' : <b class="counterSize"> </b></div>';
+		muncipalityDIV+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 897px; height: 18px;-moz-border-radius:6px;color:#ffffff;background:#72CAED;">'+totalCorporations+' : <b class="counterSize"> </b></div>';
 		muncipalityDIV+='</td>';
 		//muncipalityDIV+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif" style="clear:both;margin-right:107px;"/></td></tr></table>';
 		muncipality.innerHTML += muncipalityDIV;
@@ -955,7 +963,7 @@ function getMuncipalPartyDetails(){
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//muncipalityDiv+='<td><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 898px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;margin-top:15px;">';
+		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 898px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;margin-top:15px;background:#72CAED;">';
 		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		muncipalityDiv+='</div></td>';
 		//muncipalityDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
