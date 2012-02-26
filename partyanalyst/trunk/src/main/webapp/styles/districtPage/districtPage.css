@@ -118,8 +118,8 @@
 
 .districtPageRoundedHeaders_center
 {
-	/*background-image:url("../../images/icons/districtPage/header_body.png");*/
-	background-color:#72CAED;
+	background-image:url("../../images/icons/districtPage/header_body.png");
+	/*background-color:#72CAED;*/
 	font-weight:bold;
 	padding:11px;
 	height:14px;
