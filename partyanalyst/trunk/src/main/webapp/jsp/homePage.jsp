@@ -128,6 +128,40 @@ function openAddNewProblemWindow()
 .pft-sec a:hover{
 text-decoration:none;
 }
+.buttonStyle {
+	background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+	}
+	.updatesDiv{
+
+background:powderBlue;
+width:297px;
+margin-left:-5px;
+border-bottom:3px solid blue;
+border-radius:5px 5px 0px 0px;
+	}
+	.updatesDiv a{
+		margin:2px;
+		padding:5px 8px 5px 8px;
+		text-decoration:none;
+		color:#3d3d3d;
+		border-radius:5px 5px 0px 0px;
+	}
+	.updatesDiv a:hover,.updatesDiv a.current{
+	background:blue;
+	color:#FFFFFF;
+
+	}
+
 
 
 </style>
@@ -452,33 +486,25 @@ text-decoration:none;
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
         
-        <!--PPPM AND FT ICONS SECTION START-->
-		
-        <div class="pft-social-sec" style="width:308px;">
+          <div class="pft-social-sec" style="width:308px;">
           <div class="pft-sec"  style="font-size: 13px; padding-left: 7px;width:291px;">
 		  <strong style="color: #0D0E3B;font-size: 18px;line-height: 18px; padding-bottom: 20px;">Updates From Party Analyst</strong>
-		  <ul>
-		  <div style="width:303px;">
-		  <li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;
-		  <a style="color:#777777;margin-right: -12px;" href="javascript:{}" onclick="buildPhotoGallary()"><span class="photogallarySpan" id="photogallarySpan" style=" border-radius: 3px;">Photo Gallary</span></a></li>
-			&nbsp;&nbsp;
-		  <li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}" onclick="buildNewsGallary()">
-			<span class="newsgallarySpan" id="newsgallarySpan" style=" border-radius: 3px;">News Gallary</span></a></li>
-			&nbsp;
-		<li style="display: inline;"><img src="images/icons/star.jpg" alt=""/>&nbsp;&nbsp;<a style="color:#777777" href="javascript:{}" onclick="buildVideoGallary()"><span class="videogallarySpan" id="videogallarySpan" style=" border-radius: 3px;">Video Gallary</span></a>
-		</li>
-		</div></ul>
-          </div>
+		  
+		  <div class="updatesDiv">
+		  
+		  <a onclick="buildPhotoGallary()" class="current" href="javascript:{}" id="photoGallaryButton">Photo Gallary</a>
+			
+		  <a onclick="buildNewsGallary()" href="javascript:{}" id="newsGallaryButton">News Gallary
+			</a>
+			
+		<a onclick="buildVideoGallary()" href="javascript:{}" id="videoGallaryButton">Video Gallary</a>
+		
+		</div>
+		</div>
 			<div style="height: 200px; overflow-x: hidden; overflow-y: scroll; width: 305px; margin-top: 0px; margin-right: 30px; margin-left: 0px; border-right-width: 17px; padding-left: 0px; padding-right: 0px;"><div id="allGallariesDisplay"  style="width: 300px; clear: both; margin-right: 9px; margin-left: -9px;"></div>
 			</div>
-            <!--<img src="./images/new_homepage/pft.jpg" alt=""/>
-            <div class="clear"></div>
-            <p></p>
-            <span class="gray">Are you a</span> <strong>Politician<span class="orange">/</span>Political Party<span class="orange">/</span>Media...</strong> Want to know how you can be benefited with <span class="orange">PartyAnalyst</span> ?
-            <div class="clear"></div>
-            <div class="clickhere-button"><a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
-          </div>-->
-          <div class="social-icons"> <strong>We are SOCIAL</strong>
+           
+         <div class="social-icons"> <strong>We are SOCIAL</strong>
             <div class="clear"></div>
             <div class="social-io"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img src="./images/new_homepage/facebook-io.jpg" alt=""/></a> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none" target="_blank"><img src="./images/new_homepage/twitter-io.jpg" alt=""/></a> <a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank"><img src="./images/new_homepage/in.jpg" alt=""/></a> <a href="http://www.youtube.com/partyanalyst" target="_blank"><img src="./images/new_homepage/youtube.jpg" alt=""/></a> </div>
           </div>
@@ -757,10 +783,12 @@ $(function() {
 
 	function buildPhotoGallary()
 	{
-		$(".photogallarySpan").css("background-color","red");
-		$(".photogallarySpan").css("color","#FFFFFF");
-		$("#videogallarySpan").css("background-color","#0063DC");
-		$("#newsgallarySpan").css("background-color","#0063DC");
+		/*$("#newsGallaryButton").css("background-color","#9999ff");
+		$("#photoGallaryButton").css("background-color","#0063DC");
+		$("#videoGallaryButton").css("background-color","#9999ff");*/
+		$(".updatesDiv a").removeClass("current");
+		$("#photoGallaryButton").addClass("current");
+
 		if(homePageUpdates == null)
 			return;
 		var str ='';
@@ -774,7 +802,7 @@ $(function() {
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'" style="color:#5CB275;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'" style="color:#000000;">';
 			str += 'New Photo Added to';
 			str +='\t';
 			str +=''+homePageUpdates.photogallary[i].candidateName+'';
@@ -794,10 +822,11 @@ $(function() {
 
 	function buildVideoGallary()
 	{	
-		$(".videogallarySpan").css("background-color","red");
-		$(".videogallarySpan").css("color","#FFFFFF");
-		$("#photogallarySpan").css("background-color","#0063DC");
-		$("#newsgallarySpan").css("background-color","#0063DC");
+		/*$("#newsGallaryButton").css("background-color","#9999ff");
+		$("#photoGallaryButton").css("background-color","#9999ff");
+		$("#videoGallaryButton").css("background-color","#0063DC");*/
+		$(".updatesDiv a").removeClass("current");
+		$("#videoGallaryButton").addClass("current");
 		if(homePageUpdates == null)
 			return;
 
@@ -812,7 +841,7 @@ $(function() {
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'" style="color:#5CB275;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'" style="color:#000000;">';
 			str += 'New Video Added to';
 			str +='\t';
 			str +=''+homePageUpdates.VideoGallary[i].candidateName+'';
@@ -830,11 +859,12 @@ $(function() {
 
 	function buildNewsGallary()
 	{
-		$("#photogallarySpan").css("background-color","#0063DC");
-		$("#videogallarySpan").css("background-color","#0063DC");
-		$("#newsgallarySpan").css("background-color","red");
-		$("#newsgallarySpan").css("color","#FFFFFF");
-		
+		/*$("#newsGallaryButton").css("background-color","#0063DC");
+		$("#photoGallaryButton").css("background-color","#9999ff");
+		$("#videoGallaryButton").css("background-color","#9999ff");*/
+$(".updatesDiv a").removeClass("current");
+		$("#newsGallaryButton").addClass("current");
+
 		if(homePageUpdates == null)
 			return;
 		var str ='';
@@ -849,7 +879,7 @@ $(function() {
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color:#5CB275;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color:#000000;">';
 			str += 'New News Added to';
 			str +='\t';
 			str +=''+homePageUpdates.NewsGallary[i].candidateName+'';
@@ -865,12 +895,15 @@ $(function() {
 			}
 		}
 photosNewsVideosUpdateForACandidate();
-$(".photogallarySpan").css("background-color","red");
+/*$(".photogallarySpan").css("background-color","red");
 $(".photogallarySpan").css("color","#FFFFFF");
 $("#newsgallarySpan").css("background-color","#0063DC");
 $("#videogallarySpan").css("background-color","#0063DC");
 $("#newsgallarySpan").css("color","#FFFFFF");
-$("#videogallarySpan").css("color","#FFFFFF");
+$("#videogallarySpan").css("color","#FFFFFF");*/
+/*$("#photoGallaryButton").css("background-color","#0063DC");
+$("#videoGallaryButton").css("background-color","#9999ff");
+$("#newsGallaryButton").css("background-color","#9999ff");*/
 	</script>
 	
 </body>
