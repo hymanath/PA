@@ -57,7 +57,7 @@
 		border-collapse:separate;
 		border-spacing:0;
 		font-family:Verdana;
-		color:background;
+		color:#000000;
 	}	
 	#votesPercentageIncDiv table
 	{
