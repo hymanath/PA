@@ -298,7 +298,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr){
 		
-		Query query = getSession().createQuery("from FileGallary model "+queryStr+" and model.gallary.candidate is not null order by model.file.fileDate desc");
+		Query query = getSession().createQuery("from FileGallary model "+queryStr+" and model.gallary.candidate is not null and model.gallary.isPrivate = 'false' " +
+				" and model.isPrivate = 'false' order by model.file.fileDate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
 		
