@@ -28,11 +28,14 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PositionScope extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = 6248515321731193028L;
 	private Long positionScopeId;
 	private ElectionScope electionScope;
 	private ElectionGoverningBodyPosition electionGoverningBodyPosition;
 	private String status;
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
+	private MinisterType ministerType;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,6 +87,17 @@ public class PositionScope extends BaseModel implements Serializable {
 	public void setElectionGoverningBody(
 			Set<ElectionGoverningBody> electionGoverningBody) {
 		this.electionGoverningBody = electionGoverningBody;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+	@JoinColumn(name = "minister_type_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MinisterType getMinisterType() {
+		return ministerType;
+	}
+	public void setMinisterType(MinisterType ministerType) {
+		this.ministerType = ministerType;
 	}
 	
 	
