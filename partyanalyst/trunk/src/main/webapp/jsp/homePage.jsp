@@ -783,9 +783,6 @@ $(function() {
 
 	function buildPhotoGallary()
 	{
-		/*$("#newsGallaryButton").css("background-color","#9999ff");
-		$("#photoGallaryButton").css("background-color","#0063DC");
-		$("#videoGallaryButton").css("background-color","#9999ff");*/
 		$(".updatesDiv a").removeClass("current");
 		$("#photoGallaryButton").addClass("current");
 
@@ -822,9 +819,6 @@ $(function() {
 
 	function buildVideoGallary()
 	{	
-		/*$("#newsGallaryButton").css("background-color","#9999ff");
-		$("#photoGallaryButton").css("background-color","#9999ff");
-		$("#videoGallaryButton").css("background-color","#0063DC");*/
 		$(".updatesDiv a").removeClass("current");
 		$("#videoGallaryButton").addClass("current");
 		if(homePageUpdates == null)
@@ -859,10 +853,7 @@ $(function() {
 
 	function buildNewsGallary()
 	{
-		/*$("#newsGallaryButton").css("background-color","#0063DC");
-		$("#photoGallaryButton").css("background-color","#9999ff");
-		$("#videoGallaryButton").css("background-color","#9999ff");*/
-$(".updatesDiv a").removeClass("current");
+		$(".updatesDiv a").removeClass("current");
 		$("#newsGallaryButton").addClass("current");
 
 		if(homePageUpdates == null)
@@ -895,16 +886,7 @@ $(".updatesDiv a").removeClass("current");
 			}
 		}
 photosNewsVideosUpdateForACandidate();
-/*$(".photogallarySpan").css("background-color","red");
-$(".photogallarySpan").css("color","#FFFFFF");
-$("#newsgallarySpan").css("background-color","#0063DC");
-$("#videogallarySpan").css("background-color","#0063DC");
-$("#newsgallarySpan").css("color","#FFFFFF");
-$("#videogallarySpan").css("color","#FFFFFF");*/
-/*$("#photoGallaryButton").css("background-color","#0063DC");
-$("#videoGallaryButton").css("background-color","#9999ff");
-$("#newsGallaryButton").css("background-color","#9999ff");*/
-	</script>
+</script>
 	
 </body>
 </html>
