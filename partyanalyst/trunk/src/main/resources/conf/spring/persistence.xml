@@ -236,6 +236,7 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyLeadCandidate</value>
 				<value>com.itgrids.partyanalyst.model.PositionScope</value>
 				<value>com.itgrids.partyanalyst.model.KeyCandidate</value>
+				<value>com.itgrids.partyanalyst.model.MinisterType</value>
 			</list>
 		</property>
 	</bean>
