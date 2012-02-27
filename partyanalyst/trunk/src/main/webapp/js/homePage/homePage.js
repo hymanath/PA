@@ -739,7 +739,7 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getPhotosNewsVideosUpdateForACandidate')
 							{
 								homePageUpdates = myResults;
-								buildPhotoGallary();
+								buildVideoGallary();
 								
 							}
 						}
