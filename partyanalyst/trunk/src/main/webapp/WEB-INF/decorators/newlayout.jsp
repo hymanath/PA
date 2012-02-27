@@ -725,6 +725,14 @@ function getStatesInQuickView( task,selId)
 	var url = "getStatesAjaxAction.action?"+rparam;						
 	callQuickViewAjax(jsObj,url);
 }
+
+function openAddNewProblemWindow()
+{	
+	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+	
+	browser_addNewProblem.focus();
+}
+
 function callQuickViewAjax(jsObj, url){
 
 
