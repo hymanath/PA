@@ -42,13 +42,6 @@
   
 <script type="text/javascript">
 var homePageUpdates = null;
-function openAddNewProblemWindow()
-{	
-	var browser_addNewProblem = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
-	
-	browser_addNewProblem.focus();
-}
-
 </script>
 <style type="text/css">
 #menu ul.menu li.active a {
@@ -143,18 +136,23 @@ text-decoration:none;
 	}
 	.updatesDiv{
 
-background:powderBlue;
-width:297px;
-margin-left:-5px;
-border-bottom:3px solid blue;
-border-radius:5px 5px 0px 0px;
+ background: none repeat scroll 0 0 powderBlue;
+    border-bottom: 3px solid blue;
+    border-radius: 5px 5px 0 0;
+    height: 20px;
+    margin-left: -9px;
+    margin-top: -8px;
+    padding: 5px 17px 7px;
+    width: 401px;
+	padding-left:40px;
+	 
 	}
 	.updatesDiv a{
-		margin:2px;
-		padding:5px 8px 5px 8px;
-		text-decoration:none;
-		color:#3d3d3d;
-		border-radius:5px 5px 0px 0px;
+		 border-radius: 5px 5px 0 0;
+    margin: 0;
+    padding: 10px 18px 10px;
+
+    text-decoration: none;
 	}
 	.updatesDiv a:hover,.updatesDiv a.current{
 	background:blue;
@@ -350,78 +348,38 @@ border-radius:5px 5px 0px 0px;
         
         <div class="qa-current-election-sec"> 
           
-          <!--QA CONTENT SLIDE SECTION START-->
+          
           
           <div class="qa-sec">
-            <h1 class="fleft"><img src="./images/new_homepage/qa.gif" alt=""/></h1>
-            <div class="rd-arrows"> <a href="#" onmouseover="movedown()" onmouseout="clearTimeout(movedownvar)"><img src="./images/new_homepage/orange-top-arrow.gif" alt=""/></a> <a href="#" onmouseover="moveup()" onmouseout="clearTimeout(moveupvar)"><img src="./images/new_homepage/blue-down-arrow.gif" alt=""/></a> </div>
-            <div class="clear"></div>
-            <script type="text/javascript" src="js/vcontent.js"></script>
-            <ul>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">How Party Analyst is useful to Voters? </div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme">They can know their leaders in better way, they can publish their constituency problems,
-				they can connect their local people and leaders. They can discuss about their parties and leaders. </div>
-							  </li>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">How Party Analyst is useful to Politicians?</div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme">They can get all elections information in a single platform, they can know which area they performed well and
-				in which area they need to improve. They can maitain Cadre, Influencing People and Influencing Groups information, and
-				they can improve the communication channels with them. They can maintain all news, photo galleries and videos in one place.</div>
-              </li>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">How Party Analyst is useful to Political Parties?</div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme" style="border-bottom:none;">They can get all elections information in a single platform, they can analyze the elections based on geographically,
-				demographically, political alliances and based on previous elections. They can maintain cadre, influencing people, groups
-				information in one place and improves the communication channels with them. </div>
-							  </li>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">What are the different types users in Party Analyst?</div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme">1) Free User 2) Registered User 3) Commercial User</div>
-              </li>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">What are the other services provided by Party Analyst?</div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme">Apart online we can also provide detailed Election Analysis Reports for any Constituency.
-				Election Surveys
-				Voters details with Caste Analysis
-				Profile Maintainance - integrations of news, videos, photos
-				Call Center Services - Remote Office to Politicians.
-                </div>
-              </li>
-              <li>
-                <div class="q-icon">q</div>
-                <div class="q-theme">Want to Know More?</div>
-                <div class="clear"></div>
-                <div class="a-icon">a</div>
-                <div class="a-theme" style="border-bottom:none;">Call us at +91 9676696760 or +91 40 4012 4153<br />
-                Drop an email to a.dakavaram@itgrids.com or a.dakavaram@partyanalyst.com</div>
-              </li>
-            </ul>
-            <script type="text/javascript" src="js/vscroll.js"></script> 
-            <script type="text/javascript" src="js/vcontent-scroll.js"></script> 
-          </div>
+		  
+		  
+<div style="width: 465px;">
+		
+		<div style="margin-left: -9px; height: 43px; margin-top: -3px;">
+		<h1 style="color:#FF4705;float:left;font-size:13px; text-transform:uppercase;">Updates From Party Analyst</h1>
+		</div>
+		<div class="updatesDiv">
+
+		<a onclick="buildVideoGallary()" href="javascript:{}" id="videoGallaryButton" class="current">Video Gallary</a>
+
+		  <a onclick="buildPhotoGallary()"  href="javascript:{}" id="photoGallaryButton">Photo Gallary</a>
+			
+		  <a onclick="buildNewsGallary()" href="javascript:{}" id="newsGallaryButton">News Gallary
+			</a>
+			</div>
+			&nbsp;
+			 <div id="allGallariesDisplay" style="overflow-x: hidden; overflow-y: scroll; padding-right: 0px; border-right-width: 17px; margin-left: -11px; width: 465px; height: 250px;"></div>
+			</div>
+		
+</div>
+		
+
           
-          <!--QA CONTENT SLIDE SECTION END--> 
           
           <!--CURRENT ELECTION SECTION START-->
           
           <div class="ce-sec" style="padding-top:0px;">
-<h1 class="title"><span class="orange">Current </span>Elections</h1> <div id="wrap">
+	<h1 class="title"><span class="orange">Current </span>Elections</h1> <div id="wrap">
               <div id="list">
                 <div class="prev"><img src="./images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div>
                 <div class="slider">
@@ -485,25 +443,75 @@ border-radius:5px 5px 0px 0px;
         </div>
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
+
+		<!--QA CONTENT SLIDE SECTION START-->
         
           <div class="pft-social-sec" style="width:308px;">
-          <div class="pft-sec"  style="font-size: 13px; padding-left: 7px;width:291px;">
-		  <strong style="color: #0D0E3B;font-size: 18px;line-height: 18px; padding-bottom: 20px;">Updates From Party Analyst</strong>
-		  
-		  <div class="updatesDiv">
-		  
-		  <a onclick="buildPhotoGallary()" class="current" href="javascript:{}" id="photoGallaryButton">Photo Gallary</a>
-			
-		  <a onclick="buildNewsGallary()" href="javascript:{}" id="newsGallaryButton">News Gallary
-			</a>
-			
-		<a onclick="buildVideoGallary()" href="javascript:{}" id="videoGallaryButton">Video Gallary</a>
+        <h1 class="fleft"><img src="./images/new_homepage/qa.gif" alt=""/></h1>
+			<div class="rd-arrows"> <a href="#" onmouseover="movedown()" onmouseout="clearTimeout(movedownvar)"><img src="./images/new_homepage/orange-top-arrow.gif" alt=""/></a> <a href="#" onmouseover="moveup()" onmouseout="clearTimeout(moveupvar)"><img src="./images/new_homepage/blue-down-arrow.gif" alt=""/></a> </div>
+            <div class="clear"></div>
+			<script type="text/javascript" src="js/vcontent.js"></script>
+				
+				<ul>
+              <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">How Party Analyst is useful to Voters? </div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="width:300px;">They can know their leaders in better way, they can publish their constituency problems,
+				they can connect their local people and leaders. They can discuss about their parties and leaders. </div>
+							  </li>
+							   <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">How Party Analyst is useful to Politicians?</div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="width:300px;">They can get all elections information in a single platform, they can know which area they performed well and
+				in which area they need to improve. They can maitain Cadre, Influencing People and Influencing Groups information, and
+				they can improve the communication channels with them. They can maintain all news, photo galleries and videos in one place.</div>
+              </li>
+              <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">How Party Analyst is useful to Political Parties?</div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="border-bottom:none;width:300px;">They can get all elections information in a single platform, they can analyze the elections based on geographically,
+				demographically, political alliances and based on previous elections. They can maintain cadre, influencing people, groups
+				information in one place and improves the communication channels with them. </div>
+							  </li>
+              <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">What are the different types users in Party Analyst?</div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="width:300px;">1) Free User 2) Registered User 3) Commercial User</div>
+              </li>
+              <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">What are the other services provided by Party Analyst?</div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="width:300px;">Apart online we can also provide detailed Election Analysis Reports for any Constituency.
+				Election Surveys
+				Voters details with Caste Analysis
+				Profile Maintainance - integrations of news, videos, photos
+				Call Center Services - Remote Office to Politicians.
+                </div>
+              </li>
+              <li>
+                <div class="q-icon">q</div>
+                <div class="q-theme">Want to Know More?</div>
+                <div class="clear"></div>
+                <div class="a-icon">a</div>
+                <div class="a-theme" style="border-bottom:none;width:300px;">Call us at +91 9676696760 or +91 40 4012 4153<br />
+                Drop an email to a.dakavaram@itgrids.com or a.dakavaram@partyanalyst.com</div>
+              </li>
+							  </ul>
+			<script type="text/javascript" src="js/vscroll.js"></script> 
+            <script type="text/javascript" src="js/vcontent-scroll.js"></script> 
+
+			<!--QA CONTENT SLIDE SECTION END--> 
 		
-		</div>
-		</div>
-			<div style="height: 200px; overflow-x: hidden; overflow-y: scroll; width: 305px; margin-top: 0px; margin-right: 30px; margin-left: 0px; border-right-width: 17px; padding-left: 0px; padding-right: 0px;"><div id="allGallariesDisplay"  style="width: 300px; clear: both; margin-right: 9px; margin-left: -9px;"></div>
-			</div>
-           
          <div class="social-icons"> <strong>We are SOCIAL</strong>
             <div class="clear"></div>
             <div class="social-io"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img src="./images/new_homepage/facebook-io.jpg" alt=""/></a> <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.partyanalyst.com" data-count="none" target="_blank"><img src="./images/new_homepage/twitter-io.jpg" alt=""/></a> <a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank"><img src="./images/new_homepage/in.jpg" alt=""/></a> <a href="http://www.youtube.com/partyanalyst" target="_blank"><img src="./images/new_homepage/youtube.jpg" alt=""/></a> </div>
@@ -795,11 +803,12 @@ $(function() {
 			str += '<tr>';
 			str += '<td>';
 			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'">';
-			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:75px;height:60px"/>';
+			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:95px;height:80px"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'" style="color:#000000;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.photogallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.photogallary[i].fileTitle1+'</h5>';
 			str += 'New Photo Added to';
 			str +='\t';
 			str +=''+homePageUpdates.photogallary[i].candidateName+'';
@@ -831,11 +840,12 @@ $(function() {
 			str += '<tr>';
 			str += '<td>';
 			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'">';
-			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:75px;height:60px"/>';
+			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:95px;height:80px"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'" style="color:#000000;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.VideoGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.VideoGallary[i].fileTitle1+'</h5>';
 			str += 'New Video Added to';
 			str +='\t';
 			str +=''+homePageUpdates.VideoGallary[i].candidateName+'';
@@ -866,11 +876,12 @@ $(function() {
 			str += '<tr>';
 			str += '<td>';
 			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'">';
-			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:75px;height:60px"/>';
+			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:95px;height:80px"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
-			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color:#000000;">';
+			str +='<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+			str += '<h5 style="color: #357EC7 !important;">'+homePageUpdates.NewsGallary[i].fileTitle1+'</h5>';
 			str += 'New News Added to';
 			str +='\t';
 			str +=''+homePageUpdates.NewsGallary[i].candidateName+'';
