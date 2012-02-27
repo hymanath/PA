@@ -1913,7 +1913,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	if(result !=null){
 		  for(int i=0; i<result.size(); i++){
 			 fileVO = new FileVO();
-			 fileVO.setCandidateName(result.get(i).getGallary().getCandidate().getLastname());
+			 fileVO.setCandidateName(WordUtils.capitalize(result.get(i).getGallary().getCandidate().getLastname().toLowerCase()));
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setFileName1(result.get(i).getFile().getFileName());
 			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
