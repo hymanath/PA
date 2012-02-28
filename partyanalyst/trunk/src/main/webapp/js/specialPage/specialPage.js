@@ -2476,9 +2476,10 @@ function showStatusForEmailSubscription(results)
 		document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
 	}
 }
+
 function clearEmailFields(){
-alert("hjhjhj");
-document.getElementById('emailId').value = ' ';
+	
+	document.getElementById('emailId').value = ' ';
 
 }
 
