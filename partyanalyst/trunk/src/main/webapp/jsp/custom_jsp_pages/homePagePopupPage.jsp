@@ -40,8 +40,15 @@
 		<!--<img class="imgStyle" src="images/new_homepage/uttarakand.png"/>-->
 	</a>
 </div>
+<!-- For AP BYE Election Text Image -->
+
+<div style=" position: relative; margin-left: 520px; margin-top: -18px; top: 630px;">
+	<a class="imgStyle" href="specialPageAction.action?specialPageId=8">ANDHRA PRADESH 2012 BYE ELECTION
+		<!--<img class="imgStyle" src="images/new_homepage/uttarakand.png"/>-->
+	</a>
+</div>
 <!-- For View Results Button Image -->
-<div style=" top: 431px; position: relative; margin-left: 520px; margin-top: 196px;">
+<div style=" top: 447px; position: relative; margin-left: 520px; margin-top: 196px;">
 	<a href="specialPageAction.action?specialPageId=2">
 		<img class="imgStyle" src="images/new_homepage/viewresults.png"/>
 	</a>
