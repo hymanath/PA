@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<html>
-<body>
+<style>
+ .main-mbg {
+    width:962px;
+}
+</style>
 <div style="background:#fff;">
 <br /><br /><br/>
-
-
-
-
+<div>
+<IMG src="images/specialPage/4leadersWar.png" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
+</div>
+<br><br>
 <table width="100%">
 <tr>
 <td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
