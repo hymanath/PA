@@ -81,7 +81,7 @@ padding:10px;
 {
 border-collapse:separate;
 border-spacing:0;
-color:background;
+color:#000000;
 font-family:verdana;
 font-size:inherit;
 margin:0;
