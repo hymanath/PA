@@ -7,22 +7,7 @@
 
 
 
-<span style="margin-left:13px;text-decoration:underline;"><strong>Note:</strong></span><br>
-<div>
 
-
-
-
-<span style="font-weight:normal;font-size:12px;font-family:'Trebuchet MS',Arial,Helvetica,sans-serif';">
-&nbsp;&nbsp;&nbsp;The Election Commission of India has announced bye elections schedule for the 7 Assembly constituencies in Andhra Pradesh.Out of 7 segments, 6 are in Telangana Region.
-
-&nbsp;&nbsp;&nbsp;Kovur is the only constituency out of the seven going to polls in the Seemandhra region where regional sentiments can be said to have not hit fever pitch.Local &nbsp;&nbsp;&nbsp;&nbsp;heavyweight Nallapureddy Prasanna Kumar Reddy has already started his campaign as the YSR Congress candidate.
-</span>
-
-
-
-</div>
-<br><br>
 <table width="100%">
 <tr>
 <td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
@@ -101,7 +86,7 @@
 </div>
 </td>
 <td width="50%">
-<div style="float: right;margin-top:-66px;">
+<div style="float: right;margin-top:12px;">
 <span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:14px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">
 Participating Constituencies Andhra Pradesh 2012 Bye Elections
  </span>
@@ -130,7 +115,15 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 <a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy  :              </a> <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"><div style="margin-left:13px;">Resignation of sitting MLAs of these constituencies Jupally Krishna Rao, Rajaiah, Nagam Janardhan Reddy Jogu Ramanna Gampa Goverdhan for their seats and respective parties.</div></span><br>
 <!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>--><img src="images/icons/diamond.png" style="margin-left:3px;"/>
-<a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><!--<a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>--><br><br><div id="KovurByeElectionInfoDiv_Body"></div>
+<a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"> Prasanna Kumar Reddy resigned from Telugu Desam Party.
+&nbsp;&nbsp;&nbsp;Andhra Pradesh assembly Speaker N. Manohar Saturday accepted &nbsp;&nbsp;&nbsp;resignation.
+
+
+He has been moving close with YSR Congress Party and its &nbsp;&nbsp;&nbsp;chief YS Jagan Mohan Reddy. Nallapureddy is contesting the bye &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;election in Kovur on YSR Congress Party.
+<!--Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>-->
+
+
+<br><br><div id="KovurByeElectionInfoDiv_Body"></div>
 
 </td>
 </tr>
@@ -149,20 +142,20 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <table>
 <tr>
 <td style="font-size: 13px;padding-left:8px;">
-<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;">TDP</h4><br>
+<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=872">TDP</a></h4><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Payal Shankar</span><br><br>
 
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Mettu Venugopal</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;Kadiyam Srihari</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=1150">Kadiyam Srihari</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar</a></strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Somireddy Chandramohan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; <a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=68187">Somireddy Chandramohan Reddy</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
 </td>
 <td valign=top style="font-size: 13px;padding-left:8px;">
-<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;"/>TRS</h4><br>
+<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"/><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=886">TRS</a></h4><br>
 
-<span style="font-weight:normal;margin-left:5px;"> <strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Jogu Ramanna</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"> <strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=57">Jogu Ramanna</a></span><br><br>
 
 <span style="font-weight:normal;margin-left:5px;"> <strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Gampa Goverdhan</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;T Rajaiah </span><br><br>
@@ -172,12 +165,12 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 <td style="font-size: 13px;padding-left:8px;">
 
-<h4 style="margin-left: 5px; color:#000000; background-color: #F5ECCE; font-weight: bold;">INC</h4><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Rama Chandra Reddy</span><br><br>
+<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=362">INC</a></h4><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=72535">Rama Chandra Reddy</a></span><br><br>
 
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp&nbsp;Yedla Raji Reddy</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;Pratap</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vishnu Vardhan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=204950">Vishnu Vardhan Reddy</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahaboobnagar</a></strong>&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Muthyala Prakash</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Polavaram Srinivasa Reddy</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
@@ -190,4 +183,22 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 
 </div>
+<!--
+
+<span style="margin-left:13px;text-decoration:underline;"><strong>Note:</strong></span><br>
+<div>
+
+
+
+
+<span style="font-weight:normal;font-size:12px;font-family:'Trebuchet MS',Arial,Helvetica,sans-serif';">
+&nbsp;&nbsp;&nbsp;The Election Commission of India has announced bye elections schedule for the 7 Assembly constituencies in Andhra Pradesh.Out of 7 segments, 6 are in Telangana Region.
+
+&nbsp;&nbsp;&nbsp;Kovur is the only constituency out of the seven going to polls in the Seemandhra region where regional sentiments can be said to have not hit fever pitch. Local heavyweight Nallapureddy Prasanna Kumar Reddy has already started his campaign as the YSR Congress candidate.
+</span>
+
+-->
+
+</div>
+
 </div>
