@@ -107,7 +107,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 <a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a>,
 
-<a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkarnul</a>,
+<a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a>,
 
 <a  href="constituencyPageAction.action?constituencyId=1" style="font-size:12px;font-family:verdana;">Adilabad</a>,
 
@@ -148,7 +148,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; <a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=68187">Somireddy Chandramohan Reddy</a></span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnul</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
 </td>
 <td valign=top style="font-size: 13px;padding-left:8px;">
 <h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"/><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=886">TRS</a></h4><br>
@@ -171,7 +171,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=204950">Vishnu Vardhan Reddy</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Muthyala Prakash</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Polavaram Srinivasa Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnul</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
 
 </td>
 </tr></table>
