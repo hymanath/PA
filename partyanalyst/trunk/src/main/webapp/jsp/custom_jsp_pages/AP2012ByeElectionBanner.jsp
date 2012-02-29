@@ -135,8 +135,8 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <div style="margin-top:12px;">
 <span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Participating MLA's IN Bye Election </span>
 </div>
-<div style="margin:14px;font-weight:bold;border:1px solid #cdcdcd;padding-right:10px;background:#ffffff; width:947px;">
-
+<div style="margin:14px;font-weight:bold;padding-right:10px;background:#ffffff; width:947px;">
+<!--
 <table>
 <tr>
 <td style="font-size: 13px;padding-left:8px;">
@@ -175,6 +175,88 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 </td>
 </tr></table>
+-->
+<style>
+.spltableclass a{text-decoration:none;}
+.spltableclass a:hover{text-decoration:underline;}
+.spltableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
+.spltableclass td{border:1px solid #d3d3d3;width:20%;padding:5px 3px;color:#3d3d3d;height:35px;}
+.spltableclass th:nth-child(2){background:#fcfd03;color:#000;}
+.spltableclass th:nth-child(2) a{color:#000;}
+.spltableclass th:nth-child(3){background:#ffbfcd;color:#000;}
+.spltableclass th:nth-child(3) a{color:#000;}
+
+.spltableclass th:nth-child(4){background:#006524;color:#fff;}
+.spltableclass th:nth-child(4) a{color:#fff;}
+.spltableclass th:nth-child(5){background:#0c35ad;color:#fff;}
+.spltableclass th:nth-child(5) a{color:#fff;}
+.spltableclass th{border:1px solid #d3d3d3;width:20%;padding:10px 5px;}
+.spltableclass tr:nth-child(odd){background:#f3f3f3;}
+.spltableclass th:nth-child(1){background:#5e5e5e;color:#fff;padding:5px;text-align:left;padding-left:15px;}
+.spltableclass th:nth-child(1) a{color:#fff;}
+
+</style>
+
+<table width="100%" class="spltableclass">
+  <tr>
+    <th >CONSTITUENCY</th>
+    <th ><a href="partyPageAction.action?partyId=872">TDP</a></th>
+    <th ><a href="partyPageAction.action?partyId=886">TRS</a></th>
+    <th ><a href="partyPageAction.action?partyId=362">INC</a></th>
+    <th ><a href="partyPageAction.action?partyId=1117">YSRC</a></th>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=1">Adilabad</a></th>
+    <td>Payal Shankar</td>
+    <td>Jogu Ramanna</td>
+    <td> Rama Chandra Reddy</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th><a href="constituencyPageAction.action?constituencyId=16">Kamareddy</a></th>
+    <td>Mettu Venugopal</td>
+    <td>Gampa Goverdhan</td>
+    <td>Yedla Raji Reddy</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=67">Kollapur</a></th>
+    <td>Chandrasekhar Rao</td>
+    <td>Jupally Krishna Rao</td>
+    <td> Vishnu Vardhan Reddy</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
+    <td>Somireddy Chandramohan Reddy</td>
+    <td>&nbsp;</td>
+    <td>Polavaram Srinivasa Reddy</td>
+    <td>N.Prasanna Kumar Reddy</td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=68">Mahbubnagar</a></th>
+    <td>P Chandrasekhar</td>
+    <td>Sayed Ibrahim</td>
+    <td>Muthyala Prakash</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=70">Nagarkurnool</a></th>
+    <td> Marri Janardhan Reddy</td>
+    <td>Nagam Janardhana Reddy [Telangana Nagara Samithi]</td>
+    <td>Damodar Reddy</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th >
+<a href="constituencyPageAction.action?constituencyId=87">Station Ghanpur</a></th>
+    <td>Kadiyam Srihari</td>
+    <td> T Rajaiah</td>
+    <td> Pratap</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
 
 
 </div>
