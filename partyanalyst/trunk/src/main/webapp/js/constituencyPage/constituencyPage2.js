@@ -1480,6 +1480,7 @@ function buildZptcResults(results){
 	
 	}
     initializeResultsTableForParty();
+	buildZptcChart(tehsilDetails.partyArray);
 }
 
 function buildMptcResults(results){
@@ -1521,10 +1522,33 @@ function buildMptcResults(results){
     	tehsilDetails.partyMptcArray = emptyArr;				
 	}
     initializeMptcResultsTableForParty(); 
+	buildMptcChat(tehsilDetails.partyMptcArray);
+}
+
+	function buildMptcChat(results){
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Party');
+	data.addColumn('number','Seats Won');
+	data.addRows(results.length);
+
+	for(var j=0; j<results.length; j++)
+	{
+		data.setValue(j,0,results[j].partyName);
+		data.setValue(j,1,results[j].seatsWonByParty);
+	} 
+
+	var chart = new google.visualization.PieChart(document.getElementById('MptcChartDiv'));
+		chart.draw(data, {width: 330, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'All Parties Performance In '+constituencyName+' MPTC\'s In '+mptcElectionYear+'',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}
+	});
+
+
+
 
 }
-function initializeResultsTableForParty(){
 
+function initializeResultsTableForParty(){
+	
 	var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
 	resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSourceForTehsil.responseSchema = {
@@ -1569,7 +1593,27 @@ function initializeResultsTableForParty(){
 	return {
 		oDS:resultsDataSourceForTehsil, 
 		oDT:myDataTableForParty			
-	};  		
+	}; 
+
+	
+}
+
+function buildZptcChart(results)
+{
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Party');
+	data.addColumn('number','Seats Won');
+	data.addRows(results.length);
+
+	for(var j=0; j<results.length; j++)
+	{
+		data.setValue(j,0,results[j].partyName);
+		data.setValue(j,1,results[j].seatsWonByParty);
+	} 
+
+	var chart = new google.visualization.PieChart(document.getElementById('zptcChartDiv'));
+		chart.draw(data, {width: 330, height: 230,legend:'right',legendTextStyle:{fontSize:12}, title:'All Parties Performance In '+constituencyName+' ZPTC\'s In '+zptcElectionYear+'',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}
+	});
 }
 function initializeMptcResultsTableForParty(){
 	
