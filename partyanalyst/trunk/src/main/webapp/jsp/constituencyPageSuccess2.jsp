@@ -31,6 +31,7 @@
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 	<script type="text/javascript">
+	
 	$(document).ready(function(){
 	$("#MandalsDelimit a").click(function(){
 		$("#MandalsDelimit a").removeClass("active");
@@ -133,12 +134,13 @@
 	#electionYearsWithAssets_Panel_Div > table{width:100%;}
 
 	#zptcDivBody{width:auto;margin-left:auto;margin-right:auto;}
-	#mptcPartyTrendsDetailsDiv{width:300px;border:1px solid #d3d3d3;clear:both;}
+	#mptcPartyTrendsDetailsDiv{width:230px;border:1px solid #d3d3d3;clear:both; margin-left: 17px;}
 	#mptcPartyTrendsDetailsDiv > table{width:100%;}
 	#zptcCandidateLink,#zptcElectionIdsSelectDiv{width:auto;display:inline-block;}
 	#zptcElectionIdsSelectDiv{position:relative;padding-left:10px;top:-13px;}
 	#mptcElectionIdsSelectDiv,#mptcCandidateLink{width:auto;display:inline-block;}
 	#mptcElectionIdsSelectDiv{position:relative;top:-13px;padding-left:10px;}
+	#zptcPartyTrendsDetailsDiv{border:1px solid #d3d3d3;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -468,7 +470,9 @@
 											</tr>
 										</table>	
 									</div>
-									<div id="coroporationData_main"></div>
+									<div id="coroporationData_main">
+									
+									</div>
 								</div>
 									
 								<div id = "greaterDiv" style="display:block;clear:both;">
@@ -505,15 +509,18 @@
 			
 
             <div id="zptcDivBody" class="detailed-ele-inf">
-
-			<div id="headDiv" style="color: #5CB275;text-decoration: none;display:block;clear:left;padding:10px;">Detailed View of ${constituencyDetails.constituencyName} Zptc Election Results</div>
+			
+			<div id="headDiv" style="color: #5CB275;text-decoration: none;display:block;clear:left;padding:10px;">Detailed View of ${constituencyDetails.constituencyName} Zptc Election Results </div>
 			
 				
 				<div id="zptcElectionIdsSelectDiv"></div>
 					<div id="zptcCandidateLink" ></div>
 					<div id="countZptcDiv">
 			<span>Total Number of ZPTC's :<span id="totalZptcCountResultDiv" style="display:inblock";></span> </span></div>
-						<div id="zptcPartyTrendsDetailsDiv"></div>
+						<table><tr>
+							<td valign='top'><div id="zptcPartyTrendsDetailsDiv"></div></td>
+							<td valign='top'><div id="zptcChartDiv"></div></td>
+						</tr></table>
 						
 			 </div>
 			<div id="mptcDivBody" class="detailed-ele-inf">
@@ -524,9 +531,9 @@
 				<span style="float:left";>Total Number of MPTC's : </span>
 					<span id="totalMptcCountResultDiv" style="float:left";></span>
 			  
-						</div>								
-							<div id="mptcPartyTrendsDetailsDiv"></div>
-							
+						</div>	<table><tr><td>						
+							<div id="mptcPartyTrendsDetailsDiv"></div></td><td>
+							<div id="MptcChartDiv"></div></td></table>
 				</div>
 		
           
@@ -1160,7 +1167,8 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 								
 									if(myResults!= null &&  myResults.length>0){
 									hideMptcZptcDiv=false;
-									buildZptcResults(myResults);		
+									buildZptcResults(myResults);
+									
 									}else{
 										
 										hideMptcZptcDiv =true;
@@ -1790,12 +1798,12 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	}
 	for(var i in myResults.muncipalityVO){
 		str += '<div style="display:block;width:auto;position:relative;clear:both;margin-top:15px;color:#5CB275;">';
-		str += '<a  style="text-decoration:none;color:#5CB275;" href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' Election Results '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
-		//str += '<table><tr><td>';
-		str += '<div style="display:inline-block;width:auto;position:relative;float:left;margin:10px;" id=\"'+elecType+'TableDiv_'+i+'\"></div>';
-		//str+='</td><td>'
-		str += '<div  style="display:inline-block;width:auto;position:relative;float:left;margin:10px;"><img src=\"charts/'+myResults.muncipalityVO[i].chartName+'\"></div>';
-		//str += '</td></tr></table>';
+		str += '<a  style="text-decoration:none;color:#5CB275;" href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' '+elecType+' Election Results In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
+		str += '<table><tr><td>';
+		str += '<div style="display:inline-block;width: 284px;position:relative;float:left;margin:10px; border: solid 1px #d3d3d3;" id=\"'+elecType+'TableDiv_'+i+'\"></div>';
+		str+='</td><td>'
+		str += '<div id="municipalityChartDiv"  style="position: relative; right: 0px; left: -28px;"></div>';
+		str += '</td></tr></table>';
 	}
 	divId.innerHTML = str;
 	buildDataTable(elecType);
@@ -2032,6 +2040,8 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 
 
 	function buildDataTable(elecType){
+		var municipalitySelectBoxValue = document.getElementById('municipalitySelect');
+		var municipalitySelect = municipalitySelectBoxValue.options[municipalitySelectBoxValue.selectedIndex].text;
 
 	for(var i in myResults.muncipalityVO){
 		var resultsDataSource = new YAHOO.util.DataSource(myResults.muncipalityVO[i].muncipalityVO);
@@ -2066,9 +2076,25 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 			sortable : true
 		} ];		
 		myDataTableForMptcParty = new YAHOO.widget.DataTable(elecType+"TableDiv_"+i,resultsColumnDefs, resultsDataSource,null);
+
 	}
-	
+
+	var data =  new google.visualization.DataTable();
+
+	data.addColumn('string','partyName');
+	data.addColumn('number','seatsWonByParty');
+	for(var j=0; j<myResults.muncipalityVO.length;j++){
+		data.addRows(myResults.muncipalityVO[j].muncipalityVO.length);
+		for(var k=0; k<myResults.muncipalityVO[j].muncipalityVO.length; k++){
+		data.setValue(k,0,myResults.muncipalityVO[j].muncipalityVO[k].partyName);
+		data.setValue(k,1,myResults.muncipalityVO[j].muncipalityVO[k].seatsWonByParty);
+		}
 	}
+	var chart = new google.visualization.PieChart(document.getElementById('municipalityChartDiv')); 
+	chart.draw(data,{width: 310, height: 250, title:'All Parties Performance In  '+constituencyName+' In '+municipalitySelect+'',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
+
+
+}
 
 
 	function showNextPreviousCandidateVotingTrendz(index,type)
