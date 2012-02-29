@@ -114,10 +114,10 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy  :              </a> <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"><div style="margin-left:13px;">Resignation of sitting MLAs of these constituencies Jupally Krishna Rao, Rajaiah, Nagam Janardhan Reddy Jogu Ramanna Gampa Goverdhan for their seats and respective parties.</div></span><br>
 <!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>--><img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"> Prasanna Kumar Reddy resigned from Telugu Desam Party.
-&nbsp;&nbsp;&nbsp;Andhra Pradesh assembly Speaker N. Manohar accepted &nbsp;&nbsp;&nbsp;resignation.
+&nbsp;&nbsp;&nbsp;Andhra Pradesh assembly Speaker N. Manohar accepted &nbsp;resignation.
 
 
-He has been moving close with YSR Congress Party and its &nbsp;&nbsp;&nbsp;chief YS Jagan Mohan Reddy. Nallapureddy is contesting the bye &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;election in Kovur on YSR Congress Party.
+&nbsp;&nbsp;&nbsp;He has been moving close with YSR Congress Party and its &nbsp;chief YS &nbsp;&nbsp;&nbsp;Jagan Mohan Reddy. Nallapureddy is contesting the bye &nbsp;election in &nbsp;&nbsp;&nbsp;Kovur on YSR Congress Party.
 <!--Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>-->
 
 
