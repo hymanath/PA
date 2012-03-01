@@ -76,7 +76,7 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}*/
 	
-	public void testGetConstituencyWiseCandidatesStates()
+	/*public void testGetConstituencyWiseCandidatesStates()
 	{
 		List<Object[]> list = constituencyLeadCandidateDAO.getConstituencyWiseCandidatesStates(38l);
 		System.out.println(list.size());
@@ -88,5 +88,11 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.print("\t"+obj);
 			
 		}
+	}*/
+	
+	public void testGetResultKnownConstituenciesCountInAElection()
+	{
+		Object object = constituencyLeadCandidateDAO.getResultKnownConstituenciesCountInAElection(38l);
+		System.out.println(object.toString());
 	}
 }

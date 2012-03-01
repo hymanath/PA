@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
@@ -55,7 +56,7 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		
 	}*/
 	//public List<Object[]> getGallariesByPartyId(Long partyId,String contentType)
-	public void testGetGallariesByPartyId()
+	/*public void testGetGallariesByPartyId()
 	{
 		
 		List<Object[]> result = partyGalleryDAO.getGallariesByPartyId(163l, "photo gallary");
@@ -63,5 +64,14 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 			System.out.println((Long)objects[0]);
 			System.out.println(objects[1].toString());
 		}
+	}*/
+	
+	public void testGetPartyByGalleryId()
+	{
+		List<Party> list = partyGalleryDAO.getPartyByGalleryId(891l);
+		
+		System.out.println(list.size());
+		
+		System.out.println(list.get(0).getShortName());
 	}
 }
