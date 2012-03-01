@@ -114,6 +114,7 @@ function buildDistrictLeadersNews()
   var newsShow = new google.elements.NewsShow(content, options);
 }
 
+
 function buildDistrictLevelProblemWindow()
 {		
 	var headElmt = document.getElementById('problemViewingDiv_Head');
@@ -122,10 +123,10 @@ function buildDistrictLevelProblemWindow()
 	
 
 	var str='';
-	str+='<fieldset id="problemViewingFieldSet" style="width:285px;">';
-	str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> View Your District Problems</legend>';
+	//str+='<fieldset id="problemViewingFieldSet" style="width:285px;">';
+	//str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
-	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+	//str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
 	if(problemsInfo.length == 0)
 	{
@@ -156,9 +157,9 @@ function buildDistrictLevelProblemWindow()
 		}
 	}
 	
-	str+='</marquee>';
+	//str+='</marquee>';
 	str+='</div>';
-	str+='</fieldset>';
+	//str+='</fieldset>';
 	
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
@@ -239,12 +240,12 @@ function handleCancel()
 	this.cancel();
 }
 
-/*
+
 function openAddNewProblemWindow()
 {	
 	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
-}*/
+}
 
 function buildProblemPostingWindowForDistrict()
 {
@@ -253,17 +254,18 @@ function buildProblemPostingWindowForDistrict()
 	var headElmt = document.getElementById('problemPostingDiv_Head');
 	var bodyElmt = document.getElementById('problemPostingDiv_Body');
 	var str='';
-	str+='<fieldset id="ProblemPostingFieldSet" style="width:265px;">';
-	str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> Post Your District Problem</legend>';
+	//str+='<fieldset id="ProblemPostingFieldSet" style="width:265px;">';
+	//str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> Post Your District Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
-	str+='<div>Post your district problem and bring it to the all people notice.</div>';	
+	//str+='<div>Post your district problem and bring it to the all people notice.</div>';	
 	if(userLoginStatus=="true"){		
-		str+='<div id="problemPostingButtonDiv" class="view-all"><a type="button" id="postButton" value = "Post" style="-moz-border-radius:3px;" onclick="openAddNewProblemWindow()">POST</a></div>';	
-	}else{
-		str+='<div id="problemPostingButtonDiv" class="view-all"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';	
+		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" style="-moz-border-radius:3px;" onclick="openAddNewProblemWindow()" class="post-problem-but">POST</a></div>';	
+	}
+	else{
+		str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'" class="post-problem-but">POST</a></div>';	
 	}
 	str+='</div>';
-	str+='</fieldset>';
+	//str+='</fieldset>';
 	
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
@@ -273,7 +275,7 @@ function buildProblemPostingWindowForDistrict()
 }
 function buildDistrictConnectPeopleWindow()
 {	
-debugger;
+
 
 	var bodyElmt = document.getElementById('districtPeopleConnectData_body');
 	
