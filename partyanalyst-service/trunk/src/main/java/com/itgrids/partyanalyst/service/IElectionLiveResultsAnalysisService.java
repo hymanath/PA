@@ -25,4 +25,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public List<SelectOptionVO> getCandidatesBasedOnSelection(String candidateName ,Long stateId , Long partyId);
 	
 	public ResultStatus saveKeyCandidates(AssignKeyCandidateVO assAssignKeyCandidateVO);
+	
+	public ElectionLiveResultVO getOverViewCount(Long electionId);
 }
