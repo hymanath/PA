@@ -45,10 +45,12 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
@@ -79,6 +81,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
+import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
@@ -122,6 +125,26 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICategoryDAO categoryDAO; 
 	private TransactionTemplate transactionTemplate;
 	private INewsImportanceDAO newsImportanceDAO;
+	private IPartyGalleryDAO partyGalleryDAO;
+	private ISpecialPageGalleryDAO specialPageGalleryDAO;
+	
+	public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
+		return specialPageGalleryDAO;
+	}
+
+	public void setSpecialPageGalleryDAO(
+			ISpecialPageGalleryDAO specialPageGalleryDAO) {
+		this.specialPageGalleryDAO = specialPageGalleryDAO;
+	}
+
+	public IPartyGalleryDAO getPartyGalleryDAO() {
+		return partyGalleryDAO;
+	}
+
+	public void setPartyGalleryDAO(IPartyGalleryDAO partyGalleryDAO) {
+		this.partyGalleryDAO = partyGalleryDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -1887,8 +1910,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
 	 
-		 String queryStr = "where model.gallary.contentType.contentType ='Photo Gallary'";
-		 photoGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr);
+		 photoGallaryresultList = fileGallaryDAO.getRecentlyUploadedPhotos(startIndex, maxResults);
 		 resultList = setToFileVO(photoGallaryresultList);
 		 resultMap.put("photogallary", resultList);
 		 String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
@@ -1913,7 +1935,36 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	if(result !=null){
 		  for(int i=0; i<result.size(); i++){
 			 fileVO = new FileVO();
-			 fileVO.setCandidateName(WordUtils.capitalize(result.get(i).getGallary().getCandidate().getLastname().toLowerCase()));
+			 
+			 if(result.get(i).getGallary().getCandidate() != null)
+			 {
+				 fileVO.setCandidateName(WordUtils.capitalize(result.get(i).getGallary().getCandidate().getLastname().toLowerCase()));
+				 fileVO.setFileType("Candidate");
+				 fileVO.setCandidateId(result.get(i).getGallary().getCandidate().getCandidateId());
+			 }
+			 else
+			 {
+				List<Party> party = partyGalleryDAO.getPartyByGalleryId(result.get(i).getGallary().getGallaryId());
+				
+				if(party != null && party.size() > 0)
+				{
+					fileVO.setCandidateName(party.get(0).getShortName()+" Party");
+					fileVO.setFileType("Party");
+					fileVO.setCandidateId(party.get(0).getPartyId());
+				}
+				else
+				{
+					List<SpecialPage> specialPage = specialPageGalleryDAO.getSpecialPageByGalleryId(result.get(i).getGallary().getGallaryId());
+					
+					if(specialPage != null && specialPage.size() > 0)
+					{
+						fileVO.setCandidateName(specialPage.get(0).getHeading()+" Page");
+						fileVO.setFileType("Special Page");
+						fileVO.setCandidateId(specialPage.get(0).getSpecialPageId());
+					}
+				}
+			 }
+			 
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setFileName1(result.get(i).getFile().getFileName());
 			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
@@ -1923,7 +1974,6 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
-			 fileVO.setCandidateId(result.get(i).getGallary().getCandidate().getCandidateId());
 			 fileVOs.add(fileVO);
 		 }
 	}
