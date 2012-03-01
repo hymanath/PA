@@ -585,7 +585,7 @@ function buildUploadVideoDiv()
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
-	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
@@ -651,7 +651,7 @@ function uploadVideoGallary(){
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
 	var makeThis = 'private';
-
+	
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
 	var str = '<font color="red">';
@@ -699,6 +699,12 @@ function uploadVideoGallary(){
 	if(languageId.length == 0)
 	{
 		str += 'Language is required<br>';
+		eFlag = true;
+	}
+
+	if(fileDate.length == 0)
+	{
+		str += 'File Date is Required<br>';
 		eFlag = true;
 	}
 	str += '</font>';
@@ -1042,7 +1048,7 @@ function  buildUploadNews()
 	str += '     <td colspan="2">';
 	str += '<table>';
 	str += '   <tr>';
-	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date</font></b></td>';
+	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
@@ -1160,6 +1166,7 @@ function validateNewsFileUpload()
 	var languageId = document.getElementById("language").value;
     //var categoryId = document.getElementById("category").value;
     var keywords = document.getElementById("keywords").value;
+	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
@@ -1208,6 +1215,11 @@ function validateNewsFileUpload()
 	if(keywords.length >200)
 	{
 		str += 'Keywords should be less than 200 Characters<br>';
+		flag = false;
+	}
+	if(fileDate.length == 0)
+	{
+		str += 'File Date is required';
 		flag = false;
 	}
 	
