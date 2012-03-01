@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -34,7 +37,13 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
 
+function selectedSpecialPage(id){
+document.getElementById('specialPageId').value = id;
+}
+
+</script>
 <style>
 #problemHead
 {
@@ -218,8 +227,9 @@ font-size:18px;
 					<table>
 					  <tr>
 						<td style="padding-left:350px"><b>Select Special Page</b></td>
-						 <td><input type="text" id ="specialPageId" name = "specialPage" value="1">
-						 </td>
+
+						 <td><s:select cssClass="canSelect" theme="simple" id="specialPageId" name="specialPage" list="specialPages" listKey="id" listValue="name"/></td>
+					
 						 <span id="alertMsg1" style="padding-left:410px"></span>
 					  </tr>
 					</table>
@@ -372,6 +382,9 @@ font-size:18px;
 
 	  </div>
 	 </div>
-	  
+	  <script type="text/javascript">
+
+	selectedSpecialPage(${specialPageId});
+	  </script>
 </body>
 </html>
