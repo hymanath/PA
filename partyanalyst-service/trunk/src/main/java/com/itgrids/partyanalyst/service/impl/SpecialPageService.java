@@ -958,4 +958,29 @@ public class SpecialPageService implements ISpecialPageService{
 		}
 	}
 	
+	public List<SelectOptionVO> getSpecialPageIdsList()
+	{
+		try{
+			List<SelectOptionVO> resultList = null;
+			 
+			List<Object[]> list = specialPageDAO.getSpecialPageNames();
+			
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : list)
+				{
+					selectOptionVO = new SelectOptionVO((Long)params[0],params[1].toString());
+					resultList.add(selectOptionVO);
+				}
+			}
+			
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Occred in getSpecialPageIdsList() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
 }
