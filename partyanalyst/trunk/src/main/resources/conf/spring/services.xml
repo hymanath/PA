@@ -307,6 +307,8 @@
 		<property name="categoryDAO" ref="categoryDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
+		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
+		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -1008,6 +1010,7 @@
 		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 		<property name="keyCandidateDAO" ref="keyCandidateDAO"/>
 		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
 	
 	<bean name="electionResultsUpdationService" class="com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService">
