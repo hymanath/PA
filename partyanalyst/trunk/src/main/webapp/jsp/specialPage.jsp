@@ -362,6 +362,9 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 		</div>
 
 <!--EMAIL ALERT SECTION END--></div>
+<s:if test="isAdmin == 'true'">
+<div><a href="specialPageManageAction.action?specialPageId=${specialPageId}">Manage Special Pages</a></div>
+</s:if>
 </div>
       </div>
       
