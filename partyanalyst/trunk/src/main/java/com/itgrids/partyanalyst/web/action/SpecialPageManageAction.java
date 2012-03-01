@@ -62,7 +62,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 	private Long locationValue;
 	private File userImage;
 	private InputStream inputStream;
+	private List<SelectOptionVO> specialPages;
 	
+	public List<SelectOptionVO> getSpecialPages() {
+		return specialPages;
+	}
+
+	public void setSpecialPages(List<SelectOptionVO> specialPages) {
+		this.specialPages = specialPages;
+	}
+
 	public File getUserImage() {
 		return userImage;
 	}
@@ -231,7 +240,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 
 	public String execute()
 	{
-		
+		specialPages = specialPageService.getSpecialPageIdsList();
 		return SUCCESS;
 	}
 	public String getEventDescription(){
@@ -240,7 +249,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		}catch(ParseException e){
 			e.printStackTrace();
 		}
-		specialPageList=specialPageService.getEventProfileInfo(jobj.getLong("specialPageId"));
+		specialPageList = specialPageService.getEventProfileInfo(jobj.getLong("specialPageId"));
 		return Action.SUCCESS; 
 	}
 	
