@@ -25,6 +25,11 @@ function insertProfileDiscription()
 	
 	if(document.getElementById("videoGallaryDiv").style.display = 'block')
 		document.getElementById("videoGallaryDiv").style.display = 'none';
+
+	if(document.getElementById("metaInfoDiv").style.display = 'block')
+		document.getElementById("metaInfoDiv").style.display = 'none' ;
+
+	
 	
 	var str ='';
 	str += '<div id="content" style="width:650px;">';
