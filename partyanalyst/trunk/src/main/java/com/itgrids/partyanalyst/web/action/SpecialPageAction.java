@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
@@ -42,7 +43,16 @@ public class SpecialPageAction extends ActionSupport implements
 	private ISpecialPageService specialPageService;
 	private List<CustomPageVO> customPages;
 	private MetaInfoVO metaInfoVO;
+	private String isAdmin;
 	
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public MetaInfoVO getMetaInfoVO() {
 		return metaInfoVO;
 	}
@@ -137,7 +147,12 @@ public class SpecialPageAction extends ActionSupport implements
 	}
 
 	public String execute() {
-	
+		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		if(regVO != null)
+			isAdmin = regVO.getIsAdmin();
+		
 		descriptions  = specialPageService.getSpecialPageDescription(specialPageId);
 		specialPageVO = specialPageService.getSpecialPageBasicDetails(specialPageId);
 		fileVOList    = specialPageService.getVideoGalleryBasedOnSpecialPageId(specialPageId, 0, 20);
