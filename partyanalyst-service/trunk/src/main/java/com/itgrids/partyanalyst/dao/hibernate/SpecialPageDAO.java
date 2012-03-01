@@ -20,12 +20,18 @@ public class SpecialPageDAO extends GenericDaoHibernate<SpecialPage,Long> implem
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSpecialPageDetails(Long specialPageId){
 		
-		Query query = getSession().createQuery("SELECT model.title,model.heading,model.profileImgPath ,model.specialPageId FROM SpecialPage model where model.specialPageId =:specialPageId and model.isDelete =:isDelete");
+		Query query = getSession().createQuery("select model.title,model.heading,model.profileImgPath ,model.specialPageId FROM SpecialPage model where model.specialPageId =:specialPageId and model.isDelete =:isDelete");
 			
 			query.setParameter("specialPageId", specialPageId);
 			query.setParameter("isDelete", IConstants.FALSE);
 			
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSpecialPageNames()
+	{
+		return getHibernateTemplate().find("select model.specialPageId,model.name from SpecialPage model where model.isDelete = 'false' order by name");
 	}
 
 }
