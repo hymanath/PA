@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="java.util.ResourceBundle;" %>
+	<%@ page import="java.util.ResourceBundle;" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -29,80 +30,91 @@
 
 <!-- JQuery files (End) -->
 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
-<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
-<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
-<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
-<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+    <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
+	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
+	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css" />
-<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-	
-<style type="text/css">
-	/*#mp_body {border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}*/
-	#mp_body{border-collapse:collapse;border:1px solid #d3d3d3;width:86%;}
-	
-	#mla_body{border-collapse:collapse;border:1px solid #d3d3d3;width:870px;}
-	/*#mptc_zptc_div_main{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}*/
 
-	#mpsInfoDivBody > table{width:350px;display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:81%;}
-	#mlaInfoDivBody > table{width:600px;display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:85%;}
-	#dataTable6 > table,#dataTable3 > table,  #dataTable1 > table,#dataTable2 > table,#dataTable0 > table,#partyDetails > table,#mptcPartyDetails > table,#corporationDataTable0 > table ,#dataTable5 > table{width:400px;display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+	<style type="text/css">
+	
+	#mp_body{border-collapse:collapse;border:1px solid #d3d3d3;width:96%;}
+	#mla_body{border-collapse:collapse;border:1px solid #d3d3d3;width:96%;}
+	#mpsInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	#mlaInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	#dataTable6 > table,#dataTable3 > table,  #dataTable1 > table,#dataTable2 > table,#dataTable0 > table,#corporationDataTable0 > table ,#dataTable5 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:111%;margin-left:3px;}
+	#partyDetails > table,#mptcPartyDetails > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;}
 	#mptc_zptc_div_main table2,{border-collapse:collapse;border:1px solid #d3d3d3;width:870px;}
 	#dataTable4,#dataTable3{width:429px;}
 	#dataTable4 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:80%;}
-	/*#mpsInfoDivBody{width:800px;}*/
-	#dataTable5 > table * th,#dataTable4 > table * th,#dataTable3 > table * th, 	
-	/*#dataTable4 > table * td,#dataTable3 > table * td {width:200px;}*/
-	#dataTable1 {width:431px;}
-	#dataTable1 > table * th, #dataTable1 > table * td{width:200px;}
-	/*#mp_body div table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}*/
-	
-	/*#partyDetails > table * th{height:20px;text-align:left;background-color:#ceedf0 !important; padding:5px;font-weight:bold;}*/
-
+	#dataTable5 > table * th,#dataTable4 > table * th,#dataTable3 > table * th,#dataTable1 > table * th, 
 	#dataTable4 > table * th,#dataTable5 > table * th,#mptcPartyDetails > table * th,#partyDetails > table * th,#mlaInfoDivBody > table * th,#mpsInfoDivBody > table * th{height:20px;text-align:left;background-color:#ceedf0 !important; padding:5px;font-weight:bold;border-collapse:collapse;}
-
 	#dataTable4 > table * tr:nth-child(even),#mpsInfoDivBody > table * tr:nth-child(even){background:#f9f9f9 !important;}
 	#corporationDataTable0 > table * th,#dataTable3 > table * th,#dataTable2 > table * th,#dataTable1 > table * th,#dataTable6 > table * th,#dataTable0 > table * th{height:20px;text-align:center;background-color:#ceedf0 !important; padding:5px;font-weight:bold;border-collapse:collapse;}
 	#mlaInfoDivBody > table * tr:nth-child(odd){background:#f9f9f9;}
-#corporationDataTable0 > table * tr:nth-child(odd),#dataTable0 > table * tr:nth-child(odd){background:#f9f9f9;}
-#mptcPartyDetails > table * tr:nth-child(odd){background:#f9f9f9;}
-#partyDetails > table * tr:nth-child(odd){background:#f9f9f9;}
-#dataTable3 > table * tr:nth-child(odd){background:#f9f9f9;}
-#dataTable2 > table * tr:nth-child(odd){background:#f9f9f9;}
-#dataTable6 > table * tr:nth-child(odd),#dataTable1 > table * tr:nth-child(odd){background:#f9f9f9;}
-#dataTable5 > table * tr:nth-child(even),#dataTable4 > table * tr:nth-child(even){background:#f9f9f9;}
-#mptcPartyDetails > table * th{font-color:none;text-decoration:none;border-collapse:collapse;}
-#mptc_zptc_div_main a{color:#000000;}
+	#corporationDataTable0 > table * tr:nth-child(odd),#dataTable0 > table * tr:nth-child(odd){background:#f9f9f9;}
+	#mptcPartyDetails > table * tr:nth-child(odd){background:#f9f9f9;}
+	#partyDetails > table * tr:nth-child(odd){background:#f9f9f9;}
+	#dataTable3 > table * tr:nth-child(odd){background:#f9f9f9;}
+	#dataTable2 > table * tr:nth-child(odd){background:#f9f9f9;}
+	#dataTable6 > table * tr:nth-child(odd),#dataTable1 > table * tr:nth-child(odd){background:#f9f9f9;}
+	#dataTable5 > table * tr:nth-child(even),#dataTable4 > table * tr:nth-child(even){background:#f9f9f9;}
+	#mptcPartyDetails > table * th{font-color:none;text-decoration:none;border-collapse:collapse;}
+	#mptc_zptc_div_main a{color:#000000;}
 
-#allMuncipalitiesDetails1 table,#allMuncipalitiesDetails0 table,#allMuncipalitiesDetails3 table,#allMuncipalitiesDetails2 table,#corporationDataTable0 > table,#dataTable6 > table,#dataTable0 > table,#dataTable2 > table,#dataTable1 > table,#dataTable3 > table,#mptcPartyDetails table,#partyDetails table,#mlaInfoDivBody table,#mpsInfoDivBody table{border-collapse:collapse; }
-#dataTable5 > table,#corporationDiv > table{border:none;border-collapse:none; }
-#muncipalitiesDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:102%;}
-#dataTable4 > table{border-collapse:collapse;}
-#dataTable5 > table{border-collapse:collapse;width:100%;}
+	#allMuncipalitiesDetails1 table,#allMuncipalitiesDetails0 table,#allMuncipalitiesDetails3 table,#allMuncipalitiesDetails2 table,#corporationDataTable0 > table,#dataTable6 > table,#dataTable0 > table,#dataTable2 > table,#dataTable1 > table,#dataTable3 > table,#mptcPartyDetails table,#partyDetails table,#mlaInfoDivBody table,#mpsInfoDivBody table{border-collapse:collapse; }
+	#dataTable5 > table,#corporationDiv > table{border:none;border-collapse:none; }
+	#muncipalitiesDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:102%;}
+	#dataTable4 > table{border-collapse:collapse;}
+	#dataTable5 > table{border-collapse:collapse;width:100%;}
 
-#corporationDataTable0 > table * td,#dataTable0 > table * td,#dataTable1 > table * td,#dataTable2 > table * td,#dataTable3 > table * td,#dataTable4 > table * td,#dataTable5 > table * td,#dataTable6 > table * td,#dataTable7 > table * td,#partyDetails > table * td,#mptcPartyDetails > table * td{margin-left:auto;margin-right:auto;float:none;font-family:arial;text-align:center;}
-#mlaInfoDivBody > table * td{text-align:left;}
-#dataTable0,#dataTable1,#dataTable2 ,#dataTable3 ,#dataTable4 ,#dataTable5,#dataTable6,#dataTable7,#corporationDataTable0 {margin-top:11px;}
-.districtPageRoundedHeaders_center
-{
+	#corporationDataTable0 > table * td,#dataTable0 > table * td,#dataTable1 > table * td,#dataTable2 > table * td,#dataTable3 > table * td,#dataTable4 > table * td,#dataTable5 > table * td,#dataTable6 > table * td,#dataTable7 > table * td,#partyDetails > table * td,#mptcPartyDetails > table * td{margin-left:auto;margin-right:auto;float:none;font:13px Arial, Helvetica, sans-serif;text-align:center;font-weight:bold;color:#73787;}
+	#mlaInfoDivBody > table * td{text-align:left;}
+	#dataTable0,#dataTable1,#dataTable2 ,#dataTable3 ,#dataTable4 ,#dataTable5,#dataTable6,#dataTable7,#corporationDataTable0 {margin-top:11px;}
+	#mlaInfoDivBody > table * td ,#mpsInfoDivBody > table * td,#corporationDataTable0 > table * td {font:13px Arial, Helvetica, sans-serif;font-weight:bold;}
+	#corporationDataTable0 > table * td{font:13px Arial, Helvetica, sans-serif;font-weight:bold;color:#73787E;}
+	.districtPageRoundedHeaders_center
+	{
 	background-color:#72CAED;
 	font-weight:bold;
 	padding:11px;
 	height:14px;
-}
+	}
 
+	#allElectionResultsInDT_body
+	{
+	width:1000px;
+	}
+
+	#zptc_body,#mptc_body
+	{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:none;
+	height:300px;
+	}
+	.spltableclass th:nth-child(3) a{color:#000;}
+
+	
+
+	#mptcPartyDetails table{width:123%;}
+	#partyDetails table{width:144%;}
 
 	</style>
 
-<script type="text/javascript">
+	<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
 
-google.load("elements", "1", {packages : ["newsshow"]});
+	google.load("elements", "1", {packages : ["newsshow"]});
+	
+	var mptcHIde = false;
+	var zptcHIde = false;
 
-var mptcHIde = false;
-var zptcHIde = false;
-
-var Localization = { <%		
+	var Localization = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 		String totalMuncipalities = rb.getString("totalMuncipalities");
 		String totalCorporations = rb.getString("totalCorporations");
@@ -110,10 +122,10 @@ var Localization = { <%
 		String corporationsDataAvailability = rb.getString("corporationsDataAvailability");
 	%> }
 
-var stateName = '${stateDetails.name}';
-districtName = '${districtName}';
-google.load("visualization", "1", {packages:["corechart"]});
-var tehsilDetails={
+	var stateName = '${stateDetails.name}';
+	districtName = '${districtName}';
+	
+	var tehsilDetails={
 			zptcArray:[],
 			mptcArray:[],
 			partyArray:[],
@@ -122,18 +134,20 @@ var tehsilDetails={
 			partyCorporationArray:[],
 			localBodyArray:[]
 		};
-var districtId = '${districtId}';
-var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
-var mptcElectionTypeId='${mptcElectionTypeId}',zptcElectionTypeId='${zptcElectionTypeId}',muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
-var mptcElectionType='${mptcElectionType}',zptcElectionType='${zptcElectionType}',muncipalityElectionType='${muncipalityElectionType}',corporationElectionType='${corporationElectionType}';
-var totalZptcs = 0,totalMptcs = 0,mptcCount=1,zptcCount=1,createGroupDialog;
-var selectedZptcYear,selectedMptcYear,myDataTableForMuncipalParty;
-var totalMuncipalities = "<%=totalMuncipalities%>";
-var totalCorporations = "<%=totalCorporations%>";
-var muncipalDataAvailability = "<%=muncipalDataAvailability%>";
-var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
+	var districtId = '${districtId}';
+	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
+	var mptcElectionTypeId='${mptcElectionTypeId}',zptcElectionTypeId='${zptcElectionTypeId}',muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
+	var mptcElectionType='${mptcElectionType}',zptcElectionType='${zptcElectionType}',muncipalityElectionType='${muncipalityElectionType}',corporationElectionType='${corporationElectionType}';
+	var totalZptcs = 0,totalMptcs = 0,mptcCount=1,zptcCount=1,createGroupDialog;
+	var selectedZptcYear,selectedMptcYear,myDataTableForMuncipalParty;
+	var totalMuncipalities = "<%=totalMuncipalities%>";
+	var totalCorporations = "<%=totalCorporations%>";
+	var muncipalDataAvailability = "<%=muncipalDataAvailability%>";
+		var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 
-function initializeResultsTable() {
+
+
+	function initializeResultsTable() {
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("mlaDataSortingTable"));
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -177,14 +191,14 @@ function initializeResultsTable() {
 }
 
 
-function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
-{
+	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+	{
    //var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
    var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
    browser1.focus();
-}
+	}
 
-function initializeResultsTableForMp() {
+	function initializeResultsTableForMp() {
 
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get("mpsDataSortingTable"));
@@ -217,11 +231,13 @@ function initializeResultsTableForMp() {
 			key : "",
 			label : "Complete Results"
 		} ];
-	var myDataTableForTehsil = new YAHOO.widget.DataTable("mpsInfoDivBody",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);  
+
+		
+		var myDataTableForTehsil = new YAHOO.widget.DataTable("mpsInfoDivBody",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);  
 		
 	}
 	
-	function initializeResultsTableForParty(){
+		function initializeResultsTableForParty(){
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSourceForTehsil.responseSchema = {
@@ -265,7 +281,7 @@ function initializeResultsTableForMp() {
 			oDT:myDataTableForParty			
 		};  		
 	}
-function initializeMptcResultsTableForParty(){
+		function initializeMptcResultsTableForParty(){
 		
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyMptcArray);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
@@ -311,7 +327,7 @@ function initializeMptcResultsTableForParty(){
 		}; 		
 	}
 	
-function callAjax(jsObj,url){
+	function callAjax(jsObj,url){
 	var results;	
 	var callback = {			
 	    success : function( o ) {
@@ -362,6 +378,7 @@ function callAjax(jsObj,url){
 					{
 						if(results.resultStatus.resultCode==0){
 							showMuncipalDetailsForLatestElectionYear(results.muncipalityVO,muncipalityElectionType);
+						
 						}else{
 							errorMessageMuncipalitiesDiv();	
 						}
@@ -370,7 +387,9 @@ function callAjax(jsObj,url){
 					{
 						if(results.resultStatus.resultCode==0){
 							showMuncipalDetailsForLatestElectionYear(results.muncipalityVO,corporationElectionType);
-						}else{
+							//buildCorporationChart(results.muncipalityVO);
+						}
+					else{
 							errorMessageCorporationDiv();	
 						}
 					}
@@ -429,7 +448,7 @@ function callAjax(jsObj,url){
 					}
 					
 			}catch (e) {   		
-			   // 	alert("Invalid JSON result" + e);   
+			// alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
@@ -441,13 +460,14 @@ function callAjax(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
-function hideZPTCMPTCDiv()
-	{
+		function hideZPTCMPTCDiv()
+		{
 		var table2El = document.getElementById("table2");
 		  table2El.style.display = 'none';
-	}
-	function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
-	{
+		}
+		function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
+		{
+			
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
 		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSourceForTehsil.responseSchema = {
@@ -471,17 +491,36 @@ function hideZPTCMPTCDiv()
 
 						
 		var myDataTableForMuncipalParty	 = new YAHOO.widget.DataTable(divId,resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
+
+		if(electionType=='CORPORATION')
+			{
+		
+		var data = new google.visualization.DataTable();
+		data.addColumn('string','partyName');
+		data.addColumn('number','seatsWonByParty');
+		data.addRows(dataSrc.length);
+		for(var j=0; j<dataSrc.length; j++)
+		{
+			
+			data.setValue(j,0,dataSrc[j].partyName);
+			data.setValue(j,1,dataSrc[j].seatsWonByParty);
+		}
+		var chart = new google.visualization.PieChart(document.getElementById('CorporationPieChartDiv'));
+	
+		chart.draw(data,{width: 350, height: 230,legend:'right',legendTextStyle:{fontSize:12},title:'All Parties Performance In ${districtName} District',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
+			}
+			
 	}
 
-function hideMuncipalitiesDiv(){		
+		function hideMuncipalitiesDiv(){		
 		var muncipalityDIV = document.getElementById("muncipalitiesDiv");	
 		if(muncipalityDIV.style.display=='block'){
 			muncipalityDIV.style.display = 'none';
 		}else{
 			muncipalityDIV.style.display = 'block';
 		}		
-}	
-	function hideCorporationDiv(){
+	}	
+		function hideCorporationDiv(){
 		var muncipalityDIV = document.getElementById("corporationDiv");	
 		if(muncipalityDIV.style.display=='block'){
 			muncipalityDIV.style.display = 'none';
@@ -489,15 +528,16 @@ function hideMuncipalitiesDiv(){
 			muncipalityDIV.style.display = 'block';
 		}
 	}
-function muncipalityHeadConstruction(result){
+		function muncipalityHeadConstruction(result){
 	
+		
 		var totalMessage = "<%=totalMuncipalities%>";
 		var muncipality = document.getElementById("muncipalitiesDivHead");
 	
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//muncipalityDiv+='<td><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 898px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;margin-top:15px;background:#72CAED;">';
+		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 977px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;margin-top:-37px;background:#72CAED;">';
 		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		muncipalityDiv+='</div></td>';
 		//muncipalityDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
@@ -505,25 +545,26 @@ function muncipalityHeadConstruction(result){
 		
 		muncipality.innerHTML = muncipalityDiv;
 		
-}
+	}
 		
-function corporationHeadConstruction(result){
+		function corporationHeadConstruction(result){
 	
 		var totalMessage = "<%=totalCorporations%>";
 		var corporation = document.getElementById("corporationDivHead");
 		
 		var corporationDiv='';	
+
 		corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//corporationDiv+='<td width="30"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 897px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">';
+		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width:976px; height: 18px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">';
 		corporationDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		corporationDiv+='</div></td>';
+		
 		//corporationDiv+='<td><img width="30" height="36" src="images/icons/districtPage/header_right.gif" style="clear:both;margin-right:107px;"/></td>';	
 		corporationDiv+='</tr></table>';	
 		corporation.innerHTML = corporationDiv;
-}
-
-function showMuncipalDetailsForLatestElectionYear(result,electionType){		
+	}
+		function showMuncipalDetailsForLatestElectionYear(result,electionType){		
 		
 		var muncipalityDIV = '';
 		//var muncipalityElectionType='${muncipalityElectionType}';
@@ -535,6 +576,7 @@ function showMuncipalDetailsForLatestElectionYear(result,electionType){
 		}else{			
 			localBodyArray = tehsilDetails.partyCorporationArray;
 			muncipalityDIV = document.getElementById("corporationDiv");
+		
 			corporationHeadConstruction(result);
 		}	
 		
@@ -621,11 +663,53 @@ function showMuncipalDetailsForLatestElectionYear(result,electionType){
 				initializeMuncipalResultsTableForParty('dataTable'+i,localDataArr,electionType) ;
 			}else{
 				initializeMuncipalResultsTableForParty('corporationDataTable'+i,localDataArr,electionType) ;
+				//buildCorporationChart('CorporationPieChartDiv'),localDataArr,electionType);
+
+
+
+
+				/*var data = new google.visualization.DataTable();
+				data.addColumn('String','Party');
+				data.addColumn('number','Seats Won');
+				data.addRows(result.length);
+		for(var j=0;j<result.length;j++)
+		{
+			data.setValue(j,0,result[j].partyName);
+			data.setValue(j,1,seatsWonByParty:result[j].seatsWonByParty);
+		}
+		var chart = new google.visualization.PieChart(document.getElementById('CorporationChartDiv'));
+		chart.draw(data, {width: 330, height: 230});
+	*/
+				 
 			}
 		}
 	}
 
-function errorMessageMuncipalitiesDiv(){
+	/*function buildCorporationChart(dataSrc,electionType)
+	{
+		alert(dataSrc);
+		debuggr;
+		var data = new google.visualization.DataTable();
+		data.addColumn('String','Party');
+		data.addColumn('number','Seats Won');
+		data.addRows(dataSrc.length);
+		for(var j=0;j<dataSrc.length;j++)
+		{
+			data.setValue(j,0,results[j].partyName);
+			data.setValue(j,1,seatsWonByParty:results[j].seatsWonByParty);
+		}
+		var chart = new google.visualization.PieChart(document.getElementById('CorporationChartDiv'));
+		chart.draw(data, {width: 330, height: 230});
+	
+
+	}*/
+
+
+
+
+
+
+		function errorMessageMuncipalitiesDiv(){
 		var table1El = document.getElementById("table1");
 		table1El.style.display = 'none';
 		/*
@@ -643,9 +727,8 @@ function errorMessageMuncipalitiesDiv(){
 		rvStr+='<br/><br/>';
 		muncipalityDIV.innerHTML += rvStr;
 		*/	
-}	
-		
-function errorMessageCorporationDiv(){
+	}	
+	function errorMessageCorporationDiv(){
 	var muncipality = document.getElementById("corporationDivHead");	
 	var totalCorporations="<%=totalCorporations%>";
 	var corporationsDataAvailability="<%=corporationsDataAvailability%>";
@@ -662,9 +745,15 @@ function errorMessageCorporationDiv(){
 	rvStr+='<b style="font-weight:12px">'+corporationsDataAvailability+'</b>';	
 	rvStr+='<br/><br/>';
 	muncipalityDIV.innerHTML += rvStr;	
-}
+	document.getElementById('corporationDivHead').style.display='none';
+	document.getElementById('corporationInfoDivHead').style.display='none';
+	document.getElementById('corporationDiv').style.display='none';
 	
-	function getAllElections(elecId, type){
+
+}
+
+	
+		function getAllElections(elecId, type){
 		var barloaderImageEl = document.getElementById("barloaderImage");
 		barloaderImageEl.style.display = 'block';
 		var jsObj=
@@ -681,7 +770,7 @@ function errorMessageCorporationDiv(){
 		callAjax(jsObj,url);
 	}
 	
-	function buildElectionTypesSelect(result){
+		function buildElectionTypesSelect(result){
 
 		var selectLabel = document.getElementById("graphElectionTypeLabel");
 		var selectData = document.getElementById("graphElectionTypeSelect");
@@ -713,8 +802,8 @@ function errorMessageCorporationDiv(){
 		getAllElections(result[0].id, result[0].name);
 	}
 
-	function buildElectionTypesAndYearsGraph(results)
-	{
+		function buildElectionTypesAndYearsGraph(results)
+		{
 		var elmt = document.getElementById("partyPositionsDiv");
 		if(!elmt)
 			return;
@@ -723,8 +812,8 @@ function errorMessageCorporationDiv(){
 		str+='<img	src="charts/'+results.pasitionsChart+'"/>';
 		elmt.innerHTML=str;
 	}
-	function buildElectionTypesAndYears(results)
-	{
+		function buildElectionTypesAndYears(results)
+		{
 		var elmt = document.getElementById("electionHirarchiDiv");
 		if(!elmt)
 			return;
@@ -762,7 +851,7 @@ function errorMessageCorporationDiv(){
 		}
 	}
 	
-	function AllMptcParties(results){
+		function AllMptcParties(results){
 		assignToPartyDataArray = new Array();
 		for(var i in results)
 		{		
@@ -786,7 +875,7 @@ function errorMessageCorporationDiv(){
 	    initializeMptcResultsTableForParty(); 
 	}
 	
-	function showAllZptcParties(results){
+		function showAllZptcParties(results){
 		assignToPartyDataArray = new Array();
 		for(var i in results)
 		{		
@@ -809,30 +898,30 @@ function errorMessageCorporationDiv(){
 	    initializeResultsTableForParty();
 	}
 	
-	function redirectCandidateLink()
-	{
+		function redirectCandidateLink()
+		{
 		 //var browser1 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1170,left=200,top=200");
 		 var browser1 = window.open("districtPageCandidateDetailsAjaxAction.action?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1170,left=200,top=200");
 		 browser1.focus();
 	}
-	function redirectMptcCandidateLink()
-	{
+		function redirectMptcCandidateLink()
+		{
 		 //var browser2 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=1170,left=200,top=200");
 		 var browser2 = window.open("districtPageCandidateDetailsAjaxAction.action?disId="+districtId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=1170,left=200,top=200");
 		 browser2.focus();
 	}
-	function redirectMuncipalityCandidateLink(muncipalityId,latestMuncipalElectionYear,name){
+		function redirectMuncipalityCandidateLink(muncipalityId,latestMuncipalElectionYear,name){
 		//var browser3 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
 		var browser3 = window.open("muncipalElectionReportAction.action?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
 		browser3.focus();
 	}
-	function redirectCorporationCandidateLink(corporationId,latestCorporationElectionYear,name){
+		function redirectCorporationCandidateLink(corporationId,latestCorporationElectionYear,name){
 		//var browser4 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+corporationId+"&muncipalityElectionType="+corporationElectionType+"&name="+name+"&muncipalityElectionId="+corporationElectionTypeId+"&electionYear="+latestCorporationElectionYear,"browser4","scrollbars=yes,height=670,width=1170,left=200,top=200");
 		var browser4 = window.open("muncipalElectionReportAction.action?muncipalityId="+corporationId+"&muncipalityElectionType="+corporationElectionType+"&name="+name+"&muncipalityElectionId="+corporationElectionTypeId+"&electionYear="+latestCorporationElectionYear,"browser4","scrollbars=yes,height=670,width=1170,left=200,top=200");
 		browser4.focus();
 	}		
-	function showAllPartyDetails(results)
-	{
+		function showAllPartyDetails(results)
+		{
 		var candLink = document.getElementById("candidateLink");
 		var linkRef = '<a href="javascript:{}" onclick="redirectCandidateLink()"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
@@ -865,8 +954,8 @@ function errorMessageCorporationDiv(){
 	    initializeResultsTableForParty();  
 	}
 
-	function showAllMptcPartyDetails(results)
-	{
+		function showAllMptcPartyDetails(results)
+		{
 		var candLink = document.getElementById("mptcCandidateLink");
 		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
@@ -899,8 +988,8 @@ function errorMessageCorporationDiv(){
 	    initializeMptcResultsTableForParty();  
 	}
 	
-	function showAllYearsForZptc(results)
-	{
+		function showAllYearsForZptc(results)
+		{
 		var selectedElmt = document.getElementById("zptcElectionYears");
 		getPartyDetails(results[0].id);
 		for(var i in results)
@@ -919,8 +1008,8 @@ function errorMessageCorporationDiv(){
 		}	
 	}
 
-	function showAllYearsForMptc(results)
-	{
+		function showAllYearsForMptc(results)
+		{
 		var selectedElmt = document.getElementById("mptcElectionYears");
 		getMptcPartyDetails(results[0].id);
 		for(var i in results)
@@ -939,8 +1028,8 @@ function errorMessageCorporationDiv(){
 		}		
 	}
 	
-	function getAllYearsForTeshil()
-	{
+		function getAllYearsForTeshil()
+		{
 		var jsObj=
 		{		
 				eleType:zptcElectionTypeId,
@@ -952,8 +1041,8 @@ function errorMessageCorporationDiv(){
 		callAjax(jsObj,url);
 	}
 	
-	function getAllMptcYearsForTeshil()
-	{
+		function getAllMptcYearsForTeshil()
+		{
 		var jsObj=
 		{		
 				eleType:mptcElectionTypeId,
@@ -964,8 +1053,8 @@ function errorMessageCorporationDiv(){
 		var url = "<%=request.getContextPath()%>/districtPageElectionYearsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-	function getPartyDetails(id)
-	{	
+		function getPartyDetails(id)
+		{	
 		selectedZptcYear = id;
 		var ajaxImgElmt = document.getElementById("zptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
@@ -981,8 +1070,8 @@ function errorMessageCorporationDiv(){
 		var url = "<%=request.getContextPath()%>/districtPagePartyDetailsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-	function getMptcPartyDetails(id)
-	{
+		function getMptcPartyDetails(id)
+		{
 		selectedMptcYear = id;
 		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
@@ -999,7 +1088,7 @@ function errorMessageCorporationDiv(){
 		var url = "<%=request.getContextPath()%>/districtPagePartyDetailsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-	function getAllZptcParties(){
+		function getAllZptcParties(){
 		
 		var jsObj=
 		{		
@@ -1015,7 +1104,7 @@ function errorMessageCorporationDiv(){
 		callAjax(jsObj,url);
 	}
 	
-	function getAllMptcParties(){
+		function getAllMptcParties(){
 		var jsObj=
 		{		
 				electionTypeId:mptcElectionTypeId,
@@ -1029,7 +1118,7 @@ function errorMessageCorporationDiv(){
 		var url = "<%=request.getContextPath()%>/districtPageMptcPartyDetailsAjaxAction.action?"+rparam;					
 		callAjax(jsObj,url);
 	}
-	function hideZptcDiv(){
+		function hideZptcDiv(){
 	     var zptcElmt = document.getElementById("zptcAjaxLoadDiv");
 		 var zptcDiv="";
 		 zptcElmt.innerHTML = zptcDiv;
@@ -1051,7 +1140,7 @@ function errorMessageCorporationDiv(){
 		 		 
 	}
 	
-	function hideMptcDiv(){	 
+		function hideMptcDiv(){	 
 		 var mptcElmt = document.getElementById("mptcAjaxLoadDiv");
 		 var mptcDiv="";
 		 mptcElmt.innerHTML = mptcDiv;
@@ -1071,8 +1160,8 @@ function errorMessageCorporationDiv(){
 		 totalMptcCountResultDiv.innerHTML = totalMptcCountResult;		 
 	}
 	
-	function getAllZptcYears()
-	{	 	 
+		function getAllZptcYears()
+		{	 	 
 		 var imgElmt = document.getElementById("zptcInfoDivBody");
 		 var electionDetails="";
 		 electionDetails+="Select a Election Year :";
@@ -1087,8 +1176,8 @@ function errorMessageCorporationDiv(){
 		}		
 		zptcCount++;	 
 	}
-	function getAllMptcYears()
-	{	 
+		function getAllMptcYears()
+		{	 
 		 var imgElmt = document.getElementById("mptcInfoDivBody");
 		 var electionDetails="";
 		 electionDetails+="Select a Election Year :";
@@ -1103,12 +1192,12 @@ function errorMessageCorporationDiv(){
 	}
 
 
-	function showElectionGraph(chartResults)
-	{
-		var allElecDiv = document.getElementById("allElectionResultsInDT_body");
-		var allElecDivImg = document.getElementById("barloaderImage");
+		function showElectionGraph(chartResults)
+		{
+			var allElecDiv = document.getElementById("allElectionResultsInDT_body");
+			var allElecDivImg = document.getElementById("barloaderImage");
 
-		if(allElecDivImg)
+			if(allElecDivImg)
 			allElecDivImg.style.display = 'none';
 		
 		    var chartColumns = chartResults.result[0].result;
@@ -1150,16 +1239,16 @@ function errorMessageCorporationDiv(){
 			   if(staticColors != null && staticColors.length > 0)
 	           {
 				  new google.visualization.LineChart(allElecDiv).
-					  draw(data, {curveType: "function",width: 850, height: 350, pointSize: 4,title:"",colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+					  draw(data, {curveType: "function",width: 900, height: 350, pointSize: 4,title:"",colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
 			   }else
 		       {
 				  new google.visualization.LineChart(allElecDiv).
-					  draw(data, {curveType: "function",width: 850, height: 350, pointSize: 4,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+					  draw(data, {curveType: "function",width: 900, height: 350, pointSize: 4,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
 			   }
 
 	}
 //ref
-function showAllElectionsInDistrictHead(){
+/*function showAllElectionsInDistrictHead(){
 		
 	var allElecDiv = document.getElementById("allElectionResultsInDT_head");
 	var graphDivStr = '';
@@ -1176,16 +1265,16 @@ function showAllElectionsInDistrictHead(){
 	 allElecDiv.innerHTML = graphDivStr;
 	 
 	 getAllElectionScopes();
-}
+}*/
 		
 
-    function hideComparedResultsDiv()
-    {
-	var elmt = document.getElementById("detailedChartDiv");
-	if(!elmt)
+		function hideComparedResultsDiv()
+		{
+		var elmt = document.getElementById("detailedChartDiv");
+		if(!elmt)
 		return;
 		
-	elmt.style.display = 'none';
+		elmt.style.display = 'none';
 	
     }
 
@@ -1202,7 +1291,7 @@ function showAllElectionsInDistrictHead(){
 		if(createGroupDialog)
 			createGroupDialog.destroy();
 		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-				{ width : "800px", 		
+				{ width : "1000px", 		
 	              fixedcenter : false, 
 	              visible : true,  
 	              constraintoviewport : true, 
@@ -1210,7 +1299,7 @@ function showAllElectionsInDistrictHead(){
 				  modal :true,
 				  hideaftersubmit:true,
 				  close:true,
-				  x:600,
+				  x:800,
 				  y:800
 	             } );
 		createGroupDialog.render();      
@@ -1288,7 +1377,7 @@ function showAllElectionsInDistrictHead(){
 		contentStr+='<ul>';
 		for(var i in arr)
 		{				
-			contentStr+='<LI style="width:880px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
+			contentStr+='<LI style="width:1000px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
 		}
 		contentStr+='</ul>';
 
@@ -1301,7 +1390,7 @@ function showAllElectionsInDistrictHead(){
 					isVertical: false,
 					numVisible: 1,
 					animation: { speed: 1.0 },
-					autoPlayInterval: 2000
+					autoPlayInterval: 1000
 				});
 
 		graphImagesCarousel.render(); 
@@ -1372,7 +1461,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
   <div id="inner-content-mainsec" style="margin-left:auto;margin-right:auto;float:none;">
 		
 		<div class="cd-left-sec" style="width:676px;background:#ffffff;">
-        <div class="cd-mid-cont-sec" style="padding-bottom:112px;">
+        <div class="cd-mid-cont-sec" style="padding-bottom:78px;">
 
      
           <p class="pa-fi" style="font-weight:bold;">STATE: <strong></strong><a style="color:#6B8E23;text-decoration: none;font-weight:bold"; href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${stateDetails.name}</a> </p>
@@ -1448,7 +1537,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 										
 
 		
-</div>					
+				
 									
 	<div id="districtPeopleConnect_body" style="float: left; clear: both;">
 						
@@ -1465,7 +1554,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 					
 
 	</div>
-</div>
+</div></div>	
 	<!--left section End-->
 
 
@@ -1487,13 +1576,41 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 
 </div>
-          <div class="connect-people-sec" style="padding-top:1px;">
-			<div class="cp-title-sec" style="-moz-border-radius:3px;">
+
+
+
+
+<!--VIEW YOUR PROBLEMS SECTION START-->
+        
+        <div class="vy-problems-sec">
+          <h1 class="vyp-title"> <img src="images/view-your-problems-district.png" alt=""/></h1>
+        <div class="vy-fields-sec" style="height:100px;">
+
+		<div id="problemViewingDiv" style="margin-top:10px;">
+			<div id="problemViewingDiv_Head"></div>
+			<div id="problemViewingDiv_Body"></div>
+		</div>
+        <div class="post-problem" style="top:148px;">
+              <div>Post your constituency problem and<br />
+                bring it to the all people notice.</div>
+				
+				
+				<div id="problemPostingDiv">
+			<div id="problemPostingDiv_Head"></div>
+			<div id="problemPostingDiv_Body"></div>
+			
+								
+							</div> </div>
+        </div>
+        
+        <!--VIEW YOUR PROBLEMS SECTION END-->
+		<div class="connect-people-sec" style="padding-top:1px;margin-top:78px;">
+			<div class="cp-title-sec" style="-moz-border-radius:3px;margin-top:0px;">
                 <h1 class="cp-title">Know Your Mandals/Tehsils</h1>
                </div>
 
 
-			   <div id="mandalsDiv_body">
+			   <div id="mandalsDiv_body" style="height:445px;">
 				<c:forEach var="mandalsBeforeDelimitationConstituency" varStatus="stat" items="${mandals}">						
 						<div id="mandalAncSpan" class="mandalNamesDiv">							
 							<table>
@@ -1516,27 +1633,21 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 
 
-
+<!--
            
 			<div class="cl-sub-fields-sec" style="width:308px;">
-			<!--<div class="cp-title-sec">
-                <h1 class="cp-title">View Your District Problems</h1>
-               </div>-->
-
+			
          <div id="problemViewingDiv" style="margin-top:10px;">
 			<div id="problemViewingDiv_Head"></div>
 			<div id="problemViewingDiv_Body"></div>
 		</div>
-	</div>
+	</div>-->
             <!--CONNECT PEOPLE SECTION END--> 
 
 	
 			
-		<div class="cl-sub-fields-sec" style="width:307px;">
-			<!--<div class="cp-title-sec">
-                <h1 class="cp-title">Post Your District Problems</h1>
-               </div>-->
-
+		<!--<div class="cl-sub-fields-sec" style="width:307px;">
+			
 			   <div id="problemPostingDiv">
 			<div id="problemPostingDiv_Head"></div>
 			<div id="problemPostingDiv_Body"></div>
@@ -1546,18 +1657,19 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 
 
-</div>
+</div>-->
 
 </div>
-
+</div>
 <!--Right End-->
-<center>
-<div id="detailedChartDiv" > </div>
+
+<div id="detailedChartDiv" style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;"> 
 	
 	<div id="partiesPerformanceGraphDistrict">
-		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width: 904px; float: left; clear: both;">
+		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
+			<h3 style="margin-top:81px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
 				<div id="allElectionResultsInDT"  class="allianceListDiv">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
@@ -1573,15 +1685,15 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 			</ul>
 		</div>
 	</div>
-</center>
-<center>
+	
+<div style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
 <div id="mp_head" style="clear:both;background:none;padding-top:30px">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:52px;"/></td>
 						<td>-->
-							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:874px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:973px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">
 								<span style="float:left;color:#ffffff;font-size:14px;">Member of Parliament (MP) in the  ${districtName} District</span>
 							</div></td>
 						
@@ -1623,18 +1735,19 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 			</div>
 	
 </div>
-</center>
-	
-<center>
-     <div style="width:1000px;background:#ffffff; padding-bottom:20px;">
+</div>
 
-<div id="mla_main_div" style="background:#ffffff;">
+	
+
+     <div style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
+
+<div id="mla_main_div" style="background:#ffffff;width:100%;">
 			<div id="mla_head" style="clear:both;padding-top:24px;">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:0px;"/></td>
 						<td>	-->
-							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:882px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;">
+							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:972px;-moz-border-radius:6px;padding-bottom:7px;background:#72CAED;margin-top:-47px;">
 								<span style="float:left;color:#ffffff;">Member of Legislative Assembly (MLA) in the  ${districtName} District</span>
 							</div>
 						</td>
@@ -1643,7 +1756,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				</table>
 			</div>
 			
-<div id="mla_body" style="background:#ffffff;">				
+<div id="mla_body" style="background:#ffffff;margin-top:-14px;">				
 				<div id="mlaInfoDivBody">
 					<table  id="mlaDataSortingTable">						
 						<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
@@ -1679,44 +1792,53 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 						</c:forEach>
 					</table>		
 				</div>
+		</div>
 		
-		</center><center>
-		  <div style="width:1000px;background:#ffffff;">
-<div id="muncipality_corporation_div_main" style="margin-top:-37px;">
+		  <div style="width:1000px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
+<div id="muncipality_corporation_div_main" style="margin-top:14px;width:100%;">
 		<table width="100%" id="table1">
 			<tr>
-				<td align="left">
+				<td>
+				
 					<div id="corporationDivHead" style="text-align:left;cursor:pointer;" onclick="hideCorporationDiv()"></div>
-					<div id="corporationDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;background:#ffffff;width:881px;" ></div>
-				</td>
+					
+				
+					<div id="corporationDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;background:#ffffff;width:960px;">
+						
+					</div>
+				<!--<div id="CorporationPieChartDiv" style="float:right;"></div>-->
+
+				<div id="CorporationPieChartDiv"  style="position: relative; width: 350px; height: 300px; top: 6px; right: 0px; left: 510px; bottom: 0px; margin-bottom: 0px; clear: both; margin-top: -263px;"></div>
+					</td>
+				
+				
 			</tr>
 			<tr>
-				<td align="left">
+				<td align="left" width:50%;>
 					<div id="muncipalitiesDivHead" style="text-align:left;" onclick="hideMuncipalitiesDiv()"></div>
-					<div id="muncipalitiesDiv" style="background:#ffffff;width:898px;"></div>
+					<div id="muncipalitiesDiv" style="background:#ffffff;width:98%;"></div>
 				</td>
 			</tr>
 		</table>
 	</div>
+	
 </div>
-</center>
 
 <!--District Page MPTC, ZPTC Div-->
-<center>
  
-  <div style="width:1000px;background:#ffffff;">
+  <div style="width:1000px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
 
-	<div id="mptc_zptc_div_main">
-		<table id="table2">
+	<div id="mptc_zptc_div_main" style="margin-bottom:20px;">
+		<table id="table2" style="width: 100%;">
 			<tr>
 				<td>
 					<div id="zptc_main">
 						<div id="zptc_head" style="color:#ffffff;">
-							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+							<table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<!--<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>-->	
-										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
+										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:506px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span>Total Number of ZPTC's : </span>
 											<span id="totalZptcCountResultDiv"></span>
 										</div>
@@ -1726,7 +1848,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 							</table>
 						</div>
 						<div id="zptc_body" style="background:#ffffff;">
-							<div id="zptcDiv"  style="margin-top: 10px;">
+							<div id="zptcDiv"  style="margin-top:2px;">
 								<table>
 										<td><div id="zptcInfoDivBody" style="font-weight:bold;color:#000000;"></div></td>
 										<td><div id="zptcAjaxLoadDiv" style="display:none;">
@@ -1744,11 +1866,11 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				<td>
 					<div id="mptc_main">
 						<div id="mptc_head"> 
-							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+							<table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>	-->
-										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:398px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
+										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:447px;padding:9px;height:18px;-moz-border-radius:4px;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span style="color:#ffffff;">Total Number of MPTC's : </span>
 											<span id="totalMptcCountResultDiv"></span>
 										</div>
@@ -1757,7 +1879,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 								</tr>
 							</table>
 						</div>
-						<div id="mptc_body" style="background:#ffffff;">
+						<div id="mptc_body" style="background:#ffffff;margin-top:-8px;">
 							<div id="mptcDiv" style="margin-top: 10px;">
 									<table>
 										<td><br/></td>
@@ -1783,7 +1905,6 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 </div>
 </div>
-</center>
 
 
 	</div>
@@ -1878,7 +1999,6 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 userLoginStatus = '${userDetails.loginStatus}';
 userId = '${userDetails.userId}';
 forwardTask = "${redirectLoc}";
-
 function initializeDistrictPage()
 {
 	buildDistrictLevelProblemWindow();
@@ -1909,6 +2029,13 @@ if(forwardTask != null)
       openAddNewProblemWindow();
 	}
 }
+
+//getMuncipalPartyDetails();
+
+//getCorporationPartyDetails();
+
+
+buildProblemPostingWindowForDistrict();
 </script>
 </body>
 </html>
