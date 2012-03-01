@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IKeyCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -46,7 +47,17 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 	private IKeyCandidateDAO keyCandidateDAO;
 	private ICandidateDAO candidateDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
+	}
+
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+	}
+
 	public ICandidateDAO getCandidateDAO() {
 		return candidateDAO;
 	}
@@ -336,6 +347,64 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		
 	}
 	
+	
+	public ElectionLiveResultVO getOverViewCount(Long electionId)
+	{
+		try{
+			ElectionLiveResultVO electionLiveResultVO = new ElectionLiveResultVO();
+			Election election = electionDAO.get(electionId);
+			Boolean isPartial = null;
+			Boolean isFirstElectionAfterDelimtation = null;
+			Long totalSeats = 0L;
+			Long totalKnownCount = 0L;
+			Long oldCount = 0L;
+			Long newCount = 0L;
+			
+			if(election.getIsPartial() != null && election.getIsPartial().equalsIgnoreCase("1"))
+				isPartial = true;
+			else
+				isPartial = false;
+			
+			isFirstElectionAfterDelimtation = getIsFirstElectionAfterDelimtation(election.getElectionScope().getElectionScopeId(),Long.parseLong(election.getElectionYear()));
+			
+			electionLiveResultVO.setPartialResult(isPartial);
+			electionLiveResultVO.setIsFirstElectionAfterDelimtation(isFirstElectionAfterDelimtation);
+			
+			totalSeats = (Long)constituencyElectionDAO.getPCCountInAElection(electionId);
+			
+			electionLiveResultVO.setTotalSeats(totalSeats);
+			
+			if(isPartial)
+				totalKnownCount = (Long)constituencyLeadCandidateDAO.getResultKnownConstituenciesCountInAElection(electionId);
+			else
+				totalKnownCount = (Long)constituencyElectionResultDAO.getResultKnownConstituenciesCountInAElection(electionId);
+			
+			electionLiveResultVO.setTotalKnownCount(totalKnownCount);
+			
+			if(isFirstElectionAfterDelimtation)
+			{
+				
+				
+				List<Object[]> list = constituencyElectionDAO.getOldAndNewConstituenciesInAElection(electionId);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+						if(params[1] == null)
+							oldCount++;
+						else
+							newCount++;
+				}
+			}
+			
+			electionLiveResultVO.setOldConstituenciesCount(oldCount);
+			electionLiveResultVO.setNewConstituenciesCount(newCount);
+			return electionLiveResultVO;
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in getOverViewCount() Method, Exception is - "+e);
+			return null;
+		}
+	}
 	public List<ConstituencyElectionResultVO> getConstituencyWiseCandidatesStates(Long electionId)
 	{
 		log.debug("Entered into getConstituencyWiseCandidatesStates() Method");
@@ -758,7 +827,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			
 			electionLiveResultVO = getPartyPresentLostConstituencies(electionId,electionLiveResultVO,cIdList,isPartial);
 			
-			electionLiveResultVO = setPreviousWinAndLostConstituencies(electionLiveResultVO,prevElectionId,electionLiveResultVO.getLostConstIdsList());
+			if(electionLiveResultVO.getLostConstIdsList() != null && electionLiveResultVO.getLostConstIdsList().size() > 0)
+				electionLiveResultVO = setPreviousWinAndLostConstituencies(electionLiveResultVO,prevElectionId,electionLiveResultVO.getLostConstIdsList());
 			
 			if(isPartial)
 			{
