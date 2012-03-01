@@ -68,4 +68,6 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public void updateFileDate(Date updateDt,Long fileId);
     
     public void deleteFile(Long fileId);
+    
+    public List<FileGallary> getRecentlyUploadedPhotos(Integer startIndex,Integer maxResults);
 }
