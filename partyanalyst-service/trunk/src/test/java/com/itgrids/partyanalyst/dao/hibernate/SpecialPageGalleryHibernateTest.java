@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SpecialPageGalleryHibernateTest extends BaseDaoTestCase {
@@ -43,10 +44,18 @@ public class SpecialPageGalleryHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetGalleryBasedOnSpecialPageId(){
+	/*public void testgetGalleryBasedOnSpecialPageId(){
 		List<File> result = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(3l,0, 20, IConstants.NEWS_GALLARY);
 		for(File file : result){
 		System.out.println(file.getFileDate());
 		}
+	}*/
+	
+	public void testGetSpecialPageByGalleryId()
+	{
+		List<SpecialPage> list = specialPageGalleryDAO.getSpecialPageByGalleryId(963l);
+		System.out.println(list.size());
+		
+		System.out.println(list.get(0).getName());
 	}
 }

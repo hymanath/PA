@@ -261,9 +261,27 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		List result = constituencyElectionDAO.getCountOfDelimitedConstituencies(38l);
 		System.out.println("New Constituencies --------------"+result.get(0));
 	}*/
-	public void testGetPartyWinningConstituenciesCount(){
+	/*public void testGetPartyWinningConstituenciesCount(){
 		
 		List<Object[]> list = constituencyElectionDAO.getPartyWinningConstituenciesCount(38l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetPCCountInAElection()
+	{
+		Object object = constituencyElectionDAO.getPCCountInAElection(38l);
+		System.out.println(object.toString());
+	}*/
+	
+	public void testGetOldAndNewConstituenciesCountInAElection()
+	{
+		List<Object[]> list = constituencyElectionDAO.getOldAndNewConstituenciesInAElection(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"---"+params[1]);
+		}
 	}
 }
