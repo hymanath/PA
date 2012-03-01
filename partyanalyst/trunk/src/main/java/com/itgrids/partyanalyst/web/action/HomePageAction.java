@@ -369,7 +369,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
-				resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(1 ,10);
+				resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,15);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
