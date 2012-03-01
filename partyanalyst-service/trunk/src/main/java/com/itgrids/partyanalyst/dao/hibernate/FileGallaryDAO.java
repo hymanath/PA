@@ -298,13 +298,26 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	@SuppressWarnings("unchecked")
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr){
 		
-		Query query = getSession().createQuery("from FileGallary model "+queryStr+" and model.gallary.candidate is not null and model.gallary.isPrivate = 'false' " +
-				" and model.isPrivate = 'false' order by model.file.fileDate desc");
+		Query query = getSession().createQuery("from FileGallary model "+queryStr+" and model.gallary.isPrivate = 'false' " +
+				" and model.isPrivate = 'false' order by model.file.fileDate desc,model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getRecentlyUploadedPhotos(Integer startIndex,Integer maxResults)
+	{
+		
+		Query query = getSession().createQuery("from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
+				" and model.gallary.isPrivate = 'false' and model.isPrivate = 'false' order by model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsByGalleryId(List galleryIds){
 		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +

@@ -136,6 +136,7 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 		return query.list();
 	}
 		
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidateResultsForPartialElec(Long constituencyId,Long electionId)
 	{
 		Object[] data = {constituencyId,electionId};
@@ -150,5 +151,13 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 				" model.constituencyElection.constituency.district.districtName,model.candidate.candidateId, model.candidate.lastname,model.party.partyId,model.party.shortName,model2.status " +
 				" from Nomination model,ConstituencyLeadCandidate model2 where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and " +
 				" model.candidate.candidateId = model2.candidate.candidateId order by model.constituencyElection.constituency.name",electionId);
+	}
+	
+	public Object getResultKnownConstituenciesCountInAElection(Long electionId)
+	{
+		Query query = getSession().createQuery("select count(model.constituencyElection.constituency.constituencyId) from ConstituencyLeadCandidate model " +
+				" where model.constituencyElection.election.electionId = ?");
+		query.setParameter(0,electionId);
+		return query.uniqueResult();
 	}
 }
