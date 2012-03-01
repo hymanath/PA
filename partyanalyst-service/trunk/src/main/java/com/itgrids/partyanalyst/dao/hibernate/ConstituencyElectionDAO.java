@@ -384,6 +384,13 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		
 	}
 	
+	public Object getPCCountInAElection(Long electionId)
+	{
+		Query query = getSession().createQuery("select count(model.constiElecId) from ConstituencyElection model where model.election.electionId = ?");
+		query.setParameter(0,electionId);
+		return query.uniqueResult();
+	}
+	
 	
 	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId,List<Long> elecIds,String type){
 		StringBuilder query = new StringBuilder();
@@ -475,6 +482,12 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 			" nModel.nominationId = crModel.nomination.nominationId and" +
 			" nModel.constituencyElection.election.electionId = ? and crModel.rank = 1 group by nModel.party.shortName,nModel.constituencyElection.constituency.startDate",electionId);
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getOldAndNewConstituenciesInAElection(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.startDate from ConstituencyElection model where model.election.electionId = ? ",electionId);
+	}
 }
 
 

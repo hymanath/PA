@@ -175,4 +175,12 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? " 
 				, electionId); 
 	}
+	
+	public Object getResultKnownConstituenciesCountInAElection(Long electionId)
+	{
+		Query query = getSession().createQuery("select count(model.constituencyElection.constiElecId) from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ?");
+		query.setParameter(0,electionId);
+		
+		return query.uniqueResult();
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
@@ -147,5 +148,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		
 	   Object[] params = {gallaryId,partyId};
 	   return getHibernateTemplate().find("select model.gallery.gallaryId,model.gallery.name,model.gallery.description,model.isPrivate from PartyGallery model where model.gallery.gallaryId = ? and model.party.partyId =?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Party> getPartyByGalleryId(Long gallaryId)
+	{
+		return getHibernateTemplate().find("select model.party from PartyGallery model where model.gallery.gallaryId = ?",gallaryId);
 	}
 }
