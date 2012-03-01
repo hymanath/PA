@@ -149,4 +149,8 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List<Object[]> getPartyWinningConstituenciesCount(Long electionId);
 	
+	public Object getPCCountInAElection(Long electionId);
+	
+	public List<Object[]> getOldAndNewConstituenciesInAElection(Long electionId);
+	
 }

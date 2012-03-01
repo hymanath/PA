@@ -66,5 +66,7 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	public List<ConstituencyElectionResult> getConstituencyElectionResultByElection(Long electionId);
 
 	public List<Object[]> findTotalVotesAndValidVotesAndPolledVotesAndVotesPercentage(Long electionId );
+	
+	public Object getResultKnownConstituenciesCountInAElection(Long electionId);
 
 }
