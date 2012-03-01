@@ -139,9 +139,15 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("getConstituenciesCount")){
+			if(jObj.getString("task").equalsIgnoreCase("getConstituenciesCount"))
+			{
 				Long electionId = new Long (jObj.getString("electionId"));
 			//	electionLiveResultVO = electionLiveResultsAnalysisService.getCountOfConstituenciesForAElection(electionId);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getOverViewCount"))
+			{
+				Long electionId = new Long (jObj.getString("electionId"));
+				electionLiveResultVO = electionLiveResultsAnalysisService.getOverViewCount(electionId);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
