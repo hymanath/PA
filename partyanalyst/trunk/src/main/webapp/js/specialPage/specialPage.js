@@ -577,7 +577,7 @@ function buildUploadVideoDiv()
     str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallarySelectIdss" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
@@ -656,7 +656,7 @@ function uploadVideoGallary(){
 		str += 'Title Is Required<br>';
 		eFlag = true;
 	}
-	if(fileTitle.length > 50)
+	if(fileTitle.length > 200)
 	{
 		str += 'Title should be less than 50 Characters<br>';
 		eFlag = true;
@@ -666,9 +666,9 @@ function uploadVideoGallary(){
 		str += 'Description is required<br>';
 		eFlag = true;
 	}
-	if(fileDesc.length >200)
+	if(fileDesc.length >500)
 	{
-		str += 'Description should be less than 200 Characters<br>';
+		str += 'Description should be less than 500 Characters<br>';
 		eFlag = true;
 	}
 	if(path.length ==0)
@@ -1024,7 +1024,7 @@ function  buildUploadNews()
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" maxlength="50"></text></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" maxlength="200"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
@@ -1148,7 +1148,6 @@ function clearNewsUploadFileFields()
 
 function validateNewsFileUpload()
 {
-	debugger;
 	var fileTitle = document.getElementById('fileTitle').value;
 	var fileDesc = document.getElementById('fileDescription').value;
 	var fileVal = document.getElementById("newsFileId").value;
@@ -1166,9 +1165,9 @@ function validateNewsFileUpload()
 		str += ' Title Is Required.<br>';
 		flag = false;
 	}
-	if(fileTitle.length >50)
+	if(fileTitle.length >200)
 	{
-		str += 'Title should be less than 50 Characters<br>';
+		str += 'Title should be less than 200 Characters<br>';
 		flag = false;
 	}
 	if(fileDesc.length == 0)
@@ -1176,9 +1175,9 @@ function validateNewsFileUpload()
 		str += 'Description is Required.<br>';
 		flag = false;
 	}
-	if(fileDesc.length > 200)
+	if(fileDesc.length > 500)
 	{
-		str += 'Description Should not exceed 200 Characters.<br>';
+		str += 'Description Should not exceed 500 Characters.<br>';
 		flag = false;
 	}
 	if(fileVal.length == 0)
