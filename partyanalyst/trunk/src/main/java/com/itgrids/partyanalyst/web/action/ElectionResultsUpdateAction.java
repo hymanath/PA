@@ -15,7 +15,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionResultsUpdationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -126,7 +125,11 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getConstisForAState"))
 			{
-				selectOptionsList = staticDataService.getLatestConstituenciesByStateId(jObj.getLong("stateId"));
+				selectOptionsList = electionResultsUpdationService.getConstituenciesForAnElec(jObj.getLong("electionId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getStatesForPartialElec"))
+			{
+				selectOptionsList = electionResultsUpdationService.getStatesForPartialElec();
 			}
 		}
 		catch(Exception e)
