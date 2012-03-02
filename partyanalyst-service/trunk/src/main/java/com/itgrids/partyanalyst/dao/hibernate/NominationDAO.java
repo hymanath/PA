@@ -3256,6 +3256,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 		  if(electionType.trim().equalsIgnoreCase("Assembly"))
 		     query.append(" and model.constituencyElection.election.electionScope.state.stateId = :stateId ");
+		  
+		  query.append(" order by model.party.shortName ");
 		
 		  Query queryObject = getSession().createQuery(query.toString());
 		  
@@ -3434,5 +3436,41 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname ,model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from " +
 				" Nomination model where model.candidate.candidateId in(select model1.candidate.candidateId from KeyCandidate model1) and model.constituencyElection.election.electionId = ?",electionId);
 	}
-
+    public  List<Object[]>  getAllDistrictsForAnElection(Long electionId)
+    {
+    	return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName from " +
+				" Nomination model where model.constituencyElection.election.electionId = ? order by model.constituencyElection.constituency.district.districtName ",electionId);
+    }
+    public  List<Long>  getAllConstituenciesInADistrict(Long districtId,Long electionId)
+    {
+    	 Object[] data = {districtId,electionId};
+    	return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.constituencyId from Nomination model where model.constituencyElection.constituency.district.districtId = ? and model.constituencyElection.election.electionId = ?",data);
+    }
+    public List<Long> getAllWonCountPartyWise(Long districtId,Long electionId,Long partyId)
+    {
+    	Object[] data = {districtId,electionId,partyId,1l};
+    	return getHibernateTemplate().find("select count(*) from Nomination model where model.constituencyElection.constituency.district.districtId = ? and model.constituencyElection.election.electionId = ? and model.party.partyId = ? and model.candidateResult.rank = ?",data);
+    }
+    public List<Object[]> getAllPartiesWithAtleastOneWon(Long electionId)
+    {
+    	Object[] data = {electionId,1l};
+    	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and model.candidateResult.rank = ? order by model.party.shortName ",data);
+    }
+    public List<Object[]> getAllPartiesForPartialElec(Long electionId)
+    {
+    	Object[] data = {electionId,electionId};
+    	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId in( select model1.constituencyElection.constiElecId " +
+    			" from ConstituencyLeadCandidate model1 where model1.constituencyElection.election.electionId = ? ) ",data);
+    }
+    public List<Object[]> getAllPartiesWithAtleastOneWonForADistrict(Long electionId,Long districtId)
+    {
+    	Object[] data = {electionId,1l,districtId};
+    	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and model.candidateResult.rank = ? and model.constituencyElection.constituency.district.districtId =? order by model.party.shortName ",data);
+    }
+    public List<Object[]> getAllPartiesForPartialElecForADistrict(Long electionId,Long districtId)
+    {
+    	Object[] data = {electionId,electionId,districtId};
+    	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId in( select model1.constituencyElection.constiElecId " +
+    			" from ConstituencyLeadCandidate model1 where model1.constituencyElection.election.electionId = ? )  and model.constituencyElection.constituency.district.districtId =?  ",data);
+    }
 }
