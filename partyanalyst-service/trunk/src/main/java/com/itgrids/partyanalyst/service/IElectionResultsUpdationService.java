@@ -19,7 +19,7 @@ public interface IElectionResultsUpdationService {
 	
 	public List<SelectOptionVO> getAllPosition();
 	
-	public ResultStatus assignScopeToPosition(Long electionGoverningBodyPositionId,Long electionTypeId,Long stateId,String type);
+	public ResultStatus assignScopeToPosition(Long electionGoverningBodyPositionId,Long electionTypeId,Long stateId,Long ministerTypeId);
 	 
     public List<SelectOptionVO> getAllElectionTypes();
 	 
@@ -29,10 +29,17 @@ public interface IElectionResultsUpdationService {
 	
 	public List<SelectOptionVO> getCandidates(PositionManagementVO positionManagementVO);
 	 
-	public List<SelectOptionVO> getElectionTypeDetails(Long electionGoverningBodyPositionId,String positionType);
+	public List<SelectOptionVO> getElectionTypeDetails(Long electionGoverningBodyPositionId);
 	
-	public List<SelectOptionVO> getPositionTypeDetails(Long electionGoverningBodyPositionId);
+	public List<SelectOptionVO> getPositionTypeDetails(Long electionGoverningBodyPositionId,Long electionType);
 	
-	public List<SelectOptionVO> getStateDetails(Long electionGoverningBodyPositionId,String positionType);
+	public List<SelectOptionVO> getStateDetails(Long electionGoverningBodyPositionId,Long electionType,Long ministerTypeId);
 	
+	public List<SelectOptionVO> getStatesForPartialElec();
+	
+	public List<SelectOptionVO> getConstituenciesForAnElec(Long electionId);
+	
+	public List<SelectOptionVO>  getMinistersType();
+	
+	public List<SelectOptionVO>  getMinistersTypeDetails(Long electionGoverningBodyPositionId,Long electionType);
 }
