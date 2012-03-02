@@ -862,5 +862,10 @@
 			<property name="staticDataService" ref="staticDataService"/>
 			<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper"/>
-	</bean>			
+	</bean>
+	
+	<bean id="districtWisePartyPerformanceAction" class="com.itgrids.partyanalyst.web.action.DistrictWisePartyPerformanceAction" singleton="false">
+	        <property name="entitlementsHelper" ref="entitlementsHelper"/>
+	</bean>	
+				
 </beans>	
