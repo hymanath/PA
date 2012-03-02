@@ -8,7 +8,6 @@ import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 
 public interface IElectionLiveResultsAnalysisService {
 
@@ -27,4 +26,12 @@ public interface IElectionLiveResultsAnalysisService {
 	public ResultStatus saveKeyCandidates(AssignKeyCandidateVO assAssignKeyCandidateVO);
 	
 	public ElectionLiveResultVO getOverViewCount(Long electionId);
+		
+	public List<PositionManagementVO> getDistrictWisePartyPerfDetails(Long electionId,Long stateId);
+	
+	public List<PositionManagementVO> getWinCountForGraphs(Long electionId,Long stateId,Long districtId);
+	
+	public List<PositionManagementVO> getAllPartiesForPartialElection(Long electionId,Long stateId);
+	
+	public  List<PositionManagementVO> getAllPartiesPerfoDistWiseForPartialEle(Long electionId,List<Long> partiesList);
 }
