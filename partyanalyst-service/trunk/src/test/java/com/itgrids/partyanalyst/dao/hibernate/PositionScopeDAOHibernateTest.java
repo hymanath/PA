@@ -20,19 +20,19 @@ public void setPositionScopeDAO(IPositionScopeDAO positionScopeDAO) {
   public void testGetStateDetails()
   {
 	  
-	  List<Object[]> data = positionScopeDAO.getStateDetails(5l,"Main");
+	  List<Object[]> data = positionScopeDAO.getStateDetails(5l,2l,1l);
 	  for(Object[] result: data)
 	  {
 		  System.out.println("id:  "+result[0].toString()+"name "+result[1].toString());
 	  }
   }
-  /*public void testGetPositionTypeDetails()
+  public void testGetPositionTypeDetails()
   {
 	  
-	  List<Object> data = positionScopeDAO.getPositionTypeDetails(5l);
-	  for(Object result: data)
+	  List<Object[]> data = positionScopeDAO.getPositionTypeDetails(5l,2l);
+	  for(Object[] result: data)
 	  {
-		  System.out.println("name "+result.toString());
+		  System.out.println("id:  "+result[0].toString()+"name "+result[1].toString());
 	  }
-  }*/
+  }
 }
