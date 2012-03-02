@@ -383,7 +383,7 @@ function getElectionYears(electionType)
 									{
 									      buildData(myResults,"stateListId");
 									}
-									else if(jsObj.task == "getdetails")
+									else if(jsObj.task == "getMinsKeyCandAnalysisDetails")
 									{
 									   document.getElementById("select_ImgSpan").style.display="none";
 									   if(jsObj.reqtype == "ImportantCandidates")
@@ -446,7 +446,7 @@ function getElectionYears(electionType)
             time : new Date().getTime(),
 			electionId: eleId,
 			reqtype:reqtype,
-			task:"getdetails"
+			task:"getMinsKeyCandAnalysisDetails"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
