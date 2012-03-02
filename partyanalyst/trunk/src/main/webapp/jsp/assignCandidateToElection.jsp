@@ -121,8 +121,8 @@ width:591px;
 	</tr>
 	<tr>
 	
-        <td class="headingCss">Type<font class="requiredFont">*</font> :</td>
-		<td><select id="type" style="width:125px;margin-left: 34px;" ><option value="0">Select Type</option><option value="1">Main</option><option value="2">Sub</option></select></td>      
+        <td class="headingCss"><div id="ministerTypeTitleDiv" style="display:none;" >Minister Type<font class="requiredFont">*</font> :</div></td>
+		<td><div id="ministerTypeDiv"  style="display:none;"  ><select id="ministerType" style="width:125px;margin-left: 34px;" ></select></div></td>      
     
 	 </tr>
     </table>
@@ -136,12 +136,8 @@ width:591px;
   <table style="text-align:left;">
      <tr>
 	    <td class="headingCss">Select Position<font class="requiredFont">*</font> :</td>
-		<td><select style="margin-left: 0px;width: 125px;" id="positionSelId"  onchange="getPositionTypeDetails();"  /></td>
+		<td><select style="margin-left: 0px;width: 125px;" id="positionSelId"  onchange="getElectionTypeDetails();"  /></td>
 	 </tr>
-	 <tr>	
-        <td class="headingCss">Type<font class="requiredFont">*</font> :</td>
-		<td><select id="positionType" style="width: 125px;" onchange="getElectionTypeDetails();" ><option value="0">Select Type</option></select></td>          
-	</tr>
 	<tr>
 	    <td class="headingCss">From Date<font class="requiredFont">*</font> :</td>
 		<td>											
@@ -214,19 +210,29 @@ function showRemainingDetails()
 	   var str ='';
 	   if(electionTypeId == 1)
 		{
-		   getElectionYear();
-		   getStaticParties();
-		}
-	   if(electionTypeId == 2)
-	   {
-	      str +='<table>';
-		  str +='    <tr>';
-	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
-		   str +='      <td><select style="margin-left: 53px;width: 125px;" id="stateId" onchange="getElectionYear();getStaticParties();" ><option value="0">select</option></select></td>';
+		   str +='<table>';
+		   str +='    <tr>';
+	       str +='      <td class="headingCss"> Minister Type<font class="requiredFont">*</font> :</td>';
+		   str +='      <td><select style="margin-left: 44px;width: 125px;" id="ministerSelId" onchange="getElectionYear();getStaticParties();" ><option value="0">select</option></select></td>';
 	       str +='   </tr>';
 		  str +='</table>';
 		   document.getElementById("showRemaining").innerHTML = str;
-		   getStateDetails();
+		   getMinistersTypeDetails();
+		}
+	   if(electionTypeId == 2)
+	   {
+	       str +='<table>';
+		   str +='    <tr>';
+	       str +='      <td class="headingCss"> Minister Type<font class="requiredFont">*</font> :</td>';
+		   str +='      <td><select style="margin-left: 44px;width: 125px;" id="ministerSelId" onchange="getStateDetails();" ><option value="0">select</option></select></td>';
+	       str +='   </tr>';
+		   str +='    <tr>';
+	       str +='      <td class="headingCss"> Select State<font class="requiredFont">*</font> :</td>';
+		   str +='      <td><select style="margin-left: 44px;width: 125px;" id="stateId" onchange="getElectionYear();getStaticParties();" ><option value="0">select</option></select></td>';
+	       str +='   </tr>';
+		   str +='</table>';
+		   document.getElementById("showRemaining").innerHTML = str;
+		   getMinistersTypeDetails();
 	   }
 	   else if(electionTypeId == 5 || electionTypeId == 6 || electionTypeId == 7 )
 	   {
@@ -283,6 +289,7 @@ function getAllPositions()
 	{	
 		var jObj=
 				{
+				        time : new Date().getTime(),
 						task:"getAllPosition"						
 				};
 			
@@ -294,6 +301,7 @@ function getAllElectionTypes()
 	{	
 		var jObj=
 				{
+				        time : new Date().getTime(),
 						task:"getAllElectionTypes"						
 				};
 			
@@ -364,15 +372,20 @@ function assignScope()
 	        str+='<b><font style="color:red;font-size:12px;">Please Select State</font></b><br />';
 	      }
 	   }
-	   var typeEle = document.getElementById("type");
-       var type = typeEle.options[typeEle.selectedIndex].text;
-       var typeId = typeEle.options[typeEle.selectedIndex].value;
-	   if(typeId == 0)
+	   var minType = 0;
+	   if(electionTypeId == 1 || electionTypeId == 2 )
+	    {
+	      var minTypeEle = document.getElementById("ministerType");
+          minType = minTypeEle.options[minTypeEle.selectedIndex].value;
+		}
+      if(electionTypeId != 0 && (electionTypeId == 1 || electionTypeId == 2 ))
+	  {
+	   if(minType == 0)
 	   {
 	     validate = true;
-	     str+='<b><font style="color:red;font-size:12px;">Please Select Type</font></b><br />';
+	     str+='<b><font style="color:red;font-size:12px;">Please Select Minister Type</font></b><br />';
 	   }
-	   
+	  }
 	   
 	    if(validate)
 		{
@@ -386,10 +399,11 @@ function assignScope()
 		document.getElementById("scopPosiErrMsg").style.display = "block";
     var jsObj =
 		{ 
+		    time : new Date().getTime(),
             positionId : positionId,
 			electionTypeId : electionTypeId,
 			stateId : stateId,
-			type : type,
+			ministerTypeId : minType,
 			task:"assignScopeToPosition"
 		};
 
@@ -410,7 +424,17 @@ function showHideState()
 	   {
 	      document.getElementById("stateShowDiv").style.display ="block"; 
 		  document.getElementById("stateShowDivVal").style.display ="block";
-       }		  
+       }
+       if(elecTypId == 1 || elecTypId == 2)
+        {		 
+           document.getElementById("ministerTypeTitleDiv").style.display ="block"; 
+		   document.getElementById("ministerTypeDiv").style.display ="block";
+        }
+       else
+        {
+           document.getElementById("ministerTypeTitleDiv").style.display ="none";
+		   document.getElementById("ministerTypeDiv").style.display ="none";
+        }		
  } 
 function viewProfileLink(){
 
@@ -453,21 +477,6 @@ function hideBusyImgWithId(elmtId)
 			if(spanElmt)
 				spanElmt.style.display = "";
 		}
- function getElectionYears(){
-
-    var stateId = document.getElementById("stateId").value;
-	var electionTypeId = document.getElementById("electionTypeId").value;
-	
-	var jObj = {
-				electionTypeId : electionTypeId,
-				stateId :stateId,
-				task : "getElectionYears"
-			}
-	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
-	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
-	
-	callAjaxForAdmin(url,jObj);
- }
  
  function callAjaxForAdmin(url,jObj){
 	
@@ -475,15 +484,7 @@ function hideBusyImgWithId(elmtId)
 	 success : function(o){
 	 try {
 		 myResults = YAHOO.lang.JSON.parse(o.responseText);
-		 
-		 if(jObj.task == "getElectionYears"){
-			clearOptionsListForSelectElmtId("electionYearId");
-		    createOptionsForSelectElmtIdWithSelectOption("electionYearId",myResults);
-		 }
-		 else if(jObj.task == "getStates"){
-		     buildStates(myResults,"stateSel");
-		 }
-		  else if(jObj.task == "getStatesForAssign"){
+		  if(jObj.task == "getStatesForAssign"){
 		    if(jObj.type =="new")
 			{
 		       clearOptionsListForSelectElmtId("stateId");
@@ -584,6 +585,15 @@ function hideBusyImgWithId(elmtId)
 		    clearOptionsListForSelectElmtId("stateId");
 			createOptionsForSelectElmtIdWithSelectOption("stateId",myResults);
 		  }
+		  else if(jObj.task == "getMinistersType")
+		  {
+		     createOptionsForSelectElmtIdWithSelectOption("ministerType",myResults);
+		  }
+		  else if(jObj.task == "getMinistersTypeDetails")
+		  {
+		     clearOptionsListForSelectElmtId("ministerSelId");
+		     createOptionsForSelectElmtIdWithSelectOption("ministerSelId",myResults);
+		  }
 	   }
      catch(e)
 	   {   
@@ -614,36 +624,7 @@ function showErrorMessage(result,id,text)
      document.getElementById(id).innerHTML ='<b><font style="color:red;font-size:12px;">Error Ocuured, Try Again.</font></b>';
    }
 }
-function getCandidates(){
 
-	var electionId = document.getElementById("electionYearId").value;
-	var partyId = document.getElementById("partyId").value;
-	var candidateName = document.getElementById("candidateSearchBoxId").value;
-
-	var jObj = {
-				partyId :partyId,
-				candidateName :candidateName,
-				electionId : electionId,
-				task : "getCandidates"
-			}
-	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
-	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
-	
-	callAjaxForAdmin(url,jObj);
-}
-function getParties(){
-	
-	var electionId = document.getElementById("electionYearId").value;
-	var jObj = {
-				electionId : electionId,
-				task : "getPartiesParticipatedInElection"
-			}
-	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
-	var url= "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;
-	
-	callAjaxForAdmin(url,jObj);
-
-}
 function trim(stringToTrim) {
 	return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
@@ -663,6 +644,7 @@ function createNewPosition(){
    }
  document.getElementById("electionTypeSelect_ImgSpan").style.display="block";
    var jObj = {
+                time : new Date().getTime(),
 				newPosition : newPosition,
 				task : "addNewPosition"
 			}
@@ -671,40 +653,6 @@ function createNewPosition(){
 	
 	callAjaxForAdmin(url,jObj);
 }
-function buildStates(result,id)
- {
-      var elmt = document.getElementById(id);
-	  var option1 = document.createElement('option');
-		 option1.value= 0;
-		 option1.text= "Select State";
-		
-		try
-		{
-			elmt.add(option1,null); // standards compliant
-		}
-		catch(ex)
-		{
-			elmt.add(option1); // IE only
-		}
-		
-	 for(var i in result)
-	  {
-		var option = document.createElement('option');
-		
-		  option.value=result[i].ids;
-		  option.text=result[i].names;
-		
-		try
-		{
-			elmt.add(option,null); // standards compliant
-		}
-		catch(ex)
-		{
-			elmt.add(option); // IE only
-		}
-		
-	  }
- }
  function showHideStateForAssigCand(){  
     var electionTypeEle = document.getElementById("electionTypeId");
        var electionTypeId = electionTypeEle.options[electionTypeEle.selectedIndex].value;
@@ -817,6 +765,7 @@ function buildResults(results,id){
 	
 	var jsObj =
 		{
+		    time : new Date().getTime(),
 			stateId: stateSelectlocalElVal,
 			electionTypeId:elecTypeId,
 			task: "getLocalBodiesSelectElmtForState"
@@ -844,6 +793,7 @@ function buildResults(results,id){
 	   reportLevel = "1";
 	var jsObj =
 		{
+		    time : new Date().getTime(),
 			stateId: stateSelectlocalElVal,
 			elecTypeId:elecType,
 			reportLevel:reportLevel,
@@ -1069,12 +1019,12 @@ document.getElementById("addCandidErrMsg").innerHTML ="";
  var valid = false;
  var timeST = new Date().getTime();  
  var str='';
-var  stateId = 0;
-var   districtId = 0;
-var  tehilId = 0;
-var location = 0;
-var candidateId ;
-var count = 0;
+ var  stateId = 0;
+ var   districtId = 0;
+ var  tehilId = 0;
+ var location = 0;
+ var candidateId ;
+ var count = 0;
  var selectBoxEl = document.getElementsByName("candidateId");
    for (i=0; i< selectBoxEl.length; i++)
 	{
@@ -1140,15 +1090,20 @@ var electionGovBodyPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.
     valid = true;
 	str+='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
   }  
-
-var typeEle = document.getElementById("positionType");
-var type  = typeEle.options[typeEle.selectedIndex].text; 
-var typeval  = typeEle.options[typeEle.selectedIndex].value;   
-	 if(typeval == 0)
+var ministType = 0;
+  if(electionTypeId ==1 || electionTypeId == 2)
   {
+   var ministEle = document.getElementById("ministerSelId");
+   ministType  = ministEle.options[ministEle.selectedIndex].value;
+  } 
+ if(electionTypeId != 0 && (electionTypeId ==1 || electionTypeId == 2))
+  { 
+    if(ministType == 0)
+   {
     valid = true;
-	str+='<b><font style="color:red;font-size:12px;">Please Select Type </font></b><br />';
-  }  
+	str+='<b><font style="color:red;font-size:12px;">Please Select Minister Type </font></b><br />';
+   }
+  }   
 var statusEle = document.getElementById("presentStsId");
 var status  = statusEle.options[statusEle.selectedIndex].text; 
  var statusval  = statusEle.options[statusEle.selectedIndex].value; 
@@ -1228,7 +1183,7 @@ var toDate   = document.getElementById("toDate").value;
 	           fromDate : fromDate,
 			   toDate : toDate,
 	          status : status,
-	          type : type,
+	          ministerTypeId : ministType,
 	         electionGovBodyPosId : electionGovBodyPosId,
              candidateId : candidateId,
              year : year,
@@ -1246,27 +1201,40 @@ var toDate   = document.getElementById("toDate").value;
    var url = "updateElectionInformationAction.action?"+rparam;						
    callAjaxForAdmin(url,jsObj);
 
-
 }
 function getStateDetails()
   { 
      var str ='';
      var valid = false;
+	 var ministerType = 0;
 	 var electionGovBodyPosEle = document.getElementById("positionSelId");
      var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
-	 var positionTypeEle = document.getElementById("positionType");
-	 var positionType  = positionTypeEle.options[positionTypeEle.selectedIndex].text;
-     var positionTypeId  = positionTypeEle.options[positionTypeEle.selectedIndex].value;
+	 var electionTypeEle = document.getElementById("electionTypeId");
+	 var electionType  = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+	 if(electionType == 1 || electionType == 2 )
+	 {
+	  var ministerTypeEle = document.getElementById("ministerSelId");
+	  ministerType  = ministerTypeEle.options[ministerTypeEle.selectedIndex].value;
+	 }
+	 
 	 if(elecGovPosId == 0)
 	 {
 	   valid = true;
 	  str+='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
 	  
 	 }
-	  if(positionTypeId == 0)
+	  if(electionType == 0)
 	  {
 	     valid = true;
-	    str+='<b><font style="color:red;font-size:12px;">Please Select Type </font></b><br />';
+	    str+='<b><font style="color:red;font-size:12px;">Please Select Election Type </font></b><br />';
+	  }
+	  if(electionType != 0 && (electionType == 1 || electionType == 2 ))
+	  {
+	    if(ministerType == 0)
+		 {
+	       valid = true;
+	       str+='<b><font style="color:red;font-size:12px;">Please Select Election Type </font></b><br />';
+		 }
 	  }
 	 
 	 if(valid)
@@ -1276,8 +1244,10 @@ function getStateDetails()
 	 }
 		var jObj=
 				{
-				         positionType:positionType,
-				        elecGovPosId: elecGovPosId,
+				        time : new Date().getTime(),
+				        electionType:electionType,
+				        elecGovPosId:elecGovPosId,
+						ministerTypeId:ministerType,
 						task:"getStateDetails"						
 				};
 			
@@ -1294,6 +1264,7 @@ function getPositionTypeDetails()
 	    return;
 		var jObj=
 				{
+				        time : new Date().getTime(),
 				        elecGovPosId: elecGovPosId,
 						task:"getPositionTypeDetails"						
 				};
@@ -1308,20 +1279,13 @@ function getElectionTypeDetails()
      var electionGovBodyPosEle = document.getElementById("positionSelId");
      var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
 	 
-	 var positionTypeEle = document.getElementById("positionType");
-	 var positionType  = positionTypeEle.options[positionTypeEle.selectedIndex].text;
-     var positionTypeId  = positionTypeEle.options[positionTypeEle.selectedIndex].value;
-	  if(positionTypeId == 0)
-	   return;
-	   
 	 if(elecGovPosId == 0)
 	  {
-	  document.getElementById("addCandidErrMsg").innerHTML ='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
-	  return;
+	     return;
 	 }
 		var jObj=
 				{ 
-				        positionType:positionType,
+				        time : new Date().getTime(),
 				        elecGovPosId: elecGovPosId,
 						task:"getElectionTypeDetails"						
 				};
@@ -1342,8 +1306,57 @@ function clearData(elmtId)
 		elmt.remove(i);
 	}	
 }
+function getMinistersType()
+{
+            var jObj=
+				{ 
+				        time : new Date().getTime(),
+						task:"getMinistersType"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+				callAjaxForAdmin(url,jObj);
+}
+function getMinistersTypeDetails()
+{
+     var valid = false;
+     var electionGovBodyPosEle = document.getElementById("positionSelId");
+     var elecGovPosId  = electionGovBodyPosEle.options[electionGovBodyPosEle.selectedIndex].value;
+	 var electionTypeEle = document.getElementById("electionTypeId");
+	 var electionType  = electionTypeEle.options[electionTypeEle.selectedIndex].value;
+	 
+	 if(elecGovPosId == 0)
+	 {
+	   valid = true;
+	  str+='<b><font style="color:red;font-size:12px;">Please Select Position </font></b><br />';
+	  
+	 }
+	  if(electionType == 0)
+	  {
+	     valid = true;
+	    str+='<b><font style="color:red;font-size:12px;">Please Select Election Type </font></b><br />';
+	  }
+	   if(valid)
+	 {
+	     document.getElementById("addCandidErrMsg").innerHTML = str;
+		 return;
+	 }
+            var jObj=
+				{ 
+				        time : new Date().getTime(),
+						elecGovPosId:elecGovPosId,
+						electionType:electionType,
+						task:"getMinistersTypeDetails"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+				var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+				callAjaxForAdmin(url,jObj);
+}
 getAllPositions();
 getAllElectionTypes();
+getMinistersType();
 </script>
 </body>
 </html>
