@@ -2,9 +2,11 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -18,18 +20,19 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
+import com.itgrids.partyanalyst.dao.IKeyCandidateDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
-import com.itgrids.partyanalyst.dao.hibernate.CandidateDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SpecialPageVO;
-import com.itgrids.partyanalyst.model.KeyCandidate;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.KeyCandidate;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -47,7 +50,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 	private IKeyCandidateDAO keyCandidateDAO;
 	private ICandidateDAO candidateDAO;
-	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;	
+	private IPartyDAO partyDAO;
 	
 	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
 		return constituencyElectionResultDAO;
@@ -130,6 +134,14 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	public void setElectionGoverningBodyDAO(
 			IElectionGoverningBodyDAO electionGoverningBodyDAO) {
 		this.electionGoverningBodyDAO = electionGoverningBodyDAO;
+	}
+   
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
 	}
 
 	public ElectionLiveResultVO getCountOfConstituenciesForAElection(Long electionId, String electionIsPartial) {
@@ -1352,6 +1364,349 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
   }
   return resultStatus;  
   }
-
-
+ public List<PositionManagementVO> getDistrictWisePartyPerfDetails(Long electionId,Long stateId)
+  {
+	 if(log.isDebugEnabled())
+    	log.debug("Enter into getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService");
+	    List<PositionManagementVO> returnVal = new ArrayList<PositionManagementVO>();
+	    try
+	    {	    
+	      List<Object[]> districtsList = nominationDAO.getAllDistrictsForAnElection(electionId);
+		  Long prevElectionId = getPreviousElectionId(electionId);
+		  boolean currentPartial = false;
+		  boolean previousPartial = false;
+		  if(prevElectionId != null)
+		   {			    	
+			  Election currentElection = electionDAO.get(electionId);
+		      Election PrevElection = electionDAO.get(prevElectionId);
+		      
+		      if(currentElection.getIsPartial() != null && currentElection.getIsPartial().trim().equalsIgnoreCase("1"))
+		      {
+		    	  currentPartial = true;
+		      }
+		      if(PrevElection.getIsPartial() != null && PrevElection.getIsPartial().trim().equalsIgnoreCase("1"))
+		      {
+		    	  previousPartial = true;
+		      }
+		      
+    		  List<SelectOptionVO> presentPartiesList = getAllParties(currentElection,stateId,currentPartial);
+    		  
+			  List<SelectOptionVO> previousPartiesList = getAllParties(PrevElection,stateId,previousPartial);
+			  
+			  PositionManagementVO district = null;
+			  for(Object[] districts: districtsList)
+			   {
+				  district = new PositionManagementVO();
+				  district.setDistrictId((Long)districts[0]);
+				  district.setDistrictName(districts[1]!=null?districts[1].toString():"");
+				  if(currentPartial)
+				    district.setCurrResPartial(1l);
+				  if(previousPartial)
+				    district.setPrevResPartial(1l);
+				  
+				  List<Long> currentConstiList = nominationDAO.getAllConstituenciesInADistrict((Long)districts[0],electionId);
+			      List<Long> prevConstiList = nominationDAO.getAllConstituenciesInADistrict((Long)districts[0],prevElectionId);
+			    	 
+			      List<PositionManagementVO> currentDistPartRes = new ArrayList<PositionManagementVO>();
+			      PositionManagementVO partyWise = null;
+			      
+			      for(SelectOptionVO party : presentPartiesList)
+			      {
+			    	  partyWise = new PositionManagementVO();
+			    	  partyWise.setPartyId(party.getId());
+			    	  partyWise.setPartyName(party.getName());
+			    	  if(currentPartial)
+			    	  {
+			    		 partyWise.setTotalCount(new Long(currentConstiList.size()));
+				    	 List<Long> knownResultsCount =  constituencyLeadCandidateDAO.getTotalResultsKnown(electionId,currentConstiList);
+				    	 partyWise.setKnownResultsCount(knownResultsCount.get(0));
+				    	 List<Object[]> partyWinConstis = constituencyLeadCandidateDAO.getPartyWinConst(party.getId(),electionId,currentConstiList);
+				    	 partyWise.setPartyCount(new Long(partyWinConstis.size()));
+				    	 currentDistPartRes.add(partyWise);   			    		  
+			    	  }
+			    	  else
+			    	  {
+			    		  partyWise.setTotalCount(new Long(currentConstiList.size()));
+			    		  List<Long> partyWonCount =   nominationDAO.getAllWonCountPartyWise((Long)districts[0],electionId,party.getId());
+			    		  partyWise.setPartyCount(partyWonCount.get(0));
+			    		  currentDistPartRes.add(partyWise);  
+			    	  }			    	  			    	  
+			      }
+			      List<PositionManagementVO> prevDistPartRes = new ArrayList<PositionManagementVO>();
+			      for(SelectOptionVO party : previousPartiesList)
+			      {
+			    	  partyWise = new PositionManagementVO();
+			    	  partyWise.setPartyId(party.getId());
+			    	  partyWise.setPartyName(party.getName());
+			    	  if(previousPartial)
+			    	  {
+			    		partyWise.setTotalCount(new Long(prevConstiList.size()));
+			    		List<Long> knownResultsCount =  constituencyLeadCandidateDAO.getTotalResultsKnown(prevElectionId,prevConstiList);
+			    		partyWise.setKnownResultsCount(knownResultsCount.get(0));
+			    		List<Object[]> partyWinConstis = constituencyLeadCandidateDAO.getPartyWinConst(party.getId(),prevElectionId,prevConstiList);
+			    		partyWise.setPartyCount(new Long(partyWinConstis.size()));
+			    		prevDistPartRes.add(partyWise); 
+			    	  }
+			    	  else
+			    	  {
+			    	    partyWise.setTotalCount(new Long(prevConstiList.size()));
+			    		List<Long> partyWonCount =   nominationDAO.getAllWonCountPartyWise((Long)districts[0],prevElectionId,party.getId());
+			    		partyWise.setPartyCount(partyWonCount.get(0));
+			    		prevDistPartRes.add(partyWise); 
+			    		  
+			    	  }		
+			      }
+			      
+			      district.setCurrentResultList(currentDistPartRes);
+			      district.setPreviousResultList(prevDistPartRes);
+			      district.setPresentYear(currentElection.getElectionYear());
+			      district.setPrevYear(PrevElection.getElectionYear());
+			      returnVal.add(district);
+			   }
+		   }
+	    }
+	    catch(Exception e)
+	    {
+	       log.debug("Exception rised in getDistrictWisePartyPerfDetails of ElectionLiveResultsAnalysisService",e);
+	    }
+	  return returnVal;
+  }
+  
+  private List<SelectOptionVO> getAllParties(Election election,Long stateId,boolean partialOrFull)
+  {
+	  List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+	  SelectOptionVO selectOptionVO = null;
+	  if(partialOrFull)
+	  {
+		   returnVal = staticDataService.getStaticPartiesListForAState(stateId);
+		   List<Object[]> partiesList = nominationDAO.getAllPartiesForPartialElec(election.getElectionId());
+		   if(!(partiesList.size()>0))
+			   return returnVal;
+		    for(Object[] party:partiesList)
+		    {
+		    	selectOptionVO = new SelectOptionVO();
+		    	selectOptionVO.setId((Long)party[0]);
+		    	selectOptionVO.setName(party[1]!=null?party[1].toString():"");
+		    	returnVal.add(selectOptionVO);		    	
+		    }
+		   
+		   Map<String,SelectOptionVO> partiesMap = new HashMap<String,SelectOptionVO>();
+		   for(SelectOptionVO selOpVo: returnVal)
+		   {
+			   partiesMap.put(selOpVo.getName(), selOpVo);
+		   }
+		   List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		   Set<String> keys = partiesMap.keySet();
+		   List<String> partyKeys = new ArrayList<String>();
+		   for(String partykey:keys)
+		   {
+			   partyKeys.add(partykey);
+		   }
+		   Collections.sort(partyKeys);
+		   for(String val :partyKeys)
+		   {
+			   parties.add(partiesMap.get(val));
+		   }
+		   returnVal = parties;
+	  }
+	  else
+	  {
+		  List<Object[]> partiesList = nominationDAO.getAllPartiesWithAtleastOneWon(election.getElectionId());
+		    for(Object[] party:partiesList)
+		    {
+		    	selectOptionVO = new SelectOptionVO();
+		    	selectOptionVO.setId((Long)party[0]);
+		    	selectOptionVO.setName(party[1]!=null?party[1].toString():"");
+		    	returnVal.add(selectOptionVO);
+		    	
+		    }
+	  }
+		  
+	  return returnVal;
+  }
+  public List<PositionManagementVO> getWinCountForGraphs(Long electionId,Long stateId,Long districtId)
+  {
+	 if(log.isDebugEnabled())
+	    log.debug("Enter into getWinCountForGraphs of ElectionLiveResultsAnalysisService");
+	  List<PositionManagementVO> returnVal = new ArrayList<PositionManagementVO>();
+	try
+	{
+	  Long prevElectionId = getPreviousElectionId(electionId);
+	  Election currentElection = electionDAO.get(electionId);
+      Election PrevElection = electionDAO.get(prevElectionId);
+      List<Long> currentConstiList = nominationDAO.getAllConstituenciesInADistrict(districtId,electionId);
+      List<Long> prevConstiList = nominationDAO.getAllConstituenciesInADistrict(districtId,prevElectionId);
+      boolean currentPartial = false;
+	  boolean previousPartial = false;
+	  List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+	  if(currentElection.getIsPartial() != null && currentElection.getIsPartial().trim().equalsIgnoreCase("1"))
+      {
+    	  currentPartial = true;
+      }
+      if(PrevElection.getIsPartial() != null && PrevElection.getIsPartial().trim().equalsIgnoreCase("1"))
+      {
+    	  previousPartial = true;
+      }
+      List<Object[]> presentParties =null; 
+	  
+	  List<Object[]> previousParties =null; 
+	  if(currentPartial)
+	  {
+		  presentParties = nominationDAO.getAllPartiesForPartialElecForADistrict(electionId,districtId);
+		  partiesList = staticDataService.getStaticPartiesListForAState(stateId);
+	  }
+	  else
+	  {
+		  presentParties = nominationDAO.getAllPartiesWithAtleastOneWonForADistrict(electionId,districtId);
+		  
+	  }
+	  if(previousPartial)
+	  {
+		  previousParties = nominationDAO.getAllPartiesForPartialElecForADistrict(prevElectionId, districtId);
+		  partiesList = staticDataService.getStaticPartiesListForAState(stateId);
+	  }
+	  else
+	  {
+		  previousParties = nominationDAO.getAllPartiesWithAtleastOneWonForADistrict(prevElectionId, districtId);
+	  }
+	  SelectOptionVO selectOptionVO = null;
+	  for(Object[] parties:presentParties)
+	  {
+		  selectOptionVO = new SelectOptionVO();
+		  selectOptionVO.setId((Long)parties[0]);
+		  selectOptionVO.setName(parties[1]!=null?parties[1].toString():"");
+		  partiesList.add(selectOptionVO);
+	  }
+	  for(Object[] parties:previousParties)
+	  {
+		  selectOptionVO = new SelectOptionVO();
+		  selectOptionVO.setId((Long)parties[0]);
+		  selectOptionVO.setName(parties[1]!=null?parties[1].toString():"");
+		  partiesList.add(selectOptionVO);
+	  }
+	  
+	  Map<String,SelectOptionVO> partiesMap = new HashMap<String,SelectOptionVO>();
+	   for(SelectOptionVO selOpVo: partiesList)
+	   {
+		   partiesMap.put(selOpVo.getName(), selOpVo);
+	   }
+	   List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+	   Set<String> keys = partiesMap.keySet();
+	   List<String> partyKeys = new ArrayList<String>();
+	   for(String partykey:keys)
+	   {
+		   partyKeys.add(partykey);
+	   }
+	   Collections.sort(partyKeys);
+	   for(String val :partyKeys)
+	   {
+		   parties.add(partiesMap.get(val));
+	   }
+	   PositionManagementVO positionManagementVO = null;
+	   for(SelectOptionVO  party: parties)
+	   {
+		   positionManagementVO = new PositionManagementVO();
+		   positionManagementVO.setPartyId(party.getId());
+		   positionManagementVO.setPartyName(party.getName());
+		   positionManagementVO.setPresentYear(currentElection.getElectionYear());
+		   positionManagementVO.setPrevYear(PrevElection.getElectionYear());
+		   if(currentPartial)
+			{
+			   List<Object[]> partyWinConstis = constituencyLeadCandidateDAO.getPartyWinConst(party.getId(),electionId,currentConstiList);
+			   positionManagementVO.setPresentCount(new Long(partyWinConstis.size()));
+			}
+		   else
+		   {
+			   List<Long> partyWonCount =   nominationDAO.getAllWonCountPartyWise(districtId,electionId,party.getId());
+			   positionManagementVO.setPresentCount(partyWonCount.get(0));
+		   }
+		   if(previousPartial)
+			{
+			   List<Object[]> partyWinConstis = constituencyLeadCandidateDAO.getPartyWinConst(party.getId(),prevElectionId,prevConstiList);
+			   positionManagementVO.setPrevCount(new Long(partyWinConstis.size()));
+			}
+		   else
+		   {
+			   List<Long> partyWonCount =   nominationDAO.getAllWonCountPartyWise(districtId,prevElectionId,party.getId());
+			   positionManagementVO.setPrevCount(partyWonCount.get(0));
+		   }
+		   returnVal.add(positionManagementVO);
+	   }
+	}
+	catch(Exception e)
+	{
+		 log.debug("Exception rised in getWinCountForGraphs of ElectionLiveResultsAnalysisService",e);
+	}
+	return returnVal;
+  }
+  public List<PositionManagementVO> getAllPartiesForPartialElection(Long electionId,Long stateId)
+  {
+	  List<PositionManagementVO> returnVal = new ArrayList<PositionManagementVO>();
+	  if(log.isDebugEnabled())
+		   log.debug("Enter into getAllPartiesForPartialElection of ElectionLiveResultsAnalysisService");
+	  try
+	   { 
+		  Election election = electionDAO.get(electionId);
+		  if(election.getIsPartial() != null && election.getIsPartial().trim().equalsIgnoreCase("1"))
+	      {
+			  List<SelectOptionVO> partiesList = getAllParties(election,stateId,true);
+			  PositionManagementVO positionManagementVO = null;
+			  for(SelectOptionVO party:partiesList)
+			  {
+				  positionManagementVO = new PositionManagementVO();
+				  positionManagementVO.setPartyId(party.getId());
+				  positionManagementVO.setPartyName(party.getName());
+				  returnVal.add(positionManagementVO);
+			  }
+	      }
+	   }
+	  catch(Exception e)
+	   {
+		 log.debug("Exception rised in getAllPartiesForPartialElection of ElectionLiveResultsAnalysisService",e);
+	   }
+	  return returnVal;
+  }
+  public  List<PositionManagementVO> getAllPartiesPerfoDistWiseForPartialEle(Long electionId,List<Long> partiesList)
+  {
+	 if(log.isDebugEnabled())
+	   log.debug("Enter into getAllPartiesPerfoDistWiseForPartialEle of ElectionLiveResultsAnalysisService");
+	 List<PositionManagementVO> returnVal = new ArrayList<PositionManagementVO>();
+	 PositionManagementVO positionManagementVO = null;
+	 List<PositionManagementVO> partiesInDist = null;
+	 try
+	 { 
+	  List<Object[]> districtsList = nominationDAO.getAllDistrictsForAnElection(electionId);
+	  Election election = electionDAO.get(electionId);
+	  if(election.getIsPartial() != null && election.getIsPartial().trim().equalsIgnoreCase("1"))
+      {
+    	for(Object[] districts:districtsList)
+    	 {
+    		positionManagementVO = new PositionManagementVO();
+    		positionManagementVO.setDistrictId((Long)districts[0]);
+    		positionManagementVO.setDistrictName(districts[1]!=null?districts[1].toString():"");
+    		partiesInDist = new ArrayList<PositionManagementVO>();
+    		for(Long partyId:partiesList)
+    		{
+    		   PositionManagementVO partyWise = new PositionManagementVO();
+    		   Party party = partyDAO.get(partyId);
+    		   partyWise.setPartyName(party.getShortName());
+    		   partyWise.setPartyId(partyId);
+    		   List<Long> constiList = nominationDAO.getAllConstituenciesInADistrict((Long)districts[0],electionId);
+        	   List<Object[]> partyWinConstis = constituencyLeadCandidateDAO.getPartyWinConstituencies(partyId,electionId,constiList);
+        	   
+	    	   partyWise.setPartyCount(new Long(partyWinConstis.size()));
+	    	   
+	    	   partiesInDist.add(partyWise);
+    		}
+    		positionManagementVO.setPositionManagementVOList(partiesInDist);
+    		returnVal.add(positionManagementVO);
+    	 }
+      }
+	 }
+	 catch(Exception e)
+		{
+			 log.debug("Exception rised in getAllPartiesPerfoDistWiseForPartialEle of ElectionLiveResultsAnalysisService",e);
+		}
+	  return returnVal;
+  }
 }
