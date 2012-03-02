@@ -664,4 +664,11 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 		return query.uniqueResult();
 	}
+	
+	public List<Object[]> getStateDetailsForPartialElec()
+	{
+		Object[] params = {2l,"1"};
+		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.electionScope.electionType.electionTypeId =? and model.isPartial = ?  order by electionScope.state.stateName",params);
+	
+	}
 }
