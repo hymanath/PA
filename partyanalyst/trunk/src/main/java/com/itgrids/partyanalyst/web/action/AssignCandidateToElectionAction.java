@@ -205,17 +205,26 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getElectionTypeDetails"))
 			{
-				optionVOList = electionResultsUpdationService.getElectionTypeDetails(jObj.getLong("elecGovPosId"),jObj.getString("positionType").trim());
+				optionVOList = electionResultsUpdationService.getElectionTypeDetails(jObj.getLong("elecGovPosId"));
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getPositionTypeDetails"))
 			{
-				optionVOList = electionResultsUpdationService.getPositionTypeDetails(jObj.getLong("elecGovPosId"));
+				optionVOList = electionResultsUpdationService.getPositionTypeDetails(jObj.getLong("elecGovPosId"),jObj.getLong("electionType"));
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getStateDetails"))
 			{
-				optionVOList = electionResultsUpdationService.getStateDetails(jObj.getLong("elecGovPosId"),jObj.getString("positionType").trim());
+				optionVOList = electionResultsUpdationService.getStateDetails(jObj.getLong("elecGovPosId"),jObj.getLong("electionType"),jObj.getLong("ministerTypeId"));
 			}
-		} catch (ParseException e) {
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getMinistersType"))
+			{
+				optionVOList = electionResultsUpdationService.getMinistersType();
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getMinistersTypeDetails"))
+			{
+				optionVOList = electionResultsUpdationService.getMinistersTypeDetails(jObj.getLong("elecGovPosId"),jObj.getLong("electionType"));
+			}
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
@@ -232,7 +241,7 @@ public String updateElectionInformation(){
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("assignScopeToPosition"))
 			{
-				resultStatus = electionResultsUpdationService.assignScopeToPosition(jObj.getLong("positionId"),jObj.getLong("electionTypeId"),jObj.getLong("stateId"),jObj.getString("type"));
+				resultStatus = electionResultsUpdationService.assignScopeToPosition(jObj.getLong("positionId"),jObj.getLong("electionTypeId"),jObj.getLong("stateId"),jObj.getLong("ministerTypeId"));
 				
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("assignCandidateToPosition"))
@@ -245,9 +254,9 @@ public String updateElectionInformation(){
 				positionManagementVO.setPartyId(jObj.getLong("partyId"));
 				positionManagementVO.setDistrictId(jObj.getLong("districtId"));
 				positionManagementVO.setTehilId(jObj.getLong("tehilId"));
+				positionManagementVO.setMinisterTypeId(jObj.getLong("ministerTypeId"));
 				positionManagementVO.setLocalElecBodyId(jObj.getLong("location"));
 				positionManagementVO.setElectionGovBodyPosId(jObj.getLong("electionGovBodyPosId"));
-				positionManagementVO.setType(jObj.getString("type").trim());
 				positionManagementVO.setFromDate(getDate(jObj.getString("fromDate").trim()));
 				if(jObj.getString("toDate").trim() != null && jObj.getString("toDate").trim().length() >0)
 				positionManagementVO.setToDate(getDate(jObj.getString("toDate").trim()));
@@ -255,7 +264,7 @@ public String updateElectionInformation(){
 				resultStatus = electionResultsUpdationService.assignCandidateToAPosition(positionManagementVO);
 				
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
