@@ -1010,7 +1010,8 @@
 		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 		<property name="keyCandidateDAO" ref="keyCandidateDAO"/>
 		<property name="candidateDAO" ref="candidateDAO" />
-		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />		
+		<property name="partyDAO" ref="partyDAO" />
 	</bean>
 	
 	<bean name="electionResultsUpdationService" class="com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService">
@@ -1028,6 +1029,7 @@
 	   <property name="tehsilDAO" ref="tehsilDAO" />
 	   <property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 	   <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	   <property name="ministerTypeDAO" ref="ministerTypeDAO" />
 	</bean>
 </beans>		
 		
