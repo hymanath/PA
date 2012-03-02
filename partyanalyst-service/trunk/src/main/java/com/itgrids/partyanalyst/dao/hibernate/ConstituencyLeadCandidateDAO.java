@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.model.ConstituencyLeadCandidate;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<ConstituencyLeadCandidate, Long> implements IConstituencyLeadCandidateDAO{
 	public ConstituencyLeadCandidateDAO() {
@@ -159,5 +160,30 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 				" where model.constituencyElection.election.electionId = ?");
 		query.setParameter(0,electionId);
 		return query.uniqueResult();
+	}
+		
+	public List<Long> getTotalResultsKnown(Long electionId,List<Long> constituenciesList)
+	{
+		Object[] data = {constituenciesList,electionId};
+		Query query = getSession().createQuery("select count(*) from ConstituencyLeadCandidate model where  model.constituencyElection.constituency.constituencyId in (:constituenciesList) and model.constituencyElection.election.electionId =:electionId and model.status =:status ");
+		
+		query.setParameterList("constituenciesList",constituenciesList);
+		query.setLong("electionId",electionId);
+		query.setString("status", IConstants.WON);
+		
+		return query.list();
+	}
+	public List<Object[]> getPartyWinConst(Long partyId,Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination model, ConstituencyLeadCandidate model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
+				" model.candidate.candidateId = model2.candidate.candidateId and model.party.partyId = ? and model2.constituencyElection.constituency.constituencyId in (:constituenciesList) and model2.status =:status ");
+		
+		query.setParameter(0,electionId);
+		query.setParameter(1,partyId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		query.setString("status", IConstants.WON);
+		
+		return query.list();
 	}
 }
