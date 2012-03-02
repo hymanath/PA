@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +15,8 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IMinisterAnalysisService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -100,8 +101,33 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 		try 
 		  {
 			jObj = new JSONObject(getTask());
-			results = electionLiveResultsAnalysisService.getCurrentMinistersDetailsForCurrentAndPrevEle(1l, 1l, "", jObj.getLong("electionId"),jObj.getString("reqtype"));
-			
+			if(jObj.getString("task").trim().equalsIgnoreCase("getMinsKeyCandAnalysisDetails"))
+			{
+			  results = electionLiveResultsAnalysisService.getCurrentMinistersDetailsForCurrentAndPrevEle(1l, 1l, "", jObj.getLong("electionId"),jObj.getString("reqtype"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getDistrictWiseAnalysisDetails"))
+			{
+			  results = electionLiveResultsAnalysisService.getDistrictWisePartyPerfDetails(jObj.getLong("electionId"),jObj.getLong("stateId"));	
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getDistrictWiseAnalysisDetailsForGraph"))
+			{
+			  results = electionLiveResultsAnalysisService.getWinCountForGraphs(jObj.getLong("electionId"),jObj.getLong("stateId"),jObj.getLong("districtId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getPartiesForPartialEle"))
+			{
+			  results = electionLiveResultsAnalysisService.getAllPartiesForPartialElection(jObj.getLong("electionId"),jObj.getLong("stateId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getpartyPerfoDistWiseForPartialEle"))
+			{
+			   String partyIds = jObj.getString("partyIds");
+			  String[] partiesArray = partyIds.split(",");
+			  List<Long> partiesList = new ArrayList<Long>();
+			  for(String party:partiesArray)
+			  {
+				  partiesList.add(new Long(party));
+			  }
+			  results = electionLiveResultsAnalysisService.getAllPartiesPerfoDistWiseForPartialEle(jObj.getLong("electionId"),partiesList);
+			}
 		  }
 		  catch (ParseException e) {
 			e.printStackTrace();
