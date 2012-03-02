@@ -3085,5 +3085,11 @@
 			</result>
 	 	</action>
 	 	
+	 	<action name="districtWisePartyPerformanceAction" class="districtWisePartyPerformanceAction">
+			<result name="success">/jsp/districtWisePartyPerformanceAnalysis.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+	 	
 	 	</package>
 </struts>      
