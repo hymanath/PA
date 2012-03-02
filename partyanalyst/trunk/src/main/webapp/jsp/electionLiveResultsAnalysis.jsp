@@ -120,7 +120,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <div style="background:#fff;width: 950px;margin-top:12px;">
 <span id="mainHeading" style="color:#990099;font-weight:bold;font-size:20px;margin:10px;">Live Election Results Analysis</span>
 <div style="margin-top: 28px;margin-right: 4px;margin-left: 682px;">
-<a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Minister Results Analysis</a>
+<a href="ministerAnalysisAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Ministers Results Analysis</a>
+</div>
+<div style="margin-top: 15px;margin-right: 4px;margin-left: 682px;">
+<a href="districtWisePartyPerformanceAction.action" class="grad" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View District Wise Party Performance</a>
 </div>
  <div style="margin-bottom: 15px;padding-top: 21px;font-family:verdana;">
   <input type="radio" value="2" name="electionTypeRadio" id="assemblyId" onclick="getStates(this.value)">&nbsp;<strong>Assembly </strong>
