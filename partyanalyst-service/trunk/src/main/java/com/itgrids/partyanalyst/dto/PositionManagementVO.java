@@ -22,6 +22,7 @@ public class PositionManagementVO implements Serializable {
 	  private String partyName;
 	  private Long tehilId;
 	  private Long districtId;
+	  private String districtName;
 	  private Long positionScopeId;
 	  private Long electionGovBodyPosId;
 	  private String positionName;
@@ -40,7 +41,19 @@ public class PositionManagementVO implements Serializable {
 	  private PositionManagementVO currentResult;
 	  private PositionManagementVO previousResult;
 	  private List<PositionManagementVO> positionManagementVOList;
+	  private List<PositionManagementVO> currentResultList;
+	  private List<PositionManagementVO> previousResultList;
 	  private Long isPartial;
+	  private Long currResPartial = 0l;
+	  private Long prevResPartial = 0l;
+	  private Long knownResultsCount;
+	  private Long partyCount;
+	  private Long totalCount;
+	  private Long ministerTypeId;
+	  private String prevYear;
+	  private String presentYear;
+	  private Long presentCount;
+	  private Long prevCount;
 	  
 	public String getGender() {
 		return gender;
@@ -223,6 +236,83 @@ public class PositionManagementVO implements Serializable {
 			List<PositionManagementVO> positionManagementVOList) {
 		this.positionManagementVOList = positionManagementVOList;
 	}
-	  
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getKnownResultsCount() {
+		return knownResultsCount;
+	}
+	public void setKnownResultsCount(Long knownResultsCount) {
+		this.knownResultsCount = knownResultsCount;
+	}
+	public Long getPartyCount() {
+		return partyCount;
+	}
+	public void setPartyCount(Long partyCount) {
+		this.partyCount = partyCount;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getMinisterTypeId() {
+		return ministerTypeId;
+	}
+	public void setMinisterTypeId(Long ministerTypeId) {
+		this.ministerTypeId = ministerTypeId;
+	}
+	public List<PositionManagementVO> getCurrentResultList() {
+		return currentResultList;
+	}
+	public void setCurrentResultList(List<PositionManagementVO> currentResultList) {
+		this.currentResultList = currentResultList;
+	}
+	public List<PositionManagementVO> getPreviousResultList() {
+		return previousResultList;
+	}
+	public void setPreviousResultList(List<PositionManagementVO> previousResultList) {
+		this.previousResultList = previousResultList;
+	}
+	public Long getCurrResPartial() {
+		return currResPartial;
+	}
+	public void setCurrResPartial(Long currResPartial) {
+		this.currResPartial = currResPartial;
+	}
+	public Long getPrevResPartial() {
+		return prevResPartial;
+	}
+	public void setPrevResPartial(Long prevResPartial) {
+		this.prevResPartial = prevResPartial;
+	}
+	public String getPrevYear() {
+		return prevYear;
+	}
+	public void setPrevYear(String prevYear) {
+		this.prevYear = prevYear;
+	}
+	public String getPresentYear() {
+		return presentYear;
+	}
+	public void setPresentYear(String presentYear) {
+		this.presentYear = presentYear;
+	}
+	public Long getPresentCount() {
+		return presentCount;
+	}
+	public void setPresentCount(Long presentCount) {
+		this.presentCount = presentCount;
+	}
+	public Long getPrevCount() {
+		return prevCount;
+	}
+	public void setPrevCount(Long prevCount) {
+		this.prevCount = prevCount;
+	}	  
 	  
 }
