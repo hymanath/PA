@@ -88,11 +88,11 @@
   var jsObj =
 		{ 
             time : new Date().getTime(),
-			task:"getStates"
+			task:"getStatesForPartialElec"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	var url = "getConstituenciesOrYearsAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
 function callAjax(jsObj,url)
@@ -103,15 +103,14 @@ function callAjax(jsObj,url)
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
-		 if(jsObj.task == "getStates")
+		 if(jsObj.task == "getStatesForPartialElec")
 		 {
 		   clearOptionsList("state");
 		   buildResults(myResults,"state");
 		   document.getElementById("searchAjaxImgSpan").style.display = "none";
 		 }
-		 else if(jsObj.task == "getAllParliamentConstituencies" || jsObj.task ==  "getConstisForAState")
+		 else if( jsObj.task ==  "getConstisForAState")
 		 {
-		   document.getElementById("constiSelect").style.display = "block";
 		   clearOptionsList("constituencies");
 		   buildResults(myResults,"constituencies");
 		   document.getElementById("searchAjaxImgSpan").style.display = "none";
@@ -217,7 +216,7 @@ function clearOptionsList(elmtId)
   }
   else
   {
-    str+='No Records Found';
+    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
   }
    document.getElementById("electionResults").innerHTML = str;
  }
@@ -250,18 +249,18 @@ function clearOptionsList(elmtId)
       var url = "saveUpdateElectionResultsAction.action?"+rparam;						
       callAjax(jsObj,url);
  }
-function getAllConstituenciesInStateByType()
-{	
-    
+function getConstituencies()
+{   
     document.getElementById("electionResults").innerHTML = "";
-    var stateEle = document.getElementById("state");
-	var stateId = stateEle.options[stateEle.selectedIndex].value;
-	 if(stateId == 0)
+    var elecEle = document.getElementById("year");
+	var elecId = elecEle.options[elecEle.selectedIndex].value;
+	clearOptionsList("constituencies");
+	 if(elecId == 0)
 	  return ;
 	  document.getElementById("searchAjaxImgSpan").style.display = "block";
 	var jsObj=
 	{		time : new Date().getTime(),		
-			stateId: stateId,
+			electionId: elecId,
 			task: "getConstisForAState"	
 	}
 
@@ -269,37 +268,13 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 var url = "getConstituenciesOrYearsAction.action?"+rparam;						
 callAjax(jsObj,url);
 }
-function getAllParliamentConstInCountry()
-{
-    document.getElementById("searchAjaxImgSpan").style.display = "block";
-    document.getElementById("electionResults").innerHTML = "";
-	var jsObj=
-	{			
-             time : new Date().getTime(),	
-			task: "getAllParliamentConstituencies"
-				
-	}
-
-var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-var url = "getAllParliamentConstInCountry.action?"+rparam;						
-callAjax(jsObj,url);
-}
-
 function buildResults(results,id){
   var elmt = document.getElementById(id);
       for(var i in results)
 	  {
 		var option = document.createElement('option');
-         if(id == "constituencies" || id == "year")
-          {	
 		    option.value=results[i].id;
 		    option.text=results[i].name;
-          }
-         else
-          {		 
-		    option.value=results[i].ids;
-		    option.text=results[i].names;
-		  }
 		try
 		{
 			elmt.add(option,null); // standards compliant
@@ -417,30 +392,6 @@ function buildResults(results,id){
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "getConstituenciesOrYearsAction.action?"+rparam;
 	callAjax(jObj,url);
-  }
-  function getConstituencies()
-  {
-      clearOptionsList("constituencies");
-      document.getElementById("electionResults").innerHTML = "";	  
-	   
-     var yearEle = document.getElementById("year");
-      var yearVal = yearEle.options[yearEle.selectedIndex].value;
-	  
-	  if(yearVal == 0)
-	    return;
-	  
-     var typeEle = document.getElementById("electionType");
-      var typeVal = typeEle.options[typeEle.selectedIndex].value;
-      if(typeVal == 1)
-      {
-	    
-		getAllConstituenciesInStateByType();
-	  }
-      else if(typeVal == 2)
-      {
-	      
-         getAllParliamentConstInCountry();
-	  }
   }
 </script>
 </head>
