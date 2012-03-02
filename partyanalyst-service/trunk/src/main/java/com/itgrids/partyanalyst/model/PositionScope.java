@@ -32,7 +32,6 @@ public class PositionScope extends BaseModel implements Serializable {
 	private Long positionScopeId;
 	private ElectionScope electionScope;
 	private ElectionGoverningBodyPosition electionGoverningBodyPosition;
-	private String status;
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
 	private MinisterType ministerType;
 	
@@ -69,14 +68,6 @@ public class PositionScope extends BaseModel implements Serializable {
 	public void setElectionGoverningBodyPosition(
 			ElectionGoverningBodyPosition electionGoverningBodyPosition) {
 		this.electionGoverningBodyPosition = electionGoverningBodyPosition;
-	}
-	
-	@Column(name = "status", length = 10)
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "electionGoverningBodyPosition")
