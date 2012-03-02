@@ -1094,7 +1094,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	}*/
 	
-	public void testGetConstituencyWiseCandidatesStates()
+	/*public void testGetConstituencyWiseCandidatesStates()
 	{
 		List<Object[]> list = nominationDAO.getConstituencyWiseCandidatesStates(38l);
 		
@@ -1106,6 +1106,59 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
+	}*/
+	/*public void testGetAllDistrictsForAnElection()
+	{
+		List<Object[]> list = nominationDAO.getAllDistrictsForAnElection(3l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}*/
+	
+	/*public void testGetAllConstituenciesInADistrict()
+	{
+		List<Long> list = nominationDAO.getAllConstituenciesInADistrict(14l,38l);
+		
+		System.out.println(list.size());
+		
+		
+			for(Long obj : list)
+				System.out.print("\t"+obj);
+		
+	}*/
+	/*public void testGetAllWonCountPartyWise()
+	{
+		List<Object> list = nominationDAO.getAllWonCountPartyWise(14l,3l,362l);
+		
+		System.out.println((Long)(list.get(0)));
+		
+	}*/
+	/*public void testGetAllPartiesWithAtleastOneWon()
+	{
+		List<Object[]> list = nominationDAO.getAllPartiesWithAtleastOneWon(14l);
+		
+		for(Object[] party :list)
+		{
+		 System.out.println("id : "+party[0].toString()+"  Name : "+party[1].toString());
+		}
+		
+	}*/
+	public void testGetAllPartiesForPartialElec()
+	{
+		List<Object[]> list = nominationDAO.getAllPartiesForPartialElec(182l);
+		
+		for(Object[] party :list)
+		{
+		 System.out.println("id : "+party[0].toString()+"  Name : "+party[1].toString());
+		}
+		
 	}
+	
 }
 	
