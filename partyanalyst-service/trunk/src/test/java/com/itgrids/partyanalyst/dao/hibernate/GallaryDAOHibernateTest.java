@@ -36,17 +36,17 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		}
 	} */
 	//public Integer deleteGallary(Long gallaryId)
-	/*public void testDeleteGallary()
+	public void testDeleteGallary()
 	{
-		int i = gallaryDAO.deleteGallary(300l);
+		int i = gallaryDAO.deleteGallary(1014l);
 		System.out.println("i "+i);
 		
 		
-	}*/
-   public void testGetCandidatesGallaryDescForUpdate()
+	}
+ /*  public void testGetCandidatesGallaryDescForUpdate()
    {
 	   
-	   List<Object[]> result = gallaryDAO.getCandidatesGallaryDescForUpdate(1l,900l);
+	   List<Object[]> result = gallaryDAO.getSpecialPageGallaryDescForUpdate(1l);
 	   System.out.println("size "+ result.size());
 	   for (Object[] object : result) {
 		System.out.println((Long)object[0]);
@@ -55,5 +55,5 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(object[2]!=null?object[2].toString():null);
 		System.out.println(object[3]!=null?object[3].toString():null);
 	} 
-   }
+   }*/
 }

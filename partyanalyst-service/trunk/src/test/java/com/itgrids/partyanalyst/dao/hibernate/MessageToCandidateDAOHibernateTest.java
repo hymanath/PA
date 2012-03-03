@@ -5,7 +5,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
-import com.itgrids.partyanalyst.service.impl.DateService;
 
 
 public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -16,11 +15,11 @@ public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
 		this.messageToCandidateDAO = messageToCandidateDAO;
 	}
 	
-    public void test()
+   /* public void test()
 	{
 		messageToCandidateDAO.getAll();
 		
-	}
+	}*/
    /*public void testGetAllOpenedComments()
 	{
 		System.out.println();
@@ -49,4 +48,10 @@ public class MessageToCandidateDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(params.toString());
 		}
 	}*/
+	public void testgetUserMessagesCount()
+	{
+		List<Long> list = messageToCandidateDAO.getUserMessagesCount(900l);
+		System.out.println(list.get(0).toString());
+		
+	}
 }
