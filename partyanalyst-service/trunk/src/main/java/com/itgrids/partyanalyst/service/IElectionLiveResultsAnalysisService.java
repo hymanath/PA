@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -26,7 +27,7 @@ public interface IElectionLiveResultsAnalysisService {
 	public ResultStatus saveKeyCandidates(AssignKeyCandidateVO assAssignKeyCandidateVO);
 	
 	public ElectionLiveResultVO getOverViewCount(Long electionId);
-		
+	
 	public List<PositionManagementVO> getDistrictWisePartyPerfDetails(Long electionId,Long stateId);
 	
 	public List<PositionManagementVO> getWinCountForGraphs(Long electionId,Long stateId,Long districtId);
@@ -34,4 +35,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public List<PositionManagementVO> getAllPartiesForPartialElection(Long electionId,Long stateId);
 	
 	public  List<PositionManagementVO> getAllPartiesPerfoDistWiseForPartialEle(Long electionId,List<Long> partiesList);
+	
+	public List<PartyElectionResultVO> getGenderAnalysisInElection(Long electionId);
 }
