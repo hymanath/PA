@@ -68,7 +68,23 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 	
 	public List<Object[]> getGallariesBySpecialPageId(Long specialPageId, String contentType){
 		Object[] params = {specialPageId , contentType};
-		return getHibernateTemplate().find("select model.gallary.gallaryId , model.gallary.name from SpecialPageGallery model where model.specialPage.specialPageId=? and model.gallary.contentType.contentType=? and model.isDelect='false' order by model.gallary.name asc",params);
+		return getHibernateTemplate().find("select model.gallary.gallaryId , model.gallary.name from SpecialPageGallery model where model.specialPage.specialPageId=? and model.gallary.contentType.contentType=? and model.gallary.isDelete='false' order by model.gallary.name asc",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSpecialPageGallaryId(Long specialPageId,int firstRecord, int maxRecord, String contentType){
+		
+		
+		
+		Query query = getSession().createQuery("select distinct model.gallary.gallaryId,model.gallary.name,model.gallary.description,model.gallary.createdDate,model.gallary.updateddate from SpecialPageGallery model where model.specialPage.specialPageId =:specialPageId and model.gallary.contentType.contentType =:contentType and model.gallary.isDelete =:isDelete  and model.gallary.isPrivate=:isPrivate ");
+		
+		query.setParameter("specialPageId", specialPageId);
+		query.setParameter("contentType", contentType);
+		query.setParameter("isDelete", "false");
+		query.setParameter("isPrivate", "false");
+		query.setFirstResult(firstRecord);
+		query.setMaxResults(maxRecord);
+		return query.list();
+		
 	}
 	
 	@SuppressWarnings("unchecked")
