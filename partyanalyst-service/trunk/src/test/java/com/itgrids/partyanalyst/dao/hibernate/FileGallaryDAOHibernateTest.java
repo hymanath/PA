@@ -1,15 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
-import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.model.FileGallary;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -36,7 +31,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> results = fileGallaryDAO.getNewsRecordsBySearchCriteria(fileVO,IConstants.NEWS_GALLARY);
 		System.out.println(results.size());
 	}*/
-	public void testGetNewsToDisplay()
+	/*public void testGetNewsToDisplay()
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(3596L,0,20,"Public");
@@ -69,7 +64,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	   	System.out.println(((Long)newsDetails[8]));
 	 }
 	 
-	}
+	}*/
 	//public List<File> getPartyLatestVideos(Long partyId,Integer startIndex, Integer maxResults)
 	/*public void testGetPartyLatestVideos()
 	{
@@ -135,4 +130,15 @@ System.out.println("i " +i);
 		}
 		System.out.println(list.size());
 	}*/
+	public void testgetTotalIndividualSources()
+	{
+		//List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public","Sakshi",null,null,null); 
+		//List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public",null,"Telugu",null,null); 
+		//List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public",null,null,"Problems",null); 
+		List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public",null,null,null,"High"); 
+		
+		System.out.println(list.get(0).toString());
+		
+	}
+	
 }
