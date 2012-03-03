@@ -25,6 +25,8 @@
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
 <style>
@@ -141,7 +143,17 @@ font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); borde
 
 
 }
-	</style>
+.tableStyle 
+ {
+   align:top;
+ }
+  .gallaryImg
+{
+	width  : 150px;
+	height : 130px;
+}
+
+</style>
 <script type="text/javascript">
 
 var specialPageId = '${specialPageId}';
@@ -223,18 +235,32 @@ var specialPageId = '${specialPageId}';
 	 	success : function( o ) {
 		try
 		{ 
-		 myResults = YAHOO.lang.JSON.parse(o.responseText);
-		 if(jsObj.task == "setEmailAlertsForEvent")
+		   myResults = YAHOO.lang.JSON.parse(o.responseText);
+		    if(jsObj.task == "setEmailAlertsForEvent")
             {
 			   showStatusForEmailSubscription(myResults);
 			}
-
-			}catch(e)
-
-			{   
-			 alert("Invalid JSON result" + e);   
+		    else if(jsObj.task == "getFirstThreePhotoRecords")
+		    {
+              buildFirstThreePhotoRecords(myResults);
+		    }
+			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="new")
+			{
+               showPhotosInInitialGallary(myResults);
 			}
-		 },
+			else if(jsObj.task == "getPhotosInAGallary" && jsObj.value=="old")
+			{
+               showPhotosInAGallary(myResults);
+			}
+			else if(jsObj.task == "getPhotoGallaryWithOutGallerySizeZero")
+			{
+               buildCandidatePhotoGallary(myResults);
+			}
+
+		}catch(e){   
+			 alert("Invalid JSON result" + e);   
+		 }
+	  },
 			scope : this,
 			failure : function( o )
 			{
@@ -274,6 +300,264 @@ if(distSelectElVal == 0)
  window.location="districtPageAction.action?districtId="+distSelectElVal+"&districtName="+distSelectElText;
 
 } 
+function getFirstThreePhotoRecords(){
+	
+	   var jsObj =
+			{   
+			    time : timeST,
+			    specialPageId : specialPageId,
+				task:"getFirstThreePhotoRecords"
+			};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getFirstThreePhotoRecordsAction.action?"+rparam;						
+		callAjax(jsObj,url);  
+}
+function buildFirstThreePhotoRecords(results)
+{
+
+	if(results.length>0)
+	 {
+	  var count=0;
+	  document.getElementById("photoGallaryDiv").innerHTML= '';
+	  str ='';
+	  str+='<h3 class="main-title"><span class="da-gray">PHOTO GALLERY</span></h3>';
+	  str+='<ul class="photo-gallery-fields">';
+	  if(results[0].path!=null)
+	  {
+	   count++;
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	  str+=''+results[0].title+'</li>';
+	 
+	  }
+	  if(results[1]!=null && results[1].path!=null)
+	  {
+	  count++;
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+=''+results[1].title+'</li>';
+	  }
+	  if(results[2]!=null  && results[2].path!=null)
+	  {
+	  count++;
+	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=''+results[2].title+'</li>';
+	  
+	  }
+	  for(var i=3;i<results.length;i++)
+	  {
+	   if(results[i]!=null  && results[i].path!=null && count<3)
+	   {
+		count++;
+		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+	    str+=''+results[i].title+'</li>';
+	   }
+	  }
+	  str+='</ul>';
+	  str+='<div class="more">';
+	  str+='<a href="javascript:{}" onclick="photoGallaryPopUp()">More</a></div>';
+	  str+='<div id="buildPhotoGallaryDiv"></div>';
+	  document.getElementById("photoGallaryDiv").innerHTML= str;
+	 }
+	 else
+	 {
+		 document.getElementById("photoGallaryDiv").style.display = 'none';
+	 }
+}
+function getCandidatesPhotosInAGallary(gallaryId)
+{
+    var jsObj =
+		{   time : timeST,
+			value:"new",
+		    gallaryId:gallaryId,
+			task:"getPhotosInAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);  
+}
+function showPhotosInInitialGallary(results){
+   var str ='';
+   str+='<div id="content" style="display:none;">';
+   str+='<table width="100%" style="margin-top:10px;">'
+   str+= '<tr style="display:none">';
+    str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
+    str+= '<tr><td><a rel="photo_gallery" id="photoClickId" href="'+results[0].path+'" title="'+results[0].fileTitle1+'"><img alt="" src="'+results[0].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+	str += '<tr><td><div><b>'+results[0].fileDescription1+'</b></div></td></tr>';
+    str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
+    str+= '</tr>';
+   for(var i =1;i<results.length; i++)
+   {
+     no_of_imagesPerRow = 3; 
+     j = i;
+     if(j++ % no_of_imagesPerRow == 0){
+       str+= '<tr style="display:none">';
+     }
+     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
+	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
+     if(j % no_of_imagesPerRow == 0){
+       str+= '</tr>';
+     }
+
+   }
+   str+= ' </table>';
+   str+='</div>';
+   document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
+
+   $("a[rel=photo_gallery]").fancybox({
+     'transitionIn'		: 'none',
+     'transitionOut'		: 'none',
+     'titlePosition' 	: 'over',
+     'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+        return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
+     }
+   });
+    $('#photoClickId').trigger('click');
+   //fireEvent(document.getElementById('photoClickId'),'click');
+    //document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
+}
+function photoGallaryPopUp(){
+	
+	if(document.getElementById('buildPhotoGallaryDiv') == null)
+		return;
+     $("#buildPhotoGallaryDiv").dialog({ stack: false,
+							    height: 570,
+								width: 720,
+								position:[130,130],								
+								modal: true,
+								title:'<font color="Navy">Photo Galleries</font>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#buildPhotoGallaryDiv").dialog();
+	showPhotoGallary();
+}
+function showPhotoGallary(){
+    var jsObj =
+		{   
+		    time : timeST,
+			specialPageId:specialPageId,
+			startRecord:0,
+			maxRecord:20,
+			task:"getPhotoGallaryWithOutGallerySizeZero"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "showPhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function buildCandidatePhotoGallary(results)
+{
+	var str ='';
+
+		str+='<div id="content" style="width:650px;">';		
+		str += '<fieldset class="imgFieldset">';
+		str +='<table  width="100%" style="margin-top:10px;">';
+		
+	if(results.length<=0)
+	{
+		str+='<b>&nbsp;No Photo Galleries Found </b>';
+	}
+		for(var i in results)
+		{
+			no_of_imagesPerRow = 3; 
+			j = i;
+
+			if(j++ % no_of_imagesPerRow == 0)
+				str += '<tr style="height:220px;">';
+			
+			str += '<td width="33%" class="imageStyle">';
+			str += '<table class="tableStyle">';
+			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+			if(results[i].path!=null)
+			{
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+            }
+			else
+			{
+			str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
+			}
+			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
+			
+			str += '</table>';
+			str += '</td>';
+			
+			if(j % no_of_imagesPerRow == 0)
+				str+= '</tr>';
+		
+		}
+		str += ' </table>';
+		str += ' </fieldset>';
+		str+='</div>';
+		document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
+}
+function getCompleteGallaries(gallaryId){
+    var jsObj =
+		{ 
+            time : timeST,
+			value:"old",
+		    gallaryId:gallaryId,
+			task:"getPhotosInAGallary"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function showPhotosInAGallary(results){
+   var str ='';
+   str+='<div id="content" style="width:650px;">';
+   str += '<fieldset class="imgFieldset">';
+   str+='<table width="100%" style="margin-top:10px;">'
+   str+='<tr><td>';
+   str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
+   str+= '</td></tr>';
+   for(var i in results)
+   {
+     no_of_imagesPerRow = 3; 
+     j = i;
+     if(j++ % no_of_imagesPerRow == 0){
+       str+= '<tr style="height:220px;">';
+     }
+     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
+	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
+     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
+     if(j % no_of_imagesPerRow == 0){
+       str+= '</tr>';
+     }
+
+   }
+   str+= ' </table>';
+   str += ' </fieldset>';
+   str+='</div>';
+   document.getElementById("buildPhotoGallaryDiv").innerHTML = str;
+
+   $("a[rel=photo_gallery]").fancybox({
+     'transitionIn'		: 'none',
+     'transitionOut'		: 'none',
+     'titlePosition' 	: 'over',
+     'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+        return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
+     }
+   });
+}
+
+
+$(document).ready(function() {
+	   $("a[rel=photo_gallery]").fancybox({
+					'transitionIn'		: 'none',
+					'transitionOut'		: 'none',
+					'titlePosition' 	: 'over',
+					'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+						return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+					}
+				});
+	  });
 </script>
 </head>
 
@@ -401,11 +685,11 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
           
             <!--PHOTO GALLERY SECTION START-->
           
-            <!--<div class="pm-inner-cont-sec">
+            <div class="pm-inner-cont-sec">
            
              <div id="photoGallaryDiv"> </div>
             
-            </div>-->
+            </div>
           
             <!--PHOTO GALLERY SECTION END-->
           <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On 2012 Assembly Elections</span>
@@ -491,8 +775,8 @@ share_url="www.partyanalyst.com//specialPageAction.action?specialPageId=${specia
 <script type="text/javascript">
   
 getTotalNews('getFirstFourNewsRecordsToDisplay');
-//getFirstThreePhotoRecords();
 displayProfile();
+getFirstThreePhotoRecords();
 
 </script>
 </body>
