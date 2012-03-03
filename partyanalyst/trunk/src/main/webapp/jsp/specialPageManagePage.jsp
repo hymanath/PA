@@ -26,9 +26,13 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+    <script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 	 
 	<!-- YUI Skin Sam -->
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+
 	
 <!-- JQuery files (Start) -->
 
@@ -198,6 +202,24 @@ font-size:18px;
 	width : 230px;
 }
 </style>
+<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script>
+
+$(document).ready(function() {
+   $("a[rel=photo_gallery]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+  });
+
+</script>
+
+
 </head>
 <body>
 	<div id='profileManagementMainOuterDiv'>
@@ -240,7 +262,7 @@ font-size:18px;
 					<table>
 					  <tr>
 					    <td style="padding-left:30px"><b><input type="button" class="buttonStyle" value="Create New" onClick="buildCreateNewDiv()"></b></td>
-						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick=""></b></td>
+						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Photo Gallery" type ="button" id="photoGalleryId" onClick="showPhotoGallery()"></b></td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallary()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
 						<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Meta Info" id="developmentGalleryId" onClick="buildMetaInfoDiv()"></b> </td>
@@ -257,7 +279,7 @@ font-size:18px;
 
 	<!-- for  body 1 start    result  -->
 	<HR>
-	<div id='profileManagementMainOuterDiv1' style="display:none">
+	<div id='profileManagementMainOuterDiv1' >
 		<div id='profileManagementHeaderDiv1'>
 			<table width="100%" cellspacing="0" cellpadding="0" border="0">
 				  <tr>
@@ -265,7 +287,7 @@ font-size:18px;
 					   </td>
 					   <td width="98%">
 						 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-						   <span style="text-decoration: none;" class="headerLabelSpan2">Photo Gallery</span>
+						   <span style="text-decoration: none;" class="headerLabelSpan2"><div id="headingnames" ></div></span>
 						 </div>
 					   </td>
 					   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
@@ -310,6 +332,7 @@ font-size:18px;
 
 	<div id='createNewDiv' class="divInfo">
 	</div>
+	
 
 	<div id='metaInfoDiv' class="divInfo">
 	</div>
