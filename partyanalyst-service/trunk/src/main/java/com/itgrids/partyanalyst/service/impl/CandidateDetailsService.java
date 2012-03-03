@@ -125,8 +125,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICategoryDAO categoryDAO; 
 	private TransactionTemplate transactionTemplate;
 	private INewsImportanceDAO newsImportanceDAO;
-	private IPartyGalleryDAO partyGalleryDAO;
+	private IPartyGalleryDAO partyGalleryDAO;	
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
+	
 	
 	public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
 		return specialPageGalleryDAO;
@@ -583,6 +584,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						candidateDetails.setPartyName(party.getLongName());
 						candidateDetails.setShortName(party.getShortName());
 						candidateDetails.setPartyFlag(party.getPartyFlag());
+						candidateDetails.setPartyId(party.getPartyId());
+						
 					}
 				}
 				
@@ -851,9 +854,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		 try{
+			  FileVO fileVO;
+			  List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,null,queryType); 
+			 
 			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,firstResult,maxResult,queryType);
 			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
+				    fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
@@ -865,7 +871,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
 			   	    {
@@ -1538,9 +1544,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
+		     FileVO fileVO ;
+		     List<Long>	list = fileGallaryDAO.getNewsCountByScope(candidateId,scopeType,queryType);
 			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,null);
 			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
+				     fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
 			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
@@ -1552,7 +1560,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			        fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
 			   	    {
@@ -1577,6 +1585,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
+			 List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,language,null,null);
 			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
@@ -1591,6 +1600,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
@@ -1616,6 +1626,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
+			 List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,source ,null,null,null);
 			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null,null,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
@@ -1630,6 +1641,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
@@ -2069,7 +2081,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
-		{
+		{    List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,null,source,null);
 			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,source,null);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
@@ -2084,6 +2096,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
@@ -2107,7 +2120,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
-		{
+		{    List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,null,null,newsImportance);
 			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,newsImportance);
 			 for(Object[] newsDetails: results){
 				    FileVO fileVO = new FileVO();
@@ -2122,6 +2135,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			   	    fileVO.setCandidateId((Long)newsDetails[8]);
 			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
 			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
+			   	    fileVO.setTotalResultsCount(list.get(0));
 			   	    
 			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
 			   	    if(category != null && category.size() > 0)
@@ -2270,26 +2284,25 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			
 		} catch (Exception e) {
 			if(log.isDebugEnabled())
-				log.error("Exception in controlMessages in candidate details service");
+				log.error("Exception in controlMessages in candidate details service",e);
 			 resultStatus.setResultState(0l);
 			 resultStatus.setExceptionEncountered(e);
 		}
 		return resultStatus;
  }
  
-		public List<CandidateCommentsVO> getUserMessages(Long candidateId)
+		public List<CandidateCommentsVO> getUserMessages(Long candidateId,int startIndex,int resultsCount)
 		{
-		
+			List<CandidateCommentsVO> userlist = new ArrayList<CandidateCommentsVO>(0);
 
 		   try{
 			   if(log.isDebugEnabled())
 				   log.debug("entered into getUserMessages()in CandidateDetailsService");
-			   List<Object[]> list= messageToCandidateDAO.getUserMessages(candidateId);
-			   List<CandidateCommentsVO> userlist=null;
+			   List<Long> messCount = messageToCandidateDAO.getUserMessagesCount(candidateId);
+			   List<Object[]> list= messageToCandidateDAO.getUserMessages(candidateId,startIndex,resultsCount);
+			   
 			   if(list!=null && list.size()>0)
-			   {
-
-                     userlist= new ArrayList<CandidateCommentsVO>(0);
+			   {                   
                      CandidateCommentsVO candidateCommentsVO = null;
                      for(Object[] params:list)
                      {
@@ -2299,17 +2312,18 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
                     	 candidateCommentsVO.setMessage(params[1].toString());
                     	 candidateCommentsVO.setConstituency(params[2].toString());
                     	 candidateCommentsVO.setTime(params[3].toString().substring(0,19));
+                    	 candidateCommentsVO.setTotalResultsCount(messCount.get(0));
                     	 userlist.add(candidateCommentsVO);
                      }
                      
-			   }
-			   return userlist;
+			   }			   
 			   
 		   }catch(Exception e){
-			   log.error("Exception in getUserMessages()of CandidateDetailsService");
-			   return null;
+			   log.error("Exception in getUserMessages()of CandidateDetailsService",e);
+			   
 			   
 		   }
+		   return userlist;
 		}
 		/**
 		 * 
@@ -2336,7 +2350,68 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return selectOptionList;
 		}
 			
-	}
+	}		
+
+		public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type){
+			
+			 List<FileVO> retValue = new ArrayList<FileVO>();
+			 
+		 try{
+			 if(log.isDebugEnabled())
+				   log.debug("entered into getSpecialPagePhotoGallaryDetail()in CandidateDetailsService");
+			  List<Object[]> results = specialPageGalleryDAO.getSpecialPageGallaryId(specialPageId,firstRecord,maxRecord,type);
+			if(results !=null && results.size()>0)
+			{
+			  for(Object[] gallary: results)
+			  {
+				FileVO fileVO = new FileVO();
+			    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+			       for(Object[] startingRecord: record){
+			    	fileVO.setFileId((Long)startingRecord[0]);
+			    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
+			    	fileVO.setPath(startingRecord[2].toString());
+			    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
+			    	
+			        }
+			    fileVO.setGallaryId((Long)gallary[0]);
+			    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
+			    fileVO.setGallaryName(gallary[1] != null ? WordUtils.capitalize(gallary[1].toString()) :"");
+			    fileVO.setGallaryDescription(gallary[2] != null ? WordUtils.capitalize(gallary[2].toString()) :"");
+			    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
+			    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+			    retValue.add(fileVO);	  
+			  }
+			}
+			return retValue;
+		 }
+		 catch(Exception e)
+		 {
+			 log.error("Exception in getSpecialPagePhotoGallaryDetail()of CandidateDetailsService",e);
+			
+			 return retValue;
+		 }
+	  }
+		
+		public	FileVO getSpecialPageGallaryDescForUpdate(Long gallaryId , Long specialPageId)
+		 {
+			 FileVO fileVO = new FileVO(); 
+			 try {
+				 if(log.isDebugEnabled())
+					   log.debug("entered into getSpecialPageGallaryDescForUpdate()()in CandidateDetailsService");
+				  List<Object[]> result = gallaryDAO.getSpecialPageGallaryDescForUpdate(gallaryId);
+				 for (Object[] objects : result) {
+					fileVO.setGallaryId((Long)objects[0]);
+					fileVO.setGallaryName(objects[1].toString());
+					fileVO.setGallaryDescription(objects[2].toString());
+					fileVO.setFileName1(objects[3].toString());
+				 }
+				 return fileVO;
+			    } catch (Exception e) {
+			    	log.error("Exception in getSpecialPageGallaryDescForUpdate()of CandidateDetailsService",e);
+				  return fileVO;
+			    }
+		}
+		 
 	 
 }
 	
