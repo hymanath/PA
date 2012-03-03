@@ -1978,7 +1978,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 }
 			 
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
+			 fileVO.setContentId(result.get(i).getFileGallaryId());
 			 fileVO.setFileName1(result.get(i).getFile().getFileName());
+			 fileVO.setDescription(result.get(i).getFile().getFileDescription());
 			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
 			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
 				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
@@ -2350,9 +2352,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return selectOptionList;
 		}
 			
-	}		
-
-		public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type){
+	}
+		
+	public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type){
 			
 			 List<FileVO> retValue = new ArrayList<FileVO>();
 			 
@@ -2411,7 +2413,33 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				  return fileVO;
 			    }
 		}
-		 
+	
+	public FileVO getContentDetails(Long contentId)
+	{
+		try{
+			FileVO fileVO = new FileVO();
+			FileGallary fileGallary = fileGallaryDAO.get(contentId);
+			
+			if(fileGallary != null)
+			{
+				fileVO = new FileVO();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				fileVO.setTitle(fileGallary.getFile().getFileTitle());
+				fileVO.setDescription(fileGallary.getFile().getFileDescription());
+				fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
+				fileVO.setPath(fileGallary.getFile().getFilePath());
+				fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
+					sdf.format(fileGallary.getFile().getFileDate()));
+				fileVO.setSource(fileGallary.getFile().getSourceObj() == null ? null :
+					fileGallary.getFile().getSourceObj().getSource());
+				
+			}
+			return fileVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in getContentDetails() Method");
+			return null;
+		}
+	}
 	 
 }
 	
