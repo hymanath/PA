@@ -58,4 +58,14 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		   return query.list(); 
 		
 		}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSpecialPageGallaryDescForUpdate(Long gallaryId )
+		{
+		  Query query = getSession().createQuery("select model.gallaryId,model.name,model.description," +
+				"model.isPrivate from Gallary model  where model.gallaryId = :gallaryId " );
+		   query.setLong("gallaryId", gallaryId);			
+		   return query.list(); 
+		
+		}
+	
 }
