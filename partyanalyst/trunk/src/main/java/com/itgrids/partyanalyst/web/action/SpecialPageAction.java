@@ -203,6 +203,10 @@ public class SpecialPageAction extends ActionSupport implements
 				
 	        	fileVOList = specialPageService.getSpecialPageGallaryDetail(jObj.getLong("specialPageId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),IConstants.VIDEO_GALLARY);
 			}
+	        else if(jObj.getString("task").equalsIgnoreCase("getFirstThreePhotoRecords"))
+			{
+	        	fileVOList = specialPageService.getFirstThreePhotoGallaryRecords(jObj.getLong("specialPageId"));
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
