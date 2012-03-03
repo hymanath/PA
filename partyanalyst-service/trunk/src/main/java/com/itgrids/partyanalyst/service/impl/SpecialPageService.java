@@ -28,17 +28,14 @@ import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
-
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
-import com.itgrids.partyanalyst.model.PartyGallery;
-import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
@@ -674,6 +671,7 @@ public class SpecialPageService implements ISpecialPageService{
 			gallary.setIsPrivate(gallaryVO.getVisibility());
 
 			gallary = gallaryDAO.save(gallary);
+			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 			specialPageGallery.setIsDelect(IConstants.FALSE);
 			// specialPageGallery.setIsPrivate(gallaryVO.getVisibility());
 			specialPageGallery.setSpecialPage(specialPageDAO.get(gallaryVO
@@ -684,7 +682,7 @@ public class SpecialPageService implements ISpecialPageService{
 			specialPageGallery.setUpdatedDate(dateUtilService
 					.getCurrentDateAndTime());
 			specialPageGallery = specialPageGalleryDAO.save(specialPageGallery);
-			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
+			
 				userGallary = new UserGallary();
 				userGallary.setGallary(gallary);
 				userGallary.setRegistration(registrationDAO.get(gallaryVO
@@ -956,6 +954,60 @@ public class SpecialPageService implements ISpecialPageService{
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}
+	}
+	public List<FileVO> getFirstThreePhotoGallaryRecords(Long specialPageId)
+	{
+		List<FileVO> retValue = new ArrayList<FileVO>();
+	  try
+	  { 
+		  log.debug("Entered into getFirstThreePhotoGallaryRecords()of specialpageservice");
+		  List<Object[]> results = specialPageGalleryDAO.getSpecialPageGallaryId(specialPageId,0,20,IConstants.PHOTO_GALLARY);
+		 if(results !=null && results.size()>0)	
+		 { 
+			for(Object[] gallary: results){
+				FileVO fileVO = new FileVO();
+			    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+			    if(record !=null && record.size()>0)
+			    {
+			      for(Object[] startingRecord: record){
+			    	 fileVO.setFileId((Long)startingRecord[0]);
+			    	 fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
+			    	 fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
+			    	 String title =""; 
+			   	     if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
+			   	     {
+			   	    	title = startingRecord[3].toString().substring(0, 17);
+			   	    	title = title+"...";
+			   	     }
+			   	     else
+			   	     {
+			   	       if(startingRecord[3] != null)
+			   	       {	
+			   	    	 title = startingRecord[3].toString();
+			   	       }
+			   	     }
+			    	fileVO.setTitle(title);
+			    	
+			     }
+			   }
+			     fileVO.setGallaryId((Long)gallary[0]);
+			     fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
+			     fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
+			     fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
+			     fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
+			     fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+			     
+			    retValue.add(fileVO);	  
+			}
+		 }
+		  
+		  return retValue;
+	  }
+	  catch(Exception e)
+	  {
+		  log.error("Exception encountered in getFirstThreePhotoGallaryRecords() of specialpageservice"+e);
+		  return retValue;
+	  }
 	}
 	
 	public List<SelectOptionVO> getSpecialPageIdsList()
