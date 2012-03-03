@@ -1499,6 +1499,10 @@ function callAjaxForSpecialPage(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
+		else if(jsObj.task == "getContentDetails")	
+			{
+				showContent(myResults);
+			}
 
 		}
 		catch(e)
@@ -3162,7 +3166,6 @@ function validateFileUpload()
 	}
 	if(galId == 0)
 	{
-		//alert(galId);
 		str += 'Select Any Gallery.<br>';
 		flag = false;
 	}
@@ -3675,6 +3678,3 @@ var specialPageId=document.getElementById("specialPageId").value;
 	var url = "getEventGallariesForUplaodPhotoAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
-
-
-
