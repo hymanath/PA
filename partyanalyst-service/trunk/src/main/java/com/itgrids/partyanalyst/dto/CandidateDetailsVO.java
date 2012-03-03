@@ -60,6 +60,7 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String shortName;
 	private Long parliamentConstituencyId;
 	private String parliamentConstituencyName;
+	private Long partyId;
 	//getters and setters
 	
 	public void setParliamentConstituencyName(String parliamentConstituencyName) {
@@ -321,4 +322,11 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 		else
 			return 0;
 	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
 }
