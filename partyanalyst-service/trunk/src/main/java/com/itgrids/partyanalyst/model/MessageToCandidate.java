@@ -141,7 +141,7 @@ public class MessageToCandidate extends BaseModel implements
 		this.time = time;
 	}
 	
-	@Column(name = "is_private")
+	@Column(name = "is_private", length=10)
 	public String getIsPrivate() {
 		return isPrivate;
 	}

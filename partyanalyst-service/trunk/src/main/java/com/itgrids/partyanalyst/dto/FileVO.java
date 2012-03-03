@@ -53,11 +53,20 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String categoryType;
 	private String importance;
 	private Long newsImportanceId;
+	private Long contentId;
 	private int startIndex;
 	private int maxResult;
 	private int count;
 	private Long totalResultsCount;
 	
+	public Long getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
+
 	public String getCategoryType() {
 		return categoryType;
 	}

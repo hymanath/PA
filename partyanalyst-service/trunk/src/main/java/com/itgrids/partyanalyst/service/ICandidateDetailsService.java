@@ -136,8 +136,10 @@ public interface ICandidateDetailsService {
 	 public List<CandidateCommentsVO> getUserMessages(Long candidateId,int startIndex,int resultsCount);
 	 	 
 	 public List<SelectOptionVO> getCandidatesBasedOnSelection(String candidateName,Long partyId,Long electionId);
+	 
 	 public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type);
+	 
 	 public	FileVO getSpecialPageGallaryDescForUpdate(Long gallaryId , Long specialPageId);
-	 
-	 
+	 	 
+	 public FileVO getContentDetails(Long contentId);
 }
