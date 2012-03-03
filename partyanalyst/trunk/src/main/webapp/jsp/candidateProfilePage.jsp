@@ -15,6 +15,7 @@
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
 <style type="text/css">#videogallery a#videolb{display:none}</style>
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
@@ -276,8 +277,6 @@ District:
  <span style="margin-top:10px;margin-right:18px;float:right">
  <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
-</script>
 </span>
 </div>
  <div class="main-bbg"></div></div><br></td></tr></table>
@@ -417,6 +416,8 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
      <s:if test="fileVO != null && fileVO.size() > 4"> 
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
+	
+	<div id="showContentDiv"/>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
@@ -445,8 +446,8 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
- <script type="text/javascript"><!--
-   var descriptions = '${descriptions}'; 
+ <script type="text/javascript">
+   var descriptions = '${descriptions}';
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
    var fileIdArray = new Array();
@@ -1232,6 +1233,10 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
             }
+		else if(jsObj.task == "getContentDetails")	
+		{
+			showContent(myResults);
+		}
 		
 			
 	  }
@@ -2344,6 +2349,98 @@ function buildAllVideosInGallary(results){
 		
 		
 }
+
+function getContent()
+{
+	var jsObj =
+		{   
+		    time : timeST,
+			contentId : '${contentId}',
+			task:"getContentDetails"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryUpdateAction.action?"+rparam;						
+	callAjax(jsObj,url); 
+}
+
+function showContent(result)
+{
+	if(result == null)
+		return;
+
+	  $.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 850,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								title:'<center><font color="Navy"></font><center>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+		$("#showContentDiv").dialog();
+	
+	var str='<DIV><center>';
+
+	str += '<div class="main-title-sec">';
+	str += '<div id="contentHeaderDiv" class="main-mbg" style="width:760px;"></div><div class="main-bbg"/></div>';
+	
+	if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
+	{
+		 str+='<table>';
+		 str+='     <tr>';
+		 str+='       <td>';
+		
+		if(result.source != null)
+			str+='        <B>Source</B> : <font color="#FF4500">'+result.source+'</font> &nbsp;&nbsp;&nbsp;<B>';
+
+		if(result.fileDate != null)
+			str+=' Date </B>:<font color="#FF4500"> '+result.fileDate+'</font>';
+
+		 str+='       </td>';
+		 str+='     </tr>';
+		 str+='     </table>';
+	}
+	
+	str+='     <table>';
+	str+='			<tr>';
+	str+='             <td><div class="container">';
+	
+	if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+		str+=' <img alt="'+result.title+'" src="'+result.path+'" title="'+result.title+'" style="max-width:780px;max-length:800px;"/>';
+	
+	else if(result.contentType == 'Video Gallary')
+		str += '<iframe width="500" height="400" src="http://www.youtube.com/embed/'+result.path+'" frameborder="0" allowfullscreen="true"></iframe>';
+
+
+	str+='</div></td>';
+	str+='		      </tr>';
+	str+='         </table>';
+
+	str += '<table><tr>';
+	str+='       <td>';
+	str+='        '+result.description+'';
+	str+='       </td>';
+	str+='     </tr>';
+	str+='<table>';
+	
+	str += '</center></DIV>';
+	 document.getElementById("showContentDiv").innerHTML=str;
+
+	var str = '';
+	str += ''+result.title+'<span style="margin-top:10px;margin-right:18px;float:right">';
+	str += '<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId=${contentId}">Share in Facebook</a>';
+	str += '</span>';
+	
+	document.getElementById("contentHeaderDiv").innerHTML=str;
+	 
+}
+
 showAssemblyData();
 displayProfile();
 candidateInfo();
@@ -2352,6 +2449,9 @@ getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 buildAnalyzeConstituencyWindow();
 message_Obj.getUserDetails();
---></script>
+<s:if test="contentId != null">
+getContent();
+</s:if>
+</script>
 </body>
 </html>
