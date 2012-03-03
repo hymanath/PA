@@ -56,6 +56,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private int startIndex;
 	private int maxResult;
 	private int count;
+	private Long totalResultsCount;
 	
 	public String getCategoryType() {
 		return categoryType;
@@ -511,6 +512,15 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
+
+	public Long getTotalResultsCount() {
+		return totalResultsCount;
+	}
+
+	public void setTotalResultsCount(Long totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
+	}
+	
     
 
 	
