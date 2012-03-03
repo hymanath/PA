@@ -88,11 +88,24 @@ public class ConstituencyLeadCandidateDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.print("\t"+obj);
 			
 		}
-	}*/
+	}
 	
 	public void testGetResultKnownConstituenciesCountInAElection()
 	{
 		Object object = constituencyLeadCandidateDAO.getResultKnownConstituenciesCountInAElection(38l);
 		System.out.println(object.toString());
+	}*/
+	
+	public void test(){
+		
+	List<Object[]> list = constituencyLeadCandidateDAO.getGenderAnalysisElectionresults(182l);
+	System.out.println(list.size());
+	for(Object[] params :list){
+		System.out.println("partyId  "+params[0]);
+		System.out.println("partyName "+params[1]);
+		System.out.println("Gender "+params[2]);
+		System.out.println("status "+params[3] );
 	}
-}
+	}
+	}
+
