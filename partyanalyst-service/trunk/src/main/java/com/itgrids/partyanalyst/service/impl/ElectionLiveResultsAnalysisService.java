@@ -10,13 +10,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-
-import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
-import com.itgrids.partyanalyst.dao.IKeyCandidateDAO;
-import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyLeadCandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
@@ -26,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -1364,7 +1362,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
   }
   return resultStatus;  
   }
- public List<PositionManagementVO> getDistrictWisePartyPerfDetails(Long electionId,Long stateId)
+	
+  public List<PositionManagementVO> getDistrictWisePartyPerfDetails(Long electionId,Long stateId)
   {
 	 if(log.isDebugEnabled())
     	log.debug("Enter into getCurrentMinistersDetailsForCurrentAndPrevEle of ElectionLiveResultsAnalysisService");
@@ -1709,4 +1708,107 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		}
 	  return returnVal;
   }
+  
+
+  public List<PartyElectionResultVO> getGenderAnalysisInElection(Long electionId){
+	  
+	 log.debug("Entered Into getGenderAnalysisInElection() in ElectionLiveResultsAnalysisService" );
+	  try{
+		  List<PartyElectionResultVO> partyResult = null;
+		  Election election = electionDAO.get(electionId);
+		  if(election.getIsPartial().equalsIgnoreCase("1"))
+		  {
+		  
+		  List<Object[]> result = constituencyLeadCandidateDAO.getGenderAnalysisElectionresults(electionId);
+		  if(result !=null && result.size() >0)
+		  {
+			  partyResult = new ArrayList<PartyElectionResultVO>(0);
+			  for(Object[] params: result)
+			  {
+				  Long partyId = (Long)params[0];
+				  boolean isNew = false;
+				  PartyElectionResultVO partyElectionResultVO = getPartyElectionResultVOFromList(partyResult,partyId);
+				  
+				  if(partyElectionResultVO == null)
+				  {
+					  partyElectionResultVO = new PartyElectionResultVO();
+					  partyElectionResultVO.setPartyId((Long)params[0]);
+					  partyElectionResultVO.setPartyName(params[1].toString());
+					  partyElectionResultVO.setTotalSeatsWon(1L);
+					  isNew = true;
+					  
+					  if(params[2].toString() != null)
+					  {
+						  if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							  partyElectionResultVO.setMaleWon(1L);
+						  else
+							  partyElectionResultVO.setFemaleWon(1L);
+					  }
+				  }
+				  else
+				  {
+					  partyElectionResultVO.setTotalSeatsWon(partyElectionResultVO.getTotalSeatsWon() + 1L);
+					  if(params[2].toString() != null)
+					  {
+						  if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+							  partyElectionResultVO.setMaleWon(partyElectionResultVO.getMaleWon() != null?
+									  partyElectionResultVO.getMaleWon()+1L : 1L);
+						  else
+							  partyElectionResultVO.setFemaleWon(partyElectionResultVO.getFemaleWon() != null ?
+									  partyElectionResultVO.getFemaleWon() + 1L : 1L);
+					  }
+				  }
+				  
+				  if(isNew)
+					  partyResult.add(partyElectionResultVO);
+		  }
+			  
+		  List<Object[]> list = nominationDAO.getGenderDetailsOfParties(electionId);
+		  
+		  if(list != null && list.size() > 0)
+		  {
+			 for(Object[] params : list)
+			 {
+				 Long partyId = (Long)params[0];
+				 PartyElectionResultVO partyElectionResultVO = getPartyElectionResultVOFromList(partyResult,partyId);
+				 
+				 if(partyElectionResultVO != null)
+				 {
+					 partyElectionResultVO.setTotalParticipated(partyElectionResultVO.getTotalParticipated() != null ?
+						partyElectionResultVO.getTotalParticipated() + 1L : 1L);
+					 
+					 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+						partyElectionResultVO.setMalePerticipated(partyElectionResultVO.getMalePerticipated() != null ?
+						partyElectionResultVO.getMalePerticipated() + 1L : 1L);
+					 else
+						partyElectionResultVO.setFemalePerticipated(partyElectionResultVO.getFemalePerticipated() != null ?
+						partyElectionResultVO.getFemalePerticipated() + 1L : 1L);
+				 }
+			 }
+		  }
+			  
+			
+		 }
+		  
+		}
+		  return partyResult;
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  return null;
+	  }
+	 
+  }
+  
+  public PartyElectionResultVO getPartyElectionResultVOFromList(List<PartyElectionResultVO> list,Long partyId)
+	{
+		try{
+			for(PartyElectionResultVO resultVO : list)
+				if(resultVO.getPartyId().longValue() == partyId.longValue())
+					return resultVO;
+			return null;
+		}catch (Exception e) {
+			log.error("Exception occured in getPartyElectionResultVOFromList() Method, Exception is - "+e);
+			return null;
+		}
+	}
 }
