@@ -3091,5 +3091,11 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 	 	
+	 	<action name="getGenderAnalysisInElectionAction" class="electionLiveResultsAnalysisAction" method="ajaxCallHandlerElectionLiveResults">
+			<result type="json" name="success">
+				<param name="root">partyElectionResultVOList</param>
+			</result>
+	 	</action>
+	 	
 	 	</package>
 </struts>      
