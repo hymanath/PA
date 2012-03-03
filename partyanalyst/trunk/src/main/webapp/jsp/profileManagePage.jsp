@@ -2363,10 +2363,9 @@ function updateGallary(gallaryId)
 	}
  
  }
- 
- function updateGallaryDiv(myResults)
- {
-    var str ='';
+function updateGallaryDiv(myResults)
+{
+   var str ='';
 	document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 	document.getElementById("profileManagementMainOuterDiv6").style.display = 'block';
 	
@@ -2390,9 +2389,8 @@ function updateGallary(gallaryId)
 	document.getElementById("privateRadioId").checked= true;
 	else
 	document.getElementById("publicRadioId").checked= true;
- }
- 
- function  updateGallaryStatus(myResults)
+}
+function  updateGallaryStatus(myResults)
     {
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
