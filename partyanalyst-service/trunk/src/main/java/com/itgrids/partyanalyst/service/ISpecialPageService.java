@@ -64,4 +64,6 @@ public interface ISpecialPageService {
 	public ResultStatus saveMetaInfoForASpecialPage(MetaInfoVO metaInfoVO);
 	
 	public List<SelectOptionVO> getSpecialPageIdsList();
+	
+    public  List<FileVO> getFirstThreePhotoGallaryRecords(Long specialPageId);
 }
