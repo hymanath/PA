@@ -48,7 +48,15 @@ public class PartyPageAction extends ActionSupport implements
     private List<PartyResultInfoVO> partyResultInfoVOList;
     private List<FileVO> fileVO;
     private ResultStatus result;
+    private Long contentId;
+	
+	public Long getContentId() {
+		return contentId;
+	}
 
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
     
 	public ResultStatus getResult() {
 		return result;

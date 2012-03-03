@@ -43,7 +43,16 @@ public class SpecialPageAction extends ActionSupport implements
 	private ISpecialPageService specialPageService;
 	private List<CustomPageVO> customPages;
 	private MetaInfoVO metaInfoVO;
+	private Long contentId;
 	private String isAdmin;
+	
+	public Long getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
 	
 	public String getIsAdmin() {
 		return isAdmin;

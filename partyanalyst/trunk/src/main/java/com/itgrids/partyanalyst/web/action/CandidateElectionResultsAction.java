@@ -100,7 +100,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private IPartyDetailsService partyDetailsService;
 	private Long newsimportance;
 	private List<CandidateCommentsVO> candidateCommentsVO;
+	private Long contentId;
 	
+	public Long getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Long contentId) {
+		this.contentId = contentId;
+	}
+
 	public List<CandidateCommentsVO> getCandidateCommentsVO() {
 		return candidateCommentsVO;
 	}
@@ -589,6 +598,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			if(jObj.getString("task").equalsIgnoreCase("specialPageUpdateGallary"))
 			{
 				fileVO2 = candidateDetailsService.getSpecialPageGallaryDescForUpdate(jObj.getLong("gallaryId"),jObj.getLong("specialPageId"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getContentDetails"))
+			{
+				fileVO2 = candidateDetailsService.getContentDetails(jObj.getLong("contentId"));
 			}
 			}catch(Exception e){
 				e.printStackTrace();
