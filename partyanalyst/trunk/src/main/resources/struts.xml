@@ -3096,6 +3096,32 @@
 				<param name="root">partyElectionResultVOList</param>
 			</result>
 	 	</action>
-	 	
-	 	</package>
+	 		 		 	
+        <action name="createPhotoGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="showPhotoGalleryAction" class="candidateElectionResultsAction" method="getCandidatesPhotoGallaryDetail">
+			<result type="json" name="success">
+           		<param name="root">fileVO</param>
+        	</result>	
+		</action>
+		<action name="specialPagePhotoGallaryUpdateAction" class="candidateElectionResultsAction" method="getCandidatesPhotoGallaryDetail">
+			<result type="json" name="success">
+           		<param name="root">fileVO2</param>
+        	</result>	
+		</action>
+		<action name="getFirstThreePhotoRecordsAction" class="specialPageAction" method="ajaxCallHandlerForSpecialPage">
+			<result type="json" name="success">
+           		<param name="root">fileVOList</param>
+        	</result>	
+		</action>
+		<action name="showPhotoGallaryAction" class="specialPageAction" method="ajaxCallHandlerForSpecialPage">
+			<result type="json" name="success">
+           		<param name="root">fileVOList</param>
+        	</result>	
+		</action>
+				
+	</package>
 </struts>      
