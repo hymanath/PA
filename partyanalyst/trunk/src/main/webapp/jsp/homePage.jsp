@@ -811,8 +811,8 @@ $(function() {
 			else if(homePageUpdates.photogallary[i].fileType == 'Special Page')
 				str += 'specialPageAction.action?specialPageId=';
 
-			str += ''+homePageUpdates.photogallary[i].candidateId+'">';
-			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:95px;height:80px"/>';
+			str += ''+homePageUpdates.photogallary[i].candidateId+'&contentId='+homePageUpdates.photogallary[i].contentId+'">';
+			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:95px;height:80px" alt="'+homePageUpdates.photogallary[i].fileTitle1+'" title="'+homePageUpdates.photogallary[i].description+'"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
@@ -825,7 +825,7 @@ $(function() {
 			else if(homePageUpdates.photogallary[i].fileType == 'Special Page')
 				str += 'specialPageAction.action?specialPageId=';
 
-			str += ''+homePageUpdates.photogallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+			str += ''+homePageUpdates.photogallary[i].candidateId+'&contentId='+homePageUpdates.photogallary[i].contentId+'" title="'+homePageUpdates.photogallary[i].description+'" style="color: #000000;font-family: verdana;">';
 			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.photogallary[i].fileTitle1+'</h5>';
 			str += 'New Photo Added to';
 			str +='\t';
@@ -866,8 +866,8 @@ $(function() {
 			else if(homePageUpdates.VideoGallary[i].fileType == 'Special Page')
 				str += 'specialPageAction.action?specialPageId=';
 
-			str += ''+homePageUpdates.VideoGallary[i].candidateId+'">';
-			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:95px;height:80px"/>';
+			str += ''+homePageUpdates.VideoGallary[i].candidateId+'&contentId='+homePageUpdates.VideoGallary[i].contentId+'">';
+			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:95px;height:80px" alt="'+homePageUpdates.VideoGallary[i].fileTitle1+'" title="'+homePageUpdates.VideoGallary[i].description+'"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
@@ -880,7 +880,7 @@ $(function() {
 			else if(homePageUpdates.VideoGallary[i].fileType == 'Special Page')
 				str += 'specialPageAction.action?specialPageId=';
 			
-			str += ''+homePageUpdates.VideoGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+			str += ''+homePageUpdates.VideoGallary[i].candidateId+'&contentId='+homePageUpdates.VideoGallary[i].contentId+'" title="'+homePageUpdates.VideoGallary[i].description+'" style="color: #000000;font-family: verdana;">';
 			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.VideoGallary[i].fileTitle1+'</h5>';
 			str += 'New Video Added to';
 			str +='\t';
@@ -920,18 +920,18 @@ $(function() {
 			else if(homePageUpdates.NewsGallary[i].fileType == 'Special Page')
 				str += 'specialPageAction.action?specialPageId=';
 
-			str += ''+homePageUpdates.NewsGallary[i].candidateId+'">';
-			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:95px;height:80px"/>';
+			str += ''+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'">';
+			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:95px;height:80px" alt="'+homePageUpdates.NewsGallary[i].fileTitle1+'" title="'+homePageUpdates.NewsGallary[i].description+'"/>';
 			str += '</td>';
 			str +='</a>';
 			str += '<td>';
 						
 			if(homePageUpdates.NewsGallary[i].fileType == 'Candidate')
-				str += '<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+				str += '<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
 			else if(homePageUpdates.NewsGallary[i].fileType == 'Party')
-				str += '<a href="partyPageAction.action?partyId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+				str += '<a href="partyPageAction.action?partyId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
 			else if(homePageUpdates.NewsGallary[i].fileType == 'Special Page')
-				str += '<a href="specialPageAction.action?specialPageId='+homePageUpdates.NewsGallary[i].candidateId+'" style="color: #000000;font-family: verdana;">';
+				str += '<a href="specialPageAction.action?specialPageId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
 			
 			str += '<h5 style="color: #357EC7 !important;">'+homePageUpdates.NewsGallary[i].fileTitle1+'</h5>';
 			str += 'New News Added to';
