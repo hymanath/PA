@@ -99,6 +99,8 @@
 		<pattern>/districtPageAction*</pattern>
 		<pattern>/assignCandidateToElectionAction*</pattern>
 		<pattern>/assignKeyCandidateAction*</pattern>
+		<pattern>/cncSearchResultsAction*</pattern>
+		<pattern>/searchPartyAnalystAction*</pattern>
 		<pattern>/districtWisePartyPerformanceAction*</pattern>
     </decorator>
 
