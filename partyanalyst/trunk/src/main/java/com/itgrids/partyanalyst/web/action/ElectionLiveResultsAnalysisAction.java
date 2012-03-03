@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dao.IEntitlementDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -41,7 +42,19 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 	private JSONObject jObj;
 	private String task;
 	private List<ConstituencyElectionResultVO> candidatesList;
+	private List<PartyElectionResultVO> partyElectionResultVOList;
 	
+	
+
+	public List<PartyElectionResultVO> getPartyElectionResultVOList() {
+		return partyElectionResultVOList;
+	}
+
+	public void setPartyElectionResultVOList(
+			List<PartyElectionResultVO> partyElectionResultVOList) {
+		this.partyElectionResultVOList = partyElectionResultVOList;
+	}
+
 	public JSONObject getJObj() {
 		return jObj;
 	}
@@ -149,6 +162,11 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 				Long electionId = new Long (jObj.getString("electionId"));
 				electionLiveResultVO = electionLiveResultsAnalysisService.getOverViewCount(electionId);
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getGenderAnalysisInElection"))
+			{
+				partyElectionResultVOList = electionLiveResultsAnalysisService.getGenderAnalysisInElection(jObj.getLong("electionId"));
+			}
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
