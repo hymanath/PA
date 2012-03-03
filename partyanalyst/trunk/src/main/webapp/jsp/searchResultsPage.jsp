@@ -197,7 +197,7 @@ table.searchCriteria{
 	width: 475px;
 }
 
-h3 {
+#searchHead {
 	background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
 	color:#4B74C6;
 	font-size:12px;
@@ -383,12 +383,11 @@ function buildConstituencySearchResultDataTable()
 </script>
 </head>
 <body>
-
-<div id="tablerDetails">
+<div id="tablerDetails" style="margin-left:auto;margin-right:auto;float:none;">
 	<TABLE border="0" cellpadding="0" cellspacing="0">
 		<TR>
 		<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>
-		<TD><H3>Search for Politician or Constituency</H3></TD>
+		<TD><H3 id="searchHead">Search for Politician or Constituency</H3></TD>
 		<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>
 		</TR>
 	</TABLE>
@@ -450,11 +449,12 @@ function buildConstituencySearchResultDataTable()
 	<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;font-weight:bold;"></div>
 </s:form>
 	</div>
+	<center>
 <div style="padding:0px;font-weight:bold">
 
 	<font color="green">Total <s:property value="totalSearchCount" /> Results Found for " <s:property value="searchText" /> ".</font>
 	</div>
-
+</center>
 	<div id="mainDiv" class="yui-skin-sam">	
 	<div id="searchResultsDiv"></div>
 	</div>
