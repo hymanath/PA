@@ -53,7 +53,14 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	public Long mVotesPolled;
 	public Long fVotesPolled;
 	private BigDecimal assets;
+	private String gender;
 	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 	public Long getMVotesPolled() {
 		return mVotesPolled;
 	}
