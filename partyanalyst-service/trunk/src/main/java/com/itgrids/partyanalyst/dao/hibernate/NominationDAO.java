@@ -3436,7 +3436,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname ,model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from " +
 				" Nomination model where model.candidate.candidateId in(select model1.candidate.candidateId from KeyCandidate model1) and model.constituencyElection.election.electionId = ?",electionId);
 	}
-    public  List<Object[]>  getAllDistrictsForAnElection(Long electionId)
+	
+	public  List<Object[]>  getAllDistrictsForAnElection(Long electionId)
     {
     	return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName from " +
 				" Nomination model where model.constituencyElection.election.electionId = ? order by model.constituencyElection.constituency.district.districtName ",electionId);
@@ -3473,4 +3474,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
     	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId in( select model1.constituencyElection.constiElecId " +
     			" from ConstituencyLeadCandidate model1 where model1.constituencyElection.election.electionId = ? )  and model.constituencyElection.constituency.district.districtId =?  ",data);
     }
+    
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderDetailsOfParties(Long electionId)
+	{
+		Query query = getSession().createQuery("select model.party.partyId,model.party.shortName,model.candidate.gender from Nomination model where model.constituencyElection.election.electionId = ? order by model.party.shortName");
+		query.setParameter(0,electionId);
+		return query.list();
+	}
+
 }
