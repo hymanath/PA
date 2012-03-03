@@ -70,4 +70,6 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public void deleteFile(Long fileId);
     
     public List<FileGallary> getRecentlyUploadedPhotos(Integer startIndex,Integer maxResults);
+        
+    public List<Long> getTotalIndividualSources(Long candidateId,String queryType,String sourceStr , String languageStr,String categoryStr,String newsImportance );
 }
