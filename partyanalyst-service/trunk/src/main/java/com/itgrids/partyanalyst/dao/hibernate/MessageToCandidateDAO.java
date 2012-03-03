@@ -50,8 +50,20 @@ public class MessageToCandidateDAO extends GenericDaoHibernate<MessageToCandidat
 			
 	}
     @SuppressWarnings("unchecked")
-	public List<Object[]> getUserMessages(Long candidateId){		
-		return getHibernateTemplate().find("select model.name , model.message ,model.constituency.name, model.time from MessageToCandidate model where model.candidate.candidateId=? and model.isApproved = 'true' and model.isDelete = 'false'and model.isPrivate = 'false' order by model.time desc ",candidateId);
+	public List<Object[]> getUserMessages(Long candidateId,int startIndex,int resultsCount){		
+		Query queryObject = getSession().createQuery("select model.name , model.message ,model.constituency.name, model.time from MessageToCandidate model where model.candidate.candidateId =:candidateId and model.isApproved = 'true' and model.isDelete = 'false'and model.isPrivate = 'false' order by model.time desc ");
+		queryObject.setLong("candidateId", candidateId);
+		
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(resultsCount);
+			
+						
+		return queryObject.list(); 
 	}
+	 @SuppressWarnings("unchecked")
+	 public List<Long> getUserMessagesCount(Long candidateId)
+	 {
+		 return getHibernateTemplate().find("select count(*) from MessageToCandidate model where model.candidate.candidateId=? and model.isApproved = 'true' and model.isDelete = 'false'and model.isPrivate = 'false' order by model.time desc ",candidateId);
+	 }
 	
 }
