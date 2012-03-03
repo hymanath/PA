@@ -108,7 +108,7 @@ table.searchCriteria{
 	margin-top:10px;
 	width: 475px;
 }
-h3 {
+#searchHead {
 	background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
 	color:#4B74C6;
 	font-size:12px;
@@ -145,11 +145,11 @@ h3 {
 </head>
 <body>
 	
-	<div id="tablerDetails">
+	<div id="tablerDetails" style="margin-left:auto;margin-right:auto;float:none;">
 	<TABLE border="0" cellpadding="0" cellspacing="0">
 		<TR>
 		<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>
-		<TD><H3>Search for Politician or Constituency</H3></TD>
+		<TD><H3 id="searchHead">Search for Politician or Constituency</H3></TD>
 		<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>
 		</TR>
 	</TABLE>
