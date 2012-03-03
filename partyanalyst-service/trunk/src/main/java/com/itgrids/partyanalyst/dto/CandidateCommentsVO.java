@@ -50,6 +50,7 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private String time;
 	private Long consituencyId;
 	private String visibility;
+	private Long totalResultsCount;
 	
 	
 	public Long getConsituencyId() {
@@ -260,6 +261,13 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
+	public Long getTotalResultsCount() {
+		return totalResultsCount;
+	}
+	public void setTotalResultsCount(Long totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
+	}
+	
 	
 	
 	
