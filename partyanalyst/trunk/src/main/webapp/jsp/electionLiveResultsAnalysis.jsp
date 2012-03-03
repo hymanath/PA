@@ -136,7 +136,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <option value="0">Select State</option>
 </select>
 &nbsp;&nbsp;&nbsp;&nbsp;Select Election Year : 
-<select id="electionYearId" onchange="getOverViewCount();getPartiesGainAndLossInfo();getConstituencyWiseCandidatesStatus();" style="width:150px;">
+<select id="electionYearId" onchange="getOverViewCount();getPartiesGainAndLossInfo();getConstituencyWiseCandidatesStatus();getWonOrLeadcandidates()" style="width:150px;">
 <option value="0">Select Election Year</option>
 </select><br><br><span style="margin-top:10px;"><img id="year_ImgSpan" src="images/icons/goldAjaxLoad.gif" style="display:none;"></span>
 </div>
@@ -148,6 +148,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <div id="partyAnalysisHeading" style="margin-left:15px;margin-bottom:15px;margin-top:15px;width:100%;"></div>
 <div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
 <div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:20px;width:925px;"></div>
+<div id="genderAnalysisHeading"></div>
+<div id="genderAnalysis" class="yui-skin-sam" style="width: 79%;"></div>
 <div id="candidatesDivHeading" style="margin: 16px;"></div>
 <div id="candidatesDiv" class="yui-skin-sam" style="width: 79%;"></div>
 <div>
@@ -226,6 +228,11 @@ function callAjaxForElectionResultPage(url,jObj){
 			{
 				showOverViewCount(myResults);
 			}
+			else if(jObj.task =="getGenderAnalysisInElection"){
+				
+			showGenderAnalysisInConstituencyElection(myResults);
+			}
+
 		}
 	     catch(e)
 		   {   
@@ -916,7 +923,7 @@ function getConstituenciesCount()
 {
 
 	var electionId = document.getElementById("electionYearId").value;;
-	
+
 	var jObj=
 	{
 		electionId:electionId,
@@ -1261,6 +1268,8 @@ var electionId = document.getElementById("electionYearId").value;
 	callAjaxForElectionResultPage(url,jObj);
 }
 
+
+
 function buildConstituencyWiseCandidates(myResults)
 {
 	var candidatesDivHeadingElmt = document.getElementById("candidatesDivHeading");
@@ -1390,6 +1399,77 @@ else
 	}
 
 }
+
+
+function getWonOrLeadcandidates(){
+	
+var electionId = document.getElementById("electionYearId").value;
+var jObj=
+	{
+		electionId : electionId,
+		task:"getGenderAnalysisInElection"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getGenderAnalysisInElectionAction.action?"+rparam;						
+	callAjaxForElectionResultPage(url,jObj);
+}
+
+function showGenderAnalysisInConstituencyElection(result)
+{
+	var headstr='';
+	if(result == null || result.length == 0)
+	{
+		document.getElementById("genderAnalysisHeading").innerHTML =headstr;
+		document.getElementById("genderAnalysis").innerHTML =headstr;
+		return;
+	}
+
+	headstr+='<span class="headingstyle">Partywise Male/Female Candidates Won/Lead Info</span>';
+	document.getElementById("genderAnalysisHeading").innerHTML =headstr;
+
+	if(result !=null && result.length>0){
+
+	var genderAnalysisInElectionColumnDefs = [
+		{key:"partyName" , label:"Party" , sortable:true},
+		{key:"totalParticipated" , label:"TP*" , sortable:true},
+		{key:"totalSeatsWon" , label : "Won/Lead" , sortable:true},
+		{key:"malePerticipated",label:"Male Participants"},
+		{key:"maleWon" , label:"Male Won"},
+
+		{key:"femalePerticipated",label:"Female Participants"},
+		{key:"femaleWon" , label:"Female Won"}
+
+	];
+	var genderAnalysisInElectionDataSource = new YAHOO.util.DataSource(result);
+		genderAnalysisInElectionDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		genderAnalysisInElectionDataSource.responseSchema = {
+                fields: [{key:"partyName",parser:"string"},{key: "totalParticipated",parser:"number"},
+					{key:"totalSeatsWon",parser:"number"},
+						{key:"femalePerticipated",parser:"number"},
+						{key:"femaleWon",parser:"number"},
+			{key:"malePerticipated",parser:"number"},
+						{key:"maleWon",parser:"number"},]
+		};
+		
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10			        
+			    }),
+			    caption:"" 
+				};
+
+				partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable("genderAnalysis", genderAnalysisInElectionColumnDefs, genderAnalysisInElectionDataSource,myConfigs);
+					
+        return { 
+            oDS: genderAnalysisInElectionDataSource, 
+            oDT: partywiseResultsWithGenderDataTable 
+           
+      };
+	}
+}
+
+
 </script>
 </body>
 </html>
