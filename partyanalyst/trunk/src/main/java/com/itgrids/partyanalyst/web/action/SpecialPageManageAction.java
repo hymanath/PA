@@ -324,7 +324,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO != null)
-		if(jobj.getString("task").equalsIgnoreCase("createVideoNewGallary") || jobj.getString("task").equalsIgnoreCase("createEventNewGallary")) 
+		if(jobj.getString("task").equalsIgnoreCase("createVideoNewGallary") || jobj.getString("task").equalsIgnoreCase("createEventNewGallary") || jobj.getString("task").equalsIgnoreCase("createphotoGallary")) 
 				{
 			gallaryVO = new GallaryVO();
 			gallaryVO.setDescription(jobj.getString("desc"));
@@ -365,7 +365,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 			
 			result = specialPageService.uploadAFile(fileVOObj);
 		}
-		else if(jobj.getString("task").equalsIgnoreCase("partyGallariesForUplaod")){
+		else if(jobj.getString("task").equalsIgnoreCase("partyGallariesForUplaod") || jobj.getString("task").equalsIgnoreCase("photoGallariesForUplaod") ||jobj.getString("task").equalsIgnoreCase("photoGallariesForUpdataPhoto")){
 			selectOptionList = specialPageService.getEventGallarySelectList(jobj.getLong("specialPageId"),jobj.getString("contentType"));
 		}
 		else if(jobj.getString("task").equalsIgnoreCase("eventGallariesForUplaod"))
@@ -395,6 +395,8 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		
 		return Action.SUCCESS;
 	} 
+}
 	
 	
-	}
+	
+	
