@@ -173,6 +173,41 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		
 		return queryObject.list(); 
 	}
+	public List<Long> getTotalIndividualSources(Long candidateId,String queryType,String sourceStr , String languageStr,String categoryStr,String newsImportance )
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*) from FileGallary model where model.gallary.candidate.candidateId =:candidateId and model.gallary.contentType.contentType =:type and model.gallary.isDelete = 'false' and  model.isDelete = 'false' ");
+		if(sourceStr!=null)
+			query.append("   and model.file.sourceObj.source =:spScope");
+		if(languageStr!=null)
+			query.append("   and model.file.language.language =:spScopeLang");
+		if(categoryStr!=null)
+			query.append("   and model.file.category.categoryType =:categoryStr");
+		if(newsImportance!=null)
+			query.append("   and model.file.newsImportance.importance =:newsImportance");
+
+		if(queryType.equals("Public"))
+			query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+			
+		if(queryType.equals("Private"))
+			query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		if(sourceStr!=null)
+			queryObject.setString("spScope", sourceStr);
+		if(languageStr!=null)
+		    queryObject.setString("spScopeLang", languageStr);
+		if(categoryStr!=null)
+			queryObject.setString("categoryStr", categoryStr);
+		if(newsImportance!=null)
+			queryObject.setString("newsImportance", newsImportance);
+		
+		queryObject.setLong("candidateId", candidateId);
+		queryObject.setString("type", IConstants.NEWS_GALLARY);
+		
+		return queryObject.list();
+	}
 	public List<Object[]> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String sourceStr , String languageStr,String categoryStr,String newsImportance)
 	{
 		StringBuilder query = new StringBuilder();
