@@ -133,6 +133,15 @@ margin-right:auto;
 		border-radius:7px;
 
 }
+#regionAccessDiv{
+		
+		background: none repeat scroll 0 0 #FFF8E5;
+		 border: 1px solid #06ABEA;
+		height: auto;
+		padding: 10px;
+		text-align: center;
+		width: 500px;
+	}
 #candidateResultAccessDiv .ui-widget-header{
 	background: #06ABEA;
 	border :0px;
@@ -591,6 +600,7 @@ function hideImg(){
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
 {
+	
 	/**************************/
 	var chartSeries = new Array();
 	for(var i in results.partyResultsInRegionVOLst){
@@ -618,22 +628,20 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 
 	chartSeries.push(obj);
 
+	var	regions = new Array();
+	for(var i in results.partyResultsInRegionVOLst)
+	{
+		var obj = {
+				name: results.partyResultsInRegionVOLst[i].regionName,
+	            y: results.partyResultsInRegionVOLst[i].constituenciesCount,
+	            
+			};
+			regions.push(obj);
+	
 	var objForPie = {
 	         type: 'pie',
 	         name: 'Total Constituencys',
-	         data: [{
-	            name: 'Telangana',
-	            y: 119,
-	            color: "#4572A7" // Telangana's color
-	         }, {
-	            name: 'Andhra',
-	            y: 123,
-	            color: "#AA4643" // Andhra's color
-	         }, {
-	            name: 'Rayalaseema',
-	            y: 52,
-	            color: "#89A54E" // Rayalaseema's color
-	         }],
+	         data: regions,
 	         center: [100, 80],
 	         size: 100,
 	         showInLegend: false,
@@ -641,7 +649,7 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 	            enabled: false
 	         }
 	      };
-    
+    }
 	chartSeries.push(objForPie); 
 	/**************************/
 	
@@ -694,16 +702,36 @@ function showOverallResults()
 
 function showRegionWiseResults()
 {
-	showImg();
-	var jsObj = {
-				electionId:electionId,
-				stateID:stateID,
-				task:"getRegionWisePartyElectionResults"
-			};
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/regionWisePartyElectionResultsAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-
+	<c:if test="${loginStatus !=null}">
+		showImg();
+		var jsObj = {
+					electionId:electionId,
+					stateID:stateID,
+					task:"getRegionWisePartyElectionResults"
+				};
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/regionWisePartyElectionResultsAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	</c:if>
+	<c:if test="${sessionScope.USER == null}">
+	 document.getElementById("regionAccessDiv").style.display='block';
+		var str='';
+		//alert("not logged in ......");
+		$("#regionAccessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								
+						});
+		str+='<div>';
+		str+='<h4 style="color:#ff0000;display:inline;position:relative;top:0px;">'; 
+		str+='<div>Please register to view this content.   Click here to <a href="freeUserRegistration.action">Register</a></div><div style="margin: 10px;"> Already A member please login to get access. <div style="margin: 10px;">Click here to <a href="loginInputAction.action">Login</a></div></div></h4>';
+		str+='</div>';
+	document.getElementById("regionAccessDiv").innerHTML = str;
+		</c:if>
 }
 function getPartyGenderInfo()
 {
@@ -1972,9 +2000,31 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 }
 function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 {
+
+	<c:if test="${sessionScope.USER == null}">
+	 document.getElementById("regionAccessDiv").style.display='block';
+		var str='';
+		//alert("not logged in ......");
+		$("#regionAccessDiv").dialog({ stack: false,
+							    height: 'auto',
+								width: 500,
+								position:'center',								
+								modal: true,
+								title:'<font color="#000">ALERT</font>',
+								overlay: { opacity: 0.5, background: 'black'},
+								
+						});
+		str+='<div>';
+		str+='<h4 style="color:#ff0000;display:inline;position:relative;top:0px;">'; 
+		str+='<div>Please register to view this content.   Click here to <a href="freeUserRegistration.action">Register</a></div><div style="margin: 10px;"> Already A member please login to get access. <div style="margin: 10px;">Click here to <a href="loginInputAction.action">Login</a></div></div></h4>';
+		str+='</div>';
+	document.getElementById("regionAccessDiv").innerHTML = str;
+		</c:if>
+	<c:if test="${sessionScope.USER != null}">
 	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
 	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
 	 browser1.focus();
+	 </c:if>
 }
 
 
@@ -3393,8 +3443,11 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
 </DIV>
 <DIV id="task10"></DIV>
+<div id="regionAccessDiv" style="display:none;"></div>
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
+//alert(<%=session.getAttribute("USER")%>);
+//alert('${loginStatus}');
 getResultsForAnElection(stateID,electionType,year);
 <c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
