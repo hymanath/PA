@@ -31,6 +31,12 @@ IStateRegionDistrictDAO {
 				"StateRegionDistrict model where model.stateRegion.stateRegionId = ?",regionId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituenciesCountByDistrictRegion(Long regionId){
+		return getHibernateTemplate().find("select count(model.constituencyId) from Constituency model where " +
+				" model.district.districtId in (select model1.district.districtId from StateRegionDistrict model1" +
+				" where model1.stateRegion.stateRegionId = ?)",regionId);
+	}
 }
 
 
