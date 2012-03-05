@@ -23,6 +23,7 @@ public class PartyResultsInRegionVO implements Serializable {
 	
 	private Long regionId;
 	private String regionName;
+	private Long constituenciesCount;
 	
 	private List<PartyResultsVO> partyResultsInRegion;
 	
@@ -58,6 +59,14 @@ public class PartyResultsInRegionVO implements Serializable {
 
 	public void setRs(ResultStatus rs) {
 		this.rs = rs;
+	}
+
+	public void setConstituenciesCount(Long constituenciesCount) {
+		this.constituenciesCount = constituenciesCount;
+	}
+
+	public Long getConstituenciesCount() {
+		return constituenciesCount;
 	}
 	
 	
