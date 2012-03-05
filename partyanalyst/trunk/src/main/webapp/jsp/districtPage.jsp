@@ -45,7 +45,7 @@
 	#mla_body{border-collapse:collapse;border:1px solid #d3d3d3;width:96%;}
 	#mpsInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
 	#mlaInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
-	#dataTable6 > table,#dataTable3 > table,  #dataTable1 > table,#dataTable2 > table,#dataTable0 > table,#corporationDataTable0 > table ,#dataTable5 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:111%;margin-left:3px;}
+	#dataTable6 > table,#dataTable3 > table, #corporationDataTable0 > table ,#dataTable5 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:111%;margin-left:3px;}
 	#partyDetails > table,#mptcPartyDetails > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;}
 	#mptc_zptc_div_main table2,{border-collapse:collapse;border:1px solid #d3d3d3;width:870px;}
 	#dataTable4,#dataTable3{width:429px;}
@@ -68,6 +68,7 @@
 	#allMuncipalitiesDetails1 table,#allMuncipalitiesDetails0 table,#allMuncipalitiesDetails3 table,#allMuncipalitiesDetails2 table,#corporationDataTable0 > table,#dataTable6 > table,#dataTable0 > table,#dataTable2 > table,#dataTable1 > table,#dataTable3 > table,#mptcPartyDetails table,#partyDetails table,#mlaInfoDivBody table,#mpsInfoDivBody table{border-collapse:collapse; }
 	#dataTable5 > table,#corporationDiv > table{border:none;border-collapse:none; }
 	#muncipalitiesDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:102%;}
+
 	#dataTable4 > table{border-collapse:collapse;}
 	#dataTable5 > table{border-collapse:collapse;width:100%;}
 
@@ -97,12 +98,18 @@
 	overflow:none;
 	height:300px;
 	}
-	.spltableclass th:nth-child(3) a{color:#000;}
+
+	#dataTable0 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:118%;}
+	#dataTable1 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:129%;}
+	#dataTable2 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:117%;}
 
 	
+	#allMuncipalitiesDetails3{width:96%;}
+	#mptcPartyDetails table{width:114%;margin-left:13px;}
+	#partyDetails table{width:130%;margin-left:13px;}
+	#allMuncipalitiesDetails1,#allMuncipalitiesDetails3,#allMuncipalitiesDetails2,#allMuncipalitiesDetails0{margin-left:20px;}
+	
 
-	#mptcPartyDetails table{width:123%;}
-	#partyDetails table{width:144%;}
 
 	</style>
 
@@ -624,9 +631,9 @@
 			rvStr +='<tr>';																					
 			rvStr +='<td style="vertical-align:top;">';			
 			if(electionType == muncipalityElectionType){
-				rvStr +='<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;color:#000080;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+				rvStr +='<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;color:#ffffff;background:#3897A5" class="candidateDetailsStyle">Show Candidate Details</a></td>';
 			}else{
-				rvStr +='<a href="javascript:{}" onclick="redirectCorporationCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\' )"  style="text-decoration:none;color:#000080;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+				rvStr +='<a href="javascript:{}" onclick="redirectCorporationCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\' )"  style="text-decoration:none;color:#ffffff;background:#3897A5;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
 			}			
 			rvStr+='</td>';
 			rvStr +='</tr>';
@@ -923,7 +930,7 @@
 		function showAllPartyDetails(results)
 		{
 		var candLink = document.getElementById("candidateLink");
-		var linkRef = '<a href="javascript:{}" onclick="redirectCandidateLink()"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a>';
+		var linkRef = '<a href="javascript:{}" onclick="redirectCandidateLink()"  style="text-decoration:none;color:#ffffff;background:#3897A5;" class="candidateDetailsStyle">Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
 		totalZptcs = 0;
@@ -957,7 +964,7 @@
 		function showAllMptcPartyDetails(results)
 		{
 		var candLink = document.getElementById("mptcCandidateLink");
-		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
+		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;color:#ffffff;background:#3897A5;" class="candidateDetailsStyle" >Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
 		totalMptcs = 0;
@@ -1461,10 +1468,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
   <div id="inner-content-mainsec" style="margin-left:auto;margin-right:auto;float:none;">
 		
 		<div class="cd-left-sec" style="width:676px;background:#ffffff;">
-        <div class="cd-mid-cont-sec" style="padding-bottom:78px;">
+        <div class="cd-mid-cont-sec" style="padding-bottom:9px;">
 
      
-          <p class="pa-fi" style="font-weight:bold;">STATE: <strong></strong><a style="color:#6B8E23;text-decoration: none;font-weight:bold"; href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${stateDetails.name}</a> </p>
+          <p class="pa-fi" style="font-weight:bold;">STATE: <strong></strong><a style="color:#4169E1;text-decoration: none;font-weight:bold;font-sie:15px;"; href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${stateDetails.name}</a> </p>
 
 		<div class="cl-sub-fields-sec"> <h1 class="org-title"><span style="-moz-border-radius:4px;
     ;">Constituencies In ${districtName} District </span></h1><br><br>
@@ -1554,13 +1561,13 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 					
 
 	</div>
-</div></div>	
+</div>	
 	<!--left section End-->
 
 
  <!--CD SUB RIGHT SECTION START-->
         
-        <div class="cd-sub-right-sec" style="border-top-width:0px;">
+        <div class="cd-sub-right-sec" style="border-top-width:0px;float:left;">
      
             
             <!--CONNECT PEOPLE SECTION START-->
@@ -1610,7 +1617,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
                </div>
 
 
-			   <div id="mandalsDiv_body" style="height:445px;">
+			   <div id="mandalsDiv_body" style="height:375px;">
 				<c:forEach var="mandalsBeforeDelimitationConstituency" varStatus="stat" items="${mandals}">						
 						<div id="mandalAncSpan" class="mandalNamesDiv">							
 							<table>
@@ -1660,7 +1667,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 </div>-->
 
 </div>
-</div>
+</div></div>
 <!--Right End-->
 
 <div id="detailedChartDiv" style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;"> 
@@ -1669,8 +1676,8 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
-			<h3 style="margin-top:81px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
-				<div id="allElectionResultsInDT"  class="allianceListDiv">
+			<h3 style="margin-top:15px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
+				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-34px;">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
 				
@@ -1850,10 +1857,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 						<div id="zptc_body" style="background:#ffffff;">
 							<div id="zptcDiv"  style="margin-top:2px;">
 								<table>
-										<td><div id="zptcInfoDivBody" style="font-weight:bold;color:#000000;"></div></td>
+										<td><div id="zptcInfoDivBody" style="font-weight:bold;color:#000000;margin-top:13px;margin-left:15px;"></div></td>
 										<td><div id="zptcAjaxLoadDiv" style="display:none;">
 											<img id="ajaxImg" height="18" width="19" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-										</div></td><td><div id="candidateLink"></div></td>
+										</div></td><td><div id="candidateLink" style="margin-top:13px;"></div></td>
 										</table>
 										<table cellpadding="5px">
 										<tr><td><div id="partyDetails"></div></td>
@@ -1883,10 +1890,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 							<div id="mptcDiv" style="margin-top: 10px;">
 									<table>
 										<td><br/></td>
-										<td><div id="mptcInfoDivBody" style="font-weight:bold;color:#000000;"></div></td>
+										<td><div id="mptcInfoDivBody" style="font-weight:bold;color:#000000;margin-top:13px;margin-left:15px;"></div></td>
 										<td><div id="mptcAjaxLoadDiv" style="display:none;">
 											<img id="ajaxImg" height="18" width="19" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-										</div></td><td><div id="mptcCandidateLink"></div></td>
+										</div></td><td><div id="mptcCandidateLink" style="margin-top:13px;"></div></td>
 										</table>
 										<table cellpadding="5px">
 										<tr><td><div id="mptcPartyDetails"></div></td>
@@ -1920,7 +1927,8 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 				isVertical: false,
 				numVisible: 1,
 				animation: { speed: 1.0 },
-				autoPlayInterval: 2000
+				autoPlayInterval: 2000,
+
 			});
 
 	allianceCarousel.render(); 
