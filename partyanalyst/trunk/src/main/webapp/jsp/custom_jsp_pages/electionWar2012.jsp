@@ -10,12 +10,19 @@
 .splpage2012action ul li {border:1px solid #fff;margin-bottom:10px;background:#fff;display:block;height:75px;}
 .splpage2012action ul li a{display:block;padding:10px;color:#fff;background:#d2e888;border-radius:5px;-moz-border-radius:5px;margin-top:20px;display:block;margin-left:auto;margin-right:auto;width:300px;color:#3d3d3d;}
 .splpage2012action ul li a:hover{background:#21B2ED;text-decoration:none;color:#FFFFFF;}
-#previousElectionresultsDiv{width:988px;float:left;display:block;clear:both;background:#fff;margin-top:5px;}
+#previousElectionresultsDiv{width:988px;float:left;display:block;clear:both;background:#fff;margin-top:5px;padding-bottom:13px;}
 
 
 .splpagewarhead li a:hover{
 background:red !important;
 }
+</style>
+
+<!--table styles-->
+<style>
+#manipurTableDiv > table * td,#punjabtableDiv > table * td,#electionResulttable > table * td{text-align:center;}
+#manipurTableDiv > table th,#punjabtableDiv > table th,#electionResulttable >table th{font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;font-size: 14px;font-size-adjust: none;
+ font-style: normal;font-variant: normal;font-weight: bold;}
 </style>
 <div>
 <img src="images/specialPage/main.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Election War 2012" title="Election War 2012" />
@@ -183,7 +190,234 @@ background:red !important;
 				
 				</ul>
 			</div>
+<div id="electionResulttable" style="margin-top:13px;">
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttarPradesh State Exit polls</span>
+<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+<tr>
 
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>BJP</th>
+<th>BSP</th>
+<th>CONG+</th>
+<th>SP</th>
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+    <td>68</td>
+    <td>98</td>
+    <td>53</td>
+	<td>172</td>
+    <td>12</td>
+
+  </tr>
+  <tr> <th>STAR</th>
+    <td>71</td>
+    <td>83</td>
+    <td>62</td>
+	<td>183</td>
+    <td>-</td></tr>
+
+
+	<tr><th>NEWS-24</th>
+    <td>55</td>
+    <td>85</td>
+    <td>55</td>
+	<td>185</td>
+    <td>-</td>
+
+	</tr>
+<tr>	<th>India TV-C</th>
+    <td>71</td>
+    <td>83</td>
+    <td>62</td>
+	<td>137-145</td>
+    <td>-</td></tr>
+
+  </tr>
+</table>
+<span style="background:#D2E888;padding:4px; float: right;margin-right: 370px;margin-top: -177px;-moz-border-radius: 3px;">Goa State Exit polls</span>
+<table width="50%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:-147px;margin-right:8px;float:right;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>CONG</th>
+<th>BJP</th>
+
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+   
+    <td>17</td>
+	<td>20</td>
+    <td>3</td>
+
+  </tr>
+  <tr>
+  <th>STAR</th>
+    <td>15-19</td>
+    <td>18-22</td>
+    <td>-</td>
+	
+  </tr>
+
+
+
+<th>TV-C</th>
+   
+    <td>17</td>
+	<td>20</td>
+    <td>-</td>
+
+  </tr>
+
+
+
+</table>
+<div id="punjabtableDiv" style="margin-top:17px;">
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Punjab State Exit polls</span>
+<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>AKALI+</th>
+<th>CONG</th>
+<th>PPP+</th>
+<th>BSP</th>
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+    <td>51</td>
+    <td>59</td>
+    <td>2</td>
+	<td>2</td>
+    <td>3</td>
+
+  </tr>
+   <tr>
+<th>STAR</th>
+    <td>56</td>
+    <td>58</td>
+    <td>-</td>
+	<td>-</td>
+    <td>2</td>
+  </tr>
+
+   <tr>
+<th>NEWS-24</th>
+    <td>52</td>
+    <td>60</td>
+    <td>-</td>
+	<td>-</td>
+    <td>-</td>
+  </tr>
+</table></div>
+<span style="background:#D2E888;padding:4px; float: right;margin-right: 323px;margin-top: -148px;-moz-border-radius: 3px;">UttarKhand State Exit polls</span>
+<table width="50%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:-119px;margin-right:8px;float:right;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>CONG</th>
+<th>BJP</th>
+<th>BSP</th>
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+   
+    <td>34</td>
+	<td>27</td>
+    <td>3</td>
+	<td>6</td>
+
+  </tr>
+  <tr>
+ <th>STAR</th>
+    <td>29(+8)</td>
+    <td>36</td>
+    <td>-</td>
+	<td>5</td>
+  </tr>
+   <tr>
+ <th>NEWS-24</th>
+    <td>31-41</td>
+    <td>22-32</td>
+    <td>-</td>
+	<td>-</td>
+  </tr></tr>
+</table>
+
+<div id="manipurTableDiv" style="margin-top:17px;">
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius:3px;">Manipur State Exit polls</span>
+<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>CONG</th>
+<th>PDF</th>
+<th>TMC</th>
+
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+    <td>26</td>
+    <td>10</td>
+    <td>10</td>
+	<td>14</td>
+   
+
+  </tr>
+
+  <tr>
+    <th>NEWS-24</th>
+    <td>25</td>
+    <td>-</td>
+    <td>10</td>
+	<td>-</td>
+   
+ 
+  <!--<th>TV9</th>
+    <td>100</td>
+    <td>100</td>
+    <td>100</td>
+	<td>100</td>-->
+   
+  </tr>
+</table></div>
+</div>
 
 </div>
 
