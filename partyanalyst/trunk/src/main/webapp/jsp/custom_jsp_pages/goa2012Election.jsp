@@ -4,8 +4,11 @@
 <style type="text/css">
 a:hover{
 text-decoration:none;
+}
+#GOAExitPolltable > table * td{text-align:center;}
 </style>
-<div style="background:#ffffff;width: 979px;margin-left: 3px;">
+
+<div style="background:#ffffff;width: 979px;margin-left: 3px;padding-bottom:16px;">
 <img src="images/specialPage/goa2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-center: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%" valign="top">
@@ -132,5 +135,45 @@ Goa Assembly Previous Election Results</h3>
 </td></tr>
 </table>
 </td></tr>
+</table>
+
+<div id="GOAExitPolltable" style="margin-top:-83px;">
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Goa State Exit polls</span>
+<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>CONG</th>
+<th>BJP</th>
+
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+   
+    <td>17</td>
+	<td>20</td>
+    <td>3</td>
+
+  </tr>
+  <tr>
+<tr> <th>STAR</th>
+    <td>15-19</td>
+    <td>18-22</td>
+    <td>-</td></tr><tr>
+<th>India TV-C</th>
+   
+    <td>17</td>
+	<td>20</td>
+    <td>-</td>
+
+  </tr>
+
 </table>
 </div>
