@@ -25,9 +25,13 @@
 a:hover{
 text-decoration:none;
 }
+
+#UPtableDiv > table * td{text-align:center;}
+
+
 </style>
 
-<div style="background:#ffffff; width: 979px;">
+<div style="background:#ffffff; width: 979px;padding-bottom: 13px;">
 <img src="images/specialPage/up2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="UttarPradesh 2012 Election" title="UttarPradesh 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-center: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" >
@@ -172,4 +176,64 @@ UttarPradesh Assembly Previous Election Results</h3>
 </table>
 </td></tr>
 </table>
+
+<div id="UPtableDiv" style="margin-top:17px;">
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">2012 UttarPradesh State Exit polls</span>
+<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+<tr>
+
+<!--<th>Source</th>
+<th>INC</th>
+<th>BJP</th>
+<th>NCP</th>
+<th>MAG</th>
+<th>OTHERS</th>-->
+<th> Source</th>
+<th>BJP</th>
+<th>BSP</th>
+<th>CONG+</th>
+<th>SP</th>
+<th>OTHERS</th>
+</tr>
+<tr>
+    <th>NDTV</th>
+    <td>68</td>
+    <td>98</td>
+    <td>53</td>
+	<td>172</td>
+    <td>12</td>
+
+  </tr>
+  <tr>
+
+
+  
+ <tr> <th>STAR</th>
+    <td>71</td>
+    <td>83</td>
+    <td>62</td>
+	<td>183</td>
+    <td>-</td></tr>
+
+
+
+	<tr><th>NEWS-24</th>
+    <td>55</td>
+    <td>85</td>
+    <td>55</td>
+	<td>185</td>
+    <td>-</td>
+
+	</tr>
+<tr>	<th>India TV-C</th>
+    <td>71</td>
+    <td>83</td>
+    <td>62</td>
+	<td>137-145</td>
+    <td>-</td></tr><tr>
+
+
+
+  </tr>
+</table></div>
 </div>
