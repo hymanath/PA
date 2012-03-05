@@ -28,9 +28,9 @@ public class StateRegionDistrictDAOHibernateTest extends BaseDaoTestCase{
 
 	@SuppressWarnings("unchecked")
 	public void test(){
-		List<String> list = stateRegionDistrictDAO.getStateRegionDistrictByType(3l);	
-		
-		System.out.println(list);
+		List<Long> list = stateRegionDistrictDAO.getConstituenciesCountByDistrictRegion(7l);	
+		for(int i=0;i<list.size();i++)
+		System.out.println(list.get(i));
 	
 	}
 }
