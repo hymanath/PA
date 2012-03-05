@@ -14,4 +14,6 @@ public interface IStateRegionDistrictDAO extends GenericDao<StateRegionDistrict,
 	
 	@SuppressWarnings("unchecked")
 	public List getDistrictsInARegion(Long regionId);
+	
+	public List<Long> getConstituenciesCountByDistrictRegion(Long regionId);
 }
