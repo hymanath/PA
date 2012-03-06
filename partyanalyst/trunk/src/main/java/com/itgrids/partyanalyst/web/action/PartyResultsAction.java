@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -165,7 +166,11 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		
 		try{
 			
-		
+			HttpSession session = request.getSession();
+			
+			if(session.getAttribute(IConstants.USER) == null)
+				return IConstants.NOT_LOGGED_IN;
+			
 		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 		String reportError = rb.getString("noResults");
 		
