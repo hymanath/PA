@@ -373,10 +373,7 @@ text-decoration:none;
 		
 </div>
 		
-
-          
-          
-          <!--CURRENT ELECTION SECTION START-->
+	<!--CURRENT ELECTION SECTION START-->
           
           <div class="ce-sec" style="padding-top:0px;">
 	<h1 class="title"><span class="orange">Current </span>Elections</h1> <div id="wrap">
@@ -384,11 +381,13 @@ text-decoration:none;
                 <div class="prev"><img src="./images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div>
                 <div class="slider">
                   <ul>
-				  <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
-				  <li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
-				  <li> <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><img src="./images/new_homepage/uttaranchal.png" alt="Uttarakhand 2012 Election"/> <span>Uttarakhand</span> </a></li>
-				  <li> <a href="specialPageAction.action?specialPageId=7" title="Goa 2012 Election"><img src="./images/new_homepage/goa.jpg" alt="Goa 2012 Election"/> <span>Goa</span> </a></li>
-                  <li> <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"><img src="./images/new_homepage/manipur.png" alt="Manipur 2012 Election" /> <span>Manipur</span> </a></li>
+					<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Elections In Telangana"><img src="./images/new_homepage/Chadra Babu _ KCR.png" alt="UttarPradesh 2012 Election" /> <span>AP Bye Elections - 2012</span> </a></li>
+					<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Election In Kovver"><img src="./images/new_homepage/Kiran Kumar _Y.S. Jagan.png" alt="UttarPradesh 2012 Election" /> <span>Kovver Bye Election</span> </a></li>
+    				 <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
+				  	<li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
+				  	<li> <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><img src="./images/new_homepage/uttaranchal.png" alt="Uttarakhand 2012 Election"/> <span>Uttarakhand</span> </a></li>
+				  	<li> <a href="specialPageAction.action?specialPageId=7" title="Goa 2012 Election"><img src="./images/new_homepage/goa.jpg" alt="Goa 2012 Election"/> <span>Goa</span> </a></li>
+                 	<li> <a href="specialPageAction.action?specialPageId=6" title="Manipur 2012 Election"><img src="./images/new_homepage/manipur.png" alt="Manipur 2012 Election" /> <span>Manipur</span> </a></li>
 				</ul>
                 </div>
                 <div class="next" style="right:-30px;"><img src="./images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div>
