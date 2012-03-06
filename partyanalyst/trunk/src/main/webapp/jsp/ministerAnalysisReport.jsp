@@ -211,10 +211,10 @@ function getElectionYears(electionType)
 	   {
 	    
 	   str+='   <tr style="width:100%;">';
-	   str+='      <td style="width:13%;"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
+	   str+='      <td style="width:13%;text-align:left;"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
 	   if(id == "showData")
 	   {
-	     str+='      <td style="width:13%;">'+result[i].positionName+'</td>';
+	     str+='      <td style="width:13%;text-align:left;">'+result[i].positionName+'</td>';
 	   }
 	 if(result[i].currentResult.positionManagementVOList.length >0)
 	 {
@@ -226,8 +226,8 @@ function getElectionYears(electionType)
 	     {
 	      str+='             <tr style="width:100%;">';
 	      str+='                  <td style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	      str+='                  <td style="width:33%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
-	      str+='                  <td style="width:33%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].result+'</td>';
+	      str+='                  <td style="width:33%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td style="width:33%;border:0px;text-align:left;">'+result[i].currentResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
 	   str+='         </table>';
@@ -241,7 +241,7 @@ function getElectionYears(electionType)
 	    {
 	     str+='             <tr style="width:100%;">';
 	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].currentResult.positionManagementVOList[j].rank == 1)
@@ -295,7 +295,7 @@ function getElectionYears(electionType)
 	     {
 	      str+='             <tr  style="width:100%;">';
 	      str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	      str+='                  <td  style="width:33%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td  style="width:33%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	      str+='                  <td  style="width:33%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
@@ -310,7 +310,7 @@ function getElectionYears(electionType)
 	    {
 	     str+='             <tr  style="width:100%;">';
 	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].previousResult.positionManagementVOList[j].rank == 1)
