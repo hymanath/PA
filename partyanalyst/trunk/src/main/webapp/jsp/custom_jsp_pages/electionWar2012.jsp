@@ -190,234 +190,207 @@ background:red !important;
 				
 				</ul>
 			</div>
+
+<div>
+<!--<span style="background:red;padding:4px;margin-left:9px;-moz-border-radius: 3px;">2012 UttarPradesh Live Results</span>-->
+
+</div>
+<style>
+.resrep{display:inline-block;width:470px;margin:5px;border:1px solid #5e5e5e;margin-bottom:10px;margin-left:10px;padding-bottom:5px;}
+.resrep h2{border-bottom:2px solid #999999;margin-top:0px;background:#5e5e5e;color:#fff;padding:2px;}
+.resrep > div{float:right;padding:10px;}
+.span1{padding:10px;color:red;font-size:13px;font-weight:bold;}
+.span2{padding:10px;color:Navy;font-size:13px;font-weight:bold;}
+.resrep table th{background:#f3f3f3;color:#000;border:1px solid #cccccc;font:13px Arial;font-weight:bold;}
+.resrep table td{text-align:center;font:12px Arial;}
+</style>
 <div id="electionResulttable" style="margin-top:13px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttarPradesh State Exit polls</span>
-<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
-<tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
-<th> Source</th>
-<th>BJP</th>
-<th>BSP</th>
-<th>CONG+</th>
-<th>SP</th>
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-    <td>68</td>
-    <td>98</td>
-    <td>53</td>
-	<td>172</td>
-    <td>12</td>
-
-  </tr>
-  <tr> <th>STAR</th>
-    <td>71</td>
-    <td>83</td>
-    <td>62</td>
-	<td>183</td>
-    <td>-</td></tr>
-
-
-	<tr><th>NEWS-24</th>
-    <td>55</td>
-    <td>85</td>
-    <td>55</td>
-	<td>185</td>
-    <td>-</td>
-
-	</tr>
-<tr>	<th>India TV-C</th>
-    <td>71</td>
-    <td>83</td>
-    <td>62</td>
-	<td>137-145</td>
-    <td>-</td></tr>
-
-  </tr>
+<div class="resrep">
+<h2>UttarPradesh Live Results</h2>
+<div style="clear:both;"><span class="span1" style="padding-left: 0px; margin-left: 0px; padding-right: 48px;">Total Seats:403</span>
+<span class="span2" style="padding-right: 77px;">Know Results/Leading:403</span>
+</div>
+<table width="100%" bordercolor="#d2e888" border="1" style="border-collapse: collapse;">
+<tr><th>Party Name</th>
+			<th>Participated Seats</th>
+			<th>2007 Won</th>
+			<th>Won/Leading</th>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
+			<td>403</td>
+			<td>206</td>
+			<td>84</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+			<td>350</td>
+			<td>51</td>
+			<td>52</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">CONC+</a></th>
+			<td>393</td>
+			<td>22</td>
+			<td>37</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=839">SP</a></th>
+			<td>393</td>
+			<td>97</td>
+			<td>214</td>
+			</tr>
+			
+			<tr>
+			<th><a href="partyPageAction.action?partyId=729">OTHERS</a></th>
+			<td>--</td>
+			<td>--</td>
+			<td>16</td>
+			</tr>
 </table>
-<span style="background:#D2E888;padding:4px; float: right;margin-right: 370px;margin-top: -177px;-moz-border-radius: 3px;">Goa State Exit polls</span>
-<table width="50%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:-147px;margin-right:8px;float:right;">
-<tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
-<th> Source</th>
-<th>CONG</th>
-<th>BJP</th>
-
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-   
-    <td>17</td>
-	<td>20</td>
-    <td>3</td>
-
-  </tr>
-  <tr>
-  <th>STAR</th>
-    <td>15-19</td>
-    <td>18-22</td>
-    <td>-</td>
-	
-  </tr>
-
-
-
-<th>TV-C</th>
-   
-    <td>17</td>
-	<td>20</td>
-    <td>-</td>
-
-  </tr>
-
-
-
-</table>
-<div id="punjabtableDiv" style="margin-top:17px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Punjab State Exit polls</span>
-<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
-<tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
-<th> Source</th>
-<th>AKALI+</th>
-<th>CONG</th>
-<th>PPP+</th>
-<th>BSP</th>
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-    <td>51</td>
-    <td>59</td>
-    <td>2</td>
-	<td>2</td>
-    <td>3</td>
-
-  </tr>
-   <tr>
-<th>STAR</th>
-    <td>56</td>
-    <td>58</td>
-    <td>-</td>
-	<td>-</td>
-    <td>2</td>
-  </tr>
-
-   <tr>
-<th>NEWS-24</th>
-    <td>52</td>
-    <td>60</td>
-    <td>-</td>
-	<td>-</td>
-    <td>-</td>
-  </tr>
-</table></div>
-<span style="background:#D2E888;padding:4px; float: right;margin-right: 323px;margin-top: -148px;-moz-border-radius: 3px;">UttarKhand State Exit polls</span>
-<table width="50%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:-119px;margin-right:8px;float:right;">
-<tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
-<th> Source</th>
-<th>CONG</th>
-<th>BJP</th>
-<th>BSP</th>
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-   
-    <td>34</td>
-	<td>27</td>
-    <td>3</td>
-	<td>6</td>
-
-  </tr>
-  <tr>
- <th>STAR</th>
-    <td>29(+8)</td>
-    <td>36</td>
-    <td>-</td>
-	<td>5</td>
-  </tr>
-   <tr>
- <th>NEWS-24</th>
-    <td>31-41</td>
-    <td>22-32</td>
-    <td>-</td>
-	<td>-</td>
-  </tr></tr>
-</table>
-
-<div id="manipurTableDiv" style="margin-top:17px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius:3px;">Manipur State Exit polls</span>
-<table width="47%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
-<tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
-<th> Source</th>
-<th>CONG</th>
-<th>PDF</th>
-<th>TMC</th>
-
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-    <td>26</td>
-    <td>10</td>
-    <td>10</td>
-	<td>14</td>
-   
-
-  </tr>
-
-  <tr>
-    <th>NEWS-24</th>
-    <td>25</td>
-    <td>-</td>
-    <td>10</td>
-	<td>-</td>
-   
- 
-  <!--<th>TV9</th>
-    <td>100</td>
-    <td>100</td>
-    <td>100</td>
-	<td>100</td>-->
-   
-  </tr>
-</table></div>
 </div>
 
-</div>
+<div class="resrep" style="padding-bottom:50px;">
+<h2>Goa State Live Results</h2>
+<div style="clear:both;">
+<span class="span1" style="padding-left: 0px; margin-left: 0px; padding-right: 48px;">Total Seats:40 </span>
+<span class="span2" style="padding-right: 67px;">Know Results/Leading:39/40</span></div>
 
+<table width="100%" cellspacing="0" cellpadding="0" bordercolor="#d2e888" border="1" style="border-collapse: collapse;">
+<tr><th>Party Name</th>
+			
+			<th>Participated Seats</th>
+			<th>2007 Won Seats</th>
+			<th>Won/Leading</th>
+			</tr>
+			
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+			<td>33</td>
+			<td>14</td>
+			<td>21</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
+			<td>32</td>
+			<td>16</td>
+			<td>9</td>
+			</tr>
+			
+			<tr>
+			<th><a href="javascript:{}">Others</a></th>
+			<td>-</td>
+			<td>-</td>
+			<td>10</td>
+			</tr></table> 
+           </div>
+
+<div class="resrep">
+
+<h2>Punjab Live Results</h2>
+<div style="clear:both">
+<span class="span1" style="padding-left: 0px; margin-left: 0px; padding-right: 48px;">Total Seats:117 </span>
+<span class="span2" style="padding-right: 59px;">Know Results/Leading:117/117</span>
+<!-- punjab -->
+</div>
+<table width="100%" cellspacing="0" cellpadding="0" bordercolor="#d2e888" border="1" style="border-collapse: collapse;">
+<tr><th>Party Name</th>
+			
+			<th>Participated Seats</th>
+			<th>2007 Won Seats</th>
+			<th>Won/Leading</th>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=239">SAD+</a></th>
+			<td>115</td>
+			<td>0</td>
+			<td>68</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">INC</a></th>
+			<td>23</td>
+			<td>19</td>
+			<td>46</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">OTHERS</a></th>
+			<td>116</td>
+			<td>44</td>
+			<td>3</td>
+			</tr>
+			
+			
+</table></div>
+<div class="resrep" style="padding-bottom:4px;">
+<h2>UttarKhand Live Results</h2>
+<div style="clear:both;">
+<span class="span1" style="padding-left: 0px; margin-left: 0px; padding-right: 48px;">Total Seats:70 </span>
+<span class="span2" style="padding-right: 86px;">Know Results/Leading:70</span></div>
+
+<table width="100%" cellspacing="0" cellpadding="0" bordercolor="#d2e888" border="1" style="border-collapse: collapse;">
+<tr><th>Party Name</th>
+			
+			<th>Participated Seats</th>
+			<th>2007 Won Seats</th>
+			<th>Won/Leading</th>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
+			<td>69</td>
+			<td>8</td>
+			<td>3</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+			<td>69</td>
+			<td>34</td>
+			<td>31</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
+			<td>69</td>
+			<td>21</td>
+			<td>32</td>
+			</tr>
+			<tr>
+			<th><a href="javascript:{}">SP</a></th>
+			<td>55</td>
+			<td>0</td>
+			<td>4</td>
+			</tr>
+
+</table>
+</div>
+<div class="resrep">
+<h2>Manipur Live Results</h2><div style="clear:both">
+<span class="span1" style="padding-left: 0px; margin-left: 0px; padding-right: 48px;">Total Seats:60 </span>
+<span class="span2" style="padding-right: 86px;">Know Results/Leading:60</span></div>
+<table width="100%" cellspacing="0" cellpadding="0" bordercolor="#d2e888" border="1" style="border-collapse: collapse;">
+<tr><th>Party Name</th>
+			
+			<th>Participated Seats</th>
+			<th>2007 Won Seats</th>
+			<th>Won/Leading</th>
+			</tr>
+			
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">AITC</a></th>
+			<td>14</td>
+			<td>0</td>
+			<td>7</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
+			<td>59</td>
+			<td>30</td>
+			<td>42</td>
+			</tr>
+			<tr>
+			<th><a href="javascript:{}">Others</a></th>
+			<td>-</td>
+			<td>-</td>
+			<td>11</td>
+			</tr>
+			
+</table></div>
+</div>
