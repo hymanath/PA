@@ -47,6 +47,21 @@
 		margin-bottom: 5px;
 
 	}
+
+
+
+	.yui-skin-sam .yui-pg-container 
+	{
+	    display: block;
+	    font-size: 13px;
+	    margin: 4px 0;
+	    text-align: center;
+	    white-space: nowrap;
+	}
+
+
+
+
 	/* Big box with list of options */
 	#ajax_listOfOptions{
 		position:absolute;	/* Never change this one */
