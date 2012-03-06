@@ -304,7 +304,8 @@
 			<result name="success">/jsp/partyResultsPage.jsp</result>						
 			<result name="input">/jsp/partyResultsPage.jsp</result>
 			<result name="error">/jsp/partyResultsCriteriaPage.jsp</result>		
-			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>		
+			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>		
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
@@ -3005,7 +3006,6 @@
 		<action name="ministerAnalysisAction" class="ministerAnalysisAction">
 			<result name="success">/jsp/ministerAnalysisReport.jsp</result> 
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
-		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="constituencyPageAction2" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction">
@@ -3019,7 +3019,6 @@
 		<action name="electionLiveResultsAnalysisAction" class="electionLiveResultsAnalysisAction">
 			<result name="success">/jsp/electionLiveResultsAnalysis.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
-		    <result name="error">/jsp/entitlementErrorPage.jsp</result> 
 		</action>
 		<action name="getResultsAjaxAction" class="electionLiveResultsAnalysisAction" method="ajaxCallHandlerElectionLiveResults">
 			<result type="json" name="success">
@@ -3088,7 +3087,6 @@
 	 	<action name="districtWisePartyPerformanceAction" class="districtWisePartyPerformanceAction">
 			<result name="success">/jsp/districtWisePartyPerformanceAnalysis.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
-			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 	 	
 	 	<action name="getGenderAnalysisInElectionAction" class="electionLiveResultsAnalysisAction" method="ajaxCallHandlerElectionLiveResults">
