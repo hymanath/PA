@@ -139,12 +139,8 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute(IConstants.USER) == null && 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
-			return IConstants.NOT_LOGGED_IN;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.LIVE_RESULTS_ANALYSIS_ENTITLEMENT))
-			return ERROR;
-		
+		if(session.getAttribute(IConstants.USER) == null)
+			return IConstants.NOT_LOGGED_IN;		
 		 return SUCCESS;
 	 }
 	 
