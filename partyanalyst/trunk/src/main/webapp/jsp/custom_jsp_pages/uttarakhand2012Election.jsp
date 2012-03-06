@@ -172,19 +172,19 @@ Uttarakhand Assembly Live Election Results</h3>
 			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
 			<td>69</td>
 			<td>34</td>
-			<td>35</td>
+			<td>31</td>
 			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
 			<td>69</td>
 			<td>21</td>
-			<td>29</td>
+			<td>32</td>
 			</tr>
 			<tr>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>3</td>
+			<td>4</td>
 			</tr>
 			
 		</table>

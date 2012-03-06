@@ -173,19 +173,19 @@ Manipur Assembly Live Election Results</h3>
 			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
 			<td>59</td>
 			<td>30</td>
-			<td>35</td>
+			<td>42</td>
 			</tr>
 			<tr>
-			<th><a href="javascript:{}">PDF</a></th>
+			<th><a href="javascript:{}">AITC</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>1</td>
+			<td>7</td>
 			</tr>
 			<tr>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>15</td>
+			<td>11</td>
 			</tr>
 			
 		</table>

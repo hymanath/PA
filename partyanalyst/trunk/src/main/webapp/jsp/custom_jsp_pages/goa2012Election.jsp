@@ -178,7 +178,7 @@ Goa Assembly Live Election Results</h3>
 			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
 			<td>33</td>
 			<td>14</td>
-			<td>23</td>
+			<td>21</td>
 			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
@@ -191,7 +191,7 @@ Goa Assembly Live Election Results</h3>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>7</td>
+			<td>10</td>
 			</tr>
 		</table>
 	</td></tr>
