@@ -526,7 +526,7 @@ function getDeltailForMinisImpCand()
 	           <a  id="minisPerf" onclick="showMinisPerf(this.id);">Ministers Performance</a>
 	           <a  id="impCandPerf" onclick="showImpCandPerf(this.id);">Important Candidates Performance</a>
          </div>
-   <div style="padding-top:10px;padding-left:250px;width:65%;text-align:center;">
+   <div style="padding-top:10px;padding-left:250px;width:70%;text-align:center;">
      <table>  
 	  <tr>
 	      <td><input type="radio" name="selectScope" checked="true" id="parlSel" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
