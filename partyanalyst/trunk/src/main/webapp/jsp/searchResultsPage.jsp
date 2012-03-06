@@ -229,6 +229,16 @@ table.searchCriteria{
 	color:#474B51;
 	padding:5px;
 }
+
+
+.yui-skin-sam .yui-pg-container 
+	{
+	    display: block;
+	    font-size: 13px;
+	    margin: 4px 0;
+	    text-align: center;
+	    white-space: nowrap;
+	}
 </style>
 
 <script type="text/javascript">
