@@ -22,12 +22,8 @@ public class DistrictWisePartyPerformanceAction extends ActionSupport implements
 	public String execute()
 	{
         HttpSession session = request.getSession();		
-		if(session.getAttribute(IConstants.USER) == null && 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICTWISE_LIVE_RESULTS_ANALYSIS))
+		if(session.getAttribute(IConstants.USER) == null)
 			return IConstants.NOT_LOGGED_IN;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICTWISE_LIVE_RESULTS_ANALYSIS))
-			return ERROR;
-		
 		return Action.SUCCESS;
 	}
 
