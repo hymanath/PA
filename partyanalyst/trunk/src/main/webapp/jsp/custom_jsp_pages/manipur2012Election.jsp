@@ -204,7 +204,7 @@ Manipur Assembly Live Election Results</h3>
 <tr>
 <td colspan="5">
 <br>
-<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performance</span></td>
+<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances</span></td>
 </tr>
 <tr>
 
