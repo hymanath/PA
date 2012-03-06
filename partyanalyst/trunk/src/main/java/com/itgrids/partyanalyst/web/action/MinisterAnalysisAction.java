@@ -86,11 +86,9 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute(IConstants.USER) == null && 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.MINISTERS_AND_SPECIAL_CANDIDATES_ANALYSIS))
+		if(session.getAttribute(IConstants.USER) == null)
 			return IConstants.NOT_LOGGED_IN;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.MINISTERS_AND_SPECIAL_CANDIDATES_ANALYSIS))
-			return ERROR;
+		
 			statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
 			
 			return SUCCESS;
