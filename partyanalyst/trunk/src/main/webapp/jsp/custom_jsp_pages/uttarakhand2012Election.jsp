@@ -203,7 +203,7 @@ Uttarakhand Assembly Live Election Results</h3>
 <tr>
  </td> 
 <br>
-<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performance</span>
+<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances</span>
 <br><br>
 </td>
 </tr>
