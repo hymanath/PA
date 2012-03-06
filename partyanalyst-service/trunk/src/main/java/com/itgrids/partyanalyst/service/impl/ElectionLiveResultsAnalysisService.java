@@ -1146,6 +1146,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		{	
 			//retrieving all the previous election ministers id's  
 	        candidates = electionGoverningBodyDAO.getAllMinistersIdsAndMinistry(prevElectionId);
+	        candidates = getUniqueCandidates(candidates);
 		}
 		else
 		{
@@ -1271,7 +1272,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			    	  prevResultData.setConstituencyName(constis[1] != null?constis[1].toString():"");
 			    	  prevResultList.add(prevResultData);
 			       }
-			       prevResult.setYear(election.getElectionYear());
+			       prevResult.setYear(electionPrev.getElectionYear());
 			          prevResult.setIsPartial(1L);
 			          prevResult.setPositionManagementVOList(prevResultList);
 			          if(constiList.size() > 0)
@@ -1811,4 +1812,28 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			return null;
 		}
 	}
+  public List<Object[]> getUniqueCandidates(List<Object[]> candidates)
+  {
+	  List<Object[]> returnval = new ArrayList<Object[]>();
+	  Map<Long,Object[]> data = new HashMap<Long,Object[]>();
+	  for(Object[] candidate:candidates)
+	  {
+		  if(data.get(((Long)candidate[0]).longValue())!= null)
+		  {
+			  Object[] value = data.get(((Long)candidate[0]).longValue());
+			  value[2] = value[2].toString()+" , "+candidate[2].toString();
+			  data.put(((Long)candidate[0]).longValue(), value);
+		  }
+		  else
+		  {
+			  data.put(((Long)candidate[0]).longValue(), candidate);
+		  }
+	  }
+	  Set<Long> keys = data.keySet();
+	  for(Long key:keys)
+	  {
+		  returnval.add(data.get(key));
+	  }
+	  return returnval;
+  }
 }
