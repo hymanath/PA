@@ -283,6 +283,9 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		HttpSession session = request.getSession();
 		session = request.getSession();
 		
+		if(session.getAttribute(IConstants.USER) == null)
+			return "showMessage";
+		
 		if(session != null)
 			hasECRPage = entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ECR_DETAILED_ANALYSIS);
 				
