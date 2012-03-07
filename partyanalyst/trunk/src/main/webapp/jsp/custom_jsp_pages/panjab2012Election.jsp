@@ -211,11 +211,51 @@ Punjab Assembly Live Election Results</h3>
 <br><br>
 <tr>
 
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPI</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPM</a></th></tr>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+BSP</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+BJP</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+INC</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPI</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+CPI</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}">
+<a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPM</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+CPM</a>
+</c:if>
+</th></tr>
 </table>
 </td>
 </tr>
