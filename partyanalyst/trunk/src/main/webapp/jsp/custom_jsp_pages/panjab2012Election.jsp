@@ -167,20 +167,20 @@ Punjab Assembly Live Election Results</h3>
 			
 			<th>Participated Seats</th>
 			<th>2007 Won Seats</th>
-			<th>Won/Leading</th>
+			<th>Won</th>
 			</tr>
-			<tr>
+			<!--<tr>
 			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
 			<td>115</td>
 			<td>0</td>
 			<td>0</td>
-			</tr>
-			<!--<tr>
+			</tr>-->
+			<tr>
 			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
 			<td>23</td>
 			<td>19</td>
-			<td>0</td>
-			</tr>-->
+			<td>12</td>
+			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
 			<td>116</td>
@@ -191,7 +191,7 @@ Punjab Assembly Live Election Results</h3>
 			<th><a href="partyPageAction.action?partyId=794">SAD+</a></th>
 			<td>93</td>
 			<td>48</td>
-			<td>68</td>
+			<td>56</td>
 			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=796">Others</a></th>
