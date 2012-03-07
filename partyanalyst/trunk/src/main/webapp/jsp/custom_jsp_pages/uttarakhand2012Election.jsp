@@ -160,7 +160,7 @@ Uttarakhand Assembly Live Election Results</h3>
 			
 			<th>Participated Seats</th>
 			<th>2007 Won Seats</th>
-			<th>Won/Leading</th>
+			<th>Won</th>
 			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
@@ -181,10 +181,17 @@ Uttarakhand Assembly Live Election Results</h3>
 			<td>32</td>
 			</tr>
 			<tr>
+			<th><a href="partyPageAction.action?partyId=1216">Uttarakhand Kranti Dal(P)</a></th>
+			<td>69</td>
+			<td>21</td>
+			<td>1</td>
+			</tr>
+			
+			<tr>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>4</td>
+			<td>3</td>
 			</tr>
 			
 		</table>
