@@ -31,6 +31,14 @@
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
 <style>
+.pft-sec {
+    color: #777777;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 32px 0 16px 112px;
+    width: 244px;
+}
 .container {
     	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
     	background-color: #FFFFFF;
@@ -863,6 +871,7 @@ share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${special
     <!--CONTENT SECTION END--> 
  
  <!--CONTENT MAIN SECTION END--> 
+<div id="loginPopupDiv"></div>
 
 <script type="text/javascript">
   
