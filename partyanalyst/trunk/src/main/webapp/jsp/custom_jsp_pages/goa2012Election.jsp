@@ -157,7 +157,7 @@ Goa Assembly Live Election Results</h3>
       <td>
 	    <tr>
           <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:40 </span></td>
-          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:39</span></td>
+          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:40</span></td>
       
        </tr>
    </table>
@@ -171,7 +171,7 @@ Goa Assembly Live Election Results</h3>
 			
 			<th>Participated Seats</th>
 			<th>2007 Won Seats</th>
-			<th>Won/Leading</th>
+			<th>Won</th>
 			</tr>
 			
 			<tr>
@@ -186,12 +186,17 @@ Goa Assembly Live Election Results</h3>
 			<td>16</td>
 			<td>9</td>
 			</tr>
-			
+			<tr>
+			<th><a href="partyPageAction.action?partyId=523">MAG</a></th>
+			<td>32</td>
+			<td>16</td>
+			<td>3</td>
+			</tr>
 			<tr>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>10</td>
+			<td>7</td>
 			</tr>
 		</table>
 	</td></tr>
