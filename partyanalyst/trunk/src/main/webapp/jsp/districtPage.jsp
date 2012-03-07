@@ -45,7 +45,7 @@
 	#mla_body{border-collapse:collapse;border:1px solid #d3d3d3;width:96%;}
 	#mpsInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
 	#mlaInfoDivBody > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
-	#dataTable6 > table,#dataTable3 > table, #corporationDataTable0 > table ,#dataTable5 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:111%;margin-left:3px;}
+	#dataTable6 > table,#dataTable3 > table, #corporationDataTable0 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:111%;margin-left:3px;}
 	#partyDetails > table,#mptcPartyDetails > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;}
 	#mptc_zptc_div_main table2,{border-collapse:collapse;border:1px solid #d3d3d3;width:870px;}
 	#dataTable4,#dataTable3{width:429px;}
@@ -99,17 +99,18 @@
 	height:300px;
 	}
 
-	#dataTable0 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:118%;}
+	#dataTable5 > table,#dataTable0 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:118%;}
 	#dataTable1 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:129%;}
 	#dataTable2 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;margin-left:3px;width:117%;}
-
-	
 	#allMuncipalitiesDetails3{width:96%;}
 	#mptcPartyDetails table{width:114%;margin-left:13px;}
 	#partyDetails table{width:130%;margin-left:13px;}
-	#allMuncipalitiesDetails1,#allMuncipalitiesDetails3,#allMuncipalitiesDetails2,#allMuncipalitiesDetails0{margin-left:20px;}
-	
-
+	#allMuncipalitiesDetails10,#allMuncipalitiesDetails9,#allMuncipalitiesDetails7,#allMuncipalitiesDetails8,#allMuncipalitiesDetails6,#allMuncipalitiesDetails5,#allMuncipalitiesDetails4,#allMuncipalitiesDetails1,#allMuncipalitiesDetails3,#allMuncipalitiesDetails2,#allMuncipalitiesDetails0{margin-left:20px;}
+	#dataTable10 > table,#dataTable9 > table,#dataTable8 > table,#dataTable7 > table{display:table;border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	dataTable10 > table th,#dataTable9 > table th,#dataTable8 > table th,#dataTable7 > table th{background-color:#ceedf0 !important;text-align:left;height:20px;border-collapse:collapse;font-weight:bold;padding:5px;}
+	#dataTable10 > table * td,#dataTable9 > table * td,#dataTable8 > table * td,#dataTable7 > table * td {margin-left:auto;margin-right:auto;float:none;font:13px Arial, Helvetica, sans-serif;text-align:center;font-weight:bold;color:#73787;}
+	#dataTable10 > table * tr:nth-child(odd),#dataTable9 > table * tr:nth-child(odd),#dataTable8 > table * tr:nth-child(odd),#dataTable7 > table * tr:nth-child(odd){background:#f9f9f9;}
+	#dataTable10 > table,#dataTable9 > table,#dataTable8 > table{margin-top:13px;}
 
 	</style>
 
@@ -1327,8 +1328,8 @@
 		graphDivStr += '<table>';
 		graphDivStr += '<tr>';
 		//graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
-		graphDivStr += '<td><div id="graphElectionTypeLabel"></div></td>';
-		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';		
+		graphDivStr += '<td><div id="graphElectionTypeLabel" style="margin-top:15px;"></div></td>';
+		graphDivStr += '<td><div id="graphElectionTypeSelect" style="margin-top:13px;"></div></td>';		
 		graphDivStr += '</tr>';
 		graphDivStr += '<tr>';
 		graphDivStr += '<td colspan="2" align="center"><img id="barloaderImage" src="images/icons/barloader.gif" style="display:none;"/></td>';
