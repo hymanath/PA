@@ -3678,3 +3678,22 @@ var specialPageId=document.getElementById("specialPageId").value;
 	var url = "getEventGallariesForUplaodPhotoAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
+function checkUserLoginStatus(user,divId)
+{
+	if(user == '' || user == null) 
+	{
+		 document.getElementById(divId).style.display='block';
+			var str='';
+		$("#"+divId+"").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only registered users can view this content.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById(divId).innerHTML = str;
+	}
+}
