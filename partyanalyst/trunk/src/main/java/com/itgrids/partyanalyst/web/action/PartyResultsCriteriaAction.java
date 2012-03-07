@@ -73,6 +73,10 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 	public String execute() {	
 		
 		session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null)
+			return "showMessage";
+		
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_RESULTS_REPORT))
 			return INPUT;
