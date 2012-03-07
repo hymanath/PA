@@ -146,7 +146,7 @@ Manipur Assembly Live Election Results</h3>
       <td>
 	    <tr>
           <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:60 </span></td>
-          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:51</span></td>
+          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:60</span></td>
       
        </tr>
    </table>
@@ -160,14 +160,14 @@ Manipur Assembly Live Election Results</h3>
 			
 			<th>Participated Seats</th>
 			<th>2007 Won Seats</th>
-			<th>Won/Leading</th>
+			<th>Won</th>
 			</tr>
 			
-			<tr>
-			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+		<tr>
+			<th><a href="partyPageAction.action?partyId=579">NCP</a></th>
 			<td>14</td>
 			<td>0</td>
-			<td>0</td>
+			<td>1</td>
 			</tr>
 			<tr>
 			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
@@ -176,16 +176,29 @@ Manipur Assembly Live Election Results</h3>
 			<td>42</td>
 			</tr>
 			<tr>
-			<th><a href="javascript:{}">AITC</a></th>
+			<th><a href="partyPageAction.action?partyId=492">LJNSP</a></th>
+			<td>14</td>
+			<td>0</td>
+			<td>1</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=76">AITC</a></th>
 			<td>-</td>
 			<td>-</td>
 			<td>7</td>
 			</tr>
 			<tr>
+			<th><a href="partyPageAction.action?partyId=599">NPF</a></th>
+			<td>-</td>
+			<td>-</td>
+			<td>4</td>
+			</tr>
+
+			<tr>
 			<th><a href="javascript:{}">Others</a></th>
 			<td>-</td>
 			<td>-</td>
-			<td>11</td>
+			<td>5</td>
 			</tr>
 			
 		</table>
