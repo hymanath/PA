@@ -100,6 +100,8 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	public String execute() throws Exception {
 		
 		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return "showMessage";
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ELECTION_COMPARISION_REPORT))
 			return INPUT;
