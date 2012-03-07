@@ -239,7 +239,8 @@
 		<action name="electionComparisonAction" class="electionComparisonAction">
 			<result name="success">/jsp/electionComparisonPage.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=electionComparisonAction</result>
+			<result name="input">/jsp/loginForm.jsp?showMessage=yes&amp;src=electionComparisonAction</result>
+			<result name="showMessage">/jsp/loginForm.jsp?showMessage=yes&amp;src=electionComparisonAction</result>
 		</action>	
 		<action name="getElectionScopesForECAction" class="electionComparisonAction" method="getElectionScopesForEC" >
 			<result type="json" name="success">
@@ -269,6 +270,7 @@
 			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
+			<result name="showMessage">/jsp/loginForm.jsp?showMessage=yes&amp;src=electionComparisonAction</result>
 		</action>
 		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
@@ -296,7 +298,8 @@
 		<action name="partyResultsCriteriaAction" class="partyResultsCriteriaAction">
 			<result name="success">/jsp/partyResultsCriteriaPage.jsp</result>			
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=partyResultsCriteriaAction</result>
+			<result name="input">/jsp/loginForm.jsp?showMessage=yes&amp;src=partyResultsCriteriaAction</result>
+			<result name="showMessage">/jsp/loginForm.jsp?showMessage=yes&amp;src=partyResultsCriteriaAction</result>
 		</action>
 		
 		<action name="partyResultsAction" class="partyResultsAction">
@@ -305,7 +308,7 @@
 			<result name="input">/jsp/partyResultsPage.jsp</result>
 			<result name="error">/jsp/partyResultsCriteriaPage.jsp</result>		
 			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
-			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>		
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?showMessage=yes</result>		
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
