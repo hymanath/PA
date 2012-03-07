@@ -14,21 +14,74 @@ text-decoration:none;}
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top:0px;" ><tr><td  width="45%">
 
+<table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top:0px;" >
+
+<!------ LEFT SIDE NAV ------------->
+<tr><td  width="45%">
+
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: 0px;">2012 Panjab Exit Polls And Surveys</h3>
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: 0px;">Punjab 2012 Assembly Results, Exit Polls & Surveys</h3>
 <tr><td>
+<table>
+      <td>
+	    <tr>
+          <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:117 </span></td>
+          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:117</span></td>
+      
+       </tr>
+   </table>
+  </td>
+</tr>
+
+<tr><td colspan="2"><br>
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>2012 Results</b></span>
+
+	<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 100%; margin-left: 1px;">
+			<tr><th>Party Name</th>
+			
+			<th>Participated Seats</th>
+			<th>2007 Won Seats</th>
+			<th>Won</th>
+			</tr>
+			<!--<tr>
+			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
+			<td>115</td>
+			<td>0</td>
+			<td>0</td>
+			</tr>-->
+			<tr>
+			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+			<td>23</td>
+			<td>19</td>
+			<td>12</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
+			<td>116</td>
+			<td>44</td>
+			<td>46</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=794">SAD+</a></th>
+			<td>93</td>
+			<td>48</td>
+			<td>56</td>
+			</tr>
+			<tr>
+			<th><a href="partyPageAction.action?partyId=796">Others</a></th>
+			<td>--</td>
+			<td>--</td>
+			<td>3</td>
+			</tr>
+		</table>
+
+
+
 <div id="punjabExitPolltable" style="margin-top:9px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Punjab State Exit polls</span>
+<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>Punjab State Exit polls</b></span>
 <table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
 <tr>
-
-<!--<th>Source</th>
-<th>INC</th>
-<th>BJP</th>
-<th>NCP</th>
-<th>MAG</th>
-<th>OTHERS</th>-->
 <th> Source</th>
 <th>AKALI+</th>
 <th>CONG</th>
@@ -67,70 +120,21 @@ text-decoration:none;}
 </table>
 </div>
 
-<tr><td>
+<tr><td colspan="2">
+	<br>
+	<b><span style="-moz-border-radius:3px;margin-left:9px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br />
+	<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="96%">
+			   <tr>
+				  <td><b>Source</b></td>
+				  <td><b>INC</b></td>
+				  <td><b>BJP</b></td>
+				  <td><b>OTHERS</b></td>
+				</tr>
+			  <tr><td>Star News</td><td>63</td><td>53</td><td>1</td></tr>
+	</table>
 
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br />
-<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="96%">
-           <tr>
-			  <td><b>Source</b></td>
-              <td><b>INC</b></td>
-              <td><b>BJP</b></td>
-              <td><b>OTHERS</b></td>
-            </tr>
-		  <tr><td>Star News</td><td>63</td><td>53</td><td>1</td></tr>
-</table>
-</td></tr>
-
-</td></tr>
-<tr><td>
-<table  bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse;font-size:12px " width="96%">
-            <tbody><tr  style="background: #d2e888">
-              <td width="81" >S. No.</td>
-              <td width="345">Event</td>
-              <td width="214">Date</td>
-            </tr>
-            <tr>
-              <td align="center"><span>1</span></td>
-              <td><span>Issue of Notification</span></td>
-              <td><span>05.01.2012 (Thursday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>2</span></td>
-              <td><span>Last date for making Nominations</span></td>
-              <td><span>12.01.2012 (Thursday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>3</span></td>
-              <td><span>Scrutiny of Nominations</span></td>
-              <td><span>13.01.2012 (Friday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>4</span></td>
-              <td><span>Last date for withdrawal of candidature</span></td>
-              <td><span>16.01.2012 (Monday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>5</span></td>
-              <td><span>Date of Poll</span></td>
-              <td><span>30.01.2012 (Monday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>6</span></td>
-              <td><span>Counting of Votes</span></td>
-              <td><span>06.03.2012 (Sunday)</span></td>
-            </tr>
-            <tr>
-              <td align="center"><span>7</span></td>
-              <td><span>Date before which election process shall be completed</span></td>
-              <td><span>09.03.2012 (Friday)</span></td>
-            </tr>
-          </tbody></table></td></tr>
-
-
-</table>
-
-
-		  <div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
+<table width="100%"><tr><td>
+<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
 
 	<span class="gray">Are you a</span>
 	<strong>Politician
@@ -141,84 +145,33 @@ text-decoration:none;}
 	<div class="clickhere-button">
 	<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
 	</div>
-		  
-		  
+</td></tr>
+</table>
+</td></tr>
+</table>
+</td>
+ <td width="2%"></td>
 
-	<td width="2%"></td>
+	<!------------RIGHT SIDE PANEL ------------>
 	<td width="43%" valign="top">
 <table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
-Punjab Assembly Live Election Results</h3>
-
-<tr><td>
-<table>
-      <td>
-	    <tr>
-          <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:117 </span></td>
-          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:117</span></td>
-      
-       </tr>
-   </table>
-  </td>
-</tr>
+Punjab Assembly 2012 Live Election Analysis</h3>
 
 <tr>
-	<td>
-		<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 100%; margin-left: -10px;">
-			<tr><th>Party Name</th>
-			
-			<th>Participated Seats</th>
-			<th>2007 Won Seats</th>
-			<th>Won</th>
-			</tr>
-			<!--<tr>
-			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
-			<td>115</td>
-			<td>0</td>
-			<td>0</td>
-			</tr>-->
-			<tr>
-			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
-			<td>23</td>
-			<td>19</td>
-			<td>12</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
-			<td>116</td>
-			<td>44</td>
-			<td>46</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=794">SAD+</a></th>
-			<td>93</td>
-			<td>48</td>
-			<td>56</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=796">Others</a></th>
-			<td>--</td>
-			<td>--</td>
-			<td>3</td>
-			</tr>
-		</table>
-	</td></tr>
-
-	<tr>
-<td>
+<td colspan="2">
 <table>
-<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center>
+
 <br>
-<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances</span>
+<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1980 - 2012</span>
 <br><br>
 <tr>
-
 <th style="padding-right: 27px;">
 <c:if test="${loginStatus == 'out'}"> 
 <a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
 BSP</a>
 </c:if>
 </th>
@@ -227,7 +180,7 @@ BSP</a>
 <a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
 BJP</a>
 </c:if>
 </th>
@@ -236,7 +189,7 @@ BJP</a>
 <a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
 INC</a>
 </c:if>
 </th>
@@ -245,7 +198,7 @@ INC</a>
 <a href="partyResultsAction.action?selectedPartyShortName=SAD&selectedPartyId=794&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=794&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPI</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
 CPI</a>
 </c:if>
 </th>
@@ -254,7 +207,7 @@ CPI</a>
 <a href="partyResultsAction.action?selectedPartyShortName=SAD(M)&selectedPartyId=796&selectedElectionTypeName=Assembly&selectedLocationName=Punjab&electionType=2&reportLevel=State&stateSelectName=21&partySelectName=796&alliances=true&__checkbox_alliances=true&submitButton=Submit">CPM</a>
 </c:if>
 <c:if test="${sessionScope.USER == null}"> 
-<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+<a href="javascript:{}" onclick="checkUserLoginStatus('loginPopupDiv')">
 CPM</a>
 </c:if>
 </th></tr>
@@ -264,6 +217,11 @@ CPM</a>
 
 <tr><td colspan="7"> <br />
 <b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Punjab Assembly Elections Results </span></b><br /><br />
+<img src="images/icons/diamond.png">
+	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=182&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2012">2012
+	</a>
+
+&nbsp;
 <img src="images/icons/diamond.png">
 	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=136&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
 
@@ -279,9 +237,42 @@ CPM</a>
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=141&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1985"> 1985</a>
 &nbsp;<img src="images/icons/diamond.png">
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=142&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1980"> 1980</a>
-&nbsp;<img src="images/icons/diamond.png">
+&nbsp;<br /><br /><img src="images/icons/diamond.png">
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=144&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1977"> 1977</a>
+<br /><br /></td></tr>
+<tr>
+<td width="50%" colspan="2"><span style="background:#D2E888;color:#000;font-weight:bold;width:374px;margin:0px;padding:5px;-moz-border-radius:3px;">View Punjab Districts And Constituencies Results</span>
+<br></br></td></tr>
+<tr>
+<td>
+<div class="selectHeading">
+	<span class="selectDivStyle">Punjab Districts</span>
+	<span style="margin-left: 12px;">Know About Your District  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	<select class="selectBoxWidth" id="districtList_d" name="district">
+	<option value="0">Select District</option>
+     <option value="255">Amritsar</option><option value="267">Bathinda</option><option value="266">Faridkot</option><option value="261">Fatehgarh Sahib</option><option value="264">Firozpur</option><option value="254">Gurdaspur</option><option value="258">Hoshiarpur</option><option value="257">Jalandhar</option><option value="256">Kapurthala</option><option value="262">Ludhiana</option><option value="268">Mansa</option><option value="263">Moga</option><option value="265">Muktsar</option><option value="259">Nawanshahr </option><option value="270">Patiala</option><option value="260">Rupnagar</option><option value="269">Sangrur</option>
+   </select>
+   <div id="alertMessage_district"></div>
 
+	<div class="view-results"><a onclick="navigateToDistrictPage()" href="javascript:{}">view results</a></div>
+
+
+</div>
+</td>
+<td>
+<div class="selectHeading">
+	<span class="selectDivStyle">Punjab Constituencies </span>
+	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
+<select class="selectBoxWidth" id="constituency" name="constituency">
+<option value="0">Select Constituency</option>
+  <option value="38833">Abohar</option><option value="38770">Adampur</option><option value="38762">Ajnala</option><option value="38820">Amloh</option><option value="38760">Amritsar Central</option><option value="38758">Amritsar North</option><option value="38761">Amritsar South</option><option value="38759">Amritsar West</option><option value="38808">Anandpur Sahib Ropar</option><option value="38764">Attari</option><option value="38842">Bagha Purana</option><option value="38786">Balachaur</option><option value="38832">Balluana</option><option value="38779">Banga</option><option value="38812">Banur</option><option value="38825">Barnala</option><option value="38744">Batala</option><option value="38754">Beas</option><option value="38826">Bhadaur</option><option value="38853">Bhatinda</option><option value="38782">Bholath</option><option value="38858">Budhlada</option><option value="38809">Chamkaur Sahib</option><option value="38815">Dakala</option><option value="38797">Dakha</option><option value="38793">Dasuya</option><option value="38827">Dhanaula</option><option value="38840">Dharamkot</option><option value="38748">Dhariwal</option><option value="38822">Dhuri</option><option value="38750">Dina Nagar</option><option value="38829">Dirbha</option><option value="38846">Faridkot</option><option value="38743">Fatehgarh</option><option value="38834">Fazilka</option><option value="38837">Firozepur</option><option value="38838">Firozepur Cantonment</option><option value="38792">Garhdiwala</option><option value="38787">Garhshankar</option><option value="38814">Ghanaur</option><option value="38848">Giddar Baha</option><option value="38749">Gurdaspur</option><option value="38836">Guru Har Sahai</option><option value="38789">Hoshiarpur</option><option value="38795">Jagraon</option><option value="38835">Jalalabad</option><option value="38757">Jandiala</option><option value="38856">Joga</option><option value="38771">Jullundur Cantonment</option><option value="38773">Jullundur Central</option><option value="38772">Jullundur North</option><option value="38774">Jullundur South</option><option value="38747">Kahnuwan</option><option value="38783">Kapurthala</option><option value="38775">Kartarpur</option><option value="38766">Khadoor Sahib</option><option value="38806">Khanna</option><option value="38811">Kharar</option><option value="38845">Kot Kapura</option><option value="38804">Kum Kalan</option><option value="38850">Lambi</option><option value="38831">Lehra</option><option value="38776">Lohian</option><option value="38801">Ludhiana East</option><option value="38799">Ludhiana North</option><option value="38802">Ludhiana Rural</option><option value="38800">Ludhiana West</option><option value="38788">Mahilpur</option><option value="38755">Majitha</option><option value="38823">Malerkotla</option><option value="38849">Malout</option><option value="38857">Mansa</option><option value="38841">Moga</option><option value="38810">Morinda</option><option value="38794">Mukerian</option><option value="38847">Muktsar</option><option value="38819">Nabha</option><option value="38777">Nakodar</option><option value="38807">Nangal</option><option value="38751">Narot Mehra</option><option value="38854">Nathana</option><option value="38767">Naushahra Panwan</option><option value="38780">Nawan Shahr</option><option value="38843">Nihal Singh Wala</option><option value="38778">Nur Mahal</option><option value="38852">Pakka Kalan</option><option value="38844">Panjgrain</option><option value="38752">Pathankot</option><option value="38818">Patiala Town</option><option value="38768">Patti</option><option value="38803">Payal</option><option value="38785">Phagwara</option><option value="38781">Phillaur</option><option value="38745">Qadian</option><option value="38798">Qila Raipur</option><option value="38796">Raikot</option><option value="38763">Raja Sansi</option><option value="38813">Rajpura</option><option value="38855">Rampura Phul</option><option value="38817">Samana</option><option value="38805">Samrala</option><option value="38828">Sangrur</option><option value="38859">Sardulgarh</option><option value="38790">Sham Chaurasi</option><option value="38824">Sherpur</option><option value="38816">Shutrana</option><option value="38821">Sirhind</option><option value="38746">Srihargobindpur</option><option value="38753">Sujanpur</option><option value="38784">Sultanpur</option><option value="38830">Sunam</option><option value="38851">Talwandi Sabo</option><option value="38791">Tanda</option><option value="38765">Tarn Taran</option><option value="38769">Valtoha</option><option value="38756">Verka</option><option value="38839">Zira</option>
+ </select>
+<div id="alertMessage"></div>
+
+<div class="view-results"><a onclick="navigateToConstituencyPage()" href="javascript:{}">view constituency</a></div>
+</div>
+</td>
+</tr>
 
 <tr style="margin-left: 10px; margin-top: 5px;">
 <td colspan="7"><br><b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Major Parties In the State  </span></b><br><br>
@@ -294,48 +285,10 @@ CPM</a>
 <a href="partyPageAction.action?partyId=362" align="top">INC&nbsp;<img src="images/party_flags/INC.png" height="40px" width="60px">&nbsp;&nbsp;&nbsp; 
 <img src="images/icons/diamond.png"></a>
 <a href="partyPageAction.action?partyId=239" align="top">BSP&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
-
-
-
-<!--<tr><td colspan="7"> <br />
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">Previous Punjab Assembly Elections Results </span></b><br /><br />
-<img src="images/icons/diamond.png">
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=136&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2007">2007</a>
-
-&nbsp;<img src="images/icons/diamond.png">
-
-
-	<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=138&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2002"> 2002</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=139&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1997"> 1997</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=140&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1992"> 1992</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=141&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1985"> 1985</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=142&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1980"> 1980</a>
-&nbsp;<img src="images/icons/diamond.png">
-<a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=144&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=1977"> 1977</a>
--->
 </td></tr>
-
-<!--<tr><td colspan="7">
-<BR />
-<b><span style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br />
-<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="100%">
-           <tr>
-			  <td><b>Source</b></td>
-              <td><b>INC</b></td>
-              <td><b>BJP</b></td>
-              <td><b>OTHERS</b></td>
-            </tr>
-		  <tr><td>Star News</td><td>63</td><td>53</td><td>1</td></tr>
-</table>
-</td></tr>-->
+<tr><td colspan="7"><center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center></td>
+</tr>
 </table>
 </td></tr>
 </table>
-
-
-
 </div>
