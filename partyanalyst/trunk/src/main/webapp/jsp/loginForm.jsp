@@ -58,6 +58,7 @@ String partySelectName= "";
 String constituencySelectName= "";
 String districtSelectName= "";
 String candidateId = "";
+String showMessage = "";
 
 
 if(request.getParameter("candidateId")!=null){
@@ -193,6 +194,10 @@ if(request.getParameter("constituencyName")!=null){
 if(request.getParameter("problemHistoryId")!=null){
 	problemHistoryId = request.getParameter("problemHistoryId");
 }
+if(request.getParameter("showMessage")!=null){
+	showMessage = request.getParameter("showMessage");
+	
+}
 %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -286,11 +291,31 @@ if(request.getParameter("problemHistoryId")!=null){
 		line-height:20px;
 	}
 
+	#accessDiv 
+	{
+		background: none repeat scroll 0 0 #FFF8E5;
+		border: 1px solid #06ABEA;
+		border-radius: 7px 7px 7px 7px;
+		height: auto;
+		padding: 10px;
+		text-align: center;
+		width: 450px;
+	}
+
 	</style>	
 	</head>
 	<body><center>	 
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
+		</div>
+		<div style="background-color:#E4EDF0;"><br>
+		<div style="display:none;" id="accessDiv">
+			<img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;">Only Registered users can view this content.<br>
+			Already a member, Please Login Here.<br>
+			(OR)<br>
+			Not a member, Click here for <a href="freeUserRegistration.action">FREE REGISTRATION</a>.</h3>
+
+		</div>
 		</div>
 		<div id="loginPanel_main" class="background" style="align:center">
 		
@@ -482,7 +507,7 @@ if(request.getParameter("problemHistoryId")!=null){
 				</div>
 			</div>		
 		</div>
-        
+        <div id="showLoginErrorMsgDiv"></div>
        
 		</div>
 
@@ -668,32 +693,33 @@ function checkAvailability()
 
 </script>
 
+<script type="text/javascript">
 
+function executeOnload()
+{  
+   var checkedValue='';
+	checkedValue = '${sessionScope.checkedTypeValue}'; 
+	 if(checkedValue =="1")
+	  { 
+		  document.getElementById("paUserRadio").checked=true ;
+		  document.getElementById("freeUserRadio").checked=false;
+	  }
+	 if(checkedValue =="2")
+	 { 
+		  document.getElementById("paUserRadio").checked=false ;
+		  document.getElementById("freeUserRadio").checked=true;
+	  }
+	var textBoxEl = document.getElementById("userName");
+	textBoxEl.focus();
+	
+}
+		
+</script> 
 
-	<script type="text/javascript">
-	function executeOnload()
-	{  
-	   var checkedValue='';
-		checkedValue = '${sessionScope.checkedTypeValue}'; 
-		 if(checkedValue =="1")
-		  { 
-		      document.getElementById("paUserRadio").checked=true ;
-		      document.getElementById("freeUserRadio").checked=false;
-		  }
-		 if(checkedValue =="2")
-		 { 
-		      document.getElementById("paUserRadio").checked=false ;
-		      document.getElementById("freeUserRadio").checked=true;
-		  }
-		var textBoxEl = document.getElementById("userName");
-		textBoxEl.focus();
-		
-		
-	}
-		
-	</script> 
-        <script type="text/javascript">
-        	executeOnload();
-        </script>
-	</body>
+<script type="text/javascript">
+	executeOnload();
+if('<%=showMessage%>' == 'yes')
+	document.getElementById('accessDiv').style.display = 'block';
+</script>
+</body>
 </html>
