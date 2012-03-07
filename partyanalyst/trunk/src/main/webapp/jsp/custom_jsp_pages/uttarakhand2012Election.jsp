@@ -161,7 +161,7 @@ text-decoration:none;}
 	<td width="43%" valign="top">
 <table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
-Uttarakhand Assembly Live Election Results</h3>
+Uttarakhand Assembly Live Election Analysis</h3>
 
 <tr><td>
 <table>
