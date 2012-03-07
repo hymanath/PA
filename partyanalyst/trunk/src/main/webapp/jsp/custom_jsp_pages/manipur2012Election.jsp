@@ -15,6 +15,32 @@ text-decoration:none;}
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 <tr><td>
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">2012 Manipur Exit Polls And Surveys</h3>
+
+<tr style="border: medium none rgb(255, 255, 255);">
+
+<td><div>
+
+<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Mala And Female Candidates Performances</span>
+
+<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+<select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
+<option value="0">Select Year</option>
+				<option value="183">2012</option>
+				<option value="173">2007</option>
+				<option value="174">2002</option>
+				<option value="175">2000</option>
+				<option value="176">1995</option>
+				<option value="177">1990</option>
+				<option value="178">1984</option>
+				<option value="180">1980</option>
+				<option value="179">1974</option>
+</select></div>
+</div>
+</td>
+</tr>
+
+
 <tr><td>
 <div id="manipurExitPolltable" style="margin-top:9px;">
 <span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Manipur State Exit polls</span>
@@ -340,17 +366,123 @@ Manipur Assembly Live Election Results</h3>
     <td>-</td>
     <td>10</td>
 	<td>-</td>
-   
-
-  
-  
-  
-
-   
-  </tr>
+   </tr>
 
 </table>
 </div>-->
 
 </div>
 	
+<div id="genderInfoDiv">
+<div id="genderAnalysisDiv"></div></div>
+<script type="text/javascript">
+
+function getGenderInfo()
+{
+	var electionIdSelectedEle = document.getElementById('selectedYear');
+	var electionId = electionIdSelectedEle.value;
+	var jsObj = {
+	            time:new Date().getTime(),
+				electionId:electionId,
+				task:"getPartyGenderInfo"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(jsObj,url);
+}
+
+function callAjax(jsObj,url){
+		var myResults;
+ 					
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {												
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+									if(jsObj.task =="getPartyGenderInfo"){
+										buildGenderCountResultsDataTable(myResults);
+									}
+							}
+							catch (e) {   
+							   	alert("Invalid JSON result" + e);   
+						}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildGenderCountResultsDataTable(myResults){
+
+if(myResults == null)
+		return;
+
+	  $.fx.speeds._default = 1000;
+	  $("#genderInfoDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 850,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								title:'<center><font color="Navy"></font><center>',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+		$("#genderInfoDiv").dialog();
+
+	
+	var str= '';
+	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+
+	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
+	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
+	str +='<th style="font-size: 13px;">Party</th>';
+	str +='<th style="font-size: 13px;">TP*</th>';
+	str +='<th style="font-size: 13px;">Won</th>';
+	str +='<th style="font-size: 13px;">CV* %</th>';
+	str +='<th style="font-size: 13px;">PV* %</th>';
+	str +='<th style="font-size: 13px;">Male Participants</th>';
+	str +='<th style="font-size: 13px;">Male Won</th>';
+	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">Female Participants</th>';
+	str +='<th style="font-size: 13px;">Female Won</th>';
+	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='</tr>';
+	for(var i=0 ; i<myResults.length ; i++)
+	{
+	str +='<tr>';
+	
+	str +='<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'"><font color="blue">'+myResults[i].partyName+'</font></a></td>';
+	str +='<td>'+myResults[i].totalParticipated+'</td>';
+	str +='<td>'+myResults[i].totalSeatsWon+'</td>';
+	str +='<td>'+myResults[i].completeVotesPercent+'</td>';
+	str +='<td>'+myResults[i].PVotesPercent+'</td>';
+	str +='<td>'+myResults[i].malePerticipated+'</td>';
+	str +='<td>'+myResults[i].maleWon+'</td>';
+	str +='<td>'+myResults[i].MVotesPercent+'</td>';
+	str +='<td>'+myResults[i].femalePerticipated+'</td>';
+	str +='<td>'+myResults[i].femaleWon+'</td>';
+	str +='<td>'+myResults[i].FVotesPercent+'</td>';
+	str +='</tr>';
+	}
+	str +='</table>';
+	str +='<div style="margin-top: 31px;padding-left: 75px;">';
+	str +='<table>';
+	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
+	str +='</tr>';
+	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='</table>';
+	str +='</div>';
+	document.getElementById('genderAnalysisDiv').innerHTML = str;
+
+}
+
+</script>
