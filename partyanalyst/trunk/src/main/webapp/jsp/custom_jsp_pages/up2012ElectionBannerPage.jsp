@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
  #electionResultLinks li {
@@ -283,11 +285,46 @@ text-decoration:none;
 <br><br>
 <tr>
 
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a></th>
-<th style="padding-right: 27px;"><a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a></th>
-<th style="padding-right: 27px;"><a href="javascript:{}">SP</a></th>
-<th style="padding-right: 27px;"><a href="javascript:{}">RLD</a></th></tr>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BSP&selectedPartyId=239&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=239&alliances=true&__checkbox_alliances=true&submitButton=Submit">BSP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+BSP</a>
+</c:if>
+</th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=BJP&selectedPartyId=163&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=163&alliances=true&__checkbox_alliances=true&submitButton=Submit">BJP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+BJP</a>
+</c:if></th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="partyResultsAction.action?selectedPartyShortName=INC&selectedPartyId=362&selectedElectionTypeName=Assembly&selectedLocationName=Uttar+Pradesh&electionType=2&reportLevel=State&stateSelectName=27&partySelectName=362&alliances=true&__checkbox_alliances=true&submitButton=Submit">INC</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+INC</a>
+</c:if></th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="javascript:{}">SP</a>
+</c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+SP</a>
+</c:if></th>
+<th style="padding-right: 27px;">
+<c:if test="${loginStatus == 'out'}"> 
+<a href="javascript:{}">RLD</a></c:if>
+<c:if test="${sessionScope.USER == null}"> 
+<a href="javascript:{}" onclick="checkUserLoginStatus('${sessionScope.USER}','loginPopupDiv')">
+RLD</a>
+</c:if></th></tr>
 </table>
 </td>
 </tr>
