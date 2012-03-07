@@ -3678,7 +3678,7 @@ var specialPageId=document.getElementById("specialPageId").value;
 	var url = "getEventGallariesForUplaodPhotoAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
-function checkUserLoginStatus(user,divId)
+function checkUserLoginStatus(divId)
 {
 	document.getElementById(divId).style.display='block';
 			var str='';
