@@ -25,13 +25,13 @@ text-decoration:none;}
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">2012 UttarKhand Exit Polls And Surveys</h3>
-<tr style="border: medium none rgb(255, 255, 255);">
+<!--<tr style="border: medium none rgb(255, 255, 255);">
 	<td><div>
 	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
 
 	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
-		<select onchange="getGenderInfo()" id="electionYears" style="width:120px;">
+		<select onchange="getGenderInfo()" id="selectedElectionYears" style="width:120px;">
 				<option value="0">Select Year</option>
 				<option value="184">2012</option>
 				<option value="134">2007</option>
@@ -39,7 +39,7 @@ text-decoration:none;}
 		</select></div>
 	</div>
 	</td>
-</tr>
+</tr>-->
 <tr><td>
 <table>
       <td>
@@ -182,6 +182,27 @@ Uttarakhand Assembly Live Election Analysis</h3>
 <table>
 
 <tr><td colspan="5">
+
+
+<!--<span style="background:#D2E888;padding:4px;margin-left:0px;-moz-border-radius: 3px;font-weight:bold;">Partywise Male and Female Candidates Seats Allocation and their Performances</span>-->
+<div id="selectedYearDiv">
+	<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 7px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
+	<div style="margin-top: 9px;">
+		<table>
+			<tr>
+				<td><b>Select Election Year:</b></td>
+				<td>
+					<select onchange="getGenderInfo()" id="selectedElectionYears" style="width:120px;">
+						<option value="0">Select Year</option>
+						<option value="184">2012</option>
+						<option value="134">2007</option>
+						<option value="135">2002</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
 <br>
 <span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 2002 - 2012</span>
 <br><br>
@@ -256,7 +277,7 @@ CPM</a>
 	<span class="selectDivStyle">Uttarkhand Districts</span>
 	<span style="margin-left: 12px;height:120px;">Know About Your District&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 	
-<select class="selectBoxWidth" id="districtList_d" name="district">
+<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district">
 <option value="0">Select District</option>
 <option value="249">Almora</option><option value="248">Bageshwar</option><option value="242">Chamoli</option><option value="250">Champawat</option><option value="245">Dehradun</option><option value="246">Garhwal</option><option value="253">Hardwar</option><option value="251">Nainital</option><option value="247">Pithoragarh</option><option value="243">Rudraprayag</option><option value="244">Tehri Garhwal</option><option value="252">Udham Singh Nagar</option><option value="241">Uttarkashi</option></select>
 <div id="alertMessage_district"></div>
@@ -268,7 +289,7 @@ CPM</a>
 	<span style="margin-left: 8px;">Know About Your Assembly Constituency</span>
 	
 
-<select class="selectBoxWidth" id="constituency" name="constituency">
+<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
  <option value="0">Select Constituency</option><option value="38718">Almora</option><option value="38676">Badrinath</option><option value="38712">Bageshwar</option><option value="38740">Bahadrabad</option><option value="38729">Bajpur</option><option value="38734">Bhagwanpur</option><option value="38714">Bhikiasain</option><option value="38700">Bironkhal</option><option value="38688">Chakrata</option><option value="38720">Champawat</option><option value="38692">Dehradun</option><option value="38685">Deoprayag</option><option value="38687">Dhanolti</option><option value="38709">Dharchula</option><option value="38723">Dhari</option><option value="38699">Dhumakot</option><option value="38707">Didihat</option><option value="38696">Doiwala</option><option value="38713">Dwarahat</option><option value="38706">Gangolihat</option><option value="38674">Gangotri</option><option value="38684">Ghansali</option><option value="38724">Haldwani</option><option value="38741">Hardwar</option><option value="38736">Iqbalpur</option><option value="38719">Jageshwar</option><option value="38727">Jaspur</option><option value="38708">Kanalichhina</option><option value="38711">Kanda</option><option value="38710">Kapkot</option><option value="38678">Karanprayag</option><option value="38728">Kashipur</option><option value="38681">Kedarnath</option><option value="38733">Khatima</option><option value="38698">Kotdwar</option><option value="38739">Laksar</option><option value="38742">Laldhang</option><option value="38738">Landhaura</option><option value="38701">Lansdowne</option><option value="38691">Laxman Chowk</option><option value="38721">Lohaghat</option><option value="38737">Manglor</option><option value="38722">Mukteshwar</option><option value="38694">Mussoorie</option><option value="38725">Nainital</option><option value="38677">Nandprayag</option><option value="38686">Narendranagar</option><option value="38730">Pantnagar Gadarpur</option><option value="38702">Pauri</option><option value="38679">Pindar</option><option value="38705">Pithoragarh</option><option value="38682">Pratapnagar</option><option value="38673">Purola</option><option value="38693">Rajpur</option><option value="38726">Ramnagar</option><option value="38716">Ranikhet</option><option value="38695">Rishikesh</option><option value="38735">Roorkee</option><option value="38680">Rudraprayag</option><option value="38731">Rudrapur Kichha</option><option value="38690">Sahaspur</option><option value="38715">Salt</option><option value="38732">Sitarganj</option><option value="38717">Someshwar</option><option value="38703">Srinagar</option><option value="38683">Tehri</option><option value="38704">Thalisain</option><option value="38689">Vikasnagar</option><option value="38697">Yamakeshwar</option><option value="38675">Yamunotri</option>
 </select>
 <div id="alertMessage"></div>
@@ -354,8 +375,8 @@ CPM</a>
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('electionYears');
-	var electionId = electionIdSelectedEle.value;
+	var electionIdSelectedEle = document.getElementById('selectedElectionYears');
+	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -391,8 +412,10 @@ function callAjax(jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function buildGenderCountResultsDataTable(myResults){
-
+function buildGenderCountResultsDataTable(myResults)
+{
+	var electionIdSelectedEle = document.getElementById('selectedElectionYears');
+	var year = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].text;
 if(myResults == null)
 		return;
 
@@ -407,14 +430,14 @@ if(myResults == null)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#genderInfoDiv").dialog();
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 8px 0px; border-right-width: 0px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 31px; font-size: 13px; width: 760px; text-align: center; border-radius: 2px 2px 2px 2px;">Partywise Male and Female Participation and their Performance In Uttarakhand <font color="pink">'+year+' </font>Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
@@ -425,10 +448,10 @@ if(myResults == null)
 	str +='<th style="font-size: 13px;">PV* %</th>';
 	str +='<th style="font-size: 13px;">Male Participants</th>';
 	str +='<th style="font-size: 13px;">Male Won</th>';
-	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">MCGV* %</th>';
 	str +='<th style="font-size: 13px;">Female Participants</th>';
 	str +='<th style="font-size: 13px;">Female Won</th>';
-	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='<th style="font-size: 13px;">FCGV* %</th>';
 	str +='</tr>';
 	for(var i=0 ; i<myResults.length ; i++)
 	{
@@ -450,9 +473,15 @@ if(myResults == null)
 	str +='</table>';
 	str +='<div style="margin-top: 31px;padding-left: 75px;">';
 	str +='<table>';
-	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
-	str +='</tr>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
 	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
 	str +='</tr>';
 	str +='</table>';
 	str +='</div>';
