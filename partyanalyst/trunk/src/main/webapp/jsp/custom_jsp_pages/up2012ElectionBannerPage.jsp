@@ -54,7 +54,7 @@ text-decoration:none;
 
 	<td>
 	<div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Mala And Female Candidates Performances</span>
+	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
 
 	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
