@@ -21,13 +21,15 @@ text-decoration:none;}
 
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: 0px;">Punjab 2012 Assembly Results, Exit Polls & Surveys</h3>
-<tr style="border: medium none rgb(255, 255, 255);">
-	<td><div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
-	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: 0px;margin-top: -94px;">Punjab 2012 Assembly Results, Exit Polls & Surveys</h3>
 
-		<select id="electionYears" onchange="getGenderInfo()" style="width:120px;">
+<!--<tr style="border: medium none rgb(255, 255, 255);">
+	<td><div>
+	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>-->
+	<!--<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px;""><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>-->
+	<!--<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+		<select id="selectedElectionYears" onchange="getGenderInfo()" style="width:120px;">
 			<option value="0">Select Year</option>
 			<option value="182">2012</option>
 			<option value="136">2007</option>
@@ -41,7 +43,7 @@ text-decoration:none;}
 	</div>
 	</div>
 	</td>
-</tr>
+</tr>-->
 
 <tr><td>
 <table>
@@ -181,9 +183,31 @@ Punjab Assembly 2012 Live Election Analysis</h3>
 
 <tr>
 <td colspan="2">
+
+
+<div>
+	<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 6px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
+	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+		<select id="selectedElectionYears" onchange="getGenderInfo()" style="width:120px;">
+			<option value="0">Select Year</option>
+			<option value="182">2012</option>
+			<option value="136">2007</option>
+			<option value="138">2002</option>
+			<option value="139">1997</option>
+			<option value="140">1992</option>
+			<option value="141">1985</option>
+			<option value="142">1980</option>
+			<option value="144">1977</option>
+		</select>
+	</div>
+	</div>
+
+
 <table>
 
 <br>
+
 <span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1980 - 2012</span>
 <br><br>
 <tr>
@@ -269,7 +293,7 @@ CPM</a>
 <div class="selectHeading">
 	<span class="selectDivStyle">Punjab Districts</span>
 	<span style="margin-left: 12px;">Know About Your District  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-	<select class="selectBoxWidth" id="districtList_d" name="district">
+	<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district">
 	<option value="0">Select District</option>
      <option value="255">Amritsar</option><option value="267">Bathinda</option><option value="266">Faridkot</option><option value="261">Fatehgarh Sahib</option><option value="264">Firozpur</option><option value="254">Gurdaspur</option><option value="258">Hoshiarpur</option><option value="257">Jalandhar</option><option value="256">Kapurthala</option><option value="262">Ludhiana</option><option value="268">Mansa</option><option value="263">Moga</option><option value="265">Muktsar</option><option value="259">Nawanshahr </option><option value="270">Patiala</option><option value="260">Rupnagar</option><option value="269">Sangrur</option>
    </select>
@@ -284,7 +308,7 @@ CPM</a>
 <div class="selectHeading">
 	<span class="selectDivStyle">Punjab Constituencies </span>
 	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
-<select class="selectBoxWidth" id="constituency" name="constituency">
+<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 <option value="0">Select Constituency</option>
   <option value="38833">Abohar</option><option value="38770">Adampur</option><option value="38762">Ajnala</option><option value="38820">Amloh</option><option value="38760">Amritsar Central</option><option value="38758">Amritsar North</option><option value="38761">Amritsar South</option><option value="38759">Amritsar West</option><option value="38808">Anandpur Sahib Ropar</option><option value="38764">Attari</option><option value="38842">Bagha Purana</option><option value="38786">Balachaur</option><option value="38832">Balluana</option><option value="38779">Banga</option><option value="38812">Banur</option><option value="38825">Barnala</option><option value="38744">Batala</option><option value="38754">Beas</option><option value="38826">Bhadaur</option><option value="38853">Bhatinda</option><option value="38782">Bholath</option><option value="38858">Budhlada</option><option value="38809">Chamkaur Sahib</option><option value="38815">Dakala</option><option value="38797">Dakha</option><option value="38793">Dasuya</option><option value="38827">Dhanaula</option><option value="38840">Dharamkot</option><option value="38748">Dhariwal</option><option value="38822">Dhuri</option><option value="38750">Dina Nagar</option><option value="38829">Dirbha</option><option value="38846">Faridkot</option><option value="38743">Fatehgarh</option><option value="38834">Fazilka</option><option value="38837">Firozepur</option><option value="38838">Firozepur Cantonment</option><option value="38792">Garhdiwala</option><option value="38787">Garhshankar</option><option value="38814">Ghanaur</option><option value="38848">Giddar Baha</option><option value="38749">Gurdaspur</option><option value="38836">Guru Har Sahai</option><option value="38789">Hoshiarpur</option><option value="38795">Jagraon</option><option value="38835">Jalalabad</option><option value="38757">Jandiala</option><option value="38856">Joga</option><option value="38771">Jullundur Cantonment</option><option value="38773">Jullundur Central</option><option value="38772">Jullundur North</option><option value="38774">Jullundur South</option><option value="38747">Kahnuwan</option><option value="38783">Kapurthala</option><option value="38775">Kartarpur</option><option value="38766">Khadoor Sahib</option><option value="38806">Khanna</option><option value="38811">Kharar</option><option value="38845">Kot Kapura</option><option value="38804">Kum Kalan</option><option value="38850">Lambi</option><option value="38831">Lehra</option><option value="38776">Lohian</option><option value="38801">Ludhiana East</option><option value="38799">Ludhiana North</option><option value="38802">Ludhiana Rural</option><option value="38800">Ludhiana West</option><option value="38788">Mahilpur</option><option value="38755">Majitha</option><option value="38823">Malerkotla</option><option value="38849">Malout</option><option value="38857">Mansa</option><option value="38841">Moga</option><option value="38810">Morinda</option><option value="38794">Mukerian</option><option value="38847">Muktsar</option><option value="38819">Nabha</option><option value="38777">Nakodar</option><option value="38807">Nangal</option><option value="38751">Narot Mehra</option><option value="38854">Nathana</option><option value="38767">Naushahra Panwan</option><option value="38780">Nawan Shahr</option><option value="38843">Nihal Singh Wala</option><option value="38778">Nur Mahal</option><option value="38852">Pakka Kalan</option><option value="38844">Panjgrain</option><option value="38752">Pathankot</option><option value="38818">Patiala Town</option><option value="38768">Patti</option><option value="38803">Payal</option><option value="38785">Phagwara</option><option value="38781">Phillaur</option><option value="38745">Qadian</option><option value="38798">Qila Raipur</option><option value="38796">Raikot</option><option value="38763">Raja Sansi</option><option value="38813">Rajpura</option><option value="38855">Rampura Phul</option><option value="38817">Samana</option><option value="38805">Samrala</option><option value="38828">Sangrur</option><option value="38859">Sardulgarh</option><option value="38790">Sham Chaurasi</option><option value="38824">Sherpur</option><option value="38816">Shutrana</option><option value="38821">Sirhind</option><option value="38746">Srihargobindpur</option><option value="38753">Sujanpur</option><option value="38784">Sultanpur</option><option value="38830">Sunam</option><option value="38851">Talwandi Sabo</option><option value="38791">Tanda</option><option value="38765">Tarn Taran</option><option value="38769">Valtoha</option><option value="38756">Verka</option><option value="38839">Zira</option>
  </select>
@@ -307,7 +331,9 @@ CPM</a>
 <img src="images/icons/diamond.png"></a>
 <a href="partyPageAction.action?partyId=239" align="top">BSP&nbsp;<img src="images/party_flags/BSP.png" height="40px" width="60px"></a>&nbsp;&nbsp;
 </td></tr>
-<tr><td colspan="7"><center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center></td>
+<tr><td colspan="7">
+<br>
+<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center></td>
 </tr>
 </table>
 </td></tr>
@@ -319,8 +345,8 @@ CPM</a>
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('electionYears');
-	var electionId = electionIdSelectedEle.value;
+	var electionIdSelectedEle = document.getElementById('selectedElectionYears');
+	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -357,6 +383,8 @@ function callAjax(jsObj,url){
 }
 
 function buildGenderCountResultsDataTable(myResults){
+	var selectedYearEle = document.getElementById("selectedElectionYears");
+	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
 
 if(myResults == null)
 		return;
@@ -372,14 +400,14 @@ if(myResults == null)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#genderInfoDiv").dialog();
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px 6px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 43px; font-size: 13px; border-radius: 2px 2px 2px 2px; text-align: center; width: 726px;">Partywise Male And Female Participation and their Performance In Punjab <font color="pink">'+year+'</font> Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
@@ -390,10 +418,10 @@ if(myResults == null)
 	str +='<th style="font-size: 13px;">PV* %</th>';
 	str +='<th style="font-size: 13px;">Male Participants</th>';
 	str +='<th style="font-size: 13px;">Male Won</th>';
-	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">MCGV* %</th>';
 	str +='<th style="font-size: 13px;">Female Participants</th>';
 	str +='<th style="font-size: 13px;">Female Won</th>';
-	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='<th style="font-size: 13px;">FCGV* %</th>';
 	str +='</tr>';
 	for(var i=0 ; i<myResults.length ; i++)
 	{
@@ -415,9 +443,15 @@ if(myResults == null)
 	str +='</table>';
 	str +='<div style="margin-top: 31px;padding-left: 75px;">';
 	str +='<table>';
-	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
-	str +='</tr>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
 	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
 	str +='</tr>';
 	str +='</table>';
 	str +='</div>';
