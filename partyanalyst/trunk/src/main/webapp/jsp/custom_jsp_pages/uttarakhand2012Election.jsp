@@ -27,7 +27,7 @@ text-decoration:none;}
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">2012 UttarKhand Exit Polls And Surveys</h3>
 <tr style="border: medium none rgb(255, 255, 255);">
 	<td><div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Mala And Female Candidates Performances</span>
+	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
 
 	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
