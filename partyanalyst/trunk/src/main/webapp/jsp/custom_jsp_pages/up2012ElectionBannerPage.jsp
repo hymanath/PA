@@ -412,7 +412,7 @@ UttarPradesh Assembly Previous Election Results</h3>-->
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('selectedYear');
+	var electionIdSelectedEle = document.getElementById('selectedElectionYears');
 	var electionId = electionIdSelectedEle.value;
 	var jsObj = {
 	            time:new Date().getTime(),
@@ -451,6 +451,8 @@ function callAjax(jsObj,url){
 
 function buildGenderCountResultsDataTable(myResults)
 {
+	var selectedYearEle = document.getElementById("selectedElectionYears");
+	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
 if(myResults == null)
 		return;
 
@@ -465,14 +467,14 @@ if(myResults == null)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#genderInfoDiv").dialog();
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Male And Female Participants And Their Results</h3>';
+	str +='<h3  style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); border-right-width: 0px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 32px; font-size: 13px; padding: 6px 0pt; text-align: center; width: 769px;">Partywise Male and Female Participation and their Performance In UttarPradesh '+year+' Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
@@ -483,10 +485,10 @@ if(myResults == null)
 	str +='<th style="font-size: 13px;">PV* %</th>';
 	str +='<th style="font-size: 13px;">Male Participants</th>';
 	str +='<th style="font-size: 13px;">Male Won</th>';
-	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">MCGV*</th>';
 	str +='<th style="font-size: 13px;">Female Participants</th>';
 	str +='<th style="font-size: 13px;">Female Won</th>';
-	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='<th style="font-size: 13px;">FCGV*</th>';
 	str +='</tr>';
 	for(var i=0 ; i<myResults.length ; i++)
 	{
@@ -508,9 +510,15 @@ if(myResults == null)
 	str +='</table>';
 	str +='<div style="margin-top: 31px;padding-left: 75px;">';
 	str +='<table>';
-	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
-	str +='</tr>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
 	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
 	str +='</tr>';
 	str +='</table>';
 	str +='</div>';
@@ -519,5 +527,4 @@ if(myResults == null)
 }
 
 </script>
-
 
