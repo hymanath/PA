@@ -12,10 +12,11 @@ text-decoration:none;}
 
 <table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%">
 
-<table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
+<table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid rgb(210, 232, 136); width: 100%; margin-top: -58px;">
 <tr><td>
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Manipur 2012 Assembly Results, Exit Polls & Surveys</h3>
-<tr style="border: medium none rgb(255, 255, 255);">
+
+<!--<tr style="border: medium none rgb(255, 255, 255);">
 
 <td><div>
 
@@ -23,7 +24,7 @@ text-decoration:none;}
 
 <div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
-<select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
+<select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
 <option value="0">Select Year</option>
 				<option value="183">2012</option>
 				<option value="173">2007</option>
@@ -37,7 +38,7 @@ text-decoration:none;}
 </select></div>
 </div>
 </td>
-</tr>
+</tr>-->
 
 
 <tr><td>
@@ -226,83 +227,34 @@ text-decoration:none;}
 	</td>
 	<td width="2%"></td>
 	<td width="43%" valign="top">
-<table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
+
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;width: 96.5%;">
 Manipur Assembly 2012 Live Election Results</h3>
-
-<!--<tr><td>
-<table>
-      <td>
-	    <tr>
-          <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:60 </span></td>
-          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:60</span></td>
-      
-       </tr>
-   </table>
-  </td>
-</tr>
-
+<table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
 <tr>
-	<td>
-		<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 100%; margin-left: -10px;">
-			<tr><th>Party Name</th>
-			
-			<th>Participated Seats</th>
-			<th>2007 Won Seats</th>
-			<th>Won</th>
-			</tr>
-			
-		<tr>
-			<th><a href="partyPageAction.action?partyId=579">NCP</a></th>
-			<td>14</td>
-			<td>0</td>
-			<td>1</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
-			<td>59</td>
-			<td>30</td>
-			<td>42</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=492">LJNSP</a></th>
-			<td>14</td>
-			<td>0</td>
-			<td>1</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=76">AITC</a></th>
-			<td>-</td>
-			<td>-</td>
-			<td>7</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=599">NPF</a></th>
-			<td>-</td>
-			<td>-</td>
-			<td>4</td>
-			</tr>
-
-			<tr>
-			<th><a href="javascript:{}">Others</a></th>
-			<td>-</td>
-			<td>-</td>
-			<td>5</td>
-			</tr>
-			
-		</table>
-	</td></tr>-->
-
-	<tr>
 <td colspan="2">
-<table>
-<!--
-<center>
-<tr>
+<div>
 
-  <td colspan="5" style="margin-bottom:5px;"><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></td>
-</tr>
-</center>-->
+<!--<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Partywise Male and Female Candidates Seats Allocation and their Performances</span>-->
+
+<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 7px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
+
+<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+<select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
+<option value="0">Select Year</option>
+				<option value="183">2012</option>
+				<option value="173">2007</option>
+				<option value="174">2002</option>
+				<option value="175">2000</option>
+				<option value="176">1995</option>
+				<option value="177">1990</option>
+				<option value="178">1984</option>
+				<option value="180">1980</option>
+				<option value="179">1974</option>
+</select></div>
+</div>
+<table>
 
 <br>
 <span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1984 to 2012</span><br><br>
@@ -350,7 +302,7 @@ Manipur Assembly 2012 Live Election Results</h3>
 <div class="selectHeading">
 	<span class="selectDivStyle">Manipur Districts </span>
 	<span style="margin-left: 12px;">Know About Your District &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-<select class="selectBoxWidth" id="districtList_d" name="district">
+<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district">
 
    <option value="0">Select District</option><option value="288">Bishnupur</option><option value="293">Chandel</option><option value="287">Churachandpur</option><option value="291">Imphal East</option><option value="290">Imphal West</option><option value="285">Senapati</option><option value="286">Tamenglong</option><option value="289">Thoubal</option><option value="292">Ukhrul</option>
  </select>
@@ -361,7 +313,7 @@ Manipur Assembly 2012 Live Election Results</h3>
 	<div class="selectHeading">
 	<span class="selectDivStyle">Manipur Constituencies </span>
 	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
-	<select class="selectBoxWidth" id="constituency" name="constituency">
+	<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
     <option value="0">Select Constituency</option><option value="39415">Andro</option><option value="39434">Bishenpur</option><option value="39449">Chandel </option><option value="39453">Chingai </option><option value="39466">Churachandpur </option><option value="39410">Heingang</option><option value="39441">Heirok</option><option value="39465">Henglep </option><option value="39446">Hiyanglam</option><option value="39448">Jiribam</option><option value="39445">Kakching</option><option value="39458">Kangpokpi</option><option value="39455">Karong </option><option value="39414">Keirao</option><option value="39420">Keisamthong</option><option value="39443">Khangabok</option><option value="39412">Khetrigao</option><option value="39409">Khundrakpam</option><option value="39411">Khurai</option><option value="39426">Konthoujam</option><option value="39437">Kumbi</option><option value="39416">Lamlai</option><option value="39425">Lamsang</option><option value="39428">Langthabal</option><option value="39438">Lilong</option><option value="39456">Mao </option><option value="39431">Mayang Imphal</option><option value="39435">Moirang</option><option value="39432">Nambol</option><option value="39429">Naoriya Pakhanglakpa</option><option value="39462">Nungba </option><option value="39433">Oinam</option><option value="39427">Patsoi</option><option value="39451">Phungyar </option><option value="39419">Sagolband</option><option value="39467">Saikot </option><option value="39454">Saikul </option><option value="39459">Saitu </option><option value="39424">Sekmai </option><option value="39468">Singhat </option><option value="39421">Singjamei</option><option value="39447">Sugnoo</option><option value="39457">Tadubi </option><option value="39460">Tamei </option><option value="39461">Tamenglong </option><option value="39450">Tengnoupal </option><option value="39436">Thanga</option><option value="39417">Thangmeiband</option><option value="39464">Thanlon </option><option value="39413">Thongju</option><option value="39439">Thoubal</option><option value="39463">Tipaimukh </option><option value="39452">Ukhrul </option><option value="39418">Uripok</option><option value="39444">Wabgai</option><option value="39442">Wangjing Tentha</option><option value="39423">Wangkhei</option><option value="39440">Wangkhem</option><option value="39430">Wangoi</option><option value="39422">Yaiskul</option>
 	</select>
 	<div id="alertMessage"></div>
@@ -396,7 +348,7 @@ Manipur Assembly 2012 Live Election Results</h3>
 
 <tr><td colspan="7" >
 <center>
-
+<br>
 
  <object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></td>
 </tr>
@@ -496,8 +448,8 @@ Manipur Assembly 2012 Live Election Results</h3>
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('selectedYear');
-	var electionId = electionIdSelectedEle.value;
+	var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -533,8 +485,10 @@ function callAjax(jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function buildGenderCountResultsDataTable(myResults){
-
+function buildGenderCountResultsDataTable(myResults)
+{
+var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+	var year = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].text;
 if(myResults == null)
 		return;
 
@@ -549,14 +503,14 @@ if(myResults == null)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#genderInfoDiv").dialog();
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px 6px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 43px; font-size: 13px; border-radius: 2px 2px 2px 2px; text-align: center; width: 726px;">Partywise Male And Female Participation and their Performance In Manipur <font color="pink">'+year+' </font>Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
@@ -567,10 +521,10 @@ if(myResults == null)
 	str +='<th style="font-size: 13px;">PV* %</th>';
 	str +='<th style="font-size: 13px;">Male Participants</th>';
 	str +='<th style="font-size: 13px;">Male Won</th>';
-	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">MCGV* %</th>';
 	str +='<th style="font-size: 13px;">Female Participants</th>';
 	str +='<th style="font-size: 13px;">Female Won</th>';
-	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='<th style="font-size: 13px;">FCGV* %</th>';
 	str +='</tr>';
 	for(var i=0 ; i<myResults.length ; i++)
 	{
@@ -592,9 +546,15 @@ if(myResults == null)
 	str +='</table>';
 	str +='<div style="margin-top: 31px;padding-left: 75px;">';
 	str +='<table>';
-	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
-	str +='</tr>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
 	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
 	str +='</tr>';
 	str +='</table>';
 	str +='</div>';
@@ -603,3 +563,4 @@ if(myResults == null)
 }
 
 </script>
+
