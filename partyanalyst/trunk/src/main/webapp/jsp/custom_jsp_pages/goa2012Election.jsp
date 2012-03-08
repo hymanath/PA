@@ -11,7 +11,7 @@ text-decoration:none;
 </style>
 
 <div style="background:#ffffff;width: 979px;margin-left: 3px;padding-bottom:16px;">
-<img src="images/specialPage/goa2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
+<img src="images/specialPage/goa2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Goa 2012 Election" title="Goa 2012 Election" />
 
 <table width="100%" style="margin-left: 9px;margin-center: 9px; border-top: 1px solid #dddddd; margin-top: 4px;" ><tr><td  width="45%" valign="top">
 
@@ -19,12 +19,12 @@ text-decoration:none;
 
 <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">  2012 Goa State Exit polls anc Servys</h3>
 
-<tr style="border: medium none rgb(255, 255, 255);">
+<!--<tr style="border: medium none rgb(255, 255, 255);">
   <td>
    <div>
     <br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
     <div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
-      <select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
+      <select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
         <option value="0">Select Year</option>
 		<option value="185">2012</option>
 		<option value="165">2007</option>
@@ -38,7 +38,7 @@ text-decoration:none;
 	</select></div>
 </div>
 </td>
-</tr>
+</tr>-->
 
 
 <tr><td>
@@ -273,8 +273,33 @@ Goa Assembly 2012 Live Election Results</h3>
 		</table>
 	</td></tr>-->
 
+
 	<tr>
 <td colspan="2">
+
+<div>
+
+<!--<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Partywise Male and Female Candidates Seats Allocation and their Performances</span>-->
+
+<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 7px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
+
+<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+ <select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
+        <option value="0">Select Year</option>
+		<option value="185">2012</option>
+		<option value="165">2007</option>
+	    <option value="166">2002</option>
+		<option value="167">1999</option>
+		<option value="168">1994</option>
+		<option value="169">1989</option>
+		<option value="170">1984</option>
+		<option value="171">1980</option>
+		<option value="172">1977</option>
+	</select>
+</div>
+</div>
+
+
 <!--<center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center>-->
 <table>
 <br>
@@ -364,7 +389,7 @@ CPM</a>
 <div class="selectHeading" style="height:177px;">
 	<span class="selectDivStyle">Goa Districts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;</span>
 	<span style="margin-left: 12px;">Know About Your District </span>
-<select name="district" id="districtList_d" class="selectBoxWidth">
+<select name="district" id="selectedDistrictInSpecialPage" class="selectBoxWidth">
   <option value="0">Select District</option>
   <option value="283">North Goa</option>
   <option value="284">South Goa</option>
@@ -377,7 +402,7 @@ CPM</a>
 <div class="selectHeading">
 	<span class="selectDivStyle">Goa Constituencies </span>
 	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
- <select class="selectBoxWidth" id="constituency" name="constituency">
+ <select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 	<option value="0">Select Constituency</option>
 	<option value="39366">Aldona</option>
 	<option value="39385">Benaulim</option>
@@ -447,6 +472,7 @@ CPM</a>
 <a href="partyPageAction.action?partyId=523" align="top">MAG</a>&nbsp;&nbsp;&nbsp;
 <tr>
 <td colspan="7">
+<br>
 <center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center></td></tr>
 
 
@@ -465,8 +491,8 @@ CPM</a>
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('selectedYear');
-	var electionId = electionIdSelectedEle.value;
+	var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -502,8 +528,10 @@ function callAjax(jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function buildGenderCountResultsDataTable(myResults){
-
+function buildGenderCountResultsDataTable(myResults)
+{
+var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+	var year = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].text;
 if(myResults == null)
 		return;
 
@@ -518,14 +546,14 @@ if(myResults == null)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
+								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#genderInfoDiv").dialog();
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px; border-right-width: 0px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 49px; font-size: 13px; text-align: center; width: 706px; border-radius: 2px 2px 2px 2px;">Partywise Male and Female Participation and their Performance In Goa <font color="pink">'+year+'</font> Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
@@ -536,10 +564,10 @@ if(myResults == null)
 	str +='<th style="font-size: 13px;">PV* %</th>';
 	str +='<th style="font-size: 13px;">Male Participants</th>';
 	str +='<th style="font-size: 13px;">Male Won</th>';
-	str +='<th style="font-size: 13px;">Male Votes %</th>';
+	str +='<th style="font-size: 13px;">MCGV* %</th>';
 	str +='<th style="font-size: 13px;">Female Participants</th>';
 	str +='<th style="font-size: 13px;">Female Won</th>';
-	str +='<th style="font-size: 13px;">Female Votes %</th>';
+	str +='<th style="font-size: 13px;">FCGV* %</th>';
 	str +='</tr>';
 	for(var i=0 ; i<myResults.length ; i++)
 	{
@@ -561,9 +589,15 @@ if(myResults == null)
 	str +='</table>';
 	str +='<div style="margin-top: 31px;padding-left: 75px;">';
 	str +='<table>';
-	str +='<tr><td><b>TP* = Total Participation ,CV* % = Complete Votes Percentage </b></td>'
-	str +='</tr>';
+	str +='<tr><td><b>TP* = Total Participation</b></td></tr>'
+	str +='<tr><td><b>CV* % = Complete Votes Percentage</b></td></tr>';
 	str +='<td><b>PV* % = Participated Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>MCGV* % = Male Candidates Gained Votes Percentage</b></td>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<td><b>FCGV* % = Female Candidates Gained Votes Percentage</b></td>';
 	str +='</tr>';
 	str +='</table>';
 	str +='</div>';
