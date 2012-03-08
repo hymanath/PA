@@ -371,7 +371,7 @@ function getTotalProfile()
 	}
 	function navigateToConstituencyPage()
 {
- var constSelectEl = document.getElementById("constituency");
+ var constSelectEl = document.getElementById("selectedConstituencyInSpecialPage");
  var alertEl = document.getElementById("alertMessage");
  var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
  alertEl.innerHTML = '';
@@ -385,7 +385,7 @@ function getTotalProfile()
 } 
 function navigateToDistrictPage()
 {
- var distSelectEl = document.getElementById("districtList_d");
+ var distSelectEl = document.getElementById("selectedDistrictInSpecialPage");
  var alertEl = document.getElementById("alertMessage_district");
  var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
  var distSelectElText = distSelectEl.options[distSelectEl.selectedIndex].text;
