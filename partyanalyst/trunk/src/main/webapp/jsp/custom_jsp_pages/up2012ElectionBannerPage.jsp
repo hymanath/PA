@@ -49,28 +49,8 @@ text-decoration:none;
 <!-- <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3><tr><td><br>
 	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;margin-left: 4px;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>-->
 
-		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -18px;">2012 UttarPradesh Exit Polls And Surveys</h3>
-<tr style="border: medium none rgb(255, 255, 255);">
+		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -136px;">2012 UttarPradesh Exit Polls And Surveys</h3>
 
-	<td>
-	<div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
-
-	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
-
-		<select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
-		<option value="0">Select Year</option>
-		<option value="181">2012</option>
-		<option value="159">2002</option>
-		<option value="160">1996</option>
-		<option value="162">1993</option>
-		<option value="161">1991</option>
-		<option value="163">1989</option>
-		</select>
-	</div>
-	</div>
-	</td>
-</tr>
 
 <tr style="border: medium none rgb(255, 255, 255);"><td>
 <div id="UPtableDiv" style="margin-top:17px;">
@@ -236,6 +216,31 @@ text-decoration:none;
 
 	<td width="43%" valign="top">
 <table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
+<tr><td>
+   <table>
+      <tr>
+
+	<td>
+	<div>
+	<br><span style="background:#D2E888;padding:4px;margin-left:0px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
+
+	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
+
+		<select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
+		<option value="0">Select Year</option>
+		<option value="158">2007</option>
+		<option value="159">2002</option>
+		<option value="160">1996</option>
+		<option value="162">1993</option>
+		<option value="161">1991</option>
+		<option value="163">1989</option>
+		</select>
+	</div>
+	</div>
+	</td>
+</tr>
+   </table>
+</td></tr>
 <tr><td>
 <table><td><tr>
 <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:403</span></td>
