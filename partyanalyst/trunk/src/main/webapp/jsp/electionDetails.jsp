@@ -1638,14 +1638,14 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 								formatter:YAHOO.widget.DataTable.partyLink},		
 								{key: "totalParticipated", label: "TP*", sortable:true},	
 		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "CV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "PV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "CVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "CPVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 		              	 	 	{key: "malePerticipated", label: "Male Participants",formatter:"number", sortable:true},
 		              	 	 	{key: "maleWon", label: "Male Won",formatter:"number", sortable:true}, 
-								{key: "MVotesPercent", label: "Male Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+								{key: "MVotesPercent", label: "MCGVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
 		              	 	 	{key: "femalePerticipated", label:"Female Participants", formatter:"number",sortable: true},
 		              	 	 	{key: "femaleWon", label:"Female Won",formatter:"number", sortable: true},
-								{key: "FVotesPercent", label: "Female Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
+								{key: "FVotesPercent", label: "FCGVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
 		              	 	    ];                	 	    
 
 		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -3277,7 +3277,10 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		
 	</div>
 	  <tr>
-	    <td><b>TP* = Total Participation , CV* % = Complete Votes Percentage , PV* % = Participated Votes Percentage</b></td>
+	    <td><b>TP* = Total Participation , CVP* % = Complete Votes Percentage , CPVP* % = Complete Participated Votes Percentage</b></td>
+	  </tr>
+	  <tr>
+	    <td><b>MCGV* = Male Candidates Gained Votes % , FCGV* % = Female Candidates Gained Votes % ,CV* % = Complete Votes Percentage</b></td>
 	  </tr>
 	  <tr>
 	    <td><b>PCV* % = Participated Constituency Votes Percentage , RCP* = Rural Constituency Participated , RC* = Rural Constituency</b></td>
