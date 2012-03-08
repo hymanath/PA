@@ -226,7 +226,7 @@ text-decoration:none;
 
 	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
-		<select onchange="getGenderInfo()" id="selectedYear" style="width:120px;">
+		<select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
 		<option value="0">Select Year</option>
 		<option value="158">2007</option>
 		<option value="159">2002</option>
