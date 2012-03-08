@@ -49,7 +49,7 @@ text-decoration:none;
 <!-- <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3><tr><td><br>
 	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;margin-left: 4px;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>-->
 
-		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -153px;">2012 UttarPradesh Exit Polls And Surveys</h3>
+		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -18px;">2012 UttarPradesh Exit Polls And Surveys</h3>
 <tr style="border: medium none rgb(255, 255, 255);">
 
 	<td>
@@ -236,12 +236,6 @@ text-decoration:none;
 
 	<td width="43%" valign="top">
 <table style="border:1px solid #d2e888;padding-left:20px" width="98%" valign="top">
-  <tr><td>
-     <table style="margin-top:5px;width:8o%">
-              <tr><td style="-moz-border-radius:3px;padding:3px;margin-top: 15px;background: #d2e888;width:200px; margin-left: 10px;"><b>Election Results Analysis</b></div></td><td style="width:100px;"></td></tr>
-              <tr><td colspan="2"><div style="margin-top:10px;"><a href="ministerAnalysisAction.action" class="grad" title="Click To View Ministers Results Analysis" style="font-family:verdana;font-size:12px;text-decoration:none;padding:5px;font-weight:bold;text-align:center;color:#ffffff">View Ministers Results Analysis</a></div></td></tr>             
-    </table>
-  </td></tr>
 <tr><td>
 <table><td><tr>
 <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:403</span></td>
@@ -473,7 +467,7 @@ if(myResults == null)
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Partywise Male And Female Candidates Participation And Results</h3>';
+	str +='<h3 style="background: none repeat scroll 0% 0% rgb(163, 163, 163); text-align: center; padding: 10px 0px 8px; border-right-width: 0px; font-size: 16px;color:#FFFFFF;margin-top: 13px;">Male And Female Participants And Their Results</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
