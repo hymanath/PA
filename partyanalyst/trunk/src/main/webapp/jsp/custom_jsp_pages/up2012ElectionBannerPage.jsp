@@ -49,7 +49,7 @@ text-decoration:none;
 <!-- <h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">Election Schedule For UttarPradesh</h3><tr><td><br>
 	 	 <a style="color: rgb(255, 255, 255); background-color: CornflowerBlue; font-weight: bold; padding: 3px; margin-top:10px;cursor:pointer;margin-left: 4px;" onclick="openFile('images/specialPage/UttarPradesh.pdf')" title="Click Here To view Election Schedule for 5 Phases"> View Election Schedule for 5 Phases And Participating Constituency In Each Phase</a><br></br><br /></td></tr>-->
 
-		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -136px;">2012 UttarPradesh Exit Polls And Surveys</h3>
+		 <br /><h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: -154px;">2012 UttarPradesh Exit Polls And Surveys</h3>
 
 
 <tr style="border: medium none rgb(255, 255, 255);"><td>
@@ -222,12 +222,14 @@ text-decoration:none;
 
 	<td>
 	<div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:0px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>
-
+	
+	<!--<span style="background:#D2E888;padding:4px;margin-left:0px;-moz-border-radius: 3px;font-weight:bold;">Partywise Male and Female Candidates Seats Allocation and their Performances</span>-->
+	<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px; padding-left: 7px; border-radius: 5px 5px 5px 5px;margin-top: 6px;"><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>
 	<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
 		<select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
 		<option value="0">Select Year</option>
+		<option value="181">2012</option>
 		<option value="158">2007</option>
 		<option value="159">2002</option>
 		<option value="160">1996</option>
@@ -298,6 +300,7 @@ text-decoration:none;
 
 <tr>
 <td>
+<br>
 <center><object height="220" width="320"><param value="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="220" width="320" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/mMTRWXNVXCw?version=3&autoplay=1"></object></center>
 <table>
 <br>
@@ -412,8 +415,8 @@ UttarPradesh Assembly Previous Election Results</h3>-->
 
 function getGenderInfo()
 {
-	var electionIdSelectedEle = document.getElementById('selectedElectionYears');
-	var electionId = electionIdSelectedEle.value;
+	var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
 	            time:new Date().getTime(),
 				electionId:electionId,
@@ -451,7 +454,7 @@ function callAjax(jsObj,url){
 
 function buildGenderCountResultsDataTable(myResults)
 {
-	var selectedYearEle = document.getElementById("selectedElectionYears");
+	var selectedYearEle = document.getElementById("selectedElectionYear");
 	var year = selectedYearEle.options[selectedYearEle.selectedIndex].text;
 if(myResults == null)
 		return;
@@ -474,7 +477,7 @@ if(myResults == null)
 
 	
 	var str= '';
-	str +='<h3  style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); border-right-width: 0px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 32px; font-size: 13px; padding: 6px 0pt; text-align: center; width: 769px;">Partywise Male and Female Participation and their Performance In UttarPradesh '+year+' Assembly Election</h3>';
+	str +='<h3  style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); border-right-width: 0px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 32px; font-size: 13px; padding: 6px 0pt; text-align: center; width: 769px;">Partywise Male and Female Participation and their Performance In UttarPradesh <font color="pink">'+year+'</font> Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
