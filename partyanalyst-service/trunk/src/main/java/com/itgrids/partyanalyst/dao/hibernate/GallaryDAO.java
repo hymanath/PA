@@ -67,5 +67,10 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		   return query.list(); 
 		
 		}
+		public List<Object> getDetailsOfVisibility(Long gallaryId)
+    {
+   	 
+   	return getHibernateTemplate().find("select model.isPrivate from Gallary model where model.gallaryId=?",gallaryId); 
+    }
 	
 }
