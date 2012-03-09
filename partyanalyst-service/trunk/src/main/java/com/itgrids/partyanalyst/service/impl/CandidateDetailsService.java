@@ -2353,8 +2353,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 			
 	}
-		
-	public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type){
+		public List<FileVO> getSpecialPagePhotoGallaryDetail(Long specialPageId,int firstRecord,int maxRecord,String type){
 			
 			 List<FileVO> retValue = new ArrayList<FileVO>();
 			 
@@ -2393,7 +2392,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 return retValue;
 		 }
 	  }
-		
+	  
+	  
+	 	
 		public	FileVO getSpecialPageGallaryDescForUpdate(Long gallaryId , Long specialPageId)
 		 {
 			 FileVO fileVO = new FileVO(); 
@@ -2440,6 +2441,27 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return null;
 		}
 	}
+		
+	public String getCandidateGallaryVisibility(Long gallaryId)
+		{
+			
+			List<Object> result= gallaryDAO.getDetailsOfVisibility(gallaryId);
+		try
+		{
+			log.debug("entered into getCandidateGallaryVisibility()in CandidateDetailsService");
+			
+			return result.get(0).toString();
+		}
+			
+		catch(Exception e)
+		{
+			log.error("Error occured getCandidateGallaryVisibility of candidateDetailService");
+			return result.get(0).toString();
+		}
+			
+		}
+			
+		
 	 
 }
 	
