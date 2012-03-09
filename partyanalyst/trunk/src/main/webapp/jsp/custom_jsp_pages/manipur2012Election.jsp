@@ -241,7 +241,7 @@ Manipur Assembly 2012 Live Election Results</h3>
 
 <div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
 
-<select onchange="getGenderInfo()" id="selectedElectionYear" style="width:120px;">
+<select onchange="getGenderInfo(this.value,this.id)" id="selectedElectionYear" style="width:120px;">
 <option value="0">Select Year</option>
 				<option value="183">2012</option>
 				<option value="173">2007</option>
@@ -446,13 +446,12 @@ Manipur Assembly 2012 Live Election Results</h3>
 <div id="genderAnalysisDiv"></div></div>
 <script type="text/javascript">
 
-function getGenderInfo()
+function getGenderInfo(selectedYear,elecYearId)
 {
-	var electionIdSelectedEle = document.getElementById('selectedElectionYear');
-	var electionId = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].value;
 	var jsObj = {
+				elecYearId:elecYearId,
 	            time:new Date().getTime(),
-				electionId:electionId,
+				electionId:selectedYear,
 				task:"getPartyGenderInfo"
 			};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -469,7 +468,7 @@ function callAjax(jsObj,url){
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
 									if(jsObj.task =="getPartyGenderInfo"){
-										buildGenderCountResultsDataTable(myResults);
+										buildGenderCountResultsDataTable(myResults,jsObj.elecYearId);
 									}
 							}
 							catch (e) {   
@@ -485,9 +484,9 @@ function callAjax(jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function buildGenderCountResultsDataTable(myResults)
+function buildGenderCountResultsDataTable(myResults,elecYearId)
 {
-var electionIdSelectedEle = document.getElementById('selectedElectionYear');
+var electionIdSelectedEle = document.getElementById(''+elecYearId+'');
 	var year = electionIdSelectedEle.options[electionIdSelectedEle.selectedIndex].text;
 if(myResults == null)
 		return;
@@ -502,7 +501,7 @@ if(myResults == null)
 								hide: "explode",
 								modal: true,
 								maxWidth : 950,
-								minHeight: 650,
+								minHeight: 450,
 								title:'<center><font color="Navy">Partywise Male and Female Candidates Performances</font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
@@ -510,7 +509,28 @@ if(myResults == null)
 
 	
 	var str= '';
-	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px 6px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 43px; font-size: 13px; border-radius: 2px 2px 2px 2px; text-align: center; width: 726px;">Partywise Male And Female Participation and their Performance In Manipur <font color="pink">'+year+' </font>Assembly Election</h3>';
+	str +='<div style="margin-left: 488px;">';
+	str +='<table>';
+	str +='<tr>';
+	str +='<td><b style="font-size:13px;">Select Election Year:</b></td>';
+	str +='<td>';
+	str +='<select onchange="getGenderInfo(this.value,this.id)" id="selectedEleYear" style="width:120px;">';
+	str +='<option value="0">Select Year</option>';
+	str +='<option value="183">2012</option>';
+	str +='<option value="173">2007</option>';
+	str +='<option value="174">2002</option>';
+	str +='<option value="175">2000</option>';
+	str +='<option value="176">1995</option>';
+	str +='<option value="177">1990</option>';
+	str +='<option value="178">1984</option>';
+	str +='<option value="180">1980</option>';
+	str +='<option value="179">1974</option>';
+	str +='</select>';
+	str +='</td>';
+	str +='</tr>';
+	str +='</table>';
+	str +='</div>';
+	str +='<h3 style="background: none repeat scroll 0pt 0pt rgb(33, 178, 237); padding: 7px 0px 6px; color: rgb(255, 255, 255); margin-top: 13px; border-left-width: 0px; margin-left: 43px; font-size: 13px; border-radius: 3px 3px 3px 3px; text-align: center; width: 726px;">Partywise Male And Female Participation and their Performance In Manipur <font color="pink">'+year+' </font>Assembly Election</h3>';
 
 	str +='<table cellspacing="0" cellpadding="5" bordercolor="#cccccc" border="1" style="margin-top: 22px;">';
 	str +='<tr style="background: none repeat scroll 0% 0% aliceBlue;">';
