@@ -142,4 +142,6 @@ public interface ICandidateDetailsService {
 	 public	FileVO getSpecialPageGallaryDescForUpdate(Long gallaryId , Long specialPageId);
 	 	 
 	 public FileVO getContentDetails(Long contentId);
+
+	 public String getCandidateGallaryVisibility(Long gallaryId);
 }
