@@ -15,7 +15,7 @@
 				<ul class="State5Electlinks">
 
 				<li>
-				 <a href="specialPageAction.action?specialPageId=3" title="Uttar Pradesh 2012 Election"> <img src="./images/new_homepage/uttarpradesh.png" alt="Uttar Pradesh 2012 Election" /> <span>Uttar Pradesh </span> </a>
+				 <a href="specialPageAction.action?specialPageId=3" title="Uttar Pradesh 2012 Election"> <img src="./images/new_homepage/uttarpradesh_Mulayam.png" alt="Uttar Pradesh 2012 Election" /> <span>Uttar Pradesh </span> </a>
 				 </li>
 				 <li>
 				 
