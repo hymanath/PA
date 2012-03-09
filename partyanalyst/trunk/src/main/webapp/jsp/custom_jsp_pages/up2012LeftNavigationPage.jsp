@@ -6,7 +6,7 @@
 	<span class="selectDivStyle">UttarPradesh Districts</span>
 	<span style="margin-left: 12px;">Know About Your District</span>
 
-<select class="selectBoxWidth" id="districtList_d" name="district">
+<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district">
 <option value="0">Select  District</option>
 <option value="185">Agra </option>
 <option value="182">Aligarh</option>
@@ -88,7 +88,7 @@
 	<span class="selectDivStyle">UttarPradesh Constituencies</span>
 	<span style="margin-left: 12px;">Know About Your Constituency</span>
 	
-	<select class="selectBoxWidth" id="constituency" name="constituency">
+	<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 <option value="0">Select Constituency</option>
 <option value="38933">Afzalgarh</option>
 <option value="39297">Agota</option>
