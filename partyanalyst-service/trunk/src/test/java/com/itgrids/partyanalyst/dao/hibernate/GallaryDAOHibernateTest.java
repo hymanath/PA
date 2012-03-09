@@ -56,4 +56,14 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(object[3]!=null?object[3].toString():null);
 	} 
    }*/
+   public void testgetDetailsOfVisibility()
+   {
+	   List<Object> result = gallaryDAO.getDetailsOfVisibility(27l);
+	  for(Object params : result){
+		  System.out.println(params);
+	  }
+	   
+	   
+   }
+   
 }
