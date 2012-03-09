@@ -9,155 +9,151 @@ text-decoration:none;}
 #punjabExitPolltable > table * td{text-align:center;}
 }
 </style>
-<div style="background:#ffffff; width: 979px;margin-left: 3px;padding-bottom: 13px;">
+<div style="width: 979px;margin-left: 3px;background:#FFFFFF;">
+<div style="background:#FFFFFF;">
 <img src="images/specialPage/panjab2012election.png" style="align:center;width:985px;" usemap="#2012ElectionsMap" alt="Panjab 2012 Election" title="Panjab 2012 Election" />
-
-<table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top:0px;" ><tr><td  width="45%">
-
-<table width="100%" style="margin-left: 9px;margin-right: 9px; border-top: 1px solid #dddddd; margin-top:0px;" >
-
-<!------ LEFT SIDE NAV ------------->
-<tr><td  width="45%">
-
-<table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
-
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px; margin-top: 0px;margin-top: -94px;">Punjab 2012 Assembly Results, Exit Polls & Surveys</h3>
-
-<!--<tr style="border: medium none rgb(255, 255, 255);">
-	<td><div>
-	<br><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;font-weight:bold;">Male And Female Candidates Performances</span>-->
-	<!--<div style="background: none repeat scroll 0% 0% rgb(210, 232, 136); margin-left: -17px;""><span><b>Partywise Male and Female Candidates Seats Allocation and their Performances</b></span></div>-->
-	<!--<div style="margin:15px;margin-bottom:0px"><span style="font-weight: bold;">Select Election Year:</span>
-
-		<select id="selectedElectionYears" onchange="getGenderInfo()" style="width:120px;">
-			<option value="0">Select Year</option>
-			<option value="182">2012</option>
-			<option value="136">2007</option>
-			<option value="138">2002</option>
-			<option value="139">1997</option>
-			<option value="140">1992</option>
-			<option value="141">1985</option>
-			<option value="142">1980</option>
-			<option value="144">1977</option>
-		</select>
-	</div>
-	</div>
-	</td>
-</tr>-->
-
-<tr><td>
-<table>
-      <td>
-	    <tr>
-          <td style="padding-left: 47px;"><span style="font-weight:bold">Total Seats:117 </span></td>
-          <td style="margin-right: 2px; border-right-width: 3px; padding-right: 7px; padding-left: 53px;"><span style="font-weight:bold">Know Results/Leading:117</span></td>
-      
-       </tr>
-   </table>
-  </td>
-</tr>
-
-<tr><td colspan="2"><br>
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>2012 Results</b></span>
-
-	<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 100%; margin-left: 1px;">
-			<tr><th>Party Name</th>
-			
-			<th>Participated Seats</th>
-			<th>2007 Won Seats</th>
-			<th>Won</th>
-			</tr>
-			<!--<tr>
-			<th><a href="partyPageAction.action?partyId=239">BSP</a></th>
-			<td>115</td>
-			<td>0</td>
-			<td>0</td>
-			</tr>-->
-			<tr>
-			<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
-			<td>23</td>
-			<td>19</td>
-			<td>12</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=362">INC</a></th>
-			<td>116</td>
-			<td>44</td>
-			<td>46</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=794">SAD+</a></th>
-			<td>93</td>
-			<td>48</td>
-			<td>56</td>
-			</tr>
-			<tr>
-			<th><a href="partyPageAction.action?partyId=796">Others</a></th>
-			<td>--</td>
-			<td>--</td>
-			<td>3</td>
-			</tr>
-		</table>
-
-
-
-<div id="punjabExitPolltable" style="margin-top:9px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>Punjab State Exit polls</b></span>
-<table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
-<tr>
-<th> Source</th>
-<th>AKALI+</th>
-<th>CONG</th>
-<th>PPP+</th>
-<th>BSP</th>
-<th>OTHERS</th>
-</tr>
-<tr>
-    <th>NDTV</th>
-    <td>51</td>
-    <td>59</td>
-    <td>2</td>
-	<td>2</td>
-    <td>3</td>
-
-  </tr>
-  <tr>
-<th>STAR</th>
-    <td>56</td>
-    <td>58</td>
-    <td>-</td>
-	<td>-</td>
-    <td>2</td>
-  </tr>
-
-   <tr>
-<th>NEWS-24</th>
-    <td>52</td>
-    <td>60</td>
-    <td>-</td>
-	<td>-</td>
-    <td>-</td>
-  </tr>
-  </tr>
-
-</table>
 </div>
 
-<tr><td colspan="2">
-	<br>
-	<b><span style="-moz-border-radius:3px;margin-left:9px;padding:3px;margin-top: 15px;background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br />
-	<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="96%">
-			   <tr>
-				  <td><b>Source</b></td>
-				  <td><b>INC</b></td>
-				  <td><b>BJP</b></td>
-				  <td><b>OTHERS</b></td>
-				</tr>
-			  <tr><td>Star News</td><td>63</td><td>53</td><td>1</td></tr>
-	</table>
+<table width="100%" style="border-top: 1px solid rgb(221, 221, 221);">
+<tr>
 
-<table width="100%"><tr><td>
-<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
+<td  width="45%" valign="top">
+	<table style="border:1px solid #d2e888;margin-left: 9px;" width="98%" valign="top">
+		<h3 style="background-color: rgb(33, 178, 237); color: rgb(255, 255, 255); border-radius: 3px 3px 3px 3px;padding: 4px; margin-left: 7px;">Punjab 2012 Assembly Results, Exit Polls & Surveys</h3>
+		<tr>
+			<td>
+				<table style="margin-top: 12px;">
+					<tr>
+						<td style="padding-left: 81px;">
+							<span style="font-weight:bold">Total Seats:117 
+							</span>
+						</td>
+						<td style="padding-left: 40px;">
+							<span style="font-weight:bold">Know Results/Leading:117
+							</span>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br>
+				<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>2012 Results</b>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 100%; margin-left: 1px;">
+				 <tr>
+					<th>Party Name</th>
+					<th>Participated Seats</th>
+					<th>2007 Won Seats</th>
+					<th>Won</th>
+				 </tr>
+				 <tr>
+					<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
+					<td>23</td>
+					<td>19</td>
+					<td>12</td>
+				</tr>
+				<tr>
+				    <th><a href="partyPageAction.action?partyId=362">INC</a></th>
+					<td>116</td>
+					<td>44</td>
+					<td>46</td>
+				</tr>
+				<tr>
+				    <th><a href="partyPageAction.action?partyId=794">SAD+</a></th>
+					<td>93</td>
+					<td>48</td>
+					<td>56</td>
+				</tr>
+				<tr>
+					<th><a href="partyPageAction.action?partyId=796">Others</a></th>
+					<td>--</td>
+					<td>--</td>
+					<td>3</td>
+				</tr>
+			  </table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br>
+				<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;"><b>Punjab State Exit polls</b></span>
+			</td>
+
+		</tr>
+		<tr>
+			<td>
+				<table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
+					<tr>
+						<th> Source</th>
+						<th>AKALI+</th>
+						<th>CONG</th>
+						<th>PPP+</th>
+						<th>BSP</th>
+						<th>OTHERS</th>
+					</tr>
+					<tr>
+						<th>NDTV</th>
+						<td>51</td>
+						<td>59</td>
+						<td>2</td>
+						<td>2</td>
+						<td>3</td>
+
+					</tr>
+					<tr>
+						<th>STAR</th>
+						<td>56</td>
+						<td>58</td>
+						<td>-</td>
+						<td>-</td>
+						<td>2</td>
+					</tr>
+					<tr>
+						<th>NEWS-24</th>
+						<td>52</td>
+						<td>60</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+					</tr>
+				</table>	
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<br>
+				<b><span style="-moz-border-radius:3px;margin-left:9px;padding:3px; background: #d2e888;">2012 Punjab Assembly Survey Results</b><br /><br /></span>
+			</td>
+		<tr>
+			<td>
+				<table bordercolor="#d2e888" cellspacing="0" cellpadding="5" border="1" align="center"  style="border-collapse: collapse; " width="96%">
+					 <tr>
+						  <td><b>Source</b></td>
+						  <td><b>INC</b></td>
+						  <td><b>BJP</b></td>
+						  <td><b>OTHERS</b></td>
+					</tr>
+				    <tr>
+						<td>Star News</td>
+						<td>63</td>
+						<td>53</td>
+						<td>1</td>
+					</tr>
+				</table>
+
+			</td>
+
+
+		</tr>
+
+	</table>
+	<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>
 
 	<span class="gray">Are you a</span>
 	<strong>Politician
@@ -168,11 +164,10 @@ text-decoration:none;}
 	<div class="clickhere-button">
 	<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>
 	</div>
-</td></tr>
-</table>
-</td></tr>
-</table>
+
 </td>
+
+
  <td width="2%"></td>
 
 	<!------------RIGHT SIDE PANEL ------------>
@@ -208,7 +203,7 @@ Punjab Assembly 2012 Live Election Analysis</h3>
 
 <br>
 
-<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1980 - 2012</span>
+<span style="-moz-border-radius:3px;padding:3px;background: #d2e888;font-weight:bold;">View Party Previous Performances From 1977 - 2012</span>
 <br><br>
 <tr>
 <th style="padding-right: 27px;">
@@ -341,6 +336,7 @@ CPM</a>
 </div>
 <div id="genderInfoDiv">
 <div id="genderAnalysisDiv"></div></div>
+
 <script type="text/javascript">
 
 function getGenderInfo(selectedYear,elecYearId)
