@@ -623,7 +623,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				FileVO fileValue = new FileVO();
 				fileValue.setFileType(photoValue);
 				fileVO2 = fileValue;
-			}
+			}}
 			catch(Exception e){
 				e.printStackTrace();
 			}
