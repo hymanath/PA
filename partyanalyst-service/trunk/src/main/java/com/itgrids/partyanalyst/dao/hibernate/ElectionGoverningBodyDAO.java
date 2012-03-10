@@ -14,6 +14,7 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 		super(ElectionGoverningBody.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllMinistersIdsAndMinistry(Long electionId)
 	{
 		

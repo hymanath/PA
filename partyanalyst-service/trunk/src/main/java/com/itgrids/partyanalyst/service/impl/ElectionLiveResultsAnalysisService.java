@@ -1151,7 +1151,8 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		else
 		{
 			//retrieving all the important candidates which are nominated in previous election by using previous electionId
-			candidates = nominationDAO.getimportantCandidatesDetails(prevElectionId);
+			candidates = nominationDAO.getimportantCandidatesDetails(elecId,prevElectionId);
+			candidates = getUniqueInImpCandidates(candidates);
 		}
 	    PositionManagementVO positionManagementVO = null;
 	    // iterating individual candidate and getting their current and previous election performance details
@@ -1836,4 +1837,29 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	  }
 	  return returnval;
   }
+  
+  public List<Object[]> getUniqueInImpCandidates(List<Object[]> candidates)
+  {
+	  log.debug("Entered into getUniqueInImpCandidates() Method");
+	  try{
+		  List<Object[]> result = new ArrayList<Object[]>(0);
+		  for(Object[] candidate : candidates)
+		  {
+			  boolean flag = false;
+			  for(Object[] param : result)
+			  {
+				  if(((Long)param[0]).longValue() == ((Long)candidate[0]).longValue())
+					  flag = true;
+			  }
+			  if(!flag)
+				  result.add(candidate);  
+		  }
+		  return result;
+	  }catch (Exception e) {
+		  log.error("Exception Occured in getUniqueInImpCandidates() Method, Exception is - "+e);
+		  return candidates;
+	  }
+	  
+  }
+  
 }
