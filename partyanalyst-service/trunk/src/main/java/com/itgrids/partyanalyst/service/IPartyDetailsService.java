@@ -68,4 +68,6 @@ public interface IPartyDetailsService {
 	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO);
 	
 	public ResultStatus savePartyMessageFromPeople(GallaryVO gallaryVO);
+	
+	public String getPartyVisibility(Long gallaryId);
 }

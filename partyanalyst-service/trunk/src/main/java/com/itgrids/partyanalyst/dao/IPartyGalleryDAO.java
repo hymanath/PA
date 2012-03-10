@@ -20,4 +20,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public List<Object[]> getPartyGalleriesDescForUpdate(Long gallaryId,Long partyId);
 	
 	public List<Party> getPartyByGalleryId(Long gallaryId);
+	
+	public List<Object> getPartyVisibility(Long gallaryId);
 }
