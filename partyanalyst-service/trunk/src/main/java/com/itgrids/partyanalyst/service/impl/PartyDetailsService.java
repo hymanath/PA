@@ -1023,6 +1023,20 @@ public class PartyDetailsService implements IPartyDetailsService {
 	}
 	
 	
+	public String getPartyVisibility(Long gallaryId)
+	{
+		log.debug("Entered into getPartyVisibility() method");
+		List<Object> result = partyGalleryDAO.getPartyVisibility(gallaryId);
+		try
+		{
+			return result.get(0).toString();
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in getPartyVisibility() method of PartyDetailsService");
+			return result.get(0).toString();
+		}
+	}
 }
 	
 

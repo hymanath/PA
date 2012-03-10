@@ -53,6 +53,7 @@ public class PartyProfileDescriptionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(integer);
 	}*/
 	
+	 
 	}
 
 	

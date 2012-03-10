@@ -155,4 +155,10 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		return getHibernateTemplate().find("select model.party from PartyGallery model where model.gallery.gallaryId = ?",gallaryId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getPartyVisibility(Long gallaryId)
+	{
+		return getHibernateTemplate().find("select model.isPrivate from PartyGallery model where model.gallery.gallaryId = ?",gallaryId);
+	}
 }

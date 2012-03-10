@@ -66,12 +66,21 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		}
 	}*/
 	
-	public void testGetPartyByGalleryId()
+	/*public void testGetPartyByGalleryId()
 	{
 		List<Party> list = partyGalleryDAO.getPartyByGalleryId(891l);
 		
 		System.out.println(list.size());
 		
 		System.out.println(list.get(0).getShortName());
+	}
+	*/
+	public void testgetPartyVisibility()
+	{
+		List<Object> result = partyGalleryDAO.getPartyVisibility(1159l);
+		for(Object params:result)
+	{
+		System.out.println(params);
+	}
 	}
 }
