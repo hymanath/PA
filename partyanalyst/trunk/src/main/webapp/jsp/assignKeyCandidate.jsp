@@ -74,6 +74,11 @@ font-weight:bold;
 		<tr>
 			<th align="left">Candidate Name :</th>
 			<td><input type="text" id="candidateName"/><input type="button" value="Search Candidate" onclick="getAllCandidates()" class="buttonStyle" style="margin-left: 20px;"></td>
+			<td>
+			<div id="searchAjaxImgSpan" style="display:none;">
+			<img src="images/icons/search.gif" />
+			</div>
+			</td>
 		</tr>
 		
 		<tr>
@@ -135,8 +140,9 @@ font-weight:bold;
 	return stringToTrim.replace(/^\s+|\s+$/g,"");
 	}
 
-	function getAllCandidates(){
-
+function getAllCandidates()
+{
+	
 	var candidateName = document.getElementById("candidateName").value;
 	var partyId = document.getElementById("partyId").value;
 	var stateId = document.getElementById("stateId").value;
@@ -160,22 +166,24 @@ font-weight:bold;
 		}
 	
 	
-		divEle.innerHTML = str;
-		if(flag)
-		return;
-	var jObj=
-		{
-		candidateName : candidateName,
-		partyId : partyId,
-		stateId:stateId,
-		task : "getCandidates"
-		}
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);	
-		var url = "getStatesBasedOnElectionTypeAction.action?"+rparam;
-		callAjaxForAssignKeyCandidatePage(url,jObj);
+	   divEle.innerHTML = str;
+	  if(flag)
+	  return;
+	  else
+	  {
+	   document.getElementById("searchAjaxImgSpan").style.display = 'block';
+	     var jObj=  {
+				candidateName : candidateName,
+				partyId : partyId,
+				stateId:stateId,
+				task : "getCandidates"
+				}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);	
+			var url = "getStatesBasedOnElectionTypeAction.action?"+rparam;
+			callAjaxForAssignKeyCandidatePage(url,jObj);
 	
 	}
-	
+}
 	function assignCandidate()
 	{
 		var candidateSelEle = document.getElementById("candidateId");
@@ -291,11 +299,13 @@ font-weight:bold;
 				 if(myResults == ''){
 					var candidateName = document.getElementById("candidateName").value; 
 					document.getElementById("errorDivElement").innerHTML = '<b><font style="color:red;font-size:12px;">No candidates are found for given "'+candidateName+'"</font></b>';
+					document.getElementById('searchAjaxImgSpan').style.display = 'none';
 					}
 
 			    else{
 					clearOptionsListForSelectElmtId("candidateId");
 					createOptionsForSelectElmtIdWithSelectOption("candidateId",myResults);
+					document.getElementById('searchAjaxImgSpan').style.display = 'none';
 				}
 			 }
 			 else if(jObj.task == "assignKeyCandidate"){
