@@ -788,10 +788,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 {
 			selectOptionList = candidateDetailsService.getNewsImportance();
 		 }
-		/*else if(jObj.getString("task").equalsIgnoreCase("getUserMessages"))
+		else if(jObj.getString("task").equalsIgnoreCase("getUserMessages"))
 		{
-			candidateCommentsVO = candidateDetailsService.getUserMessages(jObj.getLong("candidateId"));
-		}*/
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			Integer resultsCount = Integer.parseInt(request.getParameter("resultsCount"));
+			candidateCommentsVO = candidateDetailsService.getUserMessages(jObj.getLong("candidateId"),startIndex,resultsCount);
+		}
 		
 		return Action.SUCCESS;
 	}
