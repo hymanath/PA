@@ -262,12 +262,31 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			}
 		else if(jsObj.task == "partyGallariesForUplaod" && jsObj.updatePhoto== "UpdatePhoto")
 			{
-               clearOptionsListForSelectElmtId('gallarySelectId');
-			   createListData('gallarySelectId',myResults);
+               clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
+			   createListData('gallaryPhotoSelectId',myResults);
+			   $("#gallaryPhotoSelectId").prepend("<option value='0'>Select Gallary</option>");
+			   document.getElementById('gallaryPhotoSelectId').value = 0;
 			}
-		else if(jsObj.task == "partyVideoGallariesForUplaod")
+			else if(jsObj.task == "partyVideoGallariesForUplaod")
 			{
+		
            showUploadVideoStatus(myResults);  
+			}
+
+			else if(jsObj.task == "partyVideoVisibility")
+			{
+				
+			
+				hideVedioVisibility(myResults);
+			}
+		else if(jsObj.task == "partyNewsVisibility")
+			{
+				hideNewsVisibility(myResults);
+			}
+
+			else if(jsObj.task == "partyPhotoVisibility")
+			{
+				hidePhotoVisibility(myResults);
 			}
 		else if(jsObj.task == "saveDiscription")
 			{
@@ -375,12 +394,15 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			
 			else if(jsObj.task == "createVideoNewGallary")  
 			{ 
-               showVideoGallaryCreateMsg(myResults);
+               showVideoGallaryCreateMsg(myResults,jsObj.createOrUpdate);
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
                clearOptionsListForSelectElmtId('gallaryId');
 			   createOptionsForSelectElmtId('gallaryId',myResults);
+			   $("#gallaryId").prepend("<option value='0'>Select Gallary</option>");
+			document.getElementById('gallaryId').value=0;
+
 			}
 			
 			else if(jsObj.task == "getSource")
@@ -393,13 +415,29 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
                clearOptionsListForSelectElmtId('language');
 			   createOptionsForSelectElmtId('language',myResults);
 			}
-			else if(jsObj.task == "partyGallariesForUplaod")
+			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Video Gallary")
 			{ 
+
+				
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
+			   $("#gallarySelectId").prepend("<option value = '0'> Select Gallary</option>")
+					document.getElementById('gallarySelectId').value = 0;
 			}
+			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Photo Gallary")
+			{ 
+
+				
+               clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
+			   createOptionsForSelectElmtId('gallaryPhotoSelectId',myResults);
+			   $("#gallaryPhotoSelectId").prepend("<option value = '0'> Select Gallary</option>")
+					document.getElementById('gallaryPhotoSelectId').value = 0;
+			}
+
+
 			else if(jsObj.task == "partyDescriptionUpdate")
 			{ 
+
                showPartyDescription(myResults);
 			}
 			else if(jsObj.task == "updateIndividualPhotoDetails")
@@ -413,7 +451,7 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
      	}
 		catch(e)
 		{   
-		 alert("Invalid JSON result" + e);   
+		 //alert("Invalid JSON result" + e);   
 		}  
 	 },
 	scope : this,
@@ -448,6 +486,31 @@ function createListData(elmtId,optionsList)
 	}
 	 if(elmtId != 'assmblParlElecYearsSelect')
      document.getElementById('gallarySelectId').value = gGallaryId;
+}
+
+function createListData(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	 if(elmtId != 'assmblParlElecYearsSelect')
+     document.getElementById('gallaryPhotoSelectId').value = gGallaryId;
 }
 
 function showPhotoUpdateDetails(result)
@@ -583,14 +646,14 @@ function buildUploadPhotosDiv()
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
-	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select onchange=" buildPhotoVisibility()" id="gallaryPhotoSelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="photofileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
-	str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId"/></td></tr></table>';
-	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
+	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"/></td></tr></table>';
+	str += '<div id="photoPublicRadioDiv" style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
@@ -615,6 +678,7 @@ function buildUploadPhotosDiv()
 	var makeThis = 'true';
     var gallaryId ='';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	//var galEle = document.getElementById('gallaryPhotoSelectId').value;
 	var eFlag = false;
      if(createOrUpdate=='Update')
 	{
@@ -627,6 +691,12 @@ function buildUploadPhotosDiv()
 		str += 'Gallery Name Required<br>';
 		eFlag = true;
 	}
+
+	/*if(galEle == 0)
+		{
+		str +='Select Gallary';
+		eFlag = true;
+		}*/
 	if(galName.length >100)
 	{
 		str += 'Gallery Name should be less than 100 Characters<br>';
@@ -671,7 +741,7 @@ function showGallaryCreateMsg(result,createOrUpdate)
 	
 	if(result.resultCode == 0)
 	{
-		clearGallaryFields();
+	clearGallaryFields();
 		if(createOrUpdate=='Create')
 		str += '<font color="green"><b>Gallery Created Successfully.</b>';
 		else
@@ -816,6 +886,7 @@ function uploadAFile()
 }
 function uploadNews()
 {
+	
 	if(validateNewsFileUpload())
 	{
 		var uploadHandler = {
@@ -835,15 +906,19 @@ function uploadNews()
 	
 function validateFileUpload()
 {
-	var fileTitle = document.getElementById('fileTitleId').value;
-	var fileDesc = document.getElementById('fileDescId').value;
-	var fileVal = document.getElementById("fileId").value;
-	var galId = document.getElementById("gallarySelectId").value;
+	var fileTitle = document.getElementById('photofileTitleId').value;
+	var fileDesc = document.getElementById('photofileDescId').value;
+	var fileVal = document.getElementById("photofileId").value;
+	var galId = document.getElementById("gallaryPhotoSelectId").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
-
+	if(galId == 0)
+	{
+		str += 'Select Gallary';
+		flag = false;
+	}
 	if(fileTitle.length == 0)
 	{
 		str += 'Photo Title Required.<br>';
@@ -869,12 +944,7 @@ function validateFileUpload()
 		str += 'Photo Required.<br>';
 		flag = false;
 	}
-	if(galId == 0)
-	{
-		alert(galId);
-		str += 'Select Any Gallery.<br>';
-		flag = false;
-	}
+	
 	
 	str += '</font>';
 	errorDivEle.innerHTML = str;
@@ -883,22 +953,28 @@ function validateFileUpload()
 }
 function validateNewsFileUpload()
 {
-	var fileTitle = document.getElementById('fileTitle').value;
-	var fileDesc = document.getElementById('fileDescription').value;
-	var fileVal = document.getElementById("fileId").value;
+	var fileTitle = document.getElementById('newsfileTitle').value;
+	var fileDesc = document.getElementById('newsfileDescription').value;
+	var fileVal = document.getElementById("newsfileId").value;
 	var source = document.getElementById("source").value;
 	var languageId = document.getElementById("language").value;
 	var keywords = document.getElementById("keywords").value;
+	var galEle = document.getElementById("gallaryId").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-
+if(galEle == 0)
+	{
+		str += 'Select Gallary';
+		flag = false;
+	}
 	if(fileTitle.length == 0)
 	{
 		str += ' Title Is Required.<br>';
 		flag = false;
 	}
+	
 	if(fileTitle.length >50)
 	{
 		str += 'Title should be less than 50 Characters<br>';
@@ -964,6 +1040,8 @@ function showUploadStatus(myResult)
 }
 function showNewsUploadStatus(myResult)
 {
+
+		
 	var result = (String)(myResult);
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '';
@@ -982,33 +1060,36 @@ function showNewsUploadStatus(myResult)
 		str += '<font color="red"><b>'+result+'</b>';
 	}
 	errorDivEle.innerHTML = str;
+
+	
 }
 
 function clearNewsUploadFileFields()
 {
-	document.getElementById('fileTitle').value = '';
-	document.getElementById('fileDescription').value = '';
+	document.getElementById('newsfileTitle').value = '';
+	document.getElementById('newsfileDescription').value = '';
 	document.getElementById('keywords').value = '';
 	document.getElementById('existingFromText').value = '';
 	document.getElementById('source').value = '';
-	document.getElementById('fileId').value = '';	
-	document.getElementById('publicRadioId').checked = true;
+	document.getElementById('newsfileId').value = '';	
+	//document.getElementById('publicRadioId').checked = true;
 	getScopes();
 }
 	
 function clearUploadFileFields()
 {
-	document.getElementById('fileTitleId').value = '';
-	document.getElementById('fileDescId').value = '';
-	document.getElementById('publicRadioId').checked = true;
-	document.getElementById('fileId').value = '';
+	document.getElementById('photofileTitleId').value = '';
+	document.getElementById('photofileDescId').value = '';
+	//document.getElementById('publicRadioId').checked = true;
+	document.getElementById('photofileId').value = '';
 }
 
 function clearGallaryFields()
 {
+	
 	document.getElementById('pGallaryNameId').value = '';
 	document.getElementById('pGallaryDescId').value = '';
-	document.getElementById('publicRadioId').checked = true;
+	//document.getElementById('publicRadioId').checked = true;
 }
 	
 function formValidation()
@@ -1649,15 +1730,15 @@ function  buildUploadNews()
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 	str += '<table>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
+	str += ' <td class="tdWidth1">Select Category</td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId" class="selectWidth" /></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="fileTitle" name="fileTitle" size="25" maxlength="50"></text></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="fileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords</td>';
@@ -1687,15 +1768,15 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="fileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" /></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></td>';
+	str += ' <td id="newsPublicRadioDiv"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv" color="#4B74C6">Visible to Public Also</font></b></input></td>';
     str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
+	str += '       <td><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
 	str += '   </tr>';
 	str +='    <tr>';
     str +='	   <td class="tdWidth1">Location Scope</td>';
@@ -1805,7 +1886,7 @@ function buildUploadVideoDiv()
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
     str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
-	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select onchange="buildPartyVedioVisibility()" id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
@@ -1822,9 +1903,9 @@ function buildUploadVideoDiv()
 	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
 	str += '</table>';
-	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div id="vedioPublicDiv" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
 	str+='</div>';
@@ -1944,12 +2025,17 @@ function uploadVideoGallary()
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
 	var str = '<font color="red">';
-
+	if(galId == 0)
+	{
+		str += 'Select Gallary';
+		eFlag =true;
+	}
 	if(fileTitle.length == 0)
 	{
 		str += 'Title Is Required<br>';
 		eFlag = true;
 	}
+	
 	if(fileTitle.length > 50)
 	{
 		str += 'Title should be less than 50 Characters<br>';
@@ -1996,7 +2082,7 @@ function uploadVideoGallary()
 	if(eFlag)
 		return;
 
-	if(isPublic)
+		if(isPublic)
 		makeThis = 'public';
 
 	var jsObj =
@@ -2020,8 +2106,55 @@ function uploadVideoGallary()
 	callAjax(jsObj,url);
 }
 
+function buildPartyVedioVisibility()
+{
+
+	var galEle = document.getElementById('gallarySelectId');
+	var galId = galEle.options[galEle.selectedIndex].value;
+	var jsObj =
+	{
+		gallaryId : galId,
+			task : "partyVideoVisibility"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyManageVisibilityAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+
+
+function buildPartyNewsVisibility()
+{
+	var galEle = document.getElementById('gallaryId');
+	var galId = galEle.options[galEle.selectedIndex].value;
+
+	var jsObj =
+	{
+		gallaryId : galId,
+			task : "partyNewsVisibility"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyManageVisibilityAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function buildPhotoVisibility()
+{
+var galEle = document.getElementById('gallaryPhotoSelectId');
+	var galId = galEle.options[galEle.selectedIndex].value;
+
+	var jsObj =
+	{
+		gallaryId : galId,
+		task : "partyPhotoVisibility"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyManageVisibilityAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
 function showVideoGallaryCreateMsg(result)
 {
+	
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
 	
@@ -2029,6 +2162,7 @@ function showVideoGallaryCreateMsg(result)
 	{
 		clearVideoGallaryFields();
 		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+			
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -2038,6 +2172,7 @@ function showVideoGallaryCreateMsg(result)
 
 function showUploadVideoStatus(result)
 {
+	
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var str = '';
 
@@ -2060,16 +2195,17 @@ function showUploadVideoStatus(result)
 
 function clearVideoGallaryFields()
 {
+
 	document.getElementById('pVGallaryNameId').value = '';
 	document.getElementById('pVGallaryDescId').value = '';
-	document.getElementById('vpublicRadioId').checked = true;
+	//document.getElementById('vpublicRadioId').checked = true;
 }
 
 function clearUploadVideoFields()
 {
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
-	document.getElementById('vpublicRadioId').checked = true;
+	//document.getElementById('vpublicRadioId').checked = true;
 	document.getElementById('path').value = '';
 	document.getElementById("keyword").value = '';
 	document.getElementById("source").value = '';	
@@ -2521,7 +2657,7 @@ function updateFilesAndPhotosDiv(myResults,fileId)
 		str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 		str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
 		str += '<table width="75%">';
-		str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallarySelectId" class="gallaryTitleVal" name="gallaryId" style="width:175px;"></select></td></tr>';
+		str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select id="gallaryPhotoSelectId" class="gallaryTitleVal" name="gallaryId" style="width:175px;"></select></td></tr>';
 		str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
 		str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 		str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement">'+myResults.fileDescription1+'</textarea></td></tr></table>';
@@ -2532,15 +2668,15 @@ function updateFilesAndPhotosDiv(myResults,fileId)
 		str+='</div>';
 		document.getElementById("photoGallaryDiv").innerHTML = str;
 		document.getElementById('fileTitleId').value = myResults.fileTitle1;
-		if(myResults.file != 'false')
+		/*if(myResults.file != 'false')
 		document.getElementById('privateRadioId').checked = true;
 		else 
-		document.getElementById('publicRadioId').checked = true;
+		document.getElementById('publicRadioId').checked = true;*/
 		getCandidateGallariesForUpdatePhoto();
 	 }	 
 function updatePhoto(fileId,fileGallaryId)
 { 
-  var galEle = document.getElementById('gallarySelectId');
+  var galEle = document.getElementById('gallaryPhotoSelectId');
      var gallaryId = galEle.options[galEle.selectedIndex].value;
 	 var title = document.getElementById('fileTitleId').value;
 	var galDesc = document.getElementById('fileDescId').value;
@@ -2577,8 +2713,8 @@ function updatePhoto(fileId,fileGallaryId)
 	if(eFlag)
 		return;
 
-	if(isPublic)
-		makeThis = 'false';
+	/*if(isPublic)
+		makeThis = 'false';*/
 	
 	var jsObj =
 		{ 
@@ -2809,6 +2945,61 @@ function updatePhoto(fileId,fileGallaryId)
 	callAjax(jsObj,url);
 	  
 	  }
+
+	  function hideVedioVisibility(myResults)
+	  {
+		
+
+		  if(myResults.isPrivate == "true"){
+			  document.getElementById('vedioPublicDiv').style.display = 'none';
+			document.getElementById('vprivateRadioId').checked = true;
+			document.getElementById('vedioPublicDiv').style.display = 'none';
+		  }
+		  else
+		  {
+			document.getElementById('vedioPublicDiv').style.display = 'block';
+		   document.getElementById('vpublicRadioId').checked = true;
+		  }
+	  }
+
+
+	  function hideNewsVisibility(myResults)
+	  {
+		  if(myResults.isPrivate == "true")
+		  {
+			  document.getElementById('newsPublicRadioDiv').style.display = 'none';
+			  // document.getElementById('newsfontDiv').style.display = 'none';
+			document.getElementById('newsprivateRadioId').checked = true;
+			document.getElementById('newsPublicRadioDiv').style.display = 'none';
+		  }
+		  else
+		  {
+			    // document.getElementById('newsfontDiv').style.display = 'block';
+			  document.getElementById('newsPublicRadioDiv').style.display = 'block';
+			
+		   document.getElementById('newsPublicRadioId').checked = true;
+		   
+
+		  }
+	  }
+
+
+	  function hidePhotoVisibility(myResults)
+	  {
+		  
+		if(myResults.isPrivate == "true")
+		  {
+			  document.getElementById('photoPublicRadioDiv').style.display = 'none';
+			document.getElementById('photoprivateRadioId').checked = true;
+			//document.getElementById('photoPublicRadioDiv').style.display = 'none';
+		  }
+		  else
+		  {
+			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
+		   document.getElementById('PhotopublicRadioId').checked = true;
+
+		  }
+	  }
 </script>
 </head>
 <body>
@@ -2841,7 +3032,9 @@ function updatePhoto(fileId,fileGallaryId)
 				<table>
 				  <tr>
 			    	<td style="padding-left:350px"><b>Select Party</b></td>
-				     <td><input type="text" id ="partyId" name = "partyId" value="163">
+				    <!-- <td><input type="text" id ="partyId" name = "partyId" value="163">
+					 </td>-->
+					 <td><s:select cssClass="canSelect" theme="simple" id="partyId" name="party" list="partyList" listKey="id" listValue="name"/>
 					 </td>
 					 <span id="alertMsg1" style="padding-left:410px"></span>
 				  </tr>
