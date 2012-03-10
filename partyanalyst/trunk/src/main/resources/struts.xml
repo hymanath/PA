@@ -3129,6 +3129,12 @@
            		<param name="root">fileVOList</param>
         	</result>	
 		</action>
+		
+		<action name="partyManageVisibilityAction" class="partyManagementAction" method="AjaxHandler">
+		<result type="json" name="success">
+           		<param name="root">gallaryVO</param>
+			</result>
+		</action>
 				
 	</package>
 </struts>      
