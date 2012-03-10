@@ -437,6 +437,33 @@ public String execute()
 		 {
 			result= partyDetailsService.deleteProfileDescById(jObj.getLong("profDescId"));
 		 }
+		else if(jObj.getString("task").equalsIgnoreCase("partyVideoVisibility"))
+		{
+			String value = partyDetailsService.getPartyVisibility(jObj.getLong("gallaryId"));
+			GallaryVO gallaryvo = new GallaryVO();
+			gallaryvo.setIsPrivate(value);
+			gallaryVO = gallaryvo;
+			
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("partyNewsVisibility"))
+		{
+			String value = partyDetailsService.getPartyVisibility(jObj.getLong("gallaryId"));
+			GallaryVO gallaryvo = new GallaryVO();
+			gallaryvo.setIsPrivate(value);
+			gallaryVO = gallaryvo;
+			
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("partyPhotoVisibility"))
+		{
+			String value = partyDetailsService.getPartyVisibility(jObj.getLong("gallaryId"));
+			GallaryVO gallaryvo = new GallaryVO();
+			gallaryvo.setIsPrivate(value);
+			gallaryVO = gallaryvo;
+			
+		}
+		
+		
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{
 			List<Long> orderNo = new ArrayList<Long>();
@@ -462,7 +489,10 @@ public String execute()
 				   gallaryList.add(gallary);
 			      }
 			      result = partyDetailsService.updateProfileDescription(gallaryList,partyId);
-			 }catch(Exception e)
+			 }
+			
+			
+			catch(Exception e)
 			       {
 				e.printStackTrace();
 			    }
@@ -478,6 +508,10 @@ public String execute()
 			Long partyId = new Long(jObj.getString("partyId"));
 			gallaryVO = partyDetailsService.getPartyGalleryDetails(galleryId,partyId); 
 		}
+		
+		
+		
+		
 	} catch (ParseException e) {
 		
 		e.printStackTrace();
