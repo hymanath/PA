@@ -28,8 +28,8 @@ var custom_paginator = {
 			try 
 			{					
 				results = YAHOO.lang.JSON.parse(o.responseText);
-				//alert("In Custom##"+results[0].totalResultsCount);
-				if(results.length>0)
+				
+				if(results != null && results.length>0)
 				    this.totalRecords = parseInt(results[0].totalResultsCount);	
 				else
                      this.totalRecords = 0;
@@ -54,27 +54,8 @@ var custom_paginator = {
 	},
 	buildPaginator:function()
 	{
-		
-		
-		//alert("paginator      "+this.paginatorElmt);
-       //var elements = $("."+this.paginatorElmt);
-		
-		/*if(elements.length == 0)
-		{			
-			return;
-		}*/
-		/*var elements =this.paginatorElmt;
-		  alert(elements+"1"+elements.length);
-		  if(elements.length == 0)
-		  {  	alert("hi");		
-			    return;
-		  }*/
-		//alert("2");
 		var paginatorElmt = document.createElement('Div');
-		//alert("3");
 		paginatorElmt.setAttribute("class","paginatorElmtClass");
-		//alert(this.totalRecords);
-		//alert(this.resultsCount);
 		var iteration = Math.ceil(this.totalRecords/this.resultsCount);		
 		var countIndex = this.startIndex;
 		var str = '';
@@ -87,16 +68,9 @@ var custom_paginator = {
 				countIndex+=this.resultsCount;
 			}
 		}
-		/*paginatorElmt.innerHTML = str;
-		alert(str);
-                for(var i=0; i<elements.length; i++)
-		{
-			elements[i].appendChild(paginatorElmt);
-		}
-        */
-	
-	      if(document.getElementById("custom_paginator_class")!=null)	
-     		  document.getElementById("custom_paginator_class").innerHTML = str;
+		
+		if(document.getElementById("custom_paginator_class")!=null)	
+     	  document.getElementById("custom_paginator_class").innerHTML = str;
 		
 	}
 };
