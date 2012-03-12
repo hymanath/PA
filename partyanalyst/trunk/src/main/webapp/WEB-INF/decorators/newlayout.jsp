@@ -287,32 +287,116 @@ function buildAccordion()
           <li><a href="userGroupAction.action"><span>User Groups</span></a></li>
         <li><a href="callCenterAction.action"><span>Call Center</span></a></li>
 	
-			 </ul></div>
-			  <li><a href="cadreManagementAction.action"><span>CADRE</span></a>
-			 </c:if>
-        <li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
-		 <div  style="z-index:8;text-align:left;" ><ul>
-                <li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a>
-                 
-                </li>
-                <li><a href="statePageAction.action?stateId=3"><span>Assam</span></a>
-                    
-                </li>
-                <li><a href="statePageAction.action?stateId=12"><span>Karnataka</span></a></li>
-				<li><a href="statePageAction.action?stateId=13"><span>Kerala</span></a></li>
-				<li><a href="statePageAction.action?stateId=35"><span>Puducherry</span></a></li>
-				<li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span></a></li>
-				<li><a href="statePageAction.action?stateId=7"><span>Gujarath</span></a></li>
-				<li><a href="statePageAction.action?stateId=28"><span>West Bengal</span></a></li>
-				<li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span></a></li>
-				<li><a href="statePageAction.action?stateId=21"><span>Punjab</span></a></li>
-                <li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
-				<li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
-				<li><a href="statePageAction.action?stateId=16"><span>Manipur</span></a></li>
-				<li><a href="statePageAction.action?stateId=6"><span>Goa</span></a></li>
-                            </ul></div>
-		
-		</li>
+	 </ul></div>
+
+<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
+	 <div  style="z-index:8;text-align:left;" >
+		<ul>
+		    <li><a href="#" class="parent"><span>South India</span></a>
+		      <div style="z-index:1;text-align:left;">
+			     <ul>
+				   <li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=6"><span>Goa</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=12"><span>Karnataka</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=13"><span>Kerala</span>
+				  </a></li>
+				  <li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span>
+				  </a></li>
+			    </ul>
+		     </div>
+	      </li>
+		 <li><a href="#" class="parent"><span>North India</span></a>
+		   <div style="z-index:1;text-align:left;">
+	         <ul>
+		       <li><a href="statePageAction.action?stateId=3"><span>Assam</span>
+	           </a></li>
+		      <li><a href="statePageAction.action?stateId=7"><span>Gujarat</span>
+				 </a></li>
+		     <li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
+		    <li><a href="statePageAction.action?stateId=16"><span>Manipur</span>
+		   </a></li>
+	       <li><a href="statePageAction.action?stateId=21"><span>Punjab</span>
+		    </a></li>
+	        <li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
+	        <li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span>
+		   </a></li>
+		 <li><a href="statePageAction.action?stateId=28"><span>West Bengal</span>
+	    </a></li>
+		</ul>
+		</div>
+	 </li>
+	  <li><a href="#" class="parent"><span>Union Territories</span></a>
+		 <div style="z-index:1;text-align:left;">
+		  <ul>
+		   <li><a href="statePageAction.action?stateId=35"><span>Puducherry</span>
+		   </a></li>
+		 </ul>
+		</div>
+		 </li>
+	</ul>
+  </div>
+	</li>
+	<li><a href="cadreManagementAction.action"><span>CADRE</span></a>
+	</li> 
+	</c:if>
+
+		<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || sessionScope.UserType == 'FreeUser'}">
+       <li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
+	 <div  style="z-index:8;text-align:left;" >
+		<ul>
+		    <li><a href="#" class="parent"><span>South India</span></a>
+		      <div style="z-index:1;text-align:left;">
+			     <ul>
+				   <li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=6"><span>Goa</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=12"><span>Karnataka</span>
+				   </a></li>
+				   <li><a href="statePageAction.action?stateId=13"><span>Kerala</span>
+				  </a></li>
+				  <li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span>
+				  </a></li>
+			    </ul>
+		     </div>
+	      </li>
+		 <li><a href="#" class="parent"><span>North India</span></a>
+		   <div style="z-index:1;text-align:left;">
+	         <ul>
+		       <li><a href="statePageAction.action?stateId=3"><span>Assam</span>
+	           </a></li>
+		      <li><a href="statePageAction.action?stateId=7"><span>Gujarat</span>
+				 </a></li>
+		     <li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
+		    <li><a href="statePageAction.action?stateId=16"><span>Manipur</span>
+		   </a></li>
+	       <li><a href="statePageAction.action?stateId=21"><span>Punjab</span>
+		    </a></li>
+	        <li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
+	        <li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span>
+		   </a></li>
+		 <li><a href="statePageAction.action?stateId=28"><span>West Bengal</span>
+	    </a></li>
+		</ul>
+		</div>
+	 </li>
+	  <li><a href="#" class="parent"><span>Union Territories</span></a>
+		 <div style="z-index:1;text-align:left;">
+		  <ul>
+		   <li><a href="statePageAction.action?stateId=35"><span>Puducherry</span>
+		   </a></li>
+		 </ul>
+		</div>
+		 </li>
+	</ul>
+   </div>
+</li>
+
+</c:if>
+
         <li class="last"><a href="searchPartyAnalystAction.action"><span>SEARCH</span></a></li>
 		<c:if test="${sessionScope.loginStatus == 'out'}">  
 							<li> 
