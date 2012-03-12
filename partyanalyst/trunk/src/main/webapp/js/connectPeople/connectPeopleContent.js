@@ -60,7 +60,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeopleData[i].candidateName+'</span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
-		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">';
+		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
 		if(userLoginStatus == "false")
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a>';
 		else
@@ -70,7 +70,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 			else if(connectedPeopleData[i].status == "NOT CONNECTED")
 			{
 				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
-				bodyStr+=' - <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')">Connect</a>';
+				bodyStr+='- <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" style="margin-left:auto;">Connect</a>';
 			}
 			else if(connectedPeopleData[i].status == "CONNECTED")
 				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Connected</font>';
@@ -102,7 +102,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	}
 	loginUserId=userLoginId;
 	//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
-	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#514830" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
+	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#ffffff" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
 	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
 	bodyStr+='</td>';
@@ -129,7 +129,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	str += '</tr>';
 	str += '<tr>';
 	str += '<td width="75%"><fieldset id="connectUserMsgFieldSet"><legend>Message</legend>';
-	str += '<textarea id="connectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="38"></textarea>';
+	str += '<textarea id="connectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="38" style="background:none;"></textarea>';
 	str +='<div id="limitDiv">';
 	str +='<table style="width:100%;"><tr>';
 	str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
