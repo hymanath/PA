@@ -134,16 +134,43 @@ function getElectionYears(electionType)
   }
   function buildDataTable(result,id)
   {
+	  
+	   var selectedStateEle = document.getElementById("stateListId");
+	  var selectedState = selectedStateEle.options[selectedStateEle.selectedIndex].text;
+	var selectedElectionYear = document.getElementById("yearSelId");
+	var selectedEleYear = selectedElectionYear.options[selectedElectionYear.selectedIndex].text;
      var str = '';
-	 if(id == "showData")
-	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td> Ministers Performance : </td></tr></table>';
-	 else
-	 str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td> Important Candidates Performance : </td></tr></table>';
+	 
 	 if(result.length > 0)
 	 {
+		if(id == "showData"){
+
+	 str +='<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td>';
+
+	 if(document.getElementById("state").checked == true){
+	 str +=''+selectedState+' State Ministers Performance in '+selectedEleYear+' Assembly Elections';
+	 }
+	 else
+		 {
+		 str +='Ministers Performance in '+selectedEleYear+' Parliament Elections';
+		 }
+	 str +='</td></tr></table>';
+	 }
+	 else{
+	 str +='<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;"><td> ';
+	if(document.getElementById("state").checked == true){
+	 str +=''+selectedState+' State Important Candidates Performance in '+selectedEleYear+' Assembly Elections';
+	}
+	else
+	  {
+	str +='Important Candidates Performance in '+selectedEleYear+' Parliament Elections';
+	}
+   str +='</td></tr></table>';
+   }
+
 	   str+='<table class="searchresultsTable" style="width:975px;margin-left:10px;text-align:center;">';
 	   str+='   <tr style="width:100%;">';
-	   str+='      <th style="width:13%;">Candidate Name</th>';
+	   str+='      <th style="width:13%;font-weight:bold;">Candidate Name</th>';
 	   if(id == "showData")
 	   {
 	     str+='      <th style="width:13%;">Ministry</th>';
@@ -167,11 +194,11 @@ function getElectionYears(electionType)
 	   str+='         <table  style="width:100%;" >';
 	   str+='             <tr style="width:100%;"><th colspan="5"  style="width:100%;border:0px;color: rgb(0, 87, 144);">'+result[0].currentResult.year+'</th></tr>';
 	   str+='             <tr style="width:100%;">';
-	   str+='                  <th  style="width:13%;border:0px;">Party</th>';
-	   str+='                  <th  style="width:25%;border:0px;">Constituency</th>';
-	   str+='                  <th  style="width:15%;border:0px;">Votes Earned</th>';
-	   str+='                  <th  style="width:15%;border:0px;">Votes Percentage</th>';
-	   str+='                  <th  style="width:20%;border:0px;">Result</th>';
+	   str+='                  <th  style="width:13%;border:0px;font-weight:bold;">Party</th>';
+	   str+='                  <th  style="width:25%;border:0px;font-weight:bold;">Constituency</th>';
+	   str+='                  <th  style="width:15%;border:0px;font-weight:bold;">Votes Earned</th>';
+	   str+='                  <th  style="width:15%;border:0px;font-weight:bold;">Votes Percentage</th>';
+	   str+='                  <th  style="width:20%;border:0px;font-weight:bold;">Result</th>';
 	   str+='             </tr>';
 	   str+='         </table>';
 	   str+='      </th>';
@@ -211,7 +238,8 @@ function getElectionYears(electionType)
 	   {
 	    
 	   str+='   <tr style="width:100%;">';
-	   str+='      <td style="width:13%;text-align:left;"><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' ">'+result[i].candidateName+'</a></td>';
+	   str+='      <td style="width:13%;text-align:left;">';
+	   str+=' <a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' "><img src="images/candidates/'+result[i].candidateName+'.jpg" width="113px" height="85px" style="padding: 5px;"/></a><BR><a href="candidateElectionResultsAction.action?candidateId='+result[i].candidateId+' " style="padding-left: 1px;font-weight:bold;">'+result[i].candidateName+'</a></td>';
 	   if(id == "showData")
 	   {
 	     str+='      <td style="width:13%;text-align:left;">'+result[i].positionName+'</td>';
@@ -225,8 +253,8 @@ function getElectionYears(electionType)
 	   for(var j in result[i].currentResult.positionManagementVOList)
 	     {
 	      str+='             <tr style="width:100%;">';
-	      str+='                  <td style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	      str+='                  <td style="width:33%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
+	      str+='                  <td style="width:33%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	      str+='                  <td style="width:33%;border:0px;text-align:left;">'+result[i].currentResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
@@ -240,14 +268,14 @@ function getElectionYears(electionType)
 	  for(var j in result[i].currentResult.positionManagementVOList)
 	    {
 	     str+='             <tr style="width:100%;">';
-	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].currentResult.partyId+' ">'+result[i].currentResult.partyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].currentResult.positionManagementVOList[j].constituencyId+'">'+result[i].currentResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].currentResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].currentResult.positionManagementVOList[j].rank == 1)
-	        str+='                  <td  style="width:20%;border:0px;">Won</td>';
+	        str+='                  <td  style="width:20%;border:0px;font-weight:bold;color:green;">Won</td>';
 		 else
-		    str+='                  <td  style="width:20%;border:0px;">Lost</td>';
+		    str+='                  <td  style="width:20%;border:0px;color:red;font-weight:bold;">Lost</td>';
 	     str+='             </tr>';
 	    }
 	   str+='         </table>';
@@ -294,8 +322,8 @@ function getElectionYears(electionType)
 	   for(var j in result[i].previousResult.positionManagementVOList)
 	     {
 	      str+='             <tr  style="width:100%;">';
-	      str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	      str+='                  <td  style="width:33%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	      str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
+	      str+='                  <td  style="width:33%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	      str+='                  <td  style="width:33%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].result+'</td>';
 	      str+='             </tr>';
 		 }
@@ -309,14 +337,14 @@ function getElectionYears(electionType)
 	  for(var j in result[i].previousResult.positionManagementVOList)
 	    {
 	     str+='             <tr  style="width:100%;">';
-	     str+='                  <td  style="width:13%;border:0px;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
-	     str+='                  <td  style="width:25%;border:0px;text-align:left;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
+	     str+='                  <td  style="width:13%;border:0px;font-weight:bold;"><a href="partyPageAction.action?partyId='+result[i].previousResult.partyId+' ">'+result[i].previousResult.partyName+'</a></td>';
+	     str+='                  <td  style="width:25%;border:0px;text-align:left;font-weight:bold;"><a href="constituencyPageAction.action?constituencyId='+result[i].previousResult.positionManagementVOList[j].constituencyId+'">'+result[i].previousResult.positionManagementVOList[j].constituencyName+'</a></td>';
 	     str+='                  <td  style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesEarned+'</td>';
 	     str+='                  <td style="width:15%;border:0px;">'+result[i].previousResult.positionManagementVOList[j].votesPercengate+'</td>';
 		 if(result[i].previousResult.positionManagementVOList[j].rank == 1)
-	        str+='                  <td style="width:20%;border:0px;">Won</td>';
+	        str+='                  <td style="width:20%;border:0px;font-weight:bold;color:green;">Won</td>';
 		 else
-		    str+='                  <td style="width:20%;border:0px;">Lost</td>';
+		    str+='                  <td style="width:20%;border:0px;color:red;font-weight:bold;">Lost</td>';
 	     str+='             </tr>';
 	    }
 	   str+='         </table>';
@@ -361,6 +389,7 @@ function getElectionYears(electionType)
 	 }
 	 else
 	 {
+		
 	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
 	 }
      document.getElementById(id).innerHTML = str; 
@@ -529,9 +558,9 @@ function getDeltailForMinisImpCand()
    <div style="padding-top:10px;padding-left:250px;width:70%;text-align:center;">
      <table>  
 	  <tr>
-	      <td><input type="radio" name="selectScope" checked="true" id="parlSel" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
+	      <td><input type="radio" name="selectScope" checked="true" id="parlSel" value="1" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
 	      <td><input type="radio" id="state" name="selectScope" onclick="showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
-		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
+		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId" value="2"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDeltailForMinisImpCand();" ></select></td>
       </tr>
 	 </table>
