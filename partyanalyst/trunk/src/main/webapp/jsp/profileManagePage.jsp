@@ -2119,7 +2119,7 @@ if(eFlag)
 		{ 
 		    
             candidateId	: candidateId,
-			gallaryId	: galId,
+			gallaryId	: galSelectId,
 			videoTitle	: fileTitle,
 			videoDescription : fileDesc,
 			path		: path,
