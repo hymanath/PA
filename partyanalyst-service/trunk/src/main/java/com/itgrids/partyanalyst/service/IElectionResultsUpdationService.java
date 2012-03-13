@@ -42,4 +42,10 @@ public interface IElectionResultsUpdationService {
 	public List<SelectOptionVO>  getMinistersType();
 	
 	public List<SelectOptionVO>  getMinistersTypeDetails(Long electionGoverningBodyPositionId,Long electionType);
+	
+	public List<SelectOptionVO> getAllStatesForParliamentMinisters();
+	
+	public List<SelectOptionVO> getAllYearsAndElecIdsForAssembly(Long stateId);
+	
+	public List<SelectOptionVO> getAllYearsAndElecIdsForParliament();
 }
