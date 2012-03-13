@@ -178,4 +178,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public Object getCountOfElectionsAfterDelimitation(Long electionScopeId);
 	
 	public List<Object[]> getStateDetailsForPartialElec();
+	
+	public List<Object[]> getNextElectionIdAndYear(Long electionId);
 }
