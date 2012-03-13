@@ -1636,16 +1636,16 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
 	var partywiseResultsWithGenderColumnDefs = [
 								{key: "partyName", label: "Party", sortable:true,
 								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "TP*", sortable:true},	
-		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "CVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "CPVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "malePerticipated", label: "Male Participants",formatter:"number", sortable:true},
-		              	 	 	{key: "maleWon", label: "Male Won",formatter:"number", sortable:true}, 
-								{key: "MVotesPercent", label: "MCGVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
-		              	 	 	{key: "femalePerticipated", label:"Female Participants", formatter:"number",sortable: true},
-		              	 	 	{key: "femaleWon", label:"Female Won",formatter:"number", sortable: true},
-								{key: "FVotesPercent", label: "FCGVP* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
+								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true},	
+		              	 	    {key: "totalSeatsWon", label: "<div style='background-color:#7DCBC6;'><%=seatsWon%></div>",formatter:"number", sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "<div style='background-color:#7DCBC6;'>CVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "<div style='background-color:#7DCBC6;'>CPVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "malePerticipated", label: "<div style='background-color:#C3B4F5;'>Male Participants</div>",formatter:"number", sortable:true},
+		              	 	 	{key: "maleWon", label: "<div style='background-color:#C3B4F5;'>Male Won</div>",formatter:"number", sortable:true}, 
+								{key: "MVotesPercent", label: "<div style='background-color:#C3B4F5;'>MCGVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+		              	 	 	{key: "femalePerticipated", label:"<div style='background-color:#BAE1B8;'>Female Participants</div>", formatter:"number",sortable: true},
+		              	 	 	{key: "femaleWon", label:"<div style='background-color:#BAE1B8;'>Female Won</div>",formatter:"number", sortable: true},
+								{key: "FVotesPercent", label: "<div style='background-color:#BAE1B8;'>FCGVP* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}  	
 		              	 	    ];                	 	    
 
 		var partywiseResultsWithGenderDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -1713,19 +1713,19 @@ function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 	var partyPerfRurlUrbnColDefs = [
 								{key: "partyName", label: "Party", sortable:true,
 								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "TP*", sortable:true},	
-		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
-		              	 	 	{key: "completeVotesPercent", label: "CV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "PVotesPercent", label: "PCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "ruralParticipated", label: "RCP*",formatter:"number", sortable:true},
-		              	 	 	{key: "ruralWon", label: "Won in RC*",formatter:"number", sortable:true}, 
-								{key: "ruralVotesPercent", label: "RCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
-		              	 	 	{key: "urbanParticipated", label:"UCP*", formatter:"number",sortable: true},
-		              	 	 	{key: "urbanWon", label:"Won in UC*",formatter:"number", sortable: true},
-								{key: "urbanVotesPercent", label: "UCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-                                {key: "ruralUrbanParticipated", label:"RUCP*", formatter:"number",sortable: true},
-		              	 	 	{key: "ruralUrbanWon", label:"Won in RUC*",formatter:"number", sortable: true},
-								{key: "ruralUrbanVotesPercent", label: "RUCV* %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true} 								
+								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true},	
+		              	 	    {key: "totalSeatsWon", label: "<div style='background-color:#7DCBC6;'><%=seatsWon%></div>",formatter:"number", sortable:true},
+		              	 	 	{key: "completeVotesPercent", label: "<div style='background-color:#7DCBC6;'>CV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "PVotesPercent", label: "<div style='background-color:#7DCBC6;'>PCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "ruralParticipated", label: "<div style='background-color:#C3B4F5;'>RCP*</div>",formatter:"number", sortable:true},
+		              	 	 	{key: "ruralWon", label: "<div style='background-color:#C3B4F5;'>Won in RC*</div>",formatter:"number", sortable:true}, 
+								{key: "ruralVotesPercent", label: "<div style='background-color:#C3B4F5;'>RCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},   	
+		              	 	 	{key: "urbanParticipated", label:"<div style='background-color:#BAE1B8;'>UCP*</div>", formatter:"number",sortable: true},
+		              	 	 	{key: "urbanWon", label:"<div style='background-color:#BAE1B8;'>Won in UC*</div>",formatter:"number", sortable: true},
+								{key: "urbanVotesPercent", label: "<div style='background-color:#BAE1B8;'>UCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+                                {key: "ruralUrbanParticipated", label:"<div style='background-color:#F9F4CE;'>RUCP*</div>", formatter:"number",sortable: true},
+		              	 	 	{key: "ruralUrbanWon", label:"<div style='background-color:#F9F4CE;'>Won in RUC*</div>",formatter:"number", sortable: true},
+								{key: "ruralUrbanVotesPercent", label: "<div style='background-color:#F9F4CE;'>RUCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true} 								
 		              	 	    ];                	 	    
 
 		var partyPerfRurlUrbnDataSource = new YAHOO.util.DataSource(dtSourceArray); 
