@@ -6,9 +6,45 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>District Wise Party Performance Analysis</title>
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- YUI Dependency Files-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<!-- YUI Skin Sam -->
+	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
 <style type="text/css">
 .main-mbg {
     background-color: #06ABEA;
@@ -59,21 +95,41 @@ table.searchresultsTable, table.searchresultsTable * td, table.searchresultsTabl
     font-weight: bold;
     padding: 4px;
 }
+.yui-dt-label{
+  font-weight:bold;
+}
+.buttonStyle {
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
 function getElectionYears(electionType)
 {
    document.getElementById("errorMessage").innerHTML = "";
+   document.getElementById("analysisTable").innerHTML= '';
+   document.getElementById("analysisTableDisplay").innerHTML= '';
    stateId = 1;
    if(electionType == "Assembly")
    {
 	var stateEle = document.getElementById("stateListId");
     stateId = stateEle.options[stateEle.selectedIndex].value;
 	document.getElementById("districtAny").innerHTML = "";
+	document.getElementById("districtAnyHeading").innerHTML = "";
 	document.getElementById("districtChart").innerHTML = "";
 	document.getElementById("districtPartyChart").innerHTML = "";
 	document.getElementById("districtPartyChartMore").innerHTML = "";
+	removeData("partiesIdDiv");
 	document.getElementById("hideSelect").style.display ="none";
 	if(stateId == 0)
 	  {
@@ -83,6 +139,7 @@ function getElectionYears(electionType)
 	  }
    }
 	removeData("yearSelId");
+	document.getElementById("select_ImgSpan").style.display="block";
 	var jObj = {
 			stateId : stateId,
 		electionType: electionType,
@@ -94,9 +151,7 @@ function getElectionYears(electionType)
 	callAjax(jObj,url);
 }
 	function getAllStates()
-   {
-    
-      
+   {     
     var jsObj =
 		{ 
             time : new Date().getTime(),
@@ -121,6 +176,7 @@ function getElectionYears(electionType)
 									
 									if(jsObj.task == "getElectionYearsForAState")
 									{
+									      document.getElementById("select_ImgSpan").style.display="none";
 									      buildData(myResults,"yearSelId");
 									}
 									else if(jsObj.task == "getStatesForAssign")
@@ -129,10 +185,16 @@ function getElectionYears(electionType)
 									}
 									else if(jsObj.task == "getDistrictWiseAnalysisDetails")
 									{ 
-									     document.getElementById("select_ImgSpan").style.display="none";
-										if(myResults.length > 0)
-									      getParties();
-										showDistrictWiseAnalysis(myResults);
+									     document.getElementById("resultImgDiv").style.display="none";
+										 pushData(myResults);
+										 if(myResults.length > 0)
+										  {
+										    buildPartyComparision(myResults[0].currResPartial)
+										  }
+										//if(myResults.length > 0)
+									     getParties();
+										 document.getElementById("hideSelect").style.display="block";
+									//	showDistrictWiseAnalysis(myResults);
 									}
 									else if(jsObj.task == "getDistrictWiseAnalysisDetailsForGraph")
 									{
@@ -143,7 +205,7 @@ function getElectionYears(electionType)
 									     {
 										    removeData("parties");
 									       document.getElementById("hideSelect").style.display="block";
-									       buildParties(myResults);
+									       //buildParties(myResults);
 										 }
 									}
 									else if(jsObj.task == "getpartyPerfoDistWiseForPartialEle")
@@ -153,6 +215,27 @@ function getElectionYears(electionType)
 									     buildGraph(myResults);
 										else
 										 divideArray(myResults);
+									}
+									else if(jsObj.task == "getAllPartiesForResults" && jsObj.type == "main")
+									{
+									  document.getElementById("select_ImgSpan").style.display="none";
+									  removeData("partiesIdDiv");
+									  buildParties(myResults,"partiesIdDiv");
+									}
+									else if(jsObj.task == "getAllPartiesForResults" && jsObj.type == "sub")
+									{
+									  removeData("partiesSelIdDiv");
+									  buildParties(myResults,"partiesSelIdDiv");
+									}
+									else if(jsObj.task == "getAllPartiesForResults" && jsObj.type == "graph")
+									{
+									  removeData("parties");
+									  buildParties(myResults,"parties");
+									}
+									else if(jsObj.task == "getPartiesPerfResultsWise")
+									{
+									  document.getElementById("select_ImgAnalysisSpan").style.display="none";
+									  showPartyPerf(myResults,jsObj.type);
 									}
 								}
 							catch (e) {   
@@ -166,6 +249,390 @@ function getElectionYears(electionType)
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+  }
+  function showPartyPerf(results,type)
+   {  
+     var str='';
+	 if(results != null && results.length>0 )
+	 {
+	  str+='<table class="searchresultsTable" align="center" style="minwidth:60%;">';
+	  str+='    <tr>';
+	  str+='       <th rowspan="2">District</th>';
+	  for(var j in results[0].positionManagementVOList)
+	  {
+	   if(type == "seats" || type == "seatsandvotes")
+	    str+='       <th colspan="2">'+results[0].positionManagementVOList[j].partyName+'(Seats)</th>';
+	   if(type == "votes" || type == "seatsandvotes")
+	    str+='       <th colspan="2">'+results[0].positionManagementVOList[j].partyName+'(Votes)</th>';
+	  }
+	  str+='    </tr>';
+	  str+='    <tr>';
+	  for(var j in results[0].positionManagementVOList)
+	  {
+	   if(type == "seats" || type == "seatsandvotes")
+	    {
+	     str+='       <th>'+results[0].prevYear+'</th>';
+		 str+='       <th>'+results[0].presentYear+'</th>';
+		}
+	   if(type == "votes" || type == "seatsandvotes")
+	    {
+		 str+='       <th>'+results[0].prevYear+'</th>';
+	     str+='       <th>'+results[0].presentYear+'</th>';
+	    }
+	  }
+	  str+='    </tr>';
+	  
+	  
+	  for(var i in results)
+	  {
+	    str+='    <tr>';
+	   str+='       <td>'+results[i].districtName+'</td>';
+	  for(var k in results[i].positionManagementVOList)
+	  {
+	   if(type == "seats" || type == "seatsandvotes")
+	    {
+		if(results[i].positionManagementVOList[k].partyPrevCount != null && results[i].positionManagementVOList[k].partyCount != null)
+		 {
+	     str+='       <td>'+results[i].positionManagementVOList[k].partyPrevCount+'</td>';
+		 if(results[i].positionManagementVOList[k].status == "increased")
+		  str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+'<font color="green">&uarr;</font>)</td>';
+		 else
+		  str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'('+results[i].positionManagementVOList[k].totalCount+'<font color="red">&darr;</font>)</td>';
+		 }
+		 else
+		 {
+		   if(results[i].positionManagementVOList[k].partyPrevCount != null)
+		     str+='       <td>'+results[i].positionManagementVOList[k].partyPrevCount+'</td>';
+		   else
+		     str+='       <td>--</td>';
+		   if(results[i].positionManagementVOList[k].partyCount != null)
+		     str+='       <td>'+results[i].positionManagementVOList[k].partyCount+'</td>';
+		   else
+		     str+='       <td>--</td>';
+		 }
+		}
+	   if(type == "votes" || type == "seatsandvotes")
+	    {
+		 if(results[i].positionManagementVOList[k].prevVotesEarned != null && results[i].positionManagementVOList[k].votesEarned != null)
+		 {
+		  str+='       <td>'+results[i].positionManagementVOList[k].prevVotesEarned+'</td>';
+		 if(results[i].positionManagementVOList[k].type == "increased")
+		  str+='       <td>'+results[i].positionManagementVOList[k].votesEarned+'('+results[i].positionManagementVOList[k].votesEarnedDiff+'<font color="green">&uarr;</font>)</td>';
+		 else
+		  str+='       <td>'+results[i].positionManagementVOList[k].votesEarned+'('+results[i].positionManagementVOList[k].votesEarnedDiff+'<font color="red">&darr;</font>)</td>';
+		 }
+		 else
+		 {
+		   if(results[i].positionManagementVOList[k].prevVotesEarned != null)
+		     str+='       <td>'+results[i].positionManagementVOList[k].prevVotesEarned+'</td>';
+		   else
+		     str+='       <td>--</td>';
+		   if(results[i].positionManagementVOList[k].votesEarned != null)
+		     str+='       <td>'+results[i].positionManagementVOList[k].votesEarned+'</td>';
+		   else
+		     str+='       <td>--</td>';
+		 }
+	    }
+	  }
+	  str+='    </tr>';
+	  }
+	  
+	  
+	  str+='</table>';
+	 }
+	 else
+	 {   
+	    str+='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
+	 }
+	  document.getElementById("analysisTableDisplay").innerHTML=str;
+   }
+
+  function buildPartyComparision(value)
+  {
+     var str='';
+     
+	 str+='<div style="font-weight: bold;padding-left: 130px;padding-bottom: 9px;font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;">Compare Party Wise Seats And Votes Earned In All Districts : </div>';
+	    str+='<table>';
+		str+='   <tr>';
+		str+='      <td>';
+		str+='         <input type="radio" id="seats" checked="true" value="seats" name="analysisRadio">&nbsp;&nbsp;<b>Seats</b>';
+		str+='      </td>';
+		if(value != 1)
+		{
+		str+='      <td>';
+		str+='         <input type="radio" id="votes" value="votes" name="analysisRadio">&nbsp;&nbsp;<b>Votes</b>';
+		str+='      </td>';
+		str+='      <td>';
+		str+='         <input type="radio" id="seatsandvotes"  value="seatsandvotes"  name="analysisRadio">&nbsp;&nbsp;<b>Seats & Votes</b>';
+		str+='      </td>';
+		}
+		str+='      <td>&nbsp;&nbsp;<b>Select Party :</b></td>';
+		str+='      <td>&nbsp;&nbsp;<select id="partiesSelIdDiv" style="width:100px;" multiple="multiple" ><option value="0">Select Party</option></select></td>';
+		str+='      <td>';
+		str+='         <input type="checkbox" id="allianceChk"  name="allianceChk">&nbsp;&nbsp;<b>Include Alliances</b>';
+		str+='      </td>';
+		str+='      <td>';
+		str+='         &nbsp;&nbsp;<input type="button" class="buttonStyle" onclick="getAnalysisDetails();" value="View">';
+		str+='      </td>';
+		str+='      <td><span style="padding-left: 10px; padding-top: 5px; display: none;" id="select_ImgAnalysisSpan"><img src="images/icons/partypositions.gif"></span></td>';
+		str+='   </tr>';
+		str+='</table>';
+	 
+	   document.getElementById("analysisTable").innerHTML= str;
+       getAllPartiesSub();
+  }
+  function getAnalysisDetails()
+   {
+        document.getElementById("analysisTableDisplay").innerHTML= '';
+         var yearEle =  document.getElementById("yearSelId");
+	     var eleId = yearEle.options[yearEle.selectedIndex].value;
+		 var partyIds ='';
+		 var includeAlliances = document.getElementById("allianceChk").checked;
+		 var partyEle =  document.getElementById("partiesSelIdDiv");
+		 for(var i = 0;i < partyEle.options.length;i++)
+	    {
+	       if (partyEle.options[i].selected) 
+		   {
+             partyIds+= ''+partyEle.options[i].value+',';
+			 
+           } 
+	   }
+	     var type;
+	   var ele = document.getElementsByName("analysisRadio");
+          for(var i=0;i<ele.length ;i++)
+		  {
+		   if(ele[i].checked == true)
+		    type = ele[i].value;
+		  }
+		  document.getElementById("select_ImgAnalysisSpan").style.display="block";
+         var jsObj =
+		  { 
+            time : new Date().getTime(),
+			electionId: eleId,
+			partyIds:partyIds,
+			includeAlliances:includeAlliances,
+			type:type,
+			task:"getPartiesPerfResultsWise"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getministersDetailsAction.action?"+rparam;						
+	callAjax(jsObj,url);
+   }
+  function getAllParties()
+  {   
+         document.getElementById("analysisTable").innerHTML= '';
+		 document.getElementById("analysisTableDisplay").innerHTML= '';
+		 document.getElementById("hideSelect").style.display="none";
+         document.getElementById("districtPartyChart").innerHTML="";
+         document.getElementById("districtPartyChartMore").innerHTML="";
+         removeData("partiesIdDiv");
+         var yearEle =  document.getElementById("yearSelId");
+	     var eleId = yearEle.options[yearEle.selectedIndex].value;
+		 var stateEle =  document.getElementById("stateListId");
+	     var stateId = stateEle.options[stateEle.selectedIndex].value;
+		 document.getElementById("select_ImgSpan").style.display="block";
+         var jsObj =
+		  { 
+            time : new Date().getTime(),
+			electionId: eleId,
+			stateId:stateId,
+			type:'main',
+			task:"getAllPartiesForResults"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getministersDetailsAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function getAllPartiesSub()
+  {   
+         var yearEle =  document.getElementById("yearSelId");
+	     var eleId = yearEle.options[yearEle.selectedIndex].value;
+		 var stateEle =  document.getElementById("stateListId");
+	     var stateId = stateEle.options[stateEle.selectedIndex].value;
+		 //document.getElementById("select_ImgSpan").style.display="block";
+         var jsObj =
+		  { 
+            time : new Date().getTime(),
+			electionId: eleId,
+			stateId:stateId,
+			type:'sub',
+			task:"getAllPartiesForResults"
+		  };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getministersDetailsAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function pushData(result)
+{
+ if(result.length >0)
+ {
+  var obj = new Array();
+    for(var i in result)
+	{
+	  var objval = new Array();
+	  objval["districtName"] = result[i].districtName;
+      objval["prevTotalCount"] = result[i].prevTotalCount;
+      objval["totalCount"] = result[i].totalCount;
+      objval["prevCount"] = result[i].prevCount;
+      objval["presentCount"] = result[i].presentCount;
+	  objval["notPresent"] = "--";
+	  
+	   for(var j in result[i].positionManagementVOList)
+	    {
+         objval["partyPrevCount"+j] = result[i].positionManagementVOList[j].partyPrevCount;
+         objval["partyCount"+j] = result[i].positionManagementVOList[j].partyCount;
+		}
+	  obj.push(objval);
+	}
+	build(obj,result[0].prevYear,result[0].presentYear,result[0].positionManagementVOList)
+ }
+ else
+ {
+    document.getElementById("districtAny").innerHTML ='<div style="padding-top:20px;"><center><b>No Data Found</b></center></div>';
+ }
+  
+}
+  function build(arr,prevYear,presentYear,result)
+ {
+    document.getElementById("districtAnyHeading").innerHTML='<center><div style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;">Party Wise Seats Earned In All Districts : </div></center>';
+	var resultsDataSource = new YAHOO.util.DataSource(arr);
+	resultsDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseschema = {
+		fields : [
+		{
+			key : "districtName"
+		},
+		{
+			key : "prevTotalCount",parser:"number"
+		},
+		{
+			key : "totalCount",parser:"number"
+		},		
+		{
+			key : "prevCount",parser:"number"
+		},		 
+		
+		{
+			key : "presentCount",parser:"number"
+		},
+		{
+			key : "notPresent"
+		}
+		]
+	};
+    for(var i in result)
+    {
+	   var obj = {
+    	     key :"partyPrevCount"+i,parser:"number"
+    		};
+    		resultsDataSource.responseschema.fields.push(obj);
+	}
+	for(var i in result)
+    {
+	   var obj = {
+    	     key :"partyCount"+i,parser:"number"
+    		};
+    		resultsDataSource.responseschema.fields.push(obj);
+	}
+	var resultsColumnDefs = [ 
+	{
+		key : "districtName",
+		label : "District",
+		sortable : true
+	}, 
+	{
+		label:"Total Seats",
+		children:[ 
+					{
+						label : ""+prevYear,
+						key : "prevTotalCount",
+						width:22,
+						sortable : true
+					},
+					{
+						label : ""+presentYear,
+						key : "totalCount",
+						width:21,
+						sortable : true
+					}				
+				]
+	},
+	{
+		label:"Known Results",
+		children:[ 
+					{
+						label : ""+prevYear,
+						key : "prevCount",
+						width:22,
+						sortable : true
+					},
+					{
+						label : ""+presentYear,
+						key : "presentCount",
+						width:21,
+						sortable : true
+					}				
+				]
+	}
+	];
+   for(var i in result)
+    {
+	  var obj;
+	  if(result[i].partyPrevPresence == 1)
+	  {
+	     obj = {
+    	label:""+result[i].partyName,
+		children:[ 
+					{
+						label : ""+prevYear,
+						key : "notPresent",
+						width:22,
+						sortable : true
+					},
+					{
+						label : ""+presentYear,
+						key : "partyCount"+i,
+						width:21,
+						sortable : true
+					}				
+				]
+    		};
+	  }
+	  else
+	  {
+	   obj = {
+    	label:""+result[i].partyName,
+		children:[ 
+					{
+						label : ""+prevYear,
+						key : "partyPrevCount"+i,
+						width:22,
+						sortable : true
+					},
+					{
+						label : ""+presentYear,
+						key : "partyCount"+i,
+						width:21,
+						sortable : true
+					}				
+				]
+    		};
+	  }
+    		resultsColumnDefs.push(obj);
+	}
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10,
+				template : "{PageLinks} {RowsPerPageDropdown}",
+                pageLinks : 5, 
+                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+			    })
+				};
+    myDataTable = new YAHOO.widget.DataTable("districtAny",resultsColumnDefs, resultsDataSource,myConfigs); 
+
   }
   function divideArray(result)
   {
@@ -187,23 +654,25 @@ function getElectionYears(electionType)
   }
   function getParties()
    {
+         //document.getElementById("analysisTable").innerHTML= '';
+		 //document.getElementById("analysisTableDisplay").innerHTML= '';
+         //removeData("partiesIdDiv");
          var yearEle =  document.getElementById("yearSelId");
 	     var eleId = yearEle.options[yearEle.selectedIndex].value;
-	     if(eleId == 0)
-	     return;
-	     var yearEle =  document.getElementById("stateListId");
-	     var stateListId = yearEle.options[yearEle.selectedIndex].value;
-	    var jsObj =
-		{ 
+		 var stateEle =  document.getElementById("stateListId");
+	     var stateId = stateEle.options[stateEle.selectedIndex].value;
+		 //document.getElementById("select_ImgSpan").style.display="block";
+         var jsObj =
+		  { 
             time : new Date().getTime(),
 			electionId: eleId,
-			stateId:stateListId,
-			task:"getPartiesForPartialEle"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getministersDetailsAction.action?"+rparam;						
-	callAjax(jsObj,url);
+			stateId:stateId,
+			type:"graph",
+			task:"getAllPartiesForResults"
+		  };
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+     	var url = "getministersDetailsAction.action?"+rparam;						
+    	callAjax(jsObj,url);
    }
   function showDistrictWiseAnalysis(result)
   {
@@ -293,9 +762,9 @@ function getElectionYears(electionType)
 	
 	  } 
  }
-  function buildParties(results)
+  function buildParties(results,id)
  {
-   var elmt = document.getElementById("parties");
+   var elmt = document.getElementById(id);
    
        for(var i in results)
 	  {
@@ -323,10 +792,16 @@ function getElectionYears(electionType)
  }
  function getDetails()
  {
+    document.getElementById("analysisTable").innerHTML= '';
+    document.getElementById("analysisTableDisplay").innerHTML= '';
       validate = false;
 	   var str='';
+	   document.getElementById("hideSelect").style.display="none";
+       document.getElementById("districtPartyChart").innerHTML="";
+       document.getElementById("districtPartyChartMore").innerHTML="";
        document.getElementById("errorMessage").innerHTML = "";
        document.getElementById("districtAny").innerHTML = "";
+	   document.getElementById("districtAnyHeading").innerHTML = "";
 	   document.getElementById("districtChart").innerHTML = "";
 	   document.getElementById("districtPartyChart").innerHTML = "";
 	   document.getElementById("districtPartyChartMore").innerHTML = "";
@@ -335,6 +810,7 @@ function getElectionYears(electionType)
 	 var eleId = yearEle.options[yearEle.selectedIndex].value;
 	 var yearEle =  document.getElementById("stateListId");
 	 var stateListId = yearEle.options[yearEle.selectedIndex].value;
+	 var partyIds ='';
 	 if(stateListId == 0)
 	 {
 	   validate = true;
@@ -345,18 +821,35 @@ function getElectionYears(electionType)
 	   validate = true;
 	   str+='<b><font style="color:red;font-size:12px;">Please Select Year </font></b><br />';
 	 }
+	 var partyEle = document.getElementById("partiesIdDiv");
+	  var count = 0;
+	  for(var i = 0;i < partyEle.options.length;i++)
+	    {
+	       if (partyEle.options[i].selected) 
+		   {
+             partyIds+= ''+partyEle.options[i].value+',';
+			 count = count+1;
+           } 
+	   }
+	   if(count == 0)
+	   {
+	     validate = true;
+	       str+='<b><font style="color:red;font-size:12px;">Please Select Atleast One Party </font></b><br />';
+	   }
 	 if(validate)
 	  {
          document.getElementById("errorMessage").innerHTML = str;
     	return;
 	  } 
 	  
-	 document.getElementById("select_ImgSpan").style.display="block";
+	 document.getElementById("resultImgDiv").style.display="block";
+	  partyIds = partyIds.slice(0, -1);
 	 var jsObj =
 		{ 
             time : new Date().getTime(),
 			electionId: eleId,
 			stateId:stateListId,
+			partyIds:partyIds,
 			task:"getDistrictWiseAnalysisDetails"
 		};
 
@@ -470,6 +963,7 @@ function getElectionYears(electionType)
   }
   function buildGraph(result)
   {
+    document.getElementById("districtPartyChartMore").innerHTML ='';
    if(result.length > 0)
 	{
      var data = new google.visualization.DataTable();
@@ -528,31 +1022,39 @@ function getElectionYears(electionType)
 <body>
 <div style="width:998px;padding-left:5px;">
    <div style="padding-left:5px;"><div class="main-mbg">District Wise Party Performance</div></div>
-   <div style="background-color:#F5F5F5;min-height:360px;">
+   <div style="background-color:#FFFFFF;min-height:360px;">
          
-   <div style="padding-top:10px;padding-left:250px;width:65%;text-align:center;">
+   <div style="padding-top:10px;padding-left:100px;width:80%;text-align:center;">
      <div id="errorMessage"></div>
      <table>  
 	  <tr>
 		  <td><div id="showHideState"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDetails();" ><option value="0">Select State</option></select></td>
-		  <td><img src="images/icons/refreshImg.png"  onclick="getDetails();" title="Click To Refresh The Result" /></td>
+		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getAllParties('main');" ><option value="0">Select State</option></select></td>
+		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Party :</b></td>
+		  <td>&nbsp;&nbsp;<select id="partiesIdDiv" style="width:100px;" multiple="multiple" ><option value="0">Select Party</option></select></td>
+		  <td><input type="button" class="buttonStyle" onclick="getDetails();" value="Search" ></td>
+		  <td><span id="select_ImgSpan" style="padding-left:10px;padding-top:5px;display:none;"><img src="images/icons/partypositions.gif"></span></td>
       </tr>
 	 </table>
 	 <table>
 	   <tr>
-	     <td><span id="select_ImgSpan" style="padding-left:206px;padding-top:5px;display:none;"><img src="images/icons/partypositions.gif"></span></td>
+	     <td><span id="resultImgDiv" style="padding-left:268px;padding-top:5px;display:none;"><img src="images/icons/goldAjaxLoad.gif"></span></td>
 	   </tr>
 	 </table>
    </div>
    <div style="padding-bottom:30px;width:100%">
-     <div style="width:990px;padding-left:5px;padding-right:5px;overflow:auto;" id="districtAny" />
+     <div class="yui-skin-sam" style="width:990px;padding-left:5px;padding-right:5px;overflow:auto;text-align:center;"  >
+	   <div id="districtAnyHeading"></div>
+	   <div class="yui-dt" id="districtAny"></div>
+	 </div>
    </div>
+   <div id="analysisTable" style="margin-left:180px;"></div>
+   <div id="analysisTableDisplay" style="overflow:auto;"></div>
    <div style="margin-top:20px;width:980px;overflow:hidden;">
      <div style="width:980px;padding-left:5px; margin-bottom: 23px;padding-right:5px;" id="districtChart" />
    </div>
    <div id="hideSelect" style="display:none;">
-     <center><div style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;">Compare Party Wise Results In All Districts : </div></center>
+     <center><div style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);padding-top:10px;">View Party Wise Results In All Districts : </div></center>
      <center>
 	     <div>
 		    <table>
