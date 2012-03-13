@@ -287,12 +287,21 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(obj);
 	}
 	*/
-	public void testGetCountOfElectionsAfterDelimitation()
+	/*public void testGetCountOfElectionsAfterDelimitation()
 	{
 		List<Object[]> obj = electionDAO.getStateDetailsForPartialElec();
 		for(Object[] stateData :obj)
 		{
 			System.out.println("Id:  "+stateData[0].toString()+"  Name:  "+stateData[1].toString());
+		}
+	}*/
+	
+	public void testGetNextElectionIdAndYear()
+	{
+		List<Object[]> obj = electionDAO.getNextElectionIdAndYear(38l);
+		for(Object[] elec :obj)
+		{
+			System.out.println("Id:  "+elec[0].toString()+"  Name:  "+elec[1].toString());
 		}
 	}
 }
