@@ -36,6 +36,8 @@ public class PositionManagementVO implements Serializable {
 	  private String votesPercengate;
 	  private Long rank;
 	  private BigDecimal votesEarned;
+	  private BigDecimal prevVotesEarned;
+	  private BigDecimal votesEarnedDiff;
 	  private Long localElecBodyId;
 	  private String result;
 	  private PositionManagementVO currentResult;
@@ -48,12 +50,15 @@ public class PositionManagementVO implements Serializable {
 	  private Long prevResPartial = 0l;
 	  private Long knownResultsCount;
 	  private Long partyCount;
+	  private Long partyPrevCount;
 	  private Long totalCount;
+	  private Long prevTotalCount;
 	  private Long ministerTypeId;
 	  private String prevYear;
 	  private String presentYear;
 	  private Long presentCount;
 	  private Long prevCount;
+	  private Long partyPrevPresence=0l;
 	  
 	public String getGender() {
 		return gender;
@@ -313,6 +318,36 @@ public class PositionManagementVO implements Serializable {
 	}
 	public void setPrevCount(Long prevCount) {
 		this.prevCount = prevCount;
+	}
+	public Long getPrevTotalCount() {
+		return prevTotalCount;
+	}
+	public void setPrevTotalCount(Long prevTotalCount) {
+		this.prevTotalCount = prevTotalCount;
+	}
+	public Long getPartyPrevCount() {
+		return partyPrevCount;
+	}
+	public void setPartyPrevCount(Long partyPrevCount) {
+		this.partyPrevCount = partyPrevCount;
+	}
+	public BigDecimal getPrevVotesEarned() {
+		return prevVotesEarned;
+	}
+	public void setPrevVotesEarned(BigDecimal prevVotesEarned) {
+		this.prevVotesEarned = prevVotesEarned;
+	}
+	public BigDecimal getVotesEarnedDiff() {
+		return votesEarnedDiff;
+	}
+	public void setVotesEarnedDiff(BigDecimal votesEarnedDiff) {
+		this.votesEarnedDiff = votesEarnedDiff;
+	}
+	public Long getPartyPrevPresence() {
+		return partyPrevPresence;
+	}
+	public void setPartyPrevPresence(Long partyPrevPresence) {
+		this.partyPrevPresence = partyPrevPresence;
 	}	  
 	  
 }
