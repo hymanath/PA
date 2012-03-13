@@ -3491,5 +3491,47 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameter(0,electionId);
 		return query.list();
 	}
-
+	public List<Object> getPartyPresenceInAnElection(Long partyId,Long electionId)
+	{
+		Query query = getSession().createQuery("select count(model.party.partyId) from Nomination model where model.party.partyId =? and model.constituencyElection.election.electionId = ? ");
+		query.setParameter(0,partyId);
+		query.setParameter(1,electionId);
+		return query.list();
+	}
+	 public List<Long> getAllOtherPartiesWonCount(Long districtId,Long electionId,List<Long> partyIds)
+	    {
+			Query query = getSession().createQuery("select count(*) from Nomination model where model.constituencyElection.constituency.district.districtId = :districtId and model.constituencyElection.election.electionId = :electionId and model.party.partyId not in (:partyIds) and model.candidateResult.rank = :rank");
+			
+			query.setParameter("districtId",districtId);
+			query.setParameter("electionId",electionId);
+			query.setParameterList("partyIds",partyIds);
+			query.setLong("rank", 1l);
+			
+			return query.list();
+	    }
+	 public List<Object[]> getAllPartiesForAnElec(Long electionId)
+	    {
+	    	return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? ",electionId);
+	    }
+	 public List<Long> getAllWonConstIdsPartyWise(Long districtId,Long electionId,Long partyId)
+	    {
+	    	Object[] data = {districtId,electionId,partyId,1l};
+	    	return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId from Nomination model where model.constituencyElection.constituency.district.districtId = ? and model.constituencyElection.election.electionId = ? and model.party.partyId = ? and model.candidateResult.rank = ?",data);
+	    }
+	 public List<Long> getAllConstIdsPartyWisePresentInPrevElec(Long districtId,Long electionId,Long partyId,List<Long> constiIds)
+	    {
+          Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId from Nomination model where model.constituencyElection.constituency.district.districtId = :districtId and model.constituencyElection.election.electionId = :electionId and model.party.partyId = :partyId and model.constituencyElection.constituency.constituencyId in (:constiIds)");
+			
+			query.setParameter("districtId",districtId);
+			query.setParameter("electionId",electionId);
+			query.setParameter("partyId",partyId);
+			query.setParameterList("constiIds",constiIds);
+			
+			return query.list();
+	    }
+	 public List<Double> getTotalVotesEarned(Long districtId,Long electionId,Long partyId)
+	    {
+	    	Object[] data = {partyId,electionId,districtId};
+	    	return getHibernateTemplate().find("select sum(model.candidateResult.votesEarned) from Nomination model where model.party.partyId = ?  and model.constituencyElection.election.electionId = ? and  model.constituencyElection.constituency.district.districtId = ? ",data);
+	    }
 }
