@@ -671,4 +671,12 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.electionScope.electionType.electionTypeId =? and model.isPartial = ?  order by electionScope.state.stateName",params);
 	
 	}
+	public List<Object[]> getNextElectionIdAndYear(Long electionId)
+	{
+		Object params[] = {electionId, electionId, IConstants.ELECTION_SUBTYPE_MAIN,electionId, IConstants.ELECTION_SUBTYPE_MAIN};
+		return getHibernateTemplate().find(" select model.electionId,model.electionYear from Election model where model.electionYear = (" +
+				" select  min(model2.electionYear) from Election model2 where model2.electionYear > (select model3.electionYear from Election model3 where model3.electionId = ?) and" +
+				" model2.electionScope.electionScopeId = (select model5.electionScope.electionScopeId from Election model5 where model5.electionId = ?) and model2.elecSubtype = ? ) and " +
+				" model.electionScope.electionScopeId = (select model4.electionScope.electionScopeId from Election model4 where model4.electionId = ?) and model.elecSubtype = ? ",params);
+	}
 }
