@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -101,7 +103,27 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long newsimportance;
 	private List<CandidateCommentsVO> candidateCommentsVO;
 	private Long contentId;
+	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
+	private List<ElectionGoverningBodyVO> electionGoverningBodyVO;
 	
+	public IElectionLiveResultsAnalysisService getElectionLiveResultsAnalysisService() {
+		return electionLiveResultsAnalysisService;
+	}
+
+	public List<ElectionGoverningBodyVO> getElectionGoverningBodyVO() {
+		return electionGoverningBodyVO;
+	}
+
+	public void setElectionGoverningBodyVO(
+			List<ElectionGoverningBodyVO> electionGoverningBodyVO) {
+		this.electionGoverningBodyVO = electionGoverningBodyVO;
+	}
+
+	public void setElectionLiveResultsAnalysisService(
+			IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService) {
+		this.electionLiveResultsAnalysisService = electionLiveResultsAnalysisService;
+	}
+
 	public Long getContentId() {
 		return contentId;
 	}
@@ -469,6 +491,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
 		
+		electionGoverningBodyVO = electionLiveResultsAnalysisService.getAllCandidateDetailsForMinisterProfile(candidateId);
+		
 		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);		
 		
 		StringBuffer candidateURLStringBuffer = new StringBuffer(IConstants.CANDIDATE_STATIC_PAGE_URL);
@@ -802,6 +826,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			candidateCommentsVO = partyDetailsService.getMessageToParty(jObj.getLong("partyId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount));
 		}
 		
+		/*else if(jObj.getString("task").trim().equalsIgnoreCase("getMinisterProfile"))
+		{
+			electionGoverningBodyVo = electionLiveResultsAnalysisService.getAllCandidateDetailsForMinisterProfile(jObj.getLong("candidateId"));
+		}*/
 		return Action.SUCCESS;
 	}
 	
