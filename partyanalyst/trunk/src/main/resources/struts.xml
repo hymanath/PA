@@ -3135,6 +3135,12 @@
            		<param name="root">gallaryVO</param>
 			</result>
 		</action>
+		
+		<action name="partyMessagesAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">candidateCommentsVO</param>
+        	</result>	
+		</action>
 				
 	</package>
 </struts>      

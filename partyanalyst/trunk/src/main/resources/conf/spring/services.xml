@@ -309,6 +309,7 @@
 		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
+		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
