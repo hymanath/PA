@@ -167,11 +167,8 @@
     text-align: left;
     background: none repeat scroll 0 0 #06ABEA;
 	color: #FFFFFF;
-	 border: 1.7px solid #D1D1D1;
-    margin-bottom: 10px;
-	
-
-
+	margin-bottom: 10px;
+	border-radius: 4px 4px 0px 0px;
 }
 .annDivId{
 		-moz-border-radius : 5px 5px 5px 5px;
@@ -230,6 +227,13 @@ a {
     padding: 3px 12px;
     text-decoration: none;
     width: 160px;
+}
+#fiedsetDiv{
+	border-color: -moz-use-text-color #D1D1D1 #D1D1D1;
+    border-left: 1.7px solid #D1D1D1;
+    border-right: 1.7px solid #D1D1D1;
+    border-style: none solid solid;
+    border-width: 0 1.7px 1.7px;
 }
 
 
@@ -1021,7 +1025,7 @@ function showAssemblyData()
    str+='     </td>';
    str+='   </tr>';
    str+=' <tr>';
-   str+='<td colspan="2"><input type="checkbox" id="check1"  checked>&nbsp Show message to public</input></td>'
+   str+='<td colspan="2"><input type="checkbox" id="check1"  checked>&nbsp Display this message publicly</input></td>'
    str+=' </tr>';
    str+=' <tr>  <td >Message <font class="requiredFont"> * </font></td>';
    str+=' <td style="padding-top: 5px;"> <textarea id= "message" name ="message" rows="4" cols="8" style="background-color: #EBE8E8;';
@@ -1265,13 +1269,13 @@ function displayUserDetails(results)
     var str = '';
 
     str += '<Div class="layoutHeadersClass" style=" margin-bottom:0px;"> Messages From Followers </DIv>';
-      str += '<fieldset>';
+      str += '<fieldset id ="fiedsetDiv">';
     for(var i=0;i<results.length;i++)
     {
 	   
        str += '<div class="annDivId">'
 	   str += '<Table>';
-	   str += '<tr class="annHeaderFont"><th>'+results[i].userName+'&nbsp;&nbsp;</th><th>'+results[i].time+'&nbsp;&nbsp;</th><th>Location:<td class=""><font color="black">'+results[i].constituency+'</font></td></th><tr>';
+	   str += '<tr class="annHeaderFont"><th>'+results[i].userName+'&nbsp;&nbsp;</th><th>'+results[i].time+'&nbsp;&nbsp;</th><th>Location:<td class=""><font color="black"><a href="constituencyPageAction.action?constituencyId='+results[i].consituencyId+' ">'+results[i].constituency+'</a></font></td></th><tr>';
 	   str += '</Table>';
 	   str += '<Table style="width:auto;">';
 	   str += '<tr class="annHeaderFont"><th>Message</th></tr>';
