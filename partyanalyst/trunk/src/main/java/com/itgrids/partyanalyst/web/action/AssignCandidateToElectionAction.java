@@ -223,6 +223,18 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 			{
 				optionVOList = electionResultsUpdationService.getMinistersTypeDetails(jObj.getLong("elecGovPosId"),jObj.getLong("electionType"));
 			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getAllStatesForParliamentMinisters"))
+			{
+				optionVOList = electionResultsUpdationService.getAllStatesForParliamentMinisters();
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getAllYearsAndElecIdsForAssembly"))
+			{
+				optionVOList = electionResultsUpdationService.getAllYearsAndElecIdsForAssembly(jObj.getLong("stateId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getAllYearsAndElecIdsForParliament"))
+			{
+				optionVOList = electionResultsUpdationService.getAllYearsAndElecIdsForParliament();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
