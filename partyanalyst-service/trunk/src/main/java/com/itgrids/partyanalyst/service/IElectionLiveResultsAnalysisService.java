@@ -37,4 +37,10 @@ public interface IElectionLiveResultsAnalysisService {
 	public  List<PositionManagementVO> getAllPartiesPerfoDistWiseForPartialEle(Long electionId,List<Long> partiesList);
 	
 	public List<PartyElectionResultVO> getGenderAnalysisInElection(Long electionId);
+	
+	public List<PositionManagementVO> getDistrictWisePartyPerfDetailsNew(Long electionId,Long stateId,List<Long> partyIds);
+	
+	public List<PositionManagementVO> getAllPartiesForAnElec(Long electionId,Long stateId);
+	
+	public List<PositionManagementVO> getAllPartyCountsDistrictWise(Long electionId,List<Long> partyIds,boolean includeAlliances,String type);
 }
