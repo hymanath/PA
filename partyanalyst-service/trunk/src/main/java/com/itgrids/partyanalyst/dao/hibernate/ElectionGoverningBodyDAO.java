@@ -21,6 +21,14 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 		return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.positionScope.electionGoverningBodyPosition.governingBodyPosition ," +
 				" model.party.partyId ,model.party.shortName from ElectionGoverningBody model where model.election.electionId = ?",electionId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionGoverningBody> getAllCandidateDetails(Long candidateId)
+	{
+		return getHibernateTemplate().find("select model from ElectionGoverningBody model where (model.election.electionScope.electionType.electionType='Assembly' or " +
+				" model.election.electionScope.electionType.electionType='Parliament') and model.candidate.candidateId = ? order by model.fromDate desc ",candidateId);
+	}
+	
 	public List<Object[]> getAllStatesForMinisters()
 	{
 		
@@ -39,4 +47,6 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 		return getHibernateTemplate().find("select distinct model.election.electionId,model.election.electionYear from ElectionGoverningBody model " +
 				"   where model.election.electionScope.electionType.electionType = ? order by model.election.electionYear ","Parliament");
 	}
+	
+	
 }
