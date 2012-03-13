@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
@@ -1004,9 +1005,11 @@ public class PartyDetailsService implements IPartyDetailsService {
 				messageToParty.setParty(partyDAO.get(gallaryVO.getPartyId()));
 				messageToParty.setConstituency(constituencyDAO.get(gallaryVO.getUserId()));
 				messageToParty.setName(gallaryVO.getGallaryName());
+				messageToParty.setIsApproved(IConstants.FALSE);
 				messageToParty.setIsDelete(IConstants.FALSE);
 				messageToParty.setMessage(gallaryVO.getDescription());
 				messageToParty.setSentTime(dateUtilService.getCurrentDateAndTime());
+				messageToParty.setIsPrivate(gallaryVO.getIsPrivate());
 				
 				messageToPartyDAO.save(messageToParty);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -1020,6 +1023,40 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 		
 		return null;
+	}
+	public List<CandidateCommentsVO> getMessageToParty(Long partyId,int startIndex,int resultsCount)
+	{
+		List<CandidateCommentsVO> userlist = new ArrayList<CandidateCommentsVO>(0);
+
+		try
+		{
+			if(log.isDebugEnabled())
+				   log.debug("entered into getMessageToParty()in CandidateDetailsService");
+			List<Long> messCount = messageToPartyDAO.getPartyMessageCount(partyId);
+			List<Object[]> list= messageToPartyDAO.getMessageToParty(partyId,startIndex,resultsCount);
+			if(list!=null && list.size()>0)
+			{
+				CandidateCommentsVO candidateCommentsVO = null;
+				 for(Object[] params:list)
+                 {
+					 candidateCommentsVO = new CandidateCommentsVO();
+					 
+					 candidateCommentsVO.setUserName(params[0].toString());
+                	 candidateCommentsVO.setMessage(params[1].toString());
+                	 candidateCommentsVO.setConstituency(params[2].toString());
+                	 candidateCommentsVO.setTime(params[3].toString().substring(0,19));
+                	 candidateCommentsVO.setConsituencyId((Long)params[4]);
+                	 candidateCommentsVO.setTotalResultsCount(messCount.get(0));
+                	 userlist.add(candidateCommentsVO);
+                 }
+			}
+			
+		}
+		catch(Exception e)
+		{
+			log.error("Exception in getMessageToParty()of CandidateDetailsService",e);
+		}
+		return userlist;
 	}
 	
 	
