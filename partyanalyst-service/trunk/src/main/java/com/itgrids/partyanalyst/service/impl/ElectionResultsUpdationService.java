@@ -715,4 +715,81 @@ public class ElectionResultsUpdationService implements IElectionResultsUpdationS
 	 }
 	   return returnVal;
    }
+   public List<SelectOptionVO> getAllStatesForParliamentMinisters()
+   {
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getAllStatesForParliamentMinisters method of ElectionResultsUpdationService");
+	   List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   try
+		 {
+		   List<Object[]>  states = electionGoverningBodyDAO.getAllStatesForMinisters();
+		     for(Object[] state:states)
+		     {
+		    	 selectOptionVO = new SelectOptionVO();
+		    	 selectOptionVO.setId((Long)state[0]);
+		    	 selectOptionVO.setName(state[1]!=null?state[1].toString():"");
+		    	 returnVal.add(selectOptionVO);
+		     }
+		 }
+		 catch(Exception e)
+		 {
+		  log.error("Exception Rised in getAllStatesForParliamentMinisters method of ElectionResultsUpdationService",e);
+		 }
+		   return returnVal;
+   }
+   public List<SelectOptionVO> getAllYearsAndElecIdsForAssembly(Long stateId)
+   {
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getAllYearsAndElecIdsForAssembly method of ElectionResultsUpdationService");
+	   List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   try
+		 {
+		   List<Object[]>  electionsList = electionGoverningBodyDAO.getAllYearsAndElecIdsForAssembly(stateId);
+		     for(Object[] election:electionsList)
+		     {
+		    	 List<Object[]>  nextElectionsList = electionDAO.getNextElectionIdAndYear((Long)election[0]);
+		    	 selectOptionVO = new SelectOptionVO();
+		    	 if(nextElectionsList.size() >0)
+		    	 {	 
+		    	    selectOptionVO.setId((Long)(nextElectionsList.get(0)[0]));
+		    	    selectOptionVO.setName((nextElectionsList.get(0)[1])!=null?(nextElectionsList.get(0)[1]).toString():"");
+		    	    returnVal.add(selectOptionVO);
+		    	 }
+		     }
+		 }
+		 catch(Exception e)
+		 {
+		  log.error("Exception Rised in getAllYearsAndElecIdsForAssembly method of ElectionResultsUpdationService",e);
+		 }
+		   return returnVal;
+   }
+   public List<SelectOptionVO> getAllYearsAndElecIdsForParliament()
+   {
+	   if(log.isDebugEnabled())
+			log.debug("Enter into getAllYearsAndElecIdsForParliament method of ElectionResultsUpdationService");
+	   List<SelectOptionVO> returnVal = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO selectOptionVO = null;
+	   try
+		 {
+		   List<Object[]>  electionsList = electionGoverningBodyDAO.getAllYearsAndElecIdsForParliament();
+		     for(Object[] election:electionsList)
+		     {
+		    	 List<Object[]>  nextElectionsList = electionDAO.getNextElectionIdAndYear((Long)election[0]);
+		    	 selectOptionVO = new SelectOptionVO();
+		    	 if(nextElectionsList.size() >0)
+		    	 {	 
+		    	    selectOptionVO.setId((Long)(nextElectionsList.get(0)[0]));
+		    	    selectOptionVO.setName((nextElectionsList.get(0)[1])!=null?(nextElectionsList.get(0)[1]).toString():"");
+		    	    returnVal.add(selectOptionVO);
+		    	 }
+		     }
+		 }
+		 catch(Exception e)
+		 {
+		  log.error("Exception Rised in getAllYearsAndElecIdsForParliament method of ElectionResultsUpdationService",e);
+		 }
+		   return returnVal;
+   }
 }
