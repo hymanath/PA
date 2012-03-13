@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 import com.itgrids.partyanalyst.model.KeyCandidate;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
@@ -2267,5 +2269,37 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 		    }
 		  return returnVal;
 	  
+  }
+  
+  public List<ElectionGoverningBodyVO> getAllCandidateDetailsForMinisterProfile(Long candidateId)
+  {
+	  List<ElectionGoverningBodyVO> resultList = null;
+	  try{
+		  List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllCandidateDetails(candidateId);
+		  
+		  if(list != null && list.size() > 0)
+		  {
+			  resultList = new ArrayList<ElectionGoverningBodyVO>(0);
+			  ElectionGoverningBodyVO governingBodyVO = null;
+			  for(ElectionGoverningBody governingBody : list)
+			  {
+				  governingBodyVO = new ElectionGoverningBodyVO();
+				  governingBodyVO.setFromDate(governingBody.getFromDate());
+				  governingBodyVO.setToDate(governingBody.getToDate());
+				  governingBodyVO.setMinistry(governingBody.getPositionScope().getElectionGoverningBodyPosition().getGoverningBodyPosition());
+				  governingBodyVO.setStatus(governingBody.getStatus().toString());
+				  governingBodyVO.setMinisterType(governingBody.getPositionScope().getMinisterType().getMinisterType());
+				  
+				  if(governingBody.getElection().getElectionScope().getState() != null)
+				  governingBodyVO.setStateName(governingBody.getElection().getElectionScope().getState().getStateName());
+				
+				  resultList.add(governingBodyVO);
+			  }
+		  }
+		  return resultList;
+	  }catch (Exception e) {
+		  log.error("Exception occured in getAllCandidateDetailsForMinisterProfile(), Exception is - "+e);
+		  return resultList;
+	  }
   }
 }
