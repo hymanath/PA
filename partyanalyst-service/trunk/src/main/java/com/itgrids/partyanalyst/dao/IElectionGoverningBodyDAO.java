@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 
 public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningBody, Long>{
@@ -15,4 +16,7 @@ public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningB
 	public List<Object[]> getAllYearsAndElecIdsForAssembly(Long stateId);
 	
 	public List<Object[]> getAllYearsAndElecIdsForParliament();
+	
+	public List<ElectionGoverningBody> getAllCandidateDetails(Long candidateId);
+	
 }
