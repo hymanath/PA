@@ -349,6 +349,42 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
               <div class="pm-inner-cont-sec" id="electionInfo"></div>
 			</s:if>
 			  <!--ELECTION PROFILE SECTION END--> 
+			  <s:if test="electionGoverningBodyVO != null && electionGoverningBodyVO.size()>0">
+		<div id="showProfile"></div>
+		<div class="pm-inner-cont-sec">
+		<h1 class="inc-title">Minister Profile</h1>
+
+		
+		<s:iterator status="stat" value="electionGoverningBodyVO" var="ministerDetails">
+		
+		<s:if test="toDate == null">
+			<ul class="wl-sub-details"><li><s:property value="status"/>
+		</s:if>
+		<s:else> 
+		<ul class="wl-sub-details"><li>	Worked
+		</s:else> 
+		As <b><s:property value="ministry"/> 
+		Minister</b>
+		
+		<s:if test="ministerType != 'Cabinet Minister'">
+		 (<s:property value="ministerType"/>) 
+		</s:if>
+		For 
+		<s:if test="stateName != null"> 
+			<b><s:property value="stateName"/></b> State
+		</s:if> 
+		<s:else> 
+			<b>India</b> 
+		</s:else> From <s:property value="fromDate"/>
+		
+		<s:if test="toDate != null"> 
+		 - To <s:property value="toDate"/>
+		</s:if></li></ul></li></ul>
+	
+		</s:iterator>
+		
+		</div>
+		</s:if>
 
 			  <!--PHOTO GALLERY SECTION START-->
           
