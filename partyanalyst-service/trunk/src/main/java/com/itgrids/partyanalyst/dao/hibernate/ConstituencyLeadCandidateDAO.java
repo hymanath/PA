@@ -177,12 +177,11 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 	{
 		Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name from Nomination model, ConstituencyLeadCandidate model2 " +
 				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
-				" model.candidate.candidateId = model2.candidate.candidateId and model.party.partyId = ? and model2.constituencyElection.constituency.constituencyId in (:constituenciesList) and model2.status =:status ");
+				" model.candidate.candidateId = model2.candidate.candidateId and model.party.partyId = ? and model2.constituencyElection.constituency.constituencyId in (:constituenciesList)");
 		
 		query.setParameter(0,electionId);
 		query.setParameter(1,partyId);
 		query.setParameterList("constituenciesList",constituenciesList);
-		query.setString("status", IConstants.WON);
 		
 		return query.list();
 	}
@@ -194,6 +193,29 @@ public class ConstituencyLeadCandidateDAO  extends GenericDaoHibernate<Constitue
 				" where model.constituencyElection.election.electionId = ? and model.constituencyElection.constiElecId = model1.constituencyElection.constiElecId and " +
 				" model.candidate.candidateId = model1.candidate.candidateId order by model.party.shortName");
 		query.setParameter(0,electionId);
+		return query.list();
+	}
+	public List<Long> getOtherPartiesWinCount(List<Long> partyIds,Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select count(model.constituencyElection.constituency.constituencyId) from Nomination model, ConstituencyLeadCandidate model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
+				" model.candidate.candidateId = model2.candidate.candidateId and model.party.partyId not in (:partyIds) and model2.constituencyElection.constituency.constituencyId in (:constituenciesList)");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("partyIds",partyIds);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+	}
+	public List<Long> getTotalKnownResultsOfADistrict(Long electionId,List<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select count(model.constituencyElection.constituency.constituencyId) from Nomination model, ConstituencyLeadCandidate model2 " +
+				" where model.constituencyElection.constiElecId = model2.constituencyElection.constiElecId and model2.constituencyElection.election.electionId = ? and " +
+				" model.candidate.candidateId = model2.candidate.candidateId and model2.constituencyElection.constituency.constituencyId in (:constituenciesList)");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
 		return query.list();
 	}
 }
