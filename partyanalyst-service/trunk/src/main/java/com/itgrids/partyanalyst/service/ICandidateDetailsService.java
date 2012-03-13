@@ -129,7 +129,7 @@ public interface ICandidateDetailsService {
 	 	 
 	 public String getLocationDetails(Long scope,Long locationValue);
 	 
-	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus);
+	 public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus);
 	 
 	 public ResultStatus controlMessages(List<CandidateCommentsVO> VO,String actionType);
 	 
@@ -144,4 +144,6 @@ public interface ICandidateDetailsService {
 	 public FileVO getContentDetails(Long contentId);
 
 	 public String getCandidateGallaryVisibility(Long gallaryId);
+	 	 
+	 public ResultStatus adminModifiedMessages(List<CandidateCommentsVO> VO,String actionType);
 }
