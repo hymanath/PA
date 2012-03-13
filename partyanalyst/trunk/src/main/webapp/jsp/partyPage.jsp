@@ -21,7 +21,10 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/customPaginator/messagePaginator.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
+
+
 
 <style type="text/css">
 .ui-widget-header {
@@ -161,6 +164,67 @@
     position: relative;
     top: 6px;
 }
+#constituencyPageCenterInfoDiv .rounded {
+    width: 620px;
+	
+}
+
+.paginatorElmtClass a {
+    border: 1px solid #ADADAD;
+    margin: 0 3px;
+    padding: 3px;
+	font-size:11px;
+   text-decoration: none;
+}	
+a:hover {
+    text-decoration: underline;
+}
+.ui-widget-content a {
+    color:Navy;
+}
+.paginatorElmtClass{
+	text-align: right;
+	 margin-right: 10px;
+}
+a {
+   
+    font-weight: bold;
+   
+}
+.layoutHeadersClass {
+    color: #89745D;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: left;
+    background: none repeat scroll 0 0 #06ABEA;
+	color: #FFFFFF;
+	margin-bottom: 10px;
+	border-radius: 4px 4px 0px 0px;
+}
+.annDivId{
+		-moz-border-radius : 5px 5px 5px 5px;
+		background : none repeat scroll 0 0 #E0F2F8;
+		margin : 15px 10px;
+		overflow : hidden;
+		padding : 14px 18px 14px 9px;
+		text-align : left;
+		padding-bottom : 9px;
+		padding-top : 9px;
+}
+.annHeaderFont {
+    color: #0053B2;
+    font-size: 11px;
+	
+}
+#fiedsetDiv{
+	border-color: -moz-use-text-color #D1D1D1 #D1D1D1;
+    border-left: 1.7px solid #D1D1D1;
+    border-right: 1.7px solid #D1D1D1;
+    border-style: none solid solid;
+    border-width: 0 1.7px 1.7px;
+}
+
 </style>
 
 </head>
@@ -256,6 +320,10 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
           <div class="fleft"> <img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/></div>
           
           FACE BOOK COMMENTS SECTION END--> 
+
+		  <!-- Message displaying-->
+		  <div id="commentBoxDiv" class="constituencyPageCenterInfoDiv .rounded">
+		  </div>
      			  
 	</div>
    </div>
@@ -364,6 +432,12 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
     document.getElementById('fileUploadErrorMsgDivId').innerHTML = '';
   var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
+	var isprivate='';
+	if(document.getElementById("privateId").checked==true)
+	   isprivate=false;
+	
+	else
+	   isprivate=true;
 
 	var str = '<font color="red">';
 
@@ -401,6 +475,7 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 			stateSelect : stateSelect,
 			constituencySelect : constituencySelect,
 			message : message,
+		    isprivate:isprivate,
 		   	task : "saveMessageToParty"
 		};
 
@@ -436,6 +511,10 @@ function showAssemblyData()
    str +='     <td>Constituency <font class="requiredFont"> * </font></td>';
    str +='     <td style="padding-top: 5px;"><select id="constituencySelect" style = "width:192px; background-color:#EBE8E8; border:1px solid #ffffff;"/></td>';
    str +='   </tr>';
+   str +='<tr>';
+   str +='<td colspan="2"> <input type="checkbox" id ="privateId" checked>&nbsp Display this message publicly</td>';
+  
+   str +='</tr>';
 
    str +=' <tr>';
    str +='   <td >Message <font class="requiredFont"> * </font></td>';
@@ -2211,15 +2290,87 @@ function getCountry()
 {
 document.getElementById("selectStatediv").style.display = 'none';
 }
+
+function displayPartyMessages(results)
+{ 
+	
+	if(results == null || results.length == 0)
+		return;
+
+    var resultDiv = document.getElementById('commentBoxDiv');
+    var str = '';
+
+    str += '<Div class="layoutHeadersClass" style=" margin-bottom:0px;"> Messages From Followers </DIv>';
+      str += '<fieldset id="fiedsetDiv">';
+    for(var i=0;i<results.length;i++)
+    {
+	   
+       str += '<div class="annDivId">'
+	   str += '<Table>';
+	   str += '<tr class="annHeaderFont"><th>'+results[i].userName+'&nbsp;&nbsp;</th><th>'+results[i].time+'&nbsp;&nbsp;</th><th>Location : <td class=""><font color="black"><a href="constituencyPageAction.action?constituencyId='+results[i].consituencyId+' ">'+results[i].constituency+'</a></font></td></th><tr>';
+	   str += '</Table>';
+	   str += '<Table style="width:auto;">';
+	   str += '<tr class="annHeaderFont"><th>Message</th></tr>';
+	   str += '<tr><td>'+results[i].message+'</td></tr>';
+	   str += '</Table>';
+	   str += '</div>'
+	
+    }
+    str +='<div id="message_paginator_class" class="paginatorElmtClass"></div>';
+   str += '</fieldset>';
+   
+   
+   resultDiv.innerHTML = str;
+
+}
+
+var message_Obj = {
+		
+		
+		problemStatus:[],
+		startIndex:0,
+		problemsCount:5,
+		
+		initialize:function(){
+			
+			this. getPartyMessages();
+
+		},
+		getPartyMessages:function ()
+	    {
+	   	 var jsObj =
+	   		{ 
+	   			partyId:partyId,
+	   			task:"getPartyMessages"
+	   		};
+	   	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	   	 var url = "partyMessagesAction.action?"+rparam;
+	   		message_paginator.paginator({
+	   		   startIndex:this.startIndex,
+			   resultsCount:this.problemsCount,
+			   jsObj:jsObj,
+			   ajaxCallURL:url,
+			   paginatorElmt:"message_paginator_class",
+			   callBackFunction:function(){
+	   		       displayPartyMessages(results);
+			   }
+		     });	
+		   
+	   	message_paginator.initialize();							
+	   	 
+	    },
+	   
+};
+
+
+
 displayProfile();
 partyInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
-<s:if test="contentId != null">
-	getContent();
-</s:if>
+message_Obj.initialize();
 </script>
 
 </body>

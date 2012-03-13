@@ -96,6 +96,12 @@
 		background-color:#9FB9D0;
 		
     }
+    #partyMessageDisplayingDiv
+    {
+      font-size: 13px;
+      font-weight: bold;
+      margin-left: 215px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -211,13 +217,14 @@ function showNewPostedReasons(jsObj,results)
 		str +='		</table>';
 		str +='</div>';
 	
-	    
-	    str += '<table border="1px" CELLSPACING="0" align="left">';
-        str += '     <tr style="text-align:center">';
-	    str += '       <th style="color:#643918;">SELECT</th><th style="color:#643918;">CANDIDATE</th><th style="color:#643918;">POSTED BY</th><th style="color:#643918;">MESSAGE</th><th style="color:#643918;">CONSTITUENCY</th><th  style="color:#643918;">STATUS</th><th  style="color:#643918;">VISIBILITY</th>';
-        str += '     </tr>';
-		for(i=0 ; i < results.length ; i++)
-        {
+	    if(jsObj.decidestatus == "candidateMessage")
+	    {
+	      str += '<table border="1px" CELLSPACING="0" align="left">';
+          str += '     <tr style="text-align:center">';
+	      str += '       <th style="color:#643918;">SELECT</th><th style="color:#643918;">CANDIDATE</th><th style="color:#643918;">POSTED BY</th><th style="color:#643918;">MESSAGE</th><th style="color:#643918;">CONSTITUENCY</th><th  style="color:#643918;">STATUS</th><th  style="color:#643918;">VISIBILITY</th>';
+          str += '     </tr>';
+		  for(i=0 ; i < results.length ; i++)
+          {
 			str += '<tr style="text-align:center">';
 			str += '<td> <form><input type="checkbox" name="check"  value='+results[i].messageToCandidateId+' /></form> </td>';
 			str += '<td><a href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+' ">'+results[i].candidate+'</a></td>';
@@ -227,8 +234,29 @@ function showNewPostedReasons(jsObj,results)
 			str += '<td>'+results[i].status+'</td>';
 			str += '<td>'+results[i].visibility+'</td>';
 			str += '</tr>';
-		} 
-		str+= '</table>';
+		  } 
+		  str+= '</table>';
+	    }
+	    else
+	    {
+	    	str += '<table border="1px" CELLSPACING="0" align="left">';
+	          str += '     <tr style="text-align:center">';
+		      str += '       <th style="color:#643918;">SELECT</th><th style="color:#643918;">PARTY</th><th style="color:#643918;">POSTED BY</th><th style="color:#643918;">MESSAGE</th><th style="color:#643918;">CONSTITUENCY</th><th  style="color:#643918;">STATUS</th><th  style="color:#643918;">VISIBILITY</th>';
+	          str += '     </tr>';
+			  for(i=0 ; i < results.length ; i++)
+	          {
+				str += '<tr style="text-align:center">';
+				str += '<td> <form><input type="checkbox" name="checkParty"  value='+results[i].messageToPartyId+' /></form> </td>';
+				str += '<td><a href="partyPageAction.action?partyId='+results[i].partyId+' ">'+results[i].shortName+'</a></td>';
+				str += '<td>'+results[i].postedBY+'</td>';
+				str += '<td><textarea cols="20" id="partyMessageId'+i+'" value='+results[i].message+'>'+results[i].message+'</textarea></td>';
+				str += '<td><a href="constituencyPageAction.action?constituencyId='+results[i].consituencyId+' ">'+results[i].constituency+'</a></td>'; 
+				str += '<td>'+results[i].status+'</td>';
+				str += '<td>'+results[i].visibility+'</td>';
+				str += '</tr>';
+			  } 
+			  str+= '</table>';
+	    }
 	}
 	else
 	{
@@ -241,7 +269,14 @@ function showNewPostedReasons(jsObj,results)
 
  function selectAll(varify)
  {
-	 var ele = document.getElementsByName("check");
+	 var ele ='';
+	 
+	 if(document.getElementById("candidate_msg").checked==true)
+		 ele = document.getElementsByName("check");
+
+     if(document.getElementById("party_msg").checked==true)
+	     ele = document.getElementsByName("checkParty");
+
 	 if(varify=="selectValue")
 	 {
 	    for(var i=0;i<ele.length;i++)
@@ -279,23 +314,48 @@ function showNewPostedReasons(jsObj,results)
  }
 function controlSelectedReasons(task)
 {
-	var elmts = document.getElementsByName("check");
+	var elmts = '';
 	
 	var errorElmt = document.getElementById("approveCommentsErrorDiv");
-
+    var decideStatus='';
 	var checkedElmts = new Array();
-	for(var i=0;i<elmts.length;i++){
-	   if(elmts[i].checked == true )
-		{
+	if(document.getElementById("candidate_msg").checked==true)
+	{
+         decideStatus = document.getElementById("candidate_msg").value;
+		 elmts = document.getElementsByName("check");
+
+	    for(var i=0;i<elmts.length;i++){
+	      if(elmts[i].checked == true )
+		  {
 			var message_id_obj={
 					 updated_message :document.getElementById("userMessageId"+i+"").value,
 					 message_candidate_id : elmts[i].value
 			}		
 			
 			 checkedElmts.push(message_id_obj);
-		}
+		  }
 		
 	  
+	    }
+	}
+	else if(document.getElementById("party_msg").checked==true)
+	{
+         decideStatus = document.getElementById("party_msg").value;
+         elmts = document.getElementsByName("checkParty");
+
+	    for(var i=0;i<elmts.length;i++){
+	      if(elmts[i].checked == true )
+		  {
+			var message_id_obj={
+					 updated_message :document.getElementById("partyMessageId"+i+"").value,
+					 message_candidate_id : elmts[i].value
+		    }		
+			
+			 checkedElmts.push(message_id_obj);
+		  }
+		
+	  
+	    }
 	}
 
    if(checkedElmts.length == 0)
@@ -311,7 +371,8 @@ function controlSelectedReasons(task)
 	var jsObj=
 	{		
 			
-			checkedElmts:checkedElmts,					
+			checkedElmts:checkedElmts,
+			decideStatus:decideStatus,	
 			task:task						
 	};
 	
@@ -326,6 +387,12 @@ function getAllProblemsBetweenDates(task)
 	var endDate = '';
 	var selectstatusEle=document.getElementById("select_staus");
 	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
+	var decidestatus = '';
+	if(document.getElementById("candidate_msg").checked==true)
+	       decidestatus = document.getElementById("candidate_msg").value;
+			 
+	if(document.getElementById("party_msg").checked==true)	
+	       decidestatus = document.getElementById("party_msg").value;
 
 	if(task == "getAllNewPostedReasons")
 	{
@@ -347,6 +414,7 @@ function getAllProblemsBetweenDates(task)
 			fromDate:startDate,
 			toDate:endDate,	
 			selectstaus:selectstatus,
+			decidestatus:decidestatus,
 			task:task						
 	};
 		
@@ -363,6 +431,10 @@ function showAllNewPostedReasons()
 		return;
 	
 	var str = '';
+	str += '<div id="partyMessageDisplayingDiv" >';
+	str += '<input type="radio"  name="displaying_Data" id="candidate_msg" value="candidateMessage" onClick="getAllProblemsBetweenDates(\'getAllNewPostedReasons\')" checked > CandidateMessage &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </input>';
+	str += '<input type="radio" name="displaying_Data" id="party_msg" value="PartyMessage" onClick="getAllProblemsBetweenDates(\'getAllNewPostedReasons\')"/> PartyMessage';
+	str += '</div>';
 	str += '<div id="openedReasonsDateDiv" style="font-size:13px;font-weight:bold;">';
 	str += 'Showing all messages posted today - '+day+'/'+month+'/'+year ;
 	
@@ -408,7 +480,7 @@ function showAllNewPostedReasons()
 <body>	
 	<div id="commentsControlMain">		
 		
-		<div id="reasonsAdminPageHeader"> Control Messages From Candidate page </div>
+		<div id="reasonsAdminPageHeader"> Control Messages From Candidate page & Party page </div>
 
 		<div id="allOpenedReasons_main" class="reasonsAdminPanels_main">
 			<div>
