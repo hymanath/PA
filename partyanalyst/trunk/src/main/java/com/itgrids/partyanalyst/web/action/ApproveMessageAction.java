@@ -106,6 +106,7 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		String toDate = null;
 		String task = null;
 		String selectstatus=null;
+		String decidestatus=null;
 		
 		if(Log.isDebugEnabled())
 			Log.debug("getMessages()..............");
@@ -120,9 +121,10 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		toDate = jObj.getString("toDate");
 		task = jObj.getString("task");
 		selectstatus = jObj.getString("selectstaus");
+		decidestatus = jObj.getString("decidestatus");
 		if(task.equalsIgnoreCase("getAllNewPostedReasons") || task.equalsIgnoreCase("getAllNewPostedReasonsBetweenDates"))
 		{
-			candidateCommentsList = candidateDetailsService.getMessages(fromDate, toDate,selectstatus);
+			candidateCommentsList = candidateDetailsService.getMessages(fromDate, toDate,selectstatus,decidestatus);
 		}
 		
 		return Action.SUCCESS;
@@ -142,7 +144,8 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 			jObj = new JSONObject(getTask());
 			
 		    String task = jObj.getString("task");
-	        JSONArray jArray = jObj.getJSONArray("checkedElmts");  
+	        JSONArray jArray = jObj.getJSONArray("checkedElmts");
+	        String decideStatus = jObj.getString("decideStatus");
 	      
 	        String actionType = "";
 			if(task.equalsIgnoreCase("approved"))
@@ -167,7 +170,10 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 				candidateCommentsList.add(candidateCommentsVO);
 					
 			}
-			resultStatus = candidateDetailsService.controlMessages(candidateCommentsList,actionType);
+			if(decideStatus.equals(IConstants.CANDIDATE_MEG))
+			     resultStatus = candidateDetailsService.controlMessages(candidateCommentsList,actionType);
+			else if(decideStatus.equals(IConstants.PARTY_MEG))
+				resultStatus =candidateDetailsService. adminModifiedMessages(candidateCommentsList,actionType);
 				
 	     } catch (ParseException e) {
 			// TODO Auto-generated catch block

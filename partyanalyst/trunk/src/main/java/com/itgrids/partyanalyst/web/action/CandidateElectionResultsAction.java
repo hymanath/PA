@@ -759,6 +759,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			gallaryVO.setGallaryId(jObj.getLong("stateSelect"));
 			gallaryVO.setUserId(jObj.getLong("constituencySelect"));
 			gallaryVO.setDescription(jObj.getString("message"));
+			gallaryVO.setIsPrivate(jObj.getString("isprivate"));
 			result = partyDetailsService.savePartyMessageFromPeople(gallaryVO);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("deleteDiscription"))
@@ -793,6 +794,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 			Integer resultsCount = Integer.parseInt(request.getParameter("resultsCount"));
 			candidateCommentsVO = candidateDetailsService.getUserMessages(jObj.getLong("candidateId"),startIndex,resultsCount);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getPartyMessages"))
+		{
+			String startIndex    = request.getParameter("startIndex");
+			String resultsCount  = request.getParameter("resultsCount");
+			candidateCommentsVO = partyDetailsService.getMessageToParty(jObj.getLong("partyId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount));
 		}
 		
 		return Action.SUCCESS;
