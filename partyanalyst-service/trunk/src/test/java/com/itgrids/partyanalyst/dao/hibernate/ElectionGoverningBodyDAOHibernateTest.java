@@ -23,10 +23,30 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 	}
 
 
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAll();
 		assertEquals(list.size() >= 0, true);
+	}*/
+	
+	/*public void testGetAllStatesForMinisters(){
+		List<Object[]> list = electionGoverningBodyDAO.getAllStatesForMinisters();
+		for(Object[] states:list)
+		{
+			System.out.println("id: "+states[0].toString()+"  name: "+states[1].toString());
+		}
 	}
-	
-	
+	public void testGetAllYearsAndElecIds(){
+		List<Object[]> list = electionGoverningBodyDAO.getAllYearsAndElecIdsForAssembly(27l);
+		for(Object[] years:list)
+		{
+			System.out.println("id: "+years[0].toString()+"  name: "+years[1].toString());
+		}
+	}*/
+	public void testGetAllYearsAndElecIdsForParliament(){
+		List<Object[]> list = electionGoverningBodyDAO.getAllYearsAndElecIdsForParliament();
+		for(Object[] years:list)
+		{
+			System.out.println("id: "+years[0].toString()+"  name: "+years[1].toString());
+		}
+	}
 }
