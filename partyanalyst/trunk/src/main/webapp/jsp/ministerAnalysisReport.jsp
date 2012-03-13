@@ -117,15 +117,57 @@ function getElectionYears(electionType)
 	  else
 	      document.getElementById("showHideState").style.display ="none";
     }
-	function getAllStates()
-   {
-    
-      
+ function getAllStates()
+   {    
     var jsObj =
 		{ 
             time : new Date().getTime(),
 			eleType: 2,
 			task:"getStatesForAssign"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function getStatesForAssembly()
+  {
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			task:"getAllStatesForParliamentMinisters"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function getYearsForAssembly()
+  {
+  
+    var stateEle = document.getElementById("stateListId");
+    var stateId = stateEle.options[stateEle.selectedIndex].value;
+	removeData("yearSelId");
+    addData("yearSelId");
+    if(stateId == 0)
+     return;	
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			stateId: stateId,
+			task:"getAllYearsAndElecIdsForAssembly"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getElectionYearsBasedOnElectionTypeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+  }
+  function getYearsForParliament()
+  {
+    var jsObj =
+		{ 
+            time : new Date().getTime(),
+			task:"getAllYearsAndElecIdsForParliament"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -406,11 +448,32 @@ function getElectionYears(electionType)
 									
 									if(jsObj.task == "getElectionYearsForAState")
 									{
+									      removeData("yearSelId");
 									      buildData(myResults,"yearSelId");
 									}
 									else if(jsObj.task == "getStatesForAssign")
 									{
+									      removeData("stateListId");
+										  addState("stateListId");
 									      buildData(myResults,"stateListId");
+									}
+									else if(jsObj.task == "getAllStatesForParliamentMinisters")
+									{
+									      removeData("stateListId");
+										  addState("stateListId");
+									      buildData(myResults,"stateListId");
+									}
+									else if(jsObj.task == "getAllYearsAndElecIdsForAssembly")
+									{
+									      removeData("yearSelId");
+										  addData("yearSelId");										  
+									      buildData(myResults,"yearSelId");
+									}
+									else if(jsObj.task == "getAllYearsAndElecIdsForParliament")
+									{
+									       removeData("yearSelId");
+										   addData("yearSelId");
+									      buildData(myResults,"yearSelId");
 									}
 									else if(jsObj.task == "getMinsKeyCandAnalysisDetails")
 									{
@@ -515,6 +578,27 @@ function getElectionYears(electionType)
  
  
  }
+ function addState(id)
+ {
+  
+    var elmt = document.getElementById(id);
+   
+		var option = document.createElement('option');     
+		
+		    option.value= 0;
+		    option.text= "Select State";       
+        
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		} 
+ 
+ 
+ }
 
 function showMinisPerf(id)
 {
@@ -523,9 +607,9 @@ function showMinisPerf(id)
   $("#minisPerf").addClass("dashBoardtabsDivSelected");
   document.getElementById("showData").innerHTML = "";
   document.getElementById("keyCandidatesData").innerHTML = "";
-  document.getElementById("parlSel").checked = true;  
-  document.getElementById("showHideState").style.display = "none";
-  getElectionYears("Parliament");
+  document.getElementById("state").checked = true;  
+  document.getElementById("showHideState").style.display = "block";
+  getStatesForAssembly();
 }
 function showImpCandPerf(id)
 {
@@ -534,16 +618,33 @@ function showImpCandPerf(id)
   $("#impCandPerf").addClass("dashBoardtabsDivSelected");
   document.getElementById("showData").innerHTML = "";
   document.getElementById("keyCandidatesData").innerHTML = "";
-  document.getElementById("parlSel").checked = true;
-  document.getElementById("showHideState").style.display = "none";
-  getElectionYears("Parliament");
+  document.getElementById("state").checked = true;
+  document.getElementById("showHideState").style.display = "block";
+  getAllStates();
+}
+function getYears(type)
+{
+  if(qtype == "minis")
+   { 
+    if(type == "Assembly")
+	 getYearsForAssembly();
+	else
+      getYearsForParliament();
+   }
+   else 
+    getElectionYears(type);
 }
 function getDeltailForMinisImpCand()
 {
    if(qtype == "minis")
      getDetails('ministers');
    else 
-    getDetails('ImportantCandidates')
+    getDetails('ImportantCandidates');
+}
+function removeDataDIV()
+{
+    document.getElementById("showData").innerHTML = "";
+	document.getElementById("keyCandidatesData").innerHTML = "";
 }
 </script>
 </head>
@@ -558,10 +659,10 @@ function getDeltailForMinisImpCand()
    <div style="padding-top:10px;padding-left:250px;width:70%;text-align:center;">
      <table>  
 	  <tr>
-	      <td><input type="radio" name="selectScope" checked="true" id="parlSel" value="1" onclick="showHidsState();getElectionYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
-	      <td><input type="radio" id="state" name="selectScope" onclick="showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
-		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId" value="2"  onchange="getElectionYears('Assembly');"><option value="0">Select State</option></select></div></td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="getDeltailForMinisImpCand();" ></select></td>
+	      <td><input type="radio" id="state" checked="true" name="selectScope" onclick="removeDataDIV();showHidsState();showOthers();" />&nbsp;&nbsp;<b>Assembly</b></td>
+	      <td><input type="radio" name="selectScope"  id="parlSel" value="1" onclick="removeDataDIV();showHidsState();getYears('Parliament');" />&nbsp;&nbsp;<b>Parliament</b>&nbsp;&nbsp;</td>
+		  <td><div id="showHideState" style="display:none;"><b>&nbsp;&nbsp;Select State :</b>&nbsp;&nbsp;<select  id="stateListId" value="2"  onchange="removeDataDIV();getYears('Assembly');"><option value="0">Select State</option></select></div></td>
+		  <td>&nbsp;&nbsp;&nbsp;&nbsp;<b>Select Year :</b>&nbsp;&nbsp;<select id="yearSelId" onchange="removeDataDIV();getDeltailForMinisImpCand();" ><option value="0">Select Year</option></select></td>
       </tr>
 	 </table>
 	 <table>
@@ -579,10 +680,10 @@ function getDeltailForMinisImpCand()
   </div>
 </div>
    <script type="text/javascript">
-     getElectionYears("Parliament");
-	 getAllStates();
+	 getStatesForAssembly();
 	 $("#impCandPerf").removeClass("dashBoardtabsDivSelected");
      $("#minisPerf").addClass("dashBoardtabsDivSelected");
+	 showHidsState();
    </script>
 </body>
 </html>
