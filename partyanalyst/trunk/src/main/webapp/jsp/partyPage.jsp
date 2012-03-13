@@ -922,9 +922,9 @@ function showPhotosInInitialGallary(results){
         return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
      }
    });
-
-   fireEvent(document.getElementById('photoClickId'),'click');
-   document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
+   $('#photoClickId').trigger('click');
+   //fireEvent(document.getElementById('photoClickId'),'click');
+   //document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
 }
 function fireEvent(obj,evt){
 	
