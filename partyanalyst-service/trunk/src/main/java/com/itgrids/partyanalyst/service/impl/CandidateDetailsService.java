@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
+import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
@@ -127,8 +128,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private INewsImportanceDAO newsImportanceDAO;
 	private IPartyGalleryDAO partyGalleryDAO;	
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
+	private IMessageToPartyDAO messageToPartyDAO;
 	
 	
+	
+	
+	public IMessageToPartyDAO getMessageToPartyDAO() {
+		return messageToPartyDAO;
+	}
+
+	public void setMessageToPartyDAO(IMessageToPartyDAO messageToPartyDAO) {
+		this.messageToPartyDAO = messageToPartyDAO;
+	}
+
 	public ISpecialPageGalleryDAO getSpecialPageGalleryDAO() {
 		return specialPageGalleryDAO;
 	}
@@ -2199,24 +2211,30 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 }
 	    return " ";
    }
- public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus)
+ public List<CandidateCommentsVO> getMessages(String fromDate, String toDate,String selectstatus,String decidestatus)
  {
-	 List<CandidateCommentsVO> candidateComments = null;
+	 List<CandidateCommentsVO> candidateComments = new ArrayList<CandidateCommentsVO>();
 	 if(log.isDebugEnabled())
 		 log.debug("getMessages()method ......");
 		try{
-			candidateComments = new ArrayList<CandidateCommentsVO>();
 			
+			List comments;
 			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
-			List comments = messageToCandidateDAO.getAllOpenedMessages(firstDate, secondDate,selectstatus);			
-			
-			return commentsDetailsFromList(comments);
-			
+			if(decidestatus.equals(IConstants.CANDIDATE_MEG))
+			{
+			     comments = messageToCandidateDAO.getAllOpenedMessages(firstDate, secondDate,selectstatus);
+			     candidateComments = commentsDetailsFromList(comments);
+			}
+			if(decidestatus.equals(IConstants.PARTY_MEG))
+			{
+				comments = messageToPartyDAO.getAllPartyMessages(firstDate,secondDate,selectstatus);
+				candidateComments = commentsDetailsFromPartyList(comments);
+			} 			
 		}catch(Exception e){
 			log.error("Exception in getMessages in candidate details service",e);
-			return candidateComments;
 		}
+		return candidateComments;
  }
  public List<CandidateCommentsVO> commentsDetailsFromList(List comments)
 	{
@@ -2314,6 +2332,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
                     	 candidateCommentsVO.setMessage(params[1].toString());
                     	 candidateCommentsVO.setConstituency(params[2].toString());
                     	 candidateCommentsVO.setTime(params[3].toString().substring(0,19));
+                    	 candidateCommentsVO.setConsituencyId((Long)params[4]);
                     	 candidateCommentsVO.setTotalResultsCount(messCount.get(0));
                     	 userlist.add(candidateCommentsVO);
                      }
@@ -2460,8 +2479,81 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 			
 		}
-			
+	
+	public List<CandidateCommentsVO> commentsDetailsFromPartyList(List comments)
+	{
+		List<CandidateCommentsVO> commentsList = null;
+		 if(log.isDebugEnabled())
+			 log.debug("commentsDetailsFromList()method ......");
 		
+		if(comments != null || comments.size() > 0)
+		{
+			commentsList = new ArrayList<CandidateCommentsVO>();
+			for (int i = 0; i < comments.size(); i++)
+			{
+				CandidateCommentsVO comment = new CandidateCommentsVO();
+				Object[] params = (Object[])comments.get(i);
+				comment.setShortName(params[0].toString());
+				comment.setPostedBY(params[1].toString());
+				comment.setMessage(params[2].toString());
+				comment.setConstituency(params[3].toString());
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.TRUE))
+					comment.setStatus(IConstants.APPROVED);
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
+					comment.setStatus(IConstants.NEW);
+				if(params[4] == null)
+					comment.setStatus(IConstants.REJECTED);
+				comment.setMessageToPartyId((Long)params[5]);
+				comment.setPartyId((Long)params[6]);
+				comment.setConsituencyId((Long)params[7]);
+				if(params[8]!=null && params[8].toString().equalsIgnoreCase(IConstants.FALSE) )
+				   comment.setVisibility(IConstants.PUBLIC);
+				if(params[8]!=null && params[8].toString().equalsIgnoreCase(IConstants.TRUE) )
+					   comment.setVisibility(IConstants.PRIVATE);
+					
+				
+				commentsList.add(comment);
+				
+			}
+		}			
+		
+		return commentsList;
+	}
+    public ResultStatus adminModifiedMessages(List<CandidateCommentsVO> upMessageVO,String actionType)
+    {
+			String isApproved = IConstants.FALSE;
+			ResultStatus resultStatus = new ResultStatus();
+			
+			try {
+				if(log.isDebugEnabled())
+					log.debug("Enterd into adminModifiedMessages in candidate details service");
+				
+				if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+					isApproved = IConstants.TRUE;
+				
+				else if(actionType.equalsIgnoreCase(IConstants.REJECTED))
+					//isApproved = IConstants.FALSE;
+					isApproved = null;
+				
+	           for(int i=0; i<upMessageVO.size();i++)
+	           {
+	        	   CandidateCommentsVO ccv = (CandidateCommentsVO)upMessageVO.get(i);
+	        	   Long id = ccv.getMessageToCandidateId();
+	        	   String message = ccv.getMessage();
+	        	   messageToPartyDAO.adminModifiedMessages(id, message, isApproved);
+	        	   
+	        	   
+	           }
+	           resultStatus.setResultState(1l);
+				
+			} catch (Exception e) {
+				if(log.isDebugEnabled())
+					log.error("Exception in adminModifiedMessages in candidate details service",e);
+				 resultStatus.setResultState(0l);
+				 resultStatus.setExceptionEncountered(e);
+			}
+			return resultStatus;
+	  }
 	 
 }
 	
