@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AssignKeyCandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PositionManagementVO;
@@ -43,4 +44,6 @@ public interface IElectionLiveResultsAnalysisService {
 	public List<PositionManagementVO> getAllPartiesForAnElec(Long electionId,Long stateId);
 	
 	public List<PositionManagementVO> getAllPartyCountsDistrictWise(Long electionId,List<Long> partyIds,boolean includeAlliances,String type);
+	
+	public List<ElectionGoverningBodyVO> getAllCandidateDetailsForMinisterProfile(Long candidateId);
 }
