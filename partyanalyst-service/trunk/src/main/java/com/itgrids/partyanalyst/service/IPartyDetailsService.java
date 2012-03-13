@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import java.util.List;
+
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
@@ -68,6 +70,8 @@ public interface IPartyDetailsService {
 	public List<FileVO> getPartyManifestoDetailsBasedOnSelection(PartyPageVO partyPageVO);
 	
 	public ResultStatus savePartyMessageFromPeople(GallaryVO gallaryVO);
-	
+		
 	public String getPartyVisibility(Long gallaryId);
+	
+	public List<CandidateCommentsVO> getMessageToParty(Long partyId,int startIndex,int resultsCount);
 }
