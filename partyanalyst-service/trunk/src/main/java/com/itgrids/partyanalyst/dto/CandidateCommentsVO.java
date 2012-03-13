@@ -51,6 +51,9 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long consituencyId;
 	private String visibility;
 	private Long totalResultsCount;
+	private String shortName;
+	private Long messageToPartyId;
+	private Long partyId;
 	
 	
 	public Long getConsituencyId() {
@@ -267,6 +270,26 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	public void setTotalResultsCount(Long totalResultsCount) {
 		this.totalResultsCount = totalResultsCount;
 	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	public Long getMessageToPartyId() {
+		return messageToPartyId;
+	}
+	public void setMessageToPartyId(Long messageToPartyId) {
+		this.messageToPartyId = messageToPartyId;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
+	
 	
 	
 	
