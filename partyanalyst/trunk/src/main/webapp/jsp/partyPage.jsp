@@ -313,12 +313,12 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
 	
-	<div id="showContentDiv"/>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
-    <div id="constituencySelectDiv"/>
-    </div>
+		<div id="constituencySelectDiv"></div>
+	</div>
+	<div id="showContentDiv"></div>
 
     <!--VIDEOS SECTION END--> 
  </td>
