@@ -850,7 +850,7 @@ share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${special
 	 <div class="more"><a onClick="videoGallaryPopUp(<s:property value ='fileVOList.size'/>);" href="javascript:{};">More</a></div>
 	 </s:if>
 
-	<div id="showContentDiv"/>
+	<div id="showContentDiv"></div>
 	<div id="videoGallaryPopUpDiv"></div>
 
  <!-- VIDEOS SECTION END--> 
