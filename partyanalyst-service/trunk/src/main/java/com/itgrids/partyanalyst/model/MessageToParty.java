@@ -33,11 +33,13 @@ public class MessageToParty extends BaseModel implements java.io.Serializable {
 	private Party party;
 	private Date sentTime;
 	private String isDelete;
+	private String isPrivate;
+	private String isApproved;
 	
 	public MessageToParty()
 	{}
 	
-	public MessageToParty(String name,Constituency constituency,String message,Party party,Date sentTime,String isDelect)
+	public MessageToParty(String name,Constituency constituency,String message,Party party,Date sentTime,String isDelect, String isPrivate,String isApproved)
 	{
 		this.isDelete = isDelect;
 		this.name = name;
@@ -45,6 +47,9 @@ public class MessageToParty extends BaseModel implements java.io.Serializable {
 		this.message=message;
 		this.party = party;
 		this.sentTime=sentTime;
+		this.isApproved=isApproved;
+		this.isDelete=isDelete;
+		this.isPrivate=isPrivate;
 	}
 
 	@Id
@@ -116,6 +121,24 @@ public class MessageToParty extends BaseModel implements java.io.Serializable {
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
+	@Column(name="is_private",length=10)
+	public String getIsPrivate() {
+		return isPrivate;
+	}
+
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	@Column(name="is_approved",length=10)
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
+	
+	
 	
 }
 
