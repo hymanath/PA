@@ -2961,7 +2961,7 @@ function buildPhotoGallery()
 	var photoGallaryDivEle = document.getElementById("photoGallaryDiv");
 	var str ='';
     str +='<div id="content" style="width:650px;">';
-	str +='<table>';
+	str +='<table style="margin:5px;width:40%;margin-left:50px;">';
 	str +='   <tr>';
 	str +='      <td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGalleryDiv()"/></td>';
 	str +='      <td><input type="button" class="imageButton" value="Upload Photos" onclick="buildUploadPhotosDiv()"/></td>';
@@ -2995,7 +2995,7 @@ function buildPhotoGalleryDiv()
 	var photoGallaryDivEle = document.getElementById("photoGallaryDiv");
 	var str ='';
     str +='<div id="content" style="width:650px;">';
-	str +='<table>';
+	str +='<table style="margin:5px;width:40%;margin-left:50px;">';
 	str +='   <tr>';
 	str +='      <td><input type="button" class="imageButton" value="Create Gallery" onclick="buildPhotoGalleryDiv()"/></td>';
 	str +='      <td><input type="button" class="imageButton" value="Upload Photos" onclick="buildUploadPhotosDiv()"/></td>';
