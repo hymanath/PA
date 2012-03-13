@@ -1012,6 +1012,7 @@
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />		
 		<property name="partyDAO" ref="partyDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	</bean>
 	
 	<bean name="electionResultsUpdationService" class="com.itgrids.partyanalyst.service.impl.ElectionResultsUpdationService">
