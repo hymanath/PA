@@ -105,7 +105,14 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getDistrictWiseAnalysisDetails"))
 			{
-			  results = electionLiveResultsAnalysisService.getDistrictWisePartyPerfDetails(jObj.getLong("electionId"),jObj.getLong("stateId"));	
+				String partyIds = jObj.getString("partyIds");
+				String[] partyArray = partyIds.split(",");
+				List<Long> partyIdsList = new ArrayList<Long>();
+				 for(String partyId:partyArray)
+				 {
+					 partyIdsList.add(new Long(partyId));
+				 }
+			  results = electionLiveResultsAnalysisService.getDistrictWisePartyPerfDetailsNew(jObj.getLong("electionId"),jObj.getLong("stateId"),partyIdsList);	
 			}
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getDistrictWiseAnalysisDetailsForGraph"))
 			{
@@ -125,6 +132,22 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 				  partiesList.add(new Long(party));
 			  }
 			  results = electionLiveResultsAnalysisService.getAllPartiesPerfoDistWiseForPartialEle(jObj.getLong("electionId"),partiesList);
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getAllPartiesForResults"))
+			{
+			  results = electionLiveResultsAnalysisService.getAllPartiesForAnElec(jObj.getLong("electionId"),jObj.getLong("stateId"));
+			}
+			else if(jObj.getString("task").trim().equalsIgnoreCase("getPartiesPerfResultsWise"))
+			{
+
+				   String partyIds = jObj.getString("partyIds");
+				  String[] partiesArray = partyIds.split(",");
+				  List<Long> partiesList = new ArrayList<Long>();
+				  for(String party:partiesArray)
+				  {
+					  partiesList.add(new Long(party));
+				  }
+				  results = electionLiveResultsAnalysisService.getAllPartyCountsDistrictWise(jObj.getLong("electionId"),partiesList,jObj.getBoolean("includeAlliances"),jObj.getString("type"));
 			}
 		  }
 		  catch (ParseException e) {
