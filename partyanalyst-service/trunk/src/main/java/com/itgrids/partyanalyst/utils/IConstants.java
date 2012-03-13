@@ -485,5 +485,10 @@ public interface IConstants {
     
     public static final String LEAD = "Lead";
     public static final String WON = "Won";
+    
+    public static final String CANDIDATE_MEG = "candidateMessage";
+    public static final String PARTY_MEG = "PartyMessage";
+    
+    
 
 }
