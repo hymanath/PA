@@ -194,8 +194,12 @@
 
 	.selectWidth
 	{
-		width:140px;
+		width:151px;
 	}
+	.selectBoxWidth {
+    padding: 0;
+    width: 144px;
+}
 </style>
 
 <script type="text/javascript">
@@ -1348,7 +1352,7 @@
 						<option>2006</option> 
 					</select>  --->
 				</td>
-				<th>Census Type</th>
+				<th>CensusType</th>
 				<td><s:select theme="simple" cssClass="selectWidth" id="censusSelect" label="Select Census Parameter" name="censusParam" list="#session.censusParamList" listKey="id" listValue="name"  headerKey = "0" headerValue = "Select" onchange="getCensusDetails()"/>
 				</td>
 			</tr>
