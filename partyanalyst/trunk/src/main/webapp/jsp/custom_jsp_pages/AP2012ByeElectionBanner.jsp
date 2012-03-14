@@ -180,17 +180,20 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 .spltableclass a{text-decoration:none;}
 .spltableclass a:hover{text-decoration:underline;}
 .spltableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
-.spltableclass td{border:1px solid #d3d3d3;width:20%;padding:5px 3px;color:#3d3d3d;height:35px;}
+.spltableclass td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;height:35px;}
 .spltableclass th:nth-child(2){background:#fcfd03;color:#000;}
 .spltableclass th:nth-child(2) a{color:#000;}
 .spltableclass th:nth-child(3){background:#ffbfcd;color:#000;}
 .spltableclass th:nth-child(3) a{color:#000;}
 
+
 .spltableclass th:nth-child(4){background:#006524;color:#fff;}
 .spltableclass th:nth-child(4) a{color:#fff;}
 .spltableclass th:nth-child(5){background:#0c35ad;color:#fff;}
 .spltableclass th:nth-child(5) a{color:#fff;}
-.spltableclass th{border:1px solid #d3d3d3;width:20%;padding:10px 5px;}
+.spltableclass th:nth-child(6) {background:#FF0000;color:#fff;}
+.spltableclass th:nth-child(6) a{color:#fff;}
+.spltableclass th{border:1px solid #d3d3d3;width:15%;padding:10px 5px;}
 .spltableclass tr:nth-child(odd){background:#f3f3f3;}
 .spltableclass th:nth-child(1){background:#5e5e5e;color:#fff;padding:5px;text-align:left;padding-left:15px;}
 .spltableclass th:nth-child(1) a{color:#fff;}
@@ -204,6 +207,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <th ><a href="partyPageAction.action?partyId=886">TRS</a></th>
     <th ><a href="partyPageAction.action?partyId=362">INC</a></th>
     <th ><a href="partyPageAction.action?partyId=1117">YSRC</a></th>
+	<th><a href="partyPageAction.action?partyId=163">BJP</a></th>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=1">Adilabad</a></th>
@@ -211,6 +215,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>Jogu Ramanna</td>
     <td> Rama Chandra Reddy</td>
     <td>&nbsp;</td>
+	 <td>&nbsp;</td>
   </tr>
   <tr>
     <th><a href="constituencyPageAction.action?constituencyId=16">Kamareddy</a></th>
@@ -218,6 +223,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>Gampa Goverdhan</td>
     <td>Yedla Raji Reddy</td>
     <td>&nbsp;</td>
+	 <td>&nbsp;</td>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=67">Kollapur</a></th>
@@ -225,6 +231,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>Jupally Krishna Rao</td>
     <td> Vishnu Vardhan Reddy</td>
     <td>&nbsp;</td>
+	 <td>&nbsp;</td>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
@@ -232,6 +239,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>&nbsp;</td>
     <td>Polavaram Srinivasa Reddy</td>
     <td>N.Prasanna Kumar Reddy</td>
+	 <td>&nbsp;</td>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=68">Mahbubnagar</a></th>
@@ -239,6 +247,8 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>Sayed Ibrahim</td>
     <td>Muthyala Prakash</td>
     <td>&nbsp;</td>
+	 <td>Yennam Srinivas Reddy
+</td>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=70">Nagarkurnool</a></th>
@@ -246,6 +256,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>Nagam Janardhana Reddy [Telangana Nagara Samithi]</td>
     <td>Damodar Reddy</td>
     <td>&nbsp;</td>
+	 <td>&nbsp;</td>
   </tr>
   <tr>
     <th >
@@ -254,6 +265,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td> T Rajaiah</td>
     <td> Pratap</td>
     <td>&nbsp;</td>
+	 <td>&nbsp;</td>
   </tr>
 </table>
 
