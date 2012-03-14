@@ -183,4 +183,19 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		
 		return query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesOverviewInAElection(Long electionId)
+	{
+		return getHibernateTemplate().find("select count(model.constituencyElection.constiElecId),sum(model.totalVotes),sum(model.validVotes) " +
+				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ?",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesAreaTypeOverviewInAElection(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.areaType,count(model.constituencyElection.constiElecId),sum(model.totalVotes),sum(model.validVotes)" +
+				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? group by model.constituencyElection.constituency.areaType " +
+				" order by model.constituencyElection.constituency.areaType desc",electionId);
+	}
 }
