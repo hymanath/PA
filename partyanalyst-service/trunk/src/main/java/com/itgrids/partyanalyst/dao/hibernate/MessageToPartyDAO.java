@@ -31,7 +31,7 @@ public class MessageToPartyDAO extends GenericDaoHibernate<MessageToParty,Long> 
 	@SuppressWarnings("unchecked")
 	public List<Long> getPartyMessageCount(Long partyId)
 	{
-		return getHibernateTemplate().find("select count(*) from MessageToParty  model where model.party.partyId = ? and model.isDelete = 'false'and model.isPrivate = 'false' order by model.sentTime desc ",partyId);
+		return getHibernateTemplate().find("select count(*) from MessageToParty  model where model.party.partyId = ? and model.isDelete = 'false'and model.isPrivate = 'false' and model.isApproved = 'true' order by model.sentTime desc ",partyId);
 	}
 	
 	public List getAllPartyMessages(Date firstDate, Date secondDate,String selectstatus)
