@@ -1980,7 +1980,9 @@ public class ElectionReportService implements IElectionReportService {
 					constituencyUrbanDetailsVO = new ConstituencyUrbanDetailsVO();
 					constituencyUrbanDetailsVO.setRange(entry.getKey());
 					constituencyUrbanDetailsVO.setPartyResults(processPartyWiseResultVOList(entry.getValue(),partiesList,partiesMap));
-					constituencyUrbanDetailsVOList.add(constituencyUrbanDetailsVO);
+					
+					if(checkForDataExistance(constituencyUrbanDetailsVO))
+						constituencyUrbanDetailsVOList.add(constituencyUrbanDetailsVO);
 				}
 			}
 			return constituencyUrbanDetailsVOList;
@@ -2096,6 +2098,76 @@ public class ElectionReportService implements IElectionReportService {
 		}catch (Exception e) {
 			log.error("Exception occured in getPartyWiseResultVO() Method, Exception is - "+e);
 			return null;
+		}
+	}
+	
+	public List<PartyElectionResultVO> getConstituencyAreaTypeWiseOverview(Long electionId)
+	{
+		log.debug("Entered into getConstituencyAreaTypeWiseOverview() Method");
+		try{
+			List<PartyElectionResultVO> resultList = null;
+			PartyElectionResultVO partyElectionResultVO = null;
+			
+			List<Object[]> list = constituencyElectionResultDAO.getConstituenciesOverviewInAElection(electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<PartyElectionResultVO>(0);
+				partyElectionResultVO = new PartyElectionResultVO();
+				
+				partyElectionResultVO.setConstiName("TOTAL");
+				partyElectionResultVO.setTotalParticipated((Long)list.get(0)[0]);
+				partyElectionResultVO.setTotalVoters(((Double)list.get(0)[1]).longValue());
+				partyElectionResultVO.setValidVotes(((Double)list.get(0)[2]).longValue());
+				partyElectionResultVO.setVotesPercentage(
+						new BigDecimal(((Double)list.get(0)[2])*(100.0)/(Double)list.get(0)[1]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				
+				resultList.add(partyElectionResultVO);
+				
+				list = constituencyElectionResultDAO.getConstituenciesAreaTypeOverviewInAElection(electionId);
+				
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						if(params[0] != null)
+						{
+							partyElectionResultVO = new PartyElectionResultVO();
+							partyElectionResultVO.setConstiName(params[0].toString());
+							partyElectionResultVO.setTotalParticipated((Long)params[1]);
+							partyElectionResultVO.setTotalVoters(((Double)params[2]).longValue());
+							partyElectionResultVO.setValidVotes(((Double)params[3]).longValue());
+							partyElectionResultVO.setVotesPercentage(
+									new BigDecimal(((Double)params[3])*(100.0)/(Double)params[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							
+							resultList.add(partyElectionResultVO);
+						}
+					}
+				}
+			}
+			
+			return resultList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getConstituencyAreaTypeWiseOverview() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
+	public boolean checkForDataExistance(ConstituencyUrbanDetailsVO constituencyUrbanDetailsVO)
+	{
+		try{
+			if(constituencyUrbanDetailsVO == null || constituencyUrbanDetailsVO.getPartyResults() == null ||
+					constituencyUrbanDetailsVO.getPartyResults().size() == 0)
+				return false;
+			for(PartyWiseResultVO partyWiseResultVO : constituencyUrbanDetailsVO.getPartyResults())
+			{
+				if(partyWiseResultVO.getSeatsParticipated() > 0)
+					return true;
+			}
+			return false;
+		}catch (Exception e) {
+			log.error("Exception Occured in checkForDataExistance() Method, Exception is - "+e);
+			return false;
 		}
 	}
 	

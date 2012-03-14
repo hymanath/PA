@@ -30,4 +30,6 @@ public interface IElectionReportService {
 	
 	public List<ConstituencyUrbanDetailsVO> getConstituencyAreaTypePercentageWiseElectionResultOfParties(Long electionId,String censusYear,List<Long> partiesList);
 	
+	public List<PartyElectionResultVO> getConstituencyAreaTypeWiseOverview(Long electionId);
+	
 }
