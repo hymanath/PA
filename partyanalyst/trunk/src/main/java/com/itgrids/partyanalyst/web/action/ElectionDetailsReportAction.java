@@ -319,7 +319,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 
-	public String ajaxCallHandler() {
+	public String ajaxCallHandler() 
+	{
 		String param = null;
 		param = getTask();
 		try {
@@ -330,11 +331,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (jObj.getString("task").equalsIgnoreCase("electionsBasicInfo")) {
+		if (jObj.getString("task").equalsIgnoreCase("electionsBasicInfo"))
+		{
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
 			String electionType = jObj.getString("electionType");
 		}
-		if (jObj.getString("task").equalsIgnoreCase("getResultForAnElection")) {
+		else if (jObj.getString("task").equalsIgnoreCase("getResultForAnElection")) 
+		{
 			session = request.getSession();
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
 			Long stateId = new Long(jObj.getString("stateID"));
@@ -362,18 +365,25 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				
 			}
 		}
-		if (jObj.getString("task").equalsIgnoreCase("getPartyGenderInfo")) {
+		else if (jObj.getString("task").equalsIgnoreCase("getPartyGenderInfo"))
+		{
 			partyElectionResultVO = electionReportService.getPartyBasicDetailsWithGenderInfoForAnElection(jObj.getLong("electionId"));
 		}
-		if (jObj.getString("task").equalsIgnoreCase("getConstituencyAreaTypeWiseResult")) {
+		else if (jObj.getString("task").equalsIgnoreCase("getConstituencyAreaTypeWiseResult")) 
+		{
 			partyElectionResultVO = electionReportService.getPartyElectionResultWithConstituencyAreaType(jObj.getLong("electionId"));
 		}
-		if(jObj.getString("task").equalsIgnoreCase("getPartiesConstituencyUbanPercentage"))
+		else if (jObj.getString("task").equalsIgnoreCase("getConstituencyAreaTypeWiseOverview")) 
+		{
+			partyElectionResultVO = electionReportService.getConstituencyAreaTypeWiseOverview(jObj.getLong("electionId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getPartiesConstituencyUbanPercentage"))
 		{
 			urbanDetailsList = electionReportService.getConstituencyAreaTypePercentageWiseElectionResultOfParties(jObj.getLong("electionId"),"2001",null);
 		}
-		if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc") || jObj.getString("task").trim().equalsIgnoreCase("HighestAssets")) {
-			 Long partyId = null;
+		else if (jObj.getString("task").trim().equalsIgnoreCase("TopVotesGained") || jObj.getString("task").trim().equalsIgnoreCase("HighestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("LowestMarginGained") || jObj.getString("task").trim().equalsIgnoreCase("TopVotesGainedPerc") || jObj.getString("task").trim().equalsIgnoreCase("HighestAssets")) 
+		{
+			Long partyId = null;
 			if(jObj.getString("partyId").trim().length()>0)
 				partyId = jObj.getLong("partyId");
 			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim(),partyId);

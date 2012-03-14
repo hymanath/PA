@@ -238,6 +238,17 @@ margin-right:auto;
 		box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
 }
 table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable * th{border:1px solid #d3d3d3;border-color:#d3d3d3 !important;}
+
+#UbanPercentageWiseGraphSelectionDiv
+{
+	background: none repeat scroll 0 0 #EBE4F2;
+    border: 1px solid #B7D3FC;
+    margin-left: 150px;
+    margin-right: 150px;
+	margin-bottom : 15px;
+    padding: 5px;
+    width: 600px;
+}
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -264,6 +275,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 var caption;
 var resultsGlobal, graphImagesCarousel,allianceResultsGlobal;
+var UbanPercentageResult = null;
 if(electionType != 'Parliament')
 {
 	caption = "Partywise Results In All Districts"
@@ -356,6 +368,10 @@ function callAjax(param,jsObj,url){
 									else if(jsObj.task == "getConstituencyAreaTypeWiseResult") {
 									  buildPartyPerfRulUrbanDataTable('partyPerfResultsDataTable',myResults);
 									}
+									else if(jsObj.task == "getConstituencyAreaTypeWiseOverview")
+									{
+									  buildConstituencyAreaTypeWiseOverviewTable(myResults);
+									}
 									else if(jsObj.task == "TopVotesGained") {
 									  buildTopStoriesTable(myResults,"topVotesGained");
 									}
@@ -373,7 +389,8 @@ function callAjax(param,jsObj,url){
 									}
 									else if(jsObj.task == "getPartiesConstituencyUbanPercentage")
 									{
-										buildUbanPercentageWisePartyDetailsGraph(myResults);
+										buildUbanPercentageWisePartyDetailsGraph(myResults,'percentage');
+										UbanPercentageResult = myResults;
 									}
 
 								}
@@ -790,7 +807,7 @@ function getAllTopStories(maxResult,task)
 }
 function getConstituencyAreaTypeWiseResult()
 {
-   document.getElementById("topVotesGained").innerHTML = "";
+  document.getElementById("topVotesGained").innerHTML = "";
   document.getElementById("topVotesGainedPerc").innerHTML =  "";
   document.getElementById("highestMarginGained").innerHTML = "";
   document.getElementById("lowestMarginGained").innerHTML =  "";
@@ -805,6 +822,73 @@ function getConstituencyAreaTypeWiseResult()
 
 }
 
+function getConstituencyAreaTypeWiseOverview()
+{
+	var jsObj = {
+	            time:new Date().getTime(),
+				electionId:electionId,
+				task:"getConstituencyAreaTypeWiseOverview"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "electionDetailsReportWithGenderAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
+function buildConstituencyAreaTypeWiseOverviewTable(result)
+{
+	var divEle = document.getElementById("constituencyTypeWiseOverviewTable");
+	var str = '';
+	if(result == null || result.length == 0)
+	{
+		divEle.innerHTML = str;
+		document.getElementById("constituencyTypeWiseOverviewGraph").innerHTML = '';
+		return;
+	}
+
+	str += '<table cellspacing="0px" cellpadding="0px"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>';
+
+	if('${electionType}' == 'Assembly')
+		str += '${stateName} ';
+	
+	str +='${electionType} Election Rural/Urban Constituencies Overview </td></tr></table>';
+
+	str +='<table class="searchresultsTable" align="left" style="width:550px"> ';
+
+	str +='	<tr>';
+	str +='		<th style="background-color : #C4DEFF"></th>';
+	str +='		<th style="background-color : #C4DEFF">Constituencies</th>';
+	str +='		<th style="background-color : #C4DEFF">Total Votes</th> ';
+	str +='		<th style="background-color : #C4DEFF">Total Polled Votes</th> ';
+	str +='		<th style="background-color : #C4DEFF">Voting Percentage </th> ';
+	str +='	</tr>';
+
+	for(var i=0;i<result.length;i++)
+	{
+		str +='	<tr>';
+		str +='		<th style="background-color : #C4DEFF">'+result[i].constiName+'</th>';
+		str +='		<th style="background-color : #FFFFFF">'+result[i].totalParticipated+'</th> ';
+		str +='		<th style="background-color : #FFFFFF">'+result[i].totalVoters+'</th> ';
+		str +='		<th style="background-color : #FFFFFF">'+result[i].validVotes+'</th> ';
+		str +='		<th style="background-color : #FFFFFF">'+result[i].votesPercentage+'</th>';
+		str +='	</tr>';
+	}
+	str +='</table>';
+	divEle.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','Area Type');
+	data.addColumn('number','Count');
+	data.addRows(result.length-1);
+
+	for(var j=1; j<result.length; j++)
+	{
+		data.setValue(j-1,0,result[j].constiName);
+		data.setValue(j-1,1,result[j].totalParticipated);
+	}
+	var chart = new google.visualization.PieChart(document.getElementById('constituencyTypeWiseOverviewGraph')); 
+	chart.draw(data,{width:300, height: 170, title:'Constituency Area Type wise % Graph'});
+}
+
 function getPartiesConstituencyUbanPercentage()
 {
 	var jsObj = {
@@ -817,14 +901,18 @@ function getPartiesConstituencyUbanPercentage()
 	callAjax(param,jsObj,url);
 }
 
-function buildUbanPercentageWisePartyDetailsGraph(results)
+function buildUbanPercentageWisePartyDetailsGraph(results,selOption)
 { 
 	if(results != null && results.length >0)
    {
     ruralUrbanChart =true;
 	document.getElementById("partyperformance").style.display = "block";
-
-	var ctitle = 'All Parties Performance By Urban Population Increase Based On Voting Percentage';
+	
+	var ctitle = null;
+	if(selOption == 'percentage')
+		ctitle = 'All Parties Performance By Urban Population Increase Based On Voting Percentage';
+	else if(selOption == 'seats')
+		ctitle = 'All Parties Performance By Urban Population Increase Based On Seats Won';
 
 	var partiesArray = new Array();
 
@@ -853,7 +941,10 @@ function buildUbanPercentageWisePartyDetailsGraph(results)
 		data.setValue(i, 0, resultsVar[i].range);
 
 		for(var j=0; j<resultsVar[i].partyResults.length; j++)
+			if(selOption == 'percentage')
 				data.setValue(i, j+1,resultsVar[i].partyResults[j].votesPercentage);
+			else
+				data.setValue(i, j+1,resultsVar[i].partyResults[j].totalSeatsWon);
 	}
 
 	 var chart = new google.visualization.LineChart(document.getElementById('UbanPercentageWiseGraph'));
@@ -866,6 +957,8 @@ function buildUbanPercentageWisePartyDetailsGraph(results)
 	  document.getElementById("partyperformance").style.display = "block";
 	 else
 	  document.getElementById("partyperformance").style.display = "none";
+
+	 document.getElementById("UbanPercentageWiseGraphSelectionDiv").innerHTML = '';
   }  
 }
 
@@ -3264,18 +3357,41 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 				<DIV id="genderWiseResultsDataTable"></DIV>
 			</TD>
 		</TR>
+
+		<TR>
+			<TD><Table><TR>
+					<TD valign="top" align="center">
+						<DIV id="constituencyTypeWiseOverviewTable"></DIV>
+					</TD>
+					<TD valign="top" align="center">
+						<DIV id="constituencyTypeWiseOverviewGraph" style="margin-top:23px;"></DIV>
+					</TD>
+				</TR></Table>
+			</TD>
+		</TR>
+
         <TR>
 			<TD valign="top" align="center">
 				<DIV id="partyPerfResultsDataTable"></DIV>
 			</TD>
 		</TR>			
 	</TABLE>
+	
 	<c:if test="${hasDeatiledAnalysis}">
-	<table>
-
-	<div id="UbanPercentageWiseGraph">
-		
+	
+	<div id="UbanPercentageWiseGraphSelectionDiv">
+		<table><tr>
+		<td><input type="radio" checked="true" name="urbanPer" value="percentage" onClick="buildUbanPercentageWisePartyDetailsGraph(UbanPercentageResult,'percentage')">
+		<b><font id="visiblePublicText" color="#4B74C6">View Graph by Party Gained Votes Percentage</font></b></td>
+		<td><input type="radio" name="urbanPer" value="seats" onClick="buildUbanPercentageWisePartyDetailsGraph(UbanPercentageResult,'seats')">
+		<b><font id="visiblePublicText" color="#4B74C6">View Graph by Party Gained Seats</font></b></td>
+		<td></td>
+		</tr></table>
 	</div>
+
+	<div id="UbanPercentageWiseGraph"></div>
+
+	<table>
 	  <tr>
 	    <td><b>TP* = Total Participation , CVP* % = Complete Votes Percentage , CPVP* % = Complete Participated Votes Percentage</b></td>
 	  </tr>
@@ -3455,6 +3571,7 @@ getResultsForAnElection(stateID,electionType,year);
 <c:if test="${hasDeatiledAnalysis}">
 getPartyGenderInfo();
 <c:if test="${year >= '2009'}">
+	getConstituencyAreaTypeWiseOverview();
 	getConstituencyAreaTypeWiseResult();
 	getPartiesConstituencyUbanPercentage();
 </c:if>
