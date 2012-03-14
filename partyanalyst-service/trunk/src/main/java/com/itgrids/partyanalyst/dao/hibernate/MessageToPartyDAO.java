@@ -18,7 +18,7 @@ public class MessageToPartyDAO extends GenericDaoHibernate<MessageToParty,Long> 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getMessageToParty(Long partyId, int startIndex,int resultsCount)
 	{
-		Query queryObject = getSession().createQuery("select model.name , model.message ,model.constituency.name, model.sentTime,model.constituency.constituencyId from MessageToParty  model where model.party.partyId =:partyId  and model.isDelete = 'false'and model.isPrivate = 'false' order by model.sentTime desc ");
+		Query queryObject = getSession().createQuery("select model.name , model.message ,model.constituency.name, model.sentTime,model.constituency.constituencyId from MessageToParty  model where model.party.partyId =:partyId  and model.isDelete = 'false'and model.isPrivate = 'false'and model.isApproved = 'true' order by model.sentTime desc ");
 		queryObject.setLong("partyId", partyId);
 		
 		queryObject.setFirstResult(startIndex);
