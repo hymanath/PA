@@ -204,10 +204,10 @@ td.tdStyle{
  }
 </style>
 <script type="text/javascript">
-	
+
 function getParty()
 {
-	var img = document.getElementById("ajaxImg3");
+    var img = document.getElementById("ajaxImg3");
 	img.style.display = 'block';
 	
 	var elecYearElmt = document.getElementById("electionYearField");
@@ -306,6 +306,10 @@ function getAssembly()
 
  		YAHOO.util.Connect.asyncRequest('GET', boothUrl , callback);
 	}
+    function setDefaultImage(img)
+    {
+		img.src = "images/candidates/default.JPG";
+     }
 
 	function buildCrossVotingReport(obj,result)
 	{
@@ -323,11 +327,11 @@ function getAssembly()
 		var parliamentSelectElmt =  document.getElementById("parliamentField");
 		var assemblySelectElmt = document.getElementById("AssemblySelect");
 
-		var partyValue = partyElmt.options[partyElmt.selectedIndex].text;
+        var partyValue = partyElmt.options[partyElmt.selectedIndex].text;
 		var parliamentValue = parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].text;
 		var electionValue = elecYearElmt.options[elecYearElmt.selectedIndex].text;
 		var assemblyValue = assemblySelectElmt.options[assemblySelectElmt.selectedIndex].text;
-
+		
 		if(result.partyPartisipated == false)
 		{	
 			var str='';
@@ -349,7 +353,7 @@ function getAssembly()
 		else
 		{
 			var str='';
-			str+='<div id="headingDiv"><h3><u>Cross Voting Details for '+ partyValue +' Party in '+ electionValue +' ' + assemblyValue +' Assembly Constituency</u></h3></div>';
+			str+='<div id="headingDiv"><h3><u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+partyValueId+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId = '+assemblyValueId+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
 			str+='<div id="candidateDetailsDiv">';
 				str+='<div id="assemblyCandidateDiv">';
 					str+='<table id="assemblyTable" class="detailsTable" style="width:auto;" >';
@@ -358,7 +362,8 @@ function getAssembly()
 					str+='<tr>';
 					str+='<th>Name</th>';
 					str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
-					str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+				    str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.acCandidateData.candidateName+'.jpg"></td>';
+					//str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
 					str+='</tr>';
 					str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
 					
@@ -371,8 +376,8 @@ function getAssembly()
 					str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
 					str+='<tr><th>Name</th>';
 					str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
-					str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
-					str+='</tr>';
+					str+='<td rowspan="3"><img height="90" width="90" onerror="setDefaultImage(this)" src="images/candidates/'+result.pcCandidateData.candidateName+'.jpg"></td>';
+				    str+='</tr>';
 					str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
 
 					str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td></tr>';
