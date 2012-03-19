@@ -102,10 +102,6 @@
 		<pattern>/cncSearchResultsAction*</pattern>
 		<pattern>/searchPartyAnalystAction*</pattern>
 		<pattern>/districtWisePartyPerformanceAction*</pattern>
-		<pattern>/partyPerformanceMain*</pattern>
-		<pattern>/electionComparisonAction*</pattern>
-		<pattern>/partyResultsCriteriaAction*</pattern>
-		<pattern>/partyResultsAction*</pattern>
     </decorator>
 
 </decorators>
