@@ -10,7 +10,7 @@
 <style type="text/css">
 table.CandidateElectionResultsTable{
 	font-family: verdana,arial,sans-serif;
-	font-size:11px;
+	font-size:13px;
 	color:#333333;
 	border-width: 1px;
 	border-color: #666666;
@@ -18,14 +18,14 @@ table.CandidateElectionResultsTable{
 }
 table.CandidateElectionResultsTable th {
 	border-width: 1px;
-	padding: 8px;
+	padding: 11px;
 	border-style: solid;
 	border-color: #666666;
 	background-color: #94A9C8;
 }
 table.CandidateElectionResultsTable td {
 	border-width: 1px;
-	padding: 8px;
+	padding: 11px;
 	border-style: solid;
 	border-color: #666666;
 	background-color: #ffffff;
@@ -345,8 +345,17 @@ var yearsPopulation={
 </script>
 </head>
 <body onload = "refresh()">
+<div id="electionComparisionMainDiv" style="margin-left:auto;margin-right:auto;float:none;height:500px;width:400px;">
+
 <div style="margin-top:40px;">
 	<form name="electionComparisionForm">
+	<table style="margin-top: -15px;">
+			<tr>
+	 			<td align="left">
+	 				<div id="errorMessage"></div>
+	 			</td>
+	 		</tr>
+		</table>
 		<table class="CandidateElectionResultsTable" width="400px;" border="1">
 			<tr>
 				<th colspan="2">
@@ -403,14 +412,12 @@ var yearsPopulation={
 				</th>
 	 		</tr>	 		
 		</table>
-		<table>
-			<tr>
-	 			<td align="left">
-	 				<div id="errorMessage"></div>
-	 			</td>
-	 		</tr>
-		</table>
+		
 	</form>
 </div>
+
+</div>
+
 </body>
 </html>
+
