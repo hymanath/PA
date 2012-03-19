@@ -2362,8 +2362,6 @@ var message_Obj = {
 	   
 };
 
-
-
 displayProfile();
 partyInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
@@ -2371,6 +2369,10 @@ getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
 message_Obj.initialize();
+
+<s:if test="contentId != null">
+	getContent();
+</s:if>
 </script>
 
 </body>
