@@ -18,46 +18,47 @@
 <script src="js/json/json-min.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
-
 <style type="text/css">
-	table.PartyResultsReportInputSelection{
-		font-size:11px;
-		color:#333333;
-		border-width: 1px;
-		border-color: #666666;
-		border-collapse: collapse;
-	}
-	table.PartyResultsReportInputSelection th {
-		border-width: 1px;
-		padding: 8px;
-		border-style: solid;
-		border-color: #666666;
-		background-color: #6380BA;
-		color:#FFFFFF;
-	}
-	table.PartyResultsReportInputSelection td {
-		border-width: 1px;
-		padding: 8px;
-		border-style: solid;
-		border-color: #666666;
-		background-color: #ffffff;
-	}
-	#resultsPageErrorDiv
-	{
-		color:red;
-		font-weight:bold;
-		padding-top:12px;
-	}
-	.selectWidth
-	{
-		width:70px;
-	}
-	#partyResultsMainDiv
-		{
-			text-align:left;
-			margin-left: 50px;
-			font-size: 12px; 		 
-		}
+.PartyResultsReportInputSelection
+{
+	 border-collapse: collapse;
+    border-width: 1px;
+    font-size: 13px;
+ }
+table.PartyResultsReportInputSelection th {
+    background-color: #6380BA;
+    border-color: #666666;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    padding: 8px;
+}
+table.PartyResultsReportInputSelection td {
+    background-color: #FFFFFF;
+    border-color: #666666;
+    border-style: solid;
+    border-width: 1px;
+    padding: 8px;
+}
+.buttonStyle {
+
+  background: none repeat scroll 0 0 #6380BA;
+    border: medium none;
+    border-radius: 4px 6px 4px 6px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    padding:3px;
+    margin-top: 22px;
+    width: 80px;
+}
+table.PartyResultsReportInputSelection {
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
 </style>
 <script type="text/javascript">
   var ELECTIONTYPE;
@@ -118,9 +119,9 @@
 			if(ELECTIONTYPE=="2" || ELECTIONTYPE=="3" || ELECTIONTYPE=="4")
 			{				
 				var str="";
-				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectOptions(this.value, ELECTIONTYPE)"/>State';
-				str+='<input type="radio" name="reportLevel" value="District" onclick="displaySelectOptions(this.value, ELECTIONTYPE)"/>District';
-				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectOptions(this.value, ELECTIONTYPE)"/>Constituency';
+				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectOptions(this.value, ELECTIONTYPE)" style="margin:5px;"/>State';
+				str+='<input type="radio" name="reportLevel" value="District" onclick="displaySelectOptions(this.value, ELECTIONTYPE)" style="margin:5px;"/>District';
+				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectOptions(this.value, ELECTIONTYPE)" style="margin:5px;"/>Constituency';
 				radioElmt.innerHTML=str;
 			}else if(ELECTIONTYPE=="5")
 			{
@@ -544,7 +545,7 @@
 			if(val!="Select Party"){		
 				row4DivElmt.style.display="block";
 				buttonDivElmt.style.display="block";			
-				bstr+='<input type="submit" name="submitButton" onclick="return validateData()" value="Submit"/>';		
+				bstr+='<input type="submit" name="submitButton" onclick="return validateData()" value="Submit" class="buttonStyle"/>';		
 				buttonDivElmt.innerHTML=bstr;			
 			}else{
 				row4DivElmt.style.display="none";
@@ -557,12 +558,13 @@
 		}
 		window.history.forward(1);
   </script>
-   </HEAD>
-	
-<BODY align="center" style="font-family: verdana,arial,sans-serif;"><br>
-<H3 style="color:#444444;"><U>Party Results Report</U></H3>
+</head>
+<body>
+<center>
+<div id="partyResultCriteriaMainDiv" style="height: 500px;">
+<H3 style="margin-top: 50px; font-weight: bold; color: #FFFFFF; width: 300px; border-radius: 5px 5px 5px 5px; background:#9966CC; padding: 3px 0px; text-align: center;">Party Results Report</H3>
 <div id="resultsPageErrorDiv"></div>
-<div id="partyResultsMainDiv">
+<div id="partyResultsMainDiv" style="margin-top: 30px;">
 		<table class="errorDIV">
 			<tr>
 				<td colspan="2">
@@ -580,7 +582,7 @@
 <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
 <input type="hidden" id="selectedLocationName" name="selectedLocationName">
 
-<table align="center" class="PartyResultsReportInputSelection" width="830px" border="1">
+<table align="center" class="PartyResultsReportInputSelection" width="830px" border="1" style="background:#FFFFFF;text-align: left;"">
  
   <tr>
  <th width="150px">
@@ -590,10 +592,10 @@
  </th>
  <td width="550px" colspan="2">
 	<div  class="tdDataDiv">
-		<input type="radio" name="electionType" value="2" onclick="getReportLevel(this.value);setElectionType('Assembly');"/>Assembly
-		<input type="radio" name="electionType" value="1" onclick="getReportLevel(this.value);setElectionType('Parliament');"/>Parliament	
-		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
-		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
+		<input type="radio" name="electionType" value="2" onclick="getReportLevel(this.value);setElectionType('Assembly');" style="margin:5px;"/>Assembly
+		<input type="radio" name="electionType" value="1" onclick="getReportLevel(this.value);setElectionType('Parliament');" style=" margin:5px;"/>Parliament	
+		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('ZPTC');" style=" margin: 5px;"/>ZPTC	
+		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('MPTC');" style=" margin: 5px;"/>MPTC	
 	</div>
  </td>
  </tr>
@@ -608,7 +610,7 @@
  </tr>
 
  <tr id="row2" style="display:none;">
-	<th width="150px">
+	<th width="173px">
 		<div class="tdLabelDiv" id="selectLabel"></div>
 	</th>
 	<td width="150px">
@@ -668,5 +670,8 @@
 	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 </div>
 
-</BODY>
-</HTML>
+</div>
+</center>
+
+</body>
+</html>

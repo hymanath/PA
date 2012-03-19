@@ -14,6 +14,32 @@
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	 <style type="text/css">
+
+		table.partyPerformanceCriteriaTable {
+			border-collapse: collapse;
+			color: #333333;
+			font-family: verdana,arial,sans-serif;
+			font-size: 13px;
+		}
+
+		table.partyPerformanceCriteriaTable th {
+			background-color: #CFDCE3;
+			border-color: #666666;
+			border-style: solid;
+			border-width: 1px;
+			padding: 11px;
+		}
+
+		table.partyPerformanceCriteriaTable td {
+			background-color: #FFFFFF;
+			border-color: #666666;
+			border-style: solid;
+			border-width: 1px;
+			padding: 11px;
+		}
+
+    </style>
 	<script type="text/javascript">
 	var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -419,74 +445,76 @@
 		return flag;
 	}
 	window.history.forward(1);
-	</script>
-	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
-
+  </script>
 </head> 
 <body>
-<div id="errorsDiv" style="font-weight:bold;color:red;font-size:12px;margin:10px;"></div>
-<s:form name="performanceReport" action="partyPerformanceReport" onsubmit="return validateClientSide()" method="post">
-<s:hidden name="country" value="1" id="country"/>
-<table class="partyPerformanceCriteriaTable">
-	<tr>
-		<th colspan="2">
-			<span style="margin: 0px; text-align: center;">Party Performance</span>
-		</th>
-	</tr>
-	<tr>
-		<th align="left"><%=electionType%></th>
-		<td>
-			<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
-			<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
-		</td>
-	</tr>
+  
+   <div id="partyPerformanceMainDiv" style="margin-left: auto; margin-right: auto; float: none; height: 500px; clear: both; width: 360px;">
+		<div id="errorsDiv" style="font-weight:bold;color:red;font-size:12px;margin:10px;">
+		</div>
+		<s:form name="performanceReport" action="partyPerformanceReport" onsubmit="return validateClientSide()" method="post">
+		<s:hidden name="country" value="1" id="country"/>
+			<table class="partyPerformanceCriteriaTable">
+				<tr>
+					<th colspan="2">
+						<span style="margin: 0px; text-align: center;">Party Performance</span>
+					</th>
+				</tr>
+				<tr>
+					<th align="left"><%=electionType%></th>
+					<td>
+						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
+					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
+					</td>
+				</tr>
+				<tr>
+					<th align="left"><%=reportLevel%></th>
+					<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
+			</tr>	
+			<tr>
+				<th align="left"><%=state%></th>
+				<td>
+					<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>
+					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th align="left"><%=party%></th>
+				<td>
+					<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
+					<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" />
+					<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
+				</td>
+			</tr>
 
-	<tr>
-		<th align="left"><%=reportLevel%></th>
-		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
-	</tr>	
-	<tr>
-		<th align="left"><%=state%></th>
-		<td>
-			<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>
-			<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
-		</td>
-	</tr>
-	
-	<tr>
-		<th align="left"><%=party%></th>
-		<td>
-			<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
-			<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" />
-			<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
-		</td>
-	</tr>
+			<tr>
+				<th align="left"><%=electionYear%></th>
+				<td><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></td>
+			</tr>
+			
+			<!--<tr>
+				<th align="left"><%=reportLevel%></th>
+				<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
+			</tr>-->	
+			<tr>		
+				<th align="left"><%=dist%></th>
+				<td>
+					<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name" cssStyle="width:120px;"/>	
+				</td>
+			</tr>	
+			<tr id="allianceRow">
+				<th align="left"><%=alliances%></th>
+				<td>
+					<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox><%=inclAlliances%>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
+			</tr>
+		</table>
+   </s:form>
+ </div>
 
-	<tr>
-		<th align="left"><%=electionYear%></th>
-		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></td>
-	</tr>
-	
-	<!--<tr>
-		<th align="left"><%=reportLevel%></th>
-		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
-	</tr>-->	
-	<tr>		
-		<th align="left"><%=dist%></th>
-		<td>
-			<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name" cssStyle="width:120px;"/>	
-		</td>
-	</tr>	
-	<tr id="allianceRow">
-		<th align="left"><%=alliances%></th>
-		<td>
-			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox><%=inclAlliances%>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
-	</tr>
-</table>
-</s:form>
 </body>
-</html> 
+</html>
