@@ -12,7 +12,7 @@
 </select>
 <div id="alertMessage_district"></div>
 
-<div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPage()">view results</a></div>
+<div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPageFrmSpeclPge()">view results</a></div>
 </div>
 <!-- Districts -->
 <!-- Constituency -->
@@ -68,7 +68,7 @@
 	<option value="39390">Velim</option>
 </select>
 	<div id="alertMessage"></div>
-	<div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPage()">view results</a></div>
+	<div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPageFrmSpeclPge()">view results</a></div>
 
 	</div>
 	<!-- Constituency -->
