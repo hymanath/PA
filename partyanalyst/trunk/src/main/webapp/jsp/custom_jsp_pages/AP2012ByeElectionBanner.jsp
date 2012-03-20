@@ -147,7 +147,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=1150">Kadiyam Srihari</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; <a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=68187">Somireddy Chandramohan Reddy</a></span><br><br>
+<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; <a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=2813">Somireddy Chandramohan Reddy</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
 </td>
 <td valign=top style="font-size: 13px;padding-left:8px;">
@@ -236,7 +236,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
-    <td> <a href="candidateElectionResultsAction.action?candidateId=68187">Somireddy Chandramohan Reddy</a></td>
+    <td> <a href="candidateElectionResultsAction.action?candidateId=2813">Somireddy Chandramohan Reddy</a></td>
     <td>&nbsp;</td>
     <td><a href="candidateElectionResultsAction.action?candidateId=2779">Polavaram Srinivasa Reddy</a></td>
     <td><a href="candidateElectionResultsAction.action?candidateId=2778">N.Prasanna Kumar Reddy</a></td>
