@@ -3141,6 +3141,26 @@
            		<param name="root">candidateCommentsVO</param>
         	</result>	
 		</action>
+		
+		<action name="ministersPageAction" class="ministersPageAction">
+			<result name="success">/jsp/ministerPage.jsp</result>
+				<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getMinisterDataAvailableYearsForAState" class="ministersPageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">years</param>
+			</result>
+		</action>
+		
+		<action name="getElectionYearsForParliamentAction" class="ministersPageAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">years</param>
+			</result>
+		</action>
+		
+		
+		
 				
 	</package>
 </struts>      
