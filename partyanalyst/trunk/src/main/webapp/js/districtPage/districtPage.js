@@ -243,7 +243,12 @@ function handleCancel()
 
 function openAddNewProblemWindow()
 {	
-	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+"&districtName="+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
+function openAddNewProblemWindowNew()
+{	
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+"&districtName="+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
 }
 
@@ -259,7 +264,7 @@ function buildProblemPostingWindowForDistrict()
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	//str+='<div>Post your district problem and bring it to the all people notice.</div>';	
 	if(userLoginStatus=="true"){		
-		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" style="-moz-border-radius:3px;" onclick="openAddNewProblemWindow()" class="post-problem-but">POST</a></div>';	
+		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" style="-moz-border-radius:3px;" onclick="openAddNewProblemWindowNew()" class="post-problem-but">POST</a></div>';	
 	}
 	else{
 		str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'" class="post-problem-but">POST</a></div>';	
