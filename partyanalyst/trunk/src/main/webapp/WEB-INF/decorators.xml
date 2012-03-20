@@ -107,6 +107,7 @@
 		<pattern>/partyResultsCriteriaAction*</pattern>
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
+		<pattern>/ministersPageAction*</pattern>
     </decorator>
 
 </decorators>
