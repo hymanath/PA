@@ -12,8 +12,10 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -146,4 +148,10 @@ public interface ICandidateDetailsService {
 	 public String getCandidateGallaryVisibility(Long gallaryId);
 	 	 
 	 public ResultStatus adminModifiedMessages(List<CandidateCommentsVO> VO,String actionType);
+	 
+	 public List<ElectionGoverningBodyVO> getElectionDetailsForMinister(Long electionId);
+	    
+	 public List<CandidateMinistriesVO> getAllMinistersDetailsForAnElection(Long electionId);
+	 
+	 public List<SelectOptionVO> getMinistryYearsForAState(String electionType, Long stateId);
 }
