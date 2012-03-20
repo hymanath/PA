@@ -576,19 +576,21 @@ function openPartyPerformanceWindow(electionTypeId)
 </SCRIPT>
 
 </HEAD>
+
 <BODY>
-	<DIV id="page_layout_main" class="yui-skin-sam"></DIV>
-	<DIV id="page_layout_right">
+<center>
+	<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>
+	<DIV id="page_layout_right" style="background:#ffffff;">
 		<DIV id="sideHeader"></DIV>
 		<DIV id="toolsDiv"></DIV>
 		
 	</DIV>
-	<DIV id="page_layout_center">
+	<DIV id="page_layout_center" style="background:#ffffff;">
 		<DIV id="pageHeading" >
 			<TABLE cellspacing="0" cellpadding="0" border="0" width="90%">
 				<TR>
-					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
-					<TD valign="top"><DIV class="mainHeading">Election Results Analysis Report</DIV></TD>
+					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-left:-1px;"/></TD>
+					<TD valign="top"><DIV class="mainHeading" style="width:674px;margin-left:-1px;">Election Results Analysis Report</DIV></TD>
 					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
 				</TR>
 			</TABLE>
@@ -637,9 +639,11 @@ function openPartyPerformanceWindow(electionTypeId)
 		<DIV id="wonPosAnalisisDetails" class="analysisDetails">		
 		</DIV>						
 		</DIV>			
-	</DIV>	
+	</DIV>
+	</center>
 <SCRIPT>
 initializePage();
 </SCRIPT>
 </BODY>
+
 </HTML>
