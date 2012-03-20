@@ -180,4 +180,8 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<Object[]> getStateDetailsForPartialElec();
 	
 	public List<Object[]> getNextElectionIdAndYear(Long electionId);
+	
+	public List<Election> getElectionDetails(Long electionId);
+	
+		
 }
