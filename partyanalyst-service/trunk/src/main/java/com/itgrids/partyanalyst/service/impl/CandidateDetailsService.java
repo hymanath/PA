@@ -36,6 +36,8 @@ import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
@@ -56,10 +58,13 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -73,6 +78,7 @@ import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.Gallary;
@@ -129,10 +135,30 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyGalleryDAO partyGalleryDAO;	
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
+	private IElectionDAO electionDAO;
+	
+	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 	
 	
 	
 	
+	public IElectionGoverningBodyDAO getElectionGoverningBodyDAO() {
+		return electionGoverningBodyDAO;
+	}
+
+	public void setElectionGoverningBodyDAO(
+			IElectionGoverningBodyDAO electionGoverningBodyDAO) {
+		this.electionGoverningBodyDAO = electionGoverningBodyDAO;
+	}
+
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
 	public IMessageToPartyDAO getMessageToPartyDAO() {
 		return messageToPartyDAO;
 	}
@@ -2555,6 +2581,138 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return resultStatus;
 	  }
 	 
+    public List<ElectionGoverningBodyVO> getElectionDetailsForMinister(Long electionId)
+    {
+    	log.debug("Entered into getElectionDetailsForMinister() of candidateDetailService");
+    	List<ElectionGoverningBodyVO> electionGoverningBodyVO = null;
+    	try
+    	{
+    		List<Election> electionDetails = electionDAO.getElectionDetails(electionId);
+    		if(electionDetails != null && electionDetails.size() > 0)
+    		{
+    		electionGoverningBodyVO = new ArrayList<ElectionGoverningBodyVO>(0);
+    		ElectionGoverningBodyVO governingBodyVO = null;
+    		for(Election params : electionDetails)
+    		{
+    			governingBodyVO = new ElectionGoverningBodyVO();
+    			governingBodyVO.setElectionYear(params.getElectionYear());
+    			if(params.getElectionScope().getState() != null)
+    			governingBodyVO.setStateName(params.getElectionScope().getState().getStateName());
+    			governingBodyVO.setElectionType(params.getElectionScope().getElectionType().getElectionType());
+    			electionGoverningBodyVO.add(governingBodyVO);
+    			
+    		}
+    		}
+    		return electionGoverningBodyVO;
+    	}
+    	
+    	catch(Exception e)
+    	{
+    		log.error("Exception occured in getElectionDetailsForMinister()");
+    		return electionGoverningBodyVO;
+    	}
+    }
+    
+    public List<CandidateMinistriesVO> getAllMinistersDetailsForAnElection(Long electionId)
+    {
+    	log.debug("Entered in getAllMinistersDetails() method of CandidateDetailService");
+    	List<CandidateMinistriesVO> resultList = null;
+    	try
+    	{
+	    	List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllMinistersDetails(electionId);
+	    	if(list !=null && list.size() > 0)
+	    	{
+	    		resultList = new ArrayList<CandidateMinistriesVO>(0);
+	    	
+	    		CandidateMinistriesVO candidateMinistriesVO = null;
+		    	for(ElectionGoverningBody params : list)
+		    	{
+		    		candidateMinistriesVO = getCandidateMinistriesVO(resultList,params.getCandidate().getCandidateId());
+		    		boolean isNew = false;
+		    		
+		    		if(candidateMinistriesVO == null)
+		    		{
+		    			candidateMinistriesVO = new CandidateMinistriesVO();
+		    			candidateMinistriesVO.setCandidateId(params.getCandidate().getCandidateId());
+		    			candidateMinistriesVO.setCandidateName(params.getCandidate().getLastname());
+		    			candidateMinistriesVO.setPartyId(params.getParty().getPartyId());
+		    			candidateMinistriesVO.setPartyName(params.getParty().getShortName());
+		    			candidateMinistriesVO.setMinistries(new ArrayList<ElectionGoverningBodyVO>());
+		    			isNew = true;
+		    		}
+		    		
+		    		ElectionGoverningBodyVO governingBodyVO = new ElectionGoverningBodyVO();
+	    			governingBodyVO.setMinistry(params.getPositionScope().getElectionGoverningBodyPosition().getGoverningBodyPosition());
+	    			
+	    			if(!params.getPositionScope().getMinisterType().getMinisterType().equalsIgnoreCase(IConstants.CABINET_MINISTER))
+	    				governingBodyVO.setMinistry(governingBodyVO.getMinistry()+"(" +
+	    						params.getPositionScope().getMinisterType().getMinisterType()+")");
+	    			
+	    			governingBodyVO.setFromDate(params.getFromDate());
+	    			governingBodyVO.setToDate(params.getToDate());
+	    			
+	    			candidateMinistriesVO.getMinistries().add(governingBodyVO);
+	    			candidateMinistriesVO.setNoOfMinistries(candidateMinistriesVO.getMinistries().size());
+	    			
+		    		if(isNew)
+		    			resultList.add(candidateMinistriesVO);
+		    	}
+	    	}
+    	return resultList;
+    	}
+    	
+    	catch(Exception e)
+    	{
+    		log.error("Exception occured in getAllMinistersDetails() of CandidateDetailsService");
+    		return resultList;
+    	}
+    }
+    
+    public CandidateMinistriesVO getCandidateMinistriesVO(List<CandidateMinistriesVO> list,Long candidateId)
+    {
+    	try{
+    		if(list == null || list.size() == 0)
+    			return null;
+			for(CandidateMinistriesVO candidateMinistriesVO : list)
+				if(candidateMinistriesVO.getCandidateId().longValue() == candidateId.longValue())
+					return candidateMinistriesVO;
+			return null;
+    	}catch (Exception e) {
+			log.error("Exception Occured in getMinistryVO method, Exception is - "+e);
+			return null;
+		}
+    }
+    
+    public List<SelectOptionVO> getMinistryYearsForAState(String electionType, Long stateId)
+    {
+    	try{
+    		List<SelectOptionVO> years = null;
+    		List<Object[]> list = null;
+    		
+    		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+    		{
+    			list = electionGoverningBodyDAO.getMinistryYearsForAssembly(stateId);
+    		}
+    		else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+    		{
+    			list = electionGoverningBodyDAO.getMinistryYearsForParliament();
+    		}
+    		
+    		if(list != null && list.size() > 0)
+    		{
+    			years = new ArrayList<SelectOptionVO>(0);
+    			
+    			for(Object[] params : list)
+    			{
+    				years.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+    			}
+    		}
+    		return years;
+    	}catch (Exception e) {
+    		log.error("Exception occured in getMinistryYearsForAState() Method, Exception is - "+e);
+    		return null;
+    	}
+    }
 }
 	
  
