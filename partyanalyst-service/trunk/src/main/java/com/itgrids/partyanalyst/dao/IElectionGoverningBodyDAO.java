@@ -19,4 +19,11 @@ public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningB
 	
 	public List<ElectionGoverningBody> getAllCandidateDetails(Long candidateId);
 	
+	public List<ElectionGoverningBody> getAllMinistersDetails(Long electionId);
+	
+	public List<Object[]> getMinistryYearsForAssembly(Long stateId);
+	
+	public List<Object[]> getMinistryYearsForParliament();
+	
+	
 }
