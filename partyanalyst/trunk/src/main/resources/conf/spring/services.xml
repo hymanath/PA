@@ -310,6 +310,9 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
 		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
+		
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
