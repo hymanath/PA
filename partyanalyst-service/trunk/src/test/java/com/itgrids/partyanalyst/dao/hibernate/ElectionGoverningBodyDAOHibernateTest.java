@@ -34,7 +34,8 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println("id: "+states[0].toString()+"  name: "+states[1].toString());
 		}
-	}
+	}*/
+/*
 	public void testGetAllYearsAndElecIds(){
 		List<Object[]> list = electionGoverningBodyDAO.getAllYearsAndElecIdsForAssembly(27l);
 		for(Object[] years:list)
@@ -50,7 +51,7 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetAllCandidateDetails()
+	/*public void testgetAllCandidateDetails()
 	{
 		
 		List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllCandidateDetails(245443l);
@@ -63,8 +64,59 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params.getPositionScope().getMinisterType().getMinisterType());
 			System.out.println(params.getElection().getElectionYear());
 			System.out.println(params.getElection().getElectionScope().getState().getStateName());
+			System.out.println(params.getCandidate().getLastname());
+			System.out.println(params.getCandidate().getCandidateId());
+			System.out.println(params.getParty().getShortName());
+			System.out.println(params.getParty().getPartyFlag());
+			System.out.println(params.getParty().getPartyId());
+			
 		}
 		
 		System.out.println(list.size());
+	}*/
+	
+	
+	
+	/*public void testgetAllMinistersDetails()
+	{
+		List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllMinistersDetails(158l);
+		for(ElectionGoverningBody params: list)
+		{
+			System.out.println(params.getCandidate().getCandidateId());
+			System.out.println(params.getCandidate().getLastname().toString());
+			System.out.println(params.getParty().getPartyId());
+			System.out.println(params.getParty().getShortName());
+			System.out.println(params.getPositionScope().getElectionGoverningBodyPosition().getGoverningBodyPosition());
+			System.out.println(params.getFromDate());
+			System.out.println(params.getToDate());
+			
+		}
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetMinistryYearsForParliament()
+	{
+		List<Object[]> list = electionGoverningBodyDAO.getMinistryYearsForParliament();
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"---"+params[1]);
+		}
+		
+	}
+	
+	public void testGetMinistryYearsForAssembly()
+	{
+		List<Object[]> list = electionGoverningBodyDAO.getMinistryYearsForAssembly(27l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0]+"---"+params[1]);
+		}
+		
 	}
 }
