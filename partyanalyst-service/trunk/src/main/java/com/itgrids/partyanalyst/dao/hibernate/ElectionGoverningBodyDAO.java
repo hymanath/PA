@@ -29,18 +29,21 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 				" model.election.electionScope.electionType.electionType='Parliament') and model.candidate.candidateId = ? order by model.fromDate desc ",candidateId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllStatesForMinisters()
 	{
 		
 		return getHibernateTemplate().find("select distinct model.election.electionScope.state.stateId,model.election.electionScope.state.stateName " +
 				"  from ElectionGoverningBody model where model.election.electionScope.electionType.electionType = ? order by model.election.electionScope.state.stateName","Assembly");
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllYearsAndElecIdsForAssembly(Long stateId)
 	{
 		
 		return getHibernateTemplate().find("select distinct model.election.electionId,model.election.electionYear from ElectionGoverningBody model " +
 				"   where model.election.electionScope.state.stateId = ? order by model.election.electionYear ",stateId);
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllYearsAndElecIdsForParliament()
 	{
 		
@@ -49,4 +52,23 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<ElectionGoverningBody> getAllMinistersDetails(Long electionId)
+	{
+		return getHibernateTemplate().find("select model from ElectionGoverningBody model where model.election.electionId = ?",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMinistryYearsForAssembly(Long stateId)
+	{
+		return getHibernateTemplate().find("select distinct(model.election.electionId),model.election.electionYear from ElectionGoverningBody model where " +
+				" model.election.electionScope.electionType.electionType = 'Assembly' and model.election.electionScope.state.stateId = ?",stateId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMinistryYearsForParliament()
+	{
+		return getHibernateTemplate().find("select distinct(model.election.electionId),model.election.electionYear from ElectionGoverningBody model where " +
+				" model.election.electionScope.electionType.electionType = 'Parliament'");
+	}
 }
