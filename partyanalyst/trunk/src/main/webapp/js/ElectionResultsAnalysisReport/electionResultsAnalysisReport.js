@@ -146,9 +146,9 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		headStr+='';
 		headStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		headStr+='<TR>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		headStr+='<TD><H3>'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="margin-left:2px;"></TD>';
+		headStr+='<TD><H3 id="headingDiv" style="margin-left:-1px;width:677px;">'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-left:0px;"></TD>';
 		headStr+='</TR>';
 		headStr+='</TABLE>';
 		
@@ -159,7 +159,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 		headStr+='<TR>';
 		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
 		headStr+='<TD><H3>'+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
-		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-left:1px;"></TD>';
 		headStr+='</TR>';
 		headStr+='</TABLE>';
 	}	
@@ -201,11 +201,11 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 	tablerDataStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 	tablerDataStr+='<TR>';
 	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-	tablerDataStr+='<TD><H3>Analysis Details</H3></TD>';
+	tablerDataStr+='<TD><H3 id="headingDiv" style="width:675px;">Analysis Details</H3></TD>';
 	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 	tablerDataStr+='</TR>';
 	tablerDataStr+='</TABLE>';	
-	tablerDataStr+='<TABLE  cellpadding="0" cellspacing="0" class="analysisDetailsTable">';
+	tablerDataStr+='<TABLE style="width:679px;" cellpadding="0" cellspacing="0" class="analysisDetailsTable" >';
 	tablerDataStr+='<TR>';
 	tablerDataStr+='<TH class="head">Party</TH>';
 	tablerDataStr+='<TH class="head">Participated</TH>';
@@ -512,13 +512,13 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='	<TABLE border="0" cellpadding="0" cellspacing="0">';
 	contentStr+='	<TR>';
 	contentStr+='		<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
-	contentStr+='		<TD><DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV></TD>';
+	contentStr+='		<TD><DIV class="wonLostPosHeading" style="width:663px;">Analysis in Party Lost Positions</DIV></TD>';
 	contentStr+='		<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
 	contentStr+='	</TR>';
 	contentStr+='	</TABLE>';	
 	contentStr+='</div>';
 
-	contentStr+='<div id="lostPositionAnalysisBody" class="positionAnalysisBodyClass">';
+	contentStr+='<div id="lostPositionAnalysisBody" class="positionAnalysisBodyClass" style="margin-left:20px;">';
 		contentStr+='<table width="100%" style="width:50%">';
 		contentStr+='<tr>';
 		contentStr+='<td style="vertical-align:top;">';
@@ -527,7 +527,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 			contentStr+='<TR>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 style="width:270px;">Analysis Data </H3></TD>';
+			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Analysis Data </H3></TD>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';	
@@ -559,7 +559,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 			contentStr+='<TR>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
+			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';
@@ -594,7 +594,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 			contentStr+='<TR>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='<TD><H3 style="width:270px;">Reasons Analysis</H3></TD>';
+			contentStr+='<TD><H3 id="headingDiv" style="width:270px;">Reasons Analysis</H3></TD>';
 			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';	
@@ -627,7 +627,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='<TR>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='<TD><div id="votesMarginLost_Head"><H3 style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
+		contentStr+='<TD><div id="votesMarginLost_Head"><H3 id="headingDiv" style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
@@ -662,13 +662,13 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='<TR>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
-		contentStr+='<TD><DIV class="wonLostPosHeading">Analysis in Party Won Positions</DIV></TD>';
+		contentStr+='<TD><DIV class="wonLostPosHeading" style="width:663px;">Analysis in Party Won Positions</DIV></TD>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
 	contentStr+='</div>';
 
-	contentStr+='<div id="wonPositionAnalysisBody">';
+	contentStr+='<div id="wonPositionAnalysisBody" style="margin-left:-7px;">';
 		contentStr+='<table>';
 		contentStr+='<tr>';
 		contentStr+='	<td style="vertical-align:top;">';
@@ -677,7 +677,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='			<TR>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><H3 style="width:270px;">Analysis Data </H3></TD>';
+		contentStr+='			<TD><H3 id="headingDiv" style="width:270px;">Analysis Data </H3></TD>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';	
@@ -710,7 +710,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='			<TR>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><H3 style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
+		contentStr+='			<TD><H3 id="headingDiv" style="width:270px;">Constituencies with Multiple Reasons</H3></TD>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';	
@@ -746,7 +746,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 			contentStr+='				<TABLE border="0" cellpadding="0" cellspacing="0">';
 			contentStr+='				<TR>';
 			contentStr+='				<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-			contentStr+='				<TD><H3 style="width:270px;">Reasons Analysis</H3></TD>';
+			contentStr+='				<TD><H3 id="headingDiv" style="width:270px;">Reasons Analysis</H3></TD>';
 			contentStr+='				<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			contentStr+='				</TR>';
 			contentStr+='				</TABLE>';	
@@ -780,7 +780,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='			<TR>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/header_left.gif"></TD>';
-		contentStr+='			<TD><div id="votesMarginWon_Head"><H3 style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
+		contentStr+='			<TD><div id="votesMarginWon_Head"><H3 id="headingDiv" style="width:270px;">Analysis Based On Votes Margin</H3></div></TD>';
 		contentStr+='			<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';
