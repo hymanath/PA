@@ -102,7 +102,7 @@
 	margin-top:10px;
 	margin-bottom:10px;	
 }
-H3
+#headingDiv
 {
 	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
 	color:#4B74C6;
@@ -194,7 +194,7 @@ H3
 .wonLostPosTable TD
 {
 	color:#4A515A;
-	padding:4px;
+	padding:2px;
 }
 
 .wonLostPosTable a
@@ -270,13 +270,13 @@ margin:1px;
 
 .votesMarginTable th
 {
-	padding:2px;	
+	padding:1px;	
 	color:#4A515A;
 }
 
 .votesMarginTable td
 {
-	padding:5px;	
+	padding:3px;	
 	color:#4A515A;
 	text-align:center;
 }
