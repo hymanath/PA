@@ -868,5 +868,12 @@
 	<bean id="districtWisePartyPerformanceAction" class="com.itgrids.partyanalyst.web.action.DistrictWisePartyPerformanceAction" singleton="false">
 	        <property name="entitlementsHelper" ref="entitlementsHelper"/>
 	</bean>	
+	
+	<bean id="ministersPageAction" class="com.itgrids.partyanalyst.web.action.MinistersPageAction" singleton="false">
+	<property name="candidateDetailsService" ref="candidateDetailsService" />
+	
+		<property name="staticDataService" ref="staticDataService" />
+
+	</bean>
 				
 </beans>	
