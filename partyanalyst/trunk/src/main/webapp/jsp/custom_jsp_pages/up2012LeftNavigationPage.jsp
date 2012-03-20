@@ -81,7 +81,7 @@
 </select>
 <div id="alertMessage_district"></div>
 
-<div class="view-results"><a onclick="navigateToDistrictPage()" href="javascript:{}">view results</a></div>
+<div class="view-results"><a onclick="navigateToDistrictPageFrmSpeclPge()" href="javascript:{}">view results</a></div>
 
 </div>
 <div class="selectHeading">
@@ -520,5 +520,5 @@
 <div id="alertMessage"></div>
 
 <div class="view-results">
-<a onclick="navigateToConstituencyPage()" href="javascript:{}">view results</a></div>
+<a onclick="navigateToConstituencyPageFrmSpeclPge()" href="javascript:{}">view results</a></div>
 </div>
