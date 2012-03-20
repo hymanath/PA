@@ -294,7 +294,7 @@ CPM</a>
    </select>
    <div id="alertMessage_district"></div>
 
-	<div class="view-results"><a onclick="navigateToDistrictPage()" href="javascript:{}">view results</a></div>
+	<div class="view-results"><a onclick="navigateToDistrictPageFrmSpeclPge()" href="javascript:{}">view results</a></div>
 
 
 </div>
@@ -309,7 +309,7 @@ CPM</a>
  </select>
 <div id="alertMessage"></div>
 
-<div class="view-results"><a onclick="navigateToConstituencyPage()" href="javascript:{}">view constituency</a></div>
+<div class="view-results"><a onclick="navigateToConstituencyPageFrmSpeclPge()" href="javascript:{}">view constituency</a></div>
 </div>
 </td>
 </tr>
