@@ -369,7 +369,7 @@ function getTotalProfile()
 
 		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	function navigateToConstituencyPage()
+	function navigateToConstituencyPageFrmSpeclPge()
 {
  var constSelectEl = document.getElementById("selectedConstituencyInSpecialPage");
  var alertEl = document.getElementById("alertMessage");
@@ -383,7 +383,7 @@ function getTotalProfile()
  window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
 
 } 
-function navigateToDistrictPage()
+function navigateToDistrictPageFrmSpeclPge()
 {
  var distSelectEl = document.getElementById("selectedDistrictInSpecialPage");
  var alertEl = document.getElementById("alertMessage_district");
