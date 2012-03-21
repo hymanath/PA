@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
@@ -526,9 +527,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			String filePath = null;
 			
 			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
+				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
 			else
-				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
+				filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES+pathSeperator+"Problem_Files"+ pathSeperator;
 			
 			problemFilePathList = new ArrayList<String>();
 			
@@ -552,7 +553,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 				  fileName = systime.toString()+randomNumber+"."+val;
 				
 				fileNameList.add(fileName);
-				problemFilePathList.add(filePath+fileName);
+				problemFilePathList.add(IWebConstants.UPLOADED_FILES+"/Problem_Files/"+fileName);
 				
 				File fileToCreate = new File(filePath, fileName);
 				FileUtils.copyFile(userImage.get(i), fileToCreate);
