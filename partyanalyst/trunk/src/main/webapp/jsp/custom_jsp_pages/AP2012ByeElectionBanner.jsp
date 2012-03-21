@@ -170,7 +170,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <!--<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 25px;"> Constituencies Participating In Bye Election</h3>--><br>
 
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
-<a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy.</span>
+<a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahabubnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy.</span>
 <!--<a href="javascript:{}" onclick="ByeElectionReason()">view Reason</a>--><br><br>
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a>,
@@ -207,42 +207,6 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 </div>
 <div style="margin:14px;font-weight:bold;padding-right:10px;background:#ffffff; width:947px;">
 
-<<<<<<< .mine
-=======
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp&nbsp;Mettu Venugopal</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=1150">Kadiyam Srihari</a></span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;P Chandrasekhar</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; <a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=2813">Somireddy Chandramohan Reddy</a></span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Marri Janardhan Reddy</span><br><br>
-</td>
-<td valign=top style="font-size: 13px;padding-left:8px;">
-<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"/><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=886">TRS</a></h4><br>
-
-<span style="font-weight:normal;margin-left:5px;"> <strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=57">Jogu Ramanna</a></span><br><br>
-
-<span style="font-weight:normal;margin-left:5px;"> <strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp&nbsp;Gampa Goverdhan</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;T Rajaiah </span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Jupally Krishna Rao</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Sayed Ibrahim</span>
-</td>
-
-<td style="font-size: 13px;padding-left:8px;">
-
-<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=362">INC</a></h4><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=72535">Rama Chandra Reddy</a></span><br><br>
-
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp&nbsp;Yedla Raji Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;Pratap</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=204950">Vishnu Vardhan Reddy</a></span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahbubnagar</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp&nbsp;&nbsp;Muthyala Prakash</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; Polavaram Srinivasa Reddy</span><br><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=70" style="font-size:12px;font-family:verdana;">Nagarkurnool</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Damodar Reddy</span><br><br>
-
-</td>
-</tr></table>
--->
->>>>>>> .r9962
 <style>
 .spltableclass a{text-decoration:none;}
 .spltableclass a:hover{text-decoration:underline;}
@@ -303,7 +267,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
   </tr>
   <tr>
     <th><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
-    <td> <a href="candidateElectionResultsAction.action?candidateId=2813">Somireddy Chandramohan Reddy</a></td>
+    <td> <a href="candidateElectionResultsAction.action?candidateId=68187">Somireddy Chandramohan Reddy</a></td>
     <td>&nbsp;</td>
     <td><a href="candidateElectionResultsAction.action?candidateId=2779">Polavaram Srinivasa Reddy</a></td>
     <td><a href="candidateElectionResultsAction.action?candidateId=2778">N.Prasanna Kumar Reddy</a></td>
