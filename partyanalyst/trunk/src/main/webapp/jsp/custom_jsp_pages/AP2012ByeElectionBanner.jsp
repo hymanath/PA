@@ -103,87 +103,9 @@ h3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;
 	<td align="center"><b>11210</b></td>
   </tr>
 </table>
-
-
-
-
-
-
-
-
-<br><br>
+<br>
 
 <table width="100%">
-<tr>
-
-<td width="45%" valign="top">
-<div><span style="background:#3399cc;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Party Analyst, TV5, IDAP 2012 A.P Bye Elections Survey Results</span>
-</div>
-<div>
-<table width="98%" style="margin-top:20px;" class="spltableclass">
-  <tr>
-    <th style="background-color:#21B2ED;">CONSTITUENCY</th>
-    <th style="background-color:#21B2ED;"><font color="#FFFFFF">Party</font></th>
-	<th style="background-color:#21B2ED;"><font color="#FFFFFF">Candidate Name</font></th>
-  </tr>
-	
-  <tr>
-   <td><b><a href="constituencyPageAction.action?constituencyId=1">Adilabad</a></td>
-   <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
-   <td><b><a href="candidateElectionResultsAction.action?candidateId=57">Jogu Ramanna</a></td>
-  </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=16">Kamareddy</a></td>
-	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=143">Gampa Goverdhan</a></td></td>
-  </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=67">Kollapur</a></td>
-	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=964">Jupally Krishna Rao</a></td>
-  </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=68">Mahbubnagar</a></td>
-	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=835">Sayed Ibrahim</a></td>
-  </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=70">Nagarkurnool</a></th>
-	<td align="center"><b>TNS</td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=934">Nagam Janardhana Reddy </a></td>
-  </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=87">Station Ghanpur</a></td>
-	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=5197"> T Rajaiah</a></td>
- </tr>
-
-  <tr>
-	<td><b><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></td>
-	<td align="center"><b><a href="partyPageAction.action?partyId=886">YSRC</a></td>
-	<td><b><a href="candidateElectionResultsAction.action?candidateId=2778">N.Prasanna Kumar Reddy</a></td>
-  </tr>
-
-</Table>
-</div>
-</td>
-
-<td width="50%" valign="top">
-<div style="float:left;">
-<span style="background:#3399cc;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:14px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">
-A.P Bye Elections Survey Results & Exit Polls Video
-</span>
-<div style="margin-top:30px;margin-left:20px;margin-bottom:10px;">
-<iframe width="430" height="300" src="http://www.youtube.com/embed/TdPbuKAh79E" frameborder="0" allowfullscreen="true"></iframe>
-</div>
-</td>
-</tr>
-
 <tr>
 <td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
 </div>
