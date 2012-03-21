@@ -13,6 +13,76 @@
 <br><br>
 <table width="100%">
 <tr>
+
+<td width="45%" valign="top">
+<div><span style="background:#3399cc;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Party Analyst, TV5, IDAP 2012 A.P Bye Elections Survey Results</span>
+</div>
+<div>
+<table width="98%" style="margin-top:20px;" class="spltableclass">
+  <tr>
+    <th style="background-color:#21B2ED;">CONSTITUENCY</th>
+    <th style="background-color:#21B2ED;"><font color="#FFFFFF">Party</font></th>
+	<th style="background-color:#21B2ED;"><font color="#FFFFFF">Candidate Name</font></th>
+  </tr>
+	
+  <tr>
+   <td><b><a href="constituencyPageAction.action?constituencyId=1">Adilabad</a></td>
+   <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+   <td><b><a href="candidateElectionResultsAction.action?candidateId=57">Jogu Ramanna</a></td>
+  </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=16">Kamareddy</a></td>
+	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=143">Gampa Goverdhan</a></td></td>
+  </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=67">Kollapur</a></td>
+	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=964">Jupally Krishna Rao</a></td>
+  </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=68">Mahbubnagar</a></td>
+	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=835">Sayed Ibrahim</a></td>
+  </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=70">Nagarkurnool</a></th>
+	<td align="center"><b>TNS</td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=934">Nagam Janardhana Reddy </a></td>
+  </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=87">Station Ghanpur</a></td>
+	<td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=5197"> T Rajaiah</a></td>
+ </tr>
+
+  <tr>
+	<td><b><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></td>
+	<td align="center"><b><a href="partyPageAction.action?partyId=886">YSRC</a></td>
+	<td><b><a href="candidateElectionResultsAction.action?candidateId=2778">N.Prasanna Kumar Reddy</a></td>
+  </tr>
+
+</Table>
+</div>
+</td>
+
+<td width="50%" valign="top">
+<div style="float:left;">
+<span style="background:#3399cc;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:14px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">
+A.P Bye Elections Survey Results & Exit Polls Video
+</span>
+<div style="margin-top:30px;margin-left:20px;margin-bottom:10px;">
+<iframe width="430" height="300" src="http://www.youtube.com/embed/TdPbuKAh79E" frameborder="0" allowfullscreen="true"></iframe>
+</div>
+</td>
+</tr>
+
+<tr>
 <td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
 </div>
 <table cellpadding="6px" cellspacing="2px" style="margin-top:12px;margin-left:12px;border:1px solid #cdcdcd; border-collapse:collapse;font-size:13px;">
@@ -133,16 +203,12 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <div style="background:#ffffff;">
 <div style="margin-top:0px;background:#ffffff;">
 <div style="margin-top:12px;">
-<span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Candidates contesting Bye Election
+<span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Candidates Contesting in Bye Election
 </div>
 <div style="margin:14px;font-weight:bold;padding-right:10px;background:#ffffff; width:947px;">
-<!--
-<table>
-<tr>
-<td style="font-size: 13px;padding-left:8px;">
-<h4 style="margin-left: 5px; color:#000000; background-color: #21B2ED; font-weight: bold;"><a style="cursor:pointer;color:#000000;" href="partyPageAction.action?partyId=872">TDP</a></h4><br>
-<span style="font-weight:normal;margin-left:5px;"><strong><a style="text-decoration:none;color:none;" href="constituencyPageAction.action?constituencyId=1" >Adilabad</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Payal Shankar</span><br><br>
 
+<<<<<<< .mine
+=======
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp&nbsp;Mettu Venugopal</span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a href="constituencyPageAction.action?constituencyId=87" style="font-size:12px;font-family:verdana;">Station Ghanpur</a></strong>&nbsp;:&nbsp;&nbsp;&nbsp;<a  style="color:#3d3d3d;cursor:pointer;" href="candidateElectionResultsAction.action?candidateId=1150">Kadiyam Srihari</a></span><br><br>
 <span style="font-weight:normal;margin-left:5px;"><strong><a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;Chandrasekhar Rao</span><br><br>
@@ -176,6 +242,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 </td>
 </tr></table>
 -->
+>>>>>>> .r9962
 <style>
 .spltableclass a{text-decoration:none;}
 .spltableclass a:hover{text-decoration:underline;}
@@ -235,7 +302,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 	 <td>&nbsp;</td>
   </tr>
   <tr>
-    <th ><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
+    <th><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
     <td> <a href="candidateElectionResultsAction.action?candidateId=2813">Somireddy Chandramohan Reddy</a></td>
     <td>&nbsp;</td>
     <td><a href="candidateElectionResultsAction.action?candidateId=2779">Polavaram Srinivasa Reddy</a></td>
