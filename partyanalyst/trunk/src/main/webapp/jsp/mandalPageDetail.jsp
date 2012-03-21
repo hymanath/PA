@@ -352,14 +352,18 @@ function getMandalVotingReport()
 			color:#23318B;
 			font-size:17px;
 			text-decoration:underline;
+			margin-left:300px;
+			
+			
 		}
 		#mandalSelectTableDiv
 		{
 			background-color:#E8E9EE;
-			margin-left:50px;
-			margin-right:50px;
+			margin-left:48px;
 			text-align:left;
 			border:2px solid #DADADA;
+			width:800px;
+			
 		}
 		
 		#mandalSelectTableDivHead
@@ -368,6 +372,7 @@ function getMandalVotingReport()
 			color:#59629C;
 			text-decoration:underline;
 			font-weight:bold;
+			
 		}
 		#mandalSelectTable th
 		{
@@ -387,8 +392,12 @@ function getMandalVotingReport()
 	</style>
 
 </head>
+
 <body>
+<div style="margin-left:auto;margin-right:auto;width:900px;">
+<div style="background:#ffffff;">
 	<s:form action="mandalPageDetailAction" method="POST" theme="simple" name="mandalVotingTrends">
+
 		<div id="mainHeadingDiv">Party Voting Trends in a Mandal / Tehsil</div>
 		<div id="mandalSelectTableDiv">
 			<div id="mandalSelectTableDivHead">Select Criteria ..</div>
@@ -442,10 +451,13 @@ function getMandalVotingReport()
 							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 	</div>
 
-	<div id="mandalVotingResultsDiv">
+	<div id="mandalVotingResultsDiv" style="position:relative;">
 		<div id="mandalVotingResultsDivHead"></div>
 		<div id="mandalVotingResultsDivGraph"></div>
 		<div id="mandalVotingResultsDivBody" class="yui-skin-sam"></div>
 	</div>
+	</div>
+	</div>
 </body>
+
 </html>

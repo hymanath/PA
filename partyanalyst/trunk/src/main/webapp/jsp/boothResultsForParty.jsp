@@ -6,6 +6,7 @@
 <TITLE>Party Performance Report In Each Booth</TITLE>
 
 <style type="text/css">
+
 #errorMessage
 {
 	color:red;
@@ -20,7 +21,9 @@
     font-family: times New Roman;
     font-size: 24px;
     font-weight: bold;
-    margin-top: 32px;
+    margin-top: 6px;
+	margin-left:auto;
+	margin-right:auto;
 }
 #tableDiv{
 	margin-left: 75px;
@@ -40,7 +43,7 @@ th.thstyle{
     font-size: 15px;
     font-weight: bold;
     height: 31px;
-    margin-left: 394px;
+  
     width: 103px;
  }
 </style>
@@ -174,9 +177,11 @@ var Localization = { <%
 </script>
 </HEAD>
 <body>
-
+<div style="margin-left:auto;margin-right:auto;width:900px;">
+<div style="background:#ffffff;">
 	<s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
 	<s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
+	
 	<div  id= "partyboothresultsheading">
 	<table border="0" cellpadding="3" cellspacing="0">          
 		<tr>
@@ -194,9 +199,9 @@ var Localization = { <%
 	</table>
 	 <s:form name="BoothPerformanceReport">
 	 <div id="tableDiv">
-	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 2px solid #0B3861;background-color: #F2F0EE;">
+	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 2px solid #0B3861;background-color: #F2F0EE;margin-left:auto;margin-right:auto;">
 		 <tr id="ElectionTyperow">
-			<th class="thstyle">Election Type</th>
+			<th class="thstyle">Election type</th>
 		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="removeErrorMessage()" theme="simple"/>
 			  </td>
 		   </tr>
@@ -232,14 +237,14 @@ var Localization = { <%
 			</tr>
 		</table>
 		</div>
-		<table>
-			<tr><th></th>
-				<td style="padding-top: 18px; padding-left: 36px;">
+		<div style="background:#ffffff;text-align:center;padding-top:8px;">
+		
 					<input id="btnStyle" type="button" id="subbutton" value="View Report" onclick="validateAndForwardToAction()" />
-				</td>
-			</tr>
-		</table>
+				
+		</div>
 	</table>
 </s:form>
+</div>
+</div>
 </body>
 </HTML>
