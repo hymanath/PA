@@ -10,7 +10,109 @@
 <div>
 <IMG src="images/specialPage/5leaderswar.png" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
 </div>
+<br>
+<style>
+.resulttableclass a{text-decoration:none;}
+.resulttableclass a:hover{text-decoration:underline;}
+.resulttableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
+.resulttableclass td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;height:35px;}
+.resulttableclass th:nth-child(2){background:#21B2ED;color:#fff;}
+.resulttableclass th:nth-child(2) a{color:#fff;}
+.resulttableclass th:nth-child(3){background:#21B2ED;color:#fff;}
+.resulttableclass th:nth-child(3) a{color:#fff;}
+.resulttableclass td a{color:#000;}
+
+
+.resulttableclass th:nth-child(4){background:#21B2ED;color:#fff;}
+.resulttableclass th:nth-child(4) a{color:#fff;}
+.resulttableclass th:nth-child(5){background:#21B2ED;color:#fff;}
+.resulttableclass th:nth-child(5) a{color:#fff;}
+.resulttableclass th:nth-child(6) {background:#21B2ED;color:#fff;}
+.resulttableclass th:nth-child(6) a{color:#fff;}
+.resulttableclass th{border:1px solid #d3d3d3;width:15%;padding:10px 5px;}
+.resulttableclass tr:nth-child(odd){background:#f3f3f3;}
+.resulttableclass th:nth-child(1){color:#000;}
+.resulttableclass th:nth-child(1) a{color:#000;}
+h3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:350px; -moz-border-radius:2px;margin-left:3px;}
+</style>
+<h3>2012 AP Bye Elections Winning Candidate info</h3>
+<table width="100%" class="resulttableclass" style="margin-top:9px;">
+  <tr>
+    <th style="background-color:#21B2ED;color:#fff;">CONSTITUENCY</th>
+    <th>Candidate Name</a></th>
+    <th>Party</th>
+	<th>Votes Gained in 2012</a></th>
+	<th>Votes majority in 2012</a></th>
+    <th>Previous Votes Majority in 2009</a></th>
+   </tr>
+  <tr>
+    <th><a href="constituencyPageAction.action?constituencyId=1">Adilabad</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=57">Jogu Ramanna</a></b></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></b></td>
+    <td align="center"><b>52829</b></td>
+    <td align="center"><b>31896</b></td>
+	<td align="center"><b>25580</b></td>
+  </tr>
+  <tr>
+    <th><a href="constituencyPageAction.action?constituencyId=16">Kamareddy</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=143">Gampa Goverdhan</a></b></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+    <td align="center"><b>75661</b></td>
+    <td align="center"><b>44465</b></td>
+	<td align="center"><b>47708</b></td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=67">Kollapur</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=964">Jupally Krishna Rao</a></b></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+    <td align="center"><b>50631</b></td>
+    <td align="center"><b>15013</b></td>
+	<td align="center"><b>1508</b></td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=233">Kovur</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=2778">N.Prasanna Kumar Reddy</a></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=1117">YSRC</a></td>
+    <td align="center"><b>73876</b></td>
+    <td align="center"><b>23496</b></td>
+	<td align="center"><b>7444</b></td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=68">Mahbubnagar</a></th>
+    <td><b><a href="javascript:{}">	Yennam Srinivas Reddy</a></b></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=163">BJP</a></td>
+    <td align="center"><b>39272</b></td>
+    <td align="center"><b>1897</b></td>
+	<td align="center">--</td>
+  </tr>
+  <tr>
+    <th ><a href="constituencyPageAction.action?constituencyId=70">Nagarkurnool</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=934">Nagam Janardhana Reddy </a></b></td>
+    <td align="center"><b><a href="javascript:{}">INDEPENDENT</a></td>
+    <td align="center"><b>71001</b></td>
+    <td align="center"><b>27825</b></td>
+	<td align="center"><b>6593</b></td>
+  </tr>
+  <tr>
+    <th >
+<a href="constituencyPageAction.action?constituencyId=87">Station Ghanpur</a></th>
+    <td><b><a href="candidateElectionResultsAction.action?candidateId=5197"> T Rajaiah</a></b></td>
+    <td align="center"><b><a href="partyPageAction.action?partyId=886">TRS</a></td>
+    <td align="center"><b>81279</b></td>
+    <td align="center"><b>32638</b></td>
+	<td align="center"><b>11210</b></td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
 <br><br>
+
 <table width="100%">
 <tr>
 
