@@ -108,6 +108,8 @@
 		<pattern>/partyResultsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
 		<pattern>/ministersPageAction*</pattern>
+		<pattern>/mandalPageSDetailAction*</pattern>
+		<pattern>/partyBoothResultAction*</pattern>
     </decorator>
 
 </decorators>
