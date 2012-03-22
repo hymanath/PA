@@ -110,6 +110,7 @@
 		<pattern>/ministersPageAction*</pattern>
 		<pattern>/mandalPageSDetailAction*</pattern>
 		<pattern>/partyBoothResultAction*</pattern>
+		<pattern>/statePageAction*</pattern>
     </decorator>
 
 </decorators>
