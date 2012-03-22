@@ -49,6 +49,13 @@
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
+	<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+
+	<!-- Local Files-->
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="js/statePage/statePage.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">
+
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -63,25 +70,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
-	
 
-	<!-- Local Files-->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript" src="js/statePage/statePage.js"></script>
-	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
-	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
-	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-
-  <style type="text/css">
-	.distAnchor
-	{
-		text-decoration:none;
-		color:black;
-		font-family:verdana;
-		
-	}
-		
-  </style>
 
 	<script type="text/javascript">
 
@@ -110,40 +99,198 @@
 		}
 
  </script>
- </HEAD>
 
-<BODY>
-<div id="statePage_main">
-	<!--<div id="maskDiv"></div>-->
-	<div id="electionResultsPopupDiv" class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
-	<div id="statePage_header">
-		<table border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
-				<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${statePage.stateName}" /> State Details</div></span></td>
-				<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
-			</tr>
-		</table>
+
+	<style type="text/css">
+	#statePageMainDiv
+	{
+	margin-left:auto;
+	margin-right:auto;
+	float:none;
+	background:#FFFFFF;
+	width:990px;
+	margin-top:5px;
+	}
+	 #statePage_header
+	{
+	background: #06ABEA;
+	border-radius: 7px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 7px;
+    text-align: left;
+	}
+	.districtPageRoundedHeaders_center {
+    background-image: url("images/icons/districtPage/header_body.png");
+    font-weight: bold;
+    padding: 11px;
+}
+#stateCensusDiv_body
+{
+border-left:1px solid #E0E0D6;
+border-right:1px solid #E0E0D6;
+border-bottom:1px solid #E0E0D6;
+margin-right: 2px;
+}
+
+#stateCensusDiv_body
+{
+
+font-size:12px;
+}
+.stateInformation_head
+{
+margin-top:10px;
+margin-right:1px;
+}
+.productFeatureHeaderBackground_center {
+    background-image: url("images/icons/homePage_new/blue_header_center.jpg");
+    height: 40px;
+	
+}
+.productFeatureHeaderBackground_center {
+    border-bottom: 2px solid #E0E0D6;
+}
+.headerLabelSpan {
+    font-size: 13px;
+    font-weight: bold;
+    top: 10px;
+    position: relative;
+    color: #FFFFFF;
+    left: 20px;
+}
+.electionResultsDiv_body {
+    height: 155px;
+}
+
+#statePage_layout_main .yui-layout-doc
+{
+width:auto;
+ border-top: 2px solid #E0E0D6;
+ border-bottom:2px solid #E0E0D6; 
+ margin-top:20px;
+ border-radius: 5px;
+}
+#statePage_layout_main .yui-layout-doc #yui-gen0{
+left:none;
+ border-left: 3px solid #E0E0D6;
+ font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+}
+#yui-gen2{
+	width:auto;
+	border-right: 0px solid #E0E0D6;
+	border-left: 2px solid #E0E0D6;
+	margin-left:1px;
+	border-radius:3px;
+}
+#yui-gen3 .yui-layout-bd yui-layout-bd-nohd yui-layout-bd-noft{
+	width:660px;
+}
+
+#statePage_electinoResults_nav_div{
+ margin-left: 21px;
+ margin-top: 10px;
+ font-size:11px;
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+
+}
+.partyResultsTable td a {
+    color: #669900;
+    font-weight: bold;
+    text-decoration: underline;
+}
+#stateNewsBody{
+border-left:1px solid #B3C1CE;
+border-right:1px solid #B3C1CE;
+border-bottom:1px solid #B3C1CE;
+}
+.electionResultsDiv{
+line-height:1.7em;
+}
+#electionResultsPopupDiv_inner{
+font-weight:bold;
+
+font-size:12px;
+}
+/** #electionResultsPopupDiv_inner .yui-dt-liner a{ 
+color:#669900;
+}*/
+.yui-dt-liner a
+{
+color:#669900;
+text-decoration:underline;
+font-weight:bold;
+font-size:12px;
+}
+#electionResultsPopupDiv_inner_h
+{
+	text-align:center;
+}
+#yui-dt0-th-partyName-liner span a{
+color:none;
+}
+</style>
+</head>
+<body>
+
+<div id="statePageMainDiv">
+	<div id="electionResultsPopupDiv" class="yui-skin-sam">
+		<div id="electionResultsPopupDiv_inner">
+		</div>
 	</div>
+
+	<div id="statePage_header">
+		<c:out value="${statePage.stateName}" /> State Details
+
+		<span style="float:right;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</span>
+		<span style="float:right;">
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}">
+				Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script>
+		</span>
+		<span style="float:right;margin-right: 20px;">
+			<a name="fb_share" type="button_count"  share_url="www.partyanalyst.com/statePageAction.action?stateId=${statePage.stateId}">Share in Facebook</a> 
+		</span>
+
+	</div>
+
 	<div id="statePage_body">
-			<div id="statePage_layout_main" class="yui-skin-sam"> </div>
-			<div id="statePage_layout_right">
-				<div id="stateInformation_main">					
-					<div id="stateInformation_body" >
+		<div id="statePage_layout_main" class="yui-skin-sam">
+		</div>
+
+		
+
+		
+		<div id="statePage_layout_right">
+			<div id="stateInformation_main">					
+					<div id="stateInformation_body" style="margin-top: 10px;">
 						<!--<div class="stateInformation_head">${statePage.stateName} At A Glance :${statePage.stateName} </div>-->
-                        <div class="stateInformation_head">
+                         <div class="stateInformation_head">
 							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
 								<tr>
 									<td width="8%"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:259px;"><span>${statePage.stateName} Outline </span></div></td>
+									<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:240px;"><span>${statePage.stateName} Outline </span></div></td>
 									<td><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						 </div>
 						<div id="stateCensusDiv_body">
-						 <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable" width="90%">
+						 <table border="0" cellpadding="0" cellspacing="0px" class="stateDetailsTable" width="90%">
 							 <tr>
-							     <td> <img src="images/icons/districtPage/listIcon.png"/></td>
+							      <td> <img src="images/icons/districtPage/listIcon.png"/>
+								 </td>
 								 <th align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </th>
 								 <td  align="left" style="color:#18325A;">: <c:out value="${statePage.adminCapital}" /></td>
 							 </tr>
@@ -166,18 +313,18 @@
 						</div>
 						<c:if test="${censusVO != null }">
 						<!--<div class="stateInformation_head">${statePage.stateName} Census Info : </div>-->
-                        <div class="stateInformation_head">
+                       <div class="stateInformation_head">
 							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
 									<tr>
 										<td width="8%"><img src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:259px;"><span>${statePage.stateName} Census Info </span></div></td>
+										<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:240px;"><span>${statePage.stateName} Census Info </span></div></td>
 										<td><img src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 							</table>
 						</div>
 						<div id="stateCensusDiv_body">
 						    
-							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="stateDetailsTable">
+							<table border="0" cellpadding="0" cellspacing="0px" width="100%" class="stateDetailsTable">
 								<tr>
 								    <th></th>
 									<th>Type</th>
@@ -199,9 +346,8 @@
 							</table>							
 						</div>
 						</c:if>
-
-						<div class="productFeatureMain" style="margin-top:20px;">							
-							 <div class="productFeatureHeader">
+						<div class="productFeatureMain" style="margin-top:20px;margin-left:-12px;">							
+							  <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
 									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
@@ -216,25 +362,26 @@
 								  </tr>
 								</table>
 							</div>
-							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;width:304px;height:250px;">
+							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;height:250px;">
 								
 							</div>						
 						</div>
-
 					</div>
-				</div>			
-			</div>
-			<div id="statePage_layout_center">
+				
+		</div>
+		<div id="statePage_layout_center">
 				<div id="stateMap_main">				
 					<object width="550" height="500">
 						<param name="movie" value="images/stateMaps/${statePage.stateName}/stateMap.swf">
 						 <param name="wmode" value="transparent"> 
-						<embed wmode="transparent" src="images/stateMaps/${statePage.stateName}/stateMap.swf" width="550" height="500">
+						<embed wmode="transparent" src="images/stateMaps/${statePage.stateName}/stateMap.swf" width="550" height="500" style="margin-left: 40px; margin-top: 15px;">
 						</embed>
 					</object>	
 				</div>
                
 			</div>
+	
+		</div>
 
 			<div id="statePage_electinoResults_nav_div">
 				<table width = "100%" style="width:100%" border="0" cellspacing="0" cellpadding="0">
@@ -243,14 +390,15 @@
 							<div id="electionTypesList_head"><u>Election Type : </u></div>
 							<div id="electionTypesList"></div>
 						</td>
-						<td style="vertical-align:top;"><div id="electionTypesNYearsList" class="yui-skin-sam"></div></td>
+						<td style="vertical-align:top;"><div id="electionTypesNYearsList" class="yui-skin-sam" style="width:840px;"></div></td>
 					</tr>
 				</table>
 			</div>
-	</div>	
-</div>
 	
-	<script type="text/javascript">
+	</div>
+</div>
+
+<script type="text/javascript">
 
 		statePageObj.stateDetails.stateId = '${statePage.stateId}';
 		statePageObj.stateDetails.stateName = '${statePage.stateName}';
@@ -289,9 +437,5 @@
 		initializeStatePage();		
 	</script>
 
- </BODY>
-</HTML>
-
-
-    
-
+</body>
+</html>
