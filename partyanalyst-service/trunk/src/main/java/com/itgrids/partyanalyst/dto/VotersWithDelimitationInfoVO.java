@@ -8,7 +8,8 @@ public class VotersWithDelimitationInfoVO {
 	private String year;
 	private String type;
 	private List<VotersInfoForMandalVO> votersInfoForMandalVO; 
-	private List<VotersInfoForMandalVO> votersBasicInfoForMandalVO; 
+	private List<VotersInfoForMandalVO> votersBasicInfoForMandalVO;
+	private String constYear;
 	
 	public String getYear() {
 		return year;
@@ -35,6 +36,12 @@ public class VotersWithDelimitationInfoVO {
 	public void setVotersBasicInfoForMandalVO(
 			List<VotersInfoForMandalVO> votersBasicInfoForMandalVO) {
 		this.votersBasicInfoForMandalVO = votersBasicInfoForMandalVO;
+	}
+	public String getConstYear() {
+		return constYear;
+	}
+	public void setConstYear(String constYear) {
+		this.constYear = constYear;
 	}
 	
 	
