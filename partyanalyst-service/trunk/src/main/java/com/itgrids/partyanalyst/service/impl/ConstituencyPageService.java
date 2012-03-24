@@ -1333,6 +1333,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			VotersWithDelimitationInfoVO votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
 			VotersWithDelimitationInfoVO votersWithDelimitationBasicInfoVO = new VotersWithDelimitationInfoVO();
 			votersWithDelimitationInfoVO.setYear(year);
+			votersWithDelimitationInfoVO.setConstYear(year);
 			votersWithDelimitationBasicInfoVO.setYear(year);
 			
 			for(MandalVO result: localElectionsInfo){
@@ -1403,6 +1404,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<VotersInfoForMandalVO> votersInfoInTowns = new ArrayList<VotersInfoForMandalVO>();
 		votersWithDelimitationInfoVO.setYear(IConstants.DELIMITATION_YEAR+"");
 		//votersWithDelimitationInfoVO.setYear(year.toString());
+		votersWithDelimitationInfoVO.setConstYear(year.toString());
 		List beforeDelimLocalBodies = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBody(constituencyId, 
 				year, "'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
 		List beforeDelimGMCs = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(constituencyId, 
@@ -2319,6 +2321,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
 			votersInfoForAcVOs = new ArrayList<VotersInfoForMandalVO>();
 			votersWithDelimitationInfoVO.setYear(entry.getKey());
+			votersWithDelimitationInfoVO.setConstYear(entry.getKey());
 			for(Object[] values:(List<Object[]>)acVotersInfo){
 				votersInfoForAcVO = new VotersInfoForMandalVO();
 				votersInfoForAcVO.setMandalId(values[0].toString());
