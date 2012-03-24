@@ -183,7 +183,6 @@ function buildRightlayoutMap()
 {
 	
 	var address=constituencyPageMainObj.constituencyAddress;	
-	
 		var map = new GMap2(document.getElementById("map_canvas"));
 		
 		var geocoder = new GClientGeocoder();
@@ -210,64 +209,33 @@ function buildConstituencyInfo()
 	var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 
 	var divElmtHead = document.getElementById("constituencyInfoDiv_Head");
-	var divElmtBody = document.getElementById("constituencyInfoDiv_Body");
-
+	var divElmtBody = document.getElementById("constituencyType");
+    
 	/*var heading='<h3>Constituency Info </h3>';
 	if(divElmtHead)
 		divElmtHead.innerHTML=heading;*/
 	
 	var str = '';
-	str+='<table id="constituencyInfoTable">';
-	str+='<tr>';
-	str+='<th> Constituency Name </th>';
-	str+='<th> : </th>';
-	str+='<td> '+constituencyPageMainObj.constituencyInfo.constituencyName+' </td>';
+	
+	str+=' '+constituencyPageMainObj.constituencyInfo.constituencyName+' ';
 	str+='</tr>';
 	if(constituencyPageMainObj.constituencyInfo.constituencyType.length > 0)
 	{
-		str+='<tr>';
-		str+='<th> Constituency Type </th>';
-		str+='<th> : </th>';
-		str+='<td> '+constituencyPageMainObj.constituencyInfo.constituencyType+' </td>';
+		
+		str+=' '+constituencyPageMainObj.constituencyInfo.constituencyType+' ';
 		str+='</tr>';
 	}
-	if(constituencyPageMainObj.constituencyInfo.constituencyType != 'Parliament')
-	{
-		str+='<tr>';
-		str+='<th> District Name </th>';
-		str+='<th> : </th>';
-		str+='<td> '+constituencyPageMainObj.constituencyInfo.districtName+' </td>';
-		str+='</tr>';
-	}
-	str+='<tr>';
-	str+='<th> State Name </th>';
-	str+='<th> : </th>';
-	str+='<td> '+constituencyPageMainObj.constituencyInfo.stateName+' </td>';
-	str+='</tr>';
-	if(constituencyPageMainObj.constituencyInfo.startDate.length > 0)
-	{
-		str+='<tr>';
-		str+='<th> Start Date </th>';
-		str+='<th> : </th>';
-		str+='<td> '+constituencyPageMainObj.constituencyInfo.startDate+' </td>';
-		str+='</tr>';
-	}
+	str+=' Constituency Details';
+	
 	if(constituencyPageMainObj.constituencyInfo.deformDate.length > 0)
 	{
-		str+='<tr>';
-		str+='<th> Deformation Year </th>';
-		str+='<th> : </th>';
-		str+='<td> '+defDate.substring(0,4)+' </td>';
-		str+='</tr>';
+		
+		str+='( delimited in '+defDate.substring(0,4)+' )';
 	}
 	
 	if(constituencyPageMainObj.constituencyInfo.reservation_zone.length > 0)
 	{
-		str+='<tr>';
-		str+='<th> Reservation Zone </th>';
-		str+='<th> : </th>';
-		str+='<td style="color:#000000;font-weight:bold;"> '+constituencyPageMainObj.constituencyInfo.reservation_zone+' </td>';
-		str+='</tr>';
+		str+='('+constituencyPageMainObj.constituencyInfo.reservation_zone+')';
 	}
 	if(divElmtBody)
 		divElmtBody.innerHTML=str;
@@ -744,7 +712,7 @@ function buildProblemViewingWindow()
 	//str+='<fieldset id="problemViewingFieldSet">';
 	//str+='<legend> View Your constituency Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
-	//str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();" style="height:80px;" >';
 
 	if(constituencyPageMainObj.problemsInfo.length == 0)
 	{
@@ -778,7 +746,7 @@ function buildProblemViewingWindow()
 		}
 	}
 	
-	//str+='</marquee>';
+	str+='</marquee>';
 	str+='</div>';
 	//str+='</fieldset>';
 	
@@ -915,17 +883,17 @@ function buildAnalyzeConstituencyWindow()
 	{
 		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
 		{
-			str	+= '<div id="analyzeConstituencyButtonDiv" class="ass-pre">';
-			str += '<a href="javascript:{}" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')" class="ass-pre">Previous Posts</a>';
-			str += '<a href="javascript:{}" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')" class="ass-pre">Assess</a>';
+			str	+= '<div id="analyzeConstituencyButtonDiv" >';
+			str += '<a href="javascript:{}" class="buttnStyle" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')" >Previous Posts</a>';
+			str += '<a href="javascript:{}" class="buttnStyle" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')" >Assess</a>';
 			
 			str += '</div>';		
 		}
 	}
 	else {
-      str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;" class="ass-pre">';
-	  		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" title="Click to View Previous Posts" style="margin-right:10px;" class="ass-pre">Previous Posts</a>';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;" class="ass-pre">Assess</a>';
+      str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;" >';
+	  		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" title="Click to View Previous Posts" style="margin-right:10px;" class="buttnStyle">Previous Posts</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;" class="buttnStyle">Assess</a>';
 
 		str += '</div>';			
 	}
@@ -976,11 +944,11 @@ function buildConstituencyConnectPeopleWindow()
 	if(constituencyConnectedPeople.length == 0 && userLoginStatus == "false")
 	{
 		var errorStr = '';
-		errorStr += '<div class="view-all"> No people have been connected.</div>';
-		errorStr += '<div class="view-all">Register to connect to your area.</div>';
-		errorStr += '<div class="view-all">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="view-all">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';
-		errorStr += '<div class="view-all">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'">Login</a></div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" > No people have been connected.</div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Register to connect to your area.</div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Already Have an account? <a href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'"><b>Login</b></a></div>';
 		
 		bodyElmt.innerHTML = errorStr;
 		return;
@@ -988,10 +956,10 @@ function buildConstituencyConnectPeopleWindow()
 	else if(constituencyConnectedPeople.length == 0 && userLoginStatus == "true")
 	{
 		var errorStr = '';
-		errorStr += '<div class="errorStr"> No people have been connected.</div>';
-		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
-		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="view-all">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';		
+		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" > No people have been connected.</div>';
+		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" >Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >To connect to your district people <a href="freeUserRegistration.action"><b>Register</b></a></div>';		
 		bodyElmt.innerHTML = errorStr;
 		return;
 	}
@@ -1320,7 +1288,7 @@ function buildelectionYearsForVotingTrendz(obj)
 	var elmt = document.getElementById('constituencyVotersInfoDiv_Navigation');
 
 	var str = '';
-	str+='<span>View Voting Trendz : </span>';
+	str+='<span><b>View Voting Trendz : </b></span>';
 	str+='<span>';
 	str+='<input type="radio" name="electionType" value="assembly" onclick="enableElectionYearSelect(this.value)">';
 	str+='<select id="assembly_YearSelect" disabled="disabled">';
@@ -1341,7 +1309,7 @@ function buildelectionYearsForVotingTrendz(obj)
 	str+='</span>';
 
 	str+='<span>';
-	str+='<input type="button" value="View" onclick="getVotingTrendzForyear()">';
+	str+='<input type="button" value="View" style="font-weight:bold;" onclick="getVotingTrendzForyear()">';
 	str+='</span>';
 	if(elmt)
 		elmt.innerHTML = str;
@@ -1373,7 +1341,7 @@ function buildVotingTrendzInPopUp()
 	
 	var str='';
   
-	str+=' <h1 class="cp-sub-title"><span>View Voting Trendz</span></h1>';
+	str+=' <h1 class="cp-sub-title"><span><b>View Voting Trendz</b></span></h1>';
 	str+='<div class="cp-cont-sec">'
 	str+='<div id="cp-cont-sub-fields">';
 	str+='<div id="votingTrendzContentDiv_main" class="votingTrendzContentDivClass">';	
@@ -1673,7 +1641,7 @@ function getAllZptcYears()
 		var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
 		var electionYearSelect="";
 		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp;</b>";
-		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="zptcYears" onchange="getZptcPartyDetails(this.options[this.selectedIndex].value)">';
+		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="zptcYears" onchange="funChangeReq();getZptcPartyDetails(this.options[this.selectedIndex].value)">';
 		for(var i in tehsilElections.zptcElectionYears)
 		{
 			electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
@@ -1685,13 +1653,18 @@ function getAllZptcYears()
 	}
 }
 
+function funChangeReq()
+{
+     
+ changeReq = 1;
+}
 function getAllMptcYears()
 {
 	if(tehsilElections.mptcElectionYears.length!=0){
 		var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
 		var electionYearSelect="";
 		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp; </b>";
-		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="mptcYears" onchange="getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
+		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="mptcYears" onchange="funChangeReq();getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
 
 		for(var i in tehsilElections.zptcElectionYears)
 		{			   
@@ -1719,10 +1692,18 @@ function getMunicipalityResults()
 	if(lebElmt == null)
 		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
-	
+	  var id;
+	if(constituencyId == null || constituencyId =='')
+	 { 
+	    id = constiId;
+	 }
+	else
+	 {
+	    id = constituencyId;
+	 }	 
 	var jsObj = {
 			localBodyElectionId:lebElmtValue,
-			constituencyId:constituencyId,
+			constituencyId:id,
 			task:"municipalElectionsInfo"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1759,10 +1740,18 @@ function getCoroporationResults()
 	if(lebElmt == null)
 		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
-	
+	   var id;
+	if(constituencyId == null || constituencyId =='')
+	 { 
+	    id = constiId;
+	 }
+	else
+	 {
+	    id = constituencyId;
+	 }	 
 	var jsObj = {
 			localBodyElectionId:lebElmtValue,
-			constituencyId:constituencyId,
+			constituencyId:id,
 			task:"corporationElectionsInfo"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1776,10 +1765,18 @@ function getGreaterResults()
 	if(lebElmt == null)
 		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
-	
+	var id;
+	if(constituencyId == null || constituencyId =='')
+	 { 
+	    id = constiId;
+	 }
+	else
+	 {
+	    id = constituencyId;
+	 }	 
 	var jsObj = {
 			localBodyElectionId:lebElmtValue,
-			constituencyId:constituencyId,
+			constituencyId:id,
 			task:"greaterElectionsInfo"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1975,7 +1972,7 @@ buildConstituencyInfo();
 
 	buildAnalyzeConstituencyWindow();	
 	buildProblemViewingWindow();
-	//buildRightlayoutMap();
+	buildRightlayoutMap();
 	buildElectionResults();	
 	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
 	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
@@ -1993,4 +1990,21 @@ buildConstituencyInfo();
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);
 	//candidateNominationsdetails(constituencyPageMainObj.constituencyInfo.constituencyId);
 
+}
+function buildNews()
+{	
+
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : "Nellore",
+            "q" : "Kavali,Nellore"
+          }
+     ],
+	"linkTarget" : "_blank"
+  }
+
+  var content = document.getElementById('Politician_news');
+  var newsShow = new google.elements.NewsShow(content, options);
 }
