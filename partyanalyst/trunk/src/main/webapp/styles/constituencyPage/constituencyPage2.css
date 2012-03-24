@@ -35,8 +35,6 @@ img{border:none;}
 .header{width:992px; float:left;  height:88px; padding:13px 7px 0px 0px;}
 .logo{position:relative; left:54px; bottom:-14px; float:left; z-index:101;}
 .header-right-section{width:670px; float:right;}
-.lr-sec{float:right; color:#80d1f1; font-weight:bold; text-transform:uppercase; padding-right:27px; line-height:11px; font-size:12px;}
-.lr-sec a{color:#80d1f1; float:left; margin:0px 10px;}
 
 /*MENU SECTION START*/
 
@@ -441,7 +439,7 @@ margin-bottom:15px;}
 }
 .view-all-a{background-color:#3897a5; height:22px; line-height:22px; color:#fff; padding:0px 11px; float:right;}
 
-.post-problem{position:absolute;top:71px; left:27px; bottom:-49px; background:url(../../images/cssimages/sprites.png) left -98px no-repeat; float:left; width:236px; 
+.post-problem{position:absolute;top:105px; left:27px; bottom:-49px; background:url(../../images/cssimages/sprites.png) left -98px no-repeat; float:left; width:236px; 
 height:76px; padding:10px 13px; text-align:center; color:#131313; font-size:11px;}
 .post-problem-but{ background: url("../../images/cssimages/sprites.png") no-repeat scroll -267px -98px transparent;
     cursor: pointer;
@@ -704,5 +702,82 @@ fieldset {
 	color:#3F546F;
 }*/
 /* INNER CONTENT SECTION START */
+.buttnStyle{
+    background: none repeat scroll 0 0 #5CB275;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin: 4px 19px 5px 4px;
+    padding: 3px 12px;
+    text-decoration: none;
+    width: 160px;
+}
+.img-clickhere-button a{
+background:url(../../images/new_homepage/clickhere_hover.jpg) no-repeat; 
+float:left;
+ width:226px; 
+ height:38px; 
+ cursor:pointer;
+ }
+.topone {
+    background: url(../../images/cssimages/menu-bg.png) no-repeat scroll left -114px transparent;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/22px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 22px;
+    padding: 0 13px 0 8px;
+	margin-top: -21px;
+    margin-left: 6px;
+}
+.toptwo{
+    background: url(../../images/cssimages/menu-bg.png) no-repeat scroll left -168px transparent;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/22px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 22px;
+    padding: 0 13px 0 8px;
+	margin-top: -21px;
+    margin-left: 6px;
+}
+.topthree {
+    background: url(../../images/cssimages/menu-bg.png) no-repeat scroll left -222px transparent;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/22px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 22px;
+    padding: 0 13px 0 8px;
+	margin-top: -21px;
+    margin-left: 6px;
+}
+.topfour {
+    background: url(../../images/cssimages/menu-bg.png) no-repeat scroll left -276px transparent;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/22px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 22px;
+    padding: 0 13px 0 8px;
+	margin-top: -21px;
+    margin-left: 6px;
+}
+ .mvd-fields li a.active1{background:url(../images/pink-down-arrow.png) center bottom no-repeat; float:left; color:#9d5cb2; padding-bottom:8px;}
+.mvd-fields li a.active1 strong{background-color:#f5e4fa;}
+.menu-sec li a.active1{background:url(../images/menu-bg.png) left top no-repeat ;text-decoration:none; color:#0a0b39;}
+.menu-sec li a.active1 span{background:url(../images/menu-bg.png) right -30px no-repeat;}
+.ale-sec .mvd-fields li a.active1{
+color:#5cb275; 
+background:url("../../images/constituencyPage/green-down-arrow.png") 
+center bottom no-repeat;
+}
+.ale-sec .mvd-fields li a.active1 strong{background-color:#d4f4c6;}
 
-
+.trenzCss {
+    border: 1px solid #E7E7E7;
+    float: left;
+    font-size: 12px;
+    margin-bottom: 32px;
+    padding: 10px 7px;
+    position: relative;
+    width: 97%;
+    margin-top: 17px;
+	margin-left: 3px;
+}
