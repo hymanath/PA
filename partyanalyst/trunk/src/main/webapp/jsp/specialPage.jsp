@@ -736,7 +736,7 @@ share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${special
                   <span class="li-red">${specialPageVO.heading}</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
 					onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value=''; document.getElementById('alertMsg').innerHTML = '';" />
 
-			<div id="alertMsg" style="dispaly: none"></div>
+			<div id="alertMsg" style="dispaly:block"></div>
 			<div class="pl-sub-but"><a onclick="validateEmailField()"
 				href="javascript:{};"><strong>Subscribe Alert</strong></a></div>
 

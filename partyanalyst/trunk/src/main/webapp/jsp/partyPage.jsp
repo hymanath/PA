@@ -791,11 +791,26 @@ function showStatusForEmailSubscription(results){
 	$("#emailAlertDiv").dialog();*/
 	var str='';
 	if(results.resultCode == 0){
+		if(results.exceptionMsg != null && results.exceptionMsg != '')
+		{
+			str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">'+results.exceptionMsg+'</span>';
+			
+		}
+		else
+		{
+	    str+='<span style="font-size: 13px; font-family: trebuchet MS;color:green">You are Subscribed For Email alerts Successfully</span>';
+		}
+	}
+	else
+	{
+		 str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">Unable To Process,Please Try Later</span>';
+	}
 		cleardescriptionFields();
 	/*str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';*/
 	document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
 	}
     document.getElementById("emailAlertDiv").innerHTML = str;
+    document.getElementById("emailId").value='';
 }
 function setDefaultImage(img)
 {
