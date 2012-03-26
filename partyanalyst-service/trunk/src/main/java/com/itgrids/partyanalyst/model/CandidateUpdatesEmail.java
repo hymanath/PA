@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +35,7 @@ public class CandidateUpdatesEmail implements Serializable{
 	private Candidate candidate;
 	private String email;
 	private String unsubscribed;
+	private Date subscribedDate;
 	
 	public CandidateUpdatesEmail()
 	{}
@@ -85,6 +87,15 @@ public class CandidateUpdatesEmail implements Serializable{
 	public void setUnsubscribed(String unsubscribed) {
 		this.unsubscribed = unsubscribed;
 	}
-	
+
+	@Column(name="subscribed_date",length=20)
+	public Date getSubscribedDate() {
+		return subscribedDate;
+	}
+
+	public void setSubscribedDate(Date subscribedDate) {
+		this.subscribedDate = subscribedDate;
+	}
+    	
 	
 }

@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +29,9 @@ public class SpecialPageUpdatesEmail implements Serializable {
 	private SpecialPage specialPage;
 	private String email;
 	private String unsubscribed;
-	 
-	public SpecialPageUpdatesEmail(){
+    private Date subscribedDate;	 
+	
+    public SpecialPageUpdatesEmail(){
 		
 	}
 	public SpecialPageUpdatesEmail(SpecialPage specialPage, String email,String unsubscribed){
@@ -81,9 +82,12 @@ public class SpecialPageUpdatesEmail implements Serializable {
 		this.unsubscribed = unsubscribed;
 	}
 	
+	@Column(name="subscribed_date",length=20)
+	public Date getSubscribedDate() {
+		return subscribedDate;
+	}
+	public void setSubscribedDate(Date subscribedDate) {
+		this.subscribedDate = subscribedDate;
+	}
 	
-    
-    
-    
-
 }
