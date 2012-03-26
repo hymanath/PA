@@ -1715,18 +1715,29 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return 0L;
 		}
 	}
-	 public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long candidateId){
-		 
+	
+	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long candidateId)
+	{
+		 DateUtilService dateUtilService = new DateUtilService();
 		 ResultStatus statusCode = new ResultStatus()  ;
 		 try {
-			  CandidateUpdatesEmail candidateUpdatesEmail = new CandidateUpdatesEmail();
+			  List<Object> candidateUpdatesEmails = candidateUpdatesEmailDAO.getCandidateUpdatesEmail(emailId, candidateId);
+			   if(!(candidateUpdatesEmails.size() >0))
+			   {
+			     CandidateUpdatesEmail candidateUpdatesEmail = new CandidateUpdatesEmail();
 				 
 			     candidateUpdatesEmail.setEmail(emailId);
 				 candidateUpdatesEmail.setCandidate(candidateDAO.get(candidateId));
 				 candidateUpdatesEmail.setUnsubscribed("false");
+				 candidateUpdatesEmail.setSubscribedDate(dateUtilService.getCurrentDateAndTime());
 				 candidateUpdatesEmailDAO.save(candidateUpdatesEmail);
-		
+			   }
+			   else
+			   {
+				   statusCode.setExceptionMsg("You have already subscribed for this candidate"); 
+			   }
 		     statusCode.setResultCode(ResultCodeMapper.SUCCESS);
+		 
 		 
 		     return statusCode;
 		
