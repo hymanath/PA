@@ -247,8 +247,20 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
     margin-right: 150px;
 	margin-bottom : 15px;
     padding: 5px;
-    width: 600px;
+    width: 610px;
 }
+
+#ConstituecyAreaTypeSelectOptionsDiv
+{
+	background: none repeat scroll 0 0 #EBE4F2;
+    border: 1px solid #B7D3FC;
+    margin-left: 150px;
+    margin-right: 150px;
+	margin-bottom : 15px;
+    padding: 5px;
+    width: 610px;
+}
+
 </style>
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
@@ -276,6 +288,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 var caption;
 var resultsGlobal, graphImagesCarousel,allianceResultsGlobal;
 var UbanPercentageResult = null;
+var areaTypeWisePartiesResults = null;
 if(electionType != 'Parliament')
 {
 	caption = "Partywise Results In All Districts"
@@ -366,7 +379,9 @@ function callAjax(param,jsObj,url){
 									  buildGenderCountResultsDataTable("genderWiseResultsDataTable",myResults);
 									}
 									else if(jsObj.task == "getConstituencyAreaTypeWiseResult") {
-									  buildPartyPerfRulUrbanDataTable('partyPerfResultsDataTable',myResults);
+									  areaTypeWisePartiesResults = myResults;
+									  buildPartyPerfRulUrbanDataTable('All');
+									  buildConstituecyAreaTypeSelectOptionsDiv('All');
 									}
 									else if(jsObj.task == "getConstituencyAreaTypeWiseOverview")
 									{
@@ -389,8 +404,7 @@ function callAjax(param,jsObj,url){
 									}
 									else if(jsObj.task == "getPartiesConstituencyUbanPercentage")
 									{
-										buildUbanPercentageWisePartyDetailsGraph(myResults,'percentage');
-										UbanPercentageResult = myResults;
+										UbanPercentageResult = myResults;	buildUbanPercentageWisePartyDetailsGraph();
 									}
 
 								}
@@ -889,6 +903,47 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 	chart.draw(data,{width:300, height: 170, title:'Constituency Area Type wise % Graph'});
 }
 
+
+function buildConstituecyAreaTypeSelectOptionsDiv(selectOption)
+{
+	var divEle = document.getElementById('ConstituecyAreaTypeSelectOptionsDiv');
+	var str = '';
+	var myResults = areaTypeWisePartiesResults;
+
+	if(myResults == null || myResults.length == 0)
+	{
+		divEle.innerHTML = '';
+		return;
+	}
+
+	str += '<b>Select Options to View Party Performance In Rural/Urban Constituencies</b>';
+	if(selectOption == 'All')
+	{
+		str += '<table><tr><td width="50px"><input type="radio" checked="true" onclick="buildPartyPerfRulUrbanDataTable(\'All\'),buildUbanPercentageWisePartyDetailsGraph()" value="All" name="areaTypeRadio"><b><font color="#4B74C6">&nbsp;All</font></b></input></td>';
+		str += '<td><input type="radio" name="areaTypeRadio" onClick="buildConstituecyAreaTypeSelectOptionsDiv(\'Partywise\')" value="Partywise"><b><font color="#4B74C6">&nbsp;Partywise</font></b></input></td>';
+		str += '</tr></table>';
+	}
+	else if(selectOption == 'Partywise')
+	{
+		str += '<table><tr>';
+		str += '<td width="50px"><input type="radio" onclick="buildConstituecyAreaTypeSelectOptionsDiv(\'All\'),buildPartyPerfRulUrbanDataTable(\'All\'),buildUbanPercentageWisePartyDetailsGraph()" value="All" name="areaTypeRadio"><b><font color="#4B74C6">&nbsp;All</font></b></input></td></td>';
+		str += '<td width="80px"><input type="radio" name="areaTypeRadio" checked="true" onClick="buildConstituecyAreaTypeSelectOptionsDiv(\'Partywise\')" value="Partywise"><b><font color="#4B74C6">&nbsp;Partywise</font></b></input></td>';
+		str += '<td><select class="selectBoxStyle" id="partySelectInUrbanPer" multiple="multiple">';
+		
+		for(var i=0;i<myResults.length;i++)
+		{
+			str += '<option value="'+myResults[i].partyName+'">'+myResults[i].partyName+'</option>';
+		}
+
+		str += '</select></td>';
+		str += '<td><input type="button" class="buttonClass" value="View" onclick="buildPartyPerfRulUrbanDataTable(\'Partywise\'),buildUbanPercentageWisePartyDetailsGraph()"/><br><br><b>Press Ctrl Key To Select Multiple Parties</b></td>';
+		str += '</tr></table>';
+	}
+
+	divEle.innerHTML = str;
+
+}
+
 function getPartiesConstituencyUbanPercentage()
 {
 	var jsObj = {
@@ -901,8 +956,46 @@ function getPartiesConstituencyUbanPercentage()
 	callAjax(param,jsObj,url);
 }
 
-function buildUbanPercentageWisePartyDetailsGraph(results,selOption)
+function buildUbanPercentageWisePartyDetailsGraph()
 { 
+	var partySelect = null;
+	var selOption = null;
+	var perSeats = document.getElementsByName('urbanPer');
+	var partyRall = document.getElementsByName('areaTypeRadio');
+	results = UbanPercentageResult;
+	
+	if(perSeats != null && perSeats.length > 0)
+		for(var x=0;x<perSeats.length;x++)
+			if(perSeats[x].checked)
+				selOption = perSeats[x].value;
+
+	if(partyRall != null && partyRall.length > 0)
+		for(var x=0;x<partyRall.length;x++)
+			if(partyRall[x].checked)
+				partySelect = partyRall[x].value;
+
+	if(partySelect == null)
+		partySelect = 'All';
+
+	if(selOption == null)
+		selOption = 'percentage';
+
+	var results = UbanPercentageResult;
+	var partyN = new Array();
+
+	if(partySelect == "Partywise")
+	{
+		var selectedPartiesResultArray = new Array()
+		var selObj = document.getElementById('partySelectInUrbanPer');
+		
+		for (var i=0; i<selObj.options.length; i++)
+		{
+			if (selObj.options[i].selected)
+					partyN.push(selObj.options[i].text);     
+		}
+
+	}
+
 	if(results != null && results.length >0)
    {
     ruralUrbanChart =true;
@@ -910,22 +1003,30 @@ function buildUbanPercentageWisePartyDetailsGraph(results,selOption)
 	
 	var ctitle = null;
 	if(selOption == 'percentage')
-		ctitle = 'All Parties Performance By Urban Population Increase Based On Voting Percentage';
+		ctitle = 'Parties Performance By Urban Population Increase Based On Voting Percentage';
 	else if(selOption == 'seats')
-		ctitle = 'All Parties Performance By Urban Population Increase Based On Seats Won';
+		ctitle = 'Parties Performance By Urban Population Increase Based On Seats Won';
 
 	var partiesArray = new Array();
-
-	for(var i=0; i<results[0].partyResults.length; i++)
+	
+	if(partySelect == 'All')
+		for(var i=0; i<results[0].partyResults.length; i++)
 			partiesArray.push(results[0].partyResults[i].partyName);
+	else
+		for(var i=0; i<partyN.length; i++)
+			partiesArray.push(partyN[i]);
 
 	var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 
 	var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
 
-	for(var i=0; i<results[0].partyResults.length; i++)
+	if(partySelect == "All")
+		for(var i=0; i<results[0].partyResults.length; i++)
 	        data.addColumn('number', results[0].partyResults[i].partyName);
+	else
+		for(var i=0; i<partyN.length; i++)
+			data.addColumn('number',partyN[i]);
 
 	var resultsVar = new Array();
 	
@@ -939,12 +1040,19 @@ function buildUbanPercentageWisePartyDetailsGraph(results,selOption)
 	for(var i=0; i<resultsVar.length; i++)
 	{
 		data.setValue(i, 0, resultsVar[i].range);
+		var indexj = 0;
 
 		for(var j=0; j<resultsVar[i].partyResults.length; j++)
-			if(selOption == 'percentage')
-				data.setValue(i, j+1,resultsVar[i].partyResults[j].votesPercentage);
-			else
-				data.setValue(i, j+1,resultsVar[i].partyResults[j].totalSeatsWon);
+		{
+			if(partiesArray.indexOf(resultsVar[i].partyResults[j].partyName) != -1)
+			{
+				if(selOption == 'percentage')
+					data.setValue(i, indexj+1,resultsVar[i].partyResults[j].votesPercentage);
+				else
+					data.setValue(i, indexj+1,resultsVar[i].partyResults[j].totalSeatsWon);
+				indexj++;
+			}
+		}
 	}
 
 	 var chart = new google.visualization.LineChart(document.getElementById('UbanPercentageWiseGraph'));
@@ -1783,8 +1891,39 @@ function buildGenderCountResultsDataTable(divId,dtSourceArray)
   }
 }
 
-function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
-{	
+function buildPartyPerfRulUrbanDataTable(option)
+{
+	var dtSourceArray = null;
+	
+   if(option == 'Partywise')
+   {
+		var selectedPartiesResultArray = new Array()
+		var selObj = document.getElementById('partySelectInUrbanPer');
+		var partyN = new Array();
+		
+		for (var i=0; i<selObj.options.length; i++)
+		{
+			if (selObj.options[i].selected)
+					partyN.push(selObj.options[i].text);     
+		}
+		
+		if(partyN.length == 0)
+			return;
+
+		for(var i=0;i<areaTypeWisePartiesResults.length;i++)
+		{
+			if(partyN.indexOf(areaTypeWisePartiesResults[i].partyName) != -1)
+			{
+				selectedPartiesResultArray.push(areaTypeWisePartiesResults[i]);
+			}
+		}
+		dtSourceArray = selectedPartiesResultArray;
+   }
+
+   else if(option == 'All')
+		dtSourceArray = areaTypeWisePartiesResults;
+
+
    if(dtSourceArray != null && dtSourceArray.length >0)
    {
     ruralUrban =true;
@@ -1795,18 +1934,33 @@ function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 		
 		var Party = oRecord.getData("partyName");
 		var partyIds = oRecord.getData("partyId");
-		if(oData !='IND' && partyIds!=null){
+		var isAlliance = oRecord.getData("isAlliance");
+		
+		if(oData !='IND' && partyIds!=null && !isAlliance)
 		elLiner.innerHTML =
 		"<a href='partyPageAction.action?partyId="+partyIds+"' >"+Party+"</a>";
-		}
+		
 		else
-			elLiner.innerHTML =Party;
+			elLiner.innerHTML = "<a href='javascript:{}'>"+Party+"</a>";
+			
+	};
+
+	YAHOO.widget.DataTable.totalParticipated = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+		var isAlliance = oRecord.getData("isAlliance");
+		
+		if(isAlliance)
+			elLiner.innerHTML =	"";
+		
+		else
+			elLiner.innerHTML = ""+oData+"";
 			
 	};
 	var partyPerfRurlUrbnColDefs = [
 								{key: "partyName", label: "Party", sortable:true,
 								formatter:YAHOO.widget.DataTable.partyLink},		
-								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true},	
+								{key: "totalParticipated", label: "<div style='background-color:#7DCBC6;'>TP*</div>", sortable:true,formatter:YAHOO.widget.DataTable.totalParticipated},	
 		              	 	    {key: "totalSeatsWon", label: "<div style='background-color:#7DCBC6;'><%=seatsWon%></div>",formatter:"number", sortable:true},
 		              	 	 	{key: "completeVotesPercent", label: "<div style='background-color:#7DCBC6;'>CV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 		              	 	 	{key: "PVotesPercent", label: "<div style='background-color:#7DCBC6;'>PCV* %</div>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
@@ -1837,7 +1991,8 @@ function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 								  {key: "ruralUrbanParticipated", parser:"number"},
 								  {key: "ruralUrbanWon", parser:"number"},
 								  {key: "ruralUrbanVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
-								{key: "partyId", parser:"number"}
+								  {key: "partyId", parser:"number"},
+								  {key: "isAlliance"}
 									] 
         		};
 
@@ -1848,7 +2003,7 @@ function buildPartyPerfRulUrbanDataTable(divId,dtSourceArray)
 			    caption:"Party Performance In Rural/Urban Constituencies" 
 				};
 		
-		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable(divId, partyPerfRurlUrbnColDefs, partyPerfRurlUrbnDataSource,myConfigs);
+		partywiseResultsWithGenderDataTable = new YAHOO.widget.DataTable('partyPerfResultsDataTable', partyPerfRurlUrbnColDefs, partyPerfRurlUrbnDataSource,myConfigs);
   }  
     else
   {
@@ -3369,6 +3524,12 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 				</TR></Table>
 			</TD>
 		</TR>
+		
+		 <TR>
+			<TD valign="top" align="center">
+				<DIV id="ConstituecyAreaTypeSelectOptionsDiv"></DIV>
+			</TD>
+		</TR>
 
         <TR>
 			<TD valign="top" align="center">
@@ -3381,9 +3542,9 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 	
 	<div id="UbanPercentageWiseGraphSelectionDiv">
 		<table><tr>
-		<td><input type="radio" checked="true" name="urbanPer" value="percentage" onClick="buildUbanPercentageWisePartyDetailsGraph(UbanPercentageResult,'percentage')">
+		<td><input type="radio" checked="true" name="urbanPer" value="percentage" onClick="buildUbanPercentageWisePartyDetailsGraph()">
 		<b><font id="visiblePublicText" color="#4B74C6">View Graph by Party Gained Votes Percentage</font></b></td>
-		<td><input type="radio" name="urbanPer" value="seats" onClick="buildUbanPercentageWisePartyDetailsGraph(UbanPercentageResult,'seats')">
+		<td><input type="radio" name="urbanPer" value="seats" onClick="buildUbanPercentageWisePartyDetailsGraph()">
 		<b><font id="visiblePublicText" color="#4B74C6">View Graph by Party Gained Seats</font></b></td>
 		<td></td>
 		</tr></table>

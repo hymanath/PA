@@ -69,7 +69,7 @@
     <td>120450</td>
 	<td class="winTD">59452</td>
     <td>28056</td>
-	<td>21249</td>
+	<td>24288</td>
     <td></td>
 	<td></td>
     <td></td>
@@ -107,25 +107,25 @@
     <td>209626</td>
     <td>175912</td>
 	<td></td>
-    <td>41343</td>
-	<td>50380</td>
+    <td>41397</td>
+	<td>50382</td>
     <td class="winTD">&nbsp;&nbsp;73876&nbsp;&nbsp;</td>
 	<td></td>
     <td></td>
-	<td>23496</td>
+	<td>23494</td>
     <td>7444</td>
   </tr>
   <tr>
     <th ><a href="constituencyPageAction.action?constituencyId=68">Mahabubnagar</a></th>
 	<td>188156</td>
     <td>124706</td>
-	<td>37377</td>
-    <td>27308</td>
-	<td>17506</td>
+	<td>37506</td>
+    <td>25333</td>
+	<td>17518</td>
     <td></td>
-	<td class="winTD">&nbsp;&nbsp;39272&nbsp;&nbsp;</td>
+	<td class="winTD">&nbsp;&nbsp;39385&nbsp;&nbsp;</td>
     <td></td>
-	<td>1895</td>
+	<td>1879</td>
     <td>--</td>
   </tr>
   <tr>
