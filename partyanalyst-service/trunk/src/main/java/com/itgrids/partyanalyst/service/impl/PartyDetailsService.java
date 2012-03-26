@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -584,12 +585,20 @@ public class PartyDetailsService implements IPartyDetailsService {
 		 ResultStatus statusCode = new ResultStatus()  ;
 		 try {
 			PartyUpdatesEmail partyUpdatesEmail = new PartyUpdatesEmail();
-				 
+			 List<Object> PartyUpdatesEmails= partyUpdatesEmailDAO.getPartyUpdatesEmail(emailId,partyId);
+			 if(!(PartyUpdatesEmails.size() >0))
+			 {
+				 DateUtilService dateservice=new DateUtilService();
 				 partyUpdatesEmail.setEmail(emailId);
 				 partyUpdatesEmail.setParty(partyDAO.get(partyId));
 				 partyUpdatesEmail.setUnsubscribed("false");
+				 partyUpdatesEmail.setSubscribedDate(dateservice.getCurrentDateAndTime());
 				 partyUpdatesEmailDAO.save(partyUpdatesEmail);
-		
+			 }
+			 else
+			 {
+				 statusCode.setExceptionMsg("You have already subscribed for this party"); 
+			 }
 		     statusCode.setResultCode(ResultCodeMapper.SUCCESS);
 		 
 		     return statusCode;
