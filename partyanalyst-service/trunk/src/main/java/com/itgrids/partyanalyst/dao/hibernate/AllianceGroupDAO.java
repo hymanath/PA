@@ -83,4 +83,11 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 		return queryObject.list();	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAlliancesAndPartiesForAnElection(Long electionId)
+	{
+		return getHibernateTemplate().find("select model.group.groupId,model.group.groupName,model.party.partyId," +
+				" model.party.shortName from AllianceGroup model where model.group.groupId in(" +
+				" select model2.group.groupId from ElectionAlliance model2 where model2.election.electionId = ?)",electionId);
+	}
 }

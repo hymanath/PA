@@ -35,6 +35,18 @@ public class PartyElectionResultsWithAreaTypeDAO extends GenericDaoHibernate<Par
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAlliancesElectionResultInConstituencyAreaTypes(Long electionId, List<Long>partiesList)
+	{
+		Query query = getSession().createQuery("select sum(model.ruralParticipated),sum(model.ruralWon),sum(model.ruralVotesGained),sum(model.ruralValidVotes)," +
+				" sum(model.urbanParticipated),sum(model.urbanWon),sum(model.urbanVotesGained),sum(model.urbanValidVotes),sum(model.ruralUrbanParticipated)," +
+				" sum(model.ruralUrbanWon),sum(model.ruralUrbanVotesGained),sum(model.ruralUrbanValidVotes) from PartyElectionResultsWithAreaType model where " +
+				" model.election.electionId = ? and model.party.partyId in(:partiesList)");
+		query.setParameter(0, electionId);
+		query.setParameterList("partiesList", partiesList);
+		return query.list();
+	}
+	
 	public Integer deleteRecordsForAElection(Long electionId)
 	{
 		Query query = getSession().createQuery("delete from PartyElectionResultsWithAreaType model where model.election.electionId = ?");

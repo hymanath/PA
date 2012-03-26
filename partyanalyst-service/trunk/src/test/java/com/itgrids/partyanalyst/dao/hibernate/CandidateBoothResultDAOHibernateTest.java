@@ -439,7 +439,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetPanchayatWisePartiesResultForAElectionInATehsil()
 	{
-		List<Object[]> list = candidateBoothResultDAO.getPanchayatWisePartiesResultForAElectionInATehsil(844l,38l);
+		List<Object[]> list = candidateBoothResultDAO.getdata(1053l,38l);
 		
 		System.out.println(list.size());
 		
