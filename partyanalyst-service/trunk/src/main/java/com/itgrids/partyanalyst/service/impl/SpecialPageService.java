@@ -524,28 +524,38 @@ public class SpecialPageService implements ISpecialPageService{
 
 	public ResultStatus subScribeEmailAlertForAEvent(String emailId,
 			Long specialPageId) {
+		 DateUtilService dateUtilService = new DateUtilService();
 
-		log
-				.debug("Entered into subScribeEmailAlertForAEvent() method in SpecialPageService");
+		log.debug("Entered into subScribeEmailAlertForAEvent() method in SpecialPageService");
 
 		ResultStatus statusCode = new ResultStatus();
 		try {
+			
 			SpecialPageUpdatesEmail specialPageUpdatesEmail = new SpecialPageUpdatesEmail();
+			
+			 List<Object> SpecialPageUpdatesEmails= specialPageUpdatesEmailDAO.getSpecialPageUpdatesEmail(emailId,specialPageId);
+			 if(!(SpecialPageUpdatesEmails.size()>0))
+			 {
 			specialPageUpdatesEmail.setEmail(emailId);
 
 			specialPageUpdatesEmail.setSpecialPage(specialPageDAO
 					.get(specialPageId));
 			specialPageUpdatesEmail.setUnsubscribed("false");
+			specialPageUpdatesEmail.setSubscribedDate(dateUtilService.getCurrentDateAndTime());
 
 			specialPageUpdatesEmailDAO.save(specialPageUpdatesEmail);
+			 }
+			 else
+			 {
+				 statusCode.setExceptionMsg("You have already subscribed for this page"); 
+			 }
+			
 			statusCode.setResultCode(ResultCodeMapper.SUCCESS);
 			return statusCode;
 
 		} catch (Exception e) {
-			log
-					.error("Exception encountered in subScribeEmailAlertForAEvent() method in SpecialPageService, Check log for Details - "
+			log.error("Exception encountered in subScribeEmailAlertForAEvent() method in SpecialPageService, Check log for Details - "
 							+ e);
-			e.printStackTrace();
 			statusCode.setExceptionEncountered(e);
 			statusCode.setResultCode(ResultCodeMapper.FAILURE);
 			return statusCode;
