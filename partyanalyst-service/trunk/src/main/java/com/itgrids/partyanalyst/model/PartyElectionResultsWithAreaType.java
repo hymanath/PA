@@ -43,6 +43,12 @@ public class PartyElectionResultsWithAreaType implements Serializable{
 	private Long ruralUrbanParticipated;
 	private Long ruralUrbanWon;
 	private String ruralUrbanVotesGainedPercentage;
+	private Long ruralVotesGained;
+	private Long ruralValidVotes;
+	private Long urbanVotesGained;
+	private Long urbanValidVotes;
+	private Long ruralUrbanVotesGained;
+	private Long ruralUrbanValidVotes;
 
 	public PartyElectionResultsWithAreaType()
 	{}
@@ -180,6 +186,60 @@ public class PartyElectionResultsWithAreaType implements Serializable{
 	public void setRuralUrbanVotesGainedPercentage(
 			String ruralUrbanVotesGainedPercentage) {
 		this.ruralUrbanVotesGainedPercentage = ruralUrbanVotesGainedPercentage;
+	}
+
+	@Column(name = "rural_votes_gained")
+	public Long getRuralVotesGained() {
+		return ruralVotesGained;
+	}
+
+	public void setRuralVotesGained(Long ruralVotesGained) {
+		this.ruralVotesGained = ruralVotesGained;
+	}
+
+	@Column(name = "rural_valid_votes")
+	public Long getRuralValidVotes() {
+		return ruralValidVotes;
+	}
+
+	public void setRuralValidVotes(Long ruralValidVotes) {
+		this.ruralValidVotes = ruralValidVotes;
+	}
+
+	@Column(name = "urban_votes_gained")
+	public Long getUrbanVotesGained() {
+		return urbanVotesGained;
+	}
+
+	public void setUrbanVotesGained(Long urbanVotesGained) {
+		this.urbanVotesGained = urbanVotesGained;
+	}
+
+	@Column(name = "urban_valid_votes")
+	public Long getUrbanValidVotes() {
+		return urbanValidVotes;
+	}
+
+	public void setUrbanValidVotes(Long urbanValidVotes) {
+		this.urbanValidVotes = urbanValidVotes;
+	}
+
+	@Column(name = "rural_urban_votes_gained")
+	public Long getRuralUrbanVotesGained() {
+		return ruralUrbanVotesGained;
+	}
+
+	public void setRuralUrbanVotesGained(Long ruralUrbanVotesGained) {
+		this.ruralUrbanVotesGained = ruralUrbanVotesGained;
+	}
+
+	@Column(name = "rural_urban_valid_votes")
+	public Long getRuralUrbanValidVotes() {
+		return ruralUrbanValidVotes;
+	}
+
+	public void setRuralUrbanValidVotes(Long ruralUrbanValidVotes) {
+		this.ruralUrbanValidVotes = ruralUrbanValidVotes;
 	}
 	
 	

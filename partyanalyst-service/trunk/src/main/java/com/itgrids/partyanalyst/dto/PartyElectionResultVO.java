@@ -54,7 +54,14 @@ public class PartyElectionResultVO extends ConstituencyAreaTypeVO implements Ser
 	public Long fVotesPolled;
 	private BigDecimal assets;
 	private String gender;
+	private Boolean isAlliance = false;
 	
+	public Boolean getIsAlliance() {
+		return isAlliance;
+	}
+	public void setIsAlliance(Boolean isAlliance) {
+		this.isAlliance = isAlliance;
+	}
 	public String getGender() {
 		return gender;
 	}

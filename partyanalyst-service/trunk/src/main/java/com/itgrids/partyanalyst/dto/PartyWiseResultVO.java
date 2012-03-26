@@ -25,7 +25,14 @@ public class PartyWiseResultVO implements java.io.Serializable{
 	private Double votesPercentage;
 	private Long rank;
 	private Long validVotes;
+	private Boolean isAlliance = false;
 	
+	public Boolean getIsAlliance() {
+		return isAlliance;
+	}
+	public void setIsAlliance(Boolean isAlliance) {
+		this.isAlliance = isAlliance;
+	}
 	public Long getValidVotes() {
 		return validVotes;
 	}

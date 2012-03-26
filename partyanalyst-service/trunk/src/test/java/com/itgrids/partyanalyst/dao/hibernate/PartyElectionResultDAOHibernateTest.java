@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -72,7 +73,7 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<Object[]> list = partyElectionResultDAO.getBasicPartiesForAnElection(38l);
 		
@@ -81,6 +82,27 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		for(Object params : list)
 		{
 			System.out.println(params);
+		}
+	}*/
+	
+	public void testGetPartiesBasicResultForAnElection()
+	{
+		List<Long> partiesList = new ArrayList<Long>(0);
+		
+		partiesList.add(872l);
+		partiesList.add(886l);
+		partiesList.add(269l);
+		partiesList.add(265l);
+		
+		List<Object[]> list = partyElectionResultDAO.getPartiesBasicResultForAnElection(38l, partiesList);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
 		}
 	}
 	

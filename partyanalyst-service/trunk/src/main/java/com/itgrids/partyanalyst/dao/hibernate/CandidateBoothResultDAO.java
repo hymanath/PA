@@ -883,4 +883,16 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" P.panchayat.tehsil.tehsilId = ? group by P.panchayat.panchayatId,CBR.nomination.party.partyId ",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getdata(Long tehsilId,Long electionId)
+	{
+		Object[] params = {electionId,tehsilId};
+		return getHibernateTemplate().find("select P.panchayat.tehsil.tehsilName,P.panchayat.panchayatName,CBR.boothConstituencyElection.booth.partNo,CBR.boothConstituencyElection.boothResult.validVotes," +
+				" CBR.nomination.party.shortName,CBR.votesEarned from CandidateBoothResult CBR, " +
+				" HamletBoothElection HBE,PanchayatHamlet P where CBR.boothConstituencyElection.boothConstituencyElectionId = HBE.boothConstituencyElection.boothConstituencyElectionId and " +
+				" HBE.hamlet.hamletId = P.hamlet.hamletId and CBR.boothConstituencyElection.constituencyElection.election.electionId = ? and P.panchayat.tehsil.tehsilId = ? " +
+				" group by P.panchayat.tehsil.tehsilId,P.panchayat.panchayatId,CBR.nomination.party.partyId order by P.panchayat.tehsil.tehsilName,P.panchayat.panchayatName,CBR.nomination.party.shortName",params);
+	}
+	
+	
 }
