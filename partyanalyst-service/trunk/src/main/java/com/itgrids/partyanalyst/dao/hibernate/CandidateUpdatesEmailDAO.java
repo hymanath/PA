@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
 
@@ -10,5 +10,11 @@ public class CandidateUpdatesEmailDAO extends GenericDaoHibernate<CandidateUpdat
 	public CandidateUpdatesEmailDAO()
 	{
 		super(CandidateUpdatesEmail.class);
+	}
+	
+	public List<Object> getCandidateUpdatesEmail(String emailId ,Long candidateId)
+	{
+		Object[] params = {candidateId,emailId};
+		return getHibernateTemplate().find("select model from CandidateUpdatesEmail model where model.candidate.candidateId = ? and model.email = ?",params);
 	}
 }
