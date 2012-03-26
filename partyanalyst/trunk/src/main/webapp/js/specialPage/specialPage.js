@@ -1439,6 +1439,10 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
                showFirstFourNewsRecords(myResults);
 			}
+		 else if(jsObj.task == "setEmailAlertsForEvent")
+         {
+			   showStatusForEmailSubscription(myResults);
+			}
 		 else if(jsObj.task == "getFileByFileId")
 			{
                showNews(myResults,jsObj.arrayType);
@@ -2473,7 +2477,7 @@ function validateEmailField()
 
  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
  var url="specialEmailAlertsForUserAction.action?"+rparam;
-callAjax(jsObj,url);
+ callAjaxForSpecialPage(jsObj,url);
 
 }
 
@@ -2482,9 +2486,27 @@ function showStatusForEmailSubscription(results)
 	var str='';
 	if(results.resultCode == 0)
 	{
+		//sasi
+		if(results.exceptionMsg != null && results.exceptionMsg != '')
+		{
+			str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">'+results.exceptionMsg+'</span>';
+			
+		}
+		else
+		{
+	    str+='<span style="font-size: 13px; font-family: trebuchet MS;color:green">You are Subscribed For Email alerts Successfully</span>';
+		}
+	}
+	else
+	{
+		 str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">Unable To Process,Please Try Later</span>';
+	}
 		clearEmailFields();
 		document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
 	}
+document.getElementById("alertMsg").innerHTML = str;
+document.getElementById("emailId").value='';
+
 }
 
 function clearEmailFields(){

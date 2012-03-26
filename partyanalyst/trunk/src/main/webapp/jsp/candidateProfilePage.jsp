@@ -308,12 +308,15 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           
           <div class="ea-fc-sec">
             <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
-            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
+            
+            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email alert to get<br />
               updates of<br />
               <span class="li-red">${candidateVO.candidateName}</span>
               <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
+               <div id="alertmsg"> </div><!-- sasi -->
               <div id="alertMsg" style="dispaly:none"></div>
 			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>
+			 
             </div>
           </div>
           
@@ -486,7 +489,7 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
- <script type="text/javascript">
+ <script type="text/javascript"><!--
    var descriptions = '${descriptions}';
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
@@ -1329,20 +1332,25 @@ function displayUserDetails(results)
 }
 function showStatusForEmailSubscription(results){
 
-    $("#emailAlertDiv").dialog({ stack: false,
-							    height: 'auto',
-								width: 'auto',
-								position:'center',								
-								modal: true,
-								title:'<font color="Navy">Email Alert</font>',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	$("#emailAlertDiv").dialog();
+
 	var str='';
 	if(results.resultCode == 0){
-	str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';
+		if(results.exceptionMsg != null && results.exceptionMsg != '')
+		{
+			str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">'+results.exceptionMsg+'</span>';
+			
+		}
+		else
+		{
+	    str+='<span style="font-size: 13px; font-family: trebuchet MS;color:green">You are Subscribed For Email alerts Successfully</span>';
+		}
 	}
-    document.getElementById("emailAlertDiv").innerHTML = str;
+	else
+	{
+		 str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">Unable To Process,Please Try Later</span>';
+	}
+    document.getElementById("alertmsg").innerHTML = str;
+    document.getElementById("emailId").value='';
 }
 function setDefaultImage(img)
 {
@@ -2492,6 +2500,6 @@ message_Obj.getUserDetails();
 <s:if test="contentId != null">
 getContent();
 </s:if>
-</script>
+--></script>
 </body>
 </html>
