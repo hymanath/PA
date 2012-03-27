@@ -642,7 +642,7 @@ function showCurrentlyElectedCandidate()
 
 	 if(constituencyPageMainObj.presentAssemblyCandidate != null && constituencyPageMainObj.presentAssemblyCandidate.length != 0)
 	{
-		
+		var title = "MLA's Of Assembly Constituencies In "+constituencyPageMainObj.constituencyInfo.constituencyName+" Parliament"; 
 	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentAssemblyCandidate); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
@@ -664,10 +664,10 @@ function showCurrentlyElectedCandidate()
 			]; 
 		 
 	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
-		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"<font style='color:#C20000;font-weight:bold;font-size:12px;font-style: normal;'>"+title+"</font>"});
 	else
-		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
-
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"<font style='color:#C20000;font-weight:bold;font-size:12px;font-style: normal;'>"+title+"</font>"});
+    
 	}
 /*
      if(constituencyPageMainObj.presentParliamentCandidate != null && constituencyPageMainObj.presentParliamentCandidate.length != 0)
@@ -892,7 +892,7 @@ function buildAnalyzeConstituencyWindow()
 	}
 	else {
       str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;" >';
-	  		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" title="Click to View Previous Posts" style="margin-right:10px;" class="buttnStyle">Previous Posts</a>';
+	  		str += '<a href="javascript:{}" class="buttnStyle" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')" >Previous Posts</a>';
 		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;" class="buttnStyle">Assess</a>';
 
 		str += '</div>';			
@@ -944,11 +944,11 @@ function buildConstituencyConnectPeopleWindow()
 	if(constituencyConnectedPeople.length == 0 && userLoginStatus == "false")
 	{
 		var errorStr = '';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" > No people have been connected.</div>';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Register to connect to your area.</div>';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >Already Have an account? <a href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'"><b>Login</b></a></div>';
+		errorStr += '<div class="view-all" style="font-family: Helvetica;" > No people have been connected.</div>';
+		errorStr += '<div class="view-all" style="margin-top: 6px;font-family: Helvetica;" >Register to connect to your area.</div>';
+		errorStr += '<div class="view-all" style="margin-top: 6px;font-family: Helvetica;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="view-all" style="margin-top: 6px;font-family: Helvetica;" >To connect to your district people <a href="freeUserRegistration.action" style="margin-right: 25px;"><b>Register</b></a></div><br/>';
+		errorStr += '<div class="view-all" style="margin-top: 6px;font-family: Helvetica;" >Already Have an account? <a style="margin-right: 40px;" href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'"><b>Login</b></a></div>';
 		
 		bodyElmt.innerHTML = errorStr;
 		return;
@@ -956,10 +956,10 @@ function buildConstituencyConnectPeopleWindow()
 	else if(constituencyConnectedPeople.length == 0 && userLoginStatus == "true")
 	{
 		var errorStr = '';
-		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" > No people have been connected.</div>';
-		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" >Register to connect to your area.</div>';
-		errorStr += '<div class="errorStr" style="font-family: Comic Sans MS;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="view-all" style="font-family: Comic Sans MS;" >To connect to your district people <a href="freeUserRegistration.action"><b>Register</b></a></div>';		
+		errorStr += '<div class="errorStr" style="font-family: Helvetica;" > No people have been connected.</div>';
+		errorStr += '<div class="errorStr" style="margin-top: 6px;font-family: Helvetica;" >Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr" style="margin-top: 6px;font-family: Helvetica;" >Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="view-all" style="margin-top: 6px;font-family: Helvetica;" >To connect to your district people <a href="freeUserRegistration.action"><b>Register</b></a></div>';		
 		bodyElmt.innerHTML = errorStr;
 		return;
 	}
@@ -1418,7 +1418,7 @@ function buildZptcResults(results){
 		document.getElementById('zptcCandidateLink').innerHTML='';;
 		return;
 	}
-	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
+	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency ZPTC Candidates Election Results" onclick="redirectZptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
 	for(var i in results)
@@ -1458,7 +1458,7 @@ function buildMptcResults(results){
 	var candLink = document.getElementById("mptcCandidateLink");
 	if(candLink == null)
 		return;
-	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
+	var linkRef = '<a href="javascript:{}" title="Click here to View '+constituencyName+' '+consticType+' Constituency MPTC Candidates Election Results" onclick="redirectMptcCandidateLink()" style="text-decoration:none;float:right" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	  totalMptcSeats = results[0].totalSeats;
 	for(var i in results)
