@@ -97,6 +97,7 @@
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
+		
 
  </script>
 
@@ -114,7 +115,7 @@
 	 #statePage_header
 	{
 	background: #06ABEA;
-	border-radius: 7px;
+	border-radius: 3px;
     color: #FFFFFF;
     font-size: 15px;
     font-weight: bold;
@@ -145,7 +146,7 @@ margin-top:10px;
 margin-right:1px;
 }
 .productFeatureHeaderBackground_center {
-    background-image: url("images/icons/homePage_new/blue_header_center.jpg");
+  background-image: url("images/icons/homePage_new/blue_header_center.jpg");
     height: 40px;
 	
 }
@@ -200,7 +201,7 @@ font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     font-weight: bold;
     text-decoration: underline;
 }
-#stateNewsBody{
+#stateNewsBody,#stateNewsBody1,#stateNewsBody2{
 border-left:1px solid #B3C1CE;
 border-right:1px solid #B3C1CE;
 border-bottom:1px solid #B3C1CE;
@@ -229,6 +230,21 @@ font-size:12px;
 }
 #yui-dt0-th-partyName-liner span a{
 color:none;
+}
+#ministerDiv_body
+{
+	 border-left: 1px solid #E0E0D6;
+    border-right: 1px solid #E0E0D6 ;
+    border-bottom: 1px solid #E0E0D6;
+}
+#ministerDiv a:hover{
+text-decoration:none;
+}
+#ministerDiv_body a:hover{
+text-decoration:none;
+}
+#ministersOfState a:hover{
+text-decoration:none;
 }
 </style>
 </head>
@@ -277,6 +293,54 @@ color:none;
 			<div id="stateInformation_main">					
 					<div id="stateInformation_body" style="margin-top: 10px;">
 						<!--<div class="stateInformation_head">${statePage.stateName} At A Glance :${statePage.stateName} </div>-->
+
+						<c:if test="${electionGoverningBodyVO != null}">
+						 <div id="ministerDiv" class="stateInformation_head">
+							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
+								<tr>
+								<td width="8%"><img src="images/icons/districtPage/header_left.gif"/></td>
+								<td>
+								<div class="districtPageRoundedHeaders_center" style="height:14px;width:240px;">
+								<span>Chief Minister of ${statePage.stateName}</span>
+								</div>
+								</td>
+								<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+								</table>
+						 </div>
+						 
+						 <div id="ministerDiv_body" style="margin-right: 2px;">
+							
+									<table>
+									<tr>
+									<td>
+									<div>
+									<a href="candidatePageAction.action?candidateId=${electionGoverningBodyVO.candidateId}"><img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
+									</div></td><td>
+									<table>
+									<tr>
+									
+									<td style="font-size: 12px; font-weight: normal;" colspan="2"><a href="candidatePageAction.action?candidateId=${electionGoverningBodyVO.candidateId}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"><span style="color:#8B4724;font-weight:bold;font-size:11px;"><c:out value="${electionGoverningBodyVO.candidateName}"></c:out></span></a></td>
+									</tr>
+									<tr>
+									<th style="font-size: 13px; font-weight: bold;">Party</th>
+									<td style="font-size: 12px; font-weight: normal;">:&nbsp&nbsp<a href="partyPageAction.action?partyId=${electionGoverningBodyVO.partyId}"><span style="color:#8B4724;" title="Click here to view <c:out value='${electionGoverningBodyVO.partyName}'/> Details"><c:out value="${electionGoverningBodyVO.partyName}"></c:out></span></a></td>
+									
+									</tr>
+									<tr>
+									<th style="font-size: 13px; font-weight: bold;">FromDate</th>
+									<td style="font-size: 12px; font-weight: normal;">:&nbsp&nbsp<c:out value="${electionGoverningBodyVO.startDate}"></c:out></td>
+									</tr>
+									
+							</table></td></tr></table>
+							
+						 </div>
+						 <div id="ministersOfState">
+						 <a href="ministersPageAction.action?electionId=${electionGoverningBodyVO.electionId}">
+							<input type="submit" value="View Ministers of ${statePage.stateName}" style="margin-top: 10px; margin-left: 40px;width:220px;background:#6380BA;color:#FFFFFF;border: medium none;border-radius: 4px;padding:3px;" title="Click here to view Ministers of <c:out value='${statePage.stateName}'/> "/></a>
+						 </div>
+						 </c:if>
+
                          <div class="stateInformation_head">
 							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
 								<tr>
@@ -346,7 +410,8 @@ color:none;
 							</table>							
 						</div>
 						</c:if>
-						<div class="productFeatureMain" style="margin-top:20px;margin-left:-12px;">							
+						<c:if test="${electionGoverningBodyVO == null}">
+						 <div class="productFeatureMain" style="margin-top:20px;margin-left:-12px;">							
 							  <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
@@ -366,6 +431,7 @@ color:none;
 								
 							</div>						
 						</div>
+						</c:if>
 					</div>
 				
 		</div>
@@ -383,7 +449,32 @@ color:none;
 	
 		</div>
 
-			<div id="statePage_electinoResults_nav_div">
+			<c:if test="${electionGoverningBodyVO != null}">
+				<div class="productFeatureMain" style="margin-top:15px;">							
+							  <div class="productFeatureHeader" id="productFeatureHeaderDiv" style="margin-bottom: -5px;">
+								
+										<div class="productFeatureHeaderBackground_center" style="background:#06ABEA;border-radius: 3px 3px 3px 3px; text-align: left; height: 30px;">
+											<span class="headerLabelSpan" style="left: 16px; top: 6px;">
+												${statePage.stateName} News 
+											</span>
+										</div>
+									
+							</div>
+							<table cellspacing="10"><tr><td>
+							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;height:auto;">
+								
+							</div></td><td>
+							<div id="stateNewsBody1" class="productFeatureBody" style="overflow:hidden;height:auto;">
+							</div></td>
+							<td>
+							<div id="stateNewsBody2" class="productFeatureBody" style="overflow:hidden;height:auto;"></div>
+							</td>
+							</tr></table>
+						</div>
+			
+	</c:if>	
+			
+		<div id="statePage_electinoResults_nav_div">
 				<table width = "100%" style="width:100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td style="vertical-align:top;width:250px;">
@@ -399,6 +490,8 @@ color:none;
 </div>
 
 <script type="text/javascript">
+		var stateName = "${statePage.stateName}"; 
+		var eleGoverningBodyVOValue ="${electionGoverningBodyVO}" ;
 
 		statePageObj.stateDetails.stateId = '${statePage.stateId}';
 		statePageObj.stateDetails.stateName = '${statePage.stateName}';
@@ -434,7 +527,8 @@ color:none;
 					statePageObj.electionResults.push(obj);
 			</c:forEach>			
 		</c:if>
-		initializeStatePage();		
+		initializeStatePage();
+		
 	</script>
 
 </body>
