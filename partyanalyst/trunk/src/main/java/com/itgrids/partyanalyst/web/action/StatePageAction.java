@@ -23,11 +23,14 @@ import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -55,7 +58,16 @@ public class StatePageAction extends ActionSupport implements
 	private String stateMapName;
 	private JSONObject jsObj;
 	private String task;
-	  
+	private ElectionGoverningBodyVO electionGoverningBodyVO;
+	
+	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
+		return electionGoverningBodyVO;
+	}
+
+	public void setElectionGoverningBodyVO(
+			ElectionGoverningBodyVO electionGoverningBodyVO) {
+		this.electionGoverningBodyVO = electionGoverningBodyVO;
+	}
 	public String getStateMapName() {
 		return stateMapName;
 	}
@@ -176,6 +188,9 @@ public class StatePageAction extends ActionSupport implements
    	  	
    	  	if(statePage == null || districtData == null)  	  	       	  		
     	 return ERROR;
+   	  	
+   	 electionGoverningBodyVO = statePageService.getChiefMinisterForAState(Long.parseLong(stateId));
+   	 
    	return SUCCESS;
     }
 	
