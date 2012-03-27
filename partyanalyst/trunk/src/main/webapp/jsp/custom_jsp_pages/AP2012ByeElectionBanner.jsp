@@ -47,9 +47,233 @@
 .winTD{background-color : GreenYellow;}
 
 .resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
+.buttonClass {
+	background-color: background;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 6px;
+}
 </style>
-<h3 class="resulth3">2012 Andhra Pradesh Bye Election Results - Partywise Votes Gained Info</h3>
-<table width="100%" class="resulttableclass" style="margin-top:9px;">
+
+<div id="upComing" style="margin-top:25px;">
+<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
+<div style="text-align:justify;margin:10px;padding:10px;"> 
+<span style="color:#ED5B21;font-weight:bold;">In Parliament</span> - Nellore MP <a href="candidateElectionResultsAction.action?candidateId=13626">Mekapati Rajamohan Reddy</a>, who is a well-known supporter of YSR Congress Party President Jagan Mohan Reddy, has submitted his resignation to Lok Sabha Speaker Meira Kumar on August 24. 
+<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>
+<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 73%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv"><table width="90%" class="legendTable" id="WinningCandidateTableClass"><tbody><tr><th></th><td></td><th>Votes Earned</th><td>430235</td></tr><tr><td><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a></td><th>Votes Percentage</th><td>42.92 %</td></tr><tr><th>Party</th><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a></td><th>Votes Margin Gained</th><td>54993</td></tr><tr><th>Party Flag</th><td><img height="30" width="40" src="/PartyAnalyst/images/party_flags/INC.png"></td><th>Votes Margin % Gained</th><td>5.49 %</td></tr></tbody></table></div></fieldset>
+
+
+</div>
+<div>
+<div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in coming days due to JAGAN MLA's who voted against to no-confidence motion and disqualified MLA's by speaker Nadendla Manohar.</div>
+<div style="font-weight:bold;font-family:verdana;font-size:12px;margin:17px;">
+<span>Total Assembly Constituencies - <font color="#05A8E9">17</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">3</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">1</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">13</font></span>
+</div>
+<table class="spltableclass" style="margin-top:-7px;text-align:center;margin-left:12px;width: 98%;">
+<tbody>
+ <tr>
+   
+   <th style="background:#21B2ED; color:#FFFFFF; text-align: center; padding: 0px;width: 1%;">Constituency</th>
+   <th style="background: #21B2ED; color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 4%;">District</th>
+   <th style="background:#21B2ED; color: rgb(255, 255, 255); text-align: left; padding: 5px 5px 5px 6px;">Disqualified MLA Name</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 10%;">Votes Earned In 2009</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 9%;">Majority Votes In 2009</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 5px 0px;">Opposition Candidate Name</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 13%;">Detailed Results</th>
+   </tr>
+   <tr>
+   
+   <td><a href="constituencyPageAction.action?constituencyId=227" >Ongole</a>
+   </td>
+   <td><a href="districtPageAction.action?districtId=18&districtName=Prakasam">Prakasam</a></td>
+   <td>Balineni Srinivasa Reddy - INC
+   </td>
+   <td>67,214
+   </td>
+   <td>22,986
+   </td>
+   <td><a href="candidateElectionResultsAction.action?candidateId=2657">Edara Hari Babu</a> - <a href="partyPageAction.action?partyId=872">TDP</a>
+   </td>
+   <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(227,'Assembly',2009)">View Complete Results</a>
+   </td>
+   </tr>
+   <tr>
+   </td>
+   <td><a href="constituencyPageAction.action?constituencyId=238" >Udayagiri
+   </td>
+   <td><a href="districtPageAction.action?districtId=19&districtName=Nellore">Nellore</a></td>
+   <td>Mekapati Chandrasekhar Reddy - INC
+   </td>
+   <td>69,352
+   </td>
+   <td>13,482
+   </td>
+   <td><a href="candidateElectionResultsAction.action?candidateId=3583">Kambham Vijayarami Reddy</a> - <a href="partyPageAction.action?partyId=872">TDP</a>
+   </td>
+   <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(238,'Assembly',2009)">View Complete Results</a>
+   </td>
+   </tr>
+   <tr>
+   </td>
+   <td><a href="constituencyPageAction.action?constituencyId=159" >Ramachandrapuram
+   </td>
+	<td><a href="districtPageAction.action?districtId=14&districtName=East Godavari">East Godavari</a></td>
+   <td>Pilli SubhashChandra Bose - INC
+   </td>
+   <td>56,589
+   </td>
+   <td>4031
+   </td>
+   <td><a href="candidateElectionResultsAction.action?candidateId=1825">Thota  Thrimurtulu - <a href="partyPageAction.action?partyId=662">PRP</a>
+   </td>
+   <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(159,'Assembly',2009)">View Complete Results</a>
+   </td>
+   
+   </tr>
+   <tr>
+   <td ><a href="constituencyPageAction.action?constituencyId=112" >Narasannapeta
+   </td>
+   <td><a href="districtPageAction.action?districtId=11&districtName=Srikakulam">Srikakulam</a></td>
+   <td >Dharmana Krishnadasu - INC
+   </td>
+   <td >60,426
+   </td>
+   <td >17,589
+   </td>
+   <td > <a href="candidateElectionResultsAction.action?candidateId=1450">Baggu Lakshmana Rao </a> - <a href="partyPageAction.action?partyId=872">TDP</a>
+   </td>
+   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(112,'Assembly',2009)">View Complete Details</a>
+   </td>
+   </tr>
+   <tr>
+   <td ><a href="constituencyPageAction.action?constituencyId=205" >Macherla</td>
+   <td><a href="districtPageAction.action?districtId=17&districtName=Guntur">Guntur</a></td>
+   <td >Pinnelli Ramakrishna Reddy - INC</td>
+
+    <td>66,953</td>
+	<td>9785</td>
+	<td><a href="candidateElectionResultsAction.action?candidateId=2554"> Julakanti  Brahmananda Reddy</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+	<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(205,'Assembly',2009)">View Complete Details</a></td>
+   </tr>
+   <tr>
+   <td ><a href="constituencyPageAction.action?constituencyId=173" >Narsapur</td>
+   <td><a href="districtPageAction.action?districtId=15&districtName=West Godavari">West Godavari</a></td>
+   <td>Prasada Raju - INC</td>
+   <td>58,560</td>
+   <td>17,325</td>
+   <td><a href="candidateElectionResultsAction.action?candidateId=1997">Kothapalli Subbarayudu (Pedababu)</a> - <a href="partyPageAction.action?partyId=662">PRP</a></td>
+   <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(173,'Assembly',2009)">View Complete Details</a></td>
+   </tr>
+   
+   <tr><td ><a href="constituencyPageAction.action?constituencyId=176" >Polavaram (ST)</a></td>
+   <td><a href="districtPageAction.action?districtId=15&districtName=West Godavari">West Godavari</a></td>
+   <td >Tellam Balaraju - INC</td>
+   <td >50,298</td>
+   <td >5664</td>
+   <td > <a href="candidateElectionResultsAction.action?candidateId=2093">Punem  Singanna Dora </a>- <a href="partyPageAction.action?partyId=872">TDP</a></td>
+   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(176,'Assembly',2009)">View Complete Details</a></td>
+   </tr>
+   <tr>
+   <td ><a href="constituencyPageAction.action?constituencyId=140" >Payakaraopet (SC)</a></td>
+   <td><a href="districtPageAction.action?districtId=13&districtName=Visakhapatnam">Visakhapatnam</a></td>
+   <td >Golla Baburao - INC</td>
+   <td >50,698</td>
+   <td >656</td>
+   <td > <a href="candidateElectionResultsAction.action?candidateId=1694">Chengala Venkatarao</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(140,'Assembly',2009)">View Complete Details</a></td>
+   </tr>
+   <tr>
+   <td ><a href="constituencyPageAction.action?constituencyId=212" >Prathipadu (SC)</td>
+   <td><a href="districtPageAction.action?districtId=17&districtName=Guntur">Guntur</a></td>
+   <td >Sucharitha Mekathoti - INC</td>
+   <td >66,324</td>
+   <td >2042</td>
+   <td ><a href="candidateElectionResultsAction.action?candidateId=2441">Kandukuri Veeraiah</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(212,'Assembly',2009)">View Complete Details</a></td>
+   </tr>
+  <tr>
+  <td ><a href="constituencyPageAction.action?constituencyId=246" >Railway Kodur (SC)</td>
+  <td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></td>
+  <td >Koramutla Srinivasulu - INC</td>
+  <td >51,747</td>
+  <td >12,388</td>
+  <td ><a href="candidateElectionResultsAction.action?candidateId=2888">Ajay Babu Nandavaram Benjiman</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+  <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(246,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=252" >Rajampet</td>
+<td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></td>
+<td>Akepati Amarnath Reddy - INC</td>
+<td>60,397</td>
+<td>12,342</td>
+<td><a href="candidateElectionResultsAction.action?candidateId=2863">Madan Mohan Reddy K</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(252,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=248" >Rayachoti</td>
+<td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></td>
+<td >Gadikota Srikanth Reddy - INC</td>
+<td >71,901</td>
+<td >14,832</td>
+<td ><a href="candidateElectionResultsAction.action?candidateId=3494">Sugavasi Palakondrayudu</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(248,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+
+
+   <tr>
+<td ><a href="constituencyPageAction.action?constituencyId=298" >Ananthapur</td>
+<td><a href="districtPageAction.action?districtId=22&districtName=Anantapur">Anantapur</a></td>
+<td >B.Gurunatha Reddy - INC</td>
+<td >45,275</td>
+<td >13,242</td>
+<td ><a href="candidateElectionResultsAction.action?candidateId=3435">Mahalakshmi Sreenivasulu</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(298,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=276" >Rayadurg</td>
+<td><a href="districtPageAction.action?districtId=22&districtName=Anantapur">Anantapur</a></td>
+<td >Kapu Ramachandra Reddy - INC</td>
+<td >76,259</td>
+<td >14,091</td>
+
+<td ><a href="candidateElectionResultsAction.action?candidateId=3463">Mettu Govinda Reddy</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(276,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=265" >Yemmiganuru</td>
+<td><a href="districtPageAction.action?districtId=21&districtName=Kurnool">Kurnool</a></td>
+<td >K. Chenna Kesava Reddy - INC</td>
+<td >53,766</td>
+<td >2323</td>
+<td ><a href="candidateElectionResultsAction.action?candidateId=3111">B V Mohan Reddy</a> - <a href="partyPageAction.action?partyId=872">TDP</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(265,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=254" >Allagadda</td>
+<td><a href="districtPageAction.action?districtId=21&districtName=Kurnool">Kurnool</a></td>
+<td >Bhooma Shobha Nagireddy - PRP</td>
+<td >61,555</td>
+<td >1958</td>
+<td ><a href="candidateElectionResultsAction.action?candidateId=2966">Gangula Prathapa Reddy</a> - <a href="partyPageAction.action?partyId=362">INC</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(254,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=94" >Parkal</td>
+<td><a href="districtPageAction.action?districtId=9&districtName=Warangal">Warangal</a></td>
+<td >Konda Surekha - INC</td>
+<td >69,135</td>
+<td >12,800</td>
+<td ><a href="candidateElectionResultsAction.action?candidateId=1203">Bikshapathy Moluguri</a> - <a href="partyPageAction.action?partyId=886">TRS</a></td>
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(94,'Assembly',2009)">View Complete Details</a></td>
+</tr>
+</tbody></table>
+</div></div>
+
+<span id="imageId"><img title="Click Here To Expand" style="display:none;margin-left:0px;margin-top:-15px" src="images/icons/plusImg .png" onclick="showVotesInfo('votesInfoId')"></img></span><a href="javascript:{}" onclick="showVotesInfo('votesInfoId')" style="text-decoration: none;"><h3 style="margin: 13px; width: 580px; font-family: verdana; font-size: 13px;" class="buttonClass">
+View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</h3></a>
+<table width="100%" class="resulttableclass" style="margin-top:9px;display:none;" id="votesInfoId">
   <tr>
     <th style="background-color:#21B2ED;color:#fff;">Constituency</th>
     <th>Total Voters</th>
@@ -159,7 +383,7 @@
 
 <table width="100%">
 <tr>
-<td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
+<!--<td width="45%"><div><span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Andhra Pradesh 2012 Bye Election Schedule</span>
 </div>
 <table cellpadding="6px" cellspacing="2px" style="margin-top:12px;margin-left:12px;border:1px solid #cdcdcd; border-collapse:collapse;font-size:13px;">
  <tbody><tr style="background:#3399cc;color:#fff;">
@@ -243,11 +467,11 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <!--
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a style="color: rgb(255, 255, 255); background-color: threeddarkshadow; font-weight: bold; padding: 3px;" href="electionDetailsReportAction.action?electionId=116&stateID=1&stateName=Andhra Pradesh&electionType=Assembly&electionTypeId=2&year=2010"> 2010</a>--></div>
-<!--<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 25px;"> Constituencies Participating In Bye Election</h3>--><br>
+<!--<h3 style=" font-size: 12px;margin-left: 9px;margin-top: 25px;"> Constituencies Participating In Bye Election</h3>--<br>
 
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a href="constituencyPageAction.action?constituencyId=68" style="font-size:12px;font-family:verdana;">Mahabubnagar </a>   :   <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;">Death of sitting MLA Rajeswar Reddy.</span>
-<!--<a href="javascript:{}" onclick="ByeElectionReason()">view Reason</a>--><br><br>
+<!--<a href="javascript:{}" onclick="ByeElectionReason()">view Reason</a>-><br><br>
 <img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a  href="constituencyPageAction.action?constituencyId=67" style="font-size:12px;font-family:verdana;">Kollapur</a>,
 
@@ -258,36 +482,35 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 <a  href="constituencyPageAction.action?constituencyId=1" style="font-size:12px;font-family:verdana;">Adilabad</a>,
 
 <a href="constituencyPageAction.action?constituencyId=16" style="font-size:12px;font-family:verdana;">Kamareddy  :              </a> <span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"><div style="margin-left:13px;">Resignation of sitting MLAs of these constituencies Jupally Krishna Rao, Rajaiah, Nagam Janardhan Reddy Jogu Ramanna Gampa Goverdhan for their seats and respective parties.</div></span><br>
-<!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>--><img src="images/icons/diamond.png" style="margin-left:3px;"/>
+<!--<a href="javascript:{}" onclick="FiveConstituenciesByeElectionReason()">view Reason</a>-><img src="images/icons/diamond.png" style="margin-left:3px;"/>
 <a href="constituencyPageAction.action?constituencyId=233" style="font-size:12px;font-family:verdana;">Kovur  :                   </a><span style="font-weight: normal; font-family:'Trebuchet MS',Arial,Helvetica,sans-serif; font-size: 14px;"> Prasanna Kumar Reddy resigned from Telugu Desam Party.
 &nbsp;&nbsp;&nbsp;Andhra Pradesh assembly Speaker N. Manohar accepted &nbsp;resignation.
 
 
 &nbsp;&nbsp;&nbsp;He has been moving close with YSR Congress Party and its &nbsp;chief YS &nbsp;&nbsp;&nbsp;Jagan Mohan Reddy. Nallapureddy is contesting the bye &nbsp;election in &nbsp;&nbsp;&nbsp;Kovur on YSR Congress Party.
-<!--Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>-->
+<!--Assembly Membership of Nallapureddy Prasanna Kumar Reddy &nbsp;&nbsp;&nbsp;&nbsp; has been  cancelled under Anti Defection Law.</span><a href="javascript:{}" onclick="KovurConstituencyByeElectionReason()">view Reason</a>->
 
 
 <br><br><div id="KovurByeElectionInfoDiv_Body"></div>
 
-</td>
+</td>-->
 </tr>
 </table>
-
-
-
+<div></div>
 
 <div style="background:#ffffff;">
 <div style="margin-top:0px;background:#ffffff;">
 <div style="margin-top:12px;">
-<span style="background:#ED5B21;border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;">Candidates Contesting in Bye Election
+<span style="border-radius:3px;-moz-border-radius:3px;font-weight:bold;font-size:12px;margin-left:15px;color:#ffffff;font-family:verdana; padding: 6px 7px 7px;"></span>
 </div>
 <div style="margin:14px;font-weight:bold;padding-right:10px;background:#ffffff; width:947px;">
 
 <style>
+.thStyle{background:#5e5e5e;color:#fff;font-weight:bold;text-align: center;}
 .spltableclass a{text-decoration:none;}
 .spltableclass a:hover{text-decoration:underline;}
 .spltableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
-.spltableclass td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;height:35px;}
+.spltableclass td{border:1px solid #d3d3d3;width:1%;padding:5px 3px;color:#3d3d3d;height:35px;}
 .spltableclass th:nth-child(2){background:#fcfd03;color:#000;}
 .spltableclass th:nth-child(2) a{color:#000;}
 .spltableclass th:nth-child(3){background:#ffbfcd;color:#000;}
@@ -308,7 +531,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 
 </style>
 
-<table width="100%" class="spltableclass">
+<!--<table width="100%" class="spltableclass">
   <tr>
     <th >CONSTITUENCY</th>
     <th ><a href="partyPageAction.action?partyId=872">TDP</a></th>
@@ -375,7 +598,7 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
     <td>&nbsp;</td>
 	 <td>&nbsp;</td>
   </tr>
-</table>
+</table>-->
 
 
 
@@ -402,3 +625,34 @@ Participating Constituencies Andhra Pradesh 2012 Bye Elections
 </div>
 
 </div>
+<script type="text/javascript">
+function showVotesInfo(tableId)
+{
+	$("#votesInfoId").slideToggle("slow");
+	if(document.getElementById("votesInfoId").style.display == 'block')
+	   document.getElementById("votesInfoId").style.display = 'none';
+	else if(document.getElementById("votesInfoId").style.display == 'none')
+	   document.getElementById("votesInfoId").style.display = 'block';
+	
+	/*var imageIdElmt = document.getElementById("imageId");
+	var str='';
+	str+='<img title="Click Here To Collapse" style="margin-left:0px;margin-top:-27px" src="images/icons/minusImage.png" onclick="hideVotesInfo()"></img>';
+	imageIdElmt.innerHTML = str;*/
+
+}
+function hideVotesInfo(tableId)
+{
+	var imageIdElmt = document.getElementById("imageId");
+	document.getElementById("votesInfoId").style.display = 'none';
+	var str='';
+	str+='<img title="Click Here To Expand" style="margin-left:0px;margin-top:-27px" src="images/icons/plusImg .png" onclick="showVotesInfo()"></img>';
+	imageIdElmt.innerHTML = str;
+
+}
+function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+	{
+	   
+	   var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
+	}
+</script>
