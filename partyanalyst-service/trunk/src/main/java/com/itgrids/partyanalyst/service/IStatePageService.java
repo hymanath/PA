@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
@@ -24,5 +25,7 @@ public interface IStatePageService {
 	public List<CensusVO> getCensusDetails(Long stateId,int year);
 	
 	public StateElectionResultsVO getStateElectionResults(Long electionId);
+	
+	 public ElectionGoverningBodyVO getChiefMinisterForAState(Long stateId);
 	
 }
