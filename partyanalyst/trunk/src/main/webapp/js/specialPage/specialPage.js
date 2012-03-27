@@ -2486,7 +2486,6 @@ function showStatusForEmailSubscription(results)
 	var str='';
 	if(results.resultCode == 0)
 	{
-		//sasi
 		if(results.exceptionMsg != null && results.exceptionMsg != '')
 		{
 			str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">'+results.exceptionMsg+'</span>';
@@ -2494,7 +2493,7 @@ function showStatusForEmailSubscription(results)
 		}
 		else
 		{
-	    str+='<span style="font-size: 13px; font-family: trebuchet MS;color:green">You are Subscribed For Email alerts Successfully</span>';
+			str+='<span style="font-size: 13px; font-family: trebuchet MS;color:green">You are Subscribed For Email alerts Successfully</span>';
 		}
 	}
 	else
@@ -2503,10 +2502,8 @@ function showStatusForEmailSubscription(results)
 	}
 		clearEmailFields();
 		document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
-	}
-document.getElementById("alertMsg").innerHTML = str;
-document.getElementById("emailId").value='';
-
+		document.getElementById("alertMsg").innerHTML = str;
+		document.getElementById("emailId").value='';
 }
 
 function clearEmailFields(){
