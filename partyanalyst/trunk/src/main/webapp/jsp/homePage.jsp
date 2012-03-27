@@ -336,12 +336,18 @@ text-decoration:none;
          <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180" >
           <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">News</u> : 
 		  
-		  <!-- Now You Can View HighLights Of <a href="electionDetailsReportAction.action?electionId=181&stateID=27&stateName=Uttar Pradesh&electionType=Assembly&electionTypeId=2&year=2012">Uttar Pradesh,</a> <a  href="electionDetailsReportAction.action?electionId=182&stateID=21&stateName=Punjab&electionType=Assembly&electionTypeId=2&year=2012">Punjab,</a> <a href="electionDetailsReportAction.action?electionId=184&stateID=26&stateName=Uttaranchal&electionType=Assembly&electionTypeId=2&year=2012">Uttaranchal,
-		  </a>
-		  <a href="electionDetailsReportAction.action?electionId=183&stateID=16&stateName=Manipur&electionType=Assembly&electionTypeId=2&year=2012">Manipur, </a><a href="electionDetailsReportAction.action?electionId=185&stateID=6&stateName=Goa&electionType=Assembly&electionTypeId=2&year=2012">Goa, </a><a href="electionDetailsReportAction.action?electionId=126&stateID=7&stateName=Gujarat&electionType=Assembly&electionTypeId=2&year=2012">Gujarat</a> States Previous Election Results to know Present Parties & Candidates Previous Results, <a href="javascript:{}"  onclick="openAssembly2011Window()">Pulivendula Bi Election 2011 Results</a> , <a href="javascript:{}"  onclick="openKadapa2011Window()">Kadapa Bi Election 2011 Results</a> , <a href="javascript:{}"  onclick="openTN2011Window()">Tamil Nadu Assembly Election 2011 Results</a> , <a href="javascript:{}"  onclick="openWB2011Window()">West Bengal Assembly Election 2011 Results</a> , <a href="javascript:{}"  onclick="openKerala2011Window()">Kerala Assembly Election 2011 Results</a> , <a href="javascript:{}"  onclick="openAssam2011Window()">Assam Assembly Election 2011 Results</a> , <a href="javascript:{}"  onclick="openPD2011Window()">Puducherry Assembly Election 2011 Results</a> -->
-		  <a href="specialPageAction.action?specialPageId=8">Andhra Pradesh 2012 Assembly Bye Elections Results : Adilabad, Kamareddy, Kollapur, Station Ghanpur - TRS, Mahabubnagar - BJP, Nagarkurnool - Nagam Janardhana Reddy, Kovur - YSRC.</a>
+		  <a href="specialPageAction.action?specialPageId=8" title="Click here to View Andhra Pradhesh State 2012 Bye Results, Latest News Updates, Photos, Videos and Previous Results">Andhra Pradesh 2012 Assembly Bye Elections Results : Adilabad - TRS, Kamareddy - TRS, Kollapur - TRS, Station Ghanpur - TRS, Mahabubnagar - BJP, Nagarkurnool - Nagam Janardhana Reddy(IND), Kovur - YSRC.</a>&nbsp;
+
+		  <a href="statePageAction.action?statePageId=12" title="Click here to View Karnataka State Details">Karnataka</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=709" title="Click here to View Udipi Chikmagalur Constituency Details, Election Results and Voting Trendz">Udipi Chikmagalur</a> - <a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Profile - Previous Election Results, News Updates, Photos, Videos">INC</a>.&nbsp; 
+		  <a href="statePageAction?action?stateId=24" title="Click here to view Tamil Nadu State Details">Tamil Nadu</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1353" title="Click here to View Sankarankoil Constituency Details, Election Results and Voting Trendz">Sankarankoil</a> - <a href="partyPageAction.action?partyId=987" title="Click here to view ADMK Party Profile - Previous Election Results, News Updates, Photos, Videos">ADMK</a>.&nbsp;
+
+		 <a href="statePageAction.action?statePageId=13" title="Click here to view Kerala State Details">Kerala</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1694" title="Click here to View Piravom Constituency Details, Election Results and Voting Trendz">Piravom</a> - <a href="partyPageAction.action?partyId=1149" title="Click here to view UDF Party Profile - Previous Election Results, News Updates, Photos, Videos">UDF</a>.&nbsp;
+
+		 <a href="statePageAction.action?statePageId=7" title="Click here to view Gujarat State Details">Gujarat</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=34860" title="Click here to view Mansa Constituency Details, Election Results and Voting Trendz">Mansa</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC Party Details">INC</a>.
+
 		</font>
-          </marquee>
+
+        </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
         </div>
         
