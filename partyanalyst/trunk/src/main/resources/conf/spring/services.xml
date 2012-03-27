@@ -241,6 +241,7 @@
 		<property name="electionDAO" ref="electionDAO" />	
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="censusDAO" ref="censusDAO" />
+		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
