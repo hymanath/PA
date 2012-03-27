@@ -22,7 +22,21 @@ public class ElectionGoverningBodyVO implements Serializable {
 	private String candidateName;
 	private Long partyId;
 	private String partyName;
+	private Long electionId;
+	private String startDate;
 	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
 	public Long getCandidateId() {
 		return candidateId;
 	}
