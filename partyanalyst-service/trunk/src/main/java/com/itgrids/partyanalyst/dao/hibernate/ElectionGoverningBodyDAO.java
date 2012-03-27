@@ -71,4 +71,7 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 		return getHibernateTemplate().find("select distinct(model.election.electionId),model.election.electionYear from ElectionGoverningBody model where " +
 				" model.election.electionScope.electionType.electionType = 'Parliament'");
 	}
+	public List<Object[]> getChiefMinisters(Long stateId){
+		return getHibernateTemplate().find("select model.candidate.candidateId ,model.candidate.lastname,model.party.partyId,model.party.shortName,model.fromDate,model.election.electionId from ElectionGoverningBody model where model.positionScope.electionGoverningBodyPosition.governingBodyPosition = 'Chief Minister' and model.status = 'Working' and model.election.electionScope.state.stateId=?",stateId);
+	}
 }
