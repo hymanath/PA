@@ -138,7 +138,6 @@ text-indent:-9999px; margin-top:18px;}
 border:1px solid #7f7f7f; padding:0px 10px; width:129px; color:#000;}
 textarea{font:12px/21px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#1a1a1a; line-height:17px; background-color:#7f7f7f; color:#000;
 border:1px solid #7f7f7f; padding:5px 0px 5px 10px; width:296px; height:78px;}
-.submit{background:url(../images/sprites.png) -231px -55px no-repeat; float:right; width:76px; height:28px; cursor:pointer; border:none;}
 .copy-rights{width:992px; float:left; border-top:1px solid #3f3f3f; text-align:center; font-size:11px; color:#2f2f2f; line-height:34px;}
 
 /*FOOTER SECTION END*/
@@ -348,7 +347,7 @@ height:22px; padding:0px 13px 0px 8px; font:bold 14px/22px "Trebuchet MS", Arial
 .gre-title span{background-position:right -303px;}
 
 .eci-fieds-sec{width:623px; float:left; padding-top:7px;}
-.eci-fieds-sec li{width:623px; float:left; padding-top:12px;}
+.eci-fieds-sec li{width:623px; float:left; padding-top:5px;}
 .eci-field-cont-sec{width:621px; float:left; background-color:#fff9e1; border:1px solid #f4eed5; margin-bottom:3px;}
 .eci-place-title{background-color:#fff5ce; float:left; width:338px; height:27px; color:#c20000; line-height:27px; padding-left:21px;}
 .eci-party-title{background-color:#fff5ce; float:right; width:241px; height:27px; color:#585858; line-height:27px; padding-left:21px;}
@@ -358,7 +357,7 @@ height:22px; padding:0px 13px 0px 8px; font:bold 14px/22px "Trebuchet MS", Arial
 .eci-party-cont img{float:left; padding-right:9px;}
 .party-symbol-code{float:left; padding-top:12px; text-transform:uppercase;}
 .eci-field-cont-sec .pl-sub-but{padding:0px 25px 0px 0px;margin-top: 6px; float:right;}
-.eci-fieds-sec li .cas-view{float:right; padding-right:9px;margin-bottom: 22px;}
+.eci-fieds-sec li .cas-view{float:right; padding-right:9px;margin-bottom: 5px;}
 .eci-fieds-sec li .cas-view a{color:#878787;}
 
 .detailed-ele-inf{width:215px;padding:15px;}
@@ -582,9 +581,18 @@ float: right; margin-top: -24px;color:#fff;
 }
 .electionInformationClass
 {
-	
+	background-color: #EEF4F6;
 	border:1px solid #CFD9DE;
 	color:#63516B;
+	cursor:pointer;
+	margin-top:5px;
+	padding:5px;	
+}
+.electionInformationClassNew
+{
+	background-color: #35C1F0;
+	border:1px solid #CFD9DE;
+	color:#FFFFFF;
 	cursor:pointer;
 	margin-top:5px;
 	padding:5px;	
@@ -757,7 +765,7 @@ float:left;
     height: 22px;
     padding: 0 13px 0 8px;
 	margin-top: -21px;
-    margin-left: 6px;
+    margin-left: 8px;
 }
  .mvd-fields li a.active1{background:url(../images/pink-down-arrow.png) center bottom no-repeat; float:left; color:#9d5cb2; padding-bottom:8px;}
 .mvd-fields li a.active1 strong{background-color:#f5e4fa;}
@@ -780,4 +788,14 @@ center bottom no-repeat;
     width: 97%;
     margin-top: 17px;
 	margin-left: 3px;
+}
+.topfive {
+    background: url("../../images/cssimages/menu-bg.png") no-repeat scroll left -60px transparent;
+    color: #FFFFFF;
+    float: left;
+    font: bold 14px/22px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 22px;
+    margin-left: 530px;
+    margin-top: -24px;
+    padding: 0 13px 0 8px;
 }
