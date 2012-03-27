@@ -7,17 +7,21 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
@@ -30,12 +34,21 @@ import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
 
 public class StatePageService implements IStatePageService {
-
 	
 	private IStateDAO stateDAO;
 	private IElectionDAO electionDAO;
 	private ICensusDAO censusDAO;
 	private INominationDAO nominationDAO;
+	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
+	
+	public IElectionGoverningBodyDAO getElectionGoverningBodyDAO() {
+		return electionGoverningBodyDAO;
+	}
+
+	public void setElectionGoverningBodyDAO(
+			IElectionGoverningBodyDAO electionGoverningBodyDAO) {
+		this.electionGoverningBodyDAO = electionGoverningBodyDAO;
+	}
 	
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
@@ -259,5 +272,33 @@ public class StatePageService implements IStatePageService {
 					  
 		return stateElectionResults;
 	    }
+	 public ElectionGoverningBodyVO getChiefMinisterForAState(Long stateId)
+	    {
+		 ElectionGoverningBodyVO electionGoverningBodyVO = null;
+	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    	
+			try{
+				 
+				List<Object[]> list = electionGoverningBodyDAO.getChiefMinisters(stateId);
+				if(list != null && list.size()>0){
+					electionGoverningBodyVO =new ElectionGoverningBodyVO();
+					for(Object[] params : list){
+						 
+						electionGoverningBodyVO.setCandidateId((Long)params[0]);
+						electionGoverningBodyVO.setCandidateName(params[1].toString());
+						electionGoverningBodyVO.setPartyId((Long)params[2]);
+						electionGoverningBodyVO.setPartyName(params[3].toString());
+						electionGoverningBodyVO.setStartDate((params[4] != null ? (sdf.format((Date)params[4])) :""));
+						electionGoverningBodyVO.setElectionId((Long)params[5]);
+						}
+				}
+				return electionGoverningBodyVO;
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				return electionGoverningBodyVO;
+			}
+	    	
+	   }
 	
 }
