@@ -92,7 +92,7 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 		System.out.println(list.size());
-	}*/
+	}
 	
 	public void testGetMinistryYearsForParliament()
 	{
@@ -116,6 +116,16 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params : list)
 		{
 			System.out.println(params[0]+"---"+params[1]);
+		}
+		
+	}*/
+	
+	public void testGetChiefMinisters(){
+		List<Object[]> list = electionGoverningBodyDAO.getChiefMinisters(1l);
+		System.out.println(list.size());
+		for(Object[] params : list){
+			System.out.println(params[0]);
+			
 		}
 		
 	}
