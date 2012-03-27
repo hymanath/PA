@@ -23,7 +23,7 @@ var searchString = '';
 function buildStatePageLayout()
 {
 	var statePageLayout = new YAHOO.widget.Layout('statePage_layout_main', { 
-	height:650,
+	height:570,
 	units: [			
 			{ 
 				position: 'right', 
@@ -310,6 +310,45 @@ function buildLatestNews()
   var content = document.getElementById('stateNewsBody');
   var newsShow = new google.elements.NewsShow(content, options);
 }
+function buildLatestNews1(){
+
+if(eleGoverningBodyVOValue != '')
+	{
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {"title" : ""+stateName+" Political News",
+            "q" : ""+stateName+" Political News"
+          }	
+     ],
+	"linkTarget" : "_blank"
+  }
+  var content = document.getElementById('stateNewsBody1');
+  var newsShow = new google.elements.NewsShow(content, options);
+	}
+
+}
+function buildLatestNews2(){
+if(eleGoverningBodyVOValue != '')
+	{
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+			"title" :  ""+stateName+" Govt Updates",
+            "q" : ""+stateName+" Goverment Updates"
+            
+          }	
+     ],
+	"linkTarget" : "_blank"
+  }
+  
+var content = document.getElementById('stateNewsBody2');
+  var newsShow = new google.elements.NewsShow(content, options);
+
+	}
+
+}
 
 function initializeStatePage()
 {
@@ -318,4 +357,6 @@ function initializeStatePage()
 	buildelectionTypeList();
 	buildElectionTypesAndYearsCarousel("electionTypesNYearsList",statePageObj.electionResultsByType[0]);
 	buildLatestNews();
+	buildLatestNews1();
+	buildLatestNews2();
 }
