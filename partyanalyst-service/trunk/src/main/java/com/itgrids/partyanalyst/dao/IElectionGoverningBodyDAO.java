@@ -25,5 +25,7 @@ public interface IElectionGoverningBodyDAO extends GenericDao<ElectionGoverningB
 	
 	public List<Object[]> getMinistryYearsForParliament();
 	
+	public List<Object[]> getChiefMinisters(Long stateId);
+	
 	
 }
