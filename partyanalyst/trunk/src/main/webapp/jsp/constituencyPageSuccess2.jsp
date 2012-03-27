@@ -7,7 +7,7 @@
 	<html>
 	<head> 
 
-	<title><c:out value='${constituencyDetails.constituencyName}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
+	<title><c:out value='${constituencyDetails.constituencyName}'/> <c:out value='${constituencyDetails.constituencyType}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
@@ -57,7 +57,8 @@
 	var stateName = '${constituencyDetails.stateName}';
 	var districtName = '${constituencyDetails.districtName}';
 	var constituencyName ='${constituencyDetails.constituencyName}'
-	var constiId = ${constituencyId}; 
+	var constiId = '${constituencyId}'; 
+	var consticType = '${constituencyDetails.constituencyType}';
 	var parliamentconstituency='${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}'
 	
 	var changeReq = 0;
@@ -83,6 +84,11 @@
 	var greaterPresent = false;
 	var mptcPresent = false;
 	var zptcPresent = false;
+	
+	function setImage(img)
+{
+		img.src = "images/constituencyPage/cp-thumb.jpg";
+}
 	</script>
 	<style>
      
@@ -92,7 +98,7 @@
 	.detailed-ele-inf * table,#mandalsVotersInfoDiv_Body div div table{border-collapse:collapse;padding:10px;}
  
 	.detailed-ele-inf * th, #mandalsVotersInfoDiv_Body div div table th{text-align:left;
-    padding:10px;font-weight:bold;background-color:#ceedf0;font-size:13px;}
+    padding:10px;font-weight:bold;background-color:#CDE6FC;font-size:13px;}
 
 	#CorporationTableDiv_0 > table,#greaterTableDiv_0 > table,#elecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
 	#CorporationTableDiv_0 > table * th,#greaterTableDiv_0 > table * th,#elecResDiv > table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
@@ -100,7 +106,7 @@
 	#elecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
 	#CorporationTableDiv_0 > table * a,#greaterTableDiv_0 > table * a,#elecResDiv > table * a{text-decoration:none;color:#3d3d3d;font-weight:bold;}
 	
-	.detailed-ele-inf * td, #mandalsVotersInfoDiv_Body div div table td{padding:8px;padding-left:10px;font-weight:normal;}
+	.detailed-ele-inf * td, #mandalsVotersInfoDiv_Body div div table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 	.detailed-ele-inf * tr:nth-child(even),#mandalsVotersInfoDiv_Body div div table tr:nth-child(even){background:#f9f9f9;}
 	
 	.detailed-ele-inf * table * a,#mandalsVotersInfoDiv_Body div div table th a,#mandalsVotersInfoDiv_Body div div table td a{text-decoration:none;color:#3d3d3d;}
@@ -150,6 +156,11 @@
 	#mptcElectionIdsSelectDiv,#mptcCandidateLink{width:auto;display:inline-block;}
 	#mptcElectionIdsSelectDiv{position:relative;top:-13px;padding-left:10px;}
 	#zptcPartyTrendsDetailsDiv{border:1px solid #d3d3d3;}
+	#CorporationTableDiv_0 > table * td, #greaterTableDiv_0 > table * td, #elecResDiv > table * td {
+    font-weight: normal;
+    font: small-caption;
+   }
+#CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDiv > table * th {background-color: #CDE6FC;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -177,16 +188,16 @@
 	
 		
           <p class="pa-fi"><b>State: </b><strong>
-		  <a style="color: #247CD4;text-decoration: underline;"; href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${constituencyDetails.stateName}</a> </strong>&gt;  
+		  <a style="color: #247CD4;text-decoration: underline;" title="Click here to get ${constituencyDetails.stateName} State details" href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${constituencyDetails.stateName}</a> </strong>&gt;  
 		  <b>District: </b><strong>
 		  <c:forEach var="district" items="${navigationVO.districtInfo}">
-					<a style="color: #247CD4;text-decoration: underline"; href="districtPageAction.action?districtId=${district.id}&districtName=${district.name}">${district.name}</a>
+					<a style="color: #247CD4;text-decoration: underline";  title="Click here to get ${district.name} District details" href="districtPageAction.action?districtId=${district.id}&districtName=${district.name}">${district.name}</a>
 			</c:forEach></strong>
 			<c:if test="${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType == 'Parliament'}"><s:if test="%{navigationVO.pcsInfo.size > 0}">&gt; 
 		<b>Parliament:</b>
 
 			<strong><c:forEach var="parliament" items="${navigationVO.pcsInfo}">
-			 <a style="color:#247CD4;text-decoration:underline;" href="constituencyPageAction.action?constituencyId=${parliament.id}">${parliament.name}</a>
+			 <a style="color:#247CD4;text-decoration:underline;"   title="Click here to get ${parliament.name} Parliament details"  href="constituencyPageAction.action?constituencyId=${parliament.id}">${parliament.name}</a>
 			
 			
 		</c:forEach>	
@@ -198,7 +209,7 @@
 		 <c:if test="${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyType == 'Assembly'}">
 		 <s:if test="%{navigationVO.acsInfo.size > 0}">&gt;Assembly :
 			<c:forEach var="assembly" items="${navigationVO.acsInfo}">
-		 	 <strong>  <a href="constituencyPageAction.action?constituencyId=${assembly.id}">${assembly.name}</a>&nbsp;
+		 	 <strong>  <a   title="Click here to get ${assembly.name} Assembly details" href="constituencyPageAction.action?constituencyId=${assembly.id}">${assembly.name}</a>&nbsp;
 			
 			</c:forEach>
 		</s:if>
@@ -226,7 +237,51 @@
 			<c:if test="${constituencyDetails.deformDate ==null}">
             <ul class="eci-fieds-sec">
               <li>
-				 
+				 <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
+				<div style="background-color: #FFF9E1;border: 1px solid #F4EED5;width:100%;">
+				    <table style="width:100%">
+				     <tr>
+				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"><img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}.jpg" height="65" width="60"/></a> </td>                    
+						<td style="width:30%;text-align:center;background-color: #FFF5CE;color: #C20000;"><b>Member Of Parliament :</b></td>
+						<td style="width:30%;text-align:center;background-color: #FFF5CE; color: #C20000;"><b>Party :</b></td>
+						<td style="width:20%;text-align:left;background-color: #FFF5CE;"> </td>
+					 </tr>
+					 <tr>
+						<td  style="width:30%;text-align:center;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News,Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"><b>${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</b></a></td>
+						<td  style="width:30%;text-align:center;"> 
+						  <table style="width:100%;text-align:center;">
+						    <tr>
+	                          <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party != 'IND'}">
+                                <td><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/> </a></td><td style="text-align:left;"> <a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}"><b>${candidateDetailsForConstituency.parliamentCandidateInfo.party}</b></a></td>
+			                  </c:if>
+                              <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party == 'IND'}">
+                                <td><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/> </td><td  style="text-align:left;"><b> ${candidateDetailsForConstituency.parliamentCandidateInfo.party}</b></td>
+			                  </c:if>			       				      
+						    </tr>
+						  </table>
+						</td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view   ${constituencyDetails.constituencyName}  parliamentary constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
+				     </tr>
+				    </table>
+                  </div>
+            </c:if>
+			<c:if test="${constituencyDetails.constituencyType == 'Parliament'}"><a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}  Parliamentary constituency participated Candidates Affidavit Summary" style="float:right;" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a> 
+					<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
+								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
+
+								<div id="electionYears_Main">
+									<div id="electionYearsWithAssets_Div"></div>
+								</div>
+								<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam" style="height:auto;max-height:400px;overflow-y:auto">
+										<div id="electionYearsWithAssets_Panel_Div"></div>
+										<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
+								</div>
+								</div>
+								
+								<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
+								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
+				               </div>
+				</c:if>
 				 <c:if test="${constituencyDetails.constituencyType == 'Parliament'}">
 			<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
@@ -242,26 +297,34 @@
 
 			
 
-                <div  id="assemblyDiv" class="eci-field-cont-sec">
-                  <div class="eci-place-title"><b>Assembly Candidate :</b>			  
-	</div>
-                  <div class="eci-party-title"><strong class="tc-tf">Party</strong></div>
-
-				
-                  <div class="clear"></div>
-
+                <div  id="assemblyDiv">
 				  <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-                  <div class="eci-place-cont"><strong class="tc-tf"><a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}">${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}</a>
-	</strong><a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}">  -View Profile</a></div>
-	         <c:if  test="${candidateDetailsForConstituency.assemblyCandidateInfo[0].party != 'IND'}">
-                  <div class="eci-party-cont"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyFlag}" height="30" width="40"/>  <span class="party-symbol-code"><a href="partyPageAction.action?partyId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyId}">${candidateDetailsForConstituency.assemblyCandidateInfo[0].party}</a></span> </div>
-			 </c:if>
-             <c:if  test="${candidateDetailsForConstituency.assemblyCandidateInfo[0].party == 'IND'}">
-                  <div class="eci-party-cont"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyFlag}" height="30" width="40"/>  <span class="party-symbol-code">${candidateDetailsForConstituency.assemblyCandidateInfo[0].party}</span> </div>
-			 </c:if>			 
-                  <div class="pl-sub-but"><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyId},'${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyType}','${candidateDetailsForConstituency.assemblyCandidateInfo[0].latestElecYear}')"><strong>View Results</strong></a>
-					</div>
-               </div>
+				   <div style="background-color: #FFF9E1;border: 1px solid #F4EED5;width:100%;">
+				    <table style="width:100%">
+				     <tr>
+				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}"><img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}.jpg" height="65" width="60"/></a> </td>                    
+						<td style="width:35%;text-align:center;background-color: #FFF5CE;color: #C20000;"><b>Member Of Legislative Assembly :</b></td>
+						<td style="width:20%;text-align:center;background-color: #FFF5CE; color: #C20000;;"><b>Party :</b></td>
+						<td style="width:20%;text-align:left;background-color: #FFF5CE;"> </td>
+					 </tr>
+					 <tr>
+						<td  style="width:35%;text-align:center;"><a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName} Profile - News,Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}"><b>${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}</b></a></td>
+						<td  style="width:20%;text-align:center;"> 
+						  <table style="width:100%;text-align:center;">
+						    <tr>
+	                          <c:if  test="${candidateDetailsForConstituency.assemblyCandidateInfo[0].party != 'IND'}">
+                                <td><a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyId}"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyFlag}" height="30" width="40"/> </a></td><td style="text-align:left;"> <a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyId}"><b>${candidateDetailsForConstituency.assemblyCandidateInfo[0].party}</b></a></td>
+			                  </c:if>
+                              <c:if  test="${candidateDetailsForConstituency.assemblyCandidateInfo[0].party == 'IND'}">
+                                <td><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.assemblyCandidateInfo[0].partyFlag}" height="30" width="40"/> </td><td  style="text-align:left;"><b> ${candidateDetailsForConstituency.assemblyCandidateInfo[0].party}</b></td>
+			                  </c:if>			       				      
+						    </tr>
+						  </table>
+						</td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view ${constituencyDetails.constituencyName} Assembly constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyId},'${candidateDetailsForConstituency.assemblyCandidateInfo[0].constituencyType}','${candidateDetailsForConstituency.assemblyCandidateInfo[0].latestElecYear}')"><strong>View Results</strong></a></div></td>
+				     </tr>
+				    </table>
+                  </div>
 				</c:if>
 
 			
@@ -271,7 +334,7 @@
 
 			<div id="candidatesAffidavitSummary" class="cas-view">
 			<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
-				<a href="javascript:{}" title="Click To View Candidates Affidavit Summary" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a></li>
+				<a href="javascript:{}" title="Click here to View  ${constituencyDetails.constituencyName}  Assembly constituency participated Candidates Affidavit Summary" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a></li>
 			<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
 								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
 
@@ -290,64 +353,40 @@
 				</c:if>
 				</c:if>
 				     </div>          
-					
-								
-
-								
-								
+							
               
               <li>
-                <div class="eci-field-cont-sec">
-                  <div class="eci-place-title"><b>Parliament Candidate :</b>
-	</div>
-                  <div class="eci-party-title"><strong class="tc-tf">Party</strong></div>
-                  <div class="clear"></div>
-                  <div class="eci-place-cont">
-				  <strong class="tc-tf"><a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}">${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a></strong>  <a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}">  -View Profile</a></div>
-                  <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party != 'IND'}">
-                     <div class="eci-party-cont"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/><span class="party-symbol-code"><a href="partyPageAction.action?partyId=${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}">${candidateDetailsForConstituency.parliamentCandidateInfo.party}</a></span> </div>
-			      </c:if>
-                  <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party == 'IND'}">
-                     <div class="eci-party-cont"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/><span class="party-symbol-code">${candidateDetailsForConstituency.parliamentCandidateInfo.party}</span> </div>
-			      </c:if>
-                  <div class="pl-sub-but"><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a>
-
-				
-				 </div>
-                </div>
-
-
-				
-                <div class="cas-view">
-				<c:if test="${constituencyDetails.constituencyType == 'Parliament'}"><a href="javascript:{}" title="Click To View Candidates Affidavit Summary" onclick="getcandidateAssetsAndLiabilities(constiId),getAssetsElectionYearsInfo(constiId)"><b>Candidates Affidavit Summary</b></a> </li>
-
-						
-
-
-
-					<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
-								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
-
-								<div id="electionYears_Main">
-									<div id="electionYearsWithAssets_Div"></div>
-								</div>
-								<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam" style="height:auto;max-height:400px;overflow-y:auto">
-										<div id="electionYearsWithAssets_Panel_Div"></div>
-										<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
-								</div>
-								</div>
-								
-								<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
-								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
-				</c:if>
-
-
-
-				</div>
-
-
-			
-          
+                
+			   <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+				<div style="background-color: #FFF9E1;border: 1px solid #F4EED5;width:100%;">
+				    <table style="width:100%">
+				     <tr>
+				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"><img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}.jpg" height="65" width="60"/></a> </td>                    
+						<td style="width:30%;text-align:center;background-color: #FFF5CE;color: #C20000;"><b>Member Of Parliament :</b></td>
+						<td style="width:30%;text-align:center;background-color: #FFF5CE; color: #C20000;"><b>Party :</b></td>
+						<td style="width:20%;text-align:left;background-color: #FFF5CE;"> </td>
+					 </tr>
+					 <tr>
+						<td  style="width:30%;text-align:center;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News,Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"><b>${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</b></a></td>
+						<td  style="width:30%;text-align:center;"> 
+						  <table style="width:100%;text-align:center;">
+						    <tr>
+	                          <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party != 'IND'}">
+                                <td><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}"><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/> </a></td><td style="text-align:left;"> <a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.party} party Election Results, News, Photos and Videos" href="partyPageAction.action?partyId=${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}"><b>${candidateDetailsForConstituency.parliamentCandidateInfo.party}</b></a></td>
+			                  </c:if>
+                              <c:if  test="${candidateDetailsForConstituency.parliamentCandidateInfo.party == 'IND'}">
+                                <td><img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/> </td><td  style="text-align:left;"><b> ${candidateDetailsForConstituency.parliamentCandidateInfo.party}</b></td>
+			                  </c:if>			       				      
+						    </tr>
+						  </table>
+						</td>
+						<td style="width:20%;text-align:left;"><div class="pl-sub-but"><a href="javascript:{}" title="Click here to view  ${parliament.name}  parliamentry constituency election results" onclick="getConstituencyElecResultsWindow(${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId},'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}','${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}')"><strong>View Results</strong></a></div></td>
+				     </tr>
+				    </table>
+                  </div>
+            </c:if>
+		    </li>
+                <div class="cas-view"/>
 			 </ul>
 			</c:if>
 			</div>
@@ -357,7 +396,7 @@
           <!--ELECTED INFORMATION SECTION START-->
           
           <div class="cl-sub-fields-sec">
-            <h1 class="toptwo"></h1><h1 class="blu-title"><span>Election Information in ${constituencyDetails.constituencyName}</span></h1>
+            <h1 class="toptwo"></h1><h1 class="blu-title"><span>Election Information in ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span></h1>
             <div class="detailed-ele-inf"> 
             </div>
              
@@ -371,9 +410,9 @@
 							
 		
             
-            <p class="detailed-ele-inf" style="display:block"> <span class="fleft" style="font-weight:bold;">Detailed Election Information</span><span>click here</span>
-			<span id="minusPlusDiv"><a  onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a></p>
-			<div id="detailedElectionInfoDiv_Body"></div>
+            <p class="detailed-ele-inf" style="display:block;margin-top:15px"> <span class="fleft" style="font-weight:bold;color:#C20000;font-size: 14px;">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Detailed Election Information</span>
+			<span id="minusPlusDiv"><a title="Click here to View ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b> Click Here To View</b></a></span></p>
+			<div id="detailedElectionInfoDiv_Body" style="display: block;"></div>
           </div>
           
 		 
@@ -382,18 +421,38 @@
           <!--MANDALS VOTERS SECTION START-->
           
           <div class="cl-sub-fields-sec" id="hidemandDIV">
-		  
-            <h1 class="topthree"></h1><h1 class="pur-title"><span>Mandals Voters Details Of ${constituencyDetails.constituencyName} Assembly:</span></h1>
+		    <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+            <h1 class="topthree"></h1><h1 class="pur-title"><span>Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} Assembly Constituency</span></h1>
+			</c:if>
+			<c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
+			 <h1 class="topthree"></h1><h1 class="pur-title"><span>Assembly Wise Voters Details Of ${constituencyDetails.constituencyName} Parliament Constituency</span></h1>
+			</c:if>
             <ul class="mvd-fields" id="MandalsDelimit">
 			 <div id="allDIV">
-              <li><a href="javascript:{}" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
-              <li><a onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+			  <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} Assembly After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
+              <li><a href="javascript:{}" title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} Assembly Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+			  </c:if>
+			  <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
+			   <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} Parliament After Delimitation" onclick="showMandalsAfterDelimitationDiv(constiId)" class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
+              <li><a href="javascript:{}" title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} Parliament Before Delimitation" onclick="showMandalsBeforeDelimitationDiv(constiId)" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>			  
+			  </c:if>
 			 </div>
 			 <div id="oneDIV" style="display:none;">
-			   <li><a href="javascript:{}"  class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
-			 </div>
+			 <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} Assembly After Delimitation"  class="active" style="cursor:pointer"><strong>Mandals After Delimitation</strong></a></li>
+			 </c:if>
+			 <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
+			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} Parliament After Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies After Delimitation</strong></a></li>
+			 </c:if>
+			</div>
 			 <div id="twoDIV" style="display:none;">
-			   <li><a href="javascript:{}"  class="active" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+			 <c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+			   <li><a href="javascript:{}"  title="Click here to view Mandals Wise Voters Details Of ${constituencyDetails.constituencyName} Assembly Before Delimitation"  class="active" style="cursor:pointer"><strong>Mandals Before Delimitation</strong></a></li>
+			 </c:if>
+			 <c:if test="${constituencyDetails.constituencyType != 'Assembly'}">
+			   <li><a href="javascript:{}"  title="Click here to view Assemblies Wise Voters Details Of ${constituencyDetails.constituencyName} Parliament Before Delimitation"  class="active" style="cursor:pointer"><strong>Assemblies Before Delimitation</strong></a></li>
+			 </c:if>
 			 </div>
 			  
             </ul>
@@ -427,86 +486,14 @@
           <!--ALL LOCAL ELECTIONS CONSITITUENCY SECTION START-->
 
 
-		  
-        
-          <div class="cl-sub-fields-sec ale-sec" id="hideAllLocalElections">
-            <h1 class="topfour"></h1><h1 class="gre-title"><span>All Local Elections Happened In ${constituencyDetails.constituencyName} Constituency</span></h1>
-			 <div id="showmungracorp">
-			<ul class="mvd-fields" id="LocalElectionsNav">             
-               <li id="muncipalityDiv"><a href="javascript:{}" onclick="showMunicipalityResults(),getMunicipalityResults()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
-			   <li id="greterMunicipalDiv"><a href="javascript:{}" onclick="showGreterElectionDetails()" style="cursor:pointer"><strong>GREATER MUNICIPALCORP</strong></a></li>
-			    <li id="corporationTabDiv"><a href="javascript:{}" onclick="showCorporationDetails()"  style="cursor:pointer"><strong>CORPORATION's</strong></a></li>
-            </ul>
-
-			 <div id="muncipalDivBody" class="detailed-ele-inf">
-			<div id="MuncipalElectionSelectDiv" style="float:left;width:auto;margin-top:-4px;">Select Election Year:
-				<s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name"></s:select>&nbsp&nbsp
-						
-			</div>
-			
-			 <div id = "muncipalDiv"></div>
-			 <div id="showMoreMuncipalResultsDiv" style="clear:right;margin-left:3px;text-decoration: none;"></div>
-					<div id="municipalityData_main"></div>
-					
-			</div>
-			<!--corporationDiv-->
-					<div id = "corporationDiv">
-					
-									<div id="corporationHeadingDIV" style="display:block;clear:both;">
-									
-									<table>
-											<tr>
-												<td>
-													<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
-												</td>
-												<td>
-													<div id="showMoreCorporationResultsDiv"></div>										
-												</td>
-											</tr>
-										</table>	
-									</div>
-									<div id="coroporationData_main">
-									
-									</div>
-								</div>
-									
-								<div id = "greaterDiv" style="display:block;clear:both;">
-									<div>
-									<table>
-											<tr>
-												<td>
-													<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
-													</td>
-												<td>
-													<div id="showMoreGreaterResultsDiv"></div>										
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
-											<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
-												Select Results Criteria :
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked"/>All
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise"/>Party Wise Results	
-												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_parties" id="wardWise_parties" list="greaterInfo.listOfParties" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('partyWise',this.options[this.selectedIndex].value)"/>
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise"/>Ward Wise Results	
-												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_wards" id="wardWise_ward" list="greaterInfo.listOfWards" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('wardWise',this.options[this.selectedIndex].value)"/>
-											</div>											
-										</div>
-									<div id="GHMCData_main"></div>
-								</div><!--
-							</td>
-						</tr>
-					</table>
-				</div>-->
-	
-            </div>
+		  <div class="cl-sub-fields-sec ale-sec" id="hideAllRuralLocalElections">
+            <h1 class="toptwo"></h1><h1 class="blu-title" ><span>All Rural Local Body Elections Happened In ${constituencyDetails.constituencyName} Constituency</span></h1>
 		   <div id="showmptcZptc">
 			  <ul class="mvd-fields" id="LocalElectionsNavNew">             
 
-                <li id="ZptcDiv"> <a href="javascript:{}" onclick="showZptcPartyDetails()" style="cursor:pointer"><strong>ZPTC's</strong></a></li>			  
+                <li id="ZptcDiv"> <a href="javascript:{}" title="Click here to view ZPTC Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showZptcPartyDetails()" style="cursor:pointer"><strong>ZPTC's</strong></a></li>			  
 			  
-                <li id="mptcDiv"><a href="javascript:{}" onclick="showMptcPartyDetails()" style="cursor:pointer"><strong>MPTC's</strong></a></li>           
+                <li id="mptcDiv"><a href="javascript:{}" title="Click here to view MPTC Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showMptcPartyDetails()" style="cursor:pointer"><strong>MPTC's</strong></a></li>           
              </ul>
 
             <div id="zptcDivBody" class="detailed-ele-inf">
@@ -517,7 +504,7 @@
 				<div id="zptcElectionIdsSelectDiv"></div>
 					<div id="zptcCandidateLink" ></div>
 					<div id="countZptcDiv">
-			<span>Total Number of ZPTC's :<span id="totalZptcCountResultDiv" style="display:inblock";></span> </span></div>
+			<span>Total Number of ZPTC's :&nbsp;<span id="totalZptcCountResultDiv" style="display:inblock";></span> </span></div>
 						<table><tr>
 							<td valign='top'><div id="zptcPartyTrendsDetailsDiv"></div></td>
 							<td valign='top'><div id="zptcChartDiv"></div></td>
@@ -529,7 +516,7 @@
 			<div id="mptcElectionIdsSelectDiv"></div>
 				<div id="mptcCandidateLink"></div>
 				<div id="countMptcDiv">
-				<span style="float:left";>Total Number of MPTC's : </span>
+				<span style="float:left";>Total Number of MPTC's :&nbsp;</span>
 					<span id="totalMptcCountResultDiv" style="float:left";></span>
 			  
 						</div>	<table><tr><td>						
@@ -541,6 +528,8 @@
 			 </div>
 		    </div>
         
+        
+         
           <!--ALL LOCAL ELECTIONS CONSITITUENCY SECTION END-->
           
           <div class="clear"></div>
@@ -563,7 +552,7 @@
 
 		
 		<c:if test="${constituencyDetails.hasAnalize}">
-			<input type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName} Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+			<input title="Click Here To Get ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName} Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
 		</c:if>
 	
 	</div>
@@ -633,7 +622,7 @@
             <div class="cp-sub-field-sec">
 			
 					
-			  <h1 class="cp-sub-title"><span><b>Announcements</b></span></h1>
+			  <h1 class="cp-sub-title"><span style="color:#787272"><b>Announcements</b></span></h1>
 
 			 
               <div class="cp-cont-sub-fields">
@@ -656,7 +645,7 @@
             <!--ASSESS YOUR PARTY RESULTS SECTION START-->
             
             <div class="cp-sub-field-sec">
-              <h1 class="cp-sub-title"><span><b>Assess Your Party Results</b></span></h1>
+              <h1 class="cp-sub-title"><span style="color:#787272"><b>Assess Your Party Results</b></span></h1>
               <div class="cp-cont-sub-fields">
                 <ul>
                   <li>
@@ -677,7 +666,7 @@
             <!--LOCATION MAP SECTION START-->
             
             <div class="cp-sub-field-sec">
-              <h1 class="cp-sub-title"><span><b>Location Map</b></span></h1>
+              <h1 class="cp-sub-title"><span style="color:#787272"><b>Location Map</b></span></h1>
               <div id="map_canvas" style="position: relative; background-color: rgb(229, 227, 223); height: 283px; margin-top: 41px; width: 311px;"></div>
             </div>
             
@@ -700,12 +689,88 @@
 </c:if>
         
         </div>
-		<h1 class="cp-sub-title"><span><b>Party Analyst</b></span></h1>
+		<h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1>
         <div id="partyAnysAdd" style="margin-left:11px;"></div>
         <!--CD SUB RIGHT SECTION END--> 
         
       </div>
       
+	   <div class="cl-sub-fields-sec ale-sec" id="hideAllUrbanLocalElections" style="margin-top:20px;margin-left:5px;width:968px;">
+            <h1 class="topfour"></h1><h1 class="gre-title"><span>All Urban Local Body Elections Happened In ${constituencyDetails.constituencyName} Constituency</span></h1>
+			 <div id="showmungracorp">
+			<ul class="mvd-fields" id="LocalElectionsNav">             
+               <li id="muncipalityDiv"><a href="javascript:{}" title="Click here to view MUNCIPALITY Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showMunicipalityResults(),getMunicipalityResults()" class="active"><strong>MUNCIPALITY</strong></a></li>			  
+			   <li id="greterMunicipalDiv"><a href="javascript:{}" title="Click here to view GREATER MUNICIPALCORP Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showGreterElectionDetails()" style="cursor:pointer"><strong>GREATER MUNICIPALCORP</strong></a></li>
+			    <li id="corporationTabDiv"><a href="javascript:{}" title="Click here to view CORPORATION Elections Happened In ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" onclick="showCorporationDetails()"  style="cursor:pointer"><strong>CORPORATION's</strong></a></li>
+            </ul>
+
+			 <div id="muncipalDivBody" class="detailed-ele-inf">
+			<div id="MuncipalElectionSelectDiv" style="float:left;width:auto;margin-top:-4px;">Select Election Year:
+				<s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name"></s:select>&nbsp&nbsp
+						
+			</div>
+			
+			 <div id = "muncipalDiv"></div>
+			 <div id="showMoreMuncipalResultsDiv" style="clear:right;margin-left:3px;text-decoration: none;"></div>
+					<div id="municipalityData_main"></div>
+					
+			</div>
+			<!--corporationDiv-->
+					<div id = "corporationDiv">
+					
+									<div id="corporationHeadingDIV" style="display:block;clear:both;">
+									
+									<table>
+											<tr>
+												<td>
+													<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
+												</td>
+												<td>
+													<div id="showMoreCorporationResultsDiv"></div>										
+												</td>
+											</tr>
+										</table>	
+									</div>
+									<div id="coroporationData_main">
+									
+									</div>
+								</div>
+									
+								<div id = "greaterDiv" style="display:block;clear:both;">
+									<div>
+									<table>
+											<tr>
+												<td>
+													<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
+													</td>
+												<td>
+													<div id="showMoreGreaterResultsDiv"></div>										
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
+											<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
+												Select Results Criteria :
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked"/>All
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise"/>Party Wise Results	
+												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_parties" id="wardWise_parties" list="greaterInfo.listOfParties" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('partyWise',this.options[this.selectedIndex].value)"/>
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise"/>Ward Wise Results	
+												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_wards" id="wardWise_ward" list="greaterInfo.listOfWards" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('wardWise',this.options[this.selectedIndex].value)"/>
+											</div>											
+										</div>
+									<div id="GHMCData_main"></div>
+								</div><!--
+							</td>
+						</tr>
+					</table>
+				</div>-->
+	
+            </div>
+		   </div>
+		   
+	  
+	  
 		<c:if test="${userDetails.loginStatus}">
 		
 		
@@ -737,7 +802,57 @@
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 	<script type="text/javascript">
-	
+function showUrbanDivIfPresent()
+{
+   if(changeReq == 0)
+ {
+ 
+ if(muncipalityPresent && corporationPresent && greaterPresent)
+ {
+  document.getElementById("hideAllUrbanLocalElections").style.display ="none";  
+ }
+ if(muncipalityPresent == false)
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#muncipalityDiv a").addClass("active");
+    showMunicipalityResults();
+ }
+ else if(corporationPresent == false)
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#corporationTabDiv a").addClass("active");
+    showCorporationDetails();
+ }
+ else if(greaterPresent == false)
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#greterMunicipalDiv a").addClass("active");
+    showGreterElectionDetails();	
+ }
+}
+}
+function showRuralDivIfPresent()
+{ 
+ if(changeReq == 0)
+ {
+ if(mptcPresent && zptcPresent)
+ {
+  document.getElementById("hideAllRuralLocalElections").style.display ="none";  
+ }
+ if(zptcPresent == false)
+ {
+   $("#LocalElectionsNavNew a").removeClass("active1");
+   $("#ZptcDiv a").addClass("active1");
+    showZptcPartyDetails();	
+ }
+ else if(mptcPresent == false)
+ {
+   $("#LocalElectionsNavNew a").removeClass("active1");
+   $("#mptcDiv a").addClass("active1");
+    showMptcPartyDetails();
+ } 
+}
+}	
 var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	userLoginStatus = '${userDetails.loginStatus}';
 	userId = '${userDetails.userId}';
@@ -1178,7 +1293,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 										zptcPresent = true;
 										hideMptcZptcDiv =true;
 										hideZptcOrMptcDiv('ZPTC');
-										showDivIfPresent();
+										showRuralDivIfPresent();
 									}	
 								
 								}
@@ -1198,7 +1313,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 								          mptcPresent = true;
 											hideMptcZptcDiv =true;
 										hideZptcOrMptcDiv('MPTC');
-										showDivIfPresent();
+										showRuralDivIfPresent();
 										}
 								}	
 							
@@ -1293,7 +1408,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 									*/
 								
 							}catch (e) {   
-							  // 	alert("Invalid JSON result" + e);   
+							   	//alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,
@@ -1615,7 +1730,13 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	 var countal = 0;
 	         if(myResults.assembliesOfParliamentInfo != null)
 	             {
-	             countal = myResults.assembliesOfParliamentInfo.length;
+				  var countLoc = 0;
+				   for(var x in myResults.assembliesOfParliamentInfo )
+	                {
+					  if(myResults.assembliesOfParliamentInfo[x].votersInfoForMandalVO != null && myResults.assembliesOfParliamentInfo[x].votersInfoForMandalVO.length > 0)
+					     countLoc = countLoc+1;
+					}
+				   countal = countLoc; 
 	            }
 	var mandalwiseVotersShare = myResults.assembliesOfParliamentInfo;
 			
@@ -1822,7 +1943,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	
 	var appendingStr = '';
 	for(var i in myResults.muncipalityVO){
-		appendingStr += '<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.muncipalityVO[i].electionTypeId+','+ myResults.muncipalityVO[i].muncipalityId+','+myResults.muncipalityVO[i].latestMuncipalElectionYear+',\''+myResults.muncipalityVO[i].muncipalityName+'\')" style="text-decoration:none;" class="candidateDetailsStyle">show Results</a>';
+		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency '+elecType+'\'s Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.muncipalityVO[i].electionTypeId+','+ myResults.muncipalityVO[i].muncipalityId+','+myResults.muncipalityVO[i].latestMuncipalElectionYear+',\''+myResults.muncipalityVO[i].muncipalityName+'\')" style="text-decoration:none;" class="candidateDetailsStyle">Show Results</a>';
 	}	
 	moreElmt.innerHTML = appendingStr;
 	
@@ -1834,16 +1955,16 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		//str +='<font color="#5CB275" size:10px>No Data available .......</font>';
 		document.getElementById('MuncipalElectionSelectDiv').innerHTML='';
 		muncipalityPresent = true;
-		showDivIfPresent();
+		showUrbanDivIfPresent();
 		
 	}
 	for(var i in myResults.muncipalityVO){
 		str += '<div style="display:block;width:auto;position:relative;clear:both;margin-top:15px;color:#5CB275;">';
 		str += '<a  style="text-decoration:none;color:#5CB275;font-weight:bold;" href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' '+elecType+' Election Results In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
-		str += '<table><tr><td>';
-		str += '<div style="display:inline-block;width: 284px;position:relative;float:left;margin:10px; border: solid 1px #d3d3d3;" id=\"'+elecType+'TableDiv_'+i+'\"></div>';
+		str += '<table style="width:90%"><tr><td>';
+		str += '<div style="display:inline-block;width: 309px;position:relative;float:left;margin:10px; border: solid 1px #d3d3d3;" id=\"'+elecType+'TableDiv_'+i+'\"></div>';
 		str+='</td><td>'
-		str += '<div id="municipalityChartDiv"  style="position: relative; right: 0px; left: -28px;"></div>';
+		str += '<div id="municipalityChartDiv"  style="position: relative; right: 0px; left: 28px;"></div>';
 		str += '</td></tr></table>';
 	}
 	divId.innerHTML = str;
@@ -1867,7 +1988,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	chartResultDiv.innerHTML = chart;
 	
 	detailsDIV += '<table><tr>';
-	detailsDIV += '<td><div><a href="javascript:{}" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
+	detailsDIV += '<td><div><a href="javascript:{}" title="Click here to view All Parties performance in different elections of ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart">Detailed Chart</a></div></td>';
 	
 	details.innerHTML = detailsDIV;
 	document.getElementById('constituencyPageElectionInfoDiv_Body').style.display='none';
@@ -1881,16 +2002,16 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
 		var elecStr = '';
 		var str = '';
-			str+='<a  onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
+			str+='<a style="cursor:pointer;" title="Click here to Hide ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency Detailed Election Information" onclick="hideDetailedElectionResultDiv(\'detailedElectionInfoDiv_Body\')"> <img src="images/minus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/> <b>&nbsp;Click here to Hide</b></a></span>';
 		minusPlusDivElmt.innerHTML = str;
 
 		for(var i in constituencyPageMainObj.constituencyElectionInfo)
 		{
 			var data = constituencyPageMainObj.constituencyElectionInfo[i];
 			var info = constituencyPageMainObj.constituencyInfo;
-			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" onclick="showDetailedElectionResult(this.id)">';
+			elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" title="Click here to view ${constituencyDetails.constituencyName} '+info.constituencyType+' constituency Election Results in '+data.year+'"  onmouseover="addCss(this.id);" onmouseout="removeCss(this.id);" onclick="showDetailedElectionResult(this.id)">';
 			elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
-			elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' votes %</span>';		
+			elecStr+='<span id=""> <b> In '+data.year+' - '+data.candidateName+' Won with '+data.votesEarned+' Votes &  '+data.votesPercentage+' votes %</b></span>';		
 			elecStr+='</div>';
 		}
 		
@@ -1907,7 +2028,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		var minusPlusDivElmt = document.getElementById("minusPlusDiv");
 		var str = '';
 
-		str+='<a  onclick="detailedElectionResult()"> <img src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;"/></span></a>';
+		str+='<a title="Click here to View ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency Detailed Election Information" style="cursor:pointer;" onclick="detailedElectionResult()"> <img  src="images/plus.png" alt="" class="fleft" style="padding:3px 0px 0px 5px;cursor: pointer;"/><b>&nbsp;Click here to View</b></a></span>';
 
 		minusPlusDivElmt.innerHTML = str;
 		}
@@ -1934,7 +2055,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		electionYearSelect += '</th>';
 
 		electionYearSelect += '</table>';
-		electionYearSelect += '<span class="hideDetailsBtnClass"><a style="cursor:pointer;" onclick="hideCandidateAffidavit(\'electionYearsPanel_Main_Div\')" >Hide Details</a></span>';
+		electionYearSelect += '<h1 class="topfive"></h1><span class="hideDetailsBtnClass"><a style="cursor:pointer;" onclick="hideCandidateAffidavit(\'electionYearsPanel_Main_Div\')" >Hide Details</a></span>';
 
 		
 	    divElmt.innerHTML = electionYearSelect; 
@@ -2121,7 +2242,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		}
 	}
 	var chart = new google.visualization.PieChart(document.getElementById('municipalityChartDiv')); 
-	chart.draw(data,{width: 310, height: 250, title:'All Parties Performance In  '+constituencyName+' In '+municipalitySelect+'',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
+	chart.draw(data,{width: 420, height: 300, title:'All Parties Performance In  '+constituencyName+' '+elecType+' In '+municipalitySelect+'',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:9}});
 
 
 }
@@ -2183,6 +2304,46 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 			return;
 		}
 	}
+}
+
+ function hideCensusAjaxImage()
+{
+ if(document.getElementById('censusAjaxImgDiv') != null)
+ {
+    var imgElmt = document.getElementById('censusAjaxImgDiv');
+	if(imgElmt.style.display == "block")
+	{
+          imgElmt.style.display = "none";
+	}
+ }
+}
+
+function showCensusError(myResult)
+{
+  if(document.getElementById('censusErrorMsgDiv') != null)
+ {
+	var cenErrorEle = document.getElementById("censusErrorMsgDiv");
+	
+	var cenvar = '';
+	cenvar += '<table>';
+	cenvar += '<th>Census Data not avaliable for this Constituency.</th>';
+	cenvar += '</table>';
+	cenErrorEle.innerHTML = cenvar;
+	cenErrorEle.style.display = '';
+  }
+}
+
+function removeCensusNotAvailableErrorMessage()
+{ 
+  if(document.getElementById('censusErrorMsgDiv') != null)
+ {
+	var cenErrorEle = document.getElementById("censusErrorMsgDiv");
+
+	if(cenErrorEle)
+	{
+		cenErrorEle.style.display = "none";
+	}
+ }
 }
 
 	function showDetailedElectionResult(id)
@@ -2978,7 +3139,7 @@ function getVotingTrendzForElectionYears()
 		showDiv.innerHTML=str;
 		showDiv.style.display = "none";
 		corporationPresent = true;
-		showDivIfPresent();
+		showUrbanDivIfPresent();
 	}
 
 	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation","showMoreCorporationResultsDiv");
@@ -2990,7 +3151,7 @@ function getVotingTrendzForElectionYears()
 	var elecType= "Greater Municipal Corp";
 	var appendingStr = '';
 	for(var i in myResults.localElectionsInfo){
-		appendingStr += '<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.localElectionsInfo[i].electionTypeId+','+ myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+		appendingStr += '<a href="javascript:{}" title="Click here to View ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency Greater Municipality Corporation Candidates Election Results" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.localElectionsInfo[i].electionTypeId+','+ myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	}	
 	moreElmt.innerHTML = appendingStr;
 	
@@ -3001,7 +3162,7 @@ function getVotingTrendzForElectionYears()
 		//str +='<font style="clear:right;margin-left:71px;text-decoration: none;color:#5CB275;cursor:pointer;">No Data available .......</font>';
 		document.getElementById('greterMunicipalDiv').style.display = "none";
 		greaterPresent = true;
-		showDivIfPresent();
+		showUrbanDivIfPresent();
 		showDiv.innerHTML=str;
 		showDiv.style.display = "none";
 	}
@@ -3093,59 +3254,25 @@ function buildPartyAdvertisiment()
       document.getElementById("partyAnysAdd").innerHTML=str;
   
 }
-function showDivIfPresent()
-{ 
- if(changeReq == 0)
- {
- if(mptcPresent && zptcPresent)
- {
-  document.getElementById("showmptcZptc").style.display ="none";  
- }
- if(muncipalityPresent && corporationPresent && greaterPresent)
- {
-  document.getElementById("showmungracorp").style.display ="none";  
- }
- if(mptcPresent && zptcPresent && muncipalityPresent && corporationPresent && greaterPresent)
- {
-  document.getElementById("hideAllLocalElections").style.display ="none";  
- }
- if(zptcPresent == false)
- {
-   $("#LocalElectionsNavNew a").removeClass("active1");
-   $("#ZptcDiv a").addClass("active1");
-    showZptcPartyDetails();	
- }
- else if(mptcPresent == false)
- {
-   $("#LocalElectionsNavNew a").removeClass("active1");
-   $("#mptcDiv a").addClass("active1");
-    showMptcPartyDetails();
- }
- if(muncipalityPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#muncipalityDiv a").addClass("active");
-    showMunicipalityResults();
- }
- else if(corporationPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#corporationTabDiv a").addClass("active");
-    showCorporationDetails();
- }
- else if(greaterPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#greterMunicipalDiv a").addClass("active");
-    showGreterElectionDetails();	
- }
+function addCss(id)
+{
+   $("#"+id).removeClass("electionInformationClass");
+    $("#"+id).addClass("electionInformationClassNew");
+
 }
+function removeCss(id)
+{
+
+ $("#"+id).removeClass("electionInformationClassNew");
+ $("#"+id).addClass("electionInformationClass");
 }
+getCoroporationResults();
+showRuralDivIfPresent();
+showUrbanDivIfPresent();
 buildPartyAdvertisiment();	
 getAllZptcYears();	
 getAllMptcYears();
 getGreaterResults();
-getCoroporationResults();
 buildConstituencyInfo();
 initializeConstituencyPage();
 detailedElectionResult();
