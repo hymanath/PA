@@ -11,7 +11,8 @@ html{overflow-y:scroll;}
 ul, ol, li{list-style-type:none;}
 a, .reg-form li a:hover, a:hover.change{outline:none; text-decoration:none;}
 a:hover{text-decoration:underline;}
-img{border:none;}
+img{border:none;
+cursor:pointer;}
 
 .fleft{float:left;}
 .fright{float:right;}
