@@ -353,7 +353,7 @@ function getAssembly()
 		else
 		{
 			var str='';
-			str+='<div id="headingDiv"><h3><u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+partyValueId+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId = '+assemblyValueId+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
+			str+='<div id="headingDiv"><h3><u>Cross Voting Details for <a href="partyPageAction.action?partyId ='+obj.partyValue+'">'+ partyValue +' </a> Party in '+ electionValue +' <a href="constituencyPageAction.action?constituencyId ='+obj.assemblyValue+'">'+ assemblyValue +'</a> Assembly Constituency</u></h3></div>';
 			str+='<div id="candidateDetailsDiv">';
 				str+='<div id="assemblyCandidateDiv">';
 					str+='<table id="assemblyTable" class="detailsTable" style="width:auto;" >';
