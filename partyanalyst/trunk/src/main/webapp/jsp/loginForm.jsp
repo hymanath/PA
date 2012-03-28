@@ -545,13 +545,14 @@ function closewindow(){
 function showDetails(results)
 {
 	
+
 	var result = document.getElementById("feedback_window_errorMsg");
 	 str='';
 	
 	if(results == null){
 		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
 	}
-	else if(results.email == null){		
+	else if(results.userName == null){		
 		str+='<div style="color:red"><b> Username Doesnot exist </b></div>';
 	}
 	else{
@@ -578,6 +579,11 @@ function afterPasswordSubmit(email){
 		var str = '';
 		str += '<div id="feedback_window_head">ForgotPassword?</div>';
 		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
+		if(email == null)
+	{
+		str += 'username is same as your email';
+	}
+	else
 		str += 'Your password has been mailed to your email address :'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
