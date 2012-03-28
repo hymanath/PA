@@ -315,12 +315,12 @@ text-decoration:none;
 									<tr>
 									<td>
 									<div>
-									<a href="candidatePageAction.action?candidateId=${electionGoverningBodyVO.candidateId}"><img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
+									<a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}"><img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
 									</div></td><td>
 									<table>
 									<tr>
 									
-									<td style="font-size: 12px; font-weight: normal;" colspan="2"><a href="candidatePageAction.action?candidateId=${electionGoverningBodyVO.candidateId}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"><span style="color:#8B4724;font-weight:bold;font-size:11px;"><c:out value="${electionGoverningBodyVO.candidateName}"></c:out></span></a></td>
+									<td style="font-size: 12px; font-weight: normal;" colspan="2"><a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"><span style="color:#8B4724;font-weight:bold;font-size:11px;"><c:out value="${electionGoverningBodyVO.candidateName}"></c:out></span></a></td>
 									</tr>
 									<tr>
 									<th style="font-size: 13px; font-weight: bold;">Party</th>
