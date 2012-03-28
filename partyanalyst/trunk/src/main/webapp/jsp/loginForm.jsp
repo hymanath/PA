@@ -581,7 +581,7 @@ function afterPasswordSubmit(email){
 		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
 		if(email == null)
 	{
-		str += 'username is same as your email';
+		str += 'Enter your email';
 	}
 	else
 		str += 'Your password has been mailed to your email address :'+email+'</div>';
