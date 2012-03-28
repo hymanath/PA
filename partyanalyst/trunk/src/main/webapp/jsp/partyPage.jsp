@@ -805,11 +805,9 @@ function showStatusForEmailSubscription(results){
 	{
 		 str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">Unable To Process,Please Try Later</span>';
 	}
-		cleardescriptionFields();
-	/*str+='<span style="font-size: 13px; font-family: trebuchet MS;">You are Subscribed For Email alerts Successfully</span>';*/
+	cleardescriptionFields();
 	document.getElementById("alertMsg").innerHTML='<font color="green">You are Subscribed For Email alerts Successfully</font>';
-	}
-    document.getElementById("emailAlertDiv").innerHTML = str;
+	document.getElementById("alertMsg").innerHTML=str;
     document.getElementById("emailId").value='';
 }
 function setDefaultImage(img)
