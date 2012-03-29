@@ -257,7 +257,7 @@ function callAjax(jsObj,url){
 	}
 		catch(e)
 						{   
-							alert("Invalid JSON result" + e);   
+							//alert("Invalid JSON result" + e);   
 						}  
 				   },
 				   scope : this,
@@ -1507,11 +1507,16 @@ function callAjaxForSpecialPage(jsObj,url)
 			{
 				showContent(myResults);
 			}
+			else if(jsObj.task == "getSelectedContent")
+			{
+				showContentResultList = myResults;
+				buildContentDetails(myResults);
+			}
 
 		}
 		catch(e)
 		{   
-		 alert("Invalid JSON result" + e);   
+		 //alert("Invalid JSON result" + e);   
 		}  
 	 },
 	scope : this,
