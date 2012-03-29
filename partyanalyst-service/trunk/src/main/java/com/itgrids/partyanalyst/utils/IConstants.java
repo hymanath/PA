@@ -488,6 +488,9 @@ public interface IConstants {
     
     public static final String CANDIDATE_MEG = "candidateMessage";
     public static final String PARTY_MEG = "PartyMessage";
+    public static final String SPECIAL_PAGE = "Special Page";
+    public static final String CANDIDATE_PAGE = "Candidate Page";
+    public static final String PARTY_PAGE = "Party Page";
     
     public static final String CABINET_MINISTER = "Cabinet Minister";
     public static final String MINISTER_OF_STATE = "Ministers of State";
