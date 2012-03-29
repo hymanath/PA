@@ -14,7 +14,11 @@ public interface IGallaryDAO extends GenericDao<Gallary, Long>{
 	public Integer deleteGallary(Long gallaryId);
 	
 	public List<Object[]> getCandidatesGallaryDescForUpdate(Long gallaryId , Long candidateId);
+	
 	public List<Object[]> getSpecialPageGallaryDescForUpdate(Long gallaryId );
+	
 	public List<Object> getDetailsOfVisibility(Long gallaryId);
+	
+	public List<Object> getOtherGalleries(Long candidateId,List<Long> gallaryIds,String contentType);
 	
 }

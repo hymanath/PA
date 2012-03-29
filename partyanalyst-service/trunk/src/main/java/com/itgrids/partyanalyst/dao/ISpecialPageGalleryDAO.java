@@ -23,5 +23,6 @@ public interface ISpecialPageGalleryDAO extends GenericDao<SpecialPageGallery, L
 		
 	public List<Object[]> getSpecialPageGallaryId(Long specialPageId,int firstRecord, int maxRecord, String contentType);
 	
+	public List<Object> getOtherGalleries(Long specialPageId,List<Long> gallaryIds,String contentType);
 
 }
