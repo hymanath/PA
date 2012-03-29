@@ -92,4 +92,17 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 	{
 		return getHibernateTemplate().find("select model.specialPage from SpecialPageGallery model where model.gallary.gallaryId = ?",gallaryId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getOtherGalleries(Long specialPageId,List<Long> gallaryIds,String contentType)
+	{
+		Query query = getSession().createQuery("select model.gallary.gallaryId from SpecialPageGallery model where model.gallary.contentType.contentType = ? and " +
+				" model.specialPage.specialPageId = ? and model.gallary.gallaryId not in(:gallaryIds)");
+		
+		query.setParameter(0,contentType);
+		query.setParameter(1,specialPageId);
+		query.setParameterList("gallaryIds",gallaryIds);
+		
+		return query.list();
+	}
 }

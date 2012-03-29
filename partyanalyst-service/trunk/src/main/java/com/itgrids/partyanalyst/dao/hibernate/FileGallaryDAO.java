@@ -1012,4 +1012,35 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		
  		queryObject.executeUpdate();
      }
+     
+     public Object getFileIdByFileGallaryId(Long fileGallaryId)
+     {
+    	 Query query = getSession().createQuery("select model.file.fileId from FileGallary model where model.fileGallaryId = ?");
+    	 query.setParameter(0,fileGallaryId);
+    	 return query.uniqueResult();
+     }
+     
+     @SuppressWarnings("unchecked")
+     public List<Object> getGalleryIdsOfAFile(Long fileId)
+     {
+    	 return getHibernateTemplate().find("select model.gallary.gallaryId from FileGallary model where model.file.fileId=?",fileId);
+     }
+     
+     @SuppressWarnings("unchecked")
+     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
+     {
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList)");
+    	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+    	 return query.list();
+     }
+     
+     @SuppressWarnings("unchecked")
+     public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId)
+     {
+    	 Query query = getSession().createQuery("select model.gallary.name,model.gallary.description,count(model.fileGallaryId), " +
+    	 		"model.fileGallaryId,model.file.filePath from FileGallary model where model.gallary.gallaryId = ? group by model.gallary.gallaryId order by updateddate desc");
+    	 query.setMaxResults(1);
+    	 query.setParameter(0,gallaryId);
+    	 return query.list();
+     }
 }
