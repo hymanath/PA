@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,9 +10,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.opensymphony.xwork2.ActionSupport;
+
+import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 
 public class ContentManagementAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware{
@@ -21,9 +26,21 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ServletContext context;
 	private HttpSession session;
 	
+	private JSONObject jObj;
+	private String task;
+	
 	private IContentManagementService contentManagementService;
+	private ContentDetailsVO contentDetailsVO;
 	
 	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public IContentManagementService getContentManagementService() {
 		return contentManagementService;
 	}
@@ -46,8 +63,36 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 		this.context = context;
 	}
 	
+	
+	
+	public ContentDetailsVO getContentDetailsVO() {
+		return contentDetailsVO;
+	}
+
+	public void setContentDetailsVO(ContentDetailsVO contentDetailsVO) {
+		this.contentDetailsVO = contentDetailsVO;
+	}
+
 	public String execute()
 	{
+		return SUCCESS;
+	}
+	
+	public String AjaxHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getSelectedContent"))
+		{
+			contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleries(
+					jObj.getLong("contentId"),jObj.getString("requestFrom"),jObj.getLong("requestPageId"));
+			 
+		}
+		
 		return SUCCESS;
 	}
 }
