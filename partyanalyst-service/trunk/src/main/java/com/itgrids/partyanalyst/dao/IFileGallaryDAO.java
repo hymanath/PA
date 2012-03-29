@@ -72,4 +72,12 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<FileGallary> getRecentlyUploadedPhotos(Integer startIndex,Integer maxResults);
         
     public List<Long> getTotalIndividualSources(Long candidateId,String queryType,String sourceStr , String languageStr,String categoryStr,String newsImportance );
+    
+    public Object getFileIdByFileGallaryId(Long fileGallaryId);
+    
+    public List<Object> getGalleryIdsOfAFile(Long fileId);
+    
+    public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList);
+    
+    public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId);
 }
