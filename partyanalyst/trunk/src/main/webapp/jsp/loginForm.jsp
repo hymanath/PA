@@ -300,6 +300,7 @@ if(request.getParameter("showMessage")!=null){
 		padding: 10px;
 		text-align: center;
 		width: 450px;
+		border-bottom: 2px solid #06ABEA;
 	}
 
 	</style>	
@@ -308,7 +309,7 @@ if(request.getParameter("showMessage")!=null){
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
-		<div style="background-color:#E4EDF0;"><br>
+		<div><br>
 		<div style="display:none;" id="accessDiv">
 			<img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;">Only Registered users can view this content.<br>
 			Already a member, Please Login Here.<br>
