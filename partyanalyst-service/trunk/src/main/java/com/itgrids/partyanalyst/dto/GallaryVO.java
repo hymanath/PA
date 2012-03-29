@@ -26,6 +26,7 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private Long orderNo;
 	private Long PartyProfileDescriptionId;
 	private String isPrivate;
+	private List<FileVO> filesList = new ArrayList<FileVO>(0);
 	
 	public String getIsPrivate() {
 		return isPrivate;
@@ -45,9 +46,6 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
-	private List<FileVO> filesList = new ArrayList<FileVO>(0);
-	
-	
 	public List<FileVO> getFilesList() {
 		return filesList;
 	}

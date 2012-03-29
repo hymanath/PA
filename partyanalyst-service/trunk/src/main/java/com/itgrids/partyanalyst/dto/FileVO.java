@@ -58,7 +58,16 @@ public class FileVO extends ResultStatus implements Serializable {
 	private int maxResult;
 	private int count;
 	private Long totalResultsCount;
+	private Boolean isSelectedContent = false;
 	
+	public Boolean getIsSelectedContent() {
+		return isSelectedContent;
+	}
+
+	public void setIsSelectedContent(Boolean isSelectedContent) {
+		this.isSelectedContent = isSelectedContent;
+	}
+
 	public Long getContentId() {
 		return contentId;
 	}

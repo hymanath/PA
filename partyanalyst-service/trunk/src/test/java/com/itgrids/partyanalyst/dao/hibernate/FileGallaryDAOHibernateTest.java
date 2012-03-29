@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.model.FileGallary;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -130,7 +132,7 @@ System.out.println("i " +i);
 		}
 		System.out.println(list.size());
 	}*/
-	public void testgetTotalIndividualSources()
+	/*public void testgetTotalIndividualSources()
 	{
 		//List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public","Sakshi",null,null,null); 
 		//List<Long> list = fileGallaryDAO.getTotalIndividualSources(900L,"public",null,"Telugu",null,null); 
@@ -139,6 +141,47 @@ System.out.println("i " +i);
 		
 		System.out.println(list.get(0).toString());
 		
+	}*/
+	
+	/*public void testGetFileIdByFileGallaryId()
+	{
+		System.out.println((Long)fileGallaryDAO.getFileIdByFileGallaryId(1042l));
+	}
+    public void testgetGalleryIdsOfAFile()
+    {
+       List<Object> list = fileGallaryDAO.getGalleryIdsOfAFile(1052l);
+       for(Object params : list)
+       {
+    	  System.out.println((Long)params); 
+       }
+    }
+    
+    public void testGetFilesOfInGallaries()
+    {
+    	List<Long> list = new ArrayList<Long>(0);
+    	list.add(1092l);
+    	list.add(1190l);
+    	List<FileGallary> rlist = fileGallaryDAO.getFilesOfInGallaries(list);
+    	{
+    		for(FileGallary params : rlist)
+    		{
+    			System.out.println(params.getFile().getFileTitle());
+    			System.out.println(params.getFile().getFileDescription());
+    			System.out.println(params.getFile().getFilePath());
+    			System.out.println(params.getGallary().getContentType().getContentType());
+    		}
+    	}
+    }*/
+	
+	public void testGetFirstFileAndGallaryInfo()
+	{
+		 List<Object[]> list = fileGallaryDAO.getFirstFileAndGallaryInfo(1193l);
+		 System.out.println(list.size());
+		 
+		 for(Object object : list.get(0))
+		 {
+			 System.out.println(object.toString());
+		 }
 	}
 	
 }
