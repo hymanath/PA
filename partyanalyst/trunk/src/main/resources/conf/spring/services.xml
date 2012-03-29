@@ -1000,6 +1000,10 @@
 	</bean>
 	
 	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
+		<property name="gallaryDAO" ref="gallaryDAO" />
+		<property name="partyGalleryDAO" ref="partyGalleryDAO"/>
 	</bean>
 	
 	<bean name="ministerAnalysisService" class="com.itgrids.partyanalyst.service.impl.MinisterAnalysisService">

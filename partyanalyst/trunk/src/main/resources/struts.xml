@@ -477,7 +477,7 @@
 			<interceptor-ref name="userTrack"/>
 			<interceptor-ref name="chain"/>
             <interceptor-ref name="basicStack"/>
-			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
+			<result name="success">/jsp/constituencyPageSuccess2.jsp</result>
 		</action>
 
         <action name="stateElectionResultsAjax" class="com.itgrids.partyanalyst.web.action.StateElectionResultsAction" method="getJSON">
@@ -3022,7 +3022,7 @@
 			<interceptor-ref name="userTrack"/>
 			<interceptor-ref name="chain"/>
             <interceptor-ref name="basicStack"/>
-			<result name="success">/jsp/constituencyPageSuccess2.jsp</result>
+			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
 		</action>
 		
 		<action name="electionLiveResultsAnalysisAction" class="electionLiveResultsAnalysisAction">
@@ -3159,7 +3159,11 @@
 			</result>
 		</action>
 		
-		
+		<action name="getSelectedContentAndRelatedGalleriesAction" class="contentManagementAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">contentDetailsVO</param>
+			</result>
+		</action>
 		
 				
 	</package>
