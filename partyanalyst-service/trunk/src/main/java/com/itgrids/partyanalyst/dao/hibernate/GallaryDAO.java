@@ -67,10 +67,22 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		   return query.list(); 
 		
 		}
-		public List<Object> getDetailsOfVisibility(Long gallaryId)
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getDetailsOfVisibility(Long gallaryId)
     {
-   	 
-   	return getHibernateTemplate().find("select model.isPrivate from Gallary model where model.gallaryId=?",gallaryId); 
+		return getHibernateTemplate().find("select model.isPrivate from Gallary model where model.gallaryId=?",gallaryId); 
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getOtherGalleries(Long candidateId,List<Long> gallaryIds,String contentType)
+	{
+		Query query = getSession().createQuery("select model.gallaryId from Gallary model model.contentType.contentType=? and "+
+				"model.candidate.candidateId=?,and model.gallaryId not in:(gallaryIds)");
+		query.setParameter(0, contentType);
+		query.setParameter(1, candidateId);
+		query.setParameter("gallaryIds", gallaryIds);
+		return query.list();
+	}
 	
 }

@@ -161,4 +161,16 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		return getHibernateTemplate().find("select model.isPrivate from PartyGallery model where model.gallery.gallaryId = ?",gallaryId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getOtherGalleries(Long partyId,List<Long>gallaryIds,String contentType)
+	{
+		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model where model.gallery.contentType.contentType=? and"+
+				"model.party.partyId = ? and model.gallary.gallaryId not in(:gallaryIds)");
+		query.setParameter(0, contentType);
+		query.setParameter(1, partyId);
+		query.setParameter("gallaryIds", gallaryIds);
+		
+		return query.list();
+	}
 }
