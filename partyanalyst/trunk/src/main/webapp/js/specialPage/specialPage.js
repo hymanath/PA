@@ -1510,7 +1510,7 @@ function callAjaxForSpecialPage(jsObj,url)
 			else if(jsObj.task == "getSelectedContent")
 			{
 				showContentResultList = myResults;
-				buildContentDetails(myResults);
+				buildContentDetails();
 			}
 
 		}
