@@ -225,6 +225,14 @@ a {
     border-width: 0 1.7px 1.7px;
 }
 
+.container {
+    	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    	background-color: #FFFFFF;
+    	margin: 9px auto 40px;
+    	max-width: 800px;
+    	padding: 10px;
+}
+
 </style>
 
 </head>
@@ -381,14 +389,15 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
 	
+	<div id="showContentDiv">
+	<div id="showContentDivInnerDiv"></div>
+	</div>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
 		<div id="constituencySelectDiv"></div>
 	</div>
-	<div id="showContentDiv"></div>
-
-    <!--VIDEOS SECTION END--> 
+	<!--VIDEOS SECTION END--> 
  </td>
  </tr>
 </table>
@@ -421,6 +430,7 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
    var arraySize =0;
    var currentSize=0;
    var queryTypeChecked='Public';
+   var showContentResultList = null;
 
    function sendMessage()
 {
@@ -758,10 +768,11 @@ function callAjax(jsObj,url)
 			 { 
 				showStatus(myResults);
 			 }
-		else if(jsObj.task == "getContentDetails")	
-		{
-			showContent(myResults);
-		}
+		else if(jsObj.task == "getSelectedContent")
+			{
+				showContentResultList = myResults;
+				buildContentDetails();
+			}
 		}
 		catch(e)
 		{   
@@ -771,7 +782,7 @@ function callAjax(jsObj,url)
 	scope : this,
 	failure : function( o )
 	{
-								//alert( "Failed to load result" + o.status + " " + o.statusText);
+		//alert( "Failed to load result" + o.status + " " + o.statusText);
 	}
   };
 
@@ -805,8 +816,9 @@ function showStatusForEmailSubscription(results){
 	{
 		 str+='<span style="font-size: 13px; font-family: trebuchet MS;color:red">Unable To Process,Please Try Later</span>';
 	}
+	
 	cleardescriptionFields();
-	document.getElementById("alertMsg").innerHTML=str;
+	document.getElementById("alertMsg").innerHTML = str;
     document.getElementById("emailId").value='';
 }
 function setDefaultImage(img)
@@ -2071,29 +2083,26 @@ var url = "partyPhotoGallaryAction.action?"+rparam;
 callAjax(jsObj,url);
 }
 
-function getContent()
+function getContentDetails(contentId)
 {
 	var jsObj =
 		{   
-		    time : timeST,
-			contentId : '${contentId}',
-			task:"getContentDetails"
+		    contentId : contentId,
+			requestFrom : 'Party Page',
+			requestPageId : '${partyId}',
+			task:"getSelectedContent"
 		};
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryUpdateAction.action?"+rparam;						
-	callAjax(jsObj,url); 
+	var url = "getSelectedContentAndRelatedGalleriesAction.action?"+rparam;					callAjax(jsObj,url); 
 }
 
-function showContent(result)
+function showSelectedContentAndRelatedGalleries()
 {
-	if(result == null)
-		return;
-
-	  $.fx.speeds._default = 1000;
+	$.fx.speeds._default = 1000;
 	  $("#showContentDiv").dialog({ stack: false,
 								height: 'auto',
-								width: 850,
+								width: 950,
 								closeOnEscape: true,
 								position:[30,30],
 								show: "blind",
@@ -2101,65 +2110,213 @@ function showContent(result)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								title:'<center><font color="Navy"></font><center>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 		$("#showContentDiv").dialog();
-	
-	var str='<DIV><center>';
+		getContentDetails('${contentId}');
+}
 
+function buildContentDetails()
+{
+	result = showContentResultList;
+	if(result == null)
+		return;
+
+	var divEle = document.getElementById('showContentDivInnerDiv');
+	var str = '';
+	var titleStr = null;
+	var pathStr = null;
+	var descriptionStr = null;
+	var preContentId = null;
+	
+	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${partyVO.partyShortName} Party - '+result.contentType;
+
+	str += '<Div><center>';
 	str += '<div class="main-title-sec">';
-	str += '<div id="contentHeaderDiv" class="main-mbg" style="width:760px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
+	str += '<div id="showContentHeaderDiv" class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;"></div><div class="main-bbg"/></div>';
 	
-	if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
+	
+	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
-		 str+='<table>';
-		 str+='     <tr>';
-		 str+='       <td>';
+		titleStr = result.relatedGalleries[0].filesList[i].title;
+		pathStr = result.relatedGalleries[0].filesList[i].path;
+		descriptionStr = result.relatedGalleries[0].filesList[i].description;
+		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		
-		if(result.source != null)
-			str+='        <B>Source</B> : <font color="#FF4500">'+result.source+'</font> &nbsp;&nbsp;&nbsp;<B>';
+		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
+		{
+			str+='<table>';
+			str+='<tr>';
+			str+='<td>';
+			if(result.relatedGalleries[0].filesList[i].source != null)
+				str+='<B>Source</B> : <font color="#FF4500">'+result.relatedGalleries[0].filesList[i].source+'</font> &nbsp;&nbsp;&nbsp;<B>';
 
-		if(result.fileDate != null)
-			str+=' Date </B>:<font color="#FF4500"> '+result.fileDate+'</font>';
+			if(result.relatedGalleries[0].filesList[i].fileDate != null)
+				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
 
-		 str+='       </td>';
-		 str+='     </tr>';
-		 str+='     </table>';
+			 str+='</td>';
+			 str+='</tr>';
+			 str+='</table>';
+		}
 	}
 	
-	str+='     <table>';
-	str+='			<tr>';
-	str+='             <td><div class="container">';
-	
-	if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
-		str+=' <img alt="'+result.title+'" src="'+result.path+'" title="'+result.title+'" style="max-width:780px;max-length:800px;"/>';
-	
-	else if(result.contentType == 'Video Gallary')
-		str += '<iframe width="500" height="400" src="http://www.youtube.com/embed/'+result.path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	if(result.contentType == 'Video Gallary')
+	{
+		if(result.relatedGalleries[0].filesList.length < 2)
+			str += '<table width="530px">';
+		else
+			str += '<table width="880px">';
+		str += '<tr>';
 
+		if(result.relatedGalleries[0].filesList.length >= 2){
+		str += '<td valign="top">';
+		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<b><font color="blue">Other Videos</font></b>';
+		str += '<Table>';
+		
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
+		{
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+		str += '</td>';
+		}
+		
+		str += '<td valign="top" style="horizontal-align:center;">';
+		str += '<div class="container">';
+		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe>';
+		str += '<table><tr>';
+		str += '<td>';
+		str += ''+descriptionStr+'';
+		str += '</td>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '</td>';
+		
+		if(result.relatedGalleries[0].filesList.length >= 2){
+		str += '<td valign="top">';
+		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<b><font color="blue">Other Videos</font></b>';
+		str += '<Table>';
 
-	str+='</div></td>';
-	str+='		      </tr>';
-	str+='         </table>';
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
+		{
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+		str += '</td>';
+		}
+		
+	str += '</tr>';
+	str += '</table>';
+	}
 
-	str += '<table><tr>';
-	str+='       <td>';
-	str+='        '+result.description+'';
-	str+='       </td>';
-	str+='     </tr>';
-	str+='<table>';
+	else if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+	{
+		str += '<table>';
+
+		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+			if(i != 0)
+			{
+				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
+			}
+			
+			str += '<td><div class="container"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].path+'" /></div></td>';
+
+			if(i != result.relatedGalleries[0].filesList.length-1)
+			{
+				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i+1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i+1].contentId+')"><img src="images/icons/jQuery/next.png" class="newsImage" /></a></td>';
+			}
+		}
+
+		str += '</table>';
+	}
+
+	if(result.otherGalleries != null && result.otherGalleries.length > 0)
+	{
+		var galType = null;
+		
+		if(result.contentType == 'Photo Gallary')
+			galType = ' Photo ';
+		else if(result.contentType == 'News Gallary')
+			galType = ' News ';
+		else if(result.contentType == 'Video Gallary')
+			galType = ' Video ';
+
+		str += '<div>';
+
+		str += '<Div><center>';
+		str += '<div class="main-title-sec">';
+		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${partyVO.partyShortName} Party </div><div class="main-bbg"/></div>';
+		
+		str += '<div class="container" style="overflow:auto;width:880px;max-width:850px;">';
+		str += '<Table>';
+		
+		for(var i=0;i<result.otherGalleries.length;i++)
+		{
+			if(i%5 == 0)
+				str += '<tr>';
+			
+			str += '<td width="20%" valign="top">';
+
+			str += '<table>';
+			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery"><font color="red">'+result.otherGalleries[i].gallaryName+'</font></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" onClick="getContentDetails('+result.otherGalleries[i].filesList[0].fileId+')" title="Click here to View '+result.otherGalleries[i].gallaryName+''+galType+' Gallery">';
+			
+			if(result.contentType == 'Photo Gallary' || result.contentType == 'News Gallary')
+				str += '<img width="120px" height="90px" alt="'+result.otherGalleries[i].gallaryName+'" src="'+result.otherGalleries[i].filesList[0].path+'"></img>';
+				
+			else if(result.contentType == 'Video Gallary')
+				str += '<img src="http://img.youtube.com/vi/'+result.otherGalleries[i].filesList[0].path+'/1.jpg"></img>';
+			
+			str += '</a></td></tr>';
+			str += '<tr><td>Gallery Size : ('+result.otherGalleries[i].orderNo+')</td></tr>';
+			str += '<tr><td>'+result.otherGalleries[i].description+'</td></tr>';
+			str += '</table>';
+
+			str += '</td>';
+
+			if(i%5 == 4)
+				str += '</tr>';
+		}
+		str += '</Table>';
+		str += '</div>';
+
+		str += '</div>';
+	}
 	
-	str += '</center></DIV>';
-	 document.getElementById("showContentDiv").innerHTML=str;
+	str += '</center></Div>';
+
+	divEle.innerHTML = str;
 
 	var str = '';
-	str += ''+result.title+'<span style="margin-top:10px;margin-right:18px;float:right">';
-	str += '<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}&contentId=${contentId}">Share in Facebook</a>';
+	str += ''+titleStr+'<span style="margin-top:10px;margin-right:18px;float:right">';
+	str += '<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'">Share in Facebook</a>';
 	str += '</span>';
 	
-	document.getElementById("contentHeaderDiv").innerHTML=str;
-	 
+	document.getElementById("showContentHeaderDiv").innerHTML=str;
+	
+}
+
+function buildContentDetailsOfSelected(preId,selId)
+{
+	for(var i=0;i<showContentResultList.relatedGalleries[0].filesList.length;i++)
+	{
+		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == preId)
+			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = false;
+		if(showContentResultList.relatedGalleries[0].filesList[i].contentId == selId)
+			showContentResultList.relatedGalleries[0].filesList[i].isSelectedContent = true;
+	}
+
+	buildContentDetails();
 }
 
 function buildPartyManifesoGallary(results)
@@ -2374,6 +2531,10 @@ var message_Obj = {
 	   
 };
 
+<s:if test="contentId != null">
+showSelectedContentAndRelatedGalleries();
+</s:if>
+
 displayProfile();
 partyInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
@@ -2381,10 +2542,6 @@ getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
 message_Obj.initialize();
-
-<s:if test="contentId != null">
-	getContent();
-</s:if>
 </script>
 
 </body>
