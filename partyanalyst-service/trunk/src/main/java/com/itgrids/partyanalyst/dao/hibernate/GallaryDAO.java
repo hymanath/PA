@@ -77,11 +77,11 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 	@SuppressWarnings("unchecked")
 	public List<Object> getOtherGalleries(Long candidateId,List<Long> gallaryIds,String contentType)
 	{
-		Query query = getSession().createQuery("select model.gallaryId from Gallary model model.contentType.contentType=? and "+
-				"model.candidate.candidateId=?,and model.gallaryId not in:(gallaryIds)");
+		Query query = getSession().createQuery("select model.gallaryId from Gallary model where model.contentType.contentType = ? and "+
+				" model.candidate.candidateId = ? and model.gallaryId not in(:gallaryIds)");
 		query.setParameter(0, contentType);
 		query.setParameter(1, candidateId);
-		query.setParameter("gallaryIds", gallaryIds);
+		query.setParameterList("gallaryIds", gallaryIds);
 		return query.list();
 	}
 	

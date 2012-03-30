@@ -127,7 +127,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		
 		Query query = getSession().createQuery("select model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileTitle,model.file.fileDescription,  " +
-				" model.gallary.name  from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
+				" model.gallary.name from FileGallary model where model.gallary.gallaryId = ? and model.isDelete = ? and model.isPrivate = ? "+
 				" order by model.file.fileId asc ");
 		
 		query.setParameter(0,gallaryId);
@@ -165,11 +165,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	@SuppressWarnings("unchecked")
 	public List<Object> getOtherGalleries(Long partyId,List<Long>gallaryIds,String contentType)
 	{
-		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model where model.gallery.contentType.contentType=? and"+
-				"model.party.partyId = ? and model.gallary.gallaryId not in(:gallaryIds)");
+		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model where model.gallery.contentType.contentType = ? and "+
+				" model.party.partyId = ? and model.gallery.gallaryId not in(:gallaryIds)");
 		query.setParameter(0, contentType);
 		query.setParameter(1, partyId);
-		query.setParameter("gallaryIds", gallaryIds);
+		query.setParameterList("gallaryIds", gallaryIds);
 		
 		return query.list();
 	}

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -36,13 +37,13 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		}
 	} */
 	//public Integer deleteGallary(Long gallaryId)
-	public void testDeleteGallary()
+	/*public void testDeleteGallary()
 	{
 		int i = gallaryDAO.deleteGallary(1014l);
 		System.out.println("i "+i);
 		
 		
-	}
+	}*/
  /*  public void testGetCandidatesGallaryDescForUpdate()
    {
 	   
@@ -56,7 +57,7 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(object[3]!=null?object[3].toString():null);
 	} 
    }*/
-   public void testgetDetailsOfVisibility()
+   /*public void testgetDetailsOfVisibility()
    {
 	   List<Object> result = gallaryDAO.getDetailsOfVisibility(27l);
 	  for(Object params : result){
@@ -64,6 +65,15 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 	  }
 	   
 	   
-   }
+   }*/
+	
+	public void testGetOtherGalleries()
+	{
+		List<Long> gallaryIds = new ArrayList<Long>(0);
+		gallaryIds.add(300l);
+		List<Object> result = gallaryDAO.getOtherGalleries(3424l, gallaryIds,IConstants.PHOTO_GALLARY);
+		
+		System.out.println(result.size());
+	}
    
 }
