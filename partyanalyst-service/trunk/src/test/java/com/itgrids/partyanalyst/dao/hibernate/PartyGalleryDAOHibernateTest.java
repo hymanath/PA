@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -75,12 +76,22 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 		System.out.println(list.get(0).getShortName());
 	}
 	*/
-	public void testgetPartyVisibility()
+	/*public void testgetPartyVisibility()
 	{
 		List<Object> result = partyGalleryDAO.getPartyVisibility(1159l);
 		for(Object params:result)
 	{
 		System.out.println(params);
 	}
+	}*/
+	
+	public void testGetOtherGalleries()
+	{
+		List<Long> gallaryIds = new ArrayList<Long>(0);
+		gallaryIds.add(1197l);
+		List<Object> result = partyGalleryDAO.getOtherGalleries(872l,gallaryIds,IConstants.VIDEO_GALLARY);
+		
+		System.out.println(result.size());
 	}
+	
 }
