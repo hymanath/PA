@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private JSONObject jObj;
 	private List<String> gender = new ArrayList<String>();
 	private Long result;
-	
+	private ResultStatus results;
 	//for problem management login
 	private Boolean prepopulate = false;
     private String redirectLoc = null;
@@ -53,7 +54,13 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private HttpSession session;
     private Integer resultValue;
         
-   	public Integer getResultValue() {
+   	public ResultStatus getResults() {
+		return results;
+	}
+	public void setResults(ResultStatus results) {
+		this.results = results;
+	}
+	public Integer getResultValue() {
 		return resultValue;
 	}
 	public void setResultValue(Integer resultValue) {
@@ -222,6 +229,24 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		
 		return Action.SUCCESS;
 	}
+	
+	
+	public String AjaxHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("saveUserEmailAndSendPwd"))
+		{
+			results = ananymousUserService.saveEmailForAUser(jObj.getString("userName"),jObj.getString("email"));
+		}
+		
+	
+		return SUCCESS;
+	}
 	public String checkForUserNameAvailability(){
 
 		try {
@@ -255,37 +280,81 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		regVO = new RegistrationVO();
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("forgotPassword")){
+			if(jObj.getString("task").equalsIgnoreCase("forgotPassword"))
+			{
 				
 				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
-				if(regVO.getEmail()== null || regVO.getEmail() == " "){
-				return SUCCESS;
-				}
-				else{
-				 email = regVO.getEmail();
-				 System.out.println("email"+email);
-					String requestURL= request.getRequestURL().toString();
-					String requestFrom = "";
-					if(requestURL.contains("www.partyanalyst.com"))
+				
+				if(regVO.getEmail()== null || regVO.getEmail() == " ")
+					return SUCCESS;
+				
+				else
+				{
+					email = regVO.getEmail();
+				 	String requestURL= request.getRequestURL().toString();
+					String requestFrom = null;
+					
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
 						requestFrom = IConstants.SERVER;
 					else
 						requestFrom = IConstants.LOCALHOST;
 					
 					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
 				 
-				 if(rs.getResultCode() == 1){
+					if(rs.getResultCode() == 1)
 					 regVO = null;
-				 }
-				return SUCCESS;
+
+					return SUCCESS;
+				}
 			}
-			}
-			System.out.println(jObj);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
+	
+	
+	
+		public String recoverPasswordForUser(){
+		
+		regVO = new RegistrationVO();
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("recoverPassword"))
+			{
+				
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				
+				if(regVO.getEmail()== null || regVO.getEmail() == " ")
+					return SUCCESS;
+				
+				else
+				{
+					email = regVO.getEmail();
+				 	String requestURL= request.getRequestURL().toString();
+					String requestFrom = null;
+					
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+				 
+					if(rs.getResultCode() == 1)
+					 regVO = null;
+
+					return SUCCESS;
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
 	
 	public String changeUserNameToEmail(){
 		regVO = new RegistrationVO();
