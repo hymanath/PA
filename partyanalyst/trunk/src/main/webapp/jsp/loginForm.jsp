@@ -305,7 +305,7 @@ if(request.getParameter("showMessage")!=null){
 
 	</style>	
 	</head>
-	<body><center>	 
+	<body><center>
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
@@ -614,8 +614,8 @@ function showEmailStatus(results)
 		clearEmailFields();
 		
 	
-	//	str += '<font color="green"><b>Email saved successfully </b></font>';
-		//errorDivEle.innerHTML = str;
+		str += '<font color="#000000">Sending Your Request. Please wait...</font>';
+		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
 		
 	}
 	else
@@ -631,6 +631,8 @@ function clearEmailFields()
 {
 
 	 document.getElementById('emailIdOfUser').value = '';
+
+	
 }
 
 function afterPasswordSubmit(username,email){
@@ -653,7 +655,7 @@ function afterPasswordSubmit(username,email){
 	if(email == null)
 	{
 		str +='<div id="ErrorMsgDivId"></div>';
-		str += 'Enter your email :';
+		str += 'Enter your Email :';
 		str +='<input id="emailIdOfUser" type="text">';
 		str += '<input type="hidden" id="hiddenUserId" value="'+username+'">';
 		str +='<input type="button"  value="submit" onclick="saveEmailAndSendPassword()" style="width:70px;margin-left: 8px;">';
@@ -707,7 +709,7 @@ function afterPasswordSubmitToUser(username,email){
 		var str = '';
 		str += '<div id="feedback_window_head">ForgotPassword?</div>';
 		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
-	
+		
 		str += 'Your password has been mailed to your email address :'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
