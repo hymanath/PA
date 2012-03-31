@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -105,7 +106,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long contentId;
 	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
 	private List<ElectionGoverningBodyVO> electionGoverningBodyVO;
+	private List<CustomPageVO> customPages;
 	
+	public List<CustomPageVO> getCustomPages() {
+		return customPages;
+	}
+
+	public void setCustomPages(List<CustomPageVO> customPages) {
+		this.customPages = customPages;
+	}
+
 	public IElectionLiveResultsAnalysisService getElectionLiveResultsAnalysisService() {
 		return electionLiveResultsAnalysisService;
 	}
@@ -512,6 +522,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		request.setAttribute("candidateURLString", candidateURLString);
 		
 		fileVO = candidateDetailsService.getCandidateLatestVideos(candidateId,0,20);
+		
+		customPages   = candidateDetailsService.getCustomPagesOfACandidatePage(candidateId);
+		
 		if(candidateElectionDetails != null)
 			return SUCCESS;
 		else
