@@ -313,7 +313,7 @@
 		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
-		
+		<property name="candidatePageCustomPagesDAO" ref="candidatePageCustomPagesDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -966,6 +966,7 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
 		<property name="messageToPartyDAO" ref="messageToPartyDAO" />
+		<property name="partyPageCustomPagesDAO" ref="partyPageCustomPagesDAO" />
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
