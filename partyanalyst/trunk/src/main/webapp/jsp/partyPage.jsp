@@ -250,6 +250,17 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 </span>
 </div>
  <div class="main-bbg"></div></div><br></td></tr></table>
+
+<s:if test="customPages != null && customPages.size() > 0">
+<s:iterator value="customPages" var="custom"> 
+<s:if test="#custom.type == 'banner'">
+	<div>
+		<jsp:include page='${custom.name}' flush="true"/> 
+	</div>
+</s:if>
+</s:iterator>
+</s:if>
+
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
  <tr>
   <td width="200" valign="top">
@@ -270,6 +281,17 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
           </div>
 	
 	  <div class="clear"></div>
+
+	  <s:if test="customPages != null && customPages.size() > 0">
+		    <s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'left_navigation'">
+				<div style="width:200px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+			</s:iterator>
+	 </s:if>
+
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
@@ -316,9 +338,19 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 
 			  <!--ELECTION PROFILE SECTION END--> 
 
+			<s:if test="customPages != null && customPages.size() > 0">
+			<s:iterator value="customPages" var="custom"> 
+				<s:if test="#custom.type == 'center_div'">
+					<div style="width:435px;">
+						<jsp:include page='${custom.name}' flush="true"/> 
+					</div>
+				</s:if>
+			</s:iterator>
+			</s:if>
+
 			  <!--PHOTO GALLERY SECTION START-->
           
-                <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
+             <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
             
 			 <div class="clear"></div>
 			
@@ -398,6 +430,17 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 		<div id="constituencySelectDiv"></div>
 	</div>
 	<!--VIDEOS SECTION END--> 
+
+	<s:if test="customPages != null && customPages.size() > 0">
+		<s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'right_navigation'">
+				<div style="width:300px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+		</s:iterator>
+	</s:if>
+
  </td>
  </tr>
 </table>

@@ -283,7 +283,18 @@ District:
 share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">Share in Facebook</a> 
 </span>
 </div>
- <div class="main-bbg"></div></div><br></td></tr></table>
+<div class="main-bbg"></div></div><br></td></tr></table>
+
+<s:if test="customPages != null && customPages.size() > 0">
+<s:iterator value="customPages" var="custom"> 
+<s:if test="#custom.type == 'banner'">
+	<div>
+		<jsp:include page='${custom.name}' flush="true"/> 
+	</div>
+</s:if>
+</s:iterator>
+</s:if>
+
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
  <tr>
   <td width="200" valign="top">
@@ -304,6 +315,17 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
           </div>
 	
 	  <div class="clear"></div>
+
+		<s:if test="customPages != null && customPages.size() > 0">
+		    <s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'left_navigation'">
+				<div style="width:200px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+			</s:iterator>
+		</s:if>
+
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
@@ -391,12 +413,20 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 
 			  <!--PHOTO GALLERY SECTION START -->
           
-               <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
-            
-			 <div class="clear"></div>
-			
-			 <div id="analyzeCandidateDiv_Body"></div>
-		         
+		<div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
+		<div class="clear"></div>
+		<div id="analyzeCandidateDiv_Body"></div>
+		
+		<s:if test="customPages != null && customPages.size() > 0">
+			<s:iterator value="customPages" var="custom"> 
+				<s:if test="#custom.type == 'center_div'">
+					<div style="width:435px;">
+						<jsp:include page='${custom.name}' flush="true"/> 
+					</div>
+				</s:if>
+			</s:iterator>
+		</s:if>
+
           <div class="fleft"> 
 		  <div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}" data-num-posts="500" data-width="430"></div>
 		  </div> 
@@ -468,6 +498,16 @@ share_url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateI
 	<div id="sendMessageDiv">
     <div id="constituencySelectDiv"/>
     </div>
+
+	<s:if test="customPages != null && customPages.size() > 0">
+		<s:iterator value="customPages" var="custom"> 
+			<s:if test="#custom.type == 'right_navigation'">
+				<div style="width:300px;">
+					<jsp:include page='${custom.name}' flush="true"/> 
+				</div>
+			</s:if>
+		</s:iterator>
+	</s:if>
 
     <!--VIDEOS SECTION END--> 
  </td>
