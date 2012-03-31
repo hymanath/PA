@@ -39,4 +39,8 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public Integer changeUserPassword(String password,Long registrationId);
 	
 	public List<AnanymousUser> checkUserPassword(String password,Long userId);
+	
+	public List<AnanymousUser> getUserByUserName(String userName);
+	
+	
 }
