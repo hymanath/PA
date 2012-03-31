@@ -61,4 +61,6 @@ public interface IAnanymousUserService {
 	public String getPassword(String password);
 	
 	public String changeUserPassword(String crntPassword,String newPassword,Long registrationId);
+	
+	public  ResultStatus saveEmailForAUser(String userName,String email);
 }	
