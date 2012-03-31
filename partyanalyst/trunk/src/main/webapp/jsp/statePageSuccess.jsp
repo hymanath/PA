@@ -239,13 +239,17 @@ color:none;
 }
 #ministerDiv a:hover{
 text-decoration:none;
+
 }
 #ministerDiv_body a:hover{
 text-decoration:none;
+
 }
 #ministersOfState a:hover{
 text-decoration:none;
+
 }
+
 </style>
 </head>
 <body>
@@ -315,7 +319,8 @@ text-decoration:none;
 									<tr>
 									<td>
 									<div>
-									<a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}"><img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
+									<a href="candidateElectionResultsAction.action?candidateId=${electionGoverningBodyVO.candidateId}">
+									<img src="images/candidates/${electionGoverningBodyVO.candidateName}.jpg" width="100px" height="88px;"   style="margin:2px 0px 2px 2px;" alt="${electionGoverningBodyVO.candidateName}" title="Click here to view <c:out value='${electionGoverningBodyVO.candidateName}'/> Profile - Election Results, News, Photos, Videos"/></a>
 									</div></td><td>
 									<table>
 									<tr>
@@ -335,9 +340,11 @@ text-decoration:none;
 							</table></td></tr></table>
 							
 						 </div>
-						 <div id="ministersOfState">
-						 <a href="ministersPageAction.action?electionId=${electionGoverningBodyVO.electionId}">
-							<input type="submit" value="View Ministers of ${statePage.stateName}" style="margin-top: 10px; margin-left: 40px;width:220px;background:#6380BA;color:#FFFFFF;border: medium none;border-radius: 4px;padding:3px;" title="Click here to view Ministers of <c:out value='${statePage.stateName}'/> "/></a>
+						 
+						 <div id="ministersOfState" style="margin-left: 25px; margin-top: 13px;">
+						 <a href="ministersPageAction.action?electionId=${electionGoverningBodyVO.electionId}" style="background:#6380BA;color:#FFFFFF;border: medium none;border-radius: 4px;font-weight: bold;padding: 3px 7px 4px;font-size: 13px;">
+							View Ministers of ${statePage.stateName}
+						</a>
 						 </div>
 						 </c:if>
 
