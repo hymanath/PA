@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -154,4 +155,6 @@ public interface ICandidateDetailsService {
 	 public List<CandidateMinistriesVO> getAllMinistersDetailsForAnElection(Long electionId);
 	 
 	 public List<SelectOptionVO> getMinistryYearsForAState(String electionType, Long stateId);
+	 
+	 public List<CustomPageVO> getCustomPagesOfACandidatePage(Long candidateId);
 }

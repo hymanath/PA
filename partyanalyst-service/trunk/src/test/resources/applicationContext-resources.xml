@@ -253,11 +253,21 @@
 				<value>com.itgrids.partyanalyst.model.PositionScope</value>
 				<value>com.itgrids.partyanalyst.model.KeyCandidate</value>
 				<value>com.itgrids.partyanalyst.model.MinisterType</value>
+				<value>com.itgrids.partyanalyst.model.PartyPageCustomPages</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePageCustomPages</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="partyPageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyPageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="electionMinistersDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionMinistersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />

@@ -37,6 +37,8 @@ public class CustomPage implements Serializable{
 	private String name;
 	private CustomPageType customPageType;
 	private Set<SpecialPageCustomPages> specialPageCustomPages = new HashSet<SpecialPageCustomPages>(0);
+	private Set<PartyPageCustomPages> partyPageCustomPages = new HashSet<PartyPageCustomPages>(0);
+	private Set<CandidatePageCustomPages> candidatePageCustomPages = new HashSet<CandidatePageCustomPages>(0);
 	
 	public CustomPage()
 	{}
@@ -88,6 +90,28 @@ public class CustomPage implements Serializable{
 	public void setSpecialPageCustomPages(
 			Set<SpecialPageCustomPages> specialPageCustomPages) {
 		this.specialPageCustomPages = specialPageCustomPages;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<PartyPageCustomPages> getPartyPageCustomPages() {
+		return partyPageCustomPages;
+	}
+
+	public void setPartyPageCustomPages(
+			Set<PartyPageCustomPages> partyPageCustomPages) {
+		this.partyPageCustomPages = partyPageCustomPages;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customPage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidatePageCustomPages> getCandidatePageCustomPages() {
+		return candidatePageCustomPages;
+	}
+
+	public void setCandidatePageCustomPages(
+			Set<CandidatePageCustomPages> candidatePageCustomPages) {
+		this.candidatePageCustomPages = candidatePageCustomPages;
 	}
 	
 	
