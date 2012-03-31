@@ -630,6 +630,8 @@ function callAJAX(jsObj,url){
 					{
 						showDetails(results);
 					}
+
+					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -642,6 +644,8 @@ function callAJAX(jsObj,url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+
+
 	
 function checkAvailability()
 { 

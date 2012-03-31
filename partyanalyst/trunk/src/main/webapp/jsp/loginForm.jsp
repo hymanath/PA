@@ -343,6 +343,7 @@ if(request.getParameter("showMessage")!=null){
 				<div id="loginPanel_Head" class="layoutHeadersClass"></div>
 				<div id="loginPanel_Body" class="layoutBodyClass yui-skin-sam">
 					<div id="loginPanel" class="panelContainer">
+					
 						<table>
 							<tr>
 								<td colspan="2" style="color:red"><s:actionerror /></td>
@@ -411,6 +412,7 @@ if(request.getParameter("showMessage")!=null){
 								<tr>
 									<th><s:label theme="simple" value="%{getText('userName')}"></s:label></th>
 									<td>
+									<div id="validate"></div>
 										<s:textfield theme="simple" name="userName" id="userName" label="%{getText('userName')}"/>
 									</td>
 								</tr>
@@ -516,16 +518,29 @@ if(request.getParameter("showMessage")!=null){
 
 
 function callAJAX(jsObj,url){
+
 	var results;	
 	var callback = {			
 	    success : function( o ) {
 			try {							
 				"",					
-					results = YAHOO.lang.JSON.parse(o.responseText);		
-					if(jsObj.task == "forgotPassword")
+					results = YAHOO.lang.JSON.parse(o.responseText);
+					if(jsObj.task == "saveUserEmailAndSendPwd")
+					{
+						
+						showEmailStatus(results);
+						
+					}
+					else if(jsObj.task == "forgotPassword")
 					{
 						showDetails(results);
 					}
+					else if(jsObj.task == "recoverPassword")
+					{
+						showPasswordStatus(results);
+					}
+
+					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -538,6 +553,8 @@ function callAJAX(jsObj,url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+
+	
 function closewindow(){
 	
 	$("#forgot_password_window").dialog("destroy");
@@ -545,8 +562,6 @@ function closewindow(){
 
 function showDetails(results)
 {
-	
-
 	var result = document.getElementById("feedback_window_errorMsg");
 	 str='';
 	
@@ -558,13 +573,67 @@ function showDetails(results)
 	}
 	else{
 		$("#forgot_password_window").dialog("destroy");
-		afterPasswordSubmit(results.email);
+		afterPasswordSubmit(results.userName,results.email);
 		return;
 	}
 	result.innerHTML = str;
 	
 }
-function afterPasswordSubmit(email){
+
+
+function showPasswordStatus(results)
+{
+	
+	var errorDivEle = document.getElementById('ErrorMsgDivId');
+	var str='';
+
+	if(results == null){
+		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
+	}
+	else if(results.userName == null){		
+		str+='<div style="color:red"><b> Username Doesnot exist </b></div>';
+	}
+	else{
+		//$("#forgot_password_window").dialog("destroy");
+		afterPasswordSubmitToUser(results.userName,results.email);
+		return;
+	}
+	errorDivEle.innerHTML = str;
+	
+}
+
+
+function showEmailStatus(results)
+{
+
+	var errorDivEle = document.getElementById('ErrorMsgDivId');
+	var str = '';
+	
+	if(results.resultCode == 0)
+	{
+		clearEmailFields();
+		
+	
+	//	str += '<font color="green"><b>Email saved successfully </b></font>';
+		//errorDivEle.innerHTML = str;
+		
+	}
+	else
+		
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b></font>';
+
+	errorDivEle.innerHTML = str;
+	sendPasswordToUser();
+}
+
+
+function clearEmailFields()
+{
+
+	 document.getElementById('emailIdOfUser').value = '';
+}
+
+function afterPasswordSubmit(username,email){
 
  $("#forgot_password_window").dialog({
 			resizable:false,
@@ -576,15 +645,69 @@ function afterPasswordSubmit(email){
 		$(".ui-dialog-titlebar").hide();
 
 		var elmt = document.getElementById("forgot_password_window_inner");
+		
+		var str = '';
+		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
+		
+	if(email == null)
+	{
+		str +='<div id="ErrorMsgDivId"></div>';
+		str += 'Enter your email :';
+		str +='<input id="emailIdOfUser" type="text">';
+		str += '<input type="hidden" id="hiddenUserId" value="'+username+'">';
+		str +='<input type="button"  value="submit" onclick="saveEmailAndSendPassword()" style="width:70px;margin-left: 8px;">';
+		
+		//str +='<button type="button" onclick="clearDialogBox()" style="margin-left:6px;">Cancel</button>';
+		
+		str += '<input type="button" id="cancelButtonId" value="Cancel"></input>';
+		
+		
+		elmt.innerHTML = str;
+		var oPushButton2 = new YAHOO.widget.Button("cancelButtonId");
+
+		oPushButton2.on("click",function(){
+			$("#forgot_password_window").dialog("destroy");
+		});
+		
+		
+	}
+	else
+	{
+		str += 'Your password has been mailed to your email address :'+email+'</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr><td>';
+		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
+		str += '   value="OK"></input></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("OkButton");
+
+		oPushButton2.on("click",function(){
+			$("#forgot_password_window").dialog("destroy");
+		});
+		
+		}
+}
+
+
+
+
+function afterPasswordSubmitToUser(username,email){
+	
+		var elmt = document.getElementById("forgot_password_window_inner");
+		var username = document.getElementById("");
+
 
 		var str = '';
 		str += '<div id="feedback_window_head">ForgotPassword?</div>';
 		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
-		if(email == null)
-	{
-		str += 'Enter your email';
-	}
-	else
+	
 		str += 'Your password has been mailed to your email address :'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
@@ -604,9 +727,25 @@ function afterPasswordSubmit(email){
 		});
 }
 
+
 function showForgotPasswordPanel(){
 
-$("#forgot_password_window").dialog({
+		var str ='';
+		var elmts = document.getElementById("validate");
+		var uname = document.getElementById("userName").value;
+		if(uname == '')
+		{
+		str +='<font color="red">Enter userName</font>';
+
+		elmts.innerHTML=str;
+		return;
+		}
+	
+	
+		else
+		{
+		document.getElementById("validate").style.display = 'none';
+		$("#forgot_password_window").dialog({
 			resizable:false,
 			width: 600,
 			minHeight:200,
@@ -618,7 +757,7 @@ $("#forgot_password_window").dialog({
 		var elmt = document.getElementById("forgot_password_window_inner");
 
 		var str = '';
-		str += '<div id="feedback_window_head">Forgot Password ?</div>';
+    	str += '<div id="feedback_window_head">Forgot Password ?</div>';
 		str += '<div id="feedback_window_body">';
 		str += '	<div id="feedBackNote_div">';
 		str += '		<table>';
@@ -662,7 +801,7 @@ $("#forgot_password_window").dialog({
 		oPushButton2.on("click",function(){
 			$("#forgot_password_window").dialog("destroy");
 		});
-
+	}
 }
 
 
@@ -670,20 +809,23 @@ function checkAvailability()
 {
 
 	var name = document.getElementById("userName_FP").value;
- 	
+ 	var uname = document.getElementById("userName").value;
 	if(name==""){
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName field cannot be empty</font>";
  	 }
 	 else if (name.charAt(0).indexOf(" ")==0){
 		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Should not contain spaces</font>";
  	 }
-	 else if(name.length < 6)
+	 else if(name.length < 3)
 	{
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
 	}
-	 
+	 else if(name != uname)
+	{
+		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Does not match</font>";
+	}
      else{ 
-		var str = '<font color="#000000">Sending Your Request.Please wait</font>';
+		var str = '<font color="#000000">Sending Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
  		document.getElementById("feedback_window_errorMsg").innerHTML = str;
  		var jsObj=
@@ -692,11 +834,82 @@ function checkAvailability()
 				task:"forgotPassword",
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/recoverPasswordAnanymousUserAction.action?"+rparam;						
+		var url = "recoverPasswordAnanymousUserAction.action?"+rparam;						
 		callAJAX(jsObj,url);
  	 }
 }
 
+
+function sendPasswordToUser()
+{
+
+	var usernameVal = document.getElementById('hiddenUserId').value;
+	//var email = document.getElementById('textid').value;
+	var jsObj=
+	{
+			userName  : usernameVal,
+			task:"recoverPassword",
+
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "sendPasswordAnanymousUserAction.action?"+rparam;						
+		callAJAX(jsObj,url);
+ 	 }
+
+
+
+function saveEmailAndSendPassword()
+{
+	var errorDivEle = document.getElementById('ErrorMsgDivId');
+
+	var username = document.getElementById('hiddenUserId').value;
+	var email = document.getElementById('emailIdOfUser').value;
+	var eFlag = false;
+	var str = '<font color="red">';
+	if(email.length == 0)
+	{
+		str +='<b>enter Email</b>';
+		eFlag = true;
+	}
+	var email = document.getElementById("emailIdOfUser").value;
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(email !='' && email!='your email'){
+          
+		  if(!email.match(emailExp)){
+
+				document.getElementById("ErrorMsgDivId").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("ErrorMsgDivId").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	str += '</font>';
+
+	errorDivEle.innerHTML = str;
+	if(eFlag)
+		return;
+
+	var jsObj = {
+
+		userName : username,
+		email : email,
+		task : "saveUserEmailAndSendPwd",
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveUserEmailAction.action?"+rparam;						
+	callAJAX(jsObj,url);
+
+}
+function clearDialogBox()
+{
+	document.getElementById('forgot_password_window').style.display = 'none';
+document.getElementById('forgot_password_window_inner').style.display = 'none';
+}
 
 </script>
 
