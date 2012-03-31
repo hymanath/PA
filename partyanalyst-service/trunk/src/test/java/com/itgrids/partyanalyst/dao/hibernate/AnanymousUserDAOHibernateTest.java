@@ -107,10 +107,19 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		
 		System.out.println(result.size());
 	}*/
-	public void checkForUserNameAvailabiityForEmail()
+	/*public void checkForUserNameAvailabiityForEmail()
 	{
 		List result=ananymousUserDAO.checkForUserNameAvailabiity("gfjhgh@dghfth.in");
 		System.out.println(result);
 	}
-	
+	*/
+	public void testgetUsername()
+	{
+	 List<AnanymousUser> params = ananymousUserDAO.getUserByUserName("kamalakar");
+	 for(AnanymousUser list : params)
+	 {
+		 System.out.println(list.getPassword());
+	 }
+	 
+}
 }
