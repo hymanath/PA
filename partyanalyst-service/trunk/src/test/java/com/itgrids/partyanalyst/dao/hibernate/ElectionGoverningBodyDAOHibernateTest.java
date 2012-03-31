@@ -77,9 +77,9 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 	
 	
 	
-	/*public void testgetAllMinistersDetails()
+	public void testgetAllMinistersDetails()
 	{
-		List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllMinistersDetails(158l);
+		List<ElectionGoverningBody> list = electionGoverningBodyDAO.getAllMinistersDetails(38l);
 		for(ElectionGoverningBody params: list)
 		{
 			System.out.println(params.getCandidate().getCandidateId());
@@ -94,7 +94,7 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}
 	
-	public void testGetMinistryYearsForParliament()
+	/*public void testGetMinistryYearsForParliament()
 	{
 		List<Object[]> list = electionGoverningBodyDAO.getMinistryYearsForParliament();
 		
@@ -120,7 +120,7 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetChiefMinisters(){
+	/*public void testGetChiefMinisters(){
 		List<Object[]> list = electionGoverningBodyDAO.getChiefMinisters(1l);
 		System.out.println(list.size());
 		for(Object[] params : list){
@@ -128,5 +128,5 @@ public class ElectionGoverningBodyDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 		
-	}
+	}*/
 }
