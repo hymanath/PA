@@ -13,6 +13,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
@@ -49,7 +50,16 @@ public class PartyPageAction extends ActionSupport implements
     private List<FileVO> fileVO;
     private ResultStatus result;
     private Long contentId;
+    private List<CustomPageVO> customPages;
 	
+	public List<CustomPageVO> getCustomPages() {
+		return customPages;
+	}
+
+	public void setCustomPages(List<CustomPageVO> customPages) {
+		this.customPages = customPages;
+	}
+
 	public Long getContentId() {
 		return contentId;
 	}
@@ -158,6 +168,7 @@ public class PartyPageAction extends ActionSupport implements
 		partyVO = partyDetailsService.getPartyDetails(partyId);
 		descriptions = partyDetailsService.getPartyProfileDescriptionById(partyId);
 		fileVO = partyDetailsService.getPartyLatestVideos(partyId,0,20);
+		customPages   = partyDetailsService.getCustomPagesOfAPartyPage(partyId);
 
 		return Action.SUCCESS;
 	}
