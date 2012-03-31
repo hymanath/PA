@@ -27,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
@@ -64,6 +65,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -136,12 +138,18 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
 	private IElectionDAO electionDAO;
-	
 	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
+	private ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO;
 	
-	
-	
-	
+	public ICandidatePageCustomPagesDAO getCandidatePageCustomPagesDAO() {
+		return candidatePageCustomPagesDAO;
+	}
+
+	public void setCandidatePageCustomPagesDAO(
+			ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO) {
+		this.candidatePageCustomPagesDAO = candidatePageCustomPagesDAO;
+	}
+
 	public IElectionGoverningBodyDAO getElectionGoverningBodyDAO() {
 		return electionGoverningBodyDAO;
 	}
@@ -2723,6 +2731,25 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     		log.error("Exception occured in getMinistryYearsForAState() Method, Exception is - "+e);
     		return null;
     	}
+    }
+    
+    public List<CustomPageVO> getCustomPagesOfACandidatePage(Long candidateId)
+    {
+    	try{
+			List<CustomPageVO> customPages = null;
+			List<Object[]> list = candidatePageCustomPagesDAO.getCustomPagesOfACandidatePage(candidateId);
+			
+			if(list != null && list.size() > 0)
+			{
+				customPages = new ArrayList<CustomPageVO>(0);
+				for(Object[] params : list)
+					customPages.add(new CustomPageVO(IConstants.CUSTOM_JSP_PAGES_PATH+"/"+params[0].toString(),params[1].toString()));
+			}
+			return customPages;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCustomPagesOfACandidatePage(), Exception is - "+e);
+			return null;
+		}
     }
 }
 	

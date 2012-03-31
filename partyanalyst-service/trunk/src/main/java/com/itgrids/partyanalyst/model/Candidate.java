@@ -64,6 +64,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateUpdatesEmail> candidateUpdatesEmails = new HashSet<CandidateUpdatesEmail>(0);
 	private Set<ElectionMinisters> electionMinisters = new HashSet<ElectionMinisters>(0);
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidate = new HashSet<ConstituencyLeadCandidate>(0);
+	private Set<CandidatePageCustomPages> CandidatePageCustomPages = new HashSet<CandidatePageCustomPages>(0);
 	private KeyCandidate keyCandidate;
 	// Constructors
 
@@ -289,6 +290,17 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setKeyCandidate(KeyCandidate keyCandidate) {
 		this.keyCandidate = keyCandidate;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<CandidatePageCustomPages> getCandidatePageCustomPages() {
+		return CandidatePageCustomPages;
+	}
+
+	public void setCandidatePageCustomPages(
+			Set<CandidatePageCustomPages> candidatePageCustomPages) {
+		CandidatePageCustomPages = candidatePageCustomPages;
 	}
 
 	

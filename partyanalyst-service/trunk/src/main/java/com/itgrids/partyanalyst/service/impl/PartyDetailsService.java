@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyManifestoDAO;
+import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.IPartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
@@ -83,7 +85,17 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IMessageToCandidateDAO messageToCandidateDAO;
 	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
+	private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
 	
+	public IPartyPageCustomPagesDAO getPartyPageCustomPagesDAO() {
+		return partyPageCustomPagesDAO;
+	}
+
+	public void setPartyPageCustomPagesDAO(
+			IPartyPageCustomPagesDAO partyPageCustomPagesDAO) {
+		this.partyPageCustomPagesDAO = partyPageCustomPagesDAO;
+	}
+
 	public IMessageToPartyDAO getMessageToPartyDAO() {
 		return messageToPartyDAO;
 	}
@@ -1083,6 +1095,25 @@ public class PartyDetailsService implements IPartyDetailsService {
 			return result.get(0).toString();
 		}
 	}
+	
+	public List<CustomPageVO> getCustomPagesOfAPartyPage(Long partyId)
+    {
+    	try{
+			List<CustomPageVO> customPages = null;
+			List<Object[]> list = partyPageCustomPagesDAO.getCustomPagesOfAPartyPage(partyId);
+			
+			if(list != null && list.size() > 0)
+			{
+				customPages = new ArrayList<CustomPageVO>(0);
+				for(Object[] params : list)
+					customPages.add(new CustomPageVO(IConstants.CUSTOM_JSP_PAGES_PATH+"/"+params[0].toString(),params[1].toString()));
+			}
+			return customPages;
+		}catch (Exception e) {
+			log.error("Exception Occured in getCustomPagesOfAPartyPage(), Exception is - "+e);
+			return null;
+		}
+    }
 }
 	
 
