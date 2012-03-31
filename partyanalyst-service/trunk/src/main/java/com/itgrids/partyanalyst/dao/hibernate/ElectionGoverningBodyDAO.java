@@ -55,7 +55,7 @@ public class ElectionGoverningBodyDAO extends GenericDaoHibernate<ElectionGovern
 	@SuppressWarnings("unchecked")
 	public List<ElectionGoverningBody> getAllMinistersDetails(Long electionId)
 	{
-		return getHibernateTemplate().find("select model from ElectionGoverningBody model where model.election.electionId = ?",electionId);
+		return getHibernateTemplate().find("select model from ElectionGoverningBody model where model.election.electionId = ? order by model.candidate.lastname,positionScope.electionGoverningBodyPosition.governingBodyPosition",electionId);
 	}
 	
 	@SuppressWarnings("unchecked")
