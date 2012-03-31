@@ -144,7 +144,7 @@
 				 <td width="70%">
 	                <div id="detailsDiv">
 					   <a href="http://www.sify.com/finance/it-grids-to-raise-rs-5-crore-vc-fund-soon-news-equity-leljRghajed.html
-                       " target="_blank">IT Grids to raise Rs 5 crore VC fund soon</a>
+                       " target="_blank">PartyAnalyst-Unique Site for Election Analysis Launched</a>
 					</div>
 				 </td>
 			  </tr>
@@ -166,7 +166,7 @@
 				 <td width="70%">
 	                <div id="detailsDiv">
 					   <a href="http://www.business-standard.com/india/news/it-grids-to-raise-rs5-crore-vc-fund-soon/431702/"
-                        target="_blank">IT Grids to raise Rs 5 crore VC fund soon</a>
+                        target="_blank">PartyAnalyst-Unique Site for Election Analysis Launched</a>
 					</div>
 				 </td>
 			  </tr>
@@ -210,7 +210,7 @@
 				 </td>
 				 <td width="70%">
 	                <div id="detailsDiv">
-					   <a href="http://www.siliconindia.com/shownews/Software_IT_girds_to_raise_VC_funding_-nid-81840.html"  target="_blank">Software IT Grids to raise VC funding </a>
+					   <a href="http://www.siliconindia.com/shownews/Software_IT_girds_to_raise_VC_funding_-nid-81840.html"  target="_blank">PartyAnalyst-Unique Portal for Election Analysis and Management Launched</a>
 					</div>
 				 </td>
 			  </tr>
@@ -254,7 +254,7 @@
 				 <td width="70%">
 	                <div id="detailsDiv">
 					   <a href="http://www.vccircle.com/500/news/news-roundup-indias-sun-pharma-merck-in-generics-joint-venture"
-                        target="_blank">IT Grids To Raise Rs 5Cr PE Funding</a>
+                        target="_blank">PartyAnalyst-Unique Portal for Election Analysis and Management Launched</a>
 					</div>
 				 </td>
 			  </tr>
