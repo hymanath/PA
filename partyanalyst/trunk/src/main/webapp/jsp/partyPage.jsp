@@ -348,9 +348,9 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
 			</s:iterator>
 			</s:if>
 
-			  <!--PHOTO GALLERY SECTION START-->
+			  <!--PHOTO SECTION START-->
           
-             <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
+                <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
             
 			 <div class="clear"></div>
 			
@@ -587,7 +587,19 @@ function showAssemblyData()
    getStates();
    getAllConstituenciesInStateByType(2,1,"constituency");
  }
- 
+ function showBusyImgWithId(elmtId)
+{		
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = 'block';
+}
+function hideBusyImgWithId(elmtId)
+{
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
+}
+
  function getAllConstituenciesInStateByType(electionType, stateId, element)
  {
     var timeST = new Date().getTime();
@@ -901,7 +913,10 @@ function validateEmailField()
 	callAjax(jsObj,url);
 }
 function photoGallaryPopUp(){
-	
+	var str='';
+	str+='<div style="margin:5px;font-size:13px;margin-left: 69px;"> Loading Photo Gallaries .....<img style="float:right;margin-right: 295px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#buildPhotoGallaryDiv").html(str);
+
 	if(document.getElementById('buildPhotoGallaryDiv') == null)
 		return;
      $("#buildPhotoGallaryDiv").dialog({ stack: false,
@@ -932,10 +947,9 @@ function showPhotoGallary(){
 function buildCandidatePhotoGallary(results)
 {
 	var str ='';
-
-		str+='<div id="content" style="width:650px;">';		
-		str += '<fieldset class="imgFieldset">';
-		str +='<table  width="100%" style="margin-top:10px;">';
+	str+='<div id="content" style="width:650px;">';		
+	str += '<fieldset class="imgFieldset">';
+	str +='<table  width="100%" style="margin-top:10px;">';
 		
 	if(results.length<=0)
 	{
@@ -1429,7 +1443,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+		   str+='             <td><div class="container"><img alt="'+results[0].fileTitle1+'" src="'+results[0].path+'" title="'+results[0].fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 }
 	 if(currentSize+1 <= (arraySize-1))
 	 {
@@ -1467,7 +1481,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 else
 	 {
-	 str+='             <td><img alt="" src="'+results[0].path+'" /></td>';
+	 str+=' <td><div class="container"><img alt="'+results[0].fileTitle1+'" src="'+results[0].path+'" title="'+results[0].fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 }
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
 	 {
@@ -1719,24 +1733,26 @@ function showCandidateElectionDetails(str)
 
 function videoGallaryPopUp()
 {
+	var str='';
    <s:if test="fileVO == null || fileVO.size() < 4"> 
    return;
    </s:if>
   
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
-							    height: 350,
-								width: 520,
-								position:[150,120],								
+							    height: 590,
+								width: 630,
+								position:[130,120],								
 								modal: true,
 								title:'<font color="Navy">Video Galleries</font>',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
-
+	 str+='<div style="margin:5px;font-size:13px;margin-left:32px;"> Loading Video Galleries .....<img style="float:right;margin-right:249px;display:block;" src="images/icons/goldAjaxLoad.gif" id="videosLoadingImg_ImgSpan"></div>';
+	$("#videoGallaryPopUpDiv").html(str);
 	showAllVideoGalleries();
 }
 
 function showAllVideoGalleries(){
-		
+		showBusyImgWithId("videosLoadingImg");
    var jsObj = {
 	       	   time : timeST,
 			   partyId:partyId,
@@ -1753,19 +1769,23 @@ function showAllVideoGalleries(){
 function buildVideoGallaries(results)
 {
     var str ='';
-    str+='<table>';
-    str += '<tr>';
+	str+='<table width="100%">';
+    //str += '<tr>';
 	for(var i=0;i<results.length;i++)
 	{
-		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
-		str += '<tr><td>';
-		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		if(i%4 == 0)
+			str += '<tr height="185px;">';
+		str += '<td valign="top" width="25%"><table width="100%">';
+		str += '<tr><td style="padding-left:4px;">';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="120px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;"  onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str += '<tr><td><div style="color:#FF0084;font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></td></tr>';
+		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Videos: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
 		str+='</div>';
-		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
 			
+			if((i+1)% 4 == 0)
+			str += '</tr>';
 		 }
-		 str+='</tr>';
+		// str+='</tr>';
 		 str+='</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
@@ -1916,9 +1936,9 @@ function getNewsByLanguage(language)
 		str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h3>';
 		str += '<fieldset class="imgFieldset">';
 		str +='<table width=80%>';
-		str +='<tr><td>';
+		str +='<tr><td style="width: 30%;">';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifesto(${partyVO.partyId});getCountry();" checked="true"> Country</td><td>';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'stateDiv\');"> State</td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'stateDiv\');" style="margin-top: 5px;"> State</td>';
 		str +='<td><div id="selectStatediv" style="display:none"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"/></div></td></tr>';
 		str +='</table>';
 		str+='<div id="content">';
@@ -2097,11 +2117,11 @@ function buildSelectionDiv(){
 	var selectionDivElmt = document.getElementById("selectionDiv");
 	var str ='';
 	
-		str +='<table style="" >';
-		str +='<tr><td style="width:18%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
+		str +='<table style="width:100%;">';
+		str +='<tr><td style="width: 18%; font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; margin-right: 0px; margin-left: 0px; padding-left: 34px;">';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifestoFile();getCountry();" checked="true"> Country</td><td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'statePopUpDiv\')"> State</td>';
-		str +='<td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><div id="selectStatePopupdiv" style="display:none"><select id="statePopUpDiv" onchange="getPartyManifestoFile();getElectionTypesBasedOnStateId();" class="selectWidth"/></div></td>';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'statePopUpDiv\')" style="padding-right: 28px; width: 22px;"> State</td>';
+		str +='<td style="font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; width: 65px; height: 35px; margin-right: 13px; padding-top: 1px;"><div id="selectStatePopupdiv" style="display:none"><select id="statePopUpDiv" onchange="getPartyManifestoFile();getElectionTypesBasedOnStateId();" class="selectWidth"/></div></td>';
 		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionTypeDiv" style="display:none" onchange="getPartyManifestoFile();getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
 		str+='</td>';
 		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionYearDiv" style="display:none" onchange="getPartyManifestoFile()" class="selectWidth"></select>';
