@@ -15,6 +15,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
@@ -1749,7 +1750,12 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 		if(detailsList!=null && detailsList.size()!=0){
 			Object ananymousUserObj[] =(Object[]) detailsList.get(0);
 			registrationVO.setEmail((String)ananymousUserObj[0]);
-			registrationVO.setPassword((String)ananymousUserObj[1]);
+			
+			if(registrationVO.getEmail() != null && registrationVO.getEmail().trim().length() > 0)
+				registrationVO.setPassword((String)ananymousUserObj[1]);
+			else
+				registrationVO.setEmail(null);
+			
 			registrationVO.setUserName(userName);
 			}
 	}catch(Exception e){
@@ -1799,8 +1805,30 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 
 
 
-
-
+public  ResultStatus saveEmailForAUser(String userName,final String email)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	
+	try{
+		final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
+		
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+			AnanymousUser ananymousUser = ananymousUsers.get(0);
+			ananymousUser.setEmail(email);
+			ananymousUserDAO.save(ananymousUser);
+			}
+		});
+		
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		}
+	catch(Exception e){
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+	
+}
 
 
 }
