@@ -155,7 +155,7 @@ public class MailService implements IMailService{
 	    	text = "";
 	    	text = "Here are the login details for your PartyAnalyst Account.<br>";
 	    	text +="User Name is:" +registrationVO.getUserName()+"<br>";
-	    	if(registrationVO.getPassword()!=null)
+	    	if(registrationVO.getPassword()!= null)
 	    	text += "<b><font color=\"green\">Your Password is:</font></b>" +"  "+ registrationVO.getPassword();
 	    	
 	    	quickRequestVO.setToEmailId(registrationVO.getEmail());
