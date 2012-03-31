@@ -776,7 +776,17 @@
 	<bean id="keyCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.KeyCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="ministerTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MinisterTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyPageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyPageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePageCustomPagesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePageCustomPagesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
