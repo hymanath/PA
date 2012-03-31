@@ -3309,11 +3309,11 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 </span>
 </div>
 <div style="padding: 5px 60px 5px 0px;text-align:right;">
-  <input type="button" class="buttonClass" id="buttonId" onclick="toggleOption(this.id);" value="Show Highlights Of ${year} Election Results">
+  <input type="button" class="buttonClass" id="buttonId" onclick="toggleOption(this.id);" value="Hide Highlights Of ${year} Election Results">
 </div>
 <div class="clear"></div>
 
-<div id="topStoriesDIV" style="display:none;">
+<div id="topStoriesDIV">
    <DIV class="graphTop"> Highlights Of ${year} Elections</DIV>
    <div class="topStories">
        <div id="topStoriesMenu" style="width:100%;">
