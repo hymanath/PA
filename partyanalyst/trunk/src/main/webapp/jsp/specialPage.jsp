@@ -18,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
 <style type="text/css">#videogallery a#videolb{display:none}</style>
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
@@ -242,6 +241,8 @@ function buildContentDetails()
 	var pathStr = null;
 	var descriptionStr = null;
 	var preContentId = null;
+	var curPos = null;
+	var totSize = null;
 	
 	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${specialPageVO.heading} - '+result.contentType;
 
@@ -257,7 +258,9 @@ function buildContentDetails()
 		pathStr = result.relatedGalleries[0].filesList[i].path;
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
-		
+		curPos = i+1;
+		totSize = result.relatedGalleries[0].filesList.length;
+
 		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
 		{
 			str+='<table>';
@@ -290,7 +293,7 @@ function buildContentDetails()
 		str += '<Table>';
 		
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
 		{
 			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
@@ -318,7 +321,7 @@ function buildContentDetails()
 		str += '<Table>';
 
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
 		{
 			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
@@ -338,6 +341,8 @@ function buildContentDetails()
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 		{
+			descriptionStr = result.relatedGalleries[0].filesList[i].description;
+
 			if(i != 0)
 			{
 				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
@@ -352,6 +357,12 @@ function buildContentDetails()
 		}
 
 		str += '</table>';
+		
+		str += '<div>';
+		str += '<table>';
+		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
+		str += '</table>';
+		str += '</div>';
 	}
 
 	if(result.otherGalleries != null && result.otherGalleries.length > 0)
@@ -412,8 +423,8 @@ function buildContentDetails()
 	divEle.innerHTML = str;
 
 	var str = '';
-	str += ''+titleStr+'<span style="margin-top:10px;margin-right:18px;float:right">';
-	str += '<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}&contentId='+preContentId+'">Share in Facebook</a>';
+	str += ''+titleStr+' ('+curPos+' of '+totSize+')<span style="margin-top:10px;margin-right:18px;float:right">';
+	str += '<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}&contentId='+preContentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this in Facebook"></img></a>';
 	str += '</span>';
 	
 	document.getElementById("showContentHeaderDiv").innerHTML=str;
@@ -831,8 +842,7 @@ Tweet</a>
 </span>
 
 <span style="margin-top:10px;margin-right:18px;float:right">
-<a name="fb_share" type="button_count" 
-share_url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}">Share in Facebook</a> 
+<a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
 </span>
 </div>
 <s:if test="customPages != null && customPages.size() > 0">

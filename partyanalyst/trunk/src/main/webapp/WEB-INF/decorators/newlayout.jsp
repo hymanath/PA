@@ -817,6 +817,12 @@ function openAddNewProblemWindow()
 	browser_addNewProblem.focus();
 }
 
+function shareInFacebook(url)
+{	
+	var shareInFacebook_window = window.open("http://www.facebook.com/sharer.php?u="+url+"&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
+	shareInFacebook_window.focus();
+}
+
 function callQuickViewAjax(jsObj, url){
 
 

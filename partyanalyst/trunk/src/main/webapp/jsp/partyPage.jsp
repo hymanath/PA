@@ -9,7 +9,7 @@
 <title>${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS</title>
 <META NAME="Keywords" CONTENT="${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS">
 <meta name="description" content="${partyVO.partyLongName} NEWS, PHOTOS, VIDEOS, GALLERIES, ELECTION RESULTS AND ANALYSIS">
-
+<meta property="fb:app_id" content="167844749984003"/>
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
@@ -228,7 +228,7 @@ a {
 .container {
     	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
     	background-color: #FFFFFF;
-    	margin: 9px auto 40px;
+    	margin: 9px auto 10px;
     	max-width: 800px;
     	padding: 10px;
 }
@@ -237,16 +237,26 @@ a {
 
 </head>
 <body>
+
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+</script>
+
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr><td>
 <div class="main-title-sec">
  <div class="main-mbg">${partyVO.partyLongName} 
  
  <span style="margin-top:10px;margin-right:18px;float:right">
- <a name="fb_share" type="button_count" 
-share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share in Facebook</a> 
-<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
-</script>
+ <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyPageAction.action?partyId=${partyId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
 </span>
 </div>
  <div class="main-bbg"></div></div><br></td></tr></table>
@@ -354,15 +364,13 @@ share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}">Share
             
 			 <div class="clear"></div>
 			
-			 
-			 <!--FACE BOOK COMMENTS SECTION START
-          
-          <div class="fleft"> <img src="images/icons/candidatePage/facebook-comments.jpg" alt=""/></div>
-          
-          FACE BOOK COMMENTS SECTION END--> 
+			<div>
+			<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageActionAction.action?partyId=${partyId}" data-num-posts="500" data-width="420"></div>
+			</div>
 
+			
 		  <!-- Message displaying-->
-		  <div id="commentBoxDiv" class="constituencyPageCenterInfoDiv .rounded">
+		  <div id="commentBoxDiv" style="margin-top:15px;" class="constituencyPageCenterInfoDiv.rounded">
 		  </div>
      			  
 	</div>
@@ -1114,16 +1122,16 @@ function showFirstFourNewsRecords(results)
      initialFileIdArray[i]=results[i].fileId;
      str+='<a href="javascript:{}" onclick="getNews('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
 	 
-	 if(results[i].fileTitle1.length > 30)
-		str +='<li><strong>'+results[i].fileTitle1.substring(0,30)+'..</strong>';
+	 if(results[i].fileTitle1.length > 42)
+		str +='<li><strong>'+results[i].fileTitle1.substring(0,42)+'..</strong>';
 	 else
-		str +='<li><strong>'+results[i].fileTitle1+'</strong>';;
+		str +='<li><strong>'+results[i].fileTitle1+'</strong>';
 
 	 str += '</a>';
      str+='<div class="year-time"><span class="li-red">'+results[i].source+'</span> | '+results[i].fileDate+'</div>';
      
-	 if(results[i].fileDescription1.length > 62)
-		str += results[i].fileDescription1.substring(0,62)+'..</li>';
+	 if(results[i].fileDescription1.length > 100)
+		str += results[i].fileDescription1.substring(0,100)+'..</li>';
 	 else
 		str += ''+results[i].fileDescription1+'</li>';
 
@@ -2191,6 +2199,8 @@ function buildContentDetails()
 	var pathStr = null;
 	var descriptionStr = null;
 	var preContentId = null;
+	var curPos = null;
+	var totSize = null;
 	
 	document.getElementById('ui-dialog-title-showContentDiv').innerHTML = '<font color="darkgreen"><b>${partyVO.partyShortName} Party - '+result.contentType;
 
@@ -2206,6 +2216,8 @@ function buildContentDetails()
 		pathStr = result.relatedGalleries[0].filesList[i].path;
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
+		curPos = i+1;
+		totSize = result.relatedGalleries[0].filesList.length;
 		
 		if(result.contentType == 'Video Gallary' || result.contentType == 'News Gallary')
 		{
@@ -2239,7 +2251,7 @@ function buildContentDetails()
 		str += '<Table>';
 		
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
 		{
 			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
@@ -2267,7 +2279,7 @@ function buildContentDetails()
 		str += '<Table>';
 
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
+		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
 		{
 			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
@@ -2287,6 +2299,8 @@ function buildContentDetails()
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 		{
+			descriptionStr = result.relatedGalleries[0].filesList[i].description;
+
 			if(i != 0)
 			{
 				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
@@ -2301,8 +2315,16 @@ function buildContentDetails()
 		}
 
 		str += '</table>';
-	}
 
+		str += '<div>';
+		str += '<table>';
+		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
+		str += '</table>';
+		str += '</div>';
+	}
+	
+	str += '<div id="fbc" style="overflow:auto;max-height:400px;"></div>';
+	
 	if(result.otherGalleries != null && result.otherGalleries.length > 0)
 	{
 		var galType = null;
@@ -2361,12 +2383,15 @@ function buildContentDetails()
 	divEle.innerHTML = str;
 
 	var str = '';
-	str += ''+titleStr+'<span style="margin-top:10px;margin-right:18px;float:right">';
-	str += '<a name="fb_share" type="button_count" share_url="www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'">Share in Facebook</a>';
+	str += ''+titleStr+' ('+curPos+' of '+totSize+')<span style="margin-top:10px;margin-right:18px;float:right">';
+	str += '<a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this in Facebook"></img></a>';
 	str += '</span>';
 	
 	document.getElementById("showContentHeaderDiv").innerHTML=str;
 	
+	var lb = document.getElementById("fbc");
+	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageActionAction.action?partyId=${partyId}&contentId='+preContentId+'" data-num-posts="2" data-width="420"></div>';
+	FB.XFBML.parse(lb);
 }
 
 function buildContentDetailsOfSelected(preId,selId)
