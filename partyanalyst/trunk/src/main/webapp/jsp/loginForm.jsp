@@ -658,16 +658,29 @@ function afterPasswordSubmit(username,email){
 		str += 'Enter your Email :';
 		str +='<input id="emailIdOfUser" type="text">';
 		str += '<input type="hidden" id="hiddenUserId" value="'+username+'">';
-		str +='<input type="button"  value="submit" onclick="saveEmailAndSendPassword()" style="width:70px;margin-left: 8px;">';
+		//str +='<input type="button"  value="submit" onclick="saveEmailAndSendPassword()" style="width:70px;margin-left: 8px;">';
 		
 		//str +='<button type="button" onclick="clearDialogBox()" style="margin-left:6px;">Cancel</button>';
 		
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '<input id="submitButtonId" type="button" value="Submit"></input>';
 		str += '<input type="button" id="cancelButtonId" value="Cancel"></input>';
-		
+		str +='</td>';
+		str +='</tr>';
+		str +='</div>';
 		
 		elmt.innerHTML = str;
 		var oPushButton2 = new YAHOO.widget.Button("cancelButtonId");
-
+		var oPushButton1 = new YAHOO.widget.Button("submitButtonId");
+		
+		oPushButton1.on("click",function(){
+			saveEmailAndSendPassword();
+		});
+		
 		oPushButton2.on("click",function(){
 			$("#forgot_password_window").dialog("destroy");
 		});
