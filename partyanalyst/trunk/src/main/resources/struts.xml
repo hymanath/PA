@@ -263,6 +263,12 @@
 			<result type="json" name="success">
 				 <param name="root">parties</param> 
 			</result>
+		</action>
+		
+		<action name="getMorePartiesForAElectionAction" class="partyPerformanceAction" method="ajaxHandler" >
+			<result type="json" name="success">
+				 <param name="root">parties</param> 
+			</result>
 		</action>							
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
