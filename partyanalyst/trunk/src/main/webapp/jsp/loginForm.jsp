@@ -730,80 +730,67 @@ function afterPasswordSubmitToUser(username,email){
 }
 
 
-function showForgotPasswordPanel(){
+function showForgotPasswordPanel()
+{
 
-		var str ='';
-		var elmts = document.getElementById("validate");
-		var uname = document.getElementById("userName").value;
-		if(uname == '')
-		{
-		str +='<font color="red">Enter userName</font>';
+	document.getElementById("validate").style.display = 'none';
+	$("#forgot_password_window").dialog({
+		resizable:false,
+		width: 600,
+		minHeight:200,
+		show:'slide',
+		modal:true
+	});	
+	$(".ui-dialog-titlebar").hide();
 
-		elmts.innerHTML=str;
-		return;
-		}
-	
-	
-		else
-		{
-		document.getElementById("validate").style.display = 'none';
-		$("#forgot_password_window").dialog({
-			resizable:false,
-			width: 600,
-			minHeight:200,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
+	var elmt = document.getElementById("forgot_password_window_inner");
 
-		var elmt = document.getElementById("forgot_password_window_inner");
+	var str = '';
+	str += '<div id="feedback_window_head">Forgot Password ?</div>';
+	str += '<div id="feedback_window_body">';
+	str += '	<div id="feedBackNote_div">';
+	str += '		<table>';
+	str += '		<tr>';
+	str += '		<td><img src="images/icons/infoicon.png"></td>';
+	str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
+	str += '		</tr>';
+	str += '		</table>';
+	str += '	</div>';
+	str += '	<div id="feedBackForm_div">';
+	str += '		<table id="feedbackTable" width="100%">';
+	str += '		<tr>';
+	str += '		<th><font color="red">*</font>UserName </th>';
+	str += '		<td>';
+	str += '			<input type="text" id="userName_FP" size="25"/>';
+	str += '		</td>';
+	str += '		</tr>';
+	str += '		</table>';
+	str += '	</div>';
+	str += '</div>';
+	str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+	str += '	<table width="100%">';
+	str += '	<tr>';
+	str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+	str += '	<td width="35%" align="right">';
+	str += '		<input  style="text-align:center;" id="submitButton" type="button" value="Submit"></input>';
+	str += '		<input style="text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
+	str += '	</td>';
+	str += '	</tr>';
+	str += '	</table>';	
+	str += '</div>';
+	elmt.innerHTML = str;
 
-		var str = '';
-    	str += '<div id="feedback_window_head">Forgot Password ?</div>';
-		str += '<div id="feedback_window_body">';
-		str += '	<div id="feedBackNote_div">';
-		str += '		<table>';
-		str += '		<tr>';
-		str += '		<td><img src="images/icons/infoicon.png"></td>';
-		str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
-		str += '		</tr>';
-		str += '		</table>';
-		str += '	</div>';
-		str += '	<div id="feedBackForm_div">';
-		str += '		<table id="feedbackTable" width="100%">';
-		str += '		<tr>';
-		str += '		<th><font color="red">*</font>UserName </th>';
-		str += '		<td>';
-		str += '			<input type="text" id="userName_FP" size="25"/>';
-		str += '		</td>';
-		str += '		</tr>';
-		str += '		</table>';
-		str += '	</div>';
-		str += '</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-		str += '	<table width="100%">';
-		str += '	<tr>';
-		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
-		str += '	<td width="35%" align="right">';
-		str += '		<input  style="text-align:center;" id="submitButton" type="button" value="Submit"></input>';
-		str += '		<input style="text-align:center;" id="cancelButton" type="button" value="Cancel"></input>';
-		str += '	</td>';
-		str += '	</tr>';
-		str += '	</table>';	
-		str += '</div>';
-		elmt.innerHTML = str;
+	var oPushButton1 = new YAHOO.widget.Button("submitButton");  
+	var oPushButton2 = new YAHOO.widget.Button("cancelButton");
 
-		var oPushButton1 = new YAHOO.widget.Button("submitButton");  
-		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+	oPushButton1.on("click",function(){
+		checkAvailability();
+	});
 
-		oPushButton1.on("click",function(){
-			checkAvailability();
-		});
+	oPushButton2.on("click",function(){
+		$("#forgot_password_window").dialog("destroy");
+	});
 
-		oPushButton2.on("click",function(){
-			$("#forgot_password_window").dialog("destroy");
-		});
-	}
 }
 
 
@@ -811,22 +798,19 @@ function checkAvailability()
 {
 
 	var name = document.getElementById("userName_FP").value;
- 	var uname = document.getElementById("userName").value;
-	if(name==""){
+ 	
+	if(name=="")
+	{
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName field cannot be empty</font>";
- 	 }
+ 	}
 	 else if (name.charAt(0).indexOf(" ")==0){
 		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Should not contain spaces</font>";
- 	 }
+	 }
 	 else if(name.length < 3)
 	{
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
 	}
-	 else if(name != uname)
-	{
-		 document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName Does not match</font>";
-	}
-     else{ 
+	else{ 
 		var str = '<font color="#000000">Sending Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
  		document.getElementById("feedback_window_errorMsg").innerHTML = str;
