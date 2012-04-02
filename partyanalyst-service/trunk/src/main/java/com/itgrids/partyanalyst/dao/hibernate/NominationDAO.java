@@ -3518,7 +3518,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	    	Object[] data = {districtId,electionId,partyId,1l};
 	    	return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId from Nomination model where model.constituencyElection.constituency.district.districtId = ? and model.constituencyElection.election.electionId = ? and model.party.partyId = ? and model.candidateResult.rank = ?",data);
 	    }
-	 public List<Long> getAllConstIdsPartyWisePresentInPrevElec(Long districtId,Long electionId,Long partyId,List<Long> constiIds)
+	 @SuppressWarnings("unchecked")
+	public List<Long> getAllConstIdsPartyWisePresentInPrevElec(Long districtId,Long electionId,Long partyId,List<Long> constiIds)
 	    {
           Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId from Nomination model where model.constituencyElection.constituency.district.districtId = :districtId and model.constituencyElection.election.electionId = :electionId and model.party.partyId = :partyId and model.constituencyElection.constituency.constituencyId in (:constiIds)");
 			
@@ -3529,9 +3530,17 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 			return query.list();
 	    }
+	 @SuppressWarnings("unchecked")
 	 public List<Double> getTotalVotesEarned(Long districtId,Long electionId,Long partyId)
 	    {
 	    	Object[] data = {partyId,electionId,districtId};
 	    	return getHibernateTemplate().find("select sum(model.candidateResult.votesEarned) from Nomination model where model.party.partyId = ?  and model.constituencyElection.election.electionId = ? and  model.constituencyElection.constituency.district.districtId = ? ",data);
 	    }
+	 
+	 @SuppressWarnings("unchecked")
+	 public List<Object[]> getPartiesWithAtleatOneWinningSeatForAElection(Long electionId)
+	 {
+		 return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model where model.constituencyElection.election.electionId = ? and " +
+		 		" model.candidateResult.rank = 1 order by model.party.shortName",electionId);
+	 }
 }

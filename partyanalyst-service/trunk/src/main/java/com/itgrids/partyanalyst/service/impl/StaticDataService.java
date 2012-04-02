@@ -6958,7 +6958,28 @@ public class StaticDataService implements IStaticDataService {
 
 		return selectedParties;
 	}
-
+	
+	public List<SelectOptionVO> getPartiesWithAtleatOneWinningSeatForAElection(Long electionId)
+	{
+		try{
+			List<SelectOptionVO> parties = null;
+			
+			List<Object[]> list = nominationDAO.getPartiesWithAtleatOneWinningSeatForAElection(electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				parties = new ArrayList<SelectOptionVO>(0);
+				for(Object[] params : list)
+					parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			return parties;
+		}catch (Exception e) {
+			log.error("Exception Occured in getPartiesWithAtleatOneWinningSeatForAElection() Method," +
+					"Exception is - "+e);
+			return null;
+		}
+	}
+	
 	public SelectOptionVO getStateOfADistrict(Long districtId) {
 		District district = districtDAO.get(districtId);
 		SelectOptionVO selectoptn = new SelectOptionVO(district.getState().getStateId(), WordUtils.capitalize(district.getState().getStateName().toLowerCase()) );

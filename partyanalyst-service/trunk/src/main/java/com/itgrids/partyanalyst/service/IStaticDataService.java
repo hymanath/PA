@@ -308,4 +308,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getStatesAndCountryBasedOnElectionType(Long electionTypeId);
 		
 		public List<SelectOptionVO> getPartiesForAGivenElectionYear(Long electionId);
+		
+		public List<SelectOptionVO> getPartiesWithAtleatOneWinningSeatForAElection(Long electionId);
 }
