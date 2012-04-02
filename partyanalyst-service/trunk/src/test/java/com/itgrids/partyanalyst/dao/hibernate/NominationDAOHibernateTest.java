@@ -949,7 +949,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetConstituencyAreaTypePercentageWiseElectionResultOfParties()
+	/*public void testGetConstituencyAreaTypePercentageWiseElectionResultOfParties()
 	{
 		List<Long> partiesList = new ArrayList<Long>(0);
 		partiesList.add(362l);
@@ -964,7 +964,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 		
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void test()
 	{
@@ -1159,6 +1159,16 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 		
 	}*/
+	
+	public void testGetPartiesWithAtleatOneWinningSeatForAElection()
+	{
+		List<Object[]> list = nominationDAO.getPartiesWithAtleatOneWinningSeatForAElection(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0] +"---"+params[1]);
+	}
 	
 }
 	
