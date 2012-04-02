@@ -183,7 +183,8 @@ width:591px;
 	 </tr>
 	 <tr>
 	    <td class="headingCss"> Select Party<font class="requiredFont">*</font> :</td>
-		<td><select style="margin-left: 24px;width: 125px;" id="partySelect" ><option value="0">select</option></select></td>
+		<td><select style="margin-left: 24px;width: 125px;" id="partySelect" ><option value="0">select</option></select>
+		<input type="button" onclick="getMoreParties()" class="buttonStyle" style="padding: 1px 6px;"  value="More Parties"/></td>
 	 </tr>	 
    </table>
    <table>
@@ -198,6 +199,35 @@ width:591px;
 </fieldset>
 </div>
 <script type="text/javascript">
+
+function getMoreParties()
+{
+	var electionTypeEle = document.getElementById('electionTypeId');
+	var stateIdEle = document.getElementById('StateId');
+	var yearSelectEle = document.getElementById('yearAssSelId');
+	
+	if(electionTypeEle == null || yearSelectEle == null)
+		return;
+
+	var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
+	var electionId = yearSelectEle.options[yearSelectEle.selectedIndex].value;
+
+	if(electionType == 'Assembly' && stateIdEle == null)
+		return;
+
+	if(electionId == 0)
+		return;
+
+	var jsObj =
+		{
+		    electionId : electionId;
+			task: "getPartiesWithAtleatOneWinningSeat"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getMorePartiesForAElectionAction.action?"+rparam; 
+	callAjaxForAdmin(url,jsObj);
+}
+
 function clearDate()
 {
   document.getElementById("toDate").value="";
@@ -502,6 +532,10 @@ function hideBusyImgWithId(elmtId)
 		 }
 		 else if(jObj.task == "getStaticParties"){
 		     clearOptionsListForSelectElmtId("partySelect");
+			createOptionsForSelectElmtIdWithSelectOption("partySelect",myResults);
+		 }
+		 else if(jObj.task == "getPartiesWithAtleatOneWinningSeat"){
+		    clearOptionsListForSelectElmtId("partySelect");
 			createOptionsForSelectElmtIdWithSelectOption("partySelect",myResults);
 		 }
 		 else if(jObj.task == "getCandidates"){
