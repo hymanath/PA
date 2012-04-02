@@ -806,4 +806,21 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String ajaxHandler()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+		}catch(Exception e){
+			log.error("Exception Occured in AjaxHandler() Method, Exception is - "+e);
+			return SUCCESS;
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getPartiesWithAtleatOneWinningSeat"))
+		{
+			parties = staticDataService.getPartiesWithAtleatOneWinningSeatForAElection(jObj.getLong("electionId"));
+		}
+		return SUCCESS;
+	}
+	
+	
 }
