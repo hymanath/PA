@@ -125,7 +125,7 @@ table.searchresultsTable td {
 	</div>
 	
 	<div id="imageDiv" style="margin-top:20px;" align="center">
-		<img width="450" height="400" id="chartImg" src="charts/partyResultsChart_13622S161FCC30D2AC72F4DFEF2715FA2F51EDC.png" style="margin-top:20px;"/> 
+		<img width="450" height="400" id="chartImg" src="charts/<%= request.getAttribute("chartName")%>" style="margin-top:20px;"/> 
     </div>
 
 	<div id="partyResultsDiv" style="padding:5px;">
