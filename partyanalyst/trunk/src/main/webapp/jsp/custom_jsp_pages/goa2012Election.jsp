@@ -17,7 +17,7 @@ text-decoration:none;
 
 <table cellspacing="0" cellpadding="2" border="0" style="border: 1px solid #D2E888;width:100%">
 
-<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">  2012 Goa State Exit polls anc Servys</h3>
+<h3 style="padding:4px;background-color: #21B2ED;color:#ffffff;-moz-border-radius:3px;border-radius:3px;">  2012 Goa State Exit polls and Surveys</h3>
 
 <!--<tr style="border: medium none rgb(255, 255, 255);">
   <td>
@@ -91,7 +91,7 @@ text-decoration:none;
 		</table></td></tr>
 <tr><td>
 <div id="GOAExitPolltable" style="margin-top:9px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Goa State Exit polls</span>
+<span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Goa State Exit polls</span>
 <table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
 <tr>
 
