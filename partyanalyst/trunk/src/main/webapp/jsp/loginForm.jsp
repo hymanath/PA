@@ -424,7 +424,7 @@ if(request.getParameter("showMessage")!=null){
 								</tr>
 								<tr>
 									<td align="right"><s:submit value="Sign In" cssClass="btnStyle" align="center"/></td></tr><tr>
-									<td colspan="2"><a href="javascript:{}" onclick="showForgotPasswordPanel()" style="margin:179px;color:#0174DF;" >Forgot Password</a></td>
+									<td colspan="2"><a href="javascript:{}" onclick="showForgotPasswordPanel()" style="margin-left:179px;color:#0174DF;" >Forgot Password</a></td>
 								</tr>
 							</table>							
 						
