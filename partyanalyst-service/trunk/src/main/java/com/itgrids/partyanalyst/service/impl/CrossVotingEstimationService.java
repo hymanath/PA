@@ -267,16 +267,25 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		Long pcValidVotesInConstituency = 0l;
 		Long acpcDiffenceInConstituency = 0l;
 		for(CrossVotedMandalVO mandalInfo:crossVotedMandalVOs){
-			acVotesEarnedInConstituency += mandalInfo.getAcEarnedVotesInMandal();
-			acValidVotesInConstituency += mandalInfo.getAcValidVotesInMandal();
-			pcVotesEarnedInConstituency += mandalInfo.getPcEarnedVotesInMandal();
-			pcValidVotesInConstituency += mandalInfo.getPcValidVotesInMandal();
+			if(mandalInfo.getAcEarnedVotesInMandal()!=null)
+			   acVotesEarnedInConstituency += mandalInfo.getAcEarnedVotesInMandal();
+			if(mandalInfo.getAcValidVotesInMandal() !=null)
+			  acValidVotesInConstituency += mandalInfo.getAcValidVotesInMandal();
+			if(mandalInfo.getPcEarnedVotesInMandal()!=null)
+			  pcVotesEarnedInConstituency += mandalInfo.getPcEarnedVotesInMandal();
+			if(mandalInfo.getPcValidVotesInMandal() !=null)
+			 pcValidVotesInConstituency += mandalInfo.getPcValidVotesInMandal();
 		}
 		
 		for(CrossVotedMandalVO mandalInfo:crossVotedMandalVOs)
-			mandalInfo.setPercentageImpactOnConstituency(new BigDecimal(mandalInfo.getEarnedVotesDiffernce()*100.0/acValidVotesInConstituency).
-					setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		
+		{
+			if(acValidVotesInConstituency !=null && mandalInfo.getEarnedVotesDiffernce()!=null)
+			{
+				mandalInfo.setPercentageImpactOnConstituency(new BigDecimal(mandalInfo.getEarnedVotesDiffernce()*100.0/acValidVotesInConstituency).
+						setScale(2, BigDecimal.ROUND_HALF_UP).toString());				
+			}
+		}
+			
 		acpcDiffenceInConstituency = acVotesEarnedInConstituency - pcVotesEarnedInConstituency;
 
 		crossVotingConsolidateVO.getAcCandidateData().setVotesEarned(acVotesEarnedInConstituency);
