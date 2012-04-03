@@ -2600,27 +2600,21 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return resultStatus;
 	  }
 	 
-    public List<ElectionGoverningBodyVO> getElectionDetailsForMinister(Long electionId)
+    public ElectionGoverningBodyVO getElectionDetailsForMinister(Long electionId)
     {
     	log.debug("Entered into getElectionDetailsForMinister() of candidateDetailService");
-    	List<ElectionGoverningBodyVO> electionGoverningBodyVO = null;
+    	ElectionGoverningBodyVO electionGoverningBodyVO = null;
     	try
     	{
-    		List<Election> electionDetails = electionDAO.getElectionDetails(electionId);
-    		if(electionDetails != null && electionDetails.size() > 0)
+    		Election election = electionDAO.get(electionId);
+    		if(election != null)
     		{
-    		electionGoverningBodyVO = new ArrayList<ElectionGoverningBodyVO>(0);
-    		ElectionGoverningBodyVO governingBodyVO = null;
-    		for(Election params : electionDetails)
-    		{
-    			governingBodyVO = new ElectionGoverningBodyVO();
-    			governingBodyVO.setElectionYear(params.getElectionYear());
-    			if(params.getElectionScope().getState() != null)
-    			governingBodyVO.setStateName(params.getElectionScope().getState().getStateName());
-    			governingBodyVO.setElectionType(params.getElectionScope().getElectionType().getElectionType());
-    			electionGoverningBodyVO.add(governingBodyVO);
+    			electionGoverningBodyVO = new ElectionGoverningBodyVO();
+    			electionGoverningBodyVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+    			electionGoverningBodyVO.setElectionYear(election.getElectionYear());
     			
-    		}
+    			if(election.getElectionScope().getState() != null)
+    				electionGoverningBodyVO.setStateName(election.getElectionScope().getState().getStateName());
     		}
     		return electionGoverningBodyVO;
     	}
@@ -2628,7 +2622,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     	catch(Exception e)
     	{
     		log.error("Exception occured in getElectionDetailsForMinister()");
-    		return electionGoverningBodyVO;
+    		return null;
     	}
     }
     
@@ -2642,6 +2636,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    	if(list !=null && list.size() > 0)
 	    	{
 	    		resultList = new ArrayList<CandidateMinistriesVO>(0);
+	    		boolean hasCabinetMinisters = false;
+	    		boolean hasMSIC = false;
+	    		boolean hasMS = false;
 	    	
 	    		CandidateMinistriesVO candidateMinistriesVO = null;
 		    	for(ElectionGoverningBody params : list)
@@ -2657,16 +2654,42 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		    			candidateMinistriesVO.setPartyId(params.getParty().getPartyId());
 		    			candidateMinistriesVO.setPartyName(params.getParty().getShortName());
 		    			candidateMinistriesVO.setMinistries(new ArrayList<ElectionGoverningBodyVO>());
+		    			candidateMinistriesVO.setMinistryTypes(new ArrayList<String>(0));
 		    			isNew = true;
 		    		}
 		    		
 		    		ElectionGoverningBodyVO governingBodyVO = new ElectionGoverningBodyVO();
 	    			governingBodyVO.setMinistry(params.getPositionScope().getElectionGoverningBodyPosition().getGoverningBodyPosition());
 	    			
-	    			if(!params.getPositionScope().getMinisterType().getMinisterType().equalsIgnoreCase(IConstants.CABINET_MINISTER))
-	    				governingBodyVO.setMinistry(governingBodyVO.getMinistry()+"(" +
-	    						params.getPositionScope().getMinisterType().getMinisterType()+")");
+	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.CHIEF_MINISTER))
+	    				candidateMinistriesVO.setIsChiefMinister(true);
 	    			
+	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.DEPUTY_CHIEF_MINISTER))
+	    				candidateMinistriesVO.setIsDeputyChiefMinister(true);
+	    			
+	    			if(governingBodyVO.getMinistry().equalsIgnoreCase(IConstants.PRIME_MINISTER))
+	    				candidateMinistriesVO.setIsPrimeMinister(true);
+	    			
+	    			governingBodyVO.setMinisterType(params.getPositionScope().getMinisterType().getMinisterType());
+	    			
+	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.CABINET_MINISTER) &&
+	    					!hasCabinetMinisters)
+	    				hasCabinetMinisters = true;
+	    				
+	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE) &&
+	    					!hasMS)
+	    				hasMS = true;
+	    			
+	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE_WITH_INDEPENDENT_CHARGE) &&
+	    					!hasMSIC)
+	    				hasMSIC = true;
+	    			
+	    			if(!candidateMinistriesVO.getMinistryTypes().contains(governingBodyVO.getMinisterType()))
+	    			{
+	    				List<String> mtypes = candidateMinistriesVO.getMinistryTypes();
+	    				mtypes.add(governingBodyVO.getMinisterType());
+	    				candidateMinistriesVO.setMinistryTypes(mtypes);
+	    			}
 	    			governingBodyVO.setFromDate(params.getFromDate());
 	    			governingBodyVO.setToDate(params.getToDate());
 	    			
@@ -2676,7 +2699,15 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		    		if(isNew)
 		    			resultList.add(candidateMinistriesVO);
 		    	}
+		    	
+		    	if(resultList != null && resultList.size() > 0)
+		    	{
+		    		resultList.get(0).setHasCabinetMinisters(hasCabinetMinisters);
+		    		resultList.get(0).setHasMS(hasMS);
+		    		resultList.get(0).setHasMSIC(hasMSIC);
+		    	}
 	    	}
+	    	
     	return resultList;
     	}
     	
