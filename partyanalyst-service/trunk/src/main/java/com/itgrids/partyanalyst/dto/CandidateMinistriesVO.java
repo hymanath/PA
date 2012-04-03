@@ -13,10 +13,59 @@ public class CandidateMinistriesVO implements Serializable {
 	private Long partyId;
 	private String partyName;
 	private List<ElectionGoverningBodyVO> ministries;
+	private List<String> ministryTypes;
 	private Date fromDate;
 	private Date toDate;
 	private int noOfMinistries;
+	private Boolean isChiefMinister;
+	private Boolean isDeputyChiefMinister;
+	private Boolean isPrimeMinister;
+	private Boolean hasCabinetMinisters;
+	private Boolean hasMSIC;
+	private Boolean hasMS;
 	
+	public Boolean getIsDeputyChiefMinister() {
+		return isDeputyChiefMinister;
+	}
+	public void setIsDeputyChiefMinister(Boolean isDeputyChiefMinister) {
+		this.isDeputyChiefMinister = isDeputyChiefMinister;
+	}
+	public Boolean getIsPrimeMinister() {
+		return isPrimeMinister;
+	}
+	public void setIsPrimeMinister(Boolean isPrimeMinister) {
+		this.isPrimeMinister = isPrimeMinister;
+	}
+	public Boolean getHasCabinetMinisters() {
+		return hasCabinetMinisters;
+	}
+	public void setHasCabinetMinisters(Boolean hasCabinetMinisters) {
+		this.hasCabinetMinisters = hasCabinetMinisters;
+	}
+	public Boolean getHasMSIC() {
+		return hasMSIC;
+	}
+	public void setHasMSIC(Boolean hasMSIC) {
+		this.hasMSIC = hasMSIC;
+	}
+	public Boolean getHasMS() {
+		return hasMS;
+	}
+	public void setHasMS(Boolean hasMS) {
+		this.hasMS = hasMS;
+	}
+	public Boolean getIsChiefMinister() {
+		return isChiefMinister;
+	}
+	public void setIsChiefMinister(Boolean isChiefMinister) {
+		this.isChiefMinister = isChiefMinister;
+	}
+	public List<String> getMinistryTypes() {
+		return ministryTypes;
+	}
+	public void setMinistryTypes(List<String> ministryTypes) {
+		this.ministryTypes = ministryTypes;
+	}
 	public Date getToDate() {
 		return toDate;
 	}
