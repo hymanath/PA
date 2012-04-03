@@ -495,6 +495,9 @@ public interface IConstants {
     public static final String CABINET_MINISTER = "Cabinet Minister";
     public static final String MINISTER_OF_STATE = "Ministers of State";
     public static final String MINISTER_OF_STATE_WITH_INDEPENDENT_CHARGE = "Ministers of State with Independent Charge";
+    public static final String CHIEF_MINISTER = "Chief Minister";
+    public static final String DEPUTY_CHIEF_MINISTER = "Deputy Chief Minister";
+    public static final String PRIME_MINISTER = "Prime Minister";
     
     
 
