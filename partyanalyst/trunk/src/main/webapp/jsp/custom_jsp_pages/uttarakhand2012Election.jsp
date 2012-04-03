@@ -53,7 +53,7 @@ text-decoration:none;}
 </tr>
 
 <tr>
-	<td><br /><span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">2012 Results</span>
+	<td><br /><span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">2012 Results</span>
 		<table cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse; margin-top: 9px; width: 96%; margin-left: 6px;">
 			<tr><th>Party Name</th>
 			
@@ -98,7 +98,7 @@ text-decoration:none;}
 
 <tr><td>
 <div id="uttarkhandExitPolltable" style="margin-top:3px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttarKhand State Exit polls</span>
+<span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">UttarKhand State Exit polls</span>
 <table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
 <tr>
 
