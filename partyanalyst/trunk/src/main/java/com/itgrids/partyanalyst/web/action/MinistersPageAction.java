@@ -24,12 +24,23 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 	private IStaticDataService staticDataService;
 	private List<FileVO> fileVO;
 	private Long electionId;
-	private List<ElectionGoverningBodyVO> electionGoverningBodyVO;
+	private ElectionGoverningBodyVO electionGoverningBodyVO;
 	private List<ElectionGoverningBodyVO> ministerDetails;
 	private JSONObject jObj;
 	private String task;
 	private List<SelectOptionVO> years;
+	private List<SelectOptionVO> statesList;
+	private List<CandidateMinistriesVO> candidateMinistriesVO;
 	
+	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
+		return electionGoverningBodyVO;
+	}
+
+	public void setElectionGoverningBodyVO(
+			ElectionGoverningBodyVO electionGoverningBodyVO) {
+		this.electionGoverningBodyVO = electionGoverningBodyVO;
+	}
+
 	public List<SelectOptionVO> getYears() {
 		return years;
 	}
@@ -46,7 +57,6 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		this.task = task;
 	}
 
-	private List<CandidateMinistriesVO> candidateMinistriesVO;
 	public Long getElectionId() {
 		return electionId;
 	}
@@ -72,8 +82,6 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		this.ministerDetails = ministerDetails;
 	}
 
-	private List<SelectOptionVO> statesList;
-	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -90,15 +98,6 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		this.staticDataService = staticDataService;
 	}
 
-	public List<ElectionGoverningBodyVO> getElectionGoverningBodyVO() {
-		return electionGoverningBodyVO;
-	}
-
-	public void setElectionGoverningBodyVO(
-			List<ElectionGoverningBodyVO> electionGoverningBodyVO) {
-		this.electionGoverningBodyVO = electionGoverningBodyVO;
-	}
-
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
@@ -108,8 +107,6 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		this.candidateDetailsService = candidateDetailsService;
 	}
 	
-
-
 	public String execute()
 	{
 		fileVO = candidateDetailsService.getStateDetails();
