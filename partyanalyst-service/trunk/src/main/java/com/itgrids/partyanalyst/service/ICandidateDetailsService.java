@@ -150,7 +150,7 @@ public interface ICandidateDetailsService {
 	 	 
 	 public ResultStatus adminModifiedMessages(List<CandidateCommentsVO> VO,String actionType);
 	 
-	 public List<ElectionGoverningBodyVO> getElectionDetailsForMinister(Long electionId);
+	 public ElectionGoverningBodyVO getElectionDetailsForMinister(Long electionId);
 	    
 	 public List<CandidateMinistriesVO> getAllMinistersDetailsForAnElection(Long electionId);
 	 
