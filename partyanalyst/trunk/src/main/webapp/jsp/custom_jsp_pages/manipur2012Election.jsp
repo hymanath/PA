@@ -107,7 +107,7 @@ text-decoration:none;}
 		</table>
 
 <div id="manipurExitPolltable" style="margin-top:15px;">
-<span style="background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Manipur State Exit polls</span>
+<span style="font-weight:bold;background:#D2E888;padding:4px;margin-left:9px;-moz-border-radius: 3px;">Manipur State Exit polls</span>
 <table width="96%" cellspacing="0" cellpadding="5" bordercolor="#d2e888" border="1" style="border-collapse: collapse;margin-top:9px;margin-left:9px;">
 <tr>
 
