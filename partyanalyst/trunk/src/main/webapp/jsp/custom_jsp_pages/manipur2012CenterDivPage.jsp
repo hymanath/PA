@@ -10,7 +10,7 @@
 .State5Electlinks li a:hover{background:#d3d3d3;}
 </style>
 	<div class="splpage2012action">
-<h3>View Others States Election Results In 2012</h3>
+<h3>View Other States Election Results In 2012</h3>
 				
 				<ul class="State5Electlinks">
 
