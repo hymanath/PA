@@ -220,7 +220,7 @@ function getMoreParties()
 
 	var jsObj =
 		{
-		    electionId : electionId;
+		    electionId : electionId,
 			task: "getPartiesWithAtleatOneWinningSeat"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
