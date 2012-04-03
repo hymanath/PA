@@ -219,7 +219,7 @@ function buildAccordion()
 									</c:if>
 									
 									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
-                                       	<a style="float:right" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
+                                       	<a href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
 										</c:if>
 								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        
 								<a href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
