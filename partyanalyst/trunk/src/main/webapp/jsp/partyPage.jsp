@@ -2390,7 +2390,7 @@ function buildContentDetails()
 	document.getElementById("showContentHeaderDiv").innerHTML=str;
 	
 	var lb = document.getElementById("fbc");
-	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageActionAction.action?partyId=${partyId}&contentId='+preContentId+'" data-num-posts="2" data-width="420"></div>';
+	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+preContentId+'" data-num-posts="2" data-width="420"></div>';
 	FB.XFBML.parse(lb);
 }
 
