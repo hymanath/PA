@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PartyVO extends ResultStatus implements Serializable{
 
@@ -14,6 +15,8 @@ public class PartyVO extends ResultStatus implements Serializable{
 	private String partyRecognization;
 	private String partyLogo;
 	private String partyFlag;
+	private List<String> electionTypes;
+	
 	public String getPartyLongName() {
 		return partyLongName;
 	}
@@ -61,6 +64,12 @@ public class PartyVO extends ResultStatus implements Serializable{
 	}
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
+	}
+	public void setElectionTypes(List<String> electionTypes) {
+		this.electionTypes = electionTypes;
+	}
+	public List<String> getElectionTypes() {
+		return electionTypes;
 	}
 	
 	
