@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
+<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
 <style type="text/css">
 .headingStyle{
 	background:#9966CC;
@@ -11,7 +13,18 @@
     font-size: 15px;
     border-radius: 3px;
     }
-
+	.VGheadingStyle{
+	 background-color: #ED5B21;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    font: bold 11px/24px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 24px;
+    margin-bottom: 13px;
+    padding: 0 15px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+	}
 
 .resulttableclass a{text-decoration:none;}
 .resulttableclass a:hover{text-decoration:underline;}
@@ -48,18 +61,18 @@
 
 </style>
 <div id="mainDiv" style="margin-left:auto;margin-right:auto;float:none;width: 999px;">
-<div style="background:#ffffff;padding-bottom: 13px;padding-left: 11px;">
-<img src="images/specialPage/TDP_30_YearsBanner.png" style="align:center;width:977px;" alt="TDP 30th Anniversary" title="TDP 30th Anniversary" />
-</div>
-
+	<div style="background:#ffffff;padding-bottom: 13px;padding-left: 11px;">
+	<img src="images/specialPage/TDP_30_YearsBanner.png" style="align:center;width:977px;" alt="TDP 30th Anniversary" title="TDP 30th Anniversary" />
+	</div>
 <div style="background:#FFFFFF;">
-<table style="width:100%">
-<tr>
-<td style="width:50%">
-<div style="margin-top: -51px;"><span class="headingStyle">TDP Party Performance in Parliament Election</span></div>
-<div id="parliamentDiv" style="margin-top: 12px;">
-<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" valign="top">
+	<table style="width:100%">
 	<tr>
+	<td style="width:50%">
+	<div style="margin-top: -51px;"><span class="headingStyle">TDP Party Performance in Parliament Election</span>
+	</div>
+	<div id="parliamentDiv" style="margin-top: 12px;">
+	<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" valign="top">
+	 <tr>
 		<th style="color:#FFFFFF;">Year</th>
 		<th>Total Seats</th>
 		<th>TP*</th>
@@ -240,16 +253,253 @@
 		<td>46.14</td>
 		<td>51.51</td>
 	</tr>
-	
 </table>
 </div>
 </td>
 </tr>
 </table>
-<div>
-<table>
-<tr><td>
-TP* =Total Participation</td></tr><tr>
-<td>PC* %=Participated Constituencies Percentage</td></tr></table> </div>
+	<div>
+		<table>
+			<tr>
+				<td>TP* =Total Participation</td>
+			</tr>
+			<tr>
+				<td>PC* %=Participated Constituencies Percentage</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="videoGallaryDiv" style="background:#FFF;margin-bottom:5px;margin-top:5px;">
+	<div  style="width: 220px; margin-left: 9px; padding-top: 10px;"><h1 class="VGheadingStyle">Video gallaries Of TDP Party <span style=" position: relative;
+    bottom: -14px;right: 69px;"><img alt="" src="images/candidatePage/or-down-arrow.png"></span></h1></div>
+	<div style="overflow-x: hidden; margin-left: 10px;margin-right: 10px; border: 1px solid #d3d3d3;">
+		<MARQUEE WIDTH=100% BEHAVIOR=SCROLL direction="left">
+			<table>
+			<tr>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View N T Rama Rao Speeches Video Gallery" onclick="getVideoDetails(2534)" href="javascript:{}">
+						<font color="red">N T Rama Rao <br> Speeches</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View N T Rama Rao Speeches Video Gallery" onclick="getVideoDetails(2534)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/Xcdzou_IR4Q/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Jr NTR Election Campaign Video Gallery" onclick="getVideoDetails(2544)" href="javascript:{}">
+						<font color="red">Jr NTR Election <br> Campaign</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Jr NTR Election Campaign Video Gallery" onclick="getVideoDetails(2544)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/FV0kyasqwzs/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Chandrababu Naidu Election Campaign In Kadapa By Election Video Gallery" onclick="getVideoDetails(2550)" href="javascript:{}">
+						<font color="red">Chandrababu Naidu <br> Election Campaign In  <br>Kadapa By Election</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Chandrababu Naidu Election Campaign In Kadapa By Election Video Gallery" onclick="getVideoDetails(2550)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/04zgATSNJe0/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Chandrababu Naidu Rythu Poru Yatra Video Gallery" onclick="getVideoDetails(2556)" href="javascript:{}">
+						<font color="red">Chandrababu Naidu <br> Rythu Poru Yatra</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Chandrababu Naidu Rythu Poru Yatra Video Gallery" onclick="getVideoDetails(2556)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/8t5ku0ASW0k/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View TDP 30th Anniversary Video Gallery" onclick="getVideoDetails(4992)" href="javascript:{}">
+						<font color="red">TDP 30th Anniversary</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View TDP 30th Anniversary Video Gallery" onclick="getVideoDetails(4992)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/wTq1prJOz9M/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Poru Video Gallery" onclick="getVideoDetails(1579)" href="javascript:{}">
+						<font color="red">Rythu Poru</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Poru Video Gallery" onclick="getVideoDetails(1579)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/Qa3wAeJCQ-g/1.jpg">
+						</a>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2011 Video Gallery" onclick="getVideoDetails(1582)" href="javascript:{}">
+						<font color="red">Mahanadu 2011</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2011 Video Gallery" onclick="getVideoDetails(1582)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/Na3HiqI1Zts/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2010 Video Gallery" onclick="getVideoDetails(1584)" href="javascript:{}">
+						<font color="red">Mahanadu 2010</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2010 Video Gallery" onclick="getVideoDetails(1584)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/Cn1Ke8Qpglo/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2009 Video Gallery" onclick="getVideoDetails(1587)" href="javascript:{}">
+						<font color="red">Mahanadu 2009</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Mahanadu 2009 Video Gallery" onclick="getVideoDetails(1587)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/1rnQ08e6Hp4/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Poru - Ranga Reddy Dist Video Gallery" onclick="getVideoDetails(1644)" href="javascript:{}">
+						<font color="red">Rythu Poru - Ranga <br> Reddy Dist</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Poru - Ranga Reddy Dist Video Gallery" onclick="getVideoDetails(1644)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/Hjn66Z0lgVU/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Khammam Video Gallery" onclick="getVideoDetails(1651)" href="javascript:{}">
+						<font color="red">Rythu Porubata in <br> Khammam</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Khammam Video Gallery" onclick="getVideoDetails(1651)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/lYVSi6_c6V4/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Prakasam Video Gallery" onclick="getVideoDetails(1657)" href="javascript:{}">
+						<font color="red">Rythu Porubata <br> in Prakasam</font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Prakasam Video Gallery" onclick="getVideoDetails(1657)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/7OEFvX9h958/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Anantapur Video Gallery" onclick="getVideoDetails(1663)" href="javascript:{}">
+						<font color="red">Rythu Porubata <br> in Anantapur </font>
+						</a></td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Porubata in Anantapur Video Gallery" onclick="getVideoDetails(1663)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/69YEkvEfuFA/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><a title="Click here to View Rythu Poru - Visakhapatnam Dist Video Gallery" onclick="getVideoDetails(1927)" href="javascript:{}">
+						<font color="red">Rythu Poru - <br> Visakhapatnam Dist</font>
+						</a>
+						</td>
+					</tr>
+					<tr>
+						<td><a title="Click here to View Rythu Poru - Visakhapatnam Dist Video Gallery" onclick="getVideoDetails(1927)" href="javascript:{}">
+						<img src="http://img.youtube.com/vi/sx_SHnxwHyc/1.jpg">
+						</a></td>
+					</tr>
+				</table>
+			</td>
+			
+			</tr>
+			</table> 
+		</marquee>
+		</div>
+	
 </div>
 </div>
+
+<script>
+function getVideoDetails(contentId)
+{
+	$.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+		$("#showContentDiv").dialog();
+		getContentDetails(contentId);
+}
+</script>
