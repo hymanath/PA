@@ -63,4 +63,12 @@ public class PartyManifestoDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
+	public void testGetElectionTypeBasedOnPartyId(){
+		List list = partyManifestoDAO.getElectionTypeBasedOnPartyId(362l);
+		System.out.println(list.size());
+		for(int i=0;i<list.size();i++)
+		{
+			System.out.println(list.get(i));
+		}
+	}
 }
