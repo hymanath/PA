@@ -294,7 +294,13 @@ public class PartyDetailsService implements IPartyDetailsService {
 
 	public PartyVO getPartyDetails(Long partyId) {
 		PartyVO partyVO = new PartyVO();
+		List<String> elecType = new ArrayList<String>(0);
 		List<Party> party = partyDAO.getPartyDetails(partyId);
+		List electionTypesList = partyManifestoDAO.getElectionTypeBasedOnPartyId(partyId);
+		for(int i=0;i<electionTypesList.size();i++)
+		{
+			elecType.add(electionTypesList.get(i).toString());
+		}
 		if (party != null) {
 			for (Party party2 : party) {
 				
@@ -310,6 +316,8 @@ public class PartyDetailsService implements IPartyDetailsService {
 				partyVO.setPartyRecognization(party2.getPartyRecognization());
 				partyVO.setPartyShortName(party2.getShortName());
 				partyVO.setSymbol(party2.getSymbol());
+				partyVO.setElectionTypes(elecType);
+				
 			}
 			return partyVO;
 		}
