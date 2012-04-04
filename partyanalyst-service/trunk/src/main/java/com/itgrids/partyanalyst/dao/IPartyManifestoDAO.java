@@ -20,4 +20,6 @@ public interface IPartyManifestoDAO extends GenericDao<PartyManifesto, Long> {
 			Long partyId, Long stateId);
 
 	public List<Object[]> getPartyManifestoInfo(Long partyId, String queryStr);
+
+	public List getElectionTypeBasedOnPartyId(Long partyId);
 }
