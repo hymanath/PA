@@ -47,13 +47,12 @@
 .resulttableclass td {text-align:center;font-weight:bold}
 
 </style>
-
-<div style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;width: 999px;padding-bottom: 13px;">
+<div id="mainDiv" style="margin-left:auto;margin-right:auto;float:none;width: 999px;">
+<div style="background:#ffffff;padding-bottom: 13px;padding-left: 11px;">
 <img src="images/specialPage/TDP_30_YearsBanner.png" style="align:center;width:977px;" alt="TDP 30th Anniversary" title="TDP 30th Anniversary" />
 </div>
-<div id="mainDiv" style="background:#FFFFFF;width: 999px;margin-left: auto; margin-right: auto; float: none;">
-<div><span></span></div>
 
+<div style="background:#FFFFFF;">
 <table style="width:100%">
 <tr>
 <td style="width:50%">
@@ -252,4 +251,5 @@
 <tr><td>
 TP* =Total Participation</td></tr><tr>
 <td>PC* %=Participated Constituencies Percentage</td></tr></table> </div>
+</div>
 </div>
