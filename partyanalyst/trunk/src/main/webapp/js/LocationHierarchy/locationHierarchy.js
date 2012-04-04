@@ -13,13 +13,34 @@
  boothsInTehsilOrMunicipality = booth's part numbers in a tehsil or municipality
  
  */
+
+
+
+
+ function showBusyImgWithId(elmtId)
+{		
+	
+		var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+		if(spanElmt)
+			spanElmt.style.display = "block";
+}
+function hideBusyImgWithId(elmtId)
+{
+	var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+	if(spanElmt)
+		spanElmt.style.display = "none";
+}
 function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId)
-{	    
-	if(selectedId ==0){
+{	
+
+	//showBusyImgWithId('ajaxImgId');
+	if(selectedId ==0)
+	{
 		alert("Please Select Valid Location");
 	 return;
-	 }
-	showBusyImgWithId('ajaxImgId');
+	}
+	 
+
 	var jsObj=
 		{				
 			id: selectedId,
@@ -48,11 +69,15 @@ function callAjaxForLocations(jsObj,url)
 							if(jsObj.task == "getBoothsCompleteDetails")	
 							{
 								buildBoothsTable(myResults);
+								hideBusyImgWithId("ajaxImgId");
 								//buildBoothCompleteDetailsPanel(myResults);
 							} else {
 								clearOptionsListForSelectElmtId(jsObj.selectElementId);
 								fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
-								hideBusyImgWithId('ajaxImgId');
+								hideBusyImgWithId('districtajaxImgId');
+								hideBusyImgWithId('constituencyajaxImgId');
+								
+								
 							}
 						}
 						catch(e)
@@ -327,6 +352,7 @@ function getBoothsInWard(address, constituencyField, boothField, id, module, mun
  */
 function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 {  
+
 	var boothsSelectEl = document.getElementById(boothSelectEl);
 	var boothsSelectElOptions = boothsSelectEl.options; 
 	var boothIdsStr = '';	
@@ -360,6 +386,8 @@ function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
 	
 	if(boothIdsStr.length > 0 && boothIdsStr != '')
 	{
+
+		showBusyImgWithId("ajaxImgId");
 		var jsObj=
 		{				
 			boothIds: boothIdsStr,
