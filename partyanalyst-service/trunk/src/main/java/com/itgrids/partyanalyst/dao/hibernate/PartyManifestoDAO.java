@@ -57,5 +57,11 @@ public class PartyManifestoDAO extends
 						+ "model.election.electionYear,model.file.fileId,model.file.fileName,model.file.filePath,model.file.fileDescription,model.file.language.language "
 						+ "from PartyManifesto model where  model.party.partyId=? "+queryStr+"",partyId);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getElectionTypeBasedOnPartyId(Long partyId) {
+		return getHibernateTemplate().find("select distinct model.election.electionScope.electionType.electionType " +
+				" from PartyManifesto model where model.party.partyId =?",partyId);
+	}
 	
 }
