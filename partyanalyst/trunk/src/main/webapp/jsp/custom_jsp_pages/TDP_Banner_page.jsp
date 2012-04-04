@@ -170,7 +170,7 @@
 	<tr>
 		<td>MahaKutami 2009</td>
 		<td>294</td>
-		<td>225</td>
+		<td></td>
 		<td>107</td>
 		<td>72.69</td>
 		<td>34.77</td>
@@ -189,7 +189,7 @@
 	<tr>
 		<td>TDP-BJP 2004</td>
 		<td>294</td>
-		<td>267</td>
+		<td></td>
 		<td>49</td>
 		<td>69.96</td>
 		<td>40.22</td>
