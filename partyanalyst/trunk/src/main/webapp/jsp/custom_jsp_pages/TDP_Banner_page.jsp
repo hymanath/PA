@@ -13,7 +13,7 @@
     }
 
 
-	.resulttableclass a{text-decoration:none;}
+.resulttableclass a{text-decoration:none;}
 .resulttableclass a:hover{text-decoration:underline;}
 .resulttableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
 .resulttableclass td{border:1px solid #d3d3d3;width:15%;padding:5px 3px;color:#3d3d3d;height:35px;}
@@ -48,10 +48,10 @@
 
 </style>
 
-<div style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;width: 979px;padding-bottom: 13px;">
+<div style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;width: 999px;padding-bottom: 13px;">
 <img src="images/specialPage/TDP_30_YearsBanner.png" style="align:center;width:977px;" alt="TDP 30th Anniversary" title="TDP 30th Anniversary" />
 </div>
-<div id="mainDiv" style="background:#FFFFFF;width: 979px;margin-left: auto; margin-right: auto; float: none;">
+<div id="mainDiv" style="background:#FFFFFF;width: 999px;margin-left: auto; margin-right: auto; float: none;">
 <div><span></span></div>
 
 <table style="width:100%">
@@ -59,7 +59,7 @@
 <td style="width:50%">
 <div style="margin-top: -51px;"><span class="headingStyle">TDP Party Performance in Parliament Election</span></div>
 <div id="parliamentDiv" style="margin-top: 12px;">
-<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" height="300px" valign="top">
+<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" valign="top">
 	<tr>
 		<th style="color:#FFFFFF;">Year</th>
 		<th>Total Seats</th>
@@ -149,7 +149,7 @@
 <td style="width:50%">
 <div><span class="headingStyle">TDP Party Performance in Assembly Election</span></div>
 <div id="assemblyDiv" style="margin-top: 12px;">
-<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" height="220px;" valign="top">
+<table class="resulttableclass" border="1" style="border-collapse:collapse;border-color:#d3d3d3;" width="100%" valign="top">
 	<tr>
 		<th style="color:#FFFFFF;">Year</th>
 		<th>Total Seats</th>
