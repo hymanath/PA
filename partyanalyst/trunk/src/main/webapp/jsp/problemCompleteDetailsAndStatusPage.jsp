@@ -12,8 +12,7 @@
 <title>Problem Details</title>
 
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
-
-  
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>  
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -976,55 +975,66 @@ str += '	</tr>';
 str += '	<tr id="row1" style="display:none;">';
 str += '	<th><s:label for="stateId" id="stateLabelId" theme="simple" value="Select State"/><font class="requiredFont"> * </font></th>';
 str += '		<td>';
-str += '		<select id="StateId" class="selectWidth" name="state" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'districtsInState\',\'influencingPeopleReg\',\'DistrictId\', \'currentAdd\');">';
+str += '<select id="StateId" class="selectWidth" name="state" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'districtsInState\',\'influencingPeopleReg\',\'DistrictId\', \'currentAdd\');showBusyImgWithId(\'stateajaxImgId\');">';
 <c:forEach var="options" items="${statesListForProb}">
 	str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
 str += '		</select>';
+str +='<img id="stateajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none;margin-right:10px;" />'; 
+
 str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row2" style="display:none;">';
 str += '		<th><s:label for="districtId" id="districtLabelId" theme="simple" value="Select District"/><font class="requiredFont"> * </font></th>';
 str += '		<td>';
-str += '		<select id="DistrictId" cssClass="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');">';
+str += '<select id="DistrictId" cssClass="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');showBusyImgWithId(\'districtajaxImgId\');">';
 <c:forEach var="options" items="${districtsListForProb}">
 	str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
 str += '		</select>';
+str +='<img id="districtajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif"  style="display:none;float:right;"/>';
 str += '		</td>';
+
 str += '	</tr>';
 
 str += '	<tr id="row3" style="display:none;">';
 str += '		<th><s:label for="constituencyId" id="constituencyLabelId" theme="simple" value="Select Constituency"/><font class="requiredFont"> * </font></th>';
 str += '		<td>';
-str += '		<select id="ConstituencyId" class="selectWidth" name="constituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'influencingPeopleReg\',\'MandalId\',\'currentAdd\', \'null\')">';
+str += '<select id="ConstituencyId" class="selectWidth" name="constituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'influencingPeopleReg\',\'MandalId\',\'currentAdd\', \'null\');showBusyImgWithId(\'constituencyajaxImgId\');">';
 <c:forEach var="options" items="${costituenciesListForProb}">
 	str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
 str += '		</select>';
+str +='<img id="constituencyajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none;float:right;"/>'; 
 str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row4" style="display:none;">';
 str += '		<th><s:label for="mandalId" id="mandalLabelId" theme="simple" value="Select Mandal/CORP/GMC"/><font class="requiredFont"> * </font></th>';
 str += '		<td>';
-str += '			<select id="MandalId" class="selectWidth" name="mandal" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'influencingPeopleReg\',\'VillageId\',\'currentAdd\');">';
+str += '<select id="MandalId" class="selectWidth" name="mandal" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'influencingPeopleReg\',\'VillageId\',\'currentAdd\');">';
 <c:forEach var="options" items="${mandalsListForProb}">
 	str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
 str += '			</select>';
+//str +='<img id="mandalajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none;float:right;"/>'; 
+
 str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row5" style="display:none;">';
+
 str += '		<th><s:label for="villageId" id="villageLabelId" theme="simple" value="Select village"/><font class="requiredFont"> * </font></th>';
 str += '		<td>';
-str += '		<select id="VillageId" class="selectWidth" name="village">';
+
+str += '<select id="VillageId" class="selectWidth" name="village">';
 <c:forEach var="options" items="${villagesListForProb}">
-	str += '		<option value="${options.id}">${options.name}</option>';
+str += '		<option value="${options.id}">${options.name}</option>';
 </c:forEach>
 str += '		</select>';
+
+str +='<img id="villageajaxImgId_ImgSpan" height="16" width="16" src="images/icons/search.gif" style="display:none;float:right;"/>'; 
 str += '		</td>';
 str += '	</tr>';
 str += '</table>';
