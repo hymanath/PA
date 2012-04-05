@@ -842,6 +842,7 @@ function callAjax(jsObj,url)
 			   
 				if(jsObj.divElmt =='statePopUpDiv')
 				{
+					clearOptionsListForSelectElmtId(jsObj.divElmt);
 					buildResults(myResults,jsObj.divElmt)
 					getPartyManifestoFile();
 				}
@@ -1976,9 +1977,9 @@ function getNewsByLanguage(language)
      {
 	 
 	 }	
-	function getPartyManifesto(partyId)
-       {
-	   	var jsObj ={
+function getPartyManifesto(partyId)
+ {
+		   	var jsObj ={
 				partyId:partyId,
 				task:"getPartyManifesto"
 
@@ -1986,7 +1987,7 @@ function getNewsByLanguage(language)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "partyPhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
-      }
+}
 	  
   function builPartyDiv()
   {     
@@ -2005,7 +2006,6 @@ function getNewsByLanguage(language)
   }
   function buildPartyManifestos(results)
   {
-	 
 	 var manifestoFilesDivElmt = document.getElementById("manifestoFilesDiv");
 	 var str ='';
 	if(results!=null && results.length>0)
@@ -2157,7 +2157,7 @@ function buildSelectionDiv(){
 	
 		str +='<table style="width:100%;">';
 		str +='<tr><td style="width: 18%; font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; margin-right: 0px; margin-left: 0px; padding-left: 34px;">';
-		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="getPartyManifestoFile();getCountry();" checked="true"> Country</td><td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
+		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="showManifestoGallary();getCountry();" checked="true"> Country</td><td style="width:10%;font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;">';
 		str += '<input type="radio" name = "manifestoByScope" id="manifestoByScope" onclick="selectedState(\'statePopUpDiv\')" style="padding-right: 28px; width: 22px;"> State</td>';
 		str +='<td style="font-size: 14px; font-family: Trebuchet MS,Arial,Helvetica,sans-serif; width: 65px; height: 35px; margin-right: 13px; padding-top: 1px;"><div id="selectStatePopupdiv" style="display:none"><select id="statePopUpDiv" onchange="getPartyManifestoFile();getElectionTypesBasedOnStateId();" class="selectWidth"/></div></td>';
 		str+='<td style="font-size: 14px;font-family:Trebuchet MS,Arial,Helvetica,sans-serif;"><select id="electionTypeDiv" style="display:none" onchange="getPartyManifestoFile();getElectionYearsBasedOnElecTypePartyIdAndStateId()" class="selectWidth"></select>';
@@ -2440,6 +2440,7 @@ function buildContentDetailsOfSelected(preId,selId)
 function buildPartyManifesoGallary(results)
 {
 	var str='';
+	document.getElementById("manifestoGallaryPopupDiv").innerHTML = str;
 	str+='<div id="content" style="width:650px;">';		
 	str += '<fieldset class="imgFieldset">';
 	str +='<table  width="100%" style="margin-top:10px;">';
@@ -2573,7 +2574,7 @@ function selectedState(selectStateDiv)
 }
 function getCountry()
 {
-document.getElementById("selectStatediv").style.display = 'none';
+	document.getElementById("selectStatediv").style.display = 'none';
 }
 
 function displayPartyMessages(results)
