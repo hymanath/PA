@@ -967,6 +967,8 @@
 		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
 		<property name="messageToPartyDAO" ref="messageToPartyDAO" />
 		<property name="partyPageCustomPagesDAO" ref="partyPageCustomPagesDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
