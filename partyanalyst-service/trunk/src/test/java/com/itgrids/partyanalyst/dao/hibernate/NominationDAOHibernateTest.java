@@ -1160,9 +1160,19 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 	}*/
 	
-	public void testGetPartiesWithAtleatOneWinningSeatForAElection()
+	/*public void testGetPartiesWithAtleatOneWinningSeatForAElection()
 	{
 		List<Object[]> list = nominationDAO.getPartiesWithAtleatOneWinningSeatForAElection(38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0] +"---"+params[1]);
+	}*/
+	
+	public void testgetCandidatePertcipatedConstituenciesInAElection()
+	{
+		List<Object[]> list = nominationDAO.getCandidatePertcipatedConstituenciesInAElection(1984l,38l);
 		
 		System.out.println(list.size());
 		
