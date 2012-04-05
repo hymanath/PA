@@ -5,6 +5,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -77,4 +78,6 @@ public interface IPartyDetailsService {
 	public List<CandidateCommentsVO> getMessageToParty(Long partyId,int startIndex,int resultsCount);
 	
 	public List<CustomPageVO> getCustomPagesOfAPartyPage(Long partyId);
+	
+	public CandidateElectionResultVO getCandidateDetailsForAsses(Long candidateId,Long electionId);
 }
