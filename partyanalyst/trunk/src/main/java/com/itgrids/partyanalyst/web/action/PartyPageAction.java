@@ -13,6 +13,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -51,7 +52,17 @@ public class PartyPageAction extends ActionSupport implements
     private ResultStatus result;
     private Long contentId;
     private List<CustomPageVO> customPages;
+    private CandidateElectionResultVO candidateElectionResultVO;
 	
+	public CandidateElectionResultVO getCandidateElectionResultVO() {
+		return candidateElectionResultVO;
+	}
+
+	public void setCandidateElectionResultVO(
+			CandidateElectionResultVO candidateElectionResultVO) {
+		this.candidateElectionResultVO = candidateElectionResultVO;
+	}
+
 	public List<CustomPageVO> getCustomPages() {
 		return customPages;
 	}
@@ -231,6 +242,16 @@ public class PartyPageAction extends ActionSupport implements
 			
         	fileVO = partyDetailsService.getSelectedState(jObj.getLong("partyId"));
 		}
+        else if(jObj.getString("task").equalsIgnoreCase("getCandidateDetailsForAsses")){
+        	
+        	candidateElectionResultVO = partyDetailsService.getCandidateDetailsForAsses(jObj.getLong("candidateId"),jObj.getLong("electionId"));
+        	if(candidateElectionResultVO != null && regVO != null)
+        	{
+        		candidateElectionResultVO.setDistrictId(regVO.getRegistrationID());
+        		candidateElectionResultVO.setDistrictName(regVO.getUserType());
+        	}
+        }
+		
 	return Action.SUCCESS;
 }
 
