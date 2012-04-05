@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyManifestoDAO;
@@ -33,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -42,6 +45,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ContentType;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Gallary;
@@ -86,7 +90,26 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IPartyUpdatesEmailDAO partyUpdatesEmailDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
 	private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
+	private INominationDAO nominationDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
 	public IPartyPageCustomPagesDAO getPartyPageCustomPagesDAO() {
 		return partyPageCustomPagesDAO;
 	}
@@ -1122,6 +1145,43 @@ public class PartyDetailsService implements IPartyDetailsService {
 			return null;
 		}
     }
+	
+	public CandidateElectionResultVO getCandidateDetailsForAsses(Long candidateId,Long electionId)
+	{
+		try{
+			CandidateElectionResultVO candidateElectionResultVO = new CandidateElectionResultVO();
+			Election election = electionDAO.get(electionId);
+			
+			candidateElectionResultVO.setCandidateId(candidateId);
+			List<Object[]> list = nominationDAO.getCandidatePertcipatedConstituenciesInAElection(candidateId,electionId);
+			
+			if(list != null && list.size() > 0)
+			{
+				candidateElectionResultVO.setConstituencyId((Long)list.get(0)[0]);
+				candidateElectionResultVO.setConstituencyName(list.get(0)[1].toString());
+			}
+			
+			if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			{
+				List<Object[]> parList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(candidateElectionResultVO.getConstituencyId());
+				if(parList != null && parList.size() > 0)
+				{
+					candidateElectionResultVO.setPartyId((Long)parList.get(0)[0]);
+					candidateElectionResultVO.setPartyName(parList.get(0)[1].toString());
+				}
+			}
+			else if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+			{
+				candidateElectionResultVO.setPartyId((Long)list.get(0)[0]);
+				candidateElectionResultVO.setPartyName(list.get(0)[1].toString());
+			}
+			
+			return candidateElectionResultVO;
+		}catch (Exception e) {
+			log.error("Exception occured in getCandidateDetailsForAsses() Method, Exception is - "+e);
+			return null;
+		}
+	}
 }
 	
 
