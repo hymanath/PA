@@ -3171,18 +3171,23 @@
 			</result>
 		</action>
 		
-		<action name="saveUserEmailAction" class="anonymousUserAction" method=" AjaxHandler">
+		<action name="saveUserEmailAction" class="anonymousUserAction" method="AjaxHandler">
 			<result type="json" name="success">
 				<param name="root">results</param>				
 			</result>		
 		</action>
 		
-		<action name="sendPasswordAnanymousUserAction" class="anonymousUserAction" method=" recoverPasswordForUser">
+		<action name="sendPasswordAnanymousUserAction" class="anonymousUserAction" method="recoverPasswordForUser">
 			<result type="json" name="success">
 				<param name="root">regVO</param>				
 			</result>		
 		</action>
 		
-				
+		<action name="getCandidateDetailsForAssesAction" class="partyPageAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">candidateElectionResultVO</param>				
+			</result>		
+		</action>
+	
 	</package>
 </struts>      
