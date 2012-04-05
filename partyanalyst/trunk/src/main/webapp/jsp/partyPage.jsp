@@ -1704,14 +1704,13 @@ function partyInfo()
     str+='<fieldset class="imgFieldset">';
     str+='  <table><tr><td>';
     str+='  <s:if test="descriptions != null">'; 
-    //str+='  <div style="font-weight: bold; font-size: 14px;">About ${partyVO.partyLongName}</div>';
-    str+=' <br><s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
+	str+=' <s:iterator value="descriptions">';
+	str+=' <div style="margin-bottom:8px; font-weight:normal;font-size:12px;font-family: tahoma;text-align:justify;">';
     str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
 	str+='</div>';
     str+='</s:iterator>';
     str+=' </s:if>';
-    str+=' </td></tr> </table>';
+    str+=' </td></tr></table>';
     str+='</fieldset>';
     document.getElementById("showProfile").innerHTML=str;
    
@@ -1731,12 +1730,15 @@ function partyInfo()
    str+='<h1 class="inc-title">About ${partyVO.partyLongName}</h1>';
    
    str+='<s:iterator value="descriptions">';
- if (x<=2)
+   
+   if (x<=2)
    {
-   str+='  <p style="font-size: 13px;"><s:property /></p><br />';
-   x++;
+	   str+='  <p style="font-size:14px;"><s:property/></p>';
+	   x++;
    }
+
    str+='  </s:iterator>';
+
    str+='<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
    str+='Read More >></a></div>';
    str+='</s:if>';
