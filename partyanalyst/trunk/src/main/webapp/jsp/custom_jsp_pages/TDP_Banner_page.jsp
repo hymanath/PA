@@ -900,7 +900,7 @@ function openAnalyzeConstituencyWindow(result,type)
 	var taskType = type;
 
 
-	if(userId == null)
+	if(userId == null && taskType == 'analyze')
 	{
 		alert("Please Login To Post Comment");
 		return;
