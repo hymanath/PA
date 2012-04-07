@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -31,7 +32,16 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> years;
 	private List<SelectOptionVO> statesList;
 	private List<CandidateMinistriesVO> candidateMinistriesVO;
+	private MetaInfoVO metaInfoVO;
 	
+	public MetaInfoVO getMetaInfoVO() {
+		return metaInfoVO;
+	}
+
+	public void setMetaInfoVO(MetaInfoVO metaInfoVO) {
+		this.metaInfoVO = metaInfoVO;
+	}
+
 	public ElectionGoverningBodyVO getElectionGoverningBodyVO() {
 		return electionGoverningBodyVO;
 	}
@@ -116,7 +126,9 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
 		
 		candidateMinistriesVO = candidateDetailsService.getAllMinistersDetailsForAnElection(electionId);
-	
+		
+		metaInfoVO = candidateDetailsService.getMetaInfoOfMinistersPage(electionGoverningBodyVO,candidateMinistriesVO);
+			
 		return SUCCESS;
 	}
 	
