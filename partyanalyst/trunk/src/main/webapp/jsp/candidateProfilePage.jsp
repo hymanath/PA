@@ -2204,8 +2204,12 @@ function candidateInfo()
 	str+='<s:if test="candidateElectionDetails[0].constituencyId !=null">';
 	str+='<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
 	str+='</s:if>';
-	str+='<s:if test="candidateElectionDetails[0].partyName !=''">';
+	str+='<s:if test="candidateElectionDetails[0].partyName !='INDEPENDENT'">';
+	
 	str+='<a href="partyPageAction.action?partyId=${candidateElectionDetails[0].partyId} ">${candidateElectionDetails[0].partyName} PARTY</a>';
+	str+='</s:if>';
+	str+='<s:if test="candidateElectionDetails[0].partyName =='INDEPENDENT'">';
+	str+='<span style="font-weight:bold;font-family:arial;">${candidateElectionDetails[0].partyName} PARTY</span>';
 	str+='</s:if>';
     str+='</div>';
 	str+='<div class="clear"></div>';
