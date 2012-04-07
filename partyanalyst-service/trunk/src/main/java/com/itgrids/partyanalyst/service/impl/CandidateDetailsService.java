@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -2614,7 +2615,10 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     			electionGoverningBodyVO.setElectionYear(election.getElectionYear());
     			
     			if(election.getElectionScope().getState() != null)
+    			{
     				electionGoverningBodyVO.setStateName(election.getElectionScope().getState().getStateName());
+    				electionGoverningBodyVO.setStateId(election.getElectionScope().getState().getStateId());
+    			}
     		}
     		return electionGoverningBodyVO;
     	}
@@ -2672,17 +2676,23 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	    			
 	    			governingBodyVO.setMinisterType(params.getPositionScope().getMinisterType().getMinisterType());
 	    			
-	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.CABINET_MINISTER) &&
-	    					!hasCabinetMinisters)
-	    				hasCabinetMinisters = true;
-	    				
-	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE) &&
-	    					!hasMS)
-	    				hasMS = true;
-	    			
-	    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE_WITH_INDEPENDENT_CHARGE) &&
-	    					!hasMSIC)
+	    			if((candidateMinistriesVO.getIsChiefMinister() == null || !candidateMinistriesVO.getIsChiefMinister()) && 
+	    				(candidateMinistriesVO.getIsDeputyChiefMinister() == null || !candidateMinistriesVO.getIsDeputyChiefMinister()) &&
+	    				 (candidateMinistriesVO.getIsPrimeMinister() == null || !candidateMinistriesVO.getIsPrimeMinister()))
+	    			{
+		    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.CABINET_MINISTER) &&
+		    					!hasCabinetMinisters)
+		    				hasCabinetMinisters = true;
+		    				
+		    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE) &&
+		    					!hasMS)
+		    				hasMS = true;
+		    			
+		    			if(governingBodyVO.getMinisterType().equalsIgnoreCase(IConstants.MINISTER_OF_STATE_WITH_INDEPENDENT_CHARGE) &&
+		    					!hasMSIC)
 	    				hasMSIC = true;
+	    			
+	    			}
 	    			
 	    			if(!candidateMinistriesVO.getMinistryTypes().contains(governingBodyVO.getMinisterType()))
 	    			{
@@ -2781,6 +2791,67 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			log.error("Exception Occured in getCustomPagesOfACandidatePage(), Exception is - "+e);
 			return null;
 		}
+    }
+    
+    public MetaInfoVO getMetaInfoOfMinistersPage(ElectionGoverningBodyVO electionGoverningBodyVO,List<CandidateMinistriesVO> ministersList)
+    {
+    	try{
+    		MetaInfoVO metaInfoVO = null;
+    		
+    		if(electionGoverningBodyVO != null && ministersList != null)
+    		{
+    			metaInfoVO = new MetaInfoVO();
+    			String keyWords = "";
+    			String description = "";
+    			String CMstr = "";
+    			String DCMstr = "";
+    			String PMstr = "";
+    			String electionType = electionGoverningBodyVO.getElectionType();
+    			
+    			keyWords = "Ministers Of ";
+    			
+    			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+    				keyWords += electionGoverningBodyVO.getStateName()+" ";
+    			else
+    				keyWords += "India ";
+    			
+    			keyWords += electionGoverningBodyVO.getElectionYear()+", ";
+    			
+    			keyWords += "Cabinet Ministers, Ministers of State, Ministers of State with Independent Charge, ";
+    			
+    			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+    				keyWords += "Chief Minister, Deputy Chief Minister of "+electionGoverningBodyVO.getStateName();
+    			else
+    				keyWords += "Prime Minister of India";
+    			
+    			for(CandidateMinistriesVO ministriesVO : ministersList)
+    			{
+    				if(ministriesVO.getIsChiefMinister() != null && ministriesVO.getIsChiefMinister())
+    				{
+    					CMstr += "Shri "+ministriesVO.getCandidateName()+ " is the Chief Minister of "+electionGoverningBodyVO.getStateName()+",";
+    				}
+    				else if(ministriesVO.getIsDeputyChiefMinister() != null && ministriesVO.getIsDeputyChiefMinister())
+    				{
+    					DCMstr += "Shri "+ministriesVO.getCandidateName()+ " is the Deputy Chief Minister of "+electionGoverningBodyVO.getStateName()+",";
+    				}
+    				else if(ministriesVO.getIsPrimeMinister() != null && ministriesVO.getIsPrimeMinister())
+    				{
+    					PMstr += "Shri "+ministriesVO.getCandidateName()+ " is the Prime Minister of India";
+    				}
+    			}
+    			
+    			description = PMstr +" "+CMstr+" "+DCMstr;
+    			description = "Now you can know all three types of ministers(Cabinet minister,State minister,State Minister " +
+    					" with independent Charge), their working duration";
+    			metaInfoVO.setKeywords(keyWords);
+    			metaInfoVO.setDescription(description);
+    		}
+    		
+    		return metaInfoVO;
+    	}catch (Exception e) {
+    		log.error("Exception occured in getMetaInfoOfMinistersPage() Method, Exception is - "+e);
+    		return null;
+    	}
     }
 }
 	
