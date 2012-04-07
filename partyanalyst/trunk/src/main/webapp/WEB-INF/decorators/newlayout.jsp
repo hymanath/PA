@@ -271,6 +271,8 @@ function buildAccordion()
 						<li><a href="ministerAnalysisAction.action"><span>Ministers & Special Candidates Analysis</span></a></li>
 						<li><a href="electionResultsUpdateAction.action"><span>Update Live Election Results</span></a></li>
 						<li><a href="assignKeyCandidateAction.action"><span>Assign Special Candidates</span></a></li>
+						<li><a href="districtWisePartyPerformanceAction.action"><span>DistrictWisePartyPerformance</span>
+						</a></li>
 					</ul></div>
 				</li>
              </ul></div>
