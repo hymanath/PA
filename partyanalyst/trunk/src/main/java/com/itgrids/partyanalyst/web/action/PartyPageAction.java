@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
@@ -52,8 +57,25 @@ public class PartyPageAction extends ActionSupport implements
     private ResultStatus result;
     private Long contentId;
     private List<CustomPageVO> customPages;
+    private List<PartyInfoVO> partyInfoVOList = new ArrayList<PartyInfoVO>();
     private CandidateElectionResultVO candidateElectionResultVO;
-	
+    private Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
+    
+	public void setResultMap(Map<String,List<PartyInfoVO>> resultMap) {
+		this.resultMap = resultMap;
+	}
+
+	public Map<String,List<PartyInfoVO>> getResultMap() {
+		return resultMap;
+	}
+
+	public void setPartyInfoVOList(List<PartyInfoVO> partyInfoVOList) {
+		this.partyInfoVOList = partyInfoVOList;
+	}
+
+	public List<PartyInfoVO> getPartyInfoVOList() {
+		return partyInfoVOList;
+	}
 	public CandidateElectionResultVO getCandidateElectionResultVO() {
 		return candidateElectionResultVO;
 	}
@@ -311,5 +333,22 @@ public class PartyPageAction extends ActionSupport implements
 		}
 		
 	return Action.SUCCESS;
+	}
+	
+	public String getPartyElectionProfile()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long partyId = new Long(jObj.getString("partyId"));
+			resultMap = partyDetailsService.getPartyElectionResults(partyId);
+		} 
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
 	}
 }
