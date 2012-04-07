@@ -27,6 +27,36 @@
 
 
 <style type="text/css">
+.yui-skin-sam.yui-dt table th {
+		background-color: #CEEDF0;
+		font-size: 13px;
+		font-weight: bold;
+		/*padding: 7px;*/
+		text-align: left;
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt table  {
+		
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt tbody{
+border: 1px solid #CDCDCD;
+    font: 12px verdana,arial,tahoma;
+}
+.yui-skin-sam .yui-dt-liner {
+margin: 0;
+padding: 0;
+padding: 4px 2px 4px 10px;
+}
+.yui-skin-sam thead .yui-dt-sortable{color:#000;}
+ .yui-skin-sam.yui-dt td {
+	font-weight: normal;
+	/*padding: 8px 8px 8px 10px;*/
+}
+.yui-skin-sam .yui-pg-container{font-size: 12px;}
+#parliamentElecProfileDiv > table * tr:nth-child(even){background:#f9f9f9;}
+#parliamentElecProfileDiv{margin-top:12px;}
+#assemblyElecProfileDiv > table * tr:nth-child(even){background:#f9f9f9;}
 .ui-widget-header {
 	background:url("");
 	border:0px;
@@ -232,7 +262,30 @@ a {
     	max-width: 800px;
     	padding: 10px;
 }
-
+#tabsDiv
+{
+	background: none repeat scroll 0 0 #A3A3A3;
+    border-radius: 5px 5px 5px 5px;
+    font: bold 14px/20px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    margin-left: -9px;
+    margin-right: -12px;
+    padding: 7px;
+    text-transform: uppercase;
+}
+#tabsDiv a {color: #FFFFFF;text-decoration: none;}
+.dashBoardtabsDivSelected
+	{
+	background: none repeat scroll 0 0 #21B2ED;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-left: -6px;
+    padding: 7px 16px 6px 9px;
+	}
+#electionProfileDiv
+	{
+		width: 104%; border: 1px solid rgb(205, 205, 205); margin-left: -17px; padding-right: 11px; padding-left: 9px; border-radius: 4px 4px 4px 4px;
+	}
+	#assemblyId{margin-left: 9px;}
 </style>
 
 </head>
@@ -344,21 +397,25 @@ a {
 		
 			 <!--ELECTION PROFILE SECTION START-->
 			 
-			<s:if test="partyVO.electionTypes.size>0">
                <div class="pm-inner-cont-sec" id="partyManifestoDiv">
+			   <div><h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
+			    <div id="electionProfileDiv"></div>
+			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
+			   <s:if test="partyVO.electionTypes.size>0">
 			   <h1 class="inc-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>
 			   <s:iterator value="partyVO.electionTypes" status="stat">
 			   <s:if test="partyVO.electionTypes[#stat.index] =='Parliament'">
-			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   <div><input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   <s:if test="partyVO.electionTypes[#stat.index] == 'Assembly'">
 			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedState('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   </s:iterator>
 			   <div id="selectStatediv" style="display:none;margin-left: 188px;margin-top: -17px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>
-				<div id="manifestoFilesDiv" style="margin-top: 27px;"></div>
+				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div></div>
 			   </div>
 			</s:if>
+			</div>
 			  <!--ELECTION PROFILE SECTION END--> 
 
 			<s:if test="customPages != null && customPages.size() > 0">
@@ -373,7 +430,7 @@ a {
 
 			  <!--PHOTO SECTION START-->
           
-                <div class="pm-inner-cont-sec" id="photoGallaryDiv"></div>
+                <div class="pm-inner-cont-sec" id="photoGallaryDiv"  style="border-top: 1px solid #cdcdcd; padding-top: 17px;"></div>
             
 			 <div class="clear"></div>
 			
@@ -558,7 +615,17 @@ a {
 	callAjax(jsObj,url);	
 
 }
+function buildElectionProfile()
+{
+	var str='';
+	str+='<div id="tabsDiv">';
+	str+='<a id="parliamentId" href="javascript:{}" onclick="buildResultForParliamentElection()" class="dashBoardtabsDivSelected"> In Parliament</a>';
+    str+='<a id="assemblyId" href="javascript:{}" onclick="buildResultForAssemblyElection();">In Assembly</a></div>';
+    str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
+    str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
+ $("#electionProfileDiv").html(str);
 
+}
 function showAssemblyData()
  {
    var str='';
@@ -823,9 +890,10 @@ function callAjax(jsObj,url)
             {
 			   showTotalNews(myResults);
 			}
-		else if(jsObj.task == "getParliamentElectionResultsByState")
+		else if(jsObj.task == "getPartyElectionProfile")
             {
-			   showParliamentResultByStatewise(myResults);
+				electionObj = myResults;
+			   buildElectionResultsOfParty(myResults);
 			}	
 		else if(jsObj.task =="getPartyManifesto")
 			{
@@ -1704,13 +1772,14 @@ function partyInfo()
     str+='<fieldset class="imgFieldset">';
     str+='  <table><tr><td>';
     str+='  <s:if test="descriptions != null">'; 
-	str+=' <s:iterator value="descriptions">';
-	str+=' <div style="margin-bottom:8px; font-weight:normal;font-size:12px;font-family: tahoma;text-align:justify;">';
+    //str+='  <div style="font-weight: bold; font-size: 14px;">About ${partyVO.partyLongName}</div>';
+    str+=' <br><s:iterator value="descriptions">';
+	str+=' <div style="margin-bottom: 21px; font-weight: normal; font-size: 11px; font-family: tahoma;text-align:justify;">';
     str+=' <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <s:property />';
 	str+='</div>';
     str+='</s:iterator>';
     str+=' </s:if>';
-    str+=' </td></tr></table>';
+    str+=' </td></tr> </table>';
     str+='</fieldset>';
     document.getElementById("showProfile").innerHTML=str;
    
@@ -1730,15 +1799,12 @@ function partyInfo()
    str+='<h1 class="inc-title">About ${partyVO.partyLongName}</h1>';
    
    str+='<s:iterator value="descriptions">';
-   
-   if (x<=2)
+ if (x<=2)
    {
-	   str+='  <p style="font-size:14px;"><s:property/></p>';
-	   x++;
+   str+='  <p style="font-size: 13px;"><s:property /></p><br />';
+   x++;
    }
-
    str+='  </s:iterator>';
-
    str+='<div class="read-more"><a href="javascript:{}" onclick="getTotalProfile()" style="color: LightSkyBlue;">';
    str+='Read More >></a></div>';
    str+='</s:if>';
@@ -1955,68 +2021,199 @@ function getNewsByLanguage(language)
 	callAjax(jsObj,url); 
   }  
  
-	function getResult()
-	  {
-	  var partyId =  ${partyId};
-	  var jsObj =
-		{   
-		    partyShortName : '${partyVO.partyShortName}',
-		   	partyId : partyId,
-			electionId  : 1,
-			countryId	: 1,
-			stateId		: 1,
-			districtId : 0,
-			constituencyId : 0,
-			hasAlliances : false,
-			task:"getParliamentElectionResultsByState"
-		};
+function getResult()
+  {
+  var partyId =  ${partyId};
+  var jsObj =
+	{   
+		partyShortName : '${partyVO.partyShortName}',
+		partyId : partyId,
+		electionId  : 1,
+		countryId	: 1,
+		stateId		: 1,
+		districtId : 0,
+		constituencyId : 0,
+		hasAlliances : false,
+		task:"getParliamentElectionResultsByState"
+	};
 
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getParliamentElectionResultByStateAction.action?"+rparam;					
+callAjax(jsObj,url);
+  }
+
+function getElectionProfile()
+{
+	var jsObj = {
+
+		partyId :'${partyVO.partyId}',
+		task:"getPartyElectionProfile"
+	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getParliamentElectionResultByStateAction.action?"+rparam;					
+	var url = "getPartyElectionProfileAction.action?"+rparam;					
 	callAjax(jsObj,url);
-	  }
-	function showParliamentResultByStatewise(myResults)
-     {
-	 
+}
+function buildElectionResultsOfParty(results)
+ {
+	if(results != null)
+	 {
+		buildResultForParliamentElection(results.Parliament);
+		//buildResultForAssemblyElection(results.Assembly);
 	 }	
+ }
+ function buildResultForParliamentElection(results)
+ {
+	$("#parliamentId").addClass("dashBoardtabsDivSelected");
+	 $("#assemblyId").removeClass("dashBoardtabsDivSelected");
+	document.getElementById("parliamentElecProfileDiv").style.display='block';
+	 YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		 
+		var partyId= oRecord.getData("partyId");
+		var partyShortName= oRecord.getData("partyShortName");
+		var electionType = oRecord.getData("electionType");
+		var electionTypeId = oRecord.getData("electionTypeId");
+		
+		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=Country&__checkbox_alliances=true'>View Details</a>";
+		
+	  };
+	  var electionColumnDefs = [
+		{key:"electionYear" , label:"Year" , sortable:true},
+		{key:"seatsParticipated" , label:"PC" , sortable:true},
+		{key:"seatsWin" , label : "Seats Won" , sortable:true},
+		{key:"percentageOfVotes",label:"VP (%)",sortable:true},
+		{key:"participatedPercentage" , label:"PCV(%)",sortable:true},
+
+		{key:"view details",label:"Complete Details",formatter:YAHOO.widget.DataTable.viewDetails},
+
+		
+
+	];
+	var electionDataSource = new YAHOO.util.DataSource(electionObj.Parliament);
+		electionDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		electionDataSource.responseSchema = {
+                fields: [{key:"electionYear"},{key: "seatsParticipated",parser:"number"},
+						 {key:"seatsWin"},
+						 {key:"percentageOfVotes"},
+						 {key:"percentageOfVotes"},
+						 {key:"participatedPercentage"},
+						 {key:"partyId"},
+						 {key:"partyShortName"},
+						 {key:"electionType"},
+					{key:"electionTypeId"}
+						]
+		};
+		
+		 var myConfigs = {    
+				
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 10,		        
+						template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+						rowsPerPageOptions: [10,20,30], 
+						pageLinks: 10
+						})
+						
+					};
+				partywiseResults = new YAHOO.widget.DataTable("parliamentElecProfileDiv", electionColumnDefs, electionDataSource,myConfigs);
+ }
+ function buildResultForAssemblyElection(results)
+ {
+	$("#assemblyId").addClass("dashBoardtabsDivSelected");
+	$("#parliamentId").removeClass("dashBoardtabsDivSelected");
+	 document.getElementById("assemblyElecProfileDiv").style.display='block';
+	YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		 
+		var partyId= oRecord.getData("partyId");
+		var partyShortName= oRecord.getData("partyShortName");
+		var electionType = oRecord.getData("electionType");
+		var electionTypeId = oRecord.getData("electionTypeId");
+		var stateName = oRecord.getData("stateName");
+		var stateId = oRecord.getData("stateId");
+		
+		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"selectedLocationName="+stateName+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=State&stateSelectName="+stateId+"&__checkbox_alliances=true'>View Details</a>";
+			
+	  };
+	  var electionColumnDefs = [
+		{key:"electionYear" , label:"Year" , sortable:true},
+		{key:"stateName" , label:"State",sortable:true},
+		{key:"seatsParticipated" , label:"PC" , sortable:true},
+		{key:"seatsWin" , label : "Seats Won" , sortable:true},
+		{key:"percentageOfVotes",label:"VP (%)",sortable:true},
+		{key:"participatedPercentage" , label:"PCV(%)",sortable:true},
+
+		{key:"view details",label:"Complete Details",formatter:YAHOO.widget.DataTable.viewDetails}
+		
+
+	];
+	var electionDataSource = new YAHOO.util.DataSource(electionObj.Assembly);
+		electionDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		electionDataSource.responseSchema = {
+                fields: [{key:"electionYear"},{key:"stateName"},
+					{key: "seatsParticipated",parser:"number"},
+					{key:"seatsWin"},
+					{key:"percentageOfVotes"},
+					{key:"percentageOfVotes"},
+					{key:"participatedPercentage"},
+					{key:"stateId"},{key:"partyId"},
+						 {key:"partyShortName"},
+						 {key:"electionType"},
+					{key:"electionTypeId"}
+					]
+		};
+		
+		 var myConfigs = {    
+				
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 10,		        
+						template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+						rowsPerPageOptions: [10,20,30], 
+						pageLinks: 10
+						})
+						
+					};
+
+				partywiseResults = new YAHOO.widget.DataTable("parliamentElecProfileDiv", electionColumnDefs, electionDataSource,myConfigs);
+ }
 function getPartyManifesto(partyId)
  {
-		   	var jsObj ={
-				partyId:partyId,
-				task:"getPartyManifesto"
+	var jsObj ={
+		partyId:partyId,
+		task:"getPartyManifesto"
 
-	           };
+	   };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "partyPhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
 	  
-  function builPartyDiv()
-  {     
-	 var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
-		var str ='';
-		
-		str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h3>';
-		str+= '<fieldset class="imgFieldset">';
-		str+='<s:iterator value="partyVO.electionTypes" status="stat">';
-		str+='<input style="margin:5px;" type="radio" name="elecType"><s:property value="partyVO.electionTypes[#stat.index]" />';
-		str+='</s:iterator>';
-		//str+='Select State';
-		str+='<div id="selectStatediv" style="display:none;margin-left: 103px;margin-top: -17px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>';
-		str+='<div id="manifestoFilesDiv"></div>';
-		
-  }
-  function buildPartyManifestos(results)
-  {
+function builPartyDiv()
+{     
+ var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
+	var str ='';
+	
+	str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h3>';
+	str+= '<fieldset class="imgFieldset">';
+	str+='<s:iterator value="partyVO.electionTypes" status="stat">';
+	str+='<input style="margin:5px;" type="radio" name="elecType"><s:property value="partyVO.electionTypes[#stat.index]" />';
+	str+='</s:iterator>';
+	//str+='Select State';
+	str+='<div id="selectStatediv" style="display:none;margin-left: 103px;margin-top: -17px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>';
+	str+='<div id="manifestoFilesDiv"></div>';
+	
+}
+function buildPartyManifestos(results)
+{
 	 var manifestoFilesDivElmt = document.getElementById("manifestoFilesDiv");
 	 var str ='';
+	// document.getElementById("manifestoGallaryPopupDiv").innerHTML = str;
 	if(results!=null && results.length>0)
 			{
 		str+='<div id="content">';
 		str+='<table>'
 		str +='<tr>';
 	 for(var i=0;i<2;i++)
-	     {
+		 {
 			str += '<td style="padding-left:15px">';
 			if(results[i]!=null)
 			{
@@ -2048,11 +2245,10 @@ function getPartyManifesto(partyId)
 		str+='<div id="manifestoGallaryPopupDiv"></div></div>';
 		manifestoFilesDivElmt.innerHTML = str;
 	  }	
-	  if(results.length==0 && document.getElementById("selectStatediv"))
-		  selectedState('stateDiv');
+	if(results.length==0 && document.getElementById("selectStatediv"))
+		selectedState('stateDiv');
 		
-		
-	}
+}
 function getPartyManifestoFile(){
 
 	var stateElmt = document.getElementById("statePopUpDiv");
@@ -2577,6 +2773,8 @@ function selectedState(selectStateDiv)
 function getCountry()
 {
 	document.getElementById("selectStatediv").style.display = 'none';
+	document.getElementById("selectStatePopupdiv").style.display = 'none';
+
 }
 
 function displayPartyMessages(results)
@@ -2661,6 +2859,8 @@ getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
 message_Obj.initialize();
+getElectionProfile();
+buildElectionProfile();
 </script>
 
 </body>
