@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 
@@ -104,6 +105,17 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
+	}
+	
+	public void testGetPartyElectionResultsBasedOnPartyId()
+	{
+		List<PartyElectionResult> elecList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(239l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		for(PartyElectionResult list : elecList)
+		{
+			System.out.println(list.getElection().getElectionYear() +" In \t"+list.getElection().getElectionScope().getState().getStateName() +"\t"+list.getTotalSeatsWon()+"\t"+list.getTotalConstiParticipated());
+			//System.out.println(list.getTotalConstiParticipated());
+		}
+			
 	}
 	
 }
