@@ -334,7 +334,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<FileGallary> getRecentlyUploadedFiles(Integer startIndex , Integer maxResults , String queryStr){
 		
 		Query query = getSession().createQuery("from FileGallary model "+queryStr+" and model.gallary.isPrivate = 'false' " +
-				" and model.isPrivate = 'false' order by model.file.fileDate desc,model.updateddate desc");
+				" and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
 		
@@ -346,7 +346,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	{
 		
 		Query query = getSession().createQuery("from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
-				" and model.gallary.isPrivate = 'false' and model.isPrivate = 'false' order by model.updateddate desc");
+				" and model.gallary.isPrivate = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
 		
@@ -1029,7 +1029,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
      @SuppressWarnings("unchecked")
      public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
      {
-    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList)");
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false'");
     	 query.setParameterList("gallaryIdsList",gallaryIdsList);
     	 return query.list();
      }
@@ -1038,7 +1038,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
      public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId)
      {
     	 Query query = getSession().createQuery("select model.gallary.name,model.gallary.description,count(model.fileGallaryId), " +
-    	 		"model.fileGallaryId,model.file.filePath from FileGallary model where model.gallary.gallaryId = ? group by model.gallary.gallaryId order by updateddate desc");
+    	 		"model.fileGallaryId,model.file.filePath from FileGallary model where model.gallary.gallaryId = ? and " +
+    	 		"model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' group by model.gallary.gallaryId order by updateddate desc");
     	 query.setMaxResults(1);
     	 query.setParameter(0,gallaryId);
     	 return query.list();

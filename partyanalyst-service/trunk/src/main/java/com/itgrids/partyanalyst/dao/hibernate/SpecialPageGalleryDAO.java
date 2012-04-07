@@ -97,7 +97,7 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 	public List<Object> getOtherGalleries(Long specialPageId,List<Long> gallaryIds,String contentType)
 	{
 		Query query = getSession().createQuery("select model.gallary.gallaryId from SpecialPageGallery model where model.gallary.contentType.contentType = ? and " +
-				" model.specialPage.specialPageId = ? and model.gallary.gallaryId not in(:gallaryIds)");
+				" model.specialPage.specialPageId = ? and model.gallary.gallaryId not in(:gallaryIds) and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false'");
 		
 		query.setParameter(0,contentType);
 		query.setParameter(1,specialPageId);

@@ -78,7 +78,7 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 	public List<Object> getOtherGalleries(Long candidateId,List<Long> gallaryIds,String contentType)
 	{
 		Query query = getSession().createQuery("select model.gallaryId from Gallary model where model.contentType.contentType = ? and "+
-				" model.candidate.candidateId = ? and model.gallaryId not in(:gallaryIds)");
+				" model.candidate.candidateId = ? and model.gallaryId not in(:gallaryIds) and model.isPrivate = 'false' and model.isDelete = 'false'");
 		query.setParameter(0, contentType);
 		query.setParameter(1, candidateId);
 		query.setParameterList("gallaryIds", gallaryIds);
