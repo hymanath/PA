@@ -20,6 +20,13 @@ public class PartyInfoVO implements Serializable{
 	private Long partyTotalVotes = new Long(0);
 	private Long validVotes = 0l;
 	private String electionYear;
+	private String electionType;
+	private Long stateId;
+	private String stateName;
+	private Long electionId;
+	private Long electionScopeId;
+	private BigDecimal participatedPercentage;
+	private Long electionTypeId;
 	
 	public String getPartyShortName() {
 		return partyShortName;
@@ -101,4 +108,61 @@ public class PartyInfoVO implements Serializable{
 		this.partyId = partyId;
 	}
 
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public Long getElectionScopeId() {
+		return electionScopeId;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public void setElectionScopeId(Long electionScopeId) {
+		this.electionScopeId = electionScopeId;
+	}
+
+	public void setParticipatedPercentage(BigDecimal participatedPercentage) {
+		this.participatedPercentage = participatedPercentage;
+	}
+
+	public BigDecimal getParticipatedPercentage() {
+		return participatedPercentage;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+
+	
 }
