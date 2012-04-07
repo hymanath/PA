@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import java.util.List;
 
@@ -9,10 +11,12 @@ import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyPageVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.PartyElectionResult;
 public interface IPartyDetailsService {
 	
 	public List<SelectOptionVO> getAllPartysNames() ;
@@ -80,4 +84,9 @@ public interface IPartyDetailsService {
 	public List<CustomPageVO> getCustomPagesOfAPartyPage(Long partyId);
 	
 	public CandidateElectionResultVO getCandidateDetailsForAsses(Long candidateId,Long electionId);
+	
+	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId);
+	
+	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList);
+
 }
