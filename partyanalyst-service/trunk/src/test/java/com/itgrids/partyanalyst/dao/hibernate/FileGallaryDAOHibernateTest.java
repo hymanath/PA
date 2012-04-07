@@ -154,9 +154,9 @@ System.out.println("i " +i);
        {
     	  System.out.println((Long)params); 
        }
-    }
+    }*/
     
-    public void testGetFilesOfInGallaries()
+   /* public void testGetFilesOfInGallaries()
     {
     	List<Long> list = new ArrayList<Long>(0);
     	list.add(1092l);
@@ -171,8 +171,8 @@ System.out.println("i " +i);
     			System.out.println(params.getGallary().getContentType().getContentType());
     		}
     	}
-    }*/
-	
+    }
+	*/
 	public void testGetFirstFileAndGallaryInfo()
 	{
 		 List<Object[]> list = fileGallaryDAO.getFirstFileAndGallaryInfo(1193l);
