@@ -1064,6 +1064,7 @@ function validateFileUpload()
 }
 function validateNewsFileUpload()
 {
+	var fileDate = document.getElementById("existingFromText").value;
 	var fileTitle = document.getElementById('fileTitle').value;
 	var fileDesc = document.getElementById('fileDescription').value;
 	var fileVal = document.getElementById("newsFileId").value;
@@ -1105,6 +1106,11 @@ function validateNewsFileUpload()
 	if(fileVal.length == 0)
 	{
 		str += 'File Is Required.<br>';
+		flag = false;
+	}
+	if(fileDate.length == 0)
+	{
+		str +='File Date Is Required.<br>';
 		flag = false;
 	}
 	if(source.length == 0)
@@ -1743,7 +1749,7 @@ function  buildUploadNews()
 	str += '     <td colspan="2">';
 	str += '<table>';
 	str += '   <tr>';
-	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date</font></b></td>';
+	str += '     <td class="tdWidth1" style="width:162px;">File Date<font class="requiredFont">*</font></td>';
 	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
