@@ -72,5 +72,12 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 	{
 		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName from PartyElectionResult model where model.election.electionId = ? and model.completeVotesPercent > 0.5 order by model.party.shortName ",electionId);
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyId(Long partyId,String electionType)
+	{
+		Object[] params ={partyId,electionType};
+		return getHibernateTemplate().find("select model from PartyElectionResult model where model.party.partyId=? " +
+				" and model.election.electionScope.electionType.electionType =? order by" +
+				" model.election.electionYear desc",params);
+	}
 }
