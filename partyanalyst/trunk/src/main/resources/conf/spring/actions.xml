@@ -870,10 +870,8 @@
 	</bean>	
 	
 	<bean id="ministersPageAction" class="com.itgrids.partyanalyst.web.action.MinistersPageAction" singleton="false">
-	<property name="candidateDetailsService" ref="candidateDetailsService" />
-	
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="staticDataService" ref="staticDataService" />
-
 	</bean>
 				
 </beans>	
