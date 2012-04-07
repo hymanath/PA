@@ -166,7 +166,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object> getOtherGalleries(Long partyId,List<Long>gallaryIds,String contentType)
 	{
 		Query query = getSession().createQuery("select model.gallery.gallaryId from PartyGallery model where model.gallery.contentType.contentType = ? and "+
-				" model.party.partyId = ? and model.gallery.gallaryId not in(:gallaryIds)");
+				" model.party.partyId = ? and model.gallery.gallaryId not in(:gallaryIds) and model.gallery.isPrivate = 'false' and model.gallery.isDelete = 'false'");
 		query.setParameter(0, contentType);
 		query.setParameter(1, partyId);
 		query.setParameterList("gallaryIds", gallaryIds);
