@@ -850,6 +850,12 @@ function changePassword()
 	resultDIVEle.innerHTML = "<font color='red'>Please Enter Confirm Password.</font>";
 	return;
 	}
+	if(cpwd == npwd)
+		{
+		resultDIVEle.innerHTML = "<font color='green'>Your new passward is same as Existing one.</font>";
+		setTimeout("closewdw()",3000);
+		return;
+		}
 	if(cpwd!='')
 		{
 		str = '<font color="#000000">Sending Your Request.Please wait</font>';
