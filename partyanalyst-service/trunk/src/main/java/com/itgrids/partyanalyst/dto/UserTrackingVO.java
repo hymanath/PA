@@ -6,7 +6,22 @@ public class UserTrackingVO {
 	private String requestURI;
 	private String userType;
 	private Long userId;
+	private Long registrationId;
+	private String status;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getRegistrationId() {
+		return registrationId;
+	}
+	public void setRegistrationId(Long registrationId) {
+		this.registrationId = registrationId;
+	}
 	public Long getUserId() {
 		return userId;
 	}
