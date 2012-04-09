@@ -285,7 +285,7 @@ a {
 	{
 		width: 104%; border: 1px solid rgb(205, 205, 205); margin-left: -17px; padding-right: 11px; padding-left: 9px; border-radius: 4px 4px 4px 4px;
 	}
-	#assemblyId{margin-left: 9px;}
+	#assemblyProfileId{margin-left: 9px;}
 </style>
 
 </head>
@@ -619,8 +619,8 @@ function buildElectionProfile()
 {
 	var str='';
 	str+='<div id="tabsDiv">';
-	str+='<a id="parliamentId" href="javascript:{}" onclick="buildResultForParliamentElection()" class="dashBoardtabsDivSelected"> In Parliament</a>';
-    str+='<a id="assemblyId" href="javascript:{}" onclick="buildResultForAssemblyElection();">In Assembly</a></div>';
+	str+='<a id="parliamentProfileId" href="javascript:{}" onclick="buildResultForParliamentElection()" class="dashBoardtabsDivSelected"> In Parliament</a>';
+    str+='<a id="assemblyProfileId" href="javascript:{}" onclick="buildResultForAssemblyElection();">In Assembly</a></div>';
 	str+='<div id="electionLoading_ImgSpan" style="font-size: 13px;margin: 16px 5px 5px 32px;"> Loading .......<img style="float:right;margin-right:161px;display:block;" src="images/icons/goldAjaxLoad.gif" ></div>';
     str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
     str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
@@ -2066,8 +2066,8 @@ function buildElectionResultsOfParty(results)
  }
  function buildResultForParliamentElection(results)
  {
-	$("#parliamentId").addClass("dashBoardtabsDivSelected");
-	 $("#assemblyId").removeClass("dashBoardtabsDivSelected");
+	$("#parliamentProfileId").addClass("dashBoardtabsDivSelected");
+	 $("#assemblyProfileId").removeClass("dashBoardtabsDivSelected");
 	document.getElementById("parliamentElecProfileDiv").style.display='block';
 	 YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
 	  {
@@ -2121,9 +2121,10 @@ function buildElectionResultsOfParty(results)
  }
  function buildResultForAssemblyElection(results)
  {
-	$("#assemblyId").addClass("dashBoardtabsDivSelected");
-	$("#parliamentId").removeClass("dashBoardtabsDivSelected");
-	// document.getElementById("assemblyElecProfileDiv").style.display='block';
+	 
+	 $("#parliamentProfileId").removeClass("dashBoardtabsDivSelected");
+	$("#assemblyProfileId").addClass("dashBoardtabsDivSelected");
+
 	YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
 	  {
 		 
@@ -2134,7 +2135,7 @@ function buildElectionResultsOfParty(results)
 		var stateName = oRecord.getData("stateName");
 		var stateId = oRecord.getData("stateId");
 		
-		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"selectedLocationName="+stateName+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=State&stateSelectName="+stateId+"&__checkbox_alliances=true'>View Details</a>";
+		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"&selectedLocationName="+stateName+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=State&stateSelectName="+stateId+"&__checkbox_alliances=true'>View Details</a>";
 			
 	  };
 	  var electionColumnDefs = [
