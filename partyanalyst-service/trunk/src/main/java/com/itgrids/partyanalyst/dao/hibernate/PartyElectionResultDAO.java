@@ -14,6 +14,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionResult, Long>
 		implements IPartyElectionResultDAO {
@@ -77,7 +78,8 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 	{
 		Object[] params ={partyId,electionType};
 		return getHibernateTemplate().find("select model from PartyElectionResult model where model.party.partyId=? " +
-				" and model.election.electionScope.electionType.electionType =? order by" +
+				" and model.election.electionScope.electionType.electionType =? and " +
+				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' order by" +
 				" model.election.electionYear desc",params);
 	}
 }
