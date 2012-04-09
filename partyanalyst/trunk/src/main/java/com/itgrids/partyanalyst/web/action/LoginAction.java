@@ -3,14 +3,19 @@ package com.itgrids.partyanalyst.web.action;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -437,12 +442,16 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session.setAttribute("loginStatus", "out");
 		session.setAttribute("HiddenCount", hiden);
 		
-		if("1".equalsIgnoreCase(userType)){
+		if("1".equalsIgnoreCase(userType))
+		{
 			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
 			session.setAttribute("UserType", "PartyAnalyst");
-		}else{
+			saveUserSessionDetails(regVO,IWebConstants.LOGIN);
+		}
+		else
+		{
 			userFullName = regVO.getFirstName() + " "; 
 			regVO.setUserStatus(IConstants.FREE_USER);
 			session.setAttribute(IConstants.USER,regVO);
@@ -450,6 +459,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("UserType", "FreeUser");
 			//session.setAttribute("changedUserName", new Boolean(true));
 			changedUserName = "true";
+			saveUserSessionDetails(regVO,IWebConstants.LOGIN);
 			return getRedirectPageDetails();	
 		}
 		
@@ -505,4 +515,19 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	public void setChangedUserName(String changedUserName) {
 		this.changedUserName = changedUserName;
 	}
+	
+public String saveUserSessionDetails(RegistrationVO regVO,String status)
+{
+	UserTrackingVO userTrackingVO = new UserTrackingVO();
+	HttpServletRequest servletRequest = ServletActionContext.getRequest();
+	
+	userTrackingVO.setRegistrationId(regVO.getRegistrationID());
+	userTrackingVO.setRemoteAddress(servletRequest.getRemoteAddr());
+	userTrackingVO.setUserType(regVO.getUserStatus());
+	userTrackingVO.setStatus(status);
+	loginService.saveUserSessionDetails(userTrackingVO);
+	
+	return SUCCESS;
+}
+
 }
