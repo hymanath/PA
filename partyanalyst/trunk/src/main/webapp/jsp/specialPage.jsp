@@ -526,10 +526,10 @@ function getTotalProfile()
 
 		 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	function navigateToConstituencyPageFrmSpeclPge()
+function navigateToConstituencyPageFrmSpeclPge(elmtId,alertId)
 {
- var constSelectEl = document.getElementById("selectedConstituencyInSpecialPage");
- var alertEl = document.getElementById("alertMessage");
+ var constSelectEl = document.getElementById(elmtId);
+ var alertEl = document.getElementById(alertId);
  var constSelectElVal = constSelectEl.options[constSelectEl.selectedIndex].value
  alertEl.innerHTML = '';
  if(constSelectElVal == 0)
@@ -540,10 +540,11 @@ function getTotalProfile()
  window.location = "constituencyPageAction.action?constituencyId="+constSelectElVal;
 
 } 
-function navigateToDistrictPageFrmSpeclPge()
+function navigateToDistrictPageFrmSpeclPge(elmtId,alertElmtId)
 {
- var distSelectEl = document.getElementById("selectedDistrictInSpecialPage");
- var alertEl = document.getElementById("alertMessage_district");
+ var distSelectEl = document.getElementById(elmtId);
+ var alertEl = document.getElementById(alertElmtId);
+	alertEl.innerHTML = '';
  var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
  var distSelectElText = distSelectEl.options[distSelectEl.selectedIndex].text;
 if(distSelectElVal == 0)
