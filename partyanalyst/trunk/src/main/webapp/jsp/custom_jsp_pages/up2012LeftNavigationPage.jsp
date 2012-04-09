@@ -6,7 +6,7 @@
 	<span class="selectDivStyle">UttarPradesh Districts</span>
 	<span style="margin-left: 12px;">Know About Your District</span>
 
-<select class="selectBoxWidth" id="selectedDistrictInSpecialPage" name="district">
+<select class="selectBoxWidth" id="district_UP" name="district">
 <option value="0">Select  District</option>
 <option value="185">Agra </option>
 <option value="182">Aligarh</option>
@@ -79,16 +79,16 @@
 <option value="196">Unnao</option>
 <option value="237">Varanasi</option>
 </select>
-<div id="alertMessage_district"></div>
+<div id="alertMessage_district_UP"></div>
 
-<div class="view-results"><a onclick="navigateToDistrictPageFrmSpeclPge()" href="javascript:{}">view results</a></div>
+<div class="view-results"><a onclick="navigateToDistrictPageFrmSpeclPge('district_UP','alertMessage_district_UP')" href="javascript:{}">view results</a></div>
 
 </div>
 <div class="selectHeading">
 	<span class="selectDivStyle">UttarPradesh Constituencies</span>
 	<span style="margin-left: 12px;">Know About Your Constituency</span>
 	
-	<select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
+	<select class="selectBoxWidth" id="constituency_UP" name="constituency">
 <option value="0">Select Constituency</option>
 <option value="38933">Afzalgarh</option>
 <option value="39297">Agota</option>
@@ -517,8 +517,8 @@
 <option value="39143">Zahoorabad</option>
 <option value="39146">Zamania</option></select>
 
-<div id="alertMessage"></div>
+<div id="alertMessage_cons_up"></div>
 
 <div class="view-results">
-<a onclick="navigateToConstituencyPageFrmSpeclPge()" href="javascript:{}">view results</a></div>
+<a onclick="navigateToConstituencyPageFrmSpeclPge('constituency_UP','alertMessage_cons_up')" href="javascript:{}">view results</a></div>
 </div>

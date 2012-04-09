@@ -5,21 +5,21 @@
 <div class="selectHeading">
 	<span class="selectDivStyle">Goa Districts </span>
 	<span style="margin-left: 12px;">Know About Your District </span>
-<select name="district" id="districtList_d" class="selectBoxWidth">
+<select name="district" id="districtList_goa" class="selectBoxWidth">
   <option value="0">Select District</option>
   <option value="283">North Goa</option>
   <option value="284">South Goa</option>
 </select>
-<div id="alertMessage_district"></div>
+<div id="alertMessage_dist_goa"></div>
 
-<div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPageFrmSpeclPge()">view results</a></div>
+<div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPageFrmSpeclPge('districtList_goa','alertMessage_dist_goa')">view results</a></div>
 </div>
 <!-- Districts -->
 <!-- Constituency -->
 <div class="selectHeading">
 	<span class="selectDivStyle">Goa Constituencies </span>
 	<span style="margin-left: 12px;">Know About Your Assembly Constituency</span>
- <select class="selectBoxWidth" id="constituency" name="constituency">
+ <select class="selectBoxWidth" id="constituency_goa" name="constituency">
 	<option value="0">Select Constituency</option>
 	<option value="39366">Aldona</option>
 	<option value="39385">Benaulim</option>
@@ -67,8 +67,8 @@
 	<option value="39382">Vasco Da Gama</option>
 	<option value="39390">Velim</option>
 </select>
-	<div id="alertMessage"></div>
-	<div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPageFrmSpeclPge()">view results</a></div>
+	<div id="alertMessage_cons_goa"></div>
+	<div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPageFrmSpeclPge('constituency_goa','alertMessage_cons_goa')">view results</a></div>
 
 	</div>
 	<!-- Constituency -->
