@@ -621,6 +621,7 @@ function buildElectionProfile()
 	str+='<div id="tabsDiv">';
 	str+='<a id="parliamentId" href="javascript:{}" onclick="buildResultForParliamentElection()" class="dashBoardtabsDivSelected"> In Parliament</a>';
     str+='<a id="assemblyId" href="javascript:{}" onclick="buildResultForAssemblyElection();">In Assembly</a></div>';
+	str+='<div id="electionLoading_ImgSpan" style="font-size: 13px;margin: 16px 5px 5px 32px;"> Loading .......<img style="float:right;margin-right:161px;display:block;" src="images/icons/goldAjaxLoad.gif" ></div>';
     str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
     str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
  $("#electionProfileDiv").html(str);
@@ -894,6 +895,7 @@ function callAjax(jsObj,url)
             {
 				electionObj = myResults;
 			   buildElectionResultsOfParty(myResults);
+			   hideBusyImgWithId("electionLoading");
 			}	
 		else if(jsObj.task =="getPartyManifesto")
 			{
@@ -2044,6 +2046,7 @@ callAjax(jsObj,url);
 
 function getElectionProfile()
 {
+	showBusyImgWithId("electionLoading");
 	var jsObj = {
 
 		partyId :'${partyVO.partyId}',
@@ -2120,7 +2123,7 @@ function buildElectionResultsOfParty(results)
  {
 	$("#assemblyId").addClass("dashBoardtabsDivSelected");
 	$("#parliamentId").removeClass("dashBoardtabsDivSelected");
-	 document.getElementById("assemblyElecProfileDiv").style.display='block';
+	// document.getElementById("assemblyElecProfileDiv").style.display='block';
 	YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
 	  {
 		 
