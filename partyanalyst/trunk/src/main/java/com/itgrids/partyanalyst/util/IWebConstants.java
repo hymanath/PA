@@ -22,4 +22,7 @@ public interface IWebConstants {
 	public static final String CENTER_DIV = "center_div";
 	
 	public static final String CUSTOM_JSP_PAGES_PATH = "custom_jsp_pages";
+	
+	public static final String LOGIN = "Login";
+	public static final String LOGOUT = "Logout";
 }
