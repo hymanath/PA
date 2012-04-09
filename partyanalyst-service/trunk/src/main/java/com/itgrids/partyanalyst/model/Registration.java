@@ -67,7 +67,9 @@ public class Registration implements java.io.Serializable {
 	 private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
 	 private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	 private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
-
+	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
+	 
+	
 	public Registration() {
 		 
 	}
@@ -479,6 +481,15 @@ public class Registration implements java.io.Serializable {
 		this.userCandidateRelations = userCandidateRelations;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserLoginDetails> getUserLoginDetails() {
+		return userLoginDetails;
+	}
+
+	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
+		this.userLoginDetails = userLoginDetails;
+	}
 	
 	
 }

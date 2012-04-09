@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ctc.wstx.util.DataUtil;
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -18,9 +19,11 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
@@ -31,8 +34,13 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
+import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.net.httpserver.Authenticator.Success;
+
+import org.apache.log4j.Logger;
 
 public class LoginService implements ILoginService{
 	
@@ -50,7 +58,19 @@ public class LoginService implements ILoginService{
 	private ITehsilDAO tehsilDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IUserLoginDetailsDAO userLoginDetailsDAO;
+	private static Logger log = Logger.getLogger(LoginService.class);
 	
+	
+	public IUserLoginDetailsDAO getUserLoginDetailsDAO() {
+		return userLoginDetailsDAO;
+	}
+
+	public void setUserLoginDetailsDAO(IUserLoginDetailsDAO userLoginDetailsDAO) {
+		this.userLoginDetailsDAO = userLoginDetailsDAO;
+	}
+
 	public ICountryDAO getCountryDAO() {
 		return countryDAO;
 	}
@@ -421,4 +441,29 @@ public class LoginService implements ILoginService{
 
 		return false;
 	}
+	
+	public String saveUserSessionDetails(UserTrackingVO userTrackingVO)
+	{
+		try{
+			UserLoginDetails userLoginDetails = new UserLoginDetails();
+			userLoginDetails.setIpAddress(userTrackingVO.getRemoteAddress());
+			userLoginDetails.setTime(dateUtilService.getCurrentDateAndTime());
+			userLoginDetails.setStatus(userTrackingVO.getStatus());
+			userLoginDetails.setUserType(userTrackingVO.getUserType());
+			
+			if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+				userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
+			else if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
+				userLoginDetails.setFreeUser(ananymousUserDAO.get(userTrackingVO.getRegistrationId()));
+			
+			userLoginDetailsDAO.save(userLoginDetails);
+			
+			return IConstants.SUCCESS;
+			
+		}catch(Exception e){
+			log.error("Exception Occured in saveUserLoginDetails() in LoginService - "+e);
+			return null;
+		}
+	}
+	
 }

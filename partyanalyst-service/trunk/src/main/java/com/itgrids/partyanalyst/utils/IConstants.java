@@ -498,7 +498,8 @@ public interface IConstants {
     public static final String CHIEF_MINISTER = "Chief Minister";
     public static final String DEPUTY_CHIEF_MINISTER = "Deputy Chief Minister";
     public static final String PRIME_MINISTER = "Prime Minister";
-    
+    public static final String LOGIN = "Login";
+	public static final String LOGOUT = "Logout";
     
 
 }
