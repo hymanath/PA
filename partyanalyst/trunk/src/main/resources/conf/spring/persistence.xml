@@ -239,6 +239,7 @@
 				<value>com.itgrids.partyanalyst.model.MinisterType</value>
 				<value>com.itgrids.partyanalyst.model.PartyPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePageCustomPages</value>
+				<value>com.itgrids.partyanalyst.model.UserLoginDetails</value>
 			</list>
 		</property>
 	</bean>
