@@ -686,7 +686,7 @@ function uploadUserPic()
 {
 	$("#uploadPic_window").dialog({
 		resizable:false,
-		width: 470,
+		width: 582,
 		minHeight:200,
 		show:'slide',
 		modal:true
@@ -1156,9 +1156,9 @@ function showPostedProblems(jsObj,results)
 		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
 
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		str += '<td width="90px">By User - '+results.postedProblemsCountByLoggedInUsers+'</td>';
+		str += '<td width="90px">By You - '+results.postedProblemsCountByLoggedInUsers+'</td>';
 	else
-		str += '<td width="90px">By User - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
+		str += '<td width="90px">By You - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
 
 	if(results.postedProblemsCountByOtherUsers == 0)
 		str += '<td width="90px">By Others - '+results.postedProblemsCountByOtherUsers+'</td>';
@@ -1172,7 +1172,7 @@ function showPostedProblems(jsObj,results)
 	str += '</table>';
 	str += '</div>';
 	str += '<div style="padding:3px;">';
-	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Problem Status Details Posted By User </div>';
+	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Problem Status Details Posted By You </div>';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
@@ -1529,7 +1529,7 @@ function showPostedReasons(jsObj,results)
 		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
 	}else{
 		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
-		str += '<td align="left" width="90px"> By User - '+postedReasonsByLoggedInUser+'</td>';
+		str += '<td align="left" width="90px"> By You - '+postedReasonsByLoggedInUser+'</td>';
 		str += '<td align="left" width="90px"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
 	}
 	
@@ -1545,7 +1545,7 @@ function showPostedReasons(jsObj,results)
 	str += '</table>'; 
 	str += '</div>';
 	str += '<div style="padding:5px;">';
-	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By User </div>';
+	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By You </div>';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
@@ -1884,8 +1884,8 @@ function buildReasonsProblemsTabContent()
 	var str = '';
 	str += '<div id="postedDiv_head">';	
 	str += '<img id="postedDivImg" style="margin-left:360px;" src="images/icons/search.gif"></img>';
-	str += '<input id="radio1" type="radio" name="radiofield1" value="Political Reasons" checked="checked">';
-	str += '<input id="radio2" type="radio" name="radiofield1" value="Problems">';	
+	str += '<input id="radio1" type="radio" name="radiofield1" value="Political Reasons" >';
+	str += '<input id="radio2" type="radio" name="radiofield1" value="Problems" checked="checked">';	
 	str += '</div>';
 	str += '<div id="postedDiv_body">';
 	str += '<div id="postedDiv_body_countInfo"></div>';
@@ -1910,8 +1910,11 @@ function buildReasonsProblemsTabContent()
 	};
 	oButtonGroup1.on("click", onButtonClick);
 
-	getAllPostedReasonsForUser();
-	openDialogOfReasons('Total');
+	//getAllPostedReasonsForUser();
+	//openDialogOfReasons('Total');
+
+	getAllPostedProblemsForUser();
+	openDialogOfProblems('Total');
 }
 
 function initializeConnectPeople()
