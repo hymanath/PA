@@ -18,6 +18,7 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	private String parliamentConstituencyName;
 	private String reservationZone;
 	private String electionYear;
+	private Long partyId;
 	
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
@@ -80,4 +81,11 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
 	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
 }
