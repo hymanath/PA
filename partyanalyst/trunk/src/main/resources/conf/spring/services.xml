@@ -968,6 +968,7 @@
 		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
 		<property name="messageToPartyDAO" ref="messageToPartyDAO" />
 		<property name="partyPageCustomPagesDAO" ref="partyPageCustomPagesDAO" />
+		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
