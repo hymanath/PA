@@ -14,5 +14,7 @@ public class UserLoginDetailsDAOHibernateTest extends BaseDaoTestCase{
 	public void test(){
 		userLoginDetailsDAO.getAll();
 	}
-
+	public void testGetBySessionId(){
+		userLoginDetailsDAO.getBySessionId("12323243423423");
+	}
 }
