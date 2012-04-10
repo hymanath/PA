@@ -83,5 +83,12 @@
     	<load-on-startup>5</load-on-startup>
     </servlet>
     
+    <listener>
+    	<description>sessionListener</description>
+    	<listener-class>
+        	com.itgrids.partyanalyst.web.action.SessionListenerAction
+    	</listener-class>
+	</listener>
+    
 
 </web-app>
