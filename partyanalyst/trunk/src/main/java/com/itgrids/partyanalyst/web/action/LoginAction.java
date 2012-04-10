@@ -448,7 +448,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
 			session.setAttribute("UserType", "PartyAnalyst");
-			saveUserSessionDetails(regVO,IWebConstants.LOGIN);
+			saveUserSessionDetails(IWebConstants.LOGIN);
 		}
 		else
 		{
@@ -459,7 +459,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("UserType", "FreeUser");
 			//session.setAttribute("changedUserName", new Boolean(true));
 			changedUserName = "true";
-			saveUserSessionDetails(regVO,IWebConstants.LOGIN);
+			saveUserSessionDetails(IWebConstants.LOGIN);
 			return getRedirectPageDetails();	
 		}
 		
@@ -516,15 +516,17 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.changedUserName = changedUserName;
 	}
 	
-public String saveUserSessionDetails(RegistrationVO regVO,String status)
+public String saveUserSessionDetails(String status)
 {
+	session = request.getSession();
+	RegistrationVO regVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 	UserTrackingVO userTrackingVO = new UserTrackingVO();
-	HttpServletRequest servletRequest = ServletActionContext.getRequest();
 	
 	userTrackingVO.setRegistrationId(regVO.getRegistrationID());
-	userTrackingVO.setRemoteAddress(servletRequest.getRemoteAddr());
+	userTrackingVO.setRemoteAddress(request.getRemoteAddr());
 	userTrackingVO.setUserType(regVO.getUserStatus());
 	userTrackingVO.setStatus(status);
+	userTrackingVO.setSessionId(session.getId());
 	loginService.saveUserSessionDetails(userTrackingVO);
 	
 	return SUCCESS;
