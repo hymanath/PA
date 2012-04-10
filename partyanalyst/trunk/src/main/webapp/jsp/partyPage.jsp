@@ -281,11 +281,16 @@ a {
     margin-left: -6px;
     padding: 7px 16px 6px 9px;
 	}
-#electionProfileDiv
-	{
-		width: 104%; border: 1px solid rgb(205, 205, 205); margin-left: -17px; padding-right: 11px; padding-left: 9px; border-radius: 4px 4px 4px 4px;
-	}
-	#assemblyProfileId{margin-left: 9px;}
+#electionProfileDiv {
+    border: 1px solid #CDCDCD;
+    border-radius: 4px 4px 4px 4px;
+    margin-left: -12px;
+    padding-left: 9px;
+    padding-right: 11px;
+    width: 100%;
+}
+#assemblyProfileId{margin-left: 9px;}
+#partyManifestoDiv {border-bottom: 1px solid #CDCDCD;width: 285px;}
 </style>
 
 </head>
@@ -396,10 +401,10 @@ a {
 			<!-- <div id="showParliamentResultDiv"></div>-->
 		
 			 <!--ELECTION PROFILE SECTION START-->
-			 
-               <div class="pm-inner-cont-sec" id="partyManifestoDiv">
-			   <div><h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
+			 <h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
 			    <div id="electionProfileDiv"></div>
+              <!-- <div class="pm-inner-cont-sec" id="partyManifestoDiv">
+			   
 			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
 			   <s:if test="partyVO.electionTypes.size>0">
 			   <h1 class="inc-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>
@@ -412,10 +417,10 @@ a {
 			   </s:if>
 			   </s:iterator>
 			   <div id="selectStatediv" style="display:none;margin-left: 188px;margin-top: -17px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>
-				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div></div>
+				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div>
 			   </div>
 			</s:if>
-			</div>
+			</div>-->
 			  <!--ELECTION PROFILE SECTION END--> 
 
 			<s:if test="customPages != null && customPages.size() > 0">
@@ -454,8 +459,14 @@ a {
    
    <td width="326" valign="top">
       <div class="profile-right-sec">
-        <div class="pr-cont-sec"> 
-		  
+        <div class="pr-cont-sec">
+        <!-- Assess Candidate Start -->
+	<!--  <div id="assessCandidateMainDiv">Assess your party leader
+	<div id="assessCandidateBodyDiv"> </div>
+	</div>-->
+	
+	<!-- Assess Candidate End --> 
+		
 		 <!-- NEWS AND EVENTS SECTION START -->
 
         <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
@@ -498,7 +509,25 @@ a {
      <s:if test="fileVO != null && fileVO.size() > 4"> 
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
-	
+	<div class="pm-inner-cont-sec" id="partyManifestoDiv">
+			   
+			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
+			   <s:if test="partyVO.electionTypes.size>0">
+			   <h1 class="inc-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h1>
+			   <s:iterator value="partyVO.electionTypes" status="stat">
+			   <s:if test="partyVO.electionTypes[#stat.index] =='Parliament'">
+			   <div><input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="getPartyManifesto(${partyVO.partyId});" checked="true"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   </s:if>
+			   <s:if test="partyVO.electionTypes[#stat.index] == 'Assembly'">
+			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedState('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
+			   </s:if>
+			   </s:iterator>
+			   <div id="selectStatediv" style="display:none;margin-top: -17px; margin-left: 138px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>
+				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div>
+			   </div>
+			</s:if>
+			</div>
+			
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
 	</div>
@@ -540,7 +569,7 @@ a {
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
- <script type="text/javascript">
+ <script type="text/javascript"><!--
    var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
    var partyId = '${partyId}';
@@ -553,8 +582,8 @@ a {
    var queryTypeChecked='Public';
    var showContentResultList = null;
 
-   function sendMessage()
-{
+function sendMessage()
+ {
   var name = document.getElementById("name").value;
   var stateSelect=document.getElementById("stateSelect").value;
   var constituencySelect=document.getElementById("constituencySelect").value;
@@ -613,6 +642,63 @@ a {
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
+
+}
+function showAssessMentDiv()
+{
+ var assessCanBodyDivElmt=document.getElementById("assessCandidateBodyDiv");
+	var str='';
+	str+='<input type="radio" name="assessradio" value="1" id="assessParliamentId" onclick="getElectionYearsForAssessment()">Parliament';
+	str+='<input type="radio" name="assessradio" value="2" id="assessAssemblyId" onclick="getStatesBasedOnPartyId()">Assembly';
+	str+='<select id="assessStateId" style="display:none;" onchange="getElectionYearsForAssessment()"><option value="0">Select State</select>';
+	str+='<select id="assessElectionYearDiv" style="display:none;"><option value="0">Select Election Year</select>';
+	/*str+='';
+	str+='';
+	str+='';*/
+	assessCanBodyDivElmt.innerHTML = str;
+}
+function getStatesBasedOnPartyId()
+{
+	var jsObj = {
+			partyId : ${partyId},
+			task : "getStatesBasedOnParty"
+	};
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url= "getCandidateDetailsForAssessment.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function getElectionYearsForAssessment(){
+
+	var stateId = document.getElementById("assessStateId").value;
+    if(document.getElementById("assessAssemblyId").checked == true)
+		var electionTypeId = document.getElementById("assessAssemblyId").value;
+
+	if(document.getElementById("assessParliamentId").checked == true)
+		var electionTypeId = document.getElementById("assessParliamentId").value;
+	
+	var jsObj = {
+				partyId : ${partyId},
+				divElmt :"assessElectionYearDiv",
+				electionTypeId : electionTypeId,
+				stateId :stateId,
+				task : "getElectionYearsForAssess"
+			}
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url= "getCandidateDetailsForAssessment.action?"+rparam;
+	
+	callAjax(jsObj,url);
+ }
+function getCandidatesForAssess()
+{
+  var jsObj = {
+			partyId : ${partyId},
+			electionId:electionId,
+			task:"getCandidatesForAssess"
+  };
+var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+var url="getCandidateDetailsForAssessment.action?"+rparam;
+callAjax(jsObj,url);
+
 
 }
 function buildElectionProfile()
@@ -960,6 +1046,21 @@ function callAjax(jsObj,url)
 				showContentResultList = myResults;
 				buildContentDetails();
 			}
+		
+		else if(jsObj.task == "getElectionYears" || jsObj.divElmt == "assessElectionYearDiv"){
+			//alert(jsObj.divElmt +" = assessElectionYearDiv");
+			document.getElementById("assessElectionYearDiv").style.display ='block';
+
+			clearOptionsListForSelectElmtId("assessElectionYearDiv");
+			createOptionsForSelectElmtId("assessElectionYearDiv",myResults);
+		  }
+	   else if(jsObj.task == "getStatesBasedOnParty"){
+			//alert("getStatesBasedOnParty");
+			document.getElementById("assessStateId").style.display ='block';
+
+			clearOptionsListForSelectElmtId("assessStateId");
+			createOptionsForSelectElmtId("assessStateId",myResults);
+		  }
 		}
 		catch(e)
 		{   
@@ -2196,13 +2297,14 @@ function builPartyDiv()
  var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
 	var str ='';
 	
-	str+='<h3 class="main-title"><span class="da-gray">${partyVO.partyShortName} Party Manifestoes</span></h3>';
+	str+='<h1 class="pr-title" style="margin-top:15px;"> ${partyVO.partyLongName} Party Manifestoes <span class="or-down-arrow">';
+   str += '  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
 	str+= '<fieldset class="imgFieldset">';
 	str+='<s:iterator value="partyVO.electionTypes" status="stat">';
 	str+='<input style="margin:5px;" type="radio" name="elecType"><s:property value="partyVO.electionTypes[#stat.index]" />';
 	str+='</s:iterator>';
 	//str+='Select State';
-	str+='<div id="selectStatediv" style="display:none;margin-left: 103px;margin-top: -17px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>';
+	str+='<div id="selectStatediv" style="display: none;margin-top: -17px; margin-left: 138px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>';
 	str+='<div id="manifestoFilesDiv"></div>';
 	
 }
@@ -2865,7 +2967,8 @@ showAssemblyData();
 message_Obj.initialize();
 getElectionProfile();
 buildElectionProfile();
-</script>
+//showAssessMentDiv();
+--></script>
 
 </body>
 </html>
