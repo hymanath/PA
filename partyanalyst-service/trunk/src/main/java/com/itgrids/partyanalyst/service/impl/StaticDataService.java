@@ -1157,6 +1157,7 @@ public class StaticDataService implements IStaticDataService {
 							parliamentConstituencies.add(Long.parseLong(params[0].toString()));
 						}
 						constituencyWinnerInfoVO.setPartyName(obj[2].toString());
+						constituencyWinnerInfoVO.setPartyId((Long)obj[7]);
 						if (obj[5] != null) {
 							constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
 						}
@@ -2740,6 +2741,7 @@ public class StaticDataService implements IStaticDataService {
 						} else {
 							candidateDetailsVO.setPartyFlag("no_Image.png");
 						}
+						candidateDetailsVO.setPartyId((Long)parms[6]);
 						candidateDetailsVO.setPartyName(parms[7].toString());
 						candidateDetailsVO.setReservationZone(parms[12].toString());
 						candidateDetailsVO.setElectionYear(latestElecYearInConsti);
