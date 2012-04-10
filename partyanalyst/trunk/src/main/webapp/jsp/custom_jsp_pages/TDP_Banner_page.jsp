@@ -272,12 +272,12 @@
 
 <table width="999px">
 <tr>
-<td>
+<td width="500px">
 <div id="videoGallaryDiv" style="background:#FFF;margin-bottom:5px;margin-top:5px;">
 	<div  style="width: 220px; margin-left: 9px; padding-top: 10px;"><h1 class="VGheadingStyle">Video gallaries Of TDP Party <span style=" position: relative;
     bottom: -14px;right: 69px;"><img alt="" src="images/candidatePage/or-down-arrow.png"></span></h1></div>
 	<div style="overflow-x: hidden; margin-left: 10px;margin-right: 10px; border: 1px solid #d3d3d3;">
-		<MARQUEE WIDTH="900px" BEHAVIOR="SCROLL" direction="left">
+		<MARQUEE WIDTH="600px" BEHAVIOR="SCROLL" direction="left">
 			<table>
 			<tr>
 			<td>
@@ -312,7 +312,7 @@
 				<table>
 					<tr>
 						<td><a title="Click here to View Chandrababu Naidu Election Campaign In Kadapa By Election Video Gallery" onclick="getVideoDetails(2550)" href="javascript:{}">
-						<font color="red">Chandrababu Naidu <br> Election Campaign In Kadapa By Election</font>
+						<font color="red">Chandrababu Naidu <br> Election Campaign In<br> Kadapa By Election</font>
 						</a></td>
 					</tr>
 					<tr>
@@ -486,24 +486,23 @@
 	
 </div>
 </td>
-</tr>
-<tr>
-<td>
+<div id="logInDiv"></div>
+<td width="300px">
 <div id="analyzeConstituency" style="background:#FFFFFF;height:215px;">
  <div style="width: 219px; padding-top: 5px; margin-left: 9px;"><h1 class="VGheadingStyle">Assess Your TDP Party Leader<span style=" position: relative;
     bottom: -14px;right: 69px;font-family: verdana;"><img alt="" src="images/candidatePage/or-down-arrow.png"></span></h1></div>
 	<div style=" border: 1px solid #d3d3d3;margin-left: 10px;margin-right: 10px;">
 <div id="analyzeConstituencyContentDiv" class="problemPostingContentDivClass">
-<div style="padding-left: 15px; padding-right: 15px;margin-top: 8px; text-align: justify; line-height: 1.4em;">Assess your TDP Party Leader and post your reasons for winning/loosing in 2009 .</div>
+<div style="padding-left: 15px; padding-right: 15px;margin-top: 8px; text-align: justify; line-height: 1.4em;margin-bottom: 6px;">Assess your TDP Party Leader and post your reasons for winning/loosing in 2009 .</div>
 </div>
-<div id="errorDivEle" style="margin-top: 0px; margin-bottom: 4px; margin-left: 189px;color:red;font-weight:bold;"></div>
-<input type="radio" name="electionTypeRadio" id="parliamentId" checked="true" style="padding-left: 0px; margin-left: 60px; margin-bottom: 13px;" value="17" onclick="ShowHideForParliament()" />
+
+<input type="radio" name="electionTypeRadio" id="parliamentId" checked="true" style="padding-left: 0px; margin-left: 60px; " value="17" onclick="ShowHideForParliament()" />
 <span style="font-weight:bold;">Parliament</span>&nbsp;&nbsp;
 <input type="radio" name="electionTypeRadio" id="assemblyId" value="38" onclick="ShowHideForAssembly()"/>
 <span style="font-weight:bold;">Assembly</span>
 <!-- parliament candidates -->
 <div style="margin-left: 60px;">
-<select style="width:200px;display:block;margin-top: 3px;" id="parliamentCandidateId">
+<select style="width: 200px; display: block; margin-top: 8px;" id="parliamentCandidateId">
 <option value="0">Select Candidate</option>
 <option value="30238">A P Jithender Reddy</option>
 <option value="30373">Appalanaidu Kondapalli</option>
@@ -770,8 +769,8 @@
 <Option Value="3055">Yerrabothula  Venkata Reddy</Option>
 </select>
 </div>
-
-	<div style="margin-top: 20px; margin-left: 26px; margin-bottom: 11px;" 		id="analyzeConstituencyButtonDiv">
+<span id="errorDivEle" style="margin-top: 0px; margin-bottom: 4px; margin-left: 79px;color:red;font-weight:bold;"></span>
+	<div style="margin-left: 26px; margin-bottom: 11px; margin-top: 7px;" 		id="analyzeConstituencyButtonDiv">
 		<a href="javascript:{}" style="background:#5CB275;color: #FFFFFF;font-weight: bold;margin-left: 20px;padding: 3px 14px;text-decoration:none;border-radius:4px;" onclick="getCandidateDetailsForAsses('analyze');">Assess</a>
 		<a href="javascript:{}" style="background:#5CB275;color: #FFFFFF;font-weight: bold;margin-left: 20px;padding: 3px 14px;text-decoration:none;border-radius:4px;" onclick="getCandidateDetailsForAsses('viewResults')">Previous Posts</a>
 	</div>
@@ -874,6 +873,9 @@ function callAjaxForTDPPartyPage(jsObj,url)
 
 function ShowHideForParliament()
 {
+	if(document.getElementById("errorDivEle"))
+	  document.getElementById("errorDivEle").innerHTML = '';
+
 	document.getElementById("assemblyCandidateId").style.display = 'none';
 	document.getElementById("parliamentCandidateId").style.display = 'block';
 	document.getElementById('parliamentCandidateId').selectedIndex = 0;
@@ -884,6 +886,9 @@ function ShowHideForParliament()
 
 function ShowHideForAssembly()
 {
+	if(document.getElementById("errorDivEle"))
+	  document.getElementById("errorDivEle").innerHTML = '';
+
 	document.getElementById("parliamentCandidateId").style.display = 'none';
 	document.getElementById("assemblyCandidateId").style.display = 'block';
 	document.getElementById('parliamentCandidateId').selectedIndex = 0;
@@ -905,7 +910,22 @@ function openAnalyzeConstituencyWindow(result,type)
 
 	if(userId == null && taskType == 'analyze')
 	{
-		alert("Please Login To Post Comment");
+		
+		document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+
+		//alert("Please Login To Post Comment");
 		return;
 	}
 	
@@ -923,7 +943,21 @@ function openAnalyzeConstituencyWindow(result,type)
 	
 	if(userType != "FREE_USER" && taskType == 'analyze')
 	{
-		alert("Comment For Free User Only");
+		document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Comment For Free User Only.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+
+		//alert("Comment For Free User Only");
 	}
 
 }
