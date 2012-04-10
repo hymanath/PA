@@ -32,6 +32,7 @@ public class UserTracking extends BaseModel implements Serializable {
 	private Date time;
 	private String userType;
 	private Long userId;
+	private String sessionId;
 	
 	 public UserTracking()
 	 {
@@ -98,6 +99,15 @@ public class UserTracking extends BaseModel implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	@Column(name = "session_id", length = 100)
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 

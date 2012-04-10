@@ -30,6 +30,7 @@ public class UserTrackingService implements IUserTrackingService{
 		userTracking.setUserType(userTrackingVO.getUserType());
 		userTracking.setUserId(userTrackingVO.getUserId());
 		userTracking.setTime(dateUtilService.getCurrentDateAndTime());
+		userTracking.setSessionId(userTrackingVO.getSessionId());
 		userTrackingDAO.save(userTracking);
 		}
 		catch(Exception e)

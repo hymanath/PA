@@ -31,22 +31,24 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	private AnanymousUser freeUser;
 	private String userType;
 	private String ipAddress;
-	private Date time;
-	private String status;
+	private Date loginTime;
+	private Date logoutTime;
+	private String sessionId;
 		
 	
 	public UserLoginDetails(){
 		
 	}
 	public UserLoginDetails(Registration registration,AnanymousUser freeUser,String userType,
-			String ipAddress,Date time,String status)
+			String ipAddress,Date loginTime,Date logoutTime,String sessionId)
 	{
 		this.registration = registration;
 		this.freeUser = freeUser;
 		this.userType = userType;
 		this.ipAddress = ipAddress;
-		this.time = time;
-		this.status = status;
+		this.loginTime = loginTime;
+		this.logoutTime = logoutTime;
+		this.sessionId = sessionId;
 	}
 	
 	@Id
@@ -74,23 +76,7 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-	
-	@Column(name = "time")
-	public Date getTime() {
-		return time;
-	}
-	public void setTime(Date time) {
-		this.time = time;
-	}
-	
-	@Column(name = "status",length = 10)
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="registration_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -111,6 +97,30 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	}
 	public void setFreeUser(AnanymousUser freeUser) {
 		this.freeUser = freeUser;
+	}
+	
+	@Column(name = "login_time")
+	public Date getLoginTime() {
+		return loginTime;
+	}
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
+	
+	@Column(name = "logout_time")
+	public Date getLogoutTime() {
+		return logoutTime;
+	}
+	public void setLogoutTime(Date logoutTime) {
+		this.logoutTime = logoutTime;
+	}
+	
+	@Column(name = "session_id",length = 100)
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 

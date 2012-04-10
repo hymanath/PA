@@ -445,19 +445,29 @@ public class LoginService implements ILoginService{
 	public String saveUserSessionDetails(UserTrackingVO userTrackingVO)
 	{
 		try{
-			UserLoginDetails userLoginDetails = new UserLoginDetails();
-			userLoginDetails.setIpAddress(userTrackingVO.getRemoteAddress());
-			userLoginDetails.setTime(dateUtilService.getCurrentDateAndTime());
-			userLoginDetails.setStatus(userTrackingVO.getStatus());
-			userLoginDetails.setUserType(userTrackingVO.getUserType());
-			
-			if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-				userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
-			else if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
-				userLoginDetails.setFreeUser(ananymousUserDAO.get(userTrackingVO.getRegistrationId()));
+			UserLoginDetails userLoginDetails = null;
+			if(userTrackingVO.getStatus().equalsIgnoreCase(IConstants.LOGIN))
+			{
+				userLoginDetails = new UserLoginDetails();
+				userLoginDetails.setIpAddress(userTrackingVO.getRemoteAddress());
+				userLoginDetails.setLoginTime(dateUtilService.getCurrentDateAndTime());
+				userLoginDetails.setUserType(userTrackingVO.getUserType());
+				userLoginDetails.setSessionId(userTrackingVO.getSessionId());
+				
+				if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+					userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
+				else if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
+					userLoginDetails.setFreeUser(ananymousUserDAO.get(userTrackingVO.getRegistrationId()));
+			}
+			else
+			{
+				userLoginDetails = userLoginDetailsDAO.getBySessionId(userTrackingVO.getSessionId());
+				
+				if(userLoginDetails != null)
+					userLoginDetails.setLogoutTime(dateUtilService.getCurrentDateAndTime());	
+			}
 			
 			userLoginDetailsDAO.save(userLoginDetails);
-			
 			return IConstants.SUCCESS;
 			
 		}catch(Exception e){
