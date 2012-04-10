@@ -1614,7 +1614,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
         <div class="cd-mid-cont-sec" style="padding-bottom:9px;">
 
      
-          <p class="pa-fi" style="font-weight:bold;">STATE: <strong></strong><a style="color:#4169E1;text-decoration: none;font-weight:bold;font-sie:15px;"; href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${stateDetails.name}</a> </p>
+          <p class="pa-fi" style="font-weight:bold;">STATE: <strong></strong><a style="color:#4169E1;text-decoration: none;font-weight:bold;font-sie:15px;" title="Click here to view ${stateDetails.name} State Details, Election Results, Census Details and Different Parties Performances" href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${stateDetails.name}</a> </p>
 
 		<div class="cl-sub-fields-sec"> <h1 class="org-title"><span style="-moz-border-radius:4px;
     ;">Constituencies In ${districtName} District </span></h1><br><br>
