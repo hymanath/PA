@@ -569,7 +569,7 @@ a {
 	</script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
- <script type="text/javascript"><!--
+ <script type="text/javascript">
    var descriptions = '${descriptions}'; 
    var timeST = new Date().getTime();
    var partyId = '${partyId}';
@@ -1672,7 +1672,7 @@ function showFirstFourNewsRecords(results)
 	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+currentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 	 }
 	 if(fileType[(fileType.length-1)] == "pdf"  ){
-	 str+='             <td><img alt="" src="images/doc_images/PDFImage.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
+	 str+='             <td><img alt="" src="images/doc_images/manifesto.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
 	 }
 	 else
 	 {
@@ -1710,7 +1710,7 @@ function showFirstFourNewsRecords(results)
 	 str+='		        <td><a href="javascript:{}" onclick="getPreviousNews('+initialCurrentSize+',\''+arrayType+'\')"><img alt="" src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 	 }
 	 if(fileType[(fileType.length-1)] == "pdf"  ){
-	 str+='             <td><img alt="" src="images/doc_images/PDFImage.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
+	 str+='             <td><img alt="" src="images/doc_images/manifesto.png" onclick="openFile(\''+results[0].path+'\')" style="cursor:pointer;" /></td>';
 	 }
 	 else
 	 {
@@ -2334,7 +2334,7 @@ function buildPartyManifestos(results)
 			 str+='<tr><td>'+results[i].title+'    '+results[i].fileDate +'  Manifesto Of    '+results[i].gallaryName;
 			 }			
 			str +='</td></tr><tr><td>';
-			str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
+			str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
 			str +='</td></tr></table>';
 		   }
 		   
@@ -2773,7 +2773,7 @@ if(results.length <=0)
 		 str += results[i].title+'     '+results[i].fileDate;
 		 }			
 		str +='</td></tr><tr><td>';
-		str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
+		str+= '<img alt="" src="images/doc_images/manifesto.png" height="100px" onclick="javascript:{openFile(\''+results[i].path+'\')}"/>';
 		str +='</td></tr><tr><td>';
 		str +=''+results[i].problem+'';
 		str +='</td></tr>';
@@ -2968,7 +2968,7 @@ message_Obj.initialize();
 getElectionProfile();
 buildElectionProfile();
 //showAssessMentDiv();
---></script>
+</script>
 
 </body>
 </html>
