@@ -48,7 +48,8 @@ public class UserTrackingInterceptor implements ServletRequestAware,Interceptor 
 			
 			userTrackingVO.setRemoteAddress(servletRequest.getRemoteAddr());
             userTrackingVO.setRequestURI(servletRequest.getRequestURI().substring(1).concat(servletRequest.getQueryString() != null ? "?"+servletRequest.getQueryString():""));
-						
+            userTrackingVO.setSessionId(session.getId());
+            
             if(session != null){
             	RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
             	if(registrationVO != null){
