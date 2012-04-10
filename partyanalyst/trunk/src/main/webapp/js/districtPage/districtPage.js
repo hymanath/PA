@@ -126,7 +126,7 @@ function buildDistrictLevelProblemWindow()
 	//str+='<fieldset id="problemViewingFieldSet" style="width:285px;">';
 	//str+='<legend style="font-weight:bold;-moz-border-radius:3px;background-color:#3897A5;"> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
-	//str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+	str+='<marquee direction="up" style="height:95px;" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
 	if(problemsInfo.length == 0)
 	{
