@@ -39,6 +39,18 @@
 		
 		border-collapse :collapse;
 }
+.buttonClass {
+	background-color: #5CB275;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    cursor: pointer;
+    margin: 13px;
+	width: 580px;
+	font-family: verdana;
+	font-size: 13px;
+	text-decoration: none;
+    padding: 4px;
+}
 .yui-skin-sam.yui-dt tbody{
 border: 1px solid #CDCDCD;
     font: 12px verdana,arial,tahoma;
@@ -216,10 +228,10 @@ a:hover {
 	text-align: right;
 	 margin-right: 10px;
 }
-a {
-   
-    font-weight: bold;
-   
+.yui-dt-liner a {
+	text-decoration:none;
+    /*font-weight: bold;*/
+	color: #5B5B5B;
 }
 .layoutHeadersClass {
     color: #89745D;
@@ -285,6 +297,7 @@ a {
     border: 1px solid #CDCDCD;
     border-radius: 4px 4px 4px 4px;
     margin-left: -12px;
+    margin-top: 15px;
     padding-left: 9px;
     padding-right: 11px;
     width: 100%;
@@ -364,7 +377,7 @@ a {
           
           <div class="ea-fc-sec">
             <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
-            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email elert to get<br />
+            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email alert to get<br />
               updates of<br />
               <span class="li-red">${partyVO.partyLongName}</span>
               <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
@@ -373,6 +386,14 @@ a {
             </div>
           </div>
           
+		   <!-- Assess Candidate Start 
+			<div id="assessCandidateMainDiv" class="ea-fc-sec">
+			<h2 class="ea-fc-title" style="font:bold 12px/33px 'Trebuchet MS',Arial,Helvetica,sans-serif">Assess your party leader</h2>
+				<div id="assessCandidateBodyDiv" class="ea-fc-cont-sec"> </div>
+			</div>
+	
+	<!-- Assess Candidate End --> 
+
           <!--EMAIL ALERT SECTION END--> 
      </div>
    
@@ -402,7 +423,10 @@ a {
 		
 			 <!--ELECTION PROFILE SECTION START-->
 			 <h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
-			    <div id="electionProfileDiv"></div>
+			 <div style="margin-left: 46px; margin-top: 10px;"> 
+			   <a href="partyResultsCriteriaAction.action" class="buttonClass" style="text-decoration: none;" title="Click here to view other party performances and results">View Party Performance and Opposition Parties Details</a></div>
+			 <div id="electionProfileDiv"></div>
+			   
               <!-- <div class="pm-inner-cont-sec" id="partyManifestoDiv">
 			   
 			   <div id="manifestoesDiv" style="border-top: 1px solid rgb(205, 205, 205); margin-top: 25px; padding-top: 13px;">
@@ -460,13 +484,7 @@ a {
    <td width="326" valign="top">
       <div class="profile-right-sec">
         <div class="pr-cont-sec">
-        <!-- Assess Candidate Start -->
-	<!--  <div id="assessCandidateMainDiv">Assess your party leader
-	<div id="assessCandidateBodyDiv"> </div>
-	</div>-->
-	
-	<!-- Assess Candidate End --> 
-		
+  		
 		 <!-- NEWS AND EVENTS SECTION START -->
 
         <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
@@ -2177,9 +2195,10 @@ function buildElectionResultsOfParty(results)
 		var partyShortName= oRecord.getData("partyShortName");
 		var electionType = oRecord.getData("electionType");
 		var electionTypeId = oRecord.getData("electionTypeId");
-		
-		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=Country&__checkbox_alliances=true'>View Details</a>";
-		
+		var electionYear = oRecord.getData("electionYear");
+		var electionId = oRecord.getData("electionId");
+		elLiner.innerHTML ="<a title='Click here to view complete election results' href='electionDetailsReportAction.action?electionId="+electionId+"&stateID=1&stateName=AndhraPradesh&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear+"'>View Details</a>";
+
 	  };
 	  var electionColumnDefs = [
 		{key:"electionYear" , label:"Year" , sortable:true},
@@ -2204,7 +2223,8 @@ function buildElectionResultsOfParty(results)
 						 {key:"partyId"},
 						 {key:"partyShortName"},
 						 {key:"electionType"},
-					{key:"electionTypeId"}
+					{key:"electionTypeId"},
+					{key:"electionId"}
 						]
 		};
 		
@@ -2235,21 +2255,27 @@ function buildElectionResultsOfParty(results)
 		var electionTypeId = oRecord.getData("electionTypeId");
 		var stateName = oRecord.getData("stateName");
 		var stateId = oRecord.getData("stateId");
+		var electionYear = oRecord.getData("electionYear");
+		var electionId = oRecord.getData("electionId");
 		
-		elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"&selectedLocationName="+stateName+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=State&stateSelectName="+stateId+"&__checkbox_alliances=true'>View Details</a>";
-			
+       //elLiner.innerHTML ="<a href='partyResultsAction.action?selectedPartyShortName="+partyShortName+"&selectedPartyId="+partyId+"&selectedElectionTypeName="+electionType+"&selectedLocationName="+stateName+"&partySelectName="+partyId+"&electionType="+electionTypeId+"&reportLevel=State&stateSelectName="+stateId+"&__checkbox_alliances=true'>View Details</a>";
+		elLiner.innerHTML ="<a title='Click here to view complete election results' style='text-decoration:none;' href='electionDetailsReportAction.action?electionId="+electionId+"&stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionTypeId="+electionTypeId+"&year="+electionYear+"'>View Details</a>";
+	 };
+	YAHOO.widget.DataTable.stateLink = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var stateName = oRecord.getData("stateName");
+		var stateId = oRecord.getData("stateId");
+		elLiner.innerHTML ="<a title='Click here to view "+stateName+" details' href='statePageAction.action?stateId="+stateId+"'>"+stateName+"</a>";
 	  };
+
 	  var electionColumnDefs = [
 		{key:"electionYear" , label:"Year" , sortable:true},
-		{key:"stateName" , label:"State",sortable:true},
+		{key:"stateName" , label:"State",sortable:true,formatter:YAHOO.widget.DataTable.stateLink},
 		{key:"seatsParticipated" , label:"PC" , sortable:true},
 		{key:"seatsWin" , label : "Seats Won" , sortable:true},
 		{key:"percentageOfVotes",label:"VP (%)",sortable:true},
 		{key:"participatedPercentage" , label:"PCV(%)",sortable:true},
-
 		{key:"view details",label:"Complete Details",formatter:YAHOO.widget.DataTable.viewDetails}
-		
-
 	];
 	var electionDataSource = new YAHOO.util.DataSource(electionObj.Assembly);
 		electionDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
@@ -2263,7 +2289,8 @@ function buildElectionResultsOfParty(results)
 					{key:"stateId"},{key:"partyId"},
 						 {key:"partyShortName"},
 						 {key:"electionType"},
-					{key:"electionTypeId"}
+					{key:"electionTypeId"},
+					{key:"electionId"}
 					]
 		};
 		
