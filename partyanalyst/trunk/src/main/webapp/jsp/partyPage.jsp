@@ -423,7 +423,7 @@ a:hover {
 		
 			 <!--ELECTION PROFILE SECTION START-->
 			 <h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
-			 <div style="margin-left: 46px; margin-top: 10px;"> 
+			 <div style="margin-top: 10px;"> 
 			   <a href="partyResultsCriteriaAction.action" class="buttonClass" style="text-decoration: none;" title="Click here to view other party performances and results">View Party Performance and Opposition Parties Details</a></div>
 			 <div id="electionProfileDiv"></div>
 			   
