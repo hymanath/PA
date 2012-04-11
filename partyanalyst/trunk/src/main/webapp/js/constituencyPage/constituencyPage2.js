@@ -1852,7 +1852,6 @@ function getUserAnnouncementDetails(userId,name,divId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAnnouncementDetailsOfAConstituency.action?"+rparam;						
-	showAjaxImage(divId);
 	callAjax(jsObj,url);
 }
 
@@ -1865,28 +1864,27 @@ function buildAnnouncementDetails(result)
 
 	{
 		
-		str += ' NO Announcements From Your Leaders';
+		str += '&nbsp;&nbsp;&nbsp; NO Announcements From Your Leaders';
 		resultDiv.innerHTML = str;
 	}
 	
-
-	str += '<Div>Announcements From Your Leaders</DIv>';
 	
 	for(var i=0;i<result.length;i++)
 	{
 		var id = 'annUserAjaxImg'+i;
 
-		//str += '<div class="annDivId">'
+		str += '<div class="annDivId">'
 		str += '<Table>';
 		str += '<tr class="annHeaderFont"><td><table><tr>';
-		//str += '<th style="width:200px;">Announcement<th>';
+		str += '<th style="width:88px;color:navy;">Announcement<th>';
 		str += '<td class="li-red"">'+result[i].fromDate+'<td>';
-		str += '<td><Div onClick="getUserAnnouncementDetails('+result[i].userId+',\''+result[i].userName+'\',\'annUserAjaxImg'+i+'\')"></div></td>';/*'+result[i].userName+'(before div),class="annUserNameDiv"*/
-		str += '<td><Div id="annUserAjaxImg'+i+'" style="padding-left:10px;display:none;"><img src="images/icons/ajaxImg.gif" height="20px;"></img></div></td>';
+		//str += '<td><Div onClick="getUserAnnouncementDetails('+result[i].userId+',\''+result[i].userName+'\',\'annUserAjaxImg'+i+'\')"></div></td>';'+result[i].userName+'(before div),class="annUserNameDiv"
+		str += '<td><Div class="annUserNameDiv" onClick="getUserAnnouncementDetails('+result[i].userId+',\''+result[i].userName+'\',\'annUserAjaxImg'+i+'\')">'+result[i].userName+'</div></td>';
+		//str += '<td><Div id="annUserAjaxImg'+i+'" style="padding-left:10px;display:none;"><img src="images/icons/ajaxImg.gif" height="20px;"></img></div></td>';
 		str += '</tr></table></td></tr>';
-		str += '<tr><td class="annText">'+result[i].title+'</td></tr>';
-		//str += '<tr class="annHeaderFont"><th>Description</th></tr>';
-		str += '<tr><td class="annText">'+result[i].message+'</td></tr>';
+		str += '<tr><td class="annText" style="font-family: verdana;font-size: 11px;" >'+result[i].title+'</td></tr>';
+		str += '<tr class="annHeaderFont" style="color:navy;"><th>Description</th></tr>';
+		str += '<tr><td class="annText" style="font-family: verdana;font-size: 11px;" >'+result[i].message+'</td></tr>';
 		str += '</Table>';
 		str += '</div>'
 	}
@@ -1899,23 +1897,17 @@ function buildUserAnnouncementDetails(jsObj,result)
 	var str = '';
 
 	if(result == null || result.length == 0)
-		str +='<div>No Announcements From Your Leaders ..........</div>';
+	 {
 		return;
-	
-	$("#announcementsOfAUserDiv").dialog();
-
+     }
 	$("#announcementsOfAUserDiv").dialog({ stack: false,
-							    height: 826,
-								width: 782,
+							    height: 620,
+								width: 700,
 								position:[102,713],								
 								modal: true,
 								title:'<font color="Navy">Announcements From '+jsObj.name+'</font>',
 								overlay: { opacity: 0.5, background: 'black'},
-								buttons: {
-								'Close': function() {
-								 $(this).dialog('close');
-								 }
-								}});
+							   });
 						
 
 			
@@ -1925,11 +1917,11 @@ function buildUserAnnouncementDetails(jsObj,result)
 	{
 		var id = 'annUserAjaxImg'+i;
 
-		str += '<div class="annDivId">'
+		str += '<div class="annDivId1">'
 		str += '<Table>';
 		str += '<tr class="annHeaderFont"><td><table><tr>';
-		str += '<th style="width:200px;">Announcement<th>';
-		str += '<td style="width:120px;">'+result[i].fromDate+'<td>';
+		str += '<th style="width:200px;color: #0053B2;">Announcement<th>';
+		str += '<td style="width:120px;color: #0053B2;font-size: 14px;">'+result[i].fromDate+'<td>';
 		str += '<td><Div class="annUserNameDiv">';
 		
 		if(constituencyId == result[i].constituency)
@@ -1939,9 +1931,9 @@ function buildUserAnnouncementDetails(jsObj,result)
 
 		str += '</div></td>';
 		str += '</tr></table></td></tr>';
-		str += '<tr><td class="annText">'+result[i].title+'</td></tr>';
-		str += '<tr class="annHeaderFont"><th>Description</th></tr>';
-		str += '<tr><td class="annText">'+result[i].message+'</td></tr>';
+		str += '<tr><td class="annText" style="font-family: verdana;font-size: 12px;padding-left: 5px;">'+result[i].title+'</td></tr>';
+		str += '<tr class="annHeaderFont" style="color: #0053B2;"><th>Description</th></tr>';
+		str += '<tr><td class="annText" style="font-family: verdana;font-size: 12px;padding-left: 5px;">'+result[i].message+'</td></tr>';
 		str += '</Table>';
 		str += '</div>'
 	}
