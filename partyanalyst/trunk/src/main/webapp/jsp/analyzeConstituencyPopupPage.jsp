@@ -241,7 +241,13 @@ body
 </style>
 
 <script type="text/javascript">
-	
+	$(document).ready(function() {
+	 var parsel = "${parlsel}";	
+      if(parsel != null && parsel == "true")
+       {
+	      document.getElementById("parliamentselect").checked='true';
+       }	   
+	});
 	var constituencyId = "${constituencyId}";
 	var parliamentConstiId = "${parliamentConstiId}";
 	var parliamentConstiName = "${parliamentConstiName}";
@@ -1074,8 +1080,8 @@ if(category == "candidate")
 				<table class="inputsTable" width="100%' border="0">						
 					<tr>
 						<th>Election Type</th>
-						<td><input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)"/>Assembly<B>(${constituencyName})</B></td>
-						<td><input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"/>Parliament<B>(${parliamentConstiName})</B></td>
+						<td><input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)" id="assemblyselect" />Assembly<B>(${constituencyName})</B></td>
+						<td><input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"  id="parliamentselect" />Parliament<B>(${parliamentConstiName})</B></td>
 					</tr>
 					<tr>
 						<th>Election Year</th>
