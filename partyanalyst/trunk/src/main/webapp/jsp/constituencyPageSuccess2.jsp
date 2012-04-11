@@ -622,7 +622,7 @@
             <div class="cp-sub-field-sec">
 			
 					
-			  <h1 class="cp-sub-title"><span style="color:#787272"><b>Announcements</b></span></h1>
+			  <h1 class="cp-sub-title"><span style="color:#787272"><b>Announcements From Your Leaders</b></span></h1>
 
 			 
               <div class="cp-cont-sub-fields">
@@ -631,7 +631,7 @@
                     <div id="constituencyAnnouncementsDiv" class="rounded"> 						
 						
 							<div id="announcements_div_main" class="innerLayoutDivClass">
-								<div id="announcementsInConstituencyDiv" style="height:auto;max-height:550px;overflow-y:auto;margin-top:10px;">
+								<div id="announcementsInConstituencyDiv" style="height:auto;max-height:280px;overflow-y:auto;width:310px;">
 								</div>
 								<div id="announcementsOfAUserDiv" >
 								</div>
@@ -649,7 +649,7 @@
               <div class="cp-cont-sub-fields">
                 <ul>
                   <li>
-                    <p>Assess your constituency election results and post your reasons for winning/loosing .</p>
+                    <p>&nbsp;&nbsp;&nbsp;Assess your constituency election results and post your reasons for winning/loosing .</p>
                     <p class="ass-pre">
 					<div id="analyzeConstituencyPageDiv_main">
 								<div id="analyzeConstituencyPageDiv_Head"></div>
@@ -1265,7 +1265,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 
 								else if(jsObj.task == "getUserAnnouncementDetails")
 								{
-								   hideAjaxImage(jsObj.divId)
+								   /*hideAjaxImage(jsObj.divId)*/
 								buildUserAnnouncementDetails(jsObj,myResults);
 								}
 
