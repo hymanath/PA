@@ -609,8 +609,7 @@ function showAlertMsg(divElmt){
 		var str='';
 
 	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;';
-	str+='<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;">'; 
-	str+='Sorry, You Don\'t have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>';
+	str+='<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry,You Don \'t have Access Privileges To View Detailed <span style="margin-left:35px;">Report.Please Contact Us For Access Privileges.</span></h3>';
 	str+='<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
 	str+='Phone No:+91 40 40124153 / +91 096766 96760<br />';
 	str+='Email: <a href="mailTo:info@partyanalyst.com">info@itgrids.com</a></span>';
@@ -906,6 +905,7 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 
 function buildConstituecyAreaTypeSelectOptionsDiv(selectOption)
 {
+	document.getElementById('ConstituecyAreaTypeSelectOptionsDiv').style.display = 'block';
 	var divEle = document.getElementById('ConstituecyAreaTypeSelectOptionsDiv');
 	var str = '';
 	var myResults = areaTypeWisePartiesResults;
@@ -3527,7 +3527,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 		
 		 <TR>
 			<TD valign="top" align="center">
-				<DIV id="ConstituecyAreaTypeSelectOptionsDiv"></DIV>
+				<DIV id="ConstituecyAreaTypeSelectOptionsDiv" style="display:none;"></DIV>
 			</TD>
 		</TR>
 
