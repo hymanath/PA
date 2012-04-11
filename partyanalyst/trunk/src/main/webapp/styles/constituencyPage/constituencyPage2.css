@@ -454,36 +454,44 @@ text-indent:-9999px; text-align:center; margin:9px 0px 0px 39px;}
 .cp-sub-title {background:url(../../images/cssimages/menu-bg.png) left -330px no-repeat; float:left; height:29px; color:#3e3e3e;
 font:16px/29px "Trebuchet MS", Arial, Helvetica, sans-serif; padding-left:5px; margin-bottom:12px;}
 .cp-sub-title span{background:url(../../images/cssimages/menu-bg.png) right -364px no-repeat; float:left; height:29px; padding:0px 16px 0px 11px; width:279px;}
-.cp-cont-sub-fields{width:274px; float:left; padding:10px 15px 0px 22px;}
+.cp-cont-sub-fields{width:274px; float:left;}
 .cp-cont-sub-fields li{border-bottom:1px solid #e0e0e0; width:272px; float:left; padding-bottom:10px; margin-bottom:11px;}
 .cp-cont-sub-fields li.last{border-bottom:none; margin-bottom:0px;}
 .ass-pre a{float:right; color:#5B5B5B; text-decoration:underline; margin-right:23px;}
 .ass-pre a:hover{text-decoration:none;}
 .connectAncSpan{margin-right:5px;}
 .annUserNameDiv {
-   -moz-border-radius: 6px 6px 6px 6px;
-    background: -moz-linear-gradient(center top , #73AEC9 0pt, #73AEC9 1px, #338AB0 1px, #0571A6 100%) repeat scroll 0 0 transparent;
+   border-radius: 5px 5px 5px 5px;
     border-color: #045A8B;
+	background:#338AB0;
     color: #FFFFFF !important;
     cursor: pointer;
     font-size: 12px;
     font-weight: bold;
-    height: 24px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-top: 3px;
-
+	text-align: center;
+    min-height: 21px;
+	min-width: 106px;
 }
 
 .annDivId {
     -moz-border-radius: 5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #F6F6F6;
+    overflow: hidden;
+    padding: 9px 18px 9px 9px;
+    text-align: left;
+	margin-top: 8px;
+}
+.annDivId1{
     background: none repeat scroll 0 0 #E0F2F8;
+    border-radius: 5px 5px 5px 5px;
     margin: 15px 10px;
     overflow: hidden;
     padding: 9px 18px 9px 9px;
     text-align: left;
 }
-
 .candidateDetailsStyle{
 	background-color:#EFF3F7;
 	border-color:#96B4D3;
