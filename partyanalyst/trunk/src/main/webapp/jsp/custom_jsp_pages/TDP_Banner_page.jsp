@@ -928,16 +928,16 @@ function openAnalyzeConstituencyWindow(result,type)
 		//alert("Please Login To Post Comment");
 		return;
 	}
-	
+	var parlcheck = document.getElementById("parliamentId").checked;
 	if(taskType == 'viewResults')
 	{
-		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId+"&parlchecked="+parlcheck,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
 	}
 
 	if(userType == "FREE_USER" && taskType == 'analyze')
 	{
-		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId+"&parlchecked="+parlcheck,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
 	}
 	
