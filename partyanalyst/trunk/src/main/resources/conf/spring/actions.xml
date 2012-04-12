@@ -877,5 +877,9 @@
 	<bean id="logoutAction" class="com.itgrids.partyanalyst.web.action.LogoutAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>	
-			
+				
+	<bean id="userTrackingReportAction" class="com.itgrids.partyanalyst.web.action.UserTrackingReportAction" singleton="false">
+		<property name="userTrackingReportService" ref="userTrackingReportService" />
+	</bean>	
+
 </beans>	
