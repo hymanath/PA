@@ -96,4 +96,11 @@ IDistrictDAO {
 		Object[] params = {stateID, districtName};
 		return getHibernateTemplate().find("select model.districtId from District model where model.state.stateId = ? and model.districtName = ?", params);
 	}
+	
+	public Object getDistrictNameById(Long districtId)
+	{
+		Query query = getSession().createQuery("select model.districtName from District model where model.districtId = ?");
+		query.setParameter(0,districtId);
+		return query.uniqueResult();
+	}
 }
