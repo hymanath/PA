@@ -82,4 +82,11 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' order by" +
 				" model.election.electionYear desc",params);
 	}
+	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyIdAndElecId(Long partyId,String electionType,Long electionId)
+	{
+		Object[] params ={partyId,electionId,electionType};
+		return getHibernateTemplate().find("select model from PartyElectionResult model where model.party.partyId=? and model.election.electionId = ? " +
+				" and model.election.electionScope.electionType.electionType =? and " +
+				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' ",params);
+	}
 }
