@@ -244,7 +244,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			results = ananymousUserService.saveEmailForAUser(jObj.getString("userName"),jObj.getString("email"));
 		}
 		
-	
+		
 		return SUCCESS;
 	}
 	public String checkForUserNameAvailability(){
@@ -256,8 +256,8 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			e.printStackTrace();
 		}
 		
-		result = new Long(ananymousUserService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
-		 
+		//result = new Long(ananymousUserService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
+		result = new Long(ananymousUserService.changeForUserNameAsEmail(jObj.getString("userName")).getResultCode());
 		return SUCCESS;
 	}
 	
