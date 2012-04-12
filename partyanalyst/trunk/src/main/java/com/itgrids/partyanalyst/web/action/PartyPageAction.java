@@ -340,7 +340,7 @@ public class PartyPageAction extends ActionSupport implements
 		try {
 			jObj = new JSONObject(getTask());
 			Long partyId = new Long(jObj.getString("partyId"));
-			resultMap = partyDetailsService.getPartyElectionResults(partyId);
+			resultMap = partyDetailsService.getPartyElectionResults(partyId,jObj.getBoolean("includeAlliances"));
 		} 
 		catch (ParseException e) {
 			// TODO Auto-generated catch block
