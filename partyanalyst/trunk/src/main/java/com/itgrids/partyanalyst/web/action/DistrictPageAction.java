@@ -412,13 +412,16 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
-		districtName = request.getParameter("districtName");
+		
+		districtName = staticDataService.getDistrictNameByDistrictId(Long.parseLong(districtId));
+		if(districtName == null)
+			districtName = request.getParameter("districtName");
+		
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
 		corporationElectionType = IConstants.CORPORATION_ELECTION_TYPE;
 		
-		//
 		electionTypes = staticDataService.getAllElectionTypes();
 		for(SelectOptionVO eleTypes : electionTypes){
 			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
