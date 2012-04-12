@@ -332,11 +332,11 @@ function openAddNewProblemWindow()
 							<th id="loginarea" style="color:#FFFFFF">
 								 <c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out'  && sessionScope.UserType == 'FreeUser'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
-									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="logoutAction.action">Logout</a>
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
-									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">Logout</a>
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="logoutAction.action">Logout</a>
 									<c:if test="${sessionScope.USER.isAdmin == 'true'}"> | 
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 									</c:if>	         		
