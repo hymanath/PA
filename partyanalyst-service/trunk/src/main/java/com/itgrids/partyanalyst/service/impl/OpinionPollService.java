@@ -503,7 +503,7 @@ public class OpinionPollService implements IOpinionPollService {
 	        UserFeedbackVO feedbackVO=new UserFeedbackVO();
 	        
 	        feedbackVO.setCommentId(feedback.getFeedbackId());
-	        feedbackVO.setComment(feedback.getComment());
+	        feedbackVO.setComment(feedback.getComment().replaceAll("\\s+", " "));
 	        feedbackVO.setPosteddate(feedback.getPostedDate());
 	        feedbackVO.setStatus(feedback.getStatus());
 	        feedbackVO.setResponseCategory(feedback.getResponseCategory());
