@@ -31,8 +31,11 @@ public class UserTracking extends BaseModel implements Serializable {
 	private String ipAddress;
 	private Date time;
 	private String userType;
-	private Long userId;
 	private String sessionId;
+	private Registration registration;
+	private AnanymousUser freeUser;
+	private Long registrationId;
+	private Long freeUserId;
 	
 	 public UserTracking()
 	 {
@@ -92,15 +95,6 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.userType = userType;
 	}
 
-	@Column(name = "user_Id", length = 5)
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
 	@Column(name = "session_id", length = 100)
 	public String getSessionId() {
 		return sessionId;
@@ -108,6 +102,48 @@ public class UserTracking extends BaseModel implements Serializable {
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="registration_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Registration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="free_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AnanymousUser getFreeUser() {
+		return freeUser;
+	}
+
+	public void setFreeUser(AnanymousUser freeUser) {
+		this.freeUser = freeUser;
+	}
+
+	@Column(name = "registration_id", length = 10)
+	public Long getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(Long registrationId) {
+		this.registrationId = registrationId;
+	}
+
+	@Column(name = "free_user_id", length = 10)
+	public Long getFreeUserId() {
+		return freeUserId;
+	}
+
+	public void setFreeUserId(Long freeUserId) {
+		this.freeUserId = freeUserId;
 	}
 	
 
