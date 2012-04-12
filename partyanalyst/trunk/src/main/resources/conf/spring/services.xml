@@ -971,6 +971,7 @@
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
