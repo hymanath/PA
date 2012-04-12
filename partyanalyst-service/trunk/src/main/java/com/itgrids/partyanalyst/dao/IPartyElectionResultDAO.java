@@ -32,5 +32,7 @@ public interface IPartyElectionResultDAO extends GenericDao<PartyElectionResult,
 	public List<Object[]> getPartiesBasicResultForAnElection(Long electionId,List<Long> partiesList);
 	
 	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyId(Long partyId,String electionType);
+	
+	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyIdAndElecId(Long partyId,String electionType,Long electionId);
 
 }
