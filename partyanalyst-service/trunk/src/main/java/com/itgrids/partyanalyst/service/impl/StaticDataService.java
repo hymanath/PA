@@ -7381,6 +7381,16 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	}
+	
+	public String getDistrictNameByDistrictId(Long districtId)
+	{
+		try{
+			return districtDAO.getDistrictNameById(districtId).toString();
+		}catch (Exception e) {
+			log.error("Exception occured in getDistrictNameByDistrictId() method, Exception is - "+e);
+			return null;
+		}
+	}
 }
 
 
