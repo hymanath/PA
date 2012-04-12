@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.model.UserTracking;
 import com.itgrids.partyanalyst.service.IUserTrackingService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserTrackingService implements IUserTrackingService{
 	private IUserTrackingDAO userTrackingDAO;
@@ -28,9 +29,17 @@ public class UserTrackingService implements IUserTrackingService{
 		userTracking.setIpAddress(userTrackingVO.getRemoteAddress());
 		userTracking.setUrlName(userTrackingVO.getRequestURI());
 		userTracking.setUserType(userTrackingVO.getUserType());
-		userTracking.setUserId(userTrackingVO.getUserId());
 		userTracking.setTime(dateUtilService.getCurrentDateAndTime());
 		userTracking.setSessionId(userTrackingVO.getSessionId());
+		
+		if(userTrackingVO.getUserType() != null)
+		{
+			if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
+				userTracking.setFreeUserId(userTrackingVO.getUserId());
+			else
+				userTracking.setRegistrationId(userTrackingVO.getUserId());
+		}
+		
 		userTrackingDAO.save(userTracking);
 		}
 		catch(Exception e)
