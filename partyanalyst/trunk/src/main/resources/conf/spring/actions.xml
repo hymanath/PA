@@ -877,5 +877,7 @@
 	<bean id="sessionListenerAction" class="com.itgrids.partyanalyst.web.action.SessionListenerAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
-				
+	
+	<bean id="logoutAction" class="com.itgrids.partyanalyst.web.action.LogoutAction" singleton="false">
+	</bean>			
 </beans>	
