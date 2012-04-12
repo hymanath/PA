@@ -122,4 +122,13 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 	 }
 	 
 }
+	public void testchangeUserAsEmail()
+	{
+		List<AnanymousUser> params = ananymousUserDAO.changeUserNameAsEmail("nunna.nagamani123@gmail.com");
+		for(AnanymousUser list : params)
+		{
+			System.out.println(list.getLastName());
+		}
+		
+	}
 }
