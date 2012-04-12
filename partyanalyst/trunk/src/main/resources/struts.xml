@@ -3192,6 +3192,9 @@
 				<param name="root">candidateElectionResultVO</param>				
 			</result>		
 		</action>
+		
+		<action name="logoutAction" class="logoutAction">
+        </action>
 	
 	</package>
 </struts>      
