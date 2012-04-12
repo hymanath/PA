@@ -599,7 +599,8 @@ a:hover {
    var currentSize=0;
    var queryTypeChecked='Public';
    var showContentResultList = null;
-
+   var incAlliances = false;
+   var clickedButtonType = '';
 function sendMessage()
  {
   var name = document.getElementById("name").value;
@@ -719,17 +720,29 @@ callAjax(jsObj,url);
 
 
 }
+function clickedButton(type)
+{
+   clickedButtonType = type;
+}
 function buildElectionProfile()
 {
 	var str='';
 	str+='<div id="tabsDiv">';
-	str+='<a id="parliamentProfileId" href="javascript:{}" onclick="buildResultForParliamentElection()" class="dashBoardtabsDivSelected"> In Parliament</a>';
-    str+='<a id="assemblyProfileId" href="javascript:{}" onclick="buildResultForAssemblyElection();">In Assembly</a></div>';
+	str+='<a id="parliamentProfileId" href="javascript:{}" onclick="clickedButton(\'parliament\');buildResultForParliamentElection();" class="dashBoardtabsDivSelected"> In Parliament</a>';
+    str+='<a id="assemblyProfileId" href="javascript:{}" onclick="clickedButton(\'assembly\');buildResultForAssemblyElection();">In Assembly</a></div>';
+	str+='<div style="margin-top:10px;margin-left:20px;"><input type="checkbox" onclick="getElecDetails();" id="allianceChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Alliance</b></font></div>';
 	str+='<div id="electionLoading_ImgSpan" style="font-size: 13px;margin: 16px 5px 5px 32px;"> Loading .......<img style="float:right;margin-right:161px;display:block;" src="images/icons/goldAjaxLoad.gif" ></div>';
     str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
     str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
  $("#electionProfileDiv").html(str);
 
+}
+function getElecDetails()
+{
+  if(document.getElementById("allianceChkBox").checked == true)
+     getElectionProfile(true);
+  else
+    getElectionProfile(false);
 }
 function showAssemblyData()
  {
@@ -998,8 +1011,20 @@ function callAjax(jsObj,url)
 		else if(jsObj.task == "getPartyElectionProfile")
             {
 				electionObj = myResults;
-			   buildElectionResultsOfParty(myResults);
+			   
 			   hideBusyImgWithId("electionLoading");
+			   if(clickedButtonType == "parliament")
+			   {
+			     buildResultForParliamentElection();
+			   }
+			   else if(clickedButtonType == "assembly")
+			   {
+			     buildResultForAssemblyElection();
+			   }
+			   else
+			   {
+			    buildElectionResultsOfParty(myResults,jsObj.includeAlliances);
+			   }
 			}	
 		else if(jsObj.task =="getPartyManifesto")
 			{
@@ -2163,27 +2188,29 @@ var url = "getParliamentElectionResultByStateAction.action?"+rparam;
 callAjax(jsObj,url);
   }
 
-function getElectionProfile()
+function getElectionProfile(includeAlliances)
 {
 	showBusyImgWithId("electionLoading");
+	incAlliances = includeAlliances;
 	var jsObj = {
 
 		partyId :'${partyVO.partyId}',
+		includeAlliances:includeAlliances,
 		task:"getPartyElectionProfile"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getPartyElectionProfileAction.action?"+rparam;					
 	callAjax(jsObj,url);
 }
-function buildElectionResultsOfParty(results)
+function buildElectionResultsOfParty(results,includeAlliances)
  {
 	if(results != null)
 	 {
-		buildResultForParliamentElection(results.Parliament);
+		buildResultForParliamentElection(results.Parliament,includeAlliances);
 		//buildResultForAssemblyElection(results.Assembly);
 	 }	
  }
- function buildResultForParliamentElection(results)
+ function buildResultForParliamentElection(results,includeAlliances)
  {
 	$("#parliamentProfileId").addClass("dashBoardtabsDivSelected");
 	 $("#assemblyProfileId").removeClass("dashBoardtabsDivSelected");
@@ -2992,7 +3019,7 @@ getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
 message_Obj.initialize();
-getElectionProfile();
+getElectionProfile(false);
 buildElectionProfile();
 //showAssessMentDiv();
 </script>
