@@ -1830,5 +1830,32 @@ public  ResultStatus saveEmailForAUser(String userName,final String email)
 	
 }
 
+public ResultStatus changeForUserNameAsEmail(String userName){
+	ResultStatus resultStatus = new ResultStatus();
+	List<AnanymousUser> detailsList = null;
+	List<AnanymousUser> detailsListForEmail = null;
+	try{
+		detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
+		detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+		 List<AnanymousUser> ananymousUsers = ananymousUserDAO.changeUserNameAsEmail(userName);
+			AnanymousUser ananymousUser = ananymousUsers.get(0);
+			ananymousUser.setUsername(userName);
+			ananymousUserDAO.save(ananymousUser);
+		
+		if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+		}else{
+			resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+		}
+		resultStatus.setResultPartial(false);
+	}catch(Exception e){
+		resultStatus.setExceptionEncountered(e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		resultStatus.setResultPartial(true);
+	}
+	return resultStatus;
+}
+
 
 }
