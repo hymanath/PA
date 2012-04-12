@@ -25,4 +25,5 @@ public interface IWebConstants {
 	
 	public static final String LOGIN = "Login";
 	public static final String LOGOUT = "Logout";
+	public static final String FAILURE = "failure";
 }
