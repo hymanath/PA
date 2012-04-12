@@ -82,13 +82,5 @@
     	<servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
     	<load-on-startup>5</load-on-startup>
     </servlet>
-    
-    <listener>
-    	<description>sessionListener</description>
-    	<listener-class>
-        	com.itgrids.partyanalyst.web.action.SessionListenerAction
-    	</listener-class>
-	</listener>
-    
-
+   
 </web-app>
