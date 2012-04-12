@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> implements IAnanymousUserDAO {
 
@@ -200,6 +201,12 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	{
 		return getHibernateTemplate().find("select model from AnanymousUser model where model.username= ?",userName);
 	}
+	public List<AnanymousUser> changeUserNameAsEmail(String email)
+	{
+		return getHibernateTemplate().find("select model from AnanymousUser model where model.email= ?",email);
+	}
+
+	
 	
 
 	
