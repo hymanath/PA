@@ -31,7 +31,7 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetDistrictIdAndNameByState()
 	{
 		List<District> list2 = districtDAO.findByStateId(1l);
@@ -39,5 +39,12 @@ public class DistrictDAOHibernateTest  extends BaseDaoTestCase{
 		List<Object[]> list = districtDAO.getDistrictIdAndNameByState(1l);
 		for(Object[] params : list)
 			System.out.println(params[0]+"-------"+params[1]);
+	}*/
+	
+	public void testGetDistrictNameById()
+	{
+		Object object = districtDAO.getDistrictNameById(3l);
+		System.out.println(object.toString());
 	}
+	
 }
