@@ -1047,5 +1047,11 @@
 	   <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	   <property name="ministerTypeDAO" ref="ministerTypeDAO" />
 	</bean>
+	
+	<bean name="userTrackingReportService" class="com.itgrids.partyanalyst.service.impl.UserTrackingReportService">
+		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+	
 </beans>		
 		
