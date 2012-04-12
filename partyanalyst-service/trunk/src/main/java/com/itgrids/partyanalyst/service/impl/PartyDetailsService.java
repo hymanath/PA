@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -99,6 +101,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private INominationDAO nominationDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IAllianceGroupDAO allianceGroupDAO;
 	
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -327,6 +330,14 @@ public class PartyDetailsService implements IPartyDetailsService {
 
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
+	}
+
+	public IAllianceGroupDAO getAllianceGroupDAO() {
+		return allianceGroupDAO;
+	}
+
+	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
+		this.allianceGroupDAO = allianceGroupDAO;
 	}
 
 	public PartyVO getPartyDetails(Long partyId) {
@@ -1160,17 +1171,17 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
     }
 	
-	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId)
+	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId,boolean includeAlliances)
 	{
 	 try
 	  {
 		Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
 		List<PartyInfoVO> partyInfoList = new ArrayList<PartyInfoVO>();
 		List<PartyElectionResult> electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.PARLIAMENT_ELECTION_TYPE);
-		partyInfoList = getPartyElectionProfile(electionResultList);
+		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
 		resultMap.put("Parliament", partyInfoList);
 		electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.ASSEMBLY_ELECTION_TYPE);
-		partyInfoList = getPartyElectionProfile(electionResultList);
+		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
 		resultMap.put("Assembly", partyInfoList);
 		return resultMap;
 		}catch(Exception e){
@@ -1178,10 +1189,11 @@ public class PartyDetailsService implements IPartyDetailsService {
 			return null;
 		}
 	}
-	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList)
+	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList,boolean includeAlliances)
 	{
 		List<PartyInfoVO> partyInfoList = new ArrayList<PartyInfoVO>();
 		PartyInfoVO partyInfoVO = new PartyInfoVO();
+		DecimalFormat dformat = new DecimalFormat("##.00");
 	 try
 		{
 		 if(log.isDebugEnabled())
@@ -1207,8 +1219,37 @@ public class PartyDetailsService implements IPartyDetailsService {
 				partyInfoVO.setSeatsParticipated(new Long(partyElectionResult.getTotalConstiParticipated()));
 				partyInfoVO.setSeatsWin(new Long(partyElectionResult.getTotalSeatsWon()));
 				partyInfoVO.setPercentageOfVotes(new BigDecimal(partyElectionResult.getCompleteVotesPercent()));
-				partyInfoVO.setParticipatedPercentage(new BigDecimal(partyElectionResult.getVotesPercentage()));
+				partyInfoVO.setParticipatedPercentage(new BigDecimal(partyElectionResult.getVotesPercentage()));				
 				
+			if(includeAlliances)
+			{	
+				List allianceList = allianceGroupDAO.findAlliancePartiesByElectionAndPartyExcludeParty(partyElectionResult.getElection().getElectionId(), partyElectionResult.getParty().getPartyId());
+				Double totalVotesGained = partyElectionResult.getTotalVotesGained();
+				Double totalValidVotes = partyElectionResult.getTotalValidVotes();
+				 for(int i=0;i<allianceList.size();i++)
+			      {
+				   Object[] allianceParty = (Object[])allianceList.get(i);
+				   
+				    List<PartyElectionResult> electionResult = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyIdAndElecId((Long)allianceParty[1],IConstants.ASSEMBLY_ELECTION_TYPE,partyElectionResult.getElection().getElectionId());
+				   if(electionResult.size() > 0)
+				   {
+					  Long constiValue =  ((partyInfoVO.getSeatsParticipated()).longValue() + (new Long(electionResult.get(0).getTotalConstiParticipated())).longValue());
+					  partyInfoVO.setSeatsParticipated(constiValue);
+				     Long seatsValue = (partyInfoVO.getSeatsWin()).longValue() + (new Long(electionResult.get(0).getTotalSeatsWon())).longValue();
+				     partyInfoVO.setSeatsWin(seatsValue);
+				     totalVotesGained = totalVotesGained+electionResult.get(0).getTotalVotesGained();
+				     totalValidVotes = totalValidVotes+electionResult.get(0).getTotalValidVotes();
+				   }
+			     }
+				 //partyElectionResult.setTotalVotesGained(totalVotesGained);
+				 partyInfoVO.setPartyTotalVotes(totalValidVotes.longValue());
+				 Double completeVotesperc = ((totalVotesGained/partyElectionResult.getCompleteConstiValidVotes())*100);
+				 Double votesPerc =  ((totalVotesGained/totalValidVotes)*100);
+				 partyInfoVO.setPercentageOfVotes(new BigDecimal(dformat.format(completeVotesperc)));
+				 partyInfoVO.setParticipatedPercentage(new BigDecimal(dformat.format(votesPerc)));
+			}
+				
+								
 				partyInfoList.add(partyInfoVO);
 			}
 		  }
