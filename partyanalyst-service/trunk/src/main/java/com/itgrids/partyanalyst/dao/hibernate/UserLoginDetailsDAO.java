@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -18,4 +21,22 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 		query.setParameter(0,sessionId);
 		return (UserLoginDetails)query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSessionIdsAndLogoutTimeInWithinDates(Date fromDate,Date toDate)
+	{
+		Object[] params = {fromDate,toDate};
+		return getHibernateTemplate().find("select distinct model2.sessionId, max(model.time) from UserTracking model,UserLoginDetails model2 " +
+				" where model.sessionId = model2.sessionId and model2.logoutTime is null and Date(model2.loginTime) >= ? and " +
+				" Date(model2.loginTime) <= ? group by model.sessionId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSessionIdsAndLogoutTimeOfTodaysUsers(Date today)
+	{
+		return getHibernateTemplate().find("select distinct model2.sessionId, max(model.time) from UserTracking model,UserLoginDetails model2 " +
+				" where model.sessionId = model2.sessionId and Date(model2.loginTime) >= ? group by model.sessionId",today);
+	}
+	
+	
 }
