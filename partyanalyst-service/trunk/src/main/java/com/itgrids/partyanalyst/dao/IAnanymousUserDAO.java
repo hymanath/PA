@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 
 
@@ -41,6 +42,8 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List<AnanymousUser> checkUserPassword(String password,Long userId);
 	
 	public List<AnanymousUser> getUserByUserName(String userName);
+	
+	public List<AnanymousUser> changeUserNameAsEmail(String email);
 	
 	
 }
