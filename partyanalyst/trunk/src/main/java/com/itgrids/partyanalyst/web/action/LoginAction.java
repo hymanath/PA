@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.sun.net.httpserver.Authenticator.Failure;
 
 public class LoginAction extends ActionSupport implements ServletContextAware, ServletRequestAware{
 
@@ -476,7 +477,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     	}
  		else if(url != null && url.length() > 0 && url.contains(".action") && !url.contains("loginAction")){
  			url = StringUtils.split(url,".")[0].substring(1);
- 			//System.out.println(url);
  			return "redirectUrl";
  		}else if("1".equalsIgnoreCase(userType))
  			return IConstants.PARTY_ANALYST_USER;
@@ -518,18 +518,23 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	
 public String saveUserSessionDetails(String status)
 {
-	session = request.getSession();
-	RegistrationVO regVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-	UserTrackingVO userTrackingVO = new UserTrackingVO();
-	
-	userTrackingVO.setRegistrationId(regVO.getRegistrationID());
-	userTrackingVO.setRemoteAddress(request.getRemoteAddr());
-	userTrackingVO.setUserType(regVO.getUserStatus());
-	userTrackingVO.setStatus(status);
-	userTrackingVO.setSessionId(session.getId());
-	loginService.saveUserSessionDetails(userTrackingVO);
-	
-	return SUCCESS;
+	try
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		UserTrackingVO userTrackingVO = new UserTrackingVO();
+		
+		userTrackingVO.setRegistrationId(regVO.getRegistrationID());
+		userTrackingVO.setRemoteAddress(request.getRemoteAddr());
+		userTrackingVO.setUserType(regVO.getUserStatus());
+		userTrackingVO.setStatus(status);
+		userTrackingVO.setSessionId(session.getId());
+		loginService.saveUserSessionDetails(userTrackingVO);
+		return SUCCESS;
+	}catch (Exception e) {
+		log.error("Exception Occured in saveUserSessionDetails() Method, Exception is - "+e);
+		return IWebConstants.FAILURE;
+	}
 }
 
 }
