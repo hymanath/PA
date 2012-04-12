@@ -267,7 +267,6 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
 		
-		//getRecentlyUpdatePhotosVideosNewsForACandidate();
 		return Action.SUCCESS;
 	}
 	
