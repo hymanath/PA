@@ -730,7 +730,7 @@ function buildElectionProfile()
 	str+='<div id="tabsDiv">';
 	str+='<a id="parliamentProfileId" href="javascript:{}" onclick="clickedButton(\'parliament\');buildResultForParliamentElection();" class="dashBoardtabsDivSelected"> In Parliament</a>';
     str+='<a id="assemblyProfileId" href="javascript:{}" onclick="clickedButton(\'assembly\');buildResultForAssemblyElection();">In Assembly</a></div>';
-	str+='<div style="margin-top:10px;margin-left:20px;"><input type="checkbox" onclick="getElecDetails();" id="allianceChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Alliance</b></font></div>';
+	str+='<div style="margin-top:10px;margin-left:20px;"><input type="checkbox" onclick="getElecDetails();" id="allianceChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Alliance</b></font>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onclick="getElecDetails();" id="bielectionChkBox">&nbsp;&nbsp;<font color="navy"><b>Include Bi Elections</b></font></div>';
 	str+='<div id="electionLoading_ImgSpan" style="font-size: 13px;margin: 16px 5px 5px 32px;"> Loading .......<img style="float:right;margin-right:161px;display:block;" src="images/icons/goldAjaxLoad.gif" ></div>';
     str+='<div id="parliamentElecProfileDiv" class="yui-skin-sam" style="display:none"></div>';
     str+='<div style="font-size: 13px; margin: 19px 10px 10px;">PC = Participated Constituencies    <br>VP = Voting Percentage <br> PC (%)= Participated Constituencies Voting Percentage	</div>';
@@ -739,10 +739,17 @@ function buildElectionProfile()
 }
 function getElecDetails()
 {
+  var bielec = false;
+  var alliance = false;
   if(document.getElementById("allianceChkBox").checked == true)
-     getElectionProfile(true);
+     alliance = true;
   else
-    getElectionProfile(false);
+     alliance = false;
+  if(document.getElementById("bielectionChkBox").checked == true)
+     bielec = true;
+  else
+     bielec = false;
+	getElectionProfile(alliance,bielec);
 }
 function showAssemblyData()
  {
@@ -2188,7 +2195,7 @@ var url = "getParliamentElectionResultByStateAction.action?"+rparam;
 callAjax(jsObj,url);
   }
 
-function getElectionProfile(includeAlliances)
+function getElectionProfile(includeAlliances,includeBielections)
 {
 	showBusyImgWithId("electionLoading");
 	incAlliances = includeAlliances;
@@ -2196,6 +2203,7 @@ function getElectionProfile(includeAlliances)
 
 		partyId :'${partyVO.partyId}',
 		includeAlliances:includeAlliances,
+		includeBielections:includeBielections,
 		task:"getPartyElectionProfile"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3019,7 +3027,7 @@ getFirstThreePhotoRecords();
 getPartyManifesto(partyId);
 showAssemblyData();
 message_Obj.initialize();
-getElectionProfile(false);
+getElectionProfile(false,false);
 buildElectionProfile();
 //showAssessMentDiv();
 </script>
