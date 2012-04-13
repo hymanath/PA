@@ -1171,16 +1171,16 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
     }
 	
-	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId,boolean includeAlliances)
+	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId,boolean includeAlliances,boolean includeBielections)
 	{
 	 try
 	  {
 		Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
 		List<PartyInfoVO> partyInfoList = new ArrayList<PartyInfoVO>();
-		List<PartyElectionResult> electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.PARLIAMENT_ELECTION_TYPE);
+		List<PartyElectionResult> electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.PARLIAMENT_ELECTION_TYPE,includeBielections);
 		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
 		resultMap.put("Parliament", partyInfoList);
-		electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.ASSEMBLY_ELECTION_TYPE);
+		electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.ASSEMBLY_ELECTION_TYPE,includeBielections);
 		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
 		resultMap.put("Assembly", partyInfoList);
 		return resultMap;
