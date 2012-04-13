@@ -3861,7 +3861,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			
 			 problemFile = new ProblemFile();
 			 
-			 if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER))
+			 if(problemBeanVO.getProblemPostedBy() != null && problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER))
 					problemFile.setIsApproved(IConstants.TRUE); 
 			 
 			problemFile.setFile(fileObj);
