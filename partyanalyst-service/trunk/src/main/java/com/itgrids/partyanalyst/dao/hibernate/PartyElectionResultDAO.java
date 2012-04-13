@@ -74,13 +74,22 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName from PartyElectionResult model where model.election.electionId = ? and model.completeVotesPercent > 0.5 order by model.party.shortName ",electionId);
 	}
 	@SuppressWarnings("unchecked")
-	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyId(Long partyId,String electionType)
+	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyId(Long partyId,String electionType,boolean includeBielections)
 	{
-		Object[] params ={partyId,electionType};
-		return getHibernateTemplate().find("select model from PartyElectionResult model where model.party.partyId=? " +
-				" and model.election.electionScope.electionType.electionType =? and " +
-				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' order by" +
-				" model.election.electionYear desc",params);
+		StringBuilder query = new StringBuilder();
+		query.append("select model from PartyElectionResult model where model.party.partyId=:partyId " +
+				" and model.election.electionScope.electionType.electionType = :electionType  ");
+		if(!includeBielections)
+		{
+			query.append(" and model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"'");
+		}
+		query.append(" order by model.election.electionYear desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		  queryObject.setLong("partyId", partyId);
+		  queryObject.setString("electionType", electionType);
+		  
+		return queryObject.list(); 
 	}
 	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyIdAndElecId(Long partyId,String electionType,Long electionId)
 	{
