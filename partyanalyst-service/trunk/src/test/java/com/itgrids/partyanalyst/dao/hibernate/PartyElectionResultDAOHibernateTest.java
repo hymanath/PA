@@ -109,7 +109,7 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testGetPartyElectionResultsBasedOnPartyId()
 	{
-		List<PartyElectionResult> elecList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(239l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		List<PartyElectionResult> elecList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(239l,IConstants.ASSEMBLY_ELECTION_TYPE,true);
 		for(PartyElectionResult list : elecList)
 		{
 			System.out.println(list.getElection().getElectionYear() +" In \t"+list.getElection().getElectionScope().getState().getStateName() +"\t"+list.getTotalSeatsWon()+"\t"+list.getTotalConstiParticipated());
