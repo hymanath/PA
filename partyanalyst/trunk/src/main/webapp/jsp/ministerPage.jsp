@@ -507,7 +507,7 @@ function getMinistryYears(taskType)
 				<td width="60%">
 					<table border="1" style="border-collapse:collapse;border-color:#FFFFFF;">
 							<tr>
-								<th width="20%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><div>Ministries</div>
+								<th width="20%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><div>Portfolios</div>
 								</th>
 								<th width="10%" style="border-bottom:1px solid #d3d3d3;"><div>From Date</div>
 								</th>
@@ -588,7 +588,7 @@ function getMinistryYears(taskType)
 				<td  width="60%">
 						<table border="1" style="border-collapse:collapse;border-color:#FFFFFF;">
 							<tr>
-								<th width="20%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><div>Ministries</div>
+								<th width="20%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><div>Portfolios</div>
 								</th>
 								<th width="10%" style="border-bottom:1px solid #d3d3d3;"><div>From Date</div>
 								</th>
@@ -667,7 +667,7 @@ function getMinistryYears(taskType)
 					<td width="60%" valign="top">
 						<table border="1" style="border-collapse:collapse;border-color:#ffffff;" width="100%">
 						<tr>
-							<th width="24%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><span style="font-weight:bold; text-align: center;">Ministries</span></th>
+							<th width="24%" style="border-bottom:1px solid #d3d3d3;border-right:1px solid #d3d3d3;"><span style="font-weight:bold; text-align: center;">Portfolios</span></th>
 							<th style="font-weight:bold;border-bottom:1px solid #d3d3d3; text-align: center;border-right:1px solid #d3d3d3;" width="15%">From Date</th>
 							<th width="15%" style="border-bottom:1px solid #d3d3d3;text-align:center;"><span style="font-weight:bold;">To Date</span></th>
 						</tr>
@@ -722,7 +722,7 @@ function getMinistryYears(taskType)
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="15%">Party</th>
-				<th width="30%">Ministry</th>
+				<th width="30%">Portfolios</th>
 				<th width="20%">From Date</th>
 				<th width="20%">To Date</th>
 			</tr>
@@ -783,7 +783,7 @@ function getMinistryYears(taskType)
 		<tr>
 			<th width="20%" style="height:30px;">Candidate Name</th>
 			<th width="15%">Party</th>
-			<th width="30%">Ministry</th>
+			<th width="30%">Portfolios</th>
 			<th width="20%">From Date</th>
 			<th width="20%">To Date</th>
 		</tr>
@@ -849,7 +849,7 @@ function getMinistryYears(taskType)
 			<tr>
 				<th width="20%" style="height:30px;">Candidate Name</th>
 				<th width="10%">Party</th>
-				<th width="30%">Ministry</th>
+				<th width="30%">Portfolios</th>
 				<th width="20%">From Date</th>
 				<th width="20%">To Date</th>
 			</tr>
