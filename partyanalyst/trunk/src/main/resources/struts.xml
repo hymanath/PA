@@ -46,7 +46,11 @@
 			<result name="success">/jsp/index.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
 		</action>
-		
+		<action name="getDashBoardInformationAction" class="indexAction" method="indexPageAjaxCallHandler">
+			<result type="json" name="success">
+			   <param name="root">cadreManagementVO</param>
+			 </result>
+		</action>
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
 			<result>/jsp/landing.jsp</result>
 		</action> 
@@ -3200,5 +3204,11 @@
              <result name="success">/jsp/userTrackingReport.jsp</result>
         </action>
         
+		<!-- <action name="getCandidateDetailsForAssessment" class="partyPageAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>				
+			</result>		
+		</action> -->
+		
 	</package>
 </struts>      
