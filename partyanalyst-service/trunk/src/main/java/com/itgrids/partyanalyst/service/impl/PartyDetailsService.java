@@ -1275,6 +1275,8 @@ public class PartyDetailsService implements IPartyDetailsService {
 			{
 				candidateElectionResultVO.setConstituencyId((Long)list.get(0)[0]);
 				candidateElectionResultVO.setConstituencyName(list.get(0)[1].toString());
+				candidateElectionResultVO.setState((Long)list.get(0)[2]);
+				
 			}
 			
 			if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
@@ -1297,6 +1299,74 @@ public class PartyDetailsService implements IPartyDetailsService {
 			log.error("Exception occured in getCandidateDetailsForAsses() Method, Exception is - "+e);
 			return null;
 		}
+	}
+	
+	public List<SelectOptionVO> getStateDetails(Long partyId)
+	{
+		List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+		if(log.isDebugEnabled())
+			 log.debug("Entered Into getStateDetails() of PartyDetailsService ");
+		try
+		{
+		  List<Object[]> stateDetailsList = nominationDAO.getStateDetails(partyId);
+		  returnValue = convertToSelectOptionVO(returnValue,stateDetailsList);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in getStateDetails() Method  of PartyDetailsService , Exception is - "+e);
+		}
+		
+		return returnValue;
+	}
+	
+	public List<SelectOptionVO> convertToSelectOptionVO(List<SelectOptionVO> returnValue,List<Object[]> data)
+	{
+		SelectOptionVO selectOptionVO = null;
+		for(Object[] values: data)
+		{
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId((Long)values[0]);
+			selectOptionVO.setName(values[1] != null?values[1].toString():"");
+			returnValue.add(selectOptionVO);
+		}
+		
+		return returnValue;
+	}
+	
+	public List<SelectOptionVO> getElecYears(Long partyId,Long electionType,Long stateId)
+	{
+		List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+		if(log.isDebugEnabled())
+			 log.debug("Entered Into getElecYears() of PartyDetailsService ");
+		try
+		{
+		  List<Object[]> stateDetailsList = nominationDAO.getElecYears(partyId,electionType,stateId);
+		  returnValue = convertToSelectOptionVO(returnValue,stateDetailsList);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in getElecYears() Method  of PartyDetailsService , Exception is - "+e);
+		}
+		
+		return returnValue;
+	}
+	
+	public List<SelectOptionVO> getCandidateDetailsForAParty(Long partyId,Long electionId)
+	{
+		List<SelectOptionVO> returnValue = new ArrayList<SelectOptionVO>();
+		if(log.isDebugEnabled())
+			 log.debug("Entered Into getCandidateDetailsForAParty() of PartyDetailsService ");
+		try
+		{
+		  List<Object[]> stateDetailsList = nominationDAO.getCandidateDetailsForAParty(partyId,electionId);
+		  returnValue = convertToSelectOptionVO(returnValue,stateDetailsList);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in getCandidateDetailsForAParty() Method  of PartyDetailsService , Exception is - "+e);
+		}
+		
+		return returnValue;
 	}
 }
 	
