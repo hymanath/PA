@@ -777,6 +777,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
 			    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
 			    fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString() :"");
+			   
 			    retValue.add(fileVO);
 		    }
 			    
@@ -1482,6 +1483,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			fileVO.setPathOfFile(videos[2].toString());
 			fileVO.setTitle(WordUtils.capitalize(videos[3].toString()));
 			fileVO.setDescription(WordUtils.capitalize(videos[4].toString()));
+			fileVO.setContentId((Long)videos[6]);
 			filesList.add(fileVO);
 		}
 		
