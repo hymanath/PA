@@ -1238,6 +1238,27 @@ function onYouTubePlayerReady(playerId)
 	ytplayer.setVolume(100);
 }
 
+
+function getVideoDetails(contentId)
+{
+	$.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+		$("#showContentDiv").dialog();
+		getContentDetails(contentId);
+}
+
+
 function callAjax(jsObj,url)
 {
 	var callback = {			
@@ -2421,7 +2442,8 @@ function buildAllVideosInGallary(results){
 			str += '<table style="font-size:13px;font-family:verdana,arial;">';
 			str += '<tr>';
 			str += '<td style="border:2px solid #CCCCCC;padding:5px;">';
-			str += '<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
+		
 			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" alt="'+results[i].title+'" title="'+results[i].description+'"/></td></a>';
 			str += '</tr>';
 			str += '<tr><td>'+results[i].title+'</td></tr>';
