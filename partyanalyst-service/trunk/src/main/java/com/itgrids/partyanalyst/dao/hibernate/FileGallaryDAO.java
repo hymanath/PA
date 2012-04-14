@@ -1021,6 +1021,14 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
      }
      
      @SuppressWarnings("unchecked")
+     public List<Object> getFileGallaryIdByFileId(Long fileId)
+     {
+    	 Query query = getSession().createQuery("select model.fileGallaryId from FileGallary model where model.file.fileId = ?");
+    	 query.setParameter(0,fileId);
+    	 return query.list();
+     }
+     
+     @SuppressWarnings("unchecked")
      public List<Object> getGalleryIdsOfAFile(Long fileId)
      {
     	 return getHibernateTemplate().find("select model.gallary.gallaryId from FileGallary model where model.file.fileId=?",fileId);
