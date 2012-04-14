@@ -153,7 +153,7 @@
 .container {
     -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
     background-color: #FFFFFF;
-    margin: 9px auto 40px;
+    margin: 9px auto 10px;
     max-width: 800px;
     padding: 10px;
 }
@@ -1990,6 +1990,9 @@ function showFirstFourNewsRecords(results)
 	 str+='       <td>';
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
 	 str+='       </td>';
+	 str+='       <td>';
+	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results[0].contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
+	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='     </table>';
 	
@@ -2051,7 +2054,14 @@ function showFirstFourNewsRecords(results)
 	str+='<table>';
 	
 	str += '</center></DIV>';
-	 document.getElementById("showNewsDiv").innerHTML=str;
+
+	str += '<div id="facebookCommentsInNewsDiv" class="container" style="overflow:auto;width:600px;"></div>';
+
+	document.getElementById("showNewsDiv").innerHTML=str;
+
+	var lb = document.getElementById("facebookCommentsInNewsDiv");
+	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}&contentId='+results[0].contentId+'" data-num-posts="5" data-width="500"></div>';
+	FB.XFBML.parse(lb);
 }
 
   function getPreviousNews(val,arrayType)
