@@ -76,29 +76,15 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		userCadreInfo.setUserAccessType(user.getAccessType());
 		userCadreInfo.setUserAccessValue(user.getAccessValue());
 		
-		Long userID = user.getRegistrationID();
+		//Long userID = user.getRegistrationID();
 		try{
-			
-			//User Planned Events
-			List<UserEventVO> userPlannedEvents =userCalendarService.getTodaysUserPlannedEvents(userID);
-			if(userPlannedEvents != null)
-			    cadreManagementVO.setUserEvents(userPlannedEvents);
-			else
-				cadreManagementVO.setUserEvents(userPlannedEvents = new ArrayList<UserEventVO>());
-			
-			//User Important Dates
-			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserTodaysImportantEvents(user);
-			if(userImpDatesList != null)
-			    cadreManagementVO.setUserImpDates(userImpDatesList);
-			else
-				cadreManagementVO.setUserImpDates(userImpDatesList = new ArrayList<ImportantDatesVO>());
-			
+							
 			//Cadres By Level
 			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userCadreInfo);
 			if(cadresByCadreLevel != null && !cadresByCadreLevel.isEmpty())
 			    cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
 			else
-				cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel = new HashMap<String,Long>());
+				cadreManagementVO.setCadresByCadreLevel(null);
 				
 		}catch (Exception exceptionEncountered) {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
@@ -107,5 +93,55 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		//log.debug("UserCadreManagementService.getUserData()::::cadreManagementVO.getUserImpDates().size()::"+cadreManagementVO.getUserImpDates().size());
 		return cadreManagementVO;
 	}
-
+	
+	/**
+	 * Method to retrieve User Planned Events
+	 * @param userId
+	 * @return cadreManagementVO
+	 */
+	public CadreManagementVO getUserPlannedEvents(Long userId)
+	{
+		CadreManagementVO cadreManagementVO = new CadreManagementVO();
+		try
+		{
+			//User Planned Events
+			List<UserEventVO> userPlannedEvents =userCalendarService.getTodaysUserPlannedEvents(userId);
+			if(userPlannedEvents != null)
+			    cadreManagementVO.setUserEvents(userPlannedEvents);
+			else
+				cadreManagementVO.setUserEvents(userPlannedEvents = new ArrayList<UserEventVO>());
+			
+			return cadreManagementVO;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return cadreManagementVO;
+		}
+	
+	}
+	/**
+	 * Method to retrieve User Todays Important Dates
+	 * @param RegistrationVO
+	 * @return cadreManagementVO
+	 */
+	public CadreManagementVO getUserTodaysImpDates(RegistrationVO user)
+	{
+		CadreManagementVO cadreManagementVO = new CadreManagementVO();
+		try
+		{
+			//User Important Dates
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserTodaysImportantEvents(user);
+			if(userImpDatesList != null)
+			    cadreManagementVO.setUserImpDates(userImpDatesList);
+			else
+				cadreManagementVO.setUserImpDates(userImpDatesList = new ArrayList<ImportantDatesVO>());
+			return cadreManagementVO;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return cadreManagementVO;
+		}
+			
+	}
+	
 }
