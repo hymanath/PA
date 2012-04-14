@@ -1830,6 +1830,32 @@ public  ResultStatus saveEmailForAUser(String userName,final String email)
 	
 }
 
+public  ResultStatus saveEmailAndSetAsUserName(String userName,final String email)
+{
+	ResultStatus resultStatus = new ResultStatus();
+	
+	try{
+		final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
+		
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+			AnanymousUser ananymousUser = ananymousUsers.get(0);
+			ananymousUser.setEmail(email);
+			ananymousUser.setUsername(email);
+			ananymousUserDAO.save(ananymousUser);
+			}
+		});
+		
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		}
+	catch(Exception e){
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+	
+}
+
 public ResultStatus changeForUserNameAsEmail(String userName){
 	ResultStatus resultStatus = new ResultStatus();
 	List<AnanymousUser> detailsList = null;
