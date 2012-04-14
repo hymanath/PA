@@ -2846,7 +2846,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     			}
     			
     			description = PMstr +" "+CMstr+" "+DCMstr;
-    			description = "Now you can know all three types of ministers(Cabinet minister,State minister,State Minister " +
+    			description += " Now you can know all three types of ministers(Cabinet minister,State minister,State Minister " +
     					" with independent Charge), their working duration";
     			metaInfoVO.setKeywords(keyWords);
     			metaInfoVO.setDescription(description);
