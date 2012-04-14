@@ -982,6 +982,7 @@ function openAnalyzeConstituencyWindow(type)
 {		
 	var constituencyId = '${candidateElectionDetails[0].constituencyId}';
 	var constituencyName = '${candidateElectionDetails[0].constituencyName}';
+	var constiTypeName = '${candidateElectionDetails[0].electionType}';
 	var candidateId = '${candidateElectionDetails[0].candidateId}';
 	var parliamentConstiId = '${candidateElectionDetails[0].parliamentConstituencyId}';
 	var parliamentConstiName = '${candidateElectionDetails[0].parliamentConstituencyName}';
@@ -993,12 +994,18 @@ function openAnalyzeConstituencyWindow(type)
 
 	if(userId != "" && userType == "FREE_USER")
 	{
+	   if(constiTypeName == 'Assembly')
 		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	   else
+	    var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&parlchecked=true&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");
 		browser1.focus();
 	}
 	if(userId != "" && taskType == 'viewResults')
 	{
+	   if(constiTypeName == 'Assembly')
 		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	   else
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&parlchecked=true&candidateId="+candidateId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");
 		browser1.focus();
 	}
 	else if(userId == "" && userType == "FREE_USER")
