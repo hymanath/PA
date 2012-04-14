@@ -1708,9 +1708,10 @@ function showFirstFourNewsRecords(results)
 	if(arrayType=='array')
 	{
 	 str+='<table>';
-	 	 str+='     <tr>';
+	 str+='     <tr>';
 	 str+='       <td>';
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>:<font color="#FF4500"> '+results[0].fileDate+'</font>';
+	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results[0].contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='   <tr>';
@@ -1749,6 +1750,7 @@ function showFirstFourNewsRecords(results)
 	 str+='     <tr>';
 	 str+='       <td>';
 	 str+='        <B>Source</B> : <font color="#FF4500">'+results[0].source+'</font> <B> Date </B>: <font color="#FF4500">'+results[0].fileDate+'</font>';
+	 str+='       <a href="javascript:{}" onClick="shareInFacebook(\'www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results[0].contentId+'\')"><img alt="Share in Facebook" src="images/FBshare.jpg" title="Click here to Share this News in Facebook" style="margin-left:30px;"></img></a>';
 	 str+='       </td>';
 	 str+='     </tr>';
 	 str+='   <tr>';
@@ -1781,7 +1783,14 @@ function showFirstFourNewsRecords(results)
 	 str+='     </tr>';
 	 str+='<table>';
 	}
-	 document.getElementById("showNewsDiv").innerHTML=str;
+
+	str += '<div id="facebookCommentsInNewsDiv" class="container" style="overflow:auto;width:600px;"></div>';
+
+	document.getElementById("showNewsDiv").innerHTML=str;
+
+	var lb = document.getElementById("facebookCommentsInNewsDiv");
+	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/partyPageAction.action?partyId=${partyId}&contentId='+results[0].contentId+'" data-num-posts="5" data-width="500"></div>';
+	FB.XFBML.parse(lb);
 	
   }
   function getPreviousNews(val,arrayType)
