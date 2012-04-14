@@ -372,7 +372,62 @@ a:hover {
 			</s:if>
 			</s:iterator>
 	 </s:if>
+	 <div id="logInDiv"></div>
+      <div class="ea-fc-sec">
+            <h2 class="ea-fc-title">Assess Your Leader <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <div id="analyzeConstituency" class="ea-fc-cont-sec" >
 
+<table style="margin-top:10px;">
+ <tr>
+	<td>
+      <select id="elecTypeSel" onchange="showHideState();" style="width:145px;" >
+         <option value="0">Select Election Type</option>
+         <option value="1">Parliament</option>
+         <option value="2">Assembly</option>
+      </select>
+	</td>
+ </tr>
+ <tr>
+	<td>
+	  <div id ="stateBody" >
+        <select onchange="getYears(2);" id="stateTypeSel" style="width:145px;" >
+          <option value="0">Select State</option>
+        </select>
+	  </div>
+	</td>
+	<td>
+	  <div style="display:none;" id="state_ImgSpan"><img src="images/icons/search.gif"></div>
+	<td>
+ </tr>
+ <tr>
+	<td>
+      <select id="yearTypeSel" style="width:145px;" onchange="getCandidates();" >
+         <option value="0">Select Year</option>
+      </select>
+	</td>
+	<td>
+	  <div style="display:none;" id="year_ImgSpan"><img src="images/icons/search.gif"></div>
+	<td>
+ </tr>
+ <tr>
+	<td>
+      <select style="width:145px;" id="candidateTypeSel" >
+         <option value="0">Select Candidate</option>
+      </select>
+	</td>
+	<td>
+	  <div style="display:none;" id="candidate_ImgSpan"><img src="images/icons/search.gif"></div>
+	<td>
+ </tr>
+</table>
+
+<div id="errorDivEle" style="margin-top: 3px; margin-bottom: 3px; margin-left: 0px;color:red;font-weight:bold;"></div>
+	<div style="margin-top:5px; margin-bottom: 28px;margin-left:-12px;">
+		<a href="javascript:{}" style="background:#5CB275;color: #FFFFFF;font-weight: bold;margin-left:0px;padding: 3px 5px;text-decoration:none;border-radius:4px;" onclick="getCandidateDetailsForAsses('analyze');">Assess</a>
+		<a href="javascript:{}" style="background:#5CB275;color: #FFFFFF;font-weight: bold;margin-left: 3px;padding: 3px 5px;text-decoration:none;border-radius:4px;" onclick="getCandidateDetailsForAsses('viewResults')">Previous Posts</a>
+	</div>
+ </div>
+</div>
 	   <!--EMAIL ALERT SECTION START-->
           
           <div class="ea-fc-sec">
@@ -424,7 +479,7 @@ a:hover {
 			 <!--ELECTION PROFILE SECTION START-->
 			 <h1 class="inc-title"><span class="da-gray">Election Profile</span></h1>
 			 <div style="margin-top: 10px;"> 
-			   <a href="partyResultsCriteriaAction.action" class="buttonClass" style="text-decoration: none;" title="Click here to view other party performances and results">View Party Performance and Opposition Parties Details</a></div>
+			   <a href="partyResultsCriteriaAction.action" class="buttonClass" style="text-decoration: none;" title="Click here to view other party performances and results">View ${partyVO.partyShortName} Performance and Opposition Parties Details</a></div>
 			 <div id="electionProfileDiv"></div>
 			   
               <!-- <div class="pm-inner-cont-sec" id="partyManifestoDiv">
@@ -1111,6 +1166,29 @@ function callAjax(jsObj,url)
 			clearOptionsListForSelectElmtId("assessStateId");
 			createOptionsForSelectElmtId("assessStateId",myResults);
 		  }
+	   else if(jsObj.task == "getCandidateDetailsForAsses")
+			{
+				openAnalyzeConstituencyWindow(myResults,jsObj.selectType);
+			}
+			else if(jsObj.task == "candidatedetails")
+			{
+			   clearData("candidateTypeSel",'Select Candidate');
+			   buildData("candidateTypeSel",myResults);
+			   document.getElementById("candidate_ImgSpan").style.display = 'none';
+			}
+			else if(jsObj.task == "statedetails")
+			{
+			   clearData("stateTypeSel",'Select State');
+			   buildData("stateTypeSel",myResults);
+			   document.getElementById("state_ImgSpan").style.display = 'none';
+			}
+			else if(jsObj.task == "elecyears")
+			{
+			   clearData("yearTypeSel",'Select Year');
+			   buildData("yearTypeSel",myResults);
+			   document.getElementById("year_ImgSpan").style.display = 'none';
+			   
+			}
 		}
 		catch(e)
 		{   
@@ -2251,7 +2329,7 @@ function buildElectionResultsOfParty(results,includeAlliances)
 		{key:"percentageOfVotes",label:"VP (%)",sortable:true},
 		{key:"participatedPercentage" , label:"PCV(%)",sortable:true},
 
-		{key:"view details",label:"Complete Details",formatter:YAHOO.widget.DataTable.viewDetails},
+		{key:"view details",label:"Complete Details",formatter:YAHOO.widget.DataTable.viewDetails}
 
 		
 
@@ -3028,7 +3106,239 @@ var message_Obj = {
 <s:if test="contentId != null">
 showSelectedContentAndRelatedGalleries();
 </s:if>
+function getCandidateDetailsForAsses(selectType)
+{
+    var candEle = document.getElementById("candidateTypeSel");
+	var candidateId = candEle.options[candEle.selectedIndex].value;
+	var elecEle = document.getElementById("yearTypeSel");
+	var electionId =  elecEle.options[elecEle.selectedIndex].value;
+	
+	if(candidateId == 0)
+	{
+		document.getElementById("errorDivEle").innerHTML = 'Please Select Candidate.';
+		return;
+	}
+	else
+	{
+		document.getElementById("errorDivEle").innerHTML = '';
+	}
 
+	var jsObj =
+		{   
+			selectType  : selectType,
+		    candidateId : candidateId,
+			electionId : electionId,
+			task:"getCandidateDetailsForAsses"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidateDetailsForAssesAction.action?"+rparam;			callAjax(jsObj,url); 
+	
+}
+function showHideState()
+{
+   var elecTypeEle =  document.getElementById("elecTypeSel");
+   var elecType = elecTypeEle.options[elecTypeEle.selectedIndex].value;
+    if(elecType == 1)
+	 {
+	  document.getElementById("stateBody").style.display = "none";	  
+	  getYears(1);
+	 }
+	else if(elecType == 2)
+	 {
+	  document.getElementById("stateBody").style.display = "block";
+	  clearData("stateTypeSel",'Select State');
+	  clearData("yearTypeSel",'Select Year');
+	  clearData("candidateTypeSel",'Select Candidate');
+	  getStatesForAssembly();
+	 }
+	 else if(elecType == 0)
+	 {
+	  clearData("stateTypeSel",'Select State');
+	  clearData("yearTypeSel",'Select Year');
+	  clearData("candidateTypeSel",'Select Candidate');
+	 }
+} 
+function getYears(electionType)
+{
+  clearData("yearTypeSel",'Select Year');
+  clearData("candidateTypeSel",'Select Candidate');
+  var stateId = 0;
+  if(electionType == 2)
+  {
+   var stateEle = document.getElementById("stateTypeSel");
+   stateId = stateEle.options[stateEle.selectedIndex].value;
+   if(stateId == 0)
+    return;
+	document.getElementById("year_ImgSpan").style.display = 'block';
+  }
+  var jsObj =
+		{   
+			partyId  : partyId,
+		    electionType : electionType,
+			stateId : stateId,
+			task:"elecyears"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyElectionDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+	
+}
+function getStatesForAssembly()
+{
+   document.getElementById("state_ImgSpan").style.display = 'block';
+  var jsObj =
+		{   
+			partyId  : partyId,
+			task:"statedetails"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyElectionDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function getCandidates()
+{
+   clearData("candidateTypeSel",'Select Candidate');
+   var elecEle = document.getElementById("yearTypeSel");
+   var electionId = elecEle.options[elecEle.selectedIndex].value;
+   
+   if(electionId == 0)
+    return;
+	 document.getElementById("candidate_ImgSpan").style.display = 'block';
+  var jsObj =
+		{   
+			partyId  : partyId,
+			electionId : electionId,
+			task:"candidatedetails"
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyElectionDetailsAction.action?"+rparam;
+	callAjax(jsObj,url); 
+}
+function buildData(eleId,results)
+{
+   var elem = document.getElementById(eleId);
+		for(var i in results)
+		{
+			var opElmt=document.createElement('option');
+			opElmt.value=results[i].id;
+			opElmt.text=results[i].name;
+		
+			try
+				{
+				  elem.add(opElmt,null); // standards compliant
+				}
+			catch(ex)
+				{
+				  elem.add(opElmt); // IE only
+				}
+		}
+}
+
+function clearData(selId,val)
+{
+   var elmt = document.getElementById(selId);
+  if(!elmt)
+		return;
+
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}
+        var opElmt=document.createElement('option');
+			opElmt.value = 0;
+			opElmt.text = val;
+		
+			try
+				{
+				  elmt.add(opElmt,null); // standards compliant
+				}
+			catch(ex)
+				{
+				  elmt.add(opElmt); // IE only
+				}	
+}
+function openAnalyzeConstituencyWindow(result,type)
+{
+	var candidateId = result.candidateId;
+	var constituencyId = result.constituencyId;
+	var constituencyName = result.constituencyName;
+	var userId = result.districtId;
+	var userType = result.districtName;
+	var parliamentConstiId = result.partyId;
+	var parliamentConstiName = result.partyName;
+	var constiElecId = result.state;
+	
+	var taskType = type;
+
+
+	if(userId == null && taskType == 'analyze')
+	{
+		
+		document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Assess Party Leaders.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+
+		//alert("Please Login To Post Comment");
+		return;
+	}
+	var parlcheck = false;
+	var elecTypeEle =  document.getElementById("elecTypeSel");
+    var elecType = elecTypeEle.options[elecTypeEle.selectedIndex].value;
+    if(elecType == 1)
+	 {
+	  parlcheck = true;
+	 }
+	else if(elecType == 2)
+	 {
+	  parlcheck = false;
+	 }
+	if(taskType == 'viewResults')
+	{
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId+"&parlchecked="+parlcheck+"&constiElecId="+constiElecId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		browser1.focus();
+	}
+
+	if(userType == "FREE_USER" && taskType == 'analyze')
+	{
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=assessCandidatePopUp&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyName+"&userId="+userId+"&taskType="+taskType+"&candidateId="+candidateId+"&parlchecked="+parlcheck+"&constiElecId="+constiElecId,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		browser1.focus();
+	}
+	
+	if(userType != "FREE_USER" && taskType == 'analyze')
+	{
+		document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Comment For Free User Only.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+
+		//alert("Comment For Free User Only");
+	}
+
+}
 displayProfile();
 partyInfo();
 getTotalNews('getFirstFourNewsRecordsToDisplay');
