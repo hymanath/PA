@@ -66,4 +66,6 @@ public interface IAnanymousUserService {
 	
 	public ResultStatus changeForUserNameAsEmail(String userName);
 	
+	public  ResultStatus saveEmailAndSetAsUserName(String userName,final String email);
+	
 }	
