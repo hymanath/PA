@@ -246,6 +246,9 @@ body
       if(parsel != null && parsel == "true")
        {
 	      document.getElementById("parliamentselect").checked='true';
+		  var elmt = document.getElementById("mainHeadingDiv");
+		  elmt.innerHTML = 'Assess ${constituencyName} Parliament Constituency Elections Results';
+		  document.getElementById("hideForParl").style.display='none';
        }	   
 	});
 	var constituencyId = "${constituencyId}";
@@ -637,7 +640,7 @@ if(category == "candidate")
             {key:"candidateName", sortable:true, label:"Canidate Name", resizeable:true},
             {key:"party",  sortable:true, label:"Party", resizeable:true,formatter:YAHOO.widget.DataTable.partyLink},
             {key:"status", formatter:YAHOO.widget.DataTable.formatNumber, label:"Rank", sortable:true, resizeable:true},
-            {key:"rankStatus",  sortable:true, label:"Status", resizeable:true},
+            {key:"rankStatus",  sortable:true, label:"Status", resizeable:true}
         ];
 
         var myDataSource = new YAHOO.util.DataSource(jsArray);
@@ -953,10 +956,13 @@ if(category == "candidate")
 		var hStr = '';
 		//hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Coments Results </font>';
 		elmtHead.innerHTML = hStr;
-
+        var count = 0;
 		var str = '';
 		for(var i=0; i<results.length; i++)
 		{
+		 if(results[i].commetsAndScores !=null && results[i].commetsAndScores.length >0)
+		 {
+		    count = count+1;
 			str += '<div id="commentsContent_main_'+i+'" class="commentsContentMain">';
 			if(results[i].rank == 1)
 			{
@@ -1022,12 +1028,15 @@ if(category == "candidate")
 			str += '</div>';
 
 			str += '</div>';
+		 }
 		}			
-
+         if(count == 0)
+		 str +='<div style="margin-left:20px;"><b>No Reasons Posted</b></div>';
 		elmtBody.innerHTML = str;
 	}
 	function executeOnload()
 	{
+	    var constiEle = '${constiElec}';
 		var yearEl = document.getElementById("electionYears");
 		var year;
 		if(yearEl.options.length>0)
@@ -1035,6 +1044,11 @@ if(category == "candidate")
 				yearEl.selectedIndex = '1';
 				year =  yearEl.options[yearEl.selectedIndex].value;				
 		}
+		if(constiEle != null && constiEle != '')
+		 {
+		   year = constiEle;
+		   document.getElementById("electionYears").value = constiEle; 
+		 }
 		if(taskType== 'analyze')
 		{
 			getCandidatesResults(year);
@@ -1078,14 +1092,14 @@ if(category == "candidate")
 		<div id="analyzebodyDiv">
 				<div style="margin-top:10px;margin-bottom:10px;border:2px solid #DBDCDB;" >
 				<table class="inputsTable" width="100%' border="0">						
-					<tr>
+					<tr id="hideForParl">					  
 						<th>Election Type</th>
 						<td><input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)" id="assemblyselect" />Assembly<B>(${constituencyName})</B></td>
-						<td><input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"  id="parliamentselect" />Parliament<B>(${parliamentConstiName})</B></td>
+						<td><input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"  id="parliamentselect" />Parliament<B>(${parliamentConstiName})</B></td>					  
 					</tr>
 					<tr>
 						<th>Election Year</th>
-						<td colspan="2">
+						<td colspan="2" style="float:left;width:100%">
 						<c:if test="${taskType == 'analyze'}">
 							<s:select theme="simple" id="electionYears" list="electionYears" listKey="id" listValue="name" headerKey="0" headerValue="select" onchange="getCandidatesResults(this.options[this.selectedIndex].value)"></s:select>					
 						</c:if>
