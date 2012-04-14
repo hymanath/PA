@@ -592,14 +592,15 @@ function callAJAX(jsObj,url){
 			try {							
 				"",					
 					results = YAHOO.lang.JSON.parse(o.responseText);		
-					if(jsObj.task == "checkAnanymousUserNameAvailability")
+					if(jsObj.task == "checkAnanymousUserNameAvailability" || 
+						jsObj.task == "saveUserEmailAndsetAsUserName")
 					{
 						showDetails(results);
 					}
 					else if(jsObj.task == "saveUserEmailAndSendPwd")
-				{
+					{
 						showEmailStatus(results);
-				}
+					}
 
 					
 			}catch (e) {   		
@@ -754,7 +755,53 @@ function changeUserNameAfterEmailSave()
 	
 }
 
+function saveEmailAndSetAsUserName()
+{
 
+	var email = document.getElementById('emailField').value;
+	var errorDivEle = document.getElementById("ErrorMsgDivId");
+	var setAsUserName = document.getElementById("changeUserNameCheck").checked;
+	var eFlag = false;
+	var str = '<font color="red">';
+	var task = null;
+	
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(email !='' && email!='your email'){
+          
+		  if(!email.match(emailExp)){
+
+				document.getElementById("ErrorMsgDivId").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("ErrorMsgDivId").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	str += '</font>';
+
+	errorDivEle.innerHTML = str;
+	if(eFlag)
+		return;
+
+	if(setAsUserName)
+		task = "saveUserEmailAndsetAsUserName";
+	else
+		task = "saveUserEmailAndSendPwd";
+
+	var jsObj=
+	{
+			userName : uname,
+			email : email,
+			task : task
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveUserEmailAction.action?"+rparam;						
+	callAJAX(jsObj,url);
+}
 
 function saveEmailForUser()
 {
@@ -792,9 +839,9 @@ function saveEmailForUser()
 			task : "saveUserEmailAndSendPwd"
 
 	};
-var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "saveUserEmailAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveUserEmailAction.action?"+rparam;						
+	callAJAX(jsObj,url);
 }
 function showUserNameChangePanel(uname){
 
@@ -854,7 +901,7 @@ function showUserNameChangePanel(uname){
 			
 			var oPushButton1 = new YAHOO.widget.Button("post");  
 			oPushButton1.on("click",function(){
-				saveEmailForUser();
+				saveEmailAndSetAsUserName();
 			});
 			var oPushButton2 = new YAHOO.widget.Button("cancelButton");
 	
