@@ -243,6 +243,10 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		{
 			results = ananymousUserService.saveEmailForAUser(jObj.getString("userName"),jObj.getString("email"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("saveUserEmailAndsetAsUserName"))
+		{
+			results = ananymousUserService.saveEmailAndSetAsUserName(jObj.getString("userName"),jObj.getString("email"));
+		}
 		
 		
 		return SUCCESS;
