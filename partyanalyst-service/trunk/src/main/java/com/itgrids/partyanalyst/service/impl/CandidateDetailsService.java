@@ -968,6 +968,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 try{
 			 List<Object[]> results = fileDAO.getFileByFileId(fileId);
 			 for(Object[] newsDetails: results){
+				 try{
 				    FileVO fileVO = new FileVO();
 				    fileVO.setFileId((Long)newsDetails[0]);
 			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
@@ -976,7 +977,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
 			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
 			   	    fileVO.setFileDate(newsDetails[6] != null ? (sdf.format((Date)newsDetails[6])) :"");
-			    	retValue.add(fileVO);	  
+			   	    fileVO.setContentId((Long)fileGallaryDAO.getFileGallaryIdByFileId(fileVO.getFileId()).get(0));
+			    	retValue.add(fileVO);
+				 }catch (Exception e) {}
 			 }
 			 
 			return retValue;
