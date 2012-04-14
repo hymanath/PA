@@ -110,7 +110,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	{
 		Query query = getSession().createQuery("select model.file from FileGallary model where model.gallary.gallaryId in "+
 				"(select model2.gallery.gallaryId from PartyGallery model2 where model2.party.partyId = :partyId"+
-				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate)");
+				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete and model.isPrivate = :isPrivate) order by model.file.fileDate desc");
 		
 		query.setLong("partyId", partyId);
 		query.setString("type", IConstants.NEWS_GALLARY);
