@@ -40,6 +40,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 	private String userId;
 	private String taskType;
 	private String parlchecked;
+	private Long constiElecId;
 	
 	private List<CandidateCommentsVO> candidateComments;
 	
@@ -178,6 +179,14 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		this.parlchecked = parlchecked;
 	}
 
+	public Long getConstiElecId() {
+		return constiElecId;
+	}
+
+	public void setConstiElecId(Long constiElecId) {
+		this.constiElecId = constiElecId;
+	}
+
 	public String execute()
 	{	
 		/*session = request.getSession();
@@ -204,6 +213,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		
 		electionYears = commentsDataService.getElectionYearsForConstituency(Long.parseLong(constituencyId), false);
 		request.setAttribute("parlsel", parlchecked);
+		request.setAttribute("constiElec", constiElecId);
 		return Action.SUCCESS;
 	}
 	
