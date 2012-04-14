@@ -28,7 +28,10 @@ import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.web.action.CadreManagementAction;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -38,6 +41,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.opensymphony.xwork2.conversion.annotations.Conversion;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
@@ -67,6 +71,8 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private boolean hasSubUserEntitlement = false;
 	private boolean hasCallCenterEntitlment = false;
 	private static final long serialVersionUID = 1L;
+	private JSONObject jObj;
+	private String task;
 	
 	private IUserCadreManagementService userCadreManagementService;
 	private CadreManagementVO cadreManagementVO = null;
@@ -78,6 +84,22 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 
 	
 	
+	public void setJObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
 	public void setHasSubUserEntitlement(boolean hasSubUserEntitlement) {
 		this.hasSubUserEntitlement = hasSubUserEntitlement;
 	}
@@ -260,26 +282,27 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 		else 
 			System.out.print(user.getUserName());
         now = new Date(System.currentTimeMillis());
-        mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1)).getConstituencies();
-        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1)).getConstituencies();
+
+        /*mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1)).getConstituencies();
+        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1)).getConstituencies();*/
         
-        cadreManagementVO = userCadreManagementService.getUserTodaysData(user);
-        eventCount = cadreManagementVO.getUserEvents().size();
-        impDateCount = cadreManagementVO.getUserImpDates().size();
         /*System.out.println("Title: " + cadreManagementVO.getUserEvents().get(0).getEventDisplayTitle());
         System.out.println("ImpDate: " + cadreManagementVO.getUserImpDates().get(0).getTitle());*/
-        userGroups = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID()).size();
-        systemGroups = userGroupService.subGrpsCountInSystemGrpsForUser(user.getRegistrationID()).size();
+        
+        /*userGroups = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID()).size();
+        systemGroups = userGroupService.subGrpsCountInSystemGrpsForUser(user.getRegistrationID()).size();*/
         /*System.out.println("EventCount: "  + eventCount + "User groups:" + userGroups + "System Groups:" + systemGroups);
         for(Entry<String, Long> s: cadreManagementVO.getCadresByCadreLevel().entrySet()) {
         	System.out.println(s.getKey() + " :" + s.getValue());
         }*/
         loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
+        
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
+		
        if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
         	hasNewsMonitoring = true;
-        	fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
+        	//fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
         }
              
        if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.ADD_SUBUSER_ENTITLEMENT)){
@@ -293,4 +316,29 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
        
         return SUCCESS;
     }
+	
+  public String indexPageAjaxCallHandler()
+	{
+		session = request.getSession();
+		user = (RegistrationVO) session.getAttribute("USER");
+		try {
+			jObj = new JSONObject(getTask());
+			
+			if(jObj.getString("task").equalsIgnoreCase("getCadreInfo"))
+			  cadreManagementVO = userCadreManagementService.getUserTodaysData(user);
+			if(jObj.getString("task").equalsIgnoreCase("getUserImportantEvents"))
+				cadreManagementVO = userCadreManagementService.getUserPlannedEvents(user.getRegistrationID());
+			if(jObj.getString("task").equalsIgnoreCase("getUserImportanDates"))
+				cadreManagementVO = userCadreManagementService.getUserTodaysImpDates(user);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 }
