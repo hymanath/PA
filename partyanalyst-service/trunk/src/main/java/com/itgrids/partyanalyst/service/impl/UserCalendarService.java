@@ -337,10 +337,14 @@ public class UserCalendarService implements IUserCalendarService {
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(cal,impDate);
 				importantDatesVOs.add(importantDatesVO);				
 			}
-		}else{
+		}
+		else{
+			ImportantDatesVO importantDatesVO;
 			calendar.setTime(startDate);
+			importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
+			importantDatesVOs.add(importantDatesVO);
 			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
-				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
+				importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
 				importantDatesVOs.add(importantDatesVO);
 			}
 		}
@@ -496,7 +500,7 @@ public class UserCalendarService implements IUserCalendarService {
 			UserEventVO userEventVO = convertUserEvents2DTO(userEvent);
 			System.out.print("locationIdVO: " + userEventVO.getLocationId());
 			String location = getEventLocation(userEvent.getLocationType(), userEvent.getLocationId());
-			String eventDisplayTitle = userEvent.getTitle() + "@" + frmat.format(userEvent.getStartDate()) + " at " + location;
+			String eventDisplayTitle = userEvent.getTitle() + "  @  " + frmat.format(userEvent.getStartDate()) + "   at  " + location;
 			userEventVO.setEventDisplayTitle(eventDisplayTitle);
 			userEventVO.setLocation(location);
 			userEventVOList.add(userEventVO);
