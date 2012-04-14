@@ -1170,7 +1170,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(params[0] +"---"+params[1]);
 	}*/
 	
-	public void testgetCandidatePertcipatedConstituenciesInAElection()
+	/*public void testgetCandidatePertcipatedConstituenciesInAElection()
 	{
 		List<Object[]> list = nominationDAO.getCandidatePertcipatedConstituenciesInAElection(1984l,38l);
 		
@@ -1178,7 +1178,33 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 		for(Object[] params : list)
 			System.out.println(params[0] +"---"+params[1]);
+	}*/
+	/*public void testGetStateDetails()
+	{
+		List<Object[]> list = nominationDAO.getStateDetails(872l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0] +"---"+params[1]);
+	}*/
+	/*public void testGetElecYears()
+	{
+		List<Object[]> list = nominationDAO.getElecYears(872l,1l,1l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0] +"---"+params[1]);
+	}*/
+	public void testGetCandidateDetailsForAParty()
+	{
+		List<Object[]> list = nominationDAO.getCandidateDetailsForAParty(872l,17l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+			System.out.println(params[0] +"---"+params[1]);
 	}
-	
 }
 	
