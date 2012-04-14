@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
@@ -60,6 +61,7 @@ public class PartyPageAction extends ActionSupport implements
     private List<PartyInfoVO> partyInfoVOList = new ArrayList<PartyInfoVO>();
     private CandidateElectionResultVO candidateElectionResultVO;
     private Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
+    private List<SelectOptionVO> data;
     
 	public void setResultMap(Map<String,List<PartyInfoVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -177,12 +179,20 @@ public class PartyPageAction extends ActionSupport implements
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
 	}
+    
+	public List<SelectOptionVO> getData() {
+		return data;
+	}
+
+	public void setData(List<SelectOptionVO> data) {
+		this.data = data;
+	}
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		this.session = request.getSession();
 	}
-
+   
 	@Override
 	public void setServletResponse(HttpServletResponse arg0) {
 
@@ -341,6 +351,31 @@ public class PartyPageAction extends ActionSupport implements
 			jObj = new JSONObject(getTask());
 			Long partyId = new Long(jObj.getString("partyId"));
 			resultMap = partyDetailsService.getPartyElectionResults(partyId,jObj.getBoolean("includeAlliances"),jObj.getBoolean("includeBielections"));
+		} 
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyElectionDetails()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			if(jObj.getString("task").trim().equalsIgnoreCase("statedetails"))
+			     data = partyDetailsService.getStateDetails(jObj.getLong("partyId"));
+			
+			else if(jObj.getString("task").trim().equalsIgnoreCase("elecyears"))
+				 data = partyDetailsService.getElecYears(jObj.getLong("partyId"),jObj.getLong("electionType"),jObj.getLong("stateId"));
+			
+			else if(jObj.getString("task").trim().equalsIgnoreCase("candidatedetails"))
+				 data = partyDetailsService.getCandidateDetailsForAParty(jObj.getLong("partyId"),jObj.getLong("electionId"));
+			
 		} 
 		catch (ParseException e) {
 			// TODO Auto-generated catch block
