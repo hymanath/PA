@@ -56,80 +56,95 @@ var indexPageMain = {
 											 ]
 					};
 
-function buildSMSPopup()
-{
-	var remainingSms = "${remainingSms}";
-	if(remainingSms==0){
-		smsRenewalMessage();
-		return;
+var selectedEventObj={
+							userEventsId:"",
+							eventName:"",
+							startDate:"",
+							endDate:"",
+							startTimeHrs:"",
+							startTimeMin:"",					
+							endTimeHrs:"",
+							endTimeMin:"",
+							locationType:"",
+							locaitonId:"",
+							desc:"",
+							organizers:"",
+							actionPlans:"",
+							isDeleted:"",
+							task:""
+						};
+	var	selectedDateObj={
+							importantDateId:"",
+							eventId:"",
+							eventType:"",
+							eventName:"",
+							startDate:"",	
+							endDate:"",
+							desc:"",
+							frequency:"",
+							isDeleted:"",
+							task:""
+						};
+	
+function showDateCal(id,val)
+	{			
+		//var dataL = val.substring(2,4)+'/'+val.substring(0,2)+'/'+val.substring(4,val.length);
+		
+		var date = (new Date().getMonth()+1)+"/"+new Date().getDate()+"/"+ new Date().getFullYear();
+		
+		if(dateCalendar)
+			dateCalendar.destroy();
+		
+		var navConfig = { 
+	      strings : { 
+	          month: "Choose Month", 
+	          year: "Enter Year", 
+	          submit: "OK", 
+	          cancel: "Cancel",  
+	          invalidYear: "Please enter a valid year" 
+	      }, 
+	      monthFormat: YAHOO.widget.Calendar.SHORT, 
+	      initialFocus: "year" 
+	}; 
+
+		dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig, mindate: date, title:"Choose a date:", close:true }); 
+		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
+		dateCalendar.render(); 
+		dateCalendar.show();		
+}
+
+function displayDateText(type,args,obj)
+{	
+	var divId = obj.containerId;		
+	var subStr = divId.substring(0,divId.lastIndexOf('_'));	
+			
+	var selected = args[0]; 
+	var selDate = this.toDate(selected[0]); 
+
+	var calDateResult = dateToLocaleString(selDate, this);
+	
+	var divElmt = document.getElementById(divId);
+	var elmt = document.getElementById(subStr);
+	
+	if(elmt)
+	{
+		elmt.value = calDateResult;
 	}
 	
-	var str = '';	
-	str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
-	str +='	<table>';
-	str +='	<tr>';
-	str +='		<th align="left">SMS Type</th>';
-	str +='		<td align="left">';
-	str +='			<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\'sms\')"/> Location Wise	';			
-	str +='			<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\'sms\')"/> Cadre Level Wise';
-	str +=' 	</td>';		
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<th align="left" colspan="2"><div id="region_type_Alert" class="errorMessage"></div></th>';			
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<th align="left"><div id="region_type_Label"></div></th>';
-	str +='		<td align="left"><div id="region_type_Data"></div></td>	';			
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<th align="left">';
-	str +='			<div id="region_select_Label">	</div>';
-	str +='		</th>';
-	str +='		<td align="left">';
-	str +='			<div id="region_select_Data">  </div>';					
-	str +='		</td>';
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<th align="left"><div id="sms_cadre_name_include_label"></div></th>';
-	str +='		<td align="left"><div id="sms_cadre_name_include_value"></div></td>';				
-	str +='	</tr>';
-	str +=' <tr>';
-	str +='		<th align="left" colspan="2"><div id="sms_text_Alert" class="errorMessage"></div></th>';
-	str +='	</tr>';
-	str +=' <tr>';
-	str +='		<th align="left"><div id="sms_text_Label"></div></th>';
-	str +='		<td align="left"><div id="sms_text_Data"></div></td>';				
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<th align="left"><div id="sms_user_name_include_label"></div></th>';
-	str +='		<td align="left"><div id="sms_user_name_include_value"></div></td>';				
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<td align="left" colspan="2">';
-	str +='		<div id="successDiv" style="color:green"></div>';
-	str +='		</td>';
-	str +='	</tr>';
-	str +='	<tr>';
-	str +='		<td align="center" colspan="2"><div id="button_div"></div></td>	';			
-	str +='	</tr>';		
-	str +='	</table>';
-	str +='	<form>';
-	
+	if(subStr == "startDateText")
+	{
+		var EendElmt = document.getElementById("endDateText");
+		if(EendElmt)
+			EendElmt.value = calDateResult;
+	}
+	else if(subStr == "ImpStartDateText")
+	{
+		var IendElmt = document.getElementById("ImpEndDateText");
+		if(IendElmt)
+			IendElmt.value = calDateResult;
+	}
 
-	smsDialog = new YAHOO.widget.Dialog("myDialog",
-			{ width : "650px", 
-              fixedcenter : true, 
-              visible : true,  
-              constraintoviewport : true, 
-			  iframe :true,
-			  modal :true	              
-             } ); 
-
-	smsDialog.setHeader("Cadre SMS...");
-	smsDialog.setBody(str);
-
-	smsDialog.render(); 
-	
+	divElmt.style.display='none';
 }
 
 function buildIndexPageLayout()
@@ -1067,7 +1082,7 @@ function handleSubmit()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(selectedEventObj);
 	var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 
-	callAjax(selectedEventObj,url);
+	callAjaxForDashBoard(selectedEventObj,url);
 }
 
 function handleCancel()
@@ -1086,11 +1101,6 @@ function removeElementsArray(arr)
 }
 function buildNewEventPopup()
 {		
-	
-/*	removeElementsArray(eventCadresArray);
-	removeElementsArray(actionCadresArray);
-	removeElementsArray(actionPlanArray);
-	*/
 	
 	var elmt = document.getElementById('cadreManagementMainDiv');
 	var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
@@ -1226,20 +1236,6 @@ function buildNewEventPopup()
 	eventStr+='</table>';
 	eventStr+='<div id="actionPlansDiv"></div>';
 	eventStr+=createActionPlan("eventAction");
-			
-
-	/*eventStr+='<table class="cadreLevelDivClass">';
-	eventStr+='<tr>';
-	eventStr+='<th><div id="actionPlanLabelDiv"></div></th>';
-	eventStr+='<td colspan="3"><div id="actionPlanDataDiv"></div></td>';		
-	eventStr+='</tr>';
-	eventStr+='</table>';*/
-
-
-	/*eventStr+='<tr>';
-	eventStr+='<td colspan="4" align="right"><a href="javascript:{}" onclick="createActionPlan()"> Create Action Plan</a></td>';		
-	eventStr+='</tr>';
-	eventStr+='<div id="actionDetailsDiv"></div>';*/
 	
 	eventStr+='</div></div>';
 
@@ -1339,7 +1335,7 @@ function buildNewImpDatePopup()
 	eventStr+='<tr>';
 	eventStr+='<th>Important Date</th>';
 	eventStr+='<td>';
-	eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_new_Div\')"/></div>';
+	eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_new_Div\',this.value)"/></div>';
 	eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
 	eventStr+='</td>';		
 	eventStr+='</tr>';
@@ -1463,10 +1459,14 @@ function openShowNews()
 	var showNewsBrowser = window.open("newsDisplayAction.action","shoeNews","scrollbars=yes,height=750,width=1000,left=10,top=10");
 	showNewsBrowser.focus();
 }
-
+var newsDetails = null;
+var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location){
 	
-var jsObj=
+ if(newsajaxCalled == false)
+  {
+	 newsajaxCalled = true;
+    var jsObj=
 	      { 
 		    queryType:queryType,
 			fileType:fileType,
@@ -1480,10 +1480,11 @@ var jsObj=
 	       }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "getNewsToDisplayAction.action?"+rparam;						
-      callAjaxForNews(jsObj,url);
+      callAjaxForDashBoard(jsObj,url);
+  }
 }
-var newsDetails = null;
-function callAjaxForNews(jsObj,url){
+
+function callAjaxForDashBoard(jsObj,url){
 
 var myResults;	
 var callback = {			
@@ -1502,8 +1503,30 @@ var callback = {
 				showNewsDetails(myResults);
 				document.getElementById("ajaxImg").style.display="none";
 			 }
-			
-			}catch (e) {   		
+			else if(jsObj.task == "getUserImportanDates")
+			{
+				buildImportantDates(myResults);
+			}
+			else if(jsObj.task == "getUserImportantEvents")
+			{
+				buildUserImpEvents(myResults);
+			}
+			else if(jsObj.task == "getCadreInfo")
+			{
+				buildCadresInfo(myResults);
+			}
+			else if(jsObj.task=="createEvent")
+			{
+				
+				$("#showImpEventSucessMsg").html("Important Event Created Successfully").dialog({ height: 100 });	
+			}
+			else if(jsObj.task=="createImpDateEvent")
+			{
+				$("#showImpDateSucessMsg").html("Important Date Created Successfully").dialog({ height: 100 });	
+				//addCreatedEvent(myResults,jsObj);			
+				//$("Important Date created successfully")
+			}
+		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
     },
@@ -1691,4 +1714,236 @@ function showNews(i)
 	str+='</center></div>';	 
   document.getElementById("showNewsDiv").innerHTML= str;
  }
- 
+ var impDateAjaxCalled = false;
+ function getUserImportantDates()
+ {
+	if(impDateAjaxCalled == false)
+	{
+		impDateAjaxCalled = true;
+		var jsObj = {
+			task:"getUserImportanDates"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDashBoardInformationAction.action?"+rparam;
+		callAjaxForDashBoard(jsObj ,url);
+	}
+ }
+ function buildImportantDates(results)
+ {
+	var str='';
+	$("#impDatesDiv_main").css("style","block");
+  $("#impDatesDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
+  
+		str+= '<div id="impDatesDiv_head">';
+		str+= '<table><tr>';
+		str+= '	<td><img src="images/icons/indexPage/cal.png"/></span></td>';
+		str+= '	<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Imp Dates</span></td>';
+		str+= '</tr></table>';
+		str+= '</div>';
+		
+	if(results.userImpDates.length!=0)
+	 {
+	    for(var i in results.userImpDates)
+	    {
+			str+= '	<ul class="dashBoardContentList">';
+					
+			str+= '		<li>'+results.userImpDates[i].title+'</li>';	
+																
+			str+= '	</ul>';
+		 }
+	 
+		str+= '</div>';
+		str+= '<div id="impDatesDiv_footer" style="text-align:right">';
+		str+= '	<span class="dashBoardLinks">';
+		str+= '		<a href="cadreManagementAction.action#cadreImpDatesDiv" class="indexPageAnc">View All</a>';
+		str+= '	</span>';
+	 }
+			
+	 else
+	 {
+		$("#impDatesDiv_main").css("padding","20px");
+		str+= '<div id="impDatesDiv_body">';
+		str+= '	<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have '+results.userImpDates.length+' Imp date(s) scheduled today</span>';
+		str+= '	<span class="dashBoardLinks">';
+		str+= '		<a href="javascript:{}" title="Click Here To Create Important Date" onclick="buildNewImpDatePopup()" class="indexPageAnc"  style="margin-left: 61px;font-size: 14px;">Create</a>';
+		str+= '	</span>';
+		str+= '</div>';
+	 }
+		str+= '</div>';
+	
+	$("#impDatesDiv_main").html(str);
+
+ }
+
+function handleImpDateSubmit()
+{	
+	var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
+	var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
+	var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
+	var ImpDescVal = document.getElementById("ImpdescTextArea").value;
+	ImpDescVal = removeEnterStrokeForString(ImpDescVal);
+
+	var repeatFreqElmt = document.getElementById("repeatFreqSelect");
+	repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
+		
+		//validation code for Imp dates
+		if(ImpeventNameVal == '')
+		{
+		document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Important Date Title </font>';
+		return;
+		}
+		else if ( /[^A-Za-z\d\s]/.test(ImpeventNameVal))
+		{ 
+			document.getElementById("errorMesgDIV").innerHTML = '<font color="red"> Important Date Title cannot allow special characters & Numbers</font>';
+			return;
+		}
+		else if(ImpDescVal == '')
+		{
+		   document.getElementById("errorMesgDIV").innerHTML = '<font color="red">Please Enter Description</font>';
+		  return;
+		}
+
+		 if(repeatFreqVal == "No Repeat")
+		{
+			ImpendDateVal = ImpstartDateVal;
+		}
+	
+	selectedDateObj.importantDateId="";
+	selectedDateObj.eventId="";
+	selectedDateObj.eventType="";
+	selectedDateObj.eventName=ImpeventNameVal;
+	selectedDateObj.startDate=ImpstartDateVal;	
+	selectedDateObj.endDate=ImpendDateVal;
+	selectedDateObj.desc=ImpDescVal;
+	selectedDateObj.frequency=repeatFreqVal;
+	selectedDateObj.isDeleted=repeatFreqVal;
+	selectedDateObj.task="createImpDateEvent";
+
+			
+	var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
+	var url = "createEventAction.action?"+rparam;		
+	callAjaxForDashBoard(selectedDateObj,url);
+newDateDialog.destroy();
+}
+	
+function handleImpDateCancel()
+{
+
+	this.cancel();
+}
+var impEventAjaxCalled = false;
+
+function getUserImpEvents()
+{
+ if(impEventAjaxCalled == false)
+	{
+		impEventAjaxCalled = true;
+		var jsObj = {
+			task:"getUserImportantEvents"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDashBoardInformationAction.action?"+rparam;
+		callAjaxForDashBoard(jsObj ,url);
+	}
+
+}
+function buildUserImpEvents(results)
+{
+	var str='';
+	$("#impEventsDiv_main").css("style","display");
+	$("#impEventsDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
+	str+='<div id="impEventsDiv_head">';
+	str+='<table><tr>';
+	str+='<td><img src="images/icons/indexPage/cal.png"/></span></td>';
+	str+='<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today \'s Event</span></td>';
+	str+='</tr></table>';
+	str+='</div>';
+	
+	if(results.userEvents.length!=0)
+	{
+	  for(var i in results.userEvents)
+	   {
+		str+='	<ul class="dashBoardContentList">';
+	    	str+='<li>'+results.userEvents[i].eventDisplayTitle+'</li>	';
+		str+='</ul>';
+	  }
+		
+	
+	str+='</div>';
+	str+='<div id="impEventsDiv_footer" style="text-align:right">';
+	str+='	<span class="dashBoardLinks">';
+	str+='		<a href="cadreManagementAction.action#yui-gen3" class="indexPageAnc">View All</a>';
+	str+='	</span>';
+	str+='</div>';
+	}
+	else
+	{
+		$("#impEventsDiv_main").css("padding","20px");
+		str+='<div id="impEventsDiv_body">';
+		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.userEvents.length+'  event(s) scheduled today</span>';
+		str+='	<span class="dashBoardLinks" >';
+		str+='		<a href="javascript:{}" title="Click Here To Create Important Events" class="indexPageAnc" onclick="buildNewEventPopup()" style="margin-left: 61px;font-size: 14px;">Create</a>';
+		str+='	</span>';
+	}
+	str+='</div>';
+	$("#impEventsDiv_main").html(str);
+}
+var cadresAjaxCalled = false;
+function getCadresInfo()
+{
+	if(cadresAjaxCalled == false)
+	{
+		cadresAjaxCalled = true;
+	  var jsObj = 
+		{
+			task:"getCadreInfo"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDashBoardInformationAction.action?"+rparam;
+		callAjaxForDashBoard(jsObj,url);
+	}
+}
+function buildCadresInfo(results)
+{
+	var str='';
+	
+	$("#cadresDiv_main").css("style","display");
+	$("#cadresDiv_main").css("box-shadow","0 0 1px rgba(0, 0, 0, 0.5), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.09)");
+
+    str+='<div id="cadresDiv_head">';
+    str+='	<table><tr>';
+	str+='		<td><img src="images/icons/indexPage/group_icon.png"/></span></td>';
+	str+='		<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Cadres Info</span></td>';
+	str+='	</tr></table>';
+	str+='</div>';
+	str+='<div id="cadresDiv_body" style="margin-bottom: -14px;">';
+	str+='	<span class="dashBoardCenterContentBody" style="color:#4B74C6"></span>';
+	if(results.cadresByCadreLevel !=null)
+	{
+	  $.each(results.cadresByCadreLevel,function(key,value)
+		{
+			str+='	<ul class="dashBoardContentList">';
+	
+			str+='		<li>'+key+'   Level Cadres - '+value+' </li>';
+		
+			str+='	</ul>';
+		});
+	
+	str+='</div> ';
+	str+='<div id="cadresDiv_footer" style="text-align:right;margin: 10px;margin-right: 94px;">';
+	str+='	<span class="dashBoardLinks">';
+	str+='		<a href="cadreManagementAction.action#regionLevelCadreDivHead" class="indexPageAnc" style="font-size: 13px;">View All</a>';
+	str+='	</span>';
+	
+    str+='</div>';
+	}
+	else
+	{
+		$("#cadresDiv_main").css("padding","20px");
+		$("#cadresDiv_body").css("margin","0px");
+		str+= '<div id="div_body">';
+		str+= '	<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  0  Cadres</span>';
+	}
+	 str+='</div>';
+	$("#cadresDiv_main").html(str);
+}
