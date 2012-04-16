@@ -3714,7 +3714,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				userId = problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId();
 			}
 			
-			message = "Your Problem Added Successfully.";
+			message = "Your Problem Posted Successfully.";
 			message += "\nYour Problem Reference Number is : "+problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getReferenceNo()+".";
 			message += "\nThis Will be usefull for Further Reference";
 			
@@ -3755,7 +3755,8 @@ public class ProblemManagementService implements IProblemManagementService {
 		FileVO fileVO=null;
 		List<FileVO> filevo1=new ArrayList<FileVO>();
 		List<Object[]> result1 = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
-        for (Object[] objects : result1) {
+       
+		for (Object[] objects : result1) {
 	    fileVO=new FileVO();
 	    fileVO.setProblemFileId((Long)objects[0]);
 	    fileVO.setProblem(objects[1].toString());
@@ -3810,7 +3811,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			fileVO.setFile(images[0].toString());
 			fileVO.setTitle(images[1].toString());
 			fileVO.setDescription(images[2].toString());
-			fileVO.setPathOfFile(images[3].toString());
+			fileVO.setPathOfFile(IConstants.UPLOADED_FILES+"/Problem_Files/"+images[0]);
 			fileVOList.add(fileVO);			
 		}
 		return fileVOList; 
