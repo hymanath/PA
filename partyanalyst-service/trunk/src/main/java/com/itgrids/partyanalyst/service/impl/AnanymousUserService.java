@@ -57,7 +57,6 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class AnanymousUserService implements IAnanymousUserService {
 
