@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cadre Complete Profile</title>
+<title>Problem Related Image</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -124,24 +124,20 @@
 
 <script type="text/javascript">
 var fileName = '${fileName}';
-var str=' ';
+
 function getImageInfo()
 {
+	var str=' ';
 	var elmt = document.getElementById("imageInfoMain");
-	
-
-
-str += '<img  src="uploaded_files/'+fileName+'"/>';
-
-elmt.innerHTML = str;
+	str += '<img  src="uploaded_files/Problem_Files/'+fileName+'"/>';
+   elmt.innerHTML = str;
 }
 </script>
 </head>
 <body>
 
-<div id="imageInfoMain">
-		
-		</div>
+<div id="imageInfoMain"></div>
+
 <script type="text/javascript">
 getImageInfo();
 
