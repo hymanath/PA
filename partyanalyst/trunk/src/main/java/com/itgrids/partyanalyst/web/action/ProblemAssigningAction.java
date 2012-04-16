@@ -607,8 +607,8 @@ public String postImagesAndFiles(){
 		try {
 			
 			String fileName;
-			String filePath1 = context.getRealPath("/");
-			String filePath = filePath1 + "/uploaded_files";
+			//String filePath1 = context.getRealPath("/");
+			String filePath = "/uploaded_files/Problem_Files";
 			problemFilepath = new ArrayList<String>();
 			System.out.println("problemHistoryID"+problemBeanVO.getProblemHistoryId());
 			tempFileName=new ArrayList<String>();
