@@ -23,9 +23,10 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class AnalyzeConstituencyPopupAction extends ActionSupport implements ServletRequestAware
 {
+	private static final long serialVersionUID = 2257011258025761934L;
 	private HttpServletRequest request;
 	private HttpSession session;
-	private static final Logger log = Logger.getLogger(ProblemPostControlAction.class);
+	private static final Logger log = Logger.getLogger(AnalyzeConstituencyPopupAction.class);
 	
 	JSONObject jObj = null;
 	private String task = null;
