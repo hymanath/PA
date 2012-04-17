@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -73,8 +74,14 @@ public class CommentsControlAdminAction extends ActionSupport implements Servlet
 
 	public String execute() throws Exception
 	{
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
 		
-		return Action.SUCCESS;
+		if(registrationVO !=null && registrationVO.getIsAdmin().equals("true"))
+		{
+			return Action.SUCCESS;
+		}
+		else
+			return Action.ERROR;
 	}
 	
 	public String getComments()
