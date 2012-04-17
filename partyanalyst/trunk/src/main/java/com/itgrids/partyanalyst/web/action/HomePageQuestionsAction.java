@@ -11,13 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
-
-
-
-
-
-
-
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HomePageQuestionsAction extends ActionSupport implements
@@ -65,11 +60,14 @@ public class HomePageQuestionsAction extends ActionSupport implements
 
 	
 	
-	public String execute(){
+	public String execute()
+	{
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
 		
-		return SUCCESS;
+		if(registrationVO !=null && registrationVO.getIsAdmin().equals("true"))
+			return SUCCESS;
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
-		
-
-
+	
 }
