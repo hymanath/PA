@@ -131,33 +131,40 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		this.userType = userType;
 	}
 
-	public String registration(){
-		List<String> type = new ArrayList<String>();
-		if(type.size()==0){
-			type.add("COUNTRY");
-			type.add("STATE");
-			type.add("DISTRICT");
-			type.add("MLA");
-			type.add("MP");			
-		}
-		if(userType.size() == 0)
+	public String registration() throws Exception
+	{
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		if(registrationVO !=null && registrationVO.getIsAdmin().equalsIgnoreCase("true"))
 		{
-			userType.add("Party");
-			userType.add("Politician");			
+			List<String> type = new ArrayList<String>();
+			if(type.size()==0){
+				type.add("COUNTRY");
+				type.add("STATE");
+				type.add("DISTRICT");
+				type.add("MLA");
+				type.add("MP");			
+			}
+			if(userType.size() == 0)
+			{
+				userType.add("Party");
+				userType.add("Politician");			
+			}
+			if(gender.size() == 0){
+				gender.add("Male");
+				gender.add("Female");
+			}		
+			
+			parties = staticDataService.getStaticParties();
+			HttpSession session = request.getSession();
+			session.setAttribute("type", type);
+			session.setAttribute("userType", userType);
+			session.setAttribute("gender", gender);
+			session.setAttribute("parties", parties);
+			
+			return Action.SUCCESS;
 		}
-		if(gender.size() == 0){
-			gender.add("Male");
-			gender.add("Female");
-		}		
-		
-		parties = staticDataService.getStaticParties();
-		HttpSession session = request.getSession();
-		session.setAttribute("type", type);
-		session.setAttribute("userType", userType);
-		session.setAttribute("gender", gender);
-		session.setAttribute("parties", parties);
-		
-		return Action.SUCCESS;
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 	public String subUserRegistration()
