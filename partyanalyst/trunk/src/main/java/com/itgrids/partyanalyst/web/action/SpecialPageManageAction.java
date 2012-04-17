@@ -21,6 +21,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
@@ -238,10 +239,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		this.specialPageService = specialPageService;
 	}
 
-	public String execute()
+	public String execute()throws Exception
 	{
-		specialPages = specialPageService.getSpecialPageIdsList();
-		return SUCCESS;
+		RegistrationVO registrationVO  = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		if(registrationVO !=null && registrationVO.getIsAdmin().equalsIgnoreCase("true"))
+		{
+			specialPages = specialPageService.getSpecialPageIdsList();
+			return SUCCESS;
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	public String getEventDescription(){
 		try{
