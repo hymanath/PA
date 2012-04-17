@@ -99,18 +99,19 @@ public class ProblemApprovalAdminAction extends ActionSupport implements Servlet
 	}
 
 	public String execute() throws Exception 
-	
 	{
-		return Action.SUCCESS;		
+		RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(user !=null && user.getIsAdmin().equals("true"))
+		  return Action.SUCCESS;
+		else
+			return Action.ERROR;
 	}
 	
 	
-	public String dataApprovalajaxCallHandler() throws Exception{
-		session = request.getSession();
-		String rparam = null;
-		rparam = getTask();
+	public String dataApprovalajaxCallHandler() throws Exception
+	{
 		
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
