@@ -121,12 +121,17 @@ public class FeedbackAdminApprovalAction extends ActionSupport implements Servle
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
+		if(user !=null && user.getIsAdmin().equals("true"))
+		{
 	   /* userfeedbackVO.setUserId(user.getRegistrationID());
 		userfeedbackVO.setUserType(user.getUserStatus());*/
 	
 			feedbackList =  opinionPollService.getAllDetailsForToday();
 			request.setAttribute("feedbackList", feedbackList);
 			return SUCCESS;		
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 	
