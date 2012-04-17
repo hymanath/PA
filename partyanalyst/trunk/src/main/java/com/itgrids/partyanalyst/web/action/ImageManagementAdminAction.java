@@ -14,8 +14,11 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ImageManagementAdminAction extends ActionSupport implements
@@ -104,32 +107,47 @@ public class ImageManagementAdminAction extends ActionSupport implements
 	}
 
 	public String execute() throws Exception {
-		if(task != null){
-			try{
-				jObj = new JSONObject(getTask());
-				
-				if(jObj.getString("task").equals("getImage")){	
-		result=problemManagementService.getImageDetails();
 		
-				}
-				else if(jObj.getString("task").equals("performDeletionOrAcceptenceImage")){	
-					JSONArray selectedProblemFileIds = jObj.getJSONArray("selectedProblemFileIds");
-					Integer problemFilesIds[] = new Integer[selectedProblemFileIds.length()];					
-					for(int i=0; i<selectedProblemFileIds.length(); i++){
-						problemFilesIds[i] = (Integer)selectedProblemFileIds.get(i);
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		
+	  if(registrationVO !=null)
+	   {
+		  if(registrationVO.getIsAdmin().equals(IConstants.TRUE))
+		  {	   
+			 if(task != null)
+			  {
+				try{
+					jObj = new JSONObject(getTask());
+					
+					if(jObj.getString("task").equals("getImage"))
+					{	
+						result=problemManagementService.getImageDetails();
+			
 					}
-					if(jObj.get("choice").equals("accept")){						
-						problemManagementService.acceptSelectedImagesByAdmin(problemFilesIds);
-					}			
-					else{						
-						problemManagementService.deleteSelectedImagesByAdmin(problemFilesIds);
+					else if(jObj.getString("task").equals("performDeletionOrAcceptenceImage"))
+					{	
+						JSONArray selectedProblemFileIds = jObj.getJSONArray("selectedProblemFileIds");
+						Integer problemFilesIds[] = new Integer[selectedProblemFileIds.length()];					
+						for(int i=0; i<selectedProblemFileIds.length(); i++){
+							problemFilesIds[i] = (Integer)selectedProblemFileIds.get(i);
+						}
+						if(jObj.get("choice").equals("accept")){						
+							problemManagementService.acceptSelectedImagesByAdmin(problemFilesIds);
+						}			
+						else{						
+							problemManagementService.deleteSelectedImagesByAdmin(problemFilesIds);
+						}
+					 }
+					}catch(Exception e){
+						e.printStackTrace();
 					}
-					}
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-		}
+			  }
+		  }
+	   
 		return SUCCESS;
+	   } 
+	  else
+		  return Action.ERROR;
 	}
 
 }
