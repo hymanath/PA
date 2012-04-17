@@ -228,54 +228,65 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
-		
-		OpinionPollVO opinionPollVO2 = new OpinionPollVO();
-		
-		opinionPollVO2.setTitle(getTitle().trim());
-		opinionPollVO2.setDescription(getDescription().trim());
-		opinionPollVO2.setOpinionPollStartDate(sdf.parse(getPollStartDate()));
-		opinionPollVO2.setOpinionPollEndDate(sdf.parse(getPollEndDate()));
-		opinionPollVO2.setRegistration_id(regVO.getRegistrationID());
-		
-		List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
-		
-		StringTokenizer st =  new StringTokenizer(getOptions(),"^");
-		
-		while(st.hasMoreElements())
+	  try
+	  {
+		if(regVO  !=null && regVO.getIsAdmin().equals(IConstants.TRUE))
 		{
-			OptionVO optionVO = new OptionVO();
-			String str = st.nextElement().toString().trim();
-	
-			if(str.length() != 0)
+			OpinionPollVO opinionPollVO2 = new OpinionPollVO();
+			
+			opinionPollVO2.setTitle(getTitle().trim());
+			opinionPollVO2.setDescription(getDescription().trim());
+			opinionPollVO2.setOpinionPollStartDate(sdf.parse(getPollStartDate()));
+			opinionPollVO2.setOpinionPollEndDate(sdf.parse(getPollEndDate()));
+			opinionPollVO2.setRegistration_id(regVO.getRegistrationID());
+			
+			List<OptionVO>  optionVOs = new ArrayList<OptionVO>(); 
+			
+			StringTokenizer st =  new StringTokenizer(getOptions(),"^");
+			
+			while(st.hasMoreElements())
 			{
-			  optionVO.setOption(str);
-			  optionVOs.add(optionVO);
+				OptionVO optionVO = new OptionVO();
+				String str = st.nextElement().toString().trim();
+		
+				if(str.length() != 0)
+				{
+				  optionVO.setOption(str);
+				  optionVOs.add(optionVO);
+				}
+				
 			}
 			
-		}
+			List<QuestionsOptionsVO> questionsOptionsVOs =new ArrayList<QuestionsOptionsVO>();
+			
+			QuestionsOptionsVO questionsOptionsVO1 = new QuestionsOptionsVO();
 		
-		List<QuestionsOptionsVO> questionsOptionsVOs =new ArrayList<QuestionsOptionsVO>();
-		
-		QuestionsOptionsVO questionsOptionsVO1 = new QuestionsOptionsVO();
-	
-		questionsOptionsVO1.setQuestion(getQuestion().trim());
-		questionsOptionsVO1.setOptions(optionVOs);
-						
-	    questionsOptionsVOs.add(questionsOptionsVO1);
-	    
-	   	opinionPollVO2.setQuesitons(questionsOptionsVOs); 
-	   
-	   	boolean result = opinionPollService.createPoll(opinionPollVO2,regVO.getRegistrationID()); 
-	   	
-	   	if(result == false){	
-	   		resultStatus = 1;
-			return ERROR;
+			questionsOptionsVO1.setQuestion(getQuestion().trim());
+			questionsOptionsVO1.setOptions(optionVOs);
+							
+		    questionsOptionsVOs.add(questionsOptionsVO1);
+		    
+		   	opinionPollVO2.setQuesitons(questionsOptionsVOs); 
+		   
+		   	boolean result = opinionPollService.createPoll(opinionPollVO2,regVO.getRegistrationID()); 
+		   	
+		   	if(result == false){	
+		   		resultStatus = 1;
+				return ERROR;
+			}
+			else
+			{
+			  resultStatus = 0;
+			}
+		   	return SUCCESS;
 		}
 		else
-		{
-		  resultStatus = 0;
-		}
-		return SUCCESS;
+			return IConstants.NOT_LOGGED_IN;
+		
+	  }catch (Exception e) {
+		e.printStackTrace();
+		return ERROR;
+	}
 	}
 	
 }
