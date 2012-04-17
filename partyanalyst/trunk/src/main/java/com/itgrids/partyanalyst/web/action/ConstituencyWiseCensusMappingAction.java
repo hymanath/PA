@@ -12,8 +12,10 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -74,12 +76,16 @@ public class ConstituencyWiseCensusMappingAction extends ActionSupport implement
 
 	public String execute()
 	{
-		statesListForCensus = new ArrayList<SelectOptionVO>();		
-		statesListForCensus.add(new SelectOptionVO(1L,"Andhra Pradesh"));
-		statesListForCensus.add(new SelectOptionVO(24L,"Tamil Nadu"));
-		
-			
-		return Action.SUCCESS;
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		if(registrationVO !=null && registrationVO.getIsAdmin().equals("true"))
+		{
+			statesListForCensus = new ArrayList<SelectOptionVO>();		
+			statesListForCensus.add(new SelectOptionVO(1L,"Andhra Pradesh"));
+			statesListForCensus.add(new SelectOptionVO(24L,"Tamil Nadu"));
+				return Action.SUCCESS;
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 	public String censusMappingAjaxHandler()
