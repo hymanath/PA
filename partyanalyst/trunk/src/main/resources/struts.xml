@@ -139,7 +139,16 @@
 			<result type="chain" name="redirectUrl">${url}</result>
 			<result type="redirect" name="partyManagementAction">partyManagementAction.action</result>
 			<result type="redirect" name="candidateElectionResultsAction">candidateElectionResultsAction.action</result>
-			
+			<result type="redirect" name="imageManagementAdminAction">imageManagementAdminAction.action</result>
+			<result type="redirect" name="commentsControlAdminAction">commentsControlAdminAction.action</result>
+			<result type="redirect" name="problemApprovalAdminAction">problemApprovalAdminAction.action</result>
+			<result type="redirect" name="constituencyWiseCensusMappingAction">constituencyWiseCensusMappingAction.action</result>
+			<result type="redirect" name="feedbackAdminApprovalAction">feedbackAdminApprovalAction.action</result>
+			<result type="redirect" name="userRegPageAction">userRegPageAction.action</result>
+			<result type="redirect" name="opinionPollPostAction">opinionPollPost.action</result>
+			<result type="redirect" name="homePageQuestionsAction">homePageQuestionsAction.action</result>
+			<result type="redirect" name="specialPageManageAction">specialPageManageAction.action</result>
+
 			<result>/jsp/loginsuccess.jsp</result>
 
 			 <!-- Problem Management Flow From Different Pages -->
@@ -437,6 +446,7 @@
        	</action>  
          
          <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
+         <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=feedbackAdminApprovalAction</result>
           <result name="success">/jsp/feedbackAdminApproval.jsp</result>
         </action>
         
@@ -531,6 +541,7 @@
 
 		<action name="userRegPageAction" class="userAction" method="registration">
 			<result name="success">/jsp/registration.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=userRegPageAction</result>
 		</action>
 		
 		<action name="subUserRegPageAction" class="userAction" method="subUserRegistration">
@@ -1714,7 +1725,7 @@
 		<action name="opinionPollPostAction" class="opinionPollPostAction">
 			<result name="success">/jsp/opinionPollPost.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=opinionPollPostAction</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=opinionPollPostAction</result>
          </action>	
 
 
@@ -1729,7 +1740,7 @@
          <action name="homePageQuestionsAction" class="homePageQuestionsAction">
 			<result name="success">/jsp/addHomePageQuestions.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=homePageQuestionsAction</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=homePageQuestionsAction</result>
          </action>	
          
          <action name="homePageQuestionsPostAction" class="homePageQuestionsPostAction">
@@ -1873,7 +1884,7 @@
         
         <action name="imageManagementAdminAction" class="com.itgrids.partyanalyst.web.action.ImageManagementAdminAction"> 
              <result name="success">/jsp/adminImageManagement.jsp</result> 
-             <result name="error">/jsp/loginForm.jsp?src=problemManagementAdminAction</result>	
+             <result name="error">/jsp/loginForm.jsp?src=imageManagementAdminAction</result>	
 			 <result name="input">/jsp/adminImageManagement.jsp</result>
         </action>
         
@@ -2264,7 +2275,7 @@
         </action>
        
        <action name="commentsControlAdminAction" class="commentsControlAdminAction">
-		   <result name="error">/jsp/commentsControlAdminPage.jsp</result>
+		   <result name="error">/jsp/loginForm.jsp?src=commentsControlAdminAction</result>
            <result name="success">/jsp/commentsControlAdminPage.jsp</result>	
         </action>
         
@@ -2315,6 +2326,7 @@
        </action>
        
        <action name="problemApprovalAdminAction" class="problemApprovalAdminAction">
+       		<result name="error">/jsp/loginForm.jsp?src=problemApprovalAdminAction</result>
         	<result name="success">/jsp/problemApprovalAdmin.jsp</result>           
         </action>
         <action name="approvalsToScrutinizeAction" class="problemApprovalAdminAction" method="dataApprovalajaxCallHandler">
@@ -2359,6 +2371,7 @@
        	</action>   
        	
        	<action name="constituencyWiseCensusMappingAction" class="constituencyWiseCensusMappingAction">
+       	<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=constituencyWiseCensusMappingAction</result>
 		   <result name="input">/jsp/constituencyWiseCensusMapping.jsp</result>
            <result name="success">/jsp/constituencyWiseCensusMapping.jsp</result>
         </action>
@@ -2873,7 +2886,7 @@
 		
 		<action name="specialPageManageAction" class="specialPageManageAction">
 			<result name="success">/jsp/specialPageManagePage.jsp</result> 
-			<result name="error">/jsp/loginForm.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=specialPageManageAction</result>
 		</action>
 		
 		<action name="specialPagePhotoGallaryAction" class="specialPageAction" method="ajaxCallHandlerForSpecialPage">
