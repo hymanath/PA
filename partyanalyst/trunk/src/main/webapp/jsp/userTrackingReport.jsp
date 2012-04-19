@@ -45,6 +45,7 @@
 	margin-left: 13px;
 	margin-top: 14px;
 	width: 950px;
+	margin-bottom: 20px;
 }
 #headerImageCenterSpan{
 	top: 5px;
@@ -55,6 +56,41 @@
 }
 .tinyDateCal {
     position: absolute;
+}
+.VDtableClass th {
+	background:#EEEEEE;
+	font-weight:bold;
+}
+
+.VDtableClass tr:nth-child(2n+1) {
+    background:#EDF5FF;
+}
+.VDtableClass{
+ border:1px solid #CCCCCC;
+ padding: 1px;
+}
+.headingStyle{
+  background: none repeat scroll 0 0 #21B2ED;
+  color: #FFF;
+  font-weight: bold;
+  border-radius: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background:#21B2ED;
+}
+#headingStyle{
+background: none repeat scroll 0 0 #06ABEA;
+    border-left-width: 3px;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 14px;
+	 width: 295px;
+    text-align: center;
+	
 }
 </style>
 <script type="text/javascript">
@@ -121,6 +157,30 @@ function callAjax(jsObj, url){
 				else if(jsObj.task == "betweendates"){
 					displayUserDetails(myResults);
 				}
+				else if(jsObj.task == "betweendatesVisitorsDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "todayVisitorsDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "thisMonthVisitorsDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "thisWeekVisitorsDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "todayUserDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "thisWeekUserDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "thisMonthUserDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
+				else if(jsObj.task == "betweendatesUserDetails"){
+					showBetweendatesVisitorsDetails(myResults);
+				}
 			}
 			catch(e){
 				alert("Invalid JSON result" + e);  
@@ -141,6 +201,167 @@ function displayUserDetails(myResults){
 		$("#totTime"+i).html(myResults[i].totalTimeSpent);
 		$("#avgTime"+i).html(myResults[i].avgTimeSpent);
 	}
+}
+function getMoreVisitorDetails()
+{
+  if(document.getElementById("today").checked == true)
+	{
+	  getVisitorDetails("todayVisitorsDetails","","");
+
+	  headingDetails("ToDay Total Visitors Details"); 
+	 }
+  if(document.getElementById("thisweek").checked == true)
+	{
+	  getVisitorDetails("thisWeekVisitorsDetails","","");
+
+		headingDetails("This Week Total Visitors Details");
+	  
+	}
+  if(document.getElementById("thismonth").checked == true)
+	{
+	  getVisitorDetails("thisMonthVisitorsDetails","","");
+
+	  headingDetails("This Month Total Visitors Details");
+	}
+  if(document.getElementById("betweendates").checked == true)
+	{
+	  var fromDate = "";
+	  var toDate = "";
+	  fromDate = document.getElementById("fromDate").value;
+	  toDate = document.getElementById("toDate").value;
+	  getVisitorDetails("betweendatesVisitorsDetails",fromDate,toDate);
+	  headingDetails(''+fromDate+' to '+toDate+' Total Visitor Details');
+	}
+}
+
+function getVisitorDetails(task , fromDate , toDate)
+{
+   var timeST = new Date().getTime();
+   var jsObj = 
+	   {
+		fromDate : fromDate,
+		toDate   : toDate,
+		task     : task
+	   }
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getVisitorsMoreDetailsAction.action?"+rparam;
+	callAjax(jsObj, url);	
+}
+
+function getMoreDetails(userType)
+{
+ if(document.getElementById("today").checked == true)
+	{
+	  getUserMoreDetails("todayUserDetails","","",userType);
+	  if(userType == null)
+	    headingDetails("ToDay Guest Visitors Details");
+	  if(userType == "FREE_USER")
+	    headingDetails("ToDay Free Users Details");
+	  if(userType == "PARTY_ANALYST_USER")
+		headingDetails("ToDay Customers Details");
+	}
+  if(document.getElementById("thisweek").checked == true)
+	{
+	  getUserMoreDetails("thisWeekUserDetails","","",userType);
+	  if(userType == null)
+	     headingDetails("This Week Guest Visitors Details");
+	  if(userType == "FREE_USER")
+         headingDetails("This Week Free Users Details");
+	  if(userType == "PARTY_ANALYST_USER")
+		  headingDetails("This Week Customers Details");
+
+	}
+  if(document.getElementById("thismonth").checked == true)
+	{
+	  getUserMoreDetails("thisMonthUserDetails","","",userType);
+	  if(userType == null)
+		  headingDetails("This Month Guest Visitors Details");
+	  if(userType == "FREE_USER")
+		  headingDetails("This Month Free Users Details");
+	  if(userType == "PARTY_ANALYST_USER")
+		  headingDetails("This Month Customers Details");
+	}
+  if(document.getElementById("betweendates").checked == true)
+	{
+	  var fromDate = "";
+	  var toDate = "";
+	  fromDate = document.getElementById("fromDate").value;
+	  toDate = document.getElementById("toDate").value;
+	  getUserMoreDetails("betweendatesUserDetails",fromDate,toDate,userType);
+	  if(userType == null)
+		  headingDetails(''+fromDate+' to '+toDate+' Guest Visitors Details');
+	  if(userType == 'FREE_USER')
+		  headingDetails(''+fromDate+' to '+toDate+' Free Users Details');
+	  if(userType == 'PARTY_ANALYST_USER')
+		  headingDetails(''+fromDate+' to '+toDate+' Customers Details');
+	}
+}
+
+function getUserMoreDetails(task , fromDate , toDate , userType)
+{
+var timeST = new Date().getTime();
+   var jsObj = 
+	   {
+		fromDate : fromDate,
+		toDate   : toDate,
+		userType : userType,
+		task     : task
+	   }
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getUserMoreDetailsAction.action?"+rparam;
+	callAjax(jsObj, url);	
+}
+
+
+
+function showBetweendatesVisitorsDetails(result)
+{
+
+if(result.length == 0)
+{
+
+document.getElementById("visitorsDetailsDiv").innerHTML = "No Records Found";
+return;
+}
+
+var visitorsDetailsDiv = document.getElementById("visitorsDetailsDiv");
+var str='';
+
+str +='<table width="100%" class="VDtableClass">';
+str +='<tr>';
+if(result[0].remoteAddress != null)
+str +='<th width="15%">Host Name</th>';
+if(result[0].userName != null)
+str +='<th width="15%">User Name</th>';
+str +='<th width="18%">No.Of Pages</th>';
+str +='<th width="15%">Time Spent</th>';
+str +='<th width="26%">Landing Page</th>';
+str +='<th width="26%">Exit Page</th>';
+str +='</tr>';
+
+for(var i=0; i<result.length; i++)
+{
+str +='<tr>';
+if(result[i].remoteAddress != null)
+  str +='<td  width="15%">'+result[i].remoteAddress+'</td>';
+if(result[i].remoteAddress == null && result[i].userName != null)
+str +='<td width="15%">'+result[i].userName+'</td>';
+str +='<td  width="10%">'+result[i].noOfPages+'</td>';
+str +='<td  width="15%">'+result[i].spentTime+' hours</td>';
+str +='<td  width="40%">'+result[i].landingPage+'</td>';
+str +='<td  width="40%">'+result[i].exitPage+'</td>';
+
+str += '</tr>';
+}
+str +='</table>';
+
+visitorsDetailsDiv.innerHTML = str;
+}
+
+function headingDetails(text)
+{
+document.getElementById("headingStyle").style.display = 'block';
+document.getElementById("headingStyle").innerHTML = text;
 }
 </script>
 </head>
@@ -213,7 +434,7 @@ function displayUserDetails(myResults){
 			<td><div id="avgPag3"></div></td>
 			<td><div id="totTime3"></div></td>
 			<td><div id="avgTime3"></div></td>
-			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="getMoreVisitorDetails()">More Details</a></td>
 		</tr>
 		<tr>
 			<th>Free Users</th>
@@ -222,7 +443,7 @@ function displayUserDetails(myResults){
 			<td><div id="avgPag0"></div></td>
 			<td><div id="totTime0"></div></td>
 			<td><div id="avgTime0"></div></td>
-			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="getMoreDetails('FREE_USER')">More Details</a></td>
 		</tr>
 		<tr>
 			<th>Customers</th>
@@ -231,7 +452,7 @@ function displayUserDetails(myResults){
 			<td><div id="avgPag1"></div></td>
 			<td><div id="totTime1"></div></td>
 			<td><div id="avgTime1"></div></td>
-			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="getMoreDetails('PARTY_ANALYST_USER')">More Details</a></td>
 		</tr>
 		<tr>
 			<th>Guest Visitors</th>
@@ -240,10 +461,14 @@ function displayUserDetails(myResults){
 			<td><div id="avgPag2"></div></td>
 			<td><div id="totTime2"></div></td>
 			<td><div id="avgTime2"></div></td>
-			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="getMoreDetails(null)">More Details</a></td>
 		</tr>
 	</table>
-	</div>	
+	</div>
+	<div  style="margin-top: 30px; margin-left: 6px;"><span id="headingStyle" style="display:none;"></span><></div>
+	<div style="background: #FFF;margin-top:15px;margin-bottom: 5px;padding-bottom:20px;margin-left: 5px;">
+	<div id="visitorsDetailsDiv" class=""></div>
+	</div>
 	</fieldset>
 	</div>
 </div>
