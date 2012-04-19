@@ -1051,6 +1051,7 @@
 	<bean name="userTrackingReportService" class="com.itgrids.partyanalyst.service.impl.UserTrackingReportService">
 		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="userTrackingDAO" ref="userTrackingDAO" />
 	</bean>
 	
 </beans>		

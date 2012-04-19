@@ -6,49 +6,141 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>User Tracking Analysis</title>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
+
 <style type="text/css">
-#userTrackingMainDiv
-{
-margin-left: auto;
-margin-right: auto;
-float: none;
-width:995px;
+.visTable td{	
+    text-align:center;
+    background-color:AliceBlue;
+	width:150px;
+	padding:5px 0px 5px 0px;
 }
-#headerImageCenterDiv
-{
- background-image: url("images/icons/constituencyManagement/header_body_blue.png");
- color:#FFFFFF;
- text-align: center;
- width: 240px;
- height:30px;
+.visTable{
+    border-collapse:separate;
+	margin-left:auto;
+	margin-right:auto;
 }
-.f2
-{
-border:2px solid #CFD6DF;
-margin-left: 13px;
-margin-top: 14px;
-width: 950px;
+.visTable th{
+	text-align:center;
+	width:330px;
+	background-color:PowderBlue;
+	font-weight:bold;
 }
-#headerImageCenterSpan
-{
-top: 5px;
-position: relative;
+#userTrackingMainDiv{
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+	width:995px;
 }
-#visitedUserSearch_head
-{
-background:#EEF4F6;
+#headerImageCenterDiv{
+	 background-image: url("images/icons/constituencyManagement/header_body_blue.png");
+	 color:#FFFFFF;
+	 text-align: center;
+	 width: 240px;
+	 height:30px;
+}
+.f2{
+	border:2px solid #CFD6DF;
+	margin-left: 13px;
+	margin-top: 14px;
+	width: 950px;
+}
+#headerImageCenterSpan{
+	top: 5px;
+	position: relative;
+}
+#visitedUserSearch_head{
+	background:#EEF4F6;
+}
+.tinyDateCal {
+    position: absolute;
 }
 </style>
 <script type="text/javascript">
-
+$(document).ready(function(){
+	getUserDetails('getUniqueVisitorsAction.action?');	
+});
 function showDates(){
-
-if(document.getElementById("betweendates").checked == true)
-document.getElementById("showDates").style.display = "block";
-else
-	document.getElementById("showDates").style.display = "none";
-
+	if(!($("#betweendates").is(':checked')))
+		getUserDetails('getUniqueVisitorsAction.action?');
+	else{		
+		if($("#fromDate").val()!="" && $("#toDate").val()!="")
+			getUserDetails('getUniqueVisitorsAction.action?');
+	}
+	
+	if(document.getElementById("betweendates").checked == true)
+		document.getElementById("showDates").style.display = "block";
+	else
+		document.getElementById("showDates").style.display = "none";
+}
+function getUserDetails(actionUrl){
+	var task='';
+	var fromDate='';
+	var toDate='';
+	if($("#today").is(':checked')){
+		task='byTodayDate';
+	}
+	else if($("#thisweek").is(':checked')){
+		task='byThisWeek';
+	}
+	else if($("#thismonth").is(':checked')){
+		task='byThisMonth';
+	}
+	else if($("#betweendates").is(':checked')){
+		task='betweendates';
+		fromDate = $("#fromDate").val();
+		toDate =  $("#toDate").val();
+	}
+	var jsObj={
+		task:task,
+		fromDate: fromDate,
+		toDate: toDate,
+		url:actionUrl
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+    var url = actionUrl+rparam;	
+    callAjax(jsObj,url);
+}
+ 
+function callAjax(jsObj, url){
+	var myResults;
+	var callback = {			
+		success : function( o ) {
+			try {												
+				myResults = YAHOO.lang.JSON.parse(o.responseText);	
+				if(jsObj.task == "byTodayDate"){
+					displayUserDetails(myResults);
+				}
+				else if(jsObj.task == "byThisWeek"){
+					displayUserDetails(myResults);
+				}
+				else if(jsObj.task == "byThisMonth"){
+					displayUserDetails(myResults);
+				}
+				else if(jsObj.task == "betweendates"){
+					displayUserDetails(myResults);
+				}
+			}
+			catch(e){
+				alert("Invalid JSON result" + e);  
+			}
+		},
+		scope:this,
+		failure : function( o ) {
+     		//alert( "Failed to load result" + o.status + " " + o.statusText);
+        }
+    };
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function displayUserDetails(myResults){
+	for(var i=0;i<4;i++){
+		$("#totVis"+i).html(myResults[i].uniqueVisitors);
+		$("#totPag"+i).html(myResults[i].totalNoOfPagesAccessed);
+		$("#avgPag"+i).html(myResults[i].avgNoOfPagesAccessed);
+		$("#totTime"+i).html(myResults[i].totalTimeSpent);
+		$("#avgTime"+i).html(myResults[i].avgTimeSpent);
+	}
 }
 </script>
 </head>
@@ -56,7 +148,7 @@ else
 <div id="userTrackingMainDiv">
 <div style="background:#FFFFFF;padding-top:2px;">
 	<fieldset class="f2">
-		<div style="margin: 12px 0px 15px 340px;">
+	<div style="margin: 12px 0px 15px 340px;">
 		<table border="0" cellpadding="0" cellspacing="0">          
 			<tr>
 			   <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
@@ -68,12 +160,12 @@ else
 	<div id="visitedUserSearch_head">
 		<table align="center" style="padding-top: 15px;padding-bottom: 10px;">
 		<tr>
-		<td><input type="radio" name="dates" value="today" checked="true" onclick="">
-		<font color="navy"><b>&nbsp;ToDay</b></font></td>
-		<td style="padding-left:10px;"><input type="radio" name="dates" value="thisweek" id="thisweek" onclick="">
+		<td><input type="radio" name="dates" value="today" id="today" checked="true" onclick="showDates()">
+		<font color="navy"><b>&nbsp;Today</b></font></td>
+		<td style="padding-left:10px;"><input type="radio" name="dates" value="thisweek" id="thisweek" onclick="showDates()">
 		<font color="navy"><b>&nbsp;This Week</b></font>
 		</td>
-		<td style="padding-left:10px;"><input type="radio" value="thismonth" name="dates" id="thismonth" onclick="">
+		<td style="padding-left:10px;"><input type="radio" value="thismonth" name="dates" id="thismonth" onclick="showDates()">
 		<font color="navy"><b>&nbsp;This Month</b></font>
 		</td> 
 		<td style="padding-left:10px;"><input type="radio" value="betweendates" name="dates" id="betweendates" onclick="showDates()" />
@@ -90,24 +182,71 @@ else
 			<div class="yui-skin-sam"><div id="fromDate_Div" class="tinyDateCal"></div></div>
 			</td>
 			<td valign="top">										
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('fromDate_Div','fromDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
+				<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('fromDate_Div','fromDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
 			</td>	
 			<td style="padding-left: 50px;"><font color="#4B74C6"><b>To Date</b></font></td>
 			<td><input type="text" id="toDate" name="toDate" readonly="readonly" size="15">
 			<div class="yui-skin-sam"><div id="toDate_Div" class="tinyDateCal"></div></div>
 			</td>
 			<td valign="top">										
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('toDate_Div','toDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>										
+				<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('toDate_Div','toDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>								
 			</td>	
 			</tr>
 		</table>
 		</div>
 	</div>
-
+	<div id="uniqueVisitorsDiv" style="margin-top:10px;">
+	<table class="visTable">
+		<tr>
+			<th style="background-color:#DADCF5;"></th>
+			<th>Total no. of Unique Visitors</th>
+			<th>Total no. of Pages Accessed</th>
+			<th>Average no. of Pages Accessed</th>
+			<th>Total Time spent on the Site</th>
+			<th>Average Time spent on the Site</th>
+			<th style="background-color:#DADCF5;"></th>
+		</tr>
+		<tr>
+			<th>Total Visitors</th>
+			<td><div id="totVis3"></div></td>
+			<td><div id="totPag3"></div></td>
+			<td><div id="avgPag3"></div></td>
+			<td><div id="totTime3"></div></td>
+			<td><div id="avgTime3"></div></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+		</tr>
+		<tr>
+			<th>Free Users</th>
+			<td><div id="totVis0"></div></td>
+			<td><div id="totPag0"></div></td>
+			<td><div id="avgPag0"></div></td>
+			<td><div id="totTime0"></div></td>
+			<td><div id="avgTime0"></div></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+		</tr>
+		<tr>
+			<th>Customers</th>
+			<td><div id="totVis1"></div></td>
+			<td><div id="totPag1"></div></td>
+			<td><div id="avgPag1"></div></td>
+			<td><div id="totTime1"></div></td>
+			<td><div id="avgTime1"></div></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+		</tr>
+		<tr>
+			<th>Guest Visitors</th>
+			<td><div id="totVis2"></div></td>
+			<td><div id="totPag2"></div></td>
+			<td><div id="avgPag2"></div></td>
+			<td><div id="totTime2"></div></td>
+			<td><div id="avgTime2"></div></td>
+			<td style="background-color:#DADCF5;"><a href="javascript:{}" onclick="">More Details</a></td>
+		</tr>
+	</table>
+	</div>	
 	</fieldset>
+	</div>
 </div>
-
-
 </div>
 </body>
 </html>
