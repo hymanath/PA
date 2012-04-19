@@ -77,7 +77,8 @@ public class ConstituencyWiseCensusMappingAction extends ActionSupport implement
 	public String execute()
 	{
 		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
-		if(registrationVO !=null && registrationVO.getIsAdmin().equals("true"))
+		
+		if(registrationVO !=null && registrationVO.getIsAdmin() !=null && registrationVO.getIsAdmin().equals("true"))
 		{
 			statesListForCensus = new ArrayList<SelectOptionVO>();		
 			statesListForCensus.add(new SelectOptionVO(1L,"Andhra Pradesh"));
