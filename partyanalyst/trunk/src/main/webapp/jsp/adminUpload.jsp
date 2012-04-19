@@ -209,6 +209,11 @@
 									<center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="electionLiveResultsAnalysisAction"/>'><b>Election Live Results Analysis</b></a></h4></center>
                                     </fieldset>
                                 </td>
+								<td> <fieldset class="f2">
+                                    <legend class="l2">User Tracking Analysis</legend>
+                                    <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="userTrackingReportAction"/>'><b>View User Tracking Details</b></a></h4></center>
+                                    </fieldset>
+                                </td>
 							<tr>
 
 

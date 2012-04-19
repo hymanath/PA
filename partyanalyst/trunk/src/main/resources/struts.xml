@@ -3228,6 +3228,12 @@
 				<param name="root">data</param>				
 			</result>						
 		</action>
-        
+		
+		<action name="getUniqueVisitorsAction" class="userTrackingReportAction" method="getTotalUniqueVisitors">
+			<result type="json" name="success">
+				<param name="root">usrTrckRprtVO</param>				
+			</result>	
+		</action>
+		
 	</package>
 </struts>      
