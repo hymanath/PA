@@ -38,8 +38,13 @@
 			border-width: 1px;
 			padding: 11px;
 		}
-
-    </style>
+		.ajaxImageStyle
+		{
+		   float:left;
+		   margin-left:125px;
+		   margin-top:-19px;
+		}
+	</style>
 	<script type="text/javascript">
 	var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -89,13 +94,15 @@
 								{								
 									clearOptionsListForSelectElmtId(jsObj.elmtId);
 									fillElectionYears(jsObj.elmtId, resultVO);
-									//createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,resultVO);		
+									//createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,resultVO);	
+									hidePartySelectAjaxImage("party");
 																		
 								}		
 								if(jsObj.task == "getStatesListAjax")
 							    {
                                    clearOptionsListForSelectElmtId(jsObj.elmtId);
 								   fillPartiesInState(jsObj.elmtId, resultVO);
+								   hidePartySelectAjaxImage("state");
 							    }
 						}catch (e)  {   
 							alert("Invalid JSON result" + e);   
@@ -334,6 +341,7 @@
 		var elecType = getSelectedValue(document.getElementsByName("electionType"));
 		var reportLevel = getSelectedValue(document.getElementsByName("1"));
 		var electionType;
+		showPartySelectAjaxImage("state");
 		if(elecType == "1")
 		{
 			electionType = "Parliament";
@@ -392,15 +400,15 @@
             setPartyNameHidden(name);
             var elecTypeVal='';
 				
-		   
+		    showPartySelectAjaxImage("party");
 			var stateElmt = document.getElementById("stateList");
 			if(stateElmt == '' || stateElmt == null)
 				alert("Please Select State ..")
 			var stateVal = stateElmt.options[stateElmt.selectedIndex].value;
 			
 			var elecTypeElmts = document.getElementsByName("electionType");
-           
-			for(var i=0;i<elecTypeElmts.length;i++)
+
+            for(var i=0;i<elecTypeElmts.length;i++)
 		    {
 				if(elecTypeElmts[i].id == 'assemblyRadio' && elecTypeElmts[i].checked == true)
                    elecTypeVal = 'Assembly';
@@ -444,6 +452,38 @@
 		}
 		return flag;
 	}
+
+	function showPartySelectAjaxImage(decide)
+	{
+         if(decide=="state")
+		 {
+		    var ajaxImageDivEle = document.getElementById("stateSelectAjaxImgId");
+		    ajaxImageDivEle.style.display = 'block';
+		 }
+		 else if(decide=="party")
+		 {
+			 var ajaxImageDivEle = document.getElementById("partySelectAjaxImgId");
+		     ajaxImageDivEle.style.display = 'block';
+		 }
+	}
+
+	function hidePartySelectAjaxImage(decide)
+	{
+		
+         //var stateEle = document.getElementById("stateList");
+		 //var partyEle = document.getElementById("partyList");
+		 if(decide=="state")
+		 {
+		     var ajaxImageDivEle = document.getElementById("stateSelectAjaxImgId");
+		     ajaxImageDivEle.style.display = 'none';
+		 }
+		 else if(decide=="party")
+		 {
+			 var ajaxImageDivEle = document.getElementById("partySelectAjaxImgId");
+		     ajaxImageDivEle.style.display = 'none';
+		 }
+		
+	}
 	window.history.forward(1);
   </script>
 </head> 
@@ -474,8 +514,9 @@
 			<tr>
 				<th align="left"><%=state%></th>
 				<td>
-					<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>
+					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/></div>
 					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
+					<div class="ajaxImageStyle"><img id="stateSelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
 				</td>
 			</tr>
 			
@@ -483,14 +524,17 @@
 				<th align="left"><%=party%></th>
 				<td>
 					<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
-					<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" />
+					<div><s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" /></div>
 					<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
+					<div class="ajaxImageStyle"><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
 				</td>
 			</tr>
 
 			<tr>
 				<th align="left"><%=electionYear%></th>
-				<td><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></td>
+				<td>
+				    <div><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></div>
+				</td>
 			</tr>
 			
 			<!--<tr>
