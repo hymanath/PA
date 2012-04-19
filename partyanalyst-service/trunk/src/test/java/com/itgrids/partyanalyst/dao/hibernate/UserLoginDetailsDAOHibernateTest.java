@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserLoginDetailsDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -45,7 +46,7 @@ public class UserLoginDetailsDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetSessionIdsAndLogoutTimeOfTodaysUsers()
+	/*public void testGetSessionIdsAndLogoutTimeOfTodaysUsers()
 	{
 		System.out.println(new Date());
 		List<Object[]> list = userLoginDetailsDAO.getSessionIdsAndLogoutTimeOfTodaysUsers(new Date());
@@ -56,5 +57,27 @@ public class UserLoginDetailsDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0] +"----"+params[1]);
 		}
+	}*/
+	
+	/*public void testGetLandingPageForAUser(){
+		Object object = userLoginDetailsDAO.getLandingPageForAUser("0C59F8C802B1D78356FC9C6F7392C191");
+		System.out.println("url is.........."+object);
 	}
+	*/
+	/*public void testGetExitPageForAUser(){
+		Object object = userLoginDetailsDAO.getExitPageForAUser("0C59F8C802B1D78356FC9C6F7392C191");
+		System.out.println("url is ......"+object);
+	}*/
+	
+	
+	/*public void testGetLandingPageAndExitPageForAUser()
+	{
+		List<Object> list = userLoginDetailsDAO.getLandingPageAndExitPageForAUser("EC4C8FFA9EBCA7D3E544ABBD658839D7");
+		
+		System.out.println(list.size());
+		
+		System.out.println(list.get(0) +"  "+list.get(1));
+	}*/
+	
+	
 }
