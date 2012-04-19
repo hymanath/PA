@@ -10,6 +10,11 @@ public class UserTrackingVO {
 	private String status;
 	private String sessionId;
 	
+	private Integer noOfPages;
+	private String timeSpent;
+	private String landingPage;
+	private String exitPage;
+	
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -51,6 +56,30 @@ public class UserTrackingVO {
 	}
 	public void setRequestURI(String requestURI) {
 		this.requestURI = requestURI;
+	}
+	public Integer getNoOfPages() {
+		return noOfPages;
+	}
+	public void setNoOfPages(Integer noOfPages) {
+		this.noOfPages = noOfPages;
+	}
+	public String getTimeSpent() {
+		return timeSpent;
+	}
+	public void setTimeSpent(String timeSpent) {
+		this.timeSpent = timeSpent;
+	}
+	public String getLandingPage() {
+		return landingPage;
+	}
+	public void setLandingPage(String landingPage) {
+		this.landingPage = landingPage;
+	}
+	public String getExitPage() {
+		return exitPage;
+	}
+	public void setExitPage(String exitPage) {
+		this.exitPage = exitPage;
 	}
 	
 	

@@ -1,16 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
 public class UserTrackingReportVO {
-	private Integer uniqueVisitors;
+	private Long uniqueVisitors;
 	private String totalTimeSpent;
 	private String avgTimeSpent;
-	private String totalNoOfPagesAccessed;
-	private String avgNoOfPagesAccessed;
+	private Long totalNoOfPagesAccessed;
+	private float avgNoOfPagesAccessed;
 	
-	public Integer getUniqueVisitors() {
+	public Long getUniqueVisitors() {
 		return uniqueVisitors;
 	}
-	public void setUniqueVisitors(Integer uniqueVisitors) {
+	public void setUniqueVisitors(Long uniqueVisitors) {
 		this.uniqueVisitors = uniqueVisitors;
 	}
 	public String getTotalTimeSpent() {
@@ -25,16 +25,16 @@ public class UserTrackingReportVO {
 	public void setAvgTimeSpent(String avgTimeSpent) {
 		this.avgTimeSpent = avgTimeSpent;
 	}
-	public String getTotalNoOfPagesAccessed() {
+	public Long getTotalNoOfPagesAccessed() {
 		return totalNoOfPagesAccessed;
 	}
-	public void setTotalNoOfPagesAccessed(String totalNoOfPagesAccessed) {
+	public void setTotalNoOfPagesAccessed(Long totalNoOfPagesAccessed) {
 		this.totalNoOfPagesAccessed = totalNoOfPagesAccessed;
 	}
-	public String getAvgNoOfPagesAccessed() {
+	public float getAvgNoOfPagesAccessed() {
 		return avgNoOfPagesAccessed;
 	}
-	public void setAvgNoOfPagesAccessed(String avgNoOfPagesAccessed) {
+	public void setAvgNoOfPagesAccessed(float avgNoOfPagesAccessed) {
 		this.avgNoOfPagesAccessed = avgNoOfPagesAccessed;
 	}
 	
