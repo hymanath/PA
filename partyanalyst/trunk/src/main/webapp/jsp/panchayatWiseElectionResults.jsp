@@ -231,6 +231,7 @@ legend
 						mandalId: mandalId,
 						rank:rank,
 						electionYear:'${electionYear}',
+						isPanchayatWise : true,
 						task:"getTownshipwiseVotesShareInfo"						
 				};
 			
@@ -754,7 +755,7 @@ legend
 			}	
 </script>
 </head>
-<body style="width:130%">
+<body>
 	
 	
 <table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
