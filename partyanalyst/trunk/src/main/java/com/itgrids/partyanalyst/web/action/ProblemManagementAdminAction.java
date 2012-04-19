@@ -16,13 +16,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.DateService;
+import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -45,6 +48,21 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	private String chartNameForAllProblemsCount,chartNameForCurrentDayProblemsCount;
 	private IProblemManagementReportService problemManagementReportService;
 	private IDateService dateService;
+	private IProblemManagementService problemManagementService;
+	private List<FileVO>filevoList;
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+	public List<FileVO> getFilevoList() {
+		return filevoList;
+	}
+	public void setFilevoList(List<FileVO> filevoList) {
+		this.filevoList = filevoList;
+	}
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	public String getProblemsInAWeekGraphDataAvailability() {
@@ -223,7 +241,6 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
         }
         return dataset;
     }
-	
 	public String getAllProblemsNeededToBeApprovalForAdmin(){
 		if(task != null){
 			try{
@@ -233,7 +250,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
 				}
 				
-				else if(jObj.getString("task").equals("currentDate")){	
+				if(jObj.getString("task").equals("currentDate")){	
 					result = problemManagementReportService.getAllApprovalProblemsForTheCurrentDay(IConstants.NEW,IConstants.FALSE);
 				}
 				
@@ -262,5 +279,41 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 		}
 		return SUCCESS;
 	}
+	
+	public String getAllApprovalPRoblemsBetweenTheDates()
+	{
+		
+		try
+		{
+		jObj = new JSONObject(getTask());	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equals("betweenDatesImages")){
+			filevoList = problemManagementService.getAllApprovalProblemImagesBetweenEventDates(jObj.getString("fromDate"), jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
+		}
+	return Action.SUCCESS;
+	}
+	
+	public String getAllProblemImageDetailsForParticularDate()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(jObj.getString("task").equals("particularDateImages")){
+			filevoList = problemManagementService.getAllApprovalProblemImagesForParticularDate(jObj.getString("particularDate"),IConstants.NEW,jObj.getString("choice"));
+		}
+		return Action.SUCCESS;
+		}
+	
 	
 }
