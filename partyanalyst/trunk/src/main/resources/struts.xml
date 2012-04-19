@@ -3226,6 +3226,11 @@
              <result name="success">/jsp/userTrackingReport.jsp</result>
         </action>
         
+        <action name="getAllProblems" class="problemManagementAdminAction" method="getAllApprovalPRoblemsBetweenTheDates">
+			<result type="json" name="success">
+				<param name="root">filevoList</param>				
+			</result>		
+		</action>
 		<!-- <action name="getCandidateDetailsForAssessment" class="partyPageAction" method="ajaxCallHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionVOList</param>				
@@ -3237,6 +3242,11 @@
 				<param name="root">data</param>				
 			</result>						
 		</action>
+        <action name="getParticularDateProblemImages" class="problemManagementAdminAction" method="getAllProblemImageDetailsForParticularDate">
+        <result type="json" name="success">
+        <param name="root">filevoList</param>
+        </result>
+        </action>
 		
 		<action name="getUniqueVisitorsAction" class="userTrackingReportAction" method="getTotalUniqueVisitors">
 			<result type="json" name="success">
