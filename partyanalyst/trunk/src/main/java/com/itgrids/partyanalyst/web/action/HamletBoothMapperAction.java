@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.BoothPanelVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
@@ -21,6 +22,8 @@ import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HamletBoothMapperAction extends ActionSupport implements ServletRequestAware{
@@ -127,58 +130,69 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 
 	public String execute() {
 		
-		if(task != null){
-			try{
-				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-			if(jObj.getString("task").equals("getDistricts")){
-				System.out.println("For Districts Of State");
-				result = staticDataService.getDistricts(jObj.getLong("locationId"));
-				result.add(0,new SelectOptionVO(0l,"Select District"));
-			}else if(jObj.getString("task").equals("getMandals")){
-				System.out.println("For Mandals Of District");
-				mandals = staticDataService.getMandalsForDistrict(jObj.getLong("locationId"));
-				mandals.add(0,new MandalVO(0l,"Select Mandal"));
-			}else if(jObj.getString("task").equals("getRevenueVillagesAndBooths")){
-				System.out.println("For REVENUE VILLAGES Of Mandal");
-				hamletsAndBoothsVO = new HamletsAndBoothsVO();
-				result = staticDataService.findTownshipsByTehsilID(jObj.getLong("locationId"));
-				result.add(0,new SelectOptionVO(0l,"Select Revenue Village"));
-				hamletsAndBoothsVO.setHamlets(result);
-				hamletsAndBoothsVO.setConstituenciesAndBooths(staticDataService.getBoothPartNosForMandalAndElection(jObj.getLong("locationId"), "2009"));
-			}else if(jObj.getString("task").equals("storeHamletBoothInfo")){
-				Long hamletId = jObj.getLong("townshipId");
-				JSONArray boothJsonIds = jObj.getJSONArray("boothIds");
-				List<Long> boothElecIds = new ArrayList<Long>();
+		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		if(registrationVO !=null)
+		{
+			if(registrationVO.getIsAdmin() !=null && registrationVO.getIsAdmin().equals("true"))
+			{
+				if(task != null){
+					try{
+						jObj = new JSONObject(getTask());
+						System.out.println("Result From JSON:"+jObj);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+					if(jObj.getString("task").equals("getDistricts")){
+						System.out.println("For Districts Of State");
+						result = staticDataService.getDistricts(jObj.getLong("locationId"));
+						result.add(0,new SelectOptionVO(0l,"Select District"));
+					}else if(jObj.getString("task").equals("getMandals")){
+						System.out.println("For Mandals Of District");
+						mandals = staticDataService.getMandalsForDistrict(jObj.getLong("locationId"));
+						mandals.add(0,new MandalVO(0l,"Select Mandal"));
+					}else if(jObj.getString("task").equals("getRevenueVillagesAndBooths")){
+						System.out.println("For REVENUE VILLAGES Of Mandal");
+						hamletsAndBoothsVO = new HamletsAndBoothsVO();
+						result = staticDataService.findTownshipsByTehsilID(jObj.getLong("locationId"));
+						result.add(0,new SelectOptionVO(0l,"Select Revenue Village"));
+						hamletsAndBoothsVO.setHamlets(result);
+						hamletsAndBoothsVO.setConstituenciesAndBooths(staticDataService.getBoothPartNosForMandalAndElection(jObj.getLong("locationId"), "2009"));
+					}else if(jObj.getString("task").equals("storeHamletBoothInfo")){
+						Long hamletId = jObj.getLong("townshipId");
+						JSONArray boothJsonIds = jObj.getJSONArray("boothIds");
+						List<Long> boothElecIds = new ArrayList<Long>();
+						
+						for(int i=0; i < boothJsonIds.length(); i++){
+							boothElecIds.add(new Long((String)boothJsonIds.get(i)));
+						}
+						ResultWithExceptionVO resultVO = constituencyPageService.saveAndUpdateHamletAndBoothInfo(new HamletAndBoothVO(hamletId, boothElecIds));
+						if(resultVO.getExceptionEncountered() == null){
+							villageBooths = (List<VillageBoothInfoVO>)resultVO.getFinalResult();
+						}
+					}else if(jObj.getString("task").equals("deleteVillageBoothInfo")){
+						HamletAndBoothVO hamletAndBoothVO = new HamletAndBoothVO();
+						Long villageBoothElectionId = jObj.getLong("villageBoothId");
+						hamletAndBoothVO.setHamletId(villageBoothElectionId);
+						ResultWithExceptionVO resultVO = constituencyPageService.deleteVillageBoothElectionRecord(hamletAndBoothVO);
+						if(resultVO.getExceptionEncountered() == null){
+							requestStatus = "Record Deleted";
+						}
+					}			
+					
+				}else{
+					result = new ArrayList<SelectOptionVO>(2);
+					result.add(0,new SelectOptionVO(0l,"Select State"));
+					result.add(1,new SelectOptionVO(1l,"Andra Pradesh"));
+				}
 				
-				for(int i=0; i < boothJsonIds.length(); i++){
-					boothElecIds.add(new Long((String)boothJsonIds.get(i)));
-				}
-				ResultWithExceptionVO resultVO = constituencyPageService.saveAndUpdateHamletAndBoothInfo(new HamletAndBoothVO(hamletId, boothElecIds));
-				if(resultVO.getExceptionEncountered() == null){
-					villageBooths = (List<VillageBoothInfoVO>)resultVO.getFinalResult();
-				}
-			}else if(jObj.getString("task").equals("deleteVillageBoothInfo")){
-				HamletAndBoothVO hamletAndBoothVO = new HamletAndBoothVO();
-				Long villageBoothElectionId = jObj.getLong("villageBoothId");
-				hamletAndBoothVO.setHamletId(villageBoothElectionId);
-				ResultWithExceptionVO resultVO = constituencyPageService.deleteVillageBoothElectionRecord(hamletAndBoothVO);
-				if(resultVO.getExceptionEncountered() == null){
-					requestStatus = "Record Deleted";
-				}
-			}			
-			
-		}else{
-			result = new ArrayList<SelectOptionVO>(2);
-			result.add(0,new SelectOptionVO(0l,"Select State"));
-			result.add(1,new SelectOptionVO(1l,"Andra Pradesh"));
+				return SUCCESS;
+			}
+			else
+				return Action.ERROR;
 		}
-		
-		return SUCCESS;
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 }
