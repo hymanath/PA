@@ -35,6 +35,8 @@
 </style>
 </head>
 	<body>
+ <s:if test="#session.USER !=null">
+<s:if test="#session.USER.isAdmin == 'true'">
 	<s:form name="DelimitationMappingsUploadAction" action="delimitationMappingsUploadAction" method="post" enctype="multipart/form-data" >
 	<h3>Delimitation Mappings Upload</h3>
 		<table style="border-collapse:collapse" border="2">
@@ -231,5 +233,17 @@
 	  </c:if>
 	</c:if>
   </c:if>
+ </s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 	</body>
 </html>
