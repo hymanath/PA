@@ -222,7 +222,169 @@ function buildNewImageDataTable(result)
 		      };	    
 		
 	}
+function getAllProblemsBetweenDates()
+		{
+			
+			var startDate = document.getElementById("identifiedFromText").value;
+			var endDate = document.getElementById("reportedFromText").value;
+			var selection = document.getElementsByName("problemRetrivalType");
+			var selectedRadio;
+			for(var i=0;i<selection.length;i++){
+				if(selection[i].checked == true){
+					selectedRadio = selection[i].value;					
+				}
+			}			
+			var jsObj=
+			{		
+					choice:selectedRadio,
+					fromDate:startDate,
+					toDate:endDate,					
+					task:"betweenDatesImages"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
+			callAjax(rparam,jsObj,url);
+		}
 
+		function getAllProblemsForParticularDate()
+		{
+			
+			var particularDate = document.getElementById("selectedDate").value;
+			var selection = document.getElementsByName("problemType");
+			var selectedRadio;
+			for(var i=0;i<selection.length;i++){
+				if(selection[i].checked == true){
+					selectedRadio = selection[i].value;					
+				}
+			}	
+			var jsObj =
+			{
+				choice:selectedRadio,
+				particularDate:particularDate,
+				task:"particularDateImages"
+
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getParticularDateProblemImages.action?"+rparam;
+			callAjax(rparam,jsObj,url);
+		}
+
+		function buildBetweenDatesImagesTable(result)
+		{
+	
+		var ColumnDefs = [ 	    
+	                        {key:"select", label: "Select", formatter:"checkbox"},
+                            {key:"problemFileId", hidden: true},
+	                        {key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
+		    	            {key:"fileTitle1", label: "Title", sortable: true},
+							{key:"fileDescription1", label: "Description", sortable: true},
+                             	{key:"problem", label: "Problem", sortable: true},
+		    	           	{key:"scope", label: "Severity", sortable: true},
+	                         {key:"existingFrom", label: "Existing From", sortable: true},
+	                         {key:"identifiedOn", label: "Identification Date", sortable: true},
+	                        {key:"name", label: "Source", sortable: true}
+		    	        ]; 
+		var DataSource = new YAHOO.util.DataSource(result); 
+	
+
+
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    }) 
+				}; 
+				
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1"]
+					};
+
+		 ResultDataTable = new YAHOO.widget.DataTable("imageTable", ColumnDefs,myDataSource, myConfigs);
+         
+
+		 ResultDataTable.subscribe("checkboxClickEvent", function(oArgs) {
+					  	    elCheckbox = oArgs.target; 
+							
+					  	    var newValue = elCheckbox.checked; 
+					  	    var record = this.getRecord(elCheckbox); 
+					  	    var column = this.getColumn(elCheckbox); 
+					  	    record.setData(column.key,newValue);				  	
+					  	    					  	        
+					  	   	if(newValue && hasRecordInArray(record))
+					  	  	{
+						  	  	recordsArray.push(record);					  	  	
+					  	  	}else
+							{
+								deleteRecordFromArray(record);
+								elCheckbox.checked = false;							
+							}	  	  				  	  	
+				});	
+				return { 
+		            oDS: myDataSource, 
+		            oDT: ResultDataTable 
+		      };	    
+		
+	}
+
+
+	function buildParticularDatesImagesTable(result){
+
+var ColumnDefs = [ 	    
+	                        {key:"select", label: "Select", formatter:"checkbox"},
+                            {key:"problemFileId", hidden: true},
+	                        {key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
+		    	            {key:"fileTitle1", label: "Title", sortable: true},
+							{key:"fileDescription1", label: "Description", sortable: true},
+                             	{key:"problem", label: "Problem", sortable: true},
+		    	           	{key:"scope", label: "Severity", sortable: true},
+	                         {key:"existingFrom", label: "Existing From", sortable: true},
+	                         {key:"identifiedOn", label: "Identification Date", sortable: true},
+	                        {key:"name", label: "Source", sortable: true}
+		    	        ]; 
+		var DataSource = new YAHOO.util.DataSource(result); 
+	
+
+
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    }) 
+				}; 
+				
+	var myDataSource = new YAHOO.util.DataSource(result);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1"]
+					};
+
+		 ResultDataTable = new YAHOO.widget.DataTable("imageTable", ColumnDefs,myDataSource, myConfigs);
+         
+
+		 ResultDataTable.subscribe("checkboxClickEvent", function(oArgs) {
+					  	    elCheckbox = oArgs.target; 
+							
+					  	    var newValue = elCheckbox.checked; 
+					  	    var record = this.getRecord(elCheckbox); 
+					  	    var column = this.getColumn(elCheckbox); 
+					  	    record.setData(column.key,newValue);				  	
+					  	    					  	        
+					  	   	if(newValue && hasRecordInArray(record))
+					  	  	{
+						  	  	recordsArray.push(record);					  	  	
+					  	  	}else
+							{
+								deleteRecordFromArray(record);
+								elCheckbox.checked = false;							
+							}	  	  				  	  	
+				});	
+				return { 
+		            oDS: myDataSource, 
+		            oDT: ResultDataTable 
+		      };	    
+		
+	}
 
 		function getImages()
 		{
@@ -251,6 +413,15 @@ function buildNewImageDataTable(result)
                              if(jsObj.task == "performDeletionOrAcceptenceImage"){
 							  getImages();
 							}
+							if(jsObj.task =="betweenDatesImages")
+						{
+								buildBetweenDatesImagesTable(results);
+						}
+						if(jsObj.task == "particularDateImages")
+						{
+
+							buildParticularDatesImagesTable(results);
+						}
 
 					}catch (e) {   		
 					   	alert("Invalid JSON result" + e);   
