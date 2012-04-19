@@ -15,5 +15,10 @@ public interface IUserTrackingDAO extends GenericDao<UserTracking, Long>{
 	
 	public List<Object> getLogoutTimeBetweenDates(Date fromDate, Date toDate, String userType);
 	
-	public Object getNoOfPagesAccessedBetweenDates(Date fromDate, Date toDate, String userType);
+	public Object getNoOfPagesAccessedBetweenDates(Date fromDate, Date toDate, String userType);	
+	
+	public List<Object[]> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate);
+	
+	public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType);
+
 }
