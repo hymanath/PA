@@ -3121,7 +3121,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<Long, List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(
-			Long tehsilId, String electionType, String electionYear) {
+			Long tehsilId, String electionType, String electionYear,Boolean isPanchayatWise) {
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside getTownshipWiseAllPartyResults method ...");
@@ -3130,8 +3130,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Map<Long, List<PartyTownshipResultsVO>> allPartyRes = new HashMap<Long, List<PartyTownshipResultsVO>>();
 		
 		if(tehsilId != null && electionType != null && electionYear != null){
+			List resultsList = null;
 			
-			List resultsList = candidateBoothResultDAO.findTownshipWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			if(isPanchayatWise != null && isPanchayatWise)
+				resultsList = candidateBoothResultDAO.findPanchayatWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			else
+				resultsList = candidateBoothResultDAO.findTownshipWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			
 			Boolean checkRes = checkResultsList(resultsList);
 			
 			if(checkRes){
@@ -3209,7 +3214,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#villageLevelPArtyAnalysis(java.lang.Long, java.lang.String, java.lang.String)
 	 */
 	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(
-			Long tehsilId, String electionType, String electionYear,int rank) {
+			Long tehsilId, String electionType, String electionYear,int rank,Boolean isPanchayatWise) {
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside villageLevelPArtyAnalysis Method ");
@@ -3218,7 +3223,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		if(tehsilId != null && electionType != null && electionYear != null){
 			
 			villageLevelResults = new ArrayList<PartyVillageLevelAnalysisVO>();
-			Map<Long, List<PartyTownshipResultsVO>> townshipwiseRes = getTownshipWiseAllPartyResults(tehsilId,electionType,electionYear);
+			Map<Long, List<PartyTownshipResultsVO>> townshipwiseRes = getTownshipWiseAllPartyResults(tehsilId,electionType,electionYear,isPanchayatWise);
 			Map<Long,List<PartyTownshipResultsVO>> partyResultsSorted = new HashMap<Long,List<PartyTownshipResultsVO>>();
 			if(!townshipwiseRes.isEmpty()){
 				

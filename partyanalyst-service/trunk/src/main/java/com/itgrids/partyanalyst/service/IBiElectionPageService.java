@@ -51,9 +51,10 @@ public interface IBiElectionPageService {
 	
 	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
 			String elections, Boolean includeAlliance );	
-	public Map<Long,List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(Long tehsilId,String electionType,String electionYear);
 	
-	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);
+	public Map<Long,List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(Long tehsilId,String electionType,String electionYear,Boolean isPanchayatWise);
+	
+	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank,Boolean isPanchayatWise);
 	
 	public ElectionWiseMandalPartyResultListVO getResultsOfRuralUrbanAreaBeasedOnSelection(Long constituencyId, 
 			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType, Boolean includeAlliance);

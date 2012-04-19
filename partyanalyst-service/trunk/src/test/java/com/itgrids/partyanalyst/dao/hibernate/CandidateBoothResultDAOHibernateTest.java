@@ -437,9 +437,23 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 
 	}*/
 	
-	public void testGetPanchayatWisePartiesResultForAElectionInATehsil()
+	/*public void testGetPanchayatWisePartiesResultForAElectionInATehsil()
 	{
 		List<Object[]> list = candidateBoothResultDAO.getdata(1053l,38l);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}*/
+	
+	public void testFindPanchayatWiseAllPartyResultsInAMandal()
+	{
+		List<Object[]> list = (List<Object[]>)candidateBoothResultDAO.findPanchayatWiseAllPartyResultsInAMandal(IConstants.ASSEMBLY_ELECTION_TYPE, "2009", 844l);
 		
 		System.out.println(list.size());
 		
