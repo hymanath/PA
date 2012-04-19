@@ -675,6 +675,7 @@
 		<property name="dataApprovalService" ref="dataApprovalService" />
 		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="problemFileDAO" ref="problemFileDAO" />
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
