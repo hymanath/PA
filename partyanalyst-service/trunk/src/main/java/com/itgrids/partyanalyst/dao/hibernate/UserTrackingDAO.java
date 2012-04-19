@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.model.UserTracking;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> implements IUserTrackingDAO {
 
@@ -15,6 +16,45 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 		super(UserTracking.class);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate){
+		Object[] params = {fromDate , toDate};
+		
+		return getHibernateTemplate().find("select model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where Date(model.time) BETWEEN ? and ? order by sessionId asc",params);
+		
+	}
+	
+@SuppressWarnings("unchecked")
+public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType){
+		
+		StringBuilder query = new StringBuilder();
+		if(userType == null)
+			
+			query.append("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ? order by model.time desc");
+		
+	 else if(userType != null && userType.equalsIgnoreCase(IConstants.FREE_USER))
+			
+			query.append("select distinct model2.sessionId , model.freeUser.name , model.freeUser.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? ");
+	 else if(userType !=null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+			query.append("select distinct model2.sessionId , model.registration.firstName , model.registration.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? ");
+		Query queryObj = getSession().createQuery(query.toString());
+		
+		if(userType == null)
+		{
+			queryObj.setParameter(0, fromDate);
+			queryObj.setParameter(1, toDate);
+		}
+		else
+		{
+			queryObj.setParameter(0, userType);
+			queryObj.setParameter(1, fromDate);
+			queryObj.setParameter(2, toDate);
+		}
+		return queryObj.list();
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public Object getUniqueVisitorsBetweenDates(Date fromDate, Date toDate, String userType){
