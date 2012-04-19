@@ -216,8 +216,13 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
 		 
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
-			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
+			String chartName = null;
 			String chartPath = "";
+			
+			if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
+				chartName = "partyPerformanceInAllMandalElectionsByPanchayats_"+constituencyObj.getConstituencyId()+".png";
+			else
+				chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
 			
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
@@ -313,8 +318,9 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		String mandalId = jObj.getString("mandalId");
 		String rank = jObj.getString("rank");
 		String electionYear = jObj.getString("electionYear");
+		Boolean isPanchayatWise = jObj.getBoolean("isPanchayatWise");
 		
-		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(new Long(mandalId), electionType, electionYear, Integer.parseInt(rank));
+		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(new Long(mandalId), electionType, electionYear, Integer.parseInt(rank),isPanchayatWise);
 		
 		return Action.SUCCESS;
 	}
