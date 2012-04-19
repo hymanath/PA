@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.service.IUserTrackingReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 
 public class UserTrackingReportAction extends ActionSupport implements ServletRequestAware , ServletContextAware{
 	
@@ -32,7 +33,17 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 	private JSONObject jObj;
 	private List<UserTrackingReportVO> usrTrckRprtVO;
 	private String task;
+	private List<UserTrackingReportVO> userTrackingReportVOList;
 	
+	public List<UserTrackingReportVO> getUserTrackingReportVOList() {
+		return userTrackingReportVOList;
+	}
+
+	public void setUserTrackingReportVOList(
+			List<UserTrackingReportVO> userTrackingReportVOList) {
+		this.userTrackingReportVOList = userTrackingReportVOList;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;	
 	}
@@ -170,4 +181,91 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 		  cal.set(Integer.parseInt(dateArray[0]),Integer.parseInt(dateArray[1])-1, Integer.parseInt(dateArray[2]));
 		  return cal.getTime();
 	  }
+ 
+	public String ajaxCallHandlerForVisitor(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").trim().equalsIgnoreCase("todayVisitorsDetails"))
+			{
+				fromDate = dateUtilService.getCurrentDateAndTime();
+				toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("thisWeekVisitorsDetails"))
+			{
+				fromDate = getStartDayOfWeek();
+				toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("thisMonthVisitorsDetails"))
+			{
+				fromDate = getStartDayOfMonth();
+				toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("betweendatesVisitorsDetails"))
+			{
+				if(jObj.getString("fromDate").trim().length() > 0)
+				    fromDate = getDate(jObj.getString("fromDate"));
+				if(jObj.getString("toDate").trim().length() > 0)
+					toDate = getDate(jObj.getString("toDate"));
+			}
+			
+			userTrackingReportVOList = userTrackingReportService.getHostNameAndNoOfPagesForAVisitor(fromDate ,toDate);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+		
+public String ajaxCallHandler(){
+	
+   session = request.getSession();
+   RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+	try{
+		Date fromDate = null;
+		Date toDate = null;
+		String userType = null;
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("todayUserDetails"))
+		{
+			fromDate = dateUtilService.getCurrentDateAndTime();
+			toDate = dateUtilService.getCurrentDateAndTime();
+			if(!jObj.getString("userType").equalsIgnoreCase("null"))
+				userType = jObj.getString("userType");
+			
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("thisWeekUserDetails"))
+		{
+			fromDate = getStartDayOfWeek();
+			toDate = dateUtilService.getCurrentDateAndTime();
+			if(!jObj.getString("userType").equalsIgnoreCase("null"))
+			userType = jObj.getString("userType");
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("thisMonthUserDetails"))
+		{
+			fromDate = getStartDayOfMonth();
+			toDate = dateUtilService.getCurrentDateAndTime();
+			if(!jObj.getString("userType").equalsIgnoreCase("null"))
+			userType = jObj.getString("userType");
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("betweendatesUserDetails"))
+		{
+			if(jObj.getString("fromDate").trim().length() > 0)
+			   fromDate = getDate(jObj.getString("fromDate"));
+			if(jObj.getString("toDate").trim().length() > 0)
+			   toDate = getDate(jObj.getString("toDate")); 
+			if(!jObj.getString("userType").equalsIgnoreCase("null"))
+				userType = jObj.getString("userType");
+		}
+		userTrackingReportVOList = userTrackingReportService.getHostNameAndNoOfPagesForAUser(fromDate ,toDate ,userType);
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
+}
+		
 }
