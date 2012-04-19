@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<s:if test="#session.USER !=null">
+<s:if test="#session.USER.isAdmin == 'true'">
 <s:form action="voterDataUploadAction" method="POST" enctype="multipart/form-data">
 	<h3>Voter Data Upload</h3>
 	<table border="1">
@@ -50,5 +52,17 @@
 		</div>
 	</c:if>	
 </s:form>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 </body>
 </html>
