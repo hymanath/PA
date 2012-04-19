@@ -191,65 +191,73 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 		this.resultWithExceptionVO = resultWithExceptionVO;
 	}
 
-	public String execute() throws Exception {
-		stateList = new ArrayList<SelectOptionVO>(0);
-		districtList = new ArrayList<SelectOptionVO>(0);
-		constituencyList = new ArrayList<SelectOptionVO>(0);
-		parliamentConstituencyList = new ArrayList<SelectOptionVO>(0);
-		session = request.getSession();
-		
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(regVO==null)
-			return ERROR;
-		String accessType =regVO.getAccessType();
-		Long accessValue= new Long(regVO.getAccessValue());
-		
-		
-		if("MLA".equals(accessType))
+	public String execute() throws Exception 
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		if(regVO !=null)
 		{
-			log.debug("Access Type = MLA ****");
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
-			stateList.add(list.get(0));			
-			districtList.add(list.get(1));
-			constituencyList.add(list.get(2));			
-						
-		}else if("COUNTRY".equals(accessType))
-		{
-			log.debug("Access Type = Country ****");
-			stateList = regionServiceDataImp.getStatesByCountry(accessValue);
-			stateList.add(0,new SelectOptionVO(0l,"Select State"));			
-			
-		}else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");
-			
-			String name = cadreManagementService.getStateName(accessValue);
-			SelectOptionVO obj2 = new SelectOptionVO();
-			obj2.setId(accessValue);
-			obj2.setName(name);
-			stateList.add(obj2);
-			districtList = regionServiceDataImp.getDistrictsByStateID(accessValue);
-			districtList.add(0,new SelectOptionVO(0l,"Select District"));
-			
-		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
-
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
-			stateList.add(list.get(0));
-			districtList.add(list.get(1));
-			constituencyList = regionServiceDataImp.getConstituenciesByAreaTypeInDistrict(accessValue, "RURAL");
-			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));			
-			
-		} else if("MP".equals(accessType)){
-			log.debug("Access Type = MP ****");
-			
-			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-			stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
-			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-			constituencyList = constituencyInfoVO.getAssembyConstituencies();
-			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
-		}		
-		return Action.SUCCESS;		
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equals("true"))
+			{
+				stateList = new ArrayList<SelectOptionVO>(0);
+				districtList = new ArrayList<SelectOptionVO>(0);
+				constituencyList = new ArrayList<SelectOptionVO>(0);
+				parliamentConstituencyList = new ArrayList<SelectOptionVO>(0);
+				
+				String accessType =regVO.getAccessType();
+				Long accessValue= new Long(regVO.getAccessValue());
+				
+				
+				if("MLA".equals(accessType))
+				{
+					log.debug("Access Type = MLA ****");
+					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+					stateList.add(list.get(0));			
+					districtList.add(list.get(1));
+					constituencyList.add(list.get(2));			
+								
+				}else if("COUNTRY".equals(accessType))
+				{
+					log.debug("Access Type = Country ****");
+					stateList = regionServiceDataImp.getStatesByCountry(accessValue);
+					stateList.add(0,new SelectOptionVO(0l,"Select State"));			
+					
+				}else if("STATE".equals(accessType)){
+					log.debug("Access Type = State ****");
+					
+					String name = cadreManagementService.getStateName(accessValue);
+					SelectOptionVO obj2 = new SelectOptionVO();
+					obj2.setId(accessValue);
+					obj2.setName(name);
+					stateList.add(obj2);
+					districtList = regionServiceDataImp.getDistrictsByStateID(accessValue);
+					districtList.add(0,new SelectOptionVO(0l,"Select District"));
+					
+				}else if("DISTRICT".equals(accessType)){
+					log.debug("Access Type = District ****");			
+		
+					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+					stateList.add(list.get(0));
+					districtList.add(list.get(1));
+					constituencyList = regionServiceDataImp.getConstituenciesByAreaTypeInDistrict(accessValue, "RURAL");
+					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));			
+					
+				} else if("MP".equals(accessType)){
+					log.debug("Access Type = MP ****");
+					
+					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+					stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+					constituencyList = constituencyInfoVO.getAssembyConstituencies();
+					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+					parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
+				}		
+				return Action.SUCCESS;
+			}
+			else
+			   return Action.ERROR;	
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 	public String getBoothsInAssemblyConstituency()
