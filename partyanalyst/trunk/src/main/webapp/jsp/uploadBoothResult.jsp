@@ -25,6 +25,8 @@
 
 </head>
 	<body>
+<s:if test="#session.USER !=null">
+<s:if test="#session.USER.isAdmin == 'true'">
 	<s:form name="BoothResultUploadForm" action="boothResultUploadAction" method="POST" enctype="multipart/form-data">
 		<h3>Booth Results Upload</h3>
 		<table border="1" style="border-collapse:collapse">
@@ -96,6 +98,18 @@
 				</div>
 			</c:forEach>
 		</div>
-	</c:if>		
+	</c:if>	
+	</s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 	</body>
 </html>
