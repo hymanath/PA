@@ -17,6 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.UserTrackingReportVO;
+import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.service.IUserTrackingReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -27,7 +28,7 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 	private IUserLoginDetailsDAO userLoginDetailsDAO;
 	private IUserTrackingDAO userTrackingDAO;
 	private TransactionTemplate transactionTemplate;
-
+	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -52,7 +53,8 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 		this.userTrackingDAO = userTrackingDAO;
 	}
 
-	public String saveUserLogOutDetails(Date fromDate, Date toDate, Boolean isToday){
+	public String saveUserLogOutDetails(Date fromDate, Date toDate, Boolean isToday)
+	{
 		try{
 			List<Object[]> list = null;
 			if(isToday)
@@ -81,6 +83,53 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 		}catch(Exception e){
 			log.debug("Entered into saveUserLogOutDetails() exception is"+e);
 			return null;
+		}
+	}
+	
+	public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate)
+	{
+		List<UserTrackingReportVO> resultList = null;
+		Date maxTime;
+		Date minTime;
+		Long spentTimeOnPage;
+		
+		try
+		{
+			List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAVisitor(fromDate,toDate);
+			if(list != null && list.size() > 0)
+			{
+				resultList = new ArrayList<UserTrackingReportVO>(0); 
+				for(Object[] params : list)
+				{
+									
+					UserTrackingReportVO userTrackingReportVO = new UserTrackingReportVO();
+					maxTime = (Date)params[2];
+					minTime = (Date)params[3];
+					spentTimeOnPage = maxTime.getTime()- minTime.getTime();
+					userTrackingReportVO.setSessionId(params[0].toString());
+					userTrackingReportVO.setRemoteAddress(params[1].toString());
+					userTrackingReportVO.setNoOfPages(((Long)params[4]).intValue());
+					spentTimeOnPage = spentTimeOnPage/(1000*60);
+					userTrackingReportVO.setSpentTime(spentTimeOnPage/60+":"+spentTimeOnPage%60);
+					
+					List<Object> pages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
+					if(pages != null && pages.size() >= 2)
+					{
+						userTrackingReportVO.setExitPage(pages.get(0).toString());
+						userTrackingReportVO.setLandingPage(pages.get(1).toString());
+					}
+					else if(pages !=null && pages.size() <= 1){
+						userTrackingReportVO.setLandingPage(pages.get(0).toString());
+						userTrackingReportVO.setExitPage(pages.get(0).toString());
+					}
+					resultList.add(userTrackingReportVO);
+				}
+			}
+			return resultList;
+		
+		}catch (Exception e) {
+			log.error("Exception occured in getHostNameAndNoOfPagesForAVisitor() Method, Exception is - "+e);
+			return resultList;
 		}
 	}
 	public List<UserTrackingReportVO> getTotalUniqueVisitorDetails(Date fromDate, Date toDate){
@@ -284,5 +333,82 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 			duration=secs+" seconds";
 		}
 		return duration;
+	}	
+public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType){
+	List<UserTrackingReportVO> resultList = null;
+	Date maxTime;
+	Date minTime;
+	Long spentTimeOnPage;
+	try{
+		List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAUser(fromDate, toDate, userType);
+			if(list != null && list.size() > 0)
+				for(Object[] params : list){
+					resultList = new ArrayList<UserTrackingReportVO>(0);
+					UserTrackingReportVO userTrackingReportVO = new UserTrackingReportVO();
+					if(userType == null){
+						maxTime = (Date)params[2];
+						minTime = (Date)params[3];
+						spentTimeOnPage = (maxTime.getTime()-minTime.getTime())/(1000*60);
+						userTrackingReportVO.setSessionId(params[0].toString());
+						userTrackingReportVO.setRemoteAddress(params[1].toString());
+						userTrackingReportVO.setNoOfPages(((Long)params[4]).intValue());
+						userTrackingReportVO.setSpentTime(spentTimeOnPage/60+":"+spentTimeOnPage%60);
+						List<Object> pages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
+						
+						 if(pages != null && pages.size() >= 2)
+						 {
+							 userTrackingReportVO.setExitPage(pages.get(0).toString());
+							 userTrackingReportVO.setLandingPage(pages.get(1).toString());
+						 }
+						 else if(pages != null && pages.size() <= 1){
+							 userTrackingReportVO.setLandingPage(pages.get(0).toString());
+							 userTrackingReportVO.setExitPage(pages.get(0).toString());
+						 }
+					}
+					else if(userType != null && userType.equalsIgnoreCase(IConstants.FREE_USER)){
+						maxTime = (Date)params[3];
+						minTime = (Date)params[4];
+						spentTimeOnPage = (maxTime.getTime()-minTime.getTime())/(1000*60);
+						userTrackingReportVO.setSessionId(params[0].toString());
+						userTrackingReportVO.setNoOfPages(((Long)params[6]).intValue());
+						userTrackingReportVO.setUserName(params[1].toString()+" "+params[2].toString());
+						userTrackingReportVO.setSpentTime(spentTimeOnPage/60+":"+spentTimeOnPage%60);
+						List<Object> FUPages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
+						if(FUPages != null && FUPages.size() >= 2){
+							userTrackingReportVO.setExitPage(FUPages.get(0).toString());
+							userTrackingReportVO.setLandingPage(FUPages.get(1).toString());
+						}
+						else if(FUPages !=null && FUPages.size() <= 1)
+						{
+							userTrackingReportVO.setExitPage(FUPages.get(0).toString());
+							userTrackingReportVO.setExitPage(FUPages.get(0).toString());
+						}
+					}
+					else if(userType != null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER)){
+						maxTime = (Date)params[3];
+						minTime = (Date)params[4];
+						spentTimeOnPage = (maxTime.getTime()-minTime.getTime())/(1000*60);
+						userTrackingReportVO.setSessionId(params[0].toString());
+						userTrackingReportVO.setNoOfPages(((Long)params[6]).intValue());
+						userTrackingReportVO.setSpentTime(spentTimeOnPage/60+":"+spentTimeOnPage%60);
+						userTrackingReportVO.setUserName(params[1].toString() +" "+params[2].toString());
+						List<Object> PAPages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
+						if(PAPages != null && PAPages.size() >= 2){
+							userTrackingReportVO.setExitPage(PAPages.get(0).toString());
+							userTrackingReportVO.setLandingPage(PAPages.get(1).toString());
+						}
+						else if(PAPages != null && PAPages.size() <=1){
+							userTrackingReportVO.setExitPage(PAPages.get(0).toString());
+							userTrackingReportVO.setLandingPage(PAPages.get(0).toString());
+						}
+						
+					}
+					resultList.add(userTrackingReportVO);
+				}
+		return resultList;
+	}catch (Exception e) {
+		log.debug("Exception Occured in getHostNameAndNoOfPagesForAUser() Method ,Exception is - "+e);
+		return resultList;
+		}
 	}
 }
