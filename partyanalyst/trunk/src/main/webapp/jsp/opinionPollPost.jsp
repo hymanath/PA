@@ -320,6 +320,8 @@ function showDateCalendar(eleId) {
 </head>
 
 <body  class="bodyStyle" style="background-color:#f2f2f2;">
+<s:if test="#session.USER !=null ">
+<s:if test="#session.USER.isAdmin == 'true'">
 <CENTER>
 <TABLE border="0" cellpadding="0" cellspacing="0">
 	<TR>
@@ -438,5 +440,17 @@ function showDateCalendar(eleId) {
 	</table>	
 	
 </s:form>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 </body>
 </html>
