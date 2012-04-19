@@ -59,7 +59,7 @@
 	    white-space: nowrap;
 	}
 
-
+	#contenttable{padding-bottom:50px}
 
 
 	/* Big box with list of options */
@@ -133,6 +133,7 @@ table.searchCriteria{
 	padding:5px;
 	text-align:left;
 	width:460px;
+	font-family:arial;
 }
 .head {
 	background-color:#EBEBEB;
@@ -148,12 +149,14 @@ table.searchCriteria{
 	color:#474B51;
 	padding:5px;
 	text-align:left;
+	font-family:arial;
 }
 .edge {
 	background-color:#EAEAE9;
 	border-bottom:1px solid #DBDCDB;
 	color:#474B51;
 	padding:5px;
+	font-family:arial;
 }
 
 </style>
@@ -171,14 +174,14 @@ table.searchCriteria{
 	 <s:form theme="simple" name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 	<table cellpadding="0" cellspacing="0" width="475px">
 	<tr>
-		<th align="left" colspan="2" class="middle">
+		<th align="left" colspan="2" class="middle" style="font-family:arial;">
 			Search Criteria
 		</th>	
 		<td align="left" class="middle">		
-			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="resetConstTypeOptions()" checked="checked"/>Politician
+			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="resetConstTypeOptions()" checked="checked"/>&nbsp;&nbsp;Politician
 		</td>
 		<td align="left" class="edge">	
-			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="resetConstTypeOptions()"/>Constituency	
+			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="resetConstTypeOptions()"/>&nbsp;&nbsp;Constituency	
 		</td>
 	</tr>
 	<tr id="row2">
@@ -186,10 +189,10 @@ table.searchCriteria{
 			Constituency Type
 		</th>	
 		<td align="left" class="middle">		
-			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect();getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');" checked="checked"/>MLA
+			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect();getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');" checked="checked"/>&nbsp;&nbsp;MLA
 		</td>
 		<td align="left" class="edge">	
-			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect();getStates(1,'stateSelect','siteSearch','stateSelect','current','null');"/>MP	
+			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect();getStates(1,'stateSelect','siteSearch','stateSelect','current','null');"/>&nbsp;&nbsp;MP	
 		</td>		
 	</tr>
 	<tr>
