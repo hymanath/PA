@@ -35,10 +35,12 @@
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="styles/combo.css" /> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"></link> 
+<link media="screen" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
 <!-- Combo-handled YUI JS files: --> 
 
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-
+<script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
+<script src="js/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">	</script>
   
 <script type="text/javascript">
 var homePageUpdates = null;
@@ -535,22 +537,26 @@ text-decoration:none;
     </div>
   </div>
 </div>
-<div id="popupDiv" style="display: block; margin-left: auto; margin-right: auto; width: 850px;">
-<c:if test='${sessionScope.loadingFirstTime == true}'>
-	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -560px;">
+<a id="inline" href="#fancydivbox" style="displaynone"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
 	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
 	</div>
-	</c:if>
-
-</div>	
+</div>
 
 <!--CONTENT MAIN SECTION END--> 
- 
+
 <script type="text/javascript">
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
 var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+$(document).ready(function(){
+if(loadingFirstTime == 'true'){
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
 buildHOmePageChartsSlider();
 	initializeHomePage();
 	getElectionTypeValue(1);
@@ -952,6 +958,7 @@ $(function() {
 		});
 
 		$(document).ready(function(){
+		$("#inline").fancybox();
 			$('img.captify').captify({
 
 				speedOver: 'fast',
