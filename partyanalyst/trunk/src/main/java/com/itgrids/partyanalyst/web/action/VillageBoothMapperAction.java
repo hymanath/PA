@@ -12,8 +12,11 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class VillageBoothMapperAction extends ActionSupport implements
@@ -96,7 +99,19 @@ ServletContextAware, ServletResponseAware, ServletRequestAware{
 	
 	public String execute(){
 		
-		return SUCCESS;
+	RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		
+		if(registrationVO !=null)
+		{
+			if(registrationVO.getIsAdmin() != null && registrationVO.getIsAdmin().equals("true"))
+			{
+				return SUCCESS;
+			}
+			else
+				return Action.ERROR;
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	
 	public String setDataForVillageBoothRelation(){
