@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
+import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
@@ -107,7 +108,16 @@ public class ProblemManagementReportService implements
 	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
 	private IDataApprovalService dataApprovalService;
 	private CadreManagementService cadreManagementService;
+	private IProblemFileDAO problemFileDAO;
 	
+	public IProblemFileDAO getProblemFileDAO() {
+		return problemFileDAO;
+	}
+
+	public void setProblemFileDAO(IProblemFileDAO problemFileDAO) {
+		this.problemFileDAO = problemFileDAO;
+	}
+
 	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
@@ -2693,4 +2703,5 @@ public class ProblemManagementReportService implements
 				return mainList;
 			}
 		}
+		
 }
