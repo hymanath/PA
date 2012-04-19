@@ -6,7 +6,8 @@
 <title>Problem Upload</title>
 </head>
 	<body>
-	<s:form name="ProblemUploadAction" action="problemUploadAction" method="post" enctype="multipart/form-data" >
+<s:if test="#session.USER !=null">
+<s:if test="#session.USER.isAdmin == 'true'">	<s:form name="ProblemUploadAction" action="problemUploadAction" method="post" enctype="multipart/form-data" >
 	<h3>Problem Upload</h3>
 	  <table border="1" style="border-collapse:collapse">
 	     <tr>
@@ -43,5 +44,17 @@
 			</c:forEach>
 		</div>
 	</c:if>				
+ </s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 	</body>
 </html>
