@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, Long> implements IUserLoginDetailsDAO{
 	
@@ -38,5 +39,12 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 				" where model.sessionId = model2.sessionId and Date(model2.loginTime) >= ? group by model.sessionId",today);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getLandingPageAndExitPageForAUser(String sessionId)
+	{ 	Object[] params = {sessionId,sessionId};
+		return getHibernateTemplate().find("select model.urlName from UserTracking model where (model.time =(select max (model2.time) from UserTracking model2 where model2.sessionId = ?)) or " +
+				" (model.time =(select min (model3.time) from UserTracking model3 where model3.sessionId = ? )) order by model.time desc " ,params);
+	}
 	
 }
