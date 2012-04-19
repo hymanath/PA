@@ -434,7 +434,7 @@ function buildAccordion()
 <div style="width:100%;float:left;">
 <center>
 <div class="header2">
-<div style="float: left; margin-left: 114px; margin-top: 15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+<div style="float:left;margin-left:62px;margin-top:15px;" class="fb-like" data-href="http://www.facebook.com/PartyAnalyst" data-send="false" data-layout="button_count" data-width="0" data-show-faces="false"></div>
 <div class="follow-us">
             <ul>
               <li><a href="http://twitter.com/#!/party_analyst" target="_blank"><img src="./images/new_homepage/twitter.gif" alt=""/></a></li>

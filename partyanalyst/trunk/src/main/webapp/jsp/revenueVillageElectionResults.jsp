@@ -231,6 +231,7 @@ legend
 						mandalId: mandalId,
 						rank:rank,
 						electionYear:'${electionYear}',
+						isPanchayatWise : false,
 						task:"getTownshipwiseVotesShareInfo"						
 				};
 			

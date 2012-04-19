@@ -840,7 +840,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		var typeVal = ""+ptypeSelectElmt.options[ptypeSelectElmt.selectedIndex].text;
 		var yearVal = ""+pyearSelectElmt.options[pyearSelectElmt.selectedIndex].text;
 		
-		var brow1 = window.open("<s:url action="panchayatWiseElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal+"resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var brow1 = window.open("<s:url action="panchayatWiseElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal+"&resultFor=panchayats","browser2","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
 	
