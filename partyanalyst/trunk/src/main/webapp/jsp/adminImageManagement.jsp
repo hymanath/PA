@@ -243,7 +243,7 @@ function getAllProblemsBetweenDates()
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
+			var url = "<%=request.getContextPath()%>/getBetweenDatesProblemImages.action?"+rparam;					
 			callAjax(rparam,jsObj,url);
 		}
 
