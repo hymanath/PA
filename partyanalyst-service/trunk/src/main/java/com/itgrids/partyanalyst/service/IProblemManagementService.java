@@ -110,4 +110,8 @@ public interface IProblemManagementService {
 	public void acceptSelectedImagesByAdmin(final Integer[] problemFileIds);
 	
 	public void deleteSelectedImagesByAdmin(final Integer[] problemFileIds);
+	
+	public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDate,String toDate,String status,String type);
+	
+	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDate,String status,String type);
 }
