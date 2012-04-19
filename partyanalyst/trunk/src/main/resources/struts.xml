@@ -3252,6 +3252,18 @@
 			<result type="json" name="success">
 				<param name="root">usrTrckRprtVO</param>				
 			</result>	
+		</action>	
+		
+		<action name="getVisitorsMoreDetailsAction" class="userTrackingReportAction" method="ajaxCallHandlerForVisitor">
+			<result type="json" name="success">
+				<param name="root">userTrackingReportVOList</param>				
+			</result>		
+		</action>
+		
+       <action name="getUserMoreDetailsAction" class="userTrackingReportAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">userTrackingReportVOList</param>				
+			</result>		
 		</action>
 		
 	</package>
