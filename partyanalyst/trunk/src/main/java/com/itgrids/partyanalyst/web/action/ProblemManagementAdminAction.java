@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProblemManagementAdminAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
@@ -164,14 +165,14 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 		String cPath = request.getContextPath();
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-			return ERROR;
 		
 		Date currentDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);
 		Date dateAfterAWeek = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,7,IConstants.PREVIOUS_DAY);
 		
 		if(user != null)
 		{			
+			if( user.getIsAdmin() !=null && user.getIsAdmin().equals("true"))
+			{
 			 allProblemsCount = problemManagementReportService.getProblemsCountInAWeek(dateAfterAWeek,currentDate,IConstants.NEW,IConstants.FALSE);
 			 if(allProblemsCount!=null  && allProblemsCount.getProblemsCount()!=null ){
 				 if(allProblemsCount.getProblemsCount().size()!=0){
@@ -207,8 +208,13 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 			 }else{
 				 problemsForCurrentDayGraphDataAvailability = "dataUnAvailable";
 			 }
+			 return SUCCESS;
  		}
-		return SUCCESS;
+			else
+				return Action.ERROR;
+		}
+		else
+			return IConstants.NOT_LOGGED_IN;
 	}
 	private CategoryDataset createDataset(List<SelectOptionVO> result) {       
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
