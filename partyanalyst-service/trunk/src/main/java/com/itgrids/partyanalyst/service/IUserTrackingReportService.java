@@ -10,4 +10,8 @@ public interface IUserTrackingReportService {
 	public String saveUserLogOutDetails(Date fromDate, Date toDate, Boolean isToday);
 	
 	public List<UserTrackingReportVO> getTotalUniqueVisitorDetails(Date fromDate, Date toDate);
+	
+	public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate);
+	
+	public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType);
 }
