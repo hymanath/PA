@@ -341,7 +341,7 @@ str +='</tr>';
 
 for(var i=0; i<result.length; i++)
 {
-str +='<tr>';
+str +='<tr style="text-align:center;">';
 if(result[i].remoteAddress != null)
   str +='<td  width="15%">'+result[i].remoteAddress+'</td>';
 if(result[i].remoteAddress == null && result[i].userName != null)
