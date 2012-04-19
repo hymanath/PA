@@ -763,6 +763,21 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"electionScope.electionType.electionType = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
 				"group by model.boothConstituencyElection.villageBoothElection.township.townshipId,model.nomination.nominationId",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findPanchayatWiseAllPartyResultsInAMandal(String electionType,
+			String electionYear, Long mandalId){
+		Object[] params = {mandalId,electionType,electionYear};
+		return getHibernateTemplate().find("select sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),"+
+				"model3.panchayat.panchayatId,model3.panchayat.panchayatName,"+
+				"model.nomination.party.partyId,model.nomination.party.shortName,sum(model.boothConstituencyElection.booth.totalVoters) from "+
+				"CandidateBoothResult model, HamletBoothElection model2, PanchayatHamlet model3 where " +
+				"model.boothConstituencyElection.boothConstituencyElectionId = model2.boothConstituencyElection.boothConstituencyElectionId and " +
+				"model2.hamlet.hamletId = model3.hamlet.hamletId and model3.panchayat.tehsil.tehsilId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election."+
+				"electionScope.electionType.electionType = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
+				"group by model3.panchayat.panchayatId,model.nomination.nominationId",params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List getValidVotesInAMandal(Long tehsilId, String electionType,
