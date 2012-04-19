@@ -6,9 +6,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Election Data Upload</title>
 </head>
 <body>
+<s:if test="#session.USER !=null">
+<s:if test="#session.USER.isAdmin == 'true'">
 <s:form name="UploadExcelAction" action="uploadExcel" method="post" enctype="multipart/form-data">
  	<h3>Election Data Upload</h3>
 	<table border="1">
@@ -77,6 +79,19 @@
 			<td></td>
 		</tr>
 	</table>
+	
 </s:form>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("userEntitlementAction.action");
+%>
+</s:else>
+</s:if>
+<s:else>
+<%
+	response.sendRedirect("loginInputAction.action");
+%>
+</s:else>
 </body>
 </html>
