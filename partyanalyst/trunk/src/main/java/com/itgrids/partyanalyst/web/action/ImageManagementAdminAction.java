@@ -112,7 +112,7 @@ public class ImageManagementAdminAction extends ActionSupport implements
 		
 	  if(registrationVO !=null)
 	   {
-		  if(registrationVO.getIsAdmin().equals(IConstants.TRUE))
+		  if(registrationVO.getIsAdmin()!=null && registrationVO.getIsAdmin().equals(IConstants.TRUE))
 		  {	   
 			 if(task != null)
 			  {
@@ -143,11 +143,14 @@ public class ImageManagementAdminAction extends ActionSupport implements
 					}
 			  }
 		  }
-	   
+		  else
+			  return Action.ERROR;
+		  
 		return SUCCESS;
+		
 	   } 
 	  else
-		  return Action.ERROR;
+		  return IConstants.NOT_LOGGED_IN;
 	}
 
 }
