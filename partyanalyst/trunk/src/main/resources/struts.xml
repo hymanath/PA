@@ -139,7 +139,7 @@
 			<result type="chain" name="redirectUrl">${url}</result>
 			<result type="redirect" name="partyManagementAction">partyManagementAction.action</result>
 			<result type="redirect" name="candidateElectionResultsAction">candidateElectionResultsAction.action</result>
-			<result type="redirect" name="imageManagementAdminAction">imageManagementAdminAction.action</result>
+			<result type="redirect" name="imageManagementAdminAction">ImageManagementAdminAction.action</result>
 			<result type="redirect" name="commentsControlAdminAction">commentsControlAdminAction.action</result>
 			<result type="redirect" name="problemApprovalAdminAction">problemApprovalAdminAction.action</result>
 			<result type="redirect" name="constituencyWiseCensusMappingAction">constituencyWiseCensusMappingAction.action</result>
@@ -148,6 +148,7 @@
 			<result type="redirect" name="opinionPollPostAction">opinionPollPost.action</result>
 			<result type="redirect" name="homePageQuestionsAction">homePageQuestionsAction.action</result>
 			<result type="redirect" name="specialPageManageAction">specialPageManageAction.action</result>
+			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 
 			<result>/jsp/loginsuccess.jsp</result>
 
@@ -649,6 +650,8 @@
         </action>
         
         <action name="hamletBoothMapperAction" class="hamletBoothMapperAction">
+        	<result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=hamletBoothMapperAction</result>
            <result name="success">/jsp/mapBoothToHamlet.jsp</result>
         </action> 
         
@@ -1862,7 +1865,9 @@
 		</action>
 		
 		<action name="municipalWardsAssemblyBoothsMapperAction" class="municipalWardsAssemblyBoothsMapperAction">
-			<result>/jsp/boothLocalBodyMapper.jsp</result>
+			 <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>	
+             <result name="error">/jsp/entitlementErrorPage.jsp</result>
+			 <result name="success">/jsp/boothLocalBodyMapper.jsp</result>
 		</action>
 		
 		<action name="municipalWardsAssemblyBoothsMapperAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="getBoothsInAssemblyConstituency">
@@ -1878,13 +1883,15 @@
 		
 		<action name="problemManagementAdminAction" class="problemManagementAdminAction"> 
              <result name="success">/jsp/adminProblemManagement.jsp</result> 
-             <result name="error">/jsp/loginForm.jsp?src=problemManagementAdminAction</result>	
+             <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=problemManagementAdminAction</result>	
+             <result name="error">/jsp/entitlementErrorPage.jsp</result>
 			 <result name="input">/jsp/adminProblemManagement.jsp</result>
         </action>
         
         <action name="imageManagementAdminAction" class="com.itgrids.partyanalyst.web.action.ImageManagementAdminAction"> 
              <result name="success">/jsp/adminImageManagement.jsp</result> 
-             <result name="error">/jsp/loginForm.jsp?src=imageManagementAdminAction</result>	
+             <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=imageManagementAdminAction</result>
+             <result name="error">/jsp/entitlementErrorPage.jsp</result>	
 			 <result name="input">/jsp/adminImageManagement.jsp</result>
         </action>
         
@@ -2064,6 +2071,8 @@
 		
 		<action name="villageBoothMapperAction" class="villageBoothMapperAction">
            <result name="success">/jsp/villageBoothMapper.jsp</result>	
+           <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
         </action>  
         
         <action name="setDataForVillageBooth" class="villageBoothMapperAction" method="setDataForVillageBoothRelation">
