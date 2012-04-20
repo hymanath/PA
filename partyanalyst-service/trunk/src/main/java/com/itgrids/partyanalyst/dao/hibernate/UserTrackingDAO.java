@@ -20,7 +20,7 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	public List<Object[]> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate){
 		Object[] params = {fromDate , toDate};
 		
-		return getHibernateTemplate().find("select model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where Date(model.time) BETWEEN ? and ? order by sessionId asc",params);
+		return getHibernateTemplate().find("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where Date(model.time) BETWEEN ? and ? group by model.sessionId",params);
 		
 	}
 	
@@ -29,16 +29,19 @@ public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDat
 		
 		StringBuilder query = new StringBuilder();
 		if(userType == null)
-			
-			query.append("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ? order by model.time desc");
-		
-	 else if(userType != null && userType.equalsIgnoreCase(IConstants.FREE_USER))
-			
+		{
+			query.append("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ? group by model.sessionId");
+		}
+	   else if(userType != null && userType.equalsIgnoreCase(IConstants.FREE_USER))
+	    {		
 			query.append("select distinct model2.sessionId , model.freeUser.name , model.freeUser.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
-					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? ");
-	 else if(userType !=null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId");
+	    }
+	   else if(userType !=null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+	   {
 			query.append("select distinct model2.sessionId , model.registration.firstName , model.registration.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
-					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? ");
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId");
+	   }
 		Query queryObj = getSession().createQuery(query.toString());
 		
 		if(userType == null)
