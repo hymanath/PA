@@ -2051,6 +2051,13 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
+			 if(result.get(i).getFile().getFileDate()!= null)
+			 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+			 if(result.get(i).getFile().getSourceObj() != null)
+			 fileVO.setSource(result.get(i).getFile().getSourceObj().getSource());
+			if(result.get(i).getFile().getLanguage() != null)
+			 fileVO.setLanguage(result.get(i).getFile().getLanguage().getLanguage());
+			
 			 fileVOs.add(fileVO);
 		 }
 	}
