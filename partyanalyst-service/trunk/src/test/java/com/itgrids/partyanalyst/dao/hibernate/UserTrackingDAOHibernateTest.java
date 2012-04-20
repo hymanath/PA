@@ -20,7 +20,7 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 	{
 		userTrackingDAO.getAll();
 	}*/
-	/*public void testGetHostNameAndNoOfPagesForAUser()
+	/*public void testGetHostNameAndNoOfPagesForAVisitor()
 	{
 		List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAVisitor(new Date() , new Date());
 		System.out.println(list.size());
@@ -28,6 +28,7 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 			
 			for(Object[] params : list)
 			{
+				System.out.println(list.size());
 				System.out.println(params[0]+ " " +params[1]+ " " +params[2]+ " " +params[3]);
 				Date max = (Date)params[2];
 				Date min = (Date)params[3];
@@ -57,10 +58,11 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 	  }*/
 		
 	public void testGetHostNameAndNoOfPagesForAUser(){
-		List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAUser(new Date(),new Date(),null);
+		List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAUser(new Date(2012-4-1),new Date(),IConstants.PARTY_ANALYST_USER);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0) 
 		for(Object[] params : list){
+			System.out.println(list.size());
 			System.out.println(params[0] + "" + params[1] + "" +params[2] + "" +params[3]);
 			System.out.println(params[1].toString()+" "+params[2].toString());
 		}
