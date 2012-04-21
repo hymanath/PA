@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 
@@ -76,10 +77,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testFindByConstituencyIdAndElectionYear(){
+	/*public void testFindByConstituencyIdAndElectionYear(){
 		List list = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(270l, 476l, "2009");
 		System.out.println("List Size:"+list);
-	}
+	}*/
 	
 	/*public void testFindPartNoConstituencyNameForTehsil(){
 		List list = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(new Long(844), "Assembly", "2009");
@@ -151,7 +152,7 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetElectionYears()
+	/*public void testGetElectionYears()
 	{
 		List list = boothConstituencyElectionDAO.getElectionYears();
 		if(list != null && list.size() > 0)
@@ -164,5 +165,9 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 	}
 	
-	
+	*/
+	public void testGetElectionIdInMandal()
+	{
+		System.out.println(boothConstituencyElectionDAO.getElectionIdInMandal(844l,IConstants.ASSEMBLY_ELECTION_TYPE,"2009"));
+	}
 }
