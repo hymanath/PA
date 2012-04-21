@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -366,6 +367,16 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	public List getElectionYears()
 	{
 		return getHibernateTemplate().find(" select distinct model.constituencyElection.election.electionYear from BoothConstituencyElection model order by model.constituencyElection.election.electionYear desc");
+	}
+	
+	public Object getElectionIdInMandal(Long tehsilId, String electionType, String year)
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionId from BoothConstituencyElection model where model.booth.tehsil.tehsilId = ? and " +
+				" model.constituencyElection.election.electionScope.electionType.electionType = ? and model.constituencyElection.election.electionYear = ? ");
+		query.setParameter(0,tehsilId);
+		query.setParameter(1,electionType);
+		query.setParameter(2,year);
+		return query.uniqueResult();
 	}
 
 }
