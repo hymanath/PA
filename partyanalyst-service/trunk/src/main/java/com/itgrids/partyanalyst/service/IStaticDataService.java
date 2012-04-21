@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
@@ -312,4 +313,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getPartiesWithAtleatOneWinningSeatForAElection(Long electionId);
 		
 		public String getDistrictNameByDistrictId(Long districtId);
+		
+		public List<TownshipBoothDetailsVO> getPanchayatVotingTrendsByMandal(Long tehsilId, String electionIds,List<RevenueVillageElectionVO> panchayats);
 }
