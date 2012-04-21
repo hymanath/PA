@@ -25,12 +25,21 @@ border:10px solid transparent;
 border-bottom:10px solid #C93033;
 border-right:10px solid #C60003;
 position:absolute;
-top:-65%;
+top:-64%;
 left:50%;
 }
 .Election2014{height:200px;}
 .Election2014 span{display:table;color:navy;}
-.ElectionInfo{display:block;margin-left:25%;}
+.ElectionInfo{display:block;margin-left:31%;}
+.ElectionInfo a{background: none repeat scroll 0 0 #C93033;border-radius: 3px 3px 3px 3px;box-shadow: 0 0 5px #888888;color: #FFFFFF;display: table;font-family: helvetica;font-size: 13px;margin: 22px 15px 0px;padding: 6px 7px;position: relative;text-decoration: none;}
+.ElectionInfo a:before{content:" ";
+border:10px solid transparent;
+border-bottom:10px solid #C93033;
+border-right:10px solid #C60003;
+position:absolute;
+top:-18px;
+left:50%;
+}
 </style>
 <div class="promos">
 <div class="promoheader">
@@ -42,24 +51,24 @@ left:50%;
 </div>
 </div>
 
-<div class="Newsmontior boxdiv">
+<div class="Newsmontior boxdiv" style="height:194px;">
 <h1 style="background:url('images/icons/homePage/LocationNews.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding:10px 55px;">News Monitoring Service</h1>
-<p>
+<p style="margin-top:13px;line-height:18px;">
 <b>Analysis of your Media Coverage:</b> In order to help you become more effective at your PR initiatives, we offer you comprehensive coverage collected from Print Media, Leading television news channels and websites, You receive personalized reports in a wide range of formats.
 <a href="#">Click Here to Know More</a></p>
 </div>
 
-<div class="Election2014 boxdiv">
-<h1 style="background:url('images/icons/homePage/Flag.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;">Are you Aspirant candidate for<br/>
+<div class="Election2014 boxdiv" style="height:194px;">
+<h1 style="background:url('images/icons/homePage/Flag.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size:20px;">Are you Aspirant candidate for<br/>
 2014 elections in Andhra Pradesh</h1>
-<p>
-Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <b>Constituency Profile Report</b>.
-<span style="font-weight:bold;margin-top:4px;">
-To know more call us +91  9676696760 or <br />Email us <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></p></span>
+<p style="margin-top:13px;line-height:18px;">
+Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.
+<span style="font-weight:bold;margin-top:24px;">
+To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></p></span>
 </div>
-<div class="ElectionInfo boxdiv">
-<h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;">Election Information</h1>
-<p style="margin:9px 25px"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
+<div class="ElectionInfo boxdiv" style="height: 92px; width: 305px; padding-left: 10px; padding-right: 10px;">
+<h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
+<p style="margin:1px;"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
 </div>
 </div>
 
