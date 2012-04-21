@@ -13,6 +13,9 @@
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+	<script type="text/javascript" src="js/homePage/homePage.js"></script>
+	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
+	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 	
 	<!--<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script> --> 
 	<script
@@ -161,6 +164,12 @@
     font: small-caption;
    }
 #CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDiv > table * th {background-color: #CDE6FC;}
+
+.electionTrendzHeaderBackground_center
+{	
+	background-image:url(images/icons/homePage_new/newsheader_center.jpg);
+	height:40px;
+}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -689,6 +698,36 @@
 </c:if>
         
         </div>
+
+
+
+	<!-- Opinion Poll Start-->
+	
+						<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;clear:both;">
+									<div id="pollsWidgetHeader">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+											<td width="98%">
+												<div class="electionTrendzHeaderBackground_center">
+													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
+														Opinion Poll
+													</span>
+												</div>
+											</td>
+											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+										  </tr>
+										</table>	
+									 </div>
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;">
+									</div>
+									<div id="pollsWidgetFooter">
+										
+									</div>
+								</div>
+							<!-- Opinion Poll End-->
+
+
 		<h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1>
         <div id="partyAnysAdd" style="margin-left:11px;"></div>
         <!--CD SUB RIGHT SECTION END--> 
@@ -3276,6 +3315,7 @@ getGreaterResults();
 buildConstituencyInfo();
 initializeConstituencyPage();
 detailedElectionResult();
+buildPolls();
 
  </script>
   </body>
