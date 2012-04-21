@@ -249,7 +249,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
 		String cPath = request.getContextPath();
 		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
-			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);
+			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,electionIds,townshipWiseElectionResults.get(0).getRevenueVillageElectionVO());
 		else
 			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
 	
