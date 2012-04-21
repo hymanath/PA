@@ -435,7 +435,7 @@ text-decoration:none;
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
-        <div class="sneak-peak-sec" style="width:630px;">
+        <div class="sneak-peak-sec" style="width:622px; border-right: 1px dotted;margin-right: 10px;">
           <h1 class="title tc-tf">Sneak Peak @Party Analyst</h1>
 		  <div class="homePageContentWidget_body" style="width:650px; border: 0px solid #DDDDDD;">
 
@@ -443,7 +443,7 @@ text-decoration:none;
 										
 									</div>
 									<div id="homePage_Chart_Header_main" style="overflow:hidden;height:360px;">
-										<div id="homePage_Chart_Header">
+										<div id="homePage_Chart_Header" style="margin-left:-30px;">
 									   
 										</div>
 									</div>
@@ -454,9 +454,62 @@ text-decoration:none;
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
 
+
+		<!-- Opinion Poll Start-->
+								
+												<!--<div id="pollsWidgetHeader">
+													
+												
+												<table><tr><td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+											<td width="98%">
+												<div class="electionTrendzHeaderBackground_center">
+													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
+														Opinion Poll
+													</span>
+												</div>
+											</td>
+											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+										  </tr>
+										  </table>
+											
+										 	
+							
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;">
+							</div>
+									<div id="pollsWidgetFooter">
+										
+									</div>
+								</div>-->
+						
+						<div>
+						<div id="pollsWidgetHeader">
+										<table width="34%" border="0" cellspacing="0" cellpadding="0">
+										
+										
+										  <tr>
+										 	<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+											<td>
+												<div class="electionTrendzHeaderBackground_center">
+													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
+														Opinion Poll
+													</span>
+												</div>
+											</td>
+											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+										  </tr>
+										</table>	
+									 </div>
+									<div id="pollsWidgetBody" style="height:263px;">
+									</div>
+									<div id="pollsWidgetFooter">
+										
+									</div></div>
+								
+							<!-- Opinion Poll End-->
+
 		<!--QA CONTENT SLIDE SECTION START-->
-        
-          <div class="pft-social-sec" style="width:308px;">
+      <!--  <c:if test="${loginStatus != 'true' && sessionScope.UserType != 'FreeUser'}">
+       <div class="pft-social-sec" style="width:308px;">
         <h1 class="fleft"><img src="./images/new_homepage/qa.gif" alt=""/></h1>
 			<div class="rd-arrows"> <a href="#" onmouseover="movedown()" onmouseout="clearTimeout(movedownvar)"><img src="./images/new_homepage/orange-top-arrow.gif" alt=""/></a> <a href="#" onmouseover="moveup()" onmouseout="clearTimeout(moveupvar)"><img src="./images/new_homepage/blue-down-arrow.gif" alt=""/></a> </div>
             <div class="clear"></div>
@@ -518,7 +571,7 @@ text-decoration:none;
               </li>
 							  </ul>
 			<script type="text/javascript" src="js/vscroll.js"></script> 
-            <script type="text/javascript" src="js/vcontent-scroll.js"></script> 
+            <script type="text/javascript" src="js/vcontent-scroll.js"></script> </c:if>-->
 
 			<!--QA CONTENT SLIDE SECTION END--> 
 		
@@ -1255,6 +1308,7 @@ function closewindow()
 			}
 		}
 photosNewsVideosUpdateForACandidate();
+buildPolls();
 </script>
 	
 </body>
