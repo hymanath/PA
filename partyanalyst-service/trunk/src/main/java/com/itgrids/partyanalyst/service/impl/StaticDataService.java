@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
@@ -5956,6 +5957,99 @@ public class StaticDataService implements IStaticDataService {
 			}
 			
 			list = hamletBoothElectionDAO.findPanchayatWiseVotingTrendsForATehsil(tehsilId, elections);
+
+			StringTokenizer st = new StringTokenizer(elections, ",");
+
+			while (st.hasMoreElements())
+			{
+				Long electionID = Long.parseLong(st.nextElement().toString());
+				TownshipBoothDetailsVO townshipBoothDetailsVO = new TownshipBoothDetailsVO();
+				List<TownshipBoothDetailsVO> township = new ArrayList<TownshipBoothDetailsVO>(0);
+				Long count = 1l;
+				ListIterator result = list.listIterator();
+				
+				while (result.hasNext())
+				{
+					Long electionId = electionID;
+					Object[] parms = (Object[]) result.next();
+					
+					if (electionId == Long.parseLong(parms[3].toString()))
+					{
+						TownshipBoothDetailsVO votes = new TownshipBoothDetailsVO();
+						votes.setSNO(count++);
+						Long eachTownshipVotes = Long.parseLong(parms[2].toString());
+						votes.setTownshipID(Long.parseLong(parms[0].toString()));
+						votes.setTownshipName(parms[1].toString());
+						votes.setElectionId(Long.parseLong(parms[3].toString()));
+						votes.setValidVoters(eachTownshipVotes);
+						
+						Double percentage = ((eachTownshipVotes * 100.0) / electionIdsAndTotalVotes.get(Long.parseLong(parms[3].toString())));
+						votes.setPercentageOfValidVotes(new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+						township.add(votes);
+					}
+				}
+				List election = electionDAO.getElectionTypeAndElectionYearByElectionId(electionID);
+				String elect = "";
+				
+				for (int i = 0; i < election.size(); i++) 
+				{
+					Object[] parms = (Object[]) election.get(i);
+					elect = parms[0].toString() + "-" + parms[1].toString();
+				}
+				townshipBoothDetailsVO.setChartTitle("Votes Polling In " + mandalName+ " Mandal for " + elect);
+				townshipBoothDetailsVO.setChartName("Votes_PollingIn_" + mandalName+ "for ElectionType" + electionID + "_piechart"+ ".png");
+				townshipBoothDetailsVO.setTownshipVotingTrends(township);
+				townshipBoothDetailsVO.setMandalId(tehsilId);
+				townshipBoothDetailsVO.setMandalName(mandalName);
+				mandal.add(townshipBoothDetailsVO);
+			}
+			return mandal;
+		} catch (Exception e) {
+			log.error("Exception raised please check the log for details" + e);
+			e.printStackTrace();
+			return mandal;
+		}
+	}
+	
+	public List<TownshipBoothDetailsVO> getPanchayatVotingTrendsByMandal(Long tehsilId, String electionIds,List<RevenueVillageElectionVO> panchayats) 
+	{
+		Long totalValidVotesInMandal = 0l;
+		List<Object[]> mandalResult = new ArrayList<Object[]>(0);
+		List<Object[]> list = new ArrayList<Object[]>(0);
+		ResultStatus resultStatus = new ResultStatus();
+		Map<Long, Long> electionIdsAndTotalVotes = new HashMap<Long, Long>(0);
+		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(0);
+		String mandalName = "";
+		String elections = null;
+		try {
+
+			elections = getLatestAssemblyElectionId();
+			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
+			
+			for(Object[] params : mandalResult)
+			{
+				electionIdsAndTotalVotes.put((Long)params[1], (Long)params[0]);
+				mandalName = params[2].toString();
+			}
+			
+			
+			if(panchayats != null && panchayats.size() > 0)
+			{
+				list = new ArrayList<Object[]>();
+				for(RevenueVillageElectionVO villageElectionVO : panchayats)
+				{
+					Object[] objArr = new Object[4];
+					objArr[0] = villageElectionVO.getTownshipId();
+					objArr[1] = villageElectionVO.getTownshipName();
+					objArr[2] = villageElectionVO.getVotesPolled();
+					objArr[3] = elections;
+					list.add(objArr);
+				}
+			}
+			else
+			{
+				list = hamletBoothElectionDAO.findPanchayatWiseVotingTrendsForATehsil(tehsilId, elections);
+			}
 
 			StringTokenizer st = new StringTokenizer(elections, ",");
 
