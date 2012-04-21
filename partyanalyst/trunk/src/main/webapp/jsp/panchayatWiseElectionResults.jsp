@@ -308,11 +308,6 @@ legend
 				    rvStr += '</table>';	
 				    rvStr += '</div>';		
 
-
-
-						
-					//rvStr += '<br/>';
-
 					rvStr += '<div id="revenueDataTable" class="yui-skin-sam"><div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
 					rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;" id="table_${constiElec.constituencyId}">';
 					<c:forEach var="villageElec" items="${constiElec.revenueVillageElectionVO}">
@@ -350,7 +345,7 @@ legend
 						rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
 						<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
 							rvStr += '<tr>';
-							rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
+							rvStr += '<td><A href="javascript:{}">${candidateInfo.party}</A></td>';
 							rvStr += '<td>${candidateInfo.candidateName}</td>';
 							rvStr += '<td>${candidateInfo.rank}</td>';
 							rvStr += '</tr>';
@@ -371,7 +366,7 @@ legend
 			
 					 var villageHead = {
 								 			key:"Revenue Village",
-								 			lable: "Village",
+								 			label: "Panchayat Name",
 								 			sortable:true
 									   }
 			
@@ -492,8 +487,7 @@ legend
 
 				YAHOO.util.Connect.asyncRequest('GET', url, callback);			
 			}
-			//var electionType = '${electionType}';
-			//var electionYear = '${electionYear}';
+			
 			var tehsilId = '${tehsilId}';
 			var electId = '${electId}';	
 
@@ -749,8 +743,8 @@ legend
 				 myPanel.render(); 
 			}
 			
-			function getRevenueVillageElectionResults(selectedYear,electionId){
-				var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			function getPanchayatsElectionResults(selectedYear,electionId){
+				var brow1 = window.open("<s:url action="panchayatWiseElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&resultFor=panchayats","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 				brow1.focus();
 			}	
 </script>
@@ -761,7 +755,7 @@ legend
 <table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
 		<tbody><tr>		
 		<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
-			<td width="72%" align="left">
+			<td width="86%" align="left">
 				<table cellspacing="0" cellpadding="0" border="0" style="margin-left:30px;">
 				<tbody><tr>
 					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td>
@@ -770,7 +764,6 @@ legend
 				</tr>
 				</tbody></table>
 			</td>
-			<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
 		</tr>
 	</tbody></table>
 
@@ -779,7 +772,7 @@ legend
 		<tr>
 			<td id="labelRadio">Select Election Year</td>
 			<td>		
-				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
+				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getPanchayatsElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
 			</td>
 			<td>
 				<table border="0" cellspacing="0" cellpadding="0" style="margin-left:50px;">
