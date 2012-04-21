@@ -778,7 +778,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"electionScope.electionType.electionType = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
 				"group by model3.panchayat.panchayatId,model.nomination.nominationId",params);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List getValidVotesInAMandal(Long tehsilId, String electionType,
 			String electionYear) {
@@ -907,6 +907,14 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" HamletBoothElection HBE,PanchayatHamlet P where CBR.boothConstituencyElection.boothConstituencyElectionId = HBE.boothConstituencyElection.boothConstituencyElectionId and " +
 				" HBE.hamlet.hamletId = P.hamlet.hamletId and CBR.boothConstituencyElection.constituencyElection.election.electionId = ? and P.panchayat.tehsil.tehsilId = ? " +
 				" group by P.panchayat.tehsil.tehsilId,P.panchayat.panchayatId,CBR.nomination.party.partyId order by P.panchayat.tehsil.tehsilName,P.panchayat.panchayatName,CBR.nomination.party.shortName",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPartiesParticipatedInAManadalForAnElection(Long tehsilId, Long electionId)
+	{
+		Object[] params = {tehsilId,electionId};
+		return (List<Long>)getHibernateTemplate().find("select distinct model.nomination.party.partyId from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId = ? order by model.nomination.party.shortName",params);
 	}
 	
 	
