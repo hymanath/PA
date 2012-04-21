@@ -152,4 +152,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<Object[]> getdata(Long tehsilId,Long electionId);
 	
 	public List findPanchayatWiseAllPartyResultsInAMandal(String electionType,String electionYear, Long mandalId);
+	
+	public List<Long> getPartiesParticipatedInAManadalForAnElection(Long tehsilId, Long electionId);
 }
