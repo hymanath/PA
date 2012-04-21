@@ -52,6 +52,8 @@ import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -68,6 +70,7 @@ import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsInMandal;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginResultsMainVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
@@ -3133,7 +3136,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 			List resultsList = null;
 			
 			if(isPanchayatWise != null && isPanchayatWise)
-				resultsList = candidateBoothResultDAO.findPanchayatWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			{	
+				resultsList = getPanchayatWisePartiesResultInAMandal(tehsilId, electionType, electionYear);
+				
+				if(resultsList == null || resultsList.size() == 0)
+					resultsList = candidateBoothResultDAO.findPanchayatWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			}
 			else
 				resultsList = candidateBoothResultDAO.findTownshipWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
 			
@@ -3171,6 +3179,46 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 		
 	 return allPartyRes;
+	}
+	
+	public List<Object[]> getPanchayatWisePartiesResultInAMandal(Long tehsilId, String electionType, String electionYear)
+	{
+		try{
+			List<Object[]> resultList = null;
+			Long electionId = (Long)boothConstituencyElectionDAO.getElectionIdInMandal(tehsilId, electionType, electionYear);
+			MandalAndRevenueVillagesInfoVO mandalAndRevenueVillagesInfoVO = constituencyPageService.getPanchayatWiseBoothDetailsForTehsil(tehsilId, electionId);
+			
+			if(mandalAndRevenueVillagesInfoVO != null)
+			{
+				resultList = new ArrayList<Object[]>(0); 
+				List<LocationWiseBoothDetailsVO> panchayats = mandalAndRevenueVillagesInfoVO.getPartiesResultsInVillages().get(0).getRevenueVillagesInfo();
+				
+				for(LocationWiseBoothDetailsVO boothDetailsVO : panchayats)
+				{
+					List<Long> boothIdList = new ArrayList<Long>(0);
+					
+					for(SelectOptionVO optionVO : boothDetailsVO.getBooths())
+						boothIdList.add(optionVO.getId());
+					List<Object[]> list = candidateBoothResultDAO.findBoothResultsForBoothsAndElection(boothIdList,electionId);
+					
+					for(Object[] params : list)
+					{
+						Object[] result = new Object[7];
+						result[0] = params[2];
+						result[1] = boothDetailsVO.getVotesPolled();
+						result[2] = boothDetailsVO.getLocationId();
+						result[3] = boothDetailsVO.getLocationName();
+						result[4] = params[0];
+						result[5] = params[1];
+						result[6] = boothDetailsVO.getPopulation();
+						resultList.add(result);
+					}
+				}
+			}
+			return resultList;
+		}catch (Exception e) {
+			return null;
+		}
 	}
 	
 	/*
