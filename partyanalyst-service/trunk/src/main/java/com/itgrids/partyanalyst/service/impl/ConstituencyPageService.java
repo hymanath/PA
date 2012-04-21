@@ -1044,28 +1044,71 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 			constituencyRevenueVillagesVO = entry.getKey();
 			candidates = new ArrayList<CandidatePartyInfoVO>();
+			List<CandidatePartyInfoVO> candidatesTemp = new ArrayList<CandidatePartyInfoVO>();
+			List<CandidatePartyInfoVO> candidatesResult = new ArrayList<CandidatePartyInfoVO>();
 			revenueVillageElectionVOs = new ArrayList<RevenueVillageElectionVO>();
+			candidates = getPanchayatWiseElectionsForPartiesInATehsil(getListFromSetOfSelectOptionVO(
+					entry.getValue().getRevenueVillagesInfo().get(0).getBooths()),electionId);
+			List<Long> parties = new ArrayList<Long>(0);
+			
+			for(int i=1;i<=candidates.size();i++)
+			{
+				for(CandidatePartyInfoVO infoVO : candidates)
+				{
+					if(infoVO.getRank().intValue() == i)
+						candidatesTemp.add(infoVO);
+				}
+			}
+			
+			candidates = candidatesTemp;
+			
+			for(CandidatePartyInfoVO infoVO : candidates)
+				parties.add(infoVO.getPartyId());
 			
 			for(LocationWiseBoothDetailsVO locationWiseBoothDetailsVO :entry.getValue().getRevenueVillagesInfo())
 			{
 				revenueVillageElectionVO = new RevenueVillageElectionVO();
 				revenueVillageElectionVO.setTownshipId(locationWiseBoothDetailsVO.getLocationId());
 				revenueVillageElectionVO.setTownshipName(locationWiseBoothDetailsVO.getLocationName());
+				revenueVillageElectionVO.setTotalVoters(locationWiseBoothDetailsVO.getPopulation());
+				revenueVillageElectionVO.setVotesPolled(locationWiseBoothDetailsVO.getVotesPolled());
+				revenueVillageElectionVO.setBoothsSet(locationWiseBoothDetailsVO.getBooths());
+				revenueVillageElectionVO.setHamletsOfTownship(locationWiseBoothDetailsVO.getHamletsOfTownship());
 				
 				revenueVillageParties = new ArrayList<PartyElectionResultVO>(); 
-				candidates = getPanchayatWiseElectionsForPartiesInATehsil(getListFromSetOfSelectOptionVO(locationWiseBoothDetailsVO.getBooths()),electionId);
-				for(CandidatePartyInfoVO values:candidates)
+				candidatesResult = getPanchayatWiseElectionsForPartiesInATehsil(getListFromSetOfSelectOptionVO(locationWiseBoothDetailsVO.getBooths()),electionId);
+				
+				for(Long partyId : parties)
 				{
-					revenueVillageParty = new PartyElectionResultVO();
-					votesEarned = values.getVotesEarned();
-					polledVotes = locationWiseBoothDetailsVO.getVotesPolled();
-					revenueVillageParty.setVotesEarned(votesEarned);
-					if(polledVotes > 0)
-						revenueVillageParty.setVotesPercentage(new BigDecimal((votesEarned*100.0)/polledVotes)
-												.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-					else
+					boolean flag = false;
+					for(CandidatePartyInfoVO values:candidatesResult)
+					{
+						if(values.getPartyId().equals(partyId))
+						{
+							flag = true;
+							revenueVillageParty = new PartyElectionResultVO();
+							revenueVillageParty.setCandidateId(values.getCandidateId());
+							revenueVillageParty.setCandidateName(values.getCandidateName());
+							revenueVillageParty.setPartyId(values.getPartyId());
+							revenueVillageParty.setPartyName(values.getParty());
+							revenueVillageParty.setRank(values.getRank());
+							votesEarned = values.getVotesEarned();
+							polledVotes = locationWiseBoothDetailsVO.getVotesPolled();
+							revenueVillageParty.setVotesEarned(votesEarned);
+							if(polledVotes > 0)
+								revenueVillageParty.setVotesPercentage(new BigDecimal((votesEarned*100.0)/polledVotes)
+														.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+							else
+								revenueVillageParty.setVotesPercentage("0.0");
+							revenueVillageParties.add(revenueVillageParty);
+						}
+					}
+					if(!flag)
+					{
+						revenueVillageParty = new PartyElectionResultVO();
 						revenueVillageParty.setVotesPercentage("0.0");
-					revenueVillageParties.add(revenueVillageParty);
+						revenueVillageParties.add(revenueVillageParty);
+					}
 				}
 				
 				revenueVillageElectionVO.setPartyElectionResultVOs(revenueVillageParties);
