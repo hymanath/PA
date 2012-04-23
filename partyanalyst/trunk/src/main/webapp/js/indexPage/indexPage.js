@@ -1499,7 +1499,7 @@ var callback = {
 			 }
 			 else if(jsObj.queryType == "getNews")
 			 {	
-				 newsDetails = myResults;
+				newsDetails = myResults;
 				showNewsDetails(myResults);
 				document.getElementById("ajaxImg").style.display="none";
 			 }
@@ -1538,6 +1538,7 @@ var callback = {
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
 function getMaxCount(result)
 {
   var count = 0;
@@ -1548,64 +1549,73 @@ function getMaxCount(result)
 	}
    return count;
 }
-function showNewsCountDetails(result,jsObj){
+
+function showNewsCountDetails(result,jsObj)
+{
 
 	if(document.getElementById("showNewsCountTable"))
-	 document.getElementById("showNewsCountTable").innerHTML='';
+		document.getElementById("showNewsCountTable").innerHTML='';
 	
-  var maxCount = getMaxCount(result);
-  document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'';
-  var str = "";
-  if(maxCount >0){
-  str+= '<strong>Today\' s  Total News Overview :</strong> <table cellspacing="2px" cellpadding="6px" width="100%" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
-  str+= '    <tr style="text-align:center">';
-  str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
- /* str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th><th>LOCATION</th>'; */
-  str+= '     </tr>';
-  for(i=0 ; i < maxCount ; i++)
-   {
-   str+= '<tr style="text-align:center">';
-      if(result[0].fileVOList[i] != null)
-       str+= '<td>'+result[0].fileVOList[i].categoryType+' -   '+result[0].fileVOList[i].sizeOfGallary+'</td>';
-	  else
-	   str+= '<td style="text-align:center">--</td>';
-	  if(result[1].fileVOList[i] != null)
-	    str+= '<td>'+ result[1].fileVOList[i].source+' -   '+result[1].fileVOList[i].sizeOfGallary+'</td>';
-	  else
-	    str+= '<td>--</td>';
-	  if(result[2].fileVOList[i] != null)
-	   str+= '<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>';
-	  else
-	    str+= '<td>--</td>';
-	  if(result[3].fileVOList[i] != null){
-		  if(result[3].fileVOList[i].importance == 'High')
-			str+= '<td><b><span style="color:red">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
-		  if(result[3].fileVOList[i].importance == 'Medium')
-			str+= '<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
-		  if(result[3].fileVOList[i].importance == 'Low')
-			str+= '<td><b><span style="color:ActiveCaption">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
-	  }
-	  else
-	   str+= '<td>--</td>';
-	  if(result[4].fileVOList[i] != null)	
-	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   '+ result[4].fileVOList[i].sizeOfGallary+'</td>';
-	  else
-	    str+= '<td>--</td>';
-	  /*if(result[5].fileVOList[i] != null)
-	      if(result[5].fileVOList[i].location != null)
-	        str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\''+result[5].fileVOList[i].location+'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
-	      else
-		    str+= '<td>'+ result[5].fileVOList[i].locationValue+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'Public\',\'\',\'\',\'\',\'\',\''+result[5].fileVOList[i].locationScope+'\',\'\');">'+ result[5].fileVOList[i].sizeOfGallary+'</a></td>';
-	  else
-	   str+= '<td>--</td>'; */
-	str+= '	  </tr>';
-   }
+	var maxCount = getMaxCount(result);
+	document.getElementById("newsCount").innerHTML='<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'';
+	
+	var str = "";
+	if(maxCount >0)
+	{
+		str+= '<strong>Today\' s  Total News Overview :</strong> <table cellspacing="2px" cellpadding="6px" width="100%" align="center" style="border: 1px solid #cdcdcd; border-collapse: collapse; color: #000000;height:auto;margin-top: 13px; font-size: 12px;">';
+		str+= '    <tr style="text-align:center">';
+		str+= '       <th>CATEGORY</th><th>SOURCE</th><th>LANGUAGE</th><th>NEWS IMPORTANCE</th><th>IMPACT LEVEL</th>';
+ 		str+= '     </tr>';
+		
+		for(i=0 ; i < maxCount ; i++)
+		{
+			if(result[0].fileVOList[i] != null || result[1].fileVOList[i] != null || 
+				result[2].fileVOList[i] != null || result[3].fileVOList[i] != null ||
+				result[4].fileVOList[i] != null)
+			{
+				str+= '<tr style="text-align:center">';
+				
+				if(result[0].fileVOList[i] != null)
+					str+= '<td>'+result[0].fileVOList[i].categoryType+' -   '+result[0].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[1].fileVOList[i] != null)
+					str+= '<td>'+ result[1].fileVOList[i].source+' -   '+result[1].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+
+				if(result[2].fileVOList[i] != null)
+					str+= '<td>'+  result[2].fileVOList[i].language+' -   '+ result[2].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[3].fileVOList[i] != null)
+				{
+					if(result[3].fileVOList[i].importance == 'High')
+						str+= '<td><b><span style="color:red">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+					if(result[3].fileVOList[i].importance == 'Medium')
+						str+= '<td><b><span style="color:green">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+					if(result[3].fileVOList[i].importance == 'Low')
+						str+= '<td><b><span style="color:ActiveCaption">'+ result[3].fileVOList[i].importance +' -   '+result[3].fileVOList[i].sizeOfGallary+'</span></b></td>';
+				}
+				else
+					str+= '<td style="text-align:center">--</td>';
+				
+				if(result[4].fileVOList[i] != null)	
+					str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   '+ result[4].fileVOList[i].sizeOfGallary+'</td>';
+				else
+					str+= '<td style="text-align:center">--</td>';
+			
+				str+= '	  </tr>';
+			}
+		}
   
-  str+= '<table>';
-  
- document.getElementById("showNewsCountTable").innerHTML = str;
-  }
+		str+= '<table>';
+		document.getElementById("showNewsCountTable").innerHTML = str;
+	}
 }
+
 function showNewsDetails(result){
 	var i = 0;
 	document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total News Count : </b></font>'+result.length;
