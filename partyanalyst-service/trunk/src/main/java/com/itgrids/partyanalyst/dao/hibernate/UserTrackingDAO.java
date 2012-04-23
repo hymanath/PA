@@ -24,8 +24,8 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 		
 	}
 	
-@SuppressWarnings("unchecked")
-public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType){
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDate , String userType){
 		
 		StringBuilder query = new StringBuilder();
 		if(userType == null)
@@ -132,6 +132,37 @@ public List<Object[]> getHostNameAndNoOfPagesForAUser(Date fromDate , Date toDat
 			queryObject.setParameter(2, userType);
 		
   		return queryObject.uniqueResult();
-	}	
+	}
 	
+	public List<Object> getLandingPageBetweenDatesBySessionId(Date fromDate, Date toDate){
+		Query query=getSession().createQuery("select model.sessionId, model.time, model.urlName from UserTracking model where model.userTrackingId in (select min(model2.userTrackingId) from UserTracking model2 where DATE(model2.time) between ? and ? group by model2.sessionId)");
+		query.setParameter(0, fromDate);
+		query.setParameter(1, toDate);
+		return query.list();
+	}
+	
+	public List<Object> getExitPageBetweenDatesBySessionId(Date fromDate, Date toDate){
+		Query query=getSession().createQuery("select model.sessionId, model.time, model.urlName from UserTracking model where model.userTrackingId in (select max(model2.userTrackingId) from UserTracking model2 where DATE(model2.time) between ? and ? group by model2.sessionId)");
+		query.setParameter(0, fromDate);
+		query.setParameter(1, toDate);
+		return query.list();
+	}
+	
+	public Object getTotalSessionCountBetweenDates(Date fromDate, Date toDate){
+		Query query=getSession().createQuery("select count(distinct model.sessionId) from UserTracking model where DATE(model.time) between ? and ?");
+		query.setParameter(0, fromDate);
+		query.setParameter(1, toDate);
+		return query.uniqueResult();
+	}
+	
+	public List<Object> getPageFlowOfUserBetweenDates(Date fromDate, Date toDate, String userType, String sessionId){
+		StringBuilder query = new StringBuilder();
+		query.append("select model.urlName, model.time from UserTracking model where model.userType = ? and Date(model.time) BETWEEN ? and ? and model.sessionId=?");
+		Query queryObj = getSession().createQuery(query.toString());	
+		queryObj.setParameter(0, userType);
+		queryObj.setParameter(1, fromDate);
+		queryObj.setParameter(2, toDate);
+		queryObj.setParameter(3, sessionId);
+		return queryObj.list();
+	}
 }

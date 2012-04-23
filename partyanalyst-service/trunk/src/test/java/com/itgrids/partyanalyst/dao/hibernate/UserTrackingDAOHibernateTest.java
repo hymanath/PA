@@ -67,4 +67,7 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[1].toString()+" "+params[2].toString());
 		}
 	}
+	/*public void testGetLandingPageBetweenDatesByLandingTimeAndSessionId(){
+		List<Object> list=userTrackingDAO.getLandingPageBetweenDatesByLandingTimeAndSessionId(new Date(), new Date(), );
+	}*/
 }
