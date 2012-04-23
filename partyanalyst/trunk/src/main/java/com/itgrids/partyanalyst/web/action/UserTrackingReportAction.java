@@ -14,12 +14,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTrackingReportVO;
 import com.itgrids.partyanalyst.service.IUserTrackingReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 
 public class UserTrackingReportAction extends ActionSupport implements ServletRequestAware , ServletContextAware{
 	
@@ -31,7 +31,7 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserTrackingReportService userTrackingReportService;
 	private JSONObject jObj;
-	private List<UserTrackingReportVO> usrTrckRprtVO;
+
 	private String task;
 	private List<UserTrackingReportVO> userTrackingReportVOList;
 	
@@ -92,14 +92,7 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 	public void setTask(String task) {
 		this.task = task;
 	}
-	public List<UserTrackingReportVO> getUsrTrckRprtVO() {
-		return usrTrckRprtVO;
-	}
-
-	public void setUsrTrckRprtVO(List<UserTrackingReportVO> usrTrckRprtVO) {
-		this.usrTrckRprtVO = usrTrckRprtVO;
-	}
-
+	
 	public String execute(){
 		
 		session = request.getSession();
@@ -112,7 +105,6 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 			 session = request.getSession();
 			 Date fromDate = null;
 			 Date toDate = null;
-			 UserTrackingReportVO UserTrackingReportVO = new UserTrackingReportVO();
 			 
 			    if(jObj.getString("task").trim().equalsIgnoreCase("byTodayDate"))
 				{
@@ -138,8 +130,10 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 					   toDate = getDate(jObj.getString("toDate").trim());
 				   
 				}	
-			    if(jObj.getString("url").trim().equalsIgnoreCase("getUniqueVisitorsAction.action?"))
-			    	usrTrckRprtVO = userTrackingReportService.getTotalUniqueVisitorDetails(fromDate,toDate);			
+			    if(jObj.getString("url").trim().equalsIgnoreCase("getUniqueVisitorsAction.action?")){
+			    	userTrackingReportVOList = userTrackingReportService.getTotalUniqueVisitorDetails(fromDate,toDate);
+			    	
+			    }
 		  }
 		  catch(Exception e){
 			  log.error("Exception rised in getTotalUniqueVisitors Method of UserTrackingReportAction ",e); 

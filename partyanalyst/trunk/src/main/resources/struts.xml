@@ -3250,7 +3250,7 @@
 		
 		<action name="getUniqueVisitorsAction" class="userTrackingReportAction" method="getTotalUniqueVisitors">
 			<result type="json" name="success">
-				<param name="root">usrTrckRprtVO</param>				
+				<param name="root">userTrackingReportVOList</param>				
 			</result>	
 		</action>	
 		
