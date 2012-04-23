@@ -1831,13 +1831,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 				List result = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId, Long.parseLong(electionYear));
 				String pcNames = "";
-				for(Object[] values:(List<Object[]>)result)
-					pcNames += ","+values[1];
-				if(constituencyRevenueVillagesVOMain != null){
-					constituencyRevenueVillagesVOMain.setConstituencyId((Long)((Object[])result.get(0))[0]);
-					constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));
-					constituencyRevenueVillagesVOMain.setElectionType(electionType);
-					constituencyRevenueVillagesVOMain.setElectionYear(electionYear);
+				if(result != null && result.size() > 0)
+				{
+					for(Object[] values:(List<Object[]>)result)
+						pcNames += ","+values[1];
+					if(constituencyRevenueVillagesVOMain != null){
+						constituencyRevenueVillagesVOMain.setConstituencyId((Long)((Object[])result.get(0))[0]);
+						constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));
+						constituencyRevenueVillagesVOMain.setElectionType(electionType);
+						constituencyRevenueVillagesVOMain.setElectionYear(electionYear);
+					}
 				}
 			}
 			
