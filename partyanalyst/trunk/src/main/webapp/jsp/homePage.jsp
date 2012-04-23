@@ -1242,9 +1242,12 @@ function closewindow()
 			str += ''+homePageUpdates.VideoGallary[i].gallaryName+'';
 			str +='\t';
 			str +='Video Gallary.';
-			str +='<font style="font-weight:bold;font-size:12px;"> Date : <span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].fileDate+'</font></span>&nbsp;';
-			str +='<font style="font-weight:bold;font-size:12px;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].source+'</font></span>'; 
 			str +='</a>';
+			str +='<div style="margin-left:64px;">'
+			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].fileDate+'</font></span>&nbsp;';
+			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].source+'</font></span>';
+			str +='</div>';
+		
 			str += '</td>';
 			str +='</tr>';
 			str += '</table>';
@@ -1301,8 +1304,8 @@ function closewindow()
 			str +='</tr>';
 			str += '</table>';
 			str +='<div style="margin-left:135px;">'
-			str +='<font style="font-weight:bold;font-size:12px;"> Date : </font><span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].fileDate+'</span>&nbsp;&nbsp';
-			str +='<font style="font-weight:bold;font-size:12px;">Source : </font><span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].source+'</span>';
+			str +='<font style="font-weight:bold;font-size:12px;font-family: verdana;color:#000000;"> Date : <span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].fileDate+'</font></span>&nbsp;';
+			str +='<font style="font-weight:bold;font-size:12px; font-family: verdana;color:#000000;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].source+'</font></span>'; 
 			str +='</div>';
 			document.getElementById("allGallariesDisplay").innerHTML = str;
 			}
