@@ -312,7 +312,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		
 <div class="dashBoardtabsDiv">
 <c:if test="${hasNewsMonitoring == true}">
-	<a onclick="tabsDiv('dashBoardNews_Main',this.id);getNews('byTodayDate','getCount','Public','','','','','','');" id="newsTabId">News</a>
+	<a onclick="tabsDiv('dashBoardNews_Main',this.id);getNews('byTodayDate','getCount','','','','','','','');" id="newsTabId">News</a>
 </c:if>
 	<a onclick="tabsDiv('impDatesDiv_main',this.id);getUserImportantDates();" id="impDateId">Important Dates</a>
 	<a onclick="tabsDiv('impEventsDiv_main',this.id);getUserImpEvents()" id="impEventsId">Events</a>
@@ -375,7 +375,7 @@ function hideScrolling()
 	$("#dashBoardCenterlayoutDiv").parent().css("height",'710px');
 }
 <s:if test="%{hasNewsMonitoring == true}">
-	getNews("byTodayDate","getCount","Public","","","","","","");
+	getNews("byTodayDate","getCount","","","","","","","");
 	tabsDiv('dashBoardNews_Main','newsTabId');
 	
 </s:if>
