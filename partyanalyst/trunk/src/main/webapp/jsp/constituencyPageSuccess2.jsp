@@ -190,13 +190,7 @@
 		<div class="cd-left-sec">
         <div class="cd-mid-cont-sec">
 
-
-
-
-
-	
-		
-          <p class="pa-fi"><b>State: </b><strong>
+  <p class="pa-fi"><b>State: </b><strong>
 		  <a style="color: #247CD4;text-decoration: underline;" title="Click here to get ${constituencyDetails.stateName} State details" href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${constituencyDetails.stateName}</a> </strong>&gt;  
 		  <b>District: </b><strong>
 		  <c:forEach var="district" items="${navigationVO.districtInfo}">
@@ -698,11 +692,8 @@
 </c:if>
         
         </div>
-
-
-
-	<!-- Opinion Poll Start-->
-	
+<!-- Opinion Poll Start-->
+			
 						<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;clear:both;">
 									<div id="pollsWidgetHeader">
 										<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -726,6 +717,8 @@
 									</div>
 								</div>
 							<!-- Opinion Poll End-->
+
+
 
 
 		<h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1>
@@ -841,6 +834,7 @@
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 	<script type="text/javascript">
+	buildPolls();
 function showUrbanDivIfPresent()
 {
    if(changeReq == 0)
@@ -3315,7 +3309,9 @@ getGreaterResults();
 buildConstituencyInfo();
 initializeConstituencyPage();
 detailedElectionResult();
-buildPolls();
+
+
+
 
  </script>
   </body>
