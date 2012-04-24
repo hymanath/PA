@@ -1047,7 +1047,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
      {
     	 Query query = getSession().createQuery("select model.gallary.name,model.gallary.description,count(model.fileGallaryId), " +
     	 		"model.fileGallaryId,model.file.filePath from FileGallary model where model.gallary.gallaryId = ? and " +
-    	 		"model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' group by model.gallary.gallaryId order by updateddate desc");
+    	 		"model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+    	 		"model.isPrivate = 'false' group by model.gallary.gallaryId order by updateddate desc");
     	 query.setMaxResults(1);
     	 query.setParameter(0,gallaryId);
     	 return query.list();
