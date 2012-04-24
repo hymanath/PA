@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -296,7 +298,7 @@ public class OpinionPollService implements IOpinionPollService {
 						
 						for(OpinionPollQuestions ops : qr){
 							QuestionsOptionsVO opinionPollQuestionsVO = new QuestionsOptionsVO();
-							List<OptionVO>  listOfOptionVO = new ArrayList<OptionVO>(0); 
+							List<OptionVO> listOfOptionVO = new ArrayList<OptionVO>(0); 
 							
 							QuestionsRepository questionsRepository = (QuestionsRepository) ops.getQuestionsRepository();
 							opinionPollQuestionsVO.setQuestion(questionsRepository.getQuestion());
@@ -309,6 +311,7 @@ public class OpinionPollService implements IOpinionPollService {
 								optionVO.setOption(options.getQuestionOption());
 								listOfOptionVO.add(optionVO);
 							}
+							Collections.sort(listOfOptionVO);
 							opinionPollQuestionsVO.setOptions(listOfOptionVO);
 							listOfQuestionsOptionsVO.add(opinionPollQuestionsVO);
 						}
