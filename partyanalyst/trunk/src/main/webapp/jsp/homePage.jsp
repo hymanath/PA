@@ -253,13 +253,13 @@ text-decoration:none;
 				  <div id="alertMessage" style="color:red;font-weight:bold;"></div>
                     <p>Select Constituency Type<br />
                       <span class="radio-type">
-                      <input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/>
+                      <input type="radio" checked="checked" name="assembly_radio" id="assembly_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/>
                       Assembly</span> <span class="radio-type">
-                      <input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/>
+                      <input type="radio" name="assembly_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/>
                       Parliament</span> </p><br />
 					  <table id="stateTable" style="display:none;">
 									<tr>
-										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" headerKey = "0" headerValue="Select State" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
+										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/>
 										</td>
 										<td><div id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>	
 									</tr>
