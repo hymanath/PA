@@ -149,7 +149,7 @@ function initializeHomePage()
 	//getRecentElectionsInState(stateSelectElVal);
 	//getProblemsInState(stateSelectElVal);
 	//buildPolls();
-	hideUnhideSelectBox('a_radio', 'constituency');
+	hideUnhideSelectBox('assembly_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
 	//getHomePageQuestions();
 	//buildleadersNews();
@@ -1270,7 +1270,7 @@ function hideUnhideSelectBox(radioElement, selectElement)
 	var stateId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
 	var alertEl = document.getElementById("alertMessage");
 	alertEl.innerHTML = '';
-	if(radioElement == 'a_radio')
+	if(radioElement == 'assembly_radio')
 	{
 		
 		if(stateTableEl.style.display == 'none')
@@ -1285,7 +1285,7 @@ function hideUnhideSelectBox(radioElement, selectElement)
 		getAllConstituenciesInStateByType(2,stateId,selectElement);
 	} else if(radioElement == 'p_radio')
 	{
-		 /*election type 1 for mla const*/
+		 /*election type 1 for mp const*/
 		
 		if(stateTableEl.style.display == 'block')
 		{
