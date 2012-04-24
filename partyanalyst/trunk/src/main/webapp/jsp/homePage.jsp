@@ -1243,7 +1243,7 @@ function closewindow()
 			str +='\t';
 			str +='Video Gallary.';
 			str +='</a>';
-			str +='<div style="margin-left:64px;">'
+			str +='<div style="margin-left:5px;margin-top:6px;">'
 			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].fileDate+'</font></span>&nbsp;';
 			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].source+'</font></span>';
 			str +='</div>';
