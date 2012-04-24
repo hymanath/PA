@@ -1122,9 +1122,9 @@ function buildNewPoll(result){
 			str += '<table>';
 			for(var j=0 ; j<result.quesitons[i].options.length; j++){
 				if(j==0){
-					str += '<tr><td><input type="radio" name="pollradio" checked=checked value="'+result.quesitons[i].options[j].optionId+'">';
+					str += '<tr><td><input type="radio" name="pollradio" checked=checked value="'+result.quesitons[i].options[j].optionId+'">&nbsp;&nbsp;';
 				}else{
-					str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
+					str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">&nbsp&nbsp;';
 				}				
 				str += result.quesitons[i].options[j].option;
 				str += '</td></tr>';			
