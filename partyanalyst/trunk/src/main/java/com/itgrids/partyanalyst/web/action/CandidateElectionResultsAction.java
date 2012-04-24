@@ -967,52 +967,63 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			Long scopeType=null;
 			if(jObj.getString("scopeType").trim().length()>0)
 				scopeType = jObj.getLong("scopeType");
-				
-			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
+			fileVO = candidateDetailsService.getNewsByScope(jObj.getLong("candidateId"),scopeType,Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"));
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsBySourceScope"))
 		 {
 			Long scopeType=null;
 			String source = null;
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
 			if(jObj.getString("scopeType").trim().length()>0)
 				scopeType = jObj.getLong("scopeType");
 			if(jObj.getString("source").trim().length()>0)
 				source = jObj.getString("source");
-			fileVO = candidateDetailsService.getNewsBySource(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),source);
+			fileVO = candidateDetailsService.getNewsBySource(jObj.getLong("candidateId"),scopeType,Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"),source);
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByLanguageScope"))
 		 {
 			Long scopeType=null;
 			String language = null;
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
 			if(jObj.getString("scopeType").trim().length()>0)
 				scopeType = jObj.getLong("scopeType");
 			if(jObj.getString("language").trim().length()>0)
 				language = jObj.getString("language");
-			fileVO = candidateDetailsService.getNewsByLanguage(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),language);
+			fileVO = candidateDetailsService.getNewsByLanguage(jObj.getLong("candidateId"),scopeType,Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"),language);
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getOtherNews"))
 		 {
-			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"));
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
+			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"));
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByCategoryScope"))
 		 {
 			Long scopeType=null;
 			String category = null;
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
 			if(jObj.getString("scopeType").trim().length()>0)
 				scopeType = jObj.getLong("scopeType");
 			if(jObj.getString("category").trim().length()>0)
 				category = jObj.getString("category");
-			fileVO = candidateDetailsService.getNewsByCategory(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),category);
+			fileVO = candidateDetailsService.getNewsByCategory(jObj.getLong("candidateId"),scopeType,Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"),category);
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByNewsImportance"))
 		 {
 			Long scopeType=null;
 			String newsImportance = null;
+			String startIndex = request.getParameter("startIndex");
+			String maxResults = request.getParameter("resultsCount");
 			if(jObj.getString("scopeType").trim().length()>0)
 				scopeType = jObj.getLong("scopeType");
 			if(jObj.getString("newsImportance").trim().length()>0)
 				newsImportance = jObj.getString("newsImportance");
-			fileVO = candidateDetailsService.getNewsByNewsImportance(jObj.getLong("candidateId"),scopeType,jObj.getInt("startIndex"),jObj.getInt("maxResults"),jObj.getString("queryType"),newsImportance);
+			fileVO = candidateDetailsService.getNewsByNewsImportance(jObj.getLong("candidateId"),scopeType,Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"),newsImportance);
 		 }
 		}
 	 catch(Exception e)
