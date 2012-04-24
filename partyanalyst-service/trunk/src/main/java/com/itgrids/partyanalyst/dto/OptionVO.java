@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
-public class OptionVO {
+import java.io.Serializable;
+
+public class OptionVO implements Serializable,Comparable<OptionVO> {
 	private Long optionId;
 	private String option;
 	private Double percentage;
@@ -51,7 +53,19 @@ public class OptionVO {
 	public void setOption(String option) {
 		this.option = option;
 	}
+
+	@Override
+	public int compareTo(OptionVO obj) {
+		if(obj instanceof OptionVO)
+		{
+			OptionVO vo = (OptionVO)obj;
+			return option.compareToIgnoreCase(vo.getOption());
+		}
+		return 0;
+	}
 	
 		
 	
+	
+
 }
