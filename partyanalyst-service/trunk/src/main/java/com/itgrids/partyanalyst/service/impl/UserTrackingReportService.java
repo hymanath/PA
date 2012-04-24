@@ -294,7 +294,7 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 			if(hours<10)
 				hrs="0"+hrs;
 			
-			days=timeDiff/1000*60*60*24;
+			days=timeDiff/(1000*60*60*24);
 			String dys=days.toString();
 			duration=dys+" Days "+hrs+":"+mins+":"+secs+" hours";
 		}
