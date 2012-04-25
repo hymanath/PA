@@ -40,6 +40,16 @@ position:absolute;
 top:-18px;
 left:50%;
 }
+#contactDiv span{background: none repeat scroll 0 0 #C93033;border-radius: 3px 3px 3px 3px;box-shadow: 0 0 5px #888888;color: #FFFFFF;display: table;font-family: helvetica;font-size: 13px;margin: 22px 15px 0px;padding: 6px 7px;position: relative;text-decoration: none;}
+#contactDiv span:before{content:" ";
+border:10px solid transparent;
+border-bottom:10px solid #C93033;
+border-right:10px solid #C60003;
+position:absolute;
+top:-18px;
+left:50%;
+}
+
 </style>
 <div class="promos">
 <div class="promoheader">
@@ -62,9 +72,9 @@ left:50%;
 <h1 style="background:url('images/icons/homePage/Flag.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size:20px;">Are you Aspirant candidate for<br/>
 2014 elections in Andhra Pradesh</h1>
 <p style="margin-top:13px;line-height:18px;">
-Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.
-<span style="font-weight:bold;margin-top:24px;">
-To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></p></span>
+Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.</p>
+<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
+To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>
 </div>
 <div class="ElectionInfo boxdiv" style="height: 92px; width: 305px; padding-left: 10px; padding-right: 10px;">
 <h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
