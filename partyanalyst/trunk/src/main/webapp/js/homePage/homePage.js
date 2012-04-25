@@ -1180,7 +1180,6 @@ function savePollResult(questionId){
 }
 
 function showVotesObtainedForOptions(myResults){
-
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
 	str += '<table><tr><td>';
@@ -1189,7 +1188,7 @@ function showVotesObtainedForOptions(myResults){
 	str += '</td></tr>';
 	
 	str += '<tr><td>';
-	str += '<img src="charts/'+myResults.imagePath+'"></img>';
+	//str += '<img src="charts/'+myResults.imagePath+'"></img>';
 	str += '</td></tr>';
 	
 	str += '<tr><td>';
@@ -1202,8 +1201,27 @@ function showVotesObtainedForOptions(myResults){
 	str += '</tr></table>';
 	str += '</div>';
 	str += '</tr></table>';
-	
+
+	str+='<div id="pollsChart"></div>';
 	elmt.innerHTML = str;
+	var data = new google.visualization.DataTable();
+		data.addColumn('string','option');
+		data.addColumn('number','votesObtained');
+		
+		data.addRows(myResults.options.length);
+		for(var j=0; j<myResults.options.length; j++)
+		{
+			data.setValue(j,0,myResults.options[j].option);
+			data.setValue(j,1,myResults.options[j].votesObtained);
+			
+		}
+	var chart = new google.visualization.ColumnChart(document.getElementById('pollsChart'));
+	
+		chart.draw(data,{width: 300, height: 280,legend:'right', 'colors' : ['blue', 'green'],
+legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+
+	
+	
 }
 
 function buildLogoImage()
@@ -1285,7 +1303,7 @@ function hideUnhideSelectBox(radioElement, selectElement)
 		getAllConstituenciesInStateByType(2,stateId,selectElement);
 	} else if(radioElement == 'p_radio')
 	{
-		 /*election type 1 for mp const*/
+		 /*election type 1 for mla const*/
 		
 		if(stateTableEl.style.display == 'block')
 		{
@@ -1337,6 +1355,7 @@ function homePageAjaxCall(param,jsObj,url){
 								{
 									if(myResults.description==null){
 										showVotesObtainedForOptions(myResults.questionsOptionsVO);
+
 									}else{
 										buildNewPoll(myResults);
 									}
@@ -1357,7 +1376,7 @@ function homePageAjaxCall(param,jsObj,url){
 						}
 						catch (e)
 							{   
-							  // 	alert("Invalid JSON result" + e);   
+							  	alert("Invalid JSON result" + e);   
 							}	  
 			              },
 			               scope : this,
