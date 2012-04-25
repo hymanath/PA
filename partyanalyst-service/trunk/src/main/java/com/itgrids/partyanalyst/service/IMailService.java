@@ -1,22 +1,25 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IMailService {
 
-	 public ResultStatus sendQuickRequestEmailToAdmin(QuickRequestVO quickRequestVO,String requestFrom);
+	public ResultStatus sendQuickRequestEmailToAdmin(QuickRequestVO quickRequestVO,String requestFrom);
 	 
-	 public ResultStatus sendMailToUserToRecoverPassword(RegistrationVO registrationVO,String requestFrom);
+	public ResultStatus sendMailToUserToRecoverPassword(RegistrationVO registrationVO,String requestFrom);
 	 
-	  public  ResultStatus sendMailFromLocalHost(QuickRequestVO quickRequestVO);
+	public  ResultStatus sendMailFromLocalHost(QuickRequestVO quickRequestVO);
 	  
-	  public ResultStatus sendRegistrationNotification(RegistrationVO registrationVO,String requestFrom);
+	public ResultStatus sendRegistrationNotification(RegistrationVO registrationVO,String requestFrom);
 	  
-	  public  ResultStatus sendMailFromServer(QuickRequestVO quickRequestVO);
+	public  ResultStatus sendMailFromServer(QuickRequestVO quickRequestVO);
 	
-		 
-	 
-
+	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails,String host);
+	
+	public ResultStatus sendEmail(EmailDetailsVO emailDetails,String host);
 }
