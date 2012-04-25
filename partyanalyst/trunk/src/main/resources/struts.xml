@@ -3266,7 +3266,7 @@
 			</result>		
 		</action>
 		
-		<action name="newsMonitoringService">
+		<action name="newsMonitoringAction">
 			<result>/jsp/newsMonitoring.jsp</result>
 		</action>
 		<action name="searchInPartyAnalyst">
