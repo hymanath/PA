@@ -44,6 +44,7 @@
   
 <script type="text/javascript">
 var homePageUpdates = null;
+google.load("visualization", "1", {packages:["piechart"]});
 </script>
 <style type="text/css">
 #menu ul.menu li.active a {
