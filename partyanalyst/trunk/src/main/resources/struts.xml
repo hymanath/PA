@@ -3269,6 +3269,9 @@
 		<action name="newsMonitoringService">
 			<result>/jsp/newsMonitoring.jsp</result>
 		</action>
+		<action name="searchInPartyAnalyst">
+			<result>/jsp/siteSearch.jsp</result>
+		</action>
 											
 	</package>
 </struts>      
