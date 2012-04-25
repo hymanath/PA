@@ -112,7 +112,8 @@
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
-		<pattern>/newsMonitoringAction*</pattern>		
+		<pattern>/newsMonitoringAction*</pattern>	
+		<pattern>/searchInPartyAnalyst*</pattern>	
     </decorator>
 
 </decorators>
