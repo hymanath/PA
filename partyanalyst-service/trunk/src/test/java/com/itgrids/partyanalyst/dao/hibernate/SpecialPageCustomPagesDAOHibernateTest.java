@@ -20,7 +20,7 @@ public class SpecialPageCustomPagesDAOHibernateTest extends BaseDaoTestCase{
 		specialPageCustomPagesDAO.getAll();
 	}*/
 	
-	public void testGetCustomPagesOfASpecialPage()
+	/*public void testGetCustomPagesOfASpecialPage()
 	{
 		List<Object[]> list = specialPageCustomPagesDAO.getCustomPagesOfASpecialPage(1l);
 		
@@ -30,5 +30,15 @@ public class SpecialPageCustomPagesDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0].toString() +"---"+params[1].toString());
 		}
+	}*/
+
+	public void testGetCustomPagesOfASpecialPage()
+	{
+		List<Object[]> list = specialPageCustomPagesDAO.getSpecialCustomPage(5l);
+		for(Object[] params : list)
+		{
+			System.out.println(params[0].toString() +"---"+params[1].toString());
+		}
 	}
+	
 }
