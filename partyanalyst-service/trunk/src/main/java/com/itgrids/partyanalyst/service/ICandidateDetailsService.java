@@ -160,4 +160,13 @@ public interface ICandidateDetailsService {
 	 public List<CustomPageVO> getCustomPagesOfACandidatePage(Long candidateId);
 	 
 	 public MetaInfoVO getMetaInfoOfMinistersPage(ElectionGoverningBodyVO electionGoverningBodyVO,List<CandidateMinistriesVO> ministersList);
+	 
+	 public List<FileVO> customPagesType();
+	 
+	 public ResultStatus createCustomPages(GallaryVO gallaryVO);
+	 
+	 public List<CustomPageVO> getCustomPages(Long pageId,String pageName);
+	 
+	 public ResultStatus updateCustomPages(GallaryVO gallaryVO);
+	 public String getMandalName(Long mandalId);
 }
