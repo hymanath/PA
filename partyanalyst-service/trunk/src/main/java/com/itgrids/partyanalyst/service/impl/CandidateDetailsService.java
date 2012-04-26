@@ -35,6 +35,8 @@ import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.ICustomPageDAO;
+import com.itgrids.partyanalyst.dao.ICustomPageTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -49,17 +51,20 @@ import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
@@ -74,12 +79,15 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.CandidatePageCustomPages;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
+import com.itgrids.partyanalyst.model.CustomPage;
+import com.itgrids.partyanalyst.model.CustomPageType;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 import com.itgrids.partyanalyst.model.File;
@@ -88,11 +96,14 @@ import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PartyPageCustomPages;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
+import com.itgrids.partyanalyst.model.SpecialPageCustomPages;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -141,7 +152,64 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IElectionDAO electionDAO;
 	private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 	private ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO;
+	private ICustomPageTypeDAO customPageTypeDAO;
+	private ICustomPageDAO customPageDAO;
+	private IPartyDAO partyDAO;
+	private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
+	private ISpecialPageDAO specialPageDAO;
+	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	
+	
+	public ISpecialPageCustomPagesDAO getSpecialPageCustomPagesDAO() {
+		return specialPageCustomPagesDAO;
+	}
+
+	public void setSpecialPageCustomPagesDAO(
+			ISpecialPageCustomPagesDAO specialPageCustomPagesDAO) {
+		this.specialPageCustomPagesDAO = specialPageCustomPagesDAO;
+	}
+
+	public ISpecialPageDAO getSpecialPageDAO() {
+		return specialPageDAO;
+	}
+
+	public void setSpecialPageDAO(ISpecialPageDAO specialPageDAO) {
+		this.specialPageDAO = specialPageDAO;
+	}
+
+	public IPartyPageCustomPagesDAO getPartyPageCustomPagesDAO() {
+		return partyPageCustomPagesDAO;
+	}
+
+	public void setPartyPageCustomPagesDAO(
+			IPartyPageCustomPagesDAO partyPageCustomPagesDAO) {
+		this.partyPageCustomPagesDAO = partyPageCustomPagesDAO;
+	}
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+	public ICustomPageDAO getCustomPageDAO() {
+		return customPageDAO;
+	}
+
+	public void setCustomPageDAO(ICustomPageDAO customPageDAO) {
+		this.customPageDAO = customPageDAO;
+	}
+
+	public ICustomPageTypeDAO getCustomPageTypeDAO() {
+		return customPageTypeDAO;
+	}
+
+	public void setCustomPageTypeDAO(ICustomPageTypeDAO customPageTypeDAO) {
+		this.customPageTypeDAO = customPageTypeDAO;
+	}
+
 	public ICandidatePageCustomPagesDAO getCandidatePageCustomPagesDAO() {
 		return candidatePageCustomPagesDAO;
 	}
@@ -2865,6 +2933,250 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     		return null;
     	}
     }
+    
+    public List<FileVO> customPagesType()
+	{   
+			 List<FileVO> retValue = new ArrayList<FileVO>();
+		  try{
+		    
+			 if(log.isDebugEnabled())
+				log.debug("Entered into customPagesType() of candidateDetailsService ");
+			 List<CustomPageType> customPageType = customPageTypeDAO.getAll();
+			 for(CustomPageType result:customPageType)
+			 {
+				FileVO fileVO = new FileVO();
+				fileVO.setIds(result.getCustomPageTypeId());
+				fileVO.setNames(result.getCustomPageType());
+				retValue.add(fileVO);
+			 }
+			 
+			
+		  }catch(Exception e){
+				log.error("Exception occured in customPagesType() of candidateDetailsService ", e);
+				
+		   }
+		
+		return retValue;
+     }
+    public ResultStatus createCustomPages(GallaryVO gallaryVO)
+    {
+    	ResultStatus resultStatus = new ResultStatus();
+    	CustomPage customPage = new CustomPage();
+    	CandidatePageCustomPages candidatePageCustomPages = new CandidatePageCustomPages();
+    	PartyPageCustomPages partyPageCustomPages = new PartyPageCustomPages();
+    	SpecialPageCustomPages specialPageCustomPages = new SpecialPageCustomPages();
+    	try
+    	{
+    	  if(log.isDebugEnabled())
+    		  log.debug("Entered into createCustomPages of candidateDetailsService");
+    	  if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.CANDIDATE_PAGE))  
+    	  {   List<CandidatePageCustomPages>  cpcp = candidatePageCustomPagesDAO.candidateExistsOrNot(gallaryVO.getPageId(),gallaryVO.getCustomPageName());
+    	      if(cpcp == null || cpcp.size()== 0)
+    	      {
+    	    	//save data in Custom_Page table
+    	    	customPage.setName(gallaryVO.getCustomPageName());
+    			customPage.setCustomPageType(customPageTypeDAO.get(gallaryVO.getCustomPageType()));
+    			customPage = customPageDAO.save(customPage);
+    			//save data in candidate_Page_Custom_Pages table
+    		    candidatePageCustomPages.setCustomPage(customPage);
+    		    candidatePageCustomPages.setCandidate(candidateDAO.get(gallaryVO.getPageId()));
+    		    candidatePageCustomPagesDAO.save(candidatePageCustomPages);
+    		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    	      }
+    	      else if(cpcp != null && cpcp.size()> 0)
+    	      {
+    	    	  resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+    	      }
+    	  }
+          else if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.PARTY_PAGE))
+          {
+        	  List<PartyPageCustomPages> ppcp = partyPageCustomPagesDAO.partyExistsOrNot(gallaryVO.getPageId(),gallaryVO.getCustomPageName());
+        	  if(ppcp == null || ppcp.size()== 0)
+        	  {
+
+      	    	//save data in Custom_Page table
+      	    	customPage.setName(gallaryVO.getCustomPageName());
+      			customPage.setCustomPageType(customPageTypeDAO.get(gallaryVO.getCustomPageType()));
+      			customPage = customPageDAO.save(customPage);
+        		//save data in party_Page_Custom_Pages table
+        	    partyPageCustomPages.setCustomPage(customPage);
+        	    partyPageCustomPages.setParty(partyDAO.get(gallaryVO.getPageId()));
+        	    partyPageCustomPagesDAO.save(partyPageCustomPages);
+        	    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+        	  }
+        	  else if(ppcp != null && ppcp.size()> 0)
+    	      {
+    	    	  resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+    	      }
+          }
+          
+          else if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.SPECIAL_PAGE))
+          {
+        	  List<SpecialPageCustomPages> spcp = specialPageCustomPagesDAO.specialIdExistsOrNot(gallaryVO.getPageId(),gallaryVO.getCustomPageName());
+        	  if(spcp == null || spcp.size()==0)
+        	  {
+
+      	    	 //save data in Custom_Page table
+      	    	 customPage.setName(gallaryVO.getCustomPageName());
+      			 customPage.setCustomPageType(customPageTypeDAO.get(gallaryVO.getCustomPageType()));
+      			 customPage = customPageDAO.save(customPage);
+      			//save data in special_Page_Custom_Pages table
+        	     specialPageCustomPages.setCustomPage(customPage);
+        	     specialPageCustomPages.setSpecialPage(specialPageDAO.get(gallaryVO.getPageId()));
+        	     specialPageCustomPagesDAO.save(specialPageCustomPages);
+        	     resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+        	  }
+        	  else if(spcp != null && spcp.size()> 0)
+    	      {
+    	    	  resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+    	      }
+        	  
+          }
+    	  
+    	}catch(Exception e){
+    	
+    		resultStatus.setExceptionEncountered(e);
+    		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+    		 log.error("Exception Occured in createCustomPages() of candidateDetailsService "+e);
+    	}
+    	
+    	return resultStatus;
+    }
+    
+    public List<CustomPageVO> getCustomPages(Long pageId,String pageName)
+    {   
+    	
+    	List<CustomPageVO> customPages = new ArrayList<CustomPageVO>();
+    	
+    	try
+    	{
+    		if(log.isDebugEnabled())
+    			log.debug("Enterd into getCustomPages() of candidateDetailsService");
+    		
+    		
+           if(pageName.equalsIgnoreCase(IConstants.CANDIDATE_PAGE))
+           {
+        	  List<Object[]>list = candidatePageCustomPagesDAO.getCandidateCustomPage(pageId);
+        	  if(list !=null && list.size()>0)
+        	  {
+        		  for(Object[] params :list)
+        		  {
+					  CustomPageVO customPageVO =new CustomPageVO();
+        			  customPageVO.setName(params[0].toString());
+        			  customPageVO.setType(params[1].toString());
+        			  customPageVO.setTypeId((Long)params[2]);
+        			  customPages.add(customPageVO);
+        		  }
+        	  }
+        	  else if(list == null || list.size() == 0)
+        	  {
+				  CustomPageVO customPageVO =new CustomPageVO();
+        		  customPageVO.setError(ResultCodeMapper.DATA_NOT_FOUND);
+        		  customPages.add(customPageVO);
+        	  }
+           }
+           else if(pageName.equalsIgnoreCase(IConstants.PARTY_PAGE))
+           {
+        	  List<Object[]>list = partyPageCustomPagesDAO.getPartyCustomPage(pageId);
+        	  if(list !=null && list.size()>0)
+        	  {
+        		  for(Object[] params :list)
+        		  {
+					  CustomPageVO customPageVO =new CustomPageVO();
+        			  customPageVO.setName(params[0].toString());
+        			  customPageVO.setType(params[1].toString());
+        			  customPageVO.setTypeId((Long)params[2]);
+        			  customPages.add(customPageVO);
+        		  }
+        	  }
+        	  else if(list == null || list.size() == 0)
+        	  {
+				  CustomPageVO customPageVO =new CustomPageVO();
+        		  customPageVO.setError(ResultCodeMapper.DATA_NOT_FOUND);
+        		  customPages.add(customPageVO);
+        	  }
+           }
+           else if(pageName.equalsIgnoreCase(IConstants.SPECIAL_PAGE))
+           {
+        	  List<Object[]>list = specialPageCustomPagesDAO.getSpecialCustomPage(pageId);
+        	  if(list !=null && list.size()>0)
+        	  {
+        		  for(Object[] params :list)
+        		  { 
+					  CustomPageVO customPageVO =new CustomPageVO();
+        			  customPageVO.setName(params[0].toString());
+        			  customPageVO.setType(params[1].toString());
+        			  customPageVO.setTypeId((Long)params[2]);
+        			  customPages.add(customPageVO);
+        		  }
+        	  }
+        	  else if(list == null || list.size() == 0)
+        	  {
+				  CustomPageVO customPageVO =new CustomPageVO();
+        		  customPageVO.setError(ResultCodeMapper.DATA_NOT_FOUND);
+        		  customPages.add(customPageVO);
+        	  }
+           }
+    	}catch(Exception e)
+    	{
+    		log.error("Exception occured in getCustomPages() of candidateDetailsService " +e);
+    	}
+    	return customPages;
+    }
+    
+    public ResultStatus updateCustomPages(GallaryVO gallaryVO)
+    {
+    	ResultStatus resultStatus = new ResultStatus();
+    	
+    	try
+    	{
+    	  if(log.isDebugEnabled())
+    		  log.debug("Entered into updateCustomPages() of candidateDetailsService");
+    	  
+    	  
+          if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.CANDIDATE_PAGE))  
+    	  {  
+        	  List<Object>list = candidatePageCustomPagesDAO.getCustomPageId(gallaryVO.getPageId());
+        	  customPageDAO.updateCustompage((Long)list.get(0),gallaryVO.getCustomPageName(),gallaryVO.getCustomPageType());
+        	  
+    	  }
+          else if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.PARTY_PAGE))
+          {
+        	  List<Object>list = partyPageCustomPagesDAO.getPartyPageId(gallaryVO.getPageId());
+        	  customPageDAO.updateCustompage((Long)list.get(0),gallaryVO.getCustomPageName(),gallaryVO.getCustomPageType());
+          }
+          
+          else if(gallaryVO.getPageName().equalsIgnoreCase(IConstants.SPECIAL_PAGE))
+          {
+        	  List<Object>list = specialPageCustomPagesDAO.getSpecialPageId(gallaryVO.getPageId());
+        	  customPageDAO.updateCustompage((Long)list.get(0),gallaryVO.getCustomPageName(),gallaryVO.getCustomPageType());
+          }
+    	  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    	}catch(Exception e){
+    	
+    		resultStatus.setExceptionEncountered(e);
+    		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+    		 log.error("Exception Occured in updateCustomPages() of candidateDetailsService "+e);
+    	}
+    	
+    	return resultStatus;
+    }
+    public String getMandalName(Long mandalId)
+    {
+    	String mandalName =null;
+    	try{
+    		if(log.isDebugEnabled())
+    			log.debug("Entered into getMandalName() of candidateDetailsService");
+    		
+    		 mandalName = tehsilDAO.get(mandalId).getTehsilName();
+    	}catch(Exception e){
+    		
+    		 log.error("Exception Occured in getMandalName() of candidateDetailsService "+e);
+    		
+    	}
+    	return mandalName;
+    }
+    
 }
 	
  
