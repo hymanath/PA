@@ -181,6 +181,7 @@
                                     </fieldset>
                                 </td>
 							</tr>
+							<tr>
 								 <td> <fieldset class="f2">
                                     <legend class="l2">Special Page Management</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="specialPageManageAction"/>'><b>Special Page Management</b></a></h4></center>
@@ -196,8 +197,9 @@
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="assignCandidateToElectionAction"/>'><b>Assign Candidate</b></a></h4></center>
                                     </fieldset>
                                 </td>
-							<tr>
+							
 							</tr>
+							<tr>
 								 <td> <fieldset class="f2">
                                     <legend class="l2">Election Results Updation</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="electionResultsUpdateAction"/>'><b>Update Election Results</b></a></h4></center>
@@ -209,14 +211,18 @@
 									<center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="electionLiveResultsAnalysisAction"/>'><b>Election Live Results Analysis</b></a></h4></center>
                                     </fieldset>
                                 </td>
-								<td> <fieldset class="f2">
+                                <td> <fieldset class="f2">
                                     <legend class="l2">User Tracking Analysis</legend>
                                     <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="userTrackingReportAction"/>'><b>View User Tracking Details</b></a></h4></center>
                                     </fieldset>
                                 </td>
+                            </tr>
 							<tr>
-
-
+							<td> <fieldset class="f2">
+                                 <legend class="l2">Maintain Custom Pages</legend>
+                                 <center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="customPagesAction"/>'><b>Create Custom Pages</b></a></h4></center>
+                                 </fieldset>
+                            </td>
 							</tr>
                         </table>
 				</fieldset>
