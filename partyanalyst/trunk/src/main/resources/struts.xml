@@ -3266,12 +3266,36 @@
 			</result>		
 		</action>
 		
-		<action name="newsMonitoringAction">
+		<action name="newsMonitoringService">
 			<result>/jsp/newsMonitoring.jsp</result>
 		</action>
 		<action name="searchInPartyAnalyst">
 			<result>/jsp/siteSearch.jsp</result>
 		</action>
-											
+		
+		<action name="customPagesAction" class="customPagesAction">
+			<result name="success">/jsp/customPages.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result> 
+		</action>
+		
+		<action name="customPagesTypeAction" class="customPagesAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">fileVO</param>
+        	</result>	
+		</action>	
+		
+		<action name="createCustomPagesAction" class="customPagesAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>	
+		</action>
+		
+		<action name="getCustomPageNameAndTypeAction" class="customPagesAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">customPageVO</param>
+        	</result>	
+		</action>
+		
+		
 	</package>
 </struts>      
