@@ -307,6 +307,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 		
 	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">
@@ -884,4 +885,10 @@
 		<property name="userTrackingReportService" ref="userTrackingReportService" />
 	</bean>	
 
+	<bean id="customPagesAction" class="com.itgrids.partyanalyst.web.action.CustomPagesAction" singleton="false">
+			<property name="candidateDetailsService" ref="candidateDetailsService"/>
+			<property name="partyDetailsService" ref="partyDetailsService"/>
+			<property name="specialPageService" ref="specialPageService"/>
+	</bean>
+				
 </beans>	
