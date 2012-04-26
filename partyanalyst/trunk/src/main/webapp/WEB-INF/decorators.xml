@@ -112,8 +112,9 @@
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
-		<pattern>/newsMonitoringAction*</pattern>	
+		<pattern>/newsMonitoringService*</pattern>
 		<pattern>/searchInPartyAnalyst*</pattern>	
+		<pattern>/customPagesAction*</pattern>
     </decorator>
 
 </decorators>
