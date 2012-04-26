@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
@@ -69,6 +70,17 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private NavigationVO navigationVO;
 	private EntitlementsHelper entitlementsHelper;
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	private ICandidateDetailsService candidateDetailsService; 
+	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
 	public List<PartyResultVO> getAllElectionResults() {
 		return allElectionResults;
 	}
@@ -238,7 +250,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		String cPath = request.getContextPath();
 		mandalId = request.getParameter("MANDAL_ID");
 		String mandalID = request.getParameter("MANDAL_ID");
-		String mandalName = request.getParameter("MANDAL_NAME");
+		String mandalName=candidateDetailsService.getMandalName(Long.parseLong(mandalID));
+		//String mandalName = request.getParameter("MANDAL_NAME");
 		List<MandalInfoVO> mandalInfo = delimitationConstituencyMandalService.getCensusInfoForMandals(mandalID);
 		for(MandalInfoVO mandalInfoVO : mandalInfo){
 			mandalInfoVO.setMandalName(mandalName);
