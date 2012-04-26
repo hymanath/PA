@@ -27,7 +27,37 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private Long PartyProfileDescriptionId;
 	private String isPrivate;
 	private List<FileVO> filesList = new ArrayList<FileVO>(0);
+	private String pageName;
+	private Long pageId;
+	private String customPageName;
+	private Long customPageType;
 	
+	
+	
+	public Long getPageId() {
+		return pageId;
+	}
+	public void setPageId(Long pageId) {
+		this.pageId = pageId;
+	}
+	public String getCustomPageName() {
+		return customPageName;
+	}
+	public void setCustomPageName(String customPageName) {
+		this.customPageName = customPageName;
+	}
+	public Long getCustomPageType() {
+		return customPageType;
+	}
+	public void setCustomPageType(Long customPageType) {
+		this.customPageType = customPageType;
+	}
+	public String getPageName() {
+		return pageName;
+	}
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
+	}
 	public String getIsPrivate() {
 		return isPrivate;
 	}
