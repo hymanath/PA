@@ -1684,7 +1684,7 @@ function showFirstFourNewsRecords(results)
 	 if(results[i].fileTitle1.length > 40)
 		str +='<li><strong>'+results[i].fileTitle1.substring(0,40)+'..</strong>';
 	 else
-		str +='<li><strong>'+results[i].fileTitle1+'</strong>';;
+		str +='<li><strong>'+results[i].fileTitle1+'</strong>';
 
 	 str += '</a>';
      str+='<div class="year-time"><span class="li-red">'+results[i].source+'</span> | '+results[i].fileDate+'</div>';
