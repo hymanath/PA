@@ -8,7 +8,26 @@ public class CustomPageVO implements Serializable{
 	
 	private String name;
 	private String type;
+	private Long typeId;
+	private int error;
 	
+	
+	public int getError() {
+		return error;
+	}
+
+	public void setError(int error) {
+		this.error = error;
+	}
+
+	public Long getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+
 	public CustomPageVO()
 	{}
 	
