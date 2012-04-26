@@ -315,6 +315,12 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 		<property name="candidatePageCustomPagesDAO" ref="candidatePageCustomPagesDAO"/>
+		<property name="customPageTypeDAO" ref="customPageTypeDAO" />
+		<property name="customPageDAO" ref="customPageDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="partyPageCustomPagesDAO" ref="partyPageCustomPagesDAO" />
+		<property name="specialPageDAO" ref="specialPageDAO" />
+		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
