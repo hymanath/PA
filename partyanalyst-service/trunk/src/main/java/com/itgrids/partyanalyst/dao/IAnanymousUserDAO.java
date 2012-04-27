@@ -45,5 +45,5 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<AnanymousUser> changeUserNameAsEmail(String email);
 	
-	
+	public List<Object[]> getUserEmail(Long userId);
 }
