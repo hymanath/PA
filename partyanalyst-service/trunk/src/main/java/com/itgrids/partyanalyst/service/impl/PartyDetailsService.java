@@ -1026,7 +1026,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 		return selOptionVO;
 	}
 
-	@Override
 	public List<FileVO> getPartyRelatedManifestoBasedOnYear(Long electionId,
 			Long partyId, Long stateId) {
 		
