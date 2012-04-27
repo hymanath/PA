@@ -20,7 +20,6 @@ public class CadreRoleDAO extends GenericDaoHibernate<CadreRole,Long> implements
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<CadreRole> findByRoleDesc(String roleDesc) {
 		
 		return getHibernateTemplate().find("from CadreRole model where model.role = ?",roleDesc);
