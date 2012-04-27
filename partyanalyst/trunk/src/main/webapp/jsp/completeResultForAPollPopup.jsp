@@ -56,7 +56,7 @@
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <style type="text/css">
 
-	body
+	/*body
 	{
 		background-color:#EAEDEF;
 		direction:ltr;
@@ -64,7 +64,7 @@
 		font-size:11px;
 		margin:0;
 		padding:0;
-	}
+	}*/
 	
 	.heading
 	{
@@ -90,6 +90,7 @@
 		padding-bottom:4px;
 		font-weight:normal;
 	}
+	#contenttable table{background:#ffffff;margin-right:auto;margin-left:auto;padding-bottom:10px;} 
 		
 </style>
 <script type="text/javascript"> 
