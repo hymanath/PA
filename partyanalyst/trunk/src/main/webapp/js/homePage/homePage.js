@@ -1144,9 +1144,9 @@ function buildNewPoll(result){
 		str += '<table><tr><td>';
 		str += '<div id="viewPollResDiv">';
 		str += '<table><tr>';
-		str += '<td onclick="getCompletePollResult(\''+questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> View Result';
+		str += '<td><a href="completeResultForAPollAction.action?questionId='+questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:43px;color:#3d3d3d;"> View Result</a>';
 		str += '</td>';
-		str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> View Previous Polls';
+		str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View Previous Polls</a>';
 		str += '</td>';	
 		str += '</tr></table>';
 		str += '</div>';
@@ -1194,9 +1194,9 @@ function showVotesObtainedForOptions(myResults){
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:10px;"> View Current Poll Result';
+	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a>';
 	str += '</td>';
-	str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> View All Polls';
+	str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a>';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
