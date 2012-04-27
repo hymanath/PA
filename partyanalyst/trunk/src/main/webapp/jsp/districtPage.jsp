@@ -26,6 +26,12 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 
+
+      <!-- For image display on mouseover -->	
+	<script type="text/javascript" src="js/overlib_mini.js"></script> 
+	<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
+
+
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <!-- JQuery files (End) -->
@@ -1923,7 +1929,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 								</td>
 								<td>
 								<span id="districtAncSpan">
-										<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" title="Click here to view ${candidate.candidateName} Profile,News,Photos,Videos" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
+										<a id='${candidate.candidateName}' href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" title="Click here to view ${candidate.candidateName} Profile,News,Photos,Videos" style="text-decoration:none;" onmouseover="displayImage(this.id);javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{removeImage(this.id);}">${candidate.candidateName}
 										</a>
 									</span>
 								 &nbsp </td>
@@ -2191,6 +2197,7 @@ if(forwardTask != null)
 
 
 buildProblemPostingWindowForDistrict();
+
 </script>
 </body>
 </html>

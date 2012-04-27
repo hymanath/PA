@@ -9,7 +9,7 @@
 
 	<title><c:out value='${constituencyDetails.constituencyName}'/> <c:out value='${constituencyDetails.constituencyType}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
-	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 
+	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 	
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
@@ -24,6 +24,14 @@
 	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 	<script src="${mapKey}" type="text/javascript"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	
+	
+	<!-- For image display on mouseover -->
+	
+	<script type="text/javascript" src="js/overlib_mini.js"></script> 
+	<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
+	
+	
 	<!-- Combo-handled YUI CSS files: --> 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/button/assets/skins/sam/button.css"> 
 
@@ -927,7 +935,8 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 						constituencyType:'${cInfo.constituencyType}',
 						deformDate:'${cInfo.deformDate}',
 						candidateId : '${cInfo.candidateId}',
-						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
+						//candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
+						candidateName:'<a id="${cInfo.candidateName}" onmouseover="displayImage(this.id)" onmouseout="return nd();" href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
 						partyId:' ${cInfo.partyId}',
 						party : '${cInfo.party}',
 						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>',
@@ -3309,10 +3318,7 @@ getGreaterResults();
 buildConstituencyInfo();
 initializeConstituencyPage();
 detailedElectionResult();
-
-
-
-
  </script>
+ 
   </body>
 </html>
