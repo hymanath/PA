@@ -73,7 +73,7 @@
 		text-align:center;
 		padding-top:30px;
 	}
-	body
+/*	body
 	{
 		background-color:#EAEDEF;
 		direction:ltr;
@@ -81,15 +81,18 @@
 		font-size:11px;
 		margin:0;
 		padding:0;
-	}
+	}*/
 	#pollsDivBody
 	{
 		padding:10px;
 	}
 	#pollsDivBody table
 	{
-		width:100%;
+		width:52%;
+	    margin-bottom: 24px;
+        margin-top: -29px;
 	}
+	#contenttable{background:#ffffff;}
 </style>
 <script type="text/javascript">
 	function getCompletePollResult(questionId){  
@@ -152,7 +155,7 @@ function initializeResultsTable() {
 				      		 	  ${polls.question}
 				      		</td>
 				      		<td>
-				      			<a href="javascript:{}" onclick="getCompletePollResult(${polls.questionId})" style="text-align:right;margin-top:15px;text-decoration:underline;"> click here</a>
+				      			<a href="completeResultForAPollAction.action?questionId=${polls.questionId}" style="text-align:right;margin-top:15px;text-decoration:underline;"> click here</a>
 				      		</td>
 				      	</tr>		
 				      </c:forEach>
