@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -82,8 +83,20 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
     private InputStream inputStream;
     private String loginUserProfilePic;
     private String pwdVal;
+    private IMailService mailService;
     
-    public String getPwdVal() {
+    
+    public IMailService getMailService() {
+		return mailService;
+	}
+
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
+
+	public String getPwdVal() {
 		return pwdVal;
 	}
 
@@ -413,7 +426,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> userId = new ArrayList<Long>(0);
 		userId.add(user.getRegistrationID());
 		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
+			return IConstants.NOT_LOGGED_IN ;
 		}		
 		connectedUsers = ananymousUserService.getAllPeopleConnectedPeopleForUser(userId);
 		return Action.SUCCESS;
@@ -481,7 +494,13 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	{
 		String param;
 		param = getTask();
-		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		if(regVO == null)
+		{
+			return IConstants.NOT_LOGGED_IN;
+		}
+		String senderName = regVO.getFirstName()+" "+regVO.getLastName();
 		try {
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
@@ -510,7 +529,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		connectUserIds.add(connectUserId);
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
-		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject,senderName);
 		return Action.SUCCESS;
 	}
 	
@@ -535,6 +554,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	{
 		String param;
 		param = getTask();
+		
 		
 		try {
 			jObj = new JSONObject(param);
@@ -570,7 +590,13 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	{
 		String param;
 		param = getTask();
-		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		if(regVO == null)
+		{
+			return IConstants.NOT_LOGGED_IN;
+		}
+		String senderName = regVO.getFirstName()+" "+regVO.getLastName();
 		try {
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
@@ -605,7 +631,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}		
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
-		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.ALL_CONNECTED_USER_DISPLAY, userId, senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.ALL_CONNECTED_USER_DISPLAY, userId, senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject,senderName);
 		return Action.SUCCESS;
 	}
 	
@@ -877,4 +903,5 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		return Action.SUCCESS;
 	}
+	
 }
