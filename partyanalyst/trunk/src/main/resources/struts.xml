@@ -3296,6 +3296,10 @@
         	</result>	
 		</action>
 		
-		
+		<action name="sendEmailRequestAction" class="connectPeopleAction" method="sendEmailRequest">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>
+			</result>
+		</action>								
 	</package>
 </struts>      
