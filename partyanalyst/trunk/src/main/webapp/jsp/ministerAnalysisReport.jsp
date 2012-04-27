@@ -649,7 +649,7 @@ function removeDataDIV()
 </script>
 </head>
 <body>
-<div style="width:998px;padding-left:5px;">
+<div style="width:998px;padding-left:5px;margin-left:auto;margin-right:auto;float:none;">
    <div style="padding-left:5px;"><div class="main-mbg">Results Analysis For Ministers</div></div>
    <div style="background-color:#F5F5F5;min-height:360px;">
          <div class="dashBoardtabsDiv" style="align:left;">
