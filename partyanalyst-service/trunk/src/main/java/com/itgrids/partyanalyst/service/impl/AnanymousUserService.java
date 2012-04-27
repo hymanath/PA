@@ -56,7 +56,7 @@ import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
-import com.itgrids.partyanalyst.service.IMailService;
+import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -85,15 +85,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ITehsilDAO tehsilDAO;
 	private IBoothDAO boothDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	private IMailService mailService;
+	private IMailsSendingService mailsSendingService;
 	
 	
-	public IMailService getMailService() {
-		return mailService;
+	public IMailsSendingService getMailsSendingService() {
+		return mailsSendingService;
 	}
 
-	public void setMailService(IMailService mailService) {
-		this.mailService = mailService;
+	public void setMailsSendingService(IMailsSendingService mailsSendingService) {
+		this.mailsSendingService = mailsSendingService;
 	}
 
 	public IHamletDAO getHamletDAO() {
@@ -552,7 +552,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					}
 						if(email != null && email.trim().length() > 0)
 						{
-						resultStatus = sendEmailRequest(userName,email,IConstants.SERVER,senderName,subject);
+						resultStatus = mailsSendingService.sendEmailFriendRequest(userName,email,IConstants.SERVER,senderName,subject);
 						}
 					}
 			}
@@ -569,26 +569,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	return dataTransferVO;
 	} 
 	
-	public ResultStatus sendEmailRequest(String userName,String email,String requestFrom,String senderName , String msg)
-	{
-		ResultStatus resultStatus = new ResultStatus();
-		String message = msg;
-		if(message != "")
-			message="\""+message+"\"";
-		String subject = ""+senderName+" sent a Friend Request in PartyAnalyst.com";
-		String logo = "<img src='http://www.partyanalyst.com/PartyAnalyst/images/icons/homePage_new/homePage_header_beta2.jpg' width='600px' height='100px'/>";
-		String content = " <div style='border:1px solid #CCCCCC'>"+logo+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+userName+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 39px;line-height:1.5em;'><b><font style='color:blue;'>"+senderName+"</font></b> has sent you a friend request in PartyAnalyst.com. <br/> "+message+" To respond " +
-				"to friend request, <a href='http://www.partyanalyst.com/loginInputAction.action'><b>Login here.</b></a></div></div>" ;
-		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-		emailDetailsVO.setToAddress(email);
-		emailDetailsVO.setHost(requestFrom);
-		emailDetailsVO.setSubject(subject);
-		emailDetailsVO.setContent(content);
-		
-		resultStatus = mailService.sendEmail(emailDetailsVO ,requestFrom );
-		return resultStatus;
-	}
-
+	
 	/**
 	 * This method can be used by other methods to populate or set data into a data transfer object which contains the list of 
 	 * registered users.
