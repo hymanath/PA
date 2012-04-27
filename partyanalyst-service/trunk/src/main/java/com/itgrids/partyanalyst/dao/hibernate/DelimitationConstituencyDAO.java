@@ -169,7 +169,6 @@ IDelimitationConstituencyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List getLatestConstituencyByConstituencyNameAndDistrictIdAndElectionType(
 			String constituencyName, Long districtId, String electionType) {
 		
