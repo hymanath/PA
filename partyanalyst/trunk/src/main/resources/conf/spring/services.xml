@@ -46,7 +46,7 @@
 	</bean>
 	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
-		<property name="mailService" ref="mailService"></property>
+		<property name="mailsSendingService" ref="mailsSendingService" />
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
@@ -1062,5 +1062,12 @@
 		<property name="userTrackingDAO" ref="userTrackingDAO" />
 	</bean>
 	
+	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
+		<property name="mailService" ref="mailService"></property>
+		<property name="mailsTemplateService" ref="mailsTemplateService"></property>
+	</bean>
+	
+	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
+	</bean>
 </beans>		
 		
