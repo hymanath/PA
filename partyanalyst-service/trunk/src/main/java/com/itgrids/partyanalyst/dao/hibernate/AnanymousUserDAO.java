@@ -206,7 +206,11 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model from AnanymousUser model where model.email= ?",email);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserEmail(Long userId)
+	{
+		return getHibernateTemplate().find("select model.userId , model.name , model.lastName , model.email from AnanymousUser model where model.userId = ?",userId);
+	}
 	
 
 	
