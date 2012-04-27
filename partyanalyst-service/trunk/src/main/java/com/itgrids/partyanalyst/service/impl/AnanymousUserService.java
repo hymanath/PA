@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
@@ -55,6 +56,7 @@ import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -83,8 +85,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ITehsilDAO tehsilDAO;
 	private IBoothDAO boothDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	private  MailService mailService;
+	private IMailService mailService;
 	
+	
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -506,12 +517,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @return
 	 */
 	public DataTransferVO getAllUsersAfterAcceptingRequest(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,
-			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject){
+			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject,String senderName){
+		String userName = "";
+		String email = "";
+		
 		ResultStatus resultStatus = new ResultStatus();
 		ResultStatus resultStatusForSaving = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
-		List<Object> result = new ArrayList<Object>();		
+		List<Object> result = new ArrayList<Object>();	
 		Long startIndex = 0L;
 		String nameString = "";
 		List<Long> userIds = new ArrayList<Long>();
@@ -526,9 +540,26 @@ public class AnanymousUserService implements IAnanymousUserService {
 			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));
 			
+			for(Long recpntId : recipeintId)
+			{
+				List<Object[]> list = ananymousUserDAO.getUserEmail(recpntId);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						userName = params[1].toString()+" "+params[2].toString();
+						email = params[3].toString();
+					}
+						if(email != null && email.trim().length() > 0)
+						{
+						resultStatus = sendEmailRequest(userName,email,IConstants.SERVER,senderName,subject);
+						}
+					}
+			}
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			dataTransferVO.setResultStatus(resultStatus);	
+			dataTransferVO.setResultStatus(resultStatus);
+			
 		}catch(Exception e){
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -537,6 +568,26 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 	return dataTransferVO;
 	} 
+	
+	public ResultStatus sendEmailRequest(String userName,String email,String requestFrom,String senderName , String msg)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		String message = msg;
+		if(message != "")
+			message="\""+message+"\"";
+		String subject = ""+senderName+" sent a Friend Request in PartyAnalyst.com";
+		String logo = "<img src='http://www.partyanalyst.com/PartyAnalyst/images/icons/homePage_new/homePage_header_beta2.jpg' width='600px' height='100px'/>";
+		String content = " <div style='border:1px solid #CCCCCC'>"+logo+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+userName+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 39px;line-height:1.5em;'><b><font style='color:blue;'>"+senderName+"</font></b> has sent you a friend request in PartyAnalyst.com. <br/> "+message+" To respond " +
+				"to friend request, <a href='http://www.partyanalyst.com/loginInputAction.action'><b>Login here.</b></a></div></div>" ;
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		emailDetailsVO.setToAddress(email);
+		emailDetailsVO.setHost(requestFrom);
+		emailDetailsVO.setSubject(subject);
+		emailDetailsVO.setContent(content);
+		
+		resultStatus = mailService.sendEmail(emailDetailsVO ,requestFrom );
+		return resultStatus;
+	}
 
 	/**
 	 * This method can be used by other methods to populate or set data into a data transfer object which contains the list of 
