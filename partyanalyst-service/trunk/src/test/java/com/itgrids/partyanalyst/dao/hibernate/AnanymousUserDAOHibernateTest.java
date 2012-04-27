@@ -113,7 +113,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result);
 	}
 	*/
-	public void testgetUsername()
+	/*public void testgetUsername()
 	{
 	 List<AnanymousUser> params = ananymousUserDAO.getUserByUserName("kamalakar");
 	 for(AnanymousUser list : params)
@@ -130,5 +130,17 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(list.getLastName());
 		}
 		
+	}*/
+	
+	public void testGetUserEmail()
+	{
+	List<Object[]> list =ananymousUserDAO.getUserEmail(1l);
+	System.out.println(list.size());
+	if(list != null && list.size() > 0)
+		for(Object[] params : list){
+			
+			System.out.println(params[0] +" " +params[1] +" " + params[2] + " " + params[3]);
+		
+		}
 	}
 }
