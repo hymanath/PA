@@ -41,8 +41,8 @@
 		<pattern>/getCadreInfoAction.action*</pattern>		
 		<pattern>/cadreSearchAction.action*</pattern>
 		<pattern>/ecrComparedResultsAction.action*</pattern>
-		<pattern>/completeResultForAPollAction.action*</pattern>  
-		<pattern>/getAllPollsAction.action*</pattern> 
+		<!--<pattern>/completeResultForAPollAction.action*</pattern>  -->
+		<!--<pattern>/getAllPollsAction.action*</pattern> -->
 		<pattern>/viewFeaturesAction.action*</pattern>
 		<pattern>/influencingPeopleAction*</pattern>
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
@@ -112,9 +112,11 @@
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
-		<pattern>/newsMonitoringService*</pattern>
-		<pattern>/searchInPartyAnalyst*</pattern>	
+		<pattern>/newsMonitoringAction*</pattern>	
+		<pattern>/searchInPartyAnalyst*</pattern>
 		<pattern>/customPagesAction*</pattern>
+		<pattern>/completeResultForAPollAction*</pattern>
+		<pattern>/getAllPollsAction*</pattern>
     </decorator>
 
 </decorators>
