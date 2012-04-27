@@ -30,7 +30,6 @@ public class PartyManifestoDAO extends
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<Object[]> getElectionTypes(Long partyId, Long stateId) {
 		
 		Object[] params = {partyId,stateId};
