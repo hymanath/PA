@@ -29,7 +29,7 @@ public interface IAnanymousUserService {
 	public DataTransferVO getDataForAUserProfile(List<Long> userId,String informationStatus);
 	
 	public DataTransferVO getAllUsersAfterAcceptingRequest(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,
-			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject);
+			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject,String senderName);
 	
 	public NavigationVO getAllMessageTypes();
 	
