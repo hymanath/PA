@@ -694,6 +694,7 @@
 	<bean id="connectPeopleAction" class="com.itgrids.partyanalyst.web.action.ConnectPeopleAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="staticDataService" ref="staticDataService" />		
+			<property name="mailService" ref="mailService"></property>	
 	</bean>
 	
 	<bean id="createLocalGroupAction" class="com.itgrids.partyanalyst.web.action.CreateLocalGroupAction" singleton="false">
