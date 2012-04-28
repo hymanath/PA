@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.RequestUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
@@ -34,6 +36,7 @@ import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -913,5 +916,57 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		return Action.SUCCESS;
 	}
-	
+	public String referralSendingMails(){
+		try{
+			jObj = new JSONObject(getTask());	
+			JSONArray mailDtls = jObj.getJSONArray("invmainobj");
+			String requestFrom="";
+			 if(getPath().equalsIgnoreCase("http://www.partyanalyst.com")){
+				 requestFrom = IConstants.SERVER;	
+	        }else{
+	        	requestFrom = IConstants.LOCALHOST;		
+	        }   
+			 List<EmailDetailsVO> emaildtlslist=new ArrayList();
+		
+			 if(mailDtls.length()>0){
+			for(int i=0;i<mailDtls.length();i++){
+				EmailDetailsVO emaildtlsVo=new EmailDetailsVO();
+				JSONObject mailobj=(JSONObject)mailDtls.get(i);	
+				String fname=mailobj.getString("firstName");
+				String email=mailobj.getString("email");
+				emaildtlsVo.setToAddress(email);
+				if(fname==null){
+					fname="";
+				}
+				emaildtlsVo.setWelcomeName(fname);
+				if(email!=null && !email.equalsIgnoreCase("")){
+					emaildtlslist.add(emaildtlsVo);	
+				}
+				
+			}
+			}
+			 ResultStatus rs = mailService.freeUserSendingMailsToFriends(emaildtlslist,requestFrom);
+				if(rs.getResultCode()==0){
+				message=IWebConstants.SUCCESS;
+				}else{
+					message=IWebConstants.FAILURE;
+				}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		 return SUCCESS;
+	}
+	public String getPath() {
+
+		String requestURL = request.getRequestURL().toString();
+		String actionURL = RequestUtils.getServletPath(request);
+
+		String path = requestURL.replace(actionURL, "");
+
+		 log.info("Path for invitation link :" + path);
+
+		return path;
+	}
 }
