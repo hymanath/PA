@@ -134,6 +134,8 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 			return resultList;
 		}
 	}
+	
+	
 	public List<UserTrackingReportVO> getTotalUniqueVisitorDetails(Date fromDate, Date toDate){
 		List<UserTrackingReportVO> userTrackingReportVOList = new ArrayList<UserTrackingReportVO>(0);
 		UserTrackingReportVO userTrackingReportVO=new UserTrackingReportVO();
@@ -201,7 +203,7 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 						while(mapOutItr.hasNext()){						
 							Object objOut[]=(Object[])mapOutItr.next();						
 							
-							if(objOut[1]!=null){
+							if(objOut[1]!=null && objOut[0]!=null){
 								sessionIdSet.add(objOut[0].toString());
 								logoutMap.put(objOut[0].toString(), ((Date)objOut[1]).getTime());
 							}
@@ -212,7 +214,9 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 						Iterator<Object> mapInItr=loginTime.iterator();
 						while(mapInItr.hasNext()){
 							Object objIn[]=(Object[])mapInItr.next();
-							loginMap.put(objIn[0].toString(), ((Date)objIn[1]).getTime());						
+							if(objIn[1]!=null && objIn[0]!=null){
+								loginMap.put(objIn[0].toString(), ((Date)objIn[1]).getTime());
+							}
 						}
 					}
 					
@@ -255,8 +259,8 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 			catch(Exception e){
 				log.error("Exception raised in getTotalUniqueVisitorDetails method of UserTrackingReportService",e);
 			}		
-		
 		}
+		
 		userTrackingReportVO=new UserTrackingReportVO();
 		userTrackingReportVO.setUniqueVisitors(allUsersSessionCount);
 		String allUsersTimeSpent=getTimeSpentBetweenDatesInString(allUsersTimeDiff);
@@ -267,10 +271,11 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 		userTrackingReportVO.setAvgNoOfPagesAccessed(allUsersAvgPagesAccessed);
 		userTrackingReportVOList.add(userTrackingReportVO);
 		
-		userTrackingReportVOList=getTotalVisitorLandingExitBounceRates(fromDate, toDate, userTrackingReportVOList);
+		//userTrackingReportVOList=getTotalVisitorLandingExitBounceRates(fromDate, toDate, userTrackingReportVOList);
 		
 		return userTrackingReportVOList;
 	}
+	
 	private String getTimeSpentBetweenDatesInString(Long timeDiff){
 		String duration;
 		Long seconds;
@@ -548,6 +553,7 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 		
 		return updateUrlTimeVOList;
 	}
+	
 	private List<UserTrackingReportVO> getTotalVisitorLandingExitBounceRates(Date fromDate, Date toDate, List<UserTrackingReportVO> userTrackingReportVOList){
 		UserTrackingReportVO userTrackingReportVO=new UserTrackingReportVO();
 		HashMap<String, Integer> leadRateMap=new HashMap<String, Integer>();
