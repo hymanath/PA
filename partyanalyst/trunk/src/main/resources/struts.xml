@@ -3300,6 +3300,12 @@
 			<result type="json" name="success">
 			<param name="root">resultStatus</param>
 			</result>
-		</action>								
+		</action>		
+		<action name="referralSendingMailsAction" class="connectPeopleAction" method="referralSendingMails">
+			<result type="json" name="success">
+				<param name="root">message</param>				
+			</result>
+		</action>
+												
 	</package>
 </struts>      
