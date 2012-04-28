@@ -1964,3 +1964,7 @@ function showpostedDivImg()
 		if(ajaxImageDivEle)
 		ajaxImageDivEle.style.display = 'none';
 	}
+	function openBrowserForSocialNetworking(id){
+	    var browser1 = window.open("socialAuthenticationAction.action?id="+id,"Refer friends From "+id,"scrollbars=yes,height=600,width=600,left=200,top=200");				 
+		browser1.focus();
+		}
