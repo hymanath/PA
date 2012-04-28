@@ -3306,6 +3306,9 @@
 				<param name="root">message</param>				
 			</result>
 		</action>
+		<action name="VotersPulse">
+			<result>/jsp/votersPulse.jsp</result>
+		</action>
 												
 	</package>
 </struts>      
