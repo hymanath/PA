@@ -24,7 +24,7 @@ public interface IAnanymousUserService {
 		
 	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex, String nameString);
 	
-	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject);
+	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject,final String senderName);
 	
 	public DataTransferVO getDataForAUserProfile(List<Long> userId,String informationStatus);
 	
