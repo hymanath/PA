@@ -61,5 +61,27 @@ public class MailsSendingService implements IMailsSendingService{
 		return resultStatus;
 		
 	}
+	
+	public ResultStatus sendMessageToConnectUser(String userName,String email,String requestFrom,String msg,String senderName)
+	{
+		String message = "";
+		ResultStatus resultStatus = new ResultStatus();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		if(msg != null && msg.trim().length() > 0)
+		{
+			message = "\""+msg+"\"";
+		}
+		String subject = ""+senderName+" send a message in PartyAnalyst.com.";
+		String content = "<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
+				"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+userName+",</b><br/>" +
+						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue;'><b>"+senderName+"</b></font> has sent a message in PartyAnalyst.com.<br/>"+message+" Do you want to send the reply? <a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a></div></div>";
+		emailDetailsVO.setContent(content);
+		emailDetailsVO.setHost(requestFrom);
+		emailDetailsVO.setToAddress(email);
+		emailDetailsVO.setSubject(subject);
+		resultStatus = mailService.sendEmail(emailDetailsVO, requestFrom);
+		return resultStatus;
+	}
+	
 
 }
