@@ -429,6 +429,35 @@ public class MailService implements IMailService{
 			return null;
 		}
 	}
+	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host){
+		String subject="Invitation From PartyAnalyst";
+		String text="PartyAnalyst inviting you to connect to your people,";
+		text+="post your area problems and access to many features<br/><br/><br/>";
+		text+="Please <a href=http://www.partyanalyst.com/freeUserRegistration.action> Click Here</a> To Register";
+		List<EmailDetailsVO> mainEmailDetailsVoList=new ArrayList();
+		try{
+			if(emaildtlslist!=null && emaildtlslist.size()>0){
+				for(int i=0;i<emaildtlslist.size();i++){
+					EmailDetailsVO mainEmailDetailsVO=new EmailDetailsVO(); 
+					EmailDetailsVO emailDetailsVO=emaildtlslist.get(i);
+					mainEmailDetailsVO.setSubject(subject);
+					mainEmailDetailsVO.setToAddress(emailDetailsVO.getToAddress());
+					String welcomename=emailDetailsVO.getWelcomeName();
+					String content="Hi "+welcomename+",<br/>"+text;
+					mainEmailDetailsVO.setContent(content);
+					mainEmailDetailsVO.setHost(host);
+					mainEmailDetailsVoList.add(mainEmailDetailsVO);
+				}
+			}
+			
+			ResultStatus rs=sendEmails(mainEmailDetailsVoList,host);
+			return rs;	
+		}catch(Exception e){
+			e.printStackTrace();
+		return null;	
+		}
+		
+	}
 
 }
 
