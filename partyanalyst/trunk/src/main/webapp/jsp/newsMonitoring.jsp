@@ -93,11 +93,16 @@ Get Constituency Reports
 Analyze your constituency,  track your progress and pending facilities.
 </div>
 <div class="service-box">
-<a href="#"><span>Survey Meter</span></a>
+<a href="VotersPulse.action"><span>Voters Pulse</span></a>
 <img src="images/new_homepage/checklist.jpg"/>
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>
+<!--<div class="service-box">
+<a href="#"><span>News Reporting Service</span></a>
+<img src="images/new_homepage/NewsTracker.png"/>
+Get News Reports
+</div>-->
 
 </div>
 </div>
@@ -114,8 +119,12 @@ Ask, Analyze, Improve
 $(document).ready(function(){
 		$(".inline").fancybox();
 		//$(".inline").trigger("click");
+		
+	$(".service-box").click(function(){
+      $(location).attr('href',$(this).find("a").attr("href"));
+    });
+});
 
-	});
 
 </script>
 
