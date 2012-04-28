@@ -23,6 +23,9 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
+     <!-- For image display on mouseover -->	
+<script type="text/javascript" src="js/overlib_mini.js"></script> 
+<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
 
  
 <!-- Slider skin (optional) --> 
@@ -415,11 +418,10 @@ function distLevelMClickHandler()
 	}
 }
 function buildParticipatedCandidatesDetailsDataTable(data)
-{
-	
+{	
 	var participatedCandidatesDetailsColumnDefs = [
 								{key: "count", label: "S No",formatter:"number", sortable:true},	
-								{key: "name", label: "Name", sortable:true},		
+								{key: "name", label:"Name",sortable:true},		
 								{key: "constituency", label: "Constituency", sortable:true},	
 								{key: "party", label: "Party", sortable:true},
 								{key: "partyFlag", label: "Flag", sortable:true},
@@ -650,6 +652,17 @@ function buildDataTable(rparam)
 			
 	  };
 
+	YAHOO.widget.DataTable.candidateDetails = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var candidateName = oData;
+		var candidateId = oRecord.getData("candidateId");
+		//elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"'>"+candidateName+"</a>";		
+		elLiner.innerHTML ='<a id='+candidateName+' onmouseover="displayImage(\''+candidateName+'\');" onmouseout="return nd();">'+candidateName+'</a>';		
+	};
+
+	
+	
+
 	  YAHOO.widget.DataTable.partyFlag = function(elLiner, oRecord, oColumn, oData) 
 	  {
 		var user = oData;
@@ -678,7 +691,7 @@ function buildDataTable(rparam)
 	<c:if test="${hasDeatiledAnalysis}">
 	  
 	var candidateDetails = [ 
-	       							{key:"candidateName", label: "Name",sortable: true} ,
+	       							{key:"candidateName", label: "Name",sortable: true,formatter:YAHOO.widget.DataTable.candidateDetails} ,
 	       		    	            {key:"constituencyName", label: "Constituency", sortable: true}, 
 	       		    	           	{key:"partyName", label: "Party Name", sortable: true},
 	       							{key:"partyFlag", label: "Party Flag",sortable:true,formatter:YAHOO.widget.DataTable.partyFlag},
