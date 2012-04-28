@@ -777,7 +777,24 @@ public class AnanymousUserService implements IAnanymousUserService {
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessage.setStatus(IConstants.MSG_UNREAD);
 								customMessageDAO.save(customMessage);
-							}							
+							}	
+							
+							for(Long recipeintUserId : recipeintId)
+							{
+								List<Object[]> list = ananymousUserDAO.getUserEmail(recipeintUserId);
+								if(list != null && list.size() > 0)
+								{
+									for(Object[] params : list)
+									{
+										userName = params[1].toString()+" "+params[2].toString();
+										email = params[3].toString();
+									}
+									if(email != null && email.trim().length() > 0)
+									{
+									 mailsSendingService.sendMessageToConnectUser(userName,email,IConstants.SERVER,subject,senderName);
+									}
+								}
+							}
 						}
 						
 						else if(messageType.equalsIgnoreCase(IConstants.REJECTED)){														
