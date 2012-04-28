@@ -425,7 +425,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		List<Long> userId = new ArrayList<Long>(0);
 		userId.add(user.getRegistrationID());
-		if(user==null){
+		if(user == null)
+		{
 			return IConstants.NOT_LOGGED_IN ;
 		}		
 		connectedUsers = ananymousUserService.getAllPeopleConnectedPeopleForUser(userId);
@@ -445,9 +446,11 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
 		if(user==null){
 			return IConstants.NOT_LOGGED_IN;
 		}
+		String senderName = user.getFirstName() +" "+user.getLastName();
 		List<Long> userId = new ArrayList<Long>();
 		userId.add(user.getRegistrationID());
 		
@@ -457,15 +460,15 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		if(jObj.getString("task").equalsIgnoreCase("acceptRequest"))
 		{
-			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.CONNECTED,"");
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.CONNECTED,"",senderName);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("rejectRequest"))
 		{
-			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.REJECTED,"");
+			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.REJECTED,"",senderName);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("blockRequest"))
 		{
-			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.BLOCK,"");
+			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.BLOCK,"",senderName);
 		}
 		return Action.SUCCESS;
 	}
@@ -697,6 +700,13 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	{
 		String param;
 		param = getTask();
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		{
+			return IConstants.NOT_LOGGED_IN;
+		}
+		String senderName = user.getFirstName() +" "+user.getLastName();
 		
 		try {
 			jObj = new JSONObject(param);
@@ -715,9 +725,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		recipientIds.add(recipientId);
 		
 		if(jObj.getString("type").equalsIgnoreCase("Message")){
-			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds, IConstants.COMMENTS,message);
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds, IConstants.COMMENTS,message,senderName);
 		}else if(jObj.getString("type").equalsIgnoreCase("Connect")){
-			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds,IConstants.FRIEND_REQUEST,message);
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds,IConstants.FRIEND_REQUEST,message,senderName);
 		}
 	
 		
