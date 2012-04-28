@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.ResourceBundle;" %>
 <html>
 <head>
@@ -135,6 +135,19 @@
 						<div class="corner bottomRight"></div>
 							
 							<div id="connectPeople_profile_center" class="yui-skin-sam">
+							<table>
+									<tr>
+										<td>
+											<span style="font-size:12px;color:#9E7556;padding:2px;">Refer Friends From</span>
+										</td>
+										<td valign="top">
+										   <a href="#" onclick="openBrowserForSocialNetworking('google')"><img src="images/google_16.png" alt="Gmail"  title="Gmail" border="0"></img></a>
+										</td>
+										<td valign="top">
+										 <a href="#" onclick="openBrowserForSocialNetworking('yahoo')"><img src="images/yahoo_16.png" alt="YahooMail" title="YahooMail" border="0"></img></a>
+										</td>
+										</tr>
+										</table>
 								<table width="100%">
 									<tr>
 										<td width="20%" valign="top">
