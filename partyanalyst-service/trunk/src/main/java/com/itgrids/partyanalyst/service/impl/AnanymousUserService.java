@@ -530,7 +530,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		String nameString = "";
 		List<Long> userIds = new ArrayList<Long>();
 		try{
-			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject);
+			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject,senderName);
 			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
 			userIds.add(loginId);
 			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);			
@@ -695,8 +695,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param messageType
 	 * @param subject
 	 */
-	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject){
-		final ResultStatus resultStatus = new ResultStatus();	
+	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject,final String senderName){
+		
+		final ResultStatus resultStatus = new ResultStatus();
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				CustomMessage customMessage = new CustomMessage();
@@ -705,6 +706,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 						Long pendingId=0l;
 						Long disconectedId=0l;
 						Long blockId=0l;
+						String userName = "";
+						String email = "";
 						for(MessageType type: messageTypeDAO.getAll()){
 							if(type.getMessageType().equalsIgnoreCase(messageType)){
 								messageTypeId =type.getMessageTypeId();							
@@ -747,6 +750,21 @@ public class AnanymousUserService implements IAnanymousUserService {
 								users.setMessageType(messageTypeDAO.get(messageTypeId));
 								users.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));
 								customMessageDAO.save(users);
+							}
+							for(Long recipeintUserId : recipeintId)
+							{
+							List<Object[]> list = ananymousUserDAO.getUserEmail(recipeintUserId);
+							if(list !=null && list.size() > 0)
+							{
+								for(Object[] params : list)
+								{
+									userName = params[1].toString()+" "+params[2];
+									email = params[3].toString();
+								}
+								if(email != null && email.trim().length() > 0){
+								mailsSendingService.acceptEmailFriendRequest(userName,email,IConstants.SERVER,senderName);
+								}
+							}
 							}
 						}
 						
