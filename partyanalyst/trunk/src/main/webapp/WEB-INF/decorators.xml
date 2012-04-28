@@ -112,11 +112,12 @@
 		<pattern>/partyBoothResultAction*</pattern>
 		<pattern>/statePageAction*</pattern>
 		<pattern>/userTrackingReportAction*</pattern>
-		<pattern>/newsMonitoringAction*</pattern>	
+		<pattern>/newsMonitoringService*</pattern>
 		<pattern>/searchInPartyAnalyst*</pattern>
 		<pattern>/customPagesAction*</pattern>
 		<pattern>/completeResultForAPollAction*</pattern>
 		<pattern>/getAllPollsAction*</pattern>
+		<pattern>/VotersPulse*</pattern>
     </decorator>
 
 </decorators>
