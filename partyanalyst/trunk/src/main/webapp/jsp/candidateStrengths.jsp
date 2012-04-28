@@ -7,7 +7,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+   <!-- For image display on mouseover -->	
+<script type="text/javascript" src="js/overlib_mini.js"></script> 
+<script type="text/javascript" src="js/commonUtilityScript/displayImage.js"></script> 
 
 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
@@ -222,7 +224,7 @@ var type = '${type}';
 						<c:forEach var="requiredConstituencyDetails" varStatus="stat" items="${requiredConstituencyDetails}">		
 							<tr>
 								<td>
-									${requiredConstituencyDetails.candidateName}
+									<a id='${requiredConstituencyDetails.candidateName}' href="javascript:{}" onmouseover="displayImage(this.id);" onmouseout="return nd();">${requiredConstituencyDetails.candidateName}
 								</td>
 								<td>
 									${requiredConstituencyDetails.constituencyName}
