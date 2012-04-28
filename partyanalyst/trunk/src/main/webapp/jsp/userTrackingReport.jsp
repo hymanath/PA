@@ -175,6 +175,8 @@ function callAjax(jsObj, url){
 	var callback = {			
 		success : function( o ) {
 			hideAjaxImg('searchAjaxImgSpan');
+			hideAjaxImg('processingImgSpan');
+
 			try {												
 				myResults = YAHOO.lang.JSON.parse(o.responseText);	
 				if(jsObj.task == "byTodayDate"){
@@ -241,11 +243,12 @@ function displayUserDetails(myResults){
 		$("#totTime"+i).html(myResults[i].totalTimeSpent);
 		$("#avgTime"+i).html(myResults[i].avgTimeSpent);		
 	}
-	displaySiteAnalytics(myResults[4]);
+	//displaySiteAnalytics(myResults[4]);
 }
 function getMoreVisitorDetails()
 {
-	$("#visitorsDetailsDiv").css("display", "block");
+		$("#visitorsDetailsDiv").css("display", "none");
+		showAjaxImg('processingImgSpan');
 
   if(document.getElementById("today").checked == true)
 	{
@@ -308,7 +311,9 @@ function getVisitorDetails(task , fromDate , toDate)
 
 function getMoreDetails(userType)
 {
-	$("#visitorsDetailsDiv").css("display", "block");
+	$("#visitorsDetailsDiv").css("display", "none");
+	showAjaxImg('processingImgSpan');
+
  if(document.getElementById("today").checked == true)
 	{
 	  getUserMoreDetails("todayUserDetails","","",userType);
@@ -384,6 +389,7 @@ if(result.length == 0)
 {
 
 document.getElementById("visitorsDetailsDiv").innerHTML = "No Records Found";
+$("#visitorsDetailsDiv").css("display", "block");
 return;
 }
 
@@ -423,6 +429,7 @@ str += '</tr>';
 str +='</table>';
 
 visitorsDetailsDiv.innerHTML = str;
+$("#visitorsDetailsDiv").css("display", "block");
 }
 
 function displayUserPageFlow(index){
@@ -468,7 +475,7 @@ function headingDetails(text)
 document.getElementById("headingStyle").style.display = 'block';
 document.getElementById("headingStyle").innerHTML = text;
 }
-function displaySiteAnalytics(result){
+/*function displaySiteAnalytics(result){
 	var landingCtr=0;
 	var exitCtr=0;
 	var bounceCtr=0;
@@ -530,7 +537,7 @@ function displaySiteAnalytics(result){
 	}
 	else
 		$("#bouncePageDiv").html("");
-}
+}*/
 </script>
 </head>
 <body>
@@ -646,7 +653,10 @@ function displaySiteAnalytics(result){
 	<div id="bouncePageDiv" style="margin-top:10px;"></div>
 	<div id="exitPageDiv" style="margin-top:10px;"></div>
 
-	<div  style="margin-top: 30px; margin-left: 6px;"><span id="headingStyle" style="display:none;"></span></div>
+	<div  style="margin-top: 30px; margin-left: 6px;">
+	<div><span id="headingStyle" style="display:none;"></span></div>
+	<div><span id="processingImgSpan" style="display:none;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></div>
+	</div>
 	<div style="background: #FFF;margin-top:15px;margin-bottom: 5px;padding-bottom:20px;margin-left: 5px;">
 		<div id="visitorsDetailsDiv" class=""></div>
 	</div>
