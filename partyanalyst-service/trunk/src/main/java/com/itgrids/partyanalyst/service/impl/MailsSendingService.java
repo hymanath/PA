@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import net.sf.cglib.core.EmitUtils;
+
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -40,6 +42,24 @@ public class MailsSendingService implements IMailsSendingService{
 		
 		resultStatus = mailService.sendEmail(emailDetailsVO ,requestFrom );
 		return resultStatus;
+	}
+	
+	public ResultStatus acceptEmailFriendRequest(String userName,String email,String requestFrom,String senderName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		
+		String subject = ""+senderName+" accepted Friend Request in PartyAnalyst.com.";
+		String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+senderName+",</b></div>" +
+				"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue'><b>"+userName+"</b></font> has accepted your friend request in PartyAnalyst.com.<br/>Do you want to send a message? " +
+						"<a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>"; 
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		emailDetailsVO.setToAddress(email);
+		emailDetailsVO.setHost(requestFrom);
+		emailDetailsVO.setSubject(subject);
+		emailDetailsVO.setContent(content);
+		resultStatus = mailService.sendEmail(emailDetailsVO, requestFrom);
+		return resultStatus;
+		
 	}
 
 }
