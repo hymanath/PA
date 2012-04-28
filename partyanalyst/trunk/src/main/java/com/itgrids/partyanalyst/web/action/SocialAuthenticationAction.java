@@ -71,7 +71,13 @@ public class SocialAuthenticationAction extends ActionSupport implements Servlet
         socialAuthManager = new SocialAuthManager();
         socialAuthManager.setSocialAuthConfig(conf);
 
-        String returnToUrl = "http://www.partyanalyst.com/socialAuthSuccessAction.action";
+        String returnToUrl ="";
+        if(getPath().equalsIgnoreCase("http://www.partyanalyst.com")){
+        	 returnToUrl = "http://www.partyanalyst.com/socialAuthSuccessAction.action";	
+        }else{
+        	 returnToUrl = getPath()+"/socialAuthSuccessAction.action";		
+        }      
+               
                         
         redirectURL = socialAuthManager.getAuthenticationUrl(id, returnToUrl);
     	
@@ -83,6 +89,17 @@ public class SocialAuthenticationAction extends ActionSupport implements Servlet
 		catch (Exception e) {
 			return ERROR;
 		}
+	}
+	public String getPath() {
+
+		String requestURL = request.getRequestURL().toString();
+		String actionURL = RequestUtils.getServletPath(request);
+
+		String path = requestURL.replace(actionURL, "");
+
+		 log.info("Path for invitation link :" + path);
+
+		return path;
 	}
 
 }
