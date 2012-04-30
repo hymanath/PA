@@ -58,7 +58,10 @@
 			<result>/jsp/homePage.jsp</result>
 			
 		</action>
-		<action name="loginInputAction"><result>/jsp/loginForm.jsp</result></action>
+		<action name="loginInputAction" class="loginInputAction">
+		<result name="success">/jsp/loginForm.jsp</result>
+		<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
+		</action>
 		
 		<action name="newAnnouncementAction" class="announcementPageAction">
 		  <result name="success">/jsp/announcement.jsp</result>
