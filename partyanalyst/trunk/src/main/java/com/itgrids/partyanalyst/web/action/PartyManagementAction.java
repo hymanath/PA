@@ -497,6 +497,11 @@ public String execute()
 				e.printStackTrace();
 			    }
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getParties"))
+		{
+			selectOptionList = partyDetailsService.getAllPartysNames();
+		}
+		
 		return Action.SUCCESS;
 } 
  public String getPartyGallaryDescription(){
