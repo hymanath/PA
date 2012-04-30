@@ -812,7 +812,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
 			if(!jObj.getString("SPGalleryId").equalsIgnoreCase(""))
-				galleryIds.add(new Long(specialPageGalId));
+				galleryIds.add(new Long(jObj.getString("SPGalleryId")));
 							
 			if(!jObj.getString("partyGalleryId").equalsIgnoreCase(""))
 				galleryIds.add(new Long(jObj.getString("partyGalleryId")));
