@@ -111,10 +111,10 @@
 	.detailed-ele-inf * th, #mandalsVotersInfoDiv_Body div div table th{text-align:left;
     padding:10px;font-weight:bold;background-color:#CDE6FC;font-size:13px;}
 
-	#CorporationTableDiv_0 > table,#greaterTableDiv_0 > table,#elecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
-	#CorporationTableDiv_0 > table * th,#greaterTableDiv_0 > table * th,#elecResDiv > table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
-	#CorporationTableDiv_0 > table * td,#greaterTableDiv_0 > table * td, #elecResDiv > table * td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
-	#elecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
+	#CorporationTableDiv_0 > table,#greaterTableDiv_0 > table,#elecResDiv > table,#parliamentElecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	#CorporationTableDiv_0 > table * th,#greaterTableDiv_0 > table * th,#elecResDiv > table * th,#parliamentElecResDiv > table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
+	#CorporationTableDiv_0 > table * td,#greaterTableDiv_0 > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
+	#elecResDiv > table * tr:nth-child(even),#parliamentElecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
 	#CorporationTableDiv_0 > table * a,#greaterTableDiv_0 > table * a,#elecResDiv > table * a{text-decoration:none;color:#3d3d3d;font-weight:bold;}
 	
 	.detailed-ele-inf * td, #mandalsVotersInfoDiv_Body div div table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
@@ -167,17 +167,36 @@
 	#mptcElectionIdsSelectDiv,#mptcCandidateLink{width:auto;display:inline-block;}
 	#mptcElectionIdsSelectDiv{position:relative;top:-13px;padding-left:10px;}
 	#zptcPartyTrendsDetailsDiv{border:1px solid #d3d3d3;}
-	#CorporationTableDiv_0 > table * td, #greaterTableDiv_0 > table * td, #elecResDiv > table * td {
+	#CorporationTableDiv_0 > table * td, #greaterTableDiv_0 > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td {
     font-weight: normal;
     font: small-caption;
    }
-#CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDiv > table * th {background-color: #CDE6FC;}
+#CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDiv > table * th,#parliamentElecResDiv > table * th{background-color: #CDE6FC;}
 
 .electionTrendzHeaderBackground_center
 {	
 	background-image:url(images/icons/homePage_new/newsheader_center.jpg);
 	height:40px;
 }
+#elecResDiv caption {background: none repeat scroll 0 0 #3897A5;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 344px;
+    padding: 4px;
+    width: 60%;}
+#parliamentElecResDiv caption {background: none repeat scroll 0 0 #3897A5;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 344px;
+    padding: 4px;
+    width: 60%;}
+
+#headingSpan{font-size:14px;font-weight:bold;background:#3897A5;color:#fff;
+width:100px;margin:10px;}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -727,8 +746,6 @@
 							<!-- Opinion Poll End-->
 
 
-
-
 		<h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1>
         <div id="partyAnysAdd" style="margin-left:11px;"></div>
         <!--CD SUB RIGHT SECTION END--> 
@@ -822,11 +839,11 @@
 				<div class="corner bottomLeft"></div>
 				<div class="corner bottomRight"></div>
 				<div id="MandalVotingTrendz_head"></div>
-				<div id="electionIdsSelectDiv" style="padding-left:131px;"></div>
+				<div id="electionIdsSelectDiv" style="padding-left:13px;"></div>
 				<div id="censusSelectDiv"></div>
 				<div id="censusErrorMsgDiv" style="padding-left:10px;"></div>
 				<div id="mandalOrConstiElecResultDiv">
-				<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
+				<div id="parliamentElectionResultsDiv" style="overflow:auto;margin-top:10px;"></div>
 				<div id="electionResultsInConstituencyDiv"></div>
 				<div id="labelRadioDiv"></div>			
 				<div id="resultsDataTableDiv"></div>
@@ -1605,109 +1622,109 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 
 
 	function buildParliamentResults(){
-		var parliamentDiv = document.getElementById("parliamentElectionResultsDiv");
-		if(parliamentDiv.style.display == "none")
+		var parliamentDivElmt = document.getElementById("parliamentElectionResultsDiv");
+		if(parliamentDivElmt.style.display == "none")
 		{
-			parliamentDiv.style.display = "block";
+			parliamentDivElmt.style.display = "block";
 		}
 		var str = '';
-		str += '<table  style="margin-left:130px;">';
+		str+='<span id="heading"></span>';
+		str += '<table  style="margin-left: 13px; margin-bottom: -43px;">';
 		str += '<th>Select Format You Want:</th>';
-		str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)">By Votes</td>';
-		str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)">By Percentage</td>';
+		str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Votes</td>';
+		str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Percentage</td>';
 		str += '</table>';
 		str += '<div id="resultDataTableDiv"></div>';
-		parliamentDiv.innerHTML = str;
+		parliamentDivElmt.innerHTML = str;
 		buildParliamentResultDT("number");
 	}
 
-		function buildParliamentResultDT(checked){
-		var parliamentDiv = document.getElementById("resultDataTableDiv");
-		var str = '';
-		var details = document.getElementById("detailsDiv");
-		var detailsDIV = '';
+function buildParliamentResultDT(checked){
+	var parliamentDiv = document.getElementById("resultDataTableDiv");
+	var str = '';
+	var details = document.getElementById("detailsDiv");
+	var detailsDIV = '';
 
-		if(parliamentResult == null){
-			detailsDIV += 'No Data Available';
-			return;	
-		}
-		
-		str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
-		
-		// Parliament Detailed Chart is disabled.
-		// Modified by sai
-
-		/*detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';	*/
-		
-		str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
-		str += '<table id = "parliamentElecResTable">';
-		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
-			str += '<tr>';
-			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
-				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
-			else
-				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
-			for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
-				if(checked == 'number')
-					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
-				else
-					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
-			}
-			str += '</tr>';
-		}
-		str += '</table>';
-		str += '</div>';
-		
-		parliamentDiv.innerHTML = str;
-		if(counter!=0){
-			details.innerHTML = detailsDIV;
-		}
-		
-		 var myColumnDefs = new Array();
-		 var myFields = new Array();
-		 
-		 var villageHead = {
-		 			key:"Mandal",
-		 			lable: "Mandal",
-		 			sortable:true
-			   }
-
-		 var villageValue = {key:"Mandal"}
-	
-		 myColumnDefs.push(villageHead);
-		 myFields.push(villageValue);
-		 
-
-		 for(var j in parliamentResult.candidateNamePartyAndStatus){
-			var obj1 = {
-						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						label:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						sortable:true
-					}
-			var obj2 = {
-						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						parser:"number"
-					}
-			myColumnDefs.push(obj1);
-			myFields.push(obj2);
-		 }
-
-		 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-					.get("parliamentElecResTable")); 
-		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
-		 myDataSource.responseSchema = { 
-								            fields:myFields    
-								        };
-		        
-		var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColumnDefs, myDataSource);
-		
-		var conName = parliamentResult.constituencyName;
-		var elecYear = parliamentResult.electionYear;
-		var elecTyp = parliamentResult.electionType;
-		var parlDivElmnt = document.getElementById("parliamentChartDiv");
-		getInteractiveChart(parlDivElmnt, parliamentResult.constituencyOrMandalWiseElectionVO,parliamentResult.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
+	if(parliamentResult == null){
+		detailsDIV += 'No Data Available';
+		return;	
 	}
 	
+	// Parliament Detailed Chart is disabled.
+	// Modified by sai
+
+	/*detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';	*/
+	//$("#heading").html("Mandal Wise Election Results For "+parliamentResult.constituencyName+" Parliament In "+parliamentResult.electionYear+"");
+
+	str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
+	str += '<table id = "parliamentElecResTable" width="80%">';
+	for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
+		str += '<tr>';
+		if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
+			str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
+		else
+			str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
+		for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
+			if(checked == 'number')
+				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
+			else
+				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
+		}
+		str += '</tr>';
+	}
+	str += '</table>';
+	str += '</div>';
+	str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
+
+	parliamentDiv.innerHTML = str;
+	if(counter!=0){
+		details.innerHTML = detailsDIV;
+	}
+	
+	 var myColumnDefs = new Array();
+	 var myFields = new Array();
+	 
+	 var villageHead = {
+				key:"Mandal",
+				lable: "Mandal",
+				sortable:true
+		   }
+
+	 var villageValue = {key:"Mandal"}
+
+	 myColumnDefs.push(villageHead);
+	 myFields.push(villageValue);
+	 
+
+	 for(var j in parliamentResult.candidateNamePartyAndStatus){
+		var obj1 = {
+					key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+					label:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+					sortable:true
+				}
+		var obj2 = {
+					key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+					parser:"number"
+				}
+		myColumnDefs.push(obj1);
+		myFields.push(obj2);
+	 }
+
+	 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("parliamentElecResTable")); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+	 myDataSource.responseSchema = { 
+										fields:myFields    
+									};
+var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For "+parliamentResult.constituencyName+" Parliament Constituency In "+parliamentResult.electionYear+""});
+	
+	var conName = parliamentResult.constituencyName;
+	var elecYear = parliamentResult.electionYear;
+	var elecTyp = parliamentResult.electionType;
+	var parlDivElmnt = document.getElementById("parliamentChartDiv");
+	getInteractiveChart(parlDivElmnt, parliamentResult.constituencyOrMandalWiseElectionVO,parliamentResult.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
+}
+
 
 //All Parties Performance In Different Elections Linechart
 	function showAllPartiesAllElectionResultsChart(myResults)
@@ -2616,7 +2633,7 @@ function removeCensusNotAvailableErrorMessage()
 		str += '</table>';		
 		extraInfoDiv.innerHTML = str;		
 	 }
-	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency In "+constituencyResults.electionYear+" "});
 	}
 
 	function getConstituencyElections(){
@@ -2636,7 +2653,7 @@ function removeCensusNotAvailableErrorMessage()
 	var censelectEle = document.getElementById("censusSelectDiv");
 	
 	var cenvar = '';
-	cenvar += '<table  style="padding-left:130px;">';
+	cenvar += '<table  style="padding-left:11px;">';
 	cenvar += '<tr>';
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 	{
@@ -2676,10 +2693,10 @@ function removeCensusNotAvailableErrorMessage()
 	
 	var selectEle = '';
 
-	selectEle += '<table><tr>';
-	selectEle += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
-	selectEle += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTable(this.value)">By Votes </td>';
-	selectEle += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTable(this.value)"/>By Percentage </td>';
+	selectEle += '<table style="margin-bottom: -45px;"><tr>';
+	selectEle += '<td id="labelRadio"><b>Select Format You Want :</b></td>';
+	selectEle += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTable(this.value)" style="margin: 3px;">By Votes </td>';
+	selectEle += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTable(this.value)" style="margin: 3px;"/>By Percentage </td>';
 	selectEle += '</tr></table>';
 
 	ElecResultselectEle.innerHTML = selectEle;
@@ -2898,7 +2915,7 @@ function removeCensusNotAvailableErrorMessage()
 	
 	var cenRadiovar = '';
 
-	cenRadiovar += '<table><tr>';
+	cenRadiovar += '<table style="margin-bottom: -45px;"><tr>';
 	cenRadiovar += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
 	cenRadiovar += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)">By Votes </td>';
 	cenRadiovar += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)"/>By Percentage </td>';
