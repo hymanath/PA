@@ -22,4 +22,6 @@ public interface IMailService {
 	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails,String host);
 	
 	public ResultStatus sendEmail(EmailDetailsVO emailDetails,String host);
+	
+	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host);
 }
