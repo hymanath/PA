@@ -1151,18 +1151,38 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			file = fileDAO.save(file);
 			
-			fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
-			fileGallary.setFile(file);
-			fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-			fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-			fileGallary.setIsDelete(IConstants.FALSE);
-			
-			if(fileVO.getVisibility().equalsIgnoreCase("public"))
-				fileGallary.setIsPrivate(IConstants.FALSE);
-			else
-				fileGallary.setIsPrivate(IConstants.TRUE);
-			
-			fileGallaryDAO.save(fileGallary);
+					fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
+					fileGallary.setFile(file);
+					fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+					fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+					fileGallary.setIsDelete(IConstants.FALSE);
+					
+					if(fileVO.getVisibility().equalsIgnoreCase("public"))
+						fileGallary.setIsPrivate(IConstants.FALSE);
+					else
+						fileGallary.setIsPrivate(IConstants.TRUE);
+					
+					fileGallaryDAO.save(fileGallary);
+					
+					if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
+					{
+						for(int i=0;i<fileVO.getUploadOtherProfileGalleryIds().size();i++)
+						{
+								fileGallary.setGallary(gallaryDAO.get(fileVO.getUploadOtherProfileGalleryIds().get(i)));
+								fileGallary.setFile(file);
+								fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+								fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+								fileGallary.setIsDelete(IConstants.FALSE);
+								
+								if(fileVO.getVisibility().equalsIgnoreCase("public"))
+									fileGallary.setIsPrivate(IConstants.FALSE);
+								else
+									fileGallary.setIsPrivate(IConstants.TRUE);
+								
+								fileGallaryDAO.save(fileGallary);
+							
+						}
+				   }
 			}
 			});
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
