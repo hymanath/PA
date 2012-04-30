@@ -253,18 +253,117 @@ function callAjax(jsObj,url){
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
                document.getElementById("gallarySelectId").value=updateGallId;
 			}
+			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
+			{
+				 showUploadVideoStatus(myResults);  
+			}
+			
+	}
+	catch(e){   
+				//alert("Invalid JSON result" + e);   
+			}  
+		},
+	   scope : this,
+	   failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				 }
+	   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function showUploadVideoStatus(result)
+{
+	var errorDivEle = document.getElementById('fileSuccessDiv');
+	var str = '';
+
+	if(result.resultCode == 0)
+	{
+		clearUploadVideoFields();
+		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
+	}
+	else if(result.resultCode == 1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	else
+	{
+	
+		str += '<font color="red"><b>'+result+'</b>';
+	}
+	errorDivEle.innerHTML = str;
+}
+
+function clearUploadVideoFields()
+{
+	document.getElementById('fileTitleId').value = '';
+	document.getElementById('fileDescId').value = '';
+	document.getElementById('vpublicRadioId').checked = true;
+	document.getElementById('path').value = '';
+	document.getElementById("keyword").value = '';
+	document.getElementById("source").value = '';	
+	document.getElementById('existingFromText').value = '';
+}
+
+function callAjaxForMultiPagesUpload(jsObj,url){
+
+	var callback = {			
+	 success : function( o ) {
+		try
+		{ 
+		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
+         	
+		if(jsObj.task == "getParties")
+			{
+				document.getElementById("partySelectId").style.display = 'block';
+               clearOptionsListForSelectElmtId('partySelectId');
+			   createOptionsForSelectElmtId('partySelectId',myResults);
+            }
+		else if(jsObj.task == "partyGallariesForUplaod" || jsObj.task == "candidateGallariesForUplaod" || jsObj.task == "photoGallariesForUplaod")
+		{
+			if(jsObj.userOption =='Party')
+			{
+			   document.getElementById("uploadPartyGalleryId").style.display = 'block';
+			   clearOptionsListForSelectElmtId('uploadPartyGalleryId');
+			   createOptionsForSelectElmtId('uploadPartyGalleryId',myResults);
+			}
+			else if(jsObj.userOption =='Candidate')
+			{
+			   document.getElementById("uploadCandidateGalleryId").style.display = 'block';
+			   clearOptionsListForSelectElmtId('uploadCandidateGalleryId');
+			   createOptionsForSelectElmtId('uploadCandidateGalleryId',myResults);
+			}
+			else if(jsObj.userOption =='SpecialPage')
+			{
+			   document.getElementById("uploadSpecialPageGalleryId").style.display = 'block';
+			   clearOptionsListForSelectElmtId('uploadSpecialPageGalleryId');
+			   createOptionsForSelectElmtId('uploadSpecialPageGalleryId',myResults);
+			}
+		}
+		else if(jsObj.task == "getCandidates")
+		{
+		   document.getElementById("candidateSelectId").style.display = 'block';
+		   clearOptionsListForSelectElmtId('candidateSelectId');
+		   createOptionsForSelectElmtId('candidateSelectId',myResults);
+		}
+		else if(jsObj.task == "getSpecialPages")
+		{
+			document.getElementById("spSelectId").style.display = 'block';
+		   clearOptionsListForSelectElmtId('spSelectId');
+		   createOptionsForSelectElmtId('spSelectId',myResults);
+		}
 
 	}
 		catch(e)
-						{   
-							//alert("Invalid JSON result" + e);   
-						}  
-				   },
-				   scope : this,
-				   failure : function( o ) {
-								//alert( "Failed to load result" + o.status + " " + o.statusText);
-							 }
-				   };
+			{   
+				//alert("Invalid JSON result" + e);   
+			}  
+	   },
+	   scope : this,
+	   failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				 }
+	   };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
@@ -658,6 +757,8 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromSpecialPage\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProVideoDiv"></div>'; 
 	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
@@ -701,19 +802,50 @@ function uploadVideoGallary(){
 	var fileTitle = document.getElementById('fileTitleId').value;
 	var fileDesc = document.getElementById('fileDescId').value;
 	var path = document.getElementById('path').value;
-	var specialPageId=document.getElementById("specialPageId").value;
-	var galId = document.getElementById("gallarySelectId").value;
+	//var candidateId=document.getElementById("candidateId").value;
+	var galSelectId = document.getElementById("gallarySelectId").value;
 	var keyword = document.getElementById("keyword").value;
 	var sourceId = document.getElementById("source").value;
 	var languageId = document.getElementById("language").value;
 	var fileDate = document.getElementById("existingFromText").value;
 	var isPublic = document.getElementById('vpublicRadioId').checked;
+	var spcheckboxIdElmt = document.getElementById('spcheckboxId');
+	var pcheckboxIdElmt = document.getElementById('pcheckboxId');
+	var ccheckboxIdElmt =  document.getElementById('ccheckboxId');
+	var spSelectId ='';
+	var SPGalleryId='';
+	var partySelectId='';
+	var canSelectId ='';
+	var canGalleryId = '';
+	var partyGalleryId='';
+	if(spcheckboxIdElmt !=null && spcheckboxIdElmt.checked)
+	{
+		spSelectId = document.getElementById("spSelectId").value;
+		SPGalleryId = document.getElementById("uploadSpecialPageGalleryId").value;
+		
+	}
+	if(pcheckboxIdElmt !=null && pcheckboxIdElmt.checked)
+	{	
+		partySelectId = document.getElementById("partySelectId").value;
+		partyGalleryId = document.getElementById("uploadPartyGalleryId").value;
+		
+	}
+	if(ccheckboxIdElmt !=null && ccheckboxIdElmt.checked)
+	{	
+		canSelectId = document.getElementById("candidateSelectId").value;
+		canGalleryId = document.getElementById("uploadCandidateGalleryId").value;
+		
+	}
 	var makeThis = 'private';
-	
+
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
 	var str = '<font color="red">';
-
+	if(galSelectId == 0)
+	{
+		str += 'Select Gallery';
+		eFlag =true;
+	}
 	if(fileTitle.length == 0)
 	{
 		str += 'Title Is Required<br>';
@@ -721,7 +853,7 @@ function uploadVideoGallary(){
 	}
 	if(fileTitle.length > 200)
 	{
-		str += 'Title should be less than 50 Characters<br>';
+		str += 'Title should be less than 200 Characters<br>';
 		eFlag = true;
 	}
 	if(fileDesc.length ==0)
@@ -759,12 +891,6 @@ function uploadVideoGallary(){
 		str += 'Language is required<br>';
 		eFlag = true;
 	}
-
-	if(fileDate.length == 0)
-	{
-		str += 'File Date is Required<br>';
-		eFlag = true;
-	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 	
@@ -776,9 +902,10 @@ function uploadVideoGallary(){
 
 	var jsObj =
 		{ 
-		    
-            specialPageId	: specialPageId,
-			gallaryId	: galId,
+			canGalleryId :canGalleryId,
+		   	SPGalleryId : SPGalleryId,
+			partyGalleryId : partyGalleryId,
+            gallaryId	: galSelectId,
 			videoTitle	: fileTitle,
 			videoDescription : fileDesc,
 			path		: path,
@@ -787,15 +914,13 @@ function uploadVideoGallary(){
 			languageId  : languageId,
 			fileDate	: fileDate,
 			visibility	: makeThis,
-		   	task		: "eventVideoGallariesForUpload"
+		   	task		: "candiadteVideoGallariesForUplaod"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "eventManageAction.action?"+rparam;
+	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);
-	clearFields();
 }
-
 
 
 function clearDiv(videoGallaryDiv)
@@ -1136,8 +1261,10 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-
-	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str +='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromSpecialPage\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
+	str +='<div id="otherProNewsDiv"></div>';
+	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td>';
+	str +='<td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -3010,8 +3137,6 @@ function buildPhotoGallery()
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
-
-
 	str +='</fieldset>';
 	str+='</div>';
 	photoGallaryDivEle.innerHTML = str;
@@ -3044,8 +3169,6 @@ function buildPhotoGalleryDiv()
 	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
-
-
 	str +='</fieldset>';
 	str+='</div>';
 	photoGallaryDivEle.innerHTML = str;
@@ -3083,10 +3206,10 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileType" value="candidate_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
-	
+	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotosDiv\',\'fromSpecialPage\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProPhotosDiv"></div>';
 	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
-
-
+	
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -3094,6 +3217,118 @@ function buildUploadPhotosDiv()
 	if(document.getElementById("gallarySelectId")!=null)
       getPhotoGallariesForUpload("Photo Gallary");
 }
+function otherProfiles(divElmt,requestFrom,contentType)
+{
+	var otherProDivElmt = document.getElementById(divElmt);
+	var str = '';
+	$("#otherProPhotosDiv").html('');
+	$("#otherProVideoDiv").html('');
+	$("#otherProNewsDiv").html('');
+	if(requestFrom == 'fromPartyProfile')
+	{
+		str+= '<input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages()">   Special Page';
+		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\');"></select></div>';
+		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+		str+= '<input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates()">   Candidate Profile Page';
+		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\');"></select></div>';
+		str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId" name="uploadCandidateGalleryId" style="width: 250px; margin: 10px;display:none;"></select></div>';
+	}
+	else if(requestFrom == 'fromSpecialPage')
+	{
+		str+= '<input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates()">   Candidate Profile Page';
+		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\');"></select></div>';
+		str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId" name="uploadCandidateGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+		str+= '<input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties()">   Party Profile Page';
+		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\');"></select></div>';
+		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+	}
+	else if(requestFrom == 'fromCandidateProfile')
+	{
+		str+= '<input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages()">   Special Page';
+		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\');"></select></div>';
+		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+		str+= '<input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties()">   Party Profile Page';
+		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\');"></select></div>';
+		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+	}
+	$(otherProDivElmt).html(str);
+
+
+}
+function getGallaries(selectedId,contentType,userOption)
+{
+	if(userOption == 'Party')
+	{
+		var jsObj = {
+			userOption : userOption,
+			partyId :selectedId,
+			contentType : contentType,
+			task :'partyGallariesForUplaod'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPartyGallariesForUplaodPhotoAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	if(userOption == 'Candidate')
+	{
+		var jsObj = {
+			userOption : userOption,
+			candidateId :selectedId,
+			contentType : contentType,
+			task : "candidateGallariesForUplaod"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCandidateGallariesForUplaodAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	if(userOption == 'SpecialPage')
+	{
+		var jsObj =
+		{ 
+			userOption : userOption,
+            specialPageId : selectedId,
+			contentType : contentType,
+		   	task : "photoGallariesForUplaod"
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getEventGallariesForUplaodPhotoAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	
+}
+
+function getParties()
+{
+	var jsObj ={
+		task :"getParties"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartiesAjaxAction.action?"+rparam;
+	callAjaxForMultiPagesUpload(jsObj,url);
+
+}
+function getCandidates()
+{
+
+	var jsObj ={
+		task :"getCandidates"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesAjaxAction.action?"+rparam;
+	callAjaxForMultiPagesUpload(jsObj,url);
+
+}
+function getSpecialPages()
+{
+	var jsObj ={
+		task :"getSpecialPages"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getSpecialPagesAjaxAction.action?"+rparam;
+	callAjaxForMultiPagesUpload(jsObj,url);
+}
+
 function getPhotoGallariesForUpload(contentType)
 {
 	var specialPageId=document.getElementById("specialPageId").value;
