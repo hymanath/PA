@@ -891,5 +891,8 @@
 			<property name="partyDetailsService" ref="partyDetailsService"/>
 			<property name="specialPageService" ref="specialPageService"/>
 	</bean>
+	
+	<bean id="loginInputAction" class="com.itgrids.partyanalyst.web.action.LoginInputAction" singleton="false">
+	</bean>
 				
 </beans>	
