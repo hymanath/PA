@@ -47,6 +47,7 @@
 .winTD{background-color : GreenYellow;}
 
 .resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
+
 .buttonClass {
 	background-color: background;
     border-radius: 6px 6px 6px 6px;
@@ -70,14 +71,48 @@
 <div id="upComing" style="margin-top:25px;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
+<span style="color:#ED5B21;font-weight:bold;">AP BiElection Schedule</span> -
+<span style="font-family:verdana;font-size:13px;">Election Notification - May18,Last Date for Nomination - may 25,Nomination withDraw Last date - May28, Polling - June12,Counting - June15.</span><br>
 <span style="color:#ED5B21;font-weight:bold;">In Parliament</span> - Nellore MP <a href="candidateElectionResultsAction.action?candidateId=13626">Mekapati Rajamohan Reddy</a>, who is a well-known supporter of YSR Congress Party President Jagan Mohan Reddy, has submitted his resignation to Lok Sabha Speaker Meira Kumar on August 24. 
-<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>
-<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 73%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv"><table width="90%" class="legendTable" id="WinningCandidateTableClass"><tbody><tr><th></th><td></td><th>Votes Earned</th><td>430235</td></tr><tr><td><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a><br />
-Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a> Party</td><th>Votes Percentage</th><td>42.92 %</td></tr><tr><th>Present Party</th><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117">YSRC</a></td><th>Votes Margin Gained</th><td>54993</td></tr><tr><th>Party Flag</th><td><img height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></td><th>Votes Margin % Gained</th><td>5.49 %</td></tr></tbody></table></div></fieldset>
-
-
+<!--<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>-->
 </div>
-<div>
+
+
+
+<table width="100%;">
+<tr><td valign="top">
+
+<table border="1" width="96%" style="margin-top: 10px;border-collapse: collapse;margin-left:13px;
+ text-align:center;"  cellspacing="0" cellpadding="5">
+
+<!--<tr><div class="schedule">Schedule</div></tr>-->
+<TR style="color: #fff;"> <TH COLSPAN=2 BGCOLOR="#21B2ED;color:#ffffff;">Schedule</TH> </TR>
+
+<tr>
+<td>18-05-2012</td>
+<td>Notification</td></tr>
+<tr><td>25-05-2012</td>
+<td>Last Date for Nominations</td></tr>
+<tr><td>28-05-2012</td>
+<td>Last Date for withdraw</td></tr>
+
+<tr><td>12-06-2012</td>
+<td>Polling</td></tr>
+
+<tr><td>15-06-2012</td>
+<td>Counting</td></tr>
+
+</tr>
+</table></td>
+
+<td valign="top">
+<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 96%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv"><table width="90%" class="legendTable" id="WinningCandidateTableClass"><tbody><tr><th></th><td></td><th>Votes Earned</th><td>430235</td></tr><tr><td><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a><br />
+Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a> Party</td><th>Votes Percentage</th><td>42.92 %</td></tr><tr><th>Present Party</th><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117">YSRC</a></td><th>Votes Margin Gained</th><td>54993</td></tr><tr><th>Party Flag</th><td><img height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></td><th>Votes Margin % Gained</th><td>5.49 %</td>
+<tr> <TH ROWSPAN=4><div><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div></tr></tbody></table></div></fieldset></div></td>
+</tr>
+</table>
+
+
 <div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in coming days due to JAGAN MLA's who voted against to confidence motion and disqualified MLA's by speaker Nadendla Manohar and Praja Rajyam president Chiranjeevi on Thursday morning resigned from the state assembly and .</div>
 <div style="font-weight:bold;font-family:verdana;font-size:12px;margin:17px;">
 <span>Total Assembly Constituencies - <font color="#05A8E9">17</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">3</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">1</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">13</font></span>
