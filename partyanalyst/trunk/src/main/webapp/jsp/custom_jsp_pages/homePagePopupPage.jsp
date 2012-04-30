@@ -64,7 +64,7 @@ left:50%;
 <div class="Newsmontior boxdiv" style="height:194px;">
 <h1 style="background:url('images/icons/homePage/LocationNews.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding:10px 55px;">News Monitoring Service</h1>
 <p style="margin-top:13px;line-height:18px;">
-<b>Analysis of your Media Coverage:</b> In order to help you become more effective at your PR initiatives, we offer you comprehensive coverage collected from Print Media, Leading television news channels and websites, You receive personalized reports in a wide range of formats.
+<b>Analysis of your Media Coverage:</b> As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 <a href="newsMonitoringService.action">Click Here to Know More</a></p>
 </div>
 
