@@ -2729,6 +2729,12 @@
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
+		<action name="getCandidatesAjaxAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+		</action>
+		
 		<action name="getNewsGalleryForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
@@ -2906,6 +2912,11 @@
            		<param name="root">fileVOList</param>
         	</result>	
 		</action>
+		<action name="getSpecialPagesAjaxAction" class="specialPageManageAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+		</action>
 		
 		<action name="getLatestVideosAction" class="specialPageAction" method="getLatestVideosForSpecialPage">
 			<result type="json" name="success">
@@ -2971,7 +2982,11 @@
 				<param name="root">result</param>
 			</result>
 		</action>
-		
+		<action name="getPartiesAjaxAction" class="partyManagementAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">selectOptionList</param>
+			</result>
+		</action>
 		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="AjaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
