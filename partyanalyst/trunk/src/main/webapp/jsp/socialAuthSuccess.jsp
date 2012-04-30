@@ -128,13 +128,14 @@
                 </td>
         </tr>
 </table>-->
-<h3 align="center">Contact Details</h3>
+<h1 align="center">Contact Details</h1>
+<div style="align:left"><input type="button" value="Send" onclick="SendingMailsToFriends();"/></div>
 <table cellspacing="1" cellspacing="4" border="0" bgcolor="e5e5e5" align="center" width="60%">
         <tr class="sectiontableheader">
             <th width="5%"><input type="checkbox" checked id="slctall" onclick="checkAll(this.id)"/></th>
                 <th width="15%">Name</th>
-                <th>Email</th>
-                <th>Profile URL</th>
+                <th width="25%">Email</th>
+               <!-- <th>Profile URL</th>--> 
         </tr>
         <%int recordsCount = 0; %>
         <c:forEach var="contact" items="${contactsList}" varStatus="index">
@@ -143,11 +144,11 @@
                         <td><input type="checkbox" checked name="contactCheckBox<%=recordsCount%>"  id="contactCheckBox<%=recordsCount%>" onclick="preparingdetails(this.id,'<%=recordsCount%>')"></td>
                         <td><c:out value="${contact.firstName}"/> <c:out value="${contact.lastName}"/></td>
                         <td><c:out value="${contact.email}"/></td>
-                        <td>
+                        <!--<td>
                 <a href='<c:out value="${contact.profileUrl}"/>' target="_new">
                     <c:out value="${contact.profileUrl}"/>
                 </a>
-            </td>
+            </td>-->
                 </tr>
 				<input type="hidden" id="firstName_<%=recordsCount%>" value="${contact.firstName}" ></input>
 				<input type="hidden" id="personEmail_<%=recordsCount%>" value="${contact.email}" ></input>
