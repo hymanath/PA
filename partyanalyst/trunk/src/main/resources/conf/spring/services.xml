@@ -1069,5 +1069,32 @@
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
 	</bean>
+	
+	<bean name="schedulerService" class="com.itgrids.partyanalyst.notification.service.impl.SchedulerService">
+		<property name="mailService" ref="mailService"></property>
+	</bean>
+	
+	<bean id="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
+		<property name="schedulerService" ref="schedulerService"></property>
+	</bean>
+	
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runningBatchJobMethods" />
+	</bean> 
+	
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="jobDetail" />
+    	<property name="cronExpression" value="0 0 17 * * ?" />
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    	<property name="triggers">
+        <list>
+            <ref bean="cronTrigger" />
+        </list>
+    	</property>
+	</bean>
+	
 </beans>		
 		
