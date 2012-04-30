@@ -95,6 +95,7 @@
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
 
 <script type="text/javascript">
+google.load("visualization", "1", {packages:["piechart"]});
 	google.load("elements", "1", {packages : ["newsshow"]});
 
 	
