@@ -10,10 +10,11 @@
 <title>Party Analyst-Know | Analyze | Act</title>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
-
+<script type="text/javascript" src="js/specialPage/specialPage.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
+	</script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
@@ -658,10 +659,9 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
-	
+	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromPartyProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProPhotoDiv"></div>'; 
 	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
-
-
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -1792,7 +1792,8 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-
+	str+='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProNewsDiv"></div>'; 
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
@@ -1884,7 +1885,8 @@ function buildUploadVideoDiv()
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-    str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
+    str += '<table align="left" class="paddingCss"><tr><td>';
+	str+='<div id="fileSuccessDiv"></div><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select onchange="buildPartyVedioVisibility()" id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
@@ -1905,8 +1907,9 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	str += '<div id="vedioPublicDiv" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromPartyProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProVideoDiv"></div>'; 
 	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
-	
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
@@ -2007,7 +2010,7 @@ function createVideoGallary(contentType)
 	callAjax(jsObj,url);
 }
 
-function uploadVideoGallary()
+/*function uploadVideoGallary()
 {
 
 	var fileTitle = document.getElementById('fileTitleId').value;
@@ -2104,7 +2107,7 @@ function uploadVideoGallary()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "partyManageAction.action?"+rparam;
 	callAjax(jsObj,url);
-}
+}*/
 
 function buildPartyVedioVisibility()
 {
