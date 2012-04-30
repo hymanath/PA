@@ -352,7 +352,14 @@ function buildConnectionsContentForUser()
 		str += '<div>';
 		str += '<table>';
 		str += '<tr>';
-		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+	
+		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></td>';
+		
+		
+		
+
+		//str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
+
 		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
@@ -373,7 +380,10 @@ function buildConnectionsContentForUser()
 
 	elmt.innerHTML = str;
 }
-
+function setImage(img)
+{
+		img.src = "/PartyAnalyst/pictures/profiles/human.jpg";
+}
 function showMailPopup(id,name,type)
 {
 	var str = '';	
