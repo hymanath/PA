@@ -399,7 +399,10 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 			
 			result = specialPageService.saveMetaInfoForASpecialPage(metaInfoVO);
 		}
-		
+		else if(jobj.getString("task").equalsIgnoreCase("getSpecialPages"))
+		{
+			selectOptionList = specialPageService.getSpecialPageIdsList();
+		}
 		return Action.SUCCESS;
 	} 
 }
