@@ -107,7 +107,47 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private IElectionLiveResultsAnalysisService electionLiveResultsAnalysisService;
 	private List<ElectionGoverningBodyVO> electionGoverningBodyVO;
 	private List<CustomPageVO> customPages;
+	private Long uploadCandidateId;
+	private Long uploadPartyId;
+	private Long uploadCandidateGalleryId;
+	private Long uploadPartyGalleryId;
+	private Long uploadSpecialPageGalleryId;
+	List<Long> galleryIds = new ArrayList<Long>(0);
 	
+	
+	
+	public Long getUploadCandidateId() {
+		return uploadCandidateId;
+	}
+
+	public Long getUploadPartyId() {
+		return uploadPartyId;
+	}
+
+	public Long getUploadCandidateGalleryId() {
+		return uploadCandidateGalleryId;
+	}
+
+	public Long getUploadPartyGalleryId() {
+		return uploadPartyGalleryId;
+	}
+
+	public void setUploadCandidateId(Long uploadCandidateId) {
+		this.uploadCandidateId = uploadCandidateId;
+	}
+
+	public void setUploadPartyId(Long uploadPartyId) {
+		this.uploadPartyId = uploadPartyId;
+	}
+
+	public void setUploadCandidateGalleryId(Long uploadCandidateGalleryId) {
+		this.uploadCandidateGalleryId = uploadCandidateGalleryId;
+	}
+
+	public void setUploadPartyGalleryId(Long uploadPartyGalleryId) {
+		this.uploadPartyGalleryId = uploadPartyGalleryId;
+	}
+
 	public List<CustomPageVO> getCustomPages() {
 		return customPages;
 	}
@@ -480,6 +520,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.newsimportance = newsimportance;
 	}
 
+	public void setUploadSpecialPageGalleryId(Long uploadSpecialPageGalleryId) {
+		this.uploadSpecialPageGalleryId = uploadSpecialPageGalleryId;
+	}
+
+	public Long getUploadSpecialPageGalleryId() {
+		return uploadSpecialPageGalleryId;
+	}
+
 	public String execute()
 	{
 		request.setAttribute("candidateId",candidateId);
@@ -763,6 +811,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setFileDate(jObj.getString("fileDate"));
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
+			if(!jObj.getString("SPGalleryId").equalsIgnoreCase(""))
+				galleryIds.add(new Long(specialPageGalId));
+							
+			if(!jObj.getString("partyGalleryId").equalsIgnoreCase(""))
+				galleryIds.add(new Long(jObj.getString("partyGalleryId")));
+			
+			if(!jObj.getString("canGalleryId").equalsIgnoreCase(""))
+				galleryIds.add(new Long(jObj.getString("canGalleryId")));
+			
+			fileVOObj.setUploadOtherProfileGalleryIds(galleryIds);
 			
 			result = candidateDetailsService.uploadAFile(fileVOObj);
 		}
@@ -838,7 +896,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			String resultsCount  = request.getParameter("resultsCount");
 			candidateCommentsVO = partyDetailsService.getMessageToParty(jObj.getLong("partyId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount));
 		}
-		
+		else if(jObj.getString("task").equalsIgnoreCase("getCandidates"))
+		{
+			selectOptionList = candidateDetailsService.getCandidatesOfAUser(regVO.getRegistrationID());
+		}
 		/*else if(jObj.getString("task").trim().equalsIgnoreCase("getMinisterProfile"))
 		{
 			electionGoverningBodyVo = electionLiveResultsAnalysisService.getAllCandidateDetailsForMinisterProfile(jObj.getLong("candidateId"));
@@ -897,6 +958,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
+			if(getUploadCandidateGalleryId()!=null)
+				galleryIds.add(getUploadCandidateGalleryId());
+			if(getUploadPartyGalleryId()!=null)
+				galleryIds.add(getUploadPartyGalleryId());
+			if(uploadSpecialPageGalleryId != null)
+				galleryIds.add(uploadSpecialPageGalleryId);
+			
+			fileVO.setUploadOtherProfileGalleryIds(galleryIds);
+			fileVO.setUploadCandidateGalleryId(getUploadCandidateGalleryId());
+			fileVO.setUploadPartyGalleryId(getUploadPartyGalleryId());
 			
 			if(profileType != null && profileId != null && profileGalleryType != null)
 				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
