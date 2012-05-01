@@ -317,6 +317,7 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 			{
 				document.getElementById("partySelectId").style.display = 'block';
                clearOptionsListForSelectElmtId('partySelectId');
+			   $("#partySelectId").prepend("<option value='0'>Select Party</option>");
 			   createOptionsForSelectElmtId('partySelectId',myResults);
             }
 		else if(jsObj.task == "partyGallariesForUplaod" || jsObj.task == "candidateGallariesForUplaod" || jsObj.task == "photoGallariesForUplaod")
@@ -325,31 +326,36 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 			{
 			   document.getElementById("uploadPartyGalleryId").style.display = 'block';
 			   clearOptionsListForSelectElmtId('uploadPartyGalleryId');
+			   $("#uploadPartyGalleryId").prepend("<option value='0'>Select Gallery</option>");
 			   createOptionsForSelectElmtId('uploadPartyGalleryId',myResults);
 			}
 			else if(jsObj.userOption =='Candidate')
 			{
 			   document.getElementById("uploadCandidateGalleryId").style.display = 'block';
 			   clearOptionsListForSelectElmtId('uploadCandidateGalleryId');
+			   $("#uploadCandidateGalleryId").prepend("<option value='0'>Select Gallery</option>");
 			   createOptionsForSelectElmtId('uploadCandidateGalleryId',myResults);
 			}
 			else if(jsObj.userOption =='SpecialPage')
 			{
 			   document.getElementById("uploadSpecialPageGalleryId").style.display = 'block';
 			   clearOptionsListForSelectElmtId('uploadSpecialPageGalleryId');
-			   createOptionsForSelectElmtId('uploadSpecialPageGalleryId',myResults);
+			   $("#uploadSpecialPageGalleryId").prepend("<option value='0'>Select Gallery</option>");
+     			createOptionsForSelectElmtId('uploadSpecialPageGalleryId',myResults);
 			}
 		}
 		else if(jsObj.task == "getCandidates")
 		{
 		   document.getElementById("candidateSelectId").style.display = 'block';
 		   clearOptionsListForSelectElmtId('candidateSelectId');
+		   $("#candidateSelectId").prepend("<option value='0'>Select Candidate</option>");
 		   createOptionsForSelectElmtId('candidateSelectId',myResults);
 		}
 		else if(jsObj.task == "getSpecialPages")
 		{
 			document.getElementById("spSelectId").style.display = 'block';
 		   clearOptionsListForSelectElmtId('spSelectId');
+		   $("#spSelectId").prepend("<option value='0'>Select Special Page</option>");
 		   createOptionsForSelectElmtId('spSelectId',myResults);
 		}
 
@@ -3300,33 +3306,59 @@ function getGallaries(selectedId,contentType,userOption)
 
 function getParties()
 {
-	var jsObj ={
-		task :"getParties"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getPartiesAjaxAction.action?"+rparam;
-	callAjaxForMultiPagesUpload(jsObj,url);
+	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
+	if(pcheckboxIdElmt.checked)
+	{
+		var jsObj ={
+			task :"getParties"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPartiesAjaxAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	else
+	{
+		document.getElementById("partySelectId").style.display ='none';
+		document.getElementById("uploadPartyGalleryId").style.display ='none';
+	}
 
 }
 function getCandidates()
 {
-
-	var jsObj ={
-		task :"getCandidates"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesAjaxAction.action?"+rparam;
-	callAjaxForMultiPagesUpload(jsObj,url);
-
+	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
+	if(ccheckboxIdElmt.checked)
+	{
+		var jsObj ={
+			task :"getCandidates"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCandidatesAjaxAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	else
+	{
+		document.getElementById("candidateSelectId").style.display ='none';
+		document.getElementById("uploadCandidateGalleryId").style.display ='none';
+	}
 }
 function getSpecialPages()
 {
-	var jsObj ={
-		task :"getSpecialPages"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getSpecialPagesAjaxAction.action?"+rparam;
-	callAjaxForMultiPagesUpload(jsObj,url);
+	var spcheckboxIdElmt = document.getElementById("spcheckboxId");
+	if(spcheckboxIdElmt.checked)
+	{
+		var jsObj ={
+			task :"getSpecialPages"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getSpecialPagesAjaxAction.action?"+rparam;
+		callAjaxForMultiPagesUpload(jsObj,url);
+	}
+	else
+	{
+		document.getElementById("spSelectId").style.display ='none';
+		document.getElementById("uploadSpecialPageGalleryId").style.display ='none';
+	}
+
 }
 
 function getPhotoGallariesForUpload(contentType)
@@ -3393,6 +3425,7 @@ function clearUploadFileFields()
 	document.getElementById('fileTitleId').value='';
 	document.getElementById('fileDescId').value='';
 	document.getElementById('fileId').value='';
+	$("#otherProPhotosDiv").html('');
 	
 }
 
@@ -3402,6 +3435,12 @@ function validateFileUpload()
 	var fileDesc = document.getElementById('fileDescId').value;
 	var fileVal = document.getElementById("fileId").value;
 	var galId = document.getElementById("gallarySelectId").value;
+	var canGalId = document.getElementById("uploadCandidateGalleryId");
+	var candidateSelectId = document.getElementById("candidateSelectId");
+	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
+	var partyGalId = document.getElementById("uploadPartyGalleryId");
+	var partySelectId = document.getElementById("partySelectId");
+	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -3437,7 +3476,35 @@ function validateFileUpload()
 		str += 'Select Any Gallery.<br>';
 		flag = false;
 	}
-	
+	if(ccheckboxIdElmt!=null && ccheckboxIdElmt.checked)
+	{
+	   if(candidateSelectId !=null && candidateSelectId.value == 0)
+	  {
+		str += 'Select Candidate <br>';
+		flag = false;
+	  }
+     else if(canGalId !=null && canGalId.value == 0)
+	  {
+		str += 'Select Candidate Gallery.<br>';
+		flag = false;
+	  }
+	  
+	}
+	if(pcheckboxIdElmt!=null && pcheckboxIdElmt.checked)
+	{
+	 
+	  if(partySelectId !=null && partySelectId.value == 0)
+	  {
+		str += 'Select Party <br>';
+		flag = false;
+	  }
+     else if(partyGalId !=null && partyGalId.value == 0)
+	  {
+		str += 'Select Party Gallery.<br>';
+		flag = false;
+	  }
+	  
+	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 
