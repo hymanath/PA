@@ -464,9 +464,9 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		Long startIndex = 0L;
 		String nameString = "";
 		if(user==null){
-			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex,nameString);
+			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,null,0l,IConstants.ALL,startIndex,nameString);
 		}else{
-			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);		
+			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,null,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);		
 		}
 		//Free User
 		

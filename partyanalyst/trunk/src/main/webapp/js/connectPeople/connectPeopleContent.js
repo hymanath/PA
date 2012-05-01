@@ -304,9 +304,11 @@ function showAllConnectedUsersInPanel(jsObj,results)
 {	
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
-	var totalResultsCount = results.totalResultsCount;
+	var totalResultsCount = results.totalResultsCnt;
+	//var totalResultsCount = results.totalResultsCnt;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
+	var notConnectedPeopleCount = (results.totalResultsCnt - results.connectedPeopleCount);
+	//var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
 
 	var users = results.candidateVO;
 
