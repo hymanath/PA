@@ -910,6 +910,12 @@ function validateFileUpload()
 	var fileDesc = document.getElementById('photofileDescId').value;
 	var fileVal = document.getElementById("photofileId").value;
 	var galId = document.getElementById("gallaryPhotoSelectId").value;
+	var SpecialPageGalId = document.getElementById("uploadSpecialPageGalleryId");
+	var spSelectId = document.getElementById("spSelectId");
+	var spcheckboxIdElmt = document.getElementById("spcheckboxId");
+	var canGalId = document.getElementById("uploadCandidateGalleryId");
+	var candidateSelectId = document.getElementById("candidateSelectId");
+	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -944,8 +950,34 @@ function validateFileUpload()
 		str += 'Photo Required.<br>';
 		flag = false;
 	}
-	
-	
+	if(spcheckboxIdElmt!=null && spcheckboxIdElmt.checked)
+	{
+	   if(spSelectId !=null && spSelectId.value == 0)
+	  {
+		str += 'Select Special Page <br>';
+		flag = false;
+	  }
+     else if(SpecialPageGalId !=null && SpecialPageGalId.value == 0)
+	  {
+		str += 'Select Special Page Gallery.<br>';
+		flag = false;
+	  }
+	  
+	}
+	if(ccheckboxIdElmt!=null && ccheckboxIdElmt.checked)
+	{
+		   if(candidateSelectId !=null && candidateSelectId.value == 0)
+		  {
+			str += 'Select Candidate <br>';
+			flag = false;
+		  }
+		 else if(canGalId !=null && canGalId.value == 0)
+		  {
+			str += 'Select Candidate Gallery.<br>';
+			flag = false;
+		  }
+		  
+		}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 
