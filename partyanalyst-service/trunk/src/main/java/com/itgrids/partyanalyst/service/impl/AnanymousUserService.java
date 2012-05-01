@@ -487,6 +487,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
+			dataTransferVO.setTotalResultsCnt(ananymousUserDAO.getAllUsersCountInSelectedLocations1(locationIds, locationType).size());
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));			
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

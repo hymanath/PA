@@ -89,7 +89,8 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setFirstResult(startIndex.intValue());
-		queryObject.setMaxResults(retrivalCount.intValue());		
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
 		
 		return queryObject.list();
 	}
@@ -111,6 +112,25 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		queryObject.setParameterList("locationIds", locationIds);
 		
 		return queryObject.list().get(0).toString();
+	}
+	
+	public List getAllUsersCountInSelectedLocations1(List<Long> locationIds,String locationType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId,model ");
+		query.append(" from AnanymousUser model where ");
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append("order by model.userId desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		
+		return queryObject.list();
 	}
 	
 	@SuppressWarnings("unchecked")

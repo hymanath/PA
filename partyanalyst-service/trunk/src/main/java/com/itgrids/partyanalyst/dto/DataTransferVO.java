@@ -38,6 +38,7 @@ public class DataTransferVO extends ResultStatus{
 	private String districtUsersCount;
 	private String constituencyUsersCount;
 	private String totalResultsCount;
+	private Integer totalResultsCnt;
 	private String connectedPeopleCount;
 	private Long parliamentConstId;
 	private String parliamentConstName;
@@ -339,6 +340,12 @@ public class DataTransferVO extends ResultStatus{
 		this.totalMsgCount = totalMsgCount;
 	}
 
+	public Integer getTotalResultsCnt() {
+		return totalResultsCnt;
+	}
 
+	public void setTotalResultsCnt(Integer totalResultsCnt) {
+		this.totalResultsCnt = totalResultsCnt;
+	}	
 
 }
