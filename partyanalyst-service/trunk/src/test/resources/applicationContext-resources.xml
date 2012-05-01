@@ -256,6 +256,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyPageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePageCustomPages</value>
 				<value>com.itgrids.partyanalyst.model.UserLoginDetails</value>
+				<value>com.itgrids.partyanalyst.model.UserReferralEmails</value>
 			</list>
 		</property>
 	</bean>
@@ -1375,5 +1376,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userReferralEmailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserReferralEmailsDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 		
 </beans>
