@@ -48,4 +48,6 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List<Object[]> getUserEmail(Long userId);
 	
 	public List getAllUsersCountInSelectedLocations1(List<Long> locationIds,String locationType);
+	
+	public AnanymousUser getAnanymousUserByUserId(Long userId);
 }

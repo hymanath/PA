@@ -68,4 +68,6 @@ public interface IAnanymousUserService {
 	
 	public  ResultStatus saveEmailAndSetAsUserName(String userName,final String email);
 	
+	public void saveMailContacts(Long userId ,List<String> mailsList);
+	
 }	

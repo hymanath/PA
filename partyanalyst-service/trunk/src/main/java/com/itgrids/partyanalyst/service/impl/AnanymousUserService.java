@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,10 +36,10 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
+import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
@@ -54,10 +55,12 @@ import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
+import com.itgrids.partyanalyst.model.UserReferralEmails;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnanymousUserService implements IAnanymousUserService {
@@ -86,8 +89,20 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IBoothDAO boothDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IMailsSendingService mailsSendingService;
+	private DateUtilService dateUtilService = new DateUtilService();
+	
+	private IUserReferralEmailsDAO userReferralEmailsDAO;
 	
 	
+	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
+		return userReferralEmailsDAO;
+	}
+
+	public void setUserReferralEmailsDAO(
+			IUserReferralEmailsDAO userReferralEmailsDAO) {
+		this.userReferralEmailsDAO = userReferralEmailsDAO;
+	}
+
 	public IMailsSendingService getMailsSendingService() {
 		return mailsSendingService;
 	}
@@ -1948,6 +1963,51 @@ public ResultStatus changeForUserNameAsEmail(String userName){
 		resultStatus.setResultPartial(true);
 	}
 	return resultStatus;
+}
+
+public void saveMailContacts(Long userId ,List<String> mailsList)
+{	
+	log.debug("Entered into the saveMailContacts method");
+	try	{
+		if(mailsList != null && mailsList.size()>0)
+		{
+			List<String> userEmails = getUserReferencedEmails(userId);
+			for(String mail : mailsList)
+			{
+				if(mail != null && mail.length() > 0 && userEmails != null && !userEmails.contains(mail))
+				{
+					try
+					{
+						UserReferralEmails userReferralEmail = new UserReferralEmails();
+						
+						userReferralEmail.setUserId(userId);
+						userReferralEmail.setEmail(mail);
+						userReferralEmail.setTime(dateUtilService.getCurrentDateAndTime());
+						userReferralEmailsDAO.save(userReferralEmail);
+					}catch (Exception e) {}
+				}
+			}
+		}
+	}
+	catch(Exception e){
+		log.error("Exception raised in saveMailContacts");
+	}	
+}
+
+public List<String> getUserReferencedEmails(Long userId)
+{
+	try{
+		List<String> emailList = userReferralEmailsDAO.getUserReferencedEmails(userId);
+		
+		if(emailList != null && emailList.size() > 0)
+			for(String email : emailList)
+				emailList.add(email);
+		
+		return emailList;
+	}catch (Exception e) {
+		log.error("Exception Occured in getUserReferencedEmails() Method, Exception is - "+e);
+		return null;
+	}
 }
 
 
