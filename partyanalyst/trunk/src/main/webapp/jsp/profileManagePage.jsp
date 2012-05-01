@@ -1014,7 +1014,12 @@ function validateFileUpload()
 	var fileDesc = document.getElementById('fileDescId').value;
 	var fileVal = document.getElementById("fileId").value;
 	var galId = document.getElementById("gallaryphotoselectId").value;
-	
+	var SpecialPageGalId = document.getElementById("uploadSpecialPageGalleryId");
+	var spSelectId = document.getElementById("spSelectId");
+	var spcheckboxIdElmt = document.getElementById("spcheckboxId");
+	var partyGalId = document.getElementById("uploadPartyGalleryId");
+	var partySelectId = document.getElementById("partySelectId");
+	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
@@ -1055,7 +1060,35 @@ function validateFileUpload()
 		//str += 'Select Any Gallery.<br>';
 		flag = false;
 	}
-	
+	if(spcheckboxIdElmt!=null && spcheckboxIdElmt.checked)
+	{
+	   if(spSelectId !=null && spSelectId.value == 0)
+	  {
+		str += 'Select Special Page <br>';
+		flag = false;
+	  }
+     else if(SpecialPageGalId !=null && SpecialPageGalId.value == 0)
+	  {
+		str += 'Select Special Page Gallery.<br>';
+		flag = false;
+	  }
+	  
+	}
+	if(pcheckboxIdElmt!=null && pcheckboxIdElmt.checked)
+	{
+	 
+	  if(partySelectId !=null && partySelectId.value == 0)
+	  {
+		str += 'Select Party <br>';
+		flag = false;
+	  }
+     else if(partyGalId !=null && partyGalId.value == 0)
+	  {
+		str += 'Select Party Gallery.<br>';
+		flag = false;
+	  }
+	  
+	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 
