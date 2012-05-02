@@ -18,6 +18,8 @@ import org.brickred.socialauth.Contact;
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.SocialAuthManager;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SocialAuthSuccessAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -30,7 +32,27 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
 	private List<Contact> contactsList;
 	private Profile profile;
 	private HttpSession session;
+	private RegistrationVO regVO = null;
+	private List<String> mailsList;
 	
+	public List<String> getMailsList() {
+		return mailsList;
+	}
+
+	public void setMailsList(List<String> mailsList) {
+		this.mailsList = mailsList;
+	}
+
+	private IAnanymousUserService  ananymousUserService;
+	
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+
 	public List<Contact> getContactsList() {
 		return contactsList;
 	}
@@ -65,7 +87,15 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
 	
 	public String execute()
 	{
+		
 		session = request.getSession();
+		
+		
+		regVO = new RegistrationVO();
+		regVO=(RegistrationVO)session.getAttribute("USER");
+		
+		Long userId=regVO.getRegistrationID();
+		
 		socialAuthManager = (SocialAuthManager)session.getAttribute("SocialAuthManager");
 		if (socialAuthManager != null)
 		{
@@ -95,6 +125,13 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
                         }
                     }
                 }
+                
+                if(contactsList != null && contactsList.size() > 0)
+                	for(Contact contact : contactsList)
+                		mailsList.add(contact.getEmail());
+                	
+                ananymousUserService.saveMailContacts(userId,mailsList);
+                
                 return SUCCESS;   
             } catch (Exception e)
             {
@@ -103,5 +140,13 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
          }
 		return ERROR;
 	 }
+
+	public RegistrationVO getRegVO() {
+		return regVO;
+	}
+
+	public void setRegVO(RegistrationVO regVO) {
+		this.regVO = regVO;
+	}
 
 }
