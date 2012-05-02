@@ -16,12 +16,8 @@ public IMailService getMailService() {
 		this.mailService = mailService;
 	}
 
-public void sendingMails(){
-	EmailDetailsVO emaildetailsvo=new EmailDetailsVO();
-	emaildetailsvo.setToAddress("sowjanyareddy.challa@gmail.com");
-	emaildetailsvo.setSubject("Hello-------------");
-	emaildetailsvo.setContent("hi how r u? iam fine.");
-	emaildetailsvo.setHost(IConstants.LOCALHOST);
-	mailService.sendEmail(emaildetailsvo,IConstants.LOCALHOST);
-}
+	public void sendingMails()
+	{
+		
+	}
 }
