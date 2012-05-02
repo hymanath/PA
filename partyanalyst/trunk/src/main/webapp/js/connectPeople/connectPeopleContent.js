@@ -374,9 +374,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str	+= '</div>';
 	
 	str	+= '<div id="allConnectPeople_footer" style="display:none;">';
+
 	str	+= '<table width="100%">';
 	str	+= '<tr>';	
-	str += '<td width="80%" style="color:#754815"> Do you Want to connect to <span id="allConnectPeople_footer_span"></span> ?</td>';
+	str += '<td width="80%" style="color:#754815"> Do you Want to connect to <span id="allConnectPeople_footer_span"></span> ?  <span id="searchAjaxImageSpan" style="display:none;margin-left: 294px; margin-top: -17px;clear: both;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></td>';
 	str += '<td width="20%" align="right">';
 	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()">';
 	str += '<table>';
@@ -440,6 +441,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 
 function connectUserSetPeople()
 {
+	showAjaxImg("searchAjaxImageSpan");
 	//var elements = document.getElementsByName("connectUserCheck");
 	var statusElmt = document.getElementById("allConnectPeopleStatusTextDiv");
 
@@ -494,7 +496,8 @@ function connectUserSetPeople()
 	
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "connectToUserSetAction.action?"+rparam;					
+	var url = "connectToUserSetAction.action?"+rparam;
+	
 	callAjax(jsObj,url);
 }
 
@@ -605,14 +608,16 @@ function buildAllConnectUserString(users)
 
 function showMailPopup(id,name,type)
 {
+	
 	var str = '';	
+	str += '<div id="ErrorMsgDivId" style="margin-left: 85px; margin-bottom: 8px; margin-top: 5px;"></div>';
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th>Message</th>';
 	str += '<td><textarea id="connectMessageText" cols="35" rows="4"></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
-	str += '<td><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
+	str += '<td><input type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
 	str += '</tr>';	
 	str += '</table>';
 	str += '<table style="text-align:center;width:100%;"><tr><td><div id="confirmationMsg"></div></td></tr></table>';
@@ -652,9 +657,33 @@ function showMailPopup(id,name,type)
 
 function sendMessageToConnectedUser(userId,type)
 {	
-	var connectTextAreaElmt = document.getElementById("connectMessageText");
-	var connectMsg = connectTextAreaElmt.value;
 	
+	var eflag = false;
+	var errorDivEle = document.getElementById("ErrorMsgDivId");
+	var str='';
+	
+	var connectTextAreaElmt = document.getElementById("connectMessageText");
+	var connectTextAreaElmtValue = document.getElementById("connectMessageText").value;
+	
+	if(connectTextAreaElmt.value == "")
+	{
+		str +='<font style="color:red">Please Enter Message.</font>';
+		eflag = true;
+	}
+	
+	else if(connectTextAreaElmtValue.length > 300)
+	{
+		str +='<font style="color:red">Message Should be lessthan 300 characters.</font>';
+		eflag = true;
+	}
+	errorDivEle.innerHTML = str;
+
+	if(eflag)
+	return;
+	
+	
+	var connectMsg = connectTextAreaElmt.value;
+	disableButton("sendMessageButtonId");
 	var jsObj ={
 				loginUserId:loginUserId,
 				message:connectMsg,				
@@ -798,3 +827,11 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
+
+function showAjaxImg(divId){
+	 document.getElementById(divId).style.display = 'block';
+ }
+
+ function hideAjaxImg(divId){
+	 document.getElementById(divId).style.display = 'none';
+ }
