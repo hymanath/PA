@@ -12,7 +12,14 @@ public class EmailDetailsVO implements Serializable{
 	private String content;
 	private String host;
 	private String welcomeName;
+	private String senderName;
 	
+	public String getSenderName() {
+		return senderName;
+	}
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
 	public String getHost() {
 		return host;
 	}
