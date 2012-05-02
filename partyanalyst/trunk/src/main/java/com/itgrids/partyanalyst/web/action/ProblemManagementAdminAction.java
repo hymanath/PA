@@ -280,7 +280,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 	
-	public String getAllApprovalPRoblemsBetweenTheDates()
+	public String getAllApprovalPRoblemImagesBetweenTheDates()
 	{
 		
 		try
