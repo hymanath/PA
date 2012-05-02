@@ -305,3 +305,13 @@ function removeAllUnwantedCharacters(str)
    var strng = str.replace(/[\'\\\%\&\#\"+"]/g," ");
    return replaceEnterKey(strng,"  ");
 } 
+
+function enableButton(id)
+{
+	document.getElementById(id).disabled  = false;
+}
+
+function disableButton(id)
+{
+	document.getElementById(id).disabled  = true;
+}
