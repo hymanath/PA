@@ -393,7 +393,7 @@ function showMailPopup(id,name,type)
 	str += '<td><textarea id="connectMessageText" cols="35" rows="4"></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
-	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
+	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
 	str += '</tr>';
 	str += '</table>';
 	str	+= '<div id="connectStatus"></div>';
@@ -450,8 +450,13 @@ function sendMessageToConnectedUser(userId,type)
 function showMessageSentConfirmation(results)
 {
 	var elmt = document.getElementById("connectStatus");
+
+	enableButton("sendMessageButtonId");
     if(results.resultCode == 0)
 	{
+		 document.getElementById("connectMessageText").value = '';
+		
+		
 		elmt.innerHTML = '<blink><font color="green">Message Sent Successfully..</font></blink>';
 		var t=setTimeout("closeMessagePopup()",2000);
 	}
@@ -544,6 +549,7 @@ function callAjax(jsObj,url){
 					}
 					else if(jsObj.task == "connectUserSet")
 					{
+						hideAjaxImg("searchAjaxImageSpan");
 						showAllConnectedUsersStatus(jsObj,results);
 					}
 					else if(jsObj.task == "connectToUser")
