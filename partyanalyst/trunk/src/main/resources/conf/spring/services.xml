@@ -66,6 +66,7 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="userReferralEmailsDAO" ref="userReferralEmailsDAO"/>
 		
 	</bean>  
 	
