@@ -118,6 +118,7 @@
 		<pattern>/completeResultForAPollAction*</pattern>
 		<pattern>/getAllPollsAction*</pattern>
 		<pattern>/VotersPulse*</pattern>
+		<pattern>/constituencyProfileReport*</pattern>
     </decorator>
 
 </decorators>
