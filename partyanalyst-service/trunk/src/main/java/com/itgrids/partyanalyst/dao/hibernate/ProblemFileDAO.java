@@ -41,7 +41,7 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 	{
 		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
 				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'true' and model.problemHistory.dateUpdated >=:startDate and model.problemHistory.dateUpdated <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'true' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -54,7 +54,7 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 	{
 		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
 				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'Rejected' and model.problemHistory.dateUpdated >=:startDate and model.problemHistory.dateUpdated <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'Rejected' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -68,7 +68,7 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 	{
 		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
 				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.problemHistory.dateUpdated >=:startDate and model.problemHistory.dateUpdated <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
