@@ -894,5 +894,11 @@
 	
 	<bean id="loginInputAction" class="com.itgrids.partyanalyst.web.action.LoginInputAction" singleton="false">
 	</bean>
+	
+	<bean id="socialAuthSuccessAction" class="com.itgrids.partyanalyst.web.action.SocialAuthSuccessAction" singleton="false">
+	
+	<property name="ananymousUserService" ref="ananymousUserService"/>
+	
+	</bean>
 				
 </beans>	
