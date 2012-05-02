@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
@@ -568,7 +568,14 @@ public class AnanymousUserService implements IAnanymousUserService {
 					}
 						if(email != null && email.trim().length() > 0)
 						{
-						resultStatus = mailsSendingService.sendEmailFriendRequest(userName,email,IConstants.SERVER,senderName,subject);
+							EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+							emailDetailsVO.setFromAddress(userName);
+							emailDetailsVO.setToAddress(email);
+							emailDetailsVO.setHost(IConstants.SERVER);
+							emailDetailsVO.setSubject(subject);
+							emailDetailsVO.setSenderName(senderName);
+							
+							resultStatus = mailsSendingService.sendEmailFriendRequest(emailDetailsVO);
 						}
 					}
 			}
@@ -718,6 +725,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			public Object doInTransaction(TransactionStatus status) {
 				CustomMessage customMessage = new CustomMessage();
 				try{
+						EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 						Long messageTypeId=0l;
 						Long pendingId=0l;
 						Long disconectedId=0l;
@@ -778,7 +786,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 									email = params[3].toString();
 								}
 								if(email != null && email.trim().length() > 0){
-								mailsSendingService.acceptEmailFriendRequest(userName,email,IConstants.SERVER,senderName);
+									emailDetailsVO.setFromAddress(userName);
+									emailDetailsVO.setHost(IConstants.SERVER);
+									emailDetailsVO.setSenderName(senderName);
+									emailDetailsVO.setToAddress(email);
+									mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
 								}
 							}
 							}
@@ -807,7 +819,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 									}
 									if(email != null && email.trim().length() > 0)
 									{
-									 mailsSendingService.sendMessageToConnectUser(userName,email,IConstants.SERVER,subject,senderName);
+										emailDetailsVO.setFromAddress(userName);
+										emailDetailsVO.setToAddress(email);
+										emailDetailsVO.setHost(IConstants.SERVER);
+										emailDetailsVO.setSubject(subject);
+										emailDetailsVO.setSenderName(senderName);
+										mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
 									}
 								}
 							}
@@ -1208,7 +1225,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						}
 						name = details.getLastName();
 						if(name!=null){
-							candidateName+=name;
+							candidateName = candidateName +" "+ name;
 						}						
 						candidateResults.setCandidateName(candidateName);
 						candidateResults.setId(details.getUserId());	
