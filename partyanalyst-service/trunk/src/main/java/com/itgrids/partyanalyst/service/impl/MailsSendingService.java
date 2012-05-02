@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import net.sf.cglib.core.EmitUtils;
-
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -25,65 +23,56 @@ public class MailsSendingService implements IMailsSendingService{
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
 	}
-	public ResultStatus sendEmailFriendRequest(String userName,String email,String requestFrom,String senderName , String msg)
+	
+	public ResultStatus sendEmailFriendRequest(EmailDetailsVO emailDetVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
+		String subject = ""+emailDetVO.getSenderName()+" sent a Friend Request in PartyAnalyst.com";
 		
-		/*String message = msg;
-		if(message != null && message.trim().length() > 0)
-			message="\""+message+"\"";*/
-		
-		String subject = ""+senderName+" sent a Friend Request in PartyAnalyst.com";
-		String content = " <div style='border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+userName+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 39px;line-height:1.5em;'><b><font style='color:blue;'>"+senderName+"</font></b> has sent you a friend request in PartyAnalyst.com. <br/>  To respond " +
+		String content = " <div style='border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+emailDetVO.getFromAddress()+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 39px;line-height:1.5em;'><b><font style='color:blue;'>"+emailDetVO.getSenderName()+"</font></b> has sent you a friend request in PartyAnalyst.com. <br/>  To respond " +
 				"to friend request, <a href='http://www.partyanalyst.com/loginInputAction.action'><b>Login here.</b></a></div></div>" ;
+		
 		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-		emailDetailsVO.setToAddress(email);
-		emailDetailsVO.setHost(requestFrom);
+		emailDetailsVO.setToAddress(emailDetVO.getToAddress());
+		emailDetailsVO.setHost(emailDetVO.getHost());
 		emailDetailsVO.setSubject(subject);
 		emailDetailsVO.setContent(content);
-		
-		resultStatus = mailService.sendEmail(emailDetailsVO ,requestFrom );
+		resultStatus = mailService.sendEmail(emailDetailsVO ,emailDetVO.getHost() );
 		return resultStatus;
 	}
 	
-	public ResultStatus acceptEmailFriendRequest(String userName,String email,String requestFrom,String senderName)
+	public ResultStatus acceptEmailFriendRequest(EmailDetailsVO emaDetailsVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
-		
-		String subject = ""+senderName+" accepted Friend Request in PartyAnalyst.com.";
-		String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+senderName+",</b></div>" +
-				"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue'><b>"+userName+"</b></font> has accepted your friend request in PartyAnalyst.com.<br/>Do you want to send a message? " +
-						"<a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>"; 
 		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-		emailDetailsVO.setToAddress(email);
-		emailDetailsVO.setHost(requestFrom);
+		String subject = ""+emaDetailsVO.getSenderName()+" accepted Friend Request in PartyAnalyst.com."; 
+		String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+emaDetailsVO.getSenderName()+",</b></div>" +
+				"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue'><b>"+emaDetailsVO.getFromAddress()+"</b></font> has accepted your friend request in PartyAnalyst.com.<br/>Do you want to send a message? " +
+						"<a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
+		
+		emailDetailsVO.setHost(emaDetailsVO.getHost());
 		emailDetailsVO.setSubject(subject);
 		emailDetailsVO.setContent(content);
-		resultStatus = mailService.sendEmail(emailDetailsVO, requestFrom);
+		emailDetailsVO.setToAddress(emaDetailsVO.getToAddress());
+		resultStatus = mailService.sendEmail(emailDetailsVO, emaDetailsVO.getHost());
 		return resultStatus;
-		
 	}
 	
-	public ResultStatus sendMessageToConnectUser(String userName,String email,String requestFrom,String msg,String senderName)
+	public ResultStatus sendMessageToConnectUser(EmailDetailsVO emailDetVO)
 	{
-		//String message = "";
 		ResultStatus resultStatus = new ResultStatus();
 		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-		/*if(msg != null && msg.trim().length() > 0)
-		{
-			message = "\""+msg+"\"";
-		}*/
-		String subject = ""+senderName+" send a message in PartyAnalyst.com.";
+		String subject = ""+emailDetVO.getSenderName()+" send a message in PartyAnalyst.com.";
+		
 		String content = "<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-				"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+userName+",</b><br/>" +
-						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue;'><b>"+senderName+"</b></font> has sent a message in PartyAnalyst.com.<br/> Do you want to send the reply? <a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a></div></div>";
+				"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+emailDetVO.getFromAddress()+",</b><br/>" +
+						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue;'><b>"+emailDetVO.getSenderName()+"</b></font> has sent a message in PartyAnalyst.com.<br/> Do you want to send the reply? <a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a></div></div>";
 		emailDetailsVO.setContent(content);
-		emailDetailsVO.setHost(requestFrom);
-		emailDetailsVO.setToAddress(email);
 		emailDetailsVO.setSubject(subject);
-		resultStatus = mailService.sendEmail(emailDetailsVO, requestFrom);
+		emailDetailsVO.setHost(emailDetVO.getHost());
+		emailDetailsVO.setToAddress(emailDetVO.getToAddress());
+		resultStatus = mailService.sendEmail(emailDetailsVO, emailDetVO.getHost());
 		return resultStatus;
 	}
-	
 
 }
