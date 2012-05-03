@@ -161,13 +161,13 @@ public class MailsSendingService implements IMailsSendingService{
 					
 					emailDetailsVO.setSubject(subject);
 					emailDetailsVO.setToAddress(userDetails[5].toString());
-					emailDetailsVO.setHost(IConstants.LOCALHOST);							
+					emailDetailsVO.setHost(IConstants.SERVER);							
 					emailDetailsVO.setContent(content);				
 				
 					mainEmailDetailsVoList.add(emailDetailsVO);
 					}catch (Exception ex) {}
 				}						
-				mailService.sendEmails(mainEmailDetailsVoList,IConstants.LOCALHOST);
+				mailService.sendEmails(mainEmailDetailsVoList,IConstants.SERVER);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			return resultStatus;
