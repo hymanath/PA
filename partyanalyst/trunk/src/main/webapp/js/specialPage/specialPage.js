@@ -2426,12 +2426,33 @@ function getVideosInAGallary(gallaryId){
 	callAjaxForSpecialPage(jsObj,url);
 }
 
+
+function getVideoDetails(contentId)
+{
+	$.fx.speeds._default = 1000;
+	  $("#showContentDiv").dialog({ stack: false,
+								height: 'auto',
+								width: 950,
+								closeOnEscape: true,
+								position:[30,30],
+								show: "blind",
+								hide: "explode",
+								modal: true,
+								maxWidth : 950,
+								minHeight: 650,
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+		$("#showContentDiv").dialog();
+		getContentDetails(contentId);
+}
+
 function buildAllVideosInGallary(results){
+
 
  var str ='';
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
-		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+		//str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
 		
 		str+='<table style="width:100%;">';
 		for(var i in results)
@@ -2450,7 +2471,9 @@ function buildAllVideosInGallary(results){
 			str+='</tr>';
 			str+='	<tr >';
 			str+='<td>';
-			str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
+		
+			//str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
 			str+='<img style="border: 2px solid #CCCCCC;padding:5px;" src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
 			str+='</tr>';
 			str+='<tr>';
