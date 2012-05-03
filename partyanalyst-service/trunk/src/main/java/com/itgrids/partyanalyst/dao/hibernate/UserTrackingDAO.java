@@ -165,4 +165,14 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 		queryObj.setParameter(3, sessionId);
 		return queryObj.list();
 	}
+	
+	public Integer deleteSearchEngineAccessedURLsFromUserTracking(List<String> ipList,Date fromDate, Date toDate)
+	{
+		Query query = getSession().createQuery("delete from UserTracking model where Date(model.time) BETWEEN ? and ? and model.ipAddress in (:ipList)");
+		query.setParameter(0,fromDate);
+		query.setParameter(1,toDate);
+		query.setParameterList("ipList",ipList);
+		
+		return query.executeUpdate();
+	}
 }
