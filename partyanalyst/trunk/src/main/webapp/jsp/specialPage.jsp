@@ -867,7 +867,7 @@ Tweet</a>
              <!-- <li><a href="#">About</a><span></span></li> -->
               <li><a href="javascript:{getTotalNews('totalNews')}">News and Events</a><span></span></li>
               <li><a href="javascript:{videoGallaryPopUp();}">Videos</a><span></span></li>
-              <li><a href="#">Photo Gallery</a><span></span></li>
+              <li><a href="javascript:{photoGallaryPopUp();}">Photo Gallery</a><span></span></li>
                <!--<li><a href="#">elections</a><span></span></li>
               <li><a href="#">Developments</a><span></span></li> -->
             </ul>
