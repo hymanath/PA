@@ -1898,7 +1898,7 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 	List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
 	if(chkPwd.size()==0)
 		return IConstants.NoPassword;
-	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId);
+	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE);
 	return IConstants.YesPassword;
 }
 
@@ -2026,6 +2026,8 @@ public List<String> getUserReferencedEmails(Long userId)
 		return null;
 	}
 }
+
+
 
 
 }

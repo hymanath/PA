@@ -1,25 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
-import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
-import com.itgrids.partyanalyst.dto.CandidateVO;
-import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.AnanymousUser;
-import com.itgrids.partyanalyst.model.CustomMessage;
-import com.itgrids.partyanalyst.model.UserProfileOpts;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
@@ -132,7 +120,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetUserEmail()
+	/*public void testGetUserEmail()
 	{
 	List<Object[]> list =ananymousUserDAO.getUserEmail(1l);
 	System.out.println(list.size());
@@ -142,5 +130,19 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(params[0] +" " +params[1] +" " + params[2] + " " + params[3]);
 		
 		}
+	}*/
+	
+	public void testGetPasswordNotUpdatdUsersList()
+	{
+		List<Object[]> list = ananymousUserDAO.getPasswordNotUpdatdUsersList();
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println((Date)params[2]);
+			
+		}
+			
 	}
 }

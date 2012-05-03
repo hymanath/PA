@@ -36,14 +36,15 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model.password from AnanymousUser model where model.password=? and model.userId=?",parameters);
 	}
 	
-	public Integer changeUserPassword(String password,Long registrationId)
+	public Integer changeUserPassword(String password,Long registrationId,String status)
 	{
 	StringBuilder query = new StringBuilder();
-	query.append("update AnanymousUser model set model.password = ? where model.userId = ?");
+	query.append("update AnanymousUser model set model.password = ?,model.isPwdChanged=? where model.userId = ?");
 	
 	Query queryObject = getSession().createQuery(query.toString());
 	queryObject.setParameter(0, password);
-	queryObject.setParameter(1, registrationId);	
+	queryObject.setParameter(1, status);
+	queryObject.setParameter(2, registrationId);	
 	
 	return queryObject.executeUpdate();	
 	}
@@ -238,10 +239,17 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		
 		Query queryObject=getSession().createQuery("select model from AnanymousUser model where model.userId=?");
 		
-		queryObject.setParameter(1, userId);
+		queryObject.setParameter(0,userId);
 		
 		return (AnanymousUser)queryObject.uniqueResult();
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPasswordNotUpdatdUsersList()
+	{
+		return getHibernateTemplate().find("select model.name,model.lastName,DATE(model.registeredDate),model.username,model.password,model.email " +
+				" from AnanymousUser model where model.isPwdChanged = 'false' and model.email is not null and model.email not like '' ");
 	}
 	
 

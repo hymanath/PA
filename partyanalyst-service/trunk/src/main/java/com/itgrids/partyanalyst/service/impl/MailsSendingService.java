@@ -1,13 +1,18 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MailsSendingService implements IMailsSendingService{
 	
@@ -15,6 +20,14 @@ public class MailsSendingService implements IMailsSendingService{
 	private IMailService mailService;
 	private IMailsTemplateService mailsTemplateService;
 	
+	private IAnanymousUserDAO ananymousUserDAO;
+	
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
+	}
 	
 	public IMailsTemplateService getMailsTemplateService() {
 		return mailsTemplateService;
@@ -112,5 +125,60 @@ public class MailsSendingService implements IMailsSendingService{
 			return resultStatus;
 		}
 	}
+	public ResultStatus sendMailsToPasswordnotUpdatedusers()
+	{
+		List<EmailDetailsVO> mainEmailDetailsVoList = new ArrayList<EmailDetailsVO>(0);
+		ResultStatus resultStatus = new ResultStatus();
+		try{			
+			log.info("Enetered into the sendMailsToPasswordnotUpdatedusers method");
+			
+			String subject="Update From partyAnalyst - Change Your Password";		
+
+			List<Object[]> usersLst = ananymousUserDAO.getPasswordNotUpdatdUsersList();
+	
+			if(usersLst != null && usersLst.size()>0)
+			{
+				for (Object[] userDetails : usersLst)
+				{
+					try{
+						
+						String content = "<div style = 'background-color:#E0FFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'></div>" +
+								"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'> ";				
+						       content+="Dear <font style='color:#1155CC;'><b>"+userDetails[0].toString()+"</b>,</font><br>";
+						       
+						       content+="You registered with <b>partyAnalyst</b> on "+userDetails[2].toString()+".Still you didn't change your password.Presently your password is systems generated password.<br><br>";
+						       content+="     Please change your password and stay connected with <b>PartyAnalyst</b> to get more updates from your <b>Friends, Constituency, District, Political Parties and Politicians</b>.<br>";
+						       
+						       
+						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action'>LogIn Here</a><b><br>";
+						       
+						       content+="<br>UserName:<b>&nbsp;"+userDetails[3].toString()+"</b><br>";
+						       content+="Password:<b>&nbsp;"+userDetails[4].toString()+"</b><br></div></div>";
+					
+				
+					
+					EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+					
+					emailDetailsVO.setSubject(subject);
+					emailDetailsVO.setToAddress(userDetails[5].toString());
+					emailDetailsVO.setHost(IConstants.LOCALHOST);							
+					emailDetailsVO.setContent(content);				
+				
+					mainEmailDetailsVoList.add(emailDetailsVO);
+					}catch (Exception ex) {}
+				}						
+				mailService.sendEmails(mainEmailDetailsVoList,IConstants.LOCALHOST);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			return resultStatus;
+	}
+	catch(Exception e){		
+		log.info("Exception raised in the sendMailsToPasswordnotUpdatedusers method");
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	}
+		
+	}
+	
 
 }

@@ -10,4 +10,6 @@ public interface IMailsSendingService {
 	public ResultStatus acceptEmailFriendRequest(EmailDetailsVO emailDetailsVO);
 	
 	public ResultStatus sendMessageToConnectUser(EmailDetailsVO emailDetailsVO);
+	
+	public ResultStatus sendMailsToPasswordnotUpdatedusers();
 }

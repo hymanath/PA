@@ -37,7 +37,7 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<AnanymousUser>  getPassword(String password);
 	
-	public Integer changeUserPassword(String password,Long registrationId);
+	public Integer changeUserPassword(String password,Long registrationId,String status);
 	
 	public List<AnanymousUser> checkUserPassword(String password,Long userId);
 	
@@ -50,4 +50,6 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List getAllUsersCountInSelectedLocations1(List<Long> locationIds,String locationType);
 	
 	public AnanymousUser getAnanymousUserByUserId(Long userId);
+	
+	public List<Object[]> getPasswordNotUpdatdUsersList();
 }
