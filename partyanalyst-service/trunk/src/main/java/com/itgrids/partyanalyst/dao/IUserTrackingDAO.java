@@ -28,5 +28,7 @@ public interface IUserTrackingDAO extends GenericDao<UserTracking, Long>{
 	public Object getTotalSessionCountBetweenDates(Date fromDate, Date toDate);
 	
 	public List<Object> getPageFlowOfUserBetweenDates(Date fromDate, Date toDate, String userType, String sessionId);
+	
+	public Integer deleteSearchEngineAccessedURLsFromUserTracking(List<String> ipList,Date fromDate, Date toDate);
 		
 }
