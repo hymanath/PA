@@ -921,7 +921,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			jObj = new JSONObject(getTask());	
 			JSONArray mailDtls = jObj.getJSONArray("invmainobj");
 			String requestFrom="";
-			 if(getPath().equalsIgnoreCase("http://www.partyanalyst.com")){
+			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE)){
 				 requestFrom = IConstants.SERVER;	
 	        }else{
 	        	requestFrom = IConstants.LOCALHOST;		
