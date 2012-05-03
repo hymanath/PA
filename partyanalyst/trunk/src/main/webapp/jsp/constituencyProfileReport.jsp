@@ -78,7 +78,7 @@ In this competitive Politics, how you will know the past election results in a b
 <div class="Query-box">
 <h3>Any questions?</h3>
 <span>
-Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products.
+Our qualified team will be happy to answer all your questions about Constituency Profile Report and Other Products.
 <br/><br/>
 <span style="width:680px;display:table;text-align:center;color:blue;">
 Please call us : +919676696760
