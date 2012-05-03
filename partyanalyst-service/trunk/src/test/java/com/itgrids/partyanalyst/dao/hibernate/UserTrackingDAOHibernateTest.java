@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,7 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 		  return cal.getTime();
 	  }*/
 		
-	public void testGetHostNameAndNoOfPagesForAUser(){
+	/*public void testGetHostNameAndNoOfPagesForAUser(){
 		List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAUser(new Date(2012-4-1),new Date(),IConstants.PARTY_ANALYST_USER);
 		System.out.println(list.size());
 		if(list != null && list.size() > 0) 
@@ -66,8 +67,17 @@ public class UserTrackingDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0] + "" + params[1] + "" +params[2] + "" +params[3]);
 			System.out.println(params[1].toString()+" "+params[2].toString());
 		}
-	}
+	}*/
 	/*public void testGetLandingPageBetweenDatesByLandingTimeAndSessionId(){
 		List<Object> list=userTrackingDAO.getLandingPageBetweenDatesByLandingTimeAndSessionId(new Date(), new Date(), );
 	}*/
+	
+	public void testDeleteSearchEngineAccessedURLsFromUserTracking()
+	{
+		List<String> ipList = new ArrayList<String>(0);
+		ipList.add("66.249.72.210");
+		int records = userTrackingDAO.deleteSearchEngineAccessedURLsFromUserTracking(ipList,new Date(),new Date());
+		
+		System.out.println(records);
+	}
 }
