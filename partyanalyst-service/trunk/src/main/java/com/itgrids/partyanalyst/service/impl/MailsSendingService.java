@@ -150,7 +150,7 @@ public class MailsSendingService implements IMailsSendingService{
 						       content+="     Please change your password and stay connected with <b>PartyAnalyst</b> to get more updates from your <b>Friends, Constituency, District, Political Parties and Politicians</b>.<br>";
 						       
 						       
-						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action'>LogIn Here</a><b><br>";
+						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a><b><br>";
 						       
 						       content+="<br>UserName:<b>&nbsp;"+userDetails[3].toString()+"</b><br>";
 						       content+="Password:<b>&nbsp;"+userDetails[4].toString()+"</b><br></div></div>";
