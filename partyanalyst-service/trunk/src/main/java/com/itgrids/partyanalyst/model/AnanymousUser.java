@@ -48,6 +48,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private District district;
 	 private Constituency constituency;
 	 
+	 private String isPwdChanged;
+	 
 	 private Set<ProblemAndProblemSource> problemAndProblemSource = new HashSet<ProblemAndProblemSource>(0); 
 	 
 	 private Set<CustomMessage> customMessageSenderId = new HashSet<CustomMessage>(0); 
@@ -359,5 +361,16 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
 		this.userReferralEmails = userReferralEmails;
 	}
+	
+	@Column(name = "is_pwd_changed", length = 10)
+	public String getIsPwdChanged() {
+		return isPwdChanged;
+	}
+
+	public void setIsPwdChanged(String isPwdChanged) {
+		this.isPwdChanged = isPwdChanged;
+	}
 		
+
+	
 }
