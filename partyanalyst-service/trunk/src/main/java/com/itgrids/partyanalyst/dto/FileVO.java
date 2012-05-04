@@ -60,9 +60,9 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long totalResultsCount;
 	private Boolean isSelectedContent = false;
 	private List<Long> uploadOtherProfileGalleryIds;
-	private Long uploadPartyGalleryId;
-	private Long uploadCandidateGalleryId;
-	private Long uploadSPGalleryId;
+	private List<Long> uploadPartyGalleryId;
+	private List<Long> uploadCandidateGalleryId;
+	private List<Long> uploadSPGalleryId;
 	
 	public Boolean getIsSelectedContent() {
 		return isSelectedContent;
@@ -543,19 +543,19 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.totalResultsCount = totalResultsCount;
 	}
 
-	public void setUploadPartyGalleryId(Long uploadPartyGalleryId) {
+	public void setUploadPartyGalleryId(List<Long> uploadPartyGalleryId) {
 		this.uploadPartyGalleryId = uploadPartyGalleryId;
 	}
 
-	public Long getUploadPartyGalleryId() {
+	public List<Long> getUploadPartyGalleryId() {
 		return uploadPartyGalleryId;
 	}
 
-	public void setUploadCandidateGalleryId(Long uploadCandidateGalleryId) {
+	public void setUploadCandidateGalleryId(List<Long> uploadCandidateGalleryId) {
 		this.uploadCandidateGalleryId = uploadCandidateGalleryId;
 	}
 
-	public Long getUploadCandidateGalleryId() {
+	public List<Long> getUploadCandidateGalleryId() {
 		return uploadCandidateGalleryId;
 	}
 
@@ -568,11 +568,11 @@ public class FileVO extends ResultStatus implements Serializable {
 		return uploadOtherProfileGalleryIds;
 	}
 
-	public void setUploadSPGalleryId(Long uploadSPGalleryId) {
+	public void setUploadSPGalleryId(List<Long> uploadSPGalleryId) {
 		this.uploadSPGalleryId = uploadSPGalleryId;
 	}
 
-	public Long getUploadSPGalleryId() {
+	public List<Long> getUploadSPGalleryId() {
 		return uploadSPGalleryId;
 	}
 	
