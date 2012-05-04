@@ -121,7 +121,7 @@ h3 {
 
 .imageButton {
 	-moz-border-radius:5px 5px 5px 5px;
-    background: none repeat scroll 0 0 #0063DC;
+    background: none repeat scroll 0 0 #57B731;
     border: medium none;
     border-radius: 4px 4px 4px 4px;
     color: #FFFFFF;
@@ -176,7 +176,7 @@ h3 {
 .tdWidth2 {           
   font-weight:bold;
   color:#4b74c6;
-  width:164px;
+  width:82px;
 } 
 .selectWidth{
  width:175px;
