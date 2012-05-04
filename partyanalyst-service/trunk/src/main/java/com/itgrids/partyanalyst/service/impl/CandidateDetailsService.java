@@ -1168,6 +1168,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					{
 						for(int i=0;i<fileVO.getUploadOtherProfileGalleryIds().size();i++)
 						{
+							if(fileVO.getUploadOtherProfileGalleryIds().get(i) !=0)
+							{
 								fileGallary.setGallary(gallaryDAO.get(fileVO.getUploadOtherProfileGalleryIds().get(i)));
 								fileGallary.setFile(file);
 								fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
@@ -1180,7 +1182,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 									fileGallary.setIsPrivate(IConstants.TRUE);
 								
 								fileGallaryDAO.save(fileGallary);
-							
+							}
 						}
 				   }
 			}
