@@ -109,9 +109,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<CustomPageVO> customPages;
 	private Long uploadCandidateId;
 	private Long uploadPartyId;
-	private Long uploadCandidateGalleryId;
-	private Long uploadPartyGalleryId;
-	private Long uploadSpecialPageGalleryId;
+	private List<Long> uploadCandidateGalleryId;
+	private List<Long> uploadPartyGalleryId;
+	private List<Long> uploadSpecialPageGalleryId;
 	List<Long> galleryIds = new ArrayList<Long>(0);
 	
 	
@@ -124,11 +124,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return uploadPartyId;
 	}
 
-	public Long getUploadCandidateGalleryId() {
+	public List<Long> getUploadCandidateGalleryId() {
 		return uploadCandidateGalleryId;
 	}
 
-	public Long getUploadPartyGalleryId() {
+	public List<Long> getUploadPartyGalleryId() {
 		return uploadPartyGalleryId;
 	}
 
@@ -140,11 +140,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.uploadPartyId = uploadPartyId;
 	}
 
-	public void setUploadCandidateGalleryId(Long uploadCandidateGalleryId) {
+	public void setUploadCandidateGalleryId(List<Long> uploadCandidateGalleryId) {
 		this.uploadCandidateGalleryId = uploadCandidateGalleryId;
 	}
 
-	public void setUploadPartyGalleryId(Long uploadPartyGalleryId) {
+	public void setUploadPartyGalleryId(List<Long> uploadPartyGalleryId) {
 		this.uploadPartyGalleryId = uploadPartyGalleryId;
 	}
 
@@ -520,11 +520,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.newsimportance = newsimportance;
 	}
 
-	public void setUploadSpecialPageGalleryId(Long uploadSpecialPageGalleryId) {
+	public void setUploadSpecialPageGalleryId(List<Long> uploadSpecialPageGalleryId) {
 		this.uploadSpecialPageGalleryId = uploadSpecialPageGalleryId;
 	}
 
-	public Long getUploadSpecialPageGalleryId() {
+	public List<Long> getUploadSpecialPageGalleryId() {
 		return uploadSpecialPageGalleryId;
 	}
 
@@ -812,14 +812,24 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
 			if(!jObj.getString("SPGalleryId").equalsIgnoreCase(""))
-				galleryIds.add(new Long(jObj.getString("SPGalleryId")));
+			{
+				JSONArray spGalIds = jObj.getJSONArray("SPGalleryId");
+				for(int i=0;i<spGalIds.length();i++)
+				galleryIds.add(new Long(spGalIds.get(i).toString()));
+			}
 							
 			if(!jObj.getString("partyGalleryId").equalsIgnoreCase(""))
-				galleryIds.add(new Long(jObj.getString("partyGalleryId")));
-			
+			{
+				JSONArray partyGalIds = jObj.getJSONArray("partyGalleryId");
+				for(int i=0;i<partyGalIds.length();i++)
+				galleryIds.add(new Long(partyGalIds.get(i).toString()));
+			}
 			if(!jObj.getString("canGalleryId").equalsIgnoreCase(""))
-				galleryIds.add(new Long(jObj.getString("canGalleryId")));
-			
+			{
+				JSONArray canGalIds = jObj.getJSONArray("canGalleryId");
+				for(int i=0;i<canGalIds.length();i++)
+				galleryIds.add(new Long(canGalIds.get(i).toString()));
+			}
 			fileVOObj.setUploadOtherProfileGalleryIds(galleryIds);
 			
 			result = candidateDetailsService.uploadAFile(fileVOObj);
@@ -959,15 +969,26 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
 			if(getUploadCandidateGalleryId()!=null)
-				galleryIds.add(getUploadCandidateGalleryId());
+			{
+				for(Long i: uploadCandidateGalleryId)
+					galleryIds.add(i);
+				
+			}
 			if(getUploadPartyGalleryId()!=null)
-				galleryIds.add(getUploadPartyGalleryId());
+			{
+				for(Long i : uploadPartyGalleryId)
+				galleryIds.add(i);
+			}
 			if(uploadSpecialPageGalleryId != null)
-				galleryIds.add(uploadSpecialPageGalleryId);
+			{
+				for(Long i : uploadSpecialPageGalleryId)
+					galleryIds.add(i);
+			}
+				
 			
 			fileVO.setUploadOtherProfileGalleryIds(galleryIds);
-			fileVO.setUploadCandidateGalleryId(getUploadCandidateGalleryId());
-			fileVO.setUploadPartyGalleryId(getUploadPartyGalleryId());
+			/*fileVO.setUploadCandidateGalleryId(getUploadCandidateGalleryId());
+			fileVO.setUploadPartyGalleryId(getUploadPartyGalleryId());*/
 			
 			if(profileType != null && profileId != null && profileGalleryType != null)
 				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
