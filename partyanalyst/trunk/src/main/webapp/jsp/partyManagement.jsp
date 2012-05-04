@@ -122,7 +122,7 @@ h3 {
 
 .imageButton {
 	-moz-border-radius:5px 5px 5px 5px;
-    background: none repeat scroll 0 0 #0063DC;
+    background: none repeat scroll 0 0 #57B731;
     border: medium none;
     border-radius: 4px 4px 4px 4px;
     color: #FFFFFF;
@@ -177,7 +177,7 @@ h3 {
 .tdWidth2 {           
   font-weight:bold;
   color:#4b74c6;
-  width:164px;
+  width:82px;
 } 
 .selectWidth{
  width:175px;
@@ -660,8 +660,8 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromPartyProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProPhotoDiv"></div>'; 
-	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>'; 
+	str += '<table style="margin-top: 30px;"><tr><td style="padding-right: 20px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -1098,6 +1098,7 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
+	$("#otherProNewsDiv").html('');
 	document.getElementById('newsfileTitle').value = '';
 	document.getElementById('newsfileDescription').value = '';
 	document.getElementById('keywords').value = '';
@@ -1110,6 +1111,7 @@ function clearNewsUploadFileFields()
 	
 function clearUploadFileFields()
 {
+	$("#otherProPhotoDiv").html('');
 	document.getElementById('photofileTitleId').value = '';
 	document.getElementById('photofileDescId').value = '';
 	//document.getElementById('publicRadioId').checked = true;
@@ -1756,7 +1758,7 @@ function  buildUploadNews()
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
 	str += 	 '</tr>';
 	str += 	'</table>';
-	str += '<fieldset class="imgFieldset" style="width:480px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
@@ -1825,7 +1827,7 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProNewsDiv"></div>'; 
+	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
@@ -1940,7 +1942,7 @@ function buildUploadVideoDiv()
 	str += '<div id="vedioPublicDiv" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromPartyProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProVideoDiv"></div>'; 
+	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
 	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -2238,6 +2240,7 @@ function clearVideoGallaryFields()
 
 function clearUploadVideoFields()
 {
+	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
 	//document.getElementById('vpublicRadioId').checked = true;
