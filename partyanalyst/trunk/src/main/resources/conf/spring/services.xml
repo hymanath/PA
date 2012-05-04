@@ -1066,6 +1066,7 @@
 	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
 		<property name="mailService" ref="mailService"></property>
 		<property name="mailsTemplateService" ref="mailsTemplateService"></property>
+		<property name="ananymousUserDAO" ref="ananymousUserDAO"></property>
 	</bean>
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
