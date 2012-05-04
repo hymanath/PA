@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
+import com.itgrids.partyanalyst.service.IMailsTemplateService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -34,9 +35,18 @@ public class MailService implements IMailService{
 	private IAnanymousUserDAO ananymousUserDAO;
 	private static final Logger log = Logger.getLogger(MailService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
-	    
+	private IMailsTemplateService mailsTemplateService;
+	
 	 
-    public IConstituencyDAO getConstituencyDAO() {
+    public IMailsTemplateService getMailsTemplateService() {
+		return mailsTemplateService;
+	}
+
+	public void setMailsTemplateService(IMailsTemplateService mailsTemplateService) {
+		this.mailsTemplateService = mailsTemplateService;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
 	return constituencyDAO;
     }
     
@@ -198,28 +208,46 @@ public class MailService implements IMailService{
     	
     	
     	text = "";
-    	text +="<b>Hey"+"     "+ registrationVO.getFirstName();
+    	text +="<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"<br/>";
+    	
 
-    	text +="</b></font><br><br>Just a quick note to confirm that you are now a registered member of our Party Analyst Community.";
-
+    	
+    	text +="<div style='margin-left:20px; margin-top:15px;'><b><font style='color:blue'>Hey  "+registrationVO.getFirstName()+" "+registrationVO.getLastName()+"</font></div>";
+    	
+    	text +="<div style='margin-left:30px;margin-right:15px;margin-bottom:30px;'></b></font><br>Just a quick note to confirm that you are now a registered member of our family.";
+    	
     	text +="<br><br>Thank you for joining - we're so glad to have you as the newest member of our growing Community.";
 
-    	text +="<br><br>Here are your login details. Please keep them safe.";
-
-    	text +="<br><br>Username:"+ " "+registrationVO.getEmail();
-    	text +="<br>Password:"+" "+registrationVO.getPassword();
-    	text +="<br><br>You can now connect with people, post problems, post comments and do lot more things. Why wait? Login now and start connecting with people. <br>Follow this link to log in <a href="+login+">Login</a>&nbsp;&nbsp;If you can't get login page click below url :";
-    	text +="<br><br><a href="+login+" target='_blank'>"+login+"</a>";
-    	text +="<br><br>Explore more about your Constituency : <a href="+constituency+">"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a>&nbsp;&nbsp;If you can't get constituency page click below url :";
-    	text +="<br><br><a href="+constituency+" target='_blank'>"+constituency+"</a>";
-    	text +="<br><br>Explore more about your  District : <a href="+district+">"+registrationVO.getDistrict()+"</a>&nbsp;&nbsp;If you can't get district page click below url :";
-    	text +="<br><br><a href="+district+" target='_blank'>"+district+"</a>";
-    	text +="<br><br><br>Please add this email which you like from Party Analyst won&#39;t go for junk email."; 
-    	text +="<br>We hope to see you around and take part in our community!!!";
+    	
+    	text +="<br><br>Here are your login details. Please keep them safe for future reference.";
+    	
+    	text +="<br><br><b>Username : </b>"+ " <span style='text-decoration: none;'>"+registrationVO.getEmail()+"</span>";
+    	text +="<br><br><b>Password : </b>"+" "+registrationVO.getPassword();
+    	
+    	text +="<br><br><b>Getting Started : </b>";
+    	text +="<br><ul><li>Connect with your local & likeminded people</li>";
+    	text +="<li>Post Problems to be noticed by everyone and understand the impact of them</li>";
+    	text +="<li>Post Comments on problems and leaders</li>";
+    	text +="<li>Subscribe and receive regular updates</li></ul>";
+    	
+    	text +="<br><b>Get Informative data in a click : </b>";
+    	text +="<ul><li>State, District and Constituency level info on both Assembly and Parliament elections</li>";
+    	text +="<li>Geographical information about constituency</li>";
+    	text +="<li>Information about Parties and Leaders and a lot more….</li></ul>";
+    	
+    	text +="<br>Explore more about your constituency : <b><a href="+constituency+">"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a></b>";
+    	text +="<br><br><a href="+constituency+" target='_blank'>"+constituency+"</a><br>";
+    	
+    	text +="<br>Explore more about your district : <b><a href="+district+">"+registrationVO.getDistrict()+"</a></b><br>";
+    	text +="<br><a href="+district+" target='_blank'>"+district+"</a>";
+    	
+    	text +="<br><br>We hope to see you around and take part in our community!!!";
     	text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
-    	text +="<br><br><b>Best Wishes,";
-    	text +="<br><font color=\"green\">Party Analyst Team.</font></b>";
-
+    	text +="<br><br>Have a good day!";
+    	text +="<br><br>-&nbsp;&nbsp;&nbsp;PartyAnalyst Team.";
+    	text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us don’t end up in your junk folder.";
+    	text +="</div></div>";
+    	
     	/*text +="<br><br>PS: Now that you are part of our community, why not invite your friends to join our community? You can not only connect and share your thoughts with them but also make them part of the change.";
 
     	text +="<br>INVITE FRIENDS NOW";*/
