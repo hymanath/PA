@@ -549,8 +549,7 @@ function callAjax(jsObj,url){
 					}
 					else if(jsObj.task == "connectUserSet")
 					{
-						hideAjaxImg("searchAjaxImageSpan");
-						showAllConnectedUsersStatus(jsObj,results);
+						//showAllConnectedUsersStatus(jsObj,results);
 					}
 					else if(jsObj.task == "connectToUser")
 					{
@@ -1097,7 +1096,7 @@ function buildPeopleYouMayKnowContent()
 	
 	var arrData = peopleYouMayKnowInfo.peopleYouMayKnow;
 
-	for(var i=0; i<arrData.length; i++)
+	for(var i=0; i<arrData.length && i<3; i++)
 	{
 		str += '	<tr>';
 		str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
@@ -1127,7 +1126,7 @@ function buildPeopleYouMayKnowContent()
 	str += '	</div>';
 	if(arrData.length!=0){
 		str += '	<div id="peopleMayKnow_buttonDiv">';
-		str += '	<a href="javascript:{}"> View All </a>';
+		str += '	<a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')""> View All </a>';
 		str += '	</div>';	
 	}else{
 		str += '	<div style="text-align:left;padding:5px 20px 5px 5px;">';
