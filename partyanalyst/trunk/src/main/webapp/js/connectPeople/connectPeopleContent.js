@@ -304,10 +304,10 @@ function showAllConnectedUsersInPanel(jsObj,results)
 {	
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
-	var totalResultsCount = results.totalResultsCnt;
-	//var totalResultsCount = results.totalResultsCnt;
+	var totalResultsCount = results.totalResultsCount;
+	//var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCnt - results.connectedPeopleCount);
+	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
 	//var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
 
 	var users = results.candidateVO;
@@ -441,7 +441,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 
 function connectUserSetPeople()
 {
-	showAjaxImg("searchAjaxImageSpan");
+
 	//var elements = document.getElementsByName("connectUserCheck");
 	var statusElmt = document.getElementById("allConnectPeopleStatusTextDiv");
 
@@ -463,6 +463,11 @@ function connectUserSetPeople()
 	}*/
 	
 	users.push(connectRequestedUserId);
+
+	var divId = "connectPeopleButtonDivId_"+connectRequestedUserId;
+	var divLeftId = "connectPeopleButtonLeftDivId_"+connectRequestedUserId;
+	var divRightId = "connectPeopleButtonRightDivId_"+connectRequestedUserId;
+
 	if(users.length == 0)
 	{
 		statusElmt.innerHTML = '<font color="red">Atleast One User Has To Selected To Connect</font>';
@@ -473,6 +478,12 @@ function connectUserSetPeople()
 
 	var connectTextAreaElmt = document.getElementById("AllConnectUserMsg");
 	var connectMsg = connectTextAreaElmt.value;
+
+	document.getElementById("allConnectPeople_footer").style.display="none";
+	
+	document.getElementById(divLeftId).innerHTML = "";
+	document.getElementById(divId).innerHTML = "PENDING";
+	document.getElementById(divRightId).innerHTML = "";
 	
 	if(connetLocationType=="DISTRICT"){
 		var jsObj ={
@@ -545,14 +556,14 @@ function buildAllConnectUserString(users)
 		{
 			str += '<table border="0" cellpadding="0" cellspacing="0">';
 			str += '<tr>';
-			str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
+			str += '<td><div id="connectPeopleButtonLeftDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_left.png"/></div></td>';
 			if(userLoginStatus == "false"){
 				str += '<td><div class="allConnectPeople_Head_botton_center_div"><a style="color:white;" class="allConnectPeople_Head_botton_center_span" href=connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a></div></td>';
 			}
 			else{
-			str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
+			str += '<td><div id="connectPeopleButtonDivId_'+users[i].id+'"><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></div></td>';
 			}
-			str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
+			str += '<td><div id="connectPeopleButtonRightDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_right.png"/></div></td>';
 			str += '</tr>';
 			str += '</table>';
 		}
@@ -827,11 +838,3 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
-
-function showAjaxImg(divId){
-	 document.getElementById(divId).style.display = 'block';
- }
-
- function hideAjaxImg(divId){
-	 document.getElementById(divId).style.display = 'none';
- }
