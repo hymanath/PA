@@ -9,6 +9,9 @@
    var queryTypeChecked='Public';
    var gGallaryId;
    var updateGallId;
+   var canCount = 0;
+	var parCount = 0;
+	var SPCount = 0;
   //var specialPageId = ${specialPageVO.specialPageId};
    
    var specialPageDescriptionId='${specialPageDescriptionId}';
@@ -296,6 +299,7 @@ function showUploadVideoStatus(result)
 
 function clearUploadVideoFields()
 {
+	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
 	document.getElementById('vpublicRadioId').checked = true;
@@ -312,51 +316,51 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
-         	
+         
 		if(jsObj.task == "getParties")
 			{
-				document.getElementById("partySelectId").style.display = 'block';
-               clearOptionsListForSelectElmtId('partySelectId');
-			   $("#partySelectId").prepend("<option value='0'>Select Party</option>");
-			   createOptionsForSelectElmtId('partySelectId',myResults);
+				document.getElementById(jsObj.selectOptionId).style.display = 'block';
+		   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
+		   $("#"+jsObj.selectOptionId+"").prepend("<option value='0'>Select Party</option>");
+		   createOptionsForSelectElmtId(jsObj.selectOptionId,myResults);
             }
 		else if(jsObj.task == "partyGallariesForUplaod" || jsObj.task == "candidateGallariesForUplaod" || jsObj.task == "photoGallariesForUplaod")
 		{
 			if(jsObj.userOption =='Party')
 			{
-			   document.getElementById("uploadPartyGalleryId").style.display = 'block';
-			   clearOptionsListForSelectElmtId('uploadPartyGalleryId');
-			   $("#uploadPartyGalleryId").prepend("<option value='0'>Select Gallery</option>");
-			   createOptionsForSelectElmtId('uploadPartyGalleryId',myResults);
+			   document.getElementById(jsObj.galSelectOPtionId).style.display = 'block';
+			   clearOptionsListForSelectElmtId(jsObj.galSelectOPtionId);
+			   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
+			   createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 			}
 			else if(jsObj.userOption =='Candidate')
 			{
-			   document.getElementById("uploadCandidateGalleryId").style.display = 'block';
-			   clearOptionsListForSelectElmtId('uploadCandidateGalleryId');
-			   $("#uploadCandidateGalleryId").prepend("<option value='0'>Select Gallery</option>");
-			   createOptionsForSelectElmtId('uploadCandidateGalleryId',myResults);
+			   document.getElementById(jsObj.galSelectOPtionId).style.display = 'block';
+			   clearOptionsListForSelectElmtId(jsObj.galSelectOPtionId);
+			   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
+			   createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 			}
 			else if(jsObj.userOption =='SpecialPage')
 			{
-			   document.getElementById("uploadSpecialPageGalleryId").style.display = 'block';
-			   clearOptionsListForSelectElmtId('uploadSpecialPageGalleryId');
-			   $("#uploadSpecialPageGalleryId").prepend("<option value='0'>Select Gallery</option>");
-     			createOptionsForSelectElmtId('uploadSpecialPageGalleryId',myResults);
+			   document.getElementById(jsObj.galSelectOPtionId).style.display = 'block';
+			   clearOptionsListForSelectElmtId(jsObj.galSelectOPtionId);
+			   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
+     			createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 			}
 		}
 		else if(jsObj.task == "getCandidates")
 		{
-		   document.getElementById("candidateSelectId").style.display = 'block';
-		   clearOptionsListForSelectElmtId('candidateSelectId');
-		   $("#candidateSelectId").prepend("<option value='0'>Select Candidate</option>");
-		   createOptionsForSelectElmtId('candidateSelectId',myResults);
+		   document.getElementById(jsObj.selectOptionId).style.display = 'block';
+		   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
+		   $("#"+jsObj.selectOptionId+"").prepend("<option value='0'>Select Candidate</option>");
+		   createOptionsForSelectElmtId(jsObj.selectOptionId,myResults);
 		}
 		else if(jsObj.task == "getSpecialPages")
 		{
-			document.getElementById("spSelectId").style.display = 'block';
-		   clearOptionsListForSelectElmtId('spSelectId');
-		   $("#spSelectId").prepend("<option value='0'>Select Special Page</option>");
-		   createOptionsForSelectElmtId('spSelectId',myResults);
+		   document.getElementById(jsObj.selectOptionId).style.display = 'block';
+		   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
+		   $("#"+jsObj.selectOptionId+"").prepend("<option value='0'>Select Special Page</option>");
+		   createOptionsForSelectElmtId(jsObj.selectOptionId,myResults);
 		}
 
 	}
@@ -764,8 +768,8 @@ function buildUploadVideoDiv()
 	str += '<div style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromSpecialPage\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProVideoDiv"></div>'; 
-	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
+	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
 	str+='</div>';
@@ -775,7 +779,39 @@ function buildUploadVideoDiv()
 	getLanguage();
 }
 
-
+function addMoreCandidates(contentType)
+{
+  var moreDiv = document.createElement("addMoreCandidatesDiv");
+  var str ='';
+  str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId'+canCount+'" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\',\'uploadCandidateGalleryId'+canCount+'\');"></select></div>';
+  str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId'+canCount+'" name="uploadCandidateGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+  moreDiv.innerHTML = str;
+  getCandidates("candidateSelectId"+canCount+"");
+	canCount++;
+	document.getElementById("addMoreCandidatesDiv").appendChild(moreDiv);
+}
+function addMoreParties(contentType)
+{
+  var morePartyDiv = document.createElement("addMorePartiesDiv");
+  var str ='';
+  str+= '<div id="partySelectionDiv"><select id="partySelectId'+parCount+'" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\',\'uploadPartyGalleryId'+parCount+'\');"></select></div>';
+  str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId'+parCount+'" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+  morePartyDiv.innerHTML = str;
+  getParties("partySelectId"+parCount+"");
+	parCount++;
+	document.getElementById("addMorePartiesDiv").appendChild(morePartyDiv);
+}
+function addMoreSpecialPage(contentType)
+{
+  var moreSPDiv = document.createElement("addMoreSPDiv");
+  var str ='';
+  str+= '<div id="spSelectionDiv"><select id="spSelectId'+SPCount+'" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\',\'uploadSpecialPageGalleryId'+SPCount+'\');"></select></div>';
+  str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId'+SPCount+'" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+  moreSPDiv.innerHTML = str;
+  getSpecialPages("spSelectId"+SPCount+"");
+	SPCount++;
+	document.getElementById("addMoreSPDiv").appendChild(moreSPDiv);
+}
 function getSource(){
 	
 var jsObj = {
@@ -824,23 +860,37 @@ function uploadVideoGallary(){
 	var canSelectId ='';
 	var canGalleryId = '';
 	var partyGalleryId='';
+	var canGalIdArray = new Array();
+	var spGalIdArray = new Array();
+	var partyGalIdArray = new Array();
 	if(spcheckboxIdElmt !=null && spcheckboxIdElmt.checked)
 	{
 		spSelectId = document.getElementById("spSelectId").value;
 		SPGalleryId = document.getElementById("uploadSpecialPageGalleryId").value;
-		
+		$("#addMoreSPDiv").find("#spGallerySelectDiv").find("select").each(function(){
+			spGalIdArray.push(this.value);
+		});
+		spGalIdArray.push(SPGalleryId);
 	}
 	if(pcheckboxIdElmt !=null && pcheckboxIdElmt.checked)
 	{	
 		partySelectId = document.getElementById("partySelectId").value;
 		partyGalleryId = document.getElementById("uploadPartyGalleryId").value;
-		
+		$("#addMorePartiesDiv").find("#partyGallerySelectDiv").find("select").each(function(){
+			partyGalIdArray.push(this.value);
+					
+		});
+		partyGalIdArray.push(partyGalleryId);
 	}
 	if(ccheckboxIdElmt !=null && ccheckboxIdElmt.checked)
 	{	
 		canSelectId = document.getElementById("candidateSelectId").value;
 		canGalleryId = document.getElementById("uploadCandidateGalleryId").value;
-		
+		$("#addMoreCandidatesDiv").find("#candidateGallerySelectDiv").find("select").each(function(){
+			canGalIdArray.push(this.value);
+					
+		});
+		canGalIdArray.push(canGalleryId);
 	}
 	var makeThis = 'private';
 
@@ -908,9 +958,9 @@ function uploadVideoGallary(){
 
 	var jsObj =
 		{ 
-			canGalleryId :canGalleryId,
-		   	SPGalleryId : SPGalleryId,
-			partyGalleryId : partyGalleryId,
+			canGalleryId :canGalIdArray,
+		   	SPGalleryId : spGalIdArray,
+			partyGalleryId : partyGalIdArray,
             gallaryId	: galSelectId,
 			videoTitle	: fileTitle,
 			videoDescription : fileDesc,
@@ -1199,7 +1249,7 @@ function  buildUploadNews()
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
 	str += 	 '</tr>';
 	str += 	'</table>';
-	str += '<fieldset class="imgFieldset" style="width:480px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px;">';
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
@@ -1268,7 +1318,7 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
 	str +='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromSpecialPage\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
-	str +='<div id="otherProNewsDiv"></div>';
+	str +='<div id="otherProNewsDiv" style="margin: 10px;"></div>';
 	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td>';
 	str +='<td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
@@ -1323,6 +1373,7 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
+	$("#otherProNewsDiv").html('');
 	document.getElementById('fileTitle').value = '';
 	document.getElementById('fileDescription').value = '';
 	document.getElementById('keywords').value = '';
@@ -3235,9 +3286,9 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileType" value="candidate_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
-	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotosDiv\',\'fromSpecialPage\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProPhotosDiv"></div>';
-	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromSpecialPage\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>';
+	str += '<table style="margin-top: 31px;"><tr><td style="padding-right: 22px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</form>';
 	str += '</fieldset>';
@@ -3250,45 +3301,59 @@ function otherProfiles(divElmt,requestFrom,contentType)
 {
 	var otherProDivElmt = document.getElementById(divElmt);
 	var str = '';
-	$("#otherProPhotosDiv").html('');
+	$("#otherProPhotoDiv").html('');
 	$("#otherProVideoDiv").html('');
 	$("#otherProNewsDiv").html('');
 	if(requestFrom == 'fromPartyProfile')
 	{
-		str+= '<input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages()">   Special Page';
-		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\');"></select></div>';
+		str+= '<span style="font-weight: bold; font-size: 13px;"><input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages(\'spSelectId\')">   Special Pages</span>';
+		str+= '<span style="float: right;"><input class="imageButton" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
+		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\',\'uploadSpecialPageGalleryId\');"></select></div>';
 		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
-		str+= '<input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates()">   Candidate Profile Page';
-		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\');"></select></div>';
+		str+= '<div id="addMoreSPDiv"></div>';
+		str+= '<div style="font-weight: bold; font-size: 13px; margin-top: 15px; margin-right: 95px;"><input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates(\'candidateSelectId\')">   Candidate Profile Page</div>';
+		str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Candidates" onclick="addMoreCandidates(\''+contentType+'\')"></span>';
+		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\',\'uploadCandidateGalleryId\');"></select></div>';
 		str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId" name="uploadCandidateGalleryId" style="width: 250px; margin: 10px;display:none;"></select></div>';
+		str+= '<div id="addMoreCandidatesDiv"></div>';
 	}
 	else if(requestFrom == 'fromSpecialPage')
 	{
-		str+= '<input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates()">   Candidate Profile Page';
-		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\');"></select></div>';
+		str+= '<span style="font-weight: bold; font-size: 13px; margin-right: 94px;"><input type="checkbox" id="ccheckboxId" name="ccheckbox" onclick="getCandidates(\'candidateSelectId\')">   Candidate Profile Page</span>';
+		str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Candidates" onclick="addMoreCandidates(\''+contentType+'\')"></span>';
+		str+= '<div id="candidateSelectionDiv"><select id="candidateSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Candidate\',\'uploadCandidateGalleryId\');"></select></div>';
 		str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId" name="uploadCandidateGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
-		str+= '<input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties()">   Party Profile Page';
-		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\');"></select></div>';
+		str+= '<div id="addMoreCandidatesDiv"></div>';
+		str+= '<div style="font-weight: bold; font-size: 13px; margin-top: 15px; margin-right: 127px;"><input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties(\'partySelectId\')">   Party Profile Page</div>';
+		str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
+		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\',\'uploadPartyGalleryId\');"></select></div>';
 		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+		str+= '<div id="addMorePartiesDiv"></div>';
+		
 	}
 	else if(requestFrom == 'fromCandidateProfile')
 	{
-		str+= '<input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages()">   Special Page';
-		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\');"></select></div>';
+		str+= '<span style="font-weight: bold; font-size: 13px;"><input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages(\'spSelectId\')">   Special Page</span>';
+		str+= '<span style="float: right;"><input class="imageButton" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
+		str+= '<div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\',\'uploadSpecialPageGalleryId\');"></select></div>';
 		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
-		str+= '<input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties()">   Party Profile Page';
-		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\');"></select></div>';
+		str+= '<div id="addMoreSPDiv"></div>';
+		str+= '<div style="font-weight: bold; font-size: 13px; margin-top: 15px; margin-right: 127px;"><input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties(\'partySelectId\')">   Party Profile Page</div>';
+	    str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
+		str+= '<div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\',\'uploadPartyGalleryId\');"></select></div>';
 		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;"></select></div>';
+		str+= '<div id="addMorePartiesDiv"></div>';
 	}
 	$(otherProDivElmt).html(str);
 
 
 }
-function getGallaries(selectedId,contentType,userOption)
+function getGallaries(selectedId,contentType,userOption,galSelectOPtionId)
 {
 	if(userOption == 'Party')
 	{
 		var jsObj = {
+			galSelectOPtionId :galSelectOPtionId,
 			userOption : userOption,
 			partyId :selectedId,
 			contentType : contentType,
@@ -3301,6 +3366,7 @@ function getGallaries(selectedId,contentType,userOption)
 	if(userOption == 'Candidate')
 	{
 		var jsObj = {
+			galSelectOPtionId :galSelectOPtionId,
 			userOption : userOption,
 			candidateId :selectedId,
 			contentType : contentType,
@@ -3314,6 +3380,7 @@ function getGallaries(selectedId,contentType,userOption)
 	{
 		var jsObj =
 		{ 
+			galSelectOPtionId :galSelectOPtionId,
 			userOption : userOption,
             specialPageId : selectedId,
 			contentType : contentType,
@@ -3327,12 +3394,13 @@ function getGallaries(selectedId,contentType,userOption)
 	
 }
 
-function getParties()
+function getParties(selectOptionId)
 {
 	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
 	if(pcheckboxIdElmt.checked)
 	{
 		var jsObj ={
+			selectOptionId:selectOptionId,
 			task :"getParties"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3343,15 +3411,17 @@ function getParties()
 	{
 		document.getElementById("partySelectId").style.display ='none';
 		document.getElementById("uploadPartyGalleryId").style.display ='none';
+		$("#addMorePartiesDiv").html("");
 	}
 
 }
-function getCandidates()
+function getCandidates(selectOptionId)
 {
 	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
 	if(ccheckboxIdElmt.checked)
 	{
 		var jsObj ={
+			selectOptionId :selectOptionId,
 			task :"getCandidates"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3362,14 +3432,16 @@ function getCandidates()
 	{
 		document.getElementById("candidateSelectId").style.display ='none';
 		document.getElementById("uploadCandidateGalleryId").style.display ='none';
+		$("#addMoreCandidatesDiv").html("");
 	}
 }
-function getSpecialPages()
+function getSpecialPages(selectOptionId)
 {
 	var spcheckboxIdElmt = document.getElementById("spcheckboxId");
 	if(spcheckboxIdElmt.checked)
 	{
 		var jsObj ={
+			selectOptionId:selectOptionId,
 			task :"getSpecialPages"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3380,6 +3452,7 @@ function getSpecialPages()
 	{
 		document.getElementById("spSelectId").style.display ='none';
 		document.getElementById("uploadSpecialPageGalleryId").style.display ='none';
+		$("#addMoreSPDiv").html('');
 	}
 
 }
@@ -3445,10 +3518,10 @@ function showUploadStatus(myResult)
 
 function clearUploadFileFields()
 {
+	$("#otherProPhotoDiv").html('');
 	document.getElementById('fileTitleId').value='';
 	document.getElementById('fileDescId').value='';
 	document.getElementById('fileId').value='';
-	$("#otherProPhotosDiv").html('');
 	
 }
 
