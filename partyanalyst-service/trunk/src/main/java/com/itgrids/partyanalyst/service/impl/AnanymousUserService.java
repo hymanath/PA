@@ -575,7 +575,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 							emailDetailsVO.setSubject(subject);
 							emailDetailsVO.setSenderName(senderName);
 							
-							resultStatus = mailsSendingService.sendEmailFriendRequest(emailDetailsVO);
+							mailsSendingService.sendEmailFriendRequest(emailDetailsVO);
 						}
 					}
 			}
