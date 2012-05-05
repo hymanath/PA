@@ -180,5 +180,34 @@ public class MailsSendingService implements IMailsSendingService{
 		
 	}
 	
+	public ResultStatus acceptEmailForAnalyzeConstituency(EmailDetailsVO emailDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			if(emailDetailsVO == null)
+			{
+				log.error("Error Occured in acceptEmailForAnalyzeConstituency() of mailSending Service");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			String subject = "Partyanalyst.com";
+			String content = "<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getFromAddress()+",</b><br/>" +
+							"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> Your Political Reason for <b>" +emailDetailsVO.getPartyStrength()+ " the candidate " +emailDetailsVO.getCandidateName()+ " from " +emailDetailsVO.getConstituencyName()+ " " +emailDetailsVO.getElectionType()+  " Constituency Added Successfully . We will send your comment to Admin for approval.</b></font> <br/></div></div>";
+			emailDetailsVO.setContent(content);
+			emailDetailsVO.setSubject(subject);
+			//emailDetailsVO.setContent(content);
+			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	
 
+}
 }
