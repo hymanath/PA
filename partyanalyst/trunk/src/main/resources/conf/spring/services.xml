@@ -748,7 +748,8 @@
 	    <property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />
 	    <property name="ananymousUserDAO" ref="ananymousUserDAO" />
 	    <property name="registrationDAO" ref="registrationDAO" />
-	    <property name="commentDataDAO" ref="commentDataDAO" />	 
+	    <property name="commentDataDAO" ref="commentDataDAO" />	
+	    <property name="mailsSendingService" ref="mailsSendingService" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />   
 	</bean>
 	
