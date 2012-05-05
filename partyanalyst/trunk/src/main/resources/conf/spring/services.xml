@@ -1066,40 +1066,51 @@
 	</bean>
 	
 	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
-		<property name="mailService" ref="mailService"></property>
-		<property name="mailsTemplateService" ref="mailsTemplateService"></property>
-		<property name="ananymousUserDAO" ref="ananymousUserDAO"></property>
+		<property name="mailService" ref="mailService"/>
+		<property name="mailsTemplateService" ref="mailsTemplateService"/>
+		<property name="ananymousUserDAO" ref="ananymousUserDAO"/>
 	</bean>
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
 	</bean>
 	
 	<bean name="schedulerService" class="com.itgrids.partyanalyst.notification.service.impl.SchedulerService">
-		<property name="mailService" ref="mailService"></property>
-	</bean>
-	
-	<bean name="schedulerTaskService" class="com.itgrids.partyanalyst.notification.service.impl.SchedulerTaskService">
-		<property name="searchEngineIPAddressDAO" ref="searchEngineIPAddressDAO"></property>
+		<property name="mailService" ref="mailService"/>
+		<property name="searchEngineIPAddressDAO" ref="searchEngineIPAddressDAO"/>
+		<property name="userTrackingDAO" ref="userTrackingDAO"/>
+		
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
-		<property name="schedulerService" ref="schedulerService"></property>
+		<property name="schedulerService" ref="schedulerService"/>
+		<property name="mailsSendingService" ref="mailsSendingService"/>
 	</bean>
 	
-	<bean name="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
-	  	<property name="targetMethod" value="runningBatchJobMethods" />
+	  	<property name="targetMethod" value="runTheBatchJobForEveryDay" />
 	</bean> 
 	
-	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="jobDetail" />
-    	<property name="cronExpression" value="0 0 17 * * ?" />
+	<bean name="cronTriggerForEveryDayJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJob" />
+    	<property name="cronExpression" value="0 0 14 * * ?" />
+	</bean>
+	
+	<bean name="weeklyBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobForEveryWeek" />
+	</bean> 
+	
+	<bean name="cronTriggerForWeeklyJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="weeklyBatchJob" />
+    	<property name="cronExpression" value="0 30 14 * * 1" />
 	</bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
-            <ref bean="cronTrigger" />
+            <ref bean="cronTriggerForEveryDayJob" />
+            <ref bean="cronTriggerForWeeklyJob" />
         </list>
     	</property>
 	</bean>
