@@ -12,4 +12,7 @@ public interface IMailsSendingService {
 	public ResultStatus sendMessageToConnectUser(EmailDetailsVO emailDetailsVO);
 	
 	public ResultStatus sendMailsToPasswordnotUpdatedusers();
+	
+	public ResultStatus acceptEmailForAnalyzeConstituency(EmailDetailsVO emailDetailsVO);
+	
 }
