@@ -142,7 +142,7 @@ public class MailsSendingService implements IMailsSendingService{
 				{
 					try{
 						
-						String content = "<div style = 'background-color:#E0FFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'></div>" +
+						String content = "<div style = 'background-color:#EFFFFF;width:600px;border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'></div>" +
 								"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'> ";				
 						       content+="Dear <font style='color:#1155CC;'><b>"+userDetails[0].toString()+"</b>,</font><br>";
 						       
@@ -173,7 +173,7 @@ public class MailsSendingService implements IMailsSendingService{
 			return resultStatus;
 	}
 	catch(Exception e){		
-		log.info("Exception raised in the sendMailsToPasswordnotUpdatedusers method");
+		log.info("Exception raised in the sendMailsToPasswordnotUpdatedusers method - "+e);
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		return resultStatus;
 	}

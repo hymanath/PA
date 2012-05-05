@@ -309,6 +309,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 						ananymousUser.setUsername(userDetails.getEmail());
 						ananymousUser.setPassword(userDetails.getPassword());
 						ananymousUser.setRegisteredDate(getCurrentDateAndTime());
+						ananymousUser.setEmail(userDetails.getEmail());
+						ananymousUser.setIsPwdChanged(IConstants.FALSE);
 					}
 					
 					
@@ -322,14 +324,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 					Date date = format.parse(userDetails.getDateOfBirth());
 					ananymousUser.setDateofbirth(date);
 					}
-					ananymousUser.setEmail(userDetails.getEmail());
+					
 					ananymousUser.setMobile(userDetails.getMobile());
 					ananymousUser.setAddress(userDetails.getAddress());
 					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
 					ananymousUser.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
 					ananymousUser.setUpdatedDate(getCurrentDateAndTime());		
-					
 					
 					
 					if(isUpdate && userDetails.getUserProfilePic()!=null)
