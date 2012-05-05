@@ -14,6 +14,35 @@ public class EmailDetailsVO implements Serializable{
 	private String welcomeName;
 	private String senderName;
 	
+	private String electionType;
+	private String constituencyName;
+	private String partyStrength;
+	private String candidateName;
+	
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getPartyStrength() {
+		return partyStrength;
+	}
+	public void setPartyStrength(String partyStrength) {
+		this.partyStrength = partyStrength;
+	}
 	public String getSenderName() {
 		return senderName;
 	}
