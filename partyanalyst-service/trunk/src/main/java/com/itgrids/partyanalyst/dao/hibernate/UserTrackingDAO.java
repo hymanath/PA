@@ -157,7 +157,7 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	
 	public List<Object> getPageFlowOfUserBetweenDates(Date fromDate, Date toDate, String userType, String sessionId){
 		StringBuilder query = new StringBuilder();
-		query.append("select model.urlName, model.time from UserTracking model where model.userType = ? and Date(model.time) BETWEEN ? and ? and model.sessionId=?");
+		query.append("select model.urlName, model.time from UserTracking model where model.userType = ? and Date(model.time) BETWEEN ? and ? and model.sessionId=? order by model.userTrackingId ");
 		Query queryObj = getSession().createQuery(query.toString());	
 		queryObj.setParameter(0, userType);
 		queryObj.setParameter(1, fromDate);
