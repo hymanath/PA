@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.model.SearchEngineIPAddress;
 public interface ISearchEngineIPAddressDAO extends GenericDao<SearchEngineIPAddress,Long>{
 	
 	public List<String> getAllSearchEngineIPAddresses();
+	
+	public List<String> getAllIPAddress();
 
 }
