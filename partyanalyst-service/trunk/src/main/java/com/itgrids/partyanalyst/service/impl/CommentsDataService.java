@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.print.DocFlavor.STRING;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -39,6 +41,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -54,6 +57,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
+import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentsDataService implements ICommentsDataService {
@@ -72,6 +76,15 @@ public class CommentsDataService implements ICommentsDataService {
 	private IRegistrationDAO registrationDAO;
 	private ICommentDataDAO commentDataDAO; 	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IMailsSendingService mailsSendingService;
+	
+
+	public IMailsSendingService getMailsSendingService() {
+		return mailsSendingService;
+	}
+	public void setMailsSendingService(IMailsSendingService mailsSendingService) {
+		this.mailsSendingService = mailsSendingService;
+	}
 
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
@@ -245,7 +258,7 @@ public class CommentsDataService implements ICommentsDataService {
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				if(electionCommentsVO != null && electionCommentsVO.size() > 0)
 				electionCommentsVO.get(0).setResultStatus(resultStatus);
-			}
+			}	
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
@@ -576,13 +589,15 @@ public class CommentsDataService implements ICommentsDataService {
 			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, 
 			Long userId, String userType, Long severityPercent){
 		
-		log.debug("Inside saveCandidateCommentsToDB Method ......");
 		
+		String userName = "";
+		String email = "";
 		CommentCategoryCandidate commentCategoryCandidate = null;
 		Float severity = severityPercent/100f;
 		Float remainingValue = 1 - severity;
 		Float tempSeverity = 0f;
 		String hqlQuery = "";
+	
 		if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
 			hqlQuery = " and model.paidUser.registrationId = ?";
 		else
@@ -604,7 +619,7 @@ public class CommentsDataService implements ICommentsDataService {
 		CandidateCommentsVO candidateComments = null;
 		commentCategoryCandidate = saveCandidateCommentForAnElection(electionType, electionYear, electionId, 
 				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType, severity);
-		
+		try{
 		if(commentCategoryCandidate != null){
 			candidateComments = new CandidateCommentsVO();
 			candidateComments.setCandidateId(candidateId);
@@ -613,6 +628,53 @@ public class CommentsDataService implements ICommentsDataService {
 			candidateComments.setCandidate(commentCategoryCandidate.getNomination().getCandidate().getLastname());
 			candidateComments.setCommentedOn(commentCategoryCandidate.getCommentData().getCommentDate().toString());
 			candidateComments.setCommentCategory(commentCategoryCandidate.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
+			candidateComments.setConstituencyName(commentCategoryCandidate.getNomination().getConstituencyElection().getConstituency().getName().toString());
+			candidateComments.setElectionType(commentCategoryCandidate.getNomination().getConstituencyElection().getElection().getElectionScope().getElectionType().getElectionType().toString());
+			candidateComments.setRank(commentCategoryCandidate.getNomination().getCandidateResult().getRank());
+			
+		}
+		
+		if(userId != null)
+		{
+			List<Object[]> list = ananymousUserDAO.getUserEmail(userId);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					
+					userName = params[1].toString()+ " " +params[2].toString();
+					email = params[3].toString();
+					if(email !=null && email.trim().length() > 0)
+					{
+						EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+						emailDetailsVO.setFromAddress(userName);
+						emailDetailsVO.setToAddress(email);
+						emailDetailsVO.setHost(IConstants.SERVER);
+						emailDetailsVO.setElectionType(candidateComments.getElectionType().toString());
+						if(candidateComments.getRank() == 1 )
+						emailDetailsVO.setPartyStrength("winning");
+						else
+							emailDetailsVO.setPartyStrength("loosing");
+						emailDetailsVO.setCandidateName(candidateComments.getCandidate().toString());
+						emailDetailsVO.setConstituencyName(candidateComments.getConstituencyName().toString());
+						
+						
+						mailsSendingService.acceptEmailForAnalyzeConstituency(emailDetailsVO);
+						
+
+						
+					
+				}
+			}
+		}
+		
+		}
+		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.error("Error occured in saveCandidateCommentsToDB() of CommentDataService");
 		}
 		return candidateComments;
 	}
@@ -823,7 +885,7 @@ public class CommentsDataService implements ICommentsDataService {
 			partyComments.setCommentDesc(commentDesc);
 			partyComments.setCommentedBy(commentedBy);
 			partyComments.setCommentedOn(commentCategoryParty.getCommentData().getCommentDate().toString());
-			partyComments.setCommentCategory(commentCategoryParty.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
+			partyComments.setCommentCategory(commentCategoryParty.getCommentData().getCommentDataCategory().getCommentDataCategoryType());	
 		}
 	 return partyComments;
 	}
