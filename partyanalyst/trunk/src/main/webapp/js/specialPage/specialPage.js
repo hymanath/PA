@@ -258,7 +258,8 @@ function callAjax(jsObj,url){
 			}
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
-				 showUploadVideoStatus(myResults);  
+				 showUploadVideoStatus(myResults);
+				 enableButton('uploadVideoBtnId');
 			}
 			
 	}
@@ -769,7 +770,7 @@ function buildUploadVideoDiv()
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromSpecialPage\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
-	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin-top: 27px;"><tr><td style="padding-right: 18px;"><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
 	str+='</div>';
@@ -955,7 +956,7 @@ function uploadVideoGallary(){
 
 	if(isPublic)
 		makeThis = 'public';
-
+	disableButton('uploadVideoBtnId');
 	var jsObj =
 		{ 
 			canGalleryId :canGalIdArray,
@@ -1319,7 +1320,7 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
 	str +='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromSpecialPage\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
 	str +='<div id="otherProNewsDiv" style="margin: 10px;"></div>';
-	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td>';
+	str += '<table><tr><td><input type="button" id="uploadNewsBtnId" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td>';
 	str +='<td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
@@ -1331,13 +1332,15 @@ function  buildUploadNews()
 	getLanguage();
 }
 function uploadNews()
-{
+{	
 	if(validateNewsFileUpload())
 	{
+		disableButton('uploadNewsBtnId');
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
-					showNewsUploadStatus(uploadResult);				
+					showNewsUploadStatus(uploadResult);
+					enableButton('uploadNewsBtnId');
 				}
 			};
 
@@ -3288,7 +3291,7 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromSpecialPage\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>';
-	str += '<table style="margin-top: 31px;"><tr><td style="padding-right: 22px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin-top: 31px;"><tr><td style="padding-right: 22px;"><input type="button" id="uploadPhotoId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</form>';
 	str += '</fieldset>';
@@ -3478,10 +3481,12 @@ function uploadAFile()
 {
 	if(validateFileUpload())
 	{
+		disableButton('uploadPhotoId');
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
-					showUploadStatus(uploadResult);				
+					showUploadStatus(uploadResult);
+					enableButton('uploadPhotoId');
 				}
 			};
 
