@@ -142,7 +142,7 @@
 			<result type="chain" name="redirectUrl">${url}</result>
 			<result type="redirect" name="partyManagementAction">partyManagementAction.action</result>
 			<result type="redirect" name="candidateElectionResultsAction">candidateElectionResultsAction.action</result>
-			<result type="redirect" name="imageManagementAdminAction">ImageManagementAdminAction.action</result>
+			<result type="redirect" name="imageManagementAdminAction">imageManagementAdminAction.action</result>
 			<result type="redirect" name="commentsControlAdminAction">commentsControlAdminAction.action</result>
 			<result type="redirect" name="problemApprovalAdminAction">problemApprovalAdminAction.action</result>
 			<result type="redirect" name="constituencyWiseCensusMappingAction">constituencyWiseCensusMappingAction.action</result>
