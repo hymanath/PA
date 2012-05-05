@@ -1266,7 +1266,7 @@ function openDialogOfProblems(type)
 		 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "getAllPostedProblemsDataAction.action?"+rparam+"&type="+type+"&sort=definition&dir=asc";	
+	var url = "getAllPostedProblemsDataAction.action?"+rparam+"&type="+type+"&sort=problemId&dir=desc";
 
 	custom_paginator.paginator({
 		startIndex:0,
@@ -1979,7 +1979,9 @@ function showpostedDivImg()
 		if(ajaxImageDivEle)
 		ajaxImageDivEle.style.display = 'none';
 	}
-	function openBrowserForSocialNetworking(id){
+	
+	function openBrowserForSocialNetworking(id)
+	{
 	    var browser1 = window.open("socialAuthenticationAction.action?id="+id,"Refer friends From "+id,"scrollbars=yes,height=600,width=600,left=200,top=200");				 
 		browser1.focus();
-		}
+	}
