@@ -308,7 +308,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						userDetails.setPassword(getPassword(pwd));
 						ananymousUser.setUsername(userDetails.getEmail());
 						ananymousUser.setPassword(userDetails.getPassword());
-						ananymousUser.setRegisteredDate(getCurrentDateAndTime());
+						ananymousUser.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
 						ananymousUser.setEmail(userDetails.getEmail());
 						ananymousUser.setIsPwdChanged(IConstants.FALSE);
 					}
@@ -330,7 +330,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
 					ananymousUser.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
-					ananymousUser.setUpdatedDate(getCurrentDateAndTime());		
+					ananymousUser.setUpdatedDate(dateUtilService.getCurrentDateAndTime());		
 					
 					
 					if(isUpdate && userDetails.getUserProfilePic()!=null)
@@ -1667,6 +1667,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.identifiedOn";
 		else if(coloumnType.equalsIgnoreCase("locationType"))
 			dbColoumnName = "model.problemLocation.problemImpactLevelValue";
+		else if(coloumnType.equalsIgnoreCase("problemId"))
+			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.problemId";
 		
 		return dbColoumnName;
 	}
