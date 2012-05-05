@@ -19,4 +19,10 @@ public class SearchEngineIPAddressDAO extends GenericDaoHibernate<SearchEngineIP
 	{
 		return getHibernateTemplate().find("select distinct model.ipAddress from SearchEngineIPAddress model");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getAllIPAddress()
+	{
+		return getHibernateTemplate().find("select distinct model.ipAddress from UserTracking model");
+	}
 }
