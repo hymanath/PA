@@ -659,7 +659,7 @@ function buildUploadPhotosDiv()
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromCandidateProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>';
-	str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 40px;"><input type="button" id="uploadPhotoBtnId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -975,10 +975,12 @@ function uploadAFile()
 {
 	if(validateFileUpload())
 	{
+		disableButton('uploadPhotoBtnId');
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
-					showUploadStatus(uploadResult);				
+					showUploadStatus(uploadResult);
+					enableButton('uploadPhotoBtnId');
 				}
 			};
 
@@ -993,10 +995,12 @@ function uploadNews()
 {
 	if(validateNewsFileUpload())
 	{
+		disableButton('uploadNewsBtnId');
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
-					showNewsUploadStatus(uploadResult);				
+					showNewsUploadStatus(uploadResult);
+					enableButton('uploadNewsBtnId');
 				}
 			};
 
@@ -1837,7 +1841,7 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromCandidateProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>';
-	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input type="button" id="uploadNewsBtnId" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -1954,7 +1958,7 @@ function buildUploadVideoDiv()
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromCandidateProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
-	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str += '<table><tr><td style="padding-right: 18px;"><input type="button" class="imageButton" id="uploadVideoBtnId" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	
 	str += '</fieldset>';
 	str+='</div>';
