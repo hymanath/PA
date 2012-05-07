@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,7 +20,6 @@ public class SchedulerService implements ISchedulerService{
 	
 	private ISearchEngineIPAddressDAO searchEngineIPAddressDAO;
 	private IUserTrackingDAO userTrackingDAO;
-	private DateUtilService dateUtilService = new DateUtilService();
 	
 	public IUserTrackingDAO getUserTrackingDAO() {
 		return userTrackingDAO;
@@ -46,7 +46,7 @@ public class SchedulerService implements ISchedulerService{
 		this.mailService = mailService;
 	}
 
-	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking()
+	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -54,7 +54,7 @@ public class SchedulerService implements ISchedulerService{
 			
 			if(ipAddressList != null && ipAddressList.size() > 0)
 			{
-				int deletedRecords = userTrackingDAO.deleteSearchEngineAccessedURLsFromUserTracking(ipAddressList,dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime());
+				int deletedRecords = userTrackingDAO.deleteSearchEngineAccessedURLsFromUserTracking(ipAddressList,fromDate,toDate);
 				log.info(deletedRecords+" No of Records Deleted from UserTracking");
 			}
 			return resultStatus;

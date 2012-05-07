@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class Scheduler {
 	
 	private ISchedulerService schedulerService;
 	private IMailsSendingService mailsSendingService;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	public IMailsSendingService getMailsSendingService() {
 		return mailsSendingService;
@@ -25,7 +27,7 @@ public class Scheduler {
 	
 	public void runTheBatchJobForEveryDay()
 	{
-		schedulerService.deleteSearchEngineAccessedURLsFromUserTracking();
+		schedulerService.deleteSearchEngineAccessedURLsFromUserTracking(dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime());
 	}
 	
 	public void runTheBatchJobForEveryWeek()

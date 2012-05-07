@@ -27,10 +27,10 @@ public class UserReferralEmailsDAOHibernateTest extends BaseDaoTestCase{
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
-	/*public void test()
+	public void test()
 	{
 		userReferralEmailsDAO.getAll();
-	}*/
+	}
 	
 	/*public void testGetConnectedUsersCount()
 	{
@@ -39,11 +39,11 @@ public class UserReferralEmailsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(connectedCount);
 	}*/
 	
-	public void testGetUserReferencedEmails()
+	/*public void testGetUserReferencedEmails()
 	{
 		List<String> list = userReferralEmailsDAO.getUserReferencedEmails(1l);
 		System.out.println(list.get(0));
-	}
+	}*/
 
 	
 }
