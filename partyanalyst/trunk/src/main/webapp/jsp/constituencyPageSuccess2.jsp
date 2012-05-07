@@ -2524,7 +2524,7 @@ function removeCensusNotAvailableErrorMessage()
 	{
 	var resultDiv = document.getElementById("resultsDataTableDiv");	
 	var str = '';
-	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
+	str += '<div id="elecResDiv" style="width:900px;overflow-x:auto;margin-top:20px;">';
 	str += '<table id = "elecResTable">';
 	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
 		str += '<tr>';
