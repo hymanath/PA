@@ -102,7 +102,7 @@
 	</bean>
 	
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
-		<property name="electionDAO" ref="electionDAO" />
+		<property name="electionDAO" ref="electionDAO" />  
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="districtDAO" ref="districtDAO" />
