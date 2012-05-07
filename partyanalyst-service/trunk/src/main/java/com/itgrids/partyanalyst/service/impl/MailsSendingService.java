@@ -83,8 +83,8 @@ public class MailsSendingService implements IMailsSendingService{
 			}
 			
 			String subject = ""+emailDetailsVO.getSenderName()+" accepted Friend Request in PartyAnalyst.com."; 
-			String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+emailDetailsVO.getSenderName()+",</b></div>" +
-					"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue'><b>"+emailDetailsVO.getFromAddress()+"</b></font> has accepted your friend request in PartyAnalyst.com.<br/>Do you want to send a message? " +
+			String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hai "+emailDetailsVO.getFromAddress()+",</b></div>" +
+					"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue'><b>"+emailDetailsVO.getSenderName()+"</b></font> has accepted your friend request in PartyAnalyst.com.<br/>Do you want to send a message? " +
 							"<a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
 			
 			emailDetailsVO.setContent(content);
@@ -208,6 +208,6 @@ public class MailsSendingService implements IMailsSendingService{
 		
 		return null;
 	
-
 }
+	
 }
