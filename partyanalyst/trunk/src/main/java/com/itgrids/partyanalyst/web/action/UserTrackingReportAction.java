@@ -14,8 +14,13 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTrackingReportVO;
+import com.itgrids.partyanalyst.dto.UserTrackingListVO;
+
+import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.IUserTrackingReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.opensymphony.xwork2.Action;
@@ -33,8 +38,27 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 	private JSONObject jObj;
 
 	private String task;
+	private UserTrackingListVO userTrackingListVO;
 	private List<UserTrackingReportVO> userTrackingReportVOList;
+	private ISchedulerService schedulerService;
+	private ResultStatus resultStatus;
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public ISchedulerService getSchedulerService() {
+		return schedulerService;
+	}
+
+	public void setSchedulerService(ISchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
+
 	public List<UserTrackingReportVO> getUserTrackingReportVOList() {
 		return userTrackingReportVOList;
 	}
@@ -93,6 +117,14 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 		this.task = task;
 	}
 	
+	public UserTrackingListVO getUserTrackingListVO() {
+		return userTrackingListVO;
+	}
+
+	public void setUserTrackingListVO(UserTrackingListVO userTrackingListVO) {
+		this.userTrackingListVO = userTrackingListVO;
+	}
+
 	public String execute(){
 		
 		session = request.getSession();
@@ -131,9 +163,11 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 				   
 				}	
 			    if(jObj.getString("url").trim().equalsIgnoreCase("getUniqueVisitorsAction.action?")){
-			    	userTrackingReportVOList = userTrackingReportService.getTotalUniqueVisitorDetails(fromDate,toDate);
-			    	
-			    }
+			    	userTrackingReportVOList = userTrackingReportService.getTotalUniqueVisitorDetails(fromDate,toDate);			    	
+			    }	
+			    if(jObj.getString("url").trim().equalsIgnoreCase("deleteUnusedRecordsAction.action?")){
+			    	resultStatus = schedulerService.deleteSearchEngineAccessedURLsFromUserTracking(fromDate,toDate);			    	
+			    }	
 		  }
 		  catch(Exception e){
 			  log.error("Exception rised in getTotalUniqueVisitors Method of UserTrackingReportAction ",e); 
@@ -183,11 +217,38 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 		try{
 			Date fromDate = null;
 			Date toDate = null;
+			
+			/*Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			Integer maxResult = Integer.parseInt(request.getParameter("results"));
+			Long totalRecs=Long.parseLong(request.getParameter("totalRecords"));
+			
+			String task=request.getParameter("task");
+			
+			if(task.equalsIgnoreCase("todayVisitorsDetails")){
+				fromDate = dateUtilService.getCurrentDateAndTime();
+				toDate = dateUtilService.getCurrentDateAndTime();			
+			}
+			else if(task.equalsIgnoreCase("thisWeekVisitorsDetails")){
+				fromDate = getStartDayOfWeek();
+				toDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(task.equalsIgnoreCase("thisMonthVisitorsDetails")){
+				fromDate = getStartDayOfMonth();
+				toDate = dateUtilService.getCurrentDateAndTime();			
+			}
+			else if(task.equalsIgnoreCase("betweendatesVisitorsDetails")){
+				if(request.getParameter("fromDate").trim().length() > 0)
+				   fromDate = getDate(request.getParameter("fromDate"));
+				if(request.getParameter("toDate").trim().length() > 0)
+				   toDate = getDate(request.getParameter("toDate")); 
+			}*/
+			
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").trim().equalsIgnoreCase("todayVisitorsDetails"))
 			{
 				fromDate = dateUtilService.getCurrentDateAndTime();
 				toDate = dateUtilService.getCurrentDateAndTime();
+				
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("thisWeekVisitorsDetails"))
 			{
@@ -208,6 +269,11 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 			}
 			
 			userTrackingReportVOList = userTrackingReportService.getHostNameAndNoOfPagesForAVisitor(fromDate ,toDate);
+			/*
+			userTrackingListVO=new UserTrackingListVO();
+			userTrackingListVO.setTotalRowCount(totalRecs);
+			userTrackingListVO.setUserTrackingReportVOList(userTrackingReportVOList);
+			 */
 			
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -223,6 +289,36 @@ public String ajaxCallHandler(){
 		Date fromDate = null;
 		Date toDate = null;
 		String userType = null;
+		
+		/*Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer maxResult = Integer.parseInt(request.getParameter("results"));
+		Long totalRecs=Long.parseLong(request.getParameter("totalRecords"));
+		
+		String task=request.getParameter("task");
+		
+		if(task.equalsIgnoreCase("todayUserDetails")){
+			fromDate = dateUtilService.getCurrentDateAndTime();
+			toDate = dateUtilService.getCurrentDateAndTime();							
+		}
+		else if(task.equalsIgnoreCase("thisWeekUserDetails")){
+			fromDate = getStartDayOfWeek();
+			toDate = dateUtilService.getCurrentDateAndTime();
+		}
+		else if(task.equalsIgnoreCase("thisMonthUserDetails")){
+			fromDate = getStartDayOfMonth();
+			toDate = dateUtilService.getCurrentDateAndTime();			
+		}
+		else if(task.equalsIgnoreCase("betweendatesUserDetails")){
+			if(request.getParameter("fromDate").trim().length() > 0)
+			   fromDate = getDate(request.getParameter("fromDate"));
+			if(request.getParameter("toDate").trim().length() > 0)
+			   toDate = getDate(request.getParameter("toDate")); 
+		}
+		if(!request.getParameter("userType").equalsIgnoreCase("null")){
+			userType=request.getParameter("userType");
+		}*/
+		
+	
 		jObj = new JSONObject(getTask());
 		if(jObj.getString("task").equalsIgnoreCase("todayUserDetails"))
 		{
@@ -255,11 +351,23 @@ public String ajaxCallHandler(){
 			if(!jObj.getString("userType").equalsIgnoreCase("null"))
 				userType = jObj.getString("userType");
 		}
-		userTrackingReportVOList = userTrackingReportService.getHostNameAndNoOfPagesForAUser(fromDate ,toDate ,userType);
+		if(jObj.getString("innerTask").equalsIgnoreCase("null"))
+			userTrackingReportVOList = userTrackingReportService.getHostNameAndNoOfPagesForAUser(fromDate ,toDate ,userType);
+		
+		userTrackingListVO=new UserTrackingListVO();
+		//userTrackingListVO.setTotalRowCount(totalRecs);
+		userTrackingListVO.setUserTrackingReportVOList(userTrackingReportVOList);
+		
+		if(jObj.getString("innerTask").trim().equalsIgnoreCase("getUserPageFlowAjax")){
+			String sessionId="";
+			if(jObj.getString("sessionId").trim().length()>0)
+				sessionId=jObj.getString("sessionId");			
+	    	List<AccessedPageLoginTimeVO> urlTimeVOList= userTrackingReportService.getUrlTimeVOList(fromDate, toDate, userType, sessionId);
+	    	userTrackingListVO.setUrlTimeVOList(urlTimeVOList);
+	    }
 	}catch (Exception e) {
 		e.printStackTrace();
 	}
 	return Action.SUCCESS;
-}
-		
+}		
 }

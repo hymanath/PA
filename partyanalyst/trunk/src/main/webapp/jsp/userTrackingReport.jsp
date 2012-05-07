@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="s" uri="/struts-tags" %>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,9 +13,20 @@
 <script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+
 <style type="text/css">
 .ui-dialog .ui-dialog-content{
 	font-size:12px;
+	overflow-x:hidden;
+	overflow-y:auto;
 }
 .visTable td, .performanceTab td{	
     text-align:center;
@@ -38,9 +50,14 @@
 	text-align:center;
 	font-weight:bold;
 }
+.userFlowTable{
+	table-layout:fixed;
+	width: 690px;
+}
 .userFlowTable td{
 	text-align:center;   
 	padding:5px 0px 5px 0px;
+	word-wrap: break-word;
 }
 #userTrackingMainDiv{
 	margin-left: auto;
@@ -103,15 +120,37 @@ background: none repeat scroll 0 0 #06ABEA;
     padding: 4px 10px;
     border-radius: 2px;
     font-size: 14px;
-	 width: 365px;
-    text-align: center;
-	
+	 width: 375px;
+    text-align: center;	
+}
+#mainDiv
+{
+	margin-top:10px;
+}
+
+.yui-skin-sam 
+{
+	font-weight:bold;
+}
+.yui-skin-sam .yui-dt th
+{
+	background-image:url(images/YUI-images/sprite.png);
+}
+
+#yui-dt0-th-Categorize
+{
+	background-color:blue;
+}
+.yui-skin-sam .yui-dt td{
+	word-wrap:break-word;
 }
 </style>
 <script type="text/javascript">
+var userVOList = null;
 var userPageFlowList = null;
+
 $(document).ready(function(){
-	getUserDetails('getUniqueVisitorsAction.action?');		
+	doAjax('getUniqueVisitorsAction.action?');		
 });
 function showDates(){
 	$("#errMsgDiv").html("");
@@ -121,10 +160,12 @@ function showDates(){
 	if(!($("#betweendates").is(':checked'))){
 		$("#datesDiv").css("height","0px");
 		$("#searchDiv").css("display", "none");
-		getUserDetails('getUniqueVisitorsAction.action?');
+		doAjax('getUniqueVisitorsAction.action?');
+		$("#delRecs").css("display", "block");
 	}
 	else{
 		$("#searchDiv").css("display", "block");
+		$("#delRecs").css("display", "none");
 	}
 		
 	if(document.getElementById("betweendates").checked == true){
@@ -141,7 +182,7 @@ function showDates(){
  function hideAjaxImg(divId){
 	 document.getElementById(divId).style.display = 'none';
  }
-function getUserDetails(actionUrl){
+function doAjax(actionUrl){
 	var task='';
 	var fromDate='';
 	var toDate='';
@@ -180,48 +221,77 @@ function callAjax(jsObj, url){
 			try {												
 				myResults = YAHOO.lang.JSON.parse(o.responseText);	
 				if(jsObj.task == "byTodayDate"){
-					displayUserDetails(myResults);
+					if(jsObj.url!="deleteUnusedRecordsAction.action?")
+						displayUserDetails(myResults);
 				}
 				else if(jsObj.task == "byThisWeek"){
-					displayUserDetails(myResults);
+					if(jsObj.url!="deleteUnusedRecordsAction.action?")
+						displayUserDetails(myResults);
 				}
 				else if(jsObj.task == "byThisMonth"){
-					displayUserDetails(myResults);
+					if(jsObj.url!="deleteUnusedRecordsAction.action?")
+						displayUserDetails(myResults);
 				}
 				else if(jsObj.task == "betweendates"){
-					displayUserDetails(myResults);
+					if(jsObj.url!="deleteUnusedRecordsAction.action?")
+						displayUserDetails(myResults);
 				}
+
 				else if(jsObj.task == "betweendatesVisitorsDetails"){
-					userPageFlowList = myResults;
+					userVOList = myResults.userTrackingReportVOList;
 					showBetweendatesVisitorsDetails(myResults);
 				}
 				else if(jsObj.task == "todayVisitorsDetails"){
-					userPageFlowList = myResults;
+					userVOList = myResults.userTrackingReportVOList;
 					showBetweendatesVisitorsDetails(myResults);
 				}
 				else if(jsObj.task == "thisMonthVisitorsDetails"){
-					userPageFlowList = myResults;
+					userVOList = myResults.userTrackingReportVOList;
 					showBetweendatesVisitorsDetails(myResults);
 				}
 				else if(jsObj.task == "thisWeekVisitorsDetails"){
-					userPageFlowList = myResults;
+					userVOList = myResults.userTrackingReportVOList;
 					showBetweendatesVisitorsDetails(myResults);
 				}
 				else if(jsObj.task == "todayUserDetails"){
-					userPageFlowList = myResults;
-					showBetweendatesVisitorsDetails(myResults);
+					if(jsObj.innerTask!=null){
+						userPageFlowList = myResults.urlTimeVOList;
+						displayUserPageFlow(jsObj.index, userPageFlowList);
+					}
+					else{
+						userVOList = myResults.userTrackingReportVOList;
+						showBetweendatesVisitorsDetails(userVOList);
+					}
 				}
 				else if(jsObj.task == "thisWeekUserDetails"){
-					userPageFlowList = myResults;
-					showBetweendatesVisitorsDetails(myResults);
+					if(jsObj.innerTask!=null){
+						userPageFlowList = myResults.urlTimeVOList;
+						displayUserPageFlow(jsObj.index, userPageFlowList);
+					}
+					else{
+						userVOList = myResults.userTrackingReportVOList;
+						showBetweendatesVisitorsDetails(userVOList);
+					}
 				}
 				else if(jsObj.task == "thisMonthUserDetails"){
-					userPageFlowList = myResults;
-					showBetweendatesVisitorsDetails(myResults);
+					if(jsObj.innerTask!=null){
+						userPageFlowList = myResults.urlTimeVOList;
+						displayUserPageFlow(jsObj.index, userPageFlowList);
+					}
+					else{
+						userVOList = myResults.userTrackingReportVOList;
+						showBetweendatesVisitorsDetails(userVOList);
+					}
 				}
 				else if(jsObj.task == "betweendatesUserDetails"){
-					userPageFlowList = myResults;
-					showBetweendatesVisitorsDetails(myResults);
+					if(jsObj.innerTask!=null){
+						userPageFlowList = myResults.urlTimeVOList;
+						displayUserPageFlow(jsObj.index, userPageFlowList);
+					}
+					else{
+						userVOList = myResults.userTrackingReportVOList;
+						showBetweendatesVisitorsDetails(userVOList);
+					}
 				}
 			}
 			catch(e){
@@ -237,7 +307,7 @@ function callAjax(jsObj, url){
 }
 function displayUserDetails(myResults){
 	for(var i=0;i<4;i++){
-		$("#totVis"+i).html(myResults[i].uniqueVisitors);
+		$("#totVis"+i).html(myResults[i].uniqueVisitors);		
 		$("#totPag"+i).html(myResults[i].totalNoOfPagesAccessed);
 		$("#avgPag"+i).html(myResults[i].avgNoOfPagesAccessed);
 		$("#totTime"+i).html(myResults[i].totalTimeSpent);
@@ -248,7 +318,13 @@ function displayUserDetails(myResults){
 function getMoreVisitorDetails()
 {
 		$("#visitorsDetailsDiv").css("display", "none");
-		showAjaxImg('processingImgSpan');
+
+	if($("#betweendates").is(':checked')){
+		if($("#fromDate").val()!="" && $("#toDate").val()!="")
+				showAjaxImg('processingImgSpan');
+	}
+	else
+			showAjaxImg('processingImgSpan');
 
   if(document.getElementById("today").checked == true)
 	{
@@ -285,20 +361,35 @@ function getMoreVisitorDetails()
 	}
 	}
 }
-function checkDateFields(){
-	if($("#fromDate").val()!="" && $("#toDate").val()!=""){
-  		$("#errMsgDiv").html("");
-		showAjaxImg('searchAjaxImgSpan');
-		getUserDetails('getUniqueVisitorsAction.action?');
-	}
-	else{
-		$("#errMsgDiv").html("<center><font style='color:red; font-size:12px;'>Please Select From Date and To Date</font><center>");
-	}	
+function checkDateFields(){	
+		if($("#fromDate").val()!="" && $("#toDate").val()!=""){
+			$("#errMsgDiv").html("");
+			showAjaxImg('searchAjaxImgSpan');
+			doAjax('getUniqueVisitorsAction.action?');
+		}
+		else{
+			$("#errMsgDiv").html("<center><font style='color:red; font-size:12px;'>Please Select From Date and To Date</font><center>");
+		}		
 }
+
+function deleteUnusedRecords(){
+	if($("#betweendates").is(':checked')){
+		if($("#fromDate").val()!="" && $("#toDate").val()!=""){
+			$("#errMsgDiv").html("");
+			showAjaxImg('searchAjaxImgSpan');
+			doAjax("deleteUnusedRecordsAction.action?");		
+		}
+		else{
+			$("#errMsgDiv").html("<center><font style='color:red; font-size:12px;'>Please Select From Date and To Date</font><center>");
+		}	
+	}
+	else
+		doAjax("deleteUnusedRecordsAction.action?");		
+}
+
 function getVisitorDetails(task , fromDate , toDate)
 {
-   var timeST = new Date().getTime();
-   var jsObj = 
+	 var jsObj = 
 	   {
 		fromDate : fromDate,
 		toDate   : toDate,
@@ -312,11 +403,17 @@ function getVisitorDetails(task , fromDate , toDate)
 function getMoreDetails(userType)
 {
 	$("#visitorsDetailsDiv").css("display", "none");
-	showAjaxImg('processingImgSpan');
+
+	if($("#betweendates").is(':checked')){
+		if($("#fromDate").val()!="" && $("#toDate").val()!="")
+				showAjaxImg('processingImgSpan');
+	}
+	else
+			showAjaxImg('processingImgSpan');
 
  if(document.getElementById("today").checked == true)
 	{
-	  getUserMoreDetails("todayUserDetails","","",userType);
+	  getUserMoreDetails("todayUserDetails","","",userType, null, "", "");
 	  if(userType == null)
 	    headingDetails("Today's Guest Visitors Details");
 	  if(userType == "FREE_USER")
@@ -326,7 +423,7 @@ function getMoreDetails(userType)
 	}
   if(document.getElementById("thisweek").checked == true)
 	{
-	  getUserMoreDetails("thisWeekUserDetails","","",userType);
+	  getUserMoreDetails("thisWeekUserDetails","","",userType, null, "", "");
 	  if(userType == null)
 	     headingDetails("Guest Visitors Details of this week");
 	  if(userType == "FREE_USER")
@@ -337,7 +434,7 @@ function getMoreDetails(userType)
 	}
   if(document.getElementById("thismonth").checked == true)
 	{
-	  getUserMoreDetails("thisMonthUserDetails","","",userType);
+	  getUserMoreDetails("thisMonthUserDetails","","",userType, null, "", "");
 	  if(userType == null)
 		  headingDetails("Guest Visitors Details of this month");
 	  if(userType == "FREE_USER")
@@ -353,7 +450,7 @@ function getMoreDetails(userType)
 		  var toDate = "";
 		  fromDate = document.getElementById("fromDate").value;
 		  toDate = document.getElementById("toDate").value;
-		  getUserMoreDetails("betweendatesUserDetails",fromDate,toDate,userType);
+		  getUserMoreDetails("betweendatesUserDetails",fromDate,toDate,userType, null, "", "");
 		  if(userType == null)
 			  headingDetails('Guest Visitors Details between '+fromDate+' and '+toDate);
 		  if(userType == 'FREE_USER')
@@ -368,15 +465,17 @@ function getMoreDetails(userType)
 	}
 }
 
-function getUserMoreDetails(task , fromDate , toDate , userType)
+function getUserMoreDetails(task , fromDate , toDate , userType, innerTask, sessionId, index)
 {
-var timeST = new Date().getTime();
-   var jsObj = 
+	 var jsObj = 
 	   {
 		fromDate : fromDate,
 		toDate   : toDate,
 		userType : userType,
-		task     : task
+		task     : task,
+		innerTask : innerTask,
+		sessionId : sessionId,
+		index : index
 	   }
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getUserMoreDetailsAction.action?"+rparam;
@@ -385,90 +484,202 @@ var timeST = new Date().getTime();
 
 function showBetweendatesVisitorsDetails(result)
 {
-if(result.length == 0)
-{
+	if(result.length == 0){
+		document.getElementById("visitorsDetailsDiv").innerHTML = "No Records Found";
+		$("#visitorsDetailsDiv").css("display", "block");
+		return;
+	}
 
-document.getElementById("visitorsDetailsDiv").innerHTML = "No Records Found";
-$("#visitorsDetailsDiv").css("display", "block");
-return;
+	$("#visitorsDetailsDiv").css("display", "block");
+	var dataArray=new Array();
+	var guestUser=false;
+		$.each(result, function(index, data){
+			var userDetailsObj=null;		
+
+				if(data.userName==null){
+					guestUser=true;
+				}
+				else{
+					guestUser=false;
+				}
+
+			if(guestUser==true){
+				userDetailsObj=
+					{		
+							hostName:data.remoteAddress,
+							noOfPages:data.noOfPages,
+							timeSpent: data.spentTime, 
+							landingPage: data.landingPage,  		
+							exitPage:data.exitPage,
+							id:data.id
+					};
+			}
+			else{						
+					userDetailsObj=
+					{		
+							userName:data.userName,
+							noOfPages:data.noOfPages,
+							timeSpent: data.spentTime, 
+							landingPage: data.landingPage,  		
+							exitPage:data.exitPage,
+							id:data.id,
+							timeSpentMS:data.spentTimeMS
+					};							
+			}				
+			dataArray.push(userDetailsObj);			
+		});
+
+		YAHOO.widget.DataTable.formatEmail = function(elLiner, oRecord, oColumn, oData) 
+		{
+				var user = oRecord.getData("userName");
+				var idx= oRecord.getData("id");	
+				elLiner.innerHTML ="<a href='javascript:{} ' id='user"+idx+"' onclick='getUserPageFlow("+idx+")'>"+user+"</a>";		
+		};	
+		
+		var sortTimeSpent = function(a,b,desc)
+		{
+				if(!YAHOO.lang.isValue(a)) { 
+					return (!YAHOO.lang.isValue(b)) ? 0 : 1; 
+				 } 
+
+				else if(!YAHOO.lang.isValue(b)) { 
+					return -1; 
+				} 
+		
+			var comp = YAHOO.util.Sort.compare; 
+			return comp(a.getData("timeSpentMS"), b.getData("timeSpentMS"), desc); 
+		};
+
+		var userDetailsColumnDefs=null;
+
+		if(guestUser==true){
+			userDetailsColumnDefs = [
+				{key:"id", label: "SNO", sortable:true, maxAutoWidth:'50', width:'50px'},
+				{key: "hostName", label: "Host Name", maxAutoWidth:'200', width:'200px'},
+				{key: "noOfPages", label: "No of Pages", maxAutoWidth:'80', width:'80px', sortable:true},
+				{key: "timeSpent", label: "Time Spent", maxAutoWidth:'80', width:'80px', sortable:true,sortOptions:{sortFunction:sortTimeSpent}},	
+				{key: "landingPage", label: "Landing Page", maxAutoWidth:'250', width:'250px'},
+				{key: "exitPage", label: "Exit Page", maxAutoWidth:'250', width:'250px'}
+			];      
+		}
+		else{
+			userDetailsColumnDefs = [
+				{key:"id", label: "SNO", sortable:true, maxAutoWidth:'50', width:'50px'},
+				{key: "userName", label: "User Name", formatter:YAHOO.widget.DataTable.formatEmail, maxAutoWidth:'200', width:'200px', sortable:true},
+				{key: "noOfPages", label: "No of Pages", maxAutoWidth:'80', width:'80px', sortable:true},
+				{key: "timeSpent", label: "Time Spent", maxAutoWidth:'80', width:'80px', sortable:true,sortOptions:{sortFunction:sortTimeSpent}},	
+				{key: "landingPage", label: "Landing Page", maxAutoWidth:'250', width:'250px'},
+				{key: "exitPage", label: "Exit Page", maxAutoWidth:'250', width:'250px'}
+			];   
+		}
+
+		var userDetailsDataSource = new YAHOO.util.DataSource(dataArray); 
+	    userDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		userDetailsDataSource.responseSchema = {
+				  fields: [{key:"id", parser:"number"}, "userName", "noOfPages", "timeSpent", "landingPage", "exitPage", "hostName", {key:"timeSpentMS", parser:"number"}]     
+		};
+		if(dataArray.length > 20)
+		{
+			var myConfigs = { 
+					sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_ASC},
+					paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 20	               							        
+					}) 
+			};
+		}	
+		userDetailsDataTable = new YAHOO.widget.DataTable("visitorsDetailsDiv", userDetailsColumnDefs, userDetailsDataSource,myConfigs);
+
+		return { 
+			oDS: userDetailsDataSource, 
+			oDT: userDetailsDataTable
+	 };	
 }
 
-var visitorsDetailsDiv = document.getElementById("visitorsDetailsDiv");
-var str='';
+function getUserPageFlow(index){
+	for(var i=0;i<userVOList.length;i++){
+		if(i==index-1){
+			var userFlowLength=userVOList[i].noOfPages;
+			if(userFlowLength<=1){
+				var cssObj = {    
+					'text-decoration' : 'none',
+					'color' : 'grey'
+				}
+				$('#user'+index).css(cssObj);
+			}
+			else{
+				var userType=userVOList[i].userType;
+				var sessionId=userVOList[i].sessionId;
+				if(document.getElementById("today").checked == true){
+					  getUserMoreDetails("todayUserDetails","","",userType, "getUserPageFlowAjax", sessionId, index-1);
+				}
+				if(document.getElementById("thisweek").checked == true){
+					  getUserMoreDetails("thisWeekUserDetails","","",userType, "getUserPageFlowAjax", sessionId, index-1);
 
-str +='<table width="100%" class="VDtableClass">';
-str +='<tr>';
-if(result[0].remoteAddress != null)
-str +='<th width="15%">Host Name</th>';
-
-if(result[0].userName != null)
-str +='<th width="15%">User Name</th>';
-
-str +='<th width="18%">No.Of Pages</th>';
-str +='<th width="15%">Time Spent</th>';
-str +='<th width="26%">Landing Page</th>';
-str +='<th width="26%">Exit Page</th>';
-str +='</tr>';
-
-for(var i=0; i<result.length; i++)
-{
-str +='<tr style="text-align:center;">';
-if(result[i].remoteAddress != null)
-  str +='<td  width="15%">'+result[i].remoteAddress+'</td>';
-
-if(result[i].remoteAddress == null && result[i].userName != null)
-str +='<td width="15%"><a href="javascript:{}" onclick="displayUserPageFlow('+i+')">'+result[i].userName+'</a></td>';
-
-str +='<td  width="10%">'+result[i].noOfPages+'</td>';
-str +='<td  width="15%">'+result[i].spentTime+'</td>';
-str +='<td  width="40%">'+result[i].landingPage+'</td>';
-str +='<td  width="40%">'+result[i].exitPage+'</td>';
-
-str += '</tr>';
+				}
+			  	if(document.getElementById("thismonth").checked == true){
+					  getUserMoreDetails("thisMonthUserDetails","","",userType, "getUserPageFlowAjax", sessionId, index-1);
+				}
+			  	if(document.getElementById("betweendates").checked == true){
+				    if($("#fromDate").val()!="" && $("#toDate").val()!=""){
+						$("#errMsgDiv").html("");
+					  var fromDate = "";
+					  var toDate = "";
+					  fromDate = document.getElementById("fromDate").value;
+					  toDate = document.getElementById("toDate").value;
+					  getUserMoreDetails("betweendatesUserDetails",fromDate,toDate,userType, "getUserPageFlowAjax", sessionId, index-1);
+					}
+					else{
+						$("#errMsgDiv").html("<center><font style='color:red; font-size:12px;'>Please Select From Date and To Date</font><center>");
+					}
+				}
+			}
+		}
+	}
 }
-str +='</table>';
 
-visitorsDetailsDiv.innerHTML = str;
-$("#visitorsDetailsDiv").css("display", "block");
-}
-
-function displayUserPageFlow(index){
+function displayUserPageFlow(index, result){
 	var userFlow;
 	var title;
-	for(var i=0;i<userPageFlowList.length;i++){
-		if(i==index){
-			userFlow=userPageFlowList[i].urlTimeVOList;
-			var userName=userPageFlowList[i].userName;
-			var loginDate=userFlow[0].loginDate;
-			title="Page flow of "+userName+" on "+loginDate;
+	var userName;
+	var loginTime;
+	var userFlowLength=result.length;
+	for(var i=0;i<userVOList.length;i++){
+		if(i==index){			
+			userName=userVOList[i].userName;
+			loginTime=userVOList[i].loginTime;
 		}
+		var loginDate=result[0].loginDate;
+		title="Page flow of "+userName+" on "+loginDate+" (Login Time: "+loginTime+")";	
 	}
-	var str='';
-	str+='<table class="userFlowTable">';
-	for(var i=0; i<userFlow.length;i++){
-		str+='<tr>';
-		str+='<td style="background-color:AliceBlue; width:350px;text-align:center;">'+userFlow[i].pageUrl+'</td>';
-		str+='<td style="width:360px;text-align:left;"><strong>Time Spent: </strong>'+userFlow[i].timeSpent;
-		if(userFlow[i].accessCount!=null){
-			str+='<br/><b>(</b>Page accessed for <strong>'+userFlow[i].accessCount+'</strong> times, between <strong>'+userFlow[i].fromTime+'</strong> and <strong>'+userFlow[i].toTime+')</strong>';			
-		}	
-		str+='</td>';
-		if(userFlow.length>1 && i!=userFlow.length-1){
-			str+="</tr><tr><td style='text-align:center'><img src='images/constituencyPage/blue-down-arrow.png'></img></td></tr>";
-		}
+	if(userFlowLength>1){
+			var str='';
+			str+='<table class="userFlowTable">';
+			for(var i=0; i<result.length;i++){
+				str+='<tr>';
+				str+='<td style="background-color:AliceBlue; width:400px;text-align:center;">'+result[i].pageUrl+'</td>';
+				str+='<td style="width:290px;text-align:left;"><strong>Time Spent: </strong>'+result[i].timeSpent;
+				if(result[i].accessCount!=null){
+					str+='<br/><b>(</b>Page accessed for <strong>'+result[i].accessCount+'</strong> times, between <strong>'+result[i].fromTime+'</strong> and <strong>'+result[i].toTime+')</strong>';	
+				}	
+				str+='</td>';
+				if(result.length>1 && i!=result.length-1){
+					str+="</tr><tr><td style='text-align:center'><img src='images/constituencyPage/blue-down-arrow.png'></img></td></tr>";
+				}
+			}		
+			str+='</tr>';
+			str+='</table>';
+
+			$("#userPageFlowDivInner").html(str);
+
+			$("#userPageFlowDivOuter").dialog({
+				resizable:false,
+				title:title,
+				show:'slide',
+				modal:true ,
+				width:'auto',
+				height:400
+			});
 	}
-	
-	str+='</tr>';
-	str+='</table>';
-	$("#userPageFlowDivInner").html(str);
-	$("#userPageFlowDivOuter").dialog({
-		resizable:false,
-		title:title,
-		show:'slide',
-		modal:true ,
-		width:'auto',
-		height:'auto'	
-	});
 }
 function headingDetails(text)
 {
@@ -569,6 +780,7 @@ document.getElementById("headingStyle").innerHTML = text;
 		</td>
 		<td style="padding-left:10px;"><span id="searchAjaxImgSpan" style="display:inline-block;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span>
 		</td>
+		<td><div id="delRecs" style="background-color: paleVioletRed; border-radius: 3px 3px 3px 3px; height: 18px; width: 180px;padding:4px;float:left;margin-left:295px;"><a href="javascript:{}" onclick="deleteUnusedRecords(); " style="color: white; font-family: verdana; font-weight: bold; text-decoration: none;">Delete Unused Records</a></div></td>
 		</tr>
 		</table>
 		<div id="datesDiv">
@@ -594,10 +806,9 @@ document.getElementById("headingStyle").innerHTML = text;
 		</div>
 		<div id="errMsgDiv"></div>
 		</div>
-		<div id="searchDiv" style="padding:10px 0px 10px 0px;display:none;">
-		<center>
-			<a href="javascript:{}" onclick="checkDateFields();"><img src="images/search_button.jpg"/></a>
-		</center>
+		<div id="searchDiv" style="padding:16px 0px;display:none;margin-left:350px;height:20px;">		
+			<div style="float:left;margin-right:10px;"><a href="javascript:{}" onclick="checkDateFields();"><img src="images/search_button.jpg"/></a></div>
+			<div style="background-color: paleVioletRed; border-radius: 3px 3px 3px 3px; height: 18px; width: 180px;padding:4px;float:left;"><a href="javascript:{}" onclick="deleteUnusedRecords(); " style="color: white; font-family: verdana; font-weight: bold; text-decoration: none;">Delete Unused Records</a></div>		
 		</div>
 	</div>
 	<div id="uniqueVisitorsDiv" style="margin-top:10px;">
@@ -654,11 +865,13 @@ document.getElementById("headingStyle").innerHTML = text;
 	<div id="exitPageDiv" style="margin-top:10px;"></div>
 
 	<div  style="margin-top: 30px; margin-left: 6px;">
-	<div><span id="headingStyle" style="display:none;"></span></div>
-	<div><span id="processingImgSpan" style="display:none;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></div>
+	<div style="width: 405px; height: 30px; float: left; "><span id="headingStyle" style="display:none;"></span></div>
+	<div style="width: 100px; height: 30px; float: left; margin-top: 4px; margin-bottom: 5px;clear:right;"><span id="processingImgSpan" style="display:none;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></div>
 	</div>
-	<div style="background: #FFF;margin-top:15px;margin-bottom: 5px;padding-bottom:20px;margin-left: 5px;">
-		<div id="visitorsDetailsDiv" class=""></div>
+	<div style="background: #FFF;margin-top:15px;margin-bottom: 5px;padding-bottom:20px;margin-left: 5px;">	
+	<div id="mainDiv" class="yui-skin-sam">
+	<div id="visitorsDetailsDiv" style="float:left;"></div>
+	</div>
 	</div>
 	<div id="userPageFlowDivOuter">
 		<div id="userPageFlowDivInner"></div>

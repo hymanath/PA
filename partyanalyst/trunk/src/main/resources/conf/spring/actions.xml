@@ -194,7 +194,7 @@
 	
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
-		<property name="staticDataService" ref="staticDataService" />
+		<property name="staticDataService" ref="staticDataService" /> 
 		<property name="registrationService" ref="registrationService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
@@ -884,6 +884,7 @@
 				
 	<bean id="userTrackingReportAction" class="com.itgrids.partyanalyst.web.action.UserTrackingReportAction" singleton="false">
 		<property name="userTrackingReportService" ref="userTrackingReportService" />
+		<property name="schedulerService" ref="schedulerService" />
 	</bean>	
 
 	<bean id="customPagesAction" class="com.itgrids.partyanalyst.web.action.CustomPagesAction" singleton="false">

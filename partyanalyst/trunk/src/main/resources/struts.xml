@@ -3280,7 +3280,13 @@
 		
        	<action name="getUserMoreDetailsAction" class="userTrackingReportAction" method="ajaxCallHandler">
 			<result type="json" name="success">
-				<param name="root">userTrackingReportVOList</param>				
+				<param name="root">userTrackingListVO</param>				
+			</result>		
+		</action>
+		
+		<action name="deleteUnusedRecordsAction" class="userTrackingReportAction" method="getTotalUniqueVisitors">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
 		
