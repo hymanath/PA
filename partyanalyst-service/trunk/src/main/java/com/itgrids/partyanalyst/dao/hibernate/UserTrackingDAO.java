@@ -15,13 +15,10 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	public UserTrackingDAO() {
 		super(UserTracking.class);
 	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getHostNameAndNoOfPagesForAVisitor(Date fromDate , Date toDate){
-		Object[] params = {fromDate , toDate};
-		
-		return getHibernateTemplate().find("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where Date(model.time) BETWEEN ? and ? group by model.sessionId",params);
-		
+		Object[] params = {fromDate , toDate};		
+		return getHibernateTemplate().find("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where Date(model.time) BETWEEN ? and ? group by model.sessionId order by model.userTrackingId",params);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -30,17 +27,17 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 		StringBuilder query = new StringBuilder();
 		if(userType == null)
 		{
-			query.append("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ? group by model.sessionId");
+			query.append("select distinct model.sessionId , model.ipAddress , max(model.time) , min(model.time) , count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ? group by model.sessionId order by model.userTrackingId");
 		}
 	   else if(userType != null && userType.equalsIgnoreCase(IConstants.FREE_USER))
 	    {		
 			query.append("select distinct model2.sessionId , model.freeUser.name , model.freeUser.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
-					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId");
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId order by model.userTrackingId");
 	    }
 	   else if(userType !=null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 	   {
 			query.append("select distinct model2.sessionId , model.registration.firstName , model.registration.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
-					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId");
+					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId order by model.userTrackingId");
 	   }
 		Query queryObj = getSession().createQuery(query.toString());
 		
@@ -62,12 +59,11 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	@SuppressWarnings("unchecked")
 	public Object getUniqueVisitorsBetweenDates(Date fromDate, Date toDate, String userType){
 		StringBuilder query = new StringBuilder();
-		query.append("select count(distinct model.sessionId) from UserTracking model where DATE(model.time) between ? and ? and model.userType");
 		
 		if(userType==null)
-			query.append(" is null");
+			query.append("select count(distinct model.sessionId) from UserTracking model where DATE(model.time) between ? and ? and model.userType is null");
 		else{
-			query.append("= ?");
+			query.append("select count(distinct model2.sessionId) from UserTracking model, UserLoginDetails model2 where model.sessionId=model2.sessionId and DATE(model.time) between ? and ? and model.userType=?");
 		}
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -80,12 +76,13 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
   		return queryObject.uniqueResult();
 	}	
 	
-	public List<Object> getLoginTimeBetweenDates(Date fromDate, Date toDate, String userType){
+	public List<Object[]> getLoginLogoutTimeBetweenDates(Date fromDate, Date toDate, String userType){
 		StringBuilder query = new StringBuilder();
 		if(userType==null)
-			query.append("select model.sessionId, min(model.time) from UserTracking model where DATE(model.time) between ? and ? and model.userType is null group by model.sessionId");
+			query.append("select distinct model.sessionId , max(model.time) , min(model.time) from UserTracking model where model.userType is null and Date(model.time) between ? and ? group by model.sessionId");
 		else{
-			query.append("select model.sessionId, model.loginTime from UserLoginDetails model where DATE(model.loginTime) between ? and ? and model.userType=?");
+			query.append("select distinct model2.sessionId , max(model.time) , min(model.time) from UserTracking model , UserLoginDetails model2 " +
+					"where model.sessionId = model2.sessionId and Date(model.time) BETWEEN ? and ? and model.userType = ? group by model.sessionId");			
 		}
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -95,33 +92,15 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 		if(userType!=null)
 			queryObject.setParameter(2, userType);	
   		return queryObject.list();
-	}
-	
-	public List<Object> getLogoutTimeBetweenDates(Date fromDate, Date toDate, String userType){
-		StringBuilder query = new StringBuilder();
-		if(userType==null)
-			query.append("select model.sessionId, max(model.time) from UserTracking model where DATE(model.time) between ? and ? and model.userType is null group by model.sessionId");
-		else{
-			query.append("select model.sessionId, model.logoutTime from UserLoginDetails model where DATE(model.loginTime) between ? and ? and model.userType=?");
-		}
-		
-		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter(0, fromDate);
-		queryObject.setParameter(1, toDate);
-		
-		if(userType!=null)
-			queryObject.setParameter(2, userType);	
-  		return queryObject.list();		
-	}
+	}	
 	
 	public Object getNoOfPagesAccessedBetweenDates(Date fromDate, Date toDate, String userType){
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.userTrackingId) from UserTracking model where DATE(model.time) between ? and ? and model.userType");
-		
+				
 		if(userType==null)
-			query.append(" is null");
+			query.append("select count(model.userTrackingId) from UserTracking model where  model.userType is null and Date(model.time) between ? and ?");
 		else{
-			query.append("= ?");
+			query.append("select count(model.userTrackingId) from UserTracking model, UserLoginDetails model2 where model.sessionId=model2.sessionId and DATE(model.time) between ? and ? and model.userType=?");
 		}
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -157,7 +136,7 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	
 	public List<Object> getPageFlowOfUserBetweenDates(Date fromDate, Date toDate, String userType, String sessionId){
 		StringBuilder query = new StringBuilder();
-		query.append("select model.urlName, model.time from UserTracking model where model.userType = ? and Date(model.time) BETWEEN ? and ? and model.sessionId=? order by model.userTrackingId ");
+		query.append("select model.urlName, model.time from UserTracking model where model.userType = ? and Date(model.time) BETWEEN ? and ? and model.sessionId=? order by model.userTrackingId");
 		Query queryObj = getSession().createQuery(query.toString());	
 		queryObj.setParameter(0, userType);
 		queryObj.setParameter(1, fromDate);

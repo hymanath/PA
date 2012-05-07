@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -20,6 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTrackingReportVO;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.service.IUserTrackingReportService;
@@ -101,18 +101,21 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 			List<Object[]> list = userTrackingDAO.getHostNameAndNoOfPagesForAVisitor(fromDate,toDate);
 			if(list != null && list.size() > 0)
 			{
-				resultList = new ArrayList<UserTrackingReportVO>(0); 
+				resultList = new ArrayList<UserTrackingReportVO>(0);
+				int count=0;
 				for(Object[] params : list)
-				{
-									
+				{	
+					if(params[0]!=null){
 					UserTrackingReportVO userTrackingReportVO = new UserTrackingReportVO();
 					maxTime = (Date)params[2];
 					minTime = (Date)params[3];
 					spentTimeOnPage = maxTime.getTime()- minTime.getTime();
 					userTrackingReportVO.setSessionId(params[0].toString());
+					userTrackingReportVO.setId(++count);
 					userTrackingReportVO.setRemoteAddress(params[1].toString());
 					userTrackingReportVO.setNoOfPages(((Long)params[4]).intValue());
 					userTrackingReportVO.setSpentTime(getTimeSpentBetweenDatesInString(spentTimeOnPage));
+					userTrackingReportVO.setSpentTimeMS(spentTimeOnPage.toString());
 					
 					List<Object> pages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
 					if(pages != null && pages.size() >= 2)
@@ -125,6 +128,7 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 						userTrackingReportVO.setExitPage(pages.get(0).toString());
 					}
 					resultList.add(userTrackingReportVO);
+					}
 				}
 			}
 			return resultList;
@@ -172,19 +176,20 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 					avgTimeSpent="0";				
 				}
 				else{			
-					List<Object> loginTime = userTrackingDAO.getLoginTimeBetweenDates(fromDate, toDate, usrTyp);
-					List<Object> initialLogoutTime = userTrackingDAO.getLogoutTimeBetweenDates(fromDate, toDate, usrTyp);
-					
-					Long timeDiff=0l;
+					List<Object[]> initialLogInOutTime = userTrackingDAO.getLoginLogoutTimeBetweenDates(fromDate, toDate, usrTyp);
 				
-					Iterator<Object> logoutItr=initialLogoutTime.iterator();
+					Long timeDiff=0l;
 					int nullCounter=0;
-					while(logoutItr.hasNext()){
-						if(logoutItr.next()==null){
-							nullCounter++;
-							break;
+
+					if(initialLogInOutTime != null && initialLogInOutTime.size() > 0){
+						for(Object[] params : initialLogInOutTime){	
+							if(params[1]==null){
+								nullCounter++;
+								break;
+							}							
 						}
 					}
+					
 					if(nullCounter!=0){
 						if(fromDate==toDate)
 							saveUserLogOutDetails(fromDate, toDate, true);
@@ -192,40 +197,16 @@ public class UserTrackingReportService implements IUserTrackingReportService{
 							saveUserLogOutDetails(fromDate, toDate, false);	
 					}
 				
-					List<Object> logoutTime = userTrackingDAO.getLogoutTimeBetweenDates(fromDate, toDate, usrTyp);
+					List<Object[]> logInOutTime = userTrackingDAO.getLoginLogoutTimeBetweenDates(fromDate, toDate, usrTyp);
 				
-					Map<String, Long> logoutMap=new HashMap<String, Long>();						
-					Map<String, Long> loginMap=new HashMap<String, Long>();				
-					Set<String> sessionIdSet=new HashSet<String>();
-
-					if(logoutTime != null && logoutTime.size()>0){					
-						Iterator<Object> mapOutItr=logoutTime.iterator();					
-						while(mapOutItr.hasNext()){						
-							Object objOut[]=(Object[])mapOutItr.next();						
-							
-							if(objOut[1]!=null && objOut[0]!=null){
-								sessionIdSet.add(objOut[0].toString());
-								logoutMap.put(objOut[0].toString(), ((Date)objOut[1]).getTime());
-							}
-						}					
-					}	
-					
-					if(loginTime != null && loginTime.size()>0){
-						Iterator<Object> mapInItr=loginTime.iterator();
-						while(mapInItr.hasNext()){
-							Object objIn[]=(Object[])mapInItr.next();
-							if(objIn[1]!=null && objIn[0]!=null){
-								loginMap.put(objIn[0].toString(), ((Date)objIn[1]).getTime());
+					if(logInOutTime != null && logInOutTime.size() > 0){
+						for(Object[] params : logInOutTime){	
+							if(params[0]!=null){
+								Long userTimeDiff=((Date)params[1]).getTime()-((Date)params[2]).getTime();
+								timeDiff=timeDiff+userTimeDiff;
 							}
 						}
-					}
-					
-					Iterator<String> sessionSetItr=sessionIdSet.iterator();				
-					while(sessionSetItr.hasNext()){
-						String sessionId=sessionSetItr.next().toString();
-						Long userTimeDiff=(Long)logoutMap.get(sessionId)-(Long)loginMap.get(sessionId);
-						timeDiff=timeDiff+userTimeDiff;
-					}				
+					}									
 								
 					allUsersTimeDiff+=timeDiff;
 				
@@ -355,6 +336,9 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 			
 		if(list != null && list.size() > 0)
 		{
+			int guestCount=0;
+			int customerCount=0;
+			int userCount=0;
 			for(Object[] params : list)
 			{
 					
@@ -364,11 +348,17 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 				{
 					maxTime = (Date)params[2];
 					minTime = (Date)params[3];
+					
+					String loginTime=DateFormat.getTimeInstance().format(minTime);
+					userTrackingReportVO.setLoginTime(loginTime);
 					spentTimeOnPage = maxTime.getTime()-minTime.getTime();
 					userTrackingReportVO.setSessionId(params[0].toString());
+					userTrackingReportVO.setUserType(userType);
+					userTrackingReportVO.setId(++guestCount);
 					userTrackingReportVO.setRemoteAddress(params[1].toString());
 					userTrackingReportVO.setNoOfPages(((Long)params[4]).intValue());
 					userTrackingReportVO.setSpentTime(getTimeSpentBetweenDatesInString(spentTimeOnPage));
+					userTrackingReportVO.setSpentTimeMS(spentTimeOnPage.toString());
 					List<Object> pages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
 					
 					 if(pages != null && pages.size() >= 2)
@@ -385,11 +375,16 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 				{
 					maxTime = (Date)params[3];
 					minTime = (Date)params[4];
+					String loginTime=DateFormat.getTimeInstance().format(minTime);
+					userTrackingReportVO.setLoginTime(loginTime);
 					spentTimeOnPage = maxTime.getTime()-minTime.getTime();
 					userTrackingReportVO.setSessionId(params[0].toString());
+					userTrackingReportVO.setUserType(userType);
+					userTrackingReportVO.setId(++userCount);
 					userTrackingReportVO.setNoOfPages(((Long)params[6]).intValue());
 					userTrackingReportVO.setUserName(params[1].toString()+" "+params[2].toString());
 					userTrackingReportVO.setSpentTime(getTimeSpentBetweenDatesInString(spentTimeOnPage));
+					userTrackingReportVO.setSpentTimeMS(spentTimeOnPage.toString());
 					List<Object> FUPages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
 					if(FUPages != null && FUPages.size() >= 2){
 						userTrackingReportVO.setExitPage(FUPages.get(0).toString());
@@ -400,16 +395,21 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 						userTrackingReportVO.setExitPage(FUPages.get(0).toString());
 						userTrackingReportVO.setExitPage(FUPages.get(0).toString());
 					}					
-					userTrackingReportVO.setUrlTimeVOList(getUrlTimeVOList(fromDate, toDate, userType, params[0].toString()));
+					//userTrackingReportVO.setUrlTimeVOList(getUrlTimeVOList(fromDate, toDate, userType, params[0].toString()));
 				}
 				else if(userType != null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 				{
 					maxTime = (Date)params[3];
 					minTime = (Date)params[4];
+					String loginTime=DateFormat.getTimeInstance().format(minTime);
+					userTrackingReportVO.setLoginTime(loginTime);
 					spentTimeOnPage = maxTime.getTime()-minTime.getTime();
 					userTrackingReportVO.setSessionId(params[0].toString());
+					userTrackingReportVO.setUserType(userType);
+					userTrackingReportVO.setId(++customerCount);
 					userTrackingReportVO.setNoOfPages(((Long)params[6]).intValue());
 					userTrackingReportVO.setSpentTime(getTimeSpentBetweenDatesInString(spentTimeOnPage));
+					userTrackingReportVO.setSpentTimeMS(spentTimeOnPage.toString());
 					userTrackingReportVO.setUserName(params[1].toString() +" "+params[2].toString());
 					List<Object> PAPages = userLoginDetailsDAO.getLandingPageAndExitPageForAUser(params[0].toString());
 					if(PAPages != null && PAPages.size() >= 2){
@@ -421,7 +421,7 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 						userTrackingReportVO.setLandingPage(PAPages.get(0).toString());
 					}
 		
-					userTrackingReportVO.setUrlTimeVOList((getUrlTimeVOList(fromDate, toDate, userType, params[0].toString())));					
+					//userTrackingReportVO.setUrlTimeVOList((getUrlTimeVOList(fromDate, toDate, userType, params[0].toString())));					
 				}
 				resultList.add(userTrackingReportVO);
 				}
@@ -432,7 +432,8 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 		return null;
 		}
 	}
-	private List<AccessedPageLoginTimeVO> getUrlTimeVOList(Date fromDate, Date toDate, String userType, String sessionId){
+
+	public List<AccessedPageLoginTimeVO> getUrlTimeVOList(Date fromDate, Date toDate, String userType, String sessionId){
 		List<Object> pageFlow=userTrackingDAO.getPageFlowOfUserBetweenDates(fromDate, toDate, userType, sessionId);
 		Iterator<Object> pageFlowItr=pageFlow.iterator();
 		List<AccessedPageLoginTimeVO> urlTimeVOList=new ArrayList<AccessedPageLoginTimeVO>();
@@ -668,5 +669,5 @@ public List<UserTrackingReportVO> getHostNameAndNoOfPagesForAUser(Date fromDate 
 		  Calendar cal = Calendar.getInstance(); 
 		  cal.set(Integer.parseInt(dateArray[0]),Integer.parseInt(dateArray[1])-1, Integer.parseInt(dateArray[2]));
 		  return cal.getTime();
-	  }
+	  }	
 }

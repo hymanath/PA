@@ -8,7 +8,6 @@ import java.util.Map;
 public class UserTrackingReportVO extends UserTrackingVO implements Serializable{
 	
 	private static final long serialVersionUID = 2217831199065585193L;
-	private String sessionId;
 	private Long uniqueVisitors;
 	private String totalTimeSpent;
 	private String avgTimeSpent;
@@ -18,9 +17,12 @@ public class UserTrackingReportVO extends UserTrackingVO implements Serializable
 	private String landingPage;
 	private String exitPage;
 	private String spentTime;
+	private String spentTimeMS;
 	private Date fromDate;
 	private Date toDate;
 	private String userName;
+	private String loginTime;
+	private Integer id;
 	private Map<String, String> landingPageMap;
 	private Map<String, String> exitPageMap;
 	private Map<String, String> bouncePageMap;
@@ -121,16 +123,29 @@ public class UserTrackingReportVO extends UserTrackingVO implements Serializable
 	public void setAvgNoOfPagesAccessed(Float avgNoOfPagesAccessed) {
 		this.avgNoOfPagesAccessed = avgNoOfPagesAccessed;
 	}
-	public String getSessionId() {
-		return sessionId;
-	}
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+	
 	public List<AccessedPageLoginTimeVO> getUrlTimeVOList() {
 		return urlTimeVOList;
 	}
 	public void setUrlTimeVOList(List<AccessedPageLoginTimeVO> urlTimeVOList) {
 		this.urlTimeVOList = urlTimeVOList;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getLoginTime() {
+		return loginTime;
+	}
+	public void setLoginTime(String loginTime) {
+		this.loginTime = loginTime;
+	}
+	public String getSpentTimeMS() {
+		return spentTimeMS;
+	}
+	public void setSpentTimeMS(String spentTimeMS) {
+		this.spentTimeMS = spentTimeMS;
 	}		
 }
