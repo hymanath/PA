@@ -86,7 +86,7 @@
 <div id="upComing" style="margin-top:25px;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
-<span style="color:#ED5B21;font-weight:bold;">AP BiElection Schedule</span> -
+<span style="color:#ED5B21;font-weight:bold;">AP Bye Election Schedule</span> -
 <span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
 <span style="color:#ED5B21;font-weight:bold;">In Parliament</span> - Nellore MP <a href="candidateElectionResultsAction.action?candidateId=13626">Mekapati Rajamohan Reddy</a>, who is a well-known supporter of YSR Congress Party President Jagan Mohan Reddy, has submitted his resignation to Lok Sabha Speaker Meira Kumar on August 24. 
 <!--<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>-->
