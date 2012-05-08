@@ -59,4 +59,6 @@ public interface ICommentsDataService {
 	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate);
 	
 	public List<CandidateCommentsVO> scrutinizePostedComments(List<Long> reasonIds, String actionType, String fromDate, String toDate);
+	
+
 }
