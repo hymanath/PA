@@ -200,14 +200,63 @@ public class MailsSendingService implements IMailsSendingService{
 			//emailDetailsVO.setContent(content);
 			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			return resultStatus;
+		
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		return null;
-	
+		return resultStatus;
+
 }
+	
+	public void acceptEmailForUserComments(EmailDetailsVO emailDetailsVO)
+	{
+		
+		try
+		{
+			if(emailDetailsVO != null)
+			{
+				String subject = "Partyanalyst.com";
+				String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
+						"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getFromAddress()+",</b><br/>" +
+						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your comment for the " +emailDetailsVO.getCandidateName()+ " " +emailDetailsVO.getPartyStrength()+  " from "  +emailDetailsVO.getConstituencyName()+  " "  +emailDetailsVO.getElectionType()+ " Constituency has approved.<br/></div></div>";
+		emailDetailsVO.setContent(content);
+		emailDetailsVO.setSubject(subject);
+		 mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			}
+		}
+		catch(Exception e)
+		{
+		e.printStackTrace();	
+		}
+		
+	}
+	
+	public ResultStatus sendEmailForConnectedUsers(EmailDetailsVO emailDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			if(emailDetailsVO != null)
+			{
+			String subject = "Partyanalyst.com";
+			
+			String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getSenderName()+ ", </b><br/>" +
+					"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your friend " +emailDetailsVO.getFromAddress()+ " assesment for the " +emailDetailsVO.getCandidateName()+ " winning from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency </b><br/>" +
+					"If You Know about " +emailDetailsVO.getCandidateName()+ " <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
+			emailDetailsVO.setSubject(subject);
+			emailDetailsVO.setContent(content);
+			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return resultStatus;
+		}
+		return resultStatus;
+	}
 	
 }
