@@ -15,4 +15,12 @@ public interface IMailsSendingService {
 	
 	public ResultStatus acceptEmailForAnalyzeConstituency(EmailDetailsVO emailDetailsVO);
 	
+	public void acceptEmailForUserComments(EmailDetailsVO emailDetailsVO);
+	
+	public ResultStatus sendEmailForConnectedUsers(EmailDetailsVO emailDetailsVO);
+	
+	
+	
+	
+	
 }
