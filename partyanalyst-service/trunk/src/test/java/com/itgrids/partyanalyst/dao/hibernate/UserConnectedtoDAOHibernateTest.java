@@ -40,8 +40,8 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		}		
 		System.out.println("final--->"+unKnownPeople);
 	}
-	
-	public List<Long> getUserIds(List<Long> userId,List<Long> ids){		
+	*/
+	/*public List<Long> testgetUserIds(List<Long> userId,List<Long> ids){		
 		Set<Long> setOfUserIds = new HashSet<Long>(0);
 		List<Long> listOfUserIds = new ArrayList<Long>(0);
 		try{
@@ -61,16 +61,30 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		}
 		return listOfUserIds;
 	}*/
+	/*public void testgetUSerIds()
+	{
+		List<Long> details = new ArrayList<Long>();
+		details.add(411l);
+	 List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForUser(details);
+	 for(int i=0;i<list.size();i++)
+	 {
+		 System.out.println(list.get(i));
+	 }
 	
-	/*public void testGetCountOfAllConnectedPeopleForUser()
+	}*/
+	
+	
+/*public void testgetAllConnectedPeopleForFreeUser()
 	{
 		List<Long> senderId = new ArrayList<Long>();
 		senderId.add(1L);
 		
 		
-		String userId = userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(senderId);
+		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(411l);
 		
-		System.out.println(userId);
+		for(Object[] params : list){
+			System.out.println(params[1].toString());
+		}
 	}*/
 	
 	public void test(){
