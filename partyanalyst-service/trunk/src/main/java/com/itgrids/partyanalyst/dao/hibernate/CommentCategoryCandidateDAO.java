@@ -430,4 +430,12 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select count(*) "+
 				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",registrationId);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
+	{
+		Query queryObject = getSession().createQuery("select model.freeUser.userId,model.freeUser.email,model.commentData.commentBy,model.nomination.candidate.lastname,model.nomination.candidateResult.rank, model.nomination.constituencyElection.constituency.name,model.nomination.constituencyElection.election.electionScope.electionType.electionType from CommentCategoryCandidate model where model.commentData.commentDataId in (:reasonIds)");
+		queryObject.setParameterList("reasonIds", reasonIds);
+		return queryObject.list();
+			
+	}
 }
