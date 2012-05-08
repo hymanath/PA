@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
@@ -77,8 +78,15 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentDataDAO commentDataDAO; 	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IMailsSendingService mailsSendingService;
+	private IUserConnectedtoDAO userConnectedtoDAO;
 	
 
+	public IUserConnectedtoDAO getUserConnectedtoDAO() {
+		return userConnectedtoDAO;
+	}
+	public void setUserConnectedtoDAO(IUserConnectedtoDAO userConnectedtoDAO) {
+		this.userConnectedtoDAO = userConnectedtoDAO;
+	}
 	public IMailsSendingService getMailsSendingService() {
 		return mailsSendingService;
 	}
@@ -1169,17 +1177,75 @@ public class CommentsDataService implements ICommentsDataService {
 				comment.setPartyName(params[6].toString());
 				comment.setConstituencyName(params[7].toString());
 				comment.setRank((Long)params[8]);
-				comment.setElectionType(params[9].toString());
-				comment.setElectionYear(params[10].toString());
+				comment.setUserId((Long)params[9]);
+				comment.setElectionType(params[10].toString());
+				comment.setElectionYear(params[11].toString());
 				
 				commentsList.add(comment);
 				
 			}
+			
+			
 		}			
 		
 		return commentsList;
 	}
 	
+	public void sendEmailForCommentsDetailsFromList(List listOfComments)
+	{
+		log.debug("Entered in sendEmailForCommentsDetailsFromList()method of CommentsDataService");
+		try
+		{
+		List<CandidateCommentsVO> commentsList = null;
+		if(listOfComments != null || listOfComments.size() > 0)
+		{
+			for (int i = 0; i < listOfComments.size(); i++)
+			{
+				Object[] params = (Object[])listOfComments.get(i);
+				
+					EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+					
+					emailDetailsVO.setHost(IConstants.SERVER);
+					emailDetailsVO.setToAddress(params[1].toString());
+					emailDetailsVO.setFromAddress(params[2].toString());
+					emailDetailsVO.setCandidateName(params[3].toString());
+					if((Long)params[4] == 1)
+					
+					emailDetailsVO.setPartyStrength("winning");
+					else
+						emailDetailsVO.setPartyStrength("loosing");
+					emailDetailsVO.setConstituencyName(params[5].toString());
+					emailDetailsVO.setElectionType(params[6].toString());
+					mailsSendingService.acceptEmailForUserComments(emailDetailsVO);
+					List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser((Long)params[0]);
+			
+					if(connectedPeople != null && connectedPeople.size() > 0)
+					{
+					for(Object[] connectPeopleDetails : connectedPeople)
+					{
+					String userName = connectPeopleDetails[1]+""+connectPeopleDetails[2];
+					
+					//emailDetailsVO.setHost(IConstants.LOCALHOST);
+					emailDetailsVO.setRecepientEmail(connectPeopleDetails[3].toString());
+					emailDetailsVO.setSenderName(userName);
+					
+					
+					mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+					
+					 }
+				}
+					
+			
+			
+			}
+		}		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.error("error occured in sendEmailForCommentsDetailsFromList()of CommentsDataService()");
+		}
+		
+	}
 	
 		
 	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate)
@@ -1217,7 +1283,16 @@ public class CommentsDataService implements ICommentsDataService {
 			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 			List comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);
 			
+			if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+			{
+			List<Object[]> listOfComments = commentCategoryCandidateDAO.getUsersBasedOnReasonIds(reasonIds);
+				 sendEmailForCommentsDetailsFromList(listOfComments);	
+				 
+			
+			}
+			
 			return extractCommentsDetailsFromList(comments);
+			
 			
 		} catch (Exception e) {
 			return candidateComments;
