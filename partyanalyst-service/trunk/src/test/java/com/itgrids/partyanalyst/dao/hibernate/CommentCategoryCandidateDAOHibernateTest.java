@@ -7,6 +7,10 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +18,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -185,10 +190,66 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetTotalPostedReasonsCountByFreeUserId()
+	/*public void testGetTotalPostedReasonsCountByFreeUserId()
 	{
 		Long count = commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(2L);
 		System.out.println(count);
+	}*/
+	
+	/*public void testgetCommonDataForAllProblems()
+	{
+		
+		Date startDate = null;
+		Date endDate = null;
+		DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		try {
+			startDate = (Date)format.parse("2012-04-13 10:30:09");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			endDate = (Date)format.parse("2012-04-18 14:59:46");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List comments = commentCategoryCandidateDAO.getAllOpenedComments(startDate,endDate);
+		if(comments  != null || comments.size() > 0)
+		{
+			for (int i = 0; i < comments.size(); i++)
+			{
+				Object[] params = (Object[])comments.get(i);
+				System.out.println((Long)params[0]);
+				System.out.println(params[1].toString());
+				System.out.println(params[2].toString());
+				System.out.println(params[3].toString());
+				System.out.println((Long)params[4]);
+				System.out.println(params[5].toString());
+				System.out.println(params[6].toString());
+				System.out.println(params[7].toString());
+				System.out.println((Long)params[8]);
+				System.out.println(params[9].toString());
+				System.out.println(params[10].toString());
+			System.out.println((Long)params[11]);
+				
+				
+				
+			}
+			
+		
+			
+			
+		}			
+	}*/
+	
+	public void testgetUsersBasedOnReasonIds()
+	{
+		List<Long> commentId = new ArrayList<Long>();
+		commentId.add(150l);
+		List<Object[]> list =commentCategoryCandidateDAO.getUsersBasedOnReasonIds(commentId);
+		System.out.println(list);
+		
 	}
 	
 }
