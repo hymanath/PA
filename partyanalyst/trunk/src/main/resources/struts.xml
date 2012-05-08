@@ -152,7 +152,7 @@
 			<result type="redirect" name="homePageQuestionsAction">homePageQuestionsAction.action</result>
 			<result type="redirect" name="specialPageManageAction">specialPageManageAction.action</result>
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
-
+			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 
 			 <!-- Problem Management Flow From Different Pages -->
