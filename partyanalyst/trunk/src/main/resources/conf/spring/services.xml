@@ -39,7 +39,6 @@
 	<bean name="mailService" class="com.itgrids.partyanalyst.service.impl.MailService" >
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="mailsTemplateService" ref="mailsTemplateService" />
 	</bean>  
 	
 	<bean name="userTrackingService" class="com.itgrids.partyanalyst.service.impl.UserTrackingService" >
@@ -750,7 +749,8 @@
 	    <property name="registrationDAO" ref="registrationDAO" />
 	    <property name="commentDataDAO" ref="commentDataDAO" />
 	    <property name="mailsSendingService" ref="mailsSendingService" />
-	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />   
+	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
 	</bean>
 	
 	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
