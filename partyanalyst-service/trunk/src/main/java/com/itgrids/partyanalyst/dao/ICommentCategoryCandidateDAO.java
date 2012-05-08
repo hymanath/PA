@@ -102,4 +102,8 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId);
 	
 	public Long getTotalPostedReasonsCountByFreeUserId();
+	
+	public String getCommonDataForAllProblems();
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds);
 }
