@@ -19,6 +19,16 @@ public class EmailDetailsVO implements Serializable{
 	private String partyStrength;
 	private String candidateName;
 	
+	private String recepientEmail;
+	
+	
+	
+	public String getRecepientEmail() {
+		return recepientEmail;
+	}
+	public void setRecepientEmail(String recepientEmail) {
+		this.recepientEmail = recepientEmail;
+	}
 	public String getCandidateName() {
 		return candidateName;
 	}
