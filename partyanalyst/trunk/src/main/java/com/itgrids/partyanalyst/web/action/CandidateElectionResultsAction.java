@@ -922,7 +922,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	{
 		log.debug("Enter into uploadFiles() Method");
 		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
 		String fileName = null;
 		String filePath = null;
@@ -987,9 +986,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				
 			
 			fileVO.setUploadOtherProfileGalleryIds(galleryIds);
-			/*fileVO.setUploadCandidateGalleryId(getUploadCandidateGalleryId());
-			fileVO.setUploadPartyGalleryId(getUploadPartyGalleryId());*/
-			
+						
 			if(profileType != null && profileId != null && profileGalleryType != null)
 				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
 			else
