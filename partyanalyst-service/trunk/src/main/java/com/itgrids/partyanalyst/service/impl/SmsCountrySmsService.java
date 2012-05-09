@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SmsTrackVO;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SmsHistory;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SmsCountrySmsService implements ISmsService {
 
@@ -169,6 +171,72 @@ public class SmsCountrySmsService implements ISmsService {
 		
 		return smsResultCode;	
 	}
+	
+	/**
+	 *  This Method will Send SMS to given Mobile Numbers From Admin
+	 *  @param String message
+	 *  @param boolean isEnglish
+	 *  @param String[] phoneNumbers
+	 *  @author Kamalakar Dandu
+	 *  @return Long ResultStatus
+	 *  
+	 */
+	public ResultStatus sendSmsFromAdmin(String message, boolean isEnglish,String... phoneNumbers)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+			client.getHttpConnectionManager().getParams().setConnectionTimeout(
+					Integer.parseInt("30000"));
+
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < phoneNumbers.length; i++) {
+				sb.append("91");
+				sb.append(phoneNumbers[i]);
+				if (i < (phoneNumbers.length-1))
+					sb.append(",");
+			}
+			
+			PostMethod post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
+			
+			post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+			post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+			post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+		    post.addParameter("mobilenumber", sb.toString());
+			post.addParameter("message", message);
+			post.addParameter("mtype", isEnglish ? "N" : "OL");
+			post.addParameter("DR", "Y");
+			
+			/* PUSH the URL */
+			try 
+			{
+				int statusCode = client.executeMethod(post);
+				
+				if (statusCode != HttpStatus.SC_OK) {
+					log.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+				}
+				else
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+
+			}catch (Exception e) {
+					log.error(e);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					resultStatus.setExceptionEncountered(e);
+			} finally {
+					post.releaseConnection();
+			}
+			
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured in sendSmsFromAdmin() method - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			return resultStatus;
+		}
+	}
+	
+	
 	
 	/**
 	 * This method Tracks all the Sms's sent by the user and stores the data into corresponding tables.
