@@ -193,13 +193,14 @@ public class MailService implements IMailService{
     	return rs;
     }
     
-    public ResultStatus sendRegistrationNotification(RegistrationVO registrationVO,String requestFrom){
-    	
-    	QuickRequestVO quickRequestVO = new QuickRequestVO();
+    public ResultStatus sendRegistrationNotification(RegistrationVO registrationVO,String requestFrom)
+    {
     	ResultStatus rs = new ResultStatus();
+    	try{
+    	QuickRequestVO quickRequestVO = new QuickRequestVO();
     	String constituency=registrationVO.getContextPath()+"/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency();
     	String district=registrationVO.getContextPath()+"/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+registrationVO.getDistrict();
-    	String login=registrationVO.getContextPath()+"/loginInputAction.action";
+    	String login = registrationVO.getContextPath()+"/loginInputAction.action";
     	String sendMail="mailto:info@partyanalyst.com";
     	String subject;
 		String text;
@@ -273,6 +274,11 @@ public class MailService implements IMailService{
 	            }
 
     	return rs;
+    	}catch (Exception e) {
+    		log.error("Exception Occured - "+e);
+    		rs.setResultCode(ResultCodeMapper.FAILURE);
+    		return rs;
+    	}
     }
 
 	public ResultStatus sendMailFromServer(QuickRequestVO quickRequestVO) {
