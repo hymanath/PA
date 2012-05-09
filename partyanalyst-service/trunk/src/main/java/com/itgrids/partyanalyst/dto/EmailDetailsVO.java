@@ -10,7 +10,6 @@ public class EmailDetailsVO implements Serializable{
 	private String toAddress;
 	private String fromAddress;
 	private String content;
-	private String host;
 	private String welcomeName;
 	private String senderName;
 	
@@ -58,12 +57,6 @@ public class EmailDetailsVO implements Serializable{
 	}
 	public void setSenderName(String senderName) {
 		this.senderName = senderName;
-	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
 	}
 	public String getSubject() {
 		return subject;
