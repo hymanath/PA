@@ -61,7 +61,13 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllConnectedPeopleForFreeUser(Long senderId){
 		return getHibernateTemplate().find(" select model.recepientId.userId,model.recepientId.name,model.recepientId.lastName,model.recepientId.email from UserConnectedto model where "+
-					" model.senderId.userId = ? ",senderId);	
+					"model.senderId.userId = ? ",senderId);	
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllConnectedPeoplesForFreeUser(Long recepientId)
+	{
+		return getHibernateTemplate().find("select model.senderId.userId,model.senderId.name,model.senderId.lastName,model.senderId.email from UserConnectedto model where "+
+	"model.recepientId.userId = ?",recepientId);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllPeopleThatMayBeKnownForUser(Long userId){
