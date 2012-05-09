@@ -59,7 +59,7 @@ public class MailsSendingService implements IMailsSendingService{
 					"to friend request, <a href='http://www.partyanalyst.com/loginInputAction.action'><b>Login here.</b></a></div></div>" ;
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
-			resultStatus = mailService.sendEmail(emailDetailsVO ,emailDetailsVO.getHost());
+			resultStatus = mailService.sendEmail(emailDetailsVO);
 			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
@@ -89,7 +89,7 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setSubject(subject);
-			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			resultStatus = mailService.sendEmail(emailDetailsVO);
 			return resultStatus;
 		}catch (Exception e) {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -116,7 +116,7 @@ public class MailsSendingService implements IMailsSendingService{
 							"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font style='color:blue;'><b>"+emailDetailsVO.getSenderName()+"</b></font> has sent a message in PartyAnalyst.com.<br/> Do you want to send the reply? <a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a></div></div>";
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setSubject(subject);
-			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			resultStatus = mailService.sendEmail(emailDetailsVO);
 			return resultStatus;
 			
 		}catch (Exception e) {
@@ -132,7 +132,7 @@ public class MailsSendingService implements IMailsSendingService{
 		try{			
 			log.info("Enetered into the sendMailsToPasswordnotUpdatedusers method");
 			
-			String subject="Update From partyAnalyst - Change Your Password";		
+			String subject="Change Your Password - PartyAnalyst";
 
 			List<Object[]> usersLst = ananymousUserDAO.getPasswordNotUpdatdUsersList();
 	
@@ -146,11 +146,11 @@ public class MailsSendingService implements IMailsSendingService{
 								"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'> ";				
 						       content+="Dear <font style='color:#1155CC;'><b>"+userDetails[0].toString()+"</b>,</font><br>";
 						       
-						       content+="You registered with <b>partyAnalyst</b> on "+userDetails[2].toString()+".Still you didn't change your password.Presently your password is systems generated password.<br><br>";
+						       content+="You registered with <b>PartyAnalyst</b> on "+userDetails[2].toString()+".Still you didn't change your password.Presently your password is systems generated password.<br><br>";
 						       content+="     Please change your password and stay connected with <b>PartyAnalyst</b> to get more updates from your <b>Friends, Constituency, District, Political Parties and Politicians</b>.<br>";
 						       
 						       
-						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action'>Login Here</a><b><br>";
+						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action?'>Login Here</a><b><br>";
 						       
 						       content+="<br>UserName:<b>&nbsp;"+userDetails[3].toString()+"</b><br>";
 						       content+="Password:<b>&nbsp;"+userDetails[4].toString()+"</b><br></div></div>";
@@ -161,13 +161,12 @@ public class MailsSendingService implements IMailsSendingService{
 					
 					emailDetailsVO.setSubject(subject);
 					emailDetailsVO.setToAddress(userDetails[5].toString());
-					emailDetailsVO.setHost(IConstants.SERVER);							
 					emailDetailsVO.setContent(content);				
 				
 					mainEmailDetailsVoList.add(emailDetailsVO);
 					}catch (Exception ex) {}
 				}						
-				mailService.sendEmails(mainEmailDetailsVoList,IConstants.SERVER);
+				mailService.sendEmails(mainEmailDetailsVoList);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			return resultStatus;
@@ -198,7 +197,7 @@ public class MailsSendingService implements IMailsSendingService{
 			emailDetailsVO.setContent(content);
 			emailDetailsVO.setSubject(subject);
 			//emailDetailsVO.setContent(content);
-			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			resultStatus = mailService.sendEmail(emailDetailsVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		
 		}catch(Exception e)
@@ -222,7 +221,7 @@ public class MailsSendingService implements IMailsSendingService{
 						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your comment for the " +emailDetailsVO.getCandidateName()+ " " +emailDetailsVO.getPartyStrength()+  " from "  +emailDetailsVO.getConstituencyName()+  " "  +emailDetailsVO.getElectionType()+ " Constituency has approved.<br/></div></div>";
 		emailDetailsVO.setContent(content);
 		emailDetailsVO.setSubject(subject);
-		 mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+		 mailService.sendEmail(emailDetailsVO);
 			}
 		}
 		catch(Exception e)
@@ -247,7 +246,7 @@ public class MailsSendingService implements IMailsSendingService{
 					"If you Want to know more about " +emailDetailsVO.getCandidateName()+ " <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
-			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
+			resultStatus = mailService.sendEmail(emailDetailsVO);
 			
 			}
 		}
