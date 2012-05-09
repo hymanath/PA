@@ -114,4 +114,6 @@ public interface IProblemManagementService {
 	public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDate,String toDate,String status,String type);
 	
 	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDate,String status,String type);
+	
+	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers);
 }
