@@ -566,10 +566,16 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
-		
-		Long startIndex = Long.parseLong(request.getParameter("startIndex"));
-		Long results = Long.parseLong(request.getParameter("resultsCount"));
+		}	
+		Long startIndex ,results;
+		if(!request.getParameter("startIndex").equalsIgnoreCase(""))
+			startIndex = Long.parseLong(request.getParameter("startIndex"));
+		else
+			startIndex =null;
+		if(!request.getParameter("resultsCount").equalsIgnoreCase(""))
+		 results = Long.parseLong(request.getParameter("resultsCount"));
+		else
+			results =null;
 		Long userId = 0l;
 		String loginId = jObj.getString("userId");
 		Long locationId = new Long(jObj.getString("locationId"));

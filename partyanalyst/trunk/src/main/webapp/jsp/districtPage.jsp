@@ -45,6 +45,7 @@
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css" />
 
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+	<link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
 	<style type="text/css">
 	
 	#mp_body {border-bottom: 1px solid #D3D3D3;border-collapse: collapse;border-left: 1px solid #D3D3D3;border-right: 1px solid #D3D3D3;width: 96.3%;}	
@@ -379,7 +380,10 @@
 	    success : function( o ) {
 			try {							
 				"",					
-					results = YAHOO.lang.JSON.parse(o.responseText);		
+					results = YAHOO.lang.JSON.parse(o.responseText);	
+					if(jsObj.task=="getAllConnectedUsers"){
+						showAllConnectedUsersInPanel(jsObj, results);
+					}
 					if(jsObj.task == "getAllElectionYears")
 					{
 						if(results!= null &&  results.length>0){
@@ -1701,9 +1705,9 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 				  <tr>
 				  
-					  <td width="45%"><div id="districtPeopleConnect_img"><img src="images/usergroups/group2.jpg"/></div></td>
+					  <!--<td width="45%"><div id="districtPeopleConnect_img"><img src="images/usergroups/group2.jpg"/></div></td>-->
 				  
-					  <td width="55%"><div id="districtPeopleConnectData_body" class="view-all"></div></td>
+					  <td><div id="districtPeopleConnectData_body"></div></td>
 				  </tr>
 				</table>
 			</div>
@@ -1943,7 +1947,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 									</span>
 								</td>									
 								<td>
-								<a <a title="Click here to view ${candidate.constituencyName} Assembly Constituency Election results" href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${candidate.electionYear}')">view results</a>
+								<a title="Click here to view ${candidate.constituencyName} Assembly Constituency Election results" href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${candidate.electionYear}')">view results</a>
 							</td>
 							</tr>  
 						</c:forEach>
@@ -2135,7 +2139,9 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						candidateName:'${candidate.candidateName}',
 						status:'${candidate.status}',
 						constituencyName:'${candidate.constituencyName}',
-						image:'${candidate.image}'
+						image:'${candidate.image}'	,
+						friends:'${candidate.noOfFriends}',
+						posts:'${candidate.noOfPosts}'
 					};
 		
 	connectedPeople.push(userObj);
