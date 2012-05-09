@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.print.DocFlavor.STRING;
-
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -658,7 +656,6 @@ public class CommentsDataService implements ICommentsDataService {
 						EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 						emailDetailsVO.setFromAddress(userName);
 						emailDetailsVO.setToAddress(email);
-						emailDetailsVO.setHost(IConstants.SERVER);
 						emailDetailsVO.setElectionType(candidateComments.getElectionType().toString());
 						if(candidateComments.getRank() == 1 )
 						emailDetailsVO.setPartyStrength("winning");
@@ -1205,7 +1202,6 @@ public class CommentsDataService implements ICommentsDataService {
 				
 					EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 					
-					emailDetailsVO.setHost(IConstants.SERVER);
 					emailDetailsVO.setToAddress(params[1].toString());
 					emailDetailsVO.setFromAddress(params[2].toString());
 					emailDetailsVO.setCandidateName(params[3].toString());
@@ -1225,7 +1221,6 @@ public class CommentsDataService implements ICommentsDataService {
 					{
 					String userName = connectPeopleDetails[1]+""+connectPeopleDetails[2];
 					
-					//emailDetailsVO.setHost(IConstants.LOCALHOST);
 					emailDetailsVO.setRecepientEmail(connectPeopleDetails[3].toString());
 					emailDetailsVO.setSenderName(userName);
 					
