@@ -19,5 +19,7 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	public String getCountOfAllConnectedPeopleForUser(List<Long> senderId);
 	
 	public List<Object[]> getAllConnectedPeopleForFreeUser(Long senderId);
+	
+	public List<Object[]> getAllConnectedPeoplesForFreeUser(Long recepientId);
 
 }
