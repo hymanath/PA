@@ -97,10 +97,10 @@ public void testgetAllConnectedPeoplesForFreeUser()
 	}
 }
 	
-	/*public void test(){
-		char c = '0';
-		System.out.println("");
+	public void testGetConnectedMembersCountForAFreeUser()
+	{
+		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(411l));
 	}
-	*/
+	
 	
 }

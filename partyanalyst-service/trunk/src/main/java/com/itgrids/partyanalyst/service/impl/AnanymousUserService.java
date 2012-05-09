@@ -618,6 +618,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 					}
 					candidateVO.setCandidateName(parms[0].toString().concat(" ").concat(lastName));
 					candidateVO.setId(userId);
+					Long friendsCount = userConnectedtoDAO.getConnectedMembersCountForAFreeUser(userId);
+					candidateVO.setNoOfFriends(friendsCount);
+					Long postsCount = problemHistoryDAO.getProblemCountOfFreeUser(userId);
+					candidateVO.setNoOfPosts(postsCount);
 					candidateVO.setStatus(IConstants.NOTCONNECTED);
 					candidateVO.setConstituencyId(new Long(parms[4].toString()));
 					candidateVO.setConstituencyName(parms[3].toString());
