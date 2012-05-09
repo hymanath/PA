@@ -4645,6 +4645,20 @@ public class ProblemManagementService implements IProblemManagementService {
 			return resultStatus;
 		}
 	}
+	
+	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			resultStatus =  smsCountrySmsService.sendSmsFromAdmin(message,true,phoneNumbers);
+			return resultStatus;
+		} catch (Exception e) {
+			log.error("Exceprtion Occured in Sending SMS " + e.getMessage());
+			resultStatus.setExceptionMsg(e.getMessage());
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
 
 	public String getRefNo(String str, String type) {
 		boolean i = true;
@@ -4681,9 +4695,13 @@ public class ProblemManagementService implements IProblemManagementService {
 			ProblemHistory problemHistory = problemHistoryDAO
 					.get(problemHistoryId);
 			Long userId = null;
+			String userType = null;
 
 			if (problemHistory.getProblemLocation()
 					.getProblemAndProblemSource().getProblemSource() != null) {
+				
+				userType = IConstants.PARTY_ANALYST_USER;
+				
 				long ProblemSource = problemHistory.getProblemLocation()
 						.getProblemAndProblemSource().getProblemSource()
 						.getInformationSourceId();
@@ -4707,6 +4725,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					}
 				}
 			} else {
+				
+				userType = IConstants.FREE_USER;
+						
 				mobile = problemHistory.getProblemLocation()
 						.getProblemAndProblemSource().getExternalUser()
 						.getMobile();
@@ -4724,8 +4745,13 @@ public class ProblemManagementService implements IProblemManagementService {
 
 			if (mobile != null && mobile.length() >= 10) {
 				mobileArray[0] = mobile;
-				ResultStatus result = sendSMS(userId, message,
-						IConstants.PROBLEM_MANAGEMENT, mobileArray);
+				ResultStatus result = null;
+				
+				if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+					result = sendSMS(userId, message,IConstants.PROBLEM_MANAGEMENT, mobileArray);
+				else
+					result = sendSMSFromAdmin(message,mobileArray);
+				
 				if (result.getResultCode() == ResultCodeMapper.SUCCESS) {
 					log.debug("Message Sent Successfully To - " + mobile);
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
