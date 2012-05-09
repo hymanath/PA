@@ -6,6 +6,7 @@ import java.io.StringBufferInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -588,64 +590,74 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
      return Action.SUCCESS;
    }
    
-public String postImagesAndFiles(){
+   	public String postImagesAndFiles()
+   	{
 	   
-	   session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+   		session = request.getSession();
+   		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-	if(user!=null)
-	{		
-		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
-		{
-			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
-		}
-		problemBeanVO.setProblemHistoryId(getProblemHistoryId());
-		fileVO.setFileName(getUserImageFileName());
-		fileVO.setFileTitle(getFileTitle());
-		fileVO.setFileDescription(getFileDescription());
-		
-		try {
+   		if(user!=null)
+   		{		
+			if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
+				problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
 			
-			String fileName;
-			//String filePath1 = context.getRealPath("/");
-			String filePath = "/uploaded_files/Problem_Files";
-			problemFilepath = new ArrayList<String>();
-			System.out.println("problemHistoryID"+problemBeanVO.getProblemHistoryId());
-			tempFileName=new ArrayList<String>();
-			for (int i = 0; i < userImage.size(); i++) {
-				Long systime = System.currentTimeMillis();
-				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
-				while(st.hasMoreTokens()) {
-				String key = st.nextToken();
-				String val = st.nextToken();
-				if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
-					fileName = systime.toString()+"."+key;
-				}
+			problemBeanVO.setProblemHistoryId(getProblemHistoryId());
+			fileVO.setFileName(getUserImageFileName());
+			fileVO.setFileTitle(getFileTitle());
+			fileVO.setFileDescription(getFileDescription());
+			
+			try {
+				
+				String fileName = null;
+				String filePath = null;
+				problemFilepath = new ArrayList<String>();
+				tempFileName = new ArrayList<String>();
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				
+				if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+					filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator + "Problem_Files" + pathSeperator;
 				else
-				  fileName = systime.toString()+"."+val;
-				tempFileName.add(fileName);
-				String problemFilePath=filePath+"/"+fileName;
-				problemFilepath.add(problemFilePath);
-				File fileToCreate = new File(filePath, fileName);
-				FileUtils.copyFile(userImage.get(i), fileToCreate);
-				System.out.println("contenyt type.."
-						+ userImageContentType.get(i));
-				System.out.println(key + "\t" + val);
-				contentType.add(val);
+					filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator + IWebConstants.PROBLEM_FILES + pathSeperator;
+				
+				for (int i = 0; i < userImage.size(); i++)
+				{
+					Long systime = System.currentTimeMillis();
+					StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
+					
+					while(st.hasMoreTokens())
+					{
+						String key = st.nextToken();
+						String val = st.nextToken();
+						Random random = new Random();
+						
+						if(userImageContentType.get(i).equalsIgnoreCase("text/plain"))
+							fileName = systime.toString()+random.nextInt(10000000)+"."+key;
+						else
+							fileName = systime.toString()+random.nextInt(10000000)+"."+val;
+						
+						tempFileName.add(fileName);
+						
+						String problemFilePath = IWebConstants.UPLOADED_FILES+"/"+IWebConstants.PROBLEM_FILES+"/"+fileName;
+						problemFilepath.add(problemFilePath);
+						
+						File fileToCreate = new File(filePath, fileName);
+						FileUtils.copyFile(userImage.get(i), fileToCreate);
+						contentType.add(val);
+					}
 				}
+				fileVO.setFileContentType(getContentType());
+				fileVO.setFileName(tempFileName);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				addActionError(e.getMessage());
 			}
-			fileVO.setFileContentType(getContentType());
-			fileVO.setFileName(tempFileName);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			addActionError(e.getMessage());
-		}
-		fileVO.setFilePath(problemFilepath);
-		problemBeanVO.setFileVO(fileVO);
-		problemManagementService.saveProblemRelatedFiles(problemBeanVO);
-		 
-		return "redirectToJSP";
+			fileVO.setFilePath(problemFilepath);
+			problemBeanVO.setFileVO(fileVO);
+			problemManagementService.saveProblemRelatedFiles(problemBeanVO);
+			 
+			return "redirectToJSP";
 		
 		} 
      return Action.SUCCESS;
