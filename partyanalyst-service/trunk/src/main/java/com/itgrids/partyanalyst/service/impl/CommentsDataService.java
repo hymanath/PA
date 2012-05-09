@@ -1177,9 +1177,9 @@ public class CommentsDataService implements ICommentsDataService {
 				comment.setPartyName(params[6].toString());
 				comment.setConstituencyName(params[7].toString());
 				comment.setRank((Long)params[8]);
-				comment.setUserId((Long)params[9]);
-				comment.setElectionType(params[10].toString());
-				comment.setElectionYear(params[11].toString());
+				
+				comment.setElectionType(params[9].toString());
+				comment.setElectionYear(params[10].toString());
 				
 				commentsList.add(comment);
 				
@@ -1231,14 +1231,24 @@ public class CommentsDataService implements ICommentsDataService {
 					
 					
 					mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
-					
+					}
+					}
+					List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser((Long)params[0]);
+					if(connectedRecepientPeople !=null && connectedRecepientPeople.size() > 0)
+					{
+					{
+						for(Object[] recepientPeople : connectedRecepientPeople)
+						{
+						String recepentUserName = recepientPeople[1]+""+recepientPeople[2];
+						emailDetailsVO.setRecepientEmail(recepientPeople[3].toString());
+						emailDetailsVO.setSenderName(recepentUserName);
+						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+						
+					}
+					}
 					 }
-				}
-					
-			
-			
 			}
-		}		
+			}		
 		}catch(Exception e)
 		{
 			e.printStackTrace();
