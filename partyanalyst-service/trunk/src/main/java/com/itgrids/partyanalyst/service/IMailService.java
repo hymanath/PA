@@ -19,9 +19,9 @@ public interface IMailService {
 	  
 	public  ResultStatus sendMailFromServer(QuickRequestVO quickRequestVO);
 	
-	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails,String host);
+	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails);
 	
-	public ResultStatus sendEmail(EmailDetailsVO emailDetails,String host);
+	public ResultStatus sendEmail(EmailDetailsVO emailDetails);
 	
 	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host);
 }
