@@ -362,22 +362,23 @@ public class MailService implements IMailService{
 				return rs;
 		 	    }
 	
-	public ResultStatus sendEmail(EmailDetailsVO emailDetails,String host)
+	public ResultStatus sendEmail(EmailDetailsVO emailDetails)
 	{
 		try{
-			if(emailDetails == null || host == null)
+			if(emailDetails == null)
 				return null;
 			List<EmailDetailsVO> emailsList = new ArrayList<EmailDetailsVO>(0);
 			emailsList.add(emailDetails);
 			
-			return sendEmails(emailsList,host);
+			return sendEmails(emailsList);
 		}catch (Exception e) {
 			return null;
 		}
 	}
-	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails,String host)
+	public ResultStatus sendEmails(List<EmailDetailsVO> emailDetails)
 	{
 		ResultStatus resultStatus = new ResultStatus();
+		String host = IConstants.DEFAULT_MAIL_SERVER;
 		try{
 			
 			if(emailDetails == null || emailDetails.size() == 0)
@@ -474,12 +475,15 @@ public class MailService implements IMailService{
 			return null;
 		}
 	}
-	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host){
+	
+	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host)
+	{
 		String subject="Invitation From PartyAnalyst";
 		String text="PartyAnalyst inviting you to connect to your people,";
 		text+="post your area problems and access to many features<br/><br/><br/>";
 		text+="Please <a href=http://www.partyanalyst.com/freeUserRegistration.action> Click Here</a> To Register";
-		List<EmailDetailsVO> mainEmailDetailsVoList=new ArrayList();
+		List<EmailDetailsVO> mainEmailDetailsVoList = new ArrayList<EmailDetailsVO>(0);
+		
 		try{
 			if(emaildtlslist!=null && emaildtlslist.size()>0){
 				for(int i=0;i<emaildtlslist.size();i++){
@@ -490,16 +494,15 @@ public class MailService implements IMailService{
 					String welcomename=emailDetailsVO.getWelcomeName();
 					String content="Hi "+welcomename+",<br/>"+text;
 					mainEmailDetailsVO.setContent(content);
-					mainEmailDetailsVO.setHost(host);
 					mainEmailDetailsVoList.add(mainEmailDetailsVO);
 				}
 			}
 			
-			ResultStatus rs=sendEmails(mainEmailDetailsVoList,host);
+			ResultStatus rs = sendEmails(mainEmailDetailsVoList);
 			return rs;	
 		}catch(Exception e){
-			e.printStackTrace();
-		return null;	
+			log.error(e);
+			return null;	
 		}
 		
 	}
