@@ -133,7 +133,7 @@ public class CallCenterService implements ICallCenterService{
 				}*/
 			 
 			 StringBuilder subUserIdAndparentIds = new StringBuilder();
-			 subUserIdAndparentIds.append(userId.toString());http://localhost:8080/PartyAnalyst/images/icons/homePage_new/blue_header_top_left_login.jpg
+			 subUserIdAndparentIds.append(userId.toString());
 			 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
 		 }
 		 //checking for empty fields and executing query
