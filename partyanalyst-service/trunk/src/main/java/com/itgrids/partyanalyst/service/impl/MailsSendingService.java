@@ -243,8 +243,8 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
 					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getSenderName()+ ", </b><br/>" +
-					"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your friend " +emailDetailsVO.getFromAddress()+ " assesment for the " +emailDetailsVO.getCandidateName()+ " winning from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency </b><br/>" +
-					"If You Know about " +emailDetailsVO.getCandidateName()+ " <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
+					"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your friend " +emailDetailsVO.getFromAddress()+ " assesment for the " +emailDetailsVO.getCandidateName()+  " "  +emailDetailsVO.getPartyStrength()+  " from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency </b><br/>" +
+					"If you Want to know more about " +emailDetailsVO.getCandidateName()+ " <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
 			resultStatus = mailService.sendEmail(emailDetailsVO, emailDetailsVO.getHost());
