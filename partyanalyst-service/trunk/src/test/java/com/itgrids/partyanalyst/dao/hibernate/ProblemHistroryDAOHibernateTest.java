@@ -471,7 +471,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetCompleteProblemDetailsByName(){
 		String mobileNum ="9676696760";
 		String name ="Suresh";
@@ -505,7 +505,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 		
-	}
+	}*/
 	/*public void testGetProblemDetailsByName(){
 		
      List<ProblemHistory> result = problemHistoryDAO.getProblemHistoryBasedOnId(77l);
@@ -524,7 +524,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testCheckUserFileUploadRight()
+	/*public void testCheckUserFileUploadRight()
 	{
 		List<Object[]> list = problemHistoryDAO.checkUserFileUploadRight(10l,20l);
 		System.out.println(list.size());
@@ -533,6 +533,11 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println(obj.toString());
 		}
+	}*/
+	
+	public void testGetProblemCountOfFreeUser()
+	{
+		System.out.println(problemHistoryDAO.getProblemCountOfFreeUser(411l));
 	}
 }	
 

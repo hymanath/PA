@@ -97,5 +97,14 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		return queryObject.list().get(0).toString();
 	}
 	
-	
+	public Long getConnectedMembersCountForAFreeUser(Long userId)
+	{
+		Query query = getSession().createQuery("select count(model.userConnectedtoId) from UserConnectedto model where " +
+				" model.senderId.userId = ? or model.recepientId.userId = ?");
+		query.setParameter(0,userId);
+		query.setParameter(1,userId);
+		
+		return (Long)query.uniqueResult();
+		
+	}
 }

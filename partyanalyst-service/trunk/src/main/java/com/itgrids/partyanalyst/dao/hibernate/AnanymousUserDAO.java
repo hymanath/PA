@@ -89,7 +89,8 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		query.append("and model.name like '"+nameString+"%' order by model.userId desc");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
-		queryObject.setFirstResult(startIndex.intValue());
+		if(startIndex!=null)
+			queryObject.setFirstResult(startIndex.intValue());
 		if(retrivalCount != null)
 			queryObject.setMaxResults(retrivalCount.intValue());	
 		

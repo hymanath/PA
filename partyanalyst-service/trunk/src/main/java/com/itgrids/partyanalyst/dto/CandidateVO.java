@@ -32,6 +32,8 @@ public class CandidateVO {
 	private String gender;
 	private String education;
 	private Long partyId;
+	private Long noOfFriends;
+	private Long noOfPosts;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -263,6 +265,22 @@ public class CandidateVO {
 
 	public void setEducation(String education) {
 		this.education = education;
+	}
+
+	public Long getNoOfFriends() {
+		return noOfFriends;
+	}
+
+	public void setNoOfFriends(Long noOfFriends) {
+		this.noOfFriends = noOfFriends;
+	}
+
+	public Long getNoOfPosts() {
+		return noOfPosts;
+	}
+
+	public void setNoOfPosts(Long noOfPosts) {
+		this.noOfPosts = noOfPosts;
 	}
 
 }

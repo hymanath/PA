@@ -985,4 +985,15 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	Object[] params = {userId,problemHistoryId};
 		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId=? and model.problemHistoryId=?",params);
 	}
+	
+	public Long getProblemCountOfFreeUser(Long userId)
+	{
+		Query query = getSession().createQuery("select count(model.problemHistoryId) " +
+				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId = ? "+
+				"and model.isApproved='true' and model.isDelete is null");
+		
+		query.setParameter(0, userId);		
+		return (Long)query.uniqueResult();
+	}
+	
 }
