@@ -278,45 +278,36 @@ function buildProblemPostingWindowForDistrict()
 	/*var postButton = new YAHOO.widget.Button("postButton");
 	postButton.on("click", openAddNewProblemWindow); */
 }
-function buildDistrictConnectPeopleWindow()
-{	
-
-
+function buildDistrictConnectPeopleWindow(){	
 	var bodyElmt = document.getElementById('districtPeopleConnectData_body');
-	
-	if(connectedPeople.length == 0 && userLoginStatus == "false")
-	{
-		var errorStr = '';
-		errorStr += '<div class="errorStr"> No people have been connected.</div>';
-		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
-		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="errorStr">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';
-		errorStr += '<div class="errorStr">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">Login</a></div>';
-		
-		bodyElmt.innerHTML = errorStr;
-		return;
+	var visitorStr='';
+	if(userLoginStatus == "false")	{		
+		//Connect Visitor Start
+		visitorStr+='<div class="Connect-Visitor">';
+		visitorStr+='<h2>Get Connected With '+districtName+' District</h2>';
+		visitorStr+='<div class="RegisterNow">';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/network.png" alt="Connections"/><span>Connect and expand your network</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/user.png" alt="Connections"/><span>View profiles and add new friends</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/share.png" alt="Connections"/><span>Share your photos and videos</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/groups.png" alt="Connections"/><span>Create your own group or join others</span></a>';
+		visitorStr+='</div>';
+
+		visitorStr+='<a href="freeUserRegistration.action" class="joinus">JOIN US NOW, IT\'S FREE</a>'; 
+		visitorStr+='<a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'" class="joinus">Sign In</a> ';
+
+		visitorStr+='</div>';
+		// Connect Visitor End
+		bodyElmt.innerHTML = visitorStr;
 	}
-	else if(connectedPeople.length == 0 && userLoginStatus == "true")
-	{
-		var errorStr = '';
-		errorStr += '<div class="errorStr"> No people have been connected.</div>';
-		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
-		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="errorStr">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';		
-		bodyElmt.innerHTML = errorStr;
-		return;
-	}
-	
+
+	if(connectedPeople.length == 0){
+		var memberStr='';
+		memberStr+='No people to connect to, from this district..Invite your friends to register..';
+		if(userLoginStatus == "false")
+			bodyElmt.innerHTML = visitorStr+memberStr;
+		else
+			bodyElmt.innerHTML = memberStr;
+	}	
+
 	buildConnectUsersContent(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
 }
-
-/*function initializeDistrictPage()
-{
-	buildProblemPostingWindowForDistrict();
-	buildDistrictPageLayout();
-	buildDistrictLatestNews();
-	buildDistrictLevelProblemWindow();
-	buildDistrictConnectPeopleWindow();
-	
-}
-*/

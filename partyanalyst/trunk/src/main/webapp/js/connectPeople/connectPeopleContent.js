@@ -12,9 +12,11 @@ var locationId;
 var locationName;
 var locationType;
 var userLoginStatus;
+var connectedPeople = new Array();
 
 function buildConnectUsersContent(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId)
 {	
+	connectedPeople=connectedPeopleData;
 	connectDivId = divId;
 	connectUserLoginStatus = userLoginStatus;
 	connetLocationId = locationId;
@@ -24,7 +26,6 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 
 	var bodyElmt = document.getElementById(divId);
 	
-
 	if(locationType == "DISTRICT")
 	{
 		locationIdLabel = 'districtId';
@@ -36,82 +37,198 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 		locationNameLabel = 'constituencyName';
 	}
 
+	var bodyStr=$("#districtPeopleConnectData_body").html();
+	
+	//Connect Member Start
+	bodyStr+='<div class="Connect-Member">';
+	bodyStr+='<div style="float:left;"><h2>Members</h2><span style="font-size:18px;">'+connectedPeopleData.length+' people connected from this district</span></div>';
 
-	var bodyStr='';
-	bodyStr+='<div id="connectedNumberDiv"> ';
-	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from this district </span>';
-	bodyStr+='</div>';
-	bodyStr+='<div id="connectedPersonsDiv">';
-	bodyStr+='<table width="100%">';
-	for(var i =0; i<connectedPeopleData.length; i++)
-	{
-		if(i == 3)
+	bodyStr+='<div class="memberfilter">';		
+	
+	bodyStr+='<a id="connTab" href="javascript:{}" onclick="membersList(\''+locationType+'\', \''+locationId+'\', \''+locationName+'\', \''+userLoginStatus+'\', \''+userLoginId+'\', \'all\', this.id)" class="activefilter">Connected</a>';
+	
+	if(userLoginStatus == "true"){
+			bodyStr+='<a id="friendTab" href="javascript:{}" onclick="membersList(\''+locationType+'\', \''+locationId+'\', \''+locationName+'\', \''+userLoginStatus+'\', \''+userLoginId+'\', \'connected\', this.id);">Friends</a>';
+			bodyStr+='<a id="pendingTab" href="javascript:{}" onclick="membersList(\''+locationType+'\', \''+locationId+'\', \''+locationName+'\', \''+userLoginStatus+'\', \''+userLoginId+'\', \'pending\', this.id)">Pending</a>';
+			bodyStr+='<a id="notConnTab" href="javascript:{}" onclick="membersList(\''+locationType+'\', \''+locationId+'\', \''+locationName+'\',\''+userLoginStatus+'\', \''+userLoginId+'\', \'notConnected\', this.id)">Not Connected</a>';
+	}	
+	bodyStr+='<a id="viewAllTab" href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\', this.id);">View All</a>';
+	bodyStr+='</div>';	
+
+	bodyStr+='<div id="membersList">';
+	bodyStr+='<ul class="memberslist">';
+	for(var i =0; i<connectedPeopleData.length; i++){
+		if(i == 10)
 			break;
-		bodyStr+='<tr>';
-		bodyStr+='<td>';
-		bodyStr+='<table width="100%">';
-		bodyStr+='<tr>';
-		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';*/
-		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-		else
-			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'"/></span></td>';
-		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeopleData[i].candidateName+'</span></td>';
-		bodyStr+='</tr>';
-		bodyStr+='<tr>';	
-		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass" style="margin-right:94px;">';
-		if(userLoginStatus == "false")
-			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a>';
-		else
-		{
+		bodyStr+='<li>';
+	
+			if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
+				bodyStr+='<img src="images/icons/connectPeople/member.png" />';
+			else
+				bodyStr+='<img src="pictures/profiles/'+connectedPeopleData[i].image+'" style="width:75px;height:75px;"/>';
+
+			bodyStr+='<span class="membercard"><h3>'+connectedPeopleData[i].candidateName+'<a href="#" class="statuslink statuson">Online</a></span></h3>';
+					
+			bodyStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeopleData[i].friends+'</b>)</a>';
+			bodyStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeopleData[i].posts+'</b>)</a>';
+		if(userLoginStatus == "false"){
+			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
+		}
+		else{		
 			if(connectedPeopleData[i].status == "LOGGED_USER")
-				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Logged User</font>';
-			else if(connectedPeopleData[i].status == "NOT CONNECTED")
-			{
-				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
-				bodyStr+='- <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" style="margin-left:auto;">Connect</a>';
+				bodyStr+='<a href="#" class="ConnectNow">Logged User</a>';
+			else if(connectedPeopleData[i].status == "NOT CONNECTED"){
+				bodyStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
 			}
 			else if(connectedPeopleData[i].status == "CONNECTED")
-				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Connected</font>';
+				bodyStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
 			else if(connectedPeopleData[i].status == "PENDING")
-				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Request Pending</font>';
-		}
-
-		bodyStr+='</span></td>';
-		bodyStr+='</tr>';
-		bodyStr+='</table>';
-		bodyStr+='</td>';
-		bodyStr+='</tr>';
-
-		bodyStr+='<tr>';
-		bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
-		bodyStr+='</tr>';
+					bodyStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
+		}		
+		bodyStr+='</li>';
 	}
-
-	bodyStr+='</table>';
+	bodyStr+='</ul>';
 	bodyStr+='</div>';
 
-	bodyStr+='<div id="viewAllPersonConnectDiv">';
-	bodyStr+='<table width = "100%"><tr>';
-	bodyStr+='<td align="right">';
-	if(userLoginStatus == "false")
-	{
-		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="connectAnc">Login</a> </span>';
-		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="freeUserRegistration.action" class="connectAnc">Register</a> </span>';
-	}
+	bodyStr+='</div>';
+	//Connect Member End
+
 	loginUserId=userLoginId;
-	//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
-	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#ffffff" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
-	//bodyStr+='<span class="connectAncSpan"> | </span>';
-	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
-	bodyStr+='</td>';
-	bodyStr+='</tr></table>';
-	bodyStr+='</div>';
 
 	if(bodyElmt)
 		bodyElmt.innerHTML=bodyStr;
+}
 
+function membersList(locationType,locationId,locationName,userLoginStatus,userLoginId, userRelation, elemId){
+	$("a").removeClass("activefilter");
+	$("#"+elemId).addClass("activefilter");
+		var memberStr='';	
+		if(userRelation=="all"){
+			memberStr+='<ul class="memberslist">';
+			for(var i =0; i<connectedPeople.length; i++){
+				if(i == 10)
+					break;
+
+				memberStr+='<li>';
+				if(connectedPeople[i].image == null || connectedPeople[i].image == '')
+					memberStr+='<img src="images/icons/connectPeople/member.png" />';
+				else
+					memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
+
+				memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'<a href="#" class="statuslink statuson">Online</a></span></h3>';
+						
+				memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
+				memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+
+				if(userLoginStatus=="false"){
+					memberStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
+				}
+				else{
+					if(connectedPeople[i].status == "LOGGED_USER")
+						memberStr+='<a href="#" class="ConnectNow">Logged User</a>';
+					else if(connectedPeople[i].status == "NOT CONNECTED"){
+						memberStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].id+'\',\''+connectedPeople[i].candidateName+'\',\''+connectedPeople[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
+					}
+					else if(connectedPeople[i].status == "CONNECTED")
+						memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
+					else if(connectedPeople[i].status == "PENDING")
+						memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
+				}
+				memberStr+='</li>';
+			}
+			memberStr+='</ul>';			
+		}
+		
+		if(userRelation=="connected"){			
+			var count=0;
+			memberStr+='<ul class="memberslist">';
+			for(var i =0; i<connectedPeople.length; i++){
+				if(count == 10)
+					break;
+				
+				if(connectedPeople[i].status == "CONNECTED"){
+					memberStr+='<li>';
+					++count;
+					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
+						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+					else
+						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
+
+					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'<a href="#" class="statuslink statuson">Online</a></span></h3>';
+							
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
+					memberStr+='</li>';
+				}
+				
+			}
+			memberStr+='</ul>';	
+			if(count==0){
+				memberStr='<ul class="memberslist">';
+				memberStr+='You haven\'t yet connected to anyone from this district';
+				memberStr+='</ul>';
+			}
+		}
+		if(userRelation=="pending"){
+			var count=0;
+			memberStr+='<ul class="memberslist">';
+			for(var i =0; i<connectedPeople.length; i++){
+				if(count == 10)
+					break;
+				if(connectedPeople[i].status == "PENDING"){
+					memberStr+='<li>';
+					++count;
+					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
+						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+					else
+						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
+
+					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'<a href="#" class="statuslink statuson">Online</a></span></h3>';
+							
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
+					memberStr+='</li>';
+				}
+			}
+			memberStr+='</ul>';		
+			if(count==0){
+				memberStr='<ul class="memberslist">';
+				memberStr+='You haven\'t yet connected to anyone from this district';
+				memberStr+='</ul>';
+			}
+		}
+		if(userRelation=="notConnected"){
+			var count=0;
+			memberStr+='<ul class="memberslist">';
+			for(var i =0; i<connectedPeople.length; i++){
+				if(count == 10)
+					break;
+				if(connectedPeople[i].status == "NOT CONNECTED"){
+					memberStr+='<li>';
+					++count;
+					if(connectedPeople[i].image == null || connectedPeople[i].image == '')
+						memberStr+='<img src="images/icons/connectPeople/member.png" />';
+					else
+						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
+
+					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'<a href="#" class="statuslink statuson">Online</a></span></h3>';
+							
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].id+'\',\''+connectedPeople[i].candidateName+'\',\''+connectedPeople[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
+					memberStr+='</li>';
+				}
+			}
+			memberStr+='</ul>';		
+			if(count==0){
+				memberStr='<ul class="memberslist">';
+				memberStr+='You haven\'t yet connected to anyone from this district';
+				memberStr+='</ul>';
+			}
+		}	
+	$("#membersList").html(memberStr);
 }
 
 function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,locationId,locationType,locationName)
@@ -139,27 +256,9 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	str += '</fieldset></td>';
 	str += '</tr>';
 	str += '</table>';
-	str	+= '<div id="connectStatus"></div>';
-	
-	//str	+= '<input type="button" class="cancelButton" onclick="closeConnectPeoplePopup()" value="Cancel"/>';
+	str	+= '<div id="connectStatus"></div>';	
 	str	+= '</div>';
 	
-	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
-				 width:'500px',
-                 fixedcenter : true, 
-                 visible : true,
-                 constraintoviewport : true, 
-        		 iframe :false,
-        		 modal :false,
-        		 hideaftersubmit:true,
-        		 close:true,
-				 draggable:true
-       });	 
-	
-	connectPopupPanel.setHeader("Connect To "+userName);
-    connectPopupPanel.setBody(str);
-    connectPopupPanel.render();*/
-
 	$( "#connectPeoplePopup" ).dialog({
 			title:"Connect To "+userName,
 			autoOpen: true,
@@ -222,29 +321,15 @@ function closeConnectPopup()
 	elmt.innerHTML = str;
 }
 
-function showAllConnectPeopleWindow(locationId,locationName,userLoginId,locationType)
+function showAllConnectPeopleWindow(locationId,locationName,userLoginId,locationType, elemId)
 {	
+	$("a").removeClass("activefilter");
+	$("#"+elemId).addClass("activefilter");
 	connetLocationType = locationType;	
 
 	var str = '';
 	str += '<div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div>';
-	
-	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
-				 width:'500px',
-                 fixedcenter : true, 
-                 visible : true,
-                 constraintoviewport : true, 
-        		 iframe :false,
-        		 modal :false,
-        		 hideaftersubmit:true,
-        		 close:true,
-				 draggable:true
-       });	 
-	
-	connectPopupPanel.setHeader("People Connected to "+locationName);   
-	connectPopupPanel.setBody(str);
-    connectPopupPanel.render();*/
-
+		
 	$( "#connectPeoplePopup" ).dialog({
 			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: true,
@@ -255,10 +340,10 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			hide: "explode"
 		});
 
-	//------
-
 	var jsObj ={
-				locationId:locationId,							
+				locationId:locationId,
+				startIndex:"",
+				resultsCount:"",
 				locationName:locationName,
 				userId:userLoginId,
 				locationType:locationType,
@@ -266,9 +351,12 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllConnectedUserAction.action?"+rparam;	
+	var url = "getAllConnectedUserAction.action?"+rparam;
+	callAjax(jsObj,url);
 
-	custom_paginator.paginator({
+
+	
+	/*custom_paginator.paginator({
 		startIndex:0,
 		resultsCount:6,
 		jsObj:jsObj,
@@ -278,29 +366,10 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			showAllConnectedUsersInPanel(jsObj,results);
 		}
 	});
-	custom_paginator.initialize();
-
-	//-------
-
-	//getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType);
+	custom_paginator.initialize();*/
 }
 
-/*function getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType)
-{	
-	var jsObj ={
-				locationId:locationId,							
-				locationName:locationName,
-				userId:userLoginId,
-				locationType:locationType,
-				task:"getAllConnectedUsers"
-			 };
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllConnectedUserAction.action?"+rparam;					
-	callAjax(jsObj,url);
-}*/
-
-function showAllConnectedUsersInPanel(jsObj,results)
+function showAllConnectedUsersInPanel(jsObj, results)
 {	
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
@@ -577,36 +646,11 @@ function buildAllConnectUserString(users)
 			str += '<a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">';
 			str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
 			str += '</a>';
-			//str += users[i].status;
 			str += '</span>';
 			str += '<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>';
 		}
 		str += '</td>';
-		str += '</tr>';
-
-
-
-
-		/*str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-		str += '<td width="80%"><div class="connectPeople_body_name">'+users[i].candidateName+'</div></td>';				
-		if(users[i].status == "NOT CONNECTED")
-			str += '<td rowspan="2" width="10%"><input type="checkbox" name="connectUserCheck" value="'+users[i].id+'"/></td>';
-		else
-			str += '<td rowspan="2" width="10%">&nbsp</td>';		
-		str += '</tr>';
-		str += '<tr>';
-		str += '<td width="80%">';
-		str += '<table width="100%">';
-		str += '<tr>';
-		str += '<td width="50%" align="left"><span class="connectPeople_body_constituency">'+users[i].constituencyName+'</span></td>';
-		if(users[i].status == "NOT CONNECTED" || users[i].status == "PENDING" || users[i].status == "LOGGED_USER")
-		{
-			str += '<td width="50%" align="right"><span class="connectPeople_body_status">'+users[i].status+'</span></td>';
-		}else
-		{
-			str += '<td width="50%" align="right"><span class="connectPeople_body_status"> <a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">Send a Message</a> CONNECTED </span> <div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div></td>';
-		}
-		str += '</tr>';*/
+		str += '</tr>';	
 		str += '</table>';
 		str += '</td>';
 		str += '</tr>';
@@ -776,7 +820,6 @@ function getAllConnectedUsersByFilterView(locationType)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
-	/*callAjax(jsObj,url);*/
 
 	custom_paginator.paginator({
 		startIndex:0,
