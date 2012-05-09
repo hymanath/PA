@@ -572,7 +572,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 							EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 							emailDetailsVO.setFromAddress(userName);
 							emailDetailsVO.setToAddress(email);
-							emailDetailsVO.setHost(IConstants.SERVER);
 							emailDetailsVO.setSubject(subject);
 							emailDetailsVO.setSenderName(senderName);
 							
@@ -788,7 +787,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 								}
 								if(email != null && email.trim().length() > 0){
 									emailDetailsVO.setFromAddress(userName);
-									emailDetailsVO.setHost(IConstants.SERVER);
 									emailDetailsVO.setSenderName(senderName);
 									emailDetailsVO.setToAddress(email);
 									mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
@@ -822,7 +820,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 									{
 										emailDetailsVO.setFromAddress(userName);
 										emailDetailsVO.setToAddress(email);
-										emailDetailsVO.setHost(IConstants.SERVER);
 										emailDetailsVO.setSubject(subject);
 										emailDetailsVO.setSenderName(senderName);
 										mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
