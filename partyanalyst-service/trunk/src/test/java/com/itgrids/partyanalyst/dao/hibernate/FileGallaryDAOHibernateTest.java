@@ -173,7 +173,7 @@ System.out.println("i " +i);
     	}
     }
 	*/
-	public void testGetFirstFileAndGallaryInfo()
+	/*public void testGetFirstFileAndGallaryInfo()
 	{
 		 List<Object[]> list = fileGallaryDAO.getFirstFileAndGallaryInfo(1193l);
 		 System.out.println(list.size());
@@ -182,6 +182,41 @@ System.out.println("i " +i);
 		 {
 			 System.out.println(object.toString());
 		 }
-	}
+	}*/
 	
+	
+	/*public void testGetRecentlyUploadedFiles()
+	{
+		List<FileGallary> list = fileGallaryDAO.getRecentlyUploadedFiles(0,15,"where model.gallary.contentType.contentType = 'Video Gallary'");
+		
+		System.out.println(list.size());
+		
+		for(FileGallary fileGallary : list)
+		{
+			System.out.println("FileId - "+fileGallary.getFile().getFileId()+" -- Gallary Id - "+fileGallary.getGallary().getGallaryId()
+					+" -- "+fileGallary.getFile().getFileTitle());
+		}
+	}*/
+	
+	public void testGetRecentlyUploadedFilIds()
+	{
+		List<Long> list = fileGallaryDAO.getRecentlyUploadedPhotoIds(0,15);
+		
+		System.out.println(list.size());
+		
+		for(Long id : list)
+		{
+			System.out.println(id);
+		}
+		
+		List<FileGallary> list2 = fileGallaryDAO.getFileGallaryByFileIdsList(list);
+		
+		System.out.println(list2.size());
+		
+		for(FileGallary fileGallary : list2)
+		{
+			System.out.println("FileId - "+fileGallary.getFile().getFileId()+" -- Gallary Id - "+fileGallary.getGallary().getGallaryId()
+					+" -- "+fileGallary.getFile().getFileTitle());
+		}
+	}
 }
