@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -258,4 +259,115 @@ public class MailsSendingService implements IMailsSendingService{
 		return resultStatus;
 	}
 	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(ProblemDetailsVO problemDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		try{
+			if(problemDetailsVO == null)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				log.error("problemDetailsVO is null in sendSuccesMsgToUserEmail()");
+				return resultStatus;
+			}
+			
+			log.info("Entered into sendSuccesMsgToUserEmail() in MailsSendingService");
+			
+			String subject = "Problem Posted Successfully in PartyAnalyst";
+			
+			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b></div>" +
+							"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'>Thanks for posting your problem.<br>Your Problem Posted Successfully.<br><br>" +
+							" <b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
+									"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
+											"<b>Location <span style='margin-left:80px;'>:</span>  </b>"+problemDetailsVO.getLocation()+"" +
+													"<br/><b>Existing From <span style='margin-left:48px;'>:</span>  </b>"+problemDetailsVO.getIdentifiedDate()+"" +
+															"<br/><b>Reported Date <span style='margin-left:45px;'>:</span>  </b>"+problemDetailsVO.getExistingFrom()+"" +
+																	"<br/><b>NO.Of Files Attached <span style='margin-left:5px;'>:</span>  </b>"+problemDetailsVO.getProblemID()+"" +
+																			"<br/>Your problem will be reviewed by our team and will be published once it gets acceptance from them." +
+							"<br>Your Problem Reference Number is : <b>"+problemDetailsVO.getEmailDetailsVO().getElectionType()+"</b>" +
+									"<br>This Will be usefull for Further Reference.</div></div>";
+			emailDetailsVO.setSubject(subject);
+			emailDetailsVO.setContent(content);
+			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
+			mailService.sendEmail(emailDetailsVO);
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return resultStatus;
+	}
+	
+	public ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemDetailsVO problemDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		if(problemDetailsVO == null)
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			log.error("problemDetailsVO is null in sendEmailToFreeUserAfterProblemApproval()");
+			return resultStatus;
+		}
+		try
+		{
+			log.info("Entered into sendEmailToFreeUserAfterProblemApproval()");
+			String subject = "Updates From PartyAnalyst";
+			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b></div>" +
+							"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'>Your Problem approved by PartyAnalyst Admin.<br><br>" +
+							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
+							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
+									"Reference Number : <b> "+problemDetailsVO.getSource()+"</div></div>";
+			
+			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
+			emailDetailsVO.setSubject(subject);
+			emailDetailsVO.setContent(content);
+			mailService.sendEmail(emailDetailsVO);
+			
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured in sendEmailToFreeUserAfterProblemApproval() , Exception is - "+e);
+			return resultStatus;
+		}
+		
+	}
+	
+	public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemDetailsVO problemDetailsVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+			if(problemDetailsVO == null)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				log.error("problemDetailsVO is null in sendEmailToConnectedUsersAfterProblemApproval()");
+				return resultStatus;
+			}
+			try
+			{
+				log.info("Entered into sendEmailToConnectedUsersAfterProblemApproval()");
+			String subject = ""+problemDetailsVO.getEmailDetailsVO().getSenderName()+" Posted Problem in PartyAnalyst";
+			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+problemDetailsVO.getEmailDetailsVO().getFromAddress()+",</b>" +
+							"</div>" +
+					"<div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'>Your Friend <b>"+problemDetailsVO.getEmailDetailsVO().getSenderName()+"</b> Posted a problem in PartyAnalyst.<br>" +
+							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
+							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
+									"To View Problem details and comments on this Problem - " +
+									"<a href='http://localhost:8090/PartyAnalyst/problemCompleteDetailsAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div></div>";
+			
+			emailDetailsVO.setSubject(subject);
+			emailDetailsVO.setContent(content);
+			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
+			mailService.sendEmail(emailDetailsVO);
+			
+			return resultStatus;
+			
+		}catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			log.error("Exception occured in sendEmailToConnectedUsersAfterProblemApproval() , Exception is - "+e);
+			return resultStatus;
+		}
+	}
 }
