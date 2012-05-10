@@ -91,13 +91,13 @@
 <span style="color:#ED5B21;font-weight:bold;">In Parliament</span> - Nellore MP <a href="candidateElectionResultsAction.action?candidateId=13626">Mekapati Rajamohan Reddy</a>, who is a well-known supporter of YSR Congress Party President Jagan Mohan Reddy, has submitted his resignation to Lok Sabha Speaker Meira Kumar on August 24. 
 <!--<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>-->
 </div>
-<table width="100%;">
-<tr><td valign="top">
+<table width="100%;"> <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Nellore Parliament Candidate Details</span>
+<tr><!--<td valign="top">
 
 <table border="1" width="96%" style="margin-top: 10px;border-collapse: collapse;margin-left:13px;
  text-align:center;"  cellspacing="0" cellpadding="5">
 
-<!--<tr><div class="schedule">Schedule</div></tr>-->
+<tr><div class="schedule">Schedule</div></tr>
 <TR style="color: #fff;"> <TH COLSPAN=2 BGCOLOR="#21B2ED;color:#ffffff;">Schedule</TH> </TR>
 
 <tr>
@@ -115,13 +115,66 @@
 <td>Counting</td></tr>
 
 </tr>
-</table></td>
+</table></td>-->
 
 <td valign="top">
-<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 96%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv"><table width="90%" class="legendTable" id="WinningCandidateTableClass"><tbody><tr><th></th><td></td><th>Votes Earned</th><td>430235</td></tr><tr><td><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a><br />
-Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a> Party</td><th>Votes Percentage</th><td>42.92 %</td></tr><tr><th>Present Party</th><td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117">YSRC</a></td><th>Votes Margin Gained</th><td>54993</td></tr><tr><th>Party Flag</th><td><img height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></td><th>Votes Margin % Gained</th><td>5.49 %</td>
-<tr> <TH ROWSPAN=4><div><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div></tr></tbody></table></div></fieldset></div></td>
+<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv" style="width: 310px;">
+<table class="legendTable" id="WinningCandidateTableClass">
+ <tr>
+  <td style="width: 154px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a>
+<br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117">YSRC</a><br />
+Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></td>
 </tr>
+<tr>
+<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
+<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=495">Nellore</a> (2009)</td>
+</tr>
+<tr><td><b>Status :</b></td><td>Won</td></tr>
+<tr><td><b>Votes Earned :</b></td><td>430235</td></tr>
+<tr><td><b>Votes Percentage:</b></td><td>42.92 %</td></tr>
+<tr><td><b>Votes Margin Gained	:</b></td><td>54993</td></tr>
+<tr><td><b>Votes Margin % Gained	: </b></td><td>5.49%</td></tr>
+
+</table></div></fieldset></div></td>
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About T SubbaRami Reddy </legend><div id="WinningCandidateDiv" style="width: 297px;">
+<table class="legendTable" id="WinningCandidateTableClass">
+ <tr>
+  <td style="width: 150px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/T SUBBARAMI REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=41939"> T SUBBARAMI REDDY</a><br />
+ <br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a><br />
+Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/INC.png"></td>
+</tr>
+<tr>
+<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(508,'Parliament',1999)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
+<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=508">Vishakapatnam</a> (1999)</td>
+</tr>
+<tr><td><b>Status :</b></td><td>Lost</td></tr>
+<tr><td><b>Votes Earned :</b></td><td>403,117</td></tr>
+<tr><td><b>Votes Percentage:</b></td><td>45.56 %</td></tr>
+<tr><td><b>Votes Margin 	:</b></td><td>38919</td></tr>
+<tr><td><b>Votes Margin %	: </b></td><td>4.25 %</td></tr>
+
+</table></div></fieldset></td>
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 29%;"><legend style="font-weight: bold;">About Vanteru Venugopal Reddy</legend><div id="WinningCandidateDiv" style="width: 290px;">
+<table class="legendTable" id="WinningCandidateTableClass">
+ <tr>
+  <td style="width: 141px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/VANTERU VENUGOPAL REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=6100"> VANTERU VENUGOPAL REDDY</a>
+ <br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=872">TDP</a><br />
+Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/TDP.PNG"></td>
+</tr>
+<tr>
+<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
+<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=495">Nellore</a> (2009)</td>
+</tr>
+<tr><td><b>Status :</b></td><td>Lost</td></tr>
+<tr><td><b>Votes Earned :</b></td><td>375,242</td></tr>
+<tr><td><b>Votes Percentage:</b></td><td>37.43 %</td></tr>
+<tr><td><b>Votes Margin 	:</b></td><td>54993</td></tr>
+<tr><td><b>Votes Margin % 	: </b></td><td>5.49 %</td></tr>
+
+</table></div></fieldset></td></tr>
 </table>
 <div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in comming days due to JAGAN MLA's who voted against to confidence motion and disqualified MLA's by speaker Nadendla Manohar and Praja Rajyam president Chiranjeevi on Thursday morning resigned from the state assembly .</div>
 <div style="font-weight:bold;font-family:verdana;font-size:12px;margin:17px;">
@@ -131,28 +184,28 @@ Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="windo
 <tbody>
  <tr>
    
-   <th style="background:#21B2ED; color:#FFFFFF; text-align: center; padding: 0px;width: 1%;">Constituency</th>
-   <th style="background: #21B2ED; color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 4%;">District</th>
-   <th style="background:#21B2ED; color: rgb(255, 255, 255); text-align: left; padding: 5px 5px 5px 6px;">Disqualified MLA Name</th>
-   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 10%;">Votes Earned In 2009</th>
-   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 9%;">Majority Votes In 2009</th>
-   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 5px 0px;">Opposition Candidate Name</th>
-   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 13%;">Detailed Results</th>
+   <th style="background:#21B2ED; color:#FFFFFF; text-align: center; padding: 9px;width: 1%;">Constituency</th>
+   <th style="background: #21B2ED; color: rgb(255, 255, 255); text-align: center; padding: 9px; width: 4%;">District</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 9px; width: 10%;">INC</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 9px; width: 10%;">YSRC</th>
+   <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 9px; width: 9%;">TDP</th>
+    <!--<th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 5px 0px;">Others</th>-->
+  <th style="background: none repeat scroll 0% 0% rgb(33, 178, 237); color: rgb(255, 255, 255); text-align: center; padding: 0px; width: 13%;">Detailed Results</th>
    </tr>
    <tr>
    
    <td><a href="constituencyPageAction.action?constituencyId=227" title="Click here to View Ongole Constituency Details, Previous Election Results, Voting Trendz">Ongole</a>
    </td>
    <td><a href="districtPageAction.action?districtId=18&districtName=Prakasam"title="Click here to view Prakasam District page">Prakasam</a></td>
-   <td><div><a id='BALINENI SRINIVASA REDDY (VASU)' href="candidateElectionResultsAction.action?candidateId=2656" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Balineni Srinivasa Reddy profile-previous election result, Updated News, Photos ,Videos">Balineni Srinivasa Reddy (Vasu)</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></div>
+   <td><div><a id='MAGUNTA PARVATHAMMA' href="candidateElectionResultsAction.action?candidateId=111975" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Magunta Parvathamma profile-previous election result, Updated News, Photos ,Videos"> Magunta Parvathamma</a></div>
    </td>
-   <td>67,214
+   <td><a id='BALINENI SRINIVASA REDDY (VASU)' href="candidateElectionResultsAction.action?candidateId=2656" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Balineni Srinivasa Reddy (Vasu) profile-previous election result, Updated News, Photos ,Videos">Balineni Srinivasa Reddy (Vasu)</a>
    </td>
-   <td>22,986
+   <td><a href="#">Damacharla Janardhan</a> / <a id='ANJANEYULU DAMACHARLA' href="candidateElectionResultsAction.action?candidateId=6048" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Anjaneyulu Damacharla profile-previous election result, Updated News, Photos ,Videos">Anjaneyulu Damacharla</a>
    </td>
-   <td><a id='EDARA HARI BABU' 
+   <!--<td><a id='EDARA HARI BABU' 
    href="candidateElectionResultsAction.action?candidateId=2657" onmouseover="displayImage(this.id);" onmouseout="return nd();"distitle="click here to view Edara Hari Babu profile-previous election result, Updated News, Photos ,Videos">Edara Hari Babu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
-   </td>
+   </td>-->
    <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(227,'Assembly',2009)" title="Click here to view Ongole Constituency election results">View Complete Details</a>
    </td>
    </tr>
@@ -161,16 +214,18 @@ Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="windo
    <td><a href="constituencyPageAction.action?constituencyId=238" title="Click here to View Udayagiri Constituency Details, Previous Election Results, Voting Trendz" >Udayagiri
    </td>
    <td><a href="districtPageAction.action?districtId=19&districtName=Nellore" title="Click here to view Nellore District Page">Nellore</a></td>
-   <td><a id='MEKAPATI CHANDRA SEKHAR REDDY' href="candidateElectionResultsAction.action?candidateId=3582" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Mekapati Chandrasekhar Reddy profile-previous election result, Updated News, Photos ,Videos">Mekapati Chandra Sekhar Reddy</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a>
-   </td>
-   <td>69,352
-   </td>
-   <td>13,482
-   </td>
    <td><a id='KAMBHAM VIJAYARAMI REDDY' 
-   href="candidateElectionResultsAction.action?candidateId=3583" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view KAMBHAM VIJAYARAMI REDDY 
-	profile-previous election result, Updated News, Photos ,Videos">Kambham Vijayarami Reddy </a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
+   href="candidateElectionResultsAction.action?candidateId=3583" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kambham Vijayarami Reddy
+	profile-previous election result, Updated News, Photos ,Videos">Kambham Vijayarami Reddy </a> 
    </td>
+   <td><a id='MEKAPATI  CHANDRA SEKHAR REDDY' href="candidateElectionResultsAction.action?candidateId=3582" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Mekapati Chandrashekar Reddy profile-previous election result, Updated News, Photos ,Videos"> Mekapati Chandrashekar Reddy
+   </td>
+   <td><a href="#">Bollineni Rama Rao</a>
+   </td>
+   <!--<td><a id='KAMBHAM VIJAYARAMI REDDY' 
+   href="candidateElectionResultsAction.action?candidateId=3583" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kambham Vijayarami Reddy
+	profile-previous election result, Updated News, Photos ,Videos">Kambham Vijayarami Reddy </a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
+   </td>-->
    <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(238,'Assembly',2009) " title="Click here to view Udayagiri Constituency election results">View Complete Details</a>
    </td>
    </tr>
@@ -179,15 +234,15 @@ Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="windo
    <td><a href="constituencyPageAction.action?constituencyId=159" title="Click here to View Ramachandrapuram Constituency Details, Previous Election Results, Voting Trendz" >Ramachandrapuram
    </td>
 	<td><a href="districtPageAction.action?districtId=14&districtName=East Godavari" title="Click here to view East Godavari District page">East Godavari</a></td>
-   <td><a id='SUBHASH CHANDRA BOSE PILLI' href="candidateElectionResultsAction.action?candidateId=1824" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Pilli SubhashChandra Bose  profile-previous election result, Updated News, Photos ,Videos">Subhash Chandra Bose Pilli</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a>
+   <td><a id='THOTA  THRIMURTULU' href="candidateElectionResultsAction.action?candidateId=1825" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Thota Trimurthulu  profile-previous election result, Updated News, Photos ,Videos">Thota Trimurthulu</a>
    </td>
-   <td>56,589
+   <td><a id='SUBHASH CHANDRA BOSE PILLI' href="candidateElectionResultsAction.action?candidateId=1824" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Subhash Chandra Bose Pilli profile-previous election result, Updated News, Photos ,Videos">Subhash Chandra Bose Pilli
    </td>
-   <td>4031
+   <td><a id='CHIKKALA RAMACHANDRA RAO' href="candidateElectionResultsAction.action?candidateId=5560" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Chikkala Ramachandra Rao profile-previous election result, Updated News, Photos ,Videos">Chikkala Ramachandra Rao
    </td>
-   <td><a id='THOTA THRIMURTULU' href="candidateElectionResultsAction.action?candidateId=1825" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Thota Thrimurtulu profile-previous election result, Updated News, Photos ,Videos">Thota Thrimurtulu - <a href="partyPageAction.action?partyId=662" title="Click here to view PRP profile-previous election result, Updated News, Photos ,Videos">PRP</a>
-   </td>
-   <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(159,'Assembly',2009)" title="Click here to view Ramachandrapuram Constituency election results">View Complete Details</a>
+     <!--<td><a id='THOTA THRIMURTULU' href="candidateElectionResultsAction.action?candidateId=1825" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Thota Thrimurtulu profile-previous election result, Updated News, Photos ,Videos">Thota Thrimurtulu - <a href="partyPageAction.action?partyId=662" title="Click here to view PRP profile-previous election result, Updated News, Photos ,Videos">PRP</a>
+   </td>-->
+ <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(159,'Assembly',2009)" title="Click here to view Ramachandrapuram Constituency election results">View Complete Details</a>
    </td>
    
    </tr>
@@ -196,97 +251,103 @@ Won In 2009 from <a style="text-decoration: none;color: #247CD4;" onclick="windo
    </td>
    <td><a href="districtPageAction.action?districtId=11&districtName=Srikakulam"title="Click here to view Srikakulam District page">Srikakulam</a></td>
    <td >
-	<a id='DHARMANA  KRISHNA DAS' 
-	href="candidateElectionResultsAction.action?candidateId=1449" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Dharmana Krishnadasu  profile-previous election result, Updated News, Photos ,Videos">Dharmana  Krishna Das</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a>
+	<a id='DHARMANA RAMDAS' 
+	href="#">Dharmana Ramdas</a>
    </td>
-   <td >60,426
+   <td ><a id='DHARMANA  KRISHNA DAS' href="candidateElectionResultsAction.action?candidateId=1449" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Dharmana Krishna Das profile-previous election results, Updated News, Photos ,Videos">Dharmana Krishna Das</a>
    </td>
-   <td >17,589
+   <td ><a href="#">Simma Swamy Babu</a>
    </td>
-   <td > <a id='LAKSHMANARAO BAGGU' href="candidateElectionResultsAction.action?candidateId=1450" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Baggu Lakshmana Rao profile-previous election result, Updated News, Photos ,Videos">Lakshmanarao Baggu </a> - <a href="partyPageAction.action?partyId=872"title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
-   </td>
-   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(112,'Assembly',2009)" title="Click here to view Narasannapeta Constituency election results">View Complete Details</a>
+    <!--<td > <a id='LAKSHMANARAO BAGGU' href="candidateElectionResultsAction.action?candidateId=1450" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Baggu Lakshmana Rao profile-previous election result, Updated News, Photos ,Videos">Lakshmanarao Baggu </a> - <a href="partyPageAction.action?partyId=872"title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
+   </td>-->
+  <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(112,'Assembly',2009)" title="Click here to view Narasannapeta Constituency election results">View Complete Details</a>
    </td>
    </tr>
    <tr>
    <td ><a href="constituencyPageAction.action?constituencyId=205" title="Click here to View Macherla Constituency Details, Previous Election Results, Voting Trendz" >Macherla</td>
    <td><a href="districtPageAction.action?districtId=17&districtName=Guntur"title="Click here to view Guntur District page">Guntur</a></td>
-   <td ><a id='RAMA KRISHNA REDDY PINNELLI' href="candidateElectionResultsAction.action?candidateId=2553" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Pinnelli Ramakrishna Reddy  profile-previous election result, Updated News, Photos ,Videos">Rama Krishna Reddy Pinnelli</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
+   <td ><a id='PINNELLI LAKSHMA REDDY' href="candidateElectionResultsAction.action?candidateId=5954" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Pinnelli Lakshma Reddy  profile-previous election result, Updated News, Photos ,Videos">Pinnelli Lakshma Reddy</a></td>
 
-    <td>66,953</td>
-	<td>9785</td>
-	<td><a id='Julakanti  Brahmananda Reddy' href="candidateElectionResultsAction.action?candidateId=2554" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Julakanti  Brahmananda Reddy profile-previous election result, Updated News, Photos ,Videos"> Julakanti  Brahmananda Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
-	<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(205,'Assembly',2009)" title="Click here to view Macherla Constituency election results">View Complete Details</a></td>
+    <td><a id='RAMA KRISHNA REDDY  PINNELLI' href="candidateElectionResultsAction.action?candidateId=2553" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Rama Krishna Reddy Pinnelli profile-previous election result, Updated News, Photos ,Videos">Rama Krishna Reddy Pinnelli</a></td>
+	<td><a href="#">Chirumamilla Madhu</a></td>
+	<!--<td><a id='Julakanti  Brahmananda Reddy' href="candidateElectionResultsAction.action?candidateId=2554" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Julakanti  Brahmananda Reddy profile-previous election result, Updated News, Photos ,Videos"> Julakanti  Brahmananda Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
+	<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(205,'Assembly',2009)" title="Click here to view Macherla Constituency election results">View Complete Details</a></td>
    </tr>
    <tr>
-   <td ><a href="constituencyPageAction.action?constituencyId=173" title="Click here to View Narsapur Constituency Details, Previous Election Results, Voting Trendz" >Narsapur</td>
+   <td ><a href="constituencyPageAction.action?constituencyId=173" title="Click here to View Narsapur Constituency Details, Previous Election Results, Voting Trendz" >Narsapuram</td>
    <td><a href="districtPageAction.action?districtId=15&districtName=West Godavari"title="Click here to view WestGodavari District page">West Godavari</a></td>
-   <td><a id='MUDUNURI PRASADA RAJU' href="candidateElectionResultsAction.action?candidateId=1996" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Prasada Raju  profile-previous election result, Updated News, Photos ,Videos">Mudunuri Prasada Raju</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-   <td>58,560</td>
-   <td>17,325</td>
-   <td><a id='Kothapalli Subbarayudu' href="candidateElectionResultsAction.action?candidateId=1997" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kothapalli Subbarayudu (Pedababu) profile-previous election result, Updated News, Photos ,Videos">Kothapalli Subbarayudu (Pedababu)</a> - <a href="partyPageAction.action?partyId=662" title="Click here to view  PRP profile-previous election result, Updated News, Photos ,Videos">PRP</a></td>
+   <td><a id='KOTHAPALLI SUBBARAYUDU (PEDA BABU)' href="candidateElectionResultsAction.action?candidateId=3952" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Kothapalli Subbarayudu (Peda Babu) profile-previous election result, Updated News, Photos ,Videos">Kothapalli Subbarayudu (Peda Babu)</a></td>
+   <td><a id='MUDUNURI  PRASADA RAJU' href="candidateElectionResultsAction.action?candidateId=1996" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Mudunuri Prasada Raju profile-previous election result, Updated News, Photos ,Videos">Mudunuri Prasada Raju</a></td>
+   <td><a href="#">Dr. Chinamilli Satyanaraya</a></td>
+   <!--<td><a id='Kothapalli Subbarayudu' href="candidateElectionResultsAction.action?candidateId=1997" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kothapalli Subbarayudu (Pedababu) profile-previous election result, Updated News, Photos ,Videos">Kothapalli Subbarayudu (Pedababu)</a> - <a href="partyPageAction.action?partyId=662" title="Click here to view  PRP profile-previous election result, Updated News, Photos ,Videos">PRP</a></td>-->
    <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(173,'Assembly',2009)" title="Click here to view Narsapur Constituency election results">View Complete Details</a></td>
    </tr>
    
-   <tr><td ><a href="constituencyPageAction.action?constituencyId=176" title="Click here to View Polavaram Constituency Details, Previous Election Results, Voting Trendz" >Polavaram (ST)</a></td>
+   <tr><td ><a href="constituencyPageAction.action?constituencyId=176" title="Click here to View Polavaram Constituency Details, Previous Election Results, Voting Trendz" >Polavaram</a></td>
    <td><a href="districtPageAction.action?districtId=15&districtName=West Godavari"title="Click here to view WestGodavari District page">West Godavari</a></td>
-   <td ><a id='TELLAM  BALA RAJU' 
-   href="candidateElectionResultsAction.action?candidateId=2092" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Tellam Balaraju profile-previous election result, Updated News, Photos ,Videos">Tellam  Bala Raju</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-   <td >50,298</td>
-   <td >5664</td>
-   <td > <a id='PUNEM SINGANNA DORA' href="candidateElectionResultsAction.action?candidateId=2093" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Punem  Singanna Dora  profile-previous election result, Updated News, Photos ,Videos" >Punem Singanna Dora</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
-   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(176,'Assembly',2009)" title="Click here to view Polavaram Constituency election results">View Complete Details</a></td>
+   <td ><a href="#" >Nupa Parvathi</a></td>
+   <td ><a id='TELLAM  BALA RAJU' href="candidateElectionResultsAction.action?candidateId=2092" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Tellam Bala Raju profile-previous election result, Updated News, Photos ,Videos" >Tellam Bala Raju</td>
+   <td ><a href="#" >Mudiyam Srinivas</a></td>
+    <!--<td > <a id='PUNEM SINGANNA DORA' href="candidateElectionResultsAction.action?candidateId=2093" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Punem  Singanna Dora  profile-previous election result, Updated News, Photos ,Videos" >Punem Singanna Dora</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
+  <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(176,'Assembly',2009)" title="Click here to view Polavaram Constituency election results">View Complete Details</a></td>
    </tr>
    <tr>
    <td ><a href="constituencyPageAction.action?constituencyId=140" title="Click here to View Payakaraopet Constituency Details, Previous Election Results, Voting Trendz" >Payakaraopet (SC)</a></td>
    <td><a href="districtPageAction.action?districtId=13&districtName=Visakhapatnam" title="Click here to view Visakhapatnam District page">Visakhapatnam</a></td>
+   <td ><a id='SUMANA GANTELA' 
+   href="candidateElectionResultsAction.action?candidateId=3842" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Sumana Gantela profile-previous election result, Updated News, Photos ,Videos">Sumana Gantela</a></td>
    <td ><a id='GOLLA  BABURAO' 
-   href="candidateElectionResultsAction.action?candidateId=1693" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Golla Baburao profile-previous election result, Updated News, Photos ,Videos">Golla  Baburao</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-   <td >50,698</td>
-   <td >656</td>
-   <td > <a id='CHENGALA VENKATARAO' href="candidateElectionResultsAction.action?candidateId=1694" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Chengala Venkatarao profile-previous election result, Updated News, Photos ,Videos">Chengala Venkatarao</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+   href="candidateElectionResultsAction.action?candidateId=1693" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Golla Babu Rao profile-previous election result, Updated News, Photos ,Videos">Golla Babu Rao</td>
+   <td ><a id='CHENGALA VENKATARAO' 
+   href="candidateElectionResultsAction.action?candidateId=1694" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Chengala Venkata Rao profile-previous election result, Updated News, Photos ,Videos">Chengala Venkata Rao</td>
+
+   <!--<td > <a id='CHENGALA VENKATARAO' href="candidateElectionResultsAction.action?candidateId=1694" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Chengala Venkatarao profile-previous election result, Updated News, Photos ,Videos">Chengala Venkatarao</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
    <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(140,'Assembly',2009)" title="Click here to view Payakaraopet Constituency election results">View Complete Details</a></td>
    </tr>
    <tr>
    <td ><a href="constituencyPageAction.action?constituencyId=212" title="Click here to View Prathipadu Constituency Details, Previous Election Results, Voting Trendz" >Prathipadu (SC)</td>
    <td><a href="districtPageAction.action?districtId=17&districtName=Guntur" title="Click here to view Guntur District page">Guntur</a></td>
-   <td ><a id='Sucharitha Mekathoti' href="candidateElectionResultsAction.action?candidateId=2440" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Sucharitha Mekathoti profile-previous election result, Updated News, Photos ,Videos">Sucharitha Mekathoti</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-   <td >66,324</td>
-   <td >2042</td>
-   <td ><a id='Kandukuri Veeraiah' href="candidateElectionResultsAction.action?candidateId=2441" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kandukuri Veeraiah profile-previous election result, Updated News, Photos ,Videos">Kandukuri Veeraiah</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+   <td ><a  href="#">TJR Sudhakarbabu</a></td>
+   <td ><a id='Sucharitha Mekathoti' href="candidateElectionResultsAction.action?candidateId=2440" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Sucharitha Mekathoti profile-previous election result, Updated News, Photos ,Videos">Sucharitha Mekathoti</a></td>
+   <td ><a id='Kandukuri Veeraiah' href="candidateElectionResultsAction.action?candidateId=2441" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kandukuri Veeraiah profile-previous election result, Updated News, Photos ,Videos">Kandukuri Veeraiah</a></td>
+
+   <!--<td ><a id='Kandukuri Veeraiah' href="candidateElectionResultsAction.action?candidateId=2441" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Kandukuri Veeraiah profile-previous election result, Updated News, Photos ,Videos">Kandukuri Veeraiah</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
    <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(212,'Assembly',2009)" title="Click here to view Prathipadu Constituency election results">View Complete Details</a></td>
    </tr>
   <tr>
   <td ><a href="constituencyPageAction.action?constituencyId=246" title="Click here to View Railway Kodur Constituency Details, Previous Election Results, Voting Trendz">Railway Kodur (SC)</td>
   <td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah"title="Click here to view Cuddapah District page">Cuddapah</a></td>
-  <td ><a id='KORAMUTLA SRINIVASULU' href="candidateElectionResultsAction.action?candidateId=2887" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Koramutla Srinivasulu  profile-previous election result, Updated News, Photos ,Videos">Koramutla Srinivasulu </a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-  <td >51,747</td>
-  <td >12,388</td>
+  <td ><a href="#">Easwaraiah</a></td>
+  <td ><a id='KORAMUTLA SRINIVASULU' href="candidateElectionResultsAction.action?candidateId=2887" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Koramutla Srinivasulu  profile-previous election result, Updated News, Photos ,Videos">Koramutla Srinivasulu</a></td>
   <td ><a id='Ajay Babu Nandavaram Benjiman' href="candidateElectionResultsAction.action?candidateId=2888" onmouseover="displayImage(this.id);" onmouseout="return nd();"
+	title="click here to view Ajay Babu Nandavaram Benjiman profile-previous election result, Updated News, Photos ,Videos"
+	>Ajay Babu Nandavaram Benjiman</a></td>
+
+  <!--<td ><a id='Ajay Babu Nandavaram Benjiman' href="candidateElectionResultsAction.action?candidateId=2888" onmouseover="displayImage(this.id);" onmouseout="return nd();"
 title="click here to view Ajay Babu Nandavaram Benjiman profile-previous election result, Updated News, Photos ,Videos"
->Ajay Babu Nandavaram Benjiman</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view  TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+>Ajay Babu Nandavaram Benjiman</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view  TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
   <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(246,'Assembly',2009)" title="Click here to view Railway Kodur Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=252" title="Click here to View Rajampet Constituency Details, Previous Election Results, Voting Trendz" >Rajampet</td>
 <td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah"title="Click here to view Cuddapah District page">Cuddapah</a></td>
-<td><a id='AMARANATH REDDY  AKEPATI' href="candidateElectionResultsAction.action?candidateId=2862" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Akepati Amarnath Reddy profile-previous election result, Updated News, Photos ,Videos">Amaranath Reddy  Akepati</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-<td>60,397</td>
-<td>12,342</td>
-<td><a id='KASIREDDI MADAN MOHAN REDDY' href="candidateElectionResultsAction.action?candidateId=2863" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Madan Mohan Reddy K profile-previous election result, Updated News, Photos ,Videos"
->Kasireddi Madan Mohan Reddy </a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+<td><a href="#">Meda Mallikarjun Reddy</a></td>
+<td><a id='AMARANATH REDDY  AKEPATI' href="candidateElectionResultsAction.action?candidateId=2862" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Akepati Amarnath Reddy profile-previous election result, Updated News, Photos ,Videos">Amarnath Reddy</a></td>
+<td><a id='BRAHMAIAH  PASUPULETI' href="candidateElectionResultsAction.action?candidateId=4472" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Brahmaiah  Pasupuleti profile-previous election result, Updated News, Photos ,Videos">Brahmaiah  Pasupuleti</td>
+<!--<td><a id='KASIREDDI MADAN MOHAN REDDY' href="candidateElectionResultsAction.action?candidateId=2863" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Madan Mohan Reddy K profile-previous election result, Updated News, Photos ,Videos"
+>Kasireddi Madan Mohan Reddy </a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
 <td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(252,'Assembly',2009)" title="Click here to view Rajampet Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=248" title="Click here to View Rayachoti Constituency Details, Previous Election Results, Voting Trendz">Rayachoti</td>
 <td><a href="districtPageAction.action?districtId=20&districtName=Cuddapah" title="Click here to view Cuddapah District page">Cuddapah</a></td>
-<td ><a id='GADIKOTA  SRIKANTH REDDY' 
-href="candidateElectionResultsAction.action?candidateId=3493" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Gadikota Srikanth Reddy profile-previous election result, Updated News, Photos ,Videos">GADIKOTA  SRIKANTH REDDY</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a>
+<td ><a href="#">Ramprasad Reddy</a>
 
 </td>
-<td >71,901</td>
-<td >14,832</td>
-<td ><a id='SUGAVASI PALAKONDRAYUDU' href="candidateElectionResultsAction.action?candidateId=3494" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Sugavasi Palakondrayudu  profile-previous election result, Updated News, Photos ,Videos" >Sugavasi Palakondrayudu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+<td ><a id='GADIKOTA  SRIKANTH REDDY' 
+href="candidateElectionResultsAction.action?candidateId=3493" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Gadikota Srikanth Reddy profile-previous election result, Updated News, Photos ,Videos">Gadikota Srikanth Reddy</a></td>
+<td ><a href="#">Balasubrahmanyam</a></td>
+<!--<td ><a id='SUGAVASI PALAKONDRAYUDU' href="candidateElectionResultsAction.action?candidateId=3494" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Sugavasi Palakondrayudu  profile-previous election result, Updated News, Photos ,Videos" >Sugavasi Palakondrayudu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
 <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(248,'Assembly',2009)" title="Click here to view Rayachoti Constituency election results">View Complete Details</a></td>
 </tr>
 
@@ -294,52 +355,64 @@ href="candidateElectionResultsAction.action?candidateId=3493" onmouseover="displ
    <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=298" title="Click here to View Ananthapur Constituency Details, Previous Election Results, Voting Trendz" >Ananthapur</td>
 <td><a href="districtPageAction.action?districtId=22&districtName=Anantapur"title="Click here to view Anantapur District page">Anantapur</a></td>
-<td ><a id='B.Gurunatha Reddy' href="candidateElectionResultsAction.action?candidateId=3434" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to B.Gurunatha Reddy profile-previous election result, Updated News, Photos ,Videos">B.Gurunatha Reddy</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-<td >45,275</td>
-<td >13,242</td>
-<td ><a id='Mahalakshmi Sreenivasulu' href="candidateElectionResultsAction.action?candidateId=3435" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Mahalakshmi Sreenivasulu  profile-previous election result, Updated News, Photos ,Videos">Mahalakshmi Sreenivasulu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+<td ><a  href="#">Musheera Begum</a></td>
+<td ><a id='B.Gurunatha Reddy' href="candidateElectionResultsAction.action?candidateId=3434" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to B.Gurunatha Reddy profile-previous election result, Updated News, Photos ,Videos">B.Gurunatha Reddy</a></td>
+<td ><a id='Mahalakshmi Sreenivasulu' href="candidateElectionResultsAction.action?candidateId=3435" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Mahalakshmi Sreenivasulu  profile-previous election result, Updated News, Photos ,Videos">Mahalakshmi Sreenivasulu</td>
+<!--<td ><a id='Mahalakshmi Sreenivasulu' href="candidateElectionResultsAction.action?candidateId=3435" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Mahalakshmi Sreenivasulu  profile-previous election result, Updated News, Photos ,Videos">Mahalakshmi Sreenivasulu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
 <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(298,'Assembly',2009)" title="Click here to view Ananthapur Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=276" title="Click here to View Rayadurg Constituency Details, Previous Election Results, Voting Trendz">Rayadurg</td>
 <td><a href="districtPageAction.action?districtId=22&districtName=Anantapur" title="Click here to view Anantapur District page">Anantapur</a></td>
 <td >
-<a id='KAPU  RAMACHANDRA REDDY' 
-href="candidateElectionResultsAction.action?candidateId=3462" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Kapu Ramachandra Reddy  profile-previous election result, Updated News, Photos ,Videos">Kapu  Ramachandra Reddy </a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a>
+<a id='PATIL VENUGOPAL REDDY' 
+href="candidateElectionResultsAction.action?candidateId=8955" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Patil Venugopal Reddy profile-previous election result, Updated News, Photos ,Videos">Patil Venugopal Reddy</a>
 </td>
-<td >76,259</td>
-<td >14,091</td>
+<td ><a id='KAPU  RAMACHANDRA REDDY' 
+href="candidateElectionResultsAction.action?candidateId=3462" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Kapu Ramachandra Reddy  profile-previous election result, Updated News, Photos ,Videos">Kapu Ramchandra Reddy</a></td>
+<td ><a  href="#">Deepak Reddy</a></td>
 
-<td ><a id='METTU GOVINDA REDDY' href="candidateElectionResultsAction.action?candidateId=3463" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Mettu Govinda Reddy  profile-previous election result, Updated News, Photos ,Videos" >Mettu Govinda Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td><td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(276,'Assembly',2009)" title="Click here to view Rayadurg Constituency election results">View Complete Details</a></td>
+<!--<td ><a id='METTU GOVINDA REDDY' href="candidateElectionResultsAction.action?candidateId=3463" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Mettu Govinda Reddy  profile-previous election result, Updated News, Photos ,Videos" >Mettu Govinda Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(276,'Assembly',2009)" title="Click here to view Rayadurg Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=265" title="Click here to View Yemmiganuru Constituency Details, Previous Election Results, Voting Trendz" >Yemmiganuru</td>
 <td><a href="districtPageAction.action?districtId=21&districtName=Kurnool" title="Click here to view Kurnool District page">Kurnool</a></td>
-<td ><a id='K. Chenna Kesava Reddy' href="candidateElectionResultsAction.action?candidateId=4658" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view K. Chenna Kesava Reddy  profile-previous election result, Updated News, Photos ,Videos">K. Chenna Kesava Reddy</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-<td >53,766</td>
-<td >2323</td>
-<td ><a id='B V MOHAN REDDY' href="candidateElectionResultsAction.action?candidateId=3111" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  B V Mohan Reddy profile-previous election result, Updated News, Photos ,Videos">B V Mohan Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>
+<td ><a  href="#">Rudra Goud</a></td>
+<td ><a id='K. Chenna Kesava Reddy' href="candidateElectionResultsAction.action?candidateId=4658" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view K.Chenna Kesava Reddy  profile-previous election result, Updated News, Photos ,Videos">K.Chenna kesava Reddy</a></td>
+<td ><a id='B V MOHAN REDDY' href="candidateElectionResultsAction.action?candidateId=3111" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  B V Mohan Reddy profile-previous election result, Updated News, Photos ,Videos">B V Mohan Reddy</a></td>
+<!--<td ><a id='B V MOHAN REDDY' href="candidateElectionResultsAction.action?candidateId=3111" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  B V Mohan Reddy profile-previous election result, Updated News, Photos ,Videos">B V Mohan Reddy</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a></td>-->
 <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(265,'Assembly',2009)" title="Click here to view Yemmiganuru Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=254" title="Click here to View Allagadda Constituency Details, Previous Election Results, Voting Trendz" >Allagadda</td>
 <td><a href="districtPageAction.action?districtId=21&districtName=Kurnool" title="Click here to view Kurnool District page">Kurnool</a></td>
-<td> <a id='BHUMA  SHOBHA NAGI REDDY' href="candidateElectionResultsAction.action?candidateId=2965" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Bhooma Shobha Nagireddy  profile-previous election result, Updated News, Photos ,Videos">Bhuma  Shobha Nagi Reddy</a> - <a href="partyPageAction.action?partyId=662" title="Click here to view PRP profile-previous election result, Updated News, Photos ,Videos">PRP</a>
+<td> <a id='GANGULA PRATHAPA REDDY' href="candidateElectionResultsAction.action?candidateId=2966" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Gangula Prathapa Reddy profile-previous election result, Updated News, Photos ,Videos">Gangula Pratapa Reddy</a>
 
 </td>
-<td >61,555</td>
-<td >1958</td>
-<td ><a id='GANGULA PRATHAPA REDDY' href="candidateElectionResultsAction.action?candidateId=2966" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Gangula Prathapa Reddy profile-previous election result, Updated News, Photos ,Videos">Gangula Prathapa Reddy</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
+<td ><a id='BHUMA  SHOBHA NAGI REDDY' href="candidateElectionResultsAction.action?candidateId=2965" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Bhooma Shobha Nagireddy  profile-previous election result, Updated News, Photos ,Videos">Bhuma Shobha Reddy</a></td>
+<td ><a id='ERIGELA  RAMPULLAREDDY' href="candidateElectionResultsAction.action?candidateId=2967" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view Erigela  Rampulla Reddy profile-previous election result, Updated News, Photos ,Videos">Erigela  Rampulla Reddy</a></td>
+<!--<td ><a id='GANGULA PRATHAPA REDDY' href="candidateElectionResultsAction.action?candidateId=2966" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Gangula Prathapa Reddy profile-previous election result, Updated News, Photos ,Videos">Gangula Prathapa Reddy</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>-->
 <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(254,'Assembly',2009)" title="Click here to view Allagadda Constituency election results">View Complete Details</a></td>
 </tr>
 <tr>
 <td ><a href="constituencyPageAction.action?constituencyId=94" title="Click here to View Parkal Constituency Details, Previous Election Results, Voting Trendz" >Parkal</td>
 <td><a href="districtPageAction.action?districtId=9&districtName=Warangal" title="Click here to view Warangal District page">Warangal</a></td>
-<td ><a id='KONDA SUREKHA' href="candidateElectionResultsAction.action?candidateId=1202" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Konda Surekha   profile-previous election result, Updated News, Photos ,Videos">Konda Surekha </a>   -  <a href="partyPageAction.action?partyId=362" title="Click here to view INC profile-previous election result, Updated News, Photos ,Videos">INC</a></td>
-<td >69,135</td>
-<td >12,800</td>
-<td ><a id='Bikshapathy Moluguri' href="candidateElectionResultsAction.action?candidateId=1203" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Bikshapathy Moluguri profile-previous election result, Updated News, Photos ,Videos">Bikshapathy Moluguri</a> - <a href="partyPageAction.action?partyId=886" title="Click here to view TRS profile-previous election result, Updated News, Photos ,Videos">TRS</a></td>
+<td ><a  href="#">Sambari Samma Rao</a>
+<td ><a id='KONDA SUREKHA' href="candidateElectionResultsAction.action?candidateId=1202" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Konda Surekha   profile-previous election result, Updated News, Photos ,Videos">Konda Surekha</a></td>
+<td ><a  href="#">Dharma Reddy</a></td>
+
+<!--<td ><a id='Bikshapathy Moluguri' href="candidateElectionResultsAction.action?candidateId=1203" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Bikshapathy Moluguri profile-previous election result, Updated News, Photos ,Videos">Bikshapathy Moluguri</a> - <a href="partyPageAction.action?partyId=886" title="Click here to view TRS profile-previous election result, Updated News, Photos ,Videos">TRS</a></td>-->
 <td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(94,'Assembly',2009)" title="Click here to view Parkal Constituency election results">View Complete Details</a></td>
+</tr>
+<tr>
+<td ><a href="constituencyPageAction.action?constituencyId=291" title="Click here to View Tirupathi Constituency Details, Previous Election Results, Voting Trendz" >Tirupathi</td>
+<td><a href="districtPageAction.action?districtId=23&districtName=Chittoor" title="Click here to view Warangal District page">Chittor </a></td>
+<td ><a id='M VENKATA RAMANA' href="candidateElectionResultsAction.action?candidateId=4461" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to M Venkata Ramana profile-previous election result, Updated News, Photos ,Videos">M Venkata Ramana</td>
+<td ><a id='KARUNAKAR REDDY  BHUMANA' href="candidateElectionResultsAction.action?candidateId=3348" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Karunakar Reddy  Bhumana profile-previous election result, Updated News, Photos ,Videos">Karunakar Reddy  Bhumana</a></td>
+<td ><a id='CHADALAVADA KRISHNA MURTHY' href="candidateElectionResultsAction.action?candidateId=8398" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to Chadalavada Krishna murthy profile-previous election result, Updated News, Photos ,Videos">Chadalavada Krishna murthy</a></td>
+<!--<td ><a id='Bikshapathy Moluguri' href="candidateElectionResultsAction.action?candidateId=1203" onmouseover="displayImage(this.id);" onmouseout="return nd();" title="click here to view  Bikshapathy Moluguri profile-previous election result, Updated News, Photos ,Videos"></a><a href="partyPageAction.action?partyId=886" title="Click here to view TRS profile-previous election result, Updated News, Photos ,Videos"></a></td>-->
+<td ><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(291,'Assembly',2009)" title="Click here to view Parkal Constituency election results">View Complete Details</a></td>
 </tr>
 </tbody></table>
 
