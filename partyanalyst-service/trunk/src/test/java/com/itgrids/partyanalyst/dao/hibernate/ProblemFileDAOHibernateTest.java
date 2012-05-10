@@ -163,7 +163,7 @@ public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 		}
 		}*/
 	
-	public void testgetAllgetAllImagesForParticularDate() throws ParseException
+	/*public void testgetAllgetAllImagesForParticularDate() throws ParseException
 	{
 		Date particularDate = null;
 		DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
@@ -178,8 +178,13 @@ public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[2]);
 			System.out.println(params[3]);
 		}
-		}
+		}*/
 	
+	public void testGetNoOfFilesUploadedForAUser()
+	{
+		Object object = problemFileDAO.getNoOfFilesUploadedForAUser(223l);
+		System.out.println(object);
+	}
 	
 	
 }
