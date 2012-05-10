@@ -349,7 +349,37 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 				" and model.gallary.isPrivate = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.updateddate desc");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxResults);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getRecentlyUploadedFileIds(Integer startIndex , Integer maxResults , String queryStr){
 		
+		Query query = getSession().createQuery("select distinct model.file.fileId from FileGallary model "+queryStr+" and model.gallary.isPrivate = 'false' " +
+				" and model.isPrivate = 'false' and model.isDelete = 'false' order by model.file.fileDate desc,model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getRecentlyUploadedPhotoIds(Integer startIndex,Integer maxResults)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.file.fileId from FileGallary model where model.gallary.contentType.contentType ='Photo Gallary'" +
+				" and model.gallary.isPrivate = 'false' and model.isPrivate = 'false' and model.isDelete = 'false' order by model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FileGallary> getFileGallaryByFileIdsList(List<Long> fileIdsList)
+	{
+		Query query = getSession().createQuery("select model from FileGallary model where model.file.fileId in (:fileIdsList) and model.isDelete = 'false' " +
+				"and model.isPrivate = 'false' order by model.file.fileDate desc,model.updateddate desc");
+		query.setParameterList("fileIdsList",fileIdsList);
 		return query.list();
 	}
 	
@@ -434,7 +464,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileVO.getLocation() != null)
  			queryObject.setLong("locScopVal",fileVO.getLocation());		
 		 
-		return queryObject.list(); 
+		return queryObject.list();
 	}
      @SuppressWarnings("unchecked")
 	public List<Object[]> getCountDetailsForCategory(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO){
