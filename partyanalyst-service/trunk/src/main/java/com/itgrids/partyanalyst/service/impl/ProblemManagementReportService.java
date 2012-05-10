@@ -39,11 +39,14 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemClassificationVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -67,8 +70,10 @@ import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
+import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.GenericException;
@@ -109,7 +114,26 @@ public class ProblemManagementReportService implements
 	private IDataApprovalService dataApprovalService;
 	private CadreManagementService cadreManagementService;
 	private IProblemFileDAO problemFileDAO;
+	private IUserConnectedtoDAO userConnectedtoDAO;
+	private IMailsSendingService mailsSendingService;
 	
+	
+	public IMailsSendingService getMailsSendingService() {
+		return mailsSendingService;
+	}
+
+	public void setMailsSendingService(IMailsSendingService mailsSendingService) {
+		this.mailsSendingService = mailsSendingService;
+	}
+
+	public IUserConnectedtoDAO getUserConnectedtoDAO() {
+		return userConnectedtoDAO;
+	}
+
+	public void setUserConnectedtoDAO(IUserConnectedtoDAO userConnectedtoDAO) {
+		this.userConnectedtoDAO = userConnectedtoDAO;
+	}
+
 	public IProblemFileDAO getProblemFileDAO() {
 		return problemFileDAO;
 	}
@@ -1777,16 +1801,143 @@ public class ProblemManagementReportService implements
 					for(int i=0;i<problemHistoryIds.length;i++){						
 						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());						
 						problemHistory.setIsApproved(IConstants.TRUE);
-						problemHistoryDAO.save(problemHistory);
+						problemHistory = problemHistoryDAO.save(problemHistory);
 						ProblemLocation problemLocation = problemLocationDAO.get(problemHistory.getProblemLocation().getProblemLocationId());
 						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
 						problemLocationDAO.save(problemLocation);
+						sendEmailToFreeUserAfterProblemApproval(problemHistory);
 					}
 				}
 			});
 		}
 		
+		private ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemHistory problemHistory)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			
+			if(problemHistory == null)
+			{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			try
+			{
+				String email = null;
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				email = problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser()
+					.getEmail();
+				if(email != null && email.trim().length() > 0)
+				{
+					emailDetailsVO.setFromAddress(problemHistory.getProblemLocation()
+							.getProblemAndProblemSource().getExternalUser().getName()+" "+
+							problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getExternalUser().getLastName());
+					
+					emailDetailsVO.setToAddress(email);
+					
+					problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getProblem());
+					problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getDescription());
+					problemDetailsVO.setSource(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getReferenceNo());
+					
+					
+					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+					mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
+					
+					sendEmailToConnectedUsersAfterProblemApproval(problemHistory);
+					
+					}
+				return resultStatus;	
+			}catch (Exception e) {
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setExceptionEncountered(e);
+				log.error("Exception Occured in sendEmailToFreeUserAfterProblemApproval() , Exception is - "+e);
+				return resultStatus;
+			}
+			
+		}
 		
+		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemHistory problemHistory)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			Long userId = null;
+			if(problemHistory == null)
+				{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+				}
+			try
+			{
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				
+				userId = problemHistory.getProblemLocation().getProblemAndProblemSource()
+						.getExternalUser().getUserId();
+				
+				if(userId != null && userId != 0)
+				{
+					String email = null;
+				
+					List<Object[]> senderId = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
+					if(senderId != null && senderId.size() > 0)
+					{
+						for(Object[] params : senderId)
+						{
+							email = params[3].toString();
+							if(email != null && email.trim().length() > 0)
+							{
+								problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
+								problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+								problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+								emailDetailsVO.setToAddress(email);
+								emailDetailsVO.setFromAddress(params[1].toString()+" "+params[2].toString());
+								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource()
+										.getExternalUser().getName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource()
+										.getExternalUser().getLastName());
+								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+								
+								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+							}
+						}
+					}
+					
+				  List<Object[]> recepientId = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
+					if(recepientId != null && recepientId.size() > 0)
+					{
+						for(Object[] param : recepientId)
+						{
+							email = param[3].toString();
+							if(email != null && email.trim().length() > 0)
+							{
+								problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
+								problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource()
+										.getProblem().getProblem());
+								problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource()
+										.getProblem().getDescription());
+								emailDetailsVO.setToAddress(email);
+								emailDetailsVO.setFromAddress(param[1].toString()+" "+param[2].toString());
+								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser()
+										.getName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getLastName());
+								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+								
+								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+							}
+						}
+					}
+				}
+				
+			return resultStatus;	
+			}catch (Exception e) {
+				
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setExceptionEncountered(e);
+				log.error("Exception occured in sendEmailToConnectedUsersAfterProblemApproval() , Exception is - "+e);
+				return resultStatus;
+			}
+		}
 		/** 
 		 * The below method can be used to retrive all the approved problems based on location-type and location-id
 		 * 
