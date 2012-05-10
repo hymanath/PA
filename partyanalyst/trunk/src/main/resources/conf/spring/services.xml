@@ -558,6 +558,7 @@
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="problemFileDAO" ref="problemFileDAO" />
+		<property name="mailsSendingService" ref="mailsSendingService" />
 
    </bean>
    
@@ -685,6 +686,8 @@
 		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="problemFileDAO" ref="problemFileDAO" />
+		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
+		<property name="mailsSendingService" ref="mailsSendingService" />
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
