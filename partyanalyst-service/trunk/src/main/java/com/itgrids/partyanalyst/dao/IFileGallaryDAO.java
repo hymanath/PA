@@ -82,4 +82,10 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId);
     
     public List<Object> getFileGallaryIdByFileId(Long fileId);
+    
+    public List<Long> getRecentlyUploadedFileIds(Integer startIndex , Integer maxResults , String queryStr);
+    
+    public List<Long> getRecentlyUploadedPhotoIds(Integer startIndex,Integer maxResults);
+    
+    public List<FileGallary> getFileGallaryByFileIdsList(List<Long> fileIdsList);
 }
