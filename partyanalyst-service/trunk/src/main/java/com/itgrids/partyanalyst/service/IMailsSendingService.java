@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IMailsSendingService {
@@ -19,8 +20,10 @@ public interface IMailsSendingService {
 	
 	public ResultStatus sendEmailForConnectedUsers(EmailDetailsVO emailDetailsVO);
 	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(ProblemDetailsVO problemDetailsVO);
 	
+	public ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemDetailsVO problemDetailsVO);
 	
-	
+	public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemDetailsVO problemDetailsVO);
 	
 }
