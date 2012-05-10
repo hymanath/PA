@@ -27,4 +27,7 @@ public interface IProblemFileDAO extends GenericDao<ProblemFile, Long> {
 	public List<Object[]> getAllNonApprovalImagesForParticularDate(Date particularDate,String status);
 	
 	public List<Object[]> getAllImagesForParticularDate(Date particularDate,String status);
+	
+	public List<Object> getNoOfFilesUploadedForAUser(Long problemHistoryId);
+	
 }
