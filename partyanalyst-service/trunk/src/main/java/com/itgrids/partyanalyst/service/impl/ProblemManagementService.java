@@ -60,12 +60,15 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartDataVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
@@ -106,6 +109,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -160,6 +164,16 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IFileTypeDAO fileTypeDAO;
 	private IProblemFileDAO problemFileDAO;
 	private String tempName;
+	private IMailsSendingService mailsSendingService;
+	
+	
+	public IMailsSendingService getMailsSendingService() {
+		return mailsSendingService;
+	}
+
+	public void setMailsSendingService(IMailsSendingService mailsSendingService) {
+		this.mailsSendingService = mailsSendingService;
+	}
 
 	public String getTempName() {
 		return tempName;
@@ -4771,6 +4785,74 @@ public class ProblemManagementService implements IProblemManagementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			log.error("Exception Occured & Exception is - " + e);
+			return resultStatus;
+		}
+	}
+	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		
+		if(problemHistoryId == null || problemHistoryId <= 0)
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+		try
+		{
+			String email = null;
+			Long noOfFilesAttached = null;
+			
+			ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryId);
+		
+			if(problemHistory != null)
+			{
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				
+				email = problemHistory.getProblemLocation()
+						.getProblemAndProblemSource().getExternalUser()
+						.getEmail();
+				
+				if(email != null && email.trim().length() > 0)
+				{
+					List<Object> obj = problemFileDAO.getNoOfFilesUploadedForAUser(problemHistoryId);
+					
+					noOfFilesAttached = (Long)obj.get(0);
+					
+					problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getDescription());
+					problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getProblem());
+					problemDetailsVO.setIdentifiedDate(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getExistingFrom().toString());
+					problemDetailsVO.setExistingFrom(problemHistory.getProblemLocation().getProblemAndProblemSource()
+							.getProblem().getIdentifiedOn().toString());
+					problemDetailsVO.setLocation(problemManagementReportService.getProblemLocation(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(),
+							problemHistory.getProblemLocation().getProblemImpactLevelValue()));
+					problemDetailsVO.setProblemID(noOfFilesAttached);
+					
+					emailDetailsVO.setFromAddress(problemHistory.getProblemLocation()
+							.getProblemAndProblemSource().getExternalUser()
+							.getName()+" "+ problemHistory.getProblemLocation()
+							.getProblemAndProblemSource().getExternalUser()
+							.getLastName());
+					emailDetailsVO.setToAddress(email);
+					emailDetailsVO.setElectionType(problemHistory.getProblemLocation()
+							.getProblemAndProblemSource().getProblem()
+							.getReferenceNo());
+					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+					
+					mailsSendingService.sendEmailToFreeUserAfterProblemAdded(problemDetailsVO);
+				}
+			}
+		return resultStatus;
+				}
+		catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			log.error("Exception Occured in sendEmailToFreeUserAfterProblemAdded() , Exception is - "+e);
 			return resultStatus;
 		}
 	}
