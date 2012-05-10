@@ -116,4 +116,6 @@ public interface IProblemManagementService {
 	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDate,String status,String type);
 	
 	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers);
+	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId);
 }
