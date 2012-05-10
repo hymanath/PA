@@ -2067,38 +2067,49 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 }
  }
  
- public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults){
-	
+ public Map<String, List<FileVO>> getPhotosNewsVideosUpdateForACandidate(int startIndex,int maxResults)
+ {
+	 try{
 	 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
 	 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileGallary> videoGallaryresultList = new ArrayList<FileGallary>();
 	 List<FileVO> resultList = new ArrayList<FileVO>();
 	 
-		 photoGallaryresultList = fileGallaryDAO.getRecentlyUploadedPhotos(startIndex, maxResults);
-		 resultList = setToFileVO(photoGallaryresultList);
-		 resultMap.put("photogallary", resultList);
-		 String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
-		 newsGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr1);
-		 resultList = setToFileVO(newsGallaryresultList);
-		 resultMap.put("NewsGallary", resultList);
-		 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
-		 videoGallaryresultList = fileGallaryDAO.getRecentlyUploadedFiles(startIndex, maxResults, queryStr2);
-		 resultList = setToFileVO(videoGallaryresultList);
-		 resultMap.put("VideoGallary", resultList);
-		
-     return resultMap;
+ 	 List<Long> photosList = fileGallaryDAO.getRecentlyUploadedPhotoIds(startIndex, maxResults);
+	 photoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(photosList);
+	 resultList = setToFileVO(photoGallaryresultList);
+	 resultMap.put("photogallary", resultList);
 	 
- 
+	 String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
+	 List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
+	 newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(newsList);
+	 resultList = setToFileVO(newsGallaryresultList);
+	 resultMap.put("NewsGallary", resultList);
+	 
+	 String queryStr2 = "where model.gallary.contentType.contentType = 'Video Gallary'";
+	 List<Long> videosList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr2);
+	 videoGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(videosList);
+	 resultList = setToFileVO(videoGallaryresultList);
+	 resultMap.put("VideoGallary", resultList);
+		 
+     return resultMap;
+	 }catch (Exception e) {
+		 log.error("Exception occured - "+e);
+		 return null;
+	 }
 }
  
  
- public List<FileVO> setToFileVO(List<FileGallary> result){
-	 List<FileVO> fileVOs = new ArrayList<FileVO>();
-	 
+ public List<FileVO> setToFileVO(List<FileGallary> result)
+ {
+	List<FileVO> fileVOs = new ArrayList<FileVO>();
 	FileVO fileVO = new FileVO();
-	if(result !=null){
-		  for(int i=0; i<result.size(); i++){
+	
+	if(result != null)
+	{
+		  for(int i=0; i<result.size(); i++)
+		  {
 			 fileVO = new FileVO();
 			 
 			 if(result.get(i).getGallary().getCandidate() != null)
@@ -2133,25 +2144,48 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setContentId(result.get(i).getFileGallaryId());
 			 fileVO.setFileName1(result.get(i).getFile().getFileName());
+			 fileVO.setFileId(result.get(i).getFile().getFileId());
 			 fileVO.setDescription(result.get(i).getFile().getFileDescription());
 			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
-			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
-				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
-			 
 			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
+			 
+			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
+				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
+			 
 			 if(result.get(i).getFile().getFileDate()!= null)
-			 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+			 
 			 if(result.get(i).getFile().getSourceObj() != null)
-			 fileVO.setSource(result.get(i).getFile().getSourceObj().getSource());
-			if(result.get(i).getFile().getLanguage() != null)
-			 fileVO.setLanguage(result.get(i).getFile().getLanguage().getLanguage());
-			
-			 fileVOs.add(fileVO);
+				 fileVO.setSource(result.get(i).getFile().getSourceObj().getSource());
+			 
+			 if(result.get(i).getFile().getLanguage() != null)
+				 fileVO.setLanguage(result.get(i).getFile().getLanguage().getLanguage());
+			 
+			 if(!checkForFileExistance(fileVOs,fileVO.getFileId()))
+				 fileVOs.add(fileVO);
 		 }
 	}
 	 return fileVOs;
+ }
+ 
+ public boolean checkForFileExistance(List<FileVO> filesList,Long fileId)
+ {
+	 try{
+		 
+		 if(filesList == null || filesList.size() == 0)
+			 return false;
+		 
+		 for(FileVO fileVO : filesList)
+			 if(fileVO.getFileId().equals(fileId))
+				return true;
+		 return false;
+		 
+	 }catch (Exception e) {
+		 log.error(" Exception Occured in checkForFileExistance() Method - "+e);
+		 return false;
+	 }
  }
  
  public SelectOptionVO assignAndReturnCandidate(Long userId,Long candidateId)
