@@ -354,7 +354,7 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
 									"To View Problem details and comments on this Problem - " +
-									"<a href='http://localhost:8090/PartyAnalyst/problemCompleteDetailsAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div></div>";
+									"<a href='http://www.partyanalyst.com/problemCompleteDetailsAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div></div>";
 			
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
