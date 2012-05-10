@@ -22,7 +22,16 @@ public class ProblemDetailsVO {
 	private Long postedProblemsCountByOtherUsers;
 	private Long postedProblemsCountByLoggedInUsers;
 	private Long problemHistoryId;
+	private EmailDetailsVO emailDetailsVO;
 	
+	
+	
+	public EmailDetailsVO getEmailDetailsVO() {
+		return emailDetailsVO;
+	}
+	public void setEmailDetailsVO(EmailDetailsVO emailDetailsVO) {
+		this.emailDetailsVO = emailDetailsVO;
+	}
 	public Long getApprovedProblemsCount() {
 		return approvedProblemsCount;
 	}
