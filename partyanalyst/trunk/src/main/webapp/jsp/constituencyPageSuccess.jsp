@@ -913,7 +913,7 @@ function buildConstituencyElectionResultsDataTableWithCensus(myResults,value)
 	var selectedIndex = myResults.censusVO[0].censusSelectedIndex;
 	
 	var str = '';
-	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
+	str += '<div id="elecResDiv" style="width:900px;overflow-x:auto;margin-top:20px;">';
 	str += '<table id = "elecResTable">';
 
 	for(var i in myResults.constituencyOrMandalWiseElectionVO)
