@@ -109,4 +109,11 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 		query.setParameter("status", status);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getNoOfFilesUploadedForAUser(Long problemHistoryId)
+	{
+		return getHibernateTemplate().find("select count(model.problemFileId) from ProblemFile model where model.problemHistory.problemHistoryId = ?", problemHistoryId);
+	}
+	
 }
