@@ -577,6 +577,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 {
 			 isSuccessfullyInserted = true;
 			 problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getProblemHistoryId());
+			 
+			 if(user.getUserType() == IConstants.FREE_USER)
+			 {
+				 problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getProblemHistoryId());
+			 }
 			 problemBeanVO = new ProblemBeanVO();
 			 
 		 } else 
