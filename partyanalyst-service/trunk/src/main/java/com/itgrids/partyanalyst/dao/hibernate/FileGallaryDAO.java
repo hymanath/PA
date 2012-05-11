@@ -1083,4 +1083,100 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
     	 query.setParameter(0,gallaryId);
     	 return query.list();
      }
+     
+     public List<Object[]> getCandidateGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> candidateIds,String type)
+     {
+    	 StringBuilder query = new StringBuilder();
+    	 
+    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model.gallary.candidate.candidateId,model.gallary.candidate.lastname,model.file.fileDescription");
+    	 
+    	 if(!type.equalsIgnoreCase("photos"))
+    		query.append(",model.file.sourceObj.source,model.file.language.language ");
+    		 
+    	 query.append(" from FileGallary model where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.candidate.candidateId in (:candidateIds) ");
+     	 
+    	 if(type.equalsIgnoreCase("photos"))
+    	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
+    	 
+    	 else if(type.equalsIgnoreCase("news"))    	 
+    	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
+    	 
+    	 else if(type.equalsIgnoreCase("videos"))
+    	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
+    	 
+    	 query.append(" order by model.createdDate desc");
+    	 
+    	 Query queryObj = getSession().createQuery(query.toString());
+    	 
+    	 queryObj.setTimestamp("fromDate",fromDate);
+    	 queryObj.setTimestamp("toDate",toDate);
+    	 queryObj.setParameterList("candidateIds",candidateIds);
+    	 
+    	 return queryObj.list();
+     }
+     
+     public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> partyIds,String type)
+     {
+    	 StringBuilder query = new StringBuilder();
+    	 
+    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model1.party.partyId,model1.party.shortName,model.file.fileDescription");
+    	 
+    	 if(!type.equalsIgnoreCase("photos"))
+    		query.append(",model.file.sourceObj.source,model.file.language.language ");
+    		 
+    	 query.append(" from FileGallary model,PartyGallery model1 where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.gallaryId = model1.gallery.gallaryId and model1.isDelete = 'false' and model1.isPrivate = 'false' and model1.party.partyId in (:partyIds) ");
+     	 
+    	 if(type.equalsIgnoreCase("photos"))
+    	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
+    	 
+    	 else if(type.equalsIgnoreCase("news"))    	 
+    	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
+    	 
+    	 else if(type.equalsIgnoreCase("videos"))
+    	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
+    	 
+    	 query.append(" order by model.createdDate desc");
+    	 
+    	 Query queryObj = getSession().createQuery(query.toString());
+    	 
+    	 queryObj.setTimestamp("fromDate",fromDate);
+    	 queryObj.setTimestamp("toDate",toDate);
+    	 queryObj.setParameterList("partyIds",partyIds);
+    	 
+    	 return queryObj.list();
+     }
+     
+     public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> specialPageIds,String type)
+     {
+    	 StringBuilder query = new StringBuilder();
+    	 
+    	 query.append("select model.fileGallaryId,model.gallary.name,model.file.fileTitle,model1.specialPage.specialPageId,model1.specialPage.heading,model.file.fileDescription");
+    	 
+    	 if(!type.equalsIgnoreCase("photos"))
+    		query.append(",model.file.sourceObj.source,model.file.language.language ");
+    		 
+    	 query.append(" from FileGallary model,SpecialPageGallery model1 where model.gallary.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.isDelete = 'false' and " +
+     	 		"model.isPrivate = 'false' and model.createdDate >= :fromDate and model.createdDate <= :toDate and model.gallary.gallaryId = model1.gallary.gallaryId and model1.isDelect = 'false' and model1.specialPage.isDelete = 'false' and model1.specialPage.specialPageId in (:specialPageIds) ");
+     	 
+    	 if(type.equalsIgnoreCase("photos"))
+    	   query.append(" and model.gallary.contentType.contentTypeId = 1 ");
+    	 
+    	 else if(type.equalsIgnoreCase("news"))    	 
+    	 query.append(" and model.gallary.contentType.contentTypeId = 2 ");
+    	 
+    	 else if(type.equalsIgnoreCase("videos"))
+    	 query.append(" and model.gallary.contentType.contentTypeId = 4 ");
+    	 
+    	 query.append(" order by model.createdDate desc");
+    	 
+    	 Query queryObj = getSession().createQuery(query.toString());
+    	 
+    	 queryObj.setTimestamp("fromDate",fromDate);
+    	 queryObj.setTimestamp("toDate",toDate);
+    	 queryObj.setParameterList("specialPageIds",specialPageIds);
+    	 
+    	 return queryObj.list();
+     }
 }
