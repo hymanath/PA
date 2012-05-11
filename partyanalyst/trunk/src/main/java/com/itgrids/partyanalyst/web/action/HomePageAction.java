@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -60,8 +61,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private Map<String, List<FileVO>> resultMap ;
 	private String changedUserName = "false";
 	private String feedback = "true"; 
-
-	
+    private IProblemManagementService problemManagementService;
+	private Long problemCount;
 	
 	public void setResultMap(Map<String, List<FileVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -228,6 +229,22 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.problemsList = problemsList;
 	}
 
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
+	public Long getProblemCount() {
+		return problemCount;
+	}
+
+	public void setProblemCount(Long problemCount) {
+		this.problemCount = problemCount;
+	}
 
 	public String execute()
 	{	
@@ -266,6 +283,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
+		
+		problemCount = problemManagementService.getProblemsCount();
 		
 		return Action.SUCCESS;
 	}
