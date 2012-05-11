@@ -399,6 +399,7 @@ public class MailService implements IMailService{
 			
 			for(EmailDetailsVO emailDetailsVO : emailDetails)
 			{
+			  try{
 				MimeMessage message = new MimeMessage(session);
 				message.setSubject(emailDetailsVO.getSubject());
 			    message.setFrom(new InternetAddress(IConstants.FROMEMAILID));
@@ -416,6 +417,9 @@ public class MailService implements IMailService{
 				}
 			    else
 			    	 Transport.send(message);
+			  }catch(Exception e){
+				  log.error("Exception in sending mail : ",e);
+			  }
 			}
 			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
