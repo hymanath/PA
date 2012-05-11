@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -164,6 +165,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IFileTypeDAO fileTypeDAO;
 	private IProblemFileDAO problemFileDAO;
 	private String tempName;
+	private IUserProblemApprovalDAO userProblemApprovalDAO;
 	private IMailsSendingService mailsSendingService;
 	
 	
@@ -515,6 +517,17 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setProblemActivityDAO(IProblemActivityDAO problemActivityDAO) {
 		this.problemActivityDAO = problemActivityDAO;
+	}
+	
+	
+
+	public IUserProblemApprovalDAO getUserProblemApprovalDAO() {
+		return userProblemApprovalDAO;
+	}
+
+	public void setUserProblemApprovalDAO(
+			IUserProblemApprovalDAO userProblemApprovalDAO) {
+		this.userProblemApprovalDAO = userProblemApprovalDAO;
 	}
 
 	/**
@@ -5111,5 +5124,67 @@ public class ProblemManagementService implements IProblemManagementService {
 			return problemImageDetails;
 		}
 
+	}
+	
+	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex)
+	{
+		if (log.isDebugEnabled())
+			log.debug(" Enter into getProblemDetailsForHomePage method ..");
+		
+		List<ProblemBeanVO> returnVal = new ArrayList<ProblemBeanVO>();
+		
+		try{
+			//getting all problem history id's
+			List<Long> problemHistoryIds = problemHistoryDAO.getAllValidProblemIds(startIndex,maxIndex);
+			
+			for(Long problemId : problemHistoryIds){
+				
+				//getting details for a problem by using id
+				ProblemBeanVO problemBeanVO = getProblemCompleteInfo(problemId);
+				problemBeanVO.setTotalResultsCount(getProblemsCount().toString());
+				//getting images for a problem
+			    List<FileVO> fileVOList =  getAllProblemRelatedImages(problemId);
+			  //setting images count for a problem to its VO
+			    problemBeanVO.setFileCount(fileVOList.size());
+			    //getting like,dislike,comments count for a problem
+		        List<Object[]> problemHistoryList = userProblemApprovalDAO.getProblemHistoryDetails(problemId);
+		       //adding like,dislike,comments count for a problem to its VO
+		        for(Object[] problemHistory : problemHistoryList){
+			    
+				    if(problemHistory[1].toString().equalsIgnoreCase("Accept")){
+					   problemBeanVO.setLikesCount((Long)problemHistory[2]);
+				    }
+				    else if(problemHistory[1].toString().equalsIgnoreCase("Reject")){
+					   problemBeanVO.setDislikesCount((Long)problemHistory[2]);
+				    }
+                    else if(problemHistory[1].toString().equalsIgnoreCase("FollowUp")){
+                	   problemBeanVO.setCommentCount((Long)problemHistory[2]);
+				    } 
+		      }
+		        returnVal.add(problemBeanVO) ;
+			}
+			
+		}
+		catch(Exception e){
+			log.error("Exception Rised in getProblemDetailsForHomePage method ..", e);
+		}
+		return returnVal;
+	}
+	
+	public Long getProblemsCount()
+	{
+		try
+		{
+		List<Long> problemHistoryCount = problemHistoryDAO.getAllValidProblemIdsCount();
+		 if(problemHistoryCount.get(0).longValue() < 31l)
+			 return problemHistoryCount.get(0);
+		 else
+			 return 30L;
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Rised in getProblemsCount method ..", e);
+		}
+		return 30L;
 	}
 }
