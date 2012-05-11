@@ -1203,7 +1203,7 @@ public class CommentsDataService implements ICommentsDataService {
 					EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 					
 					emailDetailsVO.setToAddress(params[1].toString());
-					emailDetailsVO.setFromAddress(params[2].toString());
+					emailDetailsVO.setFromAddress(params[2].toString()+" "+params[7].toString());
 					emailDetailsVO.setCandidateName(params[3].toString());
 					if((Long)params[4] == 1)
 					
@@ -1219,7 +1219,7 @@ public class CommentsDataService implements ICommentsDataService {
 					{
 					for(Object[] connectPeopleDetails : connectedPeople)
 					{
-					String userName = connectPeopleDetails[1]+""+connectPeopleDetails[2];
+					String userName = connectPeopleDetails[1]+ " " +connectPeopleDetails[2];
 					
 					emailDetailsVO.setRecepientEmail(connectPeopleDetails[3].toString());
 					emailDetailsVO.setSenderName(userName);
@@ -1234,7 +1234,7 @@ public class CommentsDataService implements ICommentsDataService {
 					{
 						for(Object[] recepientPeople : connectedRecepientPeople)
 						{
-						String recepentUserName = recepientPeople[1]+""+recepientPeople[2];
+						String recepentUserName = recepientPeople[1]+ " " +recepientPeople[2];
 						emailDetailsVO.setRecepientEmail(recepientPeople[3].toString());
 						emailDetailsVO.setSenderName(recepentUserName);
 						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
