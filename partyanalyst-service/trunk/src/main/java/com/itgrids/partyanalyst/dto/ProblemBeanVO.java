@@ -88,6 +88,10 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String mandal;
 	private FileVO fileVO;
 	private List<FileVO> fileVOList;
+	private Long likesCount = 0l;
+	private Long dislikesCount = 0l;
+	private Long commentCount = 0l;
+	private int fileCount = 0;
 	
 
 	public FileVO getFileVO() {
@@ -723,6 +727,47 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public List<FileVO> getFileVOList() {
 		return fileVOList;
 	}
+
+	public Long getpConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setpConstituencyId(Long pConstituencyId) {
+		this.pConstituencyId = pConstituencyId;
+	}
+
+	public Long getLikesCount() {
+		return likesCount;
+	}
+
+	public void setLikesCount(Long likesCount) {
+		this.likesCount = likesCount;
+	}
+
+	public Long getDislikesCount() {
+		return dislikesCount;
+	}
+
+	public void setDislikesCount(Long dislikesCount) {
+		this.dislikesCount = dislikesCount;
+	}
+
+	public Long getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Long commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public int getFileCount() {
+		return fileCount;
+	}
+
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
+	}
+
 	
 	
 }
