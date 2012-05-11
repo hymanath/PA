@@ -559,7 +559,7 @@
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="problemFileDAO" ref="problemFileDAO" />
 		<property name="mailsSendingService" ref="mailsSendingService" />
-
+        <property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -1117,6 +1117,15 @@
             <ref bean="cronTriggerForWeeklyJob" />
         </list>
     	</property>
+	</bean>
+	
+	<bean name="partyCandidateSpecialPageScheduleService" class="com.itgrids.partyanalyst.service.impl.PartyCandidateSpecialPageScheduleService">
+		<property name="candidateUpdatesEmailDAO" ref="candidateUpdatesEmailDAO" />
+		<property name="partyUpdatesEmailDAO" ref="partyUpdatesEmailDAO" />
+		<property name="specialPageUpdatesEmailDAO" ref="specialPageUpdatesEmailDAO" />
+		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
+		<property name="mailService" ref="mailService" />
+		<property name="mailsTemplateService" ref="mailsTemplateService" />
 	</bean>
 	
 </beans>		
