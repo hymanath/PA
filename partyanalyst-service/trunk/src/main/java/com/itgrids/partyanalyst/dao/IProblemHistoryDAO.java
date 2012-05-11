@@ -153,5 +153,8 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId);
 	
 	public Long getProblemCountOfFreeUser(Long userId);
-
+	
+	public List<Long> getAllValidProblemIds(int startIndex,int maxIndex);
+	
+	public List<Long> getAllValidProblemIdsCount();
 }
