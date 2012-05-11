@@ -995,5 +995,22 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.setParameter(0, userId);		
 		return (Long)query.uniqueResult();
 	}
+		
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllValidProblemIds(int startIndex,int maxIndex){
+		Query query = getSession().createQuery("select model.problemHistoryId from ProblemHistory model where model.isDelete = null and model.isApproved = '"+IConstants.TRUE+"' and model.problemLocation.problemImpactLevel.regionScopesId < 5 " +
+				"  and model.problemLocation.problemAndProblemSource.externalUser is not null order by model.problemHistoryId desc ");
+		
+		   query.setFirstResult(startIndex);
+		   query.setMaxResults(maxIndex);
+			
+						
+		  return query.list(); 
+	}
+	
+	public List<Long> getAllValidProblemIdsCount(){
+		return getHibernateTemplate().find("select count(model.problemHistoryId) from ProblemHistory model where model.isDelete = null and model.isApproved = '"+IConstants.TRUE+"' and model.problemLocation.problemImpactLevel.regionScopesId < 5 " +
+				"  and model.problemLocation.problemAndProblemSource.externalUser is not null  ");
+	}
 	
 }
