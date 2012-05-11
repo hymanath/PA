@@ -506,7 +506,7 @@ public interface IConstants {
 	public static final String ADMIN_PASSWORD_FOR_SMS = "smsc";
 	public static final String ADMIN_SENDERID_FOR_SMS = "16242";
 	
-	public static final String DEFAULT_MAIL_SERVER = "localhost";
-	public static final String DEFAULT_SCHEDULER_SEVER = "server";
+	public static final String DEFAULT_MAIL_SERVER = "server";
+	public static final String DEFAULT_SCHEDULER_SEVER = "localhost";
 
 }
