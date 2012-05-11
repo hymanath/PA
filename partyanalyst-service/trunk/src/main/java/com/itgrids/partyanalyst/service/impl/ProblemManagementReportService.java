@@ -1842,7 +1842,7 @@ public class ProblemManagementReportService implements
 							.getProblem().getDescription());
 					problemDetailsVO.setSource(problemHistory.getProblemLocation().getProblemAndProblemSource()
 							.getProblem().getReferenceNo());
-					
+					problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
 					
 					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 					mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
