@@ -1,12 +1,18 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -198,7 +204,7 @@ System.out.println("i " +i);
 		}
 	}*/
 	
-	public void testGetRecentlyUploadedFilIds()
+	/*public void testGetRecentlyUploadedFilIds()
 	{
 		List<Long> list = fileGallaryDAO.getRecentlyUploadedPhotoIds(0,15);
 		
@@ -218,5 +224,30 @@ System.out.println("i " +i);
 			System.out.println("FileId - "+fileGallary.getFile().getFileId()+" -- Gallary Id - "+fileGallary.getGallary().getGallaryId()
 					+" -- "+fileGallary.getFile().getFileTitle());
 		}
+	}*/
+	public void testGetCandidateGallaryDetailsForSubscribers()
+	{
+		Date updatedDate = new Date();
+		Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+		geCal.setTimeInMillis(updatedDate.getTime());
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
+		calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
+		calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		List<Long> candidateIds = new ArrayList<Long>();
+		candidateIds.add(900l);
+		List<Object[]> list = fileGallaryDAO.getCandidateGallaryDetailsForSubscribers(calendar.getTime(), new DateUtilService().getCurrentDateAndTime(),candidateIds,"videos");
+		
+		System.out.println(list.size());
+		 for(Object[] data:list)
+		 {
+			 System.out.println(data[0].toString());
+		 }
+		
 	}
 }
