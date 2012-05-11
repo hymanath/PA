@@ -216,10 +216,10 @@ public class MailsSendingService implements IMailsSendingService{
 		{
 			if(emailDetailsVO != null)
 			{
-				String subject = "Partyanalyst.com";
+				String subject = "Updates from partyanalyst";
 				String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-						"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getFromAddress()+",</b><br/>" +
-						"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your comment for the " +emailDetailsVO.getCandidateName()+ " " +emailDetailsVO.getPartyStrength()+  " from "  +emailDetailsVO.getConstituencyName()+  " "  +emailDetailsVO.getElectionType()+ " Constituency has approved.<br/></div></div>";
+						"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hi "+emailDetailsVO.getFromAddress()+",</b><br/>" +
+						"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font><b> your comment for the " +emailDetailsVO.getCandidateName()+ " " +emailDetailsVO.getPartyStrength()+  " from "  +emailDetailsVO.getConstituencyName()+  " "  +emailDetailsVO.getElectionType()+ " Constituency has approved.<br/></div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +"<br><b>PartyAnalyst Team.</b></div></div>";
 		emailDetailsVO.setContent(content);
 		emailDetailsVO.setSubject(subject);
 		 mailService.sendEmail(emailDetailsVO);
@@ -239,12 +239,12 @@ public class MailsSendingService implements IMailsSendingService{
 		{
 			if(emailDetailsVO != null)
 			{
-			String subject = "Partyanalyst.com";
+			String subject = "  "+emailDetailsVO.getFromAddress()+ " posted political reason  in partyanalyst";
 			
 			String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hai "+emailDetailsVO.getSenderName()+ ", </b><br/>" +
-					"</div><div style='margin-left: 45px; margin-bottom: 40px;line-height: 1.5em;'><font><b> your friend " +emailDetailsVO.getFromAddress()+ " assesment for the " +emailDetailsVO.getCandidateName()+  " "  +emailDetailsVO.getPartyStrength()+  " from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency </b><br/>" +
-					"If you Want to know more about " +emailDetailsVO.getCandidateName()+ " <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div></div>";
+					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hi "+emailDetailsVO.getSenderName()+ ", </b><br/>" +
+					"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font><b> Your friend " +emailDetailsVO.getFromAddress()+ " posted a political reason for " +emailDetailsVO.getCandidateName()+  " "  +emailDetailsVO.getPartyStrength()+  " from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency. </b><br/><br/>" +
+					"If you want to know more about " +emailDetailsVO.getCandidateName()+  " , <a href='http://www.partyanalyst.com/loginInputAction.action'><b> Login Here</b> </a></div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +"<br><b>PartyAnalyst Team.</b></div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
 			resultStatus = mailService.sendEmail(emailDetailsVO);
