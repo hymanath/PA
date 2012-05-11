@@ -138,7 +138,7 @@ function initializeHomePage()
 
 	//buildElectionTrendzTabView();
 	//buildHOmePageImageSlider();
-	buildHOmePageChartsSlider();
+	//buildHOmePageChartsSlider();
 	//var stateEl = document.getElementById("stateList_res");
 	//var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 
