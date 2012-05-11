@@ -3337,6 +3337,12 @@
 		<action name="constituencyProfileReport">
 			<result>/jsp/constituencyProfileReport.jsp</result>
 		</action>
+		
+		<action name="getProblemDetailsForHomePageAction" class="problemCompleteDetailsAction" method="getProblemDetailsForHomePage">
+        	<result type="json" name="success">
+			<param name="root">problemBeanVOList</param>				
+			</result>
+        </action>   
 												
 	</package>
 </struts>      
