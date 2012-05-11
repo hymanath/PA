@@ -119,6 +119,7 @@
 		<pattern>/getAllPollsAction*</pattern>
 		<pattern>/VotersPulse*</pattern>
 		<pattern>/constituencyProfileReport*</pattern>
+		<pattern>/partyCandidateAnalyzer*</pattern>
     </decorator>
 
 </decorators>

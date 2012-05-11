@@ -381,9 +381,7 @@
 			try {							
 				"",					
 					results = YAHOO.lang.JSON.parse(o.responseText);	
-					if(jsObj.task=="getAllConnectedUsers"){
-						showAllConnectedUsersInPanel(jsObj, results);
-					}
+				
 					if(jsObj.task == "getAllElectionYears")
 					{
 						if(results!= null &&  results.length>0){
@@ -1688,13 +1686,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 						</c:forEach>			
 					</div>
 			</div>
-        </c:if>
-
-			
-	
+        </c:if>	
 
 							<div class="cl-sub-fields-sec">
-								<h1 class="org-title"><span style="-moz-border-radius:4px;">Connect To Your District People</span></h1><br><br>
+								<!--<h1 class="org-title"><span style="-moz-border-radius:4px;">Connect To Your District People</span></h1>--><br><br>
 										
 
 		

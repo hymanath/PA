@@ -286,10 +286,10 @@ function buildDistrictConnectPeopleWindow(){
 		visitorStr+='<div class="Connect-Visitor">';
 		visitorStr+='<h2>Get Connected With '+districtName+' District</h2>';
 		visitorStr+='<div class="RegisterNow">';
-		visitorStr+='<a href="#"><img src="images/icons/connectPeople/network.png" alt="Connections"/><span>Connect and expand your network</span></a>';
-		visitorStr+='<a href="#"><img src="images/icons/connectPeople/user.png" alt="Connections"/><span>View profiles and add new friends</span></a>';
-		visitorStr+='<a href="#"><img src="images/icons/connectPeople/share.png" alt="Connections"/><span>Share your photos and videos</span></a>';
-		visitorStr+='<a href="#"><img src="images/icons/connectPeople/groups.png" alt="Connections"/><span>Create your own group or join others</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/network.png" alt="Connections"/><span>Connect and Expand Your Network</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/user.png" alt="Connections"/><span>View Profiles and Add New Friends</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/share.png" alt="Connections"/><span>Post Your Locality Problems</span></a>';
+		visitorStr+='<a href="#"><img src="images/icons/connectPeople/groups.png" alt="Connections"/><span>Discuss About Your Leaders</span></a>';
 		visitorStr+='</div>';
 
 		visitorStr+='<a href="freeUserRegistration.action" class="joinus">JOIN US NOW, IT\'S FREE</a>'; 
@@ -309,5 +309,5 @@ function buildDistrictConnectPeopleWindow(){
 			bodyElmt.innerHTML = memberStr;
 	}	
 
-	buildConnectUsersContent(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
+	buildConnectUsersContentOfDistrict(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
 }

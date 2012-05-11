@@ -567,15 +567,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
-		Long startIndex ,results;
-		if(!request.getParameter("startIndex").equalsIgnoreCase(""))
-			startIndex = Long.parseLong(request.getParameter("startIndex"));
-		else
-			startIndex =null;
-		if(!request.getParameter("resultsCount").equalsIgnoreCase(""))
-		 results = Long.parseLong(request.getParameter("resultsCount"));
-		else
-			results =null;
+	
+		 Long startIndex = Long.parseLong(request.getParameter("startIndex"));
+		 Long results = Long.parseLong(request.getParameter("resultsCount"));
 		Long userId = 0l;
 		String loginId = jObj.getString("userId");
 		Long locationId = new Long(jObj.getString("locationId"));
@@ -675,31 +669,12 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		for(int i=0; i<constituencyIds.length();i++)
 			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
 		
-		
-		
-		String status = null;
-		if(statusText.equalsIgnoreCase(IConstants.ALL))
-			status = IConstants.ALL;
-		else if(statusText.equalsIgnoreCase(IConstants.CONNECTED))
-			status = IConstants.CONNECTED;
-		else if(statusText.equalsIgnoreCase(IConstants.DISCONNECTED))
-			status = IConstants.DISCONNECTED;
-		else if(statusText.equalsIgnoreCase(IConstants.PENDING))
-			status = IConstants.PENDING;
-		else if(statusText.equalsIgnoreCase(IConstants.FRIEND_REQUEST))
-			status = IConstants.FRIEND_REQUEST;
-		else if(statusText.equalsIgnoreCase(IConstants.COMMENTS))
-			status = IConstants.COMMENTS;
-		else if(statusText.equalsIgnoreCase(IConstants.SCRAP))
-			status = IConstants.SCRAP;
-		else if(statusText.equalsIgnoreCase(IConstants.NOTCONNECTED))
-			status = IConstants.NOTCONNECTED;
-		
-		
-		if(user==null){
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,status,startIndex,nameString);	
-   		}else{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),status,startIndex,nameString);
+		if(user == null)
+		{
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,statusText,startIndex,nameString);	
+   		}else
+   		{
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),statusText,startIndex,nameString);
    		}
    		
 		return Action.SUCCESS;
