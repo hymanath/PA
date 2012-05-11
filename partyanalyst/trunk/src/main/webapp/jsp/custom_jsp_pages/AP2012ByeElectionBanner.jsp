@@ -10,8 +10,7 @@
     width:962px;
 }
 
-
-
+img{border:1px solid #cdcdcd;}
 .resulttableclass a{text-decoration:none;}
 .resulttableclass a:hover{text-decoration:underline;}
 .resulttableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
@@ -118,61 +117,68 @@
 </table></td>-->
 
 <td valign="top">
-<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv" style="width: 310px;">
+<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv" style="width: 301px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
-  <td style="width: 154px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td>
-  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626"> MEKAPATI RAJAMOHAN REDDY</a>
-<br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117">YSRC</a><br />
-Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></td>
+  <td style="width: 96px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=13626" title="Click here to view MEKAPATI RAJAMOHAN REDDY profile -previous election result, Updated News, Photos ,Videos"> MEKAPATI RAJAMOHAN REDDY</a>
+<br />
+Party Flag - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=1117" title="Click here to view YSRC party profile - previous election result, Updated News, Photos and Videos"><img style="margin-top:10px;" height="30" width="40" src="/PartyAnalyst/images/party_flags/YSRC.PNG"></a></td>
 </tr>
-<tr>
-<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
-<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=495">Nellore</a> (2009)</td>
+<!--<tr>
+<td colspan="2"><b><u>Recent Election Info</u> :</b></td></tr>-->
+<tr><td colspan="2"><strong>Won in 2009 </strong>from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362" title="Click here to view INC party profile -previous election result, Updated News, Photos and Videos">INC </a>party in <a href="constituencyPageAction.action?constituencyId=495" style="text-decoration: none;color: #247CD4;" title="Click here to view Nellore constituency profile - previous election results and Updated News about constituency.">Nellore</a> parliament constituency.<br /><strong>Won in 2004 </strong> from INC party in <a href="constituencyPageAction.action?constituencyId=493" style="text-decoration: none;color: #247CD4;" title="Click here to view Narasaraopet constituency profile - previous election results and Updated News about constituency.">Narasaraopet </a>parliament constituency.</td>
 </tr>
-<tr><td><b>Status :</b></td><td>Won</td></tr>
+<tr><td colspan="2" 
+style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td>
+</tr>
+<!--<tr><td><b>Status :</b></td><td>Won</td></tr>
 <tr><td><b>Votes Earned :</b></td><td>430235</td></tr>
 <tr><td><b>Votes Percentage:</b></td><td>42.92 %</td></tr>
 <tr><td><b>Votes Margin Gained	:</b></td><td>54993</td></tr>
-<tr><td><b>Votes Margin % Gained	: </b></td><td>5.49%</td></tr>
+<tr><td><b>Votes Margin % Gained	: </b></td><td>5.49%</td></tr>-->
 
 </table></div></fieldset></div></td>
-<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About T SubbaRami Reddy </legend><div id="WinningCandidateDiv" style="width: 297px;">
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 20%;"><legend style="font-weight: bold;">About T SubbaRami Reddy </legend><div id="WinningCandidateDiv" style="width: 272px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
-  <td style="width: 150px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/T SUBBARAMI REDDY.jpg"></img></td>
-  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=41939"> T SUBBARAMI REDDY</a><br />
- <br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362">INC</a><br />
-Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/INC.png"></td>
+  <td style="width: 99px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/T SUBBARAMI REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=41939" title="Click here to view T SUBBARAMI REDDY profile -previous election result, Updated News, Photos and Videos"> T SUBBARAMI REDDY</a><br />
+
+Party Flag -<a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=362" title="Click here to view INC party profile -previous election result, Updated News, Photos and Videos"> <img style="margin-top:10px;" height="30" width="40" src="/PartyAnalyst/images/party_flags/INC.png"></a></td>
 </tr>
-<tr>
-<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(508,'Parliament',1999)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
-<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=508">Vishakapatnam</a> (1999)</td>
+<!--<tr>
+<td colspan="2"><b><u>Recent Election Info</u> :</b></td></tr>-->
+<tr><td colspan="2">Member of the Parliament in the Rajya Sabha from Andhra Pradesh. <br /><br /><br /></td>
 </tr>
-<tr><td><b>Status :</b></td><td>Lost</td></tr>
+<tr><td colspan="2" 
+style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(508,'Parliament',1999)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td>
+</tr>
+<!--<tr><td><b>Status :</b></td><td>Lost</td></tr>
 <tr><td><b>Votes Earned :</b></td><td>403,117</td></tr>
 <tr><td><b>Votes Percentage:</b></td><td>45.56 %</td></tr>
 <tr><td><b>Votes Margin 	:</b></td><td>38919</td></tr>
-<tr><td><b>Votes Margin %	: </b></td><td>4.25 %</td></tr>
+<tr><td><b>Votes Margin %	: </b></td><td>4.25 %</td></tr>-->
 
 </table></div></fieldset></td>
-<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 29%;"><legend style="font-weight: bold;">About Vanteru Venugopal Reddy</legend><div id="WinningCandidateDiv" style="width: 290px;">
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 27%;"><legend style="font-weight: bold;">About Vanteru Venugopal Reddy</legend><div id="WinningCandidateDiv" style="width:306px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
-  <td style="width: 141px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/VANTERU VENUGOPAL REDDY.jpg"></img></td>
-  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=6100"> VANTERU VENUGOPAL REDDY</a>
- <br />Party  - <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=872">TDP</a><br />
-Party Flag - <img height="30" width="40" src="/PartyAnalyst/images/party_flags/TDP.PNG"></td>
+  <td style="width: 87px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/VANTERU VENUGOPAL REDDY.jpg"></img></td>
+  <td><a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="candidateElectionResultsAction.action?candidateId=6100" title="Click here to view VANTERU VENUGOPAL REDDY profile -previous election result, Updated News, Photos and Videos"> VANTERU VENUGOPAL REDDY</a>
+ <br />
+Party Flag -<a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=872" title="Click here to view TDP party profile -previous election result, Updated News, Photos and Videos"> <img style="margin-top:10px;" height="30" width="40" src="/PartyAnalyst/images/party_flags/TDP.PNG"></a></td>
 </tr>
-<tr>
-<td><b><u>Recent Election Info</u></b></td><td><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
-<tr><td><b>Constituency :</b></td><td><a href="constituencyPageAction.action?constituencyId=495">Nellore</a> (2009)</td>
-</tr>
-<tr><td><b>Status :</b></td><td>Lost</td></tr>
+<!--<tr>
+<td colspan="2"><b><u>Recent Election Info</u>  :</b></td></tr>-->
+<tr><td colspan="2"><strong>Lost in 2009</strong> from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=872" title="Click here to view TDP party profile -previous election result, Updated News, Photos and Videos"> TDP </a>party in <a href="constituencyPageAction.action?constituencyId=495" style="text-decoration: none;color: #247CD4;" title="Click here to view Nellore constituency profile - previous election results and Updated News about constituency.">Nellore </a>parliament constituency.<br /><strong>Won in 1999 </strong>from <a style="text-decoration: none;color: #247CD4;" onclick="window.opener.location.href=this.href;window.blur();return false;" href="partyPageAction.action?partyId=872" title="Click here to view TDP party profile -previous election result, Updated News, Photos and Videos">TDP </a>party in <a href="constituencyPageAction.action?constituencyId=232" style="text-decoration: none;color: #247CD4;" title="Click here to view Kavali constituency profile - previous election results and Updated News about constituency.">Kavali </a>assembly constituency.</td>
+</tr><tr><td colspan="2" 
+style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)" style="text-decoration:none;color:green;font-weight:bold;font-family:verdana;font-size:12px" href="javascript:{}">View Details</a></td></tr>
+<!--<tr><td><b>Status :</b></td><td>Lost</td></tr>
 <tr><td><b>Votes Earned :</b></td><td>375,242</td></tr>
 <tr><td><b>Votes Percentage:</b></td><td>37.43 %</td></tr>
 <tr><td><b>Votes Margin 	:</b></td><td>54993</td></tr>
-<tr><td><b>Votes Margin % 	: </b></td><td>5.49 %</td></tr>
+<tr><td><b>Votes Margin % 	: </b></td><td>5.49 %</td></tr>-->
 
 </table></div></fieldset></td></tr>
 </table>
