@@ -44,6 +44,7 @@ ServletRequestAware, ServletContextAware  {
 	private IDataApprovalService dataApprovalService;
 	private Long userId;
 	private boolean hasFileUploadRight;
+	List<ProblemBeanVO> problemBeanVOList;
 	
 	
 	public boolean isHasFileUploadRight() {
@@ -166,6 +167,14 @@ ServletRequestAware, ServletContextAware  {
 	public void setDataApprovalService(IDataApprovalService dataApprovalService) {
 		this.dataApprovalService = dataApprovalService;
 	}
+	
+	public List<ProblemBeanVO> getProblemBeanVOList() {
+		return problemBeanVOList;
+	}
+
+	public void setProblemBeanVOList(List<ProblemBeanVO> problemBeanVOList) {
+		this.problemBeanVOList = problemBeanVOList;
+	}
 
 	public String execute(){
 		session = request.getSession();
@@ -226,6 +235,19 @@ ServletRequestAware, ServletContextAware  {
 		return Action.SUCCESS;
 	}
 
+	public String getProblemDetailsForHomePage(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			int resultsCount = Integer.parseInt(request.getParameter("resultsCount"));
+			
+		 problemBeanVOList = problemManagementService.getProblemDetailsForHomePage(startIndex,resultsCount);
+		} catch (ParseException e) {
+			log.error("Exception rised in getProblemDetailsForHomePage method",e);
+		}	
+		return Action.SUCCESS;
+	}
 	
 
 }
