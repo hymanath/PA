@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.model.UserProblemApproval;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserProblemApprovalDAO extends GenericDaoHibernate<UserProblemApproval, Long> implements IUserProblemApprovalDAO  {
 
@@ -57,4 +58,13 @@ Object[] params = {"true",problemHistoryId};
 			" and model.problemHistory.problemHistoryId = ? group by " +
 			" model.userApprovalDetails.approvalDetails.isApproved ", params);
 }
+@SuppressWarnings("unchecked")
+public List<Object[]> getProblemHistoryDetails(Long problemId)
+{
+	
+	return getHibernateTemplate().find("select  model.problemHistory.problemHistoryId,model.userApprovalDetails.approvalDetails.isApproved,count(model.userApprovalDetails.approvalDetails.isApproved)   " +
+			"  from UserProblemApproval model where model.userApprovalDetails.approvalDetails.isAdminApproved = '"+IConstants.TRUE+"'   " +
+					" and model.problemHistory.problemHistoryId =?  group by model.userApprovalDetails.approvalDetails.isApproved ",problemId);
+}
+
 }
