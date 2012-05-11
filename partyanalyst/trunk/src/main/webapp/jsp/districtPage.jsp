@@ -25,7 +25,7 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
-
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 
       <!-- For image display on mouseover -->	
 	<script type="text/javascript" src="js/overlib_mini.js"></script> 
@@ -655,7 +655,7 @@
 			}
 			
 			if(i == listSize)
-				rvStr+='<td colspan="2" style="vertical-align: top;">';
+				rvStr+='<td style="vertical-align: top;">';
 			else
 				rvStr+='<td  style="vertical-align: top;">';		
 			assignToPartyDataArray = new Array();
@@ -1701,8 +1701,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				
 									
 	<div id="districtPeopleConnect_body" style="float: left; clear: both;">
-						
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
 				  <tr>
 				  
 					  <!--<td width="45%"><div id="districtPeopleConnect_img"><img src="images/usergroups/group2.jpg"/></div></td>-->
