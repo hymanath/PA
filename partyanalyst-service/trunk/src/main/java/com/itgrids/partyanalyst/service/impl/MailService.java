@@ -205,7 +205,7 @@ public class MailService implements IMailService{
     	String subject;
 		String text;
     	subject = "";
-    	subject = "Welcome to PartyAnalyst.com"+" "+registrationVO.getFirstName();
+    	subject = "Welcome to PartyAnalyst";
     	
     	
     	text = "";
@@ -213,7 +213,7 @@ public class MailService implements IMailService{
     	
 
     	
-    	text +="<div style='margin-left:20px; margin-top:15px;'><b><font style='color:blue'>Hey  "+registrationVO.getFirstName()+" "+registrationVO.getLastName()+"</font></div>";
+    	text +="<div style='margin-left:20px; margin-top:15px;'><b><font style='color:blue'>Hey  "+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</font></div>";
     	
     	text +="<div style='margin-left:30px;margin-right:15px;margin-bottom:30px;'></b></font><br>Just a quick note to confirm that you are now a registered member of our family.";
     	
@@ -246,7 +246,7 @@ public class MailService implements IMailService{
     	text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
     	text +="<br><br>Have a good day!";
     	text +="<br><br>-&nbsp;&nbsp;&nbsp;PartyAnalyst Team.";
-    	text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us don’t end up in your junk folder.";
+    	text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us dont end up in your junk folder.";
     	text +="</div></div>";
     	
     	/*text +="<br><br>PS: Now that you are part of our community, why not invite your friends to join our community? You can not only connect and share your thoughts with them but also make them part of the change.";
