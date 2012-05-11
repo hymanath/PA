@@ -7,6 +7,8 @@ import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
 public interface IPartyUpdatesEmailDAO extends GenericDao<PartyUpdatesEmail,Long>{
 	
 	public List<Object> getPartyUpdatesEmail(String emailId ,Long candidateId);
+	
+	public List<PartyUpdatesEmail> getAllSubscriberDetails();
 
 }
 
