@@ -1,12 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>News Monitoring Service</title>
-	 <!-- Combo-handled YUI CSS files: --> 
+<title>Party/Candidate Analyzer </title>
+ <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
@@ -19,12 +18,10 @@
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
 <link type="text/css" rel="stylesheet" href="styles/bubble.css">
 </head>
-
 <body>
- 
- <div class="mainnewsdiv">
+<div class="mainnewsdiv">
 <div class="Promo-box-left">
-<h1 class="gradlightblack">News Monitoring Service <div class="Sample-Report-top">
+<h1 class="gradlightblack">Political Management Tool <div class="Sample-Report-top">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div></h1>
 <span class="titlespan">Every Magazine, covered</span>
@@ -34,7 +31,7 @@
 <h2 class="oval-thought1">Why News Monitoring is Essential?</h2>
 <span class="RectSpan-thought">To review and publish the news related to you and your constituency/district/state.</span>
 <p class="gradcream">
-Lot of your constituency problems, activities, and your opposition party activities will come in different print and electronic media and disappear from the people.<br/><br/>Party Analyst News Monitoring Service helps you lot on this.<br/><br/>
+Lot of your constituency problems, activities, and your opposition party activities will come in different print and electronic media and disappear from the people. If you want to review or publish to public <br/><br/>Party Analyst News Monitoring Service helps you lot on this.<br/><br/>
 
 When you partner with Party Analyst, anything is possible, almost everything can be known.
 </p>
@@ -87,22 +84,22 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 <img src="images/site/imgpartyperf.jpg"/>
 Get Constituency Reports
 </div>
-<div class="service-box">
-<a href="partyCandidateAnalyzer.action"><span>Political Management Tool</span></a>
+<!--<div class="service-box">
+<a href="#"><span>Party / Candidate Analyzer</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
-Analyze your constituency, track your progress and pending facilities.
-</div>
+Analyze your constituency,  track your progress and pending facilities.
+</div>-->
 <div class="service-box">
 <a href="VotersPulse.action"><span>Voters Pulse</span></a>
 <img src="images/new_homepage/checklist.jpg"/>
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>
-<!--<div class="service-box">
-<a href="#"><span>News Reporting Service</span></a>
+<div class="service-box">
+<a href="newsMonitoringService.action"><span>News Monitoring Service</span></a>
 <img src="images/new_homepage/NewsTracker.png"/>
-Get News Reports
-</div>-->
+As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
+</div>
 
 </div>
 </div>
@@ -120,13 +117,12 @@ $(document).ready(function(){
 		$(".inline").fancybox();
 		//$(".inline").trigger("click");
 		
-	$(".service-box").click(function(){
+   	$(".service-box").click(function(){
       $(location).attr('href',$(this).find("a").attr("href"));
     });
 });
 
 
 </script>
-
 </body>
 </html>

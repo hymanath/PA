@@ -82,7 +82,7 @@ top:102%;
 .memberslist li:hover{background:#fff;}
 .memberslist li:hover .membercard{display:block;}
 .memberslist li .membercard a{text-decoration:none;}
-.statuslink{position:relative;display:inline-block;float:right;padding:3px 25px;background:#f3f3f3;border-radius:5px;text-decoration:none;font:13px Arial;}
+.statuslink{position:relative;margin-top:15px;display:inline-block;float:right;padding:3px 25px;background:#f3f3f3;border-radius:5px;text-decoration:none;font:13px Arial;}
 .membermsg{display:block;height:50px;overflow:hidden;padding:5px;}
 .sociallinks{margin:5px;}
 .statuson:before{
@@ -114,6 +114,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', end
     width: 10px;
 	top:5px;
 	background:#3d3d3d;
-
 	}
 .connectsymbol{font-size:25px;position:absolute;left:0px;top:-2px;}
+.memberCardViewAll{
+	position:relative;width:200px;height:165px;background:#E3EDF0;text-align:left;font:13px Arial;
+	border-radius:5px;border:5px solid #3d3d3d; display:inline-block; margin:7px;
+}
+.memberCardViewAll  h3 img{background:#fff;border-radius:5px;padding:5px;border:3px solid #ffff00;}
+.memberCardViewAll h3{margin:0px;background:#5e5e5e;color:#fff;padding:3px;height:100px;}
+.memberCardViewAll h3 span{float:right;}
+.memberCardViewAll a{text-decoration:none;}
+.paginatorElmtClass{background:#3d3d3d;padding:10px;border-radius:3px;}
+.paginatorElmtClass a{padding:5px 10px;
+background:#d3d3d3;border-radius:50%; margin:0px 10px;}
+.paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}

@@ -25,17 +25,12 @@
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div></h1>
 <span class="titlespan">Making Research Matters</span>
-<p class="">Analyze the Party Strength & Weaken areas up to village wise.
+<p class="">To understand the present voters trend vs Parties wise, Constituency, Geographically and Demographically.
 </p>
-<div class="why-box-survey">
-<h2 class="oval-thought-survey" style="width:320px;font:24px 'Oswald',Arial;">Why Survey is required for a Politician / Party?<span class="survey-span">To make educated decisions based on opinions of the public towards social issues, economic status and political events.</span>
-</h2>
-</p>
-</div>
 
 <div class="why-box-survey">
 <h2 class="oval-thought-survey" style="height:191px;font:24px 'Oswald',Arial;" >Why Voters Pulse?
-<span class="survey-span" style="margin-top:37px;">Voters pulse provides you with the right data and methodologies to meet your goals..</span>
+<span class="survey-span" style="margin-top:37px;">Voters pulse provides scientific Political surveys in accurate and cost effective way.</span>
 </h2>
 </div>
 
@@ -43,65 +38,53 @@
 <h1>Voters Pulse Survey Synopsis:</h1>
 <ul class="survey-feature-box">
 		<li>
-			<h2>Evolving Levels</h2>
+			<h2>Problems and Developments</h2>
 			<ul>
-				<li>Assessment of satisfaction level of the constituents from their present MP/MLA</li>
-				<li>Mapping of preferences of voters need from their present state and central Govt</li>
-				<li>Finding local issues, grievances, and demands which can influence election</li>
-				<li>Comparison between present and previous state govt as well as central govt</li>
+				<li>Identifying the Problems, which requires immediate attention to get into the people?</li>
+				<li>On what developments the localities are happy</li>			
 			</ul>
 		</li>
 
 		<li>
-			<h2>Leaders Fame</h2>
+			<h2>Demographical& Geographical</h2>
 			<ul>
-				<li>About leader's behavior with the common people </li>
-				<li>Way of working </li>
-				<li>What kind of leader constituents want</li>
-				<li>Whom constituents admire and prefer most from each party</li>
+				<li>Caste wise Analysis</li>
+				<li>Literate/Illiterate Wise Analysis</li>
+				<li>Analysis from hamlets</li>
 			</ul>
 		</li>
 		
 		<li>
-			<h2>Parties Fame</h2>
+			<h2>Parties Fame / Performances</h2>
 			<ul>
-				<li>Most active party in the local area, state and center</li>
-				<li>Most promising party in the local area, state and center</li>
-				<li>Satisfaction of present party's state govt. and central govt</li>
-				<li>Party Preference for next election</li>
-				<li>Worst policy made by the previous govt which can be an issue in the election</li>
+				<li>How many people know about the Party?</li>
+				<li>Is the Party Performance good?</li>			
 			</ul>
 		</li>
 		
 		<li>
-			<h2>Opinion Poll</h2>
+			<h2>Leaders Fame / Performances</h2>
 			<ul>
-				<li>At present, public preference about all given candidates</li>
-				<li>Whom voter thinks best suitable candidate for their benefits </li>
-				<li>Who is most reliable candidate </li>
-				<li>Feedback about all the candidates will be managed booths wise</li>
+				<li>How many people know about the Leader?</li>
+				<li>Is the Leader Performance good?</li>
 			</ul>
 		</li>
 		
 		<li>
-			<h2>Caste Fairness</h2>
+			<h2>Party / Leader Influencing Groups</h2>
 			<ul>
-				<li>Approximate number of people of each and every caste at the booth level</li>
-				<li>Approximate number of people of different religion</li>
-				<li>Strategy suitable according to the social engineering</li>
+				<li>Who are influenced people?</li>
+				<li>Finding out the right people's group to boost the political Arena.</li>			
 			</ul>
 		</li>
 		
 		<li>
-			<h2>Party Network</h2>
+			<h2>Strengthen Groups and Opposition Parties</h2>
 			<ul>
-				<li>Identification of influencial people of each and every major party at the booth level</li>
-				<li>Arranging the data base of party worker at block and vidhan sabha level. </li>
-				<li>Collecting Mobile number of the influential people of each and every village</li>
+				<li>Identifying the Strengthen groups.</li>
+				<li>Finding out the opposition Parties.</li>			
 			</ul>
-		</li>
-
-		
+		</li>		
 </ul>
 
 </div>
@@ -132,9 +115,9 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 Get Constituency Reports
 </div>
 <div class="service-box">
-<a href="#"><span>Party / Candidate Analyzer</span></a>
+<a href="partyCandidateAnalyzer.action"><span>Political Management Tool</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
-Analyze your constituency,  track your progress and pending facilities.
+Analyze your constituency, track your progress and pending facilities.
 </div>
 <!--<div class="service-box">
 <a href="#"><span>Survey Meter</span></a>
