@@ -163,8 +163,34 @@ text-decoration:none;
 
 	}
 
-
-
+.paginatorElmtClass a {
+    border: 1px solid #ADADAD;
+    margin: 0 3px;
+    padding: 3px;
+	font-size:11px;
+   text-decoration: none;
+}	
+.pagenationStyle{
+  background-color:#6AC9C1;
+}
+.problemheadClass{
+  padding:8px;
+  border-radius:10px;
+  margin-right: 10px;
+  margin-bottom:10px;
+  margin-top:15px;
+  background-color:#F7F7F7;
+}
+.problemTitleClass{
+  color:#357EC7;
+  font-weight:bold;
+  padding-right:10px;
+  font-size:15px;
+  font-family: trebuchet MS;
+}
+.social-icons {
+    width: 311px;
+}
 </style>
 </head>
 
@@ -436,21 +462,14 @@ text-decoration:none;
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
-        <div class="sneak-peak-sec" style="width:622px; border-right: 1px dotted;margin-right: 10px;">
-          <h1 class="title tc-tf">Sneak Peak @Party Analyst</h1>
-		  <div class="homePageContentWidget_body" style="width:650px; border: 0px solid #DDDDDD;">
-
-									<div class="homePageContentWidget_readMore">
-										
-									</div>
-									<div id="homePage_Chart_Header_main" style="overflow:hidden;height:360px;">
-										<div id="homePage_Chart_Header" style="margin-left:-30px;">
-									   
-										</div>
-									</div>
-							</div>
+        <div class="sneak-peak-sec" style="width:615px; border-right: 1px dotted;margin-right: 10px;">
+          <h1 class="title tc-tf" style="color:#C66E17;margin-left:23px;margin-bottom:-19px;">Problems In Your Area</h1>
+		  
+              <div style="height: 325px;overflow-y:scroll;" id="problemsShowDIV"></div>
+									
+		      <div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;"></div>
                     
-          <p>The information displayed in this website are based on the data collected from the Election Commmission Of India. Further suggestions and corrections please contact us at <a href="mailto:info@itgrids.com" class="blue">info@itgrids.com</a></p>
+         <div style="margin-top:10px;"> <p>The information displayed in this website are based on the data collected from the Election Commmission Of India. Further suggestions and corrections please contact us at <a href="mailto:info@itgrids.com" class="blue">info@itgrids.com</a></p></div>
         </div>
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
@@ -500,7 +519,7 @@ text-decoration:none;
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" style="height:263px;">
+									<div id="pollsWidgetBody" style="height:263px;width: 318px;">
 									</div>
 									<div id="pollsWidgetFooter">
 										
@@ -601,6 +620,158 @@ text-decoration:none;
 <!--CONTENT MAIN SECTION END--> 
 
 <script type="text/javascript">
+var clickid = null;
+function copyId(id)
+{
+  clickid = id;
+}
+var custom_paginator = {
+	resultsCount:"",
+	startIndex:"",
+	ajaxCallURL:"",
+	initialParams:"",
+	resultsShown:"",
+	callBackFunction:"",
+	jsObj:{},
+	results:{},
+	totalRecords:"",
+	paginatorElmt:"",		
+	paginator:function(obj){
+		this.startIndex = obj.startIndex;
+		this.ajaxCallURL = obj.ajaxCallURL;
+		this.jsObj = obj.jsObj;
+		this.callBackFunction = obj.callBackFunction;
+		this.paginatorElmt = obj.paginatorElmt;
+		this.resultsCount = obj.resultsCount;		
+	},	
+	doAjaxCall:function(start){
+
+		var url = this.ajaxCallURL+"&startIndex="+start+"&resultsCount="+this.resultsCount;
+		
+		var callback = {			
+	    success : function( o ) {
+			try 
+			{				
+				results = YAHOO.lang.JSON.parse(o.responseText);
+				
+				if(results != null && results.length>0)
+				    this.totalRecords = parseInt(results[0].totalResultsCount);	
+				else
+                     this.totalRecords = 0;
+					 this.buildPaginator();
+				this.callBackFunction();
+				
+			}
+			catch (e)
+			{   		
+				alert("Invalid JSON result" + e);   
+			}  
+		},
+		scope : this,
+		failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				  }
+		};
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	},
+	initialize:function (){		
+		this.doAjaxCall(this.startIndex);
+	},
+	buildPaginator:function()
+	{
+		var paginatorElmt = document.createElement('Div');
+		paginatorElmt.setAttribute("class","paginatorElmtClass");
+		var iteration = Math.ceil(this.totalRecords/this.resultsCount);		
+		var countIndex = this.startIndex;
+		var str = '';
+
+		if(iteration > 1)
+		{
+			for(var i=1; i<=iteration; i++)
+			{			
+				str += '<a href="javascript:{}" id="customPaginationId'+i+'" onclick="copyId(this.id);custom_paginator.doAjaxCall('+countIndex+')">'+i+'</a>';
+				countIndex+=this.resultsCount;
+			}
+		}
+		
+		if(document.getElementById("custom_paginator_class")!=null)	
+     	  document.getElementById("custom_paginator_class").innerHTML = str;
+		if(clickid != null)
+		{
+		 $("#"+clickid).addClass('pagenationStyle');
+		}
+		else
+		{
+		  $("#customPaginationId1").addClass('pagenationStyle');
+		}
+	}
+};
+
+  $(document).ready(function() {
+    $('#custom_paginator_class a').live("click",function() {
+	   
+        $('#custom_paginator_class a').removeClass('pagenationStyle');
+		$(this).addClass('pagenationStyle');
+      });
+  });
+custom_paginator.totalRecords = '${problemCount}';
+var news_Obj = {
+	
+	problemStatus:[],
+	startIndex:0,
+	problemsCount:3,
+	
+	initialize:function(){
+		
+		this.getProblemDetails();
+
+	},
+	getProblemDetails:function()
+    {  	
+        var jsObj=
+		{		
+				task:"getProblemDetails"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getProblemDetailsForHomePageAction.action?"+rparam;
+
+	    custom_paginator.paginator({
+			startIndex:this.startIndex,
+			resultsCount:this.problemsCount,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+	    	showProblemDetails(results);
+			}
+		});
+		
+		custom_paginator.initialize();
+    }
+	};
+news_Obj.initialize();
+function showProblemDetails(result)
+{
+    var probEle = document.getElementById("problemsShowDIV");
+	var str = '';
+	for(var i in result)
+	{
+	   str += '<div class ="problemheadClass">';
+	   str += '   <div ><span><a class ="problemTitleClass" href="problemCompleteDetailsAction.action?problemHistoryId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span>  <img width="20" height="20" src="images/icons/accept.png" title="Like"><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font> <img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font> <span style="color:#A71100;margin-left:15px;">Comments :</span><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></div>';
+	   str += '   <div style="padding-top:5px;font-family:arial;">'+result[i].description+' </div>';
+	   str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Location :&nbsp;&nbsp;</span> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#028D35;">Posted By :&nbsp;&nbsp;</span>'+initialCap(result[i].name)+' </div>'; 
+	   str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Existing From :&nbsp;&nbsp;</span> '+result[i].existingFrom+' &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#028D35;">Identified On :&nbsp;&nbsp;</span>'+result[i].postedDate+' </div>';
+       str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Files Attached :&nbsp;&nbsp;</span>'+result[i].fileCount+' </div>';	   
+	   str += '</div>';
+	}
+	probEle.innerHTML = str;
+	
+}
+function initialCap(data) {
+   data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
+   return data;
+}
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
 var changedUserName='${sessionScope.changedUserName}';
@@ -611,7 +782,7 @@ if(loadingFirstTime == 'true'){
 		$("#inline").trigger("click");
 		}
 	});
-buildHOmePageChartsSlider();
+//buildHOmePageChartsSlider();
 	initializeHomePage();
 	getElectionTypeValue(1);
 	
@@ -661,7 +832,10 @@ function callAJAX(jsObj,url){
 					{
 						showEmailStatus(results);
 					}
-
+					else if(jsObj.task == "getProblemDetails")
+					{
+                          showProblemDetails(results);
+					}
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
