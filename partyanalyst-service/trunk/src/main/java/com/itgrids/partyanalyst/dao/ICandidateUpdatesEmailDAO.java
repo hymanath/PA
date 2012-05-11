@@ -8,4 +8,6 @@ public interface ICandidateUpdatesEmailDAO extends GenericDao<CandidateUpdatesEm
 	
 	public List<Object> getCandidateUpdatesEmail(String emailId ,Long candidateId);
 	
+	public List<CandidateUpdatesEmail> getAllSubscriberDetails();
+	
 }
