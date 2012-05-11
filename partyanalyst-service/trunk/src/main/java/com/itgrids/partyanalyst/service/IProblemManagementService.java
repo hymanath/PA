@@ -118,4 +118,8 @@ public interface IProblemManagementService {
 	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers);
 	
 	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId);
+	
+	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex);
+	
+	public Long getProblemsCount();
 }
