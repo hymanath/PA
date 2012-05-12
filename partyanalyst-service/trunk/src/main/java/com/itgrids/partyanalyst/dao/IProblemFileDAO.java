@@ -30,4 +30,5 @@ public interface IProblemFileDAO extends GenericDao<ProblemFile, Long> {
 	
 	public List<Object> getNoOfFilesUploadedForAUser(Long problemHistoryId);
 	
+	public Long getCountOfNewlyPostedImagesByFreeUser();
 }
