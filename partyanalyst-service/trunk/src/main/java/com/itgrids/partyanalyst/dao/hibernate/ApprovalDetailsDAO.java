@@ -24,5 +24,11 @@ public class ApprovalDetailsDAO extends GenericDaoHibernate<ApprovalDetails, Lon
 		return queryObject.executeUpdate();
 			
 	}
+	public Long getCountOfNewlyPostedCommentsByUser()
+	{
+		Query query = getSession().createQuery("select count(*) from ApprovalDetails model where model.isAdminApproved is null");
+		
+		return (Long)query.uniqueResult();
+	}
 
 }
