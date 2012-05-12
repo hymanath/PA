@@ -8,5 +8,7 @@ import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollResult;
 
 public interface IOpinionPollQuestionOptionsDAO extends GenericDao<OpinionPollQuestionOptions, Long>{
+	
+	public List<Object[]> getOptions(Long questionsRepositoryId);
 
 }
