@@ -27,4 +27,8 @@ public class OpinionPollQuestionOptionsDAO extends GenericDaoHibernate<OpinionPo
 	public OpinionPollQuestionOptionsDAO() {
 		super(OpinionPollQuestionOptions.class);
 	}
+	public List<Object[]> getOptions(Long questionsRepositoryId)
+	{
+		return getHibernateTemplate().find("select model.opinionPollQuestionOptionsId,model.questionOption from OpinionPollQuestionOptions model where model.questionsRepository.questionsRepositoryId = ?",questionsRepositoryId);
+	}
 }
