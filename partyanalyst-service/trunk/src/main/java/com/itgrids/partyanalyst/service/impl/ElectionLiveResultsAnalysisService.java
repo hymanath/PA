@@ -1736,7 +1736,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	  try{
 		  List<PartyElectionResultVO> partyResult = null;
 		  Election election = electionDAO.get(electionId);
-		  if(election.getIsPartial().equalsIgnoreCase("1"))
+		  if(election.getIsPartial() != null && election.getIsPartial().equalsIgnoreCase("1"))
 		  {
 		  
 		  List<Object[]> result = constituencyLeadCandidateDAO.getGenderAnalysisElectionresults(electionId);
