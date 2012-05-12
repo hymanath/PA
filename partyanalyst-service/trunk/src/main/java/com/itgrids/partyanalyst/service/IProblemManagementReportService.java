@@ -99,4 +99,6 @@ public interface IProblemManagementReportService {
 	public List<ProblemBeanVO> getCadreDetailsForProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
 	
 	public String getProblemLocation(Long impactLevel,Long impactValue);
+	
+	public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser();
 }
