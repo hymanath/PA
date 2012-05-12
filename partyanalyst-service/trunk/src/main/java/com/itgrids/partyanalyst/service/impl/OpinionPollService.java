@@ -303,15 +303,26 @@ public class OpinionPollService implements IOpinionPollService {
 							QuestionsRepository questionsRepository = (QuestionsRepository) ops.getQuestionsRepository();
 							opinionPollQuestionsVO.setQuestion(questionsRepository.getQuestion());
 							opinionPollQuestionsVO.setQuestionId(questionsRepository.getQuestionsRepositoryId());
-							Set<OpinionPollQuestionOptions> opinionPollQuestionOptions = (Set<OpinionPollQuestionOptions>)  questionsRepository.getOpinionPollQuestionOptions();
+							/*Set<OpinionPollQuestionOptions> opinionPollQuestionOptions = (Set<OpinionPollQuestionOptions>)  questionsRepository.getOpinionPollQuestionOptions();
 							
 							for(OpinionPollQuestionOptions options : opinionPollQuestionOptions){
 								OptionVO optionVO = new OptionVO();
 								optionVO.setOptionId(options.getOpinionPollQuestionOptionsId());
 								optionVO.setOption(options.getQuestionOption());
 								listOfOptionVO.add(optionVO);
+							}*/
+							//Collections.sort(listOfOptionVO);
+							List<Object[]> options = opinionPollQuestionOptionsDAO.getOptions(opinionPollQuestionsVO.getQuestionId());
+							{
+								for(Object[] params : options)
+								{
+									OptionVO optionVO = new OptionVO();
+									optionVO.setOptionId(Long.parseLong(params[0].toString()));
+									optionVO.setOption(params[1].toString());
+									listOfOptionVO.add(optionVO);
+								}
 							}
-							Collections.sort(listOfOptionVO);
+					
 							opinionPollQuestionsVO.setOptions(listOfOptionVO);
 							listOfQuestionsOptionsVO.add(opinionPollQuestionsVO);
 						}
