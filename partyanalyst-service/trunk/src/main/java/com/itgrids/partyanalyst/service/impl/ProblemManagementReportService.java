@@ -16,6 +16,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -116,8 +117,17 @@ public class ProblemManagementReportService implements
 	private IProblemFileDAO problemFileDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IMailsSendingService mailsSendingService;
+	private IApprovalDetailsDAO approvalDetailsDAO;
 	
 	
+	public IApprovalDetailsDAO getApprovalDetailsDAO() {
+		return approvalDetailsDAO;
+	}
+
+	public void setApprovalDetailsDAO(IApprovalDetailsDAO approvalDetailsDAO) {
+		this.approvalDetailsDAO = approvalDetailsDAO;
+	}
+
 	public IMailsSendingService getMailsSendingService() {
 		return mailsSendingService;
 	}
@@ -2853,6 +2863,32 @@ public class ProblemManagementReportService implements
 			}catch(Exception e){
 				return mainList;
 			}
+		}
+		public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser() 
+		{
+			ProblemBeanVO problemBeanVO = null;
+			try{
+	    		if(log.isDebugEnabled())
+	    			log.debug("Entered into getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService");
+	    		//Count of newly Posted problems by free user.
+	    		Long countofNewlyProblems = problemHistoryDAO.getCountOfNewlyPostedProblemsByFreeUser();
+	    		//Count of newly Posted images by free user.
+	    		Long countofNewlyImages = problemFileDAO.getCountOfNewlyPostedImagesByFreeUser();
+	    		//count of newly posted comments by free user.
+	    		Long countofNewlyComments = approvalDetailsDAO.getCountOfNewlyPostedCommentsByUser();
+	    		if(countofNewlyProblems != null && countofNewlyImages !=null && countofNewlyComments != null)
+	    		{ 
+	    			problemBeanVO = new ProblemBeanVO();
+	    		    problemBeanVO.setProblemsCount(countofNewlyProblems);
+	    		    problemBeanVO.setImageCount(countofNewlyImages);
+	    		    problemBeanVO.setDiscommentCount(countofNewlyComments);
+	    		}
+	    	}catch(Exception e){
+	    		
+	    		 log.error("Exception Occured in getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService "+e);
+	    		
+	    	}
+	    	return problemBeanVO;
 		}
 		
 }
