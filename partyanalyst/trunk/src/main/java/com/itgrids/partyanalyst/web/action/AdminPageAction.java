@@ -5,8 +5,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -14,7 +16,27 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
+	ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+	private IProblemManagementReportService problemManagementReportService;
 	
+	
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -34,6 +56,10 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
 			return ERROR;
+		problemBeanVO = problemManagementReportService.getCountOfNewlyPostedProblemsByFreeUser();
+		
+		
+		
 		return SUCCESS;
 	}
 }
