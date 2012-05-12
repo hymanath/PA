@@ -115,5 +115,10 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 	{
 		return getHibernateTemplate().find("select count(model.problemFileId) from ProblemFile model where model.problemHistory.problemHistoryId = ?", problemHistoryId);
 	}
+	public Long getCountOfNewlyPostedImagesByFreeUser()
+	{
+		Query query = getSession().createQuery("select count(*) from ProblemFile model where model.isApproved is null");
+		return (Long)query.uniqueResult();
+	}
 	
 }
