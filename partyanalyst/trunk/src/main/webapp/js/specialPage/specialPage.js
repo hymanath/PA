@@ -1897,7 +1897,7 @@ function showFirstFourNewsRecords(results)
    }
 	else
 	{
-		str+='<div class="pft-sec"> <img src="./images/new_homepage/pft.jpg" alt=""/>';
+	str+='<div class="pft-sec" style="padding-left:48px;"> <img src="./images/new_homepage/pft.jpg" alt=""/>';
             str+='<div class="clear"></div>';
             str+='<p></p>';
             str+='<span class="gray">Are you a</span>'; 
