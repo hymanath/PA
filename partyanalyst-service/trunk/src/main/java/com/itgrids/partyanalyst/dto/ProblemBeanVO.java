@@ -92,7 +92,25 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long dislikesCount = 0l;
 	private Long commentCount = 0l;
 	private int fileCount = 0;
+	private Long imageCount;
+	private Long discommentCount;
 	
+    
+	public Long getDiscommentCount() {
+		return discommentCount;
+	}
+
+	public void setDiscommentCount(Long discommentCount) {
+		this.discommentCount = discommentCount;
+	}
+
+	public Long getImageCount() {
+		return imageCount;
+	}
+
+	public void setImageCount(Long imageCount) {
+		this.imageCount = imageCount;
+	}
 
 	public FileVO getFileVO() {
 		return fileVO;
