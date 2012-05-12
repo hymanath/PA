@@ -35,7 +35,7 @@
     float: left;
     font-size: 20px;
     line-height: 24px;
-    padding: 32px 0 16px 112px;
+    padding: 32px 0 16px 21px;
     width: 244px;
 }
 .container {
