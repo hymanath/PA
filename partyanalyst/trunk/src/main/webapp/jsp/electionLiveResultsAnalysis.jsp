@@ -397,6 +397,12 @@ function buildCompareResultForWonorLead(myResults)
 	}
 
   }
+  else{
+  if(partyWonOrLeadResultElmt != null)
+    partyWonOrLeadResultElmt.innerHTML = '';
+	if(document.getElementById('knownResultInOldAndNewGraphDivId') != null)
+	document.getElementById('knownResultInOldAndNewGraphDivId').innerHTML = '';
+  }
 }
 function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 {
@@ -404,6 +410,8 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 	
 	if(myResults == null || myResults.length == 0)
 	{
+	    if(seatsFlownDivEle != null)
+	    seatsFlownDivEle.innerHTML = '';
 		seatsFlownDivEle.style.display = 'none';
 		return;
 	}
@@ -1064,7 +1072,6 @@ function getPartiesGainAndLossInfo()
 }
 
 function showPartyGainedResults(myResults){
-
 	var data= new Array();
 	var stateName = $("#stateId option:selected").text();
 	var electionYear = $("#electionYearId option:selected").text();
@@ -1075,6 +1082,7 @@ function showPartyGainedResults(myResults){
 	partyGainedAnalysisDivElmt.innerHTML ='';
 	var str ='';
 	var headstr='';
+	if(myResults !=null && myResults.length >0)
 	headstr+='<span class="headingstyle">Partywise Seats Gained / Lost Analysis</span>';
 	document.getElementById("partyAnalysisHeading").innerHTML =headstr;
 
@@ -1275,6 +1283,7 @@ function buildConstituencyWiseCandidates(myResults)
 	var candidatesDivHeadingElmt = document.getElementById("candidatesDivHeading");
 
 	var headstr='';
+	if(myResults != null && myResults.length >0)
 	headstr+='<span class="headingstyle">Constituencywise Winning/Leading Candidates </span>';
 	
 	candidatesDivHeadingElmt.innerHTML = headstr;
@@ -1397,7 +1406,10 @@ else
 	
 	var myDataTable = new YAHOO.widget.DataTable("candidatesDiv",resultsColumnDefs, myDataSource,myConfigs); 
 	}
-
+   else{
+     if(document.getElementById("candidatesDiv") != null)
+	 document.getElementById("candidatesDiv").innerHTML = '';
+   }
 }
 
 
