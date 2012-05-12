@@ -157,4 +157,7 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List<Long> getAllValidProblemIds(int startIndex,int maxIndex);
 	
 	public List<Long> getAllValidProblemIdsCount();
+	
+	public Long getCountOfNewlyPostedProblemsByFreeUser();
+	
 }
