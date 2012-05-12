@@ -630,6 +630,8 @@
 	
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">			
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
+		<property name="problemManagementReportService" ref="problemManagementReportService" />	
+		
 	</bean>
 	
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">			
