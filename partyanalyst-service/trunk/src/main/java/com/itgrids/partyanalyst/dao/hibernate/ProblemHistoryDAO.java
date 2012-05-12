@@ -1013,4 +1013,9 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"  and model.problemLocation.problemAndProblemSource.externalUser is not null  ");
 	}
 	
+	public Long getCountOfNewlyPostedProblemsByFreeUser()
+	{
+		Query query = getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where model.isApproved = 'false' and model.isDelete is null");
+		return (Long)query.uniqueResult();
+	}
 }
