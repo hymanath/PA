@@ -11,6 +11,7 @@
 }
 
 img{border:1px solid #cdcdcd;}
+
 .resulttableclass a{text-decoration:none;}
 .resulttableclass a:hover{text-decoration:underline;}
 .resulttableclass{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
@@ -184,7 +185,7 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
 </table>
 <div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in comming days due to JAGAN MLA's who voted against to confidence motion and disqualified MLA's by speaker Nadendla Manohar and Praja Rajyam president Chiranjeevi on Thursday morning resigned from the state assembly .</div>
 <div style="font-weight:bold;font-family:verdana;font-size:12px;margin:17px;">
-<span>Total Assembly Constituencies - <font color="#05A8E9">17</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">3</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">1</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">13</font></span>
+<span>Total Assembly Constituencies - <font color="#05A8E9">18</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">3</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">1</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">14</font></span>
 </div>
 <table class="spltableclass" style="margin-top:-7px;text-align:center;margin-left:12px;width: 98%;">
 <tbody>
