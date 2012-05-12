@@ -688,6 +688,8 @@
 		<property name="problemFileDAO" ref="problemFileDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
 		<property name="mailsSendingService" ref="mailsSendingService" />
+		<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
+		
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
