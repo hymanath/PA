@@ -9,6 +9,8 @@ import com.itgrids.partyanalyst.model.FeedBack;
 public interface IFeedbackDAO extends GenericDao<FeedBack, Long>{
 
 	public Integer updateStatusToApproveOrReject(List<Long> commentIdList,String status);
+	
+	public Long getCountOfNewlyPostedFeedbackByFreeUser();
 
 }
 
