@@ -689,6 +689,8 @@
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
 		<property name="mailsSendingService" ref="mailsSendingService" />
 		<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
+		<property name="commentDataDAO" ref="commentDataDAO" />
+		<property name="feedbackDAO" ref="feedbackDAO" />
 		
 	</bean>
 	
