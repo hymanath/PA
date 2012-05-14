@@ -32,7 +32,7 @@ public class CommentDataDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testScrutinePostedComments(){
+	/*public void testScrutinePostedComments(){
 		
 		List<Long>  reasonIds = new ArrayList<Long>();
 		reasonIds.add(20L);		
@@ -40,6 +40,9 @@ public class CommentDataDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 		System.out.println(status);
 		
+	}*/
+	public void testScrutinePostedComments(){
+		System.out.println(commentDataDAO.getcountOfNewlyPostedReasonByFreeUser());
 	}
 	
 }
