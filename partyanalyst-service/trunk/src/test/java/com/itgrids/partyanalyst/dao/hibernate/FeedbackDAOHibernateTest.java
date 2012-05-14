@@ -12,9 +12,12 @@ public class FeedbackDAOHibernateTest extends BaseDaoTestCase {
 		this.feedbackDAO = feedbackDAO;
 	}
 
-	public void test(){
+	/*public void test(){
 		feedbackDAO.getAll();		
-	}
-
+	}*/
+    public void testGetCountNewlyPostedFeddbsck()
+    {
+    	System.out.println(feedbackDAO.getCountOfNewlyPostedFeedbackByFreeUser());
+    }
 	
 }
