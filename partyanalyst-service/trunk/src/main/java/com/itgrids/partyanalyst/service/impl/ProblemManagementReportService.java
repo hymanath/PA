@@ -21,11 +21,13 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICommentDataDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -71,7 +73,6 @@ import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -118,8 +119,26 @@ public class ProblemManagementReportService implements
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IMailsSendingService mailsSendingService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
+	private ICommentDataDAO commentDataDAO;
+	private IFeedbackDAO feedbackDAO;
 	
 	
+	public IFeedbackDAO getFeedbackDAO() {
+		return feedbackDAO;
+	}
+
+	public void setFeedbackDAO(IFeedbackDAO feedbackDAO) {
+		this.feedbackDAO = feedbackDAO;
+	}
+
+	public ICommentDataDAO getCommentDataDAO() {
+		return commentDataDAO;
+	}
+
+	public void setCommentDataDAO(ICommentDataDAO commentDataDAO) {
+		this.commentDataDAO = commentDataDAO;
+	}
+
 	public IApprovalDetailsDAO getApprovalDetailsDAO() {
 		return approvalDetailsDAO;
 	}
@@ -2876,12 +2895,19 @@ public class ProblemManagementReportService implements
 	    		Long countofNewlyImages = problemFileDAO.getCountOfNewlyPostedImagesByFreeUser();
 	    		//count of newly posted comments by free user.
 	    		Long countofNewlyComments = approvalDetailsDAO.getCountOfNewlyPostedCommentsByUser();
-	    		if(countofNewlyProblems != null && countofNewlyImages !=null && countofNewlyComments != null)
+	    		//count of newly posted political reason
+	    		Long countofNewlyReasons = commentDataDAO.getcountOfNewlyPostedReasonByFreeUser();
+	    		//count of newly posted Feedbacks
+	    		Long countOfNewlyFeedBack =  feedbackDAO.getCountOfNewlyPostedFeedbackByFreeUser();
+	    		if(countofNewlyProblems != null || countofNewlyImages !=null || countofNewlyComments != null || countofNewlyReasons != null || countOfNewlyFeedBack != null)
 	    		{ 
 	    			problemBeanVO = new ProblemBeanVO();
 	    		    problemBeanVO.setProblemsCount(countofNewlyProblems);
 	    		    problemBeanVO.setImageCount(countofNewlyImages);
 	    		    problemBeanVO.setDiscommentCount(countofNewlyComments);
+	    		    problemBeanVO.setPoliticalCount(countofNewlyReasons);
+	    		    problemBeanVO.setFeedBackCount(countOfNewlyFeedBack);
+	    		    
 	    		}
 	    	}catch(Exception e){
 	    		
