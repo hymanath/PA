@@ -1086,8 +1086,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getOtherNews"))
 		 {
-			String startIndex = request.getParameter("startIndex");
-			String maxResults = request.getParameter("resultsCount");
+			String startIndex = jObj.getString("startIndex");
+			String maxResults =  jObj.getString("maxResults");
 			fileVO = candidateDetailsService.getOtherNews(jObj.getLong("candidateId"),Integer.parseInt(startIndex),Integer.parseInt(maxResults),jObj.getString("queryType"));
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsByCategoryScope"))
