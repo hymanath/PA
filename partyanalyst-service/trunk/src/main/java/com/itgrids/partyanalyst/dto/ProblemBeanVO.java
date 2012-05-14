@@ -94,8 +94,26 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private int fileCount = 0;
 	private Long imageCount;
 	private Long discommentCount;
+	private Long politicalCount;
+	private long feedBackCount;
 	
     
+	public long getFeedBackCount() {
+		return feedBackCount;
+	}
+
+	public void setFeedBackCount(long feedBackCount) {
+		this.feedBackCount = feedBackCount;
+	}
+
+	public Long getPoliticalCount() {
+		return politicalCount;
+	}
+
+	public void setPoliticalCount(Long politicalCount) {
+		this.politicalCount = politicalCount;
+	}
+
 	public Long getDiscommentCount() {
 		return discommentCount;
 	}
