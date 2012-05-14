@@ -47,7 +47,7 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		this.customMessageDAO = customMessageDAO;
 	}
 	
-	public void testUsersRelation(){	
+	/*public void testUsersRelation(){	
 		
 		
 		List<Long> usersList = new ArrayList<Long>();
@@ -100,6 +100,13 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 				dataTransferVO.setResultStatus(resultStatus);	
 			}
 		return dataTransferVO;		
-	}	
+	}	*/
+	
+	public void testGetPendingUsersCountForAUserInAFilterView()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(323l);
+		System.out.println(customMessageDAO.getPendingUsersCountForAUserInAFilterView(796l,locationIds,IConstants.CONSTITUENCY, "kamal"));
+	}
 	
 }
