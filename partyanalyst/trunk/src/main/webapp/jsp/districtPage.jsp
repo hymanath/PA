@@ -125,8 +125,45 @@
 .paginatorElmtClass a{padding:5px 10px;
 background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 .paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}
-	</style>
+	 .cl-sub-fields-sec {
+    width: 600px;
+    }
+     .cd-mid-cont-sec {
+    width: 611px;
+	background-color: #ffffff;
+   }
+   .main-title-sec {
+    width: 980px;
+  }
+  .connect-people-sec {
+    width: 331px;
+  }
+  .yui-carousel-content{
+    width:980px;
+  }
+  .vy-problems-sec{
+   margin-left:10px;
+  }
+  #alliancePartiesCarousel .yui-carousel-element li {
+    width: 980px;
+}
+.post-problem {  
+    left: 32px;   
+    position: relative;
+}
+#mptcInfoDivHead{
+  width:428px;
+}
 
+
+</style>
+<!--[if IE]>
+<style>
+#mptcInfoDivHead{
+  width:470px;
+
+ </style>
+<![endif]-->
 	<script type="text/javascript">
 	google.load("visualization", "1", {packages:["corechart"]});
 
@@ -601,7 +638,7 @@ background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//muncipalityDiv+='<td><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 977px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;margin-top:-34px;background:#7AC77F;">';
+		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 955px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;margin-top:-34px;background:#7AC77F;">';
 		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}" style="color:#ffffff;font-family: arial;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		muncipalityDiv+='</div></td>';
 		//muncipalityDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
@@ -620,7 +657,7 @@ background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 
 		corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		//corporationDiv+='<td width="30"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
-		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width:976px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#72CAED;">';
+		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width:955px; height: 18px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#72CAED;">';
 		corporationDiv+='<div class="districtPage_headerAnc" style="color:#ffffff;font-family: arial;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></div>';
 		corporationDiv+='</div></td>';
 		
@@ -671,7 +708,7 @@ background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 			rvStr += '</tr>';
 			rvStr += '</table>';
 			rvStr += '</div>';
-			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:100%;vertical-align:top;" >';
+			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:95%;vertical-align:top;" >';
 			rvStr += '<table width="90%" style="width:auto;margin-left:5px;">';
 			rvStr += '<tr>';
 			rvStr += '<th align="left" style="font-family:sans-serif;color:  #72587F;font-size:13px;">Muncipality Name :</th><td class="tableTextStyle" style="font-size:13px;font-family: Comic Sans MS;" align="left">&nbsp;'+result[i].muncipalityName+'</td>'; 
@@ -804,7 +841,7 @@ background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 		   
 		  ctitle = 'All Parties Muncipality Wise Performance In ${districtName} District Based On Seats Won';
 		  new google.visualization.LineChart(document.getElementById('tabledata')).
-			  draw(data, {curveType: "function",width: 900, height: 380, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'navy'}}
+			  draw(data, {curveType: "function",width: 880, height: 380, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'navy'}}
 			  });
 	  }
 	/*function buildCorporationChart(dataSrc,electionType)
@@ -1521,7 +1558,7 @@ background:#d3d3d3;border-radius:50%; margin:0px 10px;}
 		contentStr+='<ul>';
 		for(var i in arr)
 		{				
-			contentStr+='<LI style="width:1000px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
+			contentStr+='<LI style="width:980px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
 		}
 		contentStr+='</ul>';
 
@@ -1620,7 +1657,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
       </div>
   <div id="inner-content-mainsec" style="margin-left:auto;margin-right:auto;float:none;">
 		
-		<div class="cd-left-sec" style="width:676px;background:#ffffff;">
+		<div class="cd-left-sec" style="width:618px;background:#ffffff;margin-left: 10px;">
         <div class="cd-mid-cont-sec" style="padding-bottom:9px;">
 
      
@@ -1649,7 +1686,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 		
 
         <c:if test="${constituenciesStatusVO.newConstituencies !=null && constituenciesStatusVO.newConstituencies[0] != null }">
-		<div class="cl-sub-fields-sec" style="width:300px;float:right;padding-top:0px;"><h1 class="org-title"><span style="-moz-border-radius:4px;">New AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></h1><br><br>
+		<div class="cl-sub-fields-sec" style="width:282px;float:right;padding-top:0px;"><h1 class="org-title"><span style="-moz-border-radius:4px;">New AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></h1><br><br>
 		
 		
 		<div id="newConstDiv_body" style="margin-top:-15x;">				
@@ -1670,7 +1707,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 		</div>
 	   </c:if>
 		<c:if test="${constituenciesStatusVO.deletedConstituencies != null && constituenciesStatusVO.deletedConstituencies[0] != null}">
-		<div class="cl-sub-fields-sec" style="width:300px;padding-top:20px;"><h1 class="org-title"><span style="-moz-border-radius:4px;">Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></h1><br><br>
+		<div class="cl-sub-fields-sec" style="width:282px;padding-top:20px;"><h1 class="org-title"><span style="-moz-border-radius:4px;">Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></h1><br><br>
 
 		<div id="delimitMandalsDiv_body" style="margin-top:-45px;">
 						<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
@@ -1688,10 +1725,13 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 						</c:forEach>			
 					</div>
 			</div>
-        </c:if>	
+        </c:if>
+
+			
+	
 
 							<div class="cl-sub-fields-sec">
-								<!--<h1 class="org-title"><span style="-moz-border-radius:4px;">Connect To Your District People</span></h1>--><br><br>
+								<h1 class="org-title"><span style="-moz-border-radius:4px;">Connect To Your District People</span></h1><br><br>
 										
 
 		
@@ -1718,7 +1758,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
  <!--CD SUB RIGHT SECTION START-->
         
-        <div class="cd-sub-right-sec" style="border-top-width:0px;float:left;">
+        <div class="cd-sub-right-sec" style="border-top-width:0px;float:left;margin-left:32px;">
      
             
             <!--CONNECT PEOPLE SECTION START-->
@@ -1735,20 +1775,21 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 </div>
 
-
+</div>
 
 
 <!--VIEW YOUR PROBLEMS SECTION START-->
         
         <div class="vy-problems-sec">
-          <h1 class="vyp-title"> <img src="images/view-your-problems-district.png" alt=""/></h1>
-        <div class="vy-fields-sec" style="height:100px;">
+          <h1 class="vyp-title" style="margin-left: 16px;"> <img src="images/view-your-problems-district.png" alt=""/></h1>
+        <div class="vy-fields-sec" style="height:100px;margin-left: 16px;">
 
 		<div id="problemViewingDiv" style="margin-top:10px;">
 			<div id="problemViewingDiv_Head"></div>
 			<div id="problemViewingDiv_Body"></div>
 		</div>
-        <div class="post-problem" style="top:148px;">
+		</div>
+        <div class="post-problem" style="top:-36px;">
               <div>Post your constituency problem and<br />
                 bring it to the all people notice.</div>
 				
@@ -1759,10 +1800,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 			
 								
 							</div> </div>
-        </div>
+        
         
         <!--VIEW YOUR PROBLEMS SECTION END-->
-		<div class="connect-people-sec" style="padding-top:1px;margin-top:78px;">
+		<div class="connect-people-sec" style="padding-top:1px;width:311px;margin-left: 22px;">
 			<div class="cp-title-sec" style="border-radius: 3px 3px 0 0;margin-top:0px;">
                 <h1 class="cp-title">Know Your Mandals/Tehsils</h1>
                </div>
@@ -1786,7 +1827,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 				 </div>
 
-
+    </div>
 				
 
 
@@ -1821,10 +1862,10 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 </div></div>
 <!--Right End-->
 
-<div id="detailedChartDiv" style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;"> 
+<div id="detailedChartDiv" style="width:980px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;"> 
 	
 	<div id="partiesPerformanceGraphDistrict">
-		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="float:left;clear: both;margin-left:1px;background:#ffffff;">
+		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:980px;float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
 			<h3 style="margin-top:15px;font-weight:bold;font-family:verdana;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
@@ -1844,14 +1885,14 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 		</div>
 	</div>
 	
-<div style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
+<div style="width:980px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
 <div id="mp_head" style="clear:both;background:none;padding-top:30px">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:52px;"/></td>
 						<td>-->
-							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:973px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#06ABEA;">
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:953px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#06ABEA;">
 								<span style="float:left;color:#ffffff;font-size:14px;font-family: arial;">Member of Parliament (MP) in the  ${districtName} District</span>
 							</div></td>
 						
@@ -1897,7 +1938,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 	
 
-     <div style="width:1000px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
+     <div style="width:980px;background:#ffffff; padding-bottom:20px;margin-left:auto;margin-right:auto;float:none;">
 
 <div id="mla_main_div" style="background:#ffffff;width:100%;">
 			<div id="mla_head" style="clear:both;padding-top:24px;">
@@ -1905,7 +1946,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 					<tr>
 						<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif" style="margin-left:0px;"/></td>
 						<td>	-->
-							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:972px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#9D5CB2;margin-top:-47px;">
+							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:953px;border-radius: 6px 6px 0 0;padding-bottom:7px;background:#9D5CB2;margin-top:-47px;">
 								<span style="float:left;color:#ffffff;font-family: arial;">Member of Legislative Assembly (MLA) in the  ${districtName} District</span>
 							</div>
 						</td>
@@ -1952,7 +1993,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				</div>
 		</div>
 		
-		  <div style="width:1000px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
+		  <div style="width:980px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
 <div id="muncipality_corporation_div_main" style="margin-top:14px;width:100%;">
 		<table width="100%" id="table1">
 			<tr>
@@ -1961,7 +2002,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 					<div id="corporationDivHead" style="text-align:left;" ></div>
 					
 				
-					<div id="corporationDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;background:#ffffff;width:962px;">
+					<div id="corporationDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;background:#ffffff;width:941px;">
 						
 					</div>
 				<!--<div id="CorporationPieChartDiv" style="float:right;"></div>-->
@@ -1984,7 +2025,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 
 <!--District Page MPTC, ZPTC Div-->
  
-  <div style="width:1000px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
+  <div style="width:980px;background:#ffffff;margin-left:auto;margin-right:auto;float:none;">
 
 	<div id="mptc_zptc_div_main" style="margin-bottom:20px;">
 		<table id="table2" style="width: 100%;">
@@ -2014,7 +2055,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 										</div></td><td><div id="candidateLink" style="margin-top:13px;"></div></td>
 										</table>
 										<table cellpadding="5px">
-										<tr><td><div id="partyDetails"></div></td>
+										<tr><td><div id="partyDetails" style="width:350px;" ></div></td>
 										</tr>
 										<tr><td><div id="zptcPartyGraphDetails" style="margin-left:14px;"></div></td></tr>
 								</table>
@@ -2029,7 +2070,7 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 								<tr>
 									<!--<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>	-->
-										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:447px;padding:9px;height:18px;border-radius: 4px 4px 0 0;padding-bottom:7px;margin-top:12px;background:#72CAED;">
+										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="padding:9px;height:18px;border-radius: 4px 4px 0 0;padding-bottom:7px;margin-top:12px;background:#72CAED;">
 											<span style="color:#ffffff;font-family: arial;">Total Number of MPTC's : </span>
 											<span id="totalMptcCountResultDiv"></span>
 										</div>
