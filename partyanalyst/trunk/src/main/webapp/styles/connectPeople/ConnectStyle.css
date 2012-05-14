@@ -68,7 +68,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', end
 
 .memberslist{display:inline-block;clear:both;list-style-type:none;background:#fff;width:525px;padding:0px 25px;margin:0px;}
 .memberslist li{float:left;margin:5px;background:#00FFFF;position:relative;border:1px solid #cccccc;cursor:pointer;}
-.memberslist li .membercard{display:none;position:absolute;top:-179px;left:0px;width:225px;height:155px;background:#ffff00;text-align:left;font:13px Arial;
+.memberslist li .membercard{display:none;position:absolute;top:-108px;left:0px;width:200px;height:85px;background:#ffff00;text-align:left;font:13px Arial;
 border-radius:5px;border:5px solid #3d3d3d;
 }
 .memberslist li .membercard:after{content:"";width:0px;height:0px;border:10px solid transparent;border-left:10px solid #3d3d3d;border-top:10px solid #3d3d3d;
@@ -77,14 +77,16 @@ left:20%;
 top:102%;
 
 }
-.ConnectNow{display:block;width:50%;border-radius:5px;font:13px Arial;padding:5px 20px;position:relative;}
-.memberslist li .membercard h3{margin:0px;background:#5e5e5e;color:#fff;padding:5px;height:45px;}
+.ConnectNow{font-weight:normal;display:block;width:50%;border-radius:5px;font:13px Arial;padding:5px 20px;position:relative;}
+.ConnectNow:hover{font-weight:normal;}
+ .sociallinks:hover{font-weight:normal;}
+.memberslist li .membercard h3{margin:0px;background:#5e5e5e;color:#fff;padding:5px;height:25px;}
 .memberslist li:hover{background:#fff;}
 .memberslist li:hover .membercard{display:block;}
 .memberslist li .membercard a{text-decoration:none;}
 .statuslink{position:relative;margin-top:15px;display:inline-block;float:right;padding:3px 25px;background:#f3f3f3;border-radius:5px;text-decoration:none;font:13px Arial;}
 .membermsg{display:block;height:50px;overflow:hidden;padding:5px;}
-.sociallinks{margin:5px;}
+.sociallinks{margin:5px;font-weight:normal;}
 .statuson:before{
     border-radius: 10px;
        content: "";
@@ -101,9 +103,7 @@ background: -o-radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#b
 background: -ms-radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* IE10+ */
 background: radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', endColorstr='#bce0ee',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-	}
-	
-	
+}	
 	
 .statusoff:before{
     border-radius: 10px;
@@ -120,11 +120,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', end
 	position:relative;width:200px;height:165px;background:#E3EDF0;text-align:left;font:13px Arial;
 	border-radius:5px;border:5px solid #3d3d3d; display:inline-block; margin:7px;
 }
-.memberCardViewAll  h3 img{background:#fff;border-radius:5px;padding:5px;border:3px solid #ffff00;}
+.memberCardViewAll  h3 img{background:#fff;border-radius:5px;margin-top:8px;border:3px solid #ffff00;}
 .memberCardViewAll h3{margin:0px;background:#5e5e5e;color:#fff;padding:3px;height:100px;}
-.memberCardViewAll h3 span{float:right;}
+.memberCardViewAll h3 span{float:right;margin-top:8px;}
 .memberCardViewAll a{text-decoration:none;}
-.paginatorElmtClass{background:#3d3d3d;padding:10px;border-radius:3px;}
-.paginatorElmtClass a{padding:5px 10px;
-background:#d3d3d3;border-radius:50%; margin:0px 10px;}
-.paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}

@@ -93,14 +93,11 @@
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">	
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
+	<link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
 
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["piechart"]});
 	google.load("elements", "1", {packages : ["newsshow"]});
-
-	
-
-
 	
 </script>
 <STYLE type="text/css" >
@@ -112,6 +109,9 @@ google.load("visualization", "1", {packages:["piechart"]});
     background: url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 #D8D8D8;
     color: #FFFFFF;
     font-weight: bold;
+}
+#connectDiv{
+	font-weight:bold;
 }
 </STYLE>
 </head>

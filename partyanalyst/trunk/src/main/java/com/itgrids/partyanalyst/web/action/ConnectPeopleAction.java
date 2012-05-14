@@ -656,11 +656,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}
 		
 		Long startIndex = Long.parseLong(request.getParameter("startIndex"));
-		Long results = Long.parseLong(request.getParameter("resultsCount"));
+		Long results = Long.parseLong(request.getParameter("resultsCount"));		
 		
-		/*Long districtId = new Long(jObj.getString("districtId"));
-		String districtName = jObj.getString("districtName");		
-		Long userId = new Long(jObj.getString("userId"));	*/
 		String statusText = jObj.getString("statusText");
 		String nameString  = jObj.getString("nameString");
 		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		

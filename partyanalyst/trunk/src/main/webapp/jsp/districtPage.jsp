@@ -25,7 +25,7 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
-<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+
 
       <!-- For image display on mouseover -->	
 	<script type="text/javascript" src="js/overlib_mini.js"></script> 
@@ -121,6 +121,10 @@
       color: #4169E1;
 	  font-size: 12px;
 	 }
+	 .paginatorElmtClass{background:#3d3d3d;padding:10px;border-radius:3px;}
+.paginatorElmtClass a{padding:5px 10px;
+background:#d3d3d3;border-radius:50%; margin:0px 10px;}
+.paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}
 	</style>
 
 	<script type="text/javascript">
@@ -203,10 +207,8 @@
 		label : "Complete Results"	
 	}];
 
-
 	var myDataTable = new YAHOO.widget.DataTable("mlaInfoDivBody",resultsColumnDefs, resultsDataSource);  
 }
-
 
 	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
@@ -653,7 +655,7 @@
 			}
 			
 			if(i == listSize)
-				rvStr+='<td style="vertical-align: top;">';
+				rvStr+='<td colspan="2" style="vertical-align: top;">';
 			else
 				rvStr+='<td  style="vertical-align: top;">';		
 			assignToPartyDataArray = new Array();
@@ -1696,7 +1698,8 @@ share_url="www.partyanalyst.com/districtPageAction.action?districtId=${districtI
 				
 									
 	<div id="districtPeopleConnect_body" style="float: left; clear: both;">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+						
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 				  <tr>
 				  
 					  <!--<td width="45%"><div id="districtPeopleConnect_img"><img src="images/usergroups/group2.jpg"/></div></td>-->
@@ -2134,8 +2137,8 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						status:'${candidate.status}',
 						constituencyName:'${candidate.constituencyName}',
 						image:'${candidate.image}'	,
-						friends:'${candidate.noOfFriends}',
-						posts:'${candidate.noOfPosts}'
+						noOfFriends:'${candidate.noOfFriends}',
+						noOfPosts:'${candidate.noOfPosts}'
 					};
 		
 	connectedPeople.push(userObj);
@@ -2197,7 +2200,13 @@ if(forwardTask != null)
 
 
 buildProblemPostingWindowForDistrict();
-
+/*$(document).ready(function(){
+$(".paginatorElmtClass a").live("click",function(){
+$(".paginatorElmtClass a").removeClass("selectedpage");
+$(this).addClass("selectedpage");
+alert("Hello");
+});
+});*/
 </script>
 </body>
 </html>
