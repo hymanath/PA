@@ -81,8 +81,9 @@ margin:-1px 0px 0px 0px ;
 <decorator:head/>
 </head>
 <body>
-
+<div id="feedback_window"><div id="feedback_window_inner"></div></div>
 <div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
+<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	
 <div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">
@@ -491,7 +492,7 @@ function buildAccordion()
       <li><a href="javascript:{}" onClick="contactForDemoLinkInHomePage()">Ask for DEMO/TEST</a><span>|</span></li>
       <li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a><span>|</span></li>
       <li><a href="javascript:{}">Articles</a><span>|</span></li>
-      <li><a href="http://www.blog.partyanalyst.com/" target="">Blogs</a></li>
+      <li><a href="http://blog.partyanalyst.com/" target="">Blogs</a></li>
     </ul>
     <ul>
       <li class="f-title">Policy</li>
