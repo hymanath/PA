@@ -16,4 +16,6 @@ import com.itgrids.partyanalyst.model.CommentData;
 public interface ICommentDataDAO extends GenericDao<CommentData, Long> {
 	
 	public Integer updateSetIsApprovedStatusToPostedComments(List<Long> reasonIds, String isApproved);
+	
+	public Long getcountOfNewlyPostedReasonByFreeUser();
 }
