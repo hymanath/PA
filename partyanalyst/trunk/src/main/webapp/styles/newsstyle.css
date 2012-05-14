@@ -273,13 +273,13 @@ padding:10px;
 }
 .Sample-Report-top a:hover,.Sample-Report a:hover{background:#1569A8;}
 
-.why-box-survey .survey-span{color: #FFFF00;
+.survey-span{color: #ffff00;
     display: block;
     float: left;
-    font: 16px Arial;
+    font: 14px Arial;
     margin: 10px 2px;
     padding-bottom: 25px;
-    text-align: left;width:250px;text-shadow:0px 0px 5px #000;}
+    text-align: left;text-shadow:0px 0px 5px #000;}
 	
 	
 .oval-thought-survey{width:250px !important;text-align:center;box-shadow:0px 5px 7px #F7C92F;background:#3d3d3d;border-radius:0px;}	
@@ -308,12 +308,12 @@ border-radius:5px;}
 
 .Survey-struct-box h1{text-transform:Capitalize;color:#5e5e5e;border-bottom:1px solid #000;}
 
-.survey-feature-box{width:670px;margin-left:48px;}
+.survey-feature-box{}
+/*
 .survey-feature-box > li{display:inline-table;width:300px;height:340px;margin:10px;border-radius:5px;}
-.survey-feature-box > li ul {margin-left:15px;}
-.survey-feature-box > li ul li{list-style-type:square;list-style-image:url('../images/icons/tick-mark.png');margin:10px;padding:5px; font-size:14px;
-list-style-position:inside;
-}
+.survey-feature-box > li ul {margin-left:15px;}*/
+.survey-feature-box > li {list-style-type:square;list-style-image:url('../images/icons/tick-mark.png');margin:10px;padding:5px; font-size:14px;
+list-style-position:inside; border-radius:3px; border-left:5px solid #5e5e5e;border-right:5px solid #5e5e5e;}
 .survey-feature-box > li h2{background:#F3961C;color:#fff;margin:0px;padding:10px;border-radius:5px 5px 0px 0px;}
 
 .Survey-struct-box  a{width:125px;font:bold 14px Arial;height:130px;display:block;border-radius:400px;background:#fff;border:5px solid #000;line-height:130px;text-align:center;
@@ -352,14 +352,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', end
 
 .leftclass:before{content:"";width:0px;height:0px;
 border:35px solid transparent;
-border-left:35px solid #fff;
+border-left:35px solid #CAEBFF;
 position:absolute;
 left:100%;
 top:40%;
 }
 .rightclass:before{content:"";width:0px;height:0px;
 border:35px solid transparent;
-border-right:35px solid #fff;
+border-right:35px solid #CAEBFF;
 position:absolute;
 left:-36%;
 top:40%;
@@ -368,3 +368,11 @@ top:40%;
 .Report-feature-box li h3{border-radius:50%;background:#1A6EAD;height:150px;width:150px;line-height:150px;text-align:center;box-shadow:inset 0px 0px 25px #fff;color:#fff;margin:35px 0px 0px 28px;}
 
 .Report-feature-box li span{clear:both;margin:10px 5px;display:block;font-weight:bold;background:#fff;border:1px solid #cccccc;padding:5px;}
+
+.votersbox{width:100%;display:table;margin:15px 0px;border:1px solid #5e5e5e;background:#FFFFD6;}
+.votersbox-left{width:30%;display:inline-block;float:left;background:#5e5e5e;padding:5px 10px;box-shadow:3px 0px 3px #a3a3a3;height:535spx;}
+.votersbox-right{display:inline-block;width:65%;float:right;}
+.helpbox-survey{display:block;clear:both;width:95%;position:relative;padding:10px;}
+.helpbox-survey .Sample-Report{display:block;float:right;margin:5px;position:relative;}
+.helpbox-survey .Query-box{display:block;clear:both;}
+.helpbox-survey .Query-box h3{color:blue;}

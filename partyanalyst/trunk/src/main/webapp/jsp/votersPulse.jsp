@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Voters Pulse</title>
+<title>Voters Pulse - Party Analyst's Election Surveys, Political Surveys</title>
  <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
@@ -21,80 +21,45 @@
 <body>
 <div class="mainnewsdiv">
 <div class="Promo-box-left gradfill">
-<h1 class="gradlightblack">Voters Pulse <div class="Sample-Report-top">
+<h1 class="gradlightblack">Voters Pulse  - An Election Survey<div class="Sample-Report-top">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div></h1>
+
 <span class="titlespan">Making Research Matters</span>
-<p class="">To understand the present voters trend vs Parties wise, Constituency, Geographically and Demographically.
+<p class="">Voters Pulse is an election or political survey to understand voters pulse towards parties, candidatures and aspirations based on geographical locations and demographics.
 </p>
 
-<div class="why-box-survey">
-<h2 class="oval-thought-survey" style="height:191px;font:24px 'Oswald',Arial;" >Why Voters Pulse?
-<span class="survey-span" style="margin-top:37px;">Voters pulse provides scientific Political surveys in accurate and cost effective way.</span>
-</h2>
+<div class="votersbox">
+<div class="votersbox-left">
+
+<h2 style="font:20px 'Oswald',Arial;margin:10px 0px 0px 0px;color:#fff;">Why Survey is required for a Politician / Party?</h2><span class="survey-span">To strategize your activities, make progressive decisions in reaching peoples heart and gain a winning-edge.</span>
+
+
+<h2 style="font:20px 'Oswald',Arial;margin:10px 0px 0px 0px;color:#fff;" >Why Voters Pulse?</h2>
+<span class="survey-span">We are exclusively in to Political Arena and our team provides you with the accurate data, detailed analytical reports and methodologies to analyze your goals. </span>
+
+<h3 style="width:125px;height:125px;border-radius:50%;background:#FFFFD6;display:inline-block;text-align:center;font:20px 'Oswald',Arial;line-height:125px;border:11px solid #ff0000;box-shadow:0px 0px 5px #333;margin:5px 35px;">Voters Pulse</h3>
 </div>
-
-<div class="Survey-struct-box">
-<h1>Voters Pulse Survey Synopsis:</h1>
+<div class="votersbox-right">
+<h1  style="color:#5e5e5e;">It's All About:</h1>
 <ul class="survey-feature-box">
-		<li>
-			<h2>Problems and Developments</h2>
-			<ul>
-				<li>Identifying the Problems, which requires immediate attention to get into the people?</li>
-				<li>On what developments the localities are happy</li>			
-			</ul>
-		</li>
-
-		<li>
-			<h2>Demographical& Geographical</h2>
-			<ul>
-				<li>Caste wise Analysis</li>
-				<li>Literate/Illiterate Wise Analysis</li>
-				<li>Analysis from hamlets</li>
-			</ul>
-		</li>
-		
-		<li>
-			<h2>Parties Fame / Performances</h2>
-			<ul>
-				<li>How many people know about the Party?</li>
-				<li>Is the Party Performance good?</li>			
-			</ul>
-		</li>
-		
-		<li>
-			<h2>Leaders Fame / Performances</h2>
-			<ul>
-				<li>How many people know about the Leader?</li>
-				<li>Is the Leader Performance good?</li>
-			</ul>
-		</li>
-		
-		<li>
-			<h2>Party / Leader Influencing Groups</h2>
-			<ul>
-				<li>Who are influenced people?</li>
-				<li>Finding out the right people's group to boost the political Arena.</li>			
-			</ul>
-		</li>
-		
-		<li>
-			<h2>Strengthen Groups and Opposition Parties</h2>
-			<ul>
-				<li>Identifying the Strengthen groups.</li>
-				<li>Finding out the opposition Parties.</li>			
-			</ul>
-		</li>		
+<li>Voters mind is very dynamic, understand the voter preferences in present situation and do comparative study with previous results. This study enables to understand where we moved to positive or moved to negative.</li>
+<li>Instead of planning for entire constituency, strategize each village wise how far we need to improve and what are the chances we have for that.</li>
+<li>If we know voter preferences based on age groups, caste, gender, location wise, we can plan in a better way to reach the groups where we need to improve.</li>
+<li>Understand voter opinions on present and past governments, present representatives (M.P / M.L.A) which help to strategize for an election.</li>
+<li>Understand the people problems, with this understanding plane how to solve or give promises to solve, which enables voters trust.</li>
+<li>It enables to identify influence local leaders, groups in each area wise.</li>
+	
 </ul>
 
-</div>
-<div class="helpbox-red" style="top:0px;">
+</div> </div>
+<div class="helpbox-survey" style="top:0px;">
 <div class="Sample-Report">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div>
  
 <div class="Query-box">
-<h3>Any questions?</h3>
+<h2>Get Started Now  (or) Any questions?</h2>
 <span>
 Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products.
 <br/><br/>
@@ -115,9 +80,9 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 Get Constituency Reports
 </div>
 <div class="service-box">
-<a href="partyCandidateAnalyzer.action"><span>Political Management Tool</span></a>
+<a href="#"><span>Party / Candidate Analyzer</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
-Analyze your constituency, track your progress and pending facilities.
+Analyze your constituency,  track your progress and pending facilities.
 </div>
 <!--<div class="service-box">
 <a href="#"><span>Survey Meter</span></a>
