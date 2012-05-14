@@ -195,7 +195,7 @@ text-decoration:none;
 </head>
 
 <body>
-<div id="feedback_window"><div id="feedback_window_inner"></div></div>
+<!--<div id="feedback_window"><div id="feedback_window_inner"></div></div>-->
 <div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
@@ -204,7 +204,7 @@ text-decoration:none;
 
 	<div id="assembly_2011_window"><div id="assembly_2011_window_inner"></div></div>
 	
-	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
+	<!--<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>-->
 	
 		<!--CONTENT MAIN SECTION START-->
 
