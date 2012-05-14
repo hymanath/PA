@@ -34,5 +34,10 @@ public class FeedbackDAO extends GenericDaoHibernate<FeedBack, Long> implements 
     	
     	return getHibernateTemplate().find("select  model.feedBackComment.commentType and model.feedBackTask.feedBackTaskName where feedbackId = ?" , feedBackId);
     }*/
+	public Long getCountOfNewlyPostedFeedbackByFreeUser()
+	{
+		Query query = getSession().createQuery("select count(*) from FeedBack model where model.status = 'NEW'");
+		return (Long)query.uniqueResult();
+	}
 }
 
