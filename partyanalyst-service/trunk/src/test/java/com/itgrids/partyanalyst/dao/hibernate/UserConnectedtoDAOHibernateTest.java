@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.utils.IConstants;
+
 public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 
 	private UserConnectedtoDAO userConnectedtoDAO;
@@ -88,7 +90,7 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 
 
-public void testgetAllConnectedPeoplesForFreeUser()
+/*public void testgetAllConnectedPeoplesForFreeUser()
 {
 	List<Object[]> list = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(10l);
 	for(Object[] params : list)
@@ -100,6 +102,13 @@ public void testgetAllConnectedPeoplesForFreeUser()
 	public void testGetConnectedMembersCountForAFreeUser()
 	{
 		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(411l));
+	}*/
+	
+	public void testGetConnectedUsersCountForAUserInAFilterView()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(323l);
+		System.out.println(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(411l,locationIds,IConstants.CONSTITUENCY_LEVEL,"pr"));
 	}
 	
 	

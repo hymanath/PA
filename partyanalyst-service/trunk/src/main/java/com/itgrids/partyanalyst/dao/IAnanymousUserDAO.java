@@ -17,7 +17,7 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex, String nameString);
 	
-	public String getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType);
+	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameString);
 	
 	public List<AnanymousUser> getDetailsForUsers(List<Long> userIds);
 	
@@ -47,9 +47,8 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<Object[]> getUserEmail(Long userId);
 	
-	public List getAllUsersCountInSelectedLocations1(List<Long> locationIds,String locationType);
-	
 	public AnanymousUser getAnanymousUserByUserId(Long userId);
 	
 	public List<Object[]> getPasswordNotUpdatdUsersList();
+	
 }

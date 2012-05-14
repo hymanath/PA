@@ -502,8 +502,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);	
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
-			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
-			dataTransferVO.setTotalResultsCnt(ananymousUserDAO.getAllUsersCountInSelectedLocations1(locationIds, locationType).size());
+			
+			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString).toString());
+						
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));			
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -517,6 +518,37 @@ public class AnanymousUserService implements IAnanymousUserService {
 	return dataTransferVO;
 	} 
 	
+	
+	public Long getAllUsersCountInSelectedLocationsInFilterView(Long userId,List<Long> locationIds,String locationType,String status,String nameString)
+	{
+		try{
+			
+			if(status.equalsIgnoreCase(IConstants.ALL))
+			{
+				return ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.CONNECTED))
+			{
+				return userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.PENDING))
+			{
+				return customMessageDAO.getPendingUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
+			{
+				return (ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString) - 
+						(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString) + 
+								customMessageDAO.getPendingUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString)));
+			}
+			
+			return 0L;
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in getAllUsersCountInSelectedLocationsInFilterView");
+			return 0L;
+		}
+	}
 	/**
 	 * This method is used to save the friend request between the users.
 	 *
@@ -554,7 +586,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
-			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
+			dataTransferVO.setTotalResultsCount((ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType, "")).toString());
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));
 			
 			for(Long recpntId : recipeintId)

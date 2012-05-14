@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.model.UserConnectedto;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long> implements
 		IUserConnectedtoDAO {
@@ -106,5 +107,31 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		
 		return (Long)query.uniqueResult();
 		
+	}
+	
+	public Long getConnectedUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.userConnectedtoId)");
+		query.append(" from UserConnectedto model where (model.senderId.userId = :userId or model.recepientId.userId = :userId) and ");
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("(model.senderId.state.stateId in (:locationIds) or model.recepientId.state.stateId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("(model.senderId.district.districtId in (:locationIds) or model.recepientId.district.districtId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("(model.senderId.constituency.constituencyId in (:locationIds) or model.recepientId.constituency.constituencyId in (:locationIds)) ");
+		}
+		query.append("and model.state.stateId is not null and model.district.districtId is not null and model.constituency.constituencyId is not null ");
+		if(nameStr != null && !nameStr.trim().equalsIgnoreCase(""))
+		{
+			query.append("and ((model.senderId.name like '"+nameStr+"%' or model.senderId.lastName like '"+nameStr+"%') or " +
+					"(model.recepientId.name like '"+nameStr+"%' or model.recepientId.lastName like '"+nameStr+"%'))");
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId", userId);
+		
+		return (Long)queryObject.uniqueResult();
 	}
 }

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
@@ -132,7 +134,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetPasswordNotUpdatdUsersList()
+	/*public void testGetPasswordNotUpdatdUsersList()
 	{
 		List<Object[]> list = ananymousUserDAO.getPasswordNotUpdatdUsersList();
 		
@@ -144,5 +146,12 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 			
+	}*/
+	
+	public void testGetAllUsersCountInSelectedLocationsInAFilterView()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(323l);
+		System.out.println(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,IConstants.CONSTITUENCY_LEVEL,"kamal"));
 	}
 }
