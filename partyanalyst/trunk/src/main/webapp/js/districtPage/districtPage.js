@@ -309,5 +309,5 @@ function buildDistrictConnectPeopleWindow(){
 			bodyElmt.innerHTML = memberStr;
 	}	
 
-	buildConnectUsersContentOfDistrict(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
+	buildConnectUsersContentOfDistrict(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId, connectedPeople.length);
 }

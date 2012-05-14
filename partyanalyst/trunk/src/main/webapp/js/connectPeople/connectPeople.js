@@ -354,12 +354,7 @@ function buildConnectionsContentForUser()
 		str += '<tr>';
 	
 		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></td>';
-		
-		
-		
-
-		//str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
-
+	
 		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
@@ -399,22 +394,6 @@ function showMailPopup(id,name,type)
 	str	+= '<div id="connectStatus"></div>';
 	str	+= '</div>';
 	
-	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
-				 width:'400px',
-                 fixedcenter : true, 
-                 visible : true,
-                 constraintoviewport : true, 
-        		 iframe :false,
-        		 modal :false,
-        		 hideaftersubmit:true,
-        		 close:true,
-				 draggable:true
-       });	 
-	
-	connectPopupPanel.setHeader("Send Message To "+name);
-    connectPopupPanel.setBody(str);
-    connectPopupPanel.render();*/
-
 	$( "#connectPeoplePopup" ).dialog({
 			title:"Send Message to "+name,
 			autoOpen: true,
@@ -1010,15 +989,7 @@ function buildQuickRegionAccessContent()
 
 	var str = '';
 	str += '<div id="regionAccessDiv_main">';
-	/*str += '<div id="regionAccessDiv_head">';
-	str += '<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
-	str += '<tr>';
-	str += '	<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
-	str += '	<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>View Your Location Details </span></div></td>';
-	str += '	<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
-	str += '</tr>';
-	str += '</table>';
-	str += '</div>';*/
+
 	str += '<div id="regionAccessDiv_body" >';
 	str += '<table id="regionAccessTable">';
 	str += '<tr>';
@@ -1047,22 +1018,14 @@ function buildQuickRegionAccessContent()
 
 	var cStr = '';
 	cStr += '<div id="connectCountDiv_main">';
-	/*cStr += '<div id="connectCountDiv_head">';
-	cStr += '	<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
-	cStr += '	<tr>';
-	cStr += '		<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
-	cStr += '		<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>People Registered To Your Location</span></div></td>';
-	cStr += '		<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
-	cStr += '	</tr>';
-	cStr += '	</table>';
-	cStr += '</div>';*/
+	
 	cStr += '<div id="connectCountDiv_body" >';	
 	cStr += '<table id="regionAccessTable">';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
 	cStr += '<th>From '+districtName+' District</th>';
 	cStr += '<td> - </td>';
-	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
+	cStr += '<td><a id="connCnt" href="javascript:{}" onclick="showAllConnectPeopleWindowOfDistrict(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
 	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';	
 	cStr += '<tr>';

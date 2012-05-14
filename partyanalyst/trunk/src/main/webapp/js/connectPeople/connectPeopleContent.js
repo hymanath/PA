@@ -23,8 +23,7 @@ connectDivId = divId;
 	connetLocationType = locationType;
 	connectUserLoginId = userLoginId;
 
-	var bodyElmt = document.getElementById(divId);
-	
+	var bodyElmt = document.getElementById(divId);	
 
 	if(locationType == "DISTRICT")
 	{
@@ -40,7 +39,7 @@ connectDivId = divId;
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
 	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from this district </span>';
+	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from '+locationName+' Constituency</span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
 	bodyStr+='<table width="100%">';
@@ -52,7 +51,7 @@ connectDivId = divId;
 		bodyStr+='<td>';
 		bodyStr+='<table width="100%">';
 		bodyStr+='<tr>';
-		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';*/
+		
 		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
 			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
 		else
@@ -101,21 +100,18 @@ connectDivId = divId;
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="freeUserRegistration.action" class="connectAnc">Register</a> </span>';
 	}
 	loginUserId=userLoginId;
-	//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
+
 	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#ffffff" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
-	//bodyStr+='<span class="connectAncSpan"> | </span>';
-	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
+
 	bodyStr+='</td>';
 	bodyStr+='</tr></table>';
 	bodyStr+='</div>';
 
 	if(bodyElmt)
 		bodyElmt.innerHTML=bodyStr;
-
-
 }
 
-function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId)
+function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId, totalCount)
 {	
 	connectedPeople=connectedPeopleData;
 	connectDivId = divId;
@@ -137,12 +133,13 @@ function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationTy
 		locationIdLabel = 'constituencyId';
 		locationNameLabel = 'constituencyName';
 	}
-
-	var bodyStr=$("#districtPeopleConnectData_body").html();
+	var bodyStr='';
+	if(userLoginStatus == "false")
+		bodyStr=$("#districtPeopleConnectData_body").html();
 	
 	//Connect Member Start
 	bodyStr+='<div class="Connect-Member">';
-	bodyStr+='<div style="float:left;"><h2>Members</h2><span style="font-size:18px;">'+connectedPeopleData.length+' people connected from this district</span></div>';
+	bodyStr+='<div style="float:left;"><h2>Members</h2><span style="font-size:18px;">'+totalCount+' people connected from '+locationName+' District</span></div>';
 
 	bodyStr+='<div class="memberfilter">';		
 	
@@ -168,10 +165,10 @@ function buildConnectUsersContentOfDistrict(connectedPeopleData,divId,locationTy
 			else
 				bodyStr+='<img src="pictures/profiles/'+connectedPeopleData[i].image+'" style="width:75px;height:75px;"/>';
 
-			bodyStr+='<span class="membercard"><h3>'+connectedPeopleData[i].candidateName+'</span></h3>';
+			bodyStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeopleData[i].candidateName+'</span></h3>';
 					
-			bodyStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeopleData[i].friends+'</b>)</a>';
-			bodyStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeopleData[i].posts+'</b>)</a>';
+			bodyStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeopleData[i].noOfFriends+'</b>)</a>';
+			bodyStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeopleData[i].noOfPosts+'</b>)</a>';
 		if(userLoginStatus == "false"){
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
 		}
@@ -216,10 +213,10 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 				else
 					memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
 
-				memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'</span></h3>';
+				memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
 						
-				memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
-				memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+				memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
+				memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 
 				if(userLoginStatus=="false"){
 					memberStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
@@ -255,10 +252,10 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					else
 						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
 
-					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
 							
-					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
-					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connected</a>';
 					memberStr+='</li>';
 				}
@@ -285,10 +282,10 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					else
 						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
 
-					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
 							
-					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
-					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="#" class="ConnectNow"><label class="connectsymbol">&infin;</label>Request Pending</a>';
 					memberStr+='</li>';
 				}
@@ -314,10 +311,10 @@ function membersList(locationType,locationId,locationName,userLoginStatus,userLo
 					else
 						memberStr+='<img src="pictures/profiles/'+connectedPeople[i].image+'" style="width:75px;height:75px;"/>';
 
-					memberStr+='<span class="membercard"><h3>'+connectedPeople[i].candidateName+'</span></h3>';
+					memberStr+='<span class="membercard"><h3 id="connectDiv">'+connectedPeople[i].candidateName+'</span></h3>';
 							
-					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].friends+'</b>)</a>';
-					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].posts+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Friends (<b>'+connectedPeople[i].noOfFriends+'</b>)</a>';
+					memberStr+='<a href=# class="sociallinks">Problems Posted(<b>'+connectedPeople[i].noOfPosts+'</b>)</a>';
 					memberStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].id+'\',\''+connectedPeople[i].candidateName+'\',\''+connectedPeople[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')" class="ConnectNow"><label class="connectsymbol">&infin;</label>Connect Now</a>';
 					memberStr+='</li>';
 				}
@@ -362,7 +359,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	
 	$( "#connectPeoplePopup" ).dialog({
 			title:"Connect To "+userName,
-			autoOpen: true,
+			autoOpen: false,
 			show: "blind",
 			width: 500,
 			minHeight:300,
@@ -373,7 +370,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	if(elmt)
 		elmt.innerHTML = str;
-
+	$( "#connectPeoplePopup" ).dialog("open");
 }
 
 function doConnectPeople(connectUserId,userLoginId,locationId,locationType,locationName)
@@ -391,10 +388,41 @@ function doConnectPeople(connectUserId,userLoginId,locationId,locationType,locat
 			 };
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "connectToUserAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	var url = "connectToUserAction.action?"+rparam;	
+	if(jsObj.locationType=="DISTRICT")
+		callAjax(jsObj, url);
+	else
+		callAjaxConnect(jsObj,url);
 }
+function callAjaxConnect(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);	
+				
+					if(jsObj.task == "connectToUser")
+					{
+						closeConnectPanel(jsObj,results);
+					}
+					if(jsObj.task == "connectUserSet")
+					{
+						showAllConnectedUsersStatus(jsObj,results);
+					}
+					
+			}catch (e) {   		
+			// alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
 
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
 function closeConnectPanel(jsObj,results)
 { 
 	var elmt = document.getElementById("connectStatus");
@@ -403,12 +431,19 @@ function closeConnectPanel(jsObj,results)
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
 		buttonElmt.innerHTML = '';
-		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent successfully.</font></blink>';
-		buildConnectUsersContent(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId);		
-		var t=setTimeout("closeConnectPopup()",2000);
+		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Request sent successfully..</font></blink>';
+
+		if(jsObj.locationType=="DISTRICT"){
+			buildConnectUsersContentOfDistrict(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId, results.totalResultsCount);	
+		}
+		else{
+			buildConnectUsersContent(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId);	
+		}
+			
+			var t=setTimeout("closeConnectPopup()",2000);
 	}
 	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
-		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent due to some technically difficulty.</blink></font>';
+		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent due to some technical difficulty.</blink></font>';
 		
 }
 
@@ -430,7 +465,7 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 		
 	$( "#connectPeoplePopup" ).dialog({
 			title:"People Connected to "+locationName+" "+locationType,
-			autoOpen: true,
+			autoOpen: false,
 			show: "blind",
 			width: 700,
 			minHeight:400,
@@ -464,9 +499,11 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 
 
 function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginId,locationType, elemId)
-{	
-	$("a").removeClass("activefilter");
-	$("#"+elemId).addClass("activefilter");
+{
+	if(elemId=="viewAllTab"){
+		$("a").removeClass("activefilter");
+		$("#"+elemId).addClass("activefilter");
+	}
 	connetLocationType = locationType;	
 
 	var str = '';
@@ -474,7 +511,7 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 		
 	$( "#connectPeoplePopup" ).dialog({
 			title:"People Connected to "+locationName+" "+locationType,
-			autoOpen: true,
+			autoOpen: false,
 			show: "blind",
 			width: 730,
 			minHeight:400,
@@ -508,11 +545,11 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 }
 
 function showAllConnectedUsersInPanel(jsObj, results){
-var str = '';	
+	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
+	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
 
 	var users = results.candidateVO;
 
@@ -577,6 +614,7 @@ var str = '';
 	
 	str += '</div>';	
 	str += '</div>';
+
 	str	+= '<div id="allConnectPeople_body">';	
 	str += buildAllConnectUserString(users);
 	str	+= '</div>';
@@ -618,21 +656,7 @@ var str = '';
 	str += '</table>';
 	str += '<div>';
 	str += '</td>';
-
-	/*str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
-	str	+= '<td width="60%" align="left">';
-	str += '<textarea id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea>';
-	str +='<div id="limitDiv">';
-	str +='<table style="width:100%;"><tr>';
-	str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
-	str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
-	str +='</tr></table>';
-	str +='</div>';	
-	str += '</td>';
-	str	+= '<td width="10%" align="center"><div id="allConnectPeopleButtonDiv"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></div></td>';
-	str	+= '</tr>';
-	str += '<tr>';
-	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';*/
+	
 	str += '</tr>';
 	str += '<tr>';
 	str += '<td >';
@@ -644,6 +668,7 @@ var str = '';
 	str	+= '</div>';
 	
 	elmt.innerHTML = str;
+	$( "#connectPeoplePopup" ).dialog("open");
 }
 
 function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
@@ -652,7 +677,7 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
-	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
+	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount-1);
 
 	var users = results.candidateVO;
 
@@ -720,10 +745,7 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	str += '</div>';	
 	str += '</div>';
 	str	+= '<div id="allConnectPeople_body">';	
-	if(jsObj.locationType == "DISTRICT")
 		str += buildAllConnectUserStringOfDistrict(users);
-	else
-		str+=buildAllConnectUserString(users);
 	str	+= '</div>';
 	
 	str	+= '<div id="allConnectPeople_footer" style="display:none;">';
@@ -776,6 +798,8 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	str	+= '</div>';
 	
 	elmt.innerHTML = str;
+
+	$("#connectPeoplePopup").dialog("open");
 }
 
 function connectUserSetPeople(){
@@ -819,7 +843,8 @@ function connectUserSetPeople(){
 				locationType:connetLocationType,
 				task:"connectUserSet"
 			 };
-	}else{
+	}
+	else{
 		var jsObj ={
 				connetLocationId:connetLocationId,				
 				connectUserIds:users,
@@ -833,7 +858,7 @@ function connectUserSetPeople(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserSetAction.action?"+rparam;
 	
-	callAjax(jsObj,url);
+	callAjaxConnect(jsObj,url);
 }
 
 function hideConfirmDiv()
@@ -879,14 +904,14 @@ var str = '';
 		{
 			str += '<table border="0" cellpadding="0" cellspacing="0">';
 			str += '<tr>';
-			str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
+			str += '<td><div id="connectPeopleButtonLeftDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_left.png"/></div></td>';
 			if(userLoginStatus == "false"){
 				str += '<td><div class="allConnectPeople_Head_botton_center_div"><a style="color:white;" class="allConnectPeople_Head_botton_center_span" href=connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a></div></td>';
 			}
 			else{
-			str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
+				str += '<td><div id="connectPeopleButtonDivId_'+users[i].id+'" class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
 			}
-			str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
+			str += '<td><div id="connectPeopleButtonRightDivId_'+users[i].id+'"><img height="20px" src="images/icons/cadreReport/bg_right.png"/></div></td>';
 			str += '</tr>';
 			str += '</table>';
 		}
@@ -905,30 +930,6 @@ var str = '';
 		}
 		str += '</td>';
 		str += '</tr>';
-
-
-
-
-		/*str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-		str += '<td width="80%"><div class="connectPeople_body_name">'+users[i].candidateName+'</div></td>';				
-		if(users[i].status == "NOT CONNECTED")
-			str += '<td rowspan="2" width="10%"><input type="checkbox" name="connectUserCheck" value="'+users[i].id+'"/></td>';
-		else
-			str += '<td rowspan="2" width="10%">&nbsp</td>';		
-		str += '</tr>';
-		str += '<tr>';
-		str += '<td width="80%">';
-		str += '<table width="100%">';
-		str += '<tr>';
-		str += '<td width="50%" align="left"><span class="connectPeople_body_constituency">'+users[i].constituencyName+'</span></td>';
-		if(users[i].status == "NOT CONNECTED" || users[i].status == "PENDING" || users[i].status == "LOGGED_USER")
-		{
-			str += '<td width="50%" align="right"><span class="connectPeople_body_status">'+users[i].status+'</span></td>';
-		}else
-		{
-			str += '<td width="50%" align="right"><span class="connectPeople_body_status"> <a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">Send a Message</a> CONNECTED </span> <div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div></td>';
-		}
-		str += '</tr>';*/
 		str += '</table>';
 		str += '</td>';
 		str += '</tr>';
@@ -945,20 +946,20 @@ function buildAllConnectUserStringOfDistrict(users)
 	for(var i=0; i<users.length; i++){
 			var imageStr = "pictures/profiles/"+users[i].image;
 			str+='<span class="memberCardViewAll">';
-			str+='<h3><div style="float:left;width:75px;height:75px;">';
+			str+='<h3 id="connectDiv"><div style="float:left;width:75px;height:75px;">';
 			if(users[i].image == null)
 				str+='<img src="images/icons/connectPeople/member.png" />';
 			else
-				str+='<img  src="'+imageStr+'" style="width:75px;height:75px;"/>';
+				str+='<img  src="'+imageStr+'" style="width:75px;height:75px;"/>';		
 			
-			str+='</div><div style="float:right;width:100px;height:75px;margin-left:5px;"><span style="margin-bottom:5px;">'+users[i].candidateName+'<br/>';
-			 if(users[i].status == "CONNECTED"){
-				str += '<a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')" style="float:right;margin-top:10px;">';
+			str+='</div><div style="float:right;width:100px;height:30px;margin-left:5px;"><span style="margin-bottom:5px;">'+users[i].candidateName+'</span>';		
+			
+			str+='</div></h3>';
+		if(users[i].status == "CONNECTED"){
+				str += '<a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')" style="float:right;margin:-40px 8px 0px 0px;background:white;padding:3px;">';
 				str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
 				str += '</a>';
 			 }
-			str+='</span></div></h3>';
-
 			str+='<a href=# class="sociallinks">Constituency: <b>'+users[i].constituencyName.toLowerCase()+'</b></a><br/>';					
 			str+='<a href=# class="sociallinks">Friends (<b>'+users[i].noOfFriends+'</b>)</a>';
 			str+='<a href=# class="sociallinks">Problems Posted(<b>'+users[i].noOfPosts+'</b>)</a>';
@@ -1081,12 +1082,18 @@ function showAllConnectedUsersStatus(jsObj,results)
 
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{		
-		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent to selected users successfully.</font></blink>';
-		showAllConnectedUsersInPanel(jsObj,results);		
-		buildConnectUsersContent(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId);
+		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Request sent to selected users successfully.</font></blink>';
+		if(jsObj.locationType=="DISTRICT"){
+			showAllConnectedUsersInPanelOfDistrict(jsObj,results);		
+			buildConnectUsersContentOfDistrict(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId, results.totalResultsCount);
+		}
+		else{
+			showAllConnectedUsersInPanel(jsObj,results);		
+			buildConnectUsersContent(results.candidateVO,connectDivId,connetLocationType,connetLocationId,connetLocationName,connectUserLoginStatus,connectUserLoginId);
+		}
 	}
 	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
-		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent to selected users due to some technically difficulty.</blink></font>';
+		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
 }
 
 
