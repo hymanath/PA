@@ -88,9 +88,9 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
 Get Constituency Reports
 </div>
 <div class="service-box">
-<a href="partyCandidateAnalyzer.action"><span>Political Management Tool</span></a>
+<a href="#"><span>Party / Candidate Analyzer</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
-Analyze your constituency, track your progress and pending facilities.
+Analyze your constituency,  track your progress and pending facilities.
 </div>
 <div class="service-box">
 <a href="VotersPulse.action"><span>Voters Pulse</span></a>
