@@ -165,8 +165,8 @@
 									<h4 class="tdstyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<a href="<s:url action="imageManagementAdminAction"/>"><b>&nbsp;Related Images :&nbsp;(${problemBeanVO.imageCount})</b></a></h4>
 									<h4 class="tdstyle">Approval/Reject Recently Posted Comments on problems &nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval :&nbsp;(${problemBeanVO.discommentCount})</b></a></h4>
 									<h4 class="tdsubstyle">Other Approvals</h4>
-									<h4 class="tdstyle">Accept/Reject recent posted comments on Political Reasons&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments </b></a></h4>
-									<h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp;Approval</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject recent posted comments on Political Reasons&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments :&nbsp;(${problemBeanVO.politicalCount})</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp;Approval :&nbsp;(${problemBeanVO.feedBackCount})</b></a></h4>
 									</fieldset>
 								</td>
 							    
