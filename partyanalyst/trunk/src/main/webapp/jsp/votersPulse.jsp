@@ -103,7 +103,7 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
-	<img src="images/voterspulse.png" /><br/>
+	<img src="images/Voterspulse1.png" alt="survey-report" /><br/><img src="images/Voterspulse2.png" alt="survey-report"/>
 	</div>
 </div>
 <script>
