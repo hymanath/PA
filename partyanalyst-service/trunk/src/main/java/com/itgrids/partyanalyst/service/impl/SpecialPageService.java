@@ -370,8 +370,9 @@ public class SpecialPageService implements ISpecialPageService{
 	public List<FileVO> getNewsGalleryBasedOnSpecialPageId(Long specialPageId,int startingRecord,int maxRecord , String queryType){
 		
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		try{
 		List<File> fileObject = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(specialPageId, startingRecord, maxRecord, IConstants.NEWS_GALLARY);
-		
+		List<Long> totalRecords = specialPageGalleryDAO.getGalleryCountBasedOnSpecialPageId(specialPageId,  IConstants.NEWS_GALLARY);
 		if(fileObject != null && fileObject.size() >0){
 			
 			for (File file2 : fileObject) 
@@ -385,8 +386,12 @@ public class SpecialPageService implements ISpecialPageService{
 				fileVO.setSource(file2.getSourceObj() != null ? file2.getSourceObj().getSource() : "");
 				fileVO.setLanguage(file2.getLanguage() != null ? file2.getLanguage().getLanguage() : "");
 				fileVO.setFileDate(file2.getFileDate() != null ? file2.getFileDate().toString() : "");
+				fileVO.setCount(totalRecords.get(0).intValue());
 				fileVOList.add(fileVO);
 			}
+		}
+		}catch(Exception e){
+			log.error("Exception Occured in getNewsGalleryBasedOnSpecialPageId() method - "+e);
 		}
 		return fileVOList;
 	}
