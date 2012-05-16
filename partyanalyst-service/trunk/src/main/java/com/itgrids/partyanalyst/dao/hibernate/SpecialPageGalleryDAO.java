@@ -64,7 +64,21 @@ public class SpecialPageGalleryDAO extends GenericDaoHibernate<SpecialPageGaller
 		return query.list();
 		
 	}
-	
+public List<Long> getGalleryCountBasedOnSpecialPageId(Long specialPageId, String contentType){
+		
+		
+		
+		Query query = getSession().createQuery("select count(*) from FileGallary model where model.gallary.gallaryId in (select model1.gallary.gallaryId from SpecialPageGallery model1" +
+				" where model1.gallary.contentType.contentType =:contentType and model1.gallary.isDelete =:isDelete " +
+				" and model1.gallary.isPrivate =:isPrivate and model1.specialPage.specialPageId =:specialPageId ) order by model.file.fileDate desc");
+		
+		query.setParameter("specialPageId", specialPageId);
+		query.setParameter("contentType", contentType);
+		query.setParameter("isDelete", "false");
+		query.setParameter("isPrivate", "false");
+		return query.list();
+		
+	}
 	
 	public List<Object[]> getGallariesBySpecialPageId(Long specialPageId, String contentType){
 		Object[] params = {specialPageId , contentType};
