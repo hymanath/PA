@@ -166,7 +166,7 @@
 									<h4 class="tdstyle">Approval/Reject Recently Posted Comments on problems &nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval :&nbsp;(${problemBeanVO.discommentCount})</b></a></h4>
 									<h4 class="tdsubstyle">Other Approvals</h4>
 									<h4 class="tdstyle">Accept/Reject recent posted comments on Political Reasons&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Posted Comments :&nbsp;(${problemBeanVO.politicalCount})</b></a></h4>
-									<h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp; Pending Approval's :&nbsp;(${problemBeanVO.feedBackCount})</b></a></h4>
+									<h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp; Posted Feedbacks :&nbsp;(${problemBeanVO.feedBackCount})</b></a></h4>
 									</fieldset>
 								</td>
 							    
