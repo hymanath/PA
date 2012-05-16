@@ -160,6 +160,15 @@ font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); borde
 	width  : 150px;
 	height : 130px;
 }
+.pagenationStyle{
+  background-color:#F5371C;color:#fff;
+}
+.paginatorElmtClass a {
+    border: 1px solid #ADADAD;
+    font-size: 11px;
+    margin: 0 3px;
+    padding: 3px;
+}
 
 </style>
 <script type="text/javascript">
