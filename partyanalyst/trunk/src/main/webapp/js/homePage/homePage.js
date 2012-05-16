@@ -259,7 +259,7 @@ function showFeedBackFormPanel()
 		str += '	<div id="feedBackForm_div">';
 		str += '		<table id="feedbackTable" width="100%">';
 		str += '		<tr>';
-		str += '		<th style="font-size:11px;"><font color="red">*</font> Select feedback type </th>';
+		str += '		<th style="font-size:11px;"><font color="red">*</font> Select Feed Back type </th>';
 		str += '		<td style="font-size:12px;">';
 		str += '			<input type="radio" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
 		str += '			<input type="radio" class="selectWidth" value="2" name="commentType"> Problem ';
@@ -269,9 +269,10 @@ function showFeedBackFormPanel()
 		str += '		</tr>';
 
 		str += '		<tr>';
-		str += '		<th style="font-size:12px;"><font color="red">*</font> Feedback about</th>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> FeedBack about</th>';
 		str += '		<td style="font-size:12px;">';
 		str += '			<select id="taskId">';
+		str +='             <option value="0">Select feedback</option>';
 		str += '			<option value="1">Web Site</option>';
 		str += '			<option value="2">Party Analysis </option>';
 		str += '			<option value="3">Constituency page</option>';
@@ -283,14 +284,14 @@ function showFeedBackFormPanel()
 		str += '		</tr>';
 
 		str += '		<tr>';
-		str += '		<th style="font-size:12px;"><font color="red">*</font> Feedback </th>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> FeedBack </th>';
 		str += '		<td style="font-size:12px;">';
 		str += '			<textarea align="right" id="commentId" style="background-color:white;" rows="5" cols="39" name="comment"></textarea>';
 		str += '		</td>';
 		str += '		</tr>';
 
 		str += '		<tr>';
-		str += '		<th style="font-size:12px;"><font color="red">*</font> Select Response type </th>';
+		str += '		<th style="font-size:12px;"><font color="red">*</font> Select Response Type </th>';
 		str += '		<td style="font-size:12px;">';
 		str += '		      <input type="radio" checked="checked" value="Early" name="responseCategory">Early ';
 		str += '		      <input type="radio" value="Late" name="responseCategory">Late';
@@ -714,6 +715,10 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getComments')
 							{
 								showFeedBackStatus(myResults);
+								
+
+								$("#taskId").prepend("<option value='0'>Select feedback</option>");
+								document.getElementById("taskId").value = 0;
 							}	
 							if(jsObj.task == 'submitRequirement'){
 								
@@ -762,12 +767,13 @@ function closewindow()
 }
 function showFeedBackStatus(result)
 {
+
 	if(result.exceptionEncountered == null)
 	{
 		var errorElmt = document.getElementById("feedback_window_Msg");
 			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
-		
-		setTimeout("closewindow()",2000);
+			clearFeedBackFields();
+		//setTimeout("closewindow()",2000);
 	}
 	else
 	{
@@ -777,6 +783,11 @@ function showFeedBackStatus(result)
 	}
 }
 
+function clearFeedBackFields()
+{
+document.getElementById('commentId').value='';
+	
+}
 function buildHOmePageImageSlider()
 {
 	var elmt = document.getElementById("homePage_Image_Header");
