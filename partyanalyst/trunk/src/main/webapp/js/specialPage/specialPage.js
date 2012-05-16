@@ -1884,7 +1884,7 @@ function showFirstFourNewsRecords(results)
      }
    str+='  </ul>';
    
-   str+='<div class="more"><a href="javascript:{}" onclick="getTotalNews(\'totalNews\');">More</a></div>';
+   str+='<div class="more"><a href="javascript:{}" onclick="getCompleteNews(\'totalNews\');">More</a></div>';
    
    str+='<table><tr><td><div id="showNewsDiv" /></td></tr></table>';
    str+='<table><tr><td><div id="showAllNewsDiv" /></td></tr></table>';
@@ -1971,6 +1971,9 @@ function showFirstFourNewsRecords(results)
 	 str+='    <tr><td><hr style="width:98%;"></td></hr></tr>';
    }
    str+='  </table>';
+   str+='<table style="width:100%">';
+   str+='<tr><td><div id="custom_paginator_class" class="paginatorElmtClass" ><td></tr>';
+   str+='</table>';
    str+='</fieldset>';
    document.getElementById("showAllNewsDiv").innerHTML=str;
   //getScopeWiseNewsCount();
@@ -4130,4 +4133,143 @@ function checkUserLoginStatus(divId)
 		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only registered users can view this content.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
 		document.getElementById(divId).innerHTML = str;
 	
+}
+
+
+
+
+var clickid = null;
+function copyId(id)
+{
+  clickid = id;
+}
+var custom_paginator = {
+	resultsCount:"",
+	startIndex:"",
+	ajaxCallURL:"",
+	callBackFunction:"",
+	jsObj:{},
+	results:{},
+	totalRecords:"",
+	paginatorElmt:"",		
+	paginator:function(obj){
+		this.startIndex = obj.startIndex;
+		this.ajaxCallURL = obj.ajaxCallURL;
+		this.jsObj = obj.jsObj;
+		this.callBackFunction = obj.callBackFunction;
+		this.paginatorElmt = obj.paginatorElmt;
+		this.resultsCount = obj.resultsCount;		
+	},	
+	doAjaxCall:function(start){
+
+		var url = this.ajaxCallURL+"&startIndex="+start+"&resultsCount="+this.resultsCount;
+		
+		var callback = {			
+	    success : function( o ) {
+			try 
+			{				
+				results = YAHOO.lang.JSON.parse(o.responseText);
+				
+				if(results != null && results.length>0)
+				    this.totalRecords = results[0].count;	
+				else
+                     this.totalRecords = 0;
+				    this.callBackFunction();
+					this.buildPaginator();
+				
+			}
+			catch (e)
+			{   		
+				alert("Invalid JSON result" + e);   
+			}  
+		},
+		scope : this,
+		failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				  }
+		};
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	},
+	initialize:function (){		
+		this.doAjaxCall(this.startIndex);
+	},
+	buildPaginator:function()
+	{
+		var paginatorElmt = document.createElement('Div');
+		paginatorElmt.setAttribute("class","paginatorElmtClass");
+		var iteration = Math.ceil(this.totalRecords/this.resultsCount);		
+		var countIndex = this.startIndex;
+		var str = '';
+
+		if(iteration > 1)
+		{
+			for(var i=1; i<=iteration; i++)
+			{			
+				str += '<a href="javascript:{}" id="customPaginationId'+i+'" onclick="copyId(this.id);custom_paginator.doAjaxCall('+countIndex+')">'+i+'</a>';
+				countIndex+=this.resultsCount;
+			}
+		}
+		
+		if(document.getElementById("custom_paginator_class")!=null)	
+     	  document.getElementById("custom_paginator_class").innerHTML = str;
+		if(clickid != null)
+		{
+		 $("#"+clickid).addClass('pagenationStyle');
+		}
+		else
+		{
+		  $("#customPaginationId1").addClass('pagenationStyle');
+		}
+	}
+};
+
+ 
+  $(document).ready(function() {
+    $('#custom_paginator_class a').live("click",function() {
+	   
+        $('#custom_paginator_class a').removeClass('pagenationStyle');
+		$(this).addClass('pagenationStyle');
+      });
+  });
+var news_Obj = {
+	
+	startIndex:0,
+	problemsCount:25,
+	
+	initialize:function(viewType){
+		
+		this.getProblemDetails(viewType);
+
+	},
+	getProblemDetails:function(viewType)
+    {  	
+        var jsObj=
+		{		time : new Date().getTime(),
+		        viewtype:viewType,
+			    specialPageId:specialPageId,
+				queryType:'Public',
+				task:"getNewsToDisplayForPagination"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "specialPagePhotoGallaryAction.action?"+rparam;
+
+	    custom_paginator.paginator({
+			startIndex:this.startIndex,
+			resultsCount:this.problemsCount,
+			jsObj:jsObj,
+			ajaxCallURL:url,
+			paginatorElmt:"custom_paginator_class",
+			callBackFunction:function(){
+	    	showTotalNews(results);
+			}
+		});
+		
+		custom_paginator.initialize();
+    }
+	};
+ function getCompleteNews(viewType)
+ {
+  clickid = null;
+ news_Obj.initialize(viewType);
 }
