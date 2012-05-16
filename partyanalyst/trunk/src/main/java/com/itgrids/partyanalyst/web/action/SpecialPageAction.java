@@ -196,6 +196,10 @@ public class SpecialPageAction extends ActionSupport implements
 			{
 				fileVOList = specialPageService.getNewsGalleryBasedOnSpecialPageId(jObj.getLong("specialPageId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getNewsToDisplayForPagination"))
+			{
+				fileVOList = specialPageService.getNewsGalleryBasedOnSpecialPageId(jObj.getLong("specialPageId"),Integer.parseInt(request.getParameter("startIndex")),Integer.parseInt(request.getParameter("resultsCount")),jObj.getString("queryType"));
+			}
 			else if(jObj.getString("task").equalsIgnoreCase("getFirstThreePhotoGallaryDetail"))
 			{
 				fileVOList = specialPageService.getPhotoGalleryBasedOnSpecialPageId(jObj.getLong("specialPageId"));
