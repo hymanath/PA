@@ -316,7 +316,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		StringBuilder query = new StringBuilder();
 		query.append(getCommonDataForAllProblems());		
 		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
-		query.append(" and model.commentData.isApproved is null and model.freeUser is not null");	
+		query.append(" and model.commentData.isApproved is null");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setDate(0,fromDate);
