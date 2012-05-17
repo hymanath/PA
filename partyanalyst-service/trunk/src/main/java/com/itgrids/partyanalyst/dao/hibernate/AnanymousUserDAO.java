@@ -1,27 +1,15 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
-
-import com.itgrids.partyanalyst.model.AnanymousUser;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.utils.IConstants;
-
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.AnanymousUser;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> implements IAnanymousUserDAO {
 
@@ -36,15 +24,17 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model.password from AnanymousUser model where model.password=? and model.userId=?",parameters);
 	}
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status)
+	public Integer changeUserPassword(String password,Long registrationId,String status,Date date)
 	{
 	StringBuilder query = new StringBuilder();
-	query.append("update AnanymousUser model set model.password = ?,model.isPwdChanged=? where model.userId = ?");
+	query.append("update AnanymousUser model set model.password = ?,model.isPwdChanged=?,model.updatedDate=? where model.userId = ?");
 	
 	Query queryObject = getSession().createQuery(query.toString());
 	queryObject.setParameter(0, password);
 	queryObject.setParameter(1, status);
-	queryObject.setParameter(2, registrationId);	
+	queryObject.setParameter(2, date);
+	queryObject.setParameter(3, registrationId);
+	
 	
 	return queryObject.executeUpdate();	
 	}
