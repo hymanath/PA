@@ -451,6 +451,11 @@ function buildConstituencySearchResultDataTable()
 		</td>
 	</tr>
 	<tr>
+	    <td style="text-align: left"class="middle">
+			<a class="viewReportButtonSpan" style = "padding: 9px 10px 6px 10px; text-decoration: none;"href="searchInPartyAnalyst.action">
+               User Google Custom Search
+            </a>
+		</td>
 		<td colspan="4" style="text-align: right"class="middle">
 			<input type="submit" name="searchButton" class="viewReportButtonSpan" value="Search"/>	
 		</td>
