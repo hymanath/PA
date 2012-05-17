@@ -8,7 +8,7 @@
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results, ${year}</TITLE></c:if>
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results ${year}</TITLE></c:if>
 <c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
 
 <meta http-equiv="Content-Language" content="en">
@@ -3299,14 +3299,13 @@ function removeOptionSelected()
 <div id="candidateResultAccessDiv"></div>
 <div id="districtAccessPopupDiv"></div>
 
- <div class="main-mbg"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if>
-<c:if test="${electionType == 'Parliament'}">${electionType} Election Results ${year}</c:if>
+ <div class="main-mbg"><h1 style = "font-size:15px;"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if>
  <span style="margin-top:10px;margin-right:18px;float:right">
  <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">Share in Facebook</a> 
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
 </script>
-</span>
+</span></h1>
 </div>
 <div style="padding: 5px 60px 5px 0px;text-align:right;">
   <input type="button" class="buttonClass" id="buttonId" onclick="toggleOption(this.id);" value="Hide Highlights Of ${year} Election Results">
@@ -3314,7 +3313,7 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <div class="clear"></div>
 
 <div id="topStoriesDIV">
-   <DIV class="graphTop"> Highlights Of ${year} Elections</DIV>
+   <DIV class="graphTop"> Highlights Of ${year} Andhra Pradesh Assembly Elections</DIV>
    <div class="topStories">
        <div id="topStoriesMenu" style="width:100%;">
           <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">
