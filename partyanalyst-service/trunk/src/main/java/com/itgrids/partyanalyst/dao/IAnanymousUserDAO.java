@@ -1,11 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 
 
@@ -37,7 +37,7 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	
 	public List<AnanymousUser>  getPassword(String password);
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status);
+	public Integer changeUserPassword(String password,Long registrationId,String status,Date date);
 	
 	public List<AnanymousUser> checkUserPassword(String password,Long userId);
 	
