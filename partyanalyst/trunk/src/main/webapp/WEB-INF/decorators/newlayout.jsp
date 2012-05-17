@@ -400,18 +400,10 @@ function buildAccordion()
 
 </c:if>
        <li>
-		<a href="searchInPartyAnalyst.action"><span>SEARCH</span></a>
-		<div>
-			<ul>
-				<li>
-					<a href="searchInPartyAnalyst.action"><span>Search in PartyAnalyst</span></a>
-				</li>
-				<li>
-				<a href="searchPartyAnalystAction.action"><span>Custom Search</span></a>
-				</li>
-			</ul>
-		</div>
-		</li>
+		<a class="searchClass" id="searchId" href="searchInPartyAnalyst.action">
+		<span id="searchSpanId">SEARCH</span></a>
+		
+	   </li>
 
 		<c:if test="${sessionScope.loginStatus == 'out'}">  
 							<li> 
