@@ -1934,7 +1934,7 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 	List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
 	if(chkPwd.size()==0)
 		return IConstants.NoPassword;
-	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE);
+	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE,dateUtilService.getCurrentDateAndTime());
 	return IConstants.YesPassword;
 }
 
