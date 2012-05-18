@@ -41,9 +41,9 @@
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
 <script src="js/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">	</script>
-  
+<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 <script type="text/javascript">
-var homePageUpdates = null;
+
 google.load("visualization", "1", {packages:["piechart"]});
 </script>
 <style type="text/css">
@@ -166,20 +166,23 @@ text-decoration:none;
 .paginatorElmtClass a {
     border: 1px solid #ADADAD;
     margin: 0 3px;
-    padding: 3px;
-	font-size:11px;
+    font-size:11px;
    text-decoration: none;
+   padding:5px;
+   border-radius:50%;
+   width:12px;height:14px;
+   display:inline-block;
+   text-align:center;
+ 
 }	
 .pagenationStyle{
-  background-color:#6AC9C1;
+  background-color:#F5371C;color:#fff;
 }
 .problemheadClass{
   padding:8px;
-  border-radius:10px;
-  margin-right: 10px;
-  margin-bottom:10px;
-  margin-top:15px;
-  background-color:#F7F7F7;
+border:1px solid #cccccc;
+  width:90%;
+  margin:8px;
 }
 .problemTitleClass{
   color:#357EC7;
@@ -188,8 +191,35 @@ text-decoration:none;
   font-size:15px;
   font-family: trebuchet MS;
 }
-.social-icons {
-    width: 311px;
+.problem-register {
+  margin-right:46px;
+}
+.partiesList{
+    float:right;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    display: block;
+    float: right;
+    margin-right: 20px;
+    margin-top: 6px;
+    width: 370px;
+}
+.partiesList a {
+
+    text-align: center;
+	 width: 58px;
+	 padding: 7px;
+}
+.titleClass{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    border-radius: 5px 5px 0 0;
+    color: #0A0B39;
+    font-size: 20px;
+    padding: 7px 5px;
+}
+.listyle{
+overflow: hidden; float: left; width: 64px; height: 90px;
 }
 </style>
 </head>
@@ -261,13 +291,13 @@ text-decoration:none;
             <h1 class="main-title">Quick View</h1>
             <div class="sr-sec">
               <div class="sr-mbg">
-                <div class="glossymenu"> <a class="menuitem submenuheader" href="javascript:{}">View Your State.</a>
+                <div class="glossymenu"> <a class="menuitem submenuheader" href="javascript:{}">View Your State</a>
                   <div class="submenu">
                     <p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
                     <div class="view-results"><a href="javascript:{}" onclick="navigateToStatePage()">view results</a></div>
                   </div>
-                  <a class="menuitem submenuheader" href="#" >View Your district.</a>
+                  <a class="menuitem submenuheader" href="#" >View Your district</a>
                   <div class="submenu">
 				  <div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
                     <p>Select your district to view its election results in district level.</p>
@@ -275,7 +305,7 @@ text-decoration:none;
                     <s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
                     <div class="view-results"><a href="javascript:{}" onclick="navigateToDistrictPage()">view results</a></div>
                   </div>
-                   <a class="menuitem submenuheader" href="#">View Your Constituency.</a>
+                   <a class="menuitem submenuheader" href="#">View Your Constituency</a>
                   <div class="submenu">
 				  <div id="alertMessage" style="color:red;font-weight:bold;"></div>
                     <p>Select Constituency Type<br />
@@ -301,7 +331,7 @@ text-decoration:none;
                     <div class="view-results"><a href="javascript:{}" onclick="navigateToConstituencyPage()">view results</a></div>
                   </div>
                   
-                  <a class="menuitem submenuheader" href="javascript:{}">View Your Localty.</a>
+                  <a class="menuitem submenuheader" href="javascript:{}">View Your Locality</a>
                   <div class="submenu">
                    
 							<div >
@@ -329,7 +359,7 @@ text-decoration:none;
 							<div class="view-results"><a onclick="navigateToLocalBodyPage()" href="javascript:{}">view results</a></div>
                   </div>
 						                   
-						<a class="menuitem submenuheader" href="javascript:{}">View all Election Results.</a>
+						<a class="menuitem submenuheader" href="javascript:{}">View Election Results</a>
                   <div class="submenu" style="padding-bottom:5px;">
                     <table>
 						<tr>
@@ -388,28 +418,127 @@ text-decoration:none;
           
           
           
-          <div class="qa-sec">
+   <div class="qa-sec">
 		  
 		  
-<div style="width: 465px;">
+     <div style="width: 465px;">
 		
 		<div style="margin-left: -9px; height: 43px; margin-top: -3px;">
-		<h1 style="color:#FF4705;float:left;font-size:13px; text-transform:uppercase;">Updates From Party Analyst</h1>
+		  <h1 style="color:#FF4705;float:left;font-size:13px; text-transform:uppercase;">Updates From Party Analyst</h1>
 		</div>
 		<div class="updatesDiv">
 
-		<a onclick="buildVideoGallary()" href="javascript:{}" id="videoGallaryButton" class="current">Video Gallary</a>
+		  <a onclick="showVideoGallary()" href="javascript:{}" id="videoGallaryButton" class="current">Video Gallery</a>
 
-		  <a onclick="buildPhotoGallary()"  href="javascript:{}" id="photoGallaryButton">Photo Gallary</a>
+		  <a onclick="showPhotoGallary()"  href="javascript:{}" id="photoGallaryButton">Photo Gallery</a>
 			
-		  <a onclick="buildNewsGallary()" href="javascript:{}" id="newsGallaryButton">News Gallary
-			</a>
-			</div>
+		  <a onclick="showNewsGallary()" href="javascript:{}" id="newsGallaryButton">News Gallery</a>
+		</div>
 			&nbsp;
-			 <div id="allGallariesDisplay" style="overflow-x: hidden; overflow-y: scroll; padding-right: 0px; border-right-width: 17px; margin-left: -11px; width: 465px; height: 250px;"></div>
-			</div>
+			<div id="videoGallariesDisplay" style="overflow-x: hidden; overflow-y: scroll; padding-right: 0px; border-right-width: 17px; margin-left: -11px; width: 465px; height: 250px;">
+			 <s:if test="resultMap != null && resultMap.size() > 0">
+			 <s:iterator value="resultMap.VideoGallary" var="videoGallaryDetails">
+			    <table>
+			      <tr>
+			       <td>
+			        <s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >         
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+					<s:if test="%{#videoGallaryDetails.fileType == 'Party'}" >
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+					<s:if test="%{#videoGallaryDetails.fileType == 'Special Page'}" >
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+                    <img src='http://img.youtube.com/vi/<s:property value="pathOfFile"/>/1.jpg' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+				  </td>		
+			      <td>
+			        <s:if test="%{#videoGallaryDetails.fileType == 'Candidate'}" >
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#videoGallaryDetails.fileType == 'Party'}" >
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#videoGallaryDetails.fileType == 'Special Page'}" >
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
+			           New Video Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> Video Gallary.</a>
+			        <div style="margin-left:5px;margin-top:6px;">
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
+			        </div>
+				  </td>
+			     </tr>
+			    </table>
+			</s:iterator>
+			</s:if>
+		   </div>
+		   <div id="photoGallaryDisplay" style="display:none;overflow-x: hidden; overflow-y: scroll; padding-right: 0px; border-right-width: 17px; margin-left: -11px; width: 465px; height: 250px;">
+			 <s:if test="resultMap != null && resultMap.size() > 0">
+			  <s:iterator value="resultMap.photogallary" var="photogallaryDetails">
+			    <table>
+			     <tr>
+			      <td>
+			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >         
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>'>
+			        </s:if>
+		            <img src='<s:property value="pathOfFile"/>' style="width:95px;height:80px" alt='<s:property value="fileTitle1"/>' title='<s:property value="description"/>'/></a>			         
+				  </td>		
+			      <td>
+			        <s:if test="%{#photogallaryDetails.fileType == 'Candidate'}" >
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#photogallaryDetails.fileType == 'Party'}" >
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
+			           New Photo Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> Photo Gallary.</a>
+				  </td>
+			     </tr>
+			    </table>
+			  </s:iterator>
+			 </s:if>
+		   </div>
+		   <div id="newsGallaryDisplay" style="display:none;overflow-x: hidden; overflow-y: scroll; padding-right: 0px; border-right-width: 17px; margin-left: -11px; width: 465px; height: 250px;">
+			 <s:if test="resultMap != null && resultMap.size() > 0"> 
+			  <s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails">
+			    <table>
+			     <tr>
+			      <td>
+			        <s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+					<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+			        </s:if>
+			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
+			           New News Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> News Gallary.</a>
+			        <div style="margin-left:5px;margin-top:6px;">
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
+			        </div>
+				  </td>
+			     </tr>
+			    </table>
+			  </s:iterator>
+			 </s:if>
+		   </div>
+     </div>
 		
-</div>
+   </div>
 		
 	<!--CURRENT ELECTION SECTION START-->
           
@@ -462,14 +591,24 @@ text-decoration:none;
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
-        <div class="sneak-peak-sec" style="width:615px; border-right: 1px dotted;margin-right: 10px;">
-          <h1 class="title tc-tf" style="color:#C66E17;margin-left:23px;margin-bottom:-19px;">Problems In Your Area</h1>
-		  
-              <div style="height: 325px;overflow-y:scroll;" id="problemsShowDIV"></div>
+        <div class="sneak-peak-sec" style="width:580px;padding:0px;margin:5px;border-radius:5px;position:relative;border:1px solid #cccccc;">
+          <span class="problem-h1"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
+		  <h2 class="problem-h2"><b><font style="color:#000;"> New or Existing</font></b> - Our Platform elevates your problems to the external world.</h2>
+		</span>
+		<div id="logInDiv"></div>
+		  <!-- <h2 class="problem-cont-h2"><b><font style="color:#F55C41"> Post your problem</font></b> -It's quick and free</h2>-->
+           <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
+			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register">Post Your Problems</a>
+		   </c:if>
+			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}">
+		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register">Post Your Problems</a>
+			</c:if>
+		  <!-- <h3 class="problem-cont-h3"><b><font style="color:#F55C41">VIEW HERE</font></b> -Problems in your AREA</h3>-->
+              <div style="min-height:504px;max-height:850px;overflow-y:auto;display:block;clear:both;" id="problemsShowDIV"></div>
 									
-		      <div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;"></div>
+		      <div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
                     
-         <div style="margin-top:10px;"> <p>The information displayed in this website are based on the data collected from the Election Commmission Of India. Further suggestions and corrections please contact us at <a href="mailto:info@itgrids.com" class="blue">info@itgrids.com</a></p></div>
+        
         </div>
         
         <!--SNEAK PEAK - PARTY ANALYST SECTION END--> 
@@ -500,16 +639,46 @@ text-decoration:none;
 										
 									</div>
 								</div>-->
-						
-						<div>
-						<div id="pollsWidgetHeader">
-										<table width="34%" border="0" cellspacing="0" cellpadding="0">
+						<div class="partiesList">
+						     <h1 class="titleClass">View Your Parties</h1>
+							 <table>
+							  <tr  style="height:130px;padding-top:30px;">
+                                <td><div class="prevImg"><img src="images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div></td>
+                                <td>
+							       <div class="sliderImg">
+                                     <ul>
+					                   <li class="listyle" > <a href="partyPageAction.action?partyId=362" title="Click here to view INC party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/INC.png" width="50" height="50"  alt="INC Party" /> <div>INC</div> </a></li>
+					                   <li class="listyle" > <a href="partyPageAction.action?partyId=872" title="Click here to view TDP party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/TDP.PNG" width="50" height="50" alt="TDP Party" /> <div>TDP</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=1117" title="Click here to view YSRC party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/YSRC.PNG" width="50" height="50" alt="YSRC Party" /> <div>YSRC</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=163" title="Click here to view BJP party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/BJP.png" width="50" height="50" alt="BJP Party" /> <div>BJP</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=886" title="Click here to view TRS party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/TRS.png" width="50" height="50" alt="TRS Party" /> <div>TRS</div> </a></li>
+				                       <li class="listyle" > <a href="partyPageAction.action?partyId=839" title="Click here to view SP party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/SP.png" width="50" height="50" alt="SP Party" /> <div>SP</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=239" title="Click here to view BSP party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/BSP.png" width="50" height="50" alt="BSP Party" /> <div>BSP</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=76" title="Click here to view AITC party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/AITC.png" width="50" height="50" alt="AITC Party" /> <div>AITC</div> </a></li>
+									   <li class="listyle" > <a href="partyPageAction.action?partyId=579" title="Click here to view NCP party profile -previous election result, Updated News, Photos and Videos"><img src="images/party_flags/NCP.png" width="50" height="50" alt="NCP Party" /> <div>NCP</div> </a></li>
+									 </ul>
+                                   </div>
+								</td>
+                                <td><div class="nextImg" ><img src="images/new_homepage/wallpapers-right-arrow.png" alt="next" /></div></td>
+                              </tr>
+							 </table>
+						</div>
+						<div class="our-services">
+		                    <h1>Our Services</h1>
+		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
+		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
+		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
+		                    <a href="#" title="Our unique tool designed for Politicians">Political<br/>Management Tool</a>
+		                </div>
+						<div style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
+						<div id="pollsWidgetHeader" >
+										<table width="97%" border="0" cellspacing="0" cellpadding="0">
 										
 										
 										  <tr>
 										 	<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 											<td>
-												<div class="electionTrendzHeaderBackground_center">
+												<div class="electionTrendzHeaderBackground_center" style="width:300px;">
 													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
 														Opinion Poll
 													</span>
@@ -519,7 +688,7 @@ text-decoration:none;
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" style="height:263px;width: 318px;">
+									<div id="pollsWidgetBody" style="height:263px;width:348px;">
 									</div>
 									<div id="pollsWidgetFooter">
 										
@@ -610,6 +779,7 @@ text-decoration:none;
     </div>
   </div>
 </div>
+  <div style="margin:10px auto;width:960px;padding:5px;text-align:center;display:table;"> <p style="margin:7px 0px;">The Election information displayed in this website are based on the data collected from the Election Commission Of India. Further suggestions and corrections please contact us at <a href="mailto:info@partyanalyst.com" class="blue">info@partyanalyst.com</a></p></div>
 <a id="inline" href="#fancydivbox" style="displaynone"></a>
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox">
@@ -620,6 +790,9 @@ text-decoration:none;
 <!--CONTENT MAIN SECTION END--> 
 
 <script type="text/javascript">
+<c:if test="${freeUserConstituencyId != null }"> 
+constituencyId = "${freeUserConstituencyId}";
+</c:if>
 var clickid = null;
 function copyId(id)
 {
@@ -758,11 +931,15 @@ function showProblemDetails(result)
 	for(var i in result)
 	{
 	   str += '<div class ="problemheadClass">';
-	   str += '   <div ><span><a class ="problemTitleClass" href="problemCompleteDetailsAction.action?problemHistoryId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span>  <img width="20" height="20" src="images/icons/accept.png" title="Like"><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font> <img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font> <span style="color:#A71100;margin-left:15px;">Comments :</span><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></div>';
+	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="problemCompleteDetailsAction.action?problemHistoryId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><img width="20" height="20" src="images/icons/accept.png" title="Like"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font></td> <td><img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
 	   str += '   <div style="padding-top:5px;font-family:arial;">'+result[i].description+' </div>';
-	   str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Location :&nbsp;&nbsp;</span> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#028D35;">Posted By :&nbsp;&nbsp;</span>'+initialCap(result[i].name)+' </div>'; 
-	   str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Existing From :&nbsp;&nbsp;</span> '+result[i].existingFrom+' &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#028D35;">Identified On :&nbsp;&nbsp;</span>'+result[i].postedDate+' </div>';
-       str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Files Attached :&nbsp;&nbsp;</span>'+result[i].fileCount+' </div>';	   
+	   if(result[i].url != null){
+	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td><a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'"> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+'</a> &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
+	   }else{
+	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
+	   }
+       str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Existing From :&nbsp;&nbsp;</span> '+result[i].existingFrom+' &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#028D35;">Identified On :&nbsp;&nbsp;</span>'+result[i].postedDate+' </div>';
+       //str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Files Attached :&nbsp;&nbsp;</span>'+result[i].fileCount+' </div>';	   
 	   str += '</div>';
 	}
 	probEle.innerHTML = str;
@@ -771,6 +948,24 @@ function showProblemDetails(result)
 function initialCap(data) {
    data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
    return data;
+}
+function showNotLogIn()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only Registered Users Can Post Problems.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+   
+
 }
 var uname = '${sessionScope.USER.userName}';
 var emailId='${sessionScope.USER.email}';
@@ -1184,7 +1379,13 @@ $(function() {
         		visible: 3
     		});
 		});
-
+$(function() {
+    		$(".sliderImg").jCarouselLite({
+        		btnNext: ".nextImg",
+        		btnPrev: ".prevImg",
+        		visible: 5
+    		});
+		});
 		$(document).ready(function(){
 		$("#inline").fancybox();
 			$('img.captify').captify({
@@ -1283,59 +1484,13 @@ $(function() {
 	
 }*/
 
-	function buildPhotoGallary()
+	function showPhotoGallary()
 	{
 		$(".updatesDiv a").removeClass("current");
 		$("#photoGallaryButton").addClass("current");
-
-		if(homePageUpdates == null)
-			return;
-		var str ='';
-		for(var i in homePageUpdates.photogallary)
-		{
-			str +='<table>';
-			str += '<tr>';
-			str += '<td>';
-			str +='<a href="';
-			
-			if(homePageUpdates.photogallary[i].fileType == 'Candidate')
-				str += 'candidateElectionResultsAction.action?candidateId=';
-			else if(homePageUpdates.photogallary[i].fileType == 'Party')
-				str += 'partyPageAction.action?partyId=';
-			else if(homePageUpdates.photogallary[i].fileType == 'Special Page')
-				str += 'specialPageAction.action?specialPageId=';
-
-			str += ''+homePageUpdates.photogallary[i].candidateId+'&contentId='+homePageUpdates.photogallary[i].contentId+'">';
-			str += '<img src="'+homePageUpdates.photogallary[i].pathOfFile+'" style="width:95px;height:80px" alt="'+homePageUpdates.photogallary[i].fileTitle1+'" title="'+homePageUpdates.photogallary[i].description+'"/>';
-			str += '</td>';
-			str +='</a>';
-			str += '<td>';
-			str +='<a href="';
-			
-			if(homePageUpdates.photogallary[i].fileType == 'Candidate')
-				str += 'candidateElectionResultsAction.action?candidateId=';
-			else if(homePageUpdates.photogallary[i].fileType == 'Party')
-				str += 'partyPageAction.action?partyId=';
-			else if(homePageUpdates.photogallary[i].fileType == 'Special Page')
-				str += 'specialPageAction.action?specialPageId=';
-
-			str += ''+homePageUpdates.photogallary[i].candidateId+'&contentId='+homePageUpdates.photogallary[i].contentId+'" title="'+homePageUpdates.photogallary[i].description+'" style="color: #000000;font-family: verdana;">';
-			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.photogallary[i].fileTitle1+'</h5>';
-			str += 'New Photo Added to';
-			str +='\t';
-			str +=''+homePageUpdates.photogallary[i].candidateName+'';
-			str +='\t';
-			str += ''+homePageUpdates.photogallary[i].gallaryName+'';
-			str +='\t';
-			str +='Photo Gallary';
-			str += '</td>';
-			str +='</a>';
-			str +='</tr>';
-			str += '</table>';
-			str +='</div>';
-			document.getElementById("allGallariesDisplay").innerHTML = str;
-		} 
-			
+		document.getElementById("videoGallariesDisplay").style.display = 'none';
+		document.getElementById("photoGallaryDisplay").style.display = 'block';
+		document.getElementById("newsGallaryDisplay").style.display = 'none';
 	}
 
 function CancelDialogue()
@@ -1372,120 +1527,24 @@ function closewindow()
 {
 	$("#username_change_window").dialog("destroy");
 }
-	function buildVideoGallary()
+	function showVideoGallary()
 	{	
 		$(".updatesDiv a").removeClass("current");
 		$("#videoGallaryButton").addClass("current");
-		if(homePageUpdates == null)
-			return;
-
-		var str ='';
-		for(var i in homePageUpdates.VideoGallary)
-		{
-			str += '<table>';
-			str += '<tr>';
-			str += '<td>';
-			str += '<a href="';
-			
-			if(homePageUpdates.VideoGallary[i].fileType == 'Candidate')
-				str += 'candidateElectionResultsAction.action?candidateId=';
-			else if(homePageUpdates.VideoGallary[i].fileType == 'Party')
-				str += 'partyPageAction.action?partyId=';
-			else if(homePageUpdates.VideoGallary[i].fileType == 'Special Page')
-				str += 'specialPageAction.action?specialPageId=';
-
-			str += ''+homePageUpdates.VideoGallary[i].candidateId+'&contentId='+homePageUpdates.VideoGallary[i].contentId+'">';
-			str += '<img src="http://img.youtube.com/vi/'+homePageUpdates.VideoGallary[i].pathOfFile+'/1.jpg" style="width:95px;height:80px" alt="'+homePageUpdates.VideoGallary[i].fileTitle1+'" title="'+homePageUpdates.VideoGallary[i].description+'"/>';
-			str += '</td>';
-			str +='</a>';
-			str += '<td>';
-			str +='<a href="';
-			
-			if(homePageUpdates.VideoGallary[i].fileType == 'Candidate')
-				str += 'candidateElectionResultsAction.action?candidateId=';
-			else if(homePageUpdates.VideoGallary[i].fileType == 'Party')
-				str += 'partyPageAction.action?partyId=';
-			else if(homePageUpdates.VideoGallary[i].fileType == 'Special Page')
-				str += 'specialPageAction.action?specialPageId=';
-			
-			str += ''+homePageUpdates.VideoGallary[i].candidateId+'&contentId='+homePageUpdates.VideoGallary[i].contentId+'" title="'+homePageUpdates.VideoGallary[i].description+'" style="color: #000000;font-family: verdana;">';
-			str += '<h5 style="color:#357EC7 !important;">'+homePageUpdates.VideoGallary[i].fileTitle1+'</h5>';
-			str += 'New Video Added to';
-			str +='\t';
-			str +=''+homePageUpdates.VideoGallary[i].candidateName+'';
-			str +='\t';
-			str += ''+homePageUpdates.VideoGallary[i].gallaryName+'';
-			str +='\t';
-			str +='Video Gallary.';
-			str +='</a>';
-			str +='<div style="margin-left:5px;margin-top:6px;">'
-			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].fileDate+'</font></span>&nbsp;';
-			str +='<font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.VideoGallary[i].source+'</font></span>';
-			str +='</div>';
-		
-			str += '</td>';
-			str +='</tr>';
-			str += '</table>';
-			document.getElementById("allGallariesDisplay").innerHTML = str;
-		}
+		document.getElementById("videoGallariesDisplay").style.display = 'block';
+		document.getElementById("photoGallaryDisplay").style.display = 'none';
+		document.getElementById("newsGallaryDisplay").style.display = 'none';
 	}
 
-	function buildNewsGallary()
+	function showNewsGallary()
 	{
 		$(".updatesDiv a").removeClass("current");
 		$("#newsGallaryButton").addClass("current");
+		document.getElementById("videoGallariesDisplay").style.display = 'none';
+		document.getElementById("photoGallaryDisplay").style.display = 'none';
+		document.getElementById("newsGallaryDisplay").style.display = 'block';
+    }
 
-		if(homePageUpdates == null)
-			return;
-		var str ='';
-		
-		for(var i in homePageUpdates.NewsGallary)
-		{
-			str +='<table>';
-			str += '<tr>';
-			str += '<td>';
-			str +='<a href="';
-
-			if(homePageUpdates.NewsGallary[i].fileType == 'Candidate')
-				str += 'candidateElectionResultsAction.action?candidateId=';
-			else if(homePageUpdates.NewsGallary[i].fileType == 'Party')
-				str += 'partyPageAction.action?partyId=';
-			else if(homePageUpdates.NewsGallary[i].fileType == 'Special Page')
-				str += 'specialPageAction.action?specialPageId=';
-
-			str += ''+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'">';
-			str += '<img src="'+homePageUpdates.NewsGallary[i].pathOfFile+'" style="width:95px;height:80px" alt="'+homePageUpdates.NewsGallary[i].fileTitle1+'" title="'+homePageUpdates.NewsGallary[i].description+'"/>';
-			str += '</td>';
-			str +='</a>';
-			str += '<td>';
-						
-			if(homePageUpdates.NewsGallary[i].fileType == 'Candidate')
-				str += '<a href="candidateElectionResultsAction.action?candidateId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
-			else if(homePageUpdates.NewsGallary[i].fileType == 'Party')
-				str += '<a href="partyPageAction.action?partyId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
-			else if(homePageUpdates.NewsGallary[i].fileType == 'Special Page')
-				str += '<a href="specialPageAction.action?specialPageId='+homePageUpdates.NewsGallary[i].candidateId+'&contentId='+homePageUpdates.NewsGallary[i].contentId+'" title="'+homePageUpdates.NewsGallary[i].description+'" style="color: #000000;font-family: verdana;">';
-			
-			str += '<h5 style="color: #357EC7 !important;">'+homePageUpdates.NewsGallary[i].fileTitle1+'</h5>';
-			str += 'New News Added to';
-			str +='\t';
-			str +=''+homePageUpdates.NewsGallary[i].candidateName+'';
-			str +='\t';
-			str += ''+homePageUpdates.NewsGallary[i].gallaryName+'';
-			str +='\t';
-			str +='News Gallary';
-			str +='</a>';
-			str += '</td>';
-			str +='</tr>';
-			str += '</table>';
-			str +='<div style="margin-left:135px;">'
-			str +='<font style="font-weight:bold;font-size:12px;font-family: verdana;color:#000000;"> Date : <span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].fileDate+'</font></span>&nbsp;';
-			str +='<font style="font-weight:bold;font-size:12px; font-family: verdana;color:#000000;"> Source : </b><span style="color:#FF4500;">'+homePageUpdates.NewsGallary[i].source+'</font></span>'; 
-			str +='</div>';
-			document.getElementById("allGallariesDisplay").innerHTML = str;
-			}
-		}
-photosNewsVideosUpdateForACandidate();
 buildPolls();
 </script>
 	
