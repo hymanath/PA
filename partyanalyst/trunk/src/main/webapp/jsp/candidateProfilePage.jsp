@@ -280,6 +280,20 @@ District:
 </div>
 <div class="main-bbg"></div></div><br></td></tr></table>
 
+<div style="text-align:center;margin-bottom:10px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0938408694174139";
+/* CandiatePageHeader */
+google_ad_slot = "2678494123";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
@@ -319,6 +333,22 @@ District:
 				</div>
 			</s:if>
 			</s:iterator>
+		</s:if>
+		
+		<s:if test="false">
+		<div>
+		<script type="text/javascript"><!--
+			google_ad_client = "ca-pub-0938408694174139";
+			/* CandidatePageLeftHandBox */
+			google_ad_slot = "1524357461";
+			google_ad_width = 200;
+			google_ad_height = 200;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+		</div>
 		</s:if>
 
 	   <!--EMAIL ALERT SECTION START-->
@@ -485,6 +515,20 @@ District:
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
 	 </s:if>
 	
+	<div>
+	<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-0938408694174139";
+		/* CandidatePageRightBox */
+		google_ad_slot = "5426332176";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
+
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
 	</div>
