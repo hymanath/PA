@@ -512,7 +512,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
   </s:if>
 
      <s:if test="fileVO != null && fileVO.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};">More</a></div>
+	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};" style="margin-bottom: 20px;">More</a></div>
 	 </s:if>
 	
 	<div>
