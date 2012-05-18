@@ -76,13 +76,14 @@
 .spltableclass th:nth-child(1){background:#5e5e5e;color:#fff;padding:5px;text-align:left;padding-left:15px;}
 .spltableclass th:nth-child(1) a{color:#fff;}
 </style>
-<div style="background:#fff;">
-<br /><br /><br/>
+
+<div>
+
 <div>
 <IMG src="images/specialPage/5leaderswar.png" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
 </div>
 <br>
-<div id="upComing" style="margin-top:25px;">
+<div id="upComing" style="background:#FFF;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
 <span style="color:#ED5B21;font-weight:bold;">AP Bye Election Schedule</span> -
