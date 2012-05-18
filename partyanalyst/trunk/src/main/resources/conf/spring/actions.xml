@@ -640,7 +640,8 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />			
-		<property name="problemManagementService" ref="problemManagementService" />			
+		<property name="problemManagementService" ref="problemManagementService" />
+        <property name="ananymousUserService" ref="ananymousUserService" />		
 	</bean>
 	
 	<bean id="announcementPageAction" class="com.itgrids.partyanalyst.web.action.AnnouncementPageAction">
