@@ -905,5 +905,10 @@
 	<property name="ananymousUserService" ref="ananymousUserService"/>
 	
 	</bean>
+	
+	<bean id="problemCompleteInfoAction" class="com.itgrids.partyanalyst.web.action.ProblemCompleteInfoAction" singleton="false">
+		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="dataApprovalService" ref="dataApprovalService" />
+	</bean>
 				
 </beans>	
