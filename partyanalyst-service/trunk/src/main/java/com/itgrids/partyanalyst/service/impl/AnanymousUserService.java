@@ -2063,7 +2063,15 @@ public List<String> getUserReferencedEmails(Long userId)
 	}
 }
 
-
+public Long getUserConstituencyId(Long userId){
+	try{
+	  AnanymousUser ananymousUser = ananymousUserDAO.get(userId);
+	   return ananymousUser.getConstituency().getConstituencyId();
+	}catch(Exception e){
+		log.error("Exception Occured in getUserConstituencyId() Method, Exception is - "+e);
+	}
+	return null;
+}
 
 
 }
