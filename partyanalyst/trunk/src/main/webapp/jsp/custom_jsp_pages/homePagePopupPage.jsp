@@ -1,4 +1,6 @@
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
+<link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
 <style>
 .imgStyle{
 	border: medium none;
@@ -30,7 +32,7 @@ left:50%;
 }
 .Election2014{height:200px;}
 .Election2014 span{display:table;color:navy;}
-.ElectionInfo{display:block;margin-left:31%;}
+.ElectionInfo{display:block;margin-left: 34%;}
 .ElectionInfo a{background: none repeat scroll 0 0 #C93033;border-radius: 3px 3px 3px 3px;box-shadow: 0 0 5px #888888;color: #FFFFFF;display: table;font-family: helvetica;font-size: 13px;margin: 22px 15px 0px;padding: 6px 7px;position: relative;text-decoration: none;}
 .ElectionInfo a:before{content:" ";
 border:10px solid transparent;
@@ -49,7 +51,17 @@ position:absolute;
 top:-18px;
 left:50%;
 }
-
+.service-box{
+	width: 193px;
+	height: 238px;
+	background: threeDFace;
+}
+.service-box a{
+	background: none repeat scroll 0 0 #000000;
+    color: ActiveCaption;
+    margin-left: 3px;
+    opacity: 0.55;
+}
 </style>
 <div class="promos">
 <div class="promoheader">
@@ -61,24 +73,51 @@ left:50%;
 </div>
 </div>
 
-<div class="Newsmontior boxdiv" style="height:194px;">
+<!--<div class="Newsmontior boxdiv" style="height:194px;">
 <h1 style="background:url('images/icons/homePage/LocationNews.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding:10px 55px;">News Monitoring Service</h1>
 <p style="margin-top:13px;line-height:18px;">
 <b>Analysis of your Media Coverage:</b> As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 <a href="newsMonitoringService.action">Click Here to Know More</a></p>
 </div>
 
-<div class="Election2014 boxdiv" style="height:194px;">
+<div class="Election2014 boxdiv" style="height:127px;">
 <h1 style="background:url('images/icons/homePage/Flag.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size:20px;">Are you Aspirant candidate for<br/>
 2014 elections in Andhra Pradesh</h1>
 <p style="margin-top:13px;line-height:18px;">
 Get the complete picture of your constituency to strategize or to understand the political picture of the constituency village wise by <font style="font-weight:bold;color:Crimson;">Constituency Profile Report</font>.</p>
-<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
-To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>
-</div>
+
+</div>-->
+
+<table>
+<tr><td><h2 style="color: #12A3EB;margin-left: 11px;">Our Services</h2></td></tr>
+<tr>
+<td>
+<div class="service-box">
+<a href="partyCandidateAnalyzer.action?src=homePageAd"><span>Political Management Tool</span></a>
+<img src="images/new_homepage/sp-pa.jpg"/>
+Analyze your constituency, track your progress and pending facilities.
+</div></td><td>
+<div class="service-box">
+<a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
+<img src="images/new_homepage/checklist.jpg"/>
+Now, you can drive your survey's through Party Analyst...
+Ask, Analyze, Improve
+</div></td><td>
+<div class="service-box">
+<a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
+<img src="images/new_homepage/NewsTracker.png"/>
+As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
+</div></td>
+<td><div class="service-box">
+<a href="constituencyProfileReport.action?src=homePageAd"><span>Constituency Profile Report</span></a>
+<img src="images/site/imgpartyperf.jpg">
+Are you aspirant candidate for<br/>
+2014 elections in Andhra Pradesh get the complete picture of your constituency profile report.
+</div></td></tr></table>
+<!--<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
+To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>-->
 <div class="ElectionInfo boxdiv" style="height: 92px; width: 305px; padding-left: 10px; padding-right: 10px;">
 <h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
 <p style="margin:1px;"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
 </div>
 </div>
-
