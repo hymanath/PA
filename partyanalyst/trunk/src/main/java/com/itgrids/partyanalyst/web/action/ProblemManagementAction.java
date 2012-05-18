@@ -642,6 +642,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	public String getProblemDetailsAndStatus()
 	{
 		session = request.getSession();
+		Long userId = null;
 		pHistoryId = Long.parseLong(request.getParameter("pHistoryId"));
 		requestFrom = request.getParameter("requestFrom");
 		if(requestFrom!=null && !requestFrom.equalsIgnoreCase("")){
@@ -654,6 +655,9 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		
 		if(regVO==null)
 			return ERROR;
+		
+		if(regVO != null)
+			userId = regVO.getRegistrationID();
 		
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
@@ -700,9 +704,14 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.MANDALS_PROB,mandalListForProb);	
 		session.setAttribute(ISessionConstants.VILLAGES_PROB,villagesListForProb);
 		
-		problemCompleteDetailsVO = problemManagementService.getProblemCompleteInformationByProblemHistory(pHistoryId);
+		problemCompleteDetailsVO = problemManagementService.getProblemCompleteInformationByProblemHistory(userId , pHistoryId);
+		
+		if(problemCompleteDetailsVO == null)
+			return ERROR;
 		
 		return Action.SUCCESS;
+			
+		
 	}
 	
 	public String getProblemCompleteDetails(){
