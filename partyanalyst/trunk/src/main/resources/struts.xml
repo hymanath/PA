@@ -3111,11 +3111,6 @@
 				<param name="root">selectOptionsList</param>
 			</result>
 		</action>	
-		<action name="homePageUpdates" class="homePageAction" method="getRecentlyUpdatePhotosVideosNewsForACandidate">
-			<result type="json" name="success">
-				<param name="root">resultMap</param>				
-			</result>		
-		</action>
 				
 		<action name="getministersDetailsAction" class="ministerAnalysisAction" method="getMinisterData">
 			<result type="json" name="success">
