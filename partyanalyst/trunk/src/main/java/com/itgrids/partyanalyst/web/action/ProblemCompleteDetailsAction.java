@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
@@ -188,12 +187,21 @@ ServletRequestAware, ServletContextAware  {
 		}
 		else
 			logInStatus = false;
+		
 		return Action.SUCCESS;
 	}
 	
-	public String getProblemCompleteDetails(){
+	public String getProblemCompleteDetails()
+	{
 		String param = null;
 		param = getTask();
+		userId = null;
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		
+		if(regVO != null)
+			userId = regVO.getRegistrationID();
 		
 		try {
 			jObj = new JSONObject(param);
@@ -201,12 +209,9 @@ ServletRequestAware, ServletContextAware  {
 		} catch (ParseException e) {
 			e.printStackTrace();			
 		}
-		if(log.isDebugEnabled())
-			log.debug("Task::"+jObj.getString("task"));
-		Long problemHistoryId = jObj.getLong("problemHistoryId");
-		log.info("problemHistoryId:"+problemHistoryId);
 		
-		problemBeanVO = problemManagementService.getProblemCompleteInfo(problemHistoryId);
+		problemBeanVO = problemManagementService.getProblemCompleteInfoOfAFreeUserProblem(jObj.getLong("problemHistoryId"),userId);
+		
 		return Action.SUCCESS;
 	}
 	
@@ -219,7 +224,6 @@ ServletRequestAware, ServletContextAware  {
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		log.debug("Task::"+jObj.getString("task"));
