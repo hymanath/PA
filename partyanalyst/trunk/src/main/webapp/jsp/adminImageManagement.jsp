@@ -49,72 +49,70 @@
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
 	
-	<style type="text/css">
-		.calendarWidth
-		{
-			height:24px;
-			width:22px;
-		}
-		.detailsHead {
-			color:#247CD4;
-			font-size:19px;
-			font-weight:bold;
-			padding:10px;
-			text-align:center;
-		}
-		#betweenDatesDiv
-		{
-			text-align:left;
-			margin-left:20px;
-		}		
-		#currentDateApprovalProblemsDiv
-		{
-			text-align:left;
-			margin-top:30px;
-			margin-left:54px;	
-			margin-bottom:30px;		
-		}
-		#dropDownSelectDiv
-		{
-			//text-align:left;
-			//margin-top:30px;
-			//margin-left:52px;					
-		}
-	</style>
-	<script type="text/javascript">	
-	var Localization = { <%		
-			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
-			String select = rb.getString("select");
-			String imageName = rb.getString("imageName");
-			String title = rb.getString("title");
-			String description = rb.getString("description");
-			String filePath = rb.getString("filePath");
-		%> }
-	var ResultDataTable;
-    var recordsArray = new Array();
-    var selectedProblemFileIdsArray = new Array();	
+<style type="text/css">
+	.calendarWidth
+	{
+		height:24px;
+		width:22px;
+	}
+	.detailsHead {
+		color:#247CD4;
+		font-size:19px;
+		font-weight:bold;
+		padding:10px;
+		text-align:center;
+	}
+	#betweenDatesDiv
+	{
+		text-align:left;
+		margin-left:20px;
+	}		
+	#currentDateApprovalProblemsDiv
+	{
+		text-align:left;
+		margin-top:30px;
+		margin-left:54px;	
+		margin-bottom:30px;		
+	}
+	#dropDownSelectDiv
+	{
+		/*text-align:left;
+		//margin-top:30px;
+		//margin-left:52px;	*/				
+	}
+</style>
+<script type="text/javascript">	
+var Localization = { <%		
+		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
+		String select = rb.getString("select");
+		String imageName = rb.getString("imageName");
+		String title = rb.getString("title");
+		String description = rb.getString("description");
+		String filePath = rb.getString("filePath");
+	%> }
+var ResultDataTable;
+var recordsArray = new Array();
+var selectedProblemFileIdsArray = new Array();	
 
-	function hasRecordInArray(record)
-		{	
-			var status = true;
-			for(i=0;i<recordsArray.length;i++)
-			{	
-				if(recordsArray[i]._sId == record._sId)
-					status=false;
-			}
-			return status;
-		} 
-        
-
-
-		function deleteRecordFromArray(record)
-		{
-			for(i=0;i<recordsArray.length;i++)
-			{	
-				if(recordsArray[i]._sId == record._sId)
-					recordsArray.splice(i,1);
-			}		
-		}
+function hasRecordInArray(record)
+{	
+	var status = true;
+	for(i=0;i<recordsArray.length;i++)
+	{	
+		if(recordsArray[i]._sId == record._sId)
+			status=false;
+	}
+	return status;
+} 
+ 
+function deleteRecordFromArray(record)
+{
+	for(i=0;i<recordsArray.length;i++)
+	{	
+		if(recordsArray[i]._sId == record._sId)
+			recordsArray.splice(i,1);
+	}		
+}
 
 
 function getImagesInfo(problemFileId,fileName)
@@ -126,31 +124,38 @@ function getImagesInfo(problemFileId,fileName)
 }
 
 
-		function getSelectedRecords(value)
+function getSelectedRecords(value)
+{
+	var selectedProblemFileIdsArray = new Array();
+	selectedChoice = value;
+	if(selectedProblemFileIdsArray.length>0)
+	{
+		while(selectedProblemFileIdsArray.length>0)
 		{
-			selectedProblemHistoryIdsArray=new Array();
-			selectedChoice = value;
-			
-			if(value!="select"){
-				for(var i in recordsArray)
-				{
-					selectedProblemFileIdsArray.push(recordsArray[i]._oData.problemFileId);			
-				}
-				
-				if(selectedChoice!="select"){
-					var jsObj=
-					{		
-							choice : selectedChoice,			
-							selectedProblemFileIds:selectedProblemFileIdsArray,
-							task:"performDeletionOrAcceptenceImage"						
-					};
-				
-					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-					var url = "<%=request.getContextPath()%>/getAllImageDetails.action?"+rparam;					
-					callAjax(rparam,jsObj,url);					
-				}
-			}			
-		}	
+			selectedProblemFileIdsArray.pop();
+		}
+
+	}
+	if(value!="select"){
+		for(var i in recordsArray)
+		{
+		selectedProblemFileIdsArray.push(recordsArray[i]._oData.problemFileId);			
+		}
+		
+		if(selectedChoice!="select"){
+			var jsObj=
+			{		
+					choice : selectedChoice,			
+					selectedProblemFileIds:selectedProblemFileIdsArray,
+					task:"performDeletionOrAcceptenceImage"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getAllImageDetails.action?"+rparam;					
+			callAjax(rparam,jsObj,url);					
+		}
+	}			
+}	
 
  YAHOO.widget.DataTable.viewDetails = function(elLiner, oRecord, oColumn, oData) 
   {
@@ -165,21 +170,23 @@ function getImagesInfo(problemFileId,fileName)
 function buildNewImageDataTable(result)
 { 
  
-  
-
-  
-  var ColumnDefs = [ 	    
-	                        {key:"select", label: "Select", formatter:"checkbox"},
-                            {key:"problemFileId", hidden: true},
-	                        {key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
-		    	            {key:"fileTitle1", label: "Title", sortable: true},
-							{key:"fileDescription1", label: "Description", sortable: true},
-                             	{key:"problem", label: "Problem", sortable: true},
-		    	           	{key:"scope", label: "Severity", sortable: true},
-	                         {key:"existingFrom", label: "Existing From", sortable: true},
-	                         {key:"identifiedOn", label: "Identification Date", sortable: true},
-	                        {key:"name", label: "Source", sortable: true}
-		    	        ]; 
+  while(recordsArray.length >0)
+	{
+	  recordsArray.pop();
+	}
+  var ColumnDefs =[ 
+					{key:"select", label: "Select", formatter:"checkbox"},
+					{key:"problemFileId", hidden: true},
+					{key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
+					{key:"fileTitle1", label: "Title", sortable: true},
+					{key:"fileDescription1", label: "Description", sortable: true},
+						{key:"problem", label: "Problem", sortable: true},
+					{key:"scope", label: "Severity", sortable: true},
+					 {key:"existingFrom", label: "Existing From", sortable: true},
+					 {key:"identifiedOn", label: "Identification Date", sortable: true},
+					{key:"name", label: "Source", sortable: true},
+					{key:"description", label: "Status", sortable: true}
+		    	 ]; 
 	var DataSource = new YAHOO.util.DataSource(result); 
 	
 
@@ -270,68 +277,75 @@ function getAllProblemsBetweenDates()
 			callAjax(rparam,jsObj,url);
 		}
 
-		function buildBetweenDatesImagesTable(result)
-		{
-	
-		var ColumnDefs = [ 	    
-	                        {key:"select", label: "Select", formatter:"checkbox"},
-                            {key:"problemFileId", hidden: true},
-	                        {key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
-		    	            {key:"fileTitle1", label: "Title", sortable: true},
-							{key:"fileDescription1", label: "Description", sortable: true},
-                             	{key:"problem", label: "Problem", sortable: true},
-		    	           	{key:"scope", label: "Severity", sortable: true},
-	                         {key:"existingFrom", label: "Existing From", sortable: true},
-	                         {key:"identifiedOn", label: "Identification Date", sortable: true},
-	                        {key:"name", label: "Source", sortable: true}
-		    	        ]; 
-		var DataSource = new YAHOO.util.DataSource(result); 
-	
-
-
-    var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10 
-			    }) 
-				}; 
-				
-	var myDataSource = new YAHOO.util.DataSource(result);
-					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
-					myDataSource.responseschema = {
-						 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1"]
-					};
-
-		 ResultDataTable = new YAHOO.widget.DataTable("imageTable", ColumnDefs,myDataSource, myConfigs);
-         
-
-		 ResultDataTable.subscribe("checkboxClickEvent", function(oArgs) {
-					  	    elCheckbox = oArgs.target; 
-							
-					  	    var newValue = elCheckbox.checked; 
-					  	    var record = this.getRecord(elCheckbox); 
-					  	    var column = this.getColumn(elCheckbox); 
-					  	    record.setData(column.key,newValue);				  	
-					  	    					  	        
-					  	   	if(newValue && hasRecordInArray(record))
-					  	  	{
-						  	  	recordsArray.push(record);					  	  	
-					  	  	}else
-							{
-								deleteRecordFromArray(record);
-								elCheckbox.checked = false;							
-							}	  	  				  	  	
-				});	
-				return { 
-		            oDS: myDataSource, 
-		            oDT: ResultDataTable 
-		      };	    
-		
+function buildBetweenDatesImagesTable(result)
+{
+	while(recordsArray.length >0)
+	{
+	  recordsArray.pop();
 	}
-
-
-	function buildParticularDatesImagesTable(result){
-
 var ColumnDefs = [ 	    
+					{key:"select", label: "Select", formatter:"checkbox"},
+					{key:"problemFileId", hidden: true},
+					{key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
+					{key:"fileTitle1", label: "Title", sortable: true},
+					{key:"fileDescription1", label: "Description", sortable: true},
+						{key:"problem", label: "Problem", sortable: true},
+					{key:"scope", label: "Severity", sortable: true},
+					 {key:"existingFrom", label: "Existing From", sortable: true},
+					 {key:"identifiedOn", label: "Identification Date", sortable: true},
+					{key:"name", label: "Source", sortable: true}
+				]; 
+var DataSource = new YAHOO.util.DataSource(result); 
+
+
+
+var myConfigs = { 
+		paginator : new YAHOO.widget.Paginator({ 
+		rowsPerPage    : 10 
+		}) 
+		}; 
+		
+var myDataSource = new YAHOO.util.DataSource(result);
+			myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+			myDataSource.responseschema = {
+				 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1"]
+			};
+
+ ResultDataTable = new YAHOO.widget.DataTable("imageTable", ColumnDefs,myDataSource, myConfigs);
+ 
+
+ ResultDataTable.subscribe("checkboxClickEvent", function(oArgs) {
+					elCheckbox = oArgs.target; 
+					
+					var newValue = elCheckbox.checked; 
+					var record = this.getRecord(elCheckbox); 
+					var column = this.getColumn(elCheckbox); 
+					record.setData(column.key,newValue);				  	
+													
+					if(newValue && hasRecordInArray(record))
+					{
+						recordsArray.push(record);					  	  	
+					}else
+					{
+						deleteRecordFromArray(record);
+						elCheckbox.checked = false;							
+					}	  	  				  	  	
+		});	
+		return { 
+			oDS: myDataSource, 
+			oDT: ResultDataTable 
+	  };	    
+
+}
+
+
+function buildParticularDatesImagesTable(result){
+	
+	while(recordsArray.length >0)
+		{
+		  recordsArray.pop();
+		}
+	var ColumnDefs = [ 	    
 	                        {key:"select", label: "Select", formatter:"checkbox"},
                             {key:"problemFileId", hidden: true},
 	                        {key:"fileName1", label: "View", sortable: true,  formatter:YAHOO.widget.DataTable.viewDetails},
@@ -386,64 +400,60 @@ var ColumnDefs = [
 		
 	}
 
-		function getImages()
-		{
-			
-			var jsObj=
-			{						
-					task:"getImage"						
-			};
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getAllImageDetails.action?"+rparam;					
-			callAjax(rparam,jsObj,url);
-		}
-       function callAjax(param,jsObj,url){
-			
-			var results;	
-			var callback = {			
-			    success : function( o ) {
-					try {							
-											
-							results = YAHOO.lang.JSON.parse(o.responseText);		
-							if(jsObj.task == "getImage"){
-							buildNewImageDataTable(results);
-							}	
-							
-                             if(jsObj.task == "performDeletionOrAcceptenceImage"){
-							  getImages();
-							}
-							if(jsObj.task =="betweenDatesImages")
-						{
-								buildBetweenDatesImagesTable(results);
-						}
-						if(jsObj.task == "particularDateImages")
-						{
-
-							buildParticularDatesImagesTable(results);
-						}
-
-					}catch (e) {   		
-					   	alert("Invalid JSON result" + e);   
-					}  
-			    },
-			    scope : this,
-			    failure : function( o ) {
-			     			//alert( "Failed to load result" + o.status + " " + o.statusText);
-			              }
-			    };
+function getImages()
+{
 	
-			YAHOO.util.Connect.asyncRequest('GET', url, callback);
-		}	
-		
-	</script>	
+	var jsObj=
+	{						
+			task:"getImage"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getAllImageDetails.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
+function callAjax(param,jsObj,url){
+	
+	var results;	
+	var callback = {			
+		success : function( o ) {
+			try {							
+									
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "getImage"){
+					buildNewImageDataTable(results);
+					}	
+					
+					 if(jsObj.task == "performDeletionOrAcceptenceImage"){
+					  getImages();
+					}
+					if(jsObj.task =="betweenDatesImages")
+				{
+						buildBetweenDatesImagesTable(results);
+				}
+				if(jsObj.task == "particularDateImages")
+				{
+
+					buildParticularDatesImagesTable(results);
+				}
+
+			}catch (e) {   		
+				alert("Invalid JSON result" + e);   
+			}  
+		},
+		scope : this,
+		failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				  }
+		};
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}	
+
+</script>	
 
 </head>
 <body>
-
-<script type="text/javascript">	
-getImages();
-</script>
 <div class="detailsHead">
 	 <u>Image Management Admin Control</u>
 </div>
@@ -539,25 +549,22 @@ getImages();
 		</tr>
 	</table>
 </div>	
-
-
-
-
 <table>
 <tr>
 <td>
 <div>
-<input type="button" value="Approve" onclick="getSelectedRecords('accept')"></input>
-<input type="button" value="Reject" onclick="getSelectedRecords('delete')"></input>
+<input id="approveBtnId" type="button" value="Approve" onclick="getSelectedRecords('accept')"></input>
+<input id="rejectBtnId" type="button" value="Reject" onclick="getSelectedRecords('delete')"></input>
 </div>
-
 </td>
 </tr>
 <tr>
 <td><div id="imageTable" ></div></td>
 </tr>
 </table>
-
+<script type="text/javascript">	
+getImages();
+</script>
 
 </body>
 </html>
