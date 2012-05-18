@@ -61,11 +61,11 @@
 <div class="Query-box">
 <h2>Get Started Now  (or) Any questions?</h2>
 <span>
-Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products.
+ &nbsp;&nbsp;Our qualified team will be happy to answer all your questions about Voters Pulse Services and Other Products.
 <br/><br/>
 <span style="width:680px;display:table;text-align:center;color:blue;">
-Please call us : +919676696760
-<br/>(or)<br/>
+Please call us : +91 9676696760
+<br /><br />(or)<br /><br />
 Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </span>
  </span>
 </div>
@@ -103,7 +103,24 @@ As a Politician or Political Party, News Monitoring and analyzing is very import
 
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
-	<img src="images/Voterspulse1.png" alt="survey-report" /><br/><img src="images/Voterspulse2.png" alt="survey-report"/>
+	<span style="color:#E47519;font-size:20px; font-family: fantasy; margin-left: 190px; "><B>Voters Pulse - Election & Political Survey Reports Glance</B></span><br></br>
+	<span style="width:100px;font-size: 12px; font-family: verdana; margin-left: 68px; "><img src="images/icons/diamond.png" />&nbsp;&nbsp;Partyanalyst use scientific methodologies to define the sample and sampling mechanisms.With this report we can understand</span> <span style="margin-left: 68px; ">geographically up to village level where we are strong and where opposition parties are in upper hand.</span>
+
+	<!--<img src="images/VotersPulseR1.png" alt="Election Survey Report Political Survey Report" /><br/>-->
+	<div style="color:#E47519;font-size:20px; font-family: fantasy; margin-left: 130px;margin-top:20px; "><B>Survey Output For Buchireddypalem Mandal Panchayat Wise</B>
+	<img src="images/panchayth_wise_survey.png" /></div>
+	<div style="color:#E47519;font-size:20px; font-family: fantasy; margin-left: 115px; "><B>Buchireddypalem Mandal Panchayats Wise Results By Percentage In 2009</B>
+	<img style="margin-left: 22px;" src="images/voters_pulse_by_percent.png" alt="Election Survey Report Political Survey Report"/></div>
+	<div  style="margin: 20px;">
+	<img alt="Election Survey Report Political Survey Report" src="images/election_res_graph.png" style="margin-left: 115px;" />
+	</div>
+	<div><span style="color: rgb(228, 117, 25); font-size: 20px; font-family: fantasy; font-weight: bold; margin-left: 30px;">Demographic Analysis</span>:
+	<div style="margin-left:80px;margin-top:10px;"><img src="images/icons/diamond.png"/>&nbsp;&nbsp;Voters preferences based on gender, age, caste, etc............</div>
+	<div style="font-weight:bold;color:#5E94D6;margin-left:40px;margin-top:10px;text-decoration:underline;font-family:tahoma;font-size:18px; ">Gender Wise:<img alt="Election Survey Report Political Survey Report" src="images/gender_wise.png"></div>
+	
+	<div style="font-weight:bold;color:#5E94D6; "><span style="margin-left: 125px; text-decoration: underline; font-family: tahoma; font-size: 19px;">Age Wise:</span><img alt="Election Survey Report Political Survey Report" src="images/age_wise.png" style="margin-left: 115px;"></div>
+	<div><img alt="Election Survey Report Political Survey Report" src="images/caste_wise.png" style="margin-left: 115px;"></div>
+	
 	</div>
 </div>
 <script>
