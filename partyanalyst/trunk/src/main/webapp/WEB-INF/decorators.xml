@@ -120,6 +120,7 @@
 		<pattern>/VotersPulse*</pattern>
 		<pattern>/constituencyProfileReport*</pattern>
 		<pattern>/partyCandidateAnalyzer*</pattern>
+		<pattern>/problemCompleteInfoAction*</pattern>
     </decorator>
 
 </decorators>
