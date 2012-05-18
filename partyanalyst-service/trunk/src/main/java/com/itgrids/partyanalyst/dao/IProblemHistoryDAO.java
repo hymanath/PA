@@ -160,4 +160,5 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public Long getCountOfNewlyPostedProblemsByFreeUser();
 	
+	public Long getFreeUserIdOfAProblem(Long problemHistoryId);
 }
