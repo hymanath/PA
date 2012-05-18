@@ -10,7 +10,6 @@
     width:962px;
 }
 
-img{border:1px solid #cdcdcd;}
 
 .resulttableclass a{text-decoration:none;}
 .resulttableclass a:hover{text-decoration:underline;}
@@ -118,7 +117,7 @@ img{border:1px solid #cdcdcd;}
 </table></td>-->
 
 <td valign="top">
-<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 24%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv" style="width: 301px;">
+<fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 91%;"><legend style="font-weight: bold;">About Mekapati Rajamohan Reddy </legend><div id="WinningCandidateDiv" style="width: 301px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
   <td style="width: 96px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/MEKAPATI RAJAMOHAN REDDY.jpg"></img></td>
@@ -140,7 +139,7 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
 <tr><td><b>Votes Margin % Gained	: </b></td><td>5.49%</td></tr>-->
 
 </table></div></fieldset></div></td>
-<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 20%;"><legend style="font-weight: bold;">About T SubbaRami Reddy </legend><div id="WinningCandidateDiv" style="width: 272px;">
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 91%;"><legend style="font-weight: bold;">About T SubbaRami Reddy </legend><div id="WinningCandidateDiv" style="width: 272px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
   <td style="width: 99px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/T SUBBARAMI REDDY.jpg"></img></td>
@@ -162,7 +161,7 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(508,'Par
 <tr><td><b>Votes Margin %	: </b></td><td>4.25 %</td></tr>-->
 
 </table></div></fieldset></td>
-<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 27%;"><legend style="font-weight: bold;">About Vanteru Venugopal Reddy</legend><div id="WinningCandidateDiv" style="width:306px;">
+<td valign="top"><fieldset id="WinningCandidateFieldSet" style="margin-top: 12px; width: 91%;"><legend style="font-weight: bold;">About Vanteru Venugopal Reddy</legend><div id="WinningCandidateDiv" style="width:306px;">
 <table class="legendTable" id="WinningCandidateTableClass">
  <tr>
   <td style="width: 87px;"><img onerror="setDefaultImage(this)" height="80" width="80" src="images/candidates/VANTERU VENUGOPAL REDDY.jpg"></img></td>
