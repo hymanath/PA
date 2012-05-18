@@ -330,7 +330,22 @@ a:hover {
  <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyPageAction.action?partyId=${partyId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
 </span>
 </div>
- <div class="main-bbg"></div></div><br></td></tr></table>
+
+<div class="main-bbg"></div></div><br></td></tr></table>
+
+<div style="text-align:center;margin-bottom:10px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0938408694174139";
+/* PartyPageHeader */
+google_ad_slot = "2678494123";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
 
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
@@ -600,6 +615,20 @@ a:hover {
 			   </div>
 			</s:if>
 			</div>
+
+	<div>
+	<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-0938408694174139";
+		/* CandidatePageRightBox */
+		google_ad_slot = "5426332176";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
 			
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
@@ -2515,7 +2544,7 @@ function buildPartyManifestos(results)
 		 str+='</div>';
 		 
 
-		str+='<div class="more">';
+		str+='<div class="more" style="margin-bottom: 35px;">';
 		str+='<a href="javascript:{}" onclick="PartyManifestoPopup()">More</a></div>';
 		str+='</fieldset>';
 		str+='<div id="buildManifestoGallaryDiv"><div id="selectionDiv"></div>';
