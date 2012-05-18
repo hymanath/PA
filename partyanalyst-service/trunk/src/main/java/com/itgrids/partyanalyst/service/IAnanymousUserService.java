@@ -70,4 +70,5 @@ public interface IAnanymousUserService {
 	
 	public void saveMailContacts(Long userId ,List<String> mailsList);
 	
+	public Long getUserConstituencyId(Long userId);
 }	
