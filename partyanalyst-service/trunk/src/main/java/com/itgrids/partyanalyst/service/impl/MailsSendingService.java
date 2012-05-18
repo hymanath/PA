@@ -329,7 +329,7 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
 									"Reference Number : <b> "+problemDetailsVO.getSource()+"</b><br>" +
 											"To share,comment,like and More Details about the Problem - " +
-											"<a href='http://www.partyanalyst.com/problemCompleteDetailsAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div>" +
+											"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div>" +
 													"<div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			
@@ -367,7 +367,7 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
 									"To View Problem details and comments on this Problem - " +
-									"<a href='http://www.partyanalyst.com/problemCompleteDetailsAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div>" +
+									"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"'>ClickHere</a></div>" +
 											"<div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			
