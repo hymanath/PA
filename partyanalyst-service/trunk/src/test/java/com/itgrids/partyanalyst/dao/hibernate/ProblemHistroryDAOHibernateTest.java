@@ -249,7 +249,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	
 	/*public void testFindProblemCompleteInfo(){
 		
-		List list1 = problemHistoryDAO.findProblemCompleteInfo(59l);
+		List list1 = problemHistoryDAO.findProblemCompleteInfo(266l);
 		System.out.println(list1.size());
 		if(list1.size()!=0){
 			for(int i=0;i<list1.size();i++){
@@ -264,14 +264,12 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println("pid"+parms[6].toString());
 				System.out.println("phid"+parms[7].toString());
 				System.out.println("pFrom"+parms[8].toString());
-				System.out.println("from"+parms[9].toString());
-				System.out.println("from"+parms[10].toString());
 				
 			}
 		}
 		
-	}
-	*/
+	}*/
+	
 	/*public void testgetAllPostedProblemsByAnanymousUserId(){
 		
 		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "asc", "model.problemLocation.problemAndProblemSource.problem.problem", IConstants.TOTAL);
@@ -535,9 +533,56 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetProblemCountOfFreeUser()
+	/*public void testGetProblemCountOfFreeUser()
 	{
 		System.out.println(problemHistoryDAO.getProblemCountOfFreeUser(411l));
+	}*/
+	
+	/*public void testGetAllPostedProblemCount()
+	{
+		List result = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(10l);
+		if(result != null && result.size() > 0)
+		{
+			System.out.println(result.size());
+			for(int i=0 ; i<result.size() ; i++)
+			{
+				System.out.println(result.size());
+				//Object[] parms = (Object[])result.get(i);
+				System.out.println(result.get(0));
+			}
+		}
+	}*/
+	
+	/*public void testGetProblemCompleteInfo()
+	{
+		List result = problemHistoryDAO.getAllProblemInfo(271l, 850l);
+		if(result != null && result.size() > 0)
+		{
+			for(int i=0 ; i<result.size() ; i++)
+			{
+				System.out.println(result.size());
+				Object[] parms = (Object[])result.get(i);
+				
+				System.out.println("prob"+parms[0].toString());
+				System.out.println("desc"+parms[1].toString());
+				System.out.println("scope"+parms[2].toString());
+				System.out.println("ilv"+parms[3].toString());
+				System.out.println("ion"+parms[4].toString());
+				System.out.println("name"+parms[5].toString());
+				System.out.println("pid"+parms[6].toString());
+				System.out.println("phid"+parms[7].toString());
+				System.out.println("pFrom"+parms[8].toString());
+				System.out.println("status"+parms[9].toString());
+				System.out.println(""+parms[10]);
+				System.out.println("");
+								
+			}
+		}
+	}*/
+	
+	public void testGetFreeUserIdOfAProblem()
+	{
+		System.out.println("----"+problemHistoryDAO.getFreeUserIdOfAProblem(244l));
 	}
 }	
 
