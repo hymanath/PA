@@ -111,9 +111,24 @@ Get News Reports
 
 <div id="promodiv" style="display:none;">
 	<div id="fancydivbox" style="height:450px;overflow-x:hidden;overflow-y:scroll;">
-	<img src="images/NewsSample/News_Service1.PNG" /><br/>
-	<img src="images/NewsSample/News_service2.PNG" />
-	</div>
+	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Search News By Different Options</div>
+	<img src="images/NewsSample/News_Service1.PNG" style="margin-bottom: -45px;"/>
+	<div style="text-align: center; margin-top: 18px; font-weight: bold; font-size: 20px; color:#4BACC6;">Different Levels Wise News</div>
+	
+	<table style="width: 70%; margin-top: 17px; border: 1px solid #d3d3d3; margin-left: 137px;">
+	<tr>
+	<td>
+	<div style="text-align: center;font-weight: bold; font-size: 20px; color:#4BACC6;">Category Wise News</div>
+	<img src="images/NewsSample/category_news.png" /></td>
+	<td>
+	<div style="text-align: center;font-weight: bold; font-size: 20px; color:#4BACC6;">Source Wise News
+	<img src="images/NewsSample/source_news.png" /></div></td></tr>
+	<tr>
+	<td><div style="text-align: center;font-weight: bold; font-size: 20px; color:#4BACC6;">Impact Level Wise News<img src="images/NewsSample/impact_level.png" /></div></td>
+	<td valign="top"><div style="text-align: center;font-weight: bold; font-size: 20px; color:#4BACC6;">Importance Wise News<img src="images/NewsSample/importance_news.png" /></div></td>
+	
+	</tr>
+	</table></div>
 </div>
 <script>
 $(document).ready(function(){
