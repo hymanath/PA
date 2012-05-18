@@ -235,7 +235,7 @@ function showProblemAllComments(results)
 	var str = '';
 	if(results.problemApproovals == null || results.problemApproovals.length == 0)
 	{
-		str+='<div id="description">No Previous Posts</div><hr>';
+		str+='<div id="description" style="text-align:center;">No Previous Posts</div><hr>';
 		showAllPostsDivEl.innerHTML = str;
 		return;
 	}
