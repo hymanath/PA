@@ -1258,7 +1258,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var data = results.problemsInfo[i];
 		
 		str += '<div class="postedDiv_dataInfo_main">';
-		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
+		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteInfoAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
 		str += '<div class="postedDiv_dataInfo_body">';
 		str += '<table class="postedDiv_dataInfo_table" width="100%">';
 		str += '<tr>';
