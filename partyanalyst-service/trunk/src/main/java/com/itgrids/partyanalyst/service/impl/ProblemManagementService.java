@@ -2152,6 +2152,8 @@ public class ProblemManagementService implements IProblemManagementService {
 				result.setProblemHistoryId((Long) parms[7]);
 				result.setExistingFrom(sdf.format(eDate));
 				result.setStatus(parms[9].toString());
+				result.setLastName(parms[11] != null?parms[11].toString():"");
+				result.setProblemLocationId((Long) parms[3]);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5141,6 +5143,16 @@ public class ProblemManagementService implements IProblemManagementService {
 				
 				//getting details for a problem by using id
 				ProblemBeanVO problemBeanVO = getProblemCompleteInfo(problemId);
+				int regionScope = problemBeanVO.getProblemImpactLevelId().intValue();
+				if(regionScope == 4){
+					problemBeanVO.setUrl("constituencyPageAction.action?constituencyId="+problemBeanVO.getProblemLocationId()+"");
+				}
+				else if(regionScope == 3){
+					problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemLocationId()+"&districtName="+problemBeanVO.getProblemLocation()+"");
+				}
+                else if(regionScope == 2){
+                	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemLocationId()+"");
+				}
 				problemBeanVO.setTotalResultsCount(getProblemsCount().toString());
 				//getting images for a problem
 			    List<FileVO> fileVOList =  getAllProblemRelatedImages(problemId);
