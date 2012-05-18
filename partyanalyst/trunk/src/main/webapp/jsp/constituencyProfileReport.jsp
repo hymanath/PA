@@ -48,8 +48,8 @@ In this competitive Politics, how you will know the past election results in a b
 <ul class="Report-feature-box">
 		<li class="gradBlueclass leftclass">
 			<span>Demographic Wise - Party's Performances </span>
-            <span>Polling Percentages vs Party's Performances</span>
-            <span>Booth Wise -Party Weak and Strong Areas</span>
+            <span>Polling Percentages Vs Party's Performances</span>
+            <span>Booth Wise - Party Strength  and Weak Areas</span>
             <span>Cross Voting Report</span>
 			
 		</li>
@@ -61,9 +61,9 @@ In this competitive Politics, how you will know the past election results in a b
 		
 		<li class="gradBlueclass rightclass">
 			<span>Mandal Wise Election Results</span>
-            <span>Comparison of Different Mandal's between 2004 & 2009</span>
+            <span>Comparison of Different Mandal's between 2004 &amp; 2009</span>
             <span>Panchayat Wise Voting Percentage  </span>
-            <span>Panchayat Wise Different Party's Performance</span>
+            <span>Panchayat Wise Different Parties Performance</span>
 			
 		</li>
 				
