@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -63,6 +64,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String feedback = "true"; 
     private IProblemManagementService problemManagementService;
 	private Long problemCount;
+	private Long freeUserConstituencyId;
+	private IAnanymousUserService ananymousUserService;
 	
 	public void setResultMap(Map<String, List<FileVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -245,6 +248,22 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setProblemCount(Long problemCount) {
 		this.problemCount = problemCount;
 	}
+	
+	public Long getFreeUserConstituencyId() {
+		return freeUserConstituencyId;
+	}
+
+	public void setFreeUserConstituencyId(Long freeUserConstituencyId) {
+		this.freeUserConstituencyId = freeUserConstituencyId;
+	}
+
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
 
 	public String execute()
 	{	
@@ -285,6 +304,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
 		
 		problemCount = problemManagementService.getProblemsCount();
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,15);
+		if(user != null && user.getUserType().equalsIgnoreCase(IConstants.FREE_USER)){
+			freeUserConstituencyId = ananymousUserService.getUserConstituencyId(user.getRegistrationID());
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -382,17 +405,4 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	 return imagePath;
 	}
 	
-	public String getRecentlyUpdatePhotosVideosNewsForACandidate(){
-		
-		if(task != null){
-			try{
-				jObj = new JSONObject(getTask());				
-				resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,15);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-		
-		return SUCCESS;
-	}
 }
