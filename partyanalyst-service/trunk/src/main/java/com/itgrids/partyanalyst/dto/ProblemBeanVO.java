@@ -96,8 +96,9 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long discommentCount;
 	private Long politicalCount;
 	private long feedBackCount;
+	private String lastName;
+    private String url;
 	
-    
 	public long getFeedBackCount() {
 		return feedBackCount;
 	}
@@ -802,6 +803,22 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setFileCount(int fileCount) {
 		this.fileCount = fileCount;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	
