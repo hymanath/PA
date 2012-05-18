@@ -592,20 +592,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li><img alt="" src="'+results[1].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li><img alt="" src="'+results[2].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -830,7 +830,19 @@ $(document).ready(function() {
 <body>
 <!--CONTENT MAIN SECTION START-->
 <!--PROFILE LEFT CONENT SECTION START-->
-
+<div style="text-align:center;margin-bottom:10px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0938408694174139";
+/* PartyPageHeader */
+google_ad_slot = "2678494123";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
 <div class="main-mbg">${specialPageVO.heading}
 <span style="margin-top:10px;margin-right:30px;float:right">
 <g:plusone size="medium"></g:plusone>
@@ -1013,13 +1025,27 @@ Tweet</a>
     </div>
   </s:if>
     <s:if test="fileVOList != null && fileVOList.size() > 4"> 
-	 <div class="more"><a onClick="videoGallaryPopUp(<s:property value ='fileVOList.size'/>);" href="javascript:{};">More</a></div>
+	 <div class="more"><a onClick="videoGallaryPopUp(<s:property value ='fileVOList.size'/>);" href="javascript:{};" style="margin-bottom:30px;">More</a></div>
 	 </s:if>
 
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
 	</div>
 	<div id="videoGallaryPopUpDiv"></div>
+
+<div>
+	<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-0938408694174139";
+		/* CandidatePageRightBox */
+		google_ad_slot = "5426332176";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
 
  <!-- VIDEOS SECTION END--> 
 
