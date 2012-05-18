@@ -59,7 +59,7 @@ public interface IProblemManagementService {
 	
 	public ProblemsOfUserVO getUserProblemsInDifferentStagesByFilters(Long userId,Long statusId,Date startDate,Date endDate,Integer startIndex,Integer maxResults);
 	
-	public ProblemCompleteDetailsVO getProblemCompleteInformationByProblemHistory(Long problemHistoryId);
+	public ProblemCompleteDetailsVO getProblemCompleteInformationByProblemHistory(Long userId,Long problemHistoryId);
 	
 	public List<SelectOptionVO> getDepartmentScopesForAnUser(Long userId);
 	
@@ -122,4 +122,6 @@ public interface IProblemManagementService {
 	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex);
 	
 	public Long getProblemsCount();
+	
+	public ProblemBeanVO getProblemCompleteInfoOfAFreeUserProblem(Long problemHistoryId, Long userId); 
 }
