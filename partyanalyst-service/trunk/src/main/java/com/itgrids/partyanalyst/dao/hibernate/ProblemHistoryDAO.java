@@ -359,7 +359,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" model.problemHistoryId,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.existingFrom,");
 		conditionQuery.append(" model.problemStatus.status,");
-		conditionQuery.append(" model.problemLocation.problemImpactLevel.regionScopesId");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel.regionScopesId,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.lastName ");
 		conditionQuery.append(" from ProblemHistory model ");
 		return conditionQuery.toString();
 	}
