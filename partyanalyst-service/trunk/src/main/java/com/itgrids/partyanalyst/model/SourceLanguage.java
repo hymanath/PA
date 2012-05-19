@@ -38,7 +38,8 @@ public class SourceLanguage extends BaseModel implements java.io.Serializable {
 	private Long languageId;
 	private String language;
 	private Set<File> files = new HashSet<File>(0);
-
+	private Set<FileSourceLanguage> fileSourceLanguage = new HashSet<FileSourceLanguage>(0);
+	
 	/** default constructor */
 	public SourceLanguage() {
 
@@ -78,6 +79,17 @@ public class SourceLanguage extends BaseModel implements java.io.Serializable {
 
 	public void setFiles(Set<File> files) {
 		this.files = files;
+	}
+
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sourceLanguage")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<FileSourceLanguage> getFileSourceLanguage() {
+		return fileSourceLanguage;
+	}
+
+	public void setFileSourceLanguage(Set<FileSourceLanguage> fileSourceLanguage) {
+		this.fileSourceLanguage = fileSourceLanguage;
 	}
 
 }
