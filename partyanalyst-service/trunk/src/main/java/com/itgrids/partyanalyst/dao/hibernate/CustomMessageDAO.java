@@ -147,5 +147,61 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		queryObject.setParameter("messageType", IConstants.PENDING);
 		
 		return (Long)queryObject.uniqueResult();
-	}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getPendingUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.recepientId.name,model.recepientId.lastName,model.recepientId.userId,model.recepientId.constituency.name,model.recepientId.constituency.constituencyId, model ");
+		query.append(" from CustomMessage model where model.senderId.userId = :userId and ");
+		query.append(" model.messageType.messageType = :messageType and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append(" model.recepientId.state.stateId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append(" model.recepientId.district.districtId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append(" model.recepientId.constituency.constituencyId in (:locationIds)) ");
+		}
+
+		if(nameString != null && !nameString.trim().equalsIgnoreCase(""))
+		{
+			query.append("and (model.recepientId.name like '"+nameString+"%' or model.recepientId.lastName like '"+nameString+"%')");
+		}
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId", userId);
+		queryObject.setParameter("messageType", IConstants.PENDING);
+
+		if(startIndex != null)
+			queryObject.setFirstResult(startIndex.intValue());
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getPendingUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.recepientId.userId from CustomMessage model where model.senderId.userId = :userId and ");
+		query.append(" model.messageType.messageType = :messageType and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append(" model.recepientId.state.stateId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append(" model.recepientId.district.districtId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append(" model.recepientId.constituency.constituencyId in (:locationIds)) ");
+		}
+
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId", userId);
+		queryObject.setParameter("messageType", IConstants.PENDING);
+
+		
+		return queryObject.list();
+	}
 }

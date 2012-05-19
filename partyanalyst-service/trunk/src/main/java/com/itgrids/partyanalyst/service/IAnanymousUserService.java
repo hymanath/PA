@@ -70,5 +70,8 @@ public interface IAnanymousUserService {
 	
 	public void saveMailContacts(Long userId ,List<String> mailsList);
 	
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocationAndStatus(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString);
+	
 	public Long getUserConstituencyId(Long userId);
+
 }	

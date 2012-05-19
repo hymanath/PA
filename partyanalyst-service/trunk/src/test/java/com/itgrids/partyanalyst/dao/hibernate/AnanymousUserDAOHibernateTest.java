@@ -148,10 +148,42 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 			
 	}*/
 	
-	public void testGetAllUsersCountInSelectedLocationsInAFilterView()
+	/*public void testGetAllUsersCountInSelectedLocationsInAFilterView()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
 		locationIds.add(323l);
 		System.out.println(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,IConstants.CONSTITUENCY_LEVEL,"kamal"));
+	}*/
+	
+	/*public void testGetNotConnectedUsersInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(3l);
+		List<Long> otherUsers = new ArrayList<Long>(0);
+		otherUsers.add(736l);
+		
+		List<Object> list = ananymousUserDAO.getNotConnectedUsersInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL, otherUsers, 20l, 0l, "Athidhi");
+		
+		System.out.println(list.size());
+		
+		for(Object obj : list)
+		{
+			Object[] params = (Object[]) obj ;
+			System.out.println();
+			for(Object o : params)
+				System.out.print("\t"+o.toString());
+		}
+	}*/
+	
+	public void testGetNotConnectedUsersCountForAUserInAFilterView(){
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(3l);
+		List<Long> otherUsers = new ArrayList<Long>(0);
+		otherUsers.add(736l);
+		otherUsers.add(411l);
+		otherUsers.add(583l);
+		otherUsers.add(473l);
+		Long notConnCnt=ananymousUserDAO.getNotConnectedUsersCountForAUserInAFilterView(411l, locationIds, IConstants.DISTRICT_LEVEL, "", otherUsers);
+		System.out.println(notConnCnt);		
 	}
 }

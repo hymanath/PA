@@ -104,12 +104,39 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(411l));
 	}*/
 	
-	public void testGetConnectedUsersCountForAUserInAFilterView()
+	/*public void testGetConnectedUsersCountForAUserInAFilterView()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
 		locationIds.add(323l);
 		System.out.println(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(411l,locationIds,IConstants.CONSTITUENCY_LEVEL,"pr"));
+	}*/
+	
+	/*public void testGetConnectedUsersInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(3l);
+		List<Object> list = userConnectedtoDAO.getConnectedUsersInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL, 10l, 0l, "");
+		
+		for(Object obj : list)
+		{
+			Object[] params = (Object[]) obj;
+			System.out.println();
+			for(Object param : params)
+				System.out.print("\t"+param.toString());
+		}
 	}
+	
+	public void testGetConnectedUserIdsInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(3l);
+		List<Long> list = userConnectedtoDAO.getConnectedUserIdsInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL);
+		
+		System.out.println(list.size());
+		
+		for(Long connId : list)
+			System.out.println(connId.toString());
+	}*/
 	
 	
 }

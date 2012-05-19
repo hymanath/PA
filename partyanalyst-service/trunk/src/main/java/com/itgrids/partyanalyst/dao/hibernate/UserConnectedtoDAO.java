@@ -134,4 +134,57 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		
 		return (Long)queryObject.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
+		StringBuilder query = new StringBuilder();
+		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append("from AnanymousUser model, UserConnectedto model1 where (model1.senderId.userId = :userId or model1.recepientId.userId = :userId) and ");
+		query.append("(model.userId = model1.recepientId or model.userId = model1.senderId) and model.userId != :userId and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("(model1.senderId.state.stateId in (:locationIds) and model1.recepientId.state.stateId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("(model1.senderId.district.districtId in (:locationIds) and model1.recepientId.district.districtId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("(model1.senderId.constituency.constituencyId in (:locationIds) and model1.recepientId.constituency.constituencyId in (:locationIds)) ");
+		}
+		if(nameString != null && !nameString.trim().equalsIgnoreCase(""))
+		{
+			query.append("and ((model1.senderId.name like '"+nameString+"%' or model1.senderId.lastName like '"+nameString+"%') or " +
+					"(model1.recepientId.name like '"+nameString+"%' or model1.recepientId.lastName like '"+nameString+"%'))");
+		}
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId", userId);
+
+		if(startIndex!=null)
+			queryObject.setFirstResult(startIndex.intValue());
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConnectedUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType) 
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.userId from AnanymousUser model, UserConnectedto model1 where (model1.senderId.userId = :userId or model1.recepientId.userId = :userId) and ");
+		query.append("(model.userId = model1.recepientId or model.userId = model1.senderId) and model.userId != :userId and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("(model1.senderId.state.stateId in (:locationIds) and model1.recepientId.state.stateId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("(model1.senderId.district.districtId in (:locationIds) and model1.recepientId.district.districtId in (:locationIds)) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("(model1.senderId.constituency.constituencyId in (:locationIds) and model1.recepientId.constituency.constituencyId in (:locationIds)) ");
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId", userId);
+
+		return queryObject.list();
+	}
 }
