@@ -715,31 +715,44 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getComments')
 							{
 								showFeedBackStatus(myResults);
-								
-
 								$("#taskId").prepend("<option value='0'>Select feedback</option>");
 								document.getElementById("taskId").value = 0;
 							}	
-							if(jsObj.task == 'submitRequirement'){
+							else if(jsObj.task == 'submitRequirement')
+							{
 								
 								showQuickRequestStatus(myResults);
 							}
-                            if(jsObj.task == 'submitAricle'){
-								
+                            else if(jsObj.task == 'submitAricle')
+							{
 								showArticlePostStatus(myResults);
 							}
-							if(jsObj.task == 'getQuestions'){
-								
+							else if(jsObj.task == 'getQuestions')
+							{
 								buildQuestions(myResults);
 							}
 
-							if(jsObj.task == 'getElectionsTypesInState'){
-								
+							else if(jsObj.task == 'getElectionsTypesInState')
+							{
 								buildElectionTypes(myResults);
 							}
 
-							if(jsObj.task == 'getElectionYearsForAState'){
+							else if(jsObj.task == 'getElectionYearsForAState')
+							{
 								buildElectionYearsSelect(myResults);
+							}
+							else if(jsObj.task == "checkAnanymousUserNameAvailability" || 
+									jsObj.task == "saveUserEmailAndsetAsUserName")
+							{
+								showDetails(results);
+							}
+							else if(jsObj.task == "saveUserEmailAndSendPwd")
+							{
+								showEmailStatus(results);
+							}
+							else if(jsObj.task == "getProblemDetails")
+							{
+								showProblemDetails(results);
 							}
 						}
 						catch(e)
