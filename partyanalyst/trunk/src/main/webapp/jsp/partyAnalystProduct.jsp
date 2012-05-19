@@ -19,13 +19,21 @@
 <link type="text/css" rel="stylesheet" href="styles/bubble.css">
 </head>
 <body>
+<style>
+  .features-box{
+    width: 274px;
+  }  
+  .helpbox-red{
+   width: 680px;
+  }
+</style>
 <div class="mainnewsdiv">
 <div class="Promo-box-left">
 <h1 class="gradlightblack">Election Analysis And Management Tool <div class="Sample-Report-top">
 
 </div></h1>
 <span class="titlespan">KNOW - ANALYZE - ACT</span>
-<p class="">First of its kind of election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools for Politicians and Political Parties.
+<p class="">First of its kind of election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools<br /> for Politicians and Political Parties.
 </p>
 <div class="why-box">
 <h2 class="oval-thought1">Why Party Analyst?</h2>
@@ -40,20 +48,19 @@ When you partner with Party Analyst, anything is possible, almost everything can
 <div class="Offer-box triangle-border">
 <h3>Special Offers from Party Analyst</h3>
 <ul>
-<li>Get 2 Year Subscription + Free Ad in the Constituency Page + Profile Page</li>
-<li>Get 1 Year Subscription with 25% discount + Profile Page</li>
-<li>Get 6 Months Subscription with 10% off.</li>
-<li>Startup Plans</li>
-<li>1 Month Subscription Plan</li>
+<li>For Parliament Constituency subscription get Free Ad in your Parliament Constituency and all Assembly Constituencies of Parliament Page + 3 Lakhs SMS Free.</li>
+<li>For Assembly Constituency subscription get Free Ad in the Constituency Page + 1 Lakh SMS Free.</li>
+<li>You can Gift the PartyAnalyst subscription to your Leader get 15% Off.</li>
 </ul>
 </div>
 <div class="features-box">
 <h3>Features</h3>
 <ul class="listdisc">
+<li>Profile Management <span>Which enables to publish your profile to every one.You can attach News articles published in different news papers to your profile,which can visible to public. </span></li>
 <li>Constituency Management <span>Consituency management feature allows user to keep track their constituency problems, know political changes and impact in their constituency, view influencing people, mandal level leaders and voters details by hamlet level. </span></li>
 <li>Election Analysis<span>Different Tools like Elections Comparision Report,Election Results Analysis Report for Elections used to analyse elections results and compare them. </span></li>
-<li>Problem Management<span>Problem management feature is mainly used to keep track of problems in different levels.The user can track problems by location, status,deparment. </span></li>
-<li>Cadre Management <span>Cadre management feature is mainly used to manage their cadre efficiently.The user can add & manage cadre, communicate with cadre, plan and organize events, maintain associate groups. </span></li>
+<li>Problem Management<span>Problem management feature is mainly helps to keep track of peoples problems or constituency problems in different levels. The user can track problems by location, status,deparment.You can send updates to users through SMS.<br/> It also helps to manage with government officials and also can publish to public what we achieved</span></li>
+<li>Cadre Management <span>Cadre management feature is mainly used to manage their cadre efficiently.The user can add & manage cadre, communicate with cadre through SMS or Email, plan and organize events, maintain associate groups. </span></li>
 </ul>
 </div>
 
@@ -68,7 +75,7 @@ When you partner with Party Analyst, anything is possible, almost everything can
 Our qualified team will be happy to answer all your questions about News Monitoring Services and Other Products.
 <br/><br/>
 <span style="width:680px;display:table;text-align:center;color:blue;">
-Please call us : +919676696760
+Call for Demo : +919676696760
 <br/>(or)<br/>
 Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </span>
  </span>
