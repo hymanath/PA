@@ -93,7 +93,7 @@ Get the complete picture of your constituency to strategize or to understand the
 <tr>
 <td>
 <div class="service-box">
-<a href="partyCandidateAnalyzer.action?src=homePageAd"><span>Political Management Tool</span></a>
+<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span>Political Management Tool</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
 Analyze your constituency, track your progress and pending facilities.
 </div></td><td>
