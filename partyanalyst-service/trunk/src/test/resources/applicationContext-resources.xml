@@ -258,6 +258,8 @@
 				<value>com.itgrids.partyanalyst.model.UserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserReferralEmails</value>
 				<value>com.itgrids.partyanalyst.model.SearchEngineIPAddress</value>
+				<value>com.itgrids.partyanalyst.model.FilePath</value>
+				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
 			</list>
 		</property>
 	</bean>
@@ -1384,5 +1386,12 @@
 	<bean id="userReferralEmailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserReferralEmailsDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
+	
+	<bean id="filePathDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileSourceLanguageDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileSourceLanguageDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 </beans>
