@@ -369,7 +369,7 @@ function getLocationWiseRangeDetails()
 			  };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "cadreSMSLocationWiseData.action?";
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 
 }
 
@@ -814,7 +814,7 @@ function getCadresResults(btnType)
 	{
 		var search = "forTotalCount";
 		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask="+winTask+"&sort=total&startIndex=0&results=-5";
-		callAjax(jsObj,url);
+		callAjaxForRegionSelectForRegionSelect(jsObj,url);
 		buildCadreSearchResultDataTable(rparam);
 		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
 	}
@@ -822,7 +822,7 @@ function getCadresResults(btnType)
 	else if(btnType == "sms")
 	{
 		var url = "sendSMSForCadresAction.action?"+rparam;						
-		callAjax(jsObj,url);
+		callAjaxForRegionSelect(jsObj,url);
 	}
 	
 }
@@ -839,7 +839,7 @@ function getVillagesComboBoxForAMandal(value,elmtId)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getVillagesForAMandalAjaxAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function getMandalsComboBoxForAConstituency(value,elmtId)
@@ -854,13 +854,14 @@ function getMandalsComboBoxForAConstituency(value,elmtId)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getMandalsForAConstituencyAjaxAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function getAllConstituenciesInStateByType(electionType, stateId, element)
 {
 	clearOptionsListForSelectElmtId(element);
 	showBusyImgWithId(element);
+	
 	var jsObj=
 	{				
 			electionTypeId: electionType,
@@ -871,7 +872,7 @@ function getAllConstituenciesInStateByType(electionType, stateId, element)
 
 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 var url = "getAllConstituenciesInState.action?"+rparam;						
-callAjax(jsObj,url);
+callAjaxForRegionSelect(jsObj,url);
 }
 
 function getAllParliamentConstInCountry(element)
@@ -884,7 +885,7 @@ function getAllParliamentConstInCountry(element)
 
 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 var url = "getAllParliamentConstInCountry.action?"+rparam;						
-callAjax(jsObj,url);
+callAjaxForRegionSelect(jsObj,url);
 }
 
 function getConstituenciesComboBoxForADistrict(value,elmtId)
@@ -899,7 +900,7 @@ function getConstituenciesComboBoxForADistrict(value,elmtId)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getConstituenciesForADistrictAjaxAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function getDistrictsComboBoxForAState(value,elmtId)
@@ -920,7 +921,7 @@ function getDistrictsComboBoxForAState(value,elmtId)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getDistrictsForAStateAjaxAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function getStatesComboBoxForACountry(value,elmtId)
@@ -935,7 +936,7 @@ function getStatesComboBoxForACountry(value,elmtId)
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getStatesForACountryAjaxAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function buildCadresDatatable(results,divId)
@@ -1280,7 +1281,7 @@ function handleSubmit()
 		
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "sendSMSForSelectedCadresCadresAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 }
 
 function handleCancel()
@@ -1327,7 +1328,7 @@ function showSMSStatus(jsObj,results)
 		var t=setTimeout("smsDialog.hide();",5000);	
 }
 
-function callAjax(jsObj,url)
+function callAjaxForRegionSelect(jsObj,url)
 {			
 	
 	var callback = {			
@@ -1374,7 +1375,7 @@ function callAjax(jsObj,url)
 						}
 						catch(e)
 						{   
-							alert("Invalid JSON result" + e);   
+							alert("Invalid JSON result" + e);  
 						}  
 				   },
 				   scope : this,
@@ -1572,7 +1573,7 @@ function getNextRegions(id,val,regTask)
 				task:"fillSelectElements"
 			  };
 	var url = "regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
-	callAjax(jsObj,url);
+	callAjaxForRegionSelect(jsObj,url);
 
 }
 
@@ -1587,7 +1588,7 @@ function buildselectBoxes()
 			  };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "cadreSMSLocationWiseData.action?";
-	//callAjax(jsObj,url);
+	//callAjaxForRegionSelect(jsObj,url);
 	createOptionsForId("socialStatus_resevation",socialStatus);
 	createOptionsForId("socialStatus_education",eduStatus);
 	createOptionsForId("socialStatus_occupation",occupations);
