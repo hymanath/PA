@@ -225,6 +225,10 @@ overflow: hidden; float: left; width: 64px; height: 90px;
 </head>
 
 <body>
+<script type="text/javascript">
+var pollStatus = [];
+
+</script>
 <!--<div id="feedback_window"><div id="feedback_window_inner"></div></div>-->
 <div id="username_change_window" style="background-color: #C7CFD2;">
 	<div id="username_change_window_inner"></div></div>
@@ -688,9 +692,12 @@ overflow: hidden; float: left; width: 64px; height: 90px;
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" style="height:263px;width:348px;">
+									 	
+									<div id="pollsWidgetBody" style="height:263px;width:348px;background:#ffffff;">
+								
 									</div>
-									<div id="pollsWidgetFooter">
+				
+				<div id="pollsWidgetFooter">
 										
 									</div></div>
 								
@@ -945,6 +952,14 @@ function showProblemDetails(result)
 	probEle.innerHTML = str;
 	
 }
+<c:forEach var="status" varStatus="stat" items="${opinionPollVO.questionsOptionsVO.options}">
+			var obj =	{
+							option:'${status.option}',
+							votesObtained:${status.votesObtained}
+						};
+			pollStatus.push(obj);
+		</c:forEach>
+	console.log(pollStatus);
 function initialCap(data) {
    data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
    return data;
@@ -980,7 +995,7 @@ if(loadingFirstTime == 'true'){
 //buildHOmePageChartsSlider();
 	initializeHomePage();
 	getElectionTypeValue(1);
-	
+	showVotesObtainedForOpinionPoll();
 	<c:if test="${loginStatus == 'true' && sessionScope.UserType == 'FreeUser'}">
 	showUserNameChangePanel(uname);
 	</c:if>
@@ -1503,6 +1518,103 @@ function closewindow()
 		document.getElementById("newsGallaryDisplay").style.display = 'none';
 	}
 
+
+
+function showVotesObtainedForOpinionPoll()
+{
+
+
+	var elmt = document.getElementById("pollsWidgetBody");
+	var str = '';
+	str+='<div id="chart"></div>';
+	str += '<table><tr><td>';
+	if(${opinionPollVO.avaliability != true})
+	{
+	str +='<div id="pollQuestionsDiv" style="color: #0C67AC;font-weight: bold;margin-top: 15px;font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;font-size: 12px;">  Q  ) ${opinionPollVO.quesitons[0].question}';
+	str +='</div>';
+	str +='</tr>';
+	
+	<s:iterator status="stat" value="opinionPollVO.quesitons[0].options">
+	str +='<tr>';
+	
+	<s:if test="%{#stat.index == 0}">
+	
+	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true"/>&nbsp;&nbsp<s:property value="option"/></td>';
+	</s:if>
+		<s:else>
+	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>"/>&nbsp;&nbsp<s:property value="option"/></td></tr>';
+		</s:else></s:iterator>
+	str += '</table>';
+
+	str += '<div onclick="savePollResult(${opinionPollVO.quesitons[0].questionId})" class="viewReportButtonSpan" style="left:">';
+		str += '<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Vote</span>';
+
+	
+	str += '</tr></table>';
+
+	str += '<div id="viewPollResDiv">';
+	str += '<table><tr>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a></div>';
+	str += '</td>';
+	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a></div>';
+	str += '</td>';	
+	str += '</tr></table>';
+	str += '</div>';
+	
+	elmt.innerHTML = str;
+
+	
+		
+	
+	}
+		else
+	{
+	
+afterRefreshOpinionPOll();
+	
+	}
+	/*str += '<div id="viewPollResDiv">';
+	str += '<table><tr>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a></div>';
+	str += '</td>';
+	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a></div>';
+	str += '</td>';	
+	str += '</tr></table>';
+	str += '</div>';
+	
+	elmt.innerHTML = str;*/
+	
+	
+	
+	
+}
+
+function afterRefreshOpinionPOll()
+{
+
+
+var str='';
+
+var arrData = pollStatus;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','option');
+	data.addColumn('number','votesObtained');
+		
+	data.addRows(arrData.length);
+
+		for(var j=0; j<arrData.length; j++)
+		{
+			
+			data.setValue(j,0,arrData[j].option);
+			data.setValue(j,1,arrData[j].votesObtained);
+			
+		}
+			var chart = new google.visualization.LineChart(document.getElementById('pollsWidgetBody'));
+	
+	chart.draw(data,{width: 300, height: 280,legend:'right', 
+	legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+	}
 	function showNewsGallary()
 	{
 		$(".updatesDiv a").removeClass("current");
@@ -1512,7 +1624,8 @@ function closewindow()
 		document.getElementById("newsGallaryDisplay").style.display = 'block';
     }
 
-buildPolls();
+//buildPolls();
+
 </script>
 	
 </body>
