@@ -20,6 +20,11 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 public class UserAction extends ActionSupport implements ServletRequestAware {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6962300034621699459L;
+
 	private HttpServletRequest request;	
 	
 	private List<String> gender = new ArrayList<String>();
@@ -36,7 +41,14 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	JSONObject jObj;
 	private String task;
 	
-	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -105,10 +117,6 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		this.request = request;		
 	}
 	
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}
-		
 	public List<String> getGender() {
 		return gender;
 	}

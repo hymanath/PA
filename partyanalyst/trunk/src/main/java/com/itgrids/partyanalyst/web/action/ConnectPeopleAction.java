@@ -587,7 +587,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfDistricts = new ArrayList<Long>();
 		listOfDistricts.add(locationId);
 		
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocationAndStatus(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
 		
 		return Action.SUCCESS;
 	}
@@ -668,10 +668,10 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		if(user == null)
 		{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,statusText,startIndex,nameString);	
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocationAndStatus(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,statusText,startIndex,nameString);	
    		}else
    		{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),statusText,startIndex,nameString);
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocationAndStatus(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),statusText,startIndex,nameString);
    		}
    		
 		return Action.SUCCESS;
