@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party/Candidate Analyzer </title>
+<title>Election Analysis And Management Tool</title>
  <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
@@ -21,17 +21,17 @@
 <body>
 <div class="mainnewsdiv">
 <div class="Promo-box-left">
-<h1 class="gradlightblack">Political Management Tool <div class="Sample-Report-top">
-<a class="inline" href="#fancydivbox">View Sample</a>
+<h1 class="gradlightblack">Election Analysis And Management Tool <div class="Sample-Report-top">
+
 </div></h1>
-<span class="titlespan">Every Magazine, covered</span>
-<p class="">As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
+<span class="titlespan">KNOW - ANALYZE - ACT</span>
+<p class="">First of its kind of election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools for Politicians and Political Parties.
 </p>
 <div class="why-box">
-<h2 class="oval-thought1">Why News Monitoring is Essential?</h2>
-<span class="RectSpan-thought">To review and publish the news related to you and your constituency/district/state.</span>
+<h2 class="oval-thought1">Why Party Analyst?</h2>
+<span class="RectSpan-thought">Party Analyst provides exclusive elections analysis tools with different data sets to understand the voting patterns based on demographically, geographically from state level to village level.</span>
 <p class="gradcream">
-Lot of your constituency problems, activities, and your opposition party activities will come in different print and electronic media and disappear from the people. If you want to review or publish to public <br/><br/>Party Analyst News Monitoring Service helps you lot on this.<br/><br/>
+It provides different tools to Politicians and Political Parties to manage Cadre, Constituencies and People Problems. It provides an interface to interact with voters and publish their activities to public. <br/><br/>
 
 When you partner with Party Analyst, anything is possible, almost everything can be known.
 </p>
@@ -50,16 +50,16 @@ When you partner with Party Analyst, anything is possible, almost everything can
 <div class="features-box">
 <h3>Features</h3>
 <ul class="listdisc">
-<li>Online Tool To Analyze <span>This tool helps you in monitoring the News in different impact levels</span></li>
-<li>Email Alerts&nbsp; <span>You will get frequent alerts to your Inbox about the news updates and their impact levels.</span></li>
-<li>Publish To Your Profile<span>Now, you can publish your passionate news to your Profile</span></li>
-<li>Categorization of News<span>Party Analyst never goes you down, you can picturize the news in different categories and you visualize them in the graphical representation to anlyze them keenly.</span></li>
+<li>Constituency Management <span>Consituency management feature allows user to keep track their constituency problems, know political changes and impact in their constituency, view influencing people, mandal level leaders and voters details by hamlet level. </span></li>
+<li>Election Analysis<span>Different Tools like Elections Comparision Report,Election Results Analysis Report for Elections used to analyse elections results and compare them. </span></li>
+<li>Problem Management<span>Problem management feature is mainly used to keep track of problems in different levels.The user can track problems by location, status,deparment. </span></li>
+<li>Cadre Management <span>Cadre management feature is mainly used to manage their cadre efficiently.The user can add & manage cadre, communicate with cadre, plan and organize events, maintain associate groups. </span></li>
 </ul>
 </div>
 
 <div class="helpbox-red">
 <div class="Sample-Report">
-<a class="inline" href="#fancydivbox">View Sample</a>
+
 </div>
  
 <div class="Query-box">
