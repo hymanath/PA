@@ -191,7 +191,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 				response.addCookie(cookie);
 				cookie.setMaxAge(questionsAndChoicesPercentage.getDifferenceBetweenCurrentDateAndPolledDate().intValue());
 				
-				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
+				/*String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
 				String chartPath = "";
 				
 				if(cPath.contains("PartyAnalyst"))
@@ -199,7 +199,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 				else
 				  chartPath = chartProducerURL + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);
-				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
+				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");*/
 			}
 		}
 		return SUCCESS;		
