@@ -22,7 +22,7 @@ public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQues
 		return getHibernateTemplate().find("select model.opinionPoll," +
 				" model.questionsRepository.question,model.questionsRepository,model from OpinionPollQuestions model where " +				
 				" date(model.opinionPoll.opinionPollStartDate) <= ? and date(model.opinionPoll.opinionPollEndDate) >= ? " +
-				" and model.opinionPoll.is_delete != ? "+"order by model.opinionPollQuestionsId desc",parms);
+				" and model.opinionPoll.is_delete != ? ",parms);
 	}
 	
 	@SuppressWarnings("unchecked")
