@@ -80,7 +80,7 @@
 <div>
 
 <div>
-<IMG src="images/specialPage/5leaderswar.png" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
+<IMG src="images/specialPage/5leaderswar.jpg" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
 </div>
 <br>
 <div id="upComing" style="background:#FFF;">
