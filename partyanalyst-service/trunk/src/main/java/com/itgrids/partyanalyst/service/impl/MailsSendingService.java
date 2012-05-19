@@ -57,7 +57,7 @@ public class MailsSendingService implements IMailsSendingService{
 				
 			String subject = ""+emailDetailsVO.getSenderName()+" sent a Friend Request in PartyAnalyst";
 			String content = " <div style='border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi "+emailDetailsVO.getFromAddress()+",</b><br/></div><div style='margin-left: 45px; margin-bottom: 20px;line-height:1.5em;'><b><font style='color:blue;'>"+emailDetailsVO.getSenderName()+"</font></b> has sent a friend request in PartyAnalyst. <br/>  To respond " +
-					"to the friend request, <a href='http://www.partyanalyst.com/loginInputAction.action?source=email'><b>Login here.</b></a></div>" +
+					"to the friend request, <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&'><b>Login here.</b></a></div>" +
 					"<div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>" ;
 			emailDetailsVO.setSubject(subject);
@@ -88,7 +88,7 @@ public class MailsSendingService implements IMailsSendingService{
 			String subject = ""+emailDetailsVO.getSenderName()+" accepted Friend Request in PartyAnalyst"; 
 			String content = "<div style = 'border:1px solid #CCCCCC'>"+mailsTemplateService.getHeader()+"<br/><div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi "+emailDetailsVO.getFromAddress()+",</b></div>" +
 					"<div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font style='color:blue'><b>"+emailDetailsVO.getSenderName()+"</b></font> has accepted your friend request in PartyAnalyst.<br/>Do you want to send a message? " +
-							"<a href='http://www.partyanalyst.com/loginInputAction.action?source=email'><b> Login Here</b> </a></div>" +
+							"<a href='http://www.partyanalyst.com/loginInputAction.action?source=email&'><b> Login Here</b> </a></div>" +
 							"<div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			
@@ -118,7 +118,7 @@ public class MailsSendingService implements IMailsSendingService{
 			String subject = ""+emailDetailsVO.getSenderName()+" send a message in PartyAnalyst";
 			String content = "<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
 					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi "+emailDetailsVO.getFromAddress()+",</b><br/>" +
-							"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font style='color:blue;'><b>"+emailDetailsVO.getSenderName()+"</b></font> has sent a message in PartyAnalyst.<br/> To see the message and send a reply? <a href='http://www.partyanalyst.com/loginInputAction.action?source=email'>Login Here</a></div>" +
+							"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font style='color:blue;'><b>"+emailDetailsVO.getSenderName()+"</b></font> has sent a message in PartyAnalyst.<br/> To see the message and send a reply? <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&'>Login Here</a></div>" +
 									"<div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			emailDetailsVO.setContent(content);
@@ -157,7 +157,7 @@ public class MailsSendingService implements IMailsSendingService{
 						       content+="     Please change your password and stay connected with <b>PartyAnalyst</b> to get more updates from your <b>Friends, Constituency, District, Political Parties and Politicians</b>.<br>";
 						       
 						       
-						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action?source=email'>Login Here</a><b><br>";
+						       content+="<br>To change your password <b><a href='http://www.partyanalyst.com/loginInputAction.action?source=email&'>Login Here</a><b><br>";
 						       
 						       content+="<br>UserName:<b>&nbsp;"+userDetails[3].toString()+"</b><br>";
 						       content+="Password:<b>&nbsp;"+userDetails[4].toString()+"</b><br></div></div>";
@@ -250,7 +250,7 @@ public class MailsSendingService implements IMailsSendingService{
 			String content ="<div style='border:1px solid #CCCCCC;'>"+mailsTemplateService.getHeader()+"<br/>" +
 					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;color:blue;'><b>Hi "+emailDetailsVO.getSenderName()+ ", </b><br/>" +
 					"</div><div style='margin-left: 45px; margin-bottom: 20px;line-height: 1.5em;'><font><b> Your friend " +emailDetailsVO.getFromAddress()+ " posted a political reason for " +emailDetailsVO.getCandidateName()+  " "  +emailDetailsVO.getPartyStrength()+  " from "+emailDetailsVO.getConstituencyName()+" " +emailDetailsVO.getElectionType()+ " constituency. </b><br/><br/>" +
-					"If you want to know more about " +emailDetailsVO.getCandidateName()+  " , <a href='http://www.partyanalyst.com/loginInputAction.action?source=email'><b> Login Here</b> </a></div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +"<br><b>PartyAnalyst Team.</b></div></div>";
+					"If you want to know more about " +emailDetailsVO.getCandidateName()+  " , <a href='http://www.partyanalyst.com/loginInputAction.action?source=email&'><b> Login Here</b> </a></div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +"<br><b>PartyAnalyst Team.</b></div></div>";
 			emailDetailsVO.setSubject(subject);
 			emailDetailsVO.setContent(content);
 			resultStatus = mailService.sendEmail(emailDetailsVO);
@@ -329,8 +329,8 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br><br>" +
 									"Reference Number : <b> "+problemDetailsVO.getSource()+"</b><br>" +
 											"To share,comment,like and More Details about the Problem - " +
-											"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email'> </a> (or) Use the below Link</div>" +
-													"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email</div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
+											"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&'> </a> (or) Use the below Link</div>" +
+													"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&</div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			
 			emailDetailsVO.setToAddress(problemDetailsVO.getEmailDetailsVO().getToAddress());
@@ -367,8 +367,8 @@ public class MailsSendingService implements IMailsSendingService{
 							"<b>Problem : </b>"+problemDetailsVO.getDefinition()+"<br><br>" +
 							"<b>Description : </b>"+problemDetailsVO.getDescription()+"<br>" +
 									"To View Problem details and comments on this Problem - " +
-									"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email'>ClickHere </a> (or) Use the below Link</div>" +
-											"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email</div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
+									"<a href='http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&'>ClickHere </a> (or) Use the below Link</div>" +
+											"<div style='margin-left: 15px;margin-bottom:20px;'>http://www.partyanalyst.com/problemCompleteInfoAction.action?problemHistoryId="+problemDetailsVO.getProblemHistoryId()+"&source=email&</div><div style='margin-left:45px;margin-bottom:40px'>From<br><b>.............</b>" +
 									"<br><b>PartyAnalyst Team.</b></div></div>";
 			
 			emailDetailsVO.setSubject(subject);
