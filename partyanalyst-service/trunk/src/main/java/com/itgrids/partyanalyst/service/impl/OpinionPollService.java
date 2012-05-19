@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -290,8 +292,11 @@ public class OpinionPollService implements IOpinionPollService {
 			try{
 				List<QuestionsOptionsVO> listOfQuestionsOptionsVO = new ArrayList<QuestionsOptionsVO>();
 				 result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);
-				 for(int i=0;i<result.size();i++){
-						Object[] parms = (Object[])result.get(i);
+				  Set<String> set = new HashSet<String>(result);
+				  
+				 for(int i=0;i<set.size();i++){
+					 Iterator itr = set.iterator();
+						Object[] parms = (Object[])itr.next();
 						OpinionPoll poll = (OpinionPoll) parms[0];
 						opinionPollVO.setDescription(poll.getDescription());
 						Set<OpinionPollQuestions> qr = (Set<OpinionPollQuestions>) poll.getOpinionPollQuestions();	
