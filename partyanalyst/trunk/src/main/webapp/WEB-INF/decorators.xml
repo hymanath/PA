@@ -121,6 +121,7 @@
 		<pattern>/constituencyProfileReport*</pattern>
 		<pattern>/partyCandidateAnalyzer*</pattern>
 		<pattern>/problemCompleteInfoAction*</pattern>
+		<pattern>/electionAnalysisAndManagementTool*</pattern>
     </decorator>
 
 </decorators>
