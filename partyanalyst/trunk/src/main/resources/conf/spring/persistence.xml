@@ -242,6 +242,8 @@
 				<value>com.itgrids.partyanalyst.model.UserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserReferralEmails</value>
 				<value>com.itgrids.partyanalyst.model.SearchEngineIPAddress</value>
+				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
+				<value>com.itgrids.partyanalyst.model.FilePath</value>
 			</list>
 		</property>
 	</bean>
