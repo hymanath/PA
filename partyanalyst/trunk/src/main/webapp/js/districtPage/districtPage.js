@@ -284,7 +284,7 @@ function buildDistrictConnectPeopleWindow(){
 	if(userLoginStatus == "false")	{		
 		//Connect Visitor Start
 		visitorStr+='<div class="Connect-Visitor">';
-		visitorStr+='<h2>Get Connected With '+districtName+' District</h2>';
+		visitorStr+='<h5>Get Connected With '+districtName+' District</h5>';
 		visitorStr+='<div class="RegisterNow">';
 		visitorStr+='<a href="#"><img src="images/icons/connectPeople/network.png" alt="Connections"/><span>Connect and Expand Your Network</span></a>';
 		visitorStr+='<a href="#"><img src="images/icons/connectPeople/user.png" alt="Connections"/><span>View Profiles and Add New Friends</span></a>';
@@ -302,11 +302,13 @@ function buildDistrictConnectPeopleWindow(){
 
 	if(connectedPeople.length == 0){
 		var memberStr='';
-		memberStr+='No people to connect to, from this district..Invite your friends to register..';
-		if(userLoginStatus == "false")
+		
+		if(userLoginStatus == "false"){			
 			bodyElmt.innerHTML = visitorStr+memberStr;
-		else
+		}
+		else{			
 			bodyElmt.innerHTML = memberStr;
+		}
 	}	
 
 	buildConnectUsersContentOfDistrict(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId, connectedPeople.length);

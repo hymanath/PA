@@ -121,9 +121,9 @@
       color: #4169E1;
 	  font-size: 12px;
 	 }
-	 .paginatorElmtClass{background:#3d3d3d;padding:10px;border-radius:3px;}
-.paginatorElmtClass a{padding:5px 10px;
-background:#d3d3d3;border-radius:50%; margin:0px 10px;}
+	 .paginatorElmtClass{background:lightBlue;padding:3px;border-radius:3px;}
+.paginatorElmtClass a{padding:3px;
+background:white;border-radius:50%; margin:0px 10px;}
 .paginatorElmtClass a:hover, .paginatorElmtClass a.selectedpage{background:#fff;box-shadow:0px 0px 5px #000;}
 	 .cl-sub-fields-sec {
     width: 600px;
