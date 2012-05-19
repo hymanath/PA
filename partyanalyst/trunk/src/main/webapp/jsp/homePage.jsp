@@ -1003,7 +1003,7 @@ var result = document.getElementById("feedback_window_errorMsg");
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/changeAnanymousUserNameToEmailAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+		callHomePageAjax(jsObj,url);
 		}	
 	else{
 		str+='<div style="color:red"> Username is not available</div>';	
@@ -1011,39 +1011,6 @@ var result = document.getElementById("feedback_window_errorMsg");
 	result.innerHTML = str;
 
 }
-function callAJAX(jsObj,url){
-	
-	var callback = {			
-	    success : function( o ) {
-			try {							
-				"",					
-					results = YAHOO.lang.JSON.parse(o.responseText);		
-					if(jsObj.task == "checkAnanymousUserNameAvailability" || 
-						jsObj.task == "saveUserEmailAndsetAsUserName")
-					{
-						showDetails(results);
-					}
-					else if(jsObj.task == "saveUserEmailAndSendPwd")
-					{
-						showEmailStatus(results);
-					}
-					else if(jsObj.task == "getProblemDetails")
-					{
-                          showProblemDetails(results);
-					}
-					
-			}catch (e) {   		
-			   	alert("Invalid JSON result" + e);   
-			}  
-	    },
-	    scope : this,
-	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);//
-	              }
-	    };
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
 
 function showDetails(results)
 {
@@ -1123,7 +1090,7 @@ var email = document.getElementById("emailField").value;
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+		callHomePageAjax(jsObj,url);
 
 	}
 	else if(reg.test(email) == true)
@@ -1136,7 +1103,7 @@ var email = document.getElementById("emailField").value;
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+		callHomePageAjax(jsObj,url);
 
 	}
 	
@@ -1165,7 +1132,7 @@ function changeUserNameAfterEmailSave()
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+		callHomePageAjax(jsObj,url);
 
 	}
 	else if(reg.test(email) == true)
@@ -1178,7 +1145,7 @@ function changeUserNameAfterEmailSave()
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
-		callAJAX(jsObj,url);
+		callHomePageAjax(jsObj,url);
 
 	}
 	
@@ -1229,7 +1196,7 @@ function saveEmailAndSetAsUserName()
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "saveUserEmailAction.action?"+rparam;						
-	callAJAX(jsObj,url);
+	callHomePageAjax(jsObj,url);
 }
 
 function saveEmailForUser()
@@ -1270,7 +1237,7 @@ function saveEmailForUser()
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "saveUserEmailAction.action?"+rparam;						
-	callAJAX(jsObj,url);
+	callHomePageAjax(jsObj,url);
 }
 function showUserNameChangePanel(uname){
 
