@@ -3344,6 +3344,10 @@
 			<result>/jsp/partyAnalystProduct.jsp</result>
 		</action>
 		
+		<action name="partyCandidateAnalyzer">
+			<result>/jsp/partyAnalystProduct.jsp</result>
+		</action>
+		
 		<action name="getProblemDetailsForHomePageAction" class="problemCompleteDetailsAction" method="getProblemDetailsForHomePage">
         	<result type="json" name="success">
 			<param name="root">problemBeanVOList</param>				
