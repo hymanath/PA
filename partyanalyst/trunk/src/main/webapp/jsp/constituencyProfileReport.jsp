@@ -24,13 +24,8 @@
 <h1 class="gradlightblack">Constituency Profile Report  <div class="Sample-Report-top">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div></h1>
-<span class="titlespan">KNOW - ANALYZE - ACT</span>
-<p class="">First of its kind of election analysis platform for Politicians, Political Parties and Media. It also provides Management tools for Politicians and Political Parties.
-</p>
-<span class="titlespan">Why Party Analyst?</span>
-<p class="">Party Analyst provides exclusive elections analysis tools with different data sets to understand the voting patterns based on demographically, geographically from state level to village level.
-</p>
-<p class="">It provides different tools to Politicians and Political Parties to manage Cadre, Constituencies and People Problems. It provides an interface to interact with voters and publish their activities to public. 
+<span class="titlespan">Know + Analyze + Act</span>
+<p class="">Get the complete picture of your constituency to strategize the political picture up to village wise.
 </p>
 <div class="">
 <h2 class="oval-thought1" style="width:280px;border-radius:50%;margin-bottom:10px;">Why you need this Report?
