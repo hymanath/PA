@@ -13,7 +13,18 @@ public class OpinionPollVO {
 	private List<QuestionsOptionsVO> quesitons;
 	private QuestionsOptionsVO questionsOptionsVO;
 	private ResultStatus resultStatus;
+	private boolean avaliability;
 	
+	
+
+	public boolean isAvaliability() {
+		return avaliability;
+	}
+
+	public void setAvaliability(boolean avaliability) {
+		this.avaliability = avaliability;
+	}
+
 	public OpinionPollVO() {
 	}
 	
