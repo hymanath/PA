@@ -21,7 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
-@Table(name = "file_path")
+@Table(name = "file_paths")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FilePath extends BaseModel implements Serializable {
 
@@ -30,18 +30,20 @@ public class FilePath extends BaseModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -5962197813848465146L;
 
-	private Long filePathId;
+	private Long filePathsId;
 	private FileSourceLanguage fileSourceLanguage;
+	private String filePath;
+	private FileType fileType;
 	private Long orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "file_path_id", unique = true, nullable = false)
-	public Long getFilePathId() {
-		return filePathId;
+	@Column(name = "file_paths_id", unique = true, nullable = false)
+	public Long getFilePathsId() {
+		return filePathsId;
 	}
-	public void setFilePathId(Long filePathId) {
-		this.filePathId = filePathId;
+	public void setFilePathsId(Long filePathsId) {
+		this.filePathsId = filePathsId;
 	}
 	
 	
@@ -56,7 +58,25 @@ public class FilePath extends BaseModel implements Serializable {
 		this.fileSourceLanguage = fileSourceLanguage;
 	}
 	
+	@Column(name="file_path" , length=200)
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "file_type_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public FileType getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(FileType fileType) {
+		this.fileType = fileType;
+	}
 	@Column(name = "order_no")
 	public Long getOrderNo() {
 		return orderNo;
