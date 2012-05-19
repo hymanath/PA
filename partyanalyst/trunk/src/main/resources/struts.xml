@@ -3340,7 +3340,7 @@
 			<result>/jsp/constituencyProfileReport.jsp</result>
 		</action>
 		
-		<action name="partyCandidateAnalyzer">
+		<action name="electionAnalysisAndManagementTool">
 			<result>/jsp/partyAnalystProduct.jsp</result>
 		</action>
 		
