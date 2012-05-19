@@ -797,9 +797,10 @@ document.getElementById('commentId').value='';
 }
 function buildHOmePageImageSlider()
 {
-	var elmt = document.getElementById("homePage_Image_Header");
+	//var elmt = document.getElementById("homePage_Image_Header");
 
 	var str = '';
+	str +='<div id="homePage_Image_Header">';
 	str += '<ul>';
 	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg1.png"></li>';
 	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg2.png"></li>';
@@ -807,8 +808,8 @@ function buildHOmePageImageSlider()
 	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg4.png"></li>';
 	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg5.png"></li>';
 	str += '</ul>';
-
-	elmt.innerHTML = str;
+	str +='</div>';
+	//elmt.innerHTML = str;
 	
 	var navArray = ['','','','',''];
 	$("#homePage_Image_Header").sudoSlider({ 
@@ -827,9 +828,10 @@ function buildHOmePageImageSlider()
 
 function buildHOmePageChartsSlider()
 {
-	var elmt = document.getElementById("homePage_Chart_Header");
+	//var elmt = document.getElementById("homePage_Chart_Header");
 
 	var str = '';
+	str +='<div id="homePage_Chart_Header">';
 	str += '<ul>';
 	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_1.PNG"></li>';
 	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_4.png"></li>';
@@ -838,8 +840,8 @@ function buildHOmePageChartsSlider()
 	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_6.png"></li>';
 	str += '<li><img width="643" height="249" src="images/icons/homePage_new/chart_view_2.png"></li>';
 	str += '</ul>';
-
-	elmt.innerHTML = str;
+	str +='</div>';
+	//elmt.innerHTML = str;
 	
 	var navArray = ['','','','','',''];
 	$("#homePage_Chart_Header").sudoSlider({ 
@@ -1198,8 +1200,11 @@ function savePollResult(questionId){
 }
 
 function showVotesObtainedForOptions(myResults){
+	
+
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
+	
 	str += '<table><tr><td>';
 	str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
 	str += '</div>';
@@ -1220,8 +1225,9 @@ function showVotesObtainedForOptions(myResults){
 	str += '</div>';
 	str += '</tr></table>';
 
-	str+='<div id="pollsChart"></div>';
+	str+='<div id="pollsChart" style=" height: 349px;width: 324px; overflow: hidden;"></div>';
 	elmt.innerHTML = str;
+
 	var data = new google.visualization.DataTable();
 		data.addColumn('string','option');
 		data.addColumn('number','votesObtained');
@@ -1233,9 +1239,9 @@ function showVotesObtainedForOptions(myResults){
 			data.setValue(j,1,myResults.options[j].votesObtained);
 			
 		}
-	var chart = new google.visualization.ColumnChart(document.getElementById('pollsChart'));
+	var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
 	
-		chart.draw(data,{width: 300, height: 280,legend:'right', 'colors' : ['blue', 'green'],
+		chart.draw(data,{width: 300, height: 300,legend:'right', 
 legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
 
 	
