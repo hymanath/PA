@@ -93,7 +93,45 @@
 	#contenttable table{background:#ffffff;margin-right:auto;margin-left:auto;padding-bottom:10px;} 
 		
 </style>
+  
+<script type="text/javascript">
+
+google.load("visualization", "1", {packages:["corechart"]});
+</script>
 <script type="text/javascript"> 
+
+
+
+var constituencies = [];
+
+var pollStatus = [];
+
+
+function opinionPollChart()
+{
+	
+var arrData = pollStatus;
+var data = new google.visualization.DataTable();
+data.addColumn('string','option');
+data.addColumn('number','votesObtained');
+		
+data.addRows(arrData.length);
+
+for(var j=0; j<arrData.length; j++)
+		{
+			
+			data.setValue(j,0,arrData[j].option);
+			data.setValue(j,1,arrData[j].votesObtained);
+			
+		}
+			var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
+	
+chart.draw(data,{width: 400, height: 280,legend:'right', 
+legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+
+
+
+}
 
 function initializeResultsTable() {
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -172,10 +210,10 @@ function initializeResultsTable() {
 							</table>
 			</td>	
 			<td align="right">
-				<table>
+				<table style="margin-left:-58px;margin-top:37px;">
 						<tr>
 							<td>
-									<img src="charts/${questionsOptionsVO.imagePath}"></img>				
+								<div id="chartDiv" style="width: 400px; height: 500px;"></div>				
 							</td>
 						</tr>
 				</table>
@@ -183,7 +221,17 @@ function initializeResultsTable() {
 		</tr>
 </table>	
 <script language="javascript">
+
+<c:forEach var="status" varStatus="stat" items="${questionsOptionsVO.options}">
+			var obj =	{
+							option:'${status.option}',
+							votesObtained:${status.votesObtained}
+						};
+			pollStatus.push(obj);
+		</c:forEach>
 initializeResultsTable();
+opinionPollChart();
+
 </script>
 </body>
 </html>
