@@ -1,25 +1,33 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
+import com.itgrids.partyanalyst.dto.OpinionPollVO;
+import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -64,8 +72,39 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String feedback = "true"; 
     private IProblemManagementService problemManagementService;
 	private Long problemCount;
-	private Long freeUserConstituencyId;
+	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
+	
+	private OpinionPollVO opinionPollVO;
+	private QuestionsOptionsVO questionsAndChoicesPercentage;
+	private Long freeUserConstituencyId;
+	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	public ServletContext getContext() {
+		return context;
+	}
+	public void setContext(ServletContext context) {
+		this.context = context;
+	}
+	
+	
+	public OpinionPollVO getOpinionPollVO() {
+		return opinionPollVO;
+	}
+
+	public void setOpinionPollVO(OpinionPollVO opinionPollVO) {
+		this.opinionPollVO = opinionPollVO;
+	}
+
+	public IOpinionPollService getOpinionPollService() {
+		return opinionPollService;
+	}
+
+	public void setOpinionPollService(IOpinionPollService opinionPollService) {
+		this.opinionPollService = opinionPollService;
+	}
+
+
 	
 	public void setResultMap(Map<String, List<FileVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -309,6 +348,64 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			freeUserConstituencyId = ananymousUserService.getUserConstituencyId(user.getRegistrationID());
 		}
 		
+		
+		
+		
+		
+		
+		
+		String cPath = request.getContextPath();
+		
+						
+				Cookie[] cookieArray = request.getCookies();
+				
+				boolean availabiity = false;
+				if(cookieArray == null)
+				{
+					opinionPollVO = opinionPollService.getAllPollsForTheDay();
+					opinionPollVO.setAvaliability(availabiity);
+				
+				}
+				else
+				{
+				for(int i=0;i<cookieArray.length;i++){
+					 Cookie cookie = cookieArray[i];
+					 if(cookie.getName().equalsIgnoreCase("hasPolled")){
+						 availabiity = true;
+					 }
+				}
+				
+				if(availabiity){
+					
+					opinionPollVO = opinionPollService.getDetailsOfTheLatestOpinionPoll();
+					opinionPollVO.setAvaliability(availabiity);
+					/*opinionPollVO = opinionPollService.getAllPollsForTheDay()
+					questionsAndChoicesPercentage = opinionPollVO.getQuestionsOptionsVO();
+					String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
+					String chartPath1 = "";
+					
+					if(cPath.contains("PartyAnalyst"))
+			        	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;	
+			        
+			        else
+					 chartPath = chartProducerURL + chartName;
+			        questionsAndChoicesPercentage.setImagePath(chartName);
+					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath1,"votesPoll");*/
+				}
+				
+				else
+				{
+					opinionPollVO = opinionPollService.getAllPollsForTheDay();
+					opinionPollVO.setAvaliability(availabiity);
+			
+			
+				}
+				
+		
+				}
+		
+		
+		
 		return Action.SUCCESS;
 	}
 	
@@ -404,5 +501,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 	 return imagePath;
 	}
+	
+	
+	private CategoryDataset createDataset(QuestionsOptionsVO questionsAndChoicesPercentage) {       
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(OptionVO result: questionsAndChoicesPercentage.getOptions()){        
+        		dataset.addValue(new BigDecimal(result.getPercentage()), result.getOption(), result.getOption());       	
+        }
+        return dataset;
+    }
+
+
 	
 }
