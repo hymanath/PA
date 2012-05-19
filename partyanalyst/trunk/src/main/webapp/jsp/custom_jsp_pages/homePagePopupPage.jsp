@@ -69,7 +69,7 @@ left:50%;
 <img src="images/icons/logoPA.png" alt="logo"/></div>
 <div class="pheaderright">
 <h1>NEW <span style="color:#000;">FEATURES</span> LAUNCHED</h1>
-<span style="font:bold 16px Arial;text-shadow:0px 0px 2px #d3d3d3;">CONNECT WITH PARTY ANALYST AND GET <br/>UPDATES IN FREQUENT INTREVALS.</span>
+<span style="font:bold 16px Arial;text-shadow:0px 0px 2px #d3d3d3;">CONNECT WITH PARTY ANALYST AND GET <br/>UPDATES IN FREQUENT INTERVALS.</span>
 </div>
 </div>
 
@@ -101,7 +101,7 @@ Analyze your constituency, track your progress and pending facilities.
 <a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
 <img src="images/new_homepage/checklist.jpg"/>
 Now, you can drive your survey's through Party Analyst...
-Ask, Analyze, Improve
+Ask, Analyze, Improve.
 </div></td><td>
 <div class="service-box">
 <a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
