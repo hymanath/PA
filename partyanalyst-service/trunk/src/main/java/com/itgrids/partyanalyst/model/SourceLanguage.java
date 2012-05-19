@@ -82,7 +82,7 @@ public class SourceLanguage extends BaseModel implements java.io.Serializable {
 	}
 
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sourceLanguage")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "language")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public Set<FileSourceLanguage> getFileSourceLanguage() {
 		return fileSourceLanguage;
