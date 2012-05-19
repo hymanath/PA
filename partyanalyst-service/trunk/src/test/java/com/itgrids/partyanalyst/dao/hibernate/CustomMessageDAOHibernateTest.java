@@ -102,11 +102,39 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		return dataTransferVO;		
 	}	*/
 	
-	public void testGetPendingUsersCountForAUserInAFilterView()
+	/*public void testGetPendingUsersCountForAUserInAFilterView()
 	{
 		List<Long> locationIds = new ArrayList<Long>(0);
 		locationIds.add(323l);
 		System.out.println(customMessageDAO.getPendingUsersCountForAUserInAFilterView(796l,locationIds,IConstants.CONSTITUENCY, "kamal"));
+	}*/
+	/*public void testGetPendingUsersInSelectedLocations(){
+		List<Long> locationIds=new ArrayList<Long>(0);
+		locationIds.add(3L);
+		List<Object> pendingUsers=customMessageDAO.getPendingUsersInSelectedLocations(411L, locationIds, IConstants.DISTRICT_LEVEL, 20L, 0L, "");
+		System.out.println(pendingUsers.size());
+		
+		for(Object params : pendingUsers)
+		{
+			Object[] obj = (Object[])params;
+			System.out.println();
+			for(Object o : obj)
+				System.out.print("\t"+o.toString());
+		}		
+	}*/
+	
+	public void testGetPendingUserIdsInSelectedLocations()
+	{
+		List<Long> locationIds=new ArrayList<Long>(0);
+		locationIds.add(3L);
+		List<Long> pendingUsers = customMessageDAO.getPendingUserIdsInSelectedLocations(411l, locationIds, IConstants.DISTRICT_LEVEL);
+		
+		System.out.println(pendingUsers.size());
+		
+		for(Long pendingId: pendingUsers)
+		{
+			System.out.println(pendingId.toString());
+		}
 	}
 	
 }

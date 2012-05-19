@@ -1,11 +1,18 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
@@ -63,6 +70,9 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model.password from AnanymousUser model where password=?", password);
 		
 	}
+	
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
@@ -231,7 +241,60 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 				" from AnanymousUser model where model.isPwdChanged = 'false' and model.email is not null and model.email not like '' ");
 	}
 	
-
+	@SuppressWarnings("unchecked")
+	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString) 
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append(" from AnanymousUser model where ");
+		query.append(" model.userId != :userId and model.userId not in (:otherUsers) and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		
+		query.append("and model.name like '"+nameString+"%' order by model.userId desc");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId",userId);
+		queryObject.setParameterList("otherUsers",otherUsers);
+		
+		if(startIndex!=null)
+			queryObject.setFirstResult(startIndex.intValue());
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
+		
+		return queryObject.list();
+	}
 	
+	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.userId)");
+		query.append(" from AnanymousUser model where ");
+		query.append(" model.userId != :userId and model.userId not in (:otherUsers) and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append("and model.state.stateId is not null and model.district.districtId is not null and model.constituency.constituencyId is not null ");
+		query.append("and model.name like '"+nameStr+"%' order by model.userId desc");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId",userId);
+		queryObject.setParameterList("otherUsers",otherUsers);		
+		
+		return (Long)queryObject.uniqueResult();
+		
+	}
 	
 }

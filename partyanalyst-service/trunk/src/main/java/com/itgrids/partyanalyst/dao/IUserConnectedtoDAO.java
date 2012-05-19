@@ -26,4 +26,8 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	
 	public Long getConnectedUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr);
 
+	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
+	
+	public List<Long> getConnectedUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType);
+
 }

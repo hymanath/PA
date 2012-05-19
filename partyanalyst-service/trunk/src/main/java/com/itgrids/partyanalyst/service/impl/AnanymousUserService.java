@@ -503,7 +503,72 @@ public class AnanymousUserService implements IAnanymousUserService {
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
-			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString).toString());
+			//dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString).toString());
+						
+			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));			
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+	} 
+	
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocationAndStatus(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString){
+		ResultStatus resultStatus = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
+		List<Object> result = new ArrayList<Object>();		
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(loginId);
+		List<Long> connectedAndPendingUserIdsList=new ArrayList<Long>();
+		
+		
+		try{			
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+				if(list!=null && list.size()!=0){
+					for(int i=0; i<list.size(); i++){					
+						locationIds.add((Long)list.get(i));
+					}
+				}
+				
+			}
+			
+			if(status.equalsIgnoreCase(IConstants.ALL))
+			{
+				result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.CONNECTED))
+			{
+				result = userConnectedtoDAO.getConnectedUsersInSelectedLocations(loginId, locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.PENDING))
+			{
+				result = customMessageDAO.getPendingUsersInSelectedLocations(loginId, locationIds, locationType,retrivalCount,startIndex,nameString);
+			}
+			else if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
+			{
+				List<Long> connectedIdsList = userConnectedtoDAO.getConnectedUserIdsInSelectedLocations(loginId, locationIds, locationType);
+				List<Long> pendingIdsList = customMessageDAO.getPendingUserIdsInSelectedLocations(loginId, locationIds, locationType);
+				
+				connectedAndPendingUserIdsList = new ArrayList<Long>();
+				if(connectedIdsList != null && connectedIdsList.size() > 0)
+					connectedAndPendingUserIdsList.addAll(connectedIdsList);
+				if(pendingIdsList != null && pendingIdsList.size() > 0)
+					connectedAndPendingUserIdsList.addAll(pendingIdsList);
+				
+				result = ananymousUserDAO.getNotConnectedUsersInSelectedLocations(loginId, locationIds, locationType, connectedAndPendingUserIdsList, retrivalCount, startIndex, nameString);
+			}
+			
+			candidateDetails = setFriendsListForAUser(result,loginId,status);		
+			dataTransferVO.setCandidateVO(candidateDetails);
+			
+			dataTransferVO.setTotalResultsCount(getAllUsersCountInSelectedLocationsInFilterView(loginId, locationIds, locationType, status, nameString, connectedAndPendingUserIdsList).toString());
 						
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));			
 			resultStatus.setResultPartial(false);
@@ -519,7 +584,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	} 
 	
 	
-	public Long getAllUsersCountInSelectedLocationsInFilterView(Long userId,List<Long> locationIds,String locationType,String status,String nameString)
+	public Long getAllUsersCountInSelectedLocationsInFilterView(Long userId,List<Long> locationIds,String locationType,String status,String nameString, List<Long> connectedAndPendingUserIdsList)
 	{
 		try{
 			
@@ -537,9 +602,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			}
 			else if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
 			{
-				return (ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString) - 
-						(userConnectedtoDAO.getConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString) + 
-								customMessageDAO.getPendingUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString)));
+				return ananymousUserDAO.getNotConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString, connectedAndPendingUserIdsList);
 			}
 			
 			return 0L;
@@ -659,10 +722,16 @@ public class AnanymousUserService implements IAnanymousUserService {
 					candidateVO.setConstituencyName(parms[3].toString());
 					
 					if(parms[5] != null){
-						
-						AnanymousUser ananyUser = (AnanymousUser)parms[5];
-						if(ananyUser.getProfileImg() != null && !ananyUser.getProfileImg().equals(""))
-							candidateVO.setImage(ananyUser.getProfileImg());
+						if(status.equalsIgnoreCase(IConstants.PENDING)){
+							CustomMessage userData=(CustomMessage)parms[5];
+							if(userData.getRecepientId().getProfileImg()!=null && !userData.getRecepientId().getProfileImg().equals(""))
+								candidateVO.setImage(userData.getRecepientId().getProfileImg());
+						}
+						else{
+							AnanymousUser ananyUser = (AnanymousUser)parms[5];
+							if(ananyUser.getProfileImg() != null && !ananyUser.getProfileImg().equals(""))
+								candidateVO.setImage(ananyUser.getProfileImg());	
+						}					
 					}
 					
 					if(loginId!=0){
@@ -2072,6 +2141,7 @@ public Long getUserConstituencyId(Long userId){
 	}
 	return null;
 }
+
 
 
 }

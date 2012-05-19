@@ -21,4 +21,9 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate);
 	
 	public Long getPendingUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr);
+	
+	public List<Object> getPendingUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
+	
+	public List<Long> getPendingUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType);
+
 }
