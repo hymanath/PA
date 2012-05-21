@@ -38,6 +38,7 @@ public class FileType extends BaseModel implements java.io.Serializable {
 	private String type;
 	private Long orderNo;
 	private Set<File> file = new HashSet<File>();
+	private Set<FilePaths> filePaths = new HashSet<FilePaths>(); 
 
 	/** default constructor */
 	public FileType() {
@@ -86,12 +87,21 @@ public class FileType extends BaseModel implements java.io.Serializable {
 		return file;
 	}
 
-	
-
-	
 
 	public void setFile(Set<File> file) {
 		this.file = file;
 	}
+   
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileType")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<FilePaths> getFilePaths() {
+		return filePaths;
+	}
 
+	public void setFilePaths(Set<FilePaths> filePaths) {
+		this.filePaths = filePaths;
+	}
+
+	
 }
