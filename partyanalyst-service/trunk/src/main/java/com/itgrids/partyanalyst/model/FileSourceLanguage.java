@@ -36,7 +36,7 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	private File file;
 	private Source source;
 	private SourceLanguage language;
-	private Set<FilePath> filePath = new HashSet<FilePath>(0);
+	private Set<FilePath> filePaths = new HashSet<FilePath>(0);
 	
 	
 	@Id
@@ -87,10 +87,10 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileSourceLanguage")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public Set<FilePath> getFilePath() {
-		return filePath;
+		return filePaths;
 	}
-	public void setFilePath(Set<FilePath> filePath) {
-		this.filePath = filePath;
+	public void setFilePath(Set<FilePath> filePaths) {
+		this.filePaths = filePaths;
 	}
 	
 	
