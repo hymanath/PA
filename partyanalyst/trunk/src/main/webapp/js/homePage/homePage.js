@@ -1200,7 +1200,6 @@ function savePollResult(questionId){
 }
 
 function showVotesObtainedForOptions(myResults){
-	
 
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
@@ -1231,7 +1230,6 @@ function showVotesObtainedForOptions(myResults){
 	var data = new google.visualization.DataTable();
 		data.addColumn('string','option');
 		data.addColumn('number','votesObtained');
-		
 		data.addRows(myResults.options.length);
 		for(var j=0; j<myResults.options.length; j++)
 		{
@@ -1242,7 +1240,7 @@ function showVotesObtainedForOptions(myResults){
 	var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
 	
 		chart.draw(data,{width: 300, height: 300,legend:'right', 
-legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
 
 	
 	
