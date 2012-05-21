@@ -330,7 +330,7 @@ text-align:left;
 {
 	background-image:url("../../images/icons/constituencyManagement/bodyWidget_bg.jpg");
 	border:1px solid #D8DEDF;
-	height:185px;
+	height:auto;
 	padding:5px;
 	color:#273543;
 	margin-bottom: 10px;
@@ -348,7 +348,7 @@ text-align:left;
 {
     font-family: verdana;
     font-size: 13px;
-    height: 50px;
+    height: auto;
     overflow: hidden;
 }
 
