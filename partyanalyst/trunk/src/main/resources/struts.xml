@@ -913,7 +913,7 @@
 		
 		<action name="problemDetailsAndStatusAction" class="problemManagementAction" method="getProblemDetailsAndStatus">
 			<result name="success">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
-			<result name="error">/jsp/pageNotFound.jsp</result>	
+			<result name="error">/jsp/problemErrorPage.jsp</result>	
 		</action>
 		
 		<action name="getProblemPresentStatusAjaxAction" class="problemManagementAction" method="getProblemPresentStatus">
@@ -2314,7 +2314,7 @@
         
         <action name="problemCompleteInfoAction" class="problemCompleteInfoAction">
 		    <result name="success">jsp/problemCompleteInfoPage.jsp</result>
-		    <result name="error">/jsp/pageNotFound.jsp</result>	
+		    <result name="error">/jsp/problemErrorPage.jsp</result>	
         </action>
                   
         <action name="delimitationMappingsUploadAction" class="delimitationMappingsUploadAction">
