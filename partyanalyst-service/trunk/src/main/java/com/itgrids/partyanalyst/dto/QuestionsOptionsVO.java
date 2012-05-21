@@ -14,6 +14,17 @@ public class QuestionsOptionsVO {
 	private Long totalVotesObtainedForPoll; 
 	private String startDate;
 	private Long differenceBetweenCurrentDateAndPolledDate;	
+	private String title;
+	public String getTitle() {
+		return title;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
 	private ResultStatus resultStatus;
 	
 	
