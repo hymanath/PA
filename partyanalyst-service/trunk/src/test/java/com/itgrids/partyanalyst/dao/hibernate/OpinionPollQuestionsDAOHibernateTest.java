@@ -33,7 +33,7 @@ public class OpinionPollQuestionsDAOHibernateTest extends BaseDaoTestCase {
 		 System.out.println(result.size());		 		 		
 	 }*/
 	
-	public void testgetAllPollsForThePresentDay(){
+	/*public void testgetAllPollsForThePresentDay(){
 		 List result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);
 		 for(int i=0;i<result.size();i++){
 				Object[] parms = (Object[])result.get(i);
@@ -56,7 +56,15 @@ public class OpinionPollQuestionsDAOHibernateTest extends BaseDaoTestCase {
 	    		e.printStackTrace();
 			return null;
 		}
-}
+}*/
+	public void testgetTitleForQuestion()
+	{
+		List<Object> list = opinionPollQuestionsDAO.getTitleForQuestion(1l);
+		for(Object params : list)
+		{
+			System.out.println(params.toString());
+		}
+	}
 }
 
 
