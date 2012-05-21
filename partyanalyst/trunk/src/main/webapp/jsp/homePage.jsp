@@ -959,7 +959,7 @@ function showProblemDetails(result)
 						};
 			pollStatus.push(obj);
 		</c:forEach>
-	console.log(pollStatus);
+	
 function initialCap(data) {
    data = data.substr(0, 1).toUpperCase() + data.substr(1).toLowerCase();
    return data;
@@ -1613,7 +1613,7 @@ var arrData = pollStatus;
 			var chart = new google.visualization.LineChart(document.getElementById('pollsWidgetBody'));
 	
 	chart.draw(data,{width: 300, height: 280,legend:'right', 
-	legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+	legendTextStyle:{fontSize:12},title:'${opinionPollVO.questionsOptionsVO.title}',titleTextStyle:{fontName:'verdana',fontSize:9}});
 	}
 	function showNewsGallary()
 	{
