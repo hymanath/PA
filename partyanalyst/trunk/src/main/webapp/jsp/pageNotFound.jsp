@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>contact us</title>
+<title>Contact Us</title>
 <style type="text/css">
 	#mainDiv
 	{
@@ -32,7 +32,7 @@
 			<tr>
 				<td><img src="images/icons/homePage_new/logo.png" height="80px" width="170px"></td>
 				<td>
-					<table >
+					<table>
 					
 					<tr><td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>
 					<tr><td>Hyderabad.<br></td></tr>
