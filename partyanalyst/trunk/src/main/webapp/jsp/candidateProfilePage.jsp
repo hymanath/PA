@@ -240,13 +240,12 @@ a {
 
 </head>
 <body>
-<div id="popupDiv" style="display: block; margin-left: auto; margin-right: auto; width: 850px;">
-<c:if test='${sessionScope.loadingFirstTime == true}'>
-	<div id="fancydivbox" style="position: absolute; z-index: 1000001;top: -499px;">
+<a id="inline" href="#fancydivbox" style="display:none"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
 	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
 	</div>
-	</c:if>
-</div>	
+</div>
 
 <div id="fb-root"></div>
 <script>
@@ -555,7 +554,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <script>
   $(document).ready(function() {
     $("#tabs").tabs();
-
+	
    $("a[rel=photo_gallery]").fancybox({
 				'transitionIn'		: 'none',
 				'transitionOut'		: 'none',
@@ -571,6 +570,13 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
  <script type="text/javascript">
+ var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+ $(document).ready(function(){
+if(loadingFirstTime == 'true'){
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
    var descriptions = '${descriptions}';
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
