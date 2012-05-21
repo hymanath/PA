@@ -18,9 +18,12 @@ import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -76,7 +79,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private List<SelectOptionVO> districts;
     private List<SelectOptionVO> constituencies;
     private IRegionServiceData regionServiceDataImp;
-    
+    private ILoginService loginService;
  
 	public IMailService getMailService() {
 		return mailService;
@@ -366,6 +369,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.accept = accept;
 	}
 	
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
 	public String execute(){
 		
 		
@@ -405,9 +414,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				regVO.setRegistrationID(registrationId);
 				regVO.setUserProfilePic(imageName);
 				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
-			}else
-			
-			  savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+			}
+            else
+            {
+            	savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+            	saveUserLogInDetails(regVO , session.getId());
+            }
             String requestURL= request.getRequestURL().toString();
 			String requestFrom = "";
 			if(requestURL.contains("www.partyanalyst.com"))
@@ -475,6 +487,28 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 		return SUCCESS;
 		
+	}
+	
+	public String saveUserLogInDetails(RegistrationVO regVO , String sessionId)
+	{
+		try{
+			if(regVO == null  || sessionId == null)
+				return null;
+			
+			UserTrackingVO userTrackingVO = new UserTrackingVO();
+			
+			userTrackingVO.setRegistrationId(regVO.getRegistrationID());
+			userTrackingVO.setRemoteAddress(request.getRemoteAddr());
+			userTrackingVO.setUserType(IConstants.FREE_USER);
+			userTrackingVO.setStatus(IWebConstants.LOGIN);
+			userTrackingVO.setSessionId(sessionId);
+			loginService.saveUserSessionDetails(userTrackingVO);
+			return SUCCESS;
+			
+		}catch (Exception e) {
+			log.error("Exception occured in saveUserLogInDetails() method , Exception -"+e);
+			return IWebConstants.FAILURE;
+		}
 	}
 	
 	public void validate() {		       
