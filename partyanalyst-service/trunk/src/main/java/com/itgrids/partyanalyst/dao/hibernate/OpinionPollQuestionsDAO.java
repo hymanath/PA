@@ -33,4 +33,10 @@ public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQues
 				"order by model.opinionPollQuestionsId desc",parms);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> getTitleForQuestion(Long opinionPollQuestionsId)
+	{
+		return getHibernateTemplate().find("select model.opinionPoll.title from OpinionPollQuestions model where model.opinionPollQuestionsId = ?",opinionPollQuestionsId);
+	}
+	
 }
