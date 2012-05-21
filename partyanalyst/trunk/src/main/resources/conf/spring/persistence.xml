@@ -243,7 +243,7 @@
 				<value>com.itgrids.partyanalyst.model.UserReferralEmails</value>
 				<value>com.itgrids.partyanalyst.model.SearchEngineIPAddress</value>
 				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
-				<value>com.itgrids.partyanalyst.model.FilePath</value>
+				<value>com.itgrids.partyanalyst.model.FilePaths</value>
 			</list>
 		</property>
 	</bean>
