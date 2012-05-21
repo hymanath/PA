@@ -265,6 +265,13 @@ public class OpinionPollService implements IOpinionPollService {
 			question.setQuestionId(opinionPollQuestionId);
 			question.setOptions(opinionPollQuestionAndPercentages);		
 			question.setTotalVotesObtainedForPoll(totalPolledVotes);
+			 List<Object> list = opinionPollQuestionsDAO.getTitleForQuestion(opinionPollQuestionId);
+			
+			 for(Object params : list)
+			 {
+				 question.setTitle(params.toString());
+			 }
+			 
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			 question.setResultStatus(resultStatus);
 			return question; 
@@ -299,6 +306,7 @@ public class OpinionPollService implements IOpinionPollService {
 						Object[] parms = (Object[])itr.next();
 						OpinionPoll poll = (OpinionPoll) parms[0];
 						opinionPollVO.setDescription(poll.getDescription());
+						opinionPollVO.setTitle(poll.getTitle());
 						Set<OpinionPollQuestions> qr = (Set<OpinionPollQuestions>) poll.getOpinionPollQuestions();	
 						
 						for(OpinionPollQuestions ops : qr){
@@ -331,6 +339,7 @@ public class OpinionPollService implements IOpinionPollService {
 							opinionPollQuestionsVO.setOptions(listOfOptionVO);
 							listOfQuestionsOptionsVO.add(opinionPollQuestionsVO);
 						}
+						
 						
 						opinionPollVO.setQuesitons(listOfQuestionsOptionsVO);
 					 }
