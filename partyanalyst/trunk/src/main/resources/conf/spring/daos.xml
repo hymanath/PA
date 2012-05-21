@@ -801,4 +801,11 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="fileSourceLanguageDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileSourceLanguageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="filePathsDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
