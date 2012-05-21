@@ -48,7 +48,7 @@ public interface IProblemManagementReportService {
 
 	public void deleteSelectedProblemsByAdmin(Integer[] problemIds);
 	
-	public void acceptSelectedProblemsByAdmin(Integer[] problemHistoryIds);
+	public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds);
 	
 	public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String status,String type);
 	
