@@ -258,7 +258,7 @@
 				<value>com.itgrids.partyanalyst.model.UserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserReferralEmails</value>
 				<value>com.itgrids.partyanalyst.model.SearchEngineIPAddress</value>
-				<value>com.itgrids.partyanalyst.model.FilePath</value>
+				<value>com.itgrids.partyanalyst.model.FilePaths</value>
 				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
 			</list>
 		</property>
@@ -1387,7 +1387,7 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="filePathDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathDAO">
+	<bean id="filePathsDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
