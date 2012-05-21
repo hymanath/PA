@@ -15,5 +15,7 @@ public interface IOpinionPollQuestionsDAO extends GenericDao<OpinionPollQuestion
 	public List getAllPollsForThePresentDay(Date currentDate,String isDelete) ;
 	
 	public List  getAllOpinionPolls(String isDelete);
+	
+	public List<Object> getTitleForQuestion(Long opinionPollQuestionsId);
 }
 
