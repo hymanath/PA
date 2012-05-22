@@ -197,9 +197,67 @@
 
 #headingSpan{font-size:14px;font-weight:bold;background:#3897A5;color:#fff;
 width:100px;margin:10px;}
+.headingClass
+{
+color: #C66E17;
+font-size: 15px;
+font-weight: bold;
+margin-bottom: 4px;
+margin-left: 18px;
+margin-top: 4px;
+}
+
+
+.our-services {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    clear: both;
+    display: block;
+    float: right;
+    margin-bottom: 20px;
+	margin-top: 12px;
+    width: 320px;
+	margin-right: 0px;
+	padding-bottom: 20px;
+}
+.our-services a {
+
+	background: none repeat scroll 0 0 #97DFEB;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    height: 42px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 0 5px #FFFFFF;
+    width: 135px;
+	margin-left:5px;
+	margin-right:2px;
+	margin-bottom:2px;
+	margin-top:2px;
+
+}
+
 	  </style>
 	  </head>
 	<div class="clear"></div>
+
+	<div style="text-align:center;margin-bottom:10px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0938408694174139";
+/* PartyPageHeader */
+google_ad_slot = "2678494123";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
      <div class="main-title-sec">
         <div class="main-mbg"><div id="constituencyType"></div></div>
         <div class="main-bbg"></div>
@@ -746,8 +804,38 @@ width:100px;margin:10px;}
 							<!-- Opinion Poll End-->
 
 
-		<h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1>
-        <div id="partyAnysAdd" style="margin-left:11px;"></div>
+		<!-- <h1 class="cp-sub-title"><span style="color:#787272"><b>Party Analyst</b></span></h1> -->
+        <!-- <div id="partyAnysAdd" style="margin-left:11px;"></div> -->
+						
+						<!-- <div class="servicesClass">
+		                    <h3 class="headingClass">Our Services</h3>
+		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
+		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
+		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
+		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Political<br/>Management Tool</a>
+		                </div> -->
+
+						<div class="our-services">
+		                    <h3 class="headingClass">Our Services</h3>
+		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
+		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
+		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
+		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Political<br/>Management Tool</a>
+		                </div>
+
+<div style="margin-left:11px;">
+	<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-0938408694174139";
+		/* CandidatePageRightBox */
+		google_ad_slot = "5426332176";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
         <!--CD SUB RIGHT SECTION END--> 
         
       </div>
@@ -3328,7 +3416,7 @@ function removeCss(id)
 getCoroporationResults();
 showRuralDivIfPresent();
 showUrbanDivIfPresent();
-buildPartyAdvertisiment();	
+//buildPartyAdvertisiment();	
 getAllZptcYears();	
 getAllMptcYears();
 getGreaterResults();
