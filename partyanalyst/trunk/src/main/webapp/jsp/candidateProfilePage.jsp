@@ -266,26 +266,7 @@ a {
 </script>
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td>
-<div class="ppc-title">
-<s:if test="candidateElectionDetails[0].stateId !=null">State: 
-<a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
-<s:property value="candidateElectionDetails[0].stateName"/></strong></a>
- &gt;  </s:if>
-<s:if test="candidateElectionDetails[0].districtName!=''"> 
-District: 
-<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></a></strong>&gt; </s:if>  <s:property value="candidateElectionDetails[0].electionType"/>:
-<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
-<div class="clear"></div>
-<div class="main-title-sec">
- <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
- <span style="margin-top:10px;margin-right:18px;float:right">
- <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
-</span>
-</div>
-<div class="main-bbg"></div></div><br></td></tr></table>
-
-<div style="text-align:center;margin-bottom:10px;">
+<tr><td><div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
 /* CandiatePageHeader */
@@ -297,7 +278,26 @@ google_ad_height = 90;
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
+</div></td></tr>
+<tr><td>
+<div class="ppc-title" style="margin-top:-4px;">
+<s:if test="candidateElectionDetails[0].stateId !=null">State: 
+<a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
+<s:property value="candidateElectionDetails[0].stateName"/></strong></a>
+ &gt;  </s:if>
+<s:if test="candidateElectionDetails[0].districtName!=null"> 
+District: 
+<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></a></strong> &gt; </s:if>  <s:property value="candidateElectionDetails[0].electionType"/>:
+<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
+<div class="clear"></div>
+<div class="main-title-sec">
+ <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
+ <span style="margin-top:10px;margin-right:18px;float:right">
+ <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
+</span>
 </div>
+
+<div class="main-bbg"></div></div><br></td></tr></table>
 
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
