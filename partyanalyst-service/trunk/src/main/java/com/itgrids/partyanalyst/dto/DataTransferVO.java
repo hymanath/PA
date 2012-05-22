@@ -42,8 +42,37 @@ public class DataTransferVO extends ResultStatus{
 	private String connectedPeopleCount;
 	private Long parliamentConstId;
 	private String parliamentConstName;
+	private String userDetails;
+	private String email;
+	private String mobileNo;
 	
 	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
+
+	public String getUserDetails() {
+		return userDetails;
+	}
+
+	public void setUserDetails(String userDetails) {
+		this.userDetails = userDetails;
+	}
+
 	public Long getParliamentConstId() {
 		return parliamentConstId;
 	}
