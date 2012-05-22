@@ -551,8 +551,7 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 
 function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginId,locationType, elemId)
 {
-
-	if(elemId=="viewAllTab"){
+	if(elemId == "viewAllTab"){
 		$("a").removeClass("activefilter");
 		$("#"+elemId).addClass("activefilter");
 	}
@@ -578,14 +577,19 @@ function showAllConnectPeopleWindowOfDistrict(locationId,locationName,userLoginI
 		for(var consti=0; consti<constituencies.length;consti++)
 			connectConstiArray.push(constituencies[consti].id);			
 	}
-	var textValue = "";	
 	
-	if(elemId=="friends")	
-		var connectStatusSelectElmtText='connected';
+	var textValue = "";	
+	var connectStatusSelectElmtText = null;
+
+	if(elemId == "friends")	
+		connectStatusSelectElmtText = 'connected';
 	else if(elemId=="pending")
-		var connectStatusSelectElmtText='pending';
+		connectStatusSelectElmtText = 'pending';
 	else if(elemId=="notConnected")
-		var connectStatusSelectElmtText='not connected';
+		connectStatusSelectElmtText = 'not connected';
+	else
+		connectStatusSelectElmtText = 'All'; 
+
 
 	if(elemId!="" && elemId!="viewAllTab"){
 		var jsObj ={
