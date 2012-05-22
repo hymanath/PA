@@ -323,16 +323,6 @@ a:hover {
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr><td>
-<div class="main-title-sec">
- <div class="main-mbg">${partyVO.partyLongName} 
- 
- <span style="margin-top:10px;margin-right:18px;float:right">
- <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyPageAction.action?partyId=${partyId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
-</span>
-</div>
-
-<div class="main-bbg"></div></div><br></td></tr></table>
-
 <div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
@@ -346,7 +336,15 @@ google_ad_height = 90;
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </div>
+<div class="main-title-sec">
+ <div class="main-mbg">${partyVO.partyLongName} 
+ 
+ <span style="margin-top:10px;margin-right:18px;float:right">
+ <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyPageAction.action?partyId=${partyId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
+</span>
+</div>
 
+<div class="main-bbg"></div></div><br></td></tr></table>
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
