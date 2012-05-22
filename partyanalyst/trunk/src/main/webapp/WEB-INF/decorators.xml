@@ -122,6 +122,7 @@
 		<pattern>/partyCandidateAnalyzer*</pattern>
 		<pattern>/problemCompleteInfoAction*</pattern>
 		<pattern>/electionAnalysisAndManagementTool*</pattern>
+		<pattern>/connectPeopleAction*</pattern>
     </decorator>
 
 </decorators>
