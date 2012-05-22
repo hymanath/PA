@@ -103,7 +103,7 @@ function initializeTabView()
 
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: "Connections",
-		content: '<div id="connectPeople_connect_center" style="text-align:left;"></div>'
+		content: '<div id="connectPeople_connect_center" style="text-align:left;font-family:verdana;"></div>'
 	}));
 	
 
@@ -280,7 +280,7 @@ function getFriendsListForUser(results)
 	for(var i=0; i<results.connectedPeople.length; i++)
 	{
 		str += '<div>';
-		str += '<table>';
+		str += '<table style="Verdana,Arial,sans-serif;font-size:12px;">';
 		str += '<tr>';
 		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
 		str += '<td valign="top">'+results.connectedPeople[i].candidateName+'</td>';
@@ -289,7 +289,7 @@ function getFriendsListForUser(results)
 		str += '<td valign="top">'+results.connectedPeople[i].constituencyName+'</td>';
 		str += '</tr>';	
 		str += '<tr>';		
-		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a></td>';
 		str += '</tr>';	
 		str += '</table>';
 		str += '</div>';
@@ -350,18 +350,19 @@ function buildConnectionsContentForUser()
 	for(var i=0; i<arrData.length; i++)
 	{
 		str += '<div>';
-		str += '<table>';
+		str += '<table style="Verdana,Arial,sans-serif;font-size:12px;">';
 		str += '<tr>';
 	
 		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></td>';
 	
+		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
 		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
 		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
 		str += '</tr>';	
 		str += '<tr>';		
-		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a></td>';
 		str += '</tr>';	
 		str += '</table>';
 		str += '</div>';
@@ -393,7 +394,7 @@ function showMailPopup(id,name,type)
 	str += '</table>';
 	str	+= '<div id="connectStatus"></div>';
 	str	+= '</div>';
-	
+
 	$( "#connectPeoplePopup" ).dialog({
 			title:"Send Message to "+name,
 			autoOpen: true,
@@ -524,7 +525,7 @@ function callAjax(jsObj,url){
 					}
 					else if(jsObj.task == "getAllConnectedUsersByFilterView")
 					{
-						showAllConnectedUsersInPanelByFilterView(jsObj,results);
+						showAllConnectedUsersInPanelByFilterView(jsObj,results);	
 					}
 					else if(jsObj.task == "connectUserSet")
 					{
@@ -788,7 +789,7 @@ $("#password_change_window").dialog({
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
-		str += '	<td width="66%" align="left"><div id="password_window_errorMsg"></div></td>';
+		str += '	<td width="50%" align="left"><div id="password_window_errorMsg"></div></td>';
 		str += '	<td width="35%" align="right">';
 		str += '		<input id="changeButton" type="button" value="Change Password"></input>';
 		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
@@ -991,7 +992,7 @@ function buildQuickRegionAccessContent()
 	str += '<div id="regionAccessDiv_main">';
 
 	str += '<div id="regionAccessDiv_body" >';
-	str += '<table id="regionAccessTable">';
+	str += '<table id="regionAccessTable" style="font-size:12px;">';
 	str += '<tr>';
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th>State</th>';
@@ -1020,17 +1021,17 @@ function buildQuickRegionAccessContent()
 	cStr += '<div id="connectCountDiv_main">';
 	
 	cStr += '<div id="connectCountDiv_body" >';	
-	cStr += '<table id="regionAccessTable">';	
+	cStr += '<table id="regionAccessTable" style="font-size:12px;">';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>From '+districtName+' District</th>';
+	cStr += '<th style="font-size:12px;">From '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a id="connCnt" href="javascript:{}" onclick="showAllConnectPeopleWindowOfDistrict(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
 	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>From '+constituencyName+' Constituency</th>';
+	cStr += '<th style="font-size:12px;">From '+constituencyName+' Constituency</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
 	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
@@ -1055,7 +1056,7 @@ function buildPeopleYouMayKnowContent()
 	//str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	str += '<div id="peopleMayKnow_body">';
 	str += '	<div class="peopleMayKnow_data">';
-	str += '	<table width="100%" class="peopleMayKnow_data_table">';
+	str += '	<table width="100%" class="peopleMayKnow_data_table" style="font-size:12px;background:window;">';
 	
 	var arrData = peopleYouMayKnowInfo.peopleYouMayKnow;
 
@@ -1089,7 +1090,7 @@ function buildPeopleYouMayKnowContent()
 	str += '	</div>';
 	if(arrData.length!=0){
 		str += '	<div id="peopleMayKnow_buttonDiv">';
-		str += '	<a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')""> View All </a>';
+		str += '	<a href="javascript:{}" style="font-size:12px;" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')""> View All </a>';
 		str += '	</div>';	
 	}else{
 		str += '	<div style="text-align:left;padding:5px 20px 5px 5px;">';
@@ -1137,20 +1138,20 @@ function showPostedProblems(jsObj,results)
 	if(results.totalPostedProblemsCount == 0)
 		str += '<td width="180px">Total posted problems - '+results.totalPostedProblemsCount+'</td>';
 	else
-		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
+		str += '<td width="180px">Total posted problems - <a href="javascript:{}" style="color:#669900;" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
 
 	if(results.postedProblemsCountByLoggedInUsers == 0)
 		str += '<td width="90px">By You - '+results.postedProblemsCountByLoggedInUsers+'</td>';
 	else
-		str += '<td width="90px">By You - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
+		str += '<td width="90px">By You - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')" style="color:#669900;">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
 
 	if(results.postedProblemsCountByOtherUsers == 0)
 		str += '<td width="90px">By Others - '+results.postedProblemsCountByOtherUsers+'</td>';
 	else
-		str += '<td width="90px">By Others - <a href="javascript:{}" onclick="openDialogOfProblems(\'OtherUsers\')">'+results.postedProblemsCountByOtherUsers+'</a></td>';
+		str += '<td width="90px">By Others - <a href="javascript:{}" onclick="openDialogOfProblems(\'OtherUsers\')" style="color:#669900;">'+results.postedProblemsCountByOtherUsers+'</a></td>';
 
 	if(userType != "PartyAnalyst")
-		str += '<td align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
+		str += '<td align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()" style="color:#669900;text-decoration: underline;">Post Problem</a></td>';
 
 	str += '</tr>';
 	str += '</table>';
@@ -1258,9 +1259,9 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var data = results.problemsInfo[i];
 		
 		str += '<div class="postedDiv_dataInfo_main">';
-		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteInfoAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
+		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
 		str += '<div class="postedDiv_dataInfo_body">';
-		str += '<table class="postedDiv_dataInfo_table" width="100%">';
+		str += '<table class="postedDiv_dataInfo_table" width="100%" style="font-family:Verdana,Arial,sans-serif;font-size:13px;">';
 		str += '<tr>';
 		str += '<th style="width:20%;">Description </th>';
 		str += '<td style="width:2%;">:</td>';
@@ -1284,7 +1285,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 		str += '</div>';
 		str += '</div>';
 	}
-	str += '<div class="custom_paginator_class"></div>';
+	str += '<div class="custom_paginator_class" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:10px;text-align:right;"></div>';
 
 	elmt.innerHTML = str;
 }
@@ -1496,32 +1497,32 @@ function showPostedReasons(jsObj,results)
 			  str+='<td>'+totalPostedReasonsCount+'</td>';
 		 
 		  else
-		   str+='<td> <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+		   str+='<td> <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')" style="color:#669900;">'+totalPostedReasonsCount+'</a></td>';
 		
 		   str += '<td align="left" width="67px"> By User - </td>';
 		
 		if(postedReasonsByLoggedInUser ==0)
 			  str+='<td>'+postedReasonsByLoggedInUser+'</td>';
 		  else
-		str+='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')" style="color:#669900;">'+postedReasonsByLoggedInUser+'</a></td>';
 		
 		str += '<td align="left" width="87px"> By Others - </td>';
 		
 		if(postedReasonsCountByOtherUsers ==0)
 			  str+='<td>'+postedReasonsCountByOtherUsers+'</td>';
 		  else
-		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
+		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')" style="color:#669900;">'+postedReasonsCountByOtherUsers+'</a></td>';	
 	}else{
-		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
-		str += '<td align="left" width="90px"> By You - '+postedReasonsByLoggedInUser+'</td>';
-		str += '<td align="left" width="90px"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
+		str += '<td align="left" width="211px" style="color:#669900;"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
+		str += '<td align="left" width="90px" style="color:#669900;"> By You - '+postedReasonsByLoggedInUser+'</td>';
+		str += '<td align="left" width="90px" style="color:#669900;"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
 	}
 	
 	str += '<td align="right">';
 
 	if(userType != "PartyAnalyst"){		
-		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')">Add Reasons</a>';
-		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';
+		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')" style="color:#669900;text-decoration: underline;">Add Reasons</a>';
+		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')" style="color:#669900;text-decoration: underline;">View Reasons</a>';
 	}
 	
 	str += '</td>';
@@ -1638,7 +1639,7 @@ function showAllPostedReasons_paginator(jsObj,results)
 		str += '<div class="postedDiv_dataInfo_main">';
 		str += '<div class="postedDiv_dataInfo_head">Political Reason for '+data.candidate+' '+status+' in '+data.constituencyName+' '+data.electionType+' constituency</div>';
 		str += '<div class="postedDiv_dataInfo_body">';
-		str += '<table class="postedDiv_dataInfo_table" width="100%">';
+		str += '<table class="postedDiv_dataInfo_table" width="100%" style="font-family:Verdana,Arial,sans-serif;font-size:13px;">';
 		str += '<tr>';
 		str += '<th style="width:20%;">Political Reason </th>';
 		str += '<td style="width:2%;">:</td>';
@@ -1948,3 +1949,26 @@ function showpostedDivImg()
 	    var browser1 = window.open("socialAuthenticationAction.action?id="+id,"Refer friends From "+id,"scrollbars=yes,height=600,width=600,left=200,top=200");				 
 		browser1.focus();
 	}
+
+
+	function UserInfo()
+	{
+		var str='';
+		
+		var divEle = document.getElementById('contactDiv');
+		document.getElementById('contactDiv').style.display='block';
+		str +='<ul>'
+		str +='<li><a href="javascript:{}" onclick="changeExistingPassword()">change Password</a></li>';
+		str +='<li><a href="#">edit Picture</a></li>';
+		str +='</ul>';
+	
+		divEle.innerHTML = str;
+	}
+
+	function mouseoutUserInfo()
+	{
+	document.getElementById('contactDiv').style.display='none';
+		
+	}
+
+	
