@@ -83,7 +83,7 @@
 <IMG src="images/specialPage/5leaderswar.jpg" style="width: 974px;" alt="Andhra Pradesh 2012 Bye Election"/>
 </div>
 <br>
-<div id="upComing" style="background:#FFF;">
+<div id="upComing" style="background:#FFF;padding-top: 12px;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
 <span style="color:#ED5B21;font-weight:bold;">AP Bye Election Schedule</span> -
@@ -184,10 +184,18 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
 </table></div></fieldset></td></tr>
 </table>
 <div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in comming days due to JAGAN MLA's who voted against to confidence motion and disqualified MLA's by speaker Nadendla Manohar and Praja Rajyam president Chiranjeevi on Thursday morning resigned from the state assembly .</div>
+<div style="margin-left: 12px;"><span style=" background:#ED5B21;color: #FFFFFF;font-family: verdana;font-size: 14px;font-weight: bold;padding: 4px;text-align: center;cursor:pointer;border-radius:5px;" onclick="byeEleParticipatedCandidateInfo()">Andhra Pradesh Bye Election Participating Candidates</span>
+
+</div>
+<div style="margin-left: 450px; margin-bottom: 0px; margin-top: -21px;"><span id="byeElePaticipatedCandInfoSpan"><img id="plusImgIdEle" title="Click Here To Expand" style="" src="images/icons/plusImg .png" onclick="byeEleParticipatedCandidateInfo()"></img></span></div>
+
+
+
 <div style="font-weight:bold;font-family:verdana;font-size:12px;margin:17px;">
+
 <span>Total Assembly Constituencies - <font color="#05A8E9">18</font></span> <span style="padding:10px;"> SC Constituencies - <font color="#05A8E9">3</font> </span> <span style="padding:10px;">ST Constituencies - <font color="#05A8E9">1</font></span> <span style="padding:10px;">General Constituencies - <font color="#05A8E9">14</font></span>
 </div>
-<table class="spltableclass" style="margin-top:-7px;text-align:center;margin-left:12px;width: 98%;">
+<table id="byeEleParticipatedCandidatetableId" class="spltableclass" style="display:none;">
 <tbody>
  <tr>
    
@@ -423,8 +431,12 @@ href="candidateElectionResultsAction.action?candidateId=3462" onmouseover="displ
 </tr>
 </tbody></table>
 
-<span id="imageId"><img title="Click Here To Expand" style="display:none;margin-left:0px;margin-top:-15px" src="images/icons/plusImg .png" onclick="showVotesInfo('votesInfoId')"></img></span><a href="javascript:{}" onclick="showVotesInfo('votesInfoId')" style="text-decoration: none;"><h3 style="margin: 13px; width: 580px; font-family: verdana; font-size: 13px;" class="buttonClass">
-View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</h3></a>
+<div style="margin-left: 610px; margin-top: 20px; margin-bottom: 0px;">
+<span id="imageId"><img title="Click Here To Expand" style="" src="images/icons/plusImg .png" onclick="showVotesInfo('votesInfoId')"></img></span></div>
+
+<div style="margin-left: 10px; margin-bottom: 13px; padding-bottom: 19px; margin-top: -21px;">
+<span style="background: none repeat scroll 0 0 #ED5B21;border-radius: 5px 5px 5px 5px;color: #FFFFFF;font-family: verdana;font-size: 13px;font-weight: bold;margin-bottom: 20px;margin-left: 0;padding: 5px;cursor:pointer;"  onclick="showVotesInfo('votesInfoId')">View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</span>
+</div>
 <table width="100%" class="resulttableclass" style="margin-top:9px;display:none;" id="votesInfoId">
   <tr>
     <th style="background-color:#21B2ED;color:#fff;">Constituency</th>
@@ -534,29 +546,34 @@ View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</h3>
 </div></div>
 
 <script type="text/javascript">
+
 function showVotesInfo(tableId)
 {
-	$("#votesInfoId").slideToggle("slow");
-	if(document.getElementById("votesInfoId").style.display == 'block')
-	   document.getElementById("votesInfoId").style.display = 'none';
-	else if(document.getElementById("votesInfoId").style.display == 'none')
-	   document.getElementById("votesInfoId").style.display = 'block';
 	
-	/*var imageIdElmt = document.getElementById("imageId");
-	var str='';
-	str+='<img title="Click Here To Collapse" style="margin-left:0px;margin-top:-27px" src="images/icons/minusImage.png" onclick="hideVotesInfo()"></img>';
-	imageIdElmt.innerHTML = str;*/
-
-}
-function hideVotesInfo(tableId)
-{
 	var imageIdElmt = document.getElementById("imageId");
-	document.getElementById("votesInfoId").style.display = 'none';
-	var str='';
-	str+='<img title="Click Here To Expand" style="margin-left:0px;margin-top:-27px" src="images/icons/plusImg .png" onclick="showVotesInfo()"></img>';
+	var str = '';
+	
+	if(document.getElementById("votesInfoId").style.display == 'block')
+	{
+		$("#votesInfoId").slideToggle("slow");
+
+	   document.getElementById("votesInfoId").style.display = 'none';
+	   str += '<img title="Click Here To Expand" style="" src="images/icons/plusImg .png" onclick="showVotesInfo()"></img>';
+	}
+	else if(document.getElementById("votesInfoId").style.display == 'none')
+	{
+		$("#votesInfoId").slideToggle("slow");
+
+	   document.getElementById("votesInfoId").style.display = 'block';
+
+	   str += '<img title="Click here to hide Table" style="" src="images/icons/minusImage.png" onclick="showVotesInfo()"></img>';
+	}
+	
+	
 	imageIdElmt.innerHTML = str;
 
 }
+
 function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 	   
@@ -566,4 +583,29 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	/*function displayImage(candidateName){
 		overlib('<div><img style="height:115px;width:115px;" src="images/candidates/'+candidateName+'.jpg" alt="'+candidateName+' Image not available"></img></div>');
      }*/
+
+	
+
+	 function byeEleParticipatedCandidateInfo()
+	 {
+		var str = '';
+		var byeEleInfo = document.getElementById("byeElePaticipatedCandInfoSpan");
+		 if(document.getElementById("byeEleParticipatedCandidatetableId").style.display == 'none') 
+		 {
+		 
+			$("#byeEleParticipatedCandidatetableId").slideToggle("slow");
+			document.getElementById("byeEleParticipatedCandidatetableId").style.display = 'block';
+			str += '<img id="minusImageId" title="Click here to Hide the Table" style="" src="images/icons/minusImage.png" onclick="byeEleParticipatedCandidateInfo()"></img>';
+		 }
+		 else if(document.getElementById("byeEleParticipatedCandidatetableId").style.display == 'block')
+		 {
+			 
+			$("#byeEleParticipatedCandidatetableId").slideToggle("slow");
+			document.getElementById("byeEleParticipatedCandidatetableId").style.display = 'none';
+			str += '<img id="plusImgId" title="Click Here To View Andhra Pradesh Bye Election Participating Candidates" style="" src="images/icons/plusImg .png" onclick="byeEleParticipatedCandidateInfo()"></img>';
+		 }
+		byeEleInfo.innerHTML = str;
+	 }
+
+	
 </script>
