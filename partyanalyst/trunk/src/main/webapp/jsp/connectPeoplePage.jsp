@@ -78,7 +78,7 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-
+<link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
 <!-- JQuery files (End) -->
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
