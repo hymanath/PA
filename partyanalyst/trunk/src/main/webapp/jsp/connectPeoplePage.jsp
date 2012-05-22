@@ -1,16 +1,16 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@ page import="java.util.ResourceBundle;" %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Connect People</title>
-
+<title>ConnectPeople</title>
 <!-- YUI Dependency files (Start) -->
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -87,21 +87,24 @@
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-
 <link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">	
-<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
-	<link rel="stylesheet" type="text/css" href="styles/connectPeople/ConnectStyle.css">
+<link rel="stylesheet" type="text/css" href="styles/FreeProfileStyle.css">
+<link rel="stylesheet" type="text/css" href="styles/styles.css">
+
 
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["piechart"]});
 	google.load("elements", "1", {packages : ["newsshow"]});
+
+	
+
+
 	
 </script>
 <STYLE type="text/css" >
-
 .yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
     background-image:url("images/icons/homePage_new/accordianHeader_selected.jpg");
    }
@@ -109,14 +112,56 @@ google.load("visualization", "1", {packages:["piechart"]});
     background: url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 #D8D8D8;
     color: #FFFFFF;
     font-weight: bold;
+
+	#regionAccessTable th {font-size:12px;}
+	.ctr-right ul li h5{padding:3px;margin:0px;}
+	.ctr-right ul li p{padding:5px;margin:0px;border-top: 1px solid #d3d3d3;}
+
+.paginatorElmtClass{
+	padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: right;
 }
-#connectDiv{
+
+#pollQuestionDiv
+{
+	color:#0C67AC;
 	font-weight:bold;
+	margin-top:15px;
 }
+
+#pollOptionsDiv
+{
+	color:#73787E;
+	font-weight:bold;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+#viewPollResDiv
+{
+    color:#73787E;
+	font-weight:bold;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+
+
+
 </STYLE>
 </head>
+
 <body>
-      <div id="password_change_window" style="background-color: #C7CFD2;">
+
+
+
+
+
+
+<div id="password_change_window" style="background-color: #C7CFD2;">
 	  <div id="password_change_window_inner"></div></div>
 	<div id="connectPeoplePopup_outer" class="yui-skin-sam">
 		<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
@@ -124,21 +169,21 @@ google.load("visualization", "1", {packages:["piechart"]});
 	<div id="jQueryPopup"> <div id="reasonsDataTable_outer" class="yui-skin-sam"> <div id="reasonsDataTable"></div> </div></div>
 	<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>
 	<div id="uploadPic_window"><div id="uploadPic_window_inner"></div></div>
-	<div id="connectPeoplePage_main">
+	<div id="connectPeoplePage_main" style="width:1000px;margin-left:auto;margin-right:auto;background:none;">
 		<table width="100%">
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyLeftContentOuter" class="rounded" style="width:650px;"> 						
+					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;height:213px;clear:both;border:1px solid #d3d3d3;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
 							
 							<div id="connectPeople_profile_center" class="yui-skin-sam">
-							<table>
+							<!--<table>
 									<tr>
-										<td>
+									<td>
 											<span style="font-size:12px;color:#9E7556;padding:2px;">Refer Friends From</span>
 										</td>
 										<td valign="top">
@@ -148,7 +193,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										 <a href="#" onclick="openBrowserForSocialNetworking('yahoo')"><img src="images/yahoo_16.png" alt="YahooMail" title="YahooMail" border="0"></img></a>
 										</td>
 										</tr>
-										</table>
+										</table>-->
 								<table width="100%">
 									<tr>
 										<td width="20%" valign="top">
@@ -161,11 +206,11 @@ google.load("visualization", "1", {packages:["piechart"]});
 										</td>
 								<c:if test="${sessionScope.UserType != 'PartyAnalyst'}"> 
 										<td width="25%" valign="top">
-											<div class="connectPeople_profile_center_linksDiv">
+											<div class="connectPeople_profile_center_linksDiv" >
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddReasonWindow('analyze')">Add Political Reasons</a></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('analyze')" style="color:#669900;">Add Political Reasons</a></td>
 													</tr>
 												</table>												
 											</div>
@@ -173,7 +218,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddReasonWindow('viewResults')">View Political Reasons</a></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('viewResults')" style="color:#669900;">View Political Reasons</a></td>
 													</tr>
 												</table>												
 											</div>
@@ -181,7 +226,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>
+														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()" style="color:#669900;">Post Problem</a></td>
 													</tr>
 												</table>												
 											</div>
@@ -191,7 +236,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 									
 								</table>
 							</div>
-							<div id="connectPeople_messages_center" class="yui-skin-sam">
+							<div id="connectPeople_messages_center" class="yui-skin-sam" style="margin-top:42px;">
 											 
 							</div>
 
@@ -202,26 +247,80 @@ google.load("visualization", "1", {packages:["piechart"]});
 
 					
 				</td>
-				<td width="30%" valign="top">
-					<div id="constituencyRightContentOuter" class="rounded" style="width:270px;"> 						
+				<td>
+					<div id="constituencyRightContentOuter" class="rounded" style="width:287px;margin-right:auto;"> 						
+						
+
+ 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
 							<!-- Accordian Start-->
-							<div id="connectedPeopleAccordian">
-								<h3><a href="#">View Your Location Details</a></h3>
+							<div id="connectedPeopleAccordian" style="width:101%;">
+								<h3><a href="#" style="color:#000000;font-size:12px;">View Your Location Details</a></h3>
 								<div style="padding:0px;height:250px;">
 									<div id="connectPeople_quickAccess_center" class="yui-skin-sam" style="margin-top:10px;">									 
 									</div>	
 								</div>
-								<h3><a href="#">People In Your Location</a></h3>
+								<h3><a href="#" style="color:#000000;font-size:12px;">People In Your Location</a></h3>
 								<div style="padding:0px;height:250px;">
 									<div id="connectPeople_count_center" class="yui-skin-sam" style="margin-top:10px;">											
 									</div>	
 								</div>
-								<h3><a href="#">People You May Know</a></h3>
+								<h3><a href="#" style="color:#000000;font-size:12px;">People You May Know</a></h3>
 								<div style="padding:0px;height:250px;">
+									<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
+											 
+									</div>	
+								</div>
+							</div>
+							<!-- Accordian End-->
+
+						
+										<!--<div class="ctr-right">
+										<h5 style="background-color:#5e5e5e;color:#ffffff;padding: 2px;">About Me</h5>
+
+								
+									<ul>
+									
+									<li> 
+										<h5>Contact Info</h5>
+										<p style="border-top: 1px solid #d3d3d3;">${dataTransferVO.email}<br/>${dataTransferVO.mobileNo}</p>
+									</li>
+									
+										<li> 
+										 <h5>My Favourite Party(s)</h5>
+							 <p style="border-top: 1px solid #d3d3d3;">Telugu Desam Party [TDP]</p>
+							</li>
+							<li> 
+							 <h5 style="border-top: 1px solid #d3d3d3;">My Favourite Leader(s)</h5>
+								<p> Chandra Babu Naidu <br/> Kishan Reddy </p>
+								</li>
+									</ul>
+									</div>	
+								
+						
+
+
+
+
+
+
+
+
+								<h5 style="background-color:#5e5e5e;color:#ffffff; padding: 2px;">Your Location Details</h5>
+								<div style="padding:0px;">
+									<div id="connectPeople_quickAccess_center" class="yui-skin-sam" style="margin-top:10px;height:auto;">									 
+									</div>	
+								</div>
+								<h5 style="background-color:#5e5e5e;color:#ffffff; padding: 2px;">People In Your Location</h5>
+								<div style="padding:0px;height:115px;">
+							<div id="connectPeople_count_center" class="yui-skin-sam" style="margin-top:10px;">											
+									</div>	
+								</div>
+								<h5 style="background-color:#5e5e5e;color:#ffffff; padding: 2px;">People You May Know</a></h5>
+								<div style="padding:0px;">
 									<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
 											 
 									</div>	
@@ -271,7 +370,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										  <tr>
 											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 											<td width="98%">
-												<div class="electionTrendzHeaderBackground_center">
+												<div class="electionTrendzHeaderBackground_center" style="width:214px;">
 													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
 														Opinion Poll
 													</span>
@@ -281,7 +380,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;">
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;background:#ffffff;width:265px;">
 									</div>
 									<div id="pollsWidgetFooter">
 										
@@ -297,7 +396,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:237px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -451,8 +550,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 		</table>	
 	
 	</div>
-
-	<script type="text/javascript"> 
+<script type="text/javascript"> 
 
 		loginUserId = '${loginUserId}';
 		loginUserName = '${loginUserName}';	
