@@ -221,6 +221,15 @@ border:1px solid #cccccc;
 .listyle{
 overflow: hidden; float: left; width: 64px; height: 90px;
 }
+.headingClass
+{
+color: #C66E17;
+font-size: 15px;
+font-weight: bold;
+margin-bottom: 4px;
+margin-left: 18px;
+margin-top: 4px;
+}
 </style>
 </head>
 
@@ -520,15 +529,15 @@ var pollStatus = [];
 			     <tr>
 			      <td>
 			        <s:if test="%{#newsGallaryDetails.fileType == 'Candidate'}" >
-					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='candidateElectionResultsAction.action?candidateId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;font-size: 13px; line-height: 1.5em;">
 			        </s:if>
 					<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
-					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;font-size: 13px; line-height: 1.5em;">
 			        </s:if>
 					<s:if test="%{#newsGallaryDetails.fileType == 'Special Page'}" >
-					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
+					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;font-size: 13px; line-height: 1.5em;">
 			        </s:if>
-			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
+			        <h4 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h4>
 			           New News Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> News Gallary.</a>
 			        <div style="margin-left:5px;margin-top:6px;">
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
@@ -536,7 +545,9 @@ var pollStatus = [];
 			        </div>
 				  </td>
 			     </tr>
+				
 			    </table>
+				 <hr style="border: 1px dotted #CDCDCD;width: 440px;">
 			  </s:iterator>
 			 </s:if>
 		   </div>
@@ -644,7 +655,7 @@ var pollStatus = [];
 									</div>
 								</div>-->
 						<div class="partiesList">
-						     <h1 class="titleClass">View Your Parties</h1>
+						     <h3 class="headingClass">View Your Parties</h3>
 							 <table>
 							  <tr  style="height:130px;padding-top:30px;">
                                 <td><div class="prevImg"><img src="images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div></td>
@@ -668,7 +679,7 @@ var pollStatus = [];
 							 </table>
 						</div>
 						<div class="our-services">
-		                    <h1>Our Services</h1>
+		                    <h3 class="headingClass">Our Services</h3>
 		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
 		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
