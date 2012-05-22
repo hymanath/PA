@@ -1629,6 +1629,20 @@ background:white;border-radius:50%; margin:0px 10px;}
 
 <div class="clear"></div>
 
+ <div style="text-align:center;margin-bottom:10px;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0938408694174139";
+/* PartyPageHeader */
+google_ad_slot = "2678494123";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
     <div class="main-title-sec">
         <div class="main-mbg">${districtName} DISTRICT DETAILS</div>
 <span style="margin-top:10px;margin-right:30px;float:right">
