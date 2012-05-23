@@ -524,7 +524,8 @@
                 name="ProjectEditForm"
                 scope="session"
                 validate="false">
-            
+                    
+                      
             <forward name="show_form" path="/project/projectedit.jsp" redirect="false" />
             <forward name="reshow_form" path="/project/projectedit.do?rnd=1" redirect="true" />
             <forward name="self_redirect" path="/project/assignproject.do?action=showUsers" redirect="true"/>
@@ -537,7 +538,8 @@
                 name="ProjectStatusForm"
                 scope="session"
                 validate="false">
-            
+                    
+                      
             <forward name="show_form" path="/project/projectstatusform.jsp" redirect="false" />
             <forward name="self_redirect" path="/project/projectstatusform.do?rnd=1" redirect="true"/>
             <forward name="show_report" path="/project/projectstatusreport.jsp" redirect="false"/>
@@ -707,7 +709,7 @@
             <forward name="billingsummary" path="/reports/billingsummary.do" redirect="true" />
             <forward name="prepareinvoice" path="/reports/prepareinvoice.do" redirect="true" />
             <forward name="staffoutput" path="/reports/staffoutput.do" redirect="true" />
-            <forward name="login_details_report" path="/reports/login_detailsform.do" redirect="true" />
+            <forward name="login_details_report" path="/reports/login_detailsform.do" direct="true" />
             <forward name="projectreportpage" path="/reports/projectreportform.do" redirect="true" />
             
         </action>
@@ -727,7 +729,7 @@
         </action>
         
         <action path="/reports/staffoutput"
-                type="com.clovStaffOutputRetech.esgtms.reports.StaffOutputReportAction"
+                type="com.clovetech.esgtms.reports.StaffOutputReportAction"
                 name="StaffOutputReportForm"
                 scope="session"
                 validate="false">
