@@ -537,9 +537,9 @@ if(category == "candidate")
 
 		hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 		hStr+='<TR>';
-		hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		hStr+='<TD >'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</TD>';
-		hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top: -5px;width: 600px;border-radius:4px;"/><h3 style="width:585px;margin-top:-22px;margin-left:8px;"> '+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</h3></TD>';
+		//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		hStr+='</TR>';
 		hStr+='</TABLE>';	
 
@@ -549,9 +549,9 @@ if(category == "candidate")
 		{
 			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 			hStr+='<TR>';
-			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-			hStr+='<TD><H3 style="width:auto;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
-			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top:-5px;width:600px;border-radius:4px;"/><h3 style="width:585px;margin-top:-22px;margin-left:8px;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			hStr+='</TR>';
 			hStr+='</TABLE>';
 		}
@@ -559,9 +559,9 @@ if(category == "candidate")
 		{
 			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 			hStr+='<TR>';
-			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-			hStr+='<TD><H3 style="width:auto;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
-			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top: -5px;width: 600px;border-radius:4px;"/><h3 style="width:585px;margin-top:-22px;margin-left:8px;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			//hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			hStr+='</TR>';
 			hStr+='</TABLE>';
 		}	
@@ -677,13 +677,13 @@ if(category == "candidate")
 		str+='<div id="postNewComment_main" class="commentsDataMainDiv">';
 		str+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		str+='<TR>';
-		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		//str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
 		if(rank == 1)
-			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Wining in '+year+' '+electionType+' Elections </H3></TD>';
+			str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top: 42px;width: 553px;border-radius:4px;"/><H3 style="width:585px;margin-top:-22px;margin-left:8px;">Add Reasons For '+candidateName+' Wining in '+year+' '+electionType+' Elections </H3></TD>';
 		else
-			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Lost in '+year+' '+electionType+' Elections </H3></TD>';
+			str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top: 42px;width: 586px;border-radius:4px;"/><H3 style="width:585px;margin-top:-22px;margin-left:4px;">Add Reasons For '+candidateName+' Lost in '+year+' '+electionType+' Elections </H3></TD>';
 
-		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		//str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
 		
@@ -830,11 +830,11 @@ if(category == "candidate")
 		var contentStr = '';
 		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='<TR>';
-		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		//contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
 		if(jsObj.rank == 1)
-			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Winning in '+year+' '+electionType+' elections</H3></TD>';
+			contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png" style="height: 33px; margin-top: 42px;width: 553px;border-radius:4px;"/><H3 style="width:585px;margin-top:-22px;margin-left:8px;">Reasons For '+candidateName+' Winning in '+year+' '+electionType+' elections</H3></TD>';
 		else
-			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Lost in '+year+' '+electionType+' elections</H3></TD>';
+			//contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Lost in '+year+' '+electionType+' elections</H3></TD>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
