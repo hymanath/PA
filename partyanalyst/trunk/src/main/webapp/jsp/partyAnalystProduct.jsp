@@ -5,7 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Election Analysis And Management Tool</title>
- <!-- Combo-handled YUI CSS files: --> 
+<!-- Combo-handled YUI CSS files: -->
+
+<meta name="Keywords" content="Election Analysis And Management Tool, Election Software, Politian Software, Voters Software, Software for Political Parties, Election Analysis Platform, Cadre Management and Constituency Management Software, Problem Management Tool, Interface to interact with Voters, Profile Management" />
+<meta name="description" content="First of PartyAnalyst is a kind of Election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools for Politicians and Political Parties. Party Analyst provides exclusive elections analysis tools with different data sets to understand the voting patterns based on demographically, geographically from state level to village level. It provides different tools to Politicians and Political Parties to manage Cadre, Constituencies and People Problems. It provides an interface to interact with voters and publish their activities to public" />
+
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
