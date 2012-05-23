@@ -607,18 +607,39 @@ var pollStatus = [];
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
         <div class="sneak-peak-sec" style="width:580px;padding:0px;margin:5px;border-radius:5px;position:relative;border:1px solid #cccccc;">
-          <span class="problem-h1"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
+          <span class="problem-h1" style="margin-bottom: 2px; padding-bottom: 21px; padding-top: 7px;"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
 		  <h2 class="problem-h2"><b><font style="color:#000;"> New or Existing</font></b> - Our Platform elevates your problems to the external world.</h2>
+		  <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
+			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register" style="display: inline;
+    float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
+		   </c:if>
+			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}">
+		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register" style="display: inline;
+    float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
+			</c:if>
 		</span>
 		<div id="logInDiv"></div>
 		  <!-- <h2 class="problem-cont-h2"><b><font style="color:#F55C41"> Post your problem</font></b> -It's quick and free</h2>-->
-           <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
+           <!-- <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
 			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register">Post Your Problems</a>
 		   </c:if>
 			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}">
 		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register">Post Your Problems</a>
-			</c:if>
+			</c:if> -->
 		  <!-- <h3 class="problem-cont-h3"><b><font style="color:#F55C41">VIEW HERE</font></b> -Problems in your AREA</h3>-->
+			<div style="margin-top: 8px; margin-left: 0px; margin-bottom: 10px;">
+			
+				<div style="margin-left: 60px; margin-bottom: 0px; margin-top: 15px;">
+				
+					Enter Problem Reference Id : <input type="text" id="problemReferenceId" />
+					
+					<input type="button" value="Search" onclick="getProblemReferenceId()" style=" background: #F6290C;color: #FFF; font-weight: bold;padding: 4px 5px 4px 5px;border-radius: 5px;cursor: pointer;" />
+
+				</div>
+				<div id="problemErrorMsgDiv" style="margin-left: 50px;"></div>
+				<div id="problemDescriptionDiv" style="margin-left: 139px; margin-top: 0px; margin-bottom: 0px; padding-top: 7px;"></div>
+				</div>
+				
               <div style="min-height:504px;max-height:850px;overflow-y:auto;display:block;clear:both;" id="problemsShowDIV"></div>
 									
 		      <div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
@@ -905,6 +926,8 @@ var custom_paginator = {
         $('#custom_paginator_class a').removeClass('pagenationStyle');
 		$(this).addClass('pagenationStyle');
       });
+	$("#problemReferenceId").focus();
+
   });
 custom_paginator.totalRecords = '${problemCount}';
 var news_Obj = {
@@ -1634,6 +1657,78 @@ var arrData = pollStatus;
 		document.getElementById("photoGallaryDisplay").style.display = 'none';
 		document.getElementById("newsGallaryDisplay").style.display = 'block';
     }
+
+	function getProblemReferenceId()
+	{
+		var problemRefId = document.getElementById("problemReferenceId").value;
+		var errorDivEle = document.getElementById('problemErrorMsgDiv');
+
+		var problemDescDivEle = document.getElementById("problemDescriptionDiv");
+		var content = "Please Enter Valid Problem Referenece Id";
+		var eFlag = false;
+		var validCharacters = /[a-zA-Z]/;
+		var onlyNumbers = /[0-9]/;
+		var invalidChars = /^[a-zA-Z0-9]{7}$/;
+		var str = '<font style="color:red">';
+		if(problemRefId.length == 0)
+		{
+			str +='Please Enter Problem Reference Id';
+			eFlag = true;
+		}
+		else if(problemRefId.length != 7)
+		{
+		str += content;
+		eFlag = true;
+		}
+		else if (!invalidChars.test(problemRefId))
+		{
+			str += content;
+			eFlag = true;
+		}
+		else if(!validCharacters.test(problemRefId.substring(0,1)))
+			{
+				str += content;
+				eFlag = true;
+			}
+		
+		else if(!onlyNumbers.test(problemRefId.substring(2,7)))
+			{
+				str += content;
+				eFlag = true;
+			
+			}
+		str +='</font>';
+		problemDescDivEle.innerHTML = str;
+
+		if(eFlag)
+			return;
+		else
+		{
+		var jsObj = 
+			{
+				problemRefId : problemRefId,
+				task         : "getProblemDetailsBasedOnProblemRefId"
+			};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getProblemDetailsAction.action?"+rparam;						
+		callHomePageAjax(jsObj,url);
+		}
+	}	
+function showProblemDescriptionByProblemRefId(results)
+{
+	var problemDescDivEle = document.getElementById("problemDescriptionDiv");
+    document.getElementById("problemReferenceId").value = '';
+	if(results == null)
+	{
+		problemDescDivEle.innerHTML = '<font style="color:red">This Problem is not Existed.</font>';
+		
+	}
+	else if(results != null)
+	{
+	problemDescDivEle.innerHTML = '<a href="problemCompleteInfoAction.action?problemHistoryId='+results.problemHistoryId+'">'+results.description+'</a>';
+	}
+	
+}
 
 //buildPolls();
 
