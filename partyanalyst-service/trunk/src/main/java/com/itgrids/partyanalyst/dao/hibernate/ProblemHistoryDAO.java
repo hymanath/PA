@@ -1010,6 +1010,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		  return query.list(); 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Long> getAllValidProblemIdsCount(){
 		return getHibernateTemplate().find("select count(model.problemHistoryId) from ProblemHistory model where model.isDelete = null and model.isApproved = '"+IConstants.TRUE+"' and model.problemLocation.problemImpactLevel.regionScopesId < 5 " +
 				"  and model.problemLocation.problemAndProblemSource.externalUser is not null  ");
@@ -1027,6 +1028,13 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.isDelete is null ");
 		query.setParameter(0,problemHistoryId);
 		return (Long)query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemHistoryIdByReferenceId(String problemRefId)
+	{
+		return getHibernateTemplate().find("select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.externalUser.userId,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.problem.referenceNo = ? and (model.isDelete is null or model.isDelete = 'false')" +
+				"and (model.problemLocation.problemAndProblemSource.externalUser.userId is not null)",problemRefId);
 	}
 	
 }
