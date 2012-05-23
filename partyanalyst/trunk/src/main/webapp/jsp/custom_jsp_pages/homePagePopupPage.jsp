@@ -101,7 +101,7 @@ Get the complete picture of your constituency to strategize or to understand the
 <tr>
 <td>
 <div class="service-box">
-<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span>Analysis and Management Tool</span></a>
+<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span>Election Analysis and Management Tool</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
 <span>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</span>
 </div></td><td>
