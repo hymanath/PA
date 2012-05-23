@@ -6,6 +6,9 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>News Monitoring Service</title>
+
+<meta name="Keywords" content="News Monitering Service, News Analyzing Service, Review and Publish News, Election Software, Politian Software, Constituency problems, Opposition Party Activities, Monitoring the News in different Impact Levels, Categorization of News, News From Different Sources and Languages, News Based on Importance"/>
+<meta name="description" content="As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena. To review and publish the news related to you and your constituency/district/state. Lot of your constituency problems, activities, and your opposition party activities will come in different print and electronic media and disappear from the people. Party Analyst News Monitoring Service helps you lot on this. When you partner with Party Analyst, anything is possible, almost everything can be known" />
 	 <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
