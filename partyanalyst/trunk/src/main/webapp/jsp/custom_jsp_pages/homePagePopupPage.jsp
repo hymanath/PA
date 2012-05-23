@@ -54,6 +54,7 @@ left:50%;
 .service-box{
 	width: 193px;
 	height: 238px;
+	text-align:left;
 	background: threeDFace;
 }
 .service-box a{
@@ -61,6 +62,13 @@ left:50%;
     color: ActiveCaption;
     margin-left: 3px;
     opacity: 0.55;
+	width: 107px;
+}
+.service-box:hover a, .service-box a:hover{
+-webkit-transition: 200ms linear 0s;
+-moz-transition: 200ms linear 0s;
+-o-transition: 200ms linear 0s;
+
 }
 </style>
 <div class="promos">
@@ -93,9 +101,9 @@ Get the complete picture of your constituency to strategize or to understand the
 <tr>
 <td>
 <div class="service-box">
-<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span>Political Management Tool</span></a>
+<a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span>Analysis and Management Tool</span></a>
 <img src="images/new_homepage/sp-pa.jpg"/>
-Analyze your constituency, track your progress and pending facilities.
+<span>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</span>
 </div></td><td>
 <div class="service-box">
 <a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
@@ -106,7 +114,7 @@ Ask, Analyze, Improve.
 <div class="service-box">
 <a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
 <img src="images/new_homepage/NewsTracker.png"/>
-As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
+As a Politician or Political Party, News Monitoring and analyzing is very important &nbsp;          to keep upper hand in the political arena.
 </div></td>
 <td><div class="service-box">
 <a href="constituencyProfileReport.action?src=homePageAd"><span>Constituency Profile Report</span></a>
