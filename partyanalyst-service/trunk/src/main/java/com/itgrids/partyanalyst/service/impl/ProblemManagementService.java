@@ -5298,5 +5298,43 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return 30L;
 	}
-
+	
+	public ProblemBeanVO getProblemDetailsByProblemReferenceId(String problemReferenceId , Long userId)
+	{
+		ProblemBeanVO problemBeanVO = null;
+		try
+		{
+			List<Object[]> list = problemHistoryDAO.getProblemHistoryIdByReferenceId(problemReferenceId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(params[3] != null && params[3].equals("true"))
+					{
+						problemBeanVO = new ProblemBeanVO();
+						problemBeanVO.setProblemHistoryId((Long)params[0]);
+						problemBeanVO.setDescription(params[1].toString());
+						return problemBeanVO;
+					}
+					else if(params[2] != null && (Long)params[2] != 0 && userId != null && userId != 0 && 
+							params[2].equals(userId))
+					{
+						problemBeanVO = new ProblemBeanVO();
+						problemBeanVO.setProblemHistoryId((Long)params[0]);
+						problemBeanVO.setDescription(params[1].toString());
+						return problemBeanVO;
+					}
+					else
+						return null;
+				}
+			}
+			return problemBeanVO;
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in getProblemDetailsByProblemReferenceId() Method , Exception - "+e);
+			return null;
+		}
+		
 	}
+
+}
