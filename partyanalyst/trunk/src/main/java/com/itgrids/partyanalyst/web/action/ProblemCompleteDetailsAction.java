@@ -253,5 +253,21 @@ ServletRequestAware, ServletContextAware  {
 		return Action.SUCCESS;
 	}
 	
-
+	public String getProblemDetailsByProblemReferenceId()
+	{
+		try {
+			userId = null;
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO != null)
+				userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			problemBeanVO = problemManagementService.getProblemDetailsByProblemReferenceId(jObj.getString("problemRefId").toUpperCase(),userId);
+			
+		}catch (Exception e) {
+			log.error("Exception Occured in getProblemDetailsByProblemReferenceId() , Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
 }
