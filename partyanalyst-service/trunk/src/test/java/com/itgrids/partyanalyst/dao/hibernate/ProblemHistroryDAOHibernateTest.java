@@ -270,11 +270,11 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	/*public void testgetAllPostedProblemsByAnanymousUserId(){
+	public void testgetAllPostedProblemsByAnanymousUserId(){
 		
-		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "asc", "model.problemLocation.problemAndProblemSource.problem.problem", IConstants.TOTAL);
+		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(411L, 0, 5, "desc", "model.problemLocation.problemAndProblemSource.problem.problemId", IConstants.TOTAL);
 		System.out.println(list1.size());
-	}*/
+	}
 	/*
 	public void testFindProblemsForSelectedSearchOptions(){
 		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l,false,false);
@@ -580,9 +580,9 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetFreeUserIdOfAProblem()
+	/*public void testGetFreeUserIdOfAProblem()
 	{
 		System.out.println("----"+problemHistoryDAO.getFreeUserIdOfAProblem(244l));
-	}
+	}*/
 }	
 
