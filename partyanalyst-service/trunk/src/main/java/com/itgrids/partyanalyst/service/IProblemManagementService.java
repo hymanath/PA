@@ -123,5 +123,7 @@ public interface IProblemManagementService {
 	
 	public Long getProblemsCount();
 	
-	public ProblemBeanVO getProblemCompleteInfoOfAFreeUserProblem(Long problemHistoryId, Long userId); 
+	public ProblemBeanVO getProblemCompleteInfoOfAFreeUserProblem(Long problemHistoryId, Long userId);
+	
+	public ProblemBeanVO getProblemDetailsByProblemReferenceId(String problemReferenceId , Long userId);
 }
