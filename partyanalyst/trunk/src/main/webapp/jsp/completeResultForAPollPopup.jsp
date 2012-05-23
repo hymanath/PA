@@ -127,7 +127,7 @@ for(var j=0; j<arrData.length; j++)
 			var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
 	
 chart.draw(data,{width: 400, height: 280,legend:'right', 
-legendTextStyle:{fontSize:12},title:'Opinion Polls To Different Parties',titleTextStyle:{fontName:'verdana',fontSize:9}});
+legendTextStyle:{fontSize:12},title:'${questionsOptionsVO.title}',titleTextStyle:{fontName:'verdana',fontSize:9}});
 
 
 
