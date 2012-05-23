@@ -285,6 +285,13 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <a href="statePageAction.action?stateId=${candidateElectionDetails[0].stateId}"><strong>
 <s:property value="candidateElectionDetails[0].stateName"/></strong></a>
  &gt;  </s:if>
+ <s:if test="candidateElectionDetails[0].getDistricts!=null && candidateElectionDetails[0].getDistricts.size >0">
+
+  District :
+<s:iterator status="districs" value="candidateElectionDetails[0].getDistricts">
+
+
+ <a href="districtPageAction.action?districtId=<s:property value="id"/>&districtName=<s:property value="name"/>"> <s:property value="name"/><s:if test="#districs.index < candidateElectionDetails[0].getDistricts.size - 1"> ,</a> </s:if></s:iterator> > </s:if>
 <s:if test="candidateElectionDetails[0].districtName!=null"> 
 District: 
 <strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></a></strong> &gt; </s:if>  <s:property value="candidateElectionDetails[0].electionType"/>:
