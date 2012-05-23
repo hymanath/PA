@@ -499,11 +499,11 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(*) from ProblemHistory model ");
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null ");
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? ");
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
@@ -511,6 +511,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
 		
+		query.append(" and (model.isDelete = 'false' or model.isDelete is null) ");
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
@@ -536,11 +537,11 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append("model.problemLocation.problemImpactLevel.scope,model.isApproved, model.problemHistoryId from ProblemHistory model ");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null ");
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? ");
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
@@ -549,7 +550,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
 		
 		
-		
+		query.append(" and (model.isDelete = 'false' or model.isDelete is null) ");
 		query.append(" order by "+columnName+" "+order);
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -572,17 +573,14 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{		
 		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId), "+
 				"model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId = ? "+
-				"group by model.isApproved",registrationId);
+				" and (model.isDelete = 'false' or model.isDelete is null) group by model.isApproved",registrationId);
 	}
 	
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long registrationId)
 	{		
-		/*return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId), "+
-				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ?",registrationId);*/
-		
 		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId) "+
-				" from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and model.isDelete is null "+
-				"",registrationId);
+				" from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and (model.isDelete is null "+
+				" or model.isDelete = 'false') and model.isApproved = 'true' ",registrationId);
 	}
 
 	@SuppressWarnings("unchecked")
