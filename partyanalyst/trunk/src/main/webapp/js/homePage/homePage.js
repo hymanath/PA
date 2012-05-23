@@ -754,6 +754,10 @@ function callHomePageAjax(jsObj,url)
 							{
 								showProblemDetails(results);
 							}
+							else if(jsObj.task == "getProblemDetailsBasedOnProblemRefId")
+							{
+								showProblemDescriptionByProblemRefId(myResults);
+							}
 						}
 						catch(e)
 						{   
