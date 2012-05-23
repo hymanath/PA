@@ -644,6 +644,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public List<CandidateDetailsVO> getCandidateElectionDetails(Long candidateId) {
 		
 		List<CandidateDetailsVO> candidateElectionDetails = new ArrayList<CandidateDetailsVO>(0);
+		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
 		
 		List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(candidateId);
 		 
@@ -652,6 +653,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Candidate candidate = null;
 			Party party = null;
 			Constituency constituency = null;
+			
 			Election election = null;
 			String districtName = "";
 			for(CandidateResult result:candidateResults){
@@ -663,6 +665,46 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				
 				CandidateDetailsVO candidateDetails = new CandidateDetailsVO();
 				
+				/*List<Object[]> districtDetails = constituencyDAO.getDistrictName(constituency.getConstituencyId());
+				if(districtDetails != null)
+				{
+				{
+					for(Object[] params : districtDetails)
+					{
+						candidateDetails.setDistrictId((Long)params[0]);
+						candidateDetails.setDistrictName(params[1].toString());
+					}
+				}}*/
+				
+				
+				
+				
+				/*List districtsInfo = delimitationConstituencyAssemblyDetailsDAO
+						.findDistrictsOfParliamentConstituency(constituency.getConstituencyId());
+				for (Object[] values : (List<Object[]>) districtsInfo)
+					districts.add(new SelectOptionVO((Long) values[0],
+							values[1].toString()));*/
+				
+			List<Object[]> districtsInfo = delimitationConstituencyAssemblyDetailsDAO
+						.findDistrictsOfParliamentConstituencies(constituency.getConstituencyId());
+				if(districtsInfo !=null)
+				{
+					districts = new ArrayList<SelectOptionVO>();
+					SelectOptionVO optionVO = new SelectOptionVO();
+				for(Object[] districtDetails : districtsInfo)
+				{
+					optionVO = new SelectOptionVO();
+					optionVO.setId((Long)districtDetails[0]);
+					optionVO.setName(districtDetails[1].toString());
+					districts.add(optionVO);
+					
+				}
+				candidateDetails.setGetDistricts(districts);
+				
+				}
+				
+			
+		
 				candidateDetails.setCandidateId(candidate.getCandidateId());
 				String name = null;
 				  if(candidate.getFirstname()!= null && candidate.getLastname()!= null){
