@@ -584,5 +584,20 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	{
 		System.out.println("----"+problemHistoryDAO.getFreeUserIdOfAProblem(244l));
 	}*/
+	
+	public void testGetProblemHistoryIdByReferenceId()
+	{
+		List<Object[]> list = problemHistoryDAO.getProblemHistoryIdByReferenceId("PU66406");
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+			{
+			System.out.println(list.size());
+			System.out.println("Problem HistoryId - "+params[0]);
+			System.out.println("Description - "+params[1].toString());
+			System.out.println("userId - "+params[2].toString());
+			System.out.println("isApproved - "+params[3]);
+			}
+	}
 }	
 
