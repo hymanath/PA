@@ -683,7 +683,7 @@ var pollStatus = [];
 		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
 		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
-		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Political<br/>Management Tool</a>
+		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Election Analysis And <br/>Management Tool</a>
 		                </div>
 						<div style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
 						<div id="pollsWidgetHeader" >
