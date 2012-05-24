@@ -5,11 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Election Analysis And Management Tool</title>
-<!-- Combo-handled YUI CSS files: -->
-
-<meta name="Keywords" content="Election Analysis And Management Tool, Election Software, Politian Software, Voters Software, Software for Political Parties, Election Analysis Platform, Cadre Management and Constituency Management Software, Problem Management Tool, Interface to interact with Voters, Profile Management" />
-<meta name="description" content="First of PartyAnalyst is a kind of Election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools for Politicians and Political Parties. Party Analyst provides exclusive elections analysis tools with different data sets to understand the voting patterns based on demographically, geographically from state level to village level. It provides different tools to Politicians and Political Parties to manage Cadre, Constituencies and People Problems. It provides an interface to interact with voters and publish their activities to public" />
-
+ <!-- Combo-handled YUI CSS files: --> 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/calendar/assets/skins/sam/calendar.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/calendar/calendar-min.js"></script> 
@@ -32,39 +28,282 @@
   }
 </style>
 <div class="mainnewsdiv">
-<div class="Promo-box-left">
+<div class="Promo-box-left gradfill">
 <h1 class="gradlightblack">Election Analysis And Management Tool <div class="Sample-Report-top">
 
 </div></h1>
 <span class="titlespan">KNOW - ANALYZE - ACT</span>
-<p class="">First of its kind of election analysis platform for Politicians, Political Parties and Media. It also provides Management Tools<br /> for Politicians and Political Parties.
+<p>The first-of-its-kind Election Analysis Platform, for Politicians, Political Parties and Media.
 </p>
-<div class="why-box">
-<h2 class="oval-thought1">Why Party Analyst?</h2>
-<span class="RectSpan-thought">Party Analyst provides exclusive elections analysis tools with different data sets to understand the voting patterns based on demographically, geographically from state level to village level.</span>
-<p class="gradcream">
-It provides different tools to Politicians and Political Parties to manage Cadre, Constituencies and People Problems. It provides an interface to interact with voters and publish their activities to public. <br/><br/>
+<p>Party Analyst provides you with different management tools, to manage your Cadre, Constituency and the Problems<br /> faced by the public. It provides you with exclusive election analysis tools equipped with different data sets, which help<br /> you to understand the party’s performance pattern.
+</p>
 
-When you partner with Party Analyst, anything is possible, almost everything can be known.
-</p>
+<ul class="contentmenutab">
+<li><a href="#" id="politicanshow" onclick="showDiv('politican')" class="selectedmenu"> Politician </a></li>
+<li><a href="#" id="politicalpartyshow" onclick="showDiv('politicalparty')"> Political Parties </a></li>
+<li><a href="#" id="mediashow" onclick="showDiv('media')"> Media </a></li>
+</ul>
+<div id="politicanDiv">
+<div class="ManageBG">
+<ul class="contentsubmenutab">
+<li><a href="#" id="LinkCanElecAna" class="selectedsubmenu"> Election Analysis </a></li>
+<li><a href="#" id="LinkCanCadMgt"> Cadre Management </a></li>
+<li><a href="#" id="LinkCanConMgt"> Constituency Management </a></li>
+<li><a href="#" id="LinkCanProMgt"> Profile Management </a></li>
+</ul>
+	<div class="contentProd" id="CanElecAna">
+			<div class="Block-Content-full">
+				<h3>You Can Analyze</h3>
+				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographic’s, Demographics and Parties.</li>
+				<li>Polling Percentage Vs Party Performances.</li>
+				<li>Cross Voting Patterns.</li>
+				<li>All local body elections information .</li>
+				<li>The previous Election results Vs present Election survey results to know the variation in voting pattern.</li>
+				</ul>
+			</div>	
+			<div class="Block-Content-full">
+				<h3>What you can get?</h3>				
+				<ul class="survey-feature-box-product"><li>All elections information, geographical information, demographics, delimitation information is integrated together which you can get any information in a single click (Ex: How many booths in each Panchayat, what is party performance in any Panchyat or booth or Mandal etc…).</li>
+				</ul>
+				
+				<ul class="survey-feature-box-product"><li>Identifying the areas where you are weak where you are strong and where you need to concentrate more.</li>
+				</ul>
+				
+				<ul class="survey-feature-box-product"><li>Party voting percentages verses literates or illiterates percentages etc….</li>
+				</ul>
+				
+				<ul class="survey-feature-box-product"><li>Get all independent candidates information that got more votes in Muncipal or MPTC or ZPTC elections.</li>
+				</ul>
+				<ul class="survey-feature-box-product"><li>Get the complete picture of geographical relationships (Panchayats for each Mandal / Tehsil, Hamlets for each Panchayats etc…).</li>
+				</ul>
+				<ul class="survey-feature-box-product"><li>Complete cross voting information up to village level.</li>
+				</ul>
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanCadMgt">
+			<div class="Block-Content-full">
+				<h3>What is it? </h3>
+				Cadre Management allows you to manage your cadre effectively and improve your communication channels with them. 
+			</div>	
+			<div class="Block-Content-full">
+				<h3>How?</h3>
+				<ul class="survey-feature-box-product">
+				<li>You can notify the entire cadre at once, about your visit or achievements or Party updates through SMS or email. </li>
+				<li>You can assign some of the local problems to the cadre.</li>
+				<li>You can plan cadre booth wise, for election planning.</li>
+				<li>You can analyze the cadre strength in different areas.</li>
+
+				</ul>
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanConMgt">
+			<div class="Block-Content-full">
+				<h3>What it Involve?</h3><br />
+				<b>Constituency Management feature helps you.</b>  
+					<ul class="survey-feature-box-product">
+				<li>The political changes happening every day and their impact on your constituency.</li>
+				<li>Maintains the mandal-level leaders details for your constituency.</li>
+				<li>Also maintains voter's details from hamlet level, segregated based on caste, literacy and other criteria.</li>
+				</ul>
+				<b>Problem Management feature assists you in</b> 
+				<ul class="survey-feature-box-product"><li>Track Problems in your constituency.</li>
+				<li>Maintain the problems based on location</li>
+				<li>Quick way to know the Status of the problem and where (department) it is residing.</li>
+				<li>Thus, it helps you in conveying these problems to the government officials, effectively. You can send updates to the public through SMS or Email.</li>
+				<li>Solved problems you can publish in your profile.</li>
+				</ul>
+				
+			    <b>Maintaining Influential People/Groups Information</b>
+				<ul class="survey-feature-box-product"><li>Maintaining influential people groups information each village wise.</li>
+				 <li>Tools to communicate your updates. </li>
+				 <li>This increases repo in these influential people and groups.</li>
+				</ul>
+				
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanProMgt">
+			<div class="Block-Content-full">
+				<h3>What it Provides?</h3><br />
+				<b>Profile Management features</b>  
+					<ul class="survey-feature-box-product">
+				<li>It enables you to share your views and publish your profile to everyone.</li>
+				<li>You can upload news articles from different news magazines to your profile.</li>
+				<li>You can maintain photo and video galleries of your activities and events in your profile.</li>
+				</ul>
+				
+			</div>	
+	</div>
+	
+	
 </div>
+
+</div>
+<div id="politicalPartyDiv"  style="display:none;">
+<div class="ManageBG">
+<ul class="contentsubmenutab">
+<li><a href="#" id="LinkCanElecAna1" class="selectedsubmenu"> Election Analysis </a></li>
+<li><a href="#" id="LinkCanCadMgt1"> Cadre Management </a></li>
+<li><a href="#" id="LinkCanConMgt1"> Constituency Management </a></li>
+<li><a href="#" id="LinkCanProMgt1"> Profile Management </a></li>
+</ul>
+	<div class="contentProd" id="CanElecAna1">
+			<div class="Block-Content-full">
+				<h3>You Can Analyze</h3>
+				<ul class="survey-feature-box-product"><li>The Voting Percentage Levels</li>
+				<li>Demographically and Geographically</li>
+				<li>From Hamlet Level to State Level and lot more.</li>
+				</ul>
+			</div>	
+			<div class="Block-Content-full">
+				<h3>What you can get?</h3>
+				Clear Picture About<br />
+				<b>Party Strengths/Weakness</b>
+				<ul class="survey-feature-box-product"><li>Used to analyze the areas where you are weak where you are strong and where you need to concentrate more</li>
+				</ul>
+				<b>Party Performance Report</b>
+				<ul class="survey-feature-box-product"><li>It is used to understand how a party is performed in a particular election</li>
+				</ul>
+				<b>Elections Comparison Report</b>
+				<ul class="survey-feature-box-product"><li>It is used to analyze party performance in a particular election by comparing to any of its participated elections</li>
+				</ul>
+				<b>Party Results Report</b>
+				<ul class="survey-feature-box-product"><li>This report is used to get all years Assembly,Parliament,Zptc,Mptc party wise election results from state level to constituency level including Alliances</li>
+				</ul>
+				<b>Elections Vs Census</b>
+				<ul class="survey-feature-box-product"><li>This report is used to analyze party performance census wise that means how a party is performes if SC or ST or Literates or Illiterates Population were more </li>
+				</ul>
+				Also ,
+				<ul class="survey-feature-box-product">
+				</ul>
+				<ul class="survey-feature-box-product"><li>You can compare your stand and opposition party's stand in different areas. </li>
+				<li>Thus, it supports you in deciding the next plan of action.</li>
+				</ul>
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanCadMgt1">
+			<div class="Block-Content-full">
+				<h3>What is it? </h3>
+				Cadre Management allows you to add and manage your cadre effectively. 
+			</div>	
+			<div class="Block-Content-full">
+				<h3>How?</h3>
+				All the communication with your cadre is made easy with this feature.
+				<ul class="survey-feature-box-product"><li>About the areas where you need to concentrate more</li>
+				<li>You can notify the entire cadre at once, about your visit to specific areas and achievements, through SMS or email. </li>
+				<li>You can assign some of the local problems to the cadre. </li>
+				<li>You can plan cadre booth wise, for election planning. </li>
+				<li>You can analyze the cadre strength in different areas.</li>
+
+				</ul>
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanConMgt1">
+			<div class="Block-Content-full">
+				<h3>What it Involve?</h3><br />
+				<b>Constituency Management feature helps you.</b>  
+					<ul class="survey-feature-box-product">
+				<li>The political changes happening every day and their impact on your constituency.</li>
+				<li>Maintains the mandal-level leaders details for your constituency.</li>
+				<li>Also maintains voter's details from hamlet level, segregated based on caste, literacy and other criteria.</li>
+				</ul>
+				<b>Problem Management feature assists you in tracking</b> 
+				<ul class="survey-feature-box-product"><li>To keep track of the problems in your constituency</li>
+				<li>The problems based on location</li>
+				<li>Status of the problem and department. </li>
+				<li>Thus, it helps you in conveying these problems to the government officials, effectively. You can send updates to the public through SMS or Email.</li>
+				</ul>
+				
+			    <b>Maintaining Influential People/Groups Information</b>
+				<ul class="survey-feature-box-product"><li>Maintaining influential people groups information each village wise.</li>
+				 <li>Tools to communicate your updates. </li>
+				 <li>This increases repo in these influential people and groups.</li>
+				</ul>
+				
+			</div>	
+	</div>
+	
+	<div class="contentProd" id="CanProMgt1">
+			<div class="Block-Content-full">
+				<h3>What it Provides?</h3><br />
+				<b>Profile Management features</b>  
+					<ul class="survey-feature-box-product">
+				<li>It enables you to share your party views and publish your party profile to everyone.</li>
+				<li>You can upload news articles from different news magazines to your party profile.</li>
+				<li>You can maintain photo and video galleries of your party activities and events in party profile.</li>
+				</ul>
+				
+			</div>	
+	</div>
+	
+	
+</div>
+</div>
+<div id="mediaDIV" style="display:none;">
+<div class="ManageBG">
+<ul class="contentsubmenutab">
+<li><a href="#" id="LinkCanElecAna2" class="selectedsubmenu"> Election Analysis </a></li>
+
+</ul>
+	<div class="contentProd" id="CanElecAna2">
+			<div class="Block-Content-full">
+				<h3>You Can Analyze</h3>
+				<ul class="survey-feature-box-product"><li>Voting Patterns based on Geographic’s, Demographics and Parties.</li>
+				</ul>
+			</div>	
+			<div class="Block-Content-full">
+				<h3>What you can get?</h3>
+				Clear Picture About<br />
+				
+				<ul class="survey-feature-box-product"><li>Comparision of election information against the demographic data to get a clear picture of the voting patterns of people based on literacy,cast ,work,status etc.</li>
+				</ul>
+
+				<ul class="survey-feature-box-product"><li>Easy understanding of party performance in a particular state,district,constituency or further at mandal/thesil and village level.</li>
+				</ul>
+				
+				<ul class="survey-feature-box-product"><li>Comparision of a political party's performance geographically in any two elections.</li>
+				</ul>
+				
+			</div>	
+	</div>
+	
+	
+	
+</div>
+</div>
+<!--
+<div class="ManageBG">
+    <h3>Cadre Management</h3>
+    <p>Cadre Management feature allows you to add and manage your cadre effectively. You can notify the entire cadre at once, about your visit to specific areas and achievements, through SMS or email. You can assign some of the local problems to the cadre. You can plan cadre booth wise, for election planning. You can analyze the cadre strength in different areas. All the communication with your cadre is made easy with this feature.</p>
+</div>
+<div class="ManageBG">
+   <h3>Constituency Management</h3> 	
+   <p>Constituency Management feature helps you to keep track of the problems in your constituency, the political changes happening every day, and their impact on your constituency. Problem Management feature assists you in tracking the problems based on location, status of the problem and department. Thus, it helps you in conveying these problems to the government officials, effectively. You can send updates to the public through SMS or Email.</p>
+
+   <p>We provide you an interface to communicate with the public and publish your activities to them. When you partner with Party Analyst, you can reach people efficiently, you will know almost everything, and anything will be possible.</p>
+
+</div> -->
 <div class="featureofferbox">
 <div class="Offer-box triangle-border">
 <h3>Special Offers from Party Analyst</h3>
 <ul>
-<li>For Parliament Constituency subscription get Free Ad in your Parliament Constituency and all Assembly Constituencies of Parliament Page + 3 Lakhs SMS Free.</li>
-<li>For Assembly Constituency subscription get Free Ad in the Constituency Page + 1 Lakh SMS Free.</li>
-<li>You can Gift the PartyAnalyst subscription to your Leader get 15% Off.</li>
+<li>For Parliament Constituency Subscription, get a free Ad in your Parliament Constituency page and all the Assembly Constituency pages of your Parliament Constituency + 3 Lakhs free SMS service.</li>
+<li>For Assembly Constituency Subscription, get a free Ad in your Assembly Constituency page + 1Lakh free SMS service.</li>
+<li><b>You can gift the Party Analyst subscription to your leader and get 15% off.</b></li>
 </ul>
 </div>
 <div class="features-box">
 <h3>Features</h3>
 <ul class="listdisc">
-<li>Profile Management <span>Which enables to publish your profile to every one.You can attach News articles published in different news papers to your profile,which can visible to public. </span></li>
-<li>Constituency Management <span>Consituency management feature allows user to keep track their constituency problems, know political changes and impact in their constituency, view influencing people, mandal level leaders and voters details by hamlet level. </span></li>
-<li>Election Analysis<span>Different Tools like Elections Comparision Report,Election Results Analysis Report for Elections used to analyse elections results and compare them. </span></li>
-<li>Problem Management<span>Problem management feature is mainly helps to keep track of peoples problems or constituency problems in different levels. The user can track problems by location, status,deparment.You can send updates to users through SMS.<br/> It also helps to manage with government officials and also can publish to public what we achieved</span></li>
-<li>Cadre Management <span>Cadre management feature is mainly used to manage their cadre efficiently.The user can add & manage cadre, communicate with cadre through SMS or Email, plan and organize events, maintain associate groups. </span></li>
+<li>Profile Management <span>This feature enables you to share your views and publish your profile to everyone. You can upload news articles of interest to you, from different news magazines to your profile. You can maintain photo and video galleries of your activities and events in your profile. </span></li>
+<li>Constituency Management <span>This feature allows you to keep track of the problems in your constituency, the political changes and their impact on your constituency. You can also maintain the details of the most influential people, create and manage groups, maintain the mandal-level leaders details from your constituency and all the voters’ details from hamlet level, segregated based on caste, literacy and other criteria. </span></li>
+<li>Election Analysis<span>This feature provides you with many specialized election reports like Election Results Analysis Report, Elections Comparison Report, etc.. These reports help you in quickly analyzing the election results in different areas, compare them, and get a clear idea about everything. </span></li>
+<li>Problem Management<span>This feature helps you to keep track of the problems faced by the people or your constituency problems. You can track these problems grouped by location, status of the problem and department. You can also send updates of the problems, to the public and other users, through SMS. This feature thus, enables you to convey the problems to the government officials, effectively. </span></li>
+<li>Cadre Management <span>Using this feature, you can add and manage your cadre efficiently. You can identify the strength of your cadre, village wise, booth wise, etc. You can communicate with cadre through SMS or email. You can plan and organize events, and maintain associate groups. You can maintain important dates to plan different constituency activities. </span></li>
 </ul>
 </div>
 
@@ -76,7 +315,7 @@ When you partner with Party Analyst, anything is possible, almost everything can
 <div class="Query-box">
 <h3>Any questions?</h3>
 <span>
-Our qualified team will be happy to answer all your questions about News Monitoring Services and Other Products.
+Our qualified team will be happy to answer all your questions about Election Analysis And Management Tool and Other Products.
 <br/><br/>
 <span style="width:680px;display:table;text-align:center;color:blue;">
 Call for Demo : +919676696760
@@ -131,9 +370,59 @@ $(document).ready(function(){
    	$(".service-box").click(function(){
       $(location).attr('href',$(this).find("a").attr("href"));
     });
+	
+	$(".contentProd").hide();
+	$(".contentProd:first").show();
+	
+	$(".contentsubmenutab a").click(function(){
+	$(".contentsubmenutab a").removeClass("selectedsubmenu");
+    $(this).addClass("selectedsubmenu");
+	var str=$(this).attr("id");
+	str=str.split("Link");
+	var strid= "#"+str[1];
+	$(".contentProd").hide();
+	$(strid).show("slow");
+	});
+	
+	$(".contentmenutab a").click(function(){
+	$(".contentmenutab a").removeClass("selectedmenu");
+    $(this).addClass("selectedmenu");
+	});
 });
 
-
+function showDiv(id)
+{
+ if(id == "politican" )
+ {
+   $('#politicanDiv').show();
+   $('#politicalPartyDiv').hide();
+   $('#mediaDIV').hide();
+   $('#politicalpartyshow').removeClass('selectedmenu');
+	$('#politicanshow').addClass('selectedmenu');
+	$('#mediashow').removeClass('selectedmenu');
+	$('#LinkCanElecAna').trigger('click');
+ }
+ else if(id == "politicalparty")
+ {
+   $('#politicanDiv').hide();
+   $('#politicalPartyDiv').show();
+   $('#mediaDIV').hide();
+    $('#politicalpartyshow').addClass('selectedmenu');
+	$('#politicanshow').removeClass('selectedmenu');
+	$('#mediashow').removeClass('selectedmenu');
+	$('#LinkCanElecAna1').trigger('click');
+ }
+ else if(id == "media" )
+ {
+   $('#politicanDiv').hide();
+   $('#politicalPartyDiv').hide();
+   $('#mediaDIV').show();
+    $('#politicalpartyshow').removeClass('selectedmenu');
+	$('#politicanshow').removeClass('selectedmenu');
+	$('#mediashow').addClass('selectedmenu');
+	$('#LinkCanElecAna2').trigger('click');
+ }
+}
 </script>
 </body>
 </html>
