@@ -183,7 +183,7 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
 
 </table></div></fieldset></td></tr>
 </table>
-<div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are expecting in comming days due to JAGAN MLA's who voted against to confidence motion and disqualified MLA's by speaker Nadendla Manohar and Praja Rajyam president Chiranjeevi on Thursday morning resigned from the state assembly .</div>
+<div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are happening due to JAGAN MLA's who voted against to confidence motion and disqualified by speaker Nadendla Manohar and the Praja Rajyam president Chiranjeevi resigned from Tirupati assembly constituency.</div>
 <div style="margin-left: 12px;"><span style=" background:#ED5B21;color: #FFFFFF;font-family: verdana;font-size: 14px;font-weight: bold;padding: 4px;text-align: center;cursor:pointer;border-radius:5px;" onclick="byeEleParticipatedCandidateInfo()">Andhra Pradesh Bye Election Participating Candidates</span>
 
 </div>
@@ -437,7 +437,7 @@ href="candidateElectionResultsAction.action?candidateId=3462" onmouseover="displ
 <div style="margin-left: 10px; margin-bottom: 13px; padding-bottom: 19px; margin-top: -21px;">
 <span style="background: none repeat scroll 0 0 #ED5B21;border-radius: 5px 5px 5px 5px;color: #FFFFFF;font-family: verdana;font-size: 13px;font-weight: bold;margin-bottom: 20px;margin-left: 0;padding: 5px;cursor:pointer;"  onclick="showVotesInfo('votesInfoId')">View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</span>
 </div>
-<table width="100%" class="resulttableclass" style="margin-top:9px;display:none;" id="votesInfoId">
+<table width="100%" class="resulttableclass" style="margin-top:9px;display:none;margin-bottom:10px;" id="votesInfoId">
   <tr>
     <th style="background-color:#21B2ED;color:#fff;">Constituency</th>
     <th>Total Voters</th>
