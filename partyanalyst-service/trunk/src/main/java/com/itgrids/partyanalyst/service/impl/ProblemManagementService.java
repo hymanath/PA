@@ -4971,30 +4971,15 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 	}
 
-	public List<FileVO> getImageDetails() {
-		FileVO fileVO = null;
-		List<FileVO> filevo1 = new ArrayList<FileVO>();
-		List<Object[]> result1 = problemFileDAO
-				.getAllNonApprovedFilesAndProblemDetails();
-
-		for (Object[] objects : result1) {
-			fileVO = new FileVO();
-			fileVO.setProblemFileId((Long) objects[0]);
-			fileVO.setProblem(objects[1].toString());
-
-			fileVO.setFileTitle1(objects[2].toString());
-			fileVO.setFileDescription1(objects[3].toString());
-			fileVO.setScope(objects[4].toString());
-			fileVO.setIdentifiedOn((Date) objects[5]);
-			fileVO.setExistingFrom((Date) objects[6]);
-			fileVO.setName(objects[7].toString());
-			fileVO.setLastName(objects[8].toString());
-			fileVO.setFileName1(objects[9].toString());
-
-			filevo1.add(fileVO);
-
-		}
-		return filevo1;
+	public List<FileVO> getImageDetails()
+	{
+		List<FileVO> fileVOList  = new ArrayList<FileVO>();
+		List<ProblemFile> result1 = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
+		
+		fileVOList = setProblemFileToFileVO(result1);
+		
+		return fileVOList;
+		
 	}
 
 	public void acceptSelectedImagesByAdmin(final Integer[] problemFileIds) {
@@ -5118,7 +5103,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDatestr, String toDatestr, String status, String type) {
 		List<FileVO> problemImages = new ArrayList<FileVO>();
-		List<Object[]> result = null;
+		List<ProblemFile> result = null;
 		FileVO fileVO = null;
 		try {
 			
@@ -5144,26 +5129,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						fromDate,toDate, status);
 			}
 
-			if (result != null) {
-				for (Object[] objects : result) {
-					fileVO = new FileVO();
-					fileVO.setProblemFileId((Long) objects[0]);
-					fileVO.setProblem(objects[1].toString());
-
-					fileVO.setFileTitle1(objects[2].toString());
-					fileVO.setFileDescription1(objects[3].toString());
-					fileVO.setScope(objects[4].toString());
-					fileVO.setIdentifiedOn((Date) objects[5]);
-					fileVO.setExistingFrom((Date) objects[6]);
-					fileVO.setName(objects[7].toString());
-					fileVO.setLastName(objects[8].toString());
-					fileVO.setFileName1(objects[9].toString());
-
-					problemImages.add(fileVO);
-
-				}
-
-			}
+			problemImages = setProblemFileToFileVO(result);
 
 			return problemImages;
 		} catch (Exception e) {
@@ -5173,11 +5139,10 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDateStr, String status, String type) {
 
 		List<FileVO> problemImageDetails = new ArrayList<FileVO>();
-		List<Object[]> result = null;
+		List<ProblemFile> result = null;
 		FileVO fileVO = null;
 		
 		try {
@@ -5200,11 +5165,14 @@ public class ProblemManagementService implements IProblemManagementService {
 			}
 		
 			if (result != null) {
-				for (Object[] objects : result) {
+				
+				problemImageDetails = setProblemFileToFileVO(result);
+				
+				/*for (Object[] objects : result) {
 					fileVO = new FileVO();
 					fileVO.setProblemFileId((Long) objects[0]);
 					fileVO.setProblem(objects[1].toString());
-
+				
 					fileVO.setFileTitle1(objects[2].toString());
 					fileVO.setFileDescription1(objects[3].toString());
 					fileVO.setScope(objects[4].toString());
@@ -5213,20 +5181,59 @@ public class ProblemManagementService implements IProblemManagementService {
 					fileVO.setName(objects[7].toString());
 					fileVO.setLastName(objects[8].toString());
 					fileVO.setFileName1(objects[9].toString());
-
+				
 					problemImageDetails.add(fileVO);
-					}
+					}*/
 
 			}
 
 			return problemImageDetails;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return problemImageDetails;
 		}
 
 	}
-	
+	public List<FileVO> setProblemFileToFileVO(List<ProblemFile> imageFilesList)
+	{
+		List<FileVO> fileVOList = new ArrayList<FileVO>();
+		FileVO fileVO = new FileVO();
+		
+		if(imageFilesList !=null && imageFilesList.size()>0)
+		{
+			for (ProblemFile problemFile : imageFilesList) {
+				fileVO = new FileVO();
+				if(problemFile.getFile() != null)
+				{
+					fileVO.setProblemFileId(problemFile.getProblemFileId());
+					fileVO.setProblem(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+					fileVO.setFileTitle1(problemFile.getFile().getFileTitle());
+					fileVO.setFileDescription1(problemFile.getFile().getFileDescription());
+					fileVO.setFileName1(problemFile.getFile().getFileName());
+					fileVO.setScope(problemFile.getProblemHistory().getProblemLocation().getProblemImpactLevel().getScope());
+					fileVO.setIdentifiedOn(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn());
+					fileVO.setExistingFrom(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom());
+					if(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser() !=null && problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getName()!=null)
+					{
+					 fileVO.setName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getName());
+					 fileVO.setLastName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getLastName());
+					}
+					
+					
+					if(problemFile.getIsApproved()!=null && problemFile.getIsApproved().equalsIgnoreCase("true"))
+						fileVO.setDescription("Approved");
+					else if(problemFile.getIsApproved()!=null && problemFile.getIsApproved().equalsIgnoreCase("false"))
+						fileVO.setDescription("Approved");
+					else
+						fileVO.setDescription("Pending");
+					
+					fileVOList.add(fileVO);
+				 }
+			   }
+		}
+		return fileVOList;
+	}
 	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex)
 	{
 		if (log.isDebugEnabled())
