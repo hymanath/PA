@@ -259,7 +259,7 @@ function callAjax(jsObj,url){
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
 				 showUploadVideoStatus(myResults);
-				 enableButton('uploadVideoBtnId');
+				 //enableButton('uploadVideoBtnId');
 			}
 			
 	}
@@ -956,7 +956,7 @@ function uploadVideoGallary(){
 
 	if(isPublic)
 		makeThis = 'public';
-	disableButton('uploadVideoBtnId');
+	//disableButton('uploadVideoBtnId');
 	var jsObj =
 		{ 
 			canGalleryId :canGalIdArray,
