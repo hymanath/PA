@@ -14,19 +14,19 @@ public interface IProblemFileDAO extends GenericDao<ProblemFile, Long> {
 	
 	public List<Object[]> getAllNonApprovedImagesBetweenDatesWithCompleteData();
 	
-	public List<Object[]> getAllNonApprovedFilesAndProblemDetails();
+	public List<ProblemFile> getAllNonApprovedFilesAndProblemDetails();
 	
-	public List<Object[]> getAllApprovedImagesBetweenDates(Date startDate,Date endDate,String status);
+	public List<ProblemFile> getAllApprovedImagesBetweenDates(Date startDate,Date endDate,String status);
 	
-	public List<Object[]> getAllNoNApprovalImagesBetweenDates(Date startDate,Date endDate,String status);
+	public List<ProblemFile> getAllNoNApprovalImagesBetweenDates(Date startDate,Date endDate,String status);
 	
-	public List<Object[]> getAllPostedImagesBetweenDates(Date startDate,Date endDate,String status);
+	public List<ProblemFile> getAllPostedImagesBetweenDates(Date startDate,Date endDate,String status);
 	
-	public List<Object[]> getApprovalImagesForParticularDate(Date particularDate,String status);
+	public List<ProblemFile> getApprovalImagesForParticularDate(Date particularDate,String status);
 	
-	public List<Object[]> getAllNonApprovalImagesForParticularDate(Date particularDate,String status);
+	public List<ProblemFile> getAllNonApprovalImagesForParticularDate(Date particularDate,String status);
 	
-	public List<Object[]> getAllImagesForParticularDate(Date particularDate,String status);
+	public List<ProblemFile> getAllImagesForParticularDate(Date particularDate,String status);
 	
 	public List<Object> getNoOfFilesUploadedForAUser(Long problemHistoryId);
 	
