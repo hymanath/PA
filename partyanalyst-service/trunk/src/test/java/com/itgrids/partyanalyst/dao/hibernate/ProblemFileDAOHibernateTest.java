@@ -9,6 +9,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
+import com.itgrids.partyanalyst.model.ProblemFile;
 
 public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -50,20 +51,28 @@ public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 
 
 
-/*public void testGetAllNonApprovedFilesAndProblemDetails()
+public void testGetAllNonApprovedFilesAndProblemDetails()
 	{
-		List<Object[]> list = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
+		List<ProblemFile> list = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
 		
 		System.out.println(list.size());
 		
-		for(Object[] params : list)
+		for(ProblemFile params : list)
 		{
 			System.out.println();
-			for(Object obj: params)
-				System.out.print("----"+obj.toString());
+			System.out.print("----"+params.toString());
 		}
-	}*/
-	/*@SuppressWarnings("deprecation")
+	}
+	/*
+	 * .problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,
+	 * model.problemHistory.problemLocation.problemImpactLevel.scope," +
+				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,
+				model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
+				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName,model.isApproved
+	 * 
+	 * 
+	 * 
+	 * @SuppressWarnings("deprecation")
 	public void testgetAllApprovedImagesBetweenDates()
 	{
 		
@@ -170,13 +179,10 @@ public class ProblemFileDAOHibernateTest extends BaseDaoTestCase{
 		particularDate = (Date)format.parse("2012-04-18 17:27:12");
 		
 		String query = "date(model.dateUpdated) = ?";
-		List<Object[]> result = problemFileDAO.getApprovalImagesForParticularDate(particularDate, "NEW");
-		for(Object[] params : result)
+		List<ProblemFile> result = problemFileDAO.getApprovalImagesForParticularDate(particularDate, "NEW");
+		for(ProblemFile params : result)
 		{
-			System.out.println(params[0]);
-			System.out.println(params[1]);
-			System.out.println(params[2]);
-			System.out.println(params[3]);
+			System.out.println(params.getIsApproved());
 		}
 		}*/
 	
