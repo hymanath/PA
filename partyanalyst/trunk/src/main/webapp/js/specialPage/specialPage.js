@@ -2544,7 +2544,7 @@ function buildAllVideosInGallary(results){
  var str ='';
  var videosDivElmt = document.getElementById("videoGallaryPopUpDiv");
 		
-		//str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
+		str+='<a href=javascript:{} style="color: #FFFFFF;margin-left: 339px;"" onclick="showAllVideoGalleries()" class="imageButton">Back To My Gallary</a>';
 		
 		str+='<table style="width:100%;">';
 		for(var i in results)
