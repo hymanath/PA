@@ -2449,7 +2449,7 @@ function showAllVideoGalleries(){
 	var url = "specialPagePhotoGallaryAction.action?"+rparam;						
 	callAjaxForSpecialPage(jsObj,url);
 	}
-
+/*
 function buildVideoGallaries(results)
 {
     var str ='';
@@ -2457,19 +2457,54 @@ function buildVideoGallaries(results)
     str += '<tr>';
 	for(var i=0;i<results.length;i++)
 	{
-		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
-		str += '<tr><td>';
+
+		(i%4 == 0)
+		
+		//str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
+		//str += '<tr><td>';
 		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
 		str+='</div>';
-		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
+		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
+		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></td></tr>';
 			
-		 }
-		 str+='</tr>';
+		 if((i+1)% 4 == 0)
+			str += '</tr>';
+	}
 		 str+='</table>';
+		 
+		
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 
+
+*/
+
+
+function buildVideoGallaries(results)
+{
+	var str = '';
+	str +='<table width=100%>';
+	for(var i=0;i<results.length;i++)
+	{
+		if(i%4 == 0)
+			str +='<tr height="185%">';
+
+		str +='<td valign="top" width="25%"><table width="100%">';
+		str +='<tr><td>';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer; background: none repeat scroll 0 0 #D3D3D3;border: 1px solid #CCCCCC;border-radius:5px 5px 5px 5px;left:13px;padding:7px;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='</div>';
+		str += '<tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></font></div></td></tr>';
+		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Videos: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
+		
+		if((i+1)% 4 == 0)
+			str += '</tr>';
+		
+	}
+		str+='</table>';
+		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
+
+
+}
 function getVideosInAGallary(gallaryId){
 
     var jsObj = {
