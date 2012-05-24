@@ -10,6 +10,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.model.CadreProblemDetails;
 import com.itgrids.partyanalyst.model.ProblemFile;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 		implements IProblemFileDAO {
@@ -29,19 +30,22 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 				" where model.isApproved = null");
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getAllNonApprovedFilesAndProblemDetails()
 	{
 		return getHibernateTemplate().find(" select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
 				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved is null");
+				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName,model.isApproved from ProblemFile model where model.isApproved is null");
+	}*/
+	@SuppressWarnings("unchecked")
+	public List<ProblemFile> getAllNonApprovedFilesAndProblemDetails()
+	{
+		return getHibernateTemplate().find("select model from ProblemFile model where model.isApproved is null");
 	}
 @SuppressWarnings("unchecked")
-	public List<Object[]> getAllApprovedImagesBetweenDates(Date startDate,Date endDate,String status)
+	public List<ProblemFile> getAllApprovedImagesBetweenDates(Date startDate,Date endDate,String status)
 	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'true' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+		Query query = getSession().createQuery("select model from ProblemFile model where model.isApproved = 'true' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -50,11 +54,21 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 		return query.list();		
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllNoNApprovalImagesBetweenDates(Date startDate,Date endDate,String status)
+	public List<ProblemFile> getAllNoNApprovalImagesBetweenDates(Date startDate,Date endDate,String status)
 	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved = 'Rejected' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+		Query query = getSession().createQuery("select model from ProblemFile model where model.isApproved ='"+IConstants.REJECTED+"' and date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		//query.setParameter("status", status);
+		
+		return query.list();		
+
+	}
+	@SuppressWarnings("unchecked")
+	public List<ProblemFile> getAllPostedImagesBetweenDates(Date startDate,Date endDate,String status)
+	{
+		Query query = getSession().createQuery("select model from ProblemFile model where date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -64,25 +78,9 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllPostedImagesBetweenDates(Date startDate,Date endDate,String status)
+	public List<ProblemFile> getApprovalImagesForParticularDate(Date particularDate,String status)
 	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where date(model.problemHistory.dateUpdated) >=:startDate and date(model.problemHistory.dateUpdated) <=:endDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
-		
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
-		query.setParameter("status", status);
-		
-		return query.list();		
-
-	}
-	@SuppressWarnings("unchecked")
-	public List<Object[]> getApprovalImagesForParticularDate(Date particularDate,String status)
-	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved ='true' and date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+		Query query = getSession().createQuery("select model from ProblemFile model where model.isApproved ='true' and date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		query.setParameter("particularDate", particularDate);
 		query.setParameter("status", status);
 		return query.list();
@@ -90,21 +88,17 @@ public class ProblemFileDAO extends GenericDaoHibernate<ProblemFile, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllNonApprovalImagesForParticularDate(Date particularDate,String status)
+	public List<ProblemFile> getAllNonApprovalImagesForParticularDate(Date particularDate,String status)
 	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where model.isApproved ='Rejected' and date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
+		Query query = getSession().createQuery("select model from ProblemFile model where model.isApproved ='Rejected' and date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status order by model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn desc");
 		query.setTimestamp("particularDate", particularDate);
 		query.setParameter("status", status);
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllImagesForParticularDate(Date particularDate,String status)
+	public List<ProblemFile> getAllImagesForParticularDate(Date particularDate,String status)
 	{
-		Query query = getSession().createQuery("select model.problemFileId,model.problemHistory.problemLocation.problemAndProblemSource.problem.problem,model.file.fileTitle,model.file.fileDescription,model.problemHistory.problemLocation.problemImpactLevel.scope," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.problem.existingFrom, model.problemHistory.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemHistory.problemLocation.problemAndProblemSource.externalUser.name," +
-				" model.problemHistory.problemLocation.problemAndProblemSource.externalUser.lastName,model.file.fileName from ProblemFile model where date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status");
+		Query query = getSession().createQuery("select model from ProblemFile model where date(model.problemHistory.dateUpdated) =:particularDate and model.problemHistory.problemStatus.status =:status");
 		query.setParameter("particularDate", particularDate);
 		query.setParameter("status", status);
 		return query.list();
