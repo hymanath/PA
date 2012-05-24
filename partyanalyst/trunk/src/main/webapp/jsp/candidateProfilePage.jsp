@@ -498,7 +498,7 @@ District:
 		<s:if test="fileVO != null && fileVO.size() > 0"> 
 		<div class="pr-sub-fields-sec">
             <h1 class="pr-title">videos<span class="or-down-arrow"><img src="images/candidatePage/or-down-arrow.png" alt=""/></span> </h1>
-		<div id="videogallery" class="fleft">
+		<div id="videogallery" class="fleft" style="margin-bottom:15px;">
 
 	<s:iterator status="stat" value="fileVO">
 		
@@ -2187,20 +2187,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img alt="" src="'+results[0].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
+	   str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[0].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius:3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
 	  str+=''+results[0].gallaryName+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img alt="" src="'+results[1].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
+	  str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[1].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC; border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[1].gallaryId+')"/><br />';
 	  str+=''+results[1].gallaryName+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img alt="" src="'+results[2].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li style="width:120px;"><img alt="" src="'+results[2].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].gallaryName+'</li>';
 	  
 	  }
@@ -2209,7 +2209,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li style="margin-right: 3px;width:120px;"><img alt="" src="'+results[i].path+'" style="height:120px;width:120px;border: 1px solid #CCCCCC;border-radius: 3px;padding:3px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].gallaryName+'</li>';
 	   }
 	  }
