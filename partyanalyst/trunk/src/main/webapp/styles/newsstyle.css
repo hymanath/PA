@@ -115,6 +115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	border-radius:220px / 120px;
 }
 
+
 .oval-thought1:hover{
    -webkit-transition: all 500ms ease-in-out;
 -moz-transition: all 500ms ease-in-out;
@@ -327,7 +328,7 @@ background:#075698;
 	color:#fff;text-shadow:0px 0px 5px #000;
 }
 
-.survey-feature-box > li{
+.survey-feature-box > li ,.survey-feature-box-product > li{
 background: #f0f9ff; /*/* Old browsers */
 background: -moz-linear-gradient(top,  #f0f9ff 0%, #cbebff 47%, #a1dbff 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f9ff), color-stop(47%,#cbebff), color-stop(100%,#a1dbff)); /* Chrome,Safari4+ */
@@ -376,3 +377,62 @@ top:40%;
 .helpbox-survey .Sample-Report{display:block;float:right;margin:5px;position:relative;}
 .helpbox-survey .Query-box{display:block;clear:both;}
 .helpbox-survey .Query-box h3{color:blue;}
+
+.ManageBG
+{
+width:100%;
+display:inline-block;
+clear:both;
+color:#fff;
+background:#075698;
+	/* css3 */
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+	background:-moz-linear-gradient(#2e88c4, #075698);
+	background:-o-linear-gradient(#2e88c4, #075698);
+	background:linear-gradient(#2e88c4, #075698); /* IE6-9 */
+ }
+.ManageBG h3{ width:auto;display:inline-block;border-radius:0px 20px 20px 0px;background:#fffff0;padding:7px 20px;margin:5px 0px;font:20px Arial;font-weight:normal;box-shadow:2px 0px 5px #ff0000;color:#000;background:#f3961c; /* default background for browsers without gradient support */
+	/* css3 */
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
+	background:-moz-linear-gradient(#f9d835, #f3961c);
+	background:-o-linear-gradient(#f9d835, #f3961c);
+	background:linear-gradient(#f9d835, #f3961c);}
+
+.ManageBG p{padding:10px;text-align:left;font-size:14px;}
+
+.contentmenutab{list-style-type:none;text-align:center;}
+.contentmenutab li{display:inline-block;margin:5px;}
+.contentmenutab li a{text-decoration:none;font:bold 16px Arial; padding:8px 20px;background:#5e5e5e;color:#d3d3d3;border-radius:5px 5px 0px 0px;text-shadow:0px 0px 5px #000;}
+.contentmenutab li a:hover{background:#000;color:#fff;box-shadow:0px -1px 2px #ff0000;}
+.contentmenutab li a.selectedmenu{
+box-shadow:0px -1px 2px #ff0000;
+color:#fff;
+background:#075698;
+	/* css3 */
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+	background:-moz-linear-gradient(#2e88c4, #075698);
+	background:-o-linear-gradient(#2e88c4, #075698);
+	background:linear-gradient(#2e88c4, #075698); /* IE6-9 */
+}
+.contentsubmenutab{list-style-type:none;text-align:center;width:100%;height:40px;margin:5px 0px;}
+.contentsubmenutab li{display:inline-block;margin:10px 0px;float:left;}
+.contentsubmenutab li a{text-decoration:none;font:bold 14px Arial;background:#cccccc;color:#333;text-shadow:0px 0px 5px #fff;padding:12px 15px;margin:0px 1px;}
+.contentsubmenutab li a:hover,.contentsubmenutab li a.selectedsubmenu{
+color:#fff;position:relative;text-shadow:0px 0px 5px #000;
+background: #87e0fd; /* Old browsers */
+background: -moz-linear-gradient(top,  #87e0fd 0%, #53cbf1 40%, #05abe0 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#87e0fd), color-stop(40%,#53cbf1), color-stop(100%,#05abe0)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* IE10+ */
+background: linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 ); /* IE6-9 */
+}
+.contentsubmenutab li a.selectedsubmenu:after{content: "";width:0px;height:0px;border:10px solid transparent;border-bottom:10px solid #2C85C1;position:absolute;bottom:0%;left:40%;}
+
+
+.survey-feature-box-product> li {list-style-type:square;list-style-image:url('../images/icons/tick-mark.png');margin:10px;padding:5px; font-size:14px;
+list-style-position:inside; border-radius:3px; border-left:5px solid #5e5e5e;border-right:5px solid #5e5e5e;color:#000;}
+
+.Block-Content-left{float:left;display:inline-block;width:45%;float:left;margin:2%;font-size:14px;}
+.Block-Content-full{float:left;display:inline-block;width:94%;float:left;margin:2%;font-size:14px;}
