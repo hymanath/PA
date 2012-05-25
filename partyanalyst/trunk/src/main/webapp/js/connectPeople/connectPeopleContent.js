@@ -1096,7 +1096,7 @@ function showMailPopup(id,name,type)
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th>Message</th>';
-	str += '<td><textarea id="connectMessageText" cols="35" rows="4"></textarea></td>';
+	str += '<td><textarea id="connectMessageText" cols="35" rows="4" style="background:#ffffff;"></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
 	str += '<td><input type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
