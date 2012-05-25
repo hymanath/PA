@@ -449,6 +449,12 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{ 
                createListData('assmblParlElecYearsSelect',myResults);
 			}
+			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
+			{
+				 showUploadVideoStatus(myResults);
+				 enableButton('uploadVideoBtnId');
+			}
+			
      	}
 		catch(e)
 		{   
