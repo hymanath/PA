@@ -1627,7 +1627,32 @@ function afterRefreshOpinionPOll()
 {
 
 
-var str='';
+var elmt = document.getElementById("pollsWidgetBody");
+	var str = '';
+	
+	str += '<table><tr><td>';
+	//str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
+	str += '</div>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
+	//str += '<img src="charts/'+myResults.imagePath+'"></img>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
+	str += '<div id="viewPollResDiv">';
+	str += '<table><tr>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a></div>';
+	str += '</td>';
+	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a></div>';
+	str += '</td>';	
+	str += '</tr></table>';
+	str += '</div>';
+	str += '</tr></table>';
+
+	str+='<div id="pollsChart" style=" height: 349px;width: 324px; overflow: hidden;"></div>';
+	elmt.innerHTML = str;
+
 
 var arrData = pollStatus;
 
@@ -1644,7 +1669,7 @@ var arrData = pollStatus;
 			data.setValue(j,1,arrData[j].votesObtained);
 			
 		}
-			var chart = new google.visualization.LineChart(document.getElementById('pollsWidgetBody'));
+			var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
 	
 	chart.draw(data,{width: 300, height: 280,legend:'right', 
 	legendTextStyle:{fontSize:12},title:'${opinionPollVO.questionsOptionsVO.title}',titleTextStyle:{fontName:'verdana',fontSize:9}});
