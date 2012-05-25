@@ -294,7 +294,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
  <a href="districtPageAction.action?districtId=<s:property value="id"/>&districtName=<s:property value="name"/>"> <s:property value="name"/><s:if test="#districs.index < candidateElectionDetails[0].getDistricts.size - 1"> ,</a> </s:if></s:iterator> > </s:if>
 <s:if test="candidateElectionDetails[0].districtName!=null"> 
 District: 
-<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></a></strong> &gt; </s:if>  <s:property value="candidateElectionDetails[0].electionType"/>:
+<strong><a href="districtPageAction.action?districtId=${candidateElectionDetails[0].districtId}&districtName=${candidateElectionDetails[0].districtName}"><s:property value="candidateElectionDetails[0].districtName"/></strong> &gt; </s:if> </a> <span style="color: #171717;font-weight:normal;"><s:property value="candidateElectionDetails[0].electionType"/></span>:
 <a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}" ><strong><s:property value="candidateElectionDetails[0].constituencyName"/></strong></a></div>
 <div class="clear"></div>
 <div class="main-title-sec">
