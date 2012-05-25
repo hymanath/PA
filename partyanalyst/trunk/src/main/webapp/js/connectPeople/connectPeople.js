@@ -344,7 +344,46 @@ function buildConnectionsContentForUser()
 	str += '<td width="30%" valign="top">';
 	str += '<div id="connection_main_search">';
 	str += '</div>';
-	str += '</td>';
+	str +='<table width="100%" style="Verdana,Arial,sans-serif;">';
+
+	for(var i=0;i<arrData.length;i++)
+	{
+		if(i%3==0)
+				
+		str +='<tr>';
+		str +='<td>';
+		str +='<table>';
+		str +='<span class="memberCardViewAll" style="height:142px;width:188px;">';
+		str +='<h3 id="connectDiv"><div style="float:left;width:75px;height:75px;">';
+		//str +='<div style="float:right;width:100px;height:30px;margin-left:5px;">';
+		
+		
+		
+		str += '<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></div>';
+		
+		//str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
+		str +='<div style="float:right;width:100px;height:30px;margin-left:5px;">';
+		str +='<span style="margin-bottom:5px;">'+arrData[i].candidateName+'</span>';
+		
+		str +='</div></h3>';
+
+		
+		
+		
+		str += '<span class="sociallinks" href="#">Constituency:';
+		str +='<b>'+arrData[i].constituencyName+'</b>';
+		str +='</span>';
+		str +='<br>';
+				
+		str += '<a class="sociallinks" href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')" style="color:#669900;">Send a Message</a>';
+		
+		str +='</span>';
+		str +='</table>';
+		if((i%3)+1==0)
+		str +='</tr>';
+	}
+	str +='</table>';
+	/*str += '</td>';
 	str += '<td width="70%" valign="top">';
 	str += '<div id="connection_main_data">';
 	for(var i=0; i<arrData.length; i++)
@@ -367,7 +406,7 @@ function buildConnectionsContentForUser()
 		str += '</table>';
 		str += '</div>';
 	}
-	str += '</div>';
+	str += '</div>';*/
 	str += '</td>';
 	str += '</tr>';	
 	str += '</table>';
@@ -386,7 +425,7 @@ function showMailPopup(id,name,type)
 	str += '<table width="100%">';
 	str += '<tr>';
 	str += '<th>Message</th>';
-	str += '<td><textarea id="connectMessageText" cols="35" rows="4"></textarea></td>';
+	str += '<td><textarea id="connectMessageText" cols="35" rows="4" style="background:#ffffff;"></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
 	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" id="sendMessageButtonId" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
