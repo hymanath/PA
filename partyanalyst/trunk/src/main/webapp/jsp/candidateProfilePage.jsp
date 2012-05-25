@@ -28,7 +28,8 @@
 <script type="text/javascript" src="js/customPaginator/messagePaginator.js"></script>
 
 <style type="text/css">
-.ui-widget-header {
+#showAllNewsDiv #videoGallaryPopUpDiv #buildPhotoGallaryDiv
+#showProfile .ui-widget-header {
 	background:url("");
 	border:0px;
 	color:none;
@@ -412,7 +413,7 @@ District:
 			</s:if>
 			  <!--ELECTION PROFILE SECTION END--> 
 			  <s:if test="electionGoverningBodyVO != null && electionGoverningBodyVO.size()>0">
-		<div id="showProfile"></div>
+		
 		<div class="pm-inner-cont-sec">
 		<h1 class="inc-title">Minister Profile</h1>
 
@@ -2320,7 +2321,7 @@ function candidateInfo()
 
  function getTotalProfile()
  {
-
+	
  $.fx.speeds._default = 900;
   $("#showProfile").dialog({ stack: false,
                                 show: "clip",
