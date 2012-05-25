@@ -417,7 +417,7 @@ function buildConnectionsContentForUser()
 }
 function setImage(img)
 {
-		img.src = "/PartyAnalyst/pictures/profiles/human.jpg";
+		img.src = "/PartyAnalyst/pictures/profiles/member.jpg";
 }
 function showMailPopup(id,name,type)
 {
