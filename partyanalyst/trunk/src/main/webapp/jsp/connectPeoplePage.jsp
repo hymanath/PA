@@ -174,7 +174,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;height:213px;clear:both;border:1px solid #d3d3d3;"> 						
+					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;height:181px;clear:both;border:1px solid #d3d3d3;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -236,7 +236,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 									
 								</table>
 							</div>
-							<div id="connectPeople_messages_center" class="yui-skin-sam" style="margin-top:42px;">
+							<div id="connectPeople_messages_center" class="yui-skin-sam" style="margin-top:12px;">
 											 
 							</div>
 
