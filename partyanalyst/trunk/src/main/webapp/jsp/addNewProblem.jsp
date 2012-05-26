@@ -489,11 +489,33 @@ function clearSuccessMsg(){
 					<tr style="height:30px;">
 						<th align="left" colspan="2"><img src="images/icons/file_upload_icon.png">&nbsp;&nbsp;<u><font color="blue">Upload Documents and Images</font></u></th>
 					</tr>
+					<s:if test="{userImage.size >0}">
+					<s:iterator value="fileTitle" status="stat">
+					<tr>
+					
+						<td width="100px;"><s:label value="Title"/></td>
+						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle[%{#stat.index}]" size="33"/></td>
+						
+					</tr>
+					<tr>
+					
+						<td width="100px;"><s:label value="Description"/></td>
+						<td style="padding-left: 15px;"><s:textarea  name="fileDescription[%{#stat.index}]" cols="25" rows="3" /></td>
+					</tr>
 					
 					<tr>
-						<td width="100px;"><s:label value="Title"/></td>
+						<td width="100px;" style="padding-left:0px;"><s:label   value="Documents And Images" /></td>
+						<td style="padding-left:15px;"> <s:file name="path[%{#stat.index}]" id="userImage"/></td>
+						
+						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
+					</s:iterator>
+					</s:if>
+					<s:else>
+					<tr>
+     					<td width="100px;"><s:label value="Title"/></td>
 						<td style="padding-left: 15px;"><s:textfield id="titleField" name="fileTitle" size="33"/></td>
 					</tr>
+					
 					<tr>
 						<td width="100px;"><s:label value="Description"/></td>
 						<td style="padding-left: 15px;"><s:textarea  name="fileDescription" cols="25" rows="3" /></td>
@@ -505,11 +527,13 @@ function clearSuccessMsg(){
 						<td><a href="javascript:{}"  onclick='addAnotherProblem("dynamicDiv")'  style="padding-left: 27px;"><font color="green"><b>  More Documents</b></font></a></td></tr>
 			       
 					</table>
+					</s:else>
+					</table>
 					<table>
 					<tr><td>
 			<div id="dynamicDiv" ></div></td></tr>
 				<tr id="problemSourceRowId">
-					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
+					<td colspan="2"><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
 					<s:select id="userTypeSelectBox"  name="probSource" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
 
