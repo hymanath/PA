@@ -2194,7 +2194,7 @@ function buildVideoGallaries(results)
 		str += '<td valign="top" width="25%"><table width="100%">';
 		str += '<tr><td style="padding-left:4px;">';
 
-		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="120px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;"  onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;"  onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
 		str += '<tr><td><div style="color:#FF0084;font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></td></tr>';
 		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Videos: ('+results[i].sizeOfGallary+')</b></div></td></tr></table></td>';
 		str+='</div>';
@@ -2235,18 +2235,14 @@ function buildAllVideosInGallary(results){
 			if(j++ % no_of_imagesPerRow == 0)
 				str += '<tr style="height:230px;">';
 			
-			str+='<td>';
-			str+='<table style="font-size: 13px; font-family: verdana,arial;">';
-			str+='<tr>';
-			str+='<td>'+results[i].title+'';
-			str+='</td>';
-			str+='</tr>';
-			str+='	<tr >';
-			str+='<td style="border: 2px solid #CCCCCC;padding:5px;">';
+			str += '<td valign="top" width="5%;">';
+			str += '<table style="font-size:13px;font-family:verdana,arial;">';
+			str += '<tr>';
+			str += '<td style="border:2px solid #CCCCCC;padding:5px;width:100px;">';
 			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
 		
 			//str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
+			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;"/></td></a>';
 			str+='</tr>';
 			str+='<tr>';
 			str+='<td>'+results[i].description+'';
