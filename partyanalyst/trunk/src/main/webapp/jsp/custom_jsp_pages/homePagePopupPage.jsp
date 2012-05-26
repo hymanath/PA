@@ -32,8 +32,8 @@ left:50%;
 }
 .Election2014{height:200px;}
 .Election2014 span{display:table;color:navy;}
-.ElectionInfo{display:block;margin-left: 34%;}
-.ElectionInfo a{background: none repeat scroll 0 0 #C93033;border-radius: 3px 3px 3px 3px;box-shadow: 0 0 5px #888888;color: #FFFFFF;display: table;font-family: helvetica;font-size: 13px;margin: 22px 15px 0px;padding: 6px 7px;position: relative;text-decoration: none;}
+.ElectionInfo{display:block;margin-left: 89px;}
+.ElectionInfo a{background: none repeat scroll 0 0 #C93033;border-radius: 3px 3px 3px 3px;box-shadow: 0 0 5px #888888;color: #FFFFFF;display: table;font-family: helvetica;font-weight: bold;font-size: 13px;margin: 22px 15px 0px;padding: 6px 7px;position: relative;text-decoration: none;}
 .ElectionInfo a:before{content:" ";
 border:10px solid transparent;
 border-bottom:10px solid #C93033;
@@ -127,5 +127,9 @@ To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mail
 <div class="ElectionInfo boxdiv" style="height: 92px; width: 305px; padding-left: 10px; padding-right: 10px;">
 <h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
 <p style="margin:1px;"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
+</div>
+<div class="ElectionInfo boxdiv" style="height: 92px; width: 267px; padding-left: 0px; padding-right: 0px; margin-left: 21px;">
+<h1 style="background-size:50px 50px;padding-left: 17px;padding-top:10px;font-size: 20px;">Latest Updates</h1>
+<p style="margin:1px;"><a style="margin-left: 19px; font-weight: bold;" href="specialPageAction.action?specialPageId=9">View CBI Cases Against Politician</a></p>
 </div>
 </div>
