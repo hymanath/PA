@@ -2538,10 +2538,10 @@ function buildAllVideosInGallary(results){
 			if(j++ % no_of_imagesPerRow == 0)
 				str += '<tr style="height:230px;">';
 			
-			str += '<td valign="top" width="33%">';
+			str += '<td valign="top" width="5%">';
 			str += '<table style="font-size:13px;font-family:verdana,arial;">';
 			str += '<tr>';
-			str += '<td style="border:2px solid #CCCCCC;padding:5px;">';
+			str += '<td style="border:2px solid #CCCCCC;padding:5px;width:100px;">';
 			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
 		
 			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" alt="'+results[i].title+'" title="'+results[i].description+'"/></td></a>';
