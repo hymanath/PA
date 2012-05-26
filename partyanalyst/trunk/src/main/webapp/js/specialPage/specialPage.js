@@ -11,8 +11,8 @@
    var updateGallId;
    var canCount = 0;
 	var parCount = 0;
-	var SPCount = 0;
-  //var specialPageId = ${specialPageVO.specialPageId};
+var SPCount = 0;
+  var specialPageId = '${specialPageVO.specialPageId}';
    
    var specialPageDescriptionId='${specialPageDescriptionId}';
 var timeST = new Date().getTime();
@@ -2713,6 +2713,7 @@ function showSuccessOfCreateNew(result)
 function validateEmailField()
 {
  document.getElementById("alertMsg").innerHTML = '';
+ //var specialPageId = document.getElementById("specialPageId").value;
  var emailIdVal = document.getElementById("emailId").value;
  var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
  
@@ -2733,7 +2734,7 @@ function validateEmailField()
 
   var jsObj={
 		emailId : emailIdVal,
-		specialPageId : 1,
+		specialPageId :specialPageId,
 		task:"setEmailAlertsForEvent"
 	};
 
