@@ -44,7 +44,7 @@ text-align:center;
 		}
 .rounded
 {
-	position:relative; padding:10px; margin:10px 0;background-color:#FFFFFF;
+	width: 980px;position:relative; padding:0px; margin:10px 0;background-color:#FFFFFF;
 }
 .corner 
 {
@@ -92,7 +92,7 @@ background-color:#E4EDF0;
     border-radius: 4px 4px 4px 4px;
     margin-bottom: 10px;
     padding: 0px;
-    width: 992px;
+    width: 962px;
 	margin-left : auto;
 	margin-right : auto;
 }
@@ -846,7 +846,7 @@ function editNewsDetails(fileId){
 </script>
 </head>
 <body>
-<div style="background-color:width:900px;" class="rounded">
+<div class="rounded">
 <fieldset class="f3">
 <body>
 <center>
@@ -934,7 +934,7 @@ function editNewsDetails(fileId){
   </td></tr>
  <tr> 
    <td>
-	<table width="100%" style="padding-top:15px;" cellpadding="0" cellspacing="0">
+	<table width="90%" style="padding-top:15px;" cellpadding="0" cellspacing="0">
 	<tr>
 		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
 	   <td><div class="widgetHeader"><span class="widgetHeaderSpan"> <div id="newsHeading"></div> </span></div></td>
