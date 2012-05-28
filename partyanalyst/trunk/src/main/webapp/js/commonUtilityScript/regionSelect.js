@@ -814,7 +814,7 @@ function getCadresResults(btnType)
 	{
 		var search = "forTotalCount";
 		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask="+winTask+"&sort=total&startIndex=0&results=-5";
-		callAjaxForRegionSelectForRegionSelect(jsObj,url);
+		callAjaxForRegionSelect(jsObj,url);
 		buildCadreSearchResultDataTable(rparam);
 		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
 	}
