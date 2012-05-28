@@ -1456,7 +1456,7 @@ function buildNews(){
 
 function openShowNews()
 {
-	var showNewsBrowser = window.open("newsDisplayAction.action","shoeNews","scrollbars=yes,height=750,width=1000,left=10,top=10");
+	var showNewsBrowser = window.open("newsDisplayAction.action","shoeNews","scrollbars=yes,height=950,width=1050");
 	showNewsBrowser.focus();
 }
 var newsDetails = null;
