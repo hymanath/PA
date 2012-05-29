@@ -408,14 +408,23 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			
 			else if(jsObj.task == "getSource")
 			{ 
-               clearOptionsListForSelectElmtId('source');
-			   createOptionsForSelectElmtId('source',myResults);
+               sourceObj = myResults;
+			   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
+			   createOptionsForSelectElmtId(jsObj.selectOptionId,sourceObj);
 			}
 			else if(jsObj.task == "getLanguage")
 			{ 
-               clearOptionsListForSelectElmtId('language');
-			   createOptionsForSelectElmtId('language',myResults);
+               languagesObj = myResults;
+               clearOptionsListForSelectElmtId(jsObj.fillOptionId);
+			   createOptionsForSelectElmtId(jsObj.fillOptionId,languagesObj);
 			}
+			else if(jsObj.task == "getNewsImportance")
+			{ 
+				
+               clearOptionsListForSelectElmtId('newsimportance');
+			   createOptionsForSelectElmtId('newsimportance',myResults);
+			}
+			
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Video Gallary")
 			{ 
 
@@ -658,7 +667,10 @@ function buildUploadPhotosDiv()
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"/></td></tr></table>';
+	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"/></td>';
+	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
+	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
+
 	str += '<div id="photoPublicRadioDiv" style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
@@ -1006,7 +1018,7 @@ function validateNewsFileUpload()
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-if(galEle == 0)
+	if(galEle == 0)
 	{
 		str += 'Select Gallary';
 		flag = false;
@@ -1108,6 +1120,8 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
+
+	$("#addMoreFilesDiv").html('');
 	$("#otherProNewsDiv").html('');
 	document.getElementById('newsfileTitle').value = '';
 	document.getElementById('newsfileDescription').value = '';
@@ -1121,6 +1135,7 @@ function clearNewsUploadFileFields()
 	
 function clearUploadFileFields()
 {
+	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	document.getElementById('photofileTitleId').value = '';
 	document.getElementById('photofileDescId').value = '';
@@ -1804,15 +1819,24 @@ function  buildUploadNews()
 	str += '   </TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
+	str += '   </tr>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -1845,8 +1869,22 @@ function  buildUploadNews()
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getPartyGallariesForUplaod("News Gallary");
 	 getScopes();
-	 getSource();
-	 getLanguage();
+	 getSource("source");
+	 getLanguage("language");
+	 getNewsImportance();
+}
+function getNewsImportance()
+{
+	var jsObj =
+		{ 
+            time : timeST,
+			task:"getNewsImportance"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getNewsGalleryForUplaodAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
 }
 function clearDiv(divId)
 {
@@ -1946,8 +1984,9 @@ function buildUploadVideoDiv()
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td><td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreVideos()" title="Click here to add more Videos" alt="Click here to add more images"/></td></tr>';
+	str += '<tr><td colspan="3"><div id="addMoreVideosDiv"></div></td></tr>';
 	str += '</table>';
 	str += '<div id="vedioPublicDiv" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
@@ -1958,36 +1997,8 @@ function buildUploadVideoDiv()
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
 	getPartyGallariesForUplaod('Video Gallary');
-	getSource();
-	getLanguage();
-}
-
-function getSource()
-{
-var jsObj =
-		{ 
-            time : timeST,
-			task:"getSource"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
-	callAjax(jsObj,url);
- 
-}
-
-function getLanguage()
-{
-var jsObj =
-		{ 
-            time : timeST,
-			task:"getLanguage"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
-	callAjax(jsObj,url);
- 
+	getSource("source");
+	getLanguage("language");
 }
 
 function getCompleteVideoGallaries(gallaryId){
@@ -2219,8 +2230,7 @@ function showVideoGallaryCreateMsg(result)
 
 function showUploadVideoStatus(result)
 {
-	
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var errorDivEle = document.getElementById('fileSuccessDiv');
 	var str = '';
 
 	if(result.resultCode == 0)
@@ -2250,6 +2260,7 @@ function clearVideoGallaryFields()
 
 function clearUploadVideoFields()
 {
+	$("#addMoreVideosDiv").html('');
 	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
@@ -2627,7 +2638,7 @@ function updateGallary(gallaryId)
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyPhotoGallaryUpdateAction.action?"+rparam;
+	var url = "updatePartyPhotoGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
 	}
  
@@ -2859,7 +2870,7 @@ function updatePhoto(fileId,fileGallaryId)
 	str+='</div>';
 	document.getElementById("manifestoDiv").innerHTML = str;
 	getElectionType();
-	getLanguage();
+	getLanguage("language");
 	}
 
 	function uploadManifesto()
