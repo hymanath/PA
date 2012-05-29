@@ -370,7 +370,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										  <tr>
 											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 											<td width="98%">
-												<div class="electionTrendzHeaderBackground_center" style="width:214px;">
+												<div class="electionTrendzHeaderBackground_center" style="width:217px;">
 													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
 														Opinion Poll
 													</span>
@@ -380,7 +380,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;background:#ffffff;width:265px;">
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:auto;overflow:hidden;background:#ffffff;width:265px;">
 									</div>
 									<div id="pollsWidgetFooter">
 										
@@ -396,7 +396,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:237px;"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:102px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
