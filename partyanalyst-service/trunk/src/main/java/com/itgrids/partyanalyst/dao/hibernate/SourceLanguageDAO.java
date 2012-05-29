@@ -13,7 +13,12 @@ public class SourceLanguageDAO extends
 	public SourceLanguageDAO() {
 		super(SourceLanguage.class);
 	}
-	public List<Object[]> getSourceLanguageDetails(){
+	public List<Object[]> getSourceLanguageDetails()
+	{
 		   return getHibernateTemplate().find("select model.languageId,model.language from SourceLanguage  model order by model.language ");
-	   }
+	}
+	public List<Object> getLanguageIdByLanguage(String language)
+	{
+		return getHibernateTemplate().find("select model.languageId from SourceLanguage  model where model.language =?",language);
+	}
 }
