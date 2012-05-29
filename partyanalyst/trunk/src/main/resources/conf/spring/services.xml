@@ -1028,6 +1028,7 @@
 		<property name="categoryDAO" ref="categoryDAO" />
 		<property name="newsImportanceDAO" ref="newsImportanceDAO" />
 		<property name="fileDAO" ref="fileDAO" />
+		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 	</bean>
 	
 	<bean name="contentManagementService" class="com.itgrids.partyanalyst.service.impl.ContentManagementService">
