@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -21,6 +22,9 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFilePathDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
+import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
@@ -39,6 +43,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -55,6 +60,8 @@ import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToParty;
 import com.itgrids.partyanalyst.model.Party;
@@ -102,7 +109,26 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private INominationDAO nominationDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IAllianceGroupDAO allianceGroupDAO;
+	private IFileSourceLanguageDAO fileSourceLanguageDAO;
+	private IFilePathsDAO filePathsDAO;
 	
+	
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
+
+	public IFileSourceLanguageDAO getFileSourceLanguageDAO() {
+		return fileSourceLanguageDAO;
+	}
+
+	public void setFileSourceLanguageDAO(IFileSourceLanguageDAO fileSourceLanguageDAO) {
+		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -704,6 +730,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 			gallary.setIsPrivate(gallaryVO.getVisibility());
 
 			gallary = gallaryDAO.save(gallary);
+			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 			partyGallery.setIsDelete(IConstants.FALSE);
 			partyGallery.setIsPrivate(gallaryVO.getVisibility());
 			partyGallery.setParty(partyDAO.get(gallaryVO.getCandidateId()));
@@ -713,6 +740,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 			partyGallery
 					.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			partyGallery = partyGalleryDAO.save(partyGallery);
+			}
 			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 				userGallary = new UserGallary();
 				userGallary.setGallary(gallary);
@@ -720,6 +748,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 						.getUserId()));
 				userGallaryDAO.save(userGallary);
 			}
+			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		} catch (Exception e) {
@@ -865,15 +894,31 @@ public class PartyDetailsService implements IPartyDetailsService {
 		 
 		log.debug("Entered into uploadPartyManifesto() method in PartyDetailsService ");
 		File file = new File();
+		FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
+		FilePaths filePaths = new FilePaths();
+		Long orderNo=0l;;
 		file.setFileName(fileVO.getName());
 		file.setFileDate(dateUtilService.getCurrentDateAndTime());
-		file.setFilePath(fileVO.getPath());
 		file.setFileDescription(fileVO.getDescription());
-		file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
-		file.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
 		
 		file = fileDAO.save(file);
 		
+		fileSourceLanguage.setFile(file);
+		fileSourceLanguage.setSource(null);
+		fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
+		fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+		
+		filePaths.setFilePath(fileVO.getPath());
+		filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
+		List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
+		if(maxOrderNo.size()==0 && maxOrderNo.get(0)==null)
+			orderNo = orderNo + 1L;
+		else
+		 orderNo = new Long (filePathsDAO.getMaxOrderNo().get(0).toString());
+		
+		filePaths.setOrderNo(orderNo);
+		filePaths.setFileSourceLanguage(fileSourceLanguage);
+		filePathsDAO.save(filePaths);
 		PartyManifesto partyManifesto = new PartyManifesto();
 		partyManifesto.setFile(file);
 		partyManifesto.setElection(electionDAO.get(fileVO.getElectionId()));
