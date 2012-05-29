@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 
 public class FileSourceLanguageDAOHibernateTest extends BaseDaoTestCase {
   
@@ -13,8 +16,15 @@ public class FileSourceLanguageDAOHibernateTest extends BaseDaoTestCase {
 		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
 	}
 	 
-	 public void test(){
+	 /*public void test(){
 		 
 		 fileSourceLanguageDAO.getAll();
-	 }
+	 }*/
+	
+	public void testGetFileSourceLanguageObject()
+	{
+		List<FileSourceLanguage> list = fileSourceLanguageDAO.getFileSourceLanguageObject(8547L,1L, 1l);
+		for(FileSourceLanguage filesource: list)
+		System.out.println(filesource.getFile().getFileId());
+	}
 }
