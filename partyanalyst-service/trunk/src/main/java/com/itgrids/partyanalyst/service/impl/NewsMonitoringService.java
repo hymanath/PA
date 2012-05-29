@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
@@ -20,6 +23,8 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
@@ -37,6 +42,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ISourceLanguageDAO sourceLanguageDAO;
     private INewsImportanceDAO newsImportanceDAO;
     private FileDAO fileDAO;
+    private IFileSourceLanguageDAO fileSourceLanguageDAO;
     
     public IFileGallaryDAO getFileGallaryDAO() {
 	          return fileGallaryDAO;
@@ -95,7 +101,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	public void setFileDAO(FileDAO fileDAO) {
 		this.fileDAO = fileDAO;
 	}
+	
+	public IFileSourceLanguageDAO getFileSourceLanguageDAO() {
+		return fileSourceLanguageDAO;
+	}
 
+	public void setFileSourceLanguageDAO(
+			IFileSourceLanguageDAO fileSourceLanguageDAO) {
+		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
+	}
+
+	
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs){
       log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
        List<FileVO> fileVOList = new ArrayList<FileVO>();
@@ -109,10 +125,55 @@ public class NewsMonitoringService implements INewsMonitoringService {
     		  fileVO.setFileTitle1(file.getFileTitle());
     		  fileVO.setDescription(file.getFileDescription());
     		  fileVO.setFileDate(file.getFileDate()!=null?file.getFileDate().toString():"");
-    		  fileVO.setSource(file.getSourceObj()!=null?file.getSourceObj().getSource():"");
-    		  fileVO.setSourceId(file.getSourceObj()!=null?file.getSourceObj().getSourceId():null);
-    		  fileVO.setLanguegeId(file.getLanguage()!=null?file.getLanguage().getLanguageId():null);
-    		  fileVO.setLanguage(file.getLanguage()!=null?file.getLanguage().getLanguage():"");
+    		  
+    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+    		  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
+    		  Set<String> sourceSet = new HashSet<String>();
+ 			  Set<String> languageSet = new HashSet<String>();
+ 			 StringBuilder sourceVal =new StringBuilder();
+			 StringBuilder languageVal =new StringBuilder();
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
+					 {
+						  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+						  sourceSet.add(fileSourceLanguage.getSource().getSource());
+						  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+					 }
+					 else if(inputs.getLanguegeId() != null){
+						 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
+						 {
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 else if(inputs.getSourceId() != null){
+						 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
+						 { 
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 
+				 }
+				 for(String source:sourceSet){
+					 sourceVal.append(source);
+					 sourceVal.append("-");
+				 }
+	             for(String language:languageSet){
+	            	 languageVal.append(language);
+	            	 languageVal.append("-");
+				 }
+	             sourceVal.deleteCharAt(sourceVal.length() - 1);
+	             languageVal.deleteCharAt(languageVal.length() - 1);
+			fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+			Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+			fileVO.setFileVOList(fileVOSourceLanguageList);
+			
+			
+    		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
+    		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
     		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
     		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"");
     		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
@@ -147,6 +208,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    			fileVO.setCategoryType(data[1].toString());
 	    			fileVO.setCategoryId((Long)data[2]);
 	    			categoryFileVOList.add(fileVO);
+	    			totalCount += (Long)data[0];
 	    		}
 	    		categoryFileVO.setFileVOList(categoryFileVOList);
 	    		returnFileVOList.add(categoryFileVO);
@@ -161,7 +223,7 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	    			fileVO.setSource(data[1].toString());
 	    			fileVO.setSourceId((Long)data[2]);
 	    			sourceFileVOList.add(fileVO);
-	    			totalCount += (Long)data[0];
+	    			
 	    		}
 	    		sourceFileVO.setFileVOList(sourceFileVOList);
 	    		returnFileVOList.add(sourceFileVO);
@@ -515,26 +577,37 @@ public class NewsMonitoringService implements INewsMonitoringService {
 		 return returnVal;
 	 }
 	 
-	 public ResultStatus updateDeleteNews(FileVO fileVO,String task){
+	 public ResultStatus updateDeleteNews(FileVO fileVO,String task,List<FileVO> sourceIds,List<FileVO> languageIds){
 		 if(log.isDebugEnabled())
 			 log.debug("Enter into updateDeleteNews Method of NewsMonitoringService ");
 		 ResultStatus resultStatus = new ResultStatus();
 	  try{ 
 		 if(task.equalsIgnoreCase("Update")){
 			 File file = fileDAO.get(fileVO.getFileId());
-			 Source source = sourceDAO.get(fileVO.getSourceId());
 			 Category category = categoryDAO.get(fileVO.getCategoryId());
-			 SourceLanguage sourceLanguage = sourceLanguageDAO.get(fileVO.getLanguegeId());
+			 
 			 NewsImportance newsImportance = newsImportanceDAO.get(fileVO.getNewsImportanceId());
 			 
 			 file.setFileTitle(fileVO.getTitle());
 			 file.setFileDescription(fileVO.getDescription());
-			 file.setSourceObj(source);
 			 file.setCategory(category);
-			 file.setLanguage(sourceLanguage);
 			 file.setNewsImportance(newsImportance);
 			 
 			 fileDAO.save(file);
+			 
+			 for(FileVO languageFile:languageIds){
+				 SourceLanguage sourceLanguage = sourceLanguageDAO.get(languageFile.getLanguegeId());
+				 FileSourceLanguage	 fileSourceLanguage = fileSourceLanguageDAO.get(languageFile.getFileSourceLanguageId());
+				 fileSourceLanguage.setLanguage(sourceLanguage);
+				 fileSourceLanguageDAO.save(fileSourceLanguage);
+			 }
+			 for(FileVO sourceFile:sourceIds){
+				 Source source = sourceDAO.get(sourceFile.getSourceId());
+				 FileSourceLanguage	 fileSourceLanguage = fileSourceLanguageDAO.get(sourceFile.getFileSourceLanguageId());
+				 fileSourceLanguage.setSource(source);
+				 fileSourceLanguageDAO.save(fileSourceLanguage);
+			 }
+			 
 			 DateUtilService dateUtilService = new DateUtilService();
 			 fileGallaryDAO.updateFileDate(dateUtilService.getCurrentDateAndTime(),fileVO.getFileId());
 			 
@@ -552,4 +625,35 @@ public class NewsMonitoringService implements INewsMonitoringService {
 	  
 	  return resultStatus;
 	 }
+	 private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
+			 
+		     FileVO fileVOSourceLanguage = new FileVO();
+			 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():"");
+			 if(fileSourceLanguage.getSource()!=null)
+				
+			 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+			 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"");
+			 if(fileSourceLanguage.getLanguage()!=null)
+				 
+			 
+			 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+			 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+			 
+			 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+			 
+			 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+			 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+			 
+			 for(FilePaths filePath : filePathsSet){
+				 FileVO fileVOPath = new FileVO();
+				 fileVOPath.setPath(filePath.getFilePath());
+				 fileVOPath.setOrderNo(filePath.getOrderNo());
+				 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+				 fileVOPathsList.add(fileVOPath);
+			 }
+			 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+			 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+			 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+			 
+		}
 }
