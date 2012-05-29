@@ -212,9 +212,11 @@ public class OpinionPollService implements IOpinionPollService {
 		ResultStatus resultStatus = new ResultStatus();
 		Long latestPollId=1l;
 		try{
-			result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);	
-			 for(int i=0;i<result.size();i++){
-					Object[] parms = (Object[])result.get(i);
+			result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);
+			Set<String> set = new HashSet<String>(result);
+			 for(int i=0;i<set.size();i++){
+				 Iterator itr = set.iterator();
+					Object[] parms = (Object[])itr.next();
 					OpinionPollQuestions poll = (OpinionPollQuestions) parms[3];
 					if(i==0){
 						latestPollId = poll.getOpinionPollQuestionsId();	
