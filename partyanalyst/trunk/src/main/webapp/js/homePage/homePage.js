@@ -1220,15 +1220,15 @@ function showVotesObtainedForOptions(myResults){
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a>';
+	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#0C67AC;font-weight:bold;"> View Current Poll Result</a>';
 	str += '</td>';
-	str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a>';
+	str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a>';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
 	str += '</tr></table>';
 
-	str+='<div id="pollsChart" style=" height: 349px;width: 324px; overflow: hidden;"></div>';
+	str+='<div id="pollsChart" style=" height: auto;width: 324px; overflow: hidden;"></div>';
 	elmt.innerHTML = str;
 
 	var data = new google.visualization.DataTable();
@@ -1243,7 +1243,7 @@ function showVotesObtainedForOptions(myResults){
 		}
 	var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
 	
-		chart.draw(data,{width: 300, height: 300,legend:'right', 
+		chart.draw(data,{width: 300, height: 280,legend:'right', 
 legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
 
 	
