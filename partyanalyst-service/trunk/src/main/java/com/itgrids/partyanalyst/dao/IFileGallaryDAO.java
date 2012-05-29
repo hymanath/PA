@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 
 public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	
-	public List<Object[]> getStartingRecordInGallary(Long gallaryId);
+	public List<File> getStartingRecordInGallary(Long gallaryId);
 	
 	public List<Object[]> getAllRecordInGallary(Long gallaryId);
 	
@@ -79,7 +79,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     
     public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList);
     
-    public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId);
+    public List<Object[]> getFirstFileAndGallaryInfo(Long gallaryId,String queryString);
     
     public List<Object> getFileGallaryIdByFileId(Long fileId);
     
@@ -94,4 +94,8 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getPartyGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> partyIds,String type);
     
     public List<Object[]> getSpecialPageGallaryDetailsForSubscribers(Date fromDate,Date toDate,List<Long> specialPageIds,String type);
+    
+    public List<Object[]> getAllNewsDetails(Long candidateId,int firstResult,int maxResult,String queryType);
+    
+    public List<Long> getAllRecordCountInGallary(Long gallaryId);
 }
