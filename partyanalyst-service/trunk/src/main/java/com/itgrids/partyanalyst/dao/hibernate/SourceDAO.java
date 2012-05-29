@@ -15,4 +15,9 @@ public class SourceDAO extends GenericDaoHibernate<Source, Long> implements
    public List<Object[]> getSourceDetails(){
 	   return getHibernateTemplate().find("select model.sourceId,model.source from Source  model order by model.source ");
    }
+   @SuppressWarnings("unchecked")
+   public List<Object> getSourceIdBySource(String source)
+   {
+	   return getHibernateTemplate().find("select model.sourceId from Source  model where model.source =?",source);
+   }
 }
