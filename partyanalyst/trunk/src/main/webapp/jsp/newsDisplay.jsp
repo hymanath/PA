@@ -163,12 +163,31 @@ textarea {
     text-decoration: none;
     white-space: nowrap;
 }
+#buildSources{
+border:1px solid #d3d3d3;
+margin-left: auto;
+margin-right: auto;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 618px;
+}
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+.newsParts{
+  
+  color:#FF4500;
+}
 </style>
 <script type="text/javascript">
 
 var ajaxCount = 0;
 var newsDetails = null;
-
+ var reqFile;
 $(document).ready(function(){
   $("#newsSearch").slideUp("fast");
 });
@@ -344,7 +363,10 @@ var callback = {
 			 }
 			else if(jsObj.queryType == "getAllSourceDetails")
 			 {	
-				bildDate(myResults,jsObj.task,jsObj.fileType);
+			     if(jsObj.task != "sourceEdit")
+				  bildDate(myResults,jsObj.task,jsObj.fileType);
+				 else
+				   bildDateForSource(myResults);
 			 }
 			 else if(jsObj.queryType == "getAllCategoryDetails")
 			 {	
@@ -352,7 +374,10 @@ var callback = {
 			 }
 			 else if(jsObj.queryType == "getAllSourceLanguageDetails")
 			 {	
-				bildDate(myResults,jsObj.task,jsObj.fileType);
+			    if(jsObj.task != "languageEdit")
+				   bildDate(myResults,jsObj.task,jsObj.fileType);
+				else
+				  bildDateForLanguage(myResults); 
 			 }
 			 else if(jsObj.queryType == "getAllNewsImportanceDetails")
 			 {	
@@ -589,7 +614,7 @@ function displayNews(fileId)
 		 str += '       <td>';
 		 str += '		 <B>Total News Aricles : <font color="#FF4500">'+newsDetails.length+'</font> &nbsp;&nbsp;&nbsp;';
 		 str += '		 <B>Present Article is : <font color="#FF4500">'+(i+1)+'</font> &nbsp;&nbsp;&nbsp;';
-		 str += '        <B>Source</B> : <font color="#FF4500">'+newsDetails[i].source+'</font> &nbsp;&nbsp;&nbsp;<B> Date </B>:<font color="#FF4500"> '+newsDetails[i].fileDate+'</font>';
+		 str += '        <B>Source</B> :<span id="sourcetypeimgDiv"> <font color="#FF4500">'+newsDetails[i].fileVOList[0].source+'</font> &nbsp;&nbsp;&nbsp;</span><span><B> Date </B>:<font color="#FF4500"> '+newsDetails[i].fileDate+'</font></span>';
 		 str += '       </td>';
 		 str += '     </tr>';
 		 str += '     </table>';
@@ -603,7 +628,7 @@ function displayNews(fileId)
 			str += '<a onclick="displayNews('+newsDetails[i-1].fileId+')" href="javascript:{}"><img class="newsNavigationImage" src="images/icons/jQuery/previous.png" alt=""></a>';
 		 }
 		 str += '</td>';
-		 str += '<td><div class="container"><img alt="'+newsDetails[i].fileTitle1+'" src="'+newsDetails[i].path+'" title="'+newsDetails[i].description+'" style="max-width:820px;max-length:800px;"/></div></td>';
+		 str += '<td><div class="container" id="newschangeDIV"><img alt="'+newsDetails[i].fileTitle1+'" src="'+newsDetails[i].fileVOList[0].fileVOList[0].path+'" title="'+newsDetails[i].description+'" style="max-width:820px;max-length:800px;"/></div></td>';
 		 str += '<td width="5%">';
 		 if(i != (newsDetails.length - 1))
 		 {
@@ -617,13 +642,99 @@ function displayNews(fileId)
 		 str += '        '+newsDetails[i].description+'';
 		 str += '       </td>';
 		 str += '     </tr>';
-		 str += '<table>';	 
-		 str += '</center></div>';	 
+		 str += '</table>';	 
+		 str += '</center></div>';
+         str +='<div id="buildSourceParts">';
+	 str += '<center><table><tr>';
+
+	for(var j=1;j<newsDetails[i].fileVOList[0].fileVOList.length;j++)
+	{
+	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+newsDetails[i].fileVOList[0].fileSourceLanguageId+','+newsDetails[i].fileVOList[0].fileVOList[j].orderNo+','+fileId+',\''+newsDetails[i].fileTitle1+'\',\''+newsDetails[i].description+'\',\''+newsDetails[i].fileVOList[0].fileVOList[j].path+'\')">'+newsDetails[i].fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	}
+	str += '  </tr></table>';
+	str +='</center></div>';
+	
+	if(newsDetails[i].multipleSource >1 )
+	{
+	  str +='<div id="buildSources">';
+	  str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	  str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	  for(var k=1;k<newsDetails[i].fileVOList.length;k++)
+	  {
+	     str += '<td><a class="newssources" href="javascript:{}" onclick="showAnotherSource('+newsDetails[i].fileVOList[k].fileSourceLanguageId+','+fileId+')">'+newsDetails[i].fileVOList[k].source+'</a></td>';
+	  }
+	  str += '  </tr></table>';
+	  str +='</center></div>';
+	}		 
 		 document.getElementById("showNewsDiv").innerHTML= str;
 		}
 	}
  }
+function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path)
+ {
+    var results;
+	 
+	    for(var i in newsDetails){
+	       if(newsDetails[i].fileId == fileId)
+	        results = newsDetails[i];
+	     }	 
+	 
+	  document.getElementById("newschangeDIV").innerHTML = '<img alt="'+title+'" src="'+path+'" title="'+desc+'" style="max-width:820px;max-length:800px;"/>';
 
+	  var str='';
+	  str += ' <center> <table><tr>';
+	 for(var j in results.fileVOList)
+	 {
+	    if(results.fileVOList[j].fileSourceLanguageId == fileSourceLanguageId)
+		 for(var k in results.fileVOList[j].fileVOList)
+		 {
+		   if(results.fileVOList[j].fileVOList[k].orderNo != orderNo)
+		    str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+results.fileId+',\''+results.fileTitle1+'\',\''+results.description+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')">'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
+		 }
+	 }
+	 str += '  </tr></table></center>';
+	 document.getElementById("buildSourceParts").innerHTML = str;
+ }
+ function showAnotherSource(fileSourceLanguageId,fileId)
+ {
+     var results;
+	 
+	    for(var i in newsDetails){
+	       if(newsDetails[i].fileId == fileId)
+	        results = newsDetails[i];
+	     }
+    for(var j in results.fileVOList)
+    {
+      if(results.fileVOList[j].fileSourceLanguageId == fileSourceLanguageId)
+       {	  
+         document.getElementById("sourcetypeimgDiv").innerHTML = '<font color="#FF4500">'+results.fileVOList[j].source+'</font> &nbsp;&nbsp;&nbsp;';		 
+         document.getElementById("newschangeDIV").innerHTML = '<img alt="'+results.fileTitle1+'" src="'+results.fileVOList[j].fileVOList[0].path+'" title="'+results.description+'" style="max-width:820px;max-length:800px;"/>';
+ 
+	      var str='';
+          str += '<center><table><tr>';
+	   
+	      for(var k=1;k<results.fileVOList[j].fileVOList.length;k++)
+	      {
+	          str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+fileId+',\''+results.fileTitle1+'\',\''+results.description+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')">'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
+	       }
+	      str += '  </tr></table>';
+	       str +='</center>';
+          document.getElementById("buildSourceParts").innerHTML = str;
+		}
+	}
+	var str='';
+	str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	  str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	  for(var m=0;m<results.fileVOList.length;m++)
+	  {
+	    if(results.fileVOList[m].fileSourceLanguageId != fileSourceLanguageId)
+	     str += '<td><a class="newssources" href="javascript:{}" onclick="showAnotherSource('+results.fileVOList[m].fileSourceLanguageId+','+fileId+')">'+results.fileVOList[m].source+'</a></td>';
+	  }
+	  str += '  </tr></table>';
+	  str +='</center>';
+	  document.getElementById("buildSources").innerHTML = str;
+   
+ }
  function showDates(){
     
    if(document.getElementById("betweendates").checked == true)
@@ -726,6 +837,7 @@ function displayNews(fileId)
 	}
  }
 function editNewsDetails(fileId){
+
   $("#editNewsOuter").dialog({ stack: false,
 							    height: 380,
 								width: 700,
@@ -737,6 +849,13 @@ function editNewsDetails(fileId){
 	$("#editNewsOuter").dialog();
 	var str= '';
 	
+	for(var i in newsDetails){
+	  if(newsDetails[i].fileId == fileId)
+	  {
+	    reqFile = newsDetails[i];
+		
+	  }
+	}
 	var str ='';
 	str+='<div>';
 	str += '<fieldset>';
@@ -751,15 +870,20 @@ function editNewsDetails(fileId){
 	str += '       <td class="tdWidth">News Description<font class="requiredFont">*</font></td>';
 	str += '       <td><textarea id="fileDescription" cols="20" rows="3"></textarea></td>';
 	str += '   </tr>';
+	for(var i in reqFile.fileVOList)
+	{
+	   str += '   <tr>';
+	   str += '       <td class="tdWidth">Source<font class="requiredFont">*</font></td>';
+	   str += '       <td><select id="sourceEdit'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><input type="hidden" id="sourceEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
+	   str += '   </tr>';
 	
-	str += '   <tr>';
-	str += '       <td class="tdWidth">Source<font class="requiredFont">*</font></td>';
-	str += '  <td><select id="sourceEdit" style="width:222px;"></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth">Language<font class="requiredFont">*</font></td>';
-	str += '  <td><select id="languageEdit" style="width:222px;"></select></td>';
-	str += '   </tr>';
+	   str += '   <tr>';
+	   str += '       <td class="tdWidth">Language<font class="requiredFont">*</font></td>';
+	   str += '       <td><select id="languageEdit'+i+'" style="width:222px;"></select></td>';
+	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
+	   str += '   </tr>';
+	}
 	str += '       <td class="tdWidth">Category<font class="requiredFont">*</font></td>';
 	str += '  <td><select id="categoryEdit" style="width:222px;"></select></td>';
 	str += '   </tr>';
@@ -775,18 +899,60 @@ function editNewsDetails(fileId){
 		
 	
 	
-	for(var i in newsDetails){
-	  if(newsDetails[i].fileId == fileId)
-	  {
-	    document.getElementById("fileTitle").value = newsDetails[i].fileTitle1;
-		document.getElementById("fileDescription").value = newsDetails[i].description;
-		getNews("sourceEdit","getAllSourceDetails",newsDetails[i].sourceId,"","","","","","","","","");
-        getNews("categoryEdit","getAllCategoryDetails",newsDetails[i].categoryId,"","","","","","","","","");
-        getNews("languageEdit","getAllSourceLanguageDetails",newsDetails[i].languegeId,"","","","","","","","","");
-        getNews("newsimportance","getAllNewsImportanceDetails",newsDetails[i].newsImportanceId,"","","","","","","","","");
+	
+	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
+		document.getElementById("fileDescription").value = reqFile.description;
+		getNews("sourceEdit","getAllSourceDetails","","","","","","","","","","");
+        getNews("categoryEdit","getAllCategoryDetails",reqFile.categoryId,"","","","","","","","","");
+        getNews("languageEdit","getAllSourceLanguageDetails","","","","","","","","","","");
+        getNews("newsimportance","getAllNewsImportanceDetails",reqFile.newsImportanceId,"","","","","","","","","");
 		
-	  }
+	  
+
+ }
+ function bildDateForSource(results)
+ {
+   for(var j in reqFile.fileVOList)
+  {
+    elmt = document.getElementById('sourceEdit'+j+'');
+    for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.value=results[i].ids;
+		option.text=results[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
 	}
+	document.getElementById('sourceEdit'+j+'').value = reqFile.fileVOList[j].sourceId;
+  }
+}
+ function bildDateForLanguage(results)
+ {
+      for(var j in reqFile.fileVOList)
+  {
+    elmt = document.getElementById('languageEdit'+j+'');
+    for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.value=results[i].ids;
+		option.text=results[i].names;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	document.getElementById('languageEdit'+j+'').value = reqFile.fileVOList[j].languegeId;
+  }
  }
  
  function updateDeleteNews(task,fileId){
@@ -798,6 +964,8 @@ function editNewsDetails(fileId){
    var languegeId ="" ;
    var categoryId ="" ;
    var newsImportanceId ="" ;
+   var sourceString ='';
+   var languageString = '';
   if(task == "Update")
   {
    title  = document.getElementById("fileTitle").value;
@@ -806,13 +974,21 @@ function editNewsDetails(fileId){
    title = removeAllUnwantedCharacters(title);
    
    description = removeAllUnwantedCharacters(description);
-   
-   var sourceEle  = document.getElementById("sourceEdit");
-   sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
-   
-   var languegeEle = document.getElementById("languageEdit");
-   languegeId = languegeEle.options[languegeEle.selectedIndex].value;
-   
+   for(var i in reqFile.fileVOList)
+   {
+      var sourceEle  = document.getElementById("sourceEdit"+i);
+      sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
+      var filesourceId1 = document.getElementById("sourceEditId"+i).value;
+	  sourceString = sourceString+''+sourceId+','+filesourceId1+'-';
+	  
+	  
+      var languegeEle = document.getElementById("languageEdit"+i);
+      languegeId = languegeEle.options[languegeEle.selectedIndex].value;
+	  var filesourceId2 = document.getElementById("languageEditId"+i).value;
+	  languageString = languageString+''+languegeId+','+filesourceId2+'-';
+	  
+	  
+   }
    var categoryEle = document.getElementById("categoryEdit");
    categoryId = categoryEle.options[categoryEle.selectedIndex].value;
    
@@ -836,11 +1012,13 @@ function editNewsDetails(fileId){
 		  categoryId	   :	categoryId,
 		  fileId           :    fileId,
 		  timeST           :    timeST,
-		  newsImportanceId :    newsImportanceId
+		  newsImportanceId :    newsImportanceId,
+		  sourceData       :    sourceString.slice(0, -1),
+		  languageData     :    languageString.slice(0, -1)
      }
 	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
       var url = "updateDeleteNewsAction.action?"+rparam;						
-      callAjax(jsObj,url);
+  callAjax(jsObj,url);
  
  }
 </script>
