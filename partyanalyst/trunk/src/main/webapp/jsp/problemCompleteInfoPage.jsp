@@ -43,6 +43,12 @@
 <!-- JQuery files (End) -->
 
 <style type="text/css">
+a img {
+    border: none
+    margin: 0;
+    padding: 0px;
+    vertical-align: top;
+}
 #problemDetailsPageMainDiv
 {
 	margin-left: auto;
@@ -619,7 +625,7 @@ function focusOnTextareas()
 
 	<c:if test="${hasFileUploadRight}">
 			
-        <div style="padding-right: 728px; padding-top: 22px;" id="mainDiv">
+        <div id="mainDiv">
 			<table>
 			   <tr> 
 				   <td> 
