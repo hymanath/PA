@@ -181,7 +181,7 @@ text-decoration:none;
 .problemheadClass{
   padding:8px;
 border:1px solid #cccccc;
-  width:90%;
+  width:94%;
   margin:8px;
 }
 .problemTitleClass{
@@ -202,7 +202,7 @@ border:1px solid #cccccc;
     float: right;
     margin-right: 20px;
     margin-top: 6px;
-    width: 370px;
+    width: 367px;
 }
 .partiesList a {
 
@@ -676,7 +676,12 @@ var pollStatus = [];
 									</div>
 								</div>-->
 						<div class="partiesList">
-						     <h3 class="headingClass">View Your Parties</h3>
+						     <!--<h3 class="headingClass">View Your Parties</h3><hr style=" border: 0;width: 80%;">-->
+							 <h3 style=" border-bottom-color: #CCCCCC;
+    border-bottom-style: solid;
+    border-bottom-width: 1px; padding-left: 9px;
+    color: #C66E17;font-size: 13px;
+    font-weight: bold; padding: 7px;margin-bottom: 3px;">View Your Parties</h3>
 							 <table>
 							  <tr  style="height:130px;padding-top:30px;">
                                 <td><div class="prevImg"><img src="images/new_homepage/wallpapers-left-arrow.png" alt="prev" /></div></td>
@@ -699,8 +704,13 @@ var pollStatus = [];
                               </tr>
 							 </table>
 						</div>
-						<div class="our-services">
-		                    <h3 class="headingClass">Our Services</h3>
+						<div class="our-services" style="width:367px;">
+		                  <!--  <h3 class="headingClass">Our Services</h3>-->
+<h3 style=" border-bottom-color: #CCCCCC;
+    border-bottom-style: solid;
+    border-bottom-width: 1px; padding-left: 9px;
+    color: #C66E17;font-size: 13px;
+    font-weight: bold; padding: 7px;margin-bottom: 3px;">Our Services</h3>
 		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
 		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
@@ -725,7 +735,7 @@ var pollStatus = [];
 										</table>	
 									 </div>
 									 	
-									<div id="pollsWidgetBody" style="height:263px;width:348px;background:#ffffff;">
+									<div id="pollsWidgetBody" style="height:auto;width:348px;background:#ffffff;">
 								
 									</div>
 				
@@ -1581,19 +1591,21 @@ function showVotesObtainedForOpinionPoll()
 	str += '</table>';
 
 	str += '<div onclick="savePollResult(${opinionPollVO.quesitons[0].questionId})" class="viewReportButtonSpan" style="left:">';
-		str += '<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Vote</span>';
+		str += '<span class="viewReportButtonLabel"  style="left:27px;top:5px;">Vote</span></div>';
 
 	
 	str += '</tr></table>';
+	str +='<br>';
 
-	str += '<div id="viewPollResDiv">';
+	//str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a></div>';
+	
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color: #0C67AC;font-weight:bold;"> View Current Poll Result</a></div>';
 	str += '</td>';
-	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a></div>';
+	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a></div>';
 	str += '</td>';	
 	str += '</tr></table>';
-	str += '</div>';
+	//str += '</div>';
 	
 	elmt.innerHTML = str;
 
@@ -1629,9 +1641,8 @@ function afterRefreshOpinionPOll()
 
 var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
-	
 	str += '<table><tr><td>';
-	//str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
+	str += '<div id="pollQuestionDiv" > Q) '  +'${opinionPollVO.questionsOptionsVO.question}';
 	str += '</div>';
 	str += '</td></tr>';
 	
@@ -1642,15 +1653,16 @@ var elmt = document.getElementById("pollsWidgetBody");
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#3d3d3d;"> View Current Poll Result</a></div>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#0C67AC;font-weight:bold;"> View Current Poll Result</a></div>';
 	str += '</td>';
-	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#3d3d3d;"> View All Polls</a></div>';
+	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a></div>';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
 	str += '</tr></table>';
+	
 
-	str+='<div id="pollsChart" style=" height: 349px;width: 324px; overflow: hidden;"></div>';
+	str+='<div id="pollsChart" style=" height: auto;width: 324px; overflow: hidden;"></div>';
 	elmt.innerHTML = str;
 
 
@@ -1673,7 +1685,8 @@ var arrData = pollStatus;
 	
 	chart.draw(data,{width: 300, height: 280,legend:'right', 
 	legendTextStyle:{fontSize:12},title:'${opinionPollVO.questionsOptionsVO.title}',titleTextStyle:{fontName:'verdana',fontSize:9}});
-	}
+	
+}
 	function showNewsGallary()
 	{
 		$(".updatesDiv a").removeClass("current");
