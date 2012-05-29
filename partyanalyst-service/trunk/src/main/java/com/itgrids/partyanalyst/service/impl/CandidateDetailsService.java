@@ -43,6 +43,9 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionGoverningBodyDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFilePathDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
+import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -92,6 +95,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionGoverningBody;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.NewsImportance;
@@ -103,7 +108,6 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageCustomPages;
 import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -158,8 +162,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartyPageCustomPagesDAO partyPageCustomPagesDAO;
 	private ISpecialPageDAO specialPageDAO;
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
+	private IFilePathsDAO filePathsDAO;
+	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	
 	
+	
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
+
+	public IFileSourceLanguageDAO getFileSourceLanguageDAO() {
+		return fileSourceLanguageDAO;
+	}
+
+	public void setFileSourceLanguageDAO(IFileSourceLanguageDAO fileSourceLanguageDAO) {
+		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
+	}
+
 	public ISpecialPageCustomPagesDAO getSpecialPageCustomPagesDAO() {
 		return specialPageCustomPagesDAO;
 	}
@@ -1156,19 +1179,18 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			File file = new File();
+			FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
+			FilePaths filePaths = new FilePaths();
 			FileGallary fileGallary = new FileGallary();
+			Long orderNO = 1L;
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			file.setFileName(fileVO.getName());
 			file.setFilePath(fileVO.getPath());
-			file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
+			//file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
 			file.setKeywords(fileVO.getKeywords());
 			
-			if(fileVO.getLanguegeId() != null && fileVO.getLanguegeId() > 0)
-				file.setLanguage(sourceLanguageDAO.get(fileVO.getLanguegeId()));
-			if(fileVO.getSourceId() != null && fileVO.getSourceId() > 0)
-				file.setSourceObj(sourceDAO.get(fileVO.getSourceId()));
 			if(fileVO.getCategoryId() != null && fileVO.getCategoryId() > 0)
 				file.setCategory(categoryDAO.get(fileVO.getCategoryId()));
 			if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
@@ -1191,46 +1213,104 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					log.error(e);
 				}
 			
-			file = fileDAO.save(file);
-			
-					fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
-					fileGallary.setFile(file);
-					fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-					fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-					fileGallary.setIsDelete(IConstants.FALSE);
-					
-					if(fileVO.getVisibility().equalsIgnoreCase("public"))
-						fileGallary.setIsPrivate(IConstants.FALSE);
-					else
-						fileGallary.setIsPrivate(IConstants.TRUE);
-					
-					fileGallaryDAO.save(fileGallary);
-					
-					if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
+				file = fileDAO.save(file);
+				/*List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
+					if(maxOrderNo == null && maxOrderNo.size()==0)
+					 	orderNO = 1L;
+					else if(maxOrderNo.get(0)!=null)
+						orderNO = (Long)maxOrderNo.get(0)+1;*/
+					if(fileVO.getSourceLangIds()!=null && fileVO.getSourceLangIds().size()>0)
 					{
-						for(int i=0;i<fileVO.getUploadOtherProfileGalleryIds().size();i++)
+					for(int i=0;i<fileVO.getSourceLangIds().size();i++)
+					{
+						List<FileSourceLanguage> fileSourceLanguageObj = fileSourceLanguageDAO.getFileSourceLanguageObject(file.getFileId(),fileVO.getFileSource().get(i),fileVO.getSourceLangIds().get(i));
+						if(fileSourceLanguageObj !=null && fileSourceLanguageObj.size() >0)
 						{
-							if(fileVO.getUploadOtherProfileGalleryIds().get(i) !=0)
-							{
-								fileGallary.setGallary(gallaryDAO.get(fileVO.getUploadOtherProfileGalleryIds().get(i)));
-								fileGallary.setFile(file);
-								fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-								fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-								fileGallary.setIsDelete(IConstants.FALSE);
-								
-								if(fileVO.getVisibility().equalsIgnoreCase("public"))
-									fileGallary.setIsPrivate(IConstants.FALSE);
-								else
-									fileGallary.setIsPrivate(IConstants.TRUE);
-								
-								fileGallaryDAO.save(fileGallary);
-							}
+							fileSourceLanguage = fileSourceLanguageObj.get(0);
+							orderNO++;
 						}
-				   }
-			}
-			});
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			return resultStatus;
+						else
+						{
+							fileSourceLanguage = new FileSourceLanguage();
+							fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileVO.getSourceLangIds().get(i)));
+							fileSourceLanguage.setSource(sourceDAO.get(fileVO.getFileSource().get(i)));
+							fileSourceLanguage.setFile(file);
+							fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+						}
+						if(fileVO.getFilePath() !=null)
+						{
+							
+						 filePaths.setFilePath(fileVO.getFilePath().get(i));
+						 filePaths.setOrderNo(orderNO);
+						 if(fileVO.getFileTypesList()!=null)
+						 filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getFileTypesList().get(i)).get(0));
+						 filePaths.setFileSourceLanguage(fileSourceLanguage);
+						 filePathsDAO.save(filePaths);
+							
+						}
+					}
+				}
+					else
+					{
+						/*Long languageId = (Long)sourceLanguageDAO.getLanguageIdByLanguage("No Language").get(0);
+						Long sourceId = (Long)sourceDAO.getSourceIdBySource("No Source").get(0);*/
+						fileSourceLanguage.setLanguage(null);
+						fileSourceLanguage.setSource(null);
+						fileSourceLanguage.setFile(file);
+						fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+						if(fileVO.getFilePath() !=null)
+						{
+						for(int i=0;i<fileVO.getFilePath().size();i++)
+						{
+							 filePaths.setFilePath(fileVO.getFilePath().get(i));
+							 filePaths.setOrderNo(orderNO);
+							 if(fileVO.getFileTypesList()!=null)
+							 filePaths.setFileType(fileTypeDAO.getFileType(fileVO.getFileTypesList().get(i)).get(0));
+							 filePaths.setFileSourceLanguage(fileSourceLanguage);
+							 filePathsDAO.save(filePaths);
+							 orderNO++;
+						}
+						}
+					}
+						
+				fileGallary.setGallary(gallaryDAO.get(fileVO.getGallaryId()));
+				fileGallary.setFile(file);
+				fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+				fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+				fileGallary.setIsDelete(IConstants.FALSE);
+				
+				if(fileVO.getVisibility().equalsIgnoreCase("public"))
+					fileGallary.setIsPrivate(IConstants.FALSE);
+				else
+					fileGallary.setIsPrivate(IConstants.TRUE);
+				
+				fileGallaryDAO.save(fileGallary);
+				
+				if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
+				{
+					for(int i=0;i<fileVO.getUploadOtherProfileGalleryIds().size();i++)
+					{
+						if(fileVO.getUploadOtherProfileGalleryIds().get(i) !=0)
+						{
+							fileGallary.setGallary(gallaryDAO.get(fileVO.getUploadOtherProfileGalleryIds().get(i)));
+							fileGallary.setFile(file);
+							fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+							fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+							fileGallary.setIsDelete(IConstants.FALSE);
+							
+							if(fileVO.getVisibility().equalsIgnoreCase("public"))
+								fileGallary.setIsPrivate(IConstants.FALSE);
+							else
+								fileGallary.setIsPrivate(IConstants.TRUE);
+							
+							fileGallaryDAO.save(fileGallary);
+						}
+					}
+			   }
+		}
+		});
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
 		}catch (Exception e) {
 			log.error("Exception encountered, Check log for Details - "+e);
 			resultStatus.setExceptionEncountered(e);
@@ -2153,8 +2233,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		  for(int i=0; i<result.size(); i++)
 		  {
 			 fileVO = new FileVO();
-			 
-			 if(result.get(i).getGallary().getCandidate() != null)
+			 if(result.get(i).getGallary() != null)
+			 {
+			 if(result.get(i).getGallary() != null && result.get(i).getGallary().getCandidate() != null)
 			 {
 				 fileVO.setCandidateName(WordUtils.capitalize(result.get(i).getGallary().getCandidate().getLastname().toLowerCase()));
 				 fileVO.setFileType("Candidate");
@@ -2207,7 +2288,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 
 			 if(!checkForFileExistance(fileVOs,fileVO.getFileId()))
 				 fileVOs.add(fileVO);
-		 }
+		   }
+		  }
 	}
 	 return fileVOs;
  }
