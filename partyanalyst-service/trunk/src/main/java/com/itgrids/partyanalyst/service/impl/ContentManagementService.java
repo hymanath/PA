@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +16,8 @@ import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -73,9 +77,11 @@ public class ContentManagementService implements IContentManagementService{
 		log.debug("Entered into getSelectedContentAndRelatedGalleries() Method");
 		try{
 			ContentDetailsVO contentDetailsVO = new ContentDetailsVO();
+			Boolean contentReq = true;
 			Long fileId = null;
 			List<Long> gallaryIds = null;
 			String contentType = null;
+			Long falseContentIdForPhotoGal = 1l;
 			
 			fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
 			
@@ -107,17 +113,95 @@ public class ContentManagementService implements IContentManagementService{
 						contentType = fileGallary.getGallary().getContentType().getContentType();
 						contentDetailsVO.setContentType(contentType);
 					}
-					
+					if(contentType !=null && contentType.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+					{
+						Set<FileSourceLanguage> fileSourceLanguageSet = fileGallary.getFile().getFileSourceLanguage();
+						 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+						Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+						for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+							 
+							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+							 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+							  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+							 
+							 for(FilePaths filePath : filePathsList){
+								 fileVO = new FileVO();
+								 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+								 FileVO fileVOSourceLanguage = new FileVO();
+								 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+								 fileVOSourceLanguage.setMultipleNews(1);
+								 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+								 if(contentReq && contentId.longValue() == fileGallary.getFileGallaryId().longValue())
+									{
+										fileVO.setIsSelectedContent(true);
+										contentReq = false;
+									}
+								    fileVO.setTitle(fileGallary.getFile().getFileTitle());
+									fileVO.setDescription(fileGallary.getFile().getFileDescription());
+									fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
+									fileVO.setContentId(falseContentIdForPhotoGal);
+									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;
+								 
+								 FileVO fileVOPath = new FileVO();
+								 fileVOPath.setPath(filePath.getFilePath());
+								 fileVOPath.setOrderNo(filePath.getOrderNo());
+								 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+								 fileVOPathsList.add(fileVOPath);
+								 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+								 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+								 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+								 fileVO.setFileVOList(fileVOSourceLanguageList);
+								 fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
+										sdf.format(fileGallary.getFile().getFileDate()));
+									
+									filesList.add(fileVO);
+							 }
+						}
+					}
+					else
+					{
 					fileVO.setTitle(fileGallary.getFile().getFileTitle());
 					fileVO.setDescription(fileGallary.getFile().getFileDescription());
 					fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
 					fileVO.setContentId(fileGallary.getFileGallaryId());
-					fileVO.setPath(fileGallary.getFile().getFilePath());
+					
+					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+					Set<FileSourceLanguage> fileSourceLanguageSet = fileGallary.getFile().getFileSourceLanguage();
+					
+					for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+						FileVO fileVOSourceLanguage = new FileVO();
+						 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+						 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+						 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+						 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+						 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+						 
+						 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+						 
+						 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+						 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+						 
+						 for(FilePaths filePath : filePathsSet){
+							 FileVO fileVOPath = new FileVO();
+							 fileVOPath.setPath(filePath.getFilePath());
+							 fileVOPath.setOrderNo(filePath.getOrderNo());
+							 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+							 fileVOPathsList.add(fileVOPath);
+						 }
+						 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+						 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+						 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+					 }
+					 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+					 Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+					 fileVO.setFileVOList(fileVOSourceLanguageList);
+					 
+					
 					fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
 						sdf.format(fileGallary.getFile().getFileDate()));
-					fileVO.setSource(fileGallary.getFile().getSourceObj() == null ? null :
-						fileGallary.getFile().getSourceObj().getSource());
+					
 					filesList.add(fileVO);
+				  }
 				}
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
@@ -142,7 +226,11 @@ public class ContentManagementService implements IContentManagementService{
 				
 				for(Object galId : otherGalIdsResult)
 				{
-					List<Object[]> galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId);
+					List<Object[]> galInfoList = null;
+					if(contentType !=null && contentType.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+						galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId," count(model.fileGallaryId) ");
+					else
+					   galInfoList = fileGallaryDAO.getFirstFileAndGallaryInfo((Long)galId," count(distinct model.fileGallaryId) ");
 					if(galInfoList != null && galInfoList.size() > 0)
 					{
 						Object[] galAndFileInfo = galInfoList.get(0);
