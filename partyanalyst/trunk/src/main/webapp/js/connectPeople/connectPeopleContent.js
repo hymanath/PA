@@ -706,13 +706,13 @@ function showAllConnectedUsersInPanel(jsObj, results){
 	str += buildAllConnectUserString(users);
 	str	+= '</div>';
 	
-	str	+= '<div id="allConnectPeople_footer" style="display:none;">';
+	str	+= '<div id="allConnectPeople_footer" style="display:none;font: 13px trebuchet MS;">';
 	str	+= '<table width="100%">';
 	str	+= '<tr>';	
-	str += '<td width="80%" style="color:#754815"> Do you Want to connect to <span id="allConnectPeople_footer_span"></span> ?</td>';
+	str += '<td width="80%" style="color:#754815"> Do you want to connect to <span id="allConnectPeople_footer_span"></span> ?</td>';
 	str += '<td width="20%" align="right">';
-	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()">';
-	str += '<table>';
+	str += '<div class="ConnectStatusButtonClass" style="width:140px;" onclick="connectUserSetPeople()">';
+	str += '<table style="margin-top: 11px;">';
 	str += '<tr>';
 	str += '<td> Connect Now </td>';
 	str += '<td><a style="margin: 0px 10px;" href="javascript:{}"><img style="border:none;" src="images/icons/accept.png"></img></a></td>';	
@@ -728,8 +728,8 @@ function showAllConnectedUsersInPanel(jsObj, results){
 	str += '<div><textarea style="background:white;" id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
 	str +='	<div id="limitDiv">';
 	str +='	<table style="width:100%;"><tr>';
-	str +='	<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
-	str +='	<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
+	str +='	<td align="left" style="width:38%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str +='	<td style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
 	str +='	</tr></table>';
 	str +='	</div>';	
 	str += '</td>';
@@ -835,11 +835,11 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 		str += buildAllConnectUserStringOfDistrict(users);
 	str	+= '</div>';
 	
-	str	+= '<div id="allConnectPeople_footer" style="display:none;">';
+	str	+= '<div id="allConnectPeople_footer" style="display:none;font: 13px trebuchet MS;">';
 
 	str	+= '<table width="100%">';
 	str	+= '<tr>';	
-	str += '<td width="80%" style="color:#754815"> Do you Want to connect to <span id="allConnectPeople_footer_span"></span> ?  <span id="searchAjaxImageSpan" style="display:none;margin-left: 294px; margin-top: -17px;clear: both;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></td>';
+	str += '<td width="80%" style="color:#754815"> Do you want to connect to <span id="allConnectPeople_footer_span"></span> ?  <span id="searchAjaxImageSpan" style="display:none;margin-left: 294px; margin-top: -17px;clear: both;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></td>';
 	str += '<td width="20%" align="right">';
 	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()">';
 	str += '<table>';
