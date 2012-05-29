@@ -417,13 +417,15 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			
 			else if(jsObj.task == "getSource")
 			{ 
-               clearOptionsListForSelectElmtId('source');
-			   createOptionsForSelectElmtId('source',myResults);
+               sourceObj = myResults;
+			   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
+			   createOptionsForSelectElmtId(jsObj.selectOptionId,sourceObj);
 			}
 			else if(jsObj.task == "getLanguage")
 			{ 
-               clearOptionsListForSelectElmtId('language');
-			   createOptionsForSelectElmtId('language',myResults);
+               languagesObj = myResults;
+               clearOptionsListForSelectElmtId(jsObj.fillOptionId);
+			   createOptionsForSelectElmtId(jsObj.fillOptionId,languagesObj);
 			}
 			else if(jsObj.task == "getCategory")
 			{ 
@@ -650,7 +652,9 @@ function buildUploadPhotosDiv()
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId"/></td></tr></table>';
+	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId"/></td>';
+	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
+	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
 	str += '<div id="photoPublicRadioId" style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicPhotoRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 
@@ -1221,6 +1225,7 @@ function showNewsUploadStatus(myResult)
 
 function clearNewsUploadFileFields()
 {
+	$("#addMoreFilesDiv").html('');
 	$("#otherProNewsDiv").html('');
 	document.getElementById('fileTitle').value = '';
 	document.getElementById('fileDescription').value = '';
@@ -1234,6 +1239,7 @@ function clearNewsUploadFileFields()
 	
 function clearUploadFileFields()
 {
+	$("#addMorePhotosDiv").html('');
 	$("#otherProPhotoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
@@ -1800,22 +1806,27 @@ function  buildUploadNews()
 	str += '   </TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
 	str += '       <td class="tdWidth1">Category<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" style="width:175px;"><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
-	str += '   </tr>';
+	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
+	str += '   </tr>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -1848,8 +1859,8 @@ function  buildUploadNews()
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getCandidateGallariesForUplaod("News Gallary");
 	getScopes();
-	getSource();
-	getLanguage();
+	getSource("source");
+	getLanguage("language");
 	getCategory();
 	getNewsImportance();
 	 
@@ -1950,8 +1961,9 @@ function buildUploadVideoDiv()
 	str += '</TR>';
 	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="source" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td><td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreVideos()" title="Click here to add more Videos" alt="Click here to add more images"/></td></tr>';
+	str += '<tr><td colspan="3"><div id="addMoreVideosDiv"></div></td></tr>';
 	str += '</table>';
 	
 	str += '<div id="vedioPublicRadioId" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
@@ -1964,11 +1976,11 @@ function buildUploadVideoDiv()
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
 	getCandidateGallariesForUplaod('Video Gallary');
-	getSource();
-	getLanguage();
+	getSource("source");
+	getLanguage("language");
 }
 
-function getSource()
+/*function getSource()
 {
 var jsObj =
 		{ 
@@ -1994,7 +2006,7 @@ var jsObj =
 	var url = "getCandidateGallariesForUplaodAction.action?"+rparam;						
 	callAjax(jsObj,url);
  
-}
+}*/
 function getCategory()
 {
 var jsObj =
@@ -2219,7 +2231,7 @@ function showVideoGallaryCreateMsg(result)
 
 function showUploadVideoStatus(result)
 {
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var errorDivEle = document.getElementById('fileSuccessDiv');
 	var str = '';
 
 	if(result.resultCode == 0)
@@ -2248,6 +2260,7 @@ function clearVideoGallaryFields()
 
 function clearUploadVideoFields()
 {
+	$("#addMoreVideosDiv").html('');
 	$("#otherProVideoDiv").html('');
 	document.getElementById('fileTitleId').value = '';
 	document.getElementById('fileDescId').value = '';
@@ -2920,7 +2933,7 @@ function setSelectedCandidate(id)
 				   </td>
 				   <td width="98%">
 					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Candidate Profile Discription</span>
+					   <span style="text-decoration: none;" class="headerLabelSpan2">Candidate Profile Description</span>
 					 </div>
 				   </td>
 				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
