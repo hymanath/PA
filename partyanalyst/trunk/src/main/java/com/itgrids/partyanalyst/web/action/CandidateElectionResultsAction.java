@@ -71,7 +71,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private ICandidateDetailsService candidateDetailsService;
-	private File userImage;
+	private List<File> userImage;
+	private File userMoreImages;
+	private String userMoreImagesContentType;
+	private String userMoreImagesFileName;
 	private String userImageContentType;
 	private String userImageFileName;
 	private String problemFilePathList;
@@ -80,7 +83,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String fileDescription;
     private HttpServletRequest servletRequest;
     private ServletContext context;
-    private String fileNameList;
     private String problemFilepath;
     private String tempFileName;
 	private String visibility;
@@ -112,10 +114,61 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<Long> uploadCandidateGalleryId;
 	private List<Long> uploadPartyGalleryId;
 	private List<Long> uploadSpecialPageGalleryId;
+	private List<String> fileNamesList = new ArrayList<String>();
 	List<Long> galleryIds = new ArrayList<Long>(0);
+	private List<Long> fileSourceId;
+	private List<Long> sourceLanguageId;
 	
 	
 	
+	public List<File> getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(List<File> userImage) {
+		this.userImage = userImage;
+	}
+
+	public List<Long> getFileSourceId() {
+		return fileSourceId;
+	}
+
+	public void setFileSourceId(List<Long> fileSourceId) {
+		this.fileSourceId = fileSourceId;
+	}
+
+	public String getUserMoreImagesContentType() {
+		return userMoreImagesContentType;
+	}
+
+	public void setUserMoreImagesContentType(String userMoreImagesContentType) {
+		this.userMoreImagesContentType = userMoreImagesContentType;
+	}
+
+	public String getUserMoreImagesFileName() {
+		return userMoreImagesFileName;
+	}
+
+	public void setUserMoreImagesFileName(String userMoreImagesFileName) {
+		this.userMoreImagesFileName = userMoreImagesFileName;
+	}
+
+	public File getUserMoreImages() {
+		return userMoreImages;
+	}
+
+	public void setUserMoreImages(File userMoreImages) {
+		this.userMoreImages = userMoreImages;
+	}
+
+	/*public List<String> getFileNamesList() {
+		return fileNamesList;
+	}
+
+	public void setFileNamesList(List<String> fileNamesList) {
+		this.fileNamesList = fileNamesList;
+	}
+*/
 	public Long getUploadCandidateId() {
 		return uploadCandidateId;
 	}
@@ -258,6 +311,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return language;
 	}
 
+	public List<Long> getSourceLanguageId() {
+		return sourceLanguageId;
+	}
+
+	public void setSourceLanguageId(List<Long> sourceLanguageId) {
+		this.sourceLanguageId = sourceLanguageId;
+	}
+
 	public void setLanguage(Long language) {
 		this.language = language;
 	}
@@ -327,14 +388,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.inputStream = inputStream;
 	}
 
-	public File getUserImage() {
-		return userImage;
-	}
-
-	public void setUserImage(File userImage) {
-		this.userImage = userImage;
-	}
-
 	public String getUserImageContentType() {
 		return userImageContentType;
 	}
@@ -381,14 +434,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setFileDescription(String fileDescription) {
 		this.fileDescription = fileDescription;
-	}
-
-	public String getFileNameList() {
-		return fileNameList;
-	}
-
-	public void setFileNameList(String fileNameList) {
-		this.fileNameList = fileNameList;
 	}
 
 	public String getProblemFilepath() {
@@ -800,38 +845,59 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("candiadteVideoGallariesForUplaod"))
 		{
+			List<String> filePathList = new ArrayList<String>();
+			List<Long> videoSourceIds = new ArrayList<Long>();
+			List<Long> videoSourceLangIds = new ArrayList<Long>();
+			
 			FileVO fileVOObj = new FileVO();
-			fileVOObj.setPath(jObj.getString("path"));
+			//fileVOObj.setPath(jObj.getString("paths"));
 			fileVOObj.setContentType("video");
 			fileVOObj.setTitle(jObj.getString("videoTitle"));
 			fileVOObj.setDescription(jObj.getString("videoDescription"));
 			fileVOObj.setKeywords(jObj.getString("keywords"));
-			fileVOObj.setSourceId(jObj.getLong("sourceId"));
-			fileVOObj.setLanguegeId(jObj.getLong("languageId"));
+			/*fileVOObj.setSourceId(jObj.getLong("sourceId"));
+			fileVOObj.setLanguegeId(jObj.getLong("languageId"));*/
 			fileVOObj.setFileDate(jObj.getString("fileDate"));
 			fileVOObj.setGallaryId(jObj.getLong("gallaryId"));
 			fileVOObj.setVisibility(jObj.getString("visibility"));
-			if(!jObj.getString("SPGalleryId").equalsIgnoreCase(""))
+			JSONArray filePaths = jObj.getJSONArray("paths");
+			JSONArray srcLangIds = jObj.getJSONArray("languageId");
+			JSONArray sourceIds = jObj.getJSONArray("sourceId");
+			for(int i=0;i<filePaths.length();i++)
+			{
+				filePathList.add(filePaths.get(i).toString());
+			}
+			for(int i=0;i<sourceIds.length();i++)
+			{
+				videoSourceIds.add(new Long(sourceIds.get(i).toString()));
+			}
+			for(int i=0;i<srcLangIds.length();i++)
+			{
+				videoSourceLangIds.add(new Long(srcLangIds.get(i).toString()));
+			}
+			if(!jObj.getString("SPGalleryId").equalsIgnoreCase("") && jObj.getString("SPGalleryId").length()>0)
 			{
 				JSONArray spGalIds = jObj.getJSONArray("SPGalleryId");
 				for(int i=0;i<spGalIds.length();i++)
 				galleryIds.add(new Long(spGalIds.get(i).toString()));
 			}
 							
-			if(!jObj.getString("partyGalleryId").equalsIgnoreCase(""))
+			if(!jObj.getString("partyGalleryId").equalsIgnoreCase("") && jObj.getString("partyGalleryId").length()>0)
 			{
 				JSONArray partyGalIds = jObj.getJSONArray("partyGalleryId");
 				for(int i=0;i<partyGalIds.length();i++)
 				galleryIds.add(new Long(partyGalIds.get(i).toString()));
 			}
-			if(!jObj.getString("canGalleryId").equalsIgnoreCase(""))
+			if(!jObj.getString("canGalleryId").equalsIgnoreCase("") && jObj.getString("canGalleryId").length()>0)
 			{
 				JSONArray canGalIds = jObj.getJSONArray("canGalleryId");
 				for(int i=0;i<canGalIds.length();i++)
 				galleryIds.add(new Long(canGalIds.get(i).toString()));
 			}
+			fileVOObj.setFilePath(filePathList);
 			fileVOObj.setUploadOtherProfileGalleryIds(galleryIds);
-			
+			fileVOObj.setSourceLangIds(videoSourceLangIds);
+			fileVOObj.setFileSource(videoSourceIds);
 			result = candidateDetailsService.uploadAFile(fileVOObj);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("saveDiscription"))
@@ -925,6 +991,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 		String fileName = null;
 		String filePath = null;
+		String fileNames = null;
 		FileVO fileVO = new FileVO();
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		
@@ -940,23 +1007,47 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		try 
 		{
 			String fileType = null;
+			List<String> fileTypes = new ArrayList<String>();
 			Long systime = System.currentTimeMillis();
 			Random random = new Random();
-			if(userImageContentType.equalsIgnoreCase("text/plain"))
+			if(userImageContentType.contains("text/plain"))
 			{
-				fileType = userImageContentType.substring(0,userImageContentType.indexOf("/"));
-				fileName = systime.toString()+random.nextInt(10000000)+"."+fileType;
+				String[] str ;
+				str = userImageContentType.split(",");
+				if(str !=null)
+				{
+					for(int i=0;i<str.length;i++)
+					{
+					fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+					fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+					fileTypes.add(fileType);
+					fileNamesList.add(fileNames);
+					}
+				}
 			}
 			else
 			{
-				fileType = userImageContentType.substring(userImageContentType.indexOf("/")+1,userImageContentType.length());
-				fileName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+				String[] str ;
+				str = userImageContentType.split(",");
+				if(str !=null)
+				{
+					for(int i=0;i<str.length;i++)
+					{
+					fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+					fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+					fileTypes.add(fileType);
+					fileNamesList.add(fileNames);
+					}
+				}
 			}
+			List<Long> fileSourceIds = new ArrayList<Long>();
+			List<Long> fileSourceLangIds = new ArrayList<Long>();
 			
+			fileVO.setFileName(fileNamesList);
 			fileVO.setName(fileName);
 			fileVO.setTitle(getFileTitle());
 			fileVO.setDescription(getFileDescription());
-			fileVO.setContentType(fileType);
+			//fileVO.setContentType(fileType);
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
 			fileVO.setKeywords(getKeywords());
@@ -967,6 +1058,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
+			fileVO.setFileTypesList(fileTypes);
+			
 			if(getUploadCandidateGalleryId()!=null)
 			{
 				for(Long i: uploadCandidateGalleryId)
@@ -986,16 +1079,56 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				
 			
 			fileVO.setUploadOtherProfileGalleryIds(galleryIds);
-						
+			if(fileSourceId!=null)
+			{
+				for(Long i: fileSourceId)
+					fileSourceIds.add(i);
+				
+			}
+			if(sourceLanguageId != null)
+			{
+				for(Long i: sourceLanguageId)
+					fileSourceLangIds.add(i);
+			}
+			fileVO.setFileSource(fileSourceIds);
+			fileVO.setSourceLangIds(fileSourceLangIds);
+			
 			if(profileType != null && profileId != null && profileGalleryType != null)
-				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileName);
+			{
+				String path ;
+				List<String> paths = new ArrayList<String>();
+				for(int i=0;i<fileNamesList.size();i++)
+				{
+					path = IWebConstants.UPLOADED_FILES+"/"+profileType+"/"+profileId+"/"+profileGalleryType+"/"+fileNamesList.get(i);
+					paths.add(path);
+					fileVO.setFilePath(paths);
+				}
+			}
 			else
-				fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+fileName);
-			
+			{
+				String path ;
+				List<String> paths = new ArrayList<String>();
+				for(int i=0;i<fileNamesList.size();i++)
+				{
+					path = IWebConstants.UPLOADED_FILES+"/"+fileNamesList.get(i);
+					paths.add(path);
+					fileVO.setFilePath(paths);
+				}
+				//fileVO.setPath(IWebConstants.UPLOADED_FILES+"/"+fileName);
+			}
 			/* Here We are saving the to uploaded_files folder */
-			File fileToCreate = new File(filePath, fileName);
-			FileUtils.copyFile(userImage, fileToCreate);
+			if(fileNamesList !=null && fileNamesList.size()>0)
+			{
+				for(int i=0;i<fileNamesList.size();i++)
+				{
+					File fileToCreate = new File(filePath, fileNamesList.get(i));
+					FileUtils.copyFile(userImage.get(i), fileToCreate);
+				}
+			}
+				/*File fileToCreate = new File(filePath, fileName);
+				FileUtils.copyFile(userImage, fileToCreate);*/
 			
+				
 			result = candidateDetailsService.uploadAFile(fileVO);
 			
 			if(result.getResultCode() == ResultCodeMapper.SUCCESS)
