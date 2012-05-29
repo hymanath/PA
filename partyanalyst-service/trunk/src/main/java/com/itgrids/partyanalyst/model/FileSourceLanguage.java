@@ -86,10 +86,10 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileSourceLanguage")
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Set<FilePaths> getFilePath() {
+	public Set<FilePaths> getFilePaths() {
 		return filePaths;
 	}
-	public void setFilePath(Set<FilePaths> filePaths) {
+	public void setFilePaths(Set<FilePaths> filePaths) {
 		this.filePaths = filePaths;
 	}
 	
