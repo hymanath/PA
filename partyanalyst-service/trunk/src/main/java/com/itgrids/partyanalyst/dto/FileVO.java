@@ -63,6 +63,9 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<Long> uploadPartyGalleryId;
 	private List<Long> uploadCandidateGalleryId;
 	private List<Long> uploadSPGalleryId;
+	private List<Long> fileSource;
+	private List<Long> sourceLangIds;
+	private List<String> fileTypesList ;
 	
 	public Boolean getIsSelectedContent() {
 		return isSelectedContent;
@@ -574,6 +577,30 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public List<Long> getUploadSPGalleryId() {
 		return uploadSPGalleryId;
+	}
+
+	public List<Long> getFileSource() {
+		return fileSource;
+	}
+
+	public void setFileSource(List<Long> fileSource) {
+		this.fileSource = fileSource;
+	}
+
+	public List<Long> getSourceLangIds() {
+		return sourceLangIds;
+	}
+
+	public void setSourceLangIds(List<Long> sourceLangIds) {
+		this.sourceLangIds = sourceLangIds;
+	}
+
+	public List<String> getFileTypesList() {
+		return fileTypesList;
+	}
+
+	public void setFileTypesList(List<String> fileTypesList) {
+		this.fileTypesList = fileTypesList;
 	}
 	
     
