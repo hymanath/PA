@@ -324,6 +324,8 @@
 		<property name="partyPageCustomPagesDAO" ref="partyPageCustomPagesDAO" />
 		<property name="specialPageDAO" ref="specialPageDAO" />
 		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO" />
+		<property name="filePathsDAO" ref="filePathsDAO" />
+		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -560,6 +562,8 @@
 		<property name="problemFileDAO" ref="problemFileDAO" />
 		<property name="mailsSendingService" ref="mailsSendingService" />
         <property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
+        <property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+        <property name="filePathsDAO" ref="filePathsDAO" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -991,6 +995,8 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+		<property name="filePathsDAO" ref="filePathsDAO" />
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
