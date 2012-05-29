@@ -3,12 +3,6 @@ html, body, div, ul {
 	padding: 0;
 }
 
-body {
-    color: #262626;
-	background: #f4f4f4;
-	font: normal 12px/18px Verdana, sans-serif;
-}
-
 #content {
 	width: 85%;
 	margin: 40px auto 0 auto;
@@ -59,7 +53,7 @@ a img.last {
 	margin-right: 0;	
 }
 
-ul {
+/*ul {
 	margin-bottom: 24px;
 	padding-left: 30px;
-}
+}*/
