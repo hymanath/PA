@@ -151,15 +151,15 @@ function initializeResultsTable() {
 	var resultsColumnDefs = [ {
 		key : "option",
 		label : "Option",
-		sortable : true
+		sortable : false
 	}, {
 		key : "votesObtained",
 		label : "Votes",
-		sortable : true
+		sortable : false
 	}, {
 		key : "percentage",
 		label : "Percentage",
-		sortable : true	
+		sortable : false	
 	}];
 
 	
