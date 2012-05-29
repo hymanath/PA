@@ -2811,7 +2811,7 @@
 			</result>
 		</action>
 		
-		<action name="partyPhotoGallaryUpdateAction" class="partyManagementAction" method="getPartyGallaryDescription">
+		<action name="updatePartyPhotoGallaryAction" class="partyManagementAction" method="getPartyGallaryDescription">
 		<result type="json" name="success">
            		<param name="root">gallaryVO</param>
 			</result>
