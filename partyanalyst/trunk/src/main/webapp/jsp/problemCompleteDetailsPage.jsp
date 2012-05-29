@@ -458,7 +458,7 @@ h3 {
 							<table style="margin-top:10px;">
 							<tr>
 								<td><label>Comment <span style="font-weight:bold;color:red;font-size: 18px;">*</span></label></td>
-								<td><textarea id="rasonText" name="reasonText" onkeyup="clearError()"></textarea></td>
+								<td><textarea id="rasonText" name="reasonText" onkeyup="clearError()" style="background:#fff;"></textarea></td>
 							</tr>
 							</table>												
 							<table style="margin:25px;" border="0" cellpadding="0" cellspacing="3">	
