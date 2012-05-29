@@ -1,12 +1,12 @@
 
 body
 {
-	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-family:14px "Trebuchet MS",Arial,Helvetica,sans-serif;
 	font-size:11px;
 	margin:0px;
 	padding:0px;
 	direction:ltr;
-	background-color:#EAEDEF;
+	/*background-color:#EAEDEF;*/
 }
 
 #mainContainer
