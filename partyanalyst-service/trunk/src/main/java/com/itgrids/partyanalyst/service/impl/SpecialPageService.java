@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -35,6 +37,8 @@ import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
@@ -380,13 +384,25 @@ public class SpecialPageService implements ISpecialPageService{
 				FileVO fileVO = new FileVO();
 				fileVO.setFileId((Long) file2.getFileId());
 				fileVO.setFileName1(file2.getFileName() != null ? file2.getFileName() : "");
-				fileVO.setPath(file2.getFilePath());
+				
 				fileVO.setFileTitle1(file2.getFileTitle() != null ? file2.getFileTitle() : "");
 				fileVO.setFileDescription1(file2.getFileDescription() != null ? file2.getFileDescription(): "");
-				fileVO.setSource(file2.getSourceObj() != null ? file2.getSourceObj().getSource() : "");
-				fileVO.setLanguage(file2.getLanguage() != null ? file2.getLanguage().getLanguage() : "");
+				
 				fileVO.setFileDate(file2.getFileDate() != null ? file2.getFileDate().toString() : "");
 				fileVO.setCount(totalRecords.get(0).intValue());
+				
+				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+				 Set<FileSourceLanguage> fileSourceLanguageSet = file2.getFileSourceLanguage();
+				 
+					 
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+				 }
+				 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				 Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+				 fileVO.setFileVOList(fileVOSourceLanguageList);
+				
+				
 				fileVOList.add(fileVO);
 			}
 		}
@@ -423,15 +439,29 @@ public class SpecialPageService implements ISpecialPageService{
 		List<Object[]> results = specialPageGalleryDAO.getSpecialPageGallaryDetail(specialPageId,firstRecord,maxRecord,type);
 		
 		for(Object[] gallary: results){
+			String path = null;
 			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
-		    	fileVO.setPath(startingRecord[2].toString());
-		    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
+		    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(File file: record){
+		    	fileVO.setFileId(file.getFileId());
+		    	fileVO.setTitle(file.getFileTitle() != null ? WordUtils.capitalize(file.getFileTitle()) :"");
+		    	
+		    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		for(FilePaths filePath : filePathsSet){
+		    			if(path != null && path.trim().length() >0)
+		    				break;
+		    				path = filePath.getFilePath();
+		    		}
+		    		if(path != null && path.trim().length() >0)
+	    				break;
+		    	}
+		    	if(path != null && path.trim().length() >0)
+    				break;	    	
 		    	
 		    }
+		    fileVO.setPath(path);
 		    fileVO.setGallaryId((Long)gallary[0]);
 		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 		    fileVO.setGallaryName(gallary[1] != null ? WordUtils.capitalize(gallary[1].toString()) :"");
@@ -458,33 +488,46 @@ public class SpecialPageService implements ISpecialPageService{
 		
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
 		for(Object[] gallariesObj : records){
+			String path = null;
 			fileVO = new FileVO();
 			fileVO.setGallaryId((Long)gallariesObj[0]);
 			fileVO.setGallaryName(gallariesObj[1].toString());
 			fileVO.setGallaryDescription(gallariesObj[2].toString());
-			List<Object[]> fileGallaries = fileGallaryDAO.getStartingRecordInGallary((Long)gallariesObj[0]);
+			List<File> fileGallaries = fileGallaryDAO.getStartingRecordInGallary((Long)gallariesObj[0]);
 			
-			for(Object[] startingRecord : fileGallaries)
+			for(File file : fileGallaries)
 			{
-				fileVO.setFileId((Long) startingRecord[0]);
-				fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString(): "");
-				fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString():"");
+				fileVO.setFileId(file.getFileId());
+				
 				String title = "";
 				
-				if(startingRecord[3] != null && startingRecord[3].toString().length() >= 18)
+				if(file.getFileTitle() != null && file.getFileTitle().length() >= 18)
 				{
-					title = startingRecord[3].toString().substring(0, 17);
+					title = file.getFileTitle().substring(0, 17);
 					title = title + "...";
 				} 
 				else
 				{
-				if(startingRecord[3] != null) {
-					title = startingRecord[3].toString();
+				if(file.getFileTitle() != null) {
+					title = file.getFileTitle().toString();
 				}
-			 
+				Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		for(FilePaths filePath : filePathsSet){
+		    			if(path != null && path.trim().length() >0)
+		    				break;
+		    				path = filePath.getFilePath();
+		    		}
+		    		if(path != null && path.trim().length() >0)
+	    				break;
+		    	}
+		    	if(path != null && path.trim().length() >0)
+    				break;
 			}
 			fileVO.setTitle(title);
 			}
+			fileVO.setPath(path != null ? path:"");
 			fileVOList.add(fileVO);
 		}
 		return fileVOList;
@@ -500,26 +543,49 @@ public class SpecialPageService implements ISpecialPageService{
 			{
 				for (Object[] gallary : results) 
 				{
+					String path = null;
 					FileVO fileVO = new FileVO();
-					List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-					for (Object[] startingRecord : record)
+					List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+					for (File file : record)
 					{
 						if (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size() > 0L) {
-							fileVO.setFileId((Long) startingRecord[0]);
-							fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString(): "");
-							fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString(): "");
-							fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString():"");
-							fileVO.setGallaryId((Long) gallary[0]);
-							fileVO.setSizeOfGallary((long) (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size()));
-							fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() : "");
-							fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString(): "");
-							fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString(): "");
-							fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString(): "");
-							retValue.add(fileVO);
+							fileVO.setFileId(file.getFileId());
+							fileVO.setTitle(file.getFileTitle() != null ? file.getFileTitle():"");
+							
+							Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+							List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+							 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+					    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+					    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+					    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+								  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+					    		for(FilePaths filePath : filePathsList){
+					    			if(path != null && path.trim().length() >0)
+					    				break;
+					    				path = filePath.getFilePath();
+					    		}
+					    		if(path != null && path.trim().length() >0)
+				    				break;
+					    	}
+					    	if(path != null && path.trim().length() >0)
+			    				break;
+							
 						}
 					}
+					fileVO.setPath(path != null ? path: "");
+					fileVO.setGallaryId((Long) gallary[0]);
+					if(type != null && type.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+						fileVO.setSizeOfGallary((fileGallaryDAO.getAllRecordCountInGallary((Long)gallary[0]).get(0)));
+			    	else
+					    fileVO.setSizeOfGallary((long) (fileGallaryDAO.getAllRecordInGallary((Long) gallary[0]).size()));
+					fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() : "");
+					fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString(): "");
+					fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString(): "");
+					fileVO.setGallaryUpdatedDate(gallary[4] != null ? gallary[4].toString(): "");
+					retValue.add(fileVO);
 				}
 			}
+			
 			return retValue;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -980,31 +1046,48 @@ public class SpecialPageService implements ISpecialPageService{
 		 if(results !=null && results.size()>0)	
 		 { 
 			for(Object[] gallary: results){
+				String path = null;
 				FileVO fileVO = new FileVO();
-			    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+			    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
 			    if(record !=null && record.size()>0)
 			    {
-			      for(Object[] startingRecord: record){
-			    	 fileVO.setFileId((Long)startingRecord[0]);
-			    	 fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-			    	 fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
+			      for(File file: record){
+			    	 fileVO.setFileId(file.getFileId());	    			    	
+			    	 
 			    	 String title =""; 
-			   	     if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
+			   	     if(file.getFileTitle() != null && file.getFileTitle().length()>=18)
 			   	     {
-			   	    	title = startingRecord[3].toString().substring(0, 17);
+			   	    	title = file.getFileTitle().substring(0, 17);
 			   	    	title = title+"...";
 			   	     }
 			   	     else
 			   	     {
-			   	       if(startingRecord[3] != null)
+			   	       if(file.getFileTitle() != null)
 			   	       {	
-			   	    	 title = startingRecord[3].toString();
+			   	    	 title = file.getFileTitle();
 			   	       }
 			   	     }
 			    	fileVO.setTitle(title);
-			    	
+			    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+			    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+					 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+			    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+			    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+			    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+						  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+			    		for(FilePaths filePath : filePathsList){
+			    			if(path != null && path.trim().length() >0)
+			    				break;
+			    				path = filePath.getFilePath();
+			    		}
+			    		if(path != null && path.trim().length() >0)
+		    				break;
+			    	}
+			    	if(path != null && path.trim().length() >0)
+	    				break;
 			     }
 			   }
+			    fileVO.setPath(path != null ? path :"");
 			     fileVO.setGallaryId((Long)gallary[0]);
 			     fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 			     fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
@@ -1049,5 +1132,28 @@ public class SpecialPageService implements ISpecialPageService{
 			return null;
 		}
 	}
-	
+	private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
+		FileVO fileVOSourceLanguage = new FileVO();
+		 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():"");
+		 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+		 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"");
+		 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+		 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+		 
+		 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+		 
+		 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+		 
+		 for(FilePaths filePath : filePathsSet){
+			 FileVO fileVOPath = new FileVO();
+			 fileVOPath.setPath(filePath.getFilePath());
+			 fileVOPath.setOrderNo(filePath.getOrderNo());
+			 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+			 fileVOPathsList.add(fileVOPath);
+		 }
+		 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+		 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+	}
 }
