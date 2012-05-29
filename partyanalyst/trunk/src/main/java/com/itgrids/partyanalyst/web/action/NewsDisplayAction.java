@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -320,9 +321,32 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    fileVO.setCategoryId(jObj.getLong("categoryId"));
 		    fileVO.setNewsImportanceId(jObj.getLong("newsImportanceId"));
 		   } 
+		   List<FileVO> sourceFilesList = new ArrayList<FileVO>();
+		   List<FileVO> languageFilesList = new ArrayList<FileVO>();
+		    String sourceString = jObj.getString("sourceData");
+		    String languageString = jObj.getString("languageData");
+		    if(jObj.getString("task").trim().equalsIgnoreCase("Update"))
+		   {
+		    String[] sourceStrArr = sourceString.split("-");
+		    for(String source : sourceStrArr){
+		    	String[] sourceAr = source.split(",");
+		    	FileVO  sourceFileVO = new FileVO();
+		    	sourceFileVO.setSourceId(new Long(sourceAr[0]));
+		    	sourceFileVO.setFileSourceLanguageId(new Long(sourceAr[1]));
+		    	sourceFilesList.add(sourceFileVO);
+		    }
 		    
+		    String[] languageStrArr = languageString.split("-");
+		    for(String language : languageStrArr){
+		    	String[] languageAr = language.split(",");
+		    	FileVO  languageFileVO = new FileVO();
+		    	languageFileVO.setLanguegeId(new Long(languageAr[0]));
+		    	languageFileVO.setFileSourceLanguageId(new Long(languageAr[1]));
+		    	languageFilesList.add(languageFileVO);
+		    }
+		   } 
 		    fileVO.setFileId(jObj.getLong("fileId"));
-		    resultStatus = newsMonitoringService.updateDeleteNews(fileVO,jObj.getString("task").trim());
+		    resultStatus = newsMonitoringService.updateDeleteNews(fileVO,jObj.getString("task").trim(),sourceFilesList,languageFilesList);
 	    }
 	   catch(Exception e){
 		   log.error("Exception rised in updateDeleteNews Method of NewsDisplayAction ",e); 
