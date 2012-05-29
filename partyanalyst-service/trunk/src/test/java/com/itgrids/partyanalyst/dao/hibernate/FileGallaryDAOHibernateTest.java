@@ -1,18 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
-import com.itgrids.partyanalyst.model.FileGallary;
-import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.File;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -181,7 +174,7 @@ System.out.println("i " +i);
 	*/
 	/*public void testGetFirstFileAndGallaryInfo()
 	{
-		 List<Object[]> list = fileGallaryDAO.getFirstFileAndGallaryInfo(1193l);
+		 List<Object[]> list = fileGallaryDAO.getFirstFileAndGallaryInfo(9l);
 		 System.out.println(list.size());
 		 
 		 for(Object object : list.get(0))
@@ -225,7 +218,7 @@ System.out.println("i " +i);
 					+" -- "+fileGallary.getFile().getFileTitle());
 		}
 	}*/
-	public void testGetCandidateGallaryDetailsForSubscribers()
+	/*public void testGetCandidateGallaryDetailsForSubscribers()
 	{
 		Date updatedDate = new Date();
 		Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
@@ -249,5 +242,22 @@ System.out.println("i " +i);
 			 System.out.println(data[0].toString());
 		 }
 		
+	}*/
+	
+	/*public void testGetAllNewsDetails()
+	{
+		List<Object[]> list = fileGallaryDAO.getAllNewsDetails(900l,0,1000,"All");
+		
+		System.out.println(list.size());
+		for(Object[] file: list){
+			System.out.println(((File)file[0]).getFileId());
+		}
+		
+	}*/
+	public void testGetAllRecordCountInGallary()
+	{
+		 List<Long> list = fileGallaryDAO.getAllRecordCountInGallary(1318L);
+		 System.out.println(list.get(0));
+		 
 	}
 }
