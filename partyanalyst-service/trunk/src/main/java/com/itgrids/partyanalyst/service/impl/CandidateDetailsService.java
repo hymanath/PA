@@ -11,11 +11,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -864,14 +867,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		for(Object[] gallary: results){
 			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
-		    	fileVO.setPath(startingRecord[2].toString());
-		    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
+		    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    String path= null;
+		    for(File file: record){
+		    	fileVO.setFileId(file.getFileId());
 		    	
+		    	fileVO.setTitle(file.getFileTitle());
+		    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		for(FilePaths filePath : filePathsSet){
+		    			if(path != null && path.trim().length() >0)
+		    				break;
+		    				path = filePath.getFilePath();
+		    		}
+		    		if(path != null && path.trim().length() >0)
+	    				break;
+		    	}
+		    	if(path != null && path.trim().length() >0)
+    				break;
 		    }
+		    fileVO.setPath(path);
 		    fileVO.setGallaryId((Long)gallary[0]);
 		    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 		    fileVO.setGallaryName(gallary[1] != null ? WordUtils.capitalize(gallary[1].toString()) :"");
@@ -895,16 +911,31 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		for(Object[] gallary: results){
 			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
+		    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(File file: record){
 		    if(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()>0L)
 		    {
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
-		    	fileVO.setTitle(startingRecord[3] != null ? startingRecord[3].toString() :"");
+		    	fileVO.setFileId(file.getFileId());		    			    	
+		    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+				 Collections.sort(fileSourceLanguageList,fileSourceLanguageSort);
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+					  Collections.sort(filePathsList,filePathsSort);
+		    		for(FilePaths filePath : filePathsList){
+		    			
+		    			fileVO.setPath(filePath.getFilePath());
+		    			
+		    			break;	
+		    		}
+		    	}
+		    	fileVO.setTitle(file.getFileTitle());
 		    	fileVO.setGallaryId((Long)gallary[0]);
-			    fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
+		    	if(type != null && type.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+		    		fileVO.setSizeOfGallary((fileGallaryDAO.getAllRecordCountInGallary((Long)gallary[0]).get(0)));
+		    	else
+			        fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 			    fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
 			    fileVO.setGallaryDescription(gallary[2] != null ? gallary[2].toString() :"");
 			    fileVO.setGallaryCreatedDate(gallary[3] != null ? gallary[3].toString() :"");
@@ -931,22 +962,35 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		for(Object[] gallary: results){
 			FileVO fileVO = new FileVO();
-		    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-		    for(Object[] startingRecord: record){
-		    	fileVO.setFileId((Long)startingRecord[0]);
-		    	fileVO.setName(startingRecord[1] != null ? startingRecord[1].toString() :"");		    			    	
-		    	fileVO.setPath(startingRecord[2] != null ? startingRecord[2].toString() :"");
+		    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+		    for(File file: record){
+		    	fileVO.setFileId(file.getFileId());
+		    	String path=null;
+		    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+				 Collections.sort(fileSourceLanguageList,fileSourceLanguageSort);
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+					  Collections.sort(filePathsList,filePathsSort);
+		    		for(FilePaths filePath : filePathsList){
+		    			path = filePath.getFilePath();
+		    			if(path != null)
+		    				break;
+		    		}
+		    	}
+		    	fileVO.setPath(path != null ? path :"");
 		    	String title =""; 
-		   	    if(startingRecord[3] != null && startingRecord[3].toString().length()>=18)
+		   	    if(file.getFileTitle() != null && file.getFileTitle().length()>=18)
 		   	    {
-		   	    	title = startingRecord[3].toString().substring(0, 17);
+		   	    	title = file.getFileTitle().substring(0, 17);
 		   	    	title = title+"...";
 		   	    }
 		   	    else
 		   	    {
-		   	    if(startingRecord[3] != null)
+		   	    if(file.getFileTitle() != null)
 		   	    {	
-		   	    	title = startingRecord[3].toString();
+		   	    	title = file.getFileTitle();
 		   	    }
 		   	    }
 		    	fileVO.setTitle(title);
@@ -975,12 +1019,29 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<Object[]> results = fileGallaryDAO.getAllRecordInGallary(gallaryId);
 		 for(Object[] imageDetails: results){
 			    FileVO fileVO = new FileVO();
-			    fileVO.setFileId((Long)imageDetails[0]);
-		    	fileVO.setName(imageDetails[1] != null ? imageDetails[1].toString() :"");		    			    	
+			    File file =  (File)imageDetails[0];
+			    fileVO.setFileId(file.getFileId());
+			    Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+		    	List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+				 Collections.sort(fileSourceLanguageList,fileSourceLanguageSort);
+		    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+					  Collections.sort(filePathsList,filePathsSort);
+		    		List<String> filePaths = new ArrayList<String>();
+		    		for(FilePaths filePath : filePathsList){
+		    			
+		    			filePaths.add(filePath.getFilePath());
+		    			
+		    				
+		    		}
+		    	
+		    		fileVO.setFilePath(filePaths);	
+		    	}
 		   	  	fileVO.setPath(imageDetails[2] != null ? imageDetails[2].toString() :"");
-		   	    fileVO.setFileTitle1(imageDetails[3] != null ? imageDetails[3].toString() :"");
-		   	    fileVO.setFileDescription1(imageDetails[4] != null ? imageDetails[4].toString() :"");
-		   	    fileVO.setGallaryName(imageDetails[5] != null ? imageDetails[5].toString() :"");
+		   	    fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() :"");
+		   	    fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription() :"");
+		   	    fileVO.setGallaryName(imageDetails[1] != null ? imageDetails[1].toString() :"");
 		    	retValue.add(fileVO);	  
 		 }
 		 
@@ -992,43 +1053,11 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	public List<FileVO> getFirstFourNewsRecordsToDisplay(Long candidateId){
-		 List<FileVO> retValue = new ArrayList<FileVO>();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		 try{
-			 List<Object[]> results = fileGallaryDAO.getFirstFourNewsToDisplay(candidateId,0,4,"Public");
-			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    String desc=""; 
-			   	    if(newsDetails[4] != null && newsDetails[4].toString().length()>=55)
-			   	    {
-			   	    desc = newsDetails[4].toString().substring(0, 50);
-			   	    desc = desc+"...";
-			   	    }
-			   	    else
-			   	    {
-			   	    if(newsDetails[4] != null)
-			   	     {
-			   	      desc = newsDetails[4].toString();
-			   	     }
-			   	    }
-			   	    fileVO.setFileDescription1(desc);
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	 fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			    	retValue.add(fileVO);	  
-			 }
-			 
-			return retValue;
-			}
-			catch(Exception e){
-				e.printStackTrace();
-				return retValue;
-			}
+		if(log.isDebugEnabled())
+			log.debug("Entered into getFirstFourNewsRecordsToDisplay() of candidateDetailsService");
+
+		 return getAllNewsdetails(candidateId,0,4,"Public");
+		 
 		}
 	public List<FileVO> getNewsToDisplay(Long candidateId,int firstResult,int maxResult,String queryType){
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -1646,13 +1675,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				fileVO.setFileId(file.getFileId());
 				fileVO.setName(file.getFileName());
-				fileVO.setPath(file.getFilePath());
+				
 				fileVO.setFileType(file.getFileType() != null ? file.getFileType().getType() : "");
-				fileVO.setTitle(file.getFileTitle());
+				
 				fileVO.setDescription(file.getFileDescription());
 				fileVO.setKeywords(file.getKeywords());
-				fileVO.setSource(file.getSource());
+				
 				fileVO.setFileDate(file.getFileDate() != null ? sdf.format(file.getFileDate()) : "");
+				String path = null;
+				Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+				for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					fileVO.setSource(fileSourceLanguage.getSource()!= null?fileSourceLanguage.getSource().getSource():"");
+		    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		    		for(FilePaths filePath : filePathsSet){
+		    			if(path != null && path.trim().length() >0)
+		    				break;
+		    				path = filePath.getFilePath();
+		    		}
+		    		if(path != null && path.trim().length() >0)
+	    				break;
+		    	}
+				fileVO.setPath(path);
 			}
 			return fileVO;
 		}catch (Exception e) {
@@ -1690,16 +1733,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<Object[]> records = fileGallaryDAO.getAllRecordInGallary(gallaryId);
 		
 		for(Object[] videos :records){
-			
+			File file= (File)videos[0];
+			String path = null;
 			fileVO = new FileVO();
-			fileVO.setFileId((Long)videos[0]);
-			fileVO.setName(videos[1]!=null ? WordUtils.capitalize(videos[1].toString()):"");
-			fileVO.setPathOfFile(videos[2].toString());
-			fileVO.setTitle(WordUtils.capitalize(videos[3].toString()));
-			fileVO.setDescription(WordUtils.capitalize(videos[4].toString()));
-			fileVO.setContentId((Long)videos[6]);
+			fileVO.setFileId(file.getFileId());
+			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+	    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+	    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+	    		for(FilePaths filePath : filePathsSet){
+	    			if(path != null && path.trim().length() >0)
+	    				break;
+	    				path = filePath.getFilePath();
+	    		}
+	    		if(path != null && path.trim().length() >0)
+    				break;
+	    	}
+	    	fileVO.setPathOfFile(path);
+			fileVO.setTitle(file.getFileTitle());
+			fileVO.setDescription(file.getFileDescription());
+			fileVO.setContentId((Long)videos[2]);
 			filesList.add(fileVO);
-		}
+	    }
 		
 		return filesList;
 		
@@ -1803,117 +1857,49 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	       }
 	public List<FileVO> getNewsByScope(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		List<FileVO> returnValue = new ArrayList<FileVO>();
-		try
-		{
-		     FileVO fileVO ;
+		if(log.isDebugEnabled())
+			log.debug("Entered into getAllNewsdetails() of candidateDetailsService");
+
+	     List<FileVO> retValue = new ArrayList<FileVO>();
+		 try{
 		     List<Long>	list = fileGallaryDAO.getNewsCountByScope(candidateId,scopeType,queryType);
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,null);
-			 for(Object[] newsDetails: results){
-				     fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			        fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
-			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    fileVO.setTotalResultsCount(list.get(0));
-			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
-			   	    if(category != null && category.size() > 0)
-			   	    {
-			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
-			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
-			   	    }
-			   	    returnValue.add(fileVO);
-			 }
-		  
-		  return returnValue;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return returnValue;
-		}
+			 List<Object[]> dataList = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,null);
+			 retValue = convertDataToFileVO(dataList,list,candidateId,null,null);
+			return retValue;
+			}
+			catch(Exception e){
+				log.error("Exception rised in getAllNewsdetails method ",e);
+				return retValue;
+			}
 	}
 	
 	public List<FileVO> getNewsByLanguage(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType,String language)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		List<FileVO> returnValue = new ArrayList<FileVO>();
+		List<FileVO> retValue = new ArrayList<FileVO>();
 		try
 		{
 			 List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,language,null,null);
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language,null,null);
-			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
-			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    fileVO.setTotalResultsCount(list.get(0));
-			   	    
-			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
-			   	    if(category != null && category.size() > 0)
-			   	    {
-			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
-			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
-			   	    }
-			   	    returnValue.add(fileVO);
-			 }
+			 List<Object[]> dataList = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,language,null,null);
+			 retValue = convertDataToFileVO(dataList,list,candidateId,language,null);
+			 
+			return retValue;
 		  
-		  return returnValue;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return returnValue;
+			return retValue;
 		}
 	}
 	
 	public List<FileVO> getNewsBySource(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{
 			 List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,source ,null,null,null);
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null,null,null);
-			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
-			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    fileVO.setTotalResultsCount(list.get(0));
-			   	    
-			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
-			   	    if(category != null && category.size() > 0)
-			   	    {
-			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
-			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
-			   	    }
-			   	    returnValue.add(fileVO);	  
-			 }
+			 List<Object[]> dataList = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,source,null,null,null);
+			 returnValue = convertDataToFileVO(dataList,list,candidateId,null,source);
 		  
 		  return returnValue;
 		}
@@ -2265,25 +2251,46 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 
 			 fileVO.setContentType(result.get(i).getGallary().getContentType().getContentType());
 			 fileVO.setContentId(result.get(i).getFileGallaryId());
-			 fileVO.setFileName1(result.get(i).getFile().getFileName());
 			 fileVO.setFileId(result.get(i).getFile().getFileId());
 			 fileVO.setDescription(result.get(i).getFile().getFileDescription());
-			 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
+			 Set<FileSourceLanguage> fileSourceLanguageSet = result.get(i).getFile().getFileSourceLanguage();
+			 String filePath = null;
+			 String source = null;
+			 String language = null;
+			 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+			 Collections.sort(fileSourceLanguageList,fileSourceLanguageSort);
+			 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList)
+			 {
+				 source = fileSourceLanguage.getSource()!= null?fileSourceLanguage.getSource().getSource():"";
+				 language = fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"";
+				 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+				 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+				  Collections.sort(filePathsList,filePathsSort);
+				 
+				 for(FilePaths singleFilePath : filePathsList)
+				 {
+					 filePath = singleFilePath.getFilePath(); 
+					 break;
+				 }
+				 if(filePath != null)
+					 break;
+			 }
+			 fileVO.setPathOfFile(filePath);
 			 fileVO.setFileTitle1(result.get(i).getFile().getFileTitle());
 			 fileVO.setGallaryName(result.get(i).getGallary().getName());
 			 fileVO.setGallaryUpdatedDate(result.get(i).getGallary().getUpdateddate().toString());
 			 
 			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.VIDEO_GALLARY))
-				 fileVO.setPathOfFile(result.get(i).getFile().getFilePath());
+				 fileVO.setPathOfFile(filePath);
 			 
 			 if(result.get(i).getFile().getFileDate()!= null)
 				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
 			 
 			 if(result.get(i).getFile().getSourceObj() != null)
-				 fileVO.setSource(result.get(i).getFile().getSourceObj().getSource());
+				 fileVO.setSource(source);
 			 
 			 if(result.get(i).getFile().getLanguage() != null)
-				 fileVO.setLanguage(result.get(i).getFile().getLanguage().getLanguage());
+				 fileVO.setLanguage(language);
 			 
 			 if(!checkForFileExistance(fileVOs,fileVO.getFileId()))
 				 fileVOs.add(fileVO);
@@ -2397,35 +2404,12 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
  
  public List<FileVO> getNewsByCategory(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String source)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{    List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,null,source,null);
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,source,null);
-			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
-			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    fileVO.setTotalResultsCount(list.get(0));
-			   	    
-			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
-			   	    if(category != null && category.size() > 0)
-			   	    {
-			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
-			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
-			   	    }
-			   	    returnValue.add(fileVO);	  
-			 }
-		  
+			 List<Object[]> dataList = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,source,null);
+			 returnValue = convertDataToFileVO(dataList,list,candidateId,null,null);
 		  return returnValue;
 		}
 		catch(Exception e)
@@ -2436,34 +2420,11 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	}
  public List<FileVO> getNewsByNewsImportance(Long candidateId,Long scopeType,int startIndex,int maxResults,String queryType , String newsImportance)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		List<FileVO> returnValue = new ArrayList<FileVO>();
 		try
 		{    List<Long> list = fileGallaryDAO.getTotalIndividualSources( candidateId,queryType ,null ,null,null,newsImportance);
-			 List<Object[]> results = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,newsImportance);
-			 for(Object[] newsDetails: results){
-				    FileVO fileVO = new FileVO();
-				    fileVO.setFileId((Long)newsDetails[0]);
-			    	fileVO.setName(newsDetails[1] != null ? newsDetails[1].toString() :"");		    			    	
-			   	  	fileVO.setPath(newsDetails[2] != null ? newsDetails[2].toString() :"");
-			   	    fileVO.setFileTitle1(newsDetails[3] != null ? newsDetails[3].toString() :"");
-			   	    fileVO.setFileDescription1(newsDetails[4] != null ? newsDetails[4].toString() :"");
-			   	    fileVO.setSource(newsDetails[5] != null ? newsDetails[5].toString() :"");
-			   	    fileVO.setLanguage(newsDetails[6] != null ? newsDetails[6].toString() :"");
-			   	    fileVO.setFileDate(newsDetails[7] != null ? (sdf.format((Date)newsDetails[7])) :"");
-			   	    fileVO.setCandidateId((Long)newsDetails[8]);
-			   	    fileVO.setNewsImportanceId((Long)newsDetails[9]);
-			   	    fileVO.setImportance(newsDetails[10] != null ? newsDetails[10].toString() :"");
-			   	    fileVO.setTotalResultsCount(list.get(0));
-			   	    
-			   	    List<Object[]> category = fileDAO.getCategoryDetailsOfAFile((Long)newsDetails[0]);
-			   	    if(category != null && category.size() > 0)
-			   	    {
-			   	    	fileVO.setCategoryId((Long)category.get(0)[0]);
-			   	    	fileVO.setCategoryType(category.get(0)[1].toString());
-			   	    }
-			   	    returnValue.add(fileVO);	  
-			 }
+			 List<Object[]> dataList = fileGallaryDAO.getNewsByScope(candidateId,scopeType,startIndex,maxResults,queryType,null,null,null,newsImportance);
+			 returnValue = convertDataToFileVO(dataList,list,candidateId,null,null);
 		  
 		  return returnValue;
 		}
@@ -2690,12 +2651,23 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			  for(Object[] gallary: results)
 			  {
 				FileVO fileVO = new FileVO();
-			    List<Object[]> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
-			       for(Object[] startingRecord: record){
-			    	fileVO.setFileId((Long)startingRecord[0]);
-			    	fileVO.setName(startingRecord[1] != null ? WordUtils.capitalize(startingRecord[1].toString()) :"");
-			    	fileVO.setPath(startingRecord[2].toString());
-			    	fileVO.setTitle(startingRecord[3] != null ? WordUtils.capitalize(startingRecord[3].toString()) :"");
+			    List<File> record = fileGallaryDAO.getStartingRecordInGallary((Long)gallary[0]);
+			       for(File file: record){
+			    	fileVO.setFileId(file.getFileId());
+			    	
+			    	Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+			    	for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+			    		Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+			    		List<String> filePaths = new ArrayList<String>();
+			    		for(FilePaths filePath : filePathsSet){
+			    			
+			    			filePaths.add(filePath.getFilePath());
+			    			
+			    				
+			    		}
+			    		fileVO.setFilePath(filePaths);
+			    	}
+			    	fileVO.setTitle(file.getFileTitle() != null ?file.getFileTitle() :"");
 			    	
 			        }
 			    fileVO.setGallaryId((Long)gallary[0]);
@@ -3355,7 +3327,136 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
     	}
     	return mandalName;
     }
-    
+   //for getNewsToDisplay
+   public List<FileVO> getAllNewsdetails(Long candidateId,int firstResult,int maxResult,String queryType){
+	   if(log.isDebugEnabled())
+			log.debug("Entered into getAllNewsdetails() of candidateDetailsService");
+	   List<FileVO> retValue = new ArrayList<FileVO>();
+		 try{
+			  List<Long> list = fileGallaryDAO.getNewsCountByScope(candidateId,null,queryType); 
+			  List<Object[]> dataList =  fileGallaryDAO.getAllNewsDetails(candidateId,firstResult,maxResult,queryType);
+			 
+			  retValue = convertDataToFileVO(dataList,list,candidateId,null,null);
+			  
+			return retValue;
+			}
+			catch(Exception e){
+				log.error("Exception rised in getAllNewsdetails method ",e);
+				return retValue;
+			}
+     }
+      public static Comparator<FileVO> sortData = new Comparator<FileVO>()
+		    {
+		   
+		        public int compare(FileVO fileVO1, FileVO fileVO2)
+		        {
+		            return (fileVO1.getOrderNo().intValue()) - (fileVO2.getOrderNo().intValue());
+		        }
+		    };
+	 public static Comparator<FileVO> sourceSort = new Comparator<FileVO>()
+			{
+				  
+			  public int compare(FileVO fileVO1, FileVO fileVO2)
+				{
+				   return (fileVO1.getFileSourceLanguageId().intValue()) - (fileVO2.getFileSourceLanguageId().intValue());
+				}
+		  };
+	 public static Comparator<FileSourceLanguage> fileSourceLanguageSort = new Comparator<FileSourceLanguage>()
+			{
+						  
+					  public int compare(FileSourceLanguage fileSourceLanguage1, FileSourceLanguage fileSourceLanguage2)
+						{
+						   return (fileSourceLanguage1.getFileSourceLanguageId().intValue()) - (fileSourceLanguage2.getFileSourceLanguageId().intValue());
+						}
+			};
+	public static Comparator<FilePaths> filePathsSort = new Comparator<FilePaths>()
+					{
+								  
+					   public int compare(FilePaths filePaths1, FilePaths filePaths2)
+						{
+					       return (filePaths1.getOrderNo().intValue()) - (filePaths2.getOrderNo().intValue());
+						}
+					};
+
+	private List<FileVO> convertDataToFileVO(List<Object[]> dataList,List<Long> list,Long candidateId,String language,String source){
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered into convertDataToFileVO() of candidateDetailsService");
+
+	     List<FileVO> retValue = new ArrayList<FileVO>();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 try{
+			  FileVO fileVO;
+			  
+			  for(Object[] data : dataList){
+				 File file = (File)data[0];
+				 fileVO = new FileVO();
+                 
+				 fileVO.setFileId(file.getFileId());
+				 fileVO.setTotalResultsCount(list.get(0));
+				 fileVO.setFileTitle1(file.getFileTitle());
+				 fileVO.setFileDescription1(file.getFileDescription());
+				 fileVO.setFileDate(data[2] != null ? (sdf.format((Date)data[2])) :"");
+				 fileVO.setContentId((Long)data[1]);
+				 fileVO.setCandidateId(candidateId);
+				 fileVO.setCategoryId(file.getCategory().getCategoryId());
+				 fileVO.setCategoryType(file.getCategory().getCategoryType());
+				 fileVO.setNewsImportanceId(file.getNewsImportance().getNewsImportanceId());
+				 fileVO.setImportance(file.getNewsImportance().getImportance());
+				 
+				 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+				 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+				 
+					 
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					 if(language == null && source == null)
+					    setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+					 else if(language != null){
+						 if(language.equalsIgnoreCase(fileSourceLanguage.getLanguage().getLanguage()))
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+					 }
+					 else if(source != null){
+						 if(source.equalsIgnoreCase(fileSourceLanguage.getSource().getSource()))
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+					 }
+				 }
+				 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				 Collections.sort(fileVOSourceLanguageList,sourceSort);
+				 fileVO.setFileVOList(fileVOSourceLanguageList);
+				 retValue.add(fileVO);
+			 }
+			 
+			return retValue;
+			}
+			catch(Exception e){
+				log.error("Exception rised in convertDataToFileVO method ",e);
+				return retValue;
+			}
+	}
+	private void setSourceLanguageAndPaths(FileSourceLanguage fileSourceLanguage,List<FileVO> fileVOSourceLanguageList){
+		FileVO fileVOSourceLanguage = new FileVO();
+		 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():"");
+		 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+		 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"");
+		 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+		 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+		 
+		 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+		 
+		 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+		 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+		 
+		 for(FilePaths filePath : filePathsSet){
+			 FileVO fileVOPath = new FileVO();
+			 fileVOPath.setPath(filePath.getFilePath());
+			 fileVOPath.setOrderNo(filePath.getOrderNo());
+			 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+			 fileVOPathsList.add(fileVOPath);
+		 }
+		 Collections.sort(fileVOPathsList,sortData);
+		 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+	}
 }
 	
  
