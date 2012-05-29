@@ -169,6 +169,33 @@ font-size: 13px; width: 187px; border-right: 1px solid rgb(205, 205, 205); borde
     margin: 0 3px;
     padding: 3px;
 }
+#buildSources,#buildNewSources{
+border:1px solid #d3d3d3;
+margin-left: auto;
+margin-right: auto;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 618px;
+}
+#buildVideoNewSources{
+border:1px solid #d3d3d3;
+margin-left: auto;
+margin-right: auto;
+margin-top: 10px;
+margin-bottom: 20px;
+width: 500px;
+}
+.newssources{
+ background-color:#97DFEB;
+ padding:8px 8px 8px 8px;
+ margin-left:5px;
+ border-radius: 5px 5px 5px 5px;
+
+}
+.newsParts{
+  
+  color:#FF4500;
+}
 
 </style>
 <script type="text/javascript">
@@ -263,8 +290,9 @@ function buildContentDetails()
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
+	    selectedContentFile = result.relatedGalleries[0].filesList[i];
 		titleStr = result.relatedGalleries[0].filesList[i].title;
-		pathStr = result.relatedGalleries[0].filesList[i].path;
+		pathStr = result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path;
 		descriptionStr = result.relatedGalleries[0].filesList[i].description;
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
@@ -275,8 +303,8 @@ function buildContentDetails()
 			str+='<table>';
 			str+='<tr>';
 			str+='<td>';
-			if(result.relatedGalleries[0].filesList[i].source != null)
-				str+='<B>Source</B> : <font color="#FF4500">'+result.relatedGalleries[0].filesList[i].source+'</font> &nbsp;&nbsp;&nbsp;<B>';
+			if(result.relatedGalleries[0].filesList[i].fileVOList[0].source != null)
+				str+='<B>Source</B> : <font color="#FF4500"><span id="sourceChangeSpan">'+result.relatedGalleries[0].filesList[i].fileVOList[0].source+'</span></font> &nbsp;&nbsp;&nbsp;<B>';
 
 			if(result.relatedGalleries[0].filesList[i].fileDate != null)
 				str+=' Date </B>:<font color="#FF4500"> '+result.relatedGalleries[0].filesList[i].fileDate+'</font>';
@@ -304,7 +332,7 @@ function buildContentDetails()
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 0))
 		{
-			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
 		str += '</Table>';
 		str += '</div>';
@@ -320,6 +348,33 @@ function buildContentDetails()
 		str += '</td>';
 		str += '</tr>';
 		str += '</table>';
+		
+		str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+		   
+		   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildVideoNewSources">';
+	             str += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		   
+		
 		str += '</div>';
 		str += '</td>';
 		
@@ -332,7 +387,7 @@ function buildContentDetails()
 		for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
 		if(!result.relatedGalleries[0].filesList[i].isSelectedContent && (i%2 == 1))
 		{
-			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
+			str += '<tr><td><a href="javascript:{}" onClick="buildContentDetailsOfSelected('+preContentId+','+result.relatedGalleries[0].filesList[i].contentId+')" title="Click here to See the Video about - '+result.relatedGalleries[0].filesList[i].description+'"><img style="margin-top:8px;" src="http://img.youtube.com/vi/'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'/1.jpg" alt="'+result.relatedGalleries[0].filesList[i].title+'"></img></a></td></tr>';
 		}
 		str += '</Table>';
 		str += '</div>';
@@ -357,7 +412,7 @@ function buildContentDetails()
 				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 			}
 			
-			str += '<td><div class="container"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].path+'" /></div></td>';
+			str += '<td><div class="container" id="nextPartImage"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
 
 			if(i != result.relatedGalleries[0].filesList.length-1)
 			{
@@ -372,6 +427,37 @@ function buildContentDetails()
 		str += '<tr><td>Description : <b>'+descriptionStr+'</b></td></tr>';
 		str += '</table>';
 		str += '</div>';
+		
+	   for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+		{
+		   selectedContentFile = result.relatedGalleries[0].filesList[i];
+		   str +='<div id="buildNewSourceParts">';
+	       str += '<center><table><tr>';
+
+	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
+	         {
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	         }
+		 
+	       str += '  </tr></table>';
+	       str +='</center></div>';
+		   
+		   if(selectedContentFile.multipleSource >1 )
+	          {
+	             str +='<div id="buildNewSources">';
+	             str += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	             str += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+	           
+			      for(var k=1;k<selectedContentFile.fileVOList.length;k++)
+	              {
+	               str += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[k].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[k].source+'</a></td>';
+	              }
+	            str += '  </tr></table>';
+	            str +='</center></div>';
+	          }
+		}
+		
 	}
 
 	if(result.otherGalleries != null && result.otherGalleries.length > 0)
@@ -452,7 +538,88 @@ function buildContentDetailsOfSelected(preId,selId)
 
 	buildContentDetails();
 }
+function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
+{
+  for(var i in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'" />';
+	  else
+	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
 
+	    for(var j=0;j<selectedContentFile.fileVOList[i].fileVOList.length;j++)
+	     {
+		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
+		    {
+			  if(type != 'video')
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	          else
+			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+		    }
+		 }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+  
+  }
+
+}
+function showNewAnotherSource(fileSourceLanguageId,type)
+{
+     var str1 ='';
+	   if(type != 'video')
+	     str1 += '<center><table><tr><td><b>Same News in another sources</b></td></tr></table></center>';
+	   else 
+         str1 += '<center><table><tr><td><b>Same Video in another sources</b></td></tr></table></center>';	   
+		 str1 += ' <center> <table style="margin-top:8px;margin-bottom:10px;"><tr>';
+  for(var m in selectedContentFile.fileVOList)
+  {
+    if(selectedContentFile.fileVOList[m].fileSourceLanguageId == fileSourceLanguageId)
+	{
+	  if(document.getElementById("sourceChangeSpan") != null)
+	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
+	  if(type != 'video')
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
+	  else
+	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
+	  document.getElementById("nextPartImage").innerHTML = str;
+	
+	   str = '<center><table><tr>';
+
+	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
+	     {
+		    if(type != 'video')
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			else 
+			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+	     }
+		 
+	   str += '  </tr></table>';
+	   str +='</center>';
+	  document.getElementById("buildNewSourceParts").innerHTML = str;
+	}
+    else
+	{
+	   if(type != 'video')
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'other\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';	             	          	
+	   else
+	    str1 += '<td><a class="newssources" href="javascript:{}" onclick="showNewAnotherSource('+selectedContentFile.fileVOList[m].fileSourceLanguageId+',\'video\')">'+selectedContentFile.fileVOList[m].source+'</a></td>';
+	}
+  }
+     	str1 += '  </tr></table>';
+	    str1 +='</center>';
+     if(document.getElementById("buildNewSources") != null)
+       document.getElementById("buildNewSources").innerHTML = str1;
+	 else
+	   document.getElementById("buildVideoNewSources").innerHTML = str1;
+}
 function getTotalProfile()
  {
 
@@ -645,29 +812,26 @@ function getCandidatesPhotosInAGallary(gallaryId)
 function showPhotosInInitialGallary(results){
    var str ='';
    str+='<div id="content" style="display:none;">';
-   str+='<table width="100%" style="margin-top:10px;">'
-   str+= '<tr style="display:none">';
-    str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
-    str+= '<tr><td><a rel="photo_gallery" id="photoClickId" href="'+results[0].path+'" title="'+results[0].fileTitle1+'"><img alt="" src="'+results[0].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	str += '<tr><td><div><b>'+results[0].fileDescription1+'</b></div></td></tr>';
-    str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
-    str+= '</tr>';
-   for(var i =1;i<results.length; i++)
+	count = 0;
+   for(var i =0;i<results.length; i++)
    {
+   for(var k in results[i].filePath)
+	{
      no_of_imagesPerRow = 3; 
-     j = i;
+     j = count;
      if(j++ % no_of_imagesPerRow == 0){
        str+= '<tr style="display:none">';
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" id="photoClickId'+i+''+k+'" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
      }
-
+	 count++;
+    }
    }
    str+= ' </table>';
    str+='</div>';
@@ -681,7 +845,7 @@ function showPhotosInInitialGallary(results){
         return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
      }
    });
-    $('#photoClickId').trigger('click');
+    $('#photoClickId00').trigger('click');
    //fireEvent(document.getElementById('photoClickId'),'click');
     //document.getElementById("buildPhotoGallaryDiv").innerHTML ='';
 }
@@ -781,23 +945,27 @@ function showPhotosInAGallary(results){
    str+='<tr><td>';
    str+='<input type="button" value="Back To Gallery"  class="imageButton" onclick="showPhotoGallary();" />';
    str+= '</td></tr>';
+   count = 0;
    for(var i in results)
    {
+    for(var k in results[i].filePath)
+	{
      no_of_imagesPerRow = 3; 
-     j = i;
+     j = count;
      if(j++ % no_of_imagesPerRow == 0){
        str+= '<tr style="height:220px;">';
      }
      str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
 	 str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].fileTitle1+'</b></font></div></td></tr>';
-     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
+     str+= '<tr><td><a rel="photo_gallery" href="'+results[i].filePath[k]+'" title="'+results[i].fileTitle1+'"><img alt="" src="'+results[i].filePath[k]+'" class="gallaryImg" height="100px" /></a></td></tr>';
 	 str += '<tr><td><div><b>'+results[i].fileDescription1+'</b></div></td></tr>';
      str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
      if(j % no_of_imagesPerRow == 0){
        str+= '</tr>';
      }
-
+    count++;
    }
+  }
    str+= ' </table>';
    str += ' </fieldset>';
    str+='</div>';
