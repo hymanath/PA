@@ -37,6 +37,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
+import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
@@ -60,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
@@ -87,6 +90,8 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.FileType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
@@ -167,8 +172,26 @@ public class ProblemManagementService implements IProblemManagementService {
 	private String tempName;
 	private IUserProblemApprovalDAO userProblemApprovalDAO;
 	private IMailsSendingService mailsSendingService;
+	private IFileSourceLanguageDAO fileSourceLanguageDAO;
+	private IFilePathsDAO filePathsDAO;
 	
 	
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
+
+	public IFileSourceLanguageDAO getFileSourceLanguageDAO() {
+		return fileSourceLanguageDAO;
+	}
+
+	public void setFileSourceLanguageDAO(IFileSourceLanguageDAO fileSourceLanguageDAO) {
+		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
+	}
+
 	public IMailsSendingService getMailsSendingService() {
 		return mailsSendingService;
 	}
@@ -5037,32 +5060,41 @@ public class ProblemManagementService implements IProblemManagementService {
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO) {
 
 		File file = new File();
+		FilePaths filePaths = new FilePaths();
+		FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
 		List<File> filesList = new ArrayList<File>();
+		Long orderNo = 0L;
 
 		try {
 			if (problemBeanVO.getFileVO().getFileTitle() != null) {
 
-				for (int i = 0; i < problemBeanVO.getFileVO().getFileName()
-						.size(); i++) {
+				for (int i = 0; i < problemBeanVO.getFileVO().getFileName().size(); i++) {
 					file = new File();
-					file.setFileName(problemBeanVO.getFileVO().getFileName()
-							.get(i));
-					file.setFilePath(problemBeanVO.getFileVO().getFilePath()
-							.get(i));
+					fileSourceLanguage = new FileSourceLanguage();
+					filePaths = new FilePaths();
+					file.setFileName(problemBeanVO.getFileVO().getFileName().get(i));
+					
 					if (problemBeanVO.getFileVO().getFileTitle().get(i) != null)
-						file.setFileTitle(problemBeanVO.getFileVO()
-								.getFileTitle().get(i));
+						file.setFileTitle(problemBeanVO.getFileVO().getFileTitle().get(i));
 					if (problemBeanVO.getFileVO().getFileDescription().get(i) != null)
-						file.setFileDescription(problemBeanVO.getFileVO()
-								.getFileDescription().get(i));
-					if (fileTypeDAO.getFileType(
-							problemBeanVO.getFileVO().getFileContentType().get(
-									i)).get(0).getFileTypeId() != 0)
-						file.setFileType(fileTypeDAO.getFileType(
-								problemBeanVO.getFileVO().getFileContentType()
-										.get(i)).get(0));
+						file.setFileDescription(problemBeanVO.getFileVO().getFileDescription().get(i));
 					file = fileDAO.save(file);
-
+					fileSourceLanguage.setLanguage(null);
+					fileSourceLanguage.setSource(null);
+					fileSourceLanguage.setFile(file);
+					fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+					filePaths.setFileSourceLanguage(fileSourceLanguage);
+					if (fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0).getFileTypeId() != 0)
+						filePaths.setFileType(fileTypeDAO.getFileType(problemBeanVO.getFileVO().getFileContentType().get(i)).get(0));
+					List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
+					if(maxOrderNo.size() ==0 && maxOrderNo.get(0)!=null)
+						orderNo = orderNo +1L;
+					else
+						orderNo = (Long)maxOrderNo.get(0)+1L;
+					
+					filePaths.setOrderNo(orderNo);
+					filePaths.setFilePath(problemBeanVO.getFileVO().getFilePath().get(i));
+					filePathsDAO.save(filePaths);
 					filesList.add(file);
 				}
 
