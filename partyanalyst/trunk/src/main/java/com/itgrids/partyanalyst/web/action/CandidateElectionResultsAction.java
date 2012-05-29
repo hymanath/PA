@@ -694,14 +694,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			else if(jObj.getString("task").equalsIgnoreCase("getNewsToDisplay") )
 			{
 				//fileVOCount = candidateDetailsService.getNewsCountByScope(jObj.getLong("candidateId"),jObj.getString("queryType"));
-				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
+				fileVO = candidateDetailsService.getAllNewsdetails(jObj.getLong("candidateId"),jObj.getInt("startRecord"),jObj.getInt("maxRecord"),jObj.getString("queryType"));
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllNewsToDisplay") )
 			{
 				String startIndex    = request.getParameter("startIndex");
 				String resultsCount  = request.getParameter("resultsCount");	
 					
-				fileVO = candidateDetailsService.getNewsToDisplay(jObj.getLong("candidateId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount),jObj.getString("queryType"));
+				fileVO = candidateDetailsService.getAllNewsdetails(jObj.getLong("candidateId"),Integer.parseInt(startIndex),Integer.parseInt(resultsCount),jObj.getString("queryType"));
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getFileByFileId"))
 			{
