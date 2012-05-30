@@ -494,13 +494,36 @@ public class PartyDetailsService implements IPartyDetailsService {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				fileVO.setFileId(file.getFileId());
 				fileVO.setName(file.getFileName());
-				fileVO.setPath(file.getFilePath());
-				fileVO.setFileType(file.getFileType() != null ? file
-						.getFileType().getType() : "");
+				
+				Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+				 String filePath = null;
+				 String source = null;
+				 String language = null;
+				 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+				 Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList)
+				 {
+					 source = fileSourceLanguage.getSource()!= null?fileSourceLanguage.getSource().getSource():"";
+					 language = fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():"";
+					 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+					 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+					  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+					 
+					 for(FilePaths singleFilePath : filePathsList)
+					 {
+						 filePath = singleFilePath.getFilePath(); 
+						 break;
+					 }
+					 if(filePath != null)
+						 break;
+				 }
+				
+				
+				fileVO.setPath(filePath);
 				fileVO.setTitle(file.getFileTitle());
 				fileVO.setDescription(file.getFileDescription());
 				fileVO.setKeywords(file.getKeywords());
-				fileVO.setSource(file.getSource());
+				fileVO.setSource(source);
 				fileVO.setFileDate(file.getFileDate() != null ? sdf.format(file
 						.getFileDate()) : "");
 			}
