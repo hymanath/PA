@@ -1087,7 +1087,7 @@ public class SpecialPageService implements ISpecialPageService{
 	    				break;
 			     }
 			   }
-			    fileVO.setPath(path != null ? path :"");
+			    fileVO.setPath(path != null ? path :null);
 			     fileVO.setGallaryId((Long)gallary[0]);
 			     fileVO.setSizeOfGallary((long)(fileGallaryDAO.getAllRecordInGallary((Long)gallary[0]).size()));
 			     fileVO.setGallaryName(gallary[1] != null ? gallary[1].toString() :"");
