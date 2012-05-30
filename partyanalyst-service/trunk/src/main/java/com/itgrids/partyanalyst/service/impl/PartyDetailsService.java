@@ -472,9 +472,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 					 fileVO.setFileVOList(fileVOSourceLanguageList);
 					 retValue.add(fileVO);
 					
-					
-					
-					retValue.add(fileVO);
 				}
 		   }
 		  return retValue;
