@@ -979,7 +979,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		    				break;
 		    		}
 		    	}
-		    	fileVO.setPath(path != null ? path :"");
+		    	fileVO.setPath(path != null ? path :null);
 		    	String title =""; 
 		   	    if(file.getFileTitle() != null && file.getFileTitle().length()>=18)
 		   	    {
@@ -2286,10 +2286,10 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 if(result.get(i).getFile().getFileDate()!= null)
 				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
 			 
-			 if(result.get(i).getFile().getSourceObj() != null)
+			 if(source != null)
 				 fileVO.setSource(source);
 			 
-			 if(result.get(i).getFile().getLanguage() != null)
+			 if(language != null)
 				 fileVO.setLanguage(language);
 			 
 			 if(!checkForFileExistance(fileVOs,fileVO.getFileId()))
