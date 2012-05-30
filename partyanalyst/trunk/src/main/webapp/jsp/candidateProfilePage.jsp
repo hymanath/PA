@@ -1936,7 +1936,7 @@ function showFirstFourNewsRecords(results)
 
 	for(var j=1;j<results.fileVOList[0].fileVOList.length;j++)
 	{
-	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[0].fileSourceLanguageId+','+results.fileVOList[0].fileVOList[j].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[0].fileVOList[j].path+'\')">'+results.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[0].fileSourceLanguageId+','+results.fileVOList[0].fileVOList[j].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[0].fileVOList[j].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+results.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+results.fileVOList[0].fileVOList[j].orderName+'</a></td>';
 	}
 	str += '  </tr></table>';
 	str +='</center></div>';
@@ -1990,7 +1990,7 @@ function showFirstFourNewsRecords(results)
 		 for(var k in results.fileVOList[j].fileVOList)
 		 {
 		   if(results.fileVOList[j].fileVOList[k].orderNo != orderNo)
-		    str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+results.fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')">'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
+		    str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+results.fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+results.fileVOList[j].fileVOList[k].path+'" /><br />&nbsp;&nbsp;'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
 		 }
 	 }
 	 str += '  </tr></table></center>';
@@ -2092,7 +2092,7 @@ function showFirstFourNewsRecords(results)
 
 	for(var l=1;l<fileVo.fileVOList.length;l++)
 	{
-	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+fileVo.fileSourceLanguageId+','+fileVo.fileVOList[l].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+fileVo.fileVOList[l].path+'\')">'+fileVo.fileVOList[l].orderName+'</a></td>';
+	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+fileVo.fileSourceLanguageId+','+fileVo.fileVOList[l].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+fileVo.fileVOList[l].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+fileVo.fileVOList[l].path+'" /><br />&nbsp;&nbsp;'+fileVo.fileVOList[l].orderName+'</a></td>';
 	}
 	str += '  </tr></table></center>';
 	
@@ -2902,7 +2902,7 @@ function buildContentDetails()
 
 	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
 	         {
-	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[0].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
 	         }
 		 
 	       str += '  </tr></table>';
@@ -2984,7 +2984,7 @@ function buildContentDetails()
 
 	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
 	         {
-	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	            str += '<td><a style="color:#FF4500;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
 	         }
 		 
 	       str += '  </tr></table>';
@@ -3103,9 +3103,9 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
 		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
 		    {
 			  if(type != 'video')
-	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	             str += '<td><a style="color:#FF4500;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
 	          else
-			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+			     str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[i].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
 		    }
 		 }
 		 
@@ -3142,9 +3142,9 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
 	     {
 		    if(type != 'video')
-	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')">'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+	         str += '<td><a style="color:#FF4500;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
 			else 
-			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')">'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+			 str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'video\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="http://img.youtube.com/vi/'+selectedContentFile.fileVOList[m].fileVOList[j].path+'/1.jpg" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
 	     }
 		 
 	   str += '  </tr></table>';
