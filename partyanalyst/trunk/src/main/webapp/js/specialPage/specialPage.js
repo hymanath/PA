@@ -2358,7 +2358,7 @@ function showFirstFourNewsRecords(results)
 
 	for(var j=1;j<results.fileVOList[0].fileVOList.length;j++)
 	{
-	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[0].fileSourceLanguageId+','+results.fileVOList[0].fileVOList[j].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[0].fileVOList[j].path+'\')">'+results.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[0].fileSourceLanguageId+','+results.fileVOList[0].fileVOList[j].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[0].fileVOList[j].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+results.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+results.fileVOList[0].fileVOList[j].orderName+'</a></td>';
 	}
 	str += '  </tr></table>';
 	str +='</center></div>';
@@ -2412,7 +2412,7 @@ function showFirstFourNewsRecords(results)
 		 for(var k in results.fileVOList[j].fileVOList)
 		 {
 		   if(results.fileVOList[j].fileVOList[k].orderNo != orderNo)
-		    str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+results.fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')">'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
+		    str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+results.fileVOList[j].fileSourceLanguageId+','+results.fileVOList[j].fileVOList[k].orderNo+','+results.fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+results.fileVOList[j].fileVOList[k].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+results.fileVOList[j].fileVOList[k].path+'" /><br />&nbsp;&nbsp;'+results.fileVOList[j].fileVOList[k].orderName+'</a></td>';
 		 }
 	 }
 	 str += '  </tr></table></center>';
@@ -2514,7 +2514,7 @@ function showFirstFourNewsRecords(results)
 
 	for(var l=1;l<fileVo.fileVOList.length;l++)
 	{
-	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+fileVo.fileSourceLanguageId+','+fileVo.fileVOList[l].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+fileVo.fileVOList[l].path+'\')">'+fileVo.fileVOList[l].orderName+'</a></td>';
+	  str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showAnotherNewsPart('+fileVo.fileSourceLanguageId+','+fileVo.fileVOList[l].orderNo+','+fileId+',\''+arrayType+'\',\''+results.fileTitle1+'\',\''+results.fileDescription1+'\',\''+fileVo.fileVOList[l].path+'\')"><img width="65" height="60" alt="'+results.fileTitle1+'" title="'+results.fileDescription1+'" src="'+fileVo.fileVOList[l].path+'" /><br />&nbsp;&nbsp;'+fileVo.fileVOList[l].orderName+'</a></td>';
 	}
 	str += '  </tr></table></center>';
 	
