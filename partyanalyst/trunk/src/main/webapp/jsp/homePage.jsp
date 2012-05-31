@@ -404,18 +404,20 @@ var pollStatus = [];
         
         <div class="latest-nu-sec">
           <h1 class="news-title">Latest news &amp; Updates</h1>
-          <div class="news-updates-scroll"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
+          <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
          <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180" >
           <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">News</u> :
 		  
-		  <a href="specialPageAction.action?specialPageId=8" title="Click here to View Andhra Pradhesh State 2012 Bye Results, Latest News Updates, Photos, Videos and Previous Results">AP Bielection Schedule:Election Commission of India Announced Andhra Pradesh Bi-Election Schedule For 18 Assembly Constituencies and One Parliament Constituency  in this summer. All Parties treated this elections as semi finals and mini General elections.Andhra Pradesh 2012 Assembly Bye Elections Results : Adilabad - TRS, Kamareddy - TRS, Kollapur - TRS, Station Ghanpur - TRS, Mahabubnagar - BJP, Nagarkurnool - Nagam Janardhana Reddy(IND), Kovur - YSRC.</a>&nbsp;
+		  <a href="javascript:{}" title="">
+		  Parvathipuram MLA SAVARAPU JAYAMANI and Kakinada MLA DWARMAPUDI CHANDRA SHEKAR REDDY is going to meet YSRC Party honorary president Y S VIJAYAMMA . Bobbili MLA SUJAY KRISHNA RANGA RAO is left from INC Party and joined in YSRC. Cabinate Approves new Telecom Policy.</a>&nbsp;
 
-		  <a href="statePageAction.action?statePageId=12" title="Click here to View Karnataka State Details">Karnataka</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=709" title="Click here to View Udipi Chikmagalur Constituency Details, Election Results and Voting Trendz">Udipi Chikmagalur</a> - <a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Profile - Previous Election Results, News Updates, Photos, Videos">INC</a>.&nbsp; 
+		  <!--<a href="javascript:{}" title="">
+		  Parvathipuram MLA <a href="candidateElectionResultsAction.action?candidateId=1481" title="Click here to view JAYAMANI Profile - latest News ,Videos ,Photos">SAVARAPU JAYAMANI </a>and Kakinada MLA <a href="candidateElectionResultsAction.action?candidateId=1809" title="Click here to view CHANDRA SHEKAR REDDY Profile - latest News ,Videos ,Photos">DWARMAPUDI CHANDRA SHEKAR REDDY </a>is going to meet YSRC Party honorary president <a href="candidateElectionResultsAction.action?candidateId=156693" title="Click here to view Y S VIJAYAMMA Profile - latest News ,Videos ,Photos">Y S VIJAYAMMA</a> . Bobbili MLA <a href="candidateElectionResultsAction.action?candidateId=1502" title="Click here to view SUJAY KRISHNA RANGA RAO Profile - latest News ,Videos ,Photos">SUJAY KRISHNA RANGA RAO </a>is left from INC Party and joined in YSRC. Cabinate Approves new Telecom Policy.</a><a href="statePageAction.action?statePageId=12" title="Click here to View Karnataka State Details">Karnataka</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=709" title="Click here to View Udipi Chikmagalur Constituency Details, Election Results and Voting Trendz">Udipi Chikmagalur</a> - <a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Profile - Previous Election Results, News Updates, Photos, Videos">INC</a>.&nbsp; 
 		  <a href="statePageAction?action?stateId=24" title="Click here to view Tamil Nadu State Details">Tamil Nadu</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1353" title="Click here to View Sankarankoil Constituency Details, Election Results and Voting Trendz">Sankarankoil</a> - <a href="partyPageAction.action?partyId=987" title="Click here to view ADMK Party Profile - Previous Election Results, News Updates, Photos, Videos">ADMK</a>.&nbsp;
 
 		 <a href="statePageAction.action?statePageId=13" title="Click here to view Kerala State Details">Kerala</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1694" title="Click here to View Piravom Constituency Details, Election Results and Voting Trendz">Piravom</a> - <a href="partyPageAction.action?partyId=1149" title="Click here to view UDF Party Profile - Previous Election Results, News Updates, Photos, Videos">UDF</a>.&nbsp;
 
-		 <a href="statePageAction.action?statePageId=7" title="Click here to view Gujarat State Details">Gujarat</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=34860" title="Click here to view Mansa Constituency Details, Election Results and Voting Trendz">Mansa</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC Party Details">INC</a>.
+		 <a href="statePageAction.action?statePageId=7" title="Click here to view Gujarat State Details">Gujarat</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=34860" title="Click here to view Mansa Constituency Details, Election Results and Voting Trendz">Mansa</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC Party Details">INC</a>.-->
 
 		</font>
 
@@ -675,7 +677,7 @@ var pollStatus = [];
 										
 									</div>
 								</div>-->
-						<div class="partiesList">
+						<div class="partiesList" style="background:#fff;">
 						     <!--<h3 class="headingClass">View Your Parties</h3><hr style=" border: 0;width: 80%;">-->
 							 <h3 style=" border-bottom-color: #CCCCCC;
     border-bottom-style: solid;
@@ -704,7 +706,7 @@ var pollStatus = [];
                               </tr>
 							 </table>
 						</div>
-						<div class="our-services" style="width:367px;">
+						<div class="our-services" style="background:#fff;width:367px;">
 		                  <!--  <h3 class="headingClass">Our Services</h3>-->
 <h3 style=" border-bottom-color: #CCCCCC;
     border-bottom-style: solid;
@@ -1574,7 +1576,7 @@ function showVotesObtainedForOpinionPoll()
 	str += '<table><tr><td>';
 	if(${opinionPollVO.avaliability != true})
 	{
-	str +='<div id="pollQuestionsDiv" style="color: #0C67AC;font-weight: bold;margin-top: 15px;font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;font-size: 12px;">  Q  ) ${opinionPollVO.quesitons[0].question}';
+	str +='<div id="pollQuestionsDiv" style="color: #0C67AC;font-weight: bold;margin-top: 15px;font-family: Trebuchet MS,Arial,Helvetica,sans-serif;font-size: 12px;">  Q  ) ${opinionPollVO.quesitons[0].question}';
 	str +='</div>';
 	str +='</tr>';
 	
@@ -1590,19 +1592,19 @@ function showVotesObtainedForOpinionPoll()
 		</s:else></s:iterator>
 	str += '</table>';
 
-	str += '<div onclick="savePollResult(${opinionPollVO.quesitons[0].questionId})" class="viewReportButtonSpan" style="left:">';
-		str += '<span class="viewReportButtonLabel"  style="left:27px;top:5px;">Vote</span></div>';
+	str += '<div onclick="savePollResult(${opinionPollVO.quesitons[0].questionId})" class="viewReportButtonSpan" style="top:15px;">';
+		str += '<span class="viewReportButtonLabel"  style="left:27px;top:8px;">Vote</span></div>';
 
 	
 	str += '</tr></table>';
 	str +='<br>';
 
 	//str += '<div id="viewPollResDiv">';
-	str += '<table><tr>';
+	str += '<table style="margin-left: 89px; margin-top: -28px;"><tr>';
 	
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color: #0C67AC;font-weight:bold;"> View Current Poll Result</a></div>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.quesitons[0].questionId}" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a></div>';
 	str += '</td>';
-	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a></div>';
+	str += '<td><div style="width:94px;"><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a></div>';
 	str += '</td>';	
 	str += '</tr></table>';
 	//str += '</div>';
@@ -1652,10 +1654,10 @@ var elmt = document.getElementById("pollsWidgetBody");
 	
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
-	str += '<table><tr>';
-	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#0C67AC;font-weight:bold;"> View Current Poll Result</a></div>';
+	str += '<table style="margin-left: 26px;"><tr>';
+	str += '<td><div style="width:157px;"><a href="completeResultForAPollAction.action?questionId=${opinionPollVO.questionsOptionsVO.questionId}" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a></div>';
 	str += '</td>';
-	str += '<td><div style="width:83px;"><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a></div>';
+	str += '<td><div style="width:94px;"><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a></div>';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
