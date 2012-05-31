@@ -548,15 +548,16 @@ function buildAccordion()
           	<h3 ><a href="#">View Your State</a></h3>
 				<div style="padding:0px;">
 					<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
-								<table>
+								<table style="font-size:12px;">
 									<tr>
 										<td style="text-align:justify;padding-bottom:30px;line-height:25px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
 									</tr>
 									<tr>
-										<td style="height:40px;color:#004078"><%=stateSelect%></td>
+		<td style="height:40px;color:#004078;font-size=12px;">
+	<%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="{}" listKey="id" listValue="name" /></td>									
+									<td style="font-size:12px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="{}" listKey="id" listValue="name" /></td>									
 									</tr>								
 								</table>
 							</div>
@@ -564,11 +565,12 @@ function buildAccordion()
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToStatePage()"></img>
 							</div>
 						</div>
-						<h3><a href="#">View Your District</a></h3>
+						<h3><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your District</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
 								<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
-								<table>
+								<table style="font-size:12px;">
 									<tr>
 										<td style="text-align:justify;padding-bottom:5px;line-height:25px;"> Select your district to view its election results in district level. </td>
 									</tr>
@@ -576,7 +578,8 @@ function buildAccordion()
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td style="width:200px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList2" list="{}" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateInQuickView(this.options[this.selectedIndex].value,'districtList_d')"></s:select></td>
+								<td style="width:200px;font-size=12px;">
+								<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList2" list="{}" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateInQuickView(this.options[this.selectedIndex].value,'districtList_d')"></s:select></td>
 										<td><span id="districtList_d_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
 										</td>
 									</tr>
@@ -592,32 +595,33 @@ function buildAccordion()
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToDistrictPage()"></img>
 							</div>
 						</div>
-						<h3 ><a href="#">View Your Constituency</a></h3>
+						<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your Constituency</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
 								<div id="alertMessage" style="color:red;font-weight:bold;"></div>
-								<table>
+								<table style="font-size:12px;">
 									<tr>
-										<td colspan="4">Select Constituency Type</td>
+										<td colspan="4" style="font-size:12px;">Select Constituency Type</td>
 									</tr>	
 									<tr>
 										<td colspan="2"><input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBoxInQuickView(this.id, 'constituency')"/><%=assembly%></td>
 										<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBoxInQuickView(this.id,'constituency')"/><%=parliament%></td>
 									</tr>
 								</table>
-								<table id="stateTable" style="display:none;">
+								<table id="stateTable" style="display:none;font-size:12px;">
 									<tr>
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="{}" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByTypeInQuickView(2,this.options[this.selectedIndex].value,'constituency')"></s:select></td>
+										<td style="font-size:12px;"><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="{}" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByTypeInQuickView(2,this.options[this.selectedIndex].value,'constituency')"></s:select></td>
 										<td><span id="constituency_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></span>
 										</td>
 									</tr>
 								</table>
 									
 								
-								<table id="constTable" style="display:none;">
+								<table id="constTable" style="display:none;font-size:12px;">
 									<tr>
 										<td style="color:#004078"><%=constSelect%></td>
 									</tr>
@@ -631,15 +635,16 @@ function buildAccordion()
 							</div>
 						</div>
 
-					<h3 ><a href="#">View Your Locality</a></h3>
+					<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Your Locality</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
-								<table>								
+								<table style="font-size:12px;">								
 									<tr>
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="{}" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
+										<td style="font-size:12px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="{}" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
 									</tr>
 									<tr>
 										<td style="color:#004078"><div id="localBodiesRadioDiv_label"><%=localBody%></div></td>
@@ -663,22 +668,23 @@ function buildAccordion()
 							</div>
 						</div>
 
-						<h3 ><a href="#">View Election Results</a></h3>
+						<h3 ><a href="#" style="font-size: 13px;
+    font-family: verdana,arial,san-serif;">View Election Results</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
-								<table>
+								<table style="font-size:12px;">
 									
 									<tr>
-										<td style="height:40px;color:#004078"><%=stateSelect%></td>
+										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>			<td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>							
+										<td style="font-size:12px;"><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="{}" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>			<td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>							
 									</tr>		
-									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
+									<tr><td style="color:#004078"><%=electionTypeInHome%></td>
 									</tr>
 									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage((this.options[this.selectedIndex].text))" ></select></td></tr>
 									<tr>
-									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
+									<td style="color:#004078"><%=electionYearInHome%></td></tr>
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
 								</table>
 							</div>
