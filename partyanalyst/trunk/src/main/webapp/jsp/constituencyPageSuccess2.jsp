@@ -933,7 +933,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<div id="censusErrorMsgDiv" style="padding-left:10px;"></div>
 				<div id="mandalOrConstiElecResultDiv">
 				<div id="parliamentElectionResultsDiv" style="overflow:auto;margin-top:10px;"></div>
-				<div id="electionResultsInConstituencyDiv"></div>
+				<div id="electionResultsInConstituencyDiv" style="margin-top: -1px;"></div>
 				<div id="labelRadioDiv"></div>			
 				<div id="resultsDataTableDiv"></div>
 				<div id="missingDataInfoDiv"></div>
@@ -3004,7 +3004,7 @@ function removeCensusNotAvailableErrorMessage()
 	
 	var cenRadiovar = '';
 
-	cenRadiovar += '<table style="margin-bottom: -45px;"><tr>';
+	cenRadiovar += '<table style="margin-bottom: -14px;"><tr>';
 	cenRadiovar += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
 	cenRadiovar += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)">By Votes </td>';
 	cenRadiovar += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)"/>By Percentage </td>';
