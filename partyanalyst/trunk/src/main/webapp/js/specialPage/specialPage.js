@@ -943,7 +943,7 @@ document.getElementById('pVGallaryNameId').value = '';
 
 function buildUploadVideoDiv()
 {
-	
+	document.getElementById("newsGallaryDiv").innerHTML = '';
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
@@ -1573,6 +1573,7 @@ function showNewsGallaryCreateMsg(result)
 }
 function  buildUploadNews()
 {
+	document.getElementById("videoGallaryDiv").innerHTML = '';
 	var specialPageIdEle = document.getElementById("specialPageId");
 	var tempSpecialPageId = specialPageIdEle.options[specialPageIdEle.selectedIndex].value
   
