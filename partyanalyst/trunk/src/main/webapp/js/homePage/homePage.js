@@ -1220,9 +1220,9 @@ function showVotesObtainedForOptions(myResults){
 	str += '<tr><td>';
 	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
-	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="text-decoration:underline;cursor:pointer;padding-right:10px;color:#0C67AC;font-weight:bold;"> View Current Poll Result</a>';
+	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a>';
 	str += '</td>';
-	str += '<td><a href="getAllPollsAction.action?.action" style="text-align:right;text-decoration:underline;cursor:pointer;color:#0C67AC;font-weight:bold;"> View All Polls</a>';
+	str += '<td><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a>';
 	str += '</td>';	
 	str += '</tr></table>';
 	str += '</div>';
