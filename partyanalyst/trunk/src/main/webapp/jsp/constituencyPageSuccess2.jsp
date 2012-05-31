@@ -795,7 +795,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 										  </tr>
 										</table>	
 									 </div>
-									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:293px;">
+									<div id="pollsWidgetBody" style="height:auto;width:302px;background:#ffffff;overflow:hidden;">
+								
 									</div>
 									<div id="pollsWidgetFooter">
 										
