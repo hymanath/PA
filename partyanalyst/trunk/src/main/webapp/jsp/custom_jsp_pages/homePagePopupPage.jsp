@@ -124,7 +124,7 @@ Are you aspirant candidate for<br/>
 </div></td></tr></table>
 <!--<div id="contactDiv"><span style="font-weight:bold;margin-top:5px;">
 To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>-->
-<div class="ElectionInfo boxdiv" style="height: 92px; width: 305px; padding-left: 10px; padding-right: 10px;">
+<div class="ElectionInfo boxdiv" style="height: 92px; padding-left: 10px; width: 308px; padding-right: 10px; margin-right: -15px; margin-left: 123px;">
 <h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
 <p style="margin:1px;"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
 </div>
