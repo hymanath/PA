@@ -242,6 +242,7 @@ function showFeedBackFormPanel()
 			modal:true
 		});	
 		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
 
 		var elmt = document.getElementById("feedback_window_inner");
 
