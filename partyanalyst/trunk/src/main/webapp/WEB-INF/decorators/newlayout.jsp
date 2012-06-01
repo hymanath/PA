@@ -518,7 +518,7 @@ function buildAccordion()
       </li>
       <li style="width:307px;text-align:left;">
        <input name="mobileNO" id="quickRequestMobileTextbox" type="text" class="text-fields" value="Mobile No"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
-        <input name="" type="submit" value="" class="submit" onclick="submitDialogBox()"/>
+        <input name="" value="" class="submit" onclick="submitDialogBox()"/>
       </li>
     </ul>
   </div>
