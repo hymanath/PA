@@ -505,7 +505,10 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
 		else
+		{
 			problemBeanVO.setProblemPostedBy(IConstants.FREE_USER);
+			problemBeanVO.setProbSourceId(0L);
+		}
 		problemBeanVO.setIsParliament(isParliament);
 				
 		if(problemBeanVO.getProbSourceId() == 2L || problemBeanVO.getProbSourceId() == 3L)
