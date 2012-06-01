@@ -1102,7 +1102,7 @@ var email = document.getElementById("emailField").value;
 			modal:true
 		});	
 		$(".ui-dialog-titlebar").hide();
-
+		$(".ui-widget-overlay").css("width","1000px");
 		var elmt = document.getElementById("username_change_window_inner");
 
 		var str = '';
@@ -1319,7 +1319,7 @@ function showUserNameChangePanel(uname){
 			modal:true
 		});	
 		$(".ui-dialog-titlebar").hide();
-
+		$(".ui-widget-overlay").css("width","1000px");
 		var elmt = document.getElementById("username_change_window_inner");
 
 		var str = '';
