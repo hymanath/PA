@@ -811,12 +811,13 @@ $("#password_change_window").dialog({
 			modal:true
 		});	
 		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
 
 		var elmt = document.getElementById("password_change_window_inner");
 
 		var str = '';
-		str += '<div id="feedback_window_head">Change Password</div>';
-		str += '<div id="feedback_window_body">';
+		str += '<div id="password_window" style=" background-color: #7898BC; color: #FFFFFF;font-weight: bold;padding: 5px;">Change Password</div>';
+		str += '<div id="password_window_body_div" style=" background-color: #FFFFFF;color: #3A4347;padding: 5px;">';
 		str += '<table>';
 		str += '<tr><td><img src="images/icons/infoicon.png"/>';
 		str += 'Fields marked with (<font color="red">*</font>) are mandatory</td></tr><tr><td class="tdStyle"><b style="color:red">*</b>Current Password</td><td>  <input type="password" name="currentPassword"  id="currentPwdId" cssClass="textFieldStyle" /></td></tr>';
@@ -825,7 +826,7 @@ $("#password_change_window").dialog({
 		str += '<tr><td class="tdStyle"><b style="color:red">*</b>Confirm Password</td><td>  <input type="password" name="confirmPassword"  id="confirmPwdId" cssClass="textFieldStyle"/>';
         str += '</td></tr></table>';
         str += '	</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: #D6E5E9;padding: 5px;">';
 		str += '	<table width="100%">';
 		str += '	<tr>';
 		str += '	<td width="50%" align="left"><div id="password_window_errorMsg"></div></td>';
@@ -853,6 +854,7 @@ $("#password_change_window").dialog({
 	
 function changePassword()
 	{
+		
 	var cpwd = document.getElementById("currentPwdId").value;
 	var npwd = document.getElementById("newPwdId").value;
 	var cfmpwd = document.getElementById("confirmPwdId").value;
