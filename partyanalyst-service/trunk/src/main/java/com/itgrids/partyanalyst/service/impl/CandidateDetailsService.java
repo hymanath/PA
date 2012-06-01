@@ -1216,7 +1216,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFilePath(fileVO.getPath());
 			//file.setFileType(fileTypeDAO.getFileType(fileVO.getContentType()).get(0));
 			file.setFileTitle(fileVO.getTitle());
-			file.setFileDescription(fileVO.getDescription());
+			file.setFileDescription(fileVO.getDescription().replace("\r\n", ""));
 			file.setKeywords(fileVO.getKeywords());
 			
 			if(fileVO.getCategoryId() != null && fileVO.getCategoryId() > 0)
