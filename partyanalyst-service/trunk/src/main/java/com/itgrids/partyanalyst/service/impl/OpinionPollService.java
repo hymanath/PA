@@ -268,12 +268,13 @@ public class OpinionPollService implements IOpinionPollService {
 			question.setOptions(opinionPollQuestionAndPercentages);		
 			question.setTotalVotesObtainedForPoll(totalPolledVotes);
 			 List<Object> list = opinionPollQuestionsDAO.getTitleForQuestion(opinionPollQuestionId);
-			
+			if(list != null)
+			{
 			 for(Object params : list)
 			 {
 				 question.setTitle(params.toString());
 			 }
-			 
+			}
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			 question.setResultStatus(resultStatus);
 			return question; 
@@ -325,7 +326,7 @@ public class OpinionPollService implements IOpinionPollService {
 								{
 									OptionVO optionVO = new OptionVO();
 									optionVO.setOptionId(Long.parseLong(params[0].toString()));
-									optionVO.setOption(params[1].toString());
+									optionVO.setOption(params[1].toString().replaceAll("'", "\\\\'"));
 									listOfOptionVO.add(optionVO);
 								}
 							}
