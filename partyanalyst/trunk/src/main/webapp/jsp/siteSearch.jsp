@@ -18,7 +18,7 @@ margin-bottom: 110px;
 #newsAnalyse{ background-color: #CADEF4;
     border: 1px solid #CCCCCC;
     direction: ltr;
-    line-height: 1.2;
+    line-height: 3.5;
     overflow: visible;
     padding: 10px;
     text-align: center;
