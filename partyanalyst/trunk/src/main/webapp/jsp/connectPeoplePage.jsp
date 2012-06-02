@@ -174,7 +174,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;height:181px;clear:both;border:1px solid #d3d3d3;"> 						
+					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;clear:both;border:1px solid #d3d3d3;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -247,7 +247,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 
 					
 				</td>
-				<td>
+				<td valign="top">
 					<div id="constituencyRightContentOuter" class="rounded" style="width:287px;margin-right:auto;"> 						
 						
 
@@ -396,7 +396,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:265px;"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:20px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
