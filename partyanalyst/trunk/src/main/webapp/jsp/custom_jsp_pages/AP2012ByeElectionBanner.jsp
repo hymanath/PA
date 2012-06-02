@@ -216,7 +216,7 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
    </td>
    <td><a id='BALINENI SRINIVASA REDDY (VASU)' href="candidateElectionResultsAction.action?candidateId=2656" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Balineni Srinivasa Reddy (Vasu) profile-previous election result, Updated News, Photos ,Videos">Balineni Srinivasa Reddy (Vasu)</a>
    </td>
-   <td><a href="#">Damacharla Janardhan</a> / <a id='ANJANEYULU DAMACHARLA' href="candidateElectionResultsAction.action?candidateId=6048" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Anjaneyulu Damacharla profile-previous election result, Updated News, Photos ,Videos">Anjaneyulu Damacharla</a>
+   <td><a href="#">Damacharla Janardhan</a> <!--/ <a id='ANJANEYULU DAMACHARLA' href="candidateElectionResultsAction.action?candidateId=6048" onmouseover="displayImage(this.id);" onmouseout="return nd();" alt="Image not available" title="click here to view Anjaneyulu Damacharla profile-previous election result, Updated News, Photos ,Videos">Anjaneyulu Damacharla</a>-->
    </td>
    <!--<td><a id='EDARA HARI BABU' 
    href="candidateElectionResultsAction.action?candidateId=2657" onmouseover="displayImage(this.id);" onmouseout="return nd();"distitle="click here to view Edara Hari Babu profile-previous election result, Updated News, Photos ,Videos">Edara Hari Babu</a> - <a href="partyPageAction.action?partyId=872" title="Click here to view TDP profile-previous election result, Updated News, Photos ,Videos">TDP</a>
