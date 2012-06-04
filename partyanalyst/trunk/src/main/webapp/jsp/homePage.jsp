@@ -1000,7 +1000,7 @@ function showProblemDetails(result)
 }
 <c:forEach var="status" varStatus="stat" items="${opinionPollVO.questionsOptionsVO.options}">
 			var obj =	{
-							option:'${status.option}',
+							option:"${status.option}",
 							votesObtained:${status.votesObtained}
 						};
 			pollStatus.push(obj);
@@ -1585,10 +1585,14 @@ function showVotesObtainedForOpinionPoll()
 	
 	<s:if test="%{#stat.index == 0}">
 	
-	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true"/>&nbsp;&nbsp<s:property value="option"/></td>';
+	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>" checked="true"/>&nbsp;&nbsp';
+	str +="<s:property value='option'/>"; 
+		str +='</td>';
 	</s:if>
 		<s:else>
-	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>"/>&nbsp;&nbsp<s:property value="option"/></td></tr>';
+	str +='<td><input type="radio" name="pollradio" value="<s:property value="optionId"/>"/>&nbsp;&nbsp';
+	str+="<s:property value='option'/>";
+		str +='</td></tr>';
 		</s:else></s:iterator>
 	str += '</table>';
 
