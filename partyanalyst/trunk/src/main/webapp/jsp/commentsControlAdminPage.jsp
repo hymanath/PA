@@ -400,7 +400,7 @@ function showAllNewPostedReasons()
 	str += '		<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>';
 	str += '	</td>';
 	str += '	<td valign="top">';
-	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'identifiedFromText_Div\',\'identifiedFromText\',\'9/2010\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
+	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'identifiedFromText_Div\',\'identifiedFromText\',new Date())"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
 	str += '	</td>';				
 		
 	str += '	<td><font class="requiredFont"> * </font></td>';
