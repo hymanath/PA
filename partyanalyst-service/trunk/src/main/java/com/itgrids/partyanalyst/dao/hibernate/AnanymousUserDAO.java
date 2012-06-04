@@ -296,5 +296,14 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return (Long)queryObject.uniqueResult();
 		
 	}
+	public List<Object[]> getAllUsersMobile()
+	{
+		return getHibernateTemplate().find("select distinct model.name,model.lastName,model.mobile,model.constituency.name,model.userId from AnanymousUser model where model.mobile is not null and model.mobile !=''");
+	}
+	public List<Object> getAllMobilenosAsUnique()
+	{
+		return getHibernateTemplate().find("select distinct model.mobile from AnanymousUser model where model.mobile is not null and model.mobile !=''");
+	}
+	
 	
 }
