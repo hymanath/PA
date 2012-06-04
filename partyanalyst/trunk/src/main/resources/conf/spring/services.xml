@@ -1138,6 +1138,10 @@
 		<property name="mailService" ref="mailService" />
 		<property name="mailsTemplateService" ref="mailsTemplateService" />
 	</bean>
+	<bean name="sendUpdatesService" class="com.itgrids.partyanalyst.service.impl.SendUpdatesService">
+	<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
+	<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+	</bean>
 	
 </beans>		
 	
