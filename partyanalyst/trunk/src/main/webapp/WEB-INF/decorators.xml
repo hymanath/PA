@@ -123,6 +123,7 @@
 		<pattern>/problemCompleteInfoAction*</pattern>
 		<pattern>/electionAnalysisAndManagementTool*</pattern>
 		<pattern>/connectPeopleAction*</pattern>
+		<pattern>/sendUpdatesAction*</pattern>
     </decorator>
 
 </decorators>
