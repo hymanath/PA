@@ -199,6 +199,12 @@
 									<center><h4 class="tdstyle"><a class="alinkstyle" href='<s:url action="memoryManagementAction"/>'><b>Memory Moniter</b></a></h4></center>
                                     </fieldset>
                                 </td>
+								<td> <fieldset class="f3" style="height:88px;">
+                                    <legend class="l2">Send Sms</legend>
+                                   <a class="alinkstyle" href='<s:url action="sendUpdatesAction"/>'><b>send Sms</b></a>
+									
+                                    </fieldset>
+                                </td>
 						  </tr>
 							
 							
