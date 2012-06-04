@@ -155,8 +155,9 @@ function selectCheckBox()
 					
 		          };*/
 		
-		}
+		
 		selectedUsersArray.push(mobile);
+		}
 	}
 	
 if(selectedUsersArray.length == 0)
