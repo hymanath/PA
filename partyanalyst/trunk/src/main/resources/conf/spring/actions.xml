@@ -913,5 +913,9 @@
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="dataApprovalService" ref="dataApprovalService" />
 	</bean>
+	<bean id="sendUpdatesAction" class="com.itgrids.partyanalyst.web.action.SendUpdatesAction" singleton="false">
+	<property name="sendUpdatesService" ref="sendUpdatesService"/>
+	<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+	</bean>
 				
 </beans>	
