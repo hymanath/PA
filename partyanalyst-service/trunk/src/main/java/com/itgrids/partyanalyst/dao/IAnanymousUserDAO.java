@@ -54,5 +54,9 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString);
 	
 	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers);
+	
+	public List<Object[]> getAllUsersMobile();
+	
+	public List<Object> getAllMobilenosAsUnique();
 
 }
