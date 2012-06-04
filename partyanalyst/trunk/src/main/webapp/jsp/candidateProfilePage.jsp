@@ -1373,7 +1373,10 @@ function getVideoDetails(contentId)
 								modal: true,
 								maxWidth : 950,
 								minHeight: 650,
-								overlay: { opacity: 0.5, background: 'black'}
+								overlay: { opacity: 0.5, background: 'black'},
+								 close: function(event, ui) {
+		  							  document.getElementById("showContentDivInnerDiv").innerHTML ='';
+							}
 								});
 		$("#showContentDiv").dialog();
 		getContentDetails(contentId);
