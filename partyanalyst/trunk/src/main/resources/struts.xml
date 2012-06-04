@@ -3357,6 +3357,17 @@
 			<result type="json" name="success">
 			<param name="root">problemBeanVO</param>
 			</result>
-		</action>									
+		</action>
+		<action name="sendUpdatesAction" class="sendUpdatesAction">
+		<result name="success">/jsp/sendUpdates.jsp</result>
+		</action>	
+		<action name="sendSMSForSelectedUsersAction" class="sendUpdatesAction" method="AjaxHandler">
+		<result type="json" name="success">
+		<param name="success">resultstatus</param>
+		</result>
+		</action>	
+		<action name="sendSMSForALLUsersAction" class="sendUpdatesAction" method="sendSmsForAllUsers">
+		<result type="json" name="success"></result>
+		</action>							
 	</package>
 </struts>      
