@@ -3006,8 +3006,8 @@ function buildContentDetails()
 		}
 		
 		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="container">';
-		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe>';
+		str += '<div class="container" id="nextPartImage">';
+		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></div>';
 		str += '<table><tr>';
 		str += '<td>';
 		str += ''+descriptionStr+'';
