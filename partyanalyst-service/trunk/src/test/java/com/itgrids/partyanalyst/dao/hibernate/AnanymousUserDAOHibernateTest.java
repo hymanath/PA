@@ -175,7 +175,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetNotConnectedUsersCountForAUserInAFilterView(){
+	/*public void testGetNotConnectedUsersCountForAUserInAFilterView(){
 		List<Long> locationIds = new ArrayList<Long>(0);
 		locationIds.add(3l);
 		List<Long> otherUsers = new ArrayList<Long>(0);
@@ -185,5 +185,27 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		otherUsers.add(473l);
 		Long notConnCnt=ananymousUserDAO.getNotConnectedUsersCountForAUserInAFilterView(411l, locationIds, IConstants.DISTRICT_LEVEL, "", otherUsers);
 		System.out.println(notConnCnt);		
+	}*/
+	
+	/*public void testgetAllUsersMobile()
+	{
+		List<Object[]> list = ananymousUserDAO.getAllUsersMobile();
+		System.out.println(list.size());
+		for(Object[] params : list)
+		{
+			System.out.println(params[0].toString());
+			System.out.println(params[1].toString());
+			System.out.println(params[2].toString());
+			System.out.println(params[3].toString());
+			System.out.println(params[4].toString());
+			
+		}
+		
+		
+	}*/
+	public void testGelAllMobilenosAsUnique()
+	{
+		 List<Object> list = ananymousUserDAO.getAllMobilenosAsUnique();
+		 System.out.println(list);
 	}
 }
