@@ -326,7 +326,7 @@ public class OpinionPollService implements IOpinionPollService {
 								{
 									OptionVO optionVO = new OptionVO();
 									optionVO.setOptionId(Long.parseLong(params[0].toString()));
-									optionVO.setOption(params[1].toString().replaceAll("'", "\\\\'"));
+									optionVO.setOption(params[1].toString());
 									listOfOptionVO.add(optionVO);
 								}
 							}
