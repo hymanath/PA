@@ -242,7 +242,7 @@
 
 	function getCensusDetails()
 	{
-
+		
 		var censusElmt = document.getElementById("censusSelect");
 		var yearElmt = document.getElementById("yearSelect");
 		var errorElmt = document.getElementById("censusReporterror_Div");
@@ -250,8 +250,10 @@
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		
 		if(censusValue == 0 || yearValue == 'Select Year')
+		{
+			errorElmt.innerHTML = "Please Select State";
 			return;
-		
+		}
 		if(stateId == 0)
 		{
 			errorElmt.innerHTML = "Please Select State";
@@ -626,7 +628,7 @@
 	{
 		var stateLitsEle = document.getElementById("stateList");
 		var stateId = stateLitsEle.options[stateLitsEle.selectedIndex].value;
-		
+
 		if(stateId == 0)
 			return;
 		
