@@ -1081,7 +1081,8 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
      @SuppressWarnings("unchecked")
      public List<FileGallary> getFilesOfInGallaries(List<Long> gallaryIdsList)
      {
-    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false'");
+    	 Query query = getSession().createQuery("select model from FileGallary model where model.gallary.gallaryId in(:gallaryIdsList) and model.isPrivate = 'false' and model.isDelete = 'false' and model.gallary.isPrivate = 'false' and model.gallary.isDelete = 'false' " +
+    	 		" group by model.file.fileId");
     	 query.setParameterList("gallaryIdsList",gallaryIdsList);
     	 return query.list();
      }
