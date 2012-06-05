@@ -93,7 +93,14 @@ public class ContentManagementService implements IContentManagementService{
 				for(Object obj : list)
 					gallaryIds.add((Long)obj);
 				
-				List<FileGallary> files = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
+				List<FileGallary> files = new ArrayList<FileGallary>(0);
+				files.add(fileGallaryDAO.get(contentId));
+				
+				List<FileGallary> filesObjList = fileGallaryDAO.getFilesOfInGallaries(gallaryIds);
+				
+				for(FileGallary fileGallary : filesObjList)
+					if(!checkForFileExistance(files,fileGallary))
+						files.add(fileGallary);
 				
 				List<GallaryVO> relatedGalleries = new ArrayList<GallaryVO>(0);
 				List<GallaryVO> otherGalleries = new ArrayList<GallaryVO>(0);
@@ -256,6 +263,19 @@ public class ContentManagementService implements IContentManagementService{
 		}catch (Exception e) {
 			log.debug("Exception occured in getSelectedContentAndRelatedGalleries() Method, Exception is - "+e);
 			return null;
+		}
+	}
+	
+	public boolean checkForFileExistance(List<FileGallary> list, FileGallary fileGallary)
+	{
+		try{
+			for(FileGallary fileGallary2 : list)
+				if(fileGallary2.getFile().getFileId().equals(fileGallary.getFile().getFileId()))
+					return true;
+			
+			return false;
+		}catch (Exception e) {
+			return false;
 		}
 	}
 
