@@ -808,4 +808,13 @@
 	<bean id="filePathsDAO" class="com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="roleDAO" class="com.itgrids.partyanalyst.dao.hibernate.RoleDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserRolesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
