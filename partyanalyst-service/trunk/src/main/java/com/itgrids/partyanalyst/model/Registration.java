@@ -68,6 +68,7 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	 private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
+	 private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	 
 	
 	public Registration() {
@@ -489,6 +490,16 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
 		this.userLoginDetails = userLoginDetails;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserRoles> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<UserRoles> userRoles) {
+		this.userRoles = userRoles;
 	}
 	
 	
