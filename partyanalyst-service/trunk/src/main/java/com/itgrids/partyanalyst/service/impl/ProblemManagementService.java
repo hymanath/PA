@@ -62,20 +62,17 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.hibernate.FilePathsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemFileDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
-import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartDataVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -5374,6 +5371,155 @@ public class ProblemManagementService implements IProblemManagementService {
 			return null;
 		}
 		
+	}
+	
+	public List<SelectOptionVO> getStates()
+	{
+		List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(); 
+		try{
+			List<Object[]> states = problemHistoryDAO.getStates();
+			if(states != null && states.size() > 0)
+			{
+				for(Object[] result : states)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)result[0]);
+					selectOptionVO.setName(result[1].toString());
+					selectOptionList.add(selectOptionVO);
+				}
+			}
+			
+			return selectOptionList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getStates() Method , Exception - "+e);
+			return selectOptionList;
+		}
+	}
+	
+	public List<SelectOptionVO> getDistrictsByAStateID(Long stateId)
+	{
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+		try{
+			
+			List<Object[]> list = districtDAO.getDistrictIdAndNameByState(stateId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					districtList.add(selectOptionVO);
+					
+				}
+			}
+			return districtList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getDistrictsByStateID() Method , Exception - "+e);
+			return districtList;
+		}
+		
+	}
+		
+	public List<SelectOptionVO> getProblemPostedUserDetails()
+	{
+		List<SelectOptionVO> userList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = problemHistoryDAO.getProblemPostedUserDetails();
+			if(list != null && list.size() > 0)
+  			 {
+				for(Object[] params : list)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString()+" "+params[2].toString());
+					userList.add(selectOptionVO);
+				}
+					
+			 }
+			return userList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getProblemPostedUserDetails() Method , Exception - "+e);
+			return null;
+		}
+	}
+	
+	public List<SelectOptionVO> getProblemTypes()
+	{
+		List<SelectOptionVO> problemTypes = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = problemTypeDAO.getProblemTypes();
+			if(list != null && list.size() >0)
+			{
+				for(Object[] params : list)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					problemTypes.add(selectOptionVO);
+				}
+			}
+			
+			return problemTypes;
+	}catch (Exception e) {
+		log.error("Exception Occured in getProblemTypes() Method , Exception is - "+e);
+		return null;
+	}
+	}
+	
+	public List<ProblemBeanVO> getProblemDetailsForFreeUser(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex)
+	{
+		if(problemSearchVO == null)
+		{
+			log.error("problemSearchVO is null in getProblemDetailsForFreeUser() method");
+			return null;
+		}
+		List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>();
+		try{
+		
+		Long scopeId = problemSearchVO.getScopeId();
+		Long locationValue = problemSearchVO.getLocationValue();
+		
+		if(scopeId != null && locationValue != null && 
+				(scopeId.equals(5L) || scopeId.equals(6L) || scopeId.equals(7L) || scopeId.equals(8L)))
+		{
+			String locStr = locationValue.toString();
+			locStr = locStr.substring(1);
+			locationValue = Long.parseLong(locStr);
+			
+			if(scopeId.equals(7L))
+			{
+				List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(locationValue);
+				locationValue = (Long)localElectionBodies.get(0);
+			}
+			problemSearchVO.setLocationValue(locationValue);
+		}
+		
+		List<Object[]> list = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,false);
+		List<Object[]> countList = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,true);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setProblemHistoryId((Long)params[0]);
+				problemBeanVO.setProblem(params[1].toString());
+				problemBeanVO.setDescription(params[2].toString());
+				problemBeanVO.setExistingFrom(params[3].toString());
+				problemBeanVO.setReportedDate(params[4].toString());
+				problemBeanVO.setProblemLocation(problemManagementReportService.getProblemLocation((Long)params[5], (Long)params[6]));
+				problemBeanVO.setName(params[7].toString()+" "+params[8].toString());
+				problemBeanVO.setUserID((Long)params[9]);
+				problemBeanVO.setProblemCount(countList.size());
+				problemBeanVOList.add(problemBeanVO);
+			}
+		}
+		return problemBeanVOList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getProblemDetailsForFreeUser() Method , Exception - "+e);
+			return null;
+		}
+					
 	}
 
 }
