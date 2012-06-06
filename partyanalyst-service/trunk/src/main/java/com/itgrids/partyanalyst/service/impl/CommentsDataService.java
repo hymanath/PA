@@ -1194,14 +1194,16 @@ public class CommentsDataService implements ICommentsDataService {
 		try
 		{
 		List<CandidateCommentsVO> commentsList = null;
+		Long userId =0l;
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 		if(listOfComments != null || listOfComments.size() > 0)
 		{
 			for (int i = 0; i < listOfComments.size(); i++)
 			{
 				Object[] params = (Object[])listOfComments.get(i);
 				
-					EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 					
+					userId = (Long)params[0];
 					emailDetailsVO.setToAddress(params[1].toString());
 					emailDetailsVO.setFromAddress(params[2].toString()+" "+params[7].toString());
 					emailDetailsVO.setCandidateName(params[3].toString());
@@ -1213,7 +1215,8 @@ public class CommentsDataService implements ICommentsDataService {
 					emailDetailsVO.setConstituencyName(params[5].toString());
 					emailDetailsVO.setElectionType(params[6].toString());
 					mailsSendingService.acceptEmailForUserComments(emailDetailsVO);
-					List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser((Long)params[0]);
+			}}
+					List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
 			
 					if(connectedPeople != null && connectedPeople.size() > 0)
 					{
@@ -1221,30 +1224,30 @@ public class CommentsDataService implements ICommentsDataService {
 					{
 					String userName = connectPeopleDetails[1]+ " " +connectPeopleDetails[2];
 					
-					emailDetailsVO.setRecepientEmail(connectPeopleDetails[3].toString());
+					emailDetailsVO.setToAddress(connectPeopleDetails[3].toString());
 					emailDetailsVO.setSenderName(userName);
 					
 					
 					mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
 					}
 					}
-					List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser((Long)params[0]);
+					List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
 					if(connectedRecepientPeople !=null && connectedRecepientPeople.size() > 0)
 					{
-					{
+					
 						for(Object[] recepientPeople : connectedRecepientPeople)
 						{
 						String recepentUserName = recepientPeople[1]+ " " +recepientPeople[2];
-						emailDetailsVO.setRecepientEmail(recepientPeople[3].toString());
+						emailDetailsVO.setToAddress(recepientPeople[3].toString());
 						emailDetailsVO.setSenderName(recepentUserName);
 						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
 						
 					}
 					}
-					 }
-			}
+					 
+			
 			}		
-		}catch(Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 			log.error("error occured in sendEmailForCommentsDetailsFromList()of CommentsDataService()");
