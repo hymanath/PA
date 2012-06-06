@@ -3352,22 +3352,43 @@
         	<result type="json" name="success">
 			<param name="root">problemBeanVOList</param>				
 			</result>
-        </action>   
+        </action>
+         
 		<action name="getProblemDetailsAction" class="problemCompleteDetailsAction" method="getProblemDetailsByProblemReferenceId">
 			<result type="json" name="success">
 			<param name="root">problemBeanVO</param>
 			</result>
 		</action>
+		
 		<action name="sendUpdatesAction" class="sendUpdatesAction">
-		<result name="success">/jsp/sendUpdates.jsp</result>
-		</action>	
+			<result name="success">/jsp/sendUpdates.jsp</result>
+		</action>
+			
 		<action name="sendSMSForSelectedUsersAction" class="sendUpdatesAction" method="AjaxHandler">
-		<result type="json" name="success">
-		<param name="success">resultstatus</param>
-		</result>
-		</action>	
+			<result type="json" name="success">
+				<param name="success">resultstatus</param>
+			</result>
+		</action>
+			
 		<action name="sendSMSForALLUsersAction" class="sendUpdatesAction" method="sendSmsForAllUsers">
-		<result type="json" name="success"></result>
-		</action>							
+			<result type="json" name="success"></result>
+		</action>
+		
+		<action name="problemSearchAction" class="problemSearchAction">
+			<result name="success">/jsp/problemSearchPage.jsp</result>
+		</action>
+		
+		<action name="getScopesForAProblemSearch" class="problemSearchAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">selectOptionList</param>
+        	</result>	
+	   </action>	
+	   
+	   <action name="getProblemDetailsForFreeUserAction" class="problemSearchAction" method="getProblemDetailsForFreeUser">
+	   		<result type="json" name="success">
+	   			<param name="root">problemBeanVOList</param>
+	   		</result>
+	   </action>
+	   		
 	</package>
 </struts>      
