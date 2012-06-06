@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
@@ -163,4 +163,11 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public Long getFreeUserIdOfAProblem(Long problemHistoryId);
 	
 	public List<Object[]> getProblemHistoryIdByReferenceId(String problemRefId);
+	
+	public List<Object[]> getStates();
+	
+	public List<Object[]> getProblemPostedUserDetails();
+	
+	public List<Object[]> getFreeUserProblemsInSearch(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex,boolean countReq);
+	
 }
