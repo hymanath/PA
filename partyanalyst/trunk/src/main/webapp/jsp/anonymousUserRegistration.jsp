@@ -310,7 +310,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 </head>  
 <body><center>  
 
-<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
+<s:form action="anonymousUserRegistrationAction.action?" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
   <div id="registrationMainDiv" style="padding-bottom:5px;">
 		<table class="registrationTable">
