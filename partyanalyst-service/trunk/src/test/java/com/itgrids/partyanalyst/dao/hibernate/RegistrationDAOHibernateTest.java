@@ -75,7 +75,7 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(reg.getParentUser());
 		System.out.println(reg.getSubUsers());
 	}*/
-	public void testGetSubusersByParentUserId(){
+	/*public void testGetSubusersByParentUserId(){
 		
 		List<Object[]> list = registrationDAO.getSubusersByParentUserId(1L);
 		if(list.size() !=0){
@@ -90,10 +90,16 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		//+(new Long(obj.getParentUser().getRegistrationId().toString())));
 		
 		
-	}
+	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		registrationDAO.getAll();
+	}*/
+	
+	public void testSaveUserProfileImageNameToDB()
+	{
+		Integer result = registrationDAO.saveUserProfileImageNameToDB(805l, "anu.jpg");
+		System.out.println(result);
 	}
 }

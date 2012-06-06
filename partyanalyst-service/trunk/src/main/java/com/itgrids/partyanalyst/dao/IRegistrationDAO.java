@@ -54,5 +54,7 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSubusersByParentUserId(Long parentUserId);
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
 
 }

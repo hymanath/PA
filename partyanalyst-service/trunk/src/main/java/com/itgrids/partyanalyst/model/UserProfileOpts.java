@@ -26,7 +26,7 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userProfileOptsId;
-	private AnanymousUser user;
+	private Registration user;
 	private ProfileOpts profileOpts;
 	
 	public UserProfileOpts(){
@@ -37,7 +37,7 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 		this.userProfileOptsId = userProfileOptsId;
 	}
 	
-	public UserProfileOpts(AnanymousUser user,
+	public UserProfileOpts(Registration user,
 			ProfileOpts profileOpts) {
 		this.user = user;
 		this.profileOpts = profileOpts;
@@ -58,11 +58,11 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AnanymousUser getUser() {
+	public Registration getUser() {
 		return user;
 	}
 
-	public void setUser(AnanymousUser user) {
+	public void setUser(Registration user) {
 		this.user = user;
 	}
 

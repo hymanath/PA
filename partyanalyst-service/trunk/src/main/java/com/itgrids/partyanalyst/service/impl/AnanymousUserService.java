@@ -31,11 +31,14 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
@@ -53,9 +56,12 @@ import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
+import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
+import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -90,8 +96,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IMailsSendingService mailsSendingService;
 	private DateUtilService dateUtilService = new DateUtilService();
-	
+	private IRoleDAO roleDAO;
+	private IUserRolesDAO userRolesDAO;
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
+	private IRegistrationDAO registrationDAO;
 	
 	
 	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
@@ -278,6 +286,30 @@ public class AnanymousUserService implements IAnanymousUserService {
 		this.profileOptsDAO = profileOptsDAO;
 	}
 
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
+	public IRoleDAO getRoleDAO() {
+		return roleDAO;
+	}
+
+	public void setRoleDAO(IRoleDAO roleDAO) {
+		this.roleDAO = roleDAO;
+	}
+
+	public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
+
 	/**
 	 * This method can be used for saving of Anonymous User details.
 	 * 
@@ -285,7 +317,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param RegistrationVO
 	 * @return RegistrationVO
 	 */
-	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
+	/*public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
 		AnanymousUser ananymousUserReturn = (AnanymousUser)transactionTemplate.execute(new TransactionCallback() {
 			
@@ -340,18 +372,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 					
 				ananymousUser = ananymousUserDAO.save(ananymousUser);
 					
-			if(!isUpdate)
+				if(!isUpdate)
 					{
 				 // If the user does'nt select the profile image
 				        if(userDetails.getUserProfilePic()!=null)
 			           {
-						String constiName[] = userDetails.getUserProfilePic().split("/");
-					
-						imageName = ananymousUser.getUserId()+"."+constiName[1];
+							String constiName[] = userDetails.getUserProfilePic().split("/");
+							imageName = ananymousUser.getUserId()+"."+constiName[1];
+							userDetails.setRegistrationID(ananymousUser.getUserId());
+							ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
 			            }
-						userDetails.setRegistrationID(ananymousUser.getUserId());
-						 
-						ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
+						
 				        
 					}
 					userDetails.setDistrict(ananymousUser.getDistrict().getDistrictName());
@@ -376,6 +407,99 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 return false;
 	}
 	
+	*/
+	
+public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
+		
+		Registration result = (Registration)transactionTemplate.execute(new TransactionCallback() {
+			
+			public Object doInTransaction(TransactionStatus status) {
+				Registration registration = null;
+				ProfileOpts profileOpts = null;
+				String imageName =null;
+				
+				if(!isUpdate)
+					registration = new Registration();
+				else{
+					registration = registrationDAO.get(userDetails.getRegistrationID());
+					userProfileOptsDAO.removeOptsOfExistingUser(userDetails.getRegistrationID());
+				}
+				
+				try{
+					
+					if(!isUpdate)
+					{
+						String str = ((Long)System.currentTimeMillis()).toString();
+						String pwd = str.substring(str.length()-7,str.length());
+						userDetails.setPassword(getPassword(pwd));
+						registration.setUserName(userDetails.getEmail());
+						registration.setPassword(userDetails.getPassword());
+						registration.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+						registration.setEmail(userDetails.getEmail());
+						registration.setIsPwdChanged(IConstants.FALSE);
+					}
+					
+					registration.setFirstName(userDetails.getFirstName());
+					registration.setLastName(userDetails.getLastName());
+					registration.setGender(userDetails.getGender());
+					
+					SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+					if(userDetails.getDateOfBirth()!= null && userDetails.getDateOfBirth().trim().length() > 0)
+					{
+						Date date = format.parse(userDetails.getDateOfBirth());
+						registration.setDateOfBirth(date);
+					}
+					registration.setMobile(userDetails.getMobile());
+					registration.setAddress(userDetails.getAddress());
+					registration.setState(stateDAO.get(new Long(userDetails.getState())));
+					registration.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
+					registration.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
+					registration.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+					
+					if(isUpdate && userDetails.getUserProfilePic()!= null)
+					{					
+						registration.setProfileImg(userDetails.getUserProfilePic());
+					}
+					
+					registration = registrationDAO.save(registration);
+					
+					if(!isUpdate && userDetails.getUserProfilePic()!= null)
+			        {
+						String constiName[] = userDetails.getUserProfilePic().split("/");
+						imageName = registration.getRegistrationId()+"."+constiName[1];
+						userDetails.setRegistrationID(registration.getRegistrationId());
+						ResultStatus imgStatus = saveUserProfileImageName(registration.getRegistrationId(), imageName);
+					}
+					
+					userDetails.setDistrict(registration.getDistrict().getDistrictName());
+					userDetails.setDistrictId(registration.getDistrict().getDistrictId());
+					
+					if(userDetails.getProfileOpts() != null)
+					for(Long optsId:userDetails.getProfileOpts())
+					{
+						profileOpts = profileOptsDAO.get(optsId);
+						userProfileOptsDAO.save(new UserProfileOpts(registration, profileOpts));
+					}
+					
+					Role role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
+					UserRoles userRoles = new UserRoles();
+					userRoles.setRole(role);
+					userRoles.setUser(registration);
+					userRolesDAO.save(userRoles);
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					status.setRollbackOnly();
+				}
+			 return registration;
+			}
+		});
+		
+		if(result != null && result.getRegistrationId() != null)
+			return true;
+		
+	 return false;
+	}
 	
 	/**
 	 * This method is used to check whether the username and password entered by anonymous user
@@ -1899,7 +2023,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		int result;
 		
 		try {			
-			result = ananymousUserDAO.saveUserProfileImageNameToDB(userId, imageName);
+			result = registrationDAO.saveUserProfileImageNameToDB(userId, imageName);
 			resultStatus.setResultCode(result);			
 			
 		} catch (Exception e) {

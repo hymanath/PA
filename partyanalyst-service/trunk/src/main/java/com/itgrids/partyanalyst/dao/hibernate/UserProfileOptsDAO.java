@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Set;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -15,7 +13,7 @@ public class UserProfileOptsDAO extends GenericDaoHibernate<UserProfileOpts, Lon
 	}
 	
 	public Integer removeOptsOfExistingUser(Long userId){
-		String queryInfo = "delete from UserProfileOpts model where model.user.userId = ?";
+		String queryInfo = "delete from UserProfileOpts model where model.user.registrationId = ?";
 		
 		Query query = getSession().createQuery(queryInfo);
 		query.setParameter(0, userId);
