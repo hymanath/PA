@@ -566,4 +566,16 @@ public class Registration implements java.io.Serializable {
 	public void setIsPwdChanged(String isPwdChanged) {
 		this.isPwdChanged = isPwdChanged;
 	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
 }
