@@ -11,6 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1035,6 +1037,81 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{
 		return getHibernateTemplate().find("select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.externalUser.userId,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.problem.referenceNo = ? and (model.isDelete is null or model.isDelete = 'false')" +
 				"and (model.problemLocation.problemAndProblemSource.externalUser.userId is not null)",problemRefId);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStates()
+	{
+		return getHibernateTemplate().find("select distinct model.problemLocation.problemCompleteLocation.state.stateId , model.problemLocation.problemCompleteLocation.state.stateName from " +
+				"ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' order by model.problemLocation.problemCompleteLocation.state.stateName");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemPostedUserDetails()
+	{
+		return getHibernateTemplate().find("select distinct model.problemLocation.problemAndProblemSource.externalUser.userId,model.problemLocation.problemAndProblemSource.externalUser" +
+				".name,model.problemLocation.problemAndProblemSource.externalUser.lastName from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId is not null order by model.problemLocation.problemAndProblemSource.externalUser.name");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFreeUserProblemsInSearch(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex,boolean countReq)
+	{
+		StringBuilder query = new StringBuilder();
+		
+		query.append(" select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.problem.description, " +
+				" model.problemLocation.problemAndProblemSource.problem.existingFrom, " +
+				" model.problemLocation.problemAndProblemSource.problem.identifiedOn, model.problemLocation.problemImpactLevel.regionScopesId,model.problemLocation.problemImpactLevelValue, " +
+				" model.problemLocation.problemAndProblemSource.externalUser.name, model.problemLocation.problemAndProblemSource.externalUser.lastName, model.problemLocation.problemAndProblemSource.externalUser.userId " +
+				" from ProblemHistory model where (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		
+		if(!problemSearchVO.getScopeAll())
+		{
+			query.append(" and model.problemLocation.problemCompleteLocation.");
+			if(problemSearchVO.getScopeId().equals(2L))
+				query.append(" state.stateId ");
+			else if(problemSearchVO.getScopeId().equals(3L))
+				query.append(" district.districtId ");
+			else if(problemSearchVO.getScopeId().equals(4L))
+				query.append(" constituency.constituencyId ");
+			else if(problemSearchVO.getScopeId().equals(5L))
+				query.append(" tehsil.tehsilId ");
+			else if(problemSearchVO.getScopeId().equals(6L))
+				query.append(" hamlet.hamletId ");
+			else if(problemSearchVO.getScopeId().equals(7L))
+				query.append(" localElectionBody.localElectionBodyId ");
+			else if(problemSearchVO.getScopeId().equals(8L))
+				query.append(" ward.constituencyId ");
+			else if(problemSearchVO.getScopeId().equals(9L))
+				query.append(" booth.boothId ");
+			
+			query.append("  = :localtionValue ");
+				
+		}
+		if(!problemSearchVO.getStatusAll())
+			query.append(" and model.problemStatus.problemStatusId = :problemStatusId ");
+		
+		if(!problemSearchVO.getUsersAll())
+			query.append(" and model.problemLocation.problemAndProblemSource.externalUser.userId = :userId ");
+		
+		if(!problemSearchVO.getTypeAll())
+			query.append(" and model.problemLocation.problemAndProblemSource.problem.problemType.problemTypeId = :problemTypeId ");
+		
+		Query queryObj = getSession().createQuery(query.toString());
+		
+		if(!problemSearchVO.getScopeAll())
+			queryObj.setParameter("localtionValue", problemSearchVO.getLocationValue());
+		if(!problemSearchVO.getStatusAll())
+			queryObj.setParameter("problemStatusId", problemSearchVO.getStatusId());
+		if(!problemSearchVO.getUsersAll())
+			queryObj.setParameter("userId", problemSearchVO.getUserId());
+		if(!problemSearchVO.getTypeAll())
+			queryObj.setParameter("problemTypeId", problemSearchVO.getTypeId());
+		   if(!countReq)
+		   {
+			queryObj.setFirstResult(startIndex);
+			queryObj.setMaxResults(maxIndex);
+		   }
+		return queryObj.list();
+	
 	}
 	
 }
