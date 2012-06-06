@@ -113,4 +113,16 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 	public List<Object[]> getSubusersByParentUserId(Long parentUserId){
 		return getHibernateTemplate().find("select model.parentUser.registrationId , model.registrationId From Registration model where model.parentUser.registrationId=?",parentUserId);
 	}
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update Registration model set model.profileImg = ? where model.registrationId = ?");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, imageName);
+		queryObject.setParameter(1, userId);	
+		
+		return queryObject.executeUpdate();	
+		
+	}
 }

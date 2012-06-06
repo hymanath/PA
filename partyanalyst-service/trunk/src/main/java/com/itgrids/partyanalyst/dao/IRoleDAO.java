@@ -5,4 +5,5 @@ import com.itgrids.partyanalyst.model.Role;
 
 public interface IRoleDAO extends GenericDao<Role, Long>{
 
+	public Role getRoleByRoleType(String roleType);
 }
