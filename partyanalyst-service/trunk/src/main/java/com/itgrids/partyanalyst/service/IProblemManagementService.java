@@ -15,12 +15,12 @@ import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.File;
-import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IProblemManagementService {
 
@@ -126,4 +126,14 @@ public interface IProblemManagementService {
 	public ProblemBeanVO getProblemCompleteInfoOfAFreeUserProblem(Long problemHistoryId, Long userId);
 	
 	public ProblemBeanVO getProblemDetailsByProblemReferenceId(String problemReferenceId , Long userId);
+	
+	public List<SelectOptionVO> getStates();
+	
+	public List<SelectOptionVO> getDistrictsByAStateID(Long stateId);
+	
+	public List<SelectOptionVO> getProblemPostedUserDetails();
+	
+	public List<SelectOptionVO> getProblemTypes();
+	
+	public List<ProblemBeanVO> getProblemDetailsForFreeUser(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex);
 }
