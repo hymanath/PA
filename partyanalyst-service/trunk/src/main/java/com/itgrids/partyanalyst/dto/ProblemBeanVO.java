@@ -98,7 +98,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private long feedBackCount;
 	private String lastName;
     private String url;
+    private Integer problemCount;
 	
+	public Integer getProblemCount() {
+		return problemCount;
+	}
+
+	public void setProblemCount(Integer problemCount) {
+		this.problemCount = problemCount;
+	}
+
 	public long getFeedBackCount() {
 		return feedBackCount;
 	}
