@@ -61,6 +61,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private StateRegionDistrict stateRegionDistrict;
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
+	private Set<Registration> users = new HashSet<Registration>(0);
 	
 
 	// Constructors
@@ -260,6 +261,16 @@ public class District extends BaseModel implements java.io.Serializable {
 	public void setElectionGoverningBody(
 			Set<ElectionGoverningBody> electionGoverningBody) {
 		this.electionGoverningBody = electionGoverningBody;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "district")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Registration> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<Registration> users) {
+		this.users = users;
 	}
 	
 	
