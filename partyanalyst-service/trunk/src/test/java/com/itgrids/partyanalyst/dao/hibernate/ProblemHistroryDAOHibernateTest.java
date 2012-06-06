@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -270,11 +271,11 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testgetAllPostedProblemsByAnanymousUserId(){
+	/*public void testgetAllPostedProblemsByAnanymousUserId(){
 		
 		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(411L, 0, 5, "desc", "model.problemLocation.problemAndProblemSource.problem.problemId", IConstants.TOTAL);
 		System.out.println(list1.size());
-	}
+	}*/
 	/*
 	public void testFindProblemsForSelectedSearchOptions(){
 		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l,false,false);
@@ -585,7 +586,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println("----"+problemHistoryDAO.getFreeUserIdOfAProblem(244l));
 	}*/
 	
-	public void testGetProblemHistoryIdByReferenceId()
+	/*public void testGetProblemHistoryIdByReferenceId()
 	{
 		List<Object[]> list = problemHistoryDAO.getProblemHistoryIdByReferenceId("PU66406");
 		System.out.println(list.size());
@@ -598,6 +599,56 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("userId - "+params[2].toString());
 			System.out.println("isApproved - "+params[3]);
 			}
+	}*/
+	
+	/*public void testGetStates()
+	{
+		List<Object[]> list = problemHistoryDAO.getStates();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params: list)
+			{
+				System.out.println(params[0]+" "+params[1].toString() );
+			}
+		}
+	}*/
+	/*public void testGetProblemPostedUserDetails()
+	{
+		List<Object[]> list = problemHistoryDAO.getProblemPostedUserDetails();
+		System.out.println(list.size());
+		if(list !=null &&list.size() >0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+"---"+params[1].toString()+" "+params[2].toString());
+			}
+		}
+	}*/
+	
+	public void testGetProblemDetailsForAFreeUser()
+	{
+		ProblemSearchVO problemSearchVO = new ProblemSearchVO();
+		
+		problemSearchVO.setScopeAll(true);
+		problemSearchVO.setStatusAll(false);
+		problemSearchVO.setTypeAll(true);
+		problemSearchVO.setTypeId(10l);
+		problemSearchVO.setUsersAll(true);
+		problemSearchVO.setUserId(850l);
+		problemSearchVO.setScopeId(8l);
+		problemSearchVO.setLocationValue(128426l);
+		problemSearchVO.setStatusId(1l);
+		List<Object[]> list = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,0,4,false);
+		System.out.println(list.size());
+		if(list!= null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]+" "+params[4]);
+			}
+		}
+		
 	}
 }	
+
 

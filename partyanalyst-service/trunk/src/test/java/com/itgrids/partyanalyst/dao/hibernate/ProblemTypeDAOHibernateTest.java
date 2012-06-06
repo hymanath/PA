@@ -15,11 +15,22 @@ public class ProblemTypeDAOHibernateTest extends BaseDaoTestCase{
 		this.problemTypeDAO = problemTypeDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		List<ProblemType> list = problemTypeDAO.getAll();
 		for(ProblemType prob : list){
 		System.out.println(prob.getProblemType());
+		}
+	}*/
+	public void testGetProblemTypes()
+	{
+		List<Object[]> list = problemTypeDAO.getProblemTypes();
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params: list){
+				System.out.println(params[0]+"----------"+params[1].toString());
+			}
 		}
 	}
 }
