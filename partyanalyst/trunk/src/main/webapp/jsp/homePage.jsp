@@ -41,6 +41,8 @@
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script src="js/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript"></script>
 <script src="js/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">	</script>
+
+ <script language="javascript" src="js/jquery.marquee.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
 <script type="text/javascript">
 
@@ -405,7 +407,7 @@ var pollStatus = [];
         <div class="latest-nu-sec">
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
-         <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollDelay="180" >
+         <marquee onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
           <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">News</u> :
 		  
 		  <a href="javascript:{}" title="">
@@ -609,8 +611,11 @@ var pollStatus = [];
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
         <div class="sneak-peak-sec" style="width:580px;padding:0px;margin:5px;border-radius:5px;position:relative;border:1px solid #cccccc;">
-          <span class="problem-h1" style="margin-bottom: 2px; padding-bottom: 21px; padding-top: 7px;"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
+          <span class="problem-h1" style="margin-bottom: 30px; padding-bottom: 21px; padding-top: 7px;"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
 		  <h2 class="problem-h2"><b><font style="color:#000;"> New or Existing</font></b> - Our Platform elevates your problems to the external world.</h2>
+
+		  <a href="problemSearchAction.action" class="problem-register" style="margin-right: 290px; margin-bottom: -30px; margin-top: 8px;">View All Problems</a>
+
 		  <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
 			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register" style="display: inline;
     float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
@@ -631,15 +636,16 @@ var pollStatus = [];
 		  <!-- <h3 class="problem-cont-h3"><b><font style="color:#F55C41">VIEW HERE</font></b> -Problems in your AREA</h3>-->
 			<div style="margin-top: 8px; margin-left: 0px; margin-bottom: 10px;">
 			
-				<div style="margin-left: 60px; margin-bottom: 0px; margin-top: 15px;">
+				<div style="margin-left: 25px; margin-bottom: 0px; margin-top: 15px;font-weight: bold;">
 				
-					Enter Problem Reference Id : <input type="text" id="problemReferenceId" />
+					To Quick View the Problem, Enter the Reference Id : <input type="text" id="problemReferenceId" size="10" />
 					
-					<input type="button" value="Search" onclick="getProblemReferenceId()" style=" background: #F6290C;color: #FFF; font-weight: bold;padding: 4px 5px 4px 5px;border-radius: 5px;cursor: pointer;" />
+					<input type="button" value="Search" onclick="getProblemReferenceId()" style=" background: #0063DC;color: #FFF; font-weight: bold;padding: 4px 5px 4px 5px;border-radius: 5px;cursor: pointer; border: medium;" />
+					<span id="searchAjaxImgSpan" style="margin-left: 515px; display: none; margin-top: -24px;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span>
 
 				</div>
 				<div id="problemErrorMsgDiv" style="margin-left: 50px;"></div>
-				<div id="problemDescriptionDiv" style="margin-left: 139px; margin-top: 0px; margin-bottom: 0px; padding-top: 7px;"></div>
+				<div id="problemDescriptionDiv" style="margin-left: 139px; margin-top: 9px; margin-bottom: 0px; padding-top: 7px;"></div>
 				</div>
 				
               <div style="min-height:504px;max-height:850px;overflow-y:auto;display:block;clear:both;" id="problemsShowDIV"></div>
@@ -1748,6 +1754,7 @@ var arrData = pollStatus;
 			return;
 		else
 		{
+			document.getElementById("searchAjaxImgSpan").style.display = 'block';
 		var jsObj = 
 			{
 				problemRefId : problemRefId,
@@ -1760,6 +1767,7 @@ var arrData = pollStatus;
 	}	
 function showProblemDescriptionByProblemRefId(results)
 {
+	document.getElementById("searchAjaxImgSpan").style.display = 'none';
 	var problemDescDivEle = document.getElementById("problemDescriptionDiv");
     document.getElementById("problemReferenceId").value = '';
 	if(results == null)
