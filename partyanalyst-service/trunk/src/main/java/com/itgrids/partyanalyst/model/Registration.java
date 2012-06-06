@@ -69,7 +69,13 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	 private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
-	 
+	 private State state;
+	 private District district;
+	 private Constituency constituency;
+	 private String profileImg;
+	 private Date registeredDate;
+	 private Date updatedDate;
+	 private String isPwdChanged;
 	
 	public Registration() {
 		 
@@ -143,7 +149,7 @@ public class Registration implements java.io.Serializable {
 	public void setRegistrationId(Long registrationId) {
 		this.registrationId = registrationId;
 	}
-	@Column(name = "firstname", length = 40)
+	@Column(name = "firstname", length = 70)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -151,7 +157,7 @@ public class Registration implements java.io.Serializable {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	@Column(name = "middlename", length = 40)
+	@Column(name = "middlename", length = 70)
 	public String getMiddleName() {
 		return middleName;
 	}
@@ -159,7 +165,7 @@ public class Registration implements java.io.Serializable {
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
-	@Column(name = "lastname", length = 40)
+	@Column(name = "lastname", length = 70)
 	public String getLastName() {
 		return lastName;
 	}
@@ -167,7 +173,7 @@ public class Registration implements java.io.Serializable {
 		this.lastName = lastName;
 	}
 	
-	@Column(name = "username", length = 40)
+	@Column(name = "username", length = 50)
 	public String getUserName() {
 		return userName;
 	}
@@ -176,7 +182,7 @@ public class Registration implements java.io.Serializable {
 		this.userName = userName;
 	}
 	
-	@Column(name = "password", length = 40)
+	@Column(name = "password", length = 50)
 	public String getPassword() {
 		return password;
 	}
@@ -195,7 +201,7 @@ public class Registration implements java.io.Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
-	@Column(name = "email", length = 60)
+	@Column(name = "email", length = 50)
 	public String getEmail() {
 		return email;
 	}
@@ -220,7 +226,7 @@ public class Registration implements java.io.Serializable {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	@Column(name = "address", length = 50)
+	@Column(name = "address", length = 250)
 	public String getAddress() {
 		return address;
 	}
@@ -228,7 +234,7 @@ public class Registration implements java.io.Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	@Column(name = "gender", length = 25)
+	@Column(name = "gender", length = 10)
 	public String getGender() {
 		return gender;
 	}
@@ -491,6 +497,30 @@ public class Registration implements java.io.Serializable {
 	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
 		this.userLoginDetails = userLoginDetails;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+		public State getState() {
+		return state;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -501,6 +531,39 @@ public class Registration implements java.io.Serializable {
 	public void setUserRoles(Set<UserRoles> userRoles) {
 		this.userRoles = userRoles;
 	}
-	
-	
+	@Column(name="profile_Img",length=100)
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
+
+	@Column(name = "registered_time", length = 10)
+	public Date getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	@Column(name = "updated_date", length = 10)
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	@Column(name = "is_pwd_changed", length = 10)
+	public String getIsPwdChanged() {
+		return isPwdChanged;
+	}
+
+	public void setIsPwdChanged(String isPwdChanged) {
+		this.isPwdChanged = isPwdChanged;
+	}
 }

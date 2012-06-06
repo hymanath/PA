@@ -74,6 +74,7 @@ public class State implements java.io.Serializable {
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
 	private Set<ProblemSourceScope> problemSourceScope = new HashSet<ProblemSourceScope>(0);
 	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
+	private Set<Registration> users = new HashSet<Registration>(0);
 	
 	// Constructors
 
@@ -397,80 +398,14 @@ public class State implements java.io.Serializable {
 		this.stateRegion = stateRegion;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"stateId", stateId)//.append("country", country)
-				.append(
-				"stateName", stateName).append("adminCapital", adminCapital)
-				.append("legisCapital", legisCapital).append(
-						"judiciaryCapital", judiciaryCapital).append(
-						"yearEstablished", yearEstablished).append(
-						"stateLanguage", stateLanguage).append("stateSymbol",
-						stateSymbol).append("stateSong", stateSong).append(
-						"stateAnimal", stateAnimal).append("stateBird",
-						stateBird).append("stateTree", stateTree).append(
-						"stateSport", stateSport).append("stateDance",
-						stateDance).append("stateFlower", stateFlower).append(
-						"isoCode", isoCode).append("stateCode", stateCode)
-				.append("startDate", startDate)
-				.append("deformDate", deformDate)//.append("constituencies",
-						//constituencies).append("districts", districts)
-				.toString();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Registration> getUsers() {
+		return users;
 	}
 
-	 (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 
-	@Override
-	public boolean equals(final Object other) {
-		if (!(other instanceof State))
-			return false;
-		State castOther = (State) other;
-		return new EqualsBuilder().append(stateId, castOther.stateId)//.append(
-				//country, castOther.country)
-		.append(stateName,
-				castOther.stateName).append(adminCapital,
-				castOther.adminCapital).append(legisCapital,
-				castOther.legisCapital).append(judiciaryCapital,
-				castOther.judiciaryCapital).append(yearEstablished,
-				castOther.yearEstablished).append(stateLanguage,
-				castOther.stateLanguage).append(stateSymbol,
-				castOther.stateSymbol).append(stateSong, castOther.stateSong)
-				.append(stateAnimal, castOther.stateAnimal).append(stateBird,
-						castOther.stateBird).append(stateTree,
-						castOther.stateTree).append(stateSport,
-						castOther.stateSport).append(stateDance,
-						castOther.stateDance).append(stateFlower,
-						castOther.stateFlower).append(isoCode,
-						castOther.isoCode).append(stateCode,
-						castOther.stateCode).append(startDate,
-						castOther.startDate).append(deformDate,
-						castOther.deformDate)//.append(constituencies,
-						//castOther.constituencies).append(districts,
-						//castOther.districts)
-						.isEquals();
+	public void setUsers(Set<Registration> users) {
+		this.users = users;
 	}
-
-	 (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 
-	@Override
-	public int hashCode() {
 	
-		return new HashCodeBuilder(17, 37).append(stateId)//.append(country)
-				.append(stateName).append(adminCapital).append(legisCapital)
-				.append(judiciaryCapital).append(yearEstablished).append(
-						stateLanguage).append(stateSymbol).append(stateSong)
-				.append(stateAnimal).append(stateBird).append(stateTree)
-				.append(stateSport).append(stateDance).append(stateFlower)
-				.append(isoCode).append(stateCode).append(startDate).append(
-						deformDate)//.append(constituencies).append(districts)
-				.toHashCode();
-	}*/
-
 }
