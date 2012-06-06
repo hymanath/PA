@@ -68,7 +68,9 @@
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="userReferralEmailsDAO" ref="userReferralEmailsDAO"/>
-		
+		<property name="registrationDAO" ref="registrationDAO"/>
+		<property name="roleDAO" ref="roleDAO"/>
+		<property name="userRolesDAO" ref="userRolesDAO"/>
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
