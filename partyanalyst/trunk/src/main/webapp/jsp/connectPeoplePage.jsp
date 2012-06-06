@@ -174,7 +174,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;clear:both;border:1px solid #d3d3d3;"> 						
+					<div id="constituencyLeftContentOuter" style="width:670px;margin-left:auto;background:#ffffff;height:190px;clear:both;border:1px solid #d3d3d3;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -206,7 +206,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 										</td>
 								<c:if test="${sessionScope.UserType != 'PartyAnalyst'}"> 
 										<td width="25%" valign="top">
-											<div class="connectPeople_profile_center_linksDiv" >
+											<div class="connectPeople_profile_center_linksDiv" style="width:160px;">
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
@@ -214,7 +214,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 													</tr>
 												</table>												
 											</div>
-											<div class="connectPeople_profile_center_linksDiv">
+											<div class="connectPeople_profile_center_linksDiv" style="width:160px;">
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
@@ -222,11 +222,19 @@ google.load("visualization", "1", {packages:["piechart"]});
 													</tr>
 												</table>												
 											</div>
-											<div class="connectPeople_profile_center_linksDiv">
+											<div class="connectPeople_profile_center_linksDiv" style="width:160px;">
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()" style="color:#669900;">Post Problem</a></td>
+													</tr>
+												</table>												
+											</div>
+										<div class="connectPeople_profile_center_linksDiv" style="width:160px;">
+												<table>
+													<tr>
+														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td><a href="problemSearchAction.action" style="color:#669900;">View All Problems</a></td>
 													</tr>
 												</table>												
 											</div>
@@ -236,7 +244,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 									
 								</table>
 							</div>
-							<div id="connectPeople_messages_center" class="yui-skin-sam" style="margin-top:12px;">
+							<div id="connectPeople_messages_center" class="yui-skin-sam" style="margin-top:20px;">
 											 
 							</div>
 
@@ -396,7 +404,7 @@ google.load("visualization", "1", {packages:["piechart"]});
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:20px;"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:270px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
