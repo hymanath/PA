@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -387,7 +388,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.INFO_SOURCES,problemSourcesList);
 		
 		try{
-		if("FreeUser".equals(session.getAttribute("UserType")))
+		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true))
 		{	
 			setScope(new Long(requestSrc));
 			if("2".equalsIgnoreCase(requestSrc))	
@@ -455,7 +456,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
 				setProblemLocation(0l);
 			}		
-		} else if("PartyAnalyst".equals(session.getAttribute("UserType")))
+		} else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true))
 		{
 			String accessType =user.getAccessType();
 			Long accessValue= new Long(user.getAccessValue());
