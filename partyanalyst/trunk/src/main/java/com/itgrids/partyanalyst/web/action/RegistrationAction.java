@@ -102,6 +102,14 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setParty(party);
 	}
 	
+	public String getFreeuser() {
+		return regVO.getFreeuser();
+	}
+
+	public void setFreeuser(String freeuser) {
+		this.regVO.setFreeuser(freeuser);
+	}
+	
 	public String execute() throws Exception
 	{
 		String requestStatus = null;
