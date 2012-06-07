@@ -586,7 +586,6 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		return SUCCESS;
 	}
 	
-	@Override
 	public void prepare() throws Exception {
 			 
 		String problemHistoryId =request.getParameter("problemHistoryId");
@@ -613,7 +612,6 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		}
 	}
 
-	@Override
 	public ProblemBeanVO getModel() {
 		// TODO Auto-generated method stub
 			return problemBeanVO;
