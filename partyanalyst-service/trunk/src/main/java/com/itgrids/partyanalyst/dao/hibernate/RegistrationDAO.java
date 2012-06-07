@@ -1,14 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
-
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 
 public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> implements
@@ -123,6 +122,34 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		queryObject.setParameter(1, userId);	
 		
 		return queryObject.executeUpdate();	
+		
+	}
+	public Integer changeUserPassword(String password,Long registrationId,String status,Date date)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update Registration model set model.password = ?,model.isPwdChanged=?,model.updatedDate=? where model.registrationId = ?");
+		Query queryObj = getSession().createQuery(query.toString());
+		queryObj.setParameter(0,password);
+		queryObj.setParameter(1, status);
+		queryObj.setParameter(2, date);
+		queryObj.setParameter(3, registrationId);
+		return queryObj.executeUpdate();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Registration> checkUserPassword(String password,Long userId)
+	{
+		Object[] parameters = {password,userId};
+		return getHibernateTemplate().find("select model.password from Registration model where model.password = ? and model.registrationId = ?",parameters);
+	}
+	
+	public List getUserProfileImageNameByUserId(Long userId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.profileImg from Registration model where model.registrationId = ?");
+		Query queryObj = getSession().createQuery(query.toString());
+		queryObj.setParameter(0, userId);
+		return queryObj.list();
 		
 	}
 }
