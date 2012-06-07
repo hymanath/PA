@@ -193,12 +193,10 @@ public class PartyPageAction extends ActionSupport implements
 		this.session = request.getSession();
 	}
    
-	@Override
 	public void setServletResponse(HttpServletResponse arg0) {
 
 	}
 
-	@Override
 	public void setServletContext(ServletContext arg0) {
 
 	}
