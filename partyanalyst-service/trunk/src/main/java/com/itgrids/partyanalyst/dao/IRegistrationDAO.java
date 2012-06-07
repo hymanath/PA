@@ -1,11 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 
 
@@ -56,5 +56,11 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	public List<Object[]> getSubusersByParentUserId(Long parentUserId);
 	
 	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
+	
+	public Integer changeUserPassword(String password,Long registrationId,String status,Date date);
+	
+	public List<Registration> checkUserPassword(String password,Long userId);
+	
+	public List getUserProfileImageNameByUserId(Long userId);
 
 }
