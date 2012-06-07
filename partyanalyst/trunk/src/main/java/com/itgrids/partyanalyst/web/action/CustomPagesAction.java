@@ -123,7 +123,6 @@ public class CustomPagesAction extends ActionSupport implements ServletRequestAw
 		this.candidateDetailsService = candidateDetailsService;
 	}
 	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		
 		this.request = request;
