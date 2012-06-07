@@ -80,6 +80,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String districtSelectName;
     private String candidateId;
     private String changedUserName = "false";
+    private String userRole;
     
     public String getDistrictSelectName() {
 		return districtSelectName;
@@ -423,10 +424,11 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session = request.getSession();
 		RegistrationVO regVO = null;
 		
-		if("2".equalsIgnoreCase(userType))
+		/*if("2".equalsIgnoreCase(userType))
 			regVO = loginService.checkForValidNormalUser(userName, password);//Free User
-		else
-			regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
+		else*/
+		
+		regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
 		
 	
 		//Check User Availability
@@ -443,27 +445,32 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session.setAttribute("loginStatus", "out");
 		session.setAttribute("HiddenCount", hiden);
 		
-		if("1".equalsIgnoreCase(userType))
+	  for(int i=0;i<regVO.getUserRoles().size();i++)
+	  {
+		if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 		{
-			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+			userRole = regVO.getUserRoles().get(i);
+			//regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
+			session.setAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE, true);
 			session.setAttribute("UserType", "PartyAnalyst");
 			saveUserSessionDetails(IWebConstants.LOGIN);
 		}
-		else
+		else if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.FREE_USER))
 		{
 			userFullName = regVO.getFirstName() + " "; 
-			regVO.setUserStatus(IConstants.FREE_USER);
+			//regVO.setUserStatus(IConstants.FREE_USER);
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
+			session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
 			session.setAttribute("UserType", "FreeUser");
 			//session.setAttribute("changedUserName", new Boolean(true));
 			changedUserName = "true";
 			saveUserSessionDetails(IWebConstants.LOGIN);
 			return getRedirectPageDetails();	
 		}
-		
+	 }
 		return finalResultString();
 		
 	}
@@ -478,13 +485,12 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
  		else if(url != null && url.length() > 0 && url.contains(".action") && !url.contains("loginAction")){
  			url = StringUtils.split(url,".")[0].substring(1);
  			return "redirectUrl";
- 		}else if("1".equalsIgnoreCase(userType))
- 			return IConstants.PARTY_ANALYST_USER;
- 		
- 		
- 		
- 		return IConstants.FREE_USER;        
-	}
+ 		}
+    	if(userRole !=null && userRole.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+				return IConstants.PARTY_ANALYST_USER;
+		
+    	return IConstants.FREE_USER;
+     }
 
 	public String getRedirectPageDetails(){
 		
