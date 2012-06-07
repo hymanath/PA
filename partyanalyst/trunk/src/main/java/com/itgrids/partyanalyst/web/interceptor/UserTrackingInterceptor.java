@@ -40,7 +40,7 @@ public class UserTrackingInterceptor implements ServletRequestAware,Interceptor 
 		
 		if(invocation.getProxy().getMethod().equalsIgnoreCase("execute"))
 		{	
-		UserTrackingVO userTrackingVO;
+			UserTrackingVO userTrackingVO;
 		
 			userTrackingVO = new UserTrackingVO();
 			HttpServletRequest servletRequest = ServletActionContext.getRequest();
@@ -50,12 +50,12 @@ public class UserTrackingInterceptor implements ServletRequestAware,Interceptor 
             userTrackingVO.setRequestURI(servletRequest.getRequestURI().substring(1).concat(servletRequest.getQueryString() != null ? "?"+servletRequest.getQueryString():""));
             userTrackingVO.setSessionId(session.getId());
             
-            if(session != null){
+            if(session != null)
+            {
             	RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
-            	if(registrationVO != null){
-            		userTrackingVO.setUserType(registrationVO.getUserStatus());
+            	
+            	if(registrationVO != null)
             		userTrackingVO.setUserId(registrationVO.getRegistrationID());
-            	}
             }
             userTrackingService.saveUserTrackingDetails(userTrackingVO);
 		}				
