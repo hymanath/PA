@@ -12,16 +12,19 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dto.BaseDTO;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.Role;
+import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
@@ -37,6 +40,24 @@ public class RegistrationService implements IRegistrationService{
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IAnanymousUserService ananymousUserService;
 	private IDateService dateService;
+	private IRoleDAO roleDAO;
+	private IUserRolesDAO userRolesDAO;
+	
+	public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
+
+	public IRoleDAO getRoleDAO() {
+		return roleDAO;
+	}
+
+	public void setRoleDAO(IRoleDAO roleDAO) {
+		this.roleDAO = roleDAO;
+	}
 	BaseDTO requestStatus = new BaseDTO();
 	private Long userID = null;
 
@@ -120,22 +141,26 @@ public class RegistrationService implements IRegistrationService{
 		Registration reg = new Registration();		
 		String dob = values.getDateOfBirth();
 		reg = convertIntoModel(values);
-				
-		if(checkUserName(values.getUserName())!= true){
-			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER)){
+		
+		
+		if(checkUserName(values.getUserName())!= true)
+		{
+			
+			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+			{
 				saveDataInToAnonymousTable(reg,dob);
 				reg = registrationDAO.save(reg);
-			}else{
+			}
+			else
 				reg = registrationDAO.save(reg);
-			}		
-		//requestStatus = BaseDTO.SUCCESS;
-		setUserID(reg.getRegistrationId());
-		requestStatus.setRequestStatus(BaseDTO.SUCCESS);
+			
+			setUserID(reg.getRegistrationId());
+			saveDataInToUserRolesTable(reg,values);
+			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
 		}
-		else{
-			//requestStatus =  BaseDTO.PARTIAL;
+		else
 			requestStatus.setRequestStatus(BaseDTO.PARTIAL);
-		}
+		
 		return requestStatus.getRequestStatus();
 	}
 	
@@ -178,6 +203,37 @@ public class RegistrationService implements IRegistrationService{
 			e.printStackTrace();
 		}
 		
+	}
+	public ResultStatus saveDataInToUserRolesTable(Registration reg, RegistrationVO values)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			UserRoles userRoles = null;
+			Role role = null;
+			
+			role = roleDAO.getRoleByRoleType(IConstants.PARTY_ANALYST_USER);
+			userRoles = new UserRoles();
+			userRoles.setUser(reg);
+			userRoles.setRole(role);
+			userRolesDAO.save(userRoles);
+			
+			if(values.getFreeuser().equalsIgnoreCase(IConstants.TRUE))
+			{
+				role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
+				userRoles = new UserRoles();
+				userRoles.setUser(reg);
+				userRoles.setRole(role);
+				userRolesDAO.save(userRoles);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}
+		catch (Exception e) 
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
 	}
 	
 	
@@ -363,5 +419,35 @@ public class RegistrationService implements IRegistrationService{
 			return detailsList;
 		}
 		return detailsList;
-	}	
+	}
+	
+	public List<String> getRoleTypeForUser()
+	{
+		 List<String> detailsList = new ArrayList<String>();
+		 RegistrationVO registrationVO=new RegistrationVO();
+		 
+		try
+		{
+		List<Role> userTypes = roleDAO.getRoleType();
+		if(userTypes != null && userTypes.size() > 0)
+		{
+			for(Role role : userTypes)
+			{
+				detailsList = new ArrayList<String>();
+				detailsList.add(role.getRoleType());
+				
+				
+			}
+			
+		}
+		return detailsList;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return detailsList;
+		}
+		
+		
+	}
 }
