@@ -306,7 +306,6 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		this.partyList = partyList;
 	}
 
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request=request;
 	}
@@ -360,7 +359,7 @@ public String execute()
 	 
  }
 
- @Override
+// @Override
  public void setServletContext(ServletContext context) {
  	// TODO Auto-generated method stub
  	this.context=context;
