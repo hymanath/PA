@@ -110,7 +110,7 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result type="redirect" name="PARTY_ANALYST_USER">index.action?changedUserName=true</result>
-			<result type="redirect" name="FREE_USER">homePage.action?changedUserName=true
+			<result type="redirect" name="FREE_USER">connectPeopleAction.action?changedUserName=true
 			</result>
 			<result type="redirect" name="constituencyProblemManagement">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
