@@ -56,8 +56,17 @@ public class RegistrationVO extends BaseDTO{
 	private Long mainAccountId;
 	private Long districtId;
     private String contextPath;
+	private String freeuser;
 	
-    public String getContextPath() {
+	public String getFreeuser() {
+		return freeuser;
+	}
+
+	public void setFreeuser(String freeuser) {
+		this.freeuser = freeuser;
+	}
+
+	public String getContextPath() {
 		return contextPath;
 	}
 
