@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -843,10 +844,10 @@ public class ConstituencyPageAction extends ActionSupport implements
    		}
    		
    		//	Free User
-   		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
+   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
 			userDetails.setLoginStatus("true");
 			userDetails.setUserId(user.getRegistrationID());
-		}else if(user!=null && user.getUserStatus() != null){
+		}else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true)){
 			userDetails.setLoginStatus("true");
 			userDetails.setUserId(user.getRegistrationID());
 		}else{
