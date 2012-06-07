@@ -204,6 +204,7 @@
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO" />
+		<property name="userRolesDAO" ref="userRolesDAO" />
 	</bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
