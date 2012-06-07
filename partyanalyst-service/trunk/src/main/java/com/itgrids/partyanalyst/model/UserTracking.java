@@ -30,12 +30,9 @@ public class UserTracking extends BaseModel implements Serializable {
 	private String urlName;
 	private String ipAddress;
 	private Date time;
-	private String userType;
 	private String sessionId;
 	private Registration registration;
-	private AnanymousUser freeUser;
 	private Long registrationId;
-	private Long freeUserId;
 	
 	 public UserTracking()
 	 {
@@ -86,15 +83,6 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.time = time;
 	}
 	
-	@Column(name = "user_type", length = 50)
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
 	@Column(name = "session_id", length = 100)
 	public String getSessionId() {
 		return sessionId;
@@ -116,18 +104,6 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.registration = registration;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_id",updatable = false, insertable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AnanymousUser getFreeUser() {
-		return freeUser;
-	}
-
-	public void setFreeUser(AnanymousUser freeUser) {
-		this.freeUser = freeUser;
-	}
-
 	@Column(name = "registration_id", length = 10)
 	public Long getRegistrationId() {
 		return registrationId;
@@ -137,18 +113,5 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.registrationId = registrationId;
 	}
 
-	@Column(name = "free_user_id", length = 10)
-	public Long getFreeUserId() {
-		return freeUserId;
-	}
-
-	public void setFreeUserId(Long freeUserId) {
-		this.freeUserId = freeUserId;
-	}
-	
-
-
-	
-	
 
 }

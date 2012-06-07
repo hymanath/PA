@@ -25,22 +25,16 @@ public class UserTrackingService implements IUserTrackingService{
 	{
 		try
 		{
-		UserTracking userTracking = new UserTracking();
-		userTracking.setIpAddress(userTrackingVO.getRemoteAddress());
-		userTracking.setUrlName(userTrackingVO.getRequestURI());
-		userTracking.setUserType(userTrackingVO.getUserType());
-		userTracking.setTime(dateUtilService.getCurrentDateAndTime());
-		userTracking.setSessionId(userTrackingVO.getSessionId());
-		
-		if(userTrackingVO.getUserType() != null)
-		{
-			if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
-				userTracking.setFreeUserId(userTrackingVO.getUserId());
-			else
+			UserTracking userTracking = new UserTracking();
+			userTracking.setIpAddress(userTrackingVO.getRemoteAddress());
+			userTracking.setUrlName(userTrackingVO.getRequestURI());
+			userTracking.setTime(dateUtilService.getCurrentDateAndTime());
+			userTracking.setSessionId(userTrackingVO.getSessionId());
+			
+			if(userTrackingVO.getUserId() != null && userTrackingVO.getUserId() > 0)
 				userTracking.setRegistrationId(userTrackingVO.getUserId());
-		}
-		
-		userTrackingDAO.save(userTracking);
+			
+			userTrackingDAO.save(userTracking);
 		}
 		catch(Exception e)
 		{
