@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -61,8 +62,17 @@ public class LoginService implements ILoginService{
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserLoginDetailsDAO userLoginDetailsDAO;
 	private static Logger log = Logger.getLogger(LoginService.class);
+	private IUserRolesDAO userRolesDAO;
 	
 	
+	public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
+
 	public IUserLoginDetailsDAO getUserLoginDetailsDAO() {
 		return userLoginDetailsDAO;
 	}
@@ -200,6 +210,7 @@ public class LoginService implements ILoginService{
 		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
 		Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
+		List<String> roles = new ArrayList<String>(0);
 		try {
 			List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);
 			
@@ -244,6 +255,14 @@ public class LoginService implements ILoginService{
 			else
 				regVO.setIsAdmin(IConstants.FALSE);	
 			
+			List<Object[]> userRoles = userRolesDAO.getUserRoles(reg.getRegistrationId());
+			if(userRoles !=null && userRoles.size()>0)
+			{
+				for(Object[] param : userRoles){
+					roles.add(param[1].toString());
+					regVO.setUserRoles(roles);
+				}
+			}
 			regVO.setEntitlements(entitlements);
 			regVO.setCountries(countries);
 			regVO.setStates(states);
