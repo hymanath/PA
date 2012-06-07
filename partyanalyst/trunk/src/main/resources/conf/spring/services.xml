@@ -213,7 +213,9 @@
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="ananymousUserService" ref="ananymousUserService" />		
+		<property name="ananymousUserService" ref="ananymousUserService" />	
+		<property name="userRolesDAO" ref="userRolesDAO"></property>
+		<property name="roleDAO" ref="roleDAO"></property>
 	</bean>
 	
 	<bean name="constituencySearchService" class="com.itgrids.partyanalyst.service.impl.ConstituencySearchService" >
