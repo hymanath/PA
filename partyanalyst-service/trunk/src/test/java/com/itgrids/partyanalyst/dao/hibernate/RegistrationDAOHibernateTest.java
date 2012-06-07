@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -97,9 +99,26 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		registrationDAO.getAll();
 	}*/
 	
-	public void testSaveUserProfileImageNameToDB()
+	/*public void testSaveUserProfileImageNameToDB()
 	{
 		Integer result = registrationDAO.saveUserProfileImageNameToDB(805l, "anu.jpg");
 		System.out.println(result);
+	}*/
+	/*public void testChangeUserPassword()
+	{
+		Integer result = registrationDAO.changeUserPassword("jyothi", 800l, IConstants.TRUE, new Date());
+		System.out.println(result);
+		
+	}*/
+	/*public void testCheckUserPassword()
+	{
+		List<Registration> list = registrationDAO.checkUserPassword("3352312",800l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetUserProfileImageNameByUserId()
+	{
+		List list = registrationDAO.getUserProfileImageNameByUserId(800l);
+		System.out.println(list.size());
 	}
 }

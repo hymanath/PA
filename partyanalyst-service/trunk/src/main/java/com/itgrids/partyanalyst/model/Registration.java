@@ -76,6 +76,7 @@ public class Registration implements java.io.Serializable {
 	 private Date registeredDate;
 	 private Date updatedDate;
 	 private String isPwdChanged;
+	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	
 	public Registration() {
 		 
@@ -578,4 +579,15 @@ public class Registration implements java.io.Serializable {
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserProfileOpts> getUserProfileOptses() {
+		return userProfileOptses;
+	}
+
+	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
+		this.userProfileOptses = userProfileOptses;
+	}
+	
 }

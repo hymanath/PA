@@ -577,11 +577,11 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	
 	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName){
 		ResultStatus resultStatus = new ResultStatus();
-		List<AnanymousUser> detailsList = null;
-		List<AnanymousUser> detailsListForEmail = null;
+		List<Registration> detailsList = null;
+		List<Registration> detailsListForEmail = null;
 		try{
-			detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
 			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
@@ -1670,23 +1670,23 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	{
 		try{
 		RegistrationVO registrationVO = new RegistrationVO();
-		AnanymousUser registration = ananymousUserDAO.get(registrationId);
+		Registration registration = registrationDAO.get(registrationId);
 		List<Long> userOpts = new ArrayList<Long>();
 		try{
 			
 			registrationVO.setRegistrationID(registrationId);
-			registrationVO.setUserName(registration.getUsername());
+			registrationVO.setUserName(registration.getFirstName());
 			registrationVO.setPassword(registration.getPassword());
 			registrationVO.setGender(registration.getGender());
 			registrationVO.setEmail(registration.getEmail());
 			registrationVO.setPhone(registration.getPhone());
 			registrationVO.setMobile(registration.getMobile());
 			registrationVO.setAddress(registration.getAddress());
-			if(registration.getDateofbirth()!=null)
+			if(registration.getDateOfBirth()!=null)
 			{
-				registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
+				registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateOfBirth().toString()));
 			}
-			registrationVO.setFirstName(registration.getName());
+			registrationVO.setFirstName(registration.getFirstName());
 			registrationVO.setLastName(registration.getLastName());
 			registrationVO.setState(registration.getState().getStateId().toString());
 			registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
@@ -2037,7 +2037,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	public String getUserProfileImageByUserId(Long userId)
 	{
 		String imageURL = "";
-		List params = ananymousUserDAO.getUserProfileImageNameByUserId(userId);
+		List params = registrationDAO.getUserProfileImageNameByUserId(userId);
 		if(params != null && params.size() == 1)
 		{
 			if(params.get(0) != null)
@@ -2124,10 +2124,16 @@ public String getPassword(String password){
 public String changeUserPassword(String crntpassword,String newpassword,Long registrationId)
 {   
 	
-	List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
+	/*List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
 	if(chkPwd.size()==0)
 		return IConstants.NoPassword;
 	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE,dateUtilService.getCurrentDateAndTime());
+	return IConstants.YesPassword;*/
+	
+	List chkpwd = registrationDAO.checkUserPassword(crntpassword,registrationId);
+	if(chkpwd.size() == 0)
+		return IConstants.NoPassword;
+	Integer chkPwdVals = registrationDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
 	return IConstants.YesPassword;
 }
 
