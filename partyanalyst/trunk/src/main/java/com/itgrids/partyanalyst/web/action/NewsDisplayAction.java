@@ -35,7 +35,6 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ResultStatus resultStatus;
 	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
