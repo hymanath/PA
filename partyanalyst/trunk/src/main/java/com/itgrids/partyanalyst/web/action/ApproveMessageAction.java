@@ -79,7 +79,7 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		this.task = task;
 	}
 	
-	@Override
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
