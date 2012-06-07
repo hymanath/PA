@@ -368,7 +368,18 @@
 		 <div id="accessDetailsDiv" class="accessDivMain">
 			 <div id="accessDetailsDivHead" class="accessDivHead"><u>Access Level Details...</u></div>
 			 <div id="accessDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">		
+				<table class="registrationTable">
+					
+					<tr>
+					 	<td style="width:168px;">
+						<s:label for="userrole" id="roleTypeid"/>Role Type
+						</td>
+				
+						<td>
+						<s:checkbox id="freeuser"  value="freeuser" name = "freeuser"/>FREE_USER
+						</td>
+					</tr>
+					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="userTypeField" id="userTypeLabel"  value="%{getText('userType')}" /></td>
 						<td style="padding-left: 10px;"><s:radio id="userTypeField" name="userType" list="#session.userType" required="true"></s:radio> </td>
