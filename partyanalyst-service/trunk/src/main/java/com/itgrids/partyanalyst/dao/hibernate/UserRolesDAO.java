@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
@@ -11,4 +13,9 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles,Long> implements
 	{
 		super(UserRoles.class);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserRoles(Long userId) {
+		return getHibernateTemplate().find("select model.role.roleId , model.role.roleType from UserRoles model where model.user.registrationId =?",userId);
+	}
+	
 }
