@@ -56,6 +56,7 @@ public class RegistrationVO extends BaseDTO{
 	private Long mainAccountId;
 	private Long districtId;
     private String contextPath;
+    private List<String> userRoles = new ArrayList<String>();
 	private String freeuser;
 	
 	public String getFreeuser() {
@@ -378,6 +379,14 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setProfileOpts(List<Long> profileOpts) {
 		this.profileOpts = profileOpts;
+	}
+
+	public List<String> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(List<String> userRoles) {
+		this.userRoles = userRoles;
 	}
 	
 }
