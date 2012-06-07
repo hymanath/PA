@@ -203,9 +203,9 @@ function buildAccordion()
 										
 									</c:if>		-->
 
-									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+									<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
                                         <c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
-									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
+									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        		
 										<c:out value="Welcome, ${sessionScope.UserName} |"/></c:if>
 										
 									<c:if test="${sessionScope.USER.isAdmin == 'true'}">
@@ -219,10 +219,10 @@ function buildAccordion()
 										
 									</c:if>
 									
-									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+									<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
                                        	<a href="logoutAction.action">Logout</a>
 										</c:if>
-								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        
+								<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        
 								<a href="logoutAction.action">Logout</a>
 								</c:if>	
 		</div>
@@ -233,9 +233,9 @@ function buildAccordion()
         
 <div id="menu">
     <ul class="menu">
-        <li><a href="homePage.action" ><span>HOME</span></a>           
-        <c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
-        <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
+        <li><a href="homePage.action" ><span>HOME</span></a>
+<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
+          <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
                 <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a>
                  
@@ -244,8 +244,8 @@ function buildAccordion()
                  
 				</ul></div>
         </li>
-        </c:if>
-		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 
+		</c:if>
+       	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}"> 
          <li><a href="#" class="parent"><span>ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;"><ul>
                 <li><a href="#" class="parent"><span>Election Analysis</span></a>
@@ -346,7 +346,7 @@ function buildAccordion()
 	</li> 
 	</c:if>
 
-		<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || sessionScope.UserType == 'FreeUser'}">
+<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
        <li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
 	 <div  style="z-index:8;text-align:left;" >
 		<ul>
@@ -407,16 +407,18 @@ function buildAccordion()
 
 		<c:if test="${sessionScope.loginStatus == 'out'}">  
 							<li> 
-								<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
-									<a href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+						<c:choose>
+							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
+								<a href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
 										<span>DASH BOARD</span>
 									</a> 
-								</c:if>
-								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+							</c:when>
+							<c:otherwise> 
 									<a href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
 										<span>DASH BOARD</span>
 									</a>  
-								</c:if>	
+							</c:otherwise>	
+						 </c:choose>
 							</li> 
 						</c:if>	
     </ul>
