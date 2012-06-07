@@ -344,10 +344,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		problemCount = problemManagementService.getProblemsCount();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,15);
-		if(user != null && user.getUserType().equalsIgnoreCase(IConstants.FREE_USER)){
+		/*if(user != null && user.getUserType().equalsIgnoreCase(IConstants.FREE_USER)){
 			freeUserConstituencyId = ananymousUserService.getUserConstituencyId(user.getRegistrationID());
 		}
-		
+		*/
 		
 		
 		
