@@ -100,7 +100,7 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-	@Override
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
