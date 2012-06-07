@@ -3302,7 +3302,7 @@ function removeOptionSelected()
  <div class="main-mbg"><h1 style = "font-size:15px;"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if></h1>
 <h1 style = "font-size:15px;"><c:if test="${electionType == 'Parliament'}">Parliament Election Results ${year}</c:if></h1>
 
- <span style="margin-top:10px;margin-right:18px;float:right">
+ <span style="margin-top:-26px;margin-right:18px;float:right">
  <a name="fb_share" type="button_count" 
 share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${electionId}&stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&electionTypeId=${electionTypeId}&year=${year}">Share in Facebook</a> 
 <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript">
