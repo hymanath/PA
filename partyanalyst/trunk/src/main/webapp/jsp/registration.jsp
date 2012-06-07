@@ -371,13 +371,11 @@
 				<table class="registrationTable">
 					
 					<tr>
-					 	<td style="width:168px;">
-						<s:label for="userrole" id="roleTypeid"/>Role Type
-						</td>
+					<td style="padding-left: 10px;">
+					<s:label for="userrole" id="roleTypeid"/>Role Type
+					</td>
 				
-						<td>
-						<s:checkbox id="freeuser"  value="freeuser" name = "freeuser"/>FREE_USER
-						</td>
+						<td style="padding-left: 11px;"><s:checkbox id="freeuser"  value="freeuser" name = "freeuser"/>FREE_USER</td>
 					</tr>
 					
 					<tr>
