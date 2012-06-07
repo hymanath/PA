@@ -465,7 +465,7 @@ public class OpinionPollService implements IOpinionPollService {
 		
 		else if(feedbackVO.getUserType() != null && feedbackVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
 			
-			feedBack.setAnanymousUser(ananymousUserDAO.get(feedbackVO.getUserId()));
+			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
 		
 		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
 		feedbackDAO.save(feedBack);
@@ -537,9 +537,9 @@ public class OpinionPollService implements IOpinionPollService {
 		         
 	        	feedbackVO.setUserName(feedback.getRegistration().getUserName());
 	        }
-	        else if(feedback.getAnanymousUser()!=null){
+	       /* else if(feedback.getAnanymousUser()!=null){
 	        	feedbackVO.setUserName(feedback.getAnanymousUser().getUsername());
-	        }
+	        }*/
 	       
 	        userFeedbackVO.add(feedbackVO);
 		}
