@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.Registration;
 
 public interface IRegistrationService {
 
@@ -18,4 +20,7 @@ public interface IRegistrationService {
 	 
 	 public Integer updateRegisteredUserDetailsToUserNameToEmail(Long userId,String userName);
 	 
+	 public List<String> getRoleTypeForUser();
+	 
+	 public ResultStatus saveDataInToUserRolesTable(Registration registration,RegistrationVO values); 
 }
