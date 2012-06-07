@@ -28,4 +28,7 @@ public interface IWebConstants {
 	public static final String FAILURE = "failure";
 	public static final String SUCCESS = "success";
 	public static final String PROBLEM_FILES = "Problem_Files";
+	
+	public static final String PARTY_ANALYST_USER_ROLE = "hasPartyAnalystUserRole";
+	public static final String FREE_USER_ROLE = "hasFreeUserRole";
 }
