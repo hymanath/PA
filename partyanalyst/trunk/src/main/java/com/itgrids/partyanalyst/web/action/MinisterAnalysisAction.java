@@ -157,7 +157,6 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 
-	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
 		// TODO Auto-generated method stub
 		request = arg0;
