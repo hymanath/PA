@@ -37,7 +37,7 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	private FeedBackTask feedBackTask;
 	private Date postedDate;
 	private String status;
-	private AnanymousUser ananymousUser;
+	//private AnanymousUser ananymousUser;
 
 	/** default constructor */
 	public FeedBack() {
@@ -47,14 +47,14 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public FeedBack(Long feedbackId, String comment, Registration registration,
 			String responseCategory, FeedBackComment feedBackComment,
-			FeedBackTask feedBackTask,Date postedDate,String status,AnanymousUser ananymousUser) {
+			FeedBackTask feedBackTask,Date postedDate,String status) {
 		this.feedbackId = feedbackId;
 		this.comment = comment;
 		this.registration = registration;
 		this.feedBackComment = feedBackComment;
 		this.feedBackTask = feedBackTask;
 		this.responseCategory = responseCategory;
-		this.ananymousUser = ananymousUser;
+		
 		this.status = status;
 		this.postedDate = postedDate;
 
@@ -144,7 +144,7 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 		return serialVersionUID;
 	}
 
-	public void setAnanymousUser(AnanymousUser ananymousUser) {
+/*	public void setAnanymousUser(AnanymousUser ananymousUser) {
 		this.ananymousUser = ananymousUser;
 	}
 
@@ -155,6 +155,6 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	public AnanymousUser getAnanymousUser() {
 		return ananymousUser;
 	}
-
+*/
 	
 }
