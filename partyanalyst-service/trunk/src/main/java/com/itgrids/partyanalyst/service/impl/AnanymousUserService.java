@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
+import com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
@@ -1109,7 +1110,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 *  
 			 */
 			Object[] params = null;
-			List details = ananymousUserDAO.getAnanymousUserLocationDetailsByIds(userId);
+			List details = registrationDAO.getAnanymousUserLocationDetailsByIds(userId);
 			if(details.size() == 1)
 			{				
 				params = (Object[]) details.get(0);
