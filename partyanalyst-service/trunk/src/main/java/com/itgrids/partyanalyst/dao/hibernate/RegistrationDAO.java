@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> implements
 		IRegistrationDAO {
@@ -164,6 +165,150 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return queryObject.list();
 		
 	}	
+		
 	
+	public List<Object[]> getUserEmailByUserId(Long userId){
+		return getHibernateTemplate().find("select model.registrationId , model.firstName , model.lastName , model.email from Registration model where model.registrationId = ?",userId);
+	}
 	
+	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
+		StringBuilder query = new StringBuilder();
+		query.append("select model.firstName,model.lastName,model.registrationId,model.constituency.name,model.constituency.constituencyId,model ");
+		query.append(" from Registration model where ");
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append("and model.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role )");
+		if(nameString != null && nameString.trim().length() >0)
+		  query.append(" and model.firstName like '"+nameString+"%' ");
+		query.append("  order by model.registrationId desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		if(startIndex!=null)
+			queryObject.setFirstResult(startIndex.intValue());
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
+		
+		return queryObject.list();
+	}
+	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.registrationId)");
+		query.append(" from Registration model where ");
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds) ");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds) ");
+		}
+		query.append("and model.state.stateId is not null and model.district.districtId is not null and model.constituency.constituencyId is not null ");
+		
+		if(nameStr != null && !nameStr.trim().equalsIgnoreCase(""))
+		{
+			query.append(" and (model.name like '"+nameStr+"%' or model.lastName like '"+nameStr+"%')");
+		}
+		
+		query.append(" and model.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role )");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		return (Long)queryObject.uniqueResult();
+	}
+	
+	public List getConnectedUsersCount(Long locationId,String locationType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model.registrationId) ");
+		query.append(" from Registration model where ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			query.append(" model.constituency.constituencyId = ? group by model.constituency.constituencyId");
+		else if (locationType.equalsIgnoreCase(IConstants.DISTRICT)) {
+			query.append(" model.district.districtId = ? group by model.district.districtId");
+			query.append(" and model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role )");
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, locationId);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		
+		return queryObject.list();
+		
+	}
+	public List<Registration> getDetailsForUsers(List<Long> userIds){
+		StringBuilder query = new StringBuilder();				
+	//	query.append(" select model.name,model.lastName,model.userId");
+		query.append(" from Registration model where ");
+		query.append(" model.registrationId in (:userIds)");	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("userIds", userIds);
+		return queryObject.list();
+	}
+	
+	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString) 
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.firstName,model.lastName,model.registrationId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append(" from Registration model where ");
+		query.append(" model.registrationId != :userId and model.registrationId not in (:otherUsers) and ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append(" and model.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role )");
+		
+		if(nameString != null && nameString.trim().length() >0)
+		 query.append("and model.name like '"+nameString+"%' ");
+		query.append(" order by model.registrationId desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId",userId);
+		queryObject.setParameterList("otherUsers",otherUsers);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		if(startIndex!=null)
+			queryObject.setFirstResult(startIndex.intValue());
+		if(retrivalCount != null)
+			queryObject.setMaxResults(retrivalCount.intValue());	
+		
+		return queryObject.list();
+	}
+	
+	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(model.registrationId)");
+		query.append(" from Registration model where ");
+		query.append(" model.registrationId != :userId and model.registrationId not in (:otherUsers)  ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append(" and model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append(" and model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append(" and model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append("and model.state.stateId is not null and model.district.districtId is not null and model.constituency.constituencyId is not null ");
+		query.append(" and model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) ");
+		if(nameStr!= null && nameStr.trim().length() > 0 )
+		query.append("and model.firstName like '"+nameStr+"%' ");
+		query.append(" order by model.registrationId desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setParameter("userId",userId);
+		queryObject.setParameterList("otherUsers",otherUsers);		
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		return (Long)queryObject.uniqueResult();
+		
+	}
 }
