@@ -79,7 +79,11 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
 	 
-	
+	 private Set<CustomMessage> customMessageSender = new HashSet<CustomMessage>(0); 
+	 private Set<CustomMessage> customMessageRecepient = new HashSet<CustomMessage>(0);
+	 private Set<UserConnectedto> userConnectedtoSource = new HashSet<UserConnectedto>(0); 
+	 private Set<UserConnectedto> userConnectedtoTarget = new HashSet<UserConnectedto>(0);
+	 
 	public Registration() {
 		 
 	}
@@ -599,6 +603,46 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserApprovalDetails(Set<UserApprovalDetails> userApprovalDetails) {
 		this.userApprovalDetails = userApprovalDetails;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sender")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CustomMessage> getCustomMessageSender() {
+		return customMessageSender;
+	}
+
+	public void setCustomMessageSender(Set<CustomMessage> customMessageSender) {
+		this.customMessageSender = customMessageSender;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recepient")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CustomMessage> getCustomMessageRecepient() {
+		return customMessageRecepient;
+	}
+
+	public void setCustomMessageRecepient(Set<CustomMessage> customMessageRecepient) {
+		this.customMessageRecepient = customMessageRecepient;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userSource")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserConnectedto> getUserConnectedtoSource() {
+		return userConnectedtoSource;
+	}
+
+	public void setUserConnectedtoSource(Set<UserConnectedto> userConnectedtoSource) {
+		this.userConnectedtoSource = userConnectedtoSource;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userTarget")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserConnectedto> getUserConnectedtoTarget() {
+		return userConnectedtoTarget;
+	}
+
+	public void setUserConnectedtoTarget(Set<UserConnectedto> userConnectedtoTarget) {
+		this.userConnectedtoTarget = userConnectedtoTarget;
 	}
 	
 }
