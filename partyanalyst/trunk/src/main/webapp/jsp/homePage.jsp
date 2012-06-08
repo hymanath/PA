@@ -286,13 +286,13 @@ var pollStatus = [];
             </div>
             <div class="clear"></div>
              <div class="clear"></div>
-			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
+			<c:if test="${sessionScope.hasFreeUserRole == true || sessionScope.hasPartyAnalystUserRole == true}"> 
 			<div class="register-free"><span class="fleft" style="line-height:30px">Click Here for </span>
                <a href="freeUserRegistration.action"><img alt="" src="images/icons/homePage_new/updatebutton.jpg" style="padding-left:13px;" ></img></a>
             </div>
 			</c:if>
-			<c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
-            <div class="register-free"><span class="fleft">Click Here for Free Registration</span>
+			<c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
+			   <div class="register-free"><span class="fleft">Click Here for Free Registration</span>
                <a class="rf-button" href="freeUserRegistration.action"></a>
             </div>
 			</c:if>
@@ -616,11 +616,11 @@ var pollStatus = [];
 
 		  <a href="problemSearchAction.action" class="problem-register" style="margin-right: 290px; margin-bottom: -30px; margin-top: 8px;">View All Problems</a>
 
-		  <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
+		  <c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
 			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register" style="display: inline;
     float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
 		   </c:if>
-			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}">
+			<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
 		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register" style="display: inline;
     float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
 			</c:if>
@@ -1048,7 +1048,7 @@ if(loadingFirstTime == 'true'){
 	initializeHomePage();
 	getElectionTypeValue(1);
 	showVotesObtainedForOpinionPoll();
-	<c:if test="${loginStatus == 'true' && sessionScope.UserType == 'FreeUser'}">
+	<c:if test="${loginStatus == 'true' && sessionScope.hasFreeUserRole == true }">
 	showUserNameChangePanel(uname);
 	</c:if>
 
