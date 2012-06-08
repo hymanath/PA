@@ -398,7 +398,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			return IConstants.NOT_LOGGED_IN;
 		}
 		
-		if(user.getUserStatus().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER) && 
+		if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true) && 
 				ananymousUserService.getDetailsOfUserByUserId(user.getRegistrationID()) == null)
 			return ERROR;
 			
