@@ -8,5 +8,7 @@ import com.itgrids.partyanalyst.model.UserRoles;
 public interface IUserRolesDAO extends GenericDao<UserRoles,Long>{
 
 	public List<Object[]> getUserRoles(Long userId);
+	
+	public List<Object[]> getAllFreeuser();
 
 }
