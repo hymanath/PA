@@ -82,9 +82,11 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountForACandidateFromNominationId(Long nominationId);
 	
-	public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId);
+	//public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId);
 	
-	public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId);
+	//public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId);
+	
+	public List getAllCommentsAndCategoryForANomination(Long nominationId);
 
 	public List getAllCommentsOfUserForANomination(Long electionId,
 			Long constituencyId, Long candidateId, Long userId, String hqlQuery);

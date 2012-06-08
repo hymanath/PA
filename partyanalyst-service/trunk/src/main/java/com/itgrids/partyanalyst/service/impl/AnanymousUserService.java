@@ -481,12 +481,14 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						profileOpts = profileOptsDAO.get(optsId);
 						userProfileOptsDAO.save(new UserProfileOpts(registration, profileOpts));
 					}
-					
-					Role role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
-					UserRoles userRoles = new UserRoles();
-					userRoles.setRole(role);
-					userRoles.setUser(registration);
-					userRolesDAO.save(userRoles);
+					if(!isUpdate)
+					{
+						Role role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
+						UserRoles userRoles = new UserRoles();
+						userRoles.setRole(role);
+						userRoles.setUser(registration);
+						userRolesDAO.save(userRoles);
+					}
 					
 				}catch(Exception e){
 					e.printStackTrace();
