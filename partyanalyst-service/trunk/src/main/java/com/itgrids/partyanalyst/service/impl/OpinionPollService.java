@@ -458,19 +458,13 @@ public class OpinionPollService implements IOpinionPollService {
 		feedBack.setFeedBackComment(feedbackCommentDAO.get(feedbackVO.getCommentType()));
 		feedBack.setStatus(IConstants.NEW);
 		feedBack.setPostedDate(problemManagementService.getCurrentDateAndTime());
-		
-		if(feedbackVO.getUserType() != null && feedbackVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-			
-			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
-		
-		else if(feedbackVO.getUserType() != null && feedbackVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
-			
+
+		if(feedbackVO.getUserId() != null && feedbackVO.getUserId() > 0)
 			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
 		
 		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
 		feedbackDAO.save(feedBack);
 		
-		//saved successfully
 		rs.setExceptionMsg("Feedback Saved Successfully ..");
 		
 		}catch(Exception e){
