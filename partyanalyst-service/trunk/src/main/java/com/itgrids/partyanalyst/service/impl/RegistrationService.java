@@ -145,14 +145,8 @@ public class RegistrationService implements IRegistrationService{
 		
 		if(checkUserName(values.getUserName())!= true)
 		{
-			
 			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-			{
-				saveDataInToAnonymousTable(reg,dob);
-				reg = registrationDAO.save(reg);
-			}
-			else
-				reg = registrationDAO.save(reg);
+			reg = registrationDAO.save(reg);
 			
 			setUserID(reg.getRegistrationId());
 			saveDataInToUserRolesTable(reg,values);
