@@ -460,10 +460,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			if(savedSuccessfully){	
 				
 				HttpSession session = request.getSession();			
-				String userFullName = regVO.getFirstName().concat(" ").concat(regVO.getLastName()); 
+				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
 				regVO.setUserStatus(IConstants.FREE_USER);
 				session.setAttribute(IConstants.USER,regVO);
 				session.setAttribute("UserName", userFullName);
+				session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
 				session.setAttribute("UserType", "FreeUser");
 				session.setAttribute("loginStatus", "out");
 				session.setAttribute("HiddenCount", 0);
