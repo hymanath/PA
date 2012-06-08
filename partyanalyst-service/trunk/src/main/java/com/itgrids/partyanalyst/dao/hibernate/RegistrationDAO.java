@@ -152,4 +152,18 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return queryObj.list();
 		
 	}
+	
+	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.state.stateId,model.state.stateName,model.district.districtId,model.district.districtName,model.constituency.constituencyId,model.constituency.name");
+		query.append(" from Registration model where ");
+		query.append(" model.registrationId in (:userIds)");	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("userIds", userIds);
+		return queryObject.list();
+		
+	}	
+	
+	
 }
