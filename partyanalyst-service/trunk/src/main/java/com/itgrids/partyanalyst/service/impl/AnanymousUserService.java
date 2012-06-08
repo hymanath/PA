@@ -668,7 +668,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			if(status.equalsIgnoreCase(IConstants.ALL))
 			{
-				result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);
+				result = registrationDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);
 			}
 			else if(status.equalsIgnoreCase(IConstants.CONNECTED))
 			{
@@ -689,7 +689,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				if(pendingIdsList != null && pendingIdsList.size() > 0)
 					connectedAndPendingUserIdsList.addAll(pendingIdsList);
 				
-				result = ananymousUserDAO.getNotConnectedUsersInSelectedLocations(loginId, locationIds, locationType, connectedAndPendingUserIdsList, retrivalCount, startIndex, nameString);
+				result = registrationDAO.getNotConnectedUsersInSelectedLocations(loginId, locationIds, locationType, connectedAndPendingUserIdsList, retrivalCount, startIndex, nameString);
 			}
 			
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
@@ -717,7 +717,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			if(status.equalsIgnoreCase(IConstants.ALL))
 			{
-				return ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString);
+				return registrationDAO.getAllUsersCountInSelectedLocations(locationIds,locationType,nameString);
 			}
 			else if(status.equalsIgnoreCase(IConstants.CONNECTED))
 			{
@@ -729,7 +729,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			}
 			else if(status.equalsIgnoreCase(IConstants.NOTCONNECTED))
 			{
-				return ananymousUserDAO.getNotConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString, connectedAndPendingUserIdsList);
+				return registrationDAO.getNotConnectedUsersCountForAUserInAFilterView(userId,locationIds,locationType,nameString, connectedAndPendingUserIdsList);
 			}
 			
 			return 0L;
@@ -772,16 +772,16 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject,senderName);
 			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
 			userIds.add(loginId);
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);			
+			result = registrationDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);			
 			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
-			dataTransferVO.setTotalResultsCount((ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType, "")).toString());
+			dataTransferVO.setTotalResultsCount((registrationDAO.getAllUsersCountInSelectedLocations(locationIds, locationType, "")).toString());
 			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));
 			
 			for(Long recpntId : recipeintId)
 			{
-				List<Object[]> list = ananymousUserDAO.getUserEmail(recpntId);
+				List<Object[]> list = registrationDAO.getUserEmailByUserId(recpntId);
 				if(list != null && list.size() > 0)
 				{
 					for(Object[] params : list)
@@ -982,8 +982,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						if(messageType.equalsIgnoreCase(IConstants.FRIEND_REQUEST)){	
 							for(int i=0;i<recipeintId.size();i++){
 								customMessage.setSubject(subject);								
-								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
-								customMessage.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
+								customMessage.setSender(registrationDAO.get(senderId.get(0)));
+								customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
 								customMessage.setMessageType(messageTypeDAO.get(pendingId));
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessageDAO.save(customMessage);
@@ -997,8 +997,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						else if(messageType.equalsIgnoreCase(IConstants.CONNECTED)){
 							UserConnectedto userConnectedto = new UserConnectedto();
 							for(int i=0;i<recipeintId.size();i++){
-								userConnectedto.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
-								userConnectedto.setSenderId(ananymousUserDAO.get(senderId.get(0)));		
+								userConnectedto.setUserTarget(registrationDAO.get(recipeintId.get(i)));
+								userConnectedto.setUserSource(registrationDAO.get(senderId.get(0)));		
 								userConnectedtoDAO.save(userConnectedto);
 							}
 							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
@@ -1009,7 +1009,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							}
 							for(Long recipeintUserId : recipeintId)
 							{
-							List<Object[]> list = ananymousUserDAO.getUserEmail(recipeintUserId);
+							List<Object[]> list = registrationDAO.getUserEmailByUserId(recipeintUserId);
 							if(list !=null && list.size() > 0)
 							{
 								for(Object[] params : list)
@@ -1030,8 +1030,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						else if(messageType.equalsIgnoreCase(IConstants.COMMENTS) || messageType.equalsIgnoreCase(IConstants.SCRAP)){
 							for(int i=0;i<recipeintId.size();i++){
 								customMessage.setSubject(subject);
-								customMessage.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
-								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
+								customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
+								customMessage.setSender(registrationDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessage.setStatus(IConstants.MSG_UNREAD);
@@ -1040,7 +1040,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							
 							for(Long recipeintUserId : recipeintId)
 							{
-								List<Object[]> list = ananymousUserDAO.getUserEmail(recipeintUserId);
+								List<Object[]> list = registrationDAO.getUserEmailByUserId(recipeintUserId);
 								if(list != null && list.size() > 0)
 								{
 									for(Object[] params : list)
@@ -1153,7 +1153,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 */
 			if(dataTransferVO.getConstituencyId() != null)
 			{
-				List constCount = ananymousUserDAO.getConnectedUsersCount(dataTransferVO.getConstituencyId(), IConstants.CONSTITUENCY);
+				List constCount = registrationDAO.getConnectedUsersCount(dataTransferVO.getConstituencyId(), IConstants.CONSTITUENCY);
 				if(constCount.size() == 1)
 				{
 					dataTransferVO.setConstituencyUsersCount(constCount.get(0).toString());					
@@ -1163,7 +1163,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			if(dataTransferVO.getDistrictId() != null)
 			{
-				List distCount = ananymousUserDAO.getConnectedUsersCount(dataTransferVO.getDistrictId(), IConstants.DISTRICT);
+				List distCount = registrationDAO.getConnectedUsersCount(dataTransferVO.getDistrictId(), IConstants.DISTRICT);
 				if(distCount.size() == 1)
 				{
 					dataTransferVO.setDistrictUsersCount(distCount.get(0).toString());					
@@ -1392,7 +1392,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				customMessageresult = null;
 			}
 			if(newList!=null && newList.size()!=0){				
-				List<AnanymousUser> result = ananymousUserDAO.getDetailsForUsers(newList);
+				List<Registration> result = registrationDAO.getDetailsForUsers(newList);
 				resultVO = setUserProfileData(result,informationStatus);	
 			}
 			
@@ -1439,17 +1439,17 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 * @return informationStatus
 	 * @see getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection()
 	 */
-	public DataTransferVO setUserProfileData(List<AnanymousUser> result,String informationStatus){		
+	public DataTransferVO setUserProfileData(List<Registration> result,String informationStatus){		
 		ResultStatus resultStatus = new ResultStatus();
 		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		try{
 			if(result!=null && result.size()!=0){
 				if(informationStatus.equalsIgnoreCase(IConstants.COMPLETE_DETAILS)){
-					for(AnanymousUser details : result){
+					for(Registration details : result){
 						CandidateVO candidateResults = new CandidateVO();
 						String candidateName = " ";
-						String name = details.getName();
+						String name = details.getFirstName();
 						if(name!=null){
 							candidateName+=name;
 						}
@@ -1458,17 +1458,17 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							candidateName = candidateName +" "+ name;
 						}						
 						candidateResults.setCandidateName(candidateName);
-						candidateResults.setId(details.getUserId());	
+						candidateResults.setId(details.getRegistrationId());	
 						candidateResults.setState(details.getState().getStateName());
 						candidateResults.setDistrict(details.getDistrict().getDistrictName());						
 						candidateResults.setConstituencyName(details.getConstituency().getName());
 						candiateVO.add(candidateResults);
 					}
 				}else{
-					for(AnanymousUser details : result){
+					for(Registration details : result){
 						CandidateVO candidateResults = new CandidateVO();
 						String candidateName = null;
-						String name = details.getName();
+						String name = details.getFirstName();
 						if(name!=null){
 							candidateName+=name;
 						}
@@ -1477,7 +1477,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							candidateName+=name;
 						}
 						candidateResults.setCandidateName(candidateName);
-						candidateResults.setId(details.getUserId());					
+						candidateResults.setId(details.getRegistrationId());					
 						candiateVO.addAll(candiateVO);
 					}
 				}
@@ -1678,7 +1678,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		try{
 			
 			registrationVO.setRegistrationID(registrationId);
-			registrationVO.setUserName(registration.getFirstName());
+			registrationVO.setUserName(registration.getUserName());
 			registrationVO.setPassword(registration.getPassword());
 			registrationVO.setGender(registration.getGender());
 			registrationVO.setEmail(registration.getEmail());
