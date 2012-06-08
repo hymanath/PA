@@ -459,7 +459,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		}
 		else if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.FREE_USER))
 		{
-			userFullName = regVO.getFirstName() + " "; 
+			userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
 			//regVO.setUserStatus(IConstants.FREE_USER);
 			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
