@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
@@ -39,8 +40,15 @@ public class DataApprovalService implements IDataApprovalService {
 	private ApprovalInfoVO approvalInfoVO;
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
+	private IRegistrationDAO registrationDAO;
 	
-	
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
 
 	public IApprovalDetailsDAO getApprovalDetailsDAO() {
 		return approvalDetailsDAO;
@@ -195,7 +203,7 @@ public class DataApprovalService implements IDataApprovalService {
 						approvalDetails.setPostedDate(problemManagementService.getCurrentDateAndTime());
 						System.out.println("DAte is ::::::::::::::::::::::::::::"+problemManagementService.getCurrentDateAndTime());
 						approvalDetails.setIsAdminApproved(null);
-						userApprovalDetails.setUser(ananymousUserDAO.get(approvalInfoVO.getUserId()));
+						userApprovalDetails.setRegistration(registrationDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setApprovalDetails(approvalDetails);
 						
 						userProblemApproval.setProblemHistory(problemHistory);
