@@ -330,11 +330,10 @@ function openAddNewProblemWindow()
 					<table width="100%" style="width:100%">
 						<tr>
 							<th id="loginarea" style="color:#FFFFFF">
-								 <c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out'  && sessionScope.UserType == 'FreeUser'}">        		
-									<c:out value="Welcome, ${sessionScope.UserName} | "/>
+								 <c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out'  && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">        <c:out value="Welcome, ${sessionScope.UserName} | "/>
 									<a class="loginStatusAnc" style="color:#FFFFFF" href="logoutAction.action">Logout</a>
 								</c:if>		
-								<c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
+								<c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">        	
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
 									<a class="loginStatusAnc" style="color:#FFFFFF" href="logoutAction.action">Logout</a>
 									<c:if test="${sessionScope.USER.isAdmin == 'true'}"> | 
@@ -366,7 +365,7 @@ function openAddNewProblemWindow()
 								HOME
 							</a> 
 						</li>
-						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">  
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 							</li> 
@@ -378,13 +377,13 @@ function openAddNewProblemWindow()
 							</li> 
 						</c:if>
 						
-						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">  
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
 							</li>
 						</c:if>
 						
-						<c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
+						<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
 						<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 							</li>
@@ -400,17 +399,21 @@ function openAddNewProblemWindow()
 						
 						<c:if test="${sessionScope.loginStatus == 'out'}">  
 							<li class="yuimenubaritem"> 
-								<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
-									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+							<c:choose>
+							
+							<c:when test="${sessionScope.hasPartyAnalystUserRole == true}"> 
+								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
 										DASH BOARD
 									</a> 
-								</c:if>
-								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+							</c:when>
+							<c:otherwise> 
 									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
 										DASH BOARD
-									</a>  
-								</c:if>	
-							</li>
+									</a>   
+							</c:otherwise>	
+							
+						 </c:choose>
+						 </li>
 						</c:if>
 					</ul> 
 				</div> 
