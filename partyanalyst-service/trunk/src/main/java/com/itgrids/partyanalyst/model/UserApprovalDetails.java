@@ -38,6 +38,7 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	private Long userApprovalDetailsId;
 	private AnanymousUser user;
 	private ApprovalDetails approvalDetails;
+	private Registration registration;
 	private Set<UserProblemApproval> userApprovalDetails = new HashSet<UserProblemApproval>(0);
 	
 	public UserApprovalDetails() {
@@ -94,8 +95,17 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	public void setUserApprovalDetails(Set<UserProblemApproval> userApprovalDetails) {
 		this.userApprovalDetails = userApprovalDetails;
 	}
-	
-	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="registration_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Registration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
+	}
 	
 	
 	
