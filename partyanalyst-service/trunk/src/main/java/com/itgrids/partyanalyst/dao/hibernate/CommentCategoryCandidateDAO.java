@@ -254,21 +254,29 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"from CommentCategoryCandidate model where model.nomination.nominationId = ? group by model.commentData.commentDataCategory.commentDataCategoryId",nominationId);
 	}
 	
-	public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId){
+	/*public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
 		return getHibernateTemplate().find("select model.freeUser.userId, model.freeUser.name, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
 				"model.nomination.nominationId = ? group by model.freeUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
-	}
+	}*/
 	
-	public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
+		public List getAllCommentsAndCategoryForANomination(Long nominationId){
+		Object[] params = {nominationId};
+		return getHibernateTemplate().find("select model.user.registrationId, model.user.firstName, model.commentData.commentDesc, " +
+				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
+				"model.commentData.commentDataCategory.commentClassification, model.severity, model.user.lastName from CommentCategoryCandidate model where " +
+				"model.nomination.nominationId = ? group by model.user.registrationId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+	}
+		
+	/*public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
 		return getHibernateTemplate().find("select model.paidUser.registrationId, model.paidUser.firstName, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
 				"model.nomination.nominationId = ? group by model.paidUser.registrationId, model.commentData.commentDataCategory.commentDataCategoryId", params);
-	}
+	}*/
 
 	public List getAllCommentsOfUserForANomination(Long electionId,
 			Long constituencyId, Long candidateId, Long userId, String hqlQuery) {

@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -759,10 +759,12 @@ public class CommentsDataService implements ICommentsDataService {
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
 					commentCategoryCandidateSaved.setCommentData(commentData);
 					
-					if(IConstants.FREE_USER.equalsIgnoreCase(userType))
+					commentCategoryCandidateSaved.setUser(registrationDAO.get(userId));
+					
+					/*if(IConstants.FREE_USER.equalsIgnoreCase(userType))
 						commentCategoryCandidateSaved.setFreeUser(ananymousUserDAO.get(userId));
 					else
-						commentCategoryCandidateSaved.setPaidUser(registrationDAO.get(userId));
+						commentCategoryCandidateSaved.setPaidUser(registrationDAO.get(userId));*/
 					
 					commentCategoryCandidateSaved.setSeverity(severity);
 					commentCategoryCandidateSaved = commentCategoryCandidateDAO.save(commentCategoryCandidateSaved);
@@ -1018,7 +1020,7 @@ public class CommentsDataService implements ICommentsDataService {
 			
 			userwiseComments = new HashMap<String, List<Object[]>>();
 			
-			commentsByUser = commentCategoryCandidateDAO.getAllCommentsByFreeUserAndCategoryForANomination((Long)values[4]);
+			/*commentsByUser = commentCategoryCandidateDAO.getAllCommentsByFreeUserAndCategoryForANomination((Long)values[4]);
 			
 			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
 				comments = userwiseComments.get(commentInfo[0]+IConstants.FREE_USER);
@@ -1036,6 +1038,16 @@ public class CommentsDataService implements ICommentsDataService {
 					comments = new ArrayList<Object[]>();
 				comments.add(commentInfo);
 				userwiseComments.put(commentInfo[0]+IConstants.PARTY_ANALYST_USER, comments);
+			}*/
+			
+			commentsByUser = commentCategoryCandidateDAO.getAllCommentsAndCategoryForANomination((Long)values[4]);
+			
+			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
+				comments = userwiseComments.get(commentInfo[0]);
+				if(comments == null)
+					comments = new ArrayList<Object[]>();
+				comments.add(commentInfo);
+				userwiseComments.put(commentInfo[0].toString(), comments);
 			}
 			
 			allUsersCommentsForNomination = new ArrayList<CandidateCommentsVO>();
