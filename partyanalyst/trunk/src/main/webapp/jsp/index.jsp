@@ -1373,7 +1373,7 @@ function displaySuccessMessage(results,jsObj)
 	divElmt.innerHTML=str;
 }
 
-<c:if test="${sessionScope.UserType == 'PartyAnalyst'}">
+<c:if test="${sessionScope.hasPartyAnalystUserRole == true}">
 	showUserNameChangePanel(uname);
 </c:if>
 var size='<s:property value="fileVOList.size"/>';
