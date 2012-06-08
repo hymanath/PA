@@ -64,5 +64,19 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	public List getUserProfileImageNameByUserId(Long userId);
 	
 	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);
+	
+	public List<Object[]> getUserEmailByUserId(Long userId);
 
+	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
+	
+	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr);
+	
+	public List getConnectedUsersCount(Long locationId,String locationType);
+	
+	public List<Registration> getDetailsForUsers(List<Long> userIds);
+	
+	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString) ;
+	
+	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers);
+	
 }
