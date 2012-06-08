@@ -844,16 +844,18 @@ public class ConstituencyPageAction extends ActionSupport implements
    		}
    		
    		//	Free User
-   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
-			userDetails.setLoginStatus("true");
-			userDetails.setUserId(user.getRegistrationID());
-		}else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true)){
-			userDetails.setLoginStatus("true");
-			userDetails.setUserId(user.getRegistrationID());
-		}else{
-			userDetails.setLoginStatus("false");
-		}
-		
+   		if(user !=null)
+   		{
+	   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
+				userDetails.setLoginStatus("true");
+				userDetails.setUserId(user.getRegistrationID());
+			}else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true)){
+				userDetails.setLoginStatus("true");
+				userDetails.setUserId(user.getRegistrationID());
+			}else{
+				userDetails.setLoginStatus("false");
+			}
+   		}
 		messageTypes = ananymousUserService.getAllMessageTypes();
 		
 	
