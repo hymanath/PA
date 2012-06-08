@@ -31,6 +31,8 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	private Long userConnectedtoId;
 	private AnanymousUser senderId;
 	private AnanymousUser recepientId;
+	private Registration userSource;
+	private Registration userTarget;
 	
 	//default constructor
 	public UserConnectedto(){
@@ -80,6 +82,28 @@ public class UserConnectedto extends BaseModel implements Serializable {
 
 	public void setRecepientId(AnanymousUser recepientId) {
 		this.recepientId = recepientId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_source")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	public Registration getUserSource() {
+		return userSource;
+	}
+
+	public void setUserSource(Registration userSource) {
+		this.userSource = userSource;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_target")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	public Registration getUserTarget() {
+		return userTarget;
+	}
+
+	public void setUserTarget(Registration userTarget) {
+		this.userTarget = userTarget;
 	}
 	
 }
