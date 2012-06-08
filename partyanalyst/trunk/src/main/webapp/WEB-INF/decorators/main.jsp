@@ -104,7 +104,7 @@ var $j = jQuery.noConflict(true);
 	oMenuBar.render();  
 	 
 	}); 
-	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 	
+	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}"> 	
 		var aSubmenuData = [ 
 		{
 			 id: "home", 
@@ -197,7 +197,7 @@ var $j = jQuery.noConflict(true);
 	     
 	]; 
 	</c:if>
-	<c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
+	<c:if test="${(sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)) || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
 		var aSubmenuData = [ 
 					{
 						 id: "home", 
