@@ -402,13 +402,13 @@ if(request.getParameter("showMessage")!=null){
 								</tr>
 							</table>
 							<table class="loginDetailTable">								
-								<tr>
+								<!--<tr>
 									<th>Sign In As</th>
 									<td>
 										<input id="paUserRadio" type="radio" name="userType" value="1"/>&nbsp;&nbsp;Customer
 										<input id="freeUserRadio" type="radio" name="userType" value="2" checked="checked"/>&nbsp;&nbsp;Free User
 									</td>
-								</tr>
+								</tr>-->
 								<tr>
 									<th><s:label theme="simple" value="%{getText('userName')}"></s:label></th>
 									<td>
