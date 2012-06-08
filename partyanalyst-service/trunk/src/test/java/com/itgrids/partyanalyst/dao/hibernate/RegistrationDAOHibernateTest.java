@@ -116,9 +116,23 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetUserProfileImageNameByUserId()
+	/*public void testGetUserProfileImageNameByUserId()
 	{
 		List list = registrationDAO.getUserProfileImageNameByUserId(800l);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetAnanymousUserLocationDetailsByIds()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(800l);
+		Object[] params = null;
+		List locationDetails = registrationDAO.getAnanymousUserLocationDetailsByIds(userIds);
+		System.out.println(locationDetails.size());
+		if(locationDetails != null && locationDetails.size() > 0)
+		{
+			
+		}
+		
 	}
 }
