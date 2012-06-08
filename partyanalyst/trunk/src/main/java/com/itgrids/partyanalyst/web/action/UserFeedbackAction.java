@@ -99,43 +99,38 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 		return SUCCESS;
 	}
 	
-public String ajaxCallHandler(){
+	public String ajaxCallHandler()
+	{
 	
-	session = request.getSession();
-	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-	/*if(user==null){
-		return IConstants.NOT_LOGGED_IN;
-	}*/
-	
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		try
 		 {
 			jObj = new JSONObject(getTask());
 			String task = jObj.getString("task");
-			  if(task.equalsIgnoreCase("getComments"))
-			  {
-				    feedbackVO.setComment(jObj.getString("feedback"));
-				    feedbackVO.setCommentType(jObj.getLong("commentTypeId"));				   
-				    feedbackVO.setTaskName(jObj.getLong("commentTaskId"));
-				    feedbackVO.setResponseCategory(jObj.getString("responseType"));
-				    
-				    if(user!=null)
-				    {
-				    	feedbackVO.setUserId(user.getRegistrationID());
-				    	feedbackVO.setUserType(user.getUserStatus());
-				    }
-				    
-				    resultStatus =  opinionPollService.saveUserFeedback(feedbackVO);
-		    
-		            if(resultStatus.getExceptionEncountered() != null)
-		            	return Action.ERROR;
-		            
-		 	  }
+			
+			if(task.equalsIgnoreCase("getComments"))
+			{
+			    feedbackVO.setComment(jObj.getString("feedback"));
+			    feedbackVO.setCommentType(jObj.getLong("commentTypeId"));				   
+			    feedbackVO.setTaskName(jObj.getLong("commentTaskId"));
+			    feedbackVO.setResponseCategory(jObj.getString("responseType"));
+			    
+			    if(user!=null)
+			    	feedbackVO.setUserId(user.getRegistrationID());
+			    
+			    resultStatus =  opinionPollService.saveUserFeedback(feedbackVO);
+	    
+	            if(resultStatus.getExceptionEncountered() != null)
+	            	return Action.ERROR;
+	            
+			}
 		 }
 		catch(Exception e){
-			e.printStackTrace();
-			
+			log.error("Exception occured while Saving User Feedback, - "+e);
+			return ERROR;
 		}
-		  return Action.SUCCESS;
+		return Action.SUCCESS;
 	}
 	
 	
