@@ -922,5 +922,6 @@
 	<bean id="problemSearchAction" class="com.itgrids.partyanalyst.web.action.ProblemSearchAction">
 		<property name="problemManagementService" ref="problemManagementService" />
 	</bean>
-				
+	<bean id="changePasswordAction" class="com.itgrids.partyanalyst.web.action.ChangePasswordAction" singleton="false">
+	</bean>			
 </beans>	
