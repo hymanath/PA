@@ -869,26 +869,26 @@ function changePassword()
 	        return;
 	}
 	if(cpwd.value=="")
-     resultDIVEle.innerHTML="<font color='red'>Please Enter Password.</font>";	
+     resultDIVEle.innerHTML="<font color='red'>Please enter password.</font>";	
      if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd){
- 		resultDIVEle.innerHTML = "<font color='red'>Passwords Do Not Match.</font>";
+ 		resultDIVEle.innerHTML = "<font color='red'>Passwords do not match.</font>";
          return
 	}
 	if(cpwd==''){
-     resultDIVEle.innerHTML = "<font color='red'>Please Enter Current Password.</font>";
+     resultDIVEle.innerHTML = "<font color='red'>Please enter current password.</font>";
 	return;
 	}
 	if(npwd==''){
-     resultDIVEle.innerHTML = "<font color='red'>Please Enter New Password.</font>";
+     resultDIVEle.innerHTML = "<font color='red'>Please enter new password.</font>";
 	return;
 	}
 	if(cfmpwd==''){
-	resultDIVEle.innerHTML = "<font color='red'>Please Enter Confirm Password.</font>";
+	resultDIVEle.innerHTML = "<font color='red'>Please enter confirm password.</font>";
 	return;
 	}
 	if(cpwd == npwd)
 		{
-		resultDIVEle.innerHTML = "<font color='green'>Your new passward is same as Existing one.</font>";
+		resultDIVEle.innerHTML = "<font color='green'>Your new passward is same as existing one.</font>";
 		setTimeout("closewdw()",3000);
 		return;
 		}
@@ -918,6 +918,11 @@ function showresults(results){
 		result.innerHTML ='<div style="color:green">Password changed successfully, Window Closing...</div>';
         
 		setTimeout("closewdw()",3000);
+		if(document.getElementById("loginDiv"))
+			{
+		  document.getElementById("loginDiv").style.display ='block';
+			result.innerHTML ='<div style="color:green">Password changed successfully.....</div>';
+			}
 		}	
 		else if(results==0){
 			var result = document.getElementById("password_window_errorMsg");
@@ -926,7 +931,7 @@ function showresults(results){
 		result.innerHTML = str;
 
 		}
-
+	
 	
 }
 
