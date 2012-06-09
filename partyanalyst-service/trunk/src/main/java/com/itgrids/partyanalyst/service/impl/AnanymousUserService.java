@@ -2124,7 +2124,7 @@ public String getPassword(String password){
 	return password;
 }
 @SuppressWarnings("unchecked")
-public String changeUserPassword(String crntpassword,String newpassword,Long registrationId)
+public String changeUserPassword(String crntpassword,String newpassword,Long registrationId,String userName)
 {   
 	
 	/*List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
@@ -2132,7 +2132,11 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 		return IConstants.NoPassword;
 	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE,dateUtilService.getCurrentDateAndTime());
 	return IConstants.YesPassword;*/
-	
+	if(registrationId == 0l)
+	{
+		List<Object> userId = registrationDAO.getUserIdByUserName(userName);
+		registrationId = (Long) userId.get(0);
+	}
 	List chkpwd = registrationDAO.checkUserPassword(crntpassword,registrationId);
 	if(chkpwd.size() == 0)
 		return IConstants.NoPassword;
