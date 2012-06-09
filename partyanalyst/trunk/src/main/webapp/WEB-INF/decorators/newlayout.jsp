@@ -234,7 +234,7 @@ function buildAccordion()
 <div id="menu">
     <ul class="menu">
         <li><a href="homePage.action" ><span>HOME</span></a>
-<c:if test="${sessionScope.loginStatus == null ||sessionScope.loginStatus == 'in' || (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
+<c:if test="${sessionScope.loginStatus == null || !sessionScope.hasPartyAnalystUserRole}">
           <li><a href="#" ><span>ELECTION ANALYSIS</span></a>
             <div style="z-index:1;text-align:left;"><ul>
                 <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a>
