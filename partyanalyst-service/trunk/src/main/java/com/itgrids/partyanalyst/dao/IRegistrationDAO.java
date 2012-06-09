@@ -79,4 +79,5 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers);
 	
+	public List<Object> getUserIdByUserName(String userName);
 }
