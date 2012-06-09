@@ -125,6 +125,7 @@
 		<pattern>/connectPeopleAction*</pattern>
 		<pattern>/sendUpdatesAction*</pattern>
 		<pattern>/problemSearchAction*</pattern>
+		<pattern>/changePasswordAction*</pattern>
     </decorator>
 
 </decorators>
