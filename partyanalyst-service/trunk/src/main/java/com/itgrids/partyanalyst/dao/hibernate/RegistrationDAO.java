@@ -311,4 +311,9 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return (Long)queryObject.uniqueResult();
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object> getUserIdByUserName(String userName)
+	{
+		return getHibernateTemplate().find("select model.registrationId from Registration model where model.userName = ?",userName);
+	}
 }
