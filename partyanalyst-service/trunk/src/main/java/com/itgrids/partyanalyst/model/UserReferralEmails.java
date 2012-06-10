@@ -29,7 +29,7 @@ public class UserReferralEmails extends BaseModel implements
 	private Long userReferralEmailsId;
 	private String email;
 	private Date time;
-	private AnanymousUser ananymousUser;
+	private Registration user;
 	private Long userId;
 	
 
@@ -46,10 +46,10 @@ public class UserReferralEmails extends BaseModel implements
 	 * fullConstructor
 	 */
 	public UserReferralEmails(String email, Date time,
-			AnanymousUser ananymousUser) {
+			Registration user) {
 		this.email = email;
 		this.time = time;
-		this.ananymousUser = ananymousUser;
+		this.user = user;
 	}
 
 	@Id
@@ -67,14 +67,15 @@ public class UserReferralEmails extends BaseModel implements
 	@JoinColumn(name = "user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AnanymousUser getAnanymousUser() {
-		return ananymousUser;
+	public Registration getUser() {
+		return user;
 	}
 
-	public void setAnanymousUser(AnanymousUser ananymousUser) {
-		this.ananymousUser = ananymousUser;
+	public void setUser(Registration user) {
+		this.user = user;
 	}
 
+	
 	@Column(name = "email", length=100)
 	public String getEmail() {
 		return email;

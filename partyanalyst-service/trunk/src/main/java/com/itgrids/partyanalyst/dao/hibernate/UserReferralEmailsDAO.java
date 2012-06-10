@@ -17,6 +17,6 @@ public class UserReferralEmailsDAO extends GenericDaoHibernate<UserReferralEmail
 	@SuppressWarnings("unchecked")
 	public List<String> getUserReferencedEmails(Long userId)
 	{
-		return getHibernateTemplate().find("select model.email from UserReferralEmails model where model.ananymousUser.userId = ?",userId);
+		return getHibernateTemplate().find("select model.email from UserReferralEmails model where model.user.registrationId = ?",userId);
 	}
 }

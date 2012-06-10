@@ -63,8 +63,6 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private Date registeredDate;
 	 private Date updatedDate;
 	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
-	 private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
-	
 	 
 	public AnanymousUser()
 	 {
@@ -351,15 +349,6 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 
 	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
 		this.userLoginDetails = userLoginDetails;
-	}
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ananymousUser")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserReferralEmails> getUserReferralEmails() {
-		return userReferralEmails;
-	}
-
-	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
-		this.userReferralEmails = userReferralEmails;
 	}
 	
 	@Column(name = "is_pwd_changed", length = 10)
