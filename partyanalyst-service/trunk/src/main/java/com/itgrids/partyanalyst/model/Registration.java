@@ -83,6 +83,7 @@ public class Registration implements java.io.Serializable {
 	 private Set<CustomMessage> customMessageRecepient = new HashSet<CustomMessage>(0);
 	 private Set<UserConnectedto> userConnectedtoSource = new HashSet<UserConnectedto>(0); 
 	 private Set<UserConnectedto> userConnectedtoTarget = new HashSet<UserConnectedto>(0);
+	 private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
 	 
 	public Registration() {
 		 
@@ -643,6 +644,16 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserConnectedtoTarget(Set<UserConnectedto> userConnectedtoTarget) {
 		this.userConnectedtoTarget = userConnectedtoTarget;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserReferralEmails> getUserReferralEmails() {
+		return userReferralEmails;
+	}
+
+	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
+		this.userReferralEmails = userReferralEmails;
 	}
 	
 }
