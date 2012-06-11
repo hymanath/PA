@@ -74,7 +74,6 @@ public class State implements java.io.Serializable {
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
 	private Set<ProblemSourceScope> problemSourceScope = new HashSet<ProblemSourceScope>(0);
 	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
-	private Set<Registration> users = new HashSet<Registration>(0);
 	
 	// Constructors
 
@@ -398,14 +397,4 @@ public class State implements java.io.Serializable {
 		this.stateRegion = stateRegion;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<Registration> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Set<Registration> users) {
-		this.users = users;
-	}
-	
 }
