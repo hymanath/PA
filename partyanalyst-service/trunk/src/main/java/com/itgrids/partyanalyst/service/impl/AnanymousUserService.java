@@ -310,105 +310,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		this.userRolesDAO = userRolesDAO;
 	}
 
-	/**
-	 * This method can be used for saving of Anonymous User details.
-	 * 
-	 * @author Ravi Kiran.Y 
-	 * @param RegistrationVO
-	 * @return RegistrationVO
-	 */
-	/*public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
-		AnanymousUser ananymousUserReturn = (AnanymousUser)transactionTemplate.execute(new TransactionCallback() {
-			
-			public Object doInTransaction(TransactionStatus status) {	
-				AnanymousUser ananymousUser = null;
-				ProfileOpts profileOpts = null;
-				String imageName =null;
-				if(!isUpdate)
-					ananymousUser = new AnanymousUser();
-				else{
-					ananymousUser = ananymousUserDAO.get(userDetails.getRegistrationID());
-					userProfileOptsDAO.removeOptsOfExistingUser(userDetails.getRegistrationID());
-				}
-				
-				try{
-					String str = ((Long)System.currentTimeMillis()).toString();
-					String pwd= str.substring(str.length()-7,str.length());
-					
-					if(!isUpdate){
-						userDetails.setPassword(getPassword(pwd));
-						ananymousUser.setUsername(userDetails.getEmail());
-						ananymousUser.setPassword(userDetails.getPassword());
-						ananymousUser.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
-						ananymousUser.setEmail(userDetails.getEmail());
-						ananymousUser.setIsPwdChanged(IConstants.FALSE);
-					}
-					
-					
-					ananymousUser.setName(userDetails.getFirstName());
-					ananymousUser.setLastName(userDetails.getLastName());
-					ananymousUser.setGender(userDetails.getGender());
-					SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-					if(userDetails.getDateOfBirth()!=null)
-						if(!("".equalsIgnoreCase(userDetails.getDateOfBirth())))
-					{
-					Date date = format.parse(userDetails.getDateOfBirth());
-					ananymousUser.setDateofbirth(date);
-					}
-					
-					ananymousUser.setMobile(userDetails.getMobile());
-					ananymousUser.setAddress(userDetails.getAddress());
-					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
-					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
-					ananymousUser.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
-					ananymousUser.setUpdatedDate(dateUtilService.getCurrentDateAndTime());		
-					
-					
-					if(isUpdate && userDetails.getUserProfilePic()!=null)
-					{					
-						ananymousUser.setProfileImg(userDetails.getUserProfilePic());
-					}
-					
-				ananymousUser = ananymousUserDAO.save(ananymousUser);
-					
-				if(!isUpdate)
-					{
-				 // If the user does'nt select the profile image
-				        if(userDetails.getUserProfilePic()!=null)
-			           {
-							String constiName[] = userDetails.getUserProfilePic().split("/");
-							imageName = ananymousUser.getUserId()+"."+constiName[1];
-							userDetails.setRegistrationID(ananymousUser.getUserId());
-							ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
-			            }
-						
-				        
-					}
-					userDetails.setDistrict(ananymousUser.getDistrict().getDistrictName());
-					userDetails.setDistrictId(ananymousUser.getDistrict().getDistrictId());
-					if(userDetails.getProfileOpts() != null)
-					for(Long optsId:userDetails.getProfileOpts()){
-						profileOpts = profileOptsDAO.get(optsId);
-						userProfileOptsDAO.save(new UserProfileOpts(ananymousUser, profileOpts));
-					}
-					
-				}catch(Exception e){
-					e.printStackTrace();
-					status.setRollbackOnly();
-				}
-			 return ananymousUser;
-			}
-		});
-		
-		if(ananymousUserReturn != null && ananymousUserReturn.getUserId() != null)
-			return true;
-		
-	 return false;
-	}
-	
-	*/
-	
 public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
 		Registration result = (Registration)transactionTemplate.execute(new TransactionCallback() {
@@ -451,9 +353,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					}
 					registration.setMobile(userDetails.getMobile());
 					registration.setAddress(userDetails.getAddress());
-					registration.setState(stateDAO.get(new Long(userDetails.getState())));
-					registration.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
-					registration.setDistrict(constituencyDAO.get(new Long(userDetails.getConstituency())).getDistrict());
+					registration.setStateId(new Long(userDetails.getState()));
+					registration.setConstituencyId(new Long(userDetails.getConstituency()));
+					registration.setDistrictId(constituencyDAO.getDistrictIdByConstituencyId(new Long(userDetails.getConstituency())).get(0));
 					registration.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 					
 					if(isUpdate && userDetails.getUserProfilePic()!= null)
@@ -583,7 +485,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		List<Registration> detailsListForEmail = null;
 		try{
 			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			detailsListForEmail = registrationDAO.checkForUserNameAvailabiityForEmail(userName);
 			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
