@@ -817,4 +817,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
