@@ -72,6 +72,9 @@ public class Registration implements java.io.Serializable {
 	 private State state;
 	 private District district;
 	 private Constituency constituency;
+	 private Long stateId;
+	 private Long districtId;
+	 private Long constituencyId;
 	 private String profileImg;
 	 private Date registeredDate;
 	 private Date updatedDate;
@@ -507,7 +510,7 @@ public class Registration implements java.io.Serializable {
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="state_id")
+	@JoinColumn(name="state_id", updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 		public State getState() {
@@ -515,7 +518,7 @@ public class Registration implements java.io.Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="district_id")
+	@JoinColumn(name="district_id", updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public District getDistrict() {
@@ -523,7 +526,7 @@ public class Registration implements java.io.Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="constituency_id")
+	@JoinColumn(name="constituency_id", updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Constituency getConstituency() {
@@ -654,6 +657,33 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
 		this.userReferralEmails = userReferralEmails;
+	}
+
+	@Column(name = "state_id", length = 10)
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	@Column(name = "district_id", length = 10)
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	@Column(name = "constituency_id", length = 10)
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 }

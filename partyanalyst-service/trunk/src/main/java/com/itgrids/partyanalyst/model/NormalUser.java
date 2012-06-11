@@ -37,7 +37,6 @@ public class NormalUser extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long normalUserId;
-	private User user;
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -53,12 +52,11 @@ public class NormalUser extends BaseModel implements Serializable {
 	}
 
 	/** Parameterized Constructor */
-	public NormalUser(Long normalUserId, User user, String firstName,
+	public NormalUser(Long normalUserId, String firstName,
 			String middleName, String lastName, String userName,
 			String password, String mobileNo, String email, String address) {
 		super();
 		this.normalUserId = normalUserId;
-		this.user = user;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
@@ -78,18 +76,6 @@ public class NormalUser extends BaseModel implements Serializable {
 
 	public void setNormalUserId(Long normalUserId) {
 		this.normalUserId = normalUserId;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	@Column(name = "first_name", length = 25)
