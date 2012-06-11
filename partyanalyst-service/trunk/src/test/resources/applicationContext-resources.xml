@@ -262,11 +262,16 @@
 				<value>com.itgrids.partyanalyst.model.FileSourceLanguage</value>
 				<value>com.itgrids.partyanalyst.model.Role</value>
 				<value>com.itgrids.partyanalyst.model.UserRoles</value>
+				<value>com.itgrids.partyanalyst.model.User</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="userDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="userRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserRolesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
