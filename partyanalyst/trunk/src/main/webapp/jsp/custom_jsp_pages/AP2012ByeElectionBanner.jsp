@@ -42,10 +42,53 @@
 .resulttableclass th:nth-child(1){color:#000;}
 .resulttableclass th:nth-child(1) a{color:#000;}
 .resulttableclass td {text-align:center;font-weight:bold}
-
 .winTD{background-color : GreenYellow;}
 
 .resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
+
+
+
+.resulttableclass1 a{text-decoration:none;}
+.resulttableclass1 a:hover{text-decoration:underline;}
+.resulttableclass1{border-collapse:collapse;font:13px Arial, Helvetica, sans-serif;}
+.resulttableclass1 td{border:1px solid #d3d3d3;padding:5px 3px;color:#3d3d3d;height:35px;}
+.resulttableclass1 th:nth-child(2){background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(2) a{color:#fff;}
+.resulttableclass1 th:nth-child(3){background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(3) a{color:#fff;}
+.resulttableclass1 td a{color:#000;}
+.resulttableclass1 th:nth-child(4){background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(4) a{color:#fff;}
+.resulttableclass1 th:nth-child(5){background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(5) a{color:#fff;}
+.resulttableclass1 th:nth-child(6) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(6) a{color:#fff;}
+.resulttableclass1 th:nth-child(7) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(7) a{color:#fff;}
+.resulttableclass1 th:nth-child(8) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(8) a{color:#fff;}
+.resulttableclass1 th:nth-child(9) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(9) a{color:#fff;}
+.resulttableclass1 th:nth-child(10) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(10) a{color:#fff;}
+.resulttableclass1 th:nth-child(11) {background:#21B2ED;color:#fff;}
+.resulttableclass1 th:nth-child(11) a{color:#fff;}
+
+.resulttableclass1 th{border:1px solid #d3d3d3;padding:10px 5px;}
+.resulttableclass1 tr:nth-child(odd){background:#f3f3f3;}
+.resulttableclass1 th:nth-child(1){color:#000;}
+.resulttableclass1 th:nth-child(1) a{color:#000;}
+.resulttableclass1 td {text-align:center;font-weight:bold}
+.winTD{background-color : GreenYellow;}
+
+.resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
+
+
+
+
+
+
+
 
 .buttonClass {
 	background-color: background;
@@ -84,10 +127,528 @@
 </div>
 <br>
 <div id="upComing" style="background:#FFF;padding-top: 12px;">
-<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Upcoming Andhra Pradesh 2012 Bye Elections</span>
+<span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Andhra Pradesh 2012 Bi Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
-<span style="color:#ED5B21;font-weight:bold;">AP Bye Election Schedule</span> -
+<span style="color:#ED5B21;font-weight:bold;">AP Bi Election Schedule</span> -
+
 <span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
+
+<span style="font-family:verdana;font-size:13px;background:#ED5B21;padding:5px;color:#ffffff;"><b>Party Analyst View on Coming Results of 18 Assembly & Nellore Parliament of Andhra Pradesh 2012 Bye Election</b> </span><br><br>
+
+<span style="font-family:verdana;font-size:13px;">Party Analyst announcing its Views on Coming Results of Andhra Pradesh 2012 Bi Elections. In 18 Assembly Constituencies <b>YSRC Party may Win 12 - 15 Seats, INC Party may Win 1 - 2 Seats, TDP Party may Win 1 - 3 Seats, TRS may Win 1 Seat (Parakala Constituency) and YSRC will Win in Nellore Parliament Constituency</b>.</span><br /><br>
+
+<style>
+	
+
+.resultclass{
+width:275px;
+color:#fff;
+display:inline-block;
+position:relative;
+margin:5px 10px 5px 10px;
+text-align:center;
+}
+.resultclass span.favour{float:left;padding:5px;background:#aaa;width:265px;height:33px;over-flow:auto;}
+
+.resultclass span.cons{background:#f3f3f3;width:100%;
+color:#000;font-size:15px;display:inline-block;float:left;
+border-radius:5px 5px 0px 0px;box-shadow:0px -2px 1px #888;
+padding:5px 0px;
+}
+
+.resultclass .borderperc{position:relative;display:inline-block;width:275px;
+background:#efefef;
+padding:1px 0px; clear:both;
+text-shadow:0px 1px 2px #fff;color:#000;
+}
+.perc1{float:left;display:inline-block;box-shadow:0px 0px 2px #aaa;border-radius:0px 0px 0px 5px;padding:5px 0px;}
+.perc2{float:left;display:inline-block;box-shadow:0px 0px 2px #aaa;border-radius:0px 0px 5px 0px;padding:5px 0px;}
+.perc3{float:left;display:inline-block;box-shadow:0px 0px 2px #aaa;border-radius:0px 0px 5px 5px;padding:5px 0px;}
+
+</style>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Rajampet</span>
+	<span class="favour">YSRC Party will Win</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Rayachoti</span>
+	<span class="favour">YSRC Party will Win</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Ananthapur</span>
+	<span class="favour">YSRC Party will Win</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Allagadda</span>
+	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Tirupathi</span>
+	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Udayagiri</span>
+	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Yemmiganuru</span>
+	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Railway Kodur (SC)</span>
+	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Ongole</span>
+	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Payakaraopet (SC)</span>
+	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Macherla<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and TDP</span>
+	
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Polavaram<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and TDP</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Prathipadu (SC)<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and TDP</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Rayadurg<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and TDP</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/TRS.png" style="float:left;margin-left:5px;"></span>
+	Parakala<img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between TRS and YSRC</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#F89BEC;width:50%;">TRS (50%)</div>
+	<div class="perc2" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	</div>
+</div>
+
+<div class="resultclass">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Narasannapeta<img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and INC</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:75%;">YSRC (75%)</div>
+	<div class="perc2" style="background:#56EC58;width:25%;">INC (25%)</div>
+	</div>
+</div>
+
+<div class="resultclass" style="margin-left:31px;">
+	<span class="cons"><span><img width="25" height="20" src="images/party_flags/INC.png" style="float:left;margin-left:5px;"></span>
+	Narsapuram</span>
+	<span class="favour">INC Party will Win</span>
+
+	<div class="borderperc">
+	<div class="perc3" style="background:#56EC58;color:#FFFFFF;width:100%;">INC</div>
+	</div>
+</div>
+
+<div class="resultclass" style="margin-left:31px;">
+	<span class="cons">
+	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
+	Ramachandrapuram<img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRC and INC</span>
+
+	<div class="borderperc">
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc2" style="background:#56EC58;width:50%;">INC (50%)</div>
+	</div>
+</div>
+<br><br>
+<span style="font-family:verdana;font-size:13px;background:#ED5B21;padding:5px;color:#ffffff;">Party wise Votes Share in 2009 Assembly Elections of 2012 Bi election Constituencies</span><br>
+
+<table width="100%" class="resulttableclass1" style="margin-top:9px;margin-bottom:10px;text-align:center">
+  <tr>
+    <th style="background-color:#21B2ED;color:#fff;padding:0px;">SNO</th>
+    <th>Region</th>
+    <th>Constituency</th>
+	<th>Total Voters
+</th>
+	<th>Polled Votes
+</th>
+	<th>TDP 
+</th>
+    <th>INC
+</th>
+	<th>PRP
+</th>
+	<th>Others
+</th>
+	
+   </tr>
+  <tr>
+    
+    <td>1</td>
+    <td>Costal Andhra</td>
+	<td >Ongole</td>
+    <td>2,34,265</td>
+	<td>1,56,530</td>
+    <td>44,228</td>
+	<td class="winTD">67,214</td>
+    <td>33,716</td>
+	<td>11,365</td>
+ 
+  </tr>
+   <tr>
+    
+    <td>2</td>
+    <td>Costal Andhra</td>
+	<td >Udayagiri </td>
+    <td>2,03,782</td>
+	<td>1,48,133</td>
+    <td>55,870</td>
+	<td class="winTD">69,352</td>
+    <td>14,512</td>
+	<td>8,073</td>
+	
+  </tr>
+   <tr>
+    
+    <td>3</td>
+    <td>Costal Andhra</td>
+	<td>Ramachandrapuram </td>
+    <td>1,75,344</td>
+	<td>1,42,302</td>
+    <td>23,252</td>
+	<td class="winTD">56,589</td>
+    <td>52,558</td>
+	<td>9,451</td>
+ 
+  </tr>
+   <tr>
+    
+    <td>4</td>
+    <td>Costal Andhra</td>
+	<td>Narasannapeta </td>
+    <td>1,72,020</td>
+	<td>1,36,923</td>
+    <td>42,837</td>
+	<td class="winTD">60,426</td>
+    <td>25,280</td>
+	<td>8,170</td>
+ 
+  </tr>
+   <tr>
+    
+    <td>5</td>
+    <td>Costal Andhra</td>
+	<td>Macherla</td>
+    <td>2,01,861</td>
+	<td>1,52,057</td>
+    <td>57,168</td>
+	<td class="winTD">66,953</td>
+    <td>16,386</td>
+	<td>11,544</td>
+ 
+  </tr>
+ 
+ <tr>
+    
+    <td>6</td>
+    <td>Costal Andhra</td>
+	<td>Narsapuram</td>
+    <td>1,32,956</td>
+	<td>1,15,957</td>
+    <td>10,841</td>
+	<td class="winTD">58,560</td>
+    <td>41,235</td>
+	<td>5,257</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>7</td>
+    <td>Costal Andhra</td>
+	<td>Polavaram</td>
+    <td>1,66,300</td>
+	<td>1,44,687</td>
+    <td>44,634</td>
+	<td class="winTD">50,298</td>
+    <td>36,483</td>
+	<td>13,247</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>8</td>
+    <td>Costal Andhra</td>
+	<td>Payakaraopet (SC)</td>
+    <td>2,10,830</td>
+	<td>1,57,926</td>
+    <td>50,042</td>
+	<td class="winTD">50,698</td>
+    <td>49,264</td>
+	<td>7,886</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>9</td>
+    <td>Costal Andhra</td>
+	<td>Prathipadu (SC)</td>
+    <td>2,07,396</td>
+	<td>1,68,896</td>
+    <td>64,282</td>
+	<td class="winTD">66,324</td>
+    <td>33,889</td>
+	<td>4,174</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>10</td>
+    <td>Rayalaseema</td>
+	<td>Railway Kodur (SC)</td>
+    <td>1,58,139</td>
+	<td>1,17,703</td>
+    <td>39,359</td>
+	<td class="winTD">51,747</td>
+    <td>22,122</td>
+	<td>4,435</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>11</td>
+    <td>Rayalaseema</td>
+	<td>Rajampet</td>
+    <td>1,85,475</td>
+	<td>1,38,346</td>
+    <td>48,055</td>
+	<td class="winTD">60,397</td>
+    <td>21,499</td>
+	<td>8,363</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>12</td>
+    <td>Rayalaseema</td>
+	<td>Rayachoti</td>
+    <td>1,86,579</td>
+	<td>1,43,194</td>
+    <td>57,069</td>
+	<td class="winTD">71,901</td>
+    <td>6,469</td>
+	<td>7,755</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>13</td>
+    <td>Rayalaseema</td>
+	<td>Ananthapur</td>
+    <td>2,29,876</td>
+	<td>1,16,008</td>
+    <td>32,033</td>
+	<td class="winTD">45,275</td>
+    <td>28,489</td>
+	<td>10,211</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>14</td>
+    <td>Rayalaseema</td>
+	<td>Rayadurg</td>
+    <td>1,98,167</td>
+	<td>1,55,854</td>
+    <td>62,168</td>
+	<td class="winTD">76,259</td>
+    <td>9,670</td>
+	<td>7,757</td>
+ 
+  </tr>
+  
+  <tr>
+    
+    <td>15</td>
+    <td>Rayalaseema</td>
+	<td>Yemmiganuru</td>
+    <td>1,89,278</td>
+	<td>1,28,816</td>
+    <td>51,443</td>
+	<td class="winTD">53,766</td>
+    <td>16,638</td>
+	<td>6,876</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>16</td>
+    <td>Rayalaseema
+</td>
+	<td>Allagadda
+</td>
+    <td>2,00,691</td>
+	<td>1,53,925</td>
+    <td>23,800</td>
+	<td>59,597</td>
+    <td class="winTD">61,555</td>
+	<td>8,895</td>
+   </tr>
+  <tr>
+    
+    <td>17</td>
+    <td>Rayalaseema</td>
+	<td>Tirupathi</td>
+    <td>2,47,160</td>
+	<td>1,27,627</td>
+    <td>21,307</td>
+	<td>40,379</td>
+    <td class="winTD">56,309</td>
+	<td>9,632</td>
+ 
+  </tr>
+  <tr>
+    
+    <td>18</td>
+    <td>Telangana</td>
+	<td>Parkal</td>
+    <td>1,93,381</td>
+	<td>1,47,872</td>
+    <td>56,335(TRS)</td>
+	<td class="winTD">69,135</td>
+    <td>11,968</td>
+	<td>10,315</td>
+ 
+  </tr>
+  <tr>
+  <td></td>
+  <td>Total</td>
+  <td></td>
+  <td>34,93,500</td>
+  <td>25,52,756</td>
+  <td>7,28,388</td>
+  <td>10,74,870</td>
+  <td>5,38,042</td>
+  <td>1,53,406</td>
+  </tr>
+  <tr><td></td><td></td><td></td><td></td>
+  <td>100 %</td>
+  <td>28.53 %</td>
+<td>42.11 %</td>
+<td>21.08 %</td>
+<td>6.01 %</td>
+</tr>
+</table>
+
 <span style="color:#ED5B21;font-weight:bold;">In Parliament</span> - Nellore MP <a href="candidateElectionResultsAction.action?candidateId=13626">Mekapati Rajamohan Reddy</a>, who is a well-known supporter of YSR Congress Party President Jagan Mohan Reddy, has submitted his resignation to Lok Sabha Speaker Meira Kumar on August 24. 
 <!--<div style="float: right; margin-right: 32px; margin-top: 49px;"><a class="buttonClass" href="javascript:{}" style="text-decoration:none;" onclick="getConstituencyElecResultsWindow(495,'Parliament',2009)">View Complete Results</a></div>-->
 </div>
@@ -183,8 +744,8 @@ style="text-align: right;"><a onclick="getConstituencyElecResultsWindow(495,'Par
 
 </table></div></fieldset></td></tr>
 </table>
-<div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bye elections are happening due to JAGAN MLA's who voted against to confidence motion and disqualified by speaker Nadendla Manohar and the Praja Rajyam president Chiranjeevi resigned from Tirupati assembly constituency.</div>
-<div style="margin-left: 12px;"><span style=" background:#ED5B21;color: #FFFFFF;font-family: verdana;font-size: 14px;font-weight: bold;padding: 4px;text-align: center;cursor:pointer;border-radius:5px;" onclick="byeEleParticipatedCandidateInfo()">Andhra Pradesh Bye Election Participating Candidates</span>
+<div style="text-align:justify;margin:10px;padding:10px;"> <span style="color:#ED5B21;font-weight:bold;font-size:16px">In Assembly</span> - Assembly constituencies details where the bi elections are happening due to JAGAN MLA's who voted against to confidence motion and disqualified by speaker Nadendla Manohar and the Praja Rajyam president Chiranjeevi resigned from Tirupati assembly constituency.</div>
+<div style="margin-left: 12px;"><span style=" background:#ED5B21;color: #FFFFFF;font-family: verdana;font-size: 14px;font-weight: bold;padding: 4px;text-align: center;cursor:pointer;border-radius:5px;" onclick="byeEleParticipatedCandidateInfo()">Andhra Pradesh Bi Election Participating Candidates</span>
 
 </div>
 <div style="margin-left: 450px; margin-bottom: 0px; margin-top: -21px;"><span id="byeElePaticipatedCandInfoSpan"><img id="plusImgIdEle" title="Click Here To Expand" style="" src="images/icons/plusImg .png" onclick="byeEleParticipatedCandidateInfo()"></img></span></div>
@@ -435,7 +996,7 @@ href="candidateElectionResultsAction.action?candidateId=3462" onmouseover="displ
 <span id="imageId"><img title="Click Here To Expand" style="" src="images/icons/plusImg .png" onclick="showVotesInfo('votesInfoId')"></img></span></div>
 
 <div style="margin-left: 10px; margin-bottom: 13px; padding-bottom: 19px; margin-top: -21px;">
-<span style="background: none repeat scroll 0 0 #ED5B21;border-radius: 5px 5px 5px 5px;color: #FFFFFF;font-family: verdana;font-size: 13px;font-weight: bold;margin-bottom: 20px;margin-left: 0;padding: 5px;cursor:pointer;"  onclick="showVotesInfo('votesInfoId')">View 2012 Andhra Pradesh Bye Election Results Completed In 7 Constituencies</span>
+<span style="background: none repeat scroll 0 0 #ED5B21;border-radius: 5px 5px 5px 5px;color: #FFFFFF;font-family: verdana;font-size: 13px;font-weight: bold;margin-bottom: 20px;margin-left: 0;padding: 5px;cursor:pointer;"  onclick="showVotesInfo('votesInfoId')">View 2012 Andhra Pradesh Bi Election Results Completed In 7 Constituencies</span>
 </div>
 <table width="100%" class="resulttableclass" style="margin-top:9px;display:none;margin-bottom:10px;" id="votesInfoId">
   <tr>
