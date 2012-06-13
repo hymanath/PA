@@ -1001,7 +1001,7 @@ $(document).ready(function() {
 <body>
 <!--CONTENT MAIN SECTION START-->
 <!--PROFILE LEFT CONENT SECTION START-->
-<div style="text-align:center;margin-bottom:10px;">
+<!--<div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
 /* PartyPageHeader */
@@ -1009,11 +1009,18 @@ google_ad_slot = "2678494123";
 google_ad_width = 728;
 google_ad_height = 90;
 //-->
-</script>
+<!--</script>
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
+</div> -->
+<a id="inline" href="#fancydivbox" style="displaynone"></a>
+<div id="promodiv" style="display:none;">
+	<div id="fancydivbox">
+	<jsp:include page="custom_jsp_pages/homePagePopupPage.jsp" flush="true" />
+	</div>
 </div>
+
 <div class="main-mbg">${specialPageVO.heading}
 <span style="margin-top:10px;margin-right:30px;float:right">
 <g:plusone size="medium"></g:plusone>
@@ -1204,7 +1211,7 @@ Tweet</a>
 	</div>
 	<div id="videoGallaryPopUpDiv"></div>
 
-<div>
+<!--<div>
 	<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-0938408694174139";
 		/* CandidatePageRightBox */
@@ -1212,11 +1219,11 @@ Tweet</a>
 		google_ad_width = 300;
 		google_ad_height = 250;
 		//-->
-		</script>
+		<!--</script>
 		<script type="text/javascript"
 		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		</script>
-	</div>
+	</div> -->
 
  <!-- VIDEOS SECTION END--> 
 
@@ -1243,6 +1250,17 @@ Tweet</a>
 getTotalNews('getFirstFourNewsRecordsToDisplay');
 displayProfile();
 getFirstThreePhotoRecords();
+var loadingFirstTime = '${sessionScope.loadingFirstTime}';
+$(document).ready(function(){
+if(loadingFirstTime != 'false'){
+		$("#inline").fancybox();
+		$("#inline").trigger("click");
+		}
+	});
+
+<%
+	session.setAttribute("loadingFirstTime", "false");
+%>
 <s:if test="contentId != null">
 	showSelectedContentAndRelatedGalleries();
 </s:if>
