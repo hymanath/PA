@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Role;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
@@ -100,6 +102,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserRolesDAO userRolesDAO;
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
 	private IRegistrationDAO registrationDAO;
+	private IUserDAO userDAO;
 	
 	
 	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
@@ -309,21 +312,28 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
 		this.userRolesDAO = userRolesDAO;
 	}
-
 		
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
-		Registration result = (Registration)transactionTemplate.execute(new TransactionCallback() {
+		User result = (User)transactionTemplate.execute(new TransactionCallback() {
 			
 			public Object doInTransaction(TransactionStatus status) {
-				Registration registration = null;
+				User user = null;
 				ProfileOpts profileOpts = null;
 				String imageName =null;
 				
 				if(!isUpdate)
-					registration = new Registration();
+					user = new User();
 				else{
-					registration = registrationDAO.get(userDetails.getRegistrationID());
+					user = userDAO.get(userDetails.getRegistrationID());
 					userProfileOptsDAO.removeOptsOfExistingUser(userDetails.getRegistrationID());
 				}
 				
@@ -334,60 +344,62 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						String str = ((Long)System.currentTimeMillis()).toString();
 						String pwd = str.substring(str.length()-7,str.length());
 						userDetails.setPassword(getPassword(pwd));
-						registration.setUserName(userDetails.getEmail());
-						registration.setPassword(userDetails.getPassword());
-						registration.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
-						registration.setEmail(userDetails.getEmail());
-						registration.setIsPwdChanged(IConstants.FALSE);
+						user.setUserName(userDetails.getEmail());
+						user.setPassword(userDetails.getPassword());
+						user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+						user.setEmail(userDetails.getEmail());
+						user.setIsPwdChanged(IConstants.FALSE);
+						
 					}
 					
-					registration.setFirstName(userDetails.getFirstName());
-					registration.setLastName(userDetails.getLastName());
-					registration.setGender(userDetails.getGender());
+					user.setFirstName(userDetails.getFirstName());
+					user.setLastName(userDetails.getLastName());
+					user.setGender(userDetails.getGender());
+					
 					
 					SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 					if(userDetails.getDateOfBirth()!= null && userDetails.getDateOfBirth().trim().length() > 0)
 					{
 						Date date = format.parse(userDetails.getDateOfBirth());
-						registration.setDateOfBirth(date);
+						user.setDateOfBirth(date);
 					}
-					registration.setMobile(userDetails.getMobile());
-					registration.setAddress(userDetails.getAddress());
-					registration.setStateId(new Long(userDetails.getState()));
-					registration.setConstituencyId(new Long(userDetails.getConstituency()));
-					registration.setDistrictId(constituencyDAO.getDistrictIdByConstituencyId(new Long(userDetails.getConstituency())).get(0));
-					registration.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+					
+					user.setMobile(userDetails.getMobile());
+					user.setAddress(userDetails.getAddress());
+					user.setStateId(new Long(userDetails.getState()));
+					user.setDistrictId(constituencyDAO.getDistrictIdByConstituencyId(new Long(userDetails.getConstituency())).get(0));
+					user.setConstituencyId(new Long(userDetails.getConstituency()));
+					user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 					
 					if(isUpdate && userDetails.getUserProfilePic()!= null)
-					{					
-						registration.setProfileImg(userDetails.getUserProfilePic());
+					{	
+						user.setProfileImg(userDetails.getUserProfilePic());
 					}
-					
-					registration = registrationDAO.save(registration);
+					user = userDAO.save(user);
 					
 					if(!isUpdate && userDetails.getUserProfilePic()!= null)
 			        {
 						String constiName[] = userDetails.getUserProfilePic().split("/");
-						imageName = registration.getRegistrationId()+"."+constiName[1];
-						userDetails.setRegistrationID(registration.getRegistrationId());
-						ResultStatus imgStatus = saveUserProfileImageName(registration.getRegistrationId(), imageName);
+						imageName = user.getUserId()+"."+constiName[1];
+						ResultStatus imgStatus = saveUserProfileImageName(user.getUserId(),imageName);
+					
 					}
 					
-					userDetails.setDistrict(registration.getDistrict().getDistrictName());
-					userDetails.setDistrictId(registration.getDistrict().getDistrictId());
+					//userDetails.setDistrict(user.getDistrict().getDistrictName());
+					userDetails.setDistrictId(user.getDistrictId());
 					
 					if(userDetails.getProfileOpts() != null)
 					for(Long optsId:userDetails.getProfileOpts())
 					{
 						profileOpts = profileOptsDAO.get(optsId);
-						userProfileOptsDAO.save(new UserProfileOpts(registration, profileOpts));
+						userProfileOptsDAO.save(new UserProfileOpts(user, profileOpts));
 					}
 					if(!isUpdate)
 					{
 						Role role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
 						UserRoles userRoles = new UserRoles();
 						userRoles.setRole(role);
-						userRoles.setUser(registration);
+						userRoles.setUser(user);
 						userRolesDAO.save(userRoles);
 					}
 					
@@ -395,11 +407,11 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					e.printStackTrace();
 					status.setRollbackOnly();
 				}
-			 return registration;
+				return user;
 			}
 		});
 		
-		if(result != null && result.getRegistrationId() != null)
+		if(result != null && result.getUserId() != null)
 			return true;
 		
 	 return false;
@@ -481,11 +493,12 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	
 	public ResultStatus checkForUserNameAvailabilityForFreashUser(String userName){
 		ResultStatus resultStatus = new ResultStatus();
-		List<Registration> detailsList = null;
-		List<Registration> detailsListForEmail = null;
+		List<User> detailsList = null;
+		List<User> detailsListForEmail = null;
 		try{
-			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail = registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			detailsList = userDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail = userDAO.checkForUserNameAvailabiityForEmail(userName);
+			
 			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
@@ -1574,29 +1587,29 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	{
 		try{
 		RegistrationVO registrationVO = new RegistrationVO();
-		Registration registration = registrationDAO.get(registrationId);
+		User user = userDAO.get(registrationId);
 		List<Long> userOpts = new ArrayList<Long>();
 		try{
 			
 			registrationVO.setRegistrationID(registrationId);
-			registrationVO.setUserName(registration.getUserName());
-			registrationVO.setPassword(registration.getPassword());
-			registrationVO.setGender(registration.getGender());
-			registrationVO.setEmail(registration.getEmail());
-			registrationVO.setPhone(registration.getPhone());
-			registrationVO.setMobile(registration.getMobile());
-			registrationVO.setAddress(registration.getAddress());
-			if(registration.getDateOfBirth()!=null)
+			registrationVO.setUserName(user.getUserName());
+			registrationVO.setPassword(user.getPassword());
+			registrationVO.setGender(user.getGender());
+			registrationVO.setEmail(user.getEmail());
+			registrationVO.setPhone(user.getPhone());
+			registrationVO.setMobile(user.getMobile());
+			registrationVO.setAddress(user.getAddress());
+			if(user.getDateOfBirth()!=null)
 			{
-				registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateOfBirth().toString()));
+				registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(user.getDateOfBirth().toString()));
 			}
-			registrationVO.setFirstName(registration.getFirstName());
-			registrationVO.setLastName(registration.getLastName());
-			registrationVO.setState(registration.getState().getStateId().toString());
-			registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
-			registrationVO.setPincode(registration.getPincode());
+			registrationVO.setFirstName(user.getFirstName());
+			registrationVO.setLastName(user.getLastName());
+			registrationVO.setState(user.getState().getStateId().toString());
+			registrationVO.setConstituency(user.getConstituency().getConstituencyId().toString());
+			registrationVO.setPincode(user.getPincode());
 			
-			for(UserProfileOpts userOptsModel:registration.getUserProfileOptses())
+			for(UserProfileOpts userOptsModel:user.getUserProfileOptses())
 				userOpts.add(userOptsModel.getProfileOpts().getProfileOptsId());
 			
 			registrationVO.setProfileOpts(userOpts);
@@ -2035,13 +2048,13 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 	return IConstants.YesPassword;*/
 	if(registrationId == 0l)
 	{
-		List<Object> userId = registrationDAO.getUserIdByUserName(userName);
+		List<Object> userId = userDAO.getUserIdByUserName(userName);
 		registrationId = (Long) userId.get(0);
 	}
-	List chkpwd = registrationDAO.checkUserPassword(crntpassword,registrationId);
+	List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
 	if(chkpwd.size() == 0)
 		return IConstants.NoPassword;
-	Integer chkPwdVals = registrationDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
+	Integer chkPwdVals = userDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
 	return IConstants.YesPassword;
 }
 
