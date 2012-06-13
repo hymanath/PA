@@ -26,12 +26,12 @@ public class UserRoles extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1249092385445335940L;
 	
 	private Long userRolesId;
-	private Registration user;
 	private Role role;
+	private User user;
 	
 	public UserRoles(){}
 	
-	public UserRoles(Registration user,Role role)
+	public UserRoles(User user,Role role)
 	{
 		this.user = user;
 		this.role = role;
@@ -49,18 +49,6 @@ public class UserRoles extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="role_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -71,7 +59,17 @@ public class UserRoles extends BaseModel implements Serializable{
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
-	
 
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }
