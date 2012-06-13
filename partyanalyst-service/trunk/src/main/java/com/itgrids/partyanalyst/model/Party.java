@@ -67,6 +67,8 @@ public class Party implements java.io.Serializable {
 	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
 	private Set<PartyElectionResultsWithGenderAnalysis> partyElectionResultsWithGenderAnalysis = new HashSet<PartyElectionResultsWithGenderAnalysis>(0);
 	private Set<PartyPageCustomPages> partyPageCustomPages = new HashSet<PartyPageCustomPages>(0);
+	private Set<User> users = new HashSet<User>(0);
+	
 	// Constructors
 	
 	/** default constructor */
@@ -353,6 +355,16 @@ public class Party implements java.io.Serializable {
 	public void setPartyPageCustomPages(
 			Set<PartyPageCustomPages> partyPageCustomPages) {
 		this.partyPageCustomPages = partyPageCustomPages;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 }
