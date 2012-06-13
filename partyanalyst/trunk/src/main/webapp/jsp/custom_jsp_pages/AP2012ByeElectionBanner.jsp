@@ -83,13 +83,6 @@
 
 .resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
 
-
-
-
-
-
-
-
 .buttonClass {
 	background-color: background;
     border-radius: 6px 6px 6px 6px;
@@ -129,10 +122,39 @@
 <div id="upComing" style="background:#FFF;padding-top: 12px;">
 <span class="resulth3" style="font-weight:bold;font-family:verdana;margin:13px;padding:5px;width:560px;">Andhra Pradesh 2012 Bi Elections</span>
 <div style="text-align:justify;margin:10px;padding:10px;"> 
-<span style="color:#ED5B21;font-weight:bold;">AP Bi Election Schedule</span> -
+<span style="color:#ED5B21;font-weight:bold;font-size: 13px;">AP Bi Election Schedule</span> -
 
 <span style="font-family:verdana;font-size:13px;">Election Notification - May 18,  Last date for Nomination - May 25, Nomination withdraw Last date - May 28, <br />Polling - June 12, Counting - June 15.</span><br /><br />
 
+<span style="border-radius: 3px;font-family:verdana;font-size:13px;background:#ED5B21;padding:5px;color:#ffffff;">
+<b>Party Analyst Detailed Analysis on Andhra Pradesh 2012 Bi Elections</b></span>
+<br /><br />
+<div style="margin-left:20px;">
+<span style="border-radius: 3px;font-family:verdana;font-size:13px;background:YellowGreen;padding:5px;color:#ffffff;">
+<b>What factors makes TDP and INC to fight with YSRC   ?</b></span>
+<ul style="margin: 18px 18px 18px 0px; font-family: verdana; font-size: 13px;">
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png"> INC and TDP are able to give good fight in some constituencies where candidates are very strong (Kothapalli Subbarayudu from &nbsp;&nbsp;&nbsp;Narsapur, Thota Trimurthulu from Ramachandrapuram, Chengala Venkata Rao from Payakaraopeta, Deepak Reddy from Raydurg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;etc...).</li>
+
+<li style="margin-bottom: 14px;"><img src="images/icons/diamond.png" style="padding: 5px 5px 0px;">Interestingly most of these leaders in INC came from PRP. Thus, PRP merger benefited to congress in this way rather than &nbsp;&nbsp;&nbsp;&nbsp;Chiranjeevi image.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Present government is INC. So, if people vote for INC, they will at least get some development activities in these two years.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png"> Everyone in YSRC are sitting MLAs, they are having lot of opposition from the voters. Even this opposition has been overcome &nbsp;&nbsp;&nbsp;&nbsp;with YSR factor.</li>
+
+ <li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Caste factor for TDP, especially from Kamma Community.</li>
+
+</ul>
+</div>
+<div style="margin-left:20px;">
+<span style="border-radius: 3px;font-family:verdana;font-size:13px;background:YellowGreen;padding:5px;color:#ffffff;"><b>What factors makes YSRC to get this much hype    ?</b></span>
+<ul style="margin: 18px 18px 18px 0px;font-family: verdana; font-size: 13px;">
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">YSR - Low and middle class people are feeling that all the developments and benefits they got in INC government, is only due to &nbsp;&nbsp;&nbsp;&nbsp;YSR. No one is able to create confidence in these people after YSR death. Voters are feeling that, if YSRC comes into ruling, only &nbsp;&nbsp;&nbsp; then,they will get better beneficial schemes. This hope is making the voters to move with YSRCP.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Sympathy (Especially with YSR family on roads), Why the government is harassing their leader's family, who has done something &nbsp;&nbsp;&nbsp;for them.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Mr. Chandra Babu Naidu is working hard to bring his party into power. Unfortunately YSR created some trademark in the voters &nbsp;&nbsp;(middle class and lower class people), not to believe Chandra Babu Naidu’s promises. This has become a bottleneck to improve &nbsp;TDP.</li>
+</ul>
+</div>
 <span style="font-family:verdana;font-size:13px;background:#ED5B21;padding:5px;color:#ffffff;"><b>Party Analyst View on Coming Results of 18 Assembly & Nellore Parliament of Andhra Pradesh 2012 Bye Election</b> </span><br><br>
 
 <span style="font-family:verdana;font-size:13px;">Party Analyst announcing its Views on Coming Results of Andhra Pradesh 2012 Bi Elections. In 18 Assembly Constituencies <b>YSRC Party may Win 12 - 15 Seats, INC Party may Win 1 - 2 Seats, TDP Party may Win 1 - 3 Seats, TRS may Win 1 Seat (Parakala Constituency) and YSRC will Win in Nellore Parliament Constituency</b>.</span><br /><br>
