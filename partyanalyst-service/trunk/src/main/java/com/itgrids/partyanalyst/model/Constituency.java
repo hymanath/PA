@@ -73,6 +73,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<UserConstituencyScope> userConstituencyScope = new HashSet<UserConstituencyScope>(0);
 	private Set<MessageToParty> messageToParty = new HashSet<MessageToParty>(0);
 	private Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage = new HashSet<ConstituencyUrbanPercentage>(0);
+	private Set<User> users = new HashSet<User>(0);
 	
 	// Constructors
 
@@ -395,6 +396,16 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setConstituencyUrbanPercentage(
 			Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage) {
 		this.constituencyUrbanPercentage = constituencyUrbanPercentage;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 }
