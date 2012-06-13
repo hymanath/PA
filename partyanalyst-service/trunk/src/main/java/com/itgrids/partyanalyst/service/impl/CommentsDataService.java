@@ -228,10 +228,12 @@ public class CommentsDataService implements ICommentsDataService {
 		List<CommentCategoryCandidate> candidateComments = null;
 		
 		String hqlQuery = "";
-		if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
+		/*if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
 			hqlQuery = " and model.paidUser.registrationId = ?";
 		else
-			hqlQuery = " and model.freeUser.userId = ?";
+			hqlQuery = " and model.freeUser.userId = ?";*/
+		
+		hqlQuery = " and model.user.registrationId = ?";
 		
 		try{
 			candidateComments = new ArrayList<CommentCategoryCandidate>();
@@ -604,10 +606,11 @@ public class CommentsDataService implements ICommentsDataService {
 		Float tempSeverity = 0f;
 		String hqlQuery = "";
 	
-		if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
+		/*if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
 			hqlQuery = " and model.paidUser.registrationId = ?";
 		else
-			hqlQuery = " and model.freeUser.userId = ?";
+			hqlQuery = " and model.freeUser.userId = ?";*/
+		hqlQuery = " and model.user.registrationId = ?";
 		
 		List<Object[]> candidatesIdAndReasonSeverity = commentCategoryCandidateDAO.getAllCommentsOfUserForANomination(electionId, constituencyId, 
 				candidateId, userId, hqlQuery);
