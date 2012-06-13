@@ -445,7 +445,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and nModel.constituency.state.stateId = ? and nModel.hasResults is null or nModel.hasResults = ? order by nModel.election.electionYear desc)",params);
 		
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCandidateAndPartyInfo(Long constituencyId,String electionType,Long rank)
 	{
@@ -460,7 +460,21 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.election.electionYear = (select max(nModel.election.electionYear) from ConstituencyElection nModel where nModel.election.electionScope.electionType.electionType = ? "+
 				"and nModel.constituency.constituencyId = ? )",params);
 	}
-	
+	*/
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidateAndPartyInfo(Long constituencyId,String electionType,Long rank)
+	{
+		Object[] params = {constituencyId,rank,electionType,constituencyId};
+			
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
+				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +
+				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.candidateResult.rank = ? and " +
+				"model.constituencyElection.election.electionYear = (select max(nModel.constituencyElection.election.electionYear) from ConstituencyElectionResult nModel where nModel.constituencyElection.election.electionScope.electionType.electionType = ? "+
+				"and nModel.constituencyElection.constituency.constituencyId = ? )",params);
+	}
 	
 	
 	@SuppressWarnings("unchecked")
