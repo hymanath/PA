@@ -136,11 +136,12 @@ margin-right:auto;
 #regionAccessDiv{
 		
 		background: none repeat scroll 0 0 #FFF8E5;
-		 border: 1px solid #06ABEA;
+		 /*border: 1px solid #06ABEA;*/
 		height: auto;
 		padding: 10px;
 		text-align: center;
 		width: 500px;
+		font-size:13px;
 	}
 #candidateResultAccessDiv .ui-widget-header{
 	background: #06ABEA;
@@ -630,7 +631,6 @@ function hideImg(){
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
 {
-	
 	/**************************/
 	var chartSeries = new Array();
 	for(var i in results.partyResultsInRegionVOLst){
@@ -670,7 +670,7 @@ function buildRegionWiseElectionsResultsGraph(jsObj,results)
 	
 	var objForPie = {
 	         type: 'pie',
-	         name: 'Total Constituencys',
+	         name: 'Total Constituencies',
 	         data: regions,
 	         center: [100, 80],
 	         size: 100,
@@ -732,7 +732,7 @@ function showOverallResults()
 
 function showRegionWiseResults()
 {
-	<c:if test="${loginStatus !=null}">
+	<c:if test="${loginStatus !=null && sessionScope.USER == null}">
 		showImg();
 		var jsObj = {
 					electionId:electionId,
