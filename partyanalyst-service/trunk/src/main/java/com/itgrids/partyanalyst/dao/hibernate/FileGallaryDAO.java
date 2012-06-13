@@ -1197,7 +1197,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
    public List<Object[]> getAllNewsDetails(Long candidateId,int firstResult,int maxResult,String queryType){
 	   
 	     StringBuilder query = new StringBuilder();
-			query.append("select model.file,model.fileGallaryId,model.createdDate from FileGallary model where model.gallary.candidate.candidateId =:candidateId and  model.gallary.isDelete = 'false'  and model.gallary.contentType.contentType= :type and model.isDelete = 'false' ");
+			query.append("select model.file,model.fileGallaryId,model.file.fileDate from FileGallary model where model.gallary.candidate.candidateId =:candidateId and  model.gallary.isDelete = 'false'  and model.gallary.contentType.contentType= :type and model.isDelete = 'false' ");
 			
 			if(queryType.equals("Public"))
 			   query.append("  and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
