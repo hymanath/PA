@@ -1238,6 +1238,7 @@ Tweet</a>
 	</s:if>
 
    <div id="showProfile"></div>
+
       <!--PROFILE RIGHT CONTENT SECTION END--> 
       
     <!--CONTENT SECTION END--> 
@@ -1245,6 +1246,13 @@ Tweet</a>
  <!--CONTENT MAIN SECTION END--> 
 <div id="loginPopupDiv"></div>
 
+<div class="our-services" style="background:#fff;width:315px;margin-right:-10px;margin-top:-4px;">
+<h3 style="border-bottom-color: #CCCCCC; border-bottom-style: solid; border-bottom-width: 1px; padding-left: 9px; color: #C66E17;font-size: 13px; font-weight: bold; padding: 7px;margin-bottom: 3px;">Our Services</h3>
+		                    <a href="newsMonitoringService.action" title="News tracking service" style="width:135px;">News<br/>Monitoring Service</a>
+		                    <a href="VotersPulse.action" title="Election-Political Surveys" style="width:135px;">Voters<br/> Pulse</a>
+		                    <a href="constituencyProfileReport.action" title="Reports" style="width:135px;">Constituency Management Reports</a>
+		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians" style="width:135px;">Election Analysis And <br/>Management Tool</a>
+</div>
 <script type="text/javascript">
   
 getTotalNews('getFirstFourNewsRecordsToDisplay');
