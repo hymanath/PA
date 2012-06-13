@@ -2930,7 +2930,7 @@ function showSelectedContentAndRelatedGalleries()
 								minHeight: 650,
 								overlay: { opacity: 0.5, background: 'black'},
 								close: function(event, ui) {
-		  					  document.getElementById("showContentDivInnerDiv").innerHTML ='';
+							document.getElementById("showContentDivInnerDiv").innerHTML ='';
 							}
 								});
 		$("#showContentDiv").dialog();
