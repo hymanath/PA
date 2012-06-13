@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dto.BaseDTO;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Role;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
@@ -42,6 +44,7 @@ public class RegistrationService implements IRegistrationService{
 	private IDateService dateService;
 	private IRoleDAO roleDAO;
 	private IUserRolesDAO userRolesDAO;
+	private IUserDAO userDAO;
 	
 	public IUserRolesDAO getUserRolesDAO() {
 		return userRolesDAO;
@@ -137,19 +140,32 @@ public class RegistrationService implements IRegistrationService{
 		this.requestStatus.setRequestStatus(requestStatus);
 	}
 	
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public String saveRegistration(RegistrationVO values,String userType){
-		Registration reg = new Registration();		
+		//Registration reg = new Registration();
+		User user = new User();
 		String dob = values.getDateOfBirth();
-		reg = convertIntoModel(values);
-		
+		//reg = convertIntoModel(values);
+		user = convertIntoModel(values);
 		
 		if(checkUserName(values.getUserName())!= true)
 		{
 			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-			reg = registrationDAO.save(reg);
+			//reg = registrationDAO.save(reg);
+			user = userDAO.save(user);
 			
-			setUserID(reg.getRegistrationId());
-			saveDataInToUserRolesTable(reg,values);
+			//setUserID(reg.getRegistrationId());
+			setUserID(user.getUserId());
+			//saveDataInToUserRolesTable(reg,values);
+			saveDataInToUserRolesTable(user,values);
 			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
 		}
 		else
@@ -198,7 +214,7 @@ public class RegistrationService implements IRegistrationService{
 		}
 		
 	}
-	public ResultStatus saveDataInToUserRolesTable(Registration reg, RegistrationVO values)
+	public ResultStatus saveDataInToUserRolesTable(User user, RegistrationVO values)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try
@@ -208,7 +224,7 @@ public class RegistrationService implements IRegistrationService{
 			
 			role = roleDAO.getRoleByRoleType(IConstants.PARTY_ANALYST_USER);
 			userRoles = new UserRoles();
-			userRoles.setUser(reg);
+			userRoles.setUser(user);
 			userRoles.setRole(role);
 			userRolesDAO.save(userRoles);
 			
@@ -216,7 +232,7 @@ public class RegistrationService implements IRegistrationService{
 			{
 				role = roleDAO.getRoleByRoleType(IConstants.FREE_USER);
 				userRoles = new UserRoles();
-				userRoles.setUser(reg);
+				userRoles.setUser(user);
 				userRoles.setRole(role);
 				userRolesDAO.save(userRoles);
 			}
@@ -248,39 +264,40 @@ public class RegistrationService implements IRegistrationService{
 	
 	
 	
-	public Registration convertIntoModel(RegistrationVO values){
-		Registration reg = new Registration();  
+	
+	public User convertIntoModel(RegistrationVO values){
+		//Registration reg = new Registration();  
+		User user = new User();
 		try{ 
-			reg.setFirstName(values.getFirstName());	
-			reg.setMiddleName(values.getMiddleName());
-			reg.setLastName(values.getLastName());
-			reg.setGender(values.getGender());
-			reg.setUserName(values.getUserName());
-			reg.setPassword(values.getPassword());
-			reg.setParty(partyDAO.get(values.getParty()));
+			user.setFirstName(values.getFirstName());	
+			user.setMiddleName(values.getMiddleName());
+			user.setLastName(values.getLastName());
+			user.setGender(values.getGender());
+			user.setUserName(values.getUserName());
+			user.setPassword(values.getPassword());
+			user.setParty(partyDAO.get(values.getParty()));
 			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			Date date =null;		
 			date= format.parse(values.getDateOfBirth());		
-			reg.setDateOfBirth(date);
-			reg.setEmail(values.getEmail());
-			reg.setPhone(values.getPhone());
-			reg.setMobile(values.getMobile());
-			reg.setAddress(values.getAddress());
-			reg.setCountry(values.getCountry());
-			reg.setPincode(values.getPincode());
-			reg.setAccessType(values.getAccessType());
-			reg.setAccessValue(values.getAccessValue());
-			reg.setUserType(values.getUserType());
+			user.setDateOfBirth(date);
+			user.setEmail(values.getEmail());
+			user.setPhone(values.getPhone());
+			user.setMobile(values.getMobile());
+			user.setAddress(values.getAddress());
+			user.setCountry(values.getCountry());
+			user.setPincode(values.getPincode());
+			user.setAccessType(values.getAccessType());
+			user.setAccessValue(values.getAccessValue());
+			user.setUserType(values.getUserType());
 			if(values.getParentUserId() != null)
-				reg.setParentUser(registrationDAO.get(values.getParentUserId()));
+				user.setParentUser(userDAO.get(values.getParentUserId()));
 			if(values.getMainAccountId() != null)
-				reg.setMainAccountUser(registrationDAO.get(values.getMainAccountId()));
+				user.setMainAccountUser(userDAO.get(values.getMainAccountId()));
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return reg;
+		return user;
 	}
-	
 	
 	/**
 	 * This method can be used to get all registered users of party analyst.
