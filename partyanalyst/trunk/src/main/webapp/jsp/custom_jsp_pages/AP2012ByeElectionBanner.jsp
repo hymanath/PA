@@ -192,204 +192,211 @@ text-shadow:0px 1px 2px #fff;color:#000;
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Rajampet</span>
-	<span class="favour">YSRC Party will Win</span>
+	<a href="constituencyPageAction.action?constituencyId=252" title="Click here to View Rajampet Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Rajampet</a></span>
+	<span class="favour">YSRC Party (Amarnath Reddy) will Win</span>
 
-	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	
+<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Rayachoti</span>
-	<span class="favour">YSRC Party will Win</span>
+	<a href="constituencyPageAction.action?constituencyId=248" title="Click here to View Rayachoti Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Rayachoti</a></span>
+	<span class="favour">YSRC Party (Gadikota Srikanth Reddy) will Win</span>
 
-	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	
+<div class="borderperc">
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117"  title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Ananthapur</span>
-	<span class="favour">YSRC Party will Win</span>
+<a href="constituencyPageAction.action?constituencyId=298" title="Click here to View Ananthapur Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Ananthapur</a></span>
+	<span class="favour">YSRC Party (B.Gurunatha Reddy) will Win</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">
+
+<a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Allagadda</span>
-	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+	<a href="constituencyPageAction.action?constituencyId=254" title="Click here to View Allagadda Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Allagadda</a></span>
+	<span class="favour">YSRC Party (Bhuma Shobha Reddy) will Win(INC Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">
+
+<a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Tirupathi</span>
-	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+<a href="constituencyPageAction.action?constituencyId=291" title="Click here to View Tirupathi Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;" >Tirupathi</a></span>
+	<span class="favour">YSRC Party (Karunakar Reddy Bhumana) will Win(INC Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Udayagiri</span>
-	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+<a href="constituencyPageAction.action?constituencyId=238" title="Click here to View Udayagiri Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;" >Udayagiri</a></span>
+	<span class="favour">YSRC Party (Mekapati Chandrashekar Reddy ) will Win(INC Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Yemmiganuru</span>
-	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+<a href="constituencyPageAction.action?constituencyId=265" title="Click here to View Yemmiganuru Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;" >Yemmiganuru</a></span>
+	<span class="favour">YSRC Party (K.Chenna kesava Reddy) will Win(TDP Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Railway Kodur (SC)</span>
-	<span class="favour">Winning Chances more to YSRC Party (INC Second Place)</span>
+<a href="constituencyPageAction.action?constituencyId=246" title="Click here to View Railway Kodur Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Railway Kodur (SC)</a></span>
+	<span class="favour">YSRC Party (Koramutla Srinivasulu) will Win(INC Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Ongole</span>
-	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+	<a href="constituencyPageAction.action?constituencyId=227" title="Click here to View Ongole Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Ongole</a></span>
+	<span class="favour">YSRC Party (Balineni Srinivasa Reddy (Vasu)) will Win(TDP Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Payakaraopet (SC)</span>
-	<span class="favour">Winning Chances more to YSRC Party (TDP Second Place)</span>
+	<a href="constituencyPageAction.action?constituencyId=140" title="Click here to View Payakaraopet Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Payakaraopet (SC)</a></span>
+	<span class="favour">YSRC Party (Golla Babu Rao) will Win(TDP Second Place)</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;">YSRC</div>
+	<div class="perc3" style="background:#0266B4;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Macherla<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<a href="constituencyPageAction.action?constituencyId=205" title="Click here to View Macherla Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Macherla</a><img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between YSRC and TDP</span>
 	
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
-	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (50%)</a></div>
+	<div class="perc2" style="background:#ffff00;width:50%;"><a href="partyPageAction.action?partyId=872" title="Click here to View TDP Party Details" style="color:#000000;">TDP (50%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Polavaram<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<a href="constituencyPageAction.action?constituencyId=176" title="Click here to View Polavaram Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Polavaram</a><img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between YSRC and TDP</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
-	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117"  title="Click here to View YSRC Party Details"style="color:#ffffff;">YSRC (50%)</a></div>
+	<div class="perc2" style="background:#ffff00;width:50%;"><a href="partyPageAction.action?partyId=872" title="Click here to View TDP Party Details" style="color:#000000;">TDP (50%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Prathipadu (SC)<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<a href="constituencyPageAction.action?constituencyId=212" title="Click here to View Prathipadu Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Prathipadu (SC)</a><img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between YSRC and TDP</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
-	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (50%)</a></div>
+	<div class="perc2" style="background:#ffff00;width:50%;"><a href="partyPageAction.action?partyId=872" title="Click here to View TDP Party Details" style="color:#000000;">TDP (50%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Rayadurg<img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
+	<a href="constituencyPageAction.action?constituencyId=276" title="Click here to View Rayadurg Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Rayadurg</a><img width="25" height="20" src="images/party_flags/TDP.PNG" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between YSRC and TDP</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
-	<div class="perc2" style="background:#ffff00;width:50%;">TDP (50%)</div>
+	
+<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (50%)</a></div>
+	<div class="perc2" style="background:#ffff00;width:50%;"><a href="partyPageAction.action?partyId=872" title="Click here to View TDP Party Details" style="color:#000000;">TDP (50%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/TRS.png" style="float:left;margin-left:5px;"></span>
-	Parakala<img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:right;margin-right:5px;"></span>
+<a href="constituencyPageAction.action?constituencyId=94" title="Click here to View Parakala Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;" >Parakala</a><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between TRS and YSRC</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#F89BEC;width:50%;">TRS (50%)</div>
-	<div class="perc2" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
+	<div class="perc1" style="background:#F89BEC;width:50%;"><a href="partyPageAction.action?partyId=886" title="Click here to View TRS Party Details" style="color:#000000;">TRS (50%)</div>
+	<div class="perc2" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (50%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Narasannapeta<img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
+	<a href="constituencyPageAction.action?constituencyId=112" title="Click here to View Narasannapeta Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Narasannapeta</a><img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
 	<span class="favour">Close Fight between YSRC and INC</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:75%;">YSRC (75%)</div>
-	<div class="perc2" style="background:#56EC58;width:25%;">INC (25%)</div>
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:75%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (75%)</a></div>
+	<div class="perc2" style="background:#56EC58;width:25%;"><a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Details" style="color:#ffffff;">INC (25%)</a></div>
 	</div>
 </div>
 
 <div class="resultclass" style="margin-left:31px;">
 	<span class="cons"><span><img width="25" height="20" src="images/party_flags/INC.png" style="float:left;margin-left:5px;"></span>
-	Narsapuram</span>
-	<span class="favour">INC Party will Win</span>
+	<a href="constituencyPageAction.action?constituencyId=173" title="Click here to View Narsapur Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Narsapuram</a></span>
+	<span class="favour">INC Party (Kothapalli Subbarayudu (Peda Babu)) will Win</span>
 
 	<div class="borderperc">
-	<div class="perc3" style="background:#56EC58;color:#FFFFFF;width:100%;">INC</div>
+	<div class="perc3" style="background:#56EC58;color:#FFFFFF;width:100%;"><a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Details" style="color:#ffffff;">INC</a></div>
 	</div>
 </div>
 
 <div class="resultclass" style="margin-left:31px;">
 	<span class="cons">
 	<span><img width="25" height="20" src="images/party_flags/YSRC.PNG" style="float:left;margin-left:5px;"></span>
-	Ramachandrapuram<img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
-	<span class="favour">Close Fight between YSRC and INC</span>
+	<a href="constituencyPageAction.action?constituencyId=159" title="Click here to View Ramachandrapuram Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Ramachandrapuram</a><img width="25" height="20" src="images/party_flags/INC.png" style="float:right;margin-right:5px;"></span>
+	<span class="favour">Close Fight between YSRCand INC</span>
 
 	<div class="borderperc">
-	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;">YSRC (50%)</div>
-	<div class="perc2" style="background:#56EC58;width:50%;">INC (50%)</div>
+	<div class="perc1" style="background:#0266B4;color:#FFFFFF;width:50%;"><a href="partyPageAction.action?partyId=1117" title="Click here to View YSRC Party Details" style="color:#ffffff;">YSRC (50%)</a></div>
+	<div class="perc2" style="background:#56EC58;width:50%;"><a href="partyPageAction.action?partyId=362" style="color:#ffffff;"><a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Details" style="color:#ffffff;">INC (50%)</a></a></div>
 	</div>
 </div>
 <br><br>
@@ -418,7 +425,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>1</td>
     <td>Costal Andhra</td>
-	<td >Ongole</td>
+	<td ><a href="constituencyPageAction.action?constituencyId=227" title="Click here to View Ongole Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;">Ongole</a></td>
     <td>2,34,265</td>
 	<td>1,56,530</td>
     <td>44,228</td>
@@ -431,7 +438,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>2</td>
     <td>Costal Andhra</td>
-	<td >Udayagiri </td>
+	<td ><a href="constituencyPageAction.action?constituencyId=238" title="Click here to View Udayagiri Constituency Details, Previous Election Results, Voting Trendz" >Udayagiri</a> </td>
     <td>2,03,782</td>
 	<td>1,48,133</td>
     <td>55,870</td>
@@ -444,7 +451,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>3</td>
     <td>Costal Andhra</td>
-	<td>Ramachandrapuram </td>
+	<td><a href="constituencyPageAction.action?constituencyId=159" title="Click here to View Ramachandrapuram Constituency Details, Previous Election Results, Voting Trendz" >Ramachandrapuram </a></td>
     <td>1,75,344</td>
 	<td>1,42,302</td>
     <td>23,252</td>
@@ -457,7 +464,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>4</td>
     <td>Costal Andhra</td>
-	<td>Narasannapeta </td>
+	<td><a href="constituencyPageAction.action?constituencyId=112" title="Click here to View Narasannapeta Constituency Details, Previous Election Results, Voting Trendz">Narasannapeta </a></td>
     <td>1,72,020</td>
 	<td>1,36,923</td>
     <td>42,837</td>
@@ -470,7 +477,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>5</td>
     <td>Costal Andhra</td>
-	<td>Macherla</td>
+	<td><a href="constituencyPageAction.action?constituencyId=205" title="Click here to View Macherla Constituency Details, Previous Election Results, Voting Trendz" >Macherla</a></td>
     <td>2,01,861</td>
 	<td>1,52,057</td>
     <td>57,168</td>
@@ -484,7 +491,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>6</td>
     <td>Costal Andhra</td>
-	<td>Narsapuram</td>
+	<td><a href="constituencyPageAction.action?constituencyId=173" title="Click here to View Narsapur Constituency Details, Previous Election Results, Voting Trendz" >Narsapuram</a></td>
     <td>1,32,956</td>
 	<td>1,15,957</td>
     <td>10,841</td>
@@ -497,7 +504,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>7</td>
     <td>Costal Andhra</td>
-	<td>Polavaram</td>
+	<td><a href="constituencyPageAction.action?constituencyId=176" title="Click here to View Polavaram Constituency Details, Previous Election Results, Voting Trendz" >Polavaram</a></td>
     <td>1,66,300</td>
 	<td>1,44,687</td>
     <td>44,634</td>
@@ -510,7 +517,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>8</td>
     <td>Costal Andhra</td>
-	<td>Payakaraopet (SC)</td>
+	<td><a href="constituencyPageAction.action?constituencyId=140" title="Click here to View Payakaraopet Constituency Details, Previous Election Results, Voting Trendz" >Payakaraopet (SC)</a></td>
     <td>2,10,830</td>
 	<td>1,57,926</td>
     <td>50,042</td>
@@ -523,7 +530,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>9</td>
     <td>Costal Andhra</td>
-	<td>Prathipadu (SC)</td>
+	<td><a href="constituencyPageAction.action?constituencyId=212" title="Click here to View Prathipadu Constituency Details, Previous Election Results, Voting Trendz" >Prathipadu (SC)</a></td>
     <td>2,07,396</td>
 	<td>1,68,896</td>
     <td>64,282</td>
@@ -536,7 +543,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>10</td>
     <td>Rayalaseema</td>
-	<td>Railway Kodur (SC)</td>
+	<td><a href="constituencyPageAction.action?constituencyId=246" title="Click here to View Railway Kodur Constituency Details, Previous Election Results, Voting Trendz">Railway Kodur (SC)</a></td>
     <td>1,58,139</td>
 	<td>1,17,703</td>
     <td>39,359</td>
@@ -549,7 +556,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>11</td>
     <td>Rayalaseema</td>
-	<td>Rajampet</td>
+	<td><a href="constituencyPageAction.action?constituencyId=252" title="Click here to View Rajampet Constituency Details, Previous Election Results, Voting Trendz" >Rajampet</a></td>
     <td>1,85,475</td>
 	<td>1,38,346</td>
     <td>48,055</td>
@@ -562,7 +569,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>12</td>
     <td>Rayalaseema</td>
-	<td>Rayachoti</td>
+	<td><a href="constituencyPageAction.action?constituencyId=248" title="Click here to View Rayachoti Constituency Details, Previous Election Results, Voting Trendz">Rayachoti</a></td>
     <td>1,86,579</td>
 	<td>1,43,194</td>
     <td>57,069</td>
@@ -575,7 +582,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>13</td>
     <td>Rayalaseema</td>
-	<td>Ananthapur</td>
+	<td><a href="constituencyPageAction.action?constituencyId=298" title="Click here to View Ananthapur Constituency Details, Previous Election Results, Voting Trendz" >Ananthapur</a></td>
     <td>2,29,876</td>
 	<td>1,16,008</td>
     <td>32,033</td>
@@ -588,7 +595,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>14</td>
     <td>Rayalaseema</td>
-	<td>Rayadurg</td>
+	<td><a href="constituencyPageAction.action?constituencyId=276" title="Click here to View Rayadurg Constituency Details, Previous Election Results, Voting Trendz">Rayadurg</a></td>
     <td>1,98,167</td>
 	<td>1,55,854</td>
     <td>62,168</td>
@@ -602,7 +609,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>15</td>
     <td>Rayalaseema</td>
-	<td>Yemmiganuru</td>
+	<td><a href="constituencyPageAction.action?constituencyId=265" title="Click here to View Yemmiganuru Constituency Details, Previous Election Results, Voting Trendz" >Yemmiganuru</a></td>
     <td>1,89,278</td>
 	<td>1,28,816</td>
     <td>51,443</td>
@@ -616,7 +623,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     <td>16</td>
     <td>Rayalaseema
 </td>
-	<td>Allagadda
+	<td><a href="constituencyPageAction.action?constituencyId=254" title="Click here to View Allagadda Constituency Details, Previous Election Results, Voting Trendz" >Allagadda</a>
 </td>
     <td>2,00,691</td>
 	<td>1,53,925</td>
@@ -629,7 +636,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>17</td>
     <td>Rayalaseema</td>
-	<td>Tirupathi</td>
+	<td><a href="constituencyPageAction.action?constituencyId=291" title="Click here to View Tirupathi Constituency Details, Previous Election Results, Voting Trendz" style="color:#000000;" >Tirupathi</a></td>
     <td>2,47,160</td>
 	<td>1,27,627</td>
     <td>21,307</td>
@@ -642,7 +649,7 @@ text-shadow:0px 1px 2px #fff;color:#000;
     
     <td>18</td>
     <td>Telangana</td>
-	<td>Parkal</td>
+	<td><a href="constituencyPageAction.action?constituencyId=94" title="Click here to View Parkal Constituency Details, Previous Election Results, Voting Trendz" >Parkal</a></td>
     <td>1,93,381</td>
 	<td>1,47,872</td>
     <td>56,335(TRS)</td>
