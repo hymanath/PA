@@ -26,9 +26,8 @@ public class StateRegionDistrictDAOHibernateTest extends BaseDaoTestCase{
 
 
 
-	@SuppressWarnings("unchecked")
 	public void test(){
-		List<Long> list = stateRegionDistrictDAO.getConstituenciesCountByDistrictRegion(7l);	
+		List<Long> list = stateRegionDistrictDAO.getConstituenciesCountByDistrictRegion(3l,38l);	
 		for(int i=0;i<list.size();i++)
 		System.out.println(list.get(i));
 	
