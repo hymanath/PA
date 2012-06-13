@@ -8,20 +8,17 @@ public class UserProfileOptsDAOHiberanate extends BaseDaoTestCase{
 
 	private IUserProfileOptsDAO userProfileOptsDAO;
 	
-	public IUserProfileOptsDAO getUserProfileOptsDAO() {
-		return userProfileOptsDAO;
-	}
-
+	
 	public void setUserProfileOptsDAO(IUserProfileOptsDAO userProfileOptsDAO) {
 		this.userProfileOptsDAO = userProfileOptsDAO;
 	}
 	
-	/*public void  testGetAll(){
+	public void  testGetAll(){
 		userProfileOptsDAO.getAll();
-	}*/
-	
-	public void testRemoveUserProfiles(){
-		userProfileOptsDAO.removeOptsOfExistingUser(1l);
 	}
+	
+	/*public void testRemoveUserProfiles(){
+		userProfileOptsDAO.removeOptsOfExistingUser(1l);
+	}*/
 	
 }
