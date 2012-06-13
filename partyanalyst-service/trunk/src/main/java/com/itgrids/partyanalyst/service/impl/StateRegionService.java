@@ -148,7 +148,7 @@ public class StateRegionService implements IStateRegionService {
 				//get districts for a region
 				List<Long> districtsInRegion = getDistrictsInARegion(stateRegions.getId(),stateRegions.getName());
 				
-				List<Long> constituenciesCount = stateRegionDistrictDAO.getConstituenciesCountByDistrictRegion(stateRegions.getId());
+				List<Long> constituenciesCount = stateRegionDistrictDAO.getConstituenciesCountByDistrictRegion(stateRegions.getId(),electionId);
 				partyResultsInRegionVO.setConstituenciesCount(constituenciesCount.get(0));
 				//DAO Call to results party results in a region
 				List partyResults = partyElectionDistrictResultDAO.findPartyResultsForARegionInState(districtsInRegion, electionId, partyIds);
