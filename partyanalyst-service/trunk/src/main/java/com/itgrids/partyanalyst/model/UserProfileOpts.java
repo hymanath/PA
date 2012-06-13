@@ -26,8 +26,8 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userProfileOptsId;
-	private Registration user;
 	private ProfileOpts profileOpts;
+	private User user;
 	
 	public UserProfileOpts(){
 		
@@ -37,10 +37,10 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 		this.userProfileOptsId = userProfileOptsId;
 	}
 	
-	public UserProfileOpts(Registration user,
+	public UserProfileOpts(User user,
 			ProfileOpts profileOpts) {
-		this.user = user;
-		this.profileOpts = profileOpts;
+			this.user = user;
+			this.profileOpts = profileOpts;
 	}
 
 	@Id
@@ -55,18 +55,6 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="profile_opts_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -77,5 +65,19 @@ public class UserProfileOpts extends BaseModel implements Serializable{
 	public void setProfileOpts(ProfileOpts profileOpts) {
 		this.profileOpts = profileOpts;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 	
 }
