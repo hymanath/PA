@@ -2,22 +2,32 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+@Entity
+@Table(name = "user")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = -1087247750076396944L;
@@ -54,6 +64,7 @@ public class User extends BaseModel implements Serializable{
 	private Date registeredDate;
 	private Date updatedDate;
 	private String isPwdChanged;
+	private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 
 	 public User(){}
 	 
@@ -371,7 +382,7 @@ public class User extends BaseModel implements Serializable{
 		this.constituencyId = constituencyId;
 	}
 
-	
+	@Column(name="profile_Img",length=100)
 	public String getProfileImg() {
 		return profileImg;
 	}
@@ -380,7 +391,7 @@ public class User extends BaseModel implements Serializable{
 		this.profileImg = profileImg;
 	}
 
-	@Column(name="profile_Img",length=100)
+	@Column(name="registered_time")
 	public Date getRegisteredDate() {
 		return registeredDate;
 	}
@@ -405,6 +416,16 @@ public class User extends BaseModel implements Serializable{
 
 	public void setIsPwdChanged(String isPwdChanged) {
 		this.isPwdChanged = isPwdChanged;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserProfileOpts> getUserProfileOptses() {
+		return userProfileOptses;
+	}
+
+	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
+		this.userProfileOptses = userProfileOptses;
 	}
 
 }
