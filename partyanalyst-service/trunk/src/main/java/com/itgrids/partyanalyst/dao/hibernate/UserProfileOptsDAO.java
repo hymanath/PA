@@ -13,7 +13,7 @@ public class UserProfileOptsDAO extends GenericDaoHibernate<UserProfileOpts, Lon
 	}
 	
 	public Integer removeOptsOfExistingUser(Long userId){
-		String queryInfo = "delete from UserProfileOpts model where model.user.registrationId = ?";
+		String queryInfo = "delete from UserProfileOpts model where model.user.userId = ?";
 		
 		Query query = getSession().createQuery(queryInfo);
 		query.setParameter(0, userId);
