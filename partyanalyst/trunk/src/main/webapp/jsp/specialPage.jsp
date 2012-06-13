@@ -30,6 +30,12 @@
 <link rel="stylesheet" type="text/css"
 	href="styles/candidatePage/candidatePage.css">
 <style>
+
+.pr-cont-sec
+{
+	margin-left: 10px;
+}
+
 .pft-sec {
     color: #777777;
     float: left;
@@ -66,7 +72,7 @@
     float: left;
     margin-right: 2px;
     padding-top: 5px;
-    width: 206px;
+    width: 204px;
 }
 .profile-mid-sec {
     background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -211px top transparent;
@@ -74,14 +80,14 @@
     float: left;
     padding-top: 5px;
     position: relative;
-    width: 453px;
+    width: 441px;
 }
 .profile-right-sec {
     background: url("../../images/icons/candidatePage/content-crv-bgs.png") no-repeat scroll -683px top transparent;
     float: left;
     margin-left: 2px;
     padding-top: 5px;
-    width: 326px;
+    width: 300px;
 }
 #contenttable {
     display: block;
@@ -1238,7 +1244,6 @@ Tweet</a>
 	</s:if>
 
    <div id="showProfile"></div>
-
       <!--PROFILE RIGHT CONTENT SECTION END--> 
       
     <!--CONTENT SECTION END--> 
@@ -1246,13 +1251,6 @@ Tweet</a>
  <!--CONTENT MAIN SECTION END--> 
 <div id="loginPopupDiv"></div>
 
-<div class="our-services" style="background:#fff;width:315px;margin-right:-10px;margin-top:-4px;">
-<h3 style="border-bottom-color: #CCCCCC; border-bottom-style: solid; border-bottom-width: 1px; padding-left: 9px; color: #C66E17;font-size: 13px; font-weight: bold; padding: 7px;margin-bottom: 3px;">Our Services</h3>
-		                    <a href="newsMonitoringService.action" title="News tracking service" style="width:135px;">News<br/>Monitoring Service</a>
-		                    <a href="VotersPulse.action" title="Election-Political Surveys" style="width:135px;">Voters<br/> Pulse</a>
-		                    <a href="constituencyProfileReport.action" title="Reports" style="width:135px;">Constituency Management Reports</a>
-		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians" style="width:135px;">Election Analysis And <br/>Management Tool</a>
-</div>
 <script type="text/javascript">
   
 getTotalNews('getFirstFourNewsRecordsToDisplay');
