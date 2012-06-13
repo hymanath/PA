@@ -228,18 +228,17 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model.registrationId) ");
 		query.append(" from Registration model where ");
-		
+		query.append("  model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = ? )");
 		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			query.append(" model.constituency.constituencyId = ? group by model.constituency.constituencyId");
+			query.append(" and model.constituency.constituencyId = ? group by model.constituency.constituencyId");
 		else if (locationType.equalsIgnoreCase(IConstants.DISTRICT)) {
-			query.append(" model.district.districtId = ? group by model.district.districtId");
-			query.append(" and model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role )");
+			query.append(" and model.district.districtId = ? group by model.district.districtId");
+			
 		}
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter(0, locationId);
-		queryObject.setParameter("role", IConstants.FREE_USER);
-		
+		queryObject.setParameter(0, IConstants.FREE_USER);
+		queryObject.setParameter(1, locationId);
 		return queryObject.list();
 		
 	}
