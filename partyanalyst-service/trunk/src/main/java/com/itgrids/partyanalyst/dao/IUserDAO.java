@@ -1,9 +1,25 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.User;
 
 public interface IUserDAO extends GenericDao<User,Long>{
+	
+	public List<User> checkForUserNameAvailabiity(String userName);
+	
+	public List<User> checkForUserNameAvailabiityForEmail(String userName);
+	
+	public List<User> checkUserPassword(String password,Long userId); 
+	
+	public Integer changeUserPassword(String password,Long registrationId,String status,Date date);
+	
+	public List<Object> getUserIdByUserName(String userName);
+	
+	public List<User> findByUserNameAndPassword(String userName, String password);
 
 }
