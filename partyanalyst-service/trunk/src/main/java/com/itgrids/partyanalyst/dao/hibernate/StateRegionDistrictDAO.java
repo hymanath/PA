@@ -32,10 +32,13 @@ IStateRegionDistrictDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> getConstituenciesCountByDistrictRegion(Long regionId){
+	public List<Long> getConstituenciesCountByDistrictRegion(Long regionId,Long electionId){
+		Object[] params = {regionId,electionId};
 		return getHibernateTemplate().find("select count(model.constituencyId) from Constituency model where " +
 				" model.district.districtId in (select model1.district.districtId from StateRegionDistrict model1" +
-				" where model1.stateRegion.stateRegionId = ?)",regionId);
+				" where model1.stateRegion.stateRegionId = ?) and " +
+				" model.electionScope.electionScopeId in (select model2.electionScope.electionScopeId from Election model2 where model2.electionId = ?)" +
+				" and model.deformDate is null",params);
 	}
 }
 
