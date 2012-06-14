@@ -152,9 +152,21 @@
 
 <li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Sympathy (Especially with YSR family on roads), Why the government is harassing their leader's family, who has done something &nbsp;&nbsp;&nbsp;for them.</li>
 
-<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Mr. Chandra Babu Naidu is working hard to bring his party into power. Unfortunately YSR created some trademark in the voters &nbsp;&nbsp;(middle class and lower class people), not to believe Chandra Babu Naidu’s promises. This has become a bottleneck to improve &nbsp;TDP.</li>
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Mr. Chandra Babu Naidu is working hard to bring his party into power. Unfortunately YSR created some trademark in the voters &nbsp;&nbsp;(middle class and lower class people), not to believe Chandra Babu Naiduï¿½s promises. This has become a bottleneck to improve &nbsp;TDP.</li>
 </ul>
 </div>
+<div style="margin-left:20px;">
+<span style="border-radius: 3px;font-family:verdana;font-size:13px;background:YellowGreen;padding:5px;color:#ffffff;"><b>What factors are involved in increasing Voting Percentage ?</b></span>
+<ul style="margin: 18px 18px 18px 0px;font-family: verdana; font-size: 13px;">
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">It is in circulation that the polling percentage has increased in AP Bye elections, because of voters voluntary participation or their 
+&nbsp;&nbsp;&nbsp;opposition to government or favoring one party.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">But we need to consider one important factor which is missed, a great step which Election Commission has taken in 2011 and must &nbsp;&nbsp;&nbsp;appreciate it for this.</li>
+
+<li style="margin-bottom: 14px;"><img style="padding: 5px 5px 0px;" src="images/icons/diamond.png">Election Commission has taken certain steps to eliminate duplicate, transferred and dead voters from 2011 voters list, before &nbsp;&nbsp;&nbsp;publishing 2012 voter rolls. In this process, around 10-12% of voters are cleaned up from old list. Every time, this 10-12% won't get &nbsp;&nbsp;&nbsp;polled. Then this 10-12% of voters will not be polled, even when everyone votes.</li>
+</ul>
+</div>
+
 <span style="font-family:verdana;font-size:13px;background:#ED5B21;padding:5px;color:#ffffff;"><b>Party Analyst View on Coming Results of 18 Assembly & Nellore Parliament of Andhra Pradesh 2012 Bye Election</b> </span><br><br>
 
 <span style="font-family:verdana;font-size:13px;">Party Analyst announcing its Views on Coming Results of Andhra Pradesh 2012 Bi Elections. In 18 Assembly Constituencies <b>YSRC Party may Win 12 - 15 Seats, INC Party may Win 1 - 2 Seats, TDP Party may Win 1 - 3 Seats, TRS may Win 1 Seat (Parakala Constituency) and YSRC will Win in Nellore Parliament Constituency</b>.</span><br /><br>
