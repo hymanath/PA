@@ -1026,10 +1026,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 *  
 			 */
 			Object[] params = null;
-			List details = registrationDAO.getAnanymousUserLocationDetailsByIds(userId);
+			List<Object[]> details =userDAO.getUserLocationDetailsByUserIds(userId);
 			if(details.size() == 1)
 			{				
-				params = (Object[]) details.get(0);
+				params = details.get(0);
 				
 				dataTransferVO.setStateId((Long)params[0]);
 				dataTransferVO.setStateName(params[1].toString());
@@ -1373,9 +1373,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						}						
 						candidateResults.setCandidateName(candidateName);
 						candidateResults.setId(details.getRegistrationId());	
-						candidateResults.setState(details.getState().getStateName());
+						/*candidateResults.setState(details.getState().getStateName());
 						candidateResults.setDistrict(details.getDistrict().getDistrictName());						
-						candidateResults.setConstituencyName(details.getConstituency().getName());
+						candidateResults.setConstituencyName(details.getConstituency().getName());*/
 						candiateVO.add(candidateResults);
 					}
 				}else{
@@ -1605,8 +1605,12 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			}
 			registrationVO.setFirstName(user.getFirstName());
 			registrationVO.setLastName(user.getLastName());
-			registrationVO.setState(user.getState().getStateId().toString());
-			registrationVO.setConstituency(user.getConstituency().getConstituencyId().toString());
+			
+			if(user.getState() != null)
+				registrationVO.setState(user.getState().getStateId().toString());
+			if(user.getConstituency() != null)
+				registrationVO.setConstituency(user.getConstituency().getConstituencyId().toString());
+			
 			registrationVO.setPincode(user.getPincode());
 			
 			/*for(UserProfileOpts userOptsModel:user.getUserProfileOptses())
@@ -1953,16 +1957,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	
 	public String getUserProfileImageByUserId(Long userId)
 	{
-		String imageURL = "";
-		List params = registrationDAO.getUserProfileImageNameByUserId(userId);
-		if(params != null && params.size() == 1)
-		{
-			if(params.get(0) != null)
-				imageURL = params.get(0).toString();
-			else
-				imageURL = "";
-		}
-		
+		String imageURL = userDAO.getUserProfileImageNameByUserId(userId);
+		if(imageURL == null)
+			imageURL = "";
 		return imageURL;
 	}
 	

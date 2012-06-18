@@ -62,7 +62,6 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private String profileImg;
 	 private Date registeredDate;
 	 private Date updatedDate;
-	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	 
 	public AnanymousUser()
 	 {
@@ -341,16 +340,6 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 		this.updatedDate = updatedDate;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "freeUser")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserLoginDetails> getUserLoginDetails() {
-		return userLoginDetails;
-	}
-
-	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
-		this.userLoginDetails = userLoginDetails;
-	}
-	
 	@Column(name = "is_pwd_changed", length = 10)
 	public String getIsPwdChanged() {
 		return isPwdChanged;

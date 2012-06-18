@@ -59,4 +59,23 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return (User)queryObject.uniqueResult(); 
 	}
 	
+	public String getUserProfileImageNameByUserId(Long userId)
+	{
+		Query query = getSession().createQuery("select model.profileImg from User model where model.userId = ?");
+		query.setParameter(0, userId);
+		return (String)query.uniqueResult();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserLocationDetailsByUserIds(List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select model.state.stateId, model.state.stateName, model.district.districtId, " +
+				" model.district.districtName, model.constituency.constituencyId, model.constituency.name from User model " +
+				" where model.userId in (:userIds)");	
+		
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
 }

@@ -33,6 +33,8 @@ public class UserTracking extends BaseModel implements Serializable {
 	private String sessionId;
 	private Registration registration;
 	private Long registrationId;
+	private User user;
+	private Long userId;
 	
 	 public UserTracking()
 	 {
@@ -111,6 +113,27 @@ public class UserTracking extends BaseModel implements Serializable {
 
 	public void setRegistrationId(Long registrationId) {
 		this.registrationId = registrationId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 
