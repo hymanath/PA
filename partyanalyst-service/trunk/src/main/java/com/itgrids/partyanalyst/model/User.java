@@ -67,6 +67,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
+	private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	 
 	 public User(){}
 	 
@@ -384,7 +385,7 @@ public class User extends BaseModel implements Serializable{
 		this.constituencyId = constituencyId;
 	}
 
-	@Column(name="profile_Img",length=100)
+	@Column(name="profile_img",length=100)
 	public String getProfileImg() {
 		return profileImg;
 	}
@@ -451,4 +452,15 @@ public class User extends BaseModel implements Serializable{
 		this.userGroupRelations = userGroupRelations;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserLoginDetails> getUserLoginDetails() {
+		return userLoginDetails;
+	}
+
+	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
+		this.userLoginDetails = userLoginDetails;
+	}
+
+	
 }
