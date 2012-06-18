@@ -21,5 +21,9 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<Object> getUserIdByUserName(String userName);
 	
 	public User findByUserNameAndPassword(String userName, String password);
+	
+	public String getUserProfileImageNameByUserId(Long userId);
+	
+	public List<Object[]> getUserLocationDetailsByUserIds(List<Long> userIds);
 
 }

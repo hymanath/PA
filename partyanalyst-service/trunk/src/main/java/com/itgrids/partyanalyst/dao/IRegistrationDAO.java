@@ -61,9 +61,9 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public List<Registration> checkUserPassword(String password,Long userId);
 	
-	public List getUserProfileImageNameByUserId(Long userId);
+	/*public List getUserProfileImageNameByUserId(Long userId);*/
 	
-	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);
+	/*public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);*/
 	
 	public List<Object[]> getUserEmailByUserId(Long userId);
 
