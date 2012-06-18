@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationService implements IRegistrationService{
@@ -45,6 +47,7 @@ public class RegistrationService implements IRegistrationService{
 	private IRoleDAO roleDAO;
 	private IUserRolesDAO userRolesDAO;
 	private IUserDAO userDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	public IUserRolesDAO getUserRolesDAO() {
 		return userRolesDAO;
@@ -150,41 +153,64 @@ public class RegistrationService implements IRegistrationService{
 	}
 
 	public String saveRegistration(RegistrationVO values,String userType){
-		//Registration reg = new Registration();
+		Registration reg = new Registration();	
 		User user = new User();
 		String dob = values.getDateOfBirth();
 		//reg = convertIntoModel(values);
 		user = convertIntoModel(values);
+		user = saveDataIntoUserModel(values);
 		
 		if(checkUserName(values.getUserName())!= true)
 		{
 			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+			reg.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			reg.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+			user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+			if(values.getStateId() !=null && values.getStateId()!=0)
+			{
+			reg.setState(stateDAO.get(new Long(values.getStateId())));
+			user.setState(stateDAO.get(new Long(values.getStateId())));
+			user.setStateId(values.getStateId());
+			reg.setStateId(values.getStateId());
+			}
+			if(values.getConstituencyId()!=null && values.getConstituencyId()!=0)
+			{
+			reg.setConstituency(constituencyDAO.get(new Long(values.getConstituencyId())));
+			user.setConstituencyId(values.getConstituencyId());
+			reg.setConstituencyId(values.getConstituencyId());
+			user.setConstituency(constituencyDAO.get(new Long(values.getConstituencyId())));
+			}
 			//reg = registrationDAO.save(reg);
 			user = userDAO.save(user);
 			
-			//setUserID(reg.getRegistrationId());
+			user = userDAO.save(user); 
+			
+			setUserID(reg.getRegistrationId());
 			setUserID(user.getUserId());
-			//saveDataInToUserRolesTable(reg,values);
 			saveDataInToUserRolesTable(user,values);
 			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
 		}
 		else
+			
+			
 			requestStatus.setRequestStatus(BaseDTO.PARTIAL);
 		
 		return requestStatus.getRequestStatus();
 	}
 	
 	public void saveDataInToAnonymousTable(Registration reg,String dob){
-		AnanymousUser userDetails = new AnanymousUser();
+		//AnanymousUser userDetails = new AnanymousUser();
+		Registration userDetails = new Registration();
 		try{
-				userDetails.setName(reg.getFirstName());				
+				//userDetails.setName(reg.getFirstName());				
 				userDetails.setGender(reg.getGender());
-				userDetails.setUsername(reg.getUserName());
+				//.setUsername(reg.getUserName());
 				userDetails.setPassword(reg.getPassword());
 				Date date =null;		
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				date= format.parse(dob);		
-				userDetails.setDateofbirth(date);
+			//	userDetails.setDateofbirth(date);
 				userDetails.setEmail(reg.getEmail());
 				userDetails.setPhone(reg.getPhone());
 				userDetails.setMobile(reg.getMobile());
@@ -208,7 +234,8 @@ public class RegistrationService implements IRegistrationService{
 				userDetails.setDistrict(constituencyDAO.get(new Long(reg.getAccessValue().toString())).getDistrict());
 				userDetails.setConstituency(constituencyDAO.get(new Long(reg.getAccessValue())));
 			}
-			ananymousUserDAO.save(userDetails);
+			//ananymousUserDAO.save(userDetails);
+			registrationDAO.save(userDetails);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -261,7 +288,42 @@ public class RegistrationService implements IRegistrationService{
 		return finalStatus;		
 		
 	}
-	
+	public User saveDataIntoUserModel(RegistrationVO values)
+	{
+		User user = new User();
+		try
+		{
+			user.setFirstName(values.getFirstName());
+			user.setMiddleName(values.getMiddleName());
+			user.setLastName(values.getLastName());
+			user.setGender(values.getGender());
+			user.setUserName(values.getUserName());
+			user.setPassword(values.getPassword());
+			user.setParty(partyDAO.get(values.getParty()));
+			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			Date date = null;
+			date = format.parse(values.getDateOfBirth());
+			user.setDateOfBirth(date);
+			user.setEmail(values.getEmail());
+			user.setPhone(values.getPhone());
+			user.setMobile(values.getMobile());
+			user.setAddress(values.getAddress());
+			user.setPincode(values.getPincode());
+			user.setCountry(values.getCountry());
+			user.setAccessType(values.getAccessType());
+			user.setAccessValue(values.getAccessValue());
+			user.setUserType(values.getUserType());
+			if(values.getParentUserId() != null)
+				user.setParentUser(userDAO.get(values.getParentUserId()));
+			if(values.getMainAccountId() != null)
+				user.setMainAccountUser(userDAO.get(values.getMainAccountId()));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return user;
+	}
 	
 	
 	

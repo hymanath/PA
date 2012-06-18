@@ -29,7 +29,7 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 	*/
-	/*public void test()
+	public void test()
 	{
 		 List<Object[]> list = userRolesDAO.getAllFreeuser();
 		 for(Object[] params : list)
@@ -40,5 +40,5 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		 }
 		
 		
-	}*/
+	}
 }

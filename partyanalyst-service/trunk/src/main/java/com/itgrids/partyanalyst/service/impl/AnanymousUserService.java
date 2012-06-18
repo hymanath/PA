@@ -1609,9 +1609,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			registrationVO.setConstituency(user.getConstituency().getConstituencyId().toString());
 			registrationVO.setPincode(user.getPincode());
 			
-			for(UserProfileOpts userOptsModel:user.getUserProfileOptses())
+			/*for(UserProfileOpts userOptsModel:user.getUserProfileOptses())
 				userOpts.add(userOptsModel.getProfileOpts().getProfileOptsId());
-			
+			*/
 			registrationVO.setProfileOpts(userOpts);
 
 		}catch (Exception e) {

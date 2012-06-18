@@ -31,12 +31,13 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	// Fields
 	private Long feedbackId;
 	private String comment;
-	private Registration registration;
+	//private Registration registration;
 	private String responseCategory;
 	private FeedBackComment feedBackComment;
 	private FeedBackTask feedBackTask;
 	private Date postedDate;
 	private String status;
+	private User user;
 	//private AnanymousUser ananymousUser;
 
 	/** default constructor */
@@ -45,12 +46,12 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public FeedBack(Long feedbackId, String comment, Registration registration,
+	public FeedBack(Long feedbackId, String comment,
 			String responseCategory, FeedBackComment feedBackComment,
 			FeedBackTask feedBackTask,Date postedDate,String status) {
 		this.feedbackId = feedbackId;
 		this.comment = comment;
-		this.registration = registration;
+		
 		this.feedBackComment = feedBackComment;
 		this.feedBackTask = feedBackTask;
 		this.responseCategory = responseCategory;
@@ -88,7 +89,7 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 		this.responseCategory = responseCategory;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
@@ -98,6 +99,18 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 
 	public void setRegistration(Registration registration) {
 		this.registration = registration;
+	}*/
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
