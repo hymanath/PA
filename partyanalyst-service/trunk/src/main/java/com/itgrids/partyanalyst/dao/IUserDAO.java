@@ -20,6 +20,6 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<Object> getUserIdByUserName(String userName);
 	
-	public List<User> findByUserNameAndPassword(String userName, String password);
+	public User findByUserNameAndPassword(String userName, String password);
 
 }
