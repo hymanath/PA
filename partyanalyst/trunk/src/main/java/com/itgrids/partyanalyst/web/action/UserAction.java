@@ -41,6 +41,37 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	JSONObject jObj;
 	private String task;
 	
+	 private List<SelectOptionVO> states;
+	 private List<SelectOptionVO> districts;
+	 private List<SelectOptionVO> constituencies;
+	    public List<SelectOptionVO> getStates() {
+		return states;
+	}
+
+	public void setStates(List<SelectOptionVO> states) {
+		this.states = states;
+	}
+
+
+		public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}
+
+
+		
+	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -142,6 +173,14 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	public String registration() throws Exception
 	{
 		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
+		
+		states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		districts = new ArrayList<SelectOptionVO>(0);
+		 constituencies = new ArrayList<SelectOptionVO>(0);
+		 HttpSession session = request.getSession();	
+		 session.setAttribute("states", states);
+		//session.setAttribute("districts", districts);
+		//session.setAttribute("constituencies", constituencies);
 		if(registrationVO !=null && registrationVO.getIsAdmin().equalsIgnoreCase("true"))
 		{
 			List<String> type = new ArrayList<String>();
@@ -163,11 +202,13 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			}		
 			
 			parties = staticDataService.getStaticParties();
-			HttpSession session = request.getSession();
+			//HttpSession session = request.getSession();
 			session.setAttribute("type", type);
 			session.setAttribute("userType", userType);
 			session.setAttribute("gender", gender);
 			session.setAttribute("parties", parties);
+			
+			
 			
 			return Action.SUCCESS;
 		}
