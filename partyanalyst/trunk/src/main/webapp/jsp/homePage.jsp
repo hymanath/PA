@@ -944,9 +944,7 @@ var custom_paginator = {
         $('#custom_paginator_class a').removeClass('pagenationStyle');
 		$(this).addClass('pagenationStyle');
       });
-	$("#problemReferenceId").focus();
-
-  });
+	});
 custom_paginator.totalRecords = '${problemCount}';
 var news_Obj = {
 	
