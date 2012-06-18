@@ -207,90 +207,8 @@ public class LoginService implements ILoginService{
 		this.userDAO = userDAO;
 	}
 
-	/*public RegistrationVO checkForValidUser(String userName,String password){
-		RegistrationVO regVO = new RegistrationVO();
-		Registration reg = null;
-		Set<UserGroupEntitlement> groupEntitlements = null;
-		Set<GroupEntitlementRelation> entitlementsModel = null;
-		List<String> entitlements = new ArrayList<String>(0);
-		Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
-		Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
-		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
-		Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
-		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
-		List<String> roles = new ArrayList<String>(0);
-		try {
-			List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);
-			
-			if(registrations.size() != 1)
-				return regVO;		
-
-			reg = registrations.get(0);
-			Long userId = reg.getRegistrationId();
-			regVO.setRegistrationID(userId);
-			regVO.setUserName(reg.getUserName());
-			regVO.setEmail(reg.getEmail());
-			regVO.setAccessType(reg.getAccessType());
-			regVO.setAccessValue(reg.getAccessValue());
-			regVO.setFirstName(reg.getFirstName());
-			regVO.setLastName(reg.getLastName());
-			regVO.setSubscribePartyImpDate(reg.getIncludePartyImpDateStatus());
-			regVO.setUserType(reg.getUserType());
-			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
-			regVO.setParentUserId(reg.getParentUser() != null?reg.getParentUser().getRegistrationId():null);
-			regVO.setMainAccountId(reg.getMainAccountUser() != null ? reg.getMainAccountUser().getRegistrationId() : null);
-						
-			if(reg.getParty() != null){
-				regVO.setParty(reg.getParty().getPartyId());
-				regVO.setPartyShortName(reg.getParty().getShortName());
-			}
-			
-			Set<UserGroupRelation> userGroups = reg.getUserGroupRelations();
-			
-			for(UserGroupRelation groupRelation:userGroups){
-				groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
-				for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
-					entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
-					for(GroupEntitlementRelation entitlement:entitlementsModel)
-						entitlements.add(entitlement.getEntitlement().getEntitlementType());
-				}
-			}
-			
-			getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
-			
-			if(entitlements.contains(IConstants.ADMIN_PAGE))
-				regVO.setIsAdmin(IConstants.TRUE);	
-			else
-				regVO.setIsAdmin(IConstants.FALSE);	
-			
-			List<Object[]> userRoles = userRolesDAO.getUserRoles(reg.getRegistrationId());
-			if(userRoles !=null && userRoles.size()>0)
-			{
-				for(Object[] param : userRoles){
-					roles.add(param[1].toString());
-					regVO.setUserRoles(roles);
-				}
-			}
-			regVO.setEntitlements(entitlements);
-			regVO.setCountries(countries);
-			regVO.setStates(states);
-			regVO.setDistricts(districts);
-			regVO.setAssemblies(assemblies);
-			regVO.setParliaments(parliaments);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return regVO;
-	
-	}
-	*/
-	
-	
-	
-
-	public RegistrationVO checkForValidUser(String userName,String password){
+	public RegistrationVO checkForValidUser(String userName,String password)
+	{
 		RegistrationVO regVO = new RegistrationVO();
 		User user = null;
 		Set<UserGroupEntitlement> groupEntitlements = null;
@@ -301,66 +219,72 @@ public class LoginService implements ILoginService{
 		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
 		Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
-		List<String> roles = new ArrayList<String>(0);
-		try {
-			List<User> users = userDAO.findByUserNameAndPassword(userName, password);
-			//List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);
-			
-			if(users.size() != 1)
-				return regVO;		
 
-			user = users.get(0);
+		try{
+			user = userDAO.findByUserNameAndPassword(userName, password);
+			
+			if(user == null ||  user.getUserId() <= 0)
+				return regVO;
+
 			Long userId = user.getUserId();
 			regVO.setRegistrationID(userId);
-			regVO.setUserName(user.getUserName());
-			regVO.setEmail(user.getEmail());
-			regVO.setAccessType(user.getAccessType());
-			regVO.setAccessValue(user.getAccessValue());
 			regVO.setFirstName(user.getFirstName());
 			regVO.setLastName(user.getLastName());
-			regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
-			//regVO.setUserType(user.getUserType());
-			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
-			regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
-			regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
-						
-			if(user.getParty() != null){
-				regVO.setParty(user.getParty().getPartyId());
-				regVO.setPartyShortName(user.getParty().getShortName());
-			}
+			regVO.setUserName(user.getUserName());
 			
-			Set<UserGroupRelation> userGroups = user.getUserGroupRelations();
+			List<String> userRoles = userRolesDAO.getUserRolesOfAUser(userId);
+			regVO.setUserRoles(userRoles);
 			
-			for(UserGroupRelation groupRelation:userGroups){
-				groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
-				for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
-					entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
-					for(GroupEntitlementRelation entitlement:entitlementsModel)
-						entitlements.add(entitlement.getEntitlement().getEntitlementType());
-				}
-			}
-			
-			getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
-			
-			if(entitlements.contains(IConstants.ADMIN_PAGE))
-				regVO.setIsAdmin(IConstants.TRUE);	
-			else
-				regVO.setIsAdmin(IConstants.FALSE);	
-			
-			List<Object[]> userRoles = userRolesDAO.getUserRoles(user.getUserId());
-			if(userRoles !=null && userRoles.size()>0)
+			if(userRoles.contains(IConstants.FREE_USER))
 			{
-				for(Object[] param : userRoles){
-					roles.add(param[1].toString());
-					regVO.setUserRoles(roles);
-				}
+				regVO.setEmail(user.getEmail());
+				regVO.setUserProfilePic(user.getProfileImg());
+				regVO.setUserType(IConstants.FREE_USER);
+				regVO.setUserStatus(IConstants.FREE_USER);
 			}
-			regVO.setEntitlements(entitlements);
-			regVO.setCountries(countries);
-			regVO.setStates(states);
-			regVO.setDistricts(districts);
-			regVO.setAssemblies(assemblies);
-			regVO.setParliaments(parliaments);
+			
+			if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
+			{
+				regVO.setUserType(user.getUserType());
+				regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+				regVO.setAccessType(user.getAccessType());
+				regVO.setAccessValue(user.getAccessValue());
+				regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
+				regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
+				regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
+							
+				if(user.getParty() != null){
+					regVO.setParty(user.getParty().getPartyId());
+					regVO.setPartyShortName(user.getParty().getShortName());
+				}
+				
+				Set<UserGroupRelation> userGroups = user.getUserGroupRelations();
+				
+				for(UserGroupRelation groupRelation:userGroups){
+					groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
+					for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
+						entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
+						for(GroupEntitlementRelation entitlement:entitlementsModel)
+							entitlements.add(entitlement.getEntitlement().getEntitlementType());
+					}
+				}
+				
+				getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
+				
+				regVO.setEntitlements(entitlements);
+				regVO.setCountries(countries);
+				regVO.setStates(states);
+				regVO.setDistricts(districts);
+				regVO.setAssemblies(assemblies);
+				regVO.setParliaments(parliaments);
+				
+				if(entitlements.contains(IConstants.ADMIN_PAGE))
+					regVO.setIsAdmin(IConstants.TRUE);	
+				else
+					regVO.setIsAdmin(IConstants.FALSE);	
+			}
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -570,7 +494,8 @@ public class LoginService implements ILoginService{
 					userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
 				else if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
 					userLoginDetails.setFreeUser(ananymousUserDAO.get(userTrackingVO.getRegistrationId()));*/
-				userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
+				//userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
+				userLoginDetails.setUser(userDAO.get(userTrackingVO.getRegistrationId()));
 			}
 			else
 			{
