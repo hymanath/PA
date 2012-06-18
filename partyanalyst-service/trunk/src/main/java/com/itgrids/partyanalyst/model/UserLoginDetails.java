@@ -27,22 +27,22 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userLoginDetailsId;
-	private Registration registration;
+	//private Registration registration;
 	private AnanymousUser freeUser;
 	private String userType;
 	private String ipAddress;
 	private Date loginTime;
 	private Date logoutTime;
 	private String sessionId;
-		
+	private User user;
 	
 	public UserLoginDetails(){
 		
 	}
-	public UserLoginDetails(Registration registration,AnanymousUser freeUser,String userType,
+	public UserLoginDetails(User user,AnanymousUser freeUser,String userType,
 			String ipAddress,Date loginTime,Date logoutTime,String sessionId)
 	{
-		this.registration = registration;
+		this.user = user;
 		this.freeUser = freeUser;
 		this.userType = userType;
 		this.ipAddress = ipAddress;
@@ -77,7 +77,7 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 		this.ipAddress = ipAddress;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="registration_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -86,7 +86,7 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	}
 	public void setRegistration(Registration registration) {
 		this.registration = registration;
-	}
+	}*/
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="free_user_id")
@@ -122,6 +122,19 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 
 
 }
