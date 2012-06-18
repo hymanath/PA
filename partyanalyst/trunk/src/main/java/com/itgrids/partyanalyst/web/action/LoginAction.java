@@ -485,7 +485,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("UserType", "FreeUser");
 			changedUserName = "true";
 			saveUserSessionDetails(IWebConstants.LOGIN);
-			return getRedirectPageDetails();
+			//return getRedirectPageDetails();	
 		}
 				
 		return finalResultString();
