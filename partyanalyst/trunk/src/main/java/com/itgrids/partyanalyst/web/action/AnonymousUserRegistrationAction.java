@@ -457,7 +457,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
                imageName =  regVO.getRegistrationID()+"."+constiName[1];  
 	           ImageIO.write(imageFile, constiName[1],new File(fileName));
              }       	*/
-			/*if(savedSuccessfully){	
+			if(savedSuccessfully){	
 				regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
@@ -472,7 +472,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				
 				session.removeAttribute("districts");
 				session.removeAttribute("constituencies");
-			}*/
+			}
 			 
         
 		 }
