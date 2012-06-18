@@ -21,4 +21,6 @@ public class UserProfileOptsDAOHiberanate extends BaseDaoTestCase{
 		userProfileOptsDAO.removeOptsOfExistingUser(1l);
 	}*/
 	
+	
+	
 }

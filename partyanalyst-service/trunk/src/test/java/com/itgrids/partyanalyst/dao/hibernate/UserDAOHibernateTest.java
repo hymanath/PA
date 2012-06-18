@@ -43,16 +43,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testFindByUserNameAndPassword()
 	{
-		List<User> list = userDAO.findByUserNameAndPassword("aaaa@aa.com", "3685171");
-		System.out.println(list.size());
-		if(list != null && list.size() > 0)
-		{
-			for(User params : list)
-			{
-				System.out.println(params.getUserId());
-				System.out.println(params.getFirstName());
-				System.out.println(params.getLastName());
-			}
-		}
+		User user = userDAO.findByUserNameAndPassword("aaaa@aa.com", "3685171");
+		System.out.println(user.getUserName());
 	}
 }
