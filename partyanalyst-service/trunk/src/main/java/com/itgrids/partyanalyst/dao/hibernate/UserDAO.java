@@ -51,13 +51,12 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select model.userId from User model where model.userName = ?",userName);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<User> findByUserNameAndPassword(String userName, String password){
-		
-		Query queryObject = getSession().createQuery("from User as model where model.userName = ? and model.password = ?");
-		 queryObject.setParameter(0, userName);
-		 queryObject.setParameter(1, password);
-		 return queryObject.list(); 
+	public User findByUserNameAndPassword(String userName, String password)
+	{
+		Query queryObject = getSession().createQuery("select model from User model where model.userName = ? and model.password = ?");
+		queryObject.setParameter(0, userName);
+		queryObject.setParameter(1, password);
+		return (User)queryObject.uniqueResult(); 
 	}
 	
 }
