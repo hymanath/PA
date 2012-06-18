@@ -19,7 +19,7 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		userRolesDAO.getAll();
 	}*/
 	
-	public void testGetUserRoles()
+	/*public void testGetUserRoles()
 	{
 		List<Object[]> userRoles = userRolesDAO.getUserRoles(28L);
 		System.out.println(userRoles.size());
@@ -27,7 +27,7 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println((Long)param[0]);
 			System.out.println(param[1].toString());
 		}
-	}
+	}*/
 	
 	/*public void test()
 	{
@@ -41,4 +41,15 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		
 		
 	}*/
+	
+	public void testGetUserRolesOfAUser()
+	{
+		List<String> roles = userRolesDAO.getUserRolesOfAUser(1l);
+		System.out.println(roles.size());
+		
+		for(String str : roles)
+		{
+			System.out.println(str);
+		}
+	}
 }
