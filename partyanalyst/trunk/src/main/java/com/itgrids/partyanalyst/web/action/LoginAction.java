@@ -81,8 +81,26 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String candidateId;
     private String changedUserName = "false";
     private String userRole;
+    private boolean hasPartyAnalystUserRole;
+    private boolean hasFreeUserRole;
     
-    public String getDistrictSelectName() {
+    public boolean isHasPartyAnalystUserRole() {
+		return hasPartyAnalystUserRole;
+	}
+
+	public void setHasPartyAnalystUserRole(boolean hasPartyAnalystUserRole) {
+		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
+	}
+
+	public boolean isHasFreeUserRole() {
+		return hasFreeUserRole;
+	}
+
+	public void setHasFreeUserRole(boolean hasFreeUserRole) {
+		this.hasFreeUserRole = hasFreeUserRole;
+	}
+
+	public String getDistrictSelectName() {
 		return districtSelectName;
 	}
 
@@ -440,19 +458,20 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		}	
 		
 		int hiden = 0;
-
+		
 		userFullName = regVO.getFirstName() + " " + regVO.getLastName();
 		session.setAttribute("loginStatus", "out");
 		session.setAttribute("HiddenCount", hiden);
-		
+		session.setAttribute("UserName", userFullName);
+				
 	  for(int i=0;i<regVO.getUserRoles().size();i++)
 	  {
 		if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 		{
 			userRole = regVO.getUserRoles().get(i);
-			//regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			session.setAttribute(IConstants.USER,regVO);
-			session.setAttribute("UserName", userFullName);
+			hasPartyAnalystUserRole = true;
+			
 			session.setAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE, true);
 			session.setAttribute("UserType", "PartyAnalyst");
 			saveUserSessionDetails(IWebConstants.LOGIN);
@@ -460,12 +479,10 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		else if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.FREE_USER))
 		{
 			userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
-			//regVO.setUserStatus(IConstants.FREE_USER);
 			session.setAttribute(IConstants.USER,regVO);
-			session.setAttribute("UserName", userFullName);
 			session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+			hasFreeUserRole = true;
 			session.setAttribute("UserType", "FreeUser");
-			//session.setAttribute("changedUserName", new Boolean(true));
 			changedUserName = "true";
 			saveUserSessionDetails(IWebConstants.LOGIN);
 			return getRedirectPageDetails();	
