@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,9 +11,11 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.mysql.jdbc.Field;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -32,7 +37,42 @@ public class RegistrationAction extends ActionSupport implements
 	private Long resltval;
 	private String resultStr;
     private Integer resultValue;
+    private List<SelectOptionVO> states;
+    private List<SelectOptionVO> districts;
+    private List<SelectOptionVO> constituencies;
+    private Long stateId = null;
+    private Long districtId = null;
+    private Long constituencyId = null;
+   
+	private String district;
 	
+	
+	public List<SelectOptionVO> getStates() {
+	return states;
+	}
+
+	public void setStates(List<SelectOptionVO> states) {
+	this.states = states;
+	}
+
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}
+	
+	
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -110,14 +150,56 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setFreeuser(freeuser);
 	}
 	
+	public Long getConstituencyId() {
+		return regVO.getConstituencyId();
+	}
+	public void setConstituencyId(Long constituencyId) {
+		//this.constituencyId = constituencyId;
+		this.regVO.setConstituencyId(constituencyId);
+		
+	}
+	
+	
+	public void setStateId(Long stateId) {
+		//this.state = state;
+		this.regVO.setStateId(stateId);
+	}
+	public Long getStateId() {
+		return regVO.getStateId();
+	}
+		
+	
+	/*public void setConstituencyId1(Long constituencyId) {
+		//this.constituency = constituency;
+		this.regVO.setConstituencyId(constituencyId);
+	}
+	
+	public Long getConstituencyId() {
+		return regVO.getConstituencyId();
+	}*/
+	
 	public String execute() throws Exception
 	{
 		String requestStatus = null;
 		Long userId = null;
+		
+	/* states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		districts = new ArrayList<SelectOptionVO>(0);
+		 constituencies = new ArrayList<SelectOptionVO>(0);*/
+		
+		/*HttpSession session = request.getSession();
+		//session.setAttribute("gender", gender);
+		//session.setAttribute("profileOpts", profileOpts);
+		session.setAttribute("states", states);
+		session.setAttribute("districts", districts);
+		session.setAttribute("constituencies", constituencies);*/
 		if(IConstants.SUB_USER.equalsIgnoreCase(registrationType))
 		{
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			session.setAttribute("loginStatus", "out");
+			session.setAttribute("HiddenCount", 0);
+			
 			if(user==null){
 				return IConstants.NOT_LOGGED_IN;
 			}

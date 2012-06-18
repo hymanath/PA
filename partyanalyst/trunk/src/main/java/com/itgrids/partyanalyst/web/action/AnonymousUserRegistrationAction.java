@@ -413,11 +413,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
 				regVO.setUserProfilePic(imageName);
-				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
+				//savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
 			}
             else
             {
-            	savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+            	//savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
             	saveUserLogInDetails(regVO , session.getId());
             }
             String requestURL= request.getRequestURL().toString();
@@ -457,7 +457,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
                imageName =  regVO.getRegistrationID()+"."+constiName[1];  
 	           ImageIO.write(imageFile, constiName[1],new File(fileName));
              }       	*/
-			if(savedSuccessfully){	
+			/*if(savedSuccessfully){	
 				
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
@@ -472,7 +472,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				
 				session.removeAttribute("districts");
 				session.removeAttribute("constituencies");
-			}
+			}*/
 			 
         
 		 }
