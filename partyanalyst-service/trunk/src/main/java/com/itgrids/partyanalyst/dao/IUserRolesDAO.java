@@ -10,5 +10,6 @@ public interface IUserRolesDAO extends GenericDao<UserRoles,Long>{
 	public List<Object[]> getUserRoles(Long userId);
 	
 	public List<Object[]> getAllFreeuser();
-
+	
+	public List<String> getUserRolesOfAUser(Long userId);
 }
