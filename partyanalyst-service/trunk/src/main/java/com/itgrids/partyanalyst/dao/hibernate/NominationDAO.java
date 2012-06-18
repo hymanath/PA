@@ -392,9 +392,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and nModel.hasResults is null or nModel.hasResults = ? order by nModel.election.electionYear desc)",params);
 		
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List getCandidateAndPartyInfoForParliament(Long constituencyId,String electionType,Long rank)
+	/*public List getCandidateAndPartyInfoForParliament(Long constituencyId,String electionType,Long rank)
 	{
 		String hasResults = "1";
 		Object[] params = {constituencyId, rank, electionType,constituencyId};
@@ -410,7 +408,34 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and nModel.constituency.constituencyId = ? and nModel.hasResults is null )",params);
 		
 	}
-	
+*/
+	@SuppressWarnings("unchecked")
+	public List getCandidateAndPartyInfoForParliament(Long constituencyId,String electionType,Long rank)
+	{
+		String hasResults = "1";
+		Object[] params = {constituencyId, rank, electionType,constituencyId};
+		
+		
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
+				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +
+				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.candidateResult.rank = ? and " +
+				"model.constituencyElection.election.electionYear = (select max(nModel.constituencyElection.election.electionYear) from ConstituencyElectionResult nModel where nModel.constituencyElection.election.electionScope.electionType.electionType = ? "+
+				"and nModel.constituencyElection.constituency.constituencyId = ? and nModel.constituencyElection.hasResults is null )",params);
+		
+	}
+	public List<String> getCandidateAndPartyInfoForParliamentYear(Long constituencyId,String electionType)
+	{
+		Object[] params = { electionType,constituencyId};
+		
+		
+		return getHibernateTemplate().find("select max(nModel.election.electionYear) from ConstituencyElection nModel where nModel.election.electionScope.electionType.electionType = ? "+
+				"and nModel.constituency.constituencyId = ? and nModel.hasResults is null ",params);
+		
+	}
+
 	/*@SuppressWarnings("unchecked")
 	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype,Long stateId)
 	{
@@ -474,6 +499,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.candidateResult.rank = ? and " +
 				"model.constituencyElection.election.electionYear = (select max(nModel.constituencyElection.election.electionYear) from ConstituencyElectionResult nModel where nModel.constituencyElection.election.electionScope.electionType.electionType = ? "+
 				"and nModel.constituencyElection.constituency.constituencyId = ? )",params);
+	}
+	public List<String> getCandidateAndPartyInfoYear(Long constituencyId,String electionType)
+	{
+		Object[] params = {electionType,constituencyId};
+			
+		return getHibernateTemplate().find("select max(nModel.election.electionYear) from ConstituencyElection nModel where nModel.election.electionScope.electionType.electionType = ? "+
+				"and nModel.constituency.constituencyId = ? ",params);
 	}
 	
 	
