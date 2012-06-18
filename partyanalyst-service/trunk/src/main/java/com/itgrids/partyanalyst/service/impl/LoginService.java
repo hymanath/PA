@@ -487,15 +487,8 @@ public class LoginService implements ILoginService{
 				userLoginDetails = new UserLoginDetails();
 				userLoginDetails.setIpAddress(userTrackingVO.getRemoteAddress());
 				userLoginDetails.setLoginTime(dateUtilService.getCurrentDateAndTime());
-				//userLoginDetails.setUserType(userTrackingVO.getUserType());
 				userLoginDetails.setSessionId(userTrackingVO.getSessionId());
-				
-				/*if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-					userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
-				else if(userTrackingVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
-					userLoginDetails.setFreeUser(ananymousUserDAO.get(userTrackingVO.getRegistrationId()));*/
-				//userLoginDetails.setRegistration(registrationDAO.get(userTrackingVO.getRegistrationId()));
-				userLoginDetails.setUser(userDAO.get(userTrackingVO.getRegistrationId()));
+				userLoginDetails.setUserId(userTrackingVO.getRegistrationId());
 			}
 			else
 			{

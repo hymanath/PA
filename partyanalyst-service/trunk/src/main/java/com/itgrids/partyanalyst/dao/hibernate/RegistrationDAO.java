@@ -144,7 +144,7 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return getHibernateTemplate().find("select model.password from Registration model where model.password = ? and model.registrationId = ?",parameters);
 	}
 	
-	public List getUserProfileImageNameByUserId(Long userId)
+	/*public List getUserProfileImageNameByUserId(Long userId)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.profileImg from Registration model where model.registrationId = ?");
@@ -152,9 +152,9 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		queryObj.setParameter(0, userId);
 		return queryObj.list();
 		
-	}
+	}*/
 	
-	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds)
+	/*public List getAnanymousUserLocationDetailsByIds(List<Long> userIds)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.state.stateId,model.state.stateName,model.district.districtId,model.district.districtName,model.constituency.constituencyId,model.constituency.name");
@@ -164,7 +164,7 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		queryObject.setParameterList("userIds", userIds);
 		return queryObject.list();
 		
-	}	
+	}	*/
 		
 	
 	public List<Object[]> getUserEmailByUserId(Long userId){

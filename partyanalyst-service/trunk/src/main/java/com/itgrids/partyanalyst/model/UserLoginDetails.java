@@ -27,24 +27,19 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userLoginDetailsId;
-	//private Registration registration;
-	private AnanymousUser freeUser;
-	private String userType;
+	private User user;
 	private String ipAddress;
 	private Date loginTime;
 	private Date logoutTime;
 	private String sessionId;
-	private User user;
+	private Long userId;
 	
 	public UserLoginDetails(){
 		
 	}
-	public UserLoginDetails(User user,AnanymousUser freeUser,String userType,
-			String ipAddress,Date loginTime,Date logoutTime,String sessionId)
+	public UserLoginDetails(User user,String ipAddress,Date loginTime,Date logoutTime,String sessionId)
 	{
 		this.user = user;
-		this.freeUser = freeUser;
-		this.userType = userType;
 		this.ipAddress = ipAddress;
 		this.loginTime = loginTime;
 		this.logoutTime = logoutTime;
@@ -61,12 +56,15 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 		this.userLoginDetailsId = userLoginDetailsId;
 	}
 	
-	@Column(name = "user_type",length = 20)
-	public String getUserType() {
-		return userType;
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
 	}
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	@Column(name = "ip_address",length = 20)
@@ -77,28 +75,6 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 		this.ipAddress = ipAddress;
 	}
 
-	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
-	}*/
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AnanymousUser getFreeUser() {
-		return freeUser;
-	}
-	public void setFreeUser(AnanymousUser freeUser) {
-		this.freeUser = freeUser;
-	}
-	
 	@Column(name = "login_time")
 	public Date getLoginTime() {
 		return loginTime;
@@ -123,18 +99,12 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 		this.sessionId = sessionId;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUser() {
-		return user;
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
-	
-
 
 }
