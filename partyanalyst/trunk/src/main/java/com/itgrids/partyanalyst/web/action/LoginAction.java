@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -440,17 +442,12 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	public String execute(){
 
 		session = request.getSession();
-		RegistrationVO regVO = null;
 		
-		/*if("2".equalsIgnoreCase(userType))
-			regVO = loginService.checkForValidNormalUser(userName, password);//Free User
-		else*/
+		RegistrationVO regVO = loginService.checkForValidUser(userName, password);
 		
-		regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
-		
-	
 		//Check User Availability
-		if (regVO.getRegistrationID() == null) {
+		if (regVO == null || regVO.getRegistrationID() == null)
+		{
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid username or password! Please try again!");
 			session.setAttribute("checkedTypeValue", userType);
@@ -463,33 +460,35 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session.setAttribute("loginStatus", "out");
 		session.setAttribute("HiddenCount", hiden);
 		session.setAttribute("UserName", userFullName);
-				
-	  for(int i=0;i<regVO.getUserRoles().size();i++)
-	  {
-		if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+		session.setAttribute(IConstants.USER,regVO);
+		
+		List<String> userRoles = regVO.getUserRoles();
+		
+		if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
 		{
-			userRole = regVO.getUserRoles().get(i);
-			session.setAttribute(IConstants.USER,regVO);
 			hasPartyAnalystUserRole = true;
-			
 			session.setAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE, true);
 			session.setAttribute("UserType", "PartyAnalyst");
+			
+			if(userRoles.contains(IConstants.FREE_USER))
+			{
+				session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+				hasFreeUserRole = true;
+			}
 			saveUserSessionDetails(IWebConstants.LOGIN);
 		}
-		else if(regVO.getUserRoles().get(i).equalsIgnoreCase(IConstants.FREE_USER))
+		
+		else if(userRoles.contains(IConstants.FREE_USER))
 		{
-			userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
-			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
 			hasFreeUserRole = true;
 			session.setAttribute("UserType", "FreeUser");
 			changedUserName = "true";
 			saveUserSessionDetails(IWebConstants.LOGIN);
-			return getRedirectPageDetails();	
+			return getRedirectPageDetails();
 		}
-	 }
+				
 		return finalResultString();
-		
 	}
 	
      private String finalResultString() {
