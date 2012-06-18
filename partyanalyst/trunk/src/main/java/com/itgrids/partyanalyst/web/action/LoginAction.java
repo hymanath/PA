@@ -548,7 +548,6 @@ public String saveUserSessionDetails(String status)
 		
 		userTrackingVO.setRegistrationId(regVO.getRegistrationID());
 		userTrackingVO.setRemoteAddress(request.getRemoteAddr());
-		userTrackingVO.setUserType(regVO.getUserStatus());
 		userTrackingVO.setStatus(status);
 		userTrackingVO.setSessionId(session.getId());
 		loginService.saveUserSessionDetails(userTrackingVO);
