@@ -401,6 +401,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true) && 
 				ananymousUserService.getDetailsOfUserByUserId(user.getRegistrationID()) == null)
 			return ERROR;
+		
+		/* if(!session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true))
+			return ERROR;*/
 			
 		List<Long> userId = new ArrayList<Long>(0);
 		loginUserId = user.getRegistrationID();
