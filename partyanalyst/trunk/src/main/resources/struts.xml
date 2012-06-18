@@ -3391,6 +3391,13 @@
 	   </action>
 	   	<action name="changePasswordAction" class="changePasswordAction">
 			<result name="SUCCESS">/jsp/changePassword.jsp</result>	   	
-	   	</action>	
+	   	</action>
+	   	
+	   	<action name="checkUserEmailAction" class="connectPeopleAction" method="checkUserEmail">
+		    <result type="json" name="success">
+			<param name="root">email</param>				
+		</result>		
+	    </action>
+	   		
 	</package>
 </struts>      
