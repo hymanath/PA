@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.ctc.wstx.util.DataUtil;
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
@@ -30,18 +32,15 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.net.httpserver.Authenticator.Success;
-
-import org.apache.log4j.Logger;
 
 public class LoginService implements ILoginService{
 	
@@ -63,6 +62,7 @@ public class LoginService implements ILoginService{
 	private IUserLoginDetailsDAO userLoginDetailsDAO;
 	private static Logger log = Logger.getLogger(LoginService.class);
 	private IUserRolesDAO userRolesDAO;
+	private IUserDAO userDAO;
 	
 	
 	public IUserRolesDAO getUserRolesDAO() {
@@ -198,8 +198,16 @@ public class LoginService implements ILoginService{
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
 
-	public RegistrationVO checkForValidUser(String userName,String password){
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	/*public RegistrationVO checkForValidUser(String userName,String password){
 		RegistrationVO regVO = new RegistrationVO();
 		Registration reg = null;
 		Set<UserGroupEntitlement> groupEntitlements = null;
@@ -277,6 +285,91 @@ public class LoginService implements ILoginService{
 		return regVO;
 	
 	}
+	*/
+	
+	
+	
+
+	public RegistrationVO checkForValidUser(String userName,String password){
+		RegistrationVO regVO = new RegistrationVO();
+		User user = null;
+		Set<UserGroupEntitlement> groupEntitlements = null;
+		Set<GroupEntitlementRelation> entitlementsModel = null;
+		List<String> entitlements = new ArrayList<String>(0);
+		Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
+		List<String> roles = new ArrayList<String>(0);
+		try {
+			List<User> users = userDAO.findByUserNameAndPassword(userName, password);
+			//List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);
+			
+			if(users.size() != 1)
+				return regVO;		
+
+			user = users.get(0);
+			Long userId = user.getUserId();
+			regVO.setRegistrationID(userId);
+			regVO.setUserName(user.getUserName());
+			regVO.setEmail(user.getEmail());
+			regVO.setAccessType(user.getAccessType());
+			regVO.setAccessValue(user.getAccessValue());
+			regVO.setFirstName(user.getFirstName());
+			regVO.setLastName(user.getLastName());
+			regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
+			//regVO.setUserType(user.getUserType());
+			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+			regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
+			regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
+						
+			if(user.getParty() != null){
+				regVO.setParty(user.getParty().getPartyId());
+				regVO.setPartyShortName(user.getParty().getShortName());
+			}
+			
+			Set<UserGroupRelation> userGroups = user.getUserGroupRelations();
+			
+			for(UserGroupRelation groupRelation:userGroups){
+				groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
+				for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
+					entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
+					for(GroupEntitlementRelation entitlement:entitlementsModel)
+						entitlements.add(entitlement.getEntitlement().getEntitlementType());
+				}
+			}
+			
+			getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
+			
+			if(entitlements.contains(IConstants.ADMIN_PAGE))
+				regVO.setIsAdmin(IConstants.TRUE);	
+			else
+				regVO.setIsAdmin(IConstants.FALSE);	
+			
+			List<Object[]> userRoles = userRolesDAO.getUserRoles(user.getUserId());
+			if(userRoles !=null && userRoles.size()>0)
+			{
+				for(Object[] param : userRoles){
+					roles.add(param[1].toString());
+					regVO.setUserRoles(roles);
+				}
+			}
+			regVO.setEntitlements(entitlements);
+			regVO.setCountries(countries);
+			regVO.setStates(states);
+			regVO.setDistricts(districts);
+			regVO.setAssemblies(assemblies);
+			regVO.setParliaments(parliaments);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return regVO;
+	
+	}
+	
 	
 	private void getUserAccessInfo(Long userId, Set<SelectOptionVO> countries,
 			Set<SelectOptionVO> states, Set<SelectOptionVO> districts,

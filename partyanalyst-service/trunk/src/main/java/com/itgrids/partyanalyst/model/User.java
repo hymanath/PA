@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.awt.Desktop.Action;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -66,6 +65,8 @@ public class User extends BaseModel implements Serializable{
 	private Date updatedDate;
 	private String isPwdChanged;
 	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+	private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
+	private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	 
 	 public User(){}
 	 
@@ -392,7 +393,7 @@ public class User extends BaseModel implements Serializable{
 		this.profileImg = profileImg;
 	}
 
-	@Column(name="registered_time",length = 10)
+	@Column(name="registered_time")
 	public Date getRegisteredDate() {
 		return registeredDate;
 	}
@@ -418,16 +419,17 @@ public class User extends BaseModel implements Serializable{
 	public void setIsPwdChanged(String isPwdChanged) {
 		this.isPwdChanged = isPwdChanged;
 	}
-	/*@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Set<UserApprovalDetails> getUserApprovalDetails() {
-		return userApprovalDetails;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserProfileOpts> getUserProfileOptses() {
+		return userProfileOptses;
 	}
 
-	public void setUserApprovalDetails(Set<UserApprovalDetails> userApprovalDetails) {
-		this.userApprovalDetails = userApprovalDetails;
+	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
+		this.userProfileOptses = userProfileOptses;
 	}
-*/
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	 public Set<UserRoles> getUserRoles() {
@@ -437,4 +439,16 @@ public class User extends BaseModel implements Serializable{
 		public void setUserRoles(Set<UserRoles> userRoles) {
 			this.userRoles = userRoles;
 		}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserGroupRelation> getUserGroupRelations() {
+		return userGroupRelations;
+	}
+
+	public void setUserGroupRelations(Set<UserGroupRelation> userGroupRelations) {
+		this.userGroupRelations = userGroupRelations;
+	}
+
 }

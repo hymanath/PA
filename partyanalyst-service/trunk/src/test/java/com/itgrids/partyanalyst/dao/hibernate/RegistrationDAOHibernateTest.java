@@ -122,7 +122,7 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetAnanymousUserLocationDetailsByIds()
+	/*public void testGetAnanymousUserLocationDetailsByIds()
 	{
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(800l);
@@ -133,6 +133,14 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		{
 			
 		}
+		
+	}*/
+	
+	public void testGetConnectedUsersCount()
+	{
+		List list = registrationDAO.getConnectedUsersCount(10l, IConstants.DISTRICT);
+		
+		System.out.println(list.size());
 		
 	}
 }

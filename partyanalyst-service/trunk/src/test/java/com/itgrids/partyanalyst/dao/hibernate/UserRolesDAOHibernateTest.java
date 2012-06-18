@@ -19,17 +19,17 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		userRolesDAO.getAll();
 	}*/
 	
-	/*public void testGetUserRoles()
+	public void testGetUserRoles()
 	{
-		List<Object[]> userRoles = userRolesDAO.getUserRoles(1L);
+		List<Object[]> userRoles = userRolesDAO.getUserRoles(28L);
 		System.out.println(userRoles.size());
 		for(Object[] param : userRoles){
 			System.out.println((Long)param[0]);
 			System.out.println(param[1].toString());
 		}
 	}
-	*/
-	public void test()
+	
+	/*public void test()
 	{
 		 List<Object[]> list = userRolesDAO.getAllFreeuser();
 		 for(Object[] params : list)
@@ -40,5 +40,5 @@ public class UserRolesDAOHibernateTest extends BaseDaoTestCase{
 		 }
 		
 		
-	}
+	}*/
 }

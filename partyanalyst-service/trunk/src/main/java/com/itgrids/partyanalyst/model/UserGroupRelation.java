@@ -34,7 +34,8 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long userGroupRelationId;
-	private Registration user;
+	private User user;
+	//private Registration user;
 	private UserGroups userGroup;
 	
 	/** Default Constructor */
@@ -43,7 +44,7 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 	}
 	
 	/** Parameterized Constructor */
-	public UserGroupRelation(Long userGroupRelationId, Registration user,
+	public UserGroupRelation(Long userGroupRelationId, User user,
 			UserGroups userGroup) {
 		super();
 		this.userGroupRelationId = userGroupRelationId;
@@ -62,7 +63,7 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 		this.userGroupRelationId = userGroupRelationId;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -72,7 +73,7 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 
 	public void setUser(Registration user) {
 		this.user = user;
-	}
+	}*/
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_group_id")
@@ -85,5 +86,18 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 	public void setUserGroup(UserGroups userGroup) {
 		this.userGroup = userGroup;
 	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 
 }

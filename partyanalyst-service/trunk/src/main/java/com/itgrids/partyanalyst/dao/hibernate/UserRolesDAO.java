@@ -15,9 +15,10 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles,Long> implements
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserRoles(Long userId) {
-		return getHibernateTemplate().find("select model.role.roleId , model.role.roleType from UserRoles model where model.user.registrationId =?",userId);
+		return getHibernateTemplate().find("select model.role.roleId , model.role.roleType from UserRoles model where model.user.userId =?",userId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllFreeuser()
 	{
 		return getHibernateTemplate().find("select model.user.firstName,user.mobile from UserRoles model where role.roleType='FREE_USER'");

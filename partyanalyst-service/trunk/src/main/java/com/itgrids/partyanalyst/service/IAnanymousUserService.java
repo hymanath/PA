@@ -14,7 +14,7 @@ import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 
 public interface IAnanymousUserService {
 
-	//public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate);
+	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate);
 	
 	public RegistrationVO checkAnonymousUserLogin(String anonymousUserId,String password);
 	
@@ -52,7 +52,6 @@ public interface IAnanymousUserService {
 	public ResultStatus saveUserProfileImageName(Long userId,String imageName);
 	
 	public String getUserProfileImageByUserId(Long userId);
-	
 	
 	public RegistrationVO getUserDetailsToRecoverPassword(String userName);
 	

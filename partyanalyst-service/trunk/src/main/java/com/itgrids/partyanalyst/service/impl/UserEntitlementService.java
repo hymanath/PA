@@ -495,7 +495,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 					if(!userIdsAndGroupIds.containsKey(id)){
 						j++;
 						UserGroupRelation relation = new UserGroupRelation();
-						relation.setUser(registrationDAO.get(userId));
+						//relation.setUser(registrationDAO.get(userId));
 						relation.setUserGroup(userGroupsDAO.get(id));
 						relation = userGroupRelationDAO.save(relation);	
 					}
