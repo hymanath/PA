@@ -68,7 +68,7 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	 private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
-	 private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+	// private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	 private State state;
 	 private District district;
 	 private Constituency constituency;
@@ -533,7 +533,7 @@ public class Registration implements java.io.Serializable {
 		return constituency;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserRoles> getUserRoles() {
 		return userRoles;
@@ -541,7 +541,7 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserRoles(Set<UserRoles> userRoles) {
 		this.userRoles = userRoles;
-	}
+	}*/
 	@Column(name="profile_Img",length=100)
 	public String getProfileImg() {
 		return profileImg;

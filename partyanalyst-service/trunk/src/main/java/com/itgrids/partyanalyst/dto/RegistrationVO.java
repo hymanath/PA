@@ -58,6 +58,25 @@ public class RegistrationVO extends BaseDTO{
     private String contextPath;
     private List<String> userRoles = new ArrayList<String>();
 	private String freeuser;
+	private Long constituencyId;
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	private Long stateId;
+	
 	
 	public String getFreeuser() {
 		return freeuser;

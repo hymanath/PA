@@ -15,7 +15,9 @@ import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -41,7 +43,16 @@ public class DataApprovalService implements IDataApprovalService {
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
 	private IRegistrationDAO registrationDAO;
+	//private IUserDAO userDAO;
 	
+	/*public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+*/
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -204,6 +215,7 @@ public class DataApprovalService implements IDataApprovalService {
 						System.out.println("DAte is ::::::::::::::::::::::::::::"+problemManagementService.getCurrentDateAndTime());
 						approvalDetails.setIsAdminApproved(null);
 						userApprovalDetails.setRegistration(registrationDAO.get(approvalInfoVO.getUserId()));
+						//userApprovalDetails.setUser(userDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setApprovalDetails(approvalDetails);
 						
 						userProblemApproval.setProblemHistory(problemHistory);

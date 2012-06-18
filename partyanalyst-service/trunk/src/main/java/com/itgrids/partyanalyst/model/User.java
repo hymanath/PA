@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.awt.Desktop.Action;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -64,7 +65,7 @@ public class User extends BaseModel implements Serializable{
 	private Date registeredDate;
 	private Date updatedDate;
 	private String isPwdChanged;
-	private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
+	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	 
 	 public User(){}
 	 
@@ -391,7 +392,7 @@ public class User extends BaseModel implements Serializable{
 		this.profileImg = profileImg;
 	}
 
-	@Column(name="registered_time")
+	@Column(name="registered_time",length = 10)
 	public Date getRegisteredDate() {
 		return registeredDate;
 	}
@@ -417,15 +418,23 @@ public class User extends BaseModel implements Serializable{
 	public void setIsPwdChanged(String isPwdChanged) {
 		this.isPwdChanged = isPwdChanged;
 	}
-	
+	/*@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<UserApprovalDetails> getUserApprovalDetails() {
+		return userApprovalDetails;
+	}
+
+	public void setUserApprovalDetails(Set<UserApprovalDetails> userApprovalDetails) {
+		this.userApprovalDetails = userApprovalDetails;
+	}
+*/
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserProfileOpts> getUserProfileOptses() {
-		return userProfileOptses;
-	}
+	 public Set<UserRoles> getUserRoles() {
+			return userRoles;
+		}
 
-	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
-		this.userProfileOptses = userProfileOptses;
-	}
-
+		public void setUserRoles(Set<UserRoles> userRoles) {
+			this.userRoles = userRoles;
+		}
 }

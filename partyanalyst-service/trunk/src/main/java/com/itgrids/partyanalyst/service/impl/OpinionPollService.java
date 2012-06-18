@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
 import com.itgrids.partyanalyst.dao.IQuestionsRepositoryDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
@@ -66,10 +67,19 @@ public class OpinionPollService implements IOpinionPollService {
 	private IFeedbackTaskDAO feedbackTaskDAO;
 	private IFeedbackDAO feedbackDAO;
 	private IProblemManagementService problemManagementService;
+	private IUserDAO userDAO;
 	GregorianCalendar calendar = new GregorianCalendar();
 	SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
 		
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -460,7 +470,8 @@ public class OpinionPollService implements IOpinionPollService {
 		feedBack.setPostedDate(problemManagementService.getCurrentDateAndTime());
 
 		if(feedbackVO.getUserId() != null && feedbackVO.getUserId() > 0)
-			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
+			//feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
+			feedBack.setUser(userDAO.get(feedbackVO.getUserId()));
 		
 		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
 		feedbackDAO.save(feedBack);
@@ -527,9 +538,9 @@ public class OpinionPollService implements IOpinionPollService {
 	        feedbackVO.setKindOfComment(feedback.getFeedBackComment().getCommentType());
 	        feedbackVO.setTask(feedback.getFeedBackTask().getFeedBackTaskName());
 	        
-	        if(feedback.getRegistration()!=null){
+	        if(feedback.getUser()!=null){
 		         
-	        	feedbackVO.setUserName(feedback.getRegistration().getUserName());
+	        	feedbackVO.setUserName(feedback.getUser().getUserName());
 	        }
 	       /* else if(feedback.getAnanymousUser()!=null){
 	        	feedbackVO.setUserName(feedback.getAnanymousUser().getUsername());

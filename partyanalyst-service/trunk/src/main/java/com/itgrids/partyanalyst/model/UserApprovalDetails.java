@@ -36,7 +36,7 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long userApprovalDetailsId;
-	private AnanymousUser user;
+	private User user;
 	private ApprovalDetails approvalDetails;
 	private Registration registration;
 	private Set<UserProblemApproval> userApprovalDetails = new HashSet<UserProblemApproval>(0);
@@ -45,7 +45,7 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 		
 	}
 
-	public UserApprovalDetails(Long userApprovalDetailsId, AnanymousUser user,
+	public UserApprovalDetails(Long userApprovalDetailsId, User user,
 			ApprovalDetails approvalDetails) {
 		this.userApprovalDetailsId = userApprovalDetailsId;
 		this.user = user;
@@ -67,11 +67,11 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
-	public AnanymousUser getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(AnanymousUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
