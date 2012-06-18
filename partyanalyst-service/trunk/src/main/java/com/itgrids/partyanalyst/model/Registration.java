@@ -67,7 +67,7 @@ public class Registration implements java.io.Serializable {
 	 private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
 	 private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	 private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
-	 private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
+	// private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	// private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	 private State state;
 	 private District district;
@@ -499,7 +499,7 @@ public class Registration implements java.io.Serializable {
 		this.userCandidateRelations = userCandidateRelations;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserLoginDetails> getUserLoginDetails() {
 		return userLoginDetails;
@@ -507,7 +507,7 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
 		this.userLoginDetails = userLoginDetails;
-	}
+	}*/
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="state_id", updatable = false, insertable = false)
