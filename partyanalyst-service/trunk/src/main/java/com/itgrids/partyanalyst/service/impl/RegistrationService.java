@@ -152,54 +152,30 @@ public class RegistrationService implements IRegistrationService{
 		this.userDAO = userDAO;
 	}
 
-	public String saveRegistration(RegistrationVO values,String userType){
-		Registration reg = new Registration();	
-		User user = new User();
-		String dob = values.getDateOfBirth();
-		//reg = convertIntoModel(values);
-		user = convertIntoModel(values);
-		user = saveDataIntoUserModel(values);
+	public String saveRegistration(RegistrationVO values,String userType)
+	{
+		User user = saveDataIntoUserModel(values);
 		
 		if(checkUserName(values.getUserName())!= true)
 		{
-			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
-			reg.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-			reg.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
-			user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-			user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
+			
 			if(values.getStateId() !=null && values.getStateId()!=0)
-			{
-			reg.setState(stateDAO.get(new Long(values.getStateId())));
-			user.setState(stateDAO.get(new Long(values.getStateId())));
-			user.setStateId(values.getStateId());
-			reg.setStateId(values.getStateId());
-			}
-			if(values.getConstituencyId()!=null && values.getConstituencyId()!=0)
-			{
-			reg.setConstituency(constituencyDAO.get(new Long(values.getConstituencyId())));
+				user.setStateId(values.getStateId());
+			
+			if(values.getConstituencyId()!= null && values.getConstituencyId()!=0)
 			user.setConstituencyId(values.getConstituencyId());
-			reg.setConstituencyId(values.getConstituencyId());
-			user.setConstituency(constituencyDAO.get(new Long(values.getConstituencyId())));
-			}
-			//reg = registrationDAO.save(reg);
+			
 			user = userDAO.save(user);
-			
-			user = userDAO.save(user); 
-			
-			setUserID(reg.getRegistrationId());
-			setUserID(user.getUserId());
 			saveDataInToUserRolesTable(user,values);
 			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
 		}
 		else
-			
-			
 			requestStatus.setRequestStatus(BaseDTO.PARTIAL);
-		
+
 		return requestStatus.getRequestStatus();
 	}
 	
-	public void saveDataInToAnonymousTable(Registration reg,String dob){
+	/*public void saveDataInToAnonymousTable(Registration reg,String dob){
 		//AnanymousUser userDetails = new AnanymousUser();
 		Registration userDetails = new Registration();
 		try{
@@ -240,7 +216,7 @@ public class RegistrationService implements IRegistrationService{
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	public ResultStatus saveDataInToUserRolesTable(User user, RegistrationVO values)
 	{
 		ResultStatus resultStatus = new ResultStatus();
@@ -313,6 +289,8 @@ public class RegistrationService implements IRegistrationService{
 			user.setAccessType(values.getAccessType());
 			user.setAccessValue(values.getAccessValue());
 			user.setUserType(values.getUserType());
+			user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
 			if(values.getParentUserId() != null)
 				user.setParentUser(userDAO.get(values.getParentUserId()));
 			if(values.getMainAccountId() != null)
