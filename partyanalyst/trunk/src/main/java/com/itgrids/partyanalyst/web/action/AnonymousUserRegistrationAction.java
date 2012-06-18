@@ -151,9 +151,9 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public void setRegVO(RegistrationVO regVO) {
 		this.regVO = regVO;
 	}
+		
 	
-	
-//User Details Validation
+	//User Details Validation
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Username Should not Contain Special characters and Numbers.", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter Username below 20 characters ", minLength = "1", maxLength = "20")	
 	public void setUserName(String userName) {
@@ -458,7 +458,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	           ImageIO.write(imageFile, constiName[1],new File(fileName));
              }       	*/
 			/*if(savedSuccessfully){	
-				
+				regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
 				regVO.setUserStatus(IConstants.FREE_USER);
