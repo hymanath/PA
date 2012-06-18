@@ -71,6 +71,7 @@
 		<property name="registrationDAO" ref="registrationDAO"/>
 		<property name="roleDAO" ref="roleDAO"/>
 		<property name="userRolesDAO" ref="userRolesDAO"/>
+		<property name="userDAO" ref="userDAO"></property>
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
@@ -78,7 +79,7 @@
 		<property name="opinionPollResultDAO" ref="opinionPollResultDAO" /> 
 		<property name="opinionPollQuestionOptionsDAO" ref="opinionPollQuestionOptionsDAO" /> 
 		<property name="transactionTemplate" ref="transactionTemplate" />
-		<property name="registrationDAO" ref="registrationDAO" />
+		<!-- <property name="registrationDAO" ref="registrationDAO" /> -->
 		<property name="opinionPollDAO" ref="opinionPollDAO" /> 
 		<property name="questionsRepositoryDAO" ref="questionsRepositoryDAO" /> 
 		<property name="feedbackCommentDAO" ref="feedbackCommentDAO" /> 
@@ -86,6 +87,7 @@
 		<property name="feedbackDAO" ref="feedbackDAO" /> 
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="problemManagementService" ref="problemManagementService" /> 
+		<property name="userDAO" ref="userDAO"></property>
 	</bean>
 	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
@@ -217,6 +219,7 @@
 		<property name="ananymousUserService" ref="ananymousUserService" />	
 		<property name="userRolesDAO" ref="userRolesDAO"></property>
 		<property name="roleDAO" ref="roleDAO"></property>
+		<property name="userDAO" ref="userDAO"></property>
 	</bean>
 	
 	<bean name="constituencySearchService" class="com.itgrids.partyanalyst.service.impl.ConstituencySearchService" >
@@ -878,7 +881,9 @@
     	<property name="problemManagementService" ref="problemManagementService" /> 
     	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
     	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
-    	<property name="registrationDAO" ref="registrationDAO"/>	
+    	<property name="registrationDAO" ref="registrationDAO"/>
+    	
+    	
 	</bean>
 	
 	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">

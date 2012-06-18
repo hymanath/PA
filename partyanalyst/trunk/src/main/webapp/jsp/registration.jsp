@@ -10,6 +10,7 @@
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 
+
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
@@ -242,6 +243,12 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 
+	function showAndHide()
+	{
+		var Ele = document.getElementById('freeuserDiv');
+		Ele.style.display='block';
+	}
+
 	function getAccessValuesForSubUser(value)
 	{
 		SUB_USER_ACCESSVALUE = value;
@@ -273,7 +280,36 @@
 			callAjax(jsObj,url,rparam);
 		}		
 	}
+function getStatesValidationForFreeuser()
+{
+	
+var Ele=document.getElementById('freeuser');
+var errorDiv=document.getElementById('errorDiv');
+var stateSelectBox =document.getElementById("stateSelectBox").value;
+var constituency = document.getElementById("constituency").value;
+var str = '<font style="color:red;font-size:12px;">';
 
+	if(Ele.checked == true)
+	
+	if(stateSelectBox == 0)
+	{
+		str += 'Select State';
+		
+		errorDiv.innerHTML = str;
+		return false;
+	}
+	else if(constituency == 0)
+	{
+		str += 'Select Constituency';
+		
+		errorDiv.innerHTML = str;
+		return false;
+	}
+	else
+	
+	return true;
+	
+}
 </script>
 
 </head>  
@@ -364,7 +400,7 @@
 				</table>
 			</div>	
 		 </div>
-
+			<div id="errorDiv"></div>
 		 <div id="accessDetailsDiv" class="accessDivMain">
 			 <div id="accessDetailsDivHead" class="accessDivHead"><u>Access Level Details...</u></div>
 			 <div id="accessDetailsDivBody" class="accessDivBody">
@@ -375,8 +411,22 @@
 					<s:label for="userrole" id="roleTypeid"/>Role Type
 					</td>
 				
-						<td style="padding-left: 11px;"><s:checkbox id="freeuser"  value="freeuser" name = "freeuser"/>FREE_USER</td>
+				<td style="padding-left: 11px;"><s:checkbox id="freeuser"  value="freeuser" name ="freeuser" onclick="showAndHide()"/>FREE_USER</td>
+
+				
 					</tr>
+
+			<tr><td colspan="2">		
+			
+		<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State:<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:189px;"  theme="simple" />
+						
+
+
+					<b style="color:red">*</b> 
+ Select Constituency:<s:select name="constituencyId" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name" cssStyle="width:189px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+		 </div></td></tr>
+
+				
 					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="userTypeField" id="userTypeLabel"  value="%{getText('userType')}" /></td>
@@ -396,8 +446,7 @@
 						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
 					</tr>
 					</c:if>					
-					
-					<tr>
+				<tr>
 						<td width="100px;" id="thId"> </td>
 						<td style="padding-left: 15px;" id="tdId"> </td>
 					</tr>
@@ -412,9 +461,11 @@
 
 				 </table>
 			 </div>
+
+			
 		</div> 
 		<div style="text-align: center;">
-			<s:submit name="Save"></s:submit> 
+<s:submit name="Save" onclick="return getStatesValidationForFreeuser()"></s:submit> 
 		</div>
 </div>
 </s:form>  
