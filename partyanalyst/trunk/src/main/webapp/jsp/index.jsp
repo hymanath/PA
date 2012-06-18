@@ -279,7 +279,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 							<c:if test="${hasSubUserEntitlement}"><a href="javascript:{}" onclick="openSubUserRegPopup()" class="profileAnc">
 							<span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a></c:if>
 							<c:if test="${hasSubUserEntitlement == false}"><a href="javascript:{}" onclick="showAlertMsg('noticeBoard_new')" class="profileAnc"><span><img src="images/icons/cadreReport/addCadre.png"/></span>Add Sub User</a></c:if>
+							
+							<c:if test="${sessionScope.hasFreeUserRole == true}">
 							<a class="profileAnc" style="text-decoration:none" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" ><span><img src="images/icons/constituencyPage/groups.png" /></span>DashBoard</a>
+							</c:if>
+
 							<c:if test="${hasCallCenterEntitlment}">
 							<a href="callCenterAction.action" class="profileAnc" ><span><img src="images/icons/callCenter.png" /></span>Call Center</a>
 							</c:if>
