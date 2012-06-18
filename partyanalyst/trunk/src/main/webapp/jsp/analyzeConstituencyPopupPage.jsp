@@ -366,7 +366,6 @@ body
 
 	function handleAddCommentsSubmit(id,category,constituencyId,candidate,constituency,party,rank)
 	{
-		
 		var commentVal = document.getElementById("commentText").value; 
 		var postedByVal = document.getElementById("commentPostedByText").value;
 		var partyId;
@@ -420,7 +419,7 @@ if(category == "candidate")
 		}
 		
 		
-		if(commentCategoryId == '' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
+		if(commentCategoryId == '' || commentCategoryName == 'Select Reason' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
 		{
 			alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
 			return;		
