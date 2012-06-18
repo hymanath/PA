@@ -18,10 +18,10 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.userDAO = userDAO;
 	}
 
-	public void test()
+	/*public void test()
 	{
 		userDAO.getAll();
-	}
+	}*/
 	
 	/*public void testCheckUserPassword()
 	{
@@ -41,9 +41,18 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.get(0));
 	}*/
 	
-	/*public void testFindByUserNameAndPassword()
+	public void testFindByUserNameAndPassword()
 	{
 		List<User> list = userDAO.findByUserNameAndPassword("aaaa@aa.com", "3685171");
 		System.out.println(list.size());
-	}*/
+		if(list != null && list.size() > 0)
+		{
+			for(User params : list)
+			{
+				System.out.println(params.getUserId());
+				System.out.println(params.getFirstName());
+				System.out.println(params.getLastName());
+			}
+		}
+	}
 }
