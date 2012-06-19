@@ -1778,7 +1778,8 @@
 		 <action name="anonymousUserRegistrationAction" class="anonymousUserRegisterAction">
 		    <result name="input">/jsp/anonymousUserRegistration.jsp</result>
 		    <result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
-		     <result type="redirect" name="CHANGE_PASSWORD_PAGE">changePasswordAction.action</result>
+		     <result type="redirect" name="connect">connectPeopleAction.action</result>
+		    <!--  <result type="redirect" name="CHANGE_PASSWORD_PAGE">changePasswordAction.action</result> -->
 			 <!-- Problem Management Flow From Different Pages -->
 			<result name="error">/jsp/anonymousUserRegistration.jsp</result>	
 			 <interceptor-ref name="userTrack"/>
