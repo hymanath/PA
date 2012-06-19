@@ -244,7 +244,7 @@ margin-top: 4px;
 	  </head>
 	<div class="clear"></div>
 
-	<div style="text-align:center;margin-bottom:10px;">
+<!--	<div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
 /* PartyPageHeader */
@@ -252,11 +252,11 @@ google_ad_slot = "2678494123";
 google_ad_width = 728;
 google_ad_height = 90;
 //-->
-</script>
+<!--</script>
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-</div>
+</div> -->
 
      <div class="main-title-sec">
         <div class="main-mbg"><div id="constituencyType"></div></div>
@@ -823,7 +823,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
 		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Election Analysis And<br/>Management Tool</a>
 		                </div>
-
+<!--
 <div style="margin-left:11px;">
 	<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-0938408694174139";
@@ -832,11 +832,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		google_ad_width = 300;
 		google_ad_height = 250;
 		//-->
-		</script>
+		<!--</script>
 		<script type="text/javascript"
 		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		</script>
-	</div>
+	</div>  -->
         <!--CD SUB RIGHT SECTION END--> 
         
       </div>
@@ -948,6 +948,10 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 	<script type="text/javascript">
+	if('${candidateDetailsForConstituency.ispartial}' == 'true'){
+	        getcandidateAssetsAndLiabilities(constiId);
+			getAssetsElectionYearsInfo(constiId);
+	}
 	buildPolls();
 function showUrbanDivIfPresent()
 {
