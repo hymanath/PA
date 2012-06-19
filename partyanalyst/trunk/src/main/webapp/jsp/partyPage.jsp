@@ -352,7 +352,7 @@ width: 500px;
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr><td>
-<div style="text-align:center;margin-bottom:10px;">
+<!-- <div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
 /* PartyPageHeader */
@@ -360,11 +360,11 @@ google_ad_slot = "2678494123";
 google_ad_width = 728;
 google_ad_height = 90;
 //-->
-</script>
+<!-- </script>
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-</div>
+</div> -->
 <div class="main-title-sec">
  <div class="main-mbg">${partyVO.partyLongName} 
  
@@ -642,7 +642,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			   </div>
 			</s:if>
 			</div>
-
+	<!--
 	<div>
 	<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-0938408694174139";
@@ -651,11 +651,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		google_ad_width = 300;
 		google_ad_height = 250;
 		//-->
-		</script>
+		<!--</script>
 		<script type="text/javascript"
 		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		</script>
-	</div>
+	</div>  -->
 			
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
