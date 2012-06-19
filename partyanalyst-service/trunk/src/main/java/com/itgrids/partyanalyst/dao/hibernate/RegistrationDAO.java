@@ -223,7 +223,7 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return (Long)queryObject.uniqueResult();
 	}
 	
-	public List getConnectedUsersCount(Long locationId,String locationType)
+	/*public List getConnectedUsersCount(Long locationId,String locationType)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model.registrationId) ");
@@ -241,7 +241,7 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		queryObject.setParameter(1, locationId);
 		return queryObject.list();
 		
-	}
+	}*/
 	public List<Registration> getDetailsForUsers(List<Long> userIds){
 		StringBuilder query = new StringBuilder();				
 	//	query.append(" select model.name,model.lastName,model.userId");

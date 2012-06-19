@@ -73,7 +73,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		return queryObject.list();
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType){
 		StringBuilder query = new StringBuilder();				
 		query.append(" select model.subject, model.sender.registrationId, model.sender.firstName, model.sender.lastName, ");
@@ -89,7 +89,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		queryObject.setParameter("role", IConstants.FREE_USER);
 		
 		return queryObject.list();
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate){
