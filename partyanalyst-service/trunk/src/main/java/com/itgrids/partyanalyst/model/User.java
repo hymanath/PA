@@ -69,6 +69,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	private Set<Cadre> cadre = new HashSet<Cadre>(0);
+	private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0);
 	 
 	 public User(){}
 	 
@@ -472,6 +473,16 @@ public class User extends BaseModel implements Serializable{
 	public void setCadre(Set<Cadre> cadre) {
 		this.cadre = cadre;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<OpinionPoll> getOpinionPoll() {
+		return opinionPoll;
+	}
+
+	public void setOpinionPoll(Set<OpinionPoll> opinionPoll) {
+		this.opinionPoll = opinionPoll;
+	}
+
+	
 
 	
 }

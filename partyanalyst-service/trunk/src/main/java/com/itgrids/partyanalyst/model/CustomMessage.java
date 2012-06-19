@@ -36,9 +36,6 @@ public class CustomMessage extends BaseModel implements Serializable {
 	private AnanymousUser senderId;
 	private AnanymousUser recepientId;
     private MessageType messageType;
-    private Registration sender;
-    private Registration recepient;
-    
 	
 	//Default Constructor
 	public CustomMessage(){		
@@ -128,29 +125,5 @@ public class CustomMessage extends BaseModel implements Serializable {
 	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
 	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="sender")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public Registration getSender() {
-		return sender;
-	}
-
-	public void setSender(Registration sender) {
-		this.sender = sender;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="recepient")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public Registration getRecepient() {
-		return recepient;
-	}
-
-	public void setRecepient(Registration recepient) {
-		this.recepient = recepient;
-	}
-	
-	
 	
 }

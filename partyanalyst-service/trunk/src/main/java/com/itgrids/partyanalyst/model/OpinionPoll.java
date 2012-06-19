@@ -38,7 +38,7 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
 	 private Long opinionPollId;
-	 private Registration registration;
+	 private User user;
 	 private String title;
 	 private Date opinionPollStartDate;
 	 private Date opinionPollEndDate;
@@ -54,14 +54,12 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 	
 	  /** full constructor */
 	
-	 	public OpinionPoll(Registration registration,
+	 	public OpinionPoll(
 			Date opinionPollStartDate,Date opinionPollEndDate,String description,
 			Set<OpinionPollQuestions> opinionPollQuestions) {
-	 		this.registration=registration;
 	 		this.opinionPollStartDate = opinionPollStartDate;
 	 		this.opinionPollEndDate = opinionPollEndDate;
 	 		this.description = description;
-	 		this.opinionPollQuestions = opinionPollQuestions;
 	}
 	
 	@Id
@@ -74,16 +72,17 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 	public void setOpinionPollId(Long opinionPollId) {
 		this.opinionPollId = opinionPollId;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
+	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
+	public User getUser() {
+		return user;
 	}
 
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -92,6 +91,7 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 		return opinionPollStartDate;
 	}
 
+	
 	public void setOpinionPollStartDate(Date opinionPollStartDate) {
 		this.opinionPollStartDate = opinionPollStartDate;
 	}
