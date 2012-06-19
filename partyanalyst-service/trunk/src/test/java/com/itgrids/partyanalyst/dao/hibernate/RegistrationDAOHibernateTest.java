@@ -135,12 +135,12 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 	}*/
-	
+	/*
 	public void testGetConnectedUsersCount()
 	{
-		List list = registrationDAO.getConnectedUsersCount(10l, IConstants.DISTRICT);
+		//List list = registrationDAO.getConnectedUsersCount(10l, IConstants.DISTRICT);
 		
 		System.out.println(list.size());
 		
-	}
+	}*/
 }

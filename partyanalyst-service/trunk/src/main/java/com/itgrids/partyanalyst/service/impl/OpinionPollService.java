@@ -415,7 +415,7 @@ public class OpinionPollService implements IOpinionPollService {
 	 public boolean createPoll(OpinionPollVO dataVO, Long userId) {
 			boolean isSaved = false;
 			OpinionPoll opinionPoll = new OpinionPoll();
-			opinionPoll.setRegistration(registrationDAO.get(userId)); 
+			opinionPoll.setUser(userDAO.get(userId));
 			opinionPoll.setDescription(dataVO.getDescription());
 			opinionPoll.setOpinionPollStartDate(dataVO.getOpinionPollStartDate());
 			opinionPoll.setOpinionPollEndDate(dataVO.getOpinionPollEndDate());
@@ -470,7 +470,6 @@ public class OpinionPollService implements IOpinionPollService {
 		feedBack.setPostedDate(problemManagementService.getCurrentDateAndTime());
 
 		if(feedbackVO.getUserId() != null && feedbackVO.getUserId() > 0)
-			//feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
 			feedBack.setUser(userDAO.get(feedbackVO.getUserId()));
 		
 		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
