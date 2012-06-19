@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name= "custom_message")
@@ -36,6 +37,8 @@ public class CustomMessage extends BaseModel implements Serializable {
 	private AnanymousUser senderId;
 	private AnanymousUser recepientId;
     private MessageType messageType;
+    private User sender;
+    private User recepient;
 	
 	//Default Constructor
 	public CustomMessage(){		
@@ -94,7 +97,7 @@ public class CustomMessage extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="sender_id")
+	@JoinColumn(name="free_user_sender_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	public AnanymousUser getSenderId() {
 		return senderId;
@@ -105,7 +108,7 @@ public class CustomMessage extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="recepient_id")
+	@JoinColumn(name="free_user_recepient_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	public AnanymousUser getRecepientId() {
 		return recepientId;
@@ -124,6 +127,30 @@ public class CustomMessage extends BaseModel implements Serializable {
 
 	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="sender_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getSender() {
+		return sender;
+	}
+
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="recepient_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getRecepient() {
+		return recepient;
+	}
+
+	public void setRecepient(User recepient) {
+		this.recepient = recepient;
 	}
 	
 }

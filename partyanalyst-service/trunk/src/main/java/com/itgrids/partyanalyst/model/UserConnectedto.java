@@ -17,6 +17,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="user_connectedto")
@@ -31,6 +32,8 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	private Long userConnectedtoId;
 	private AnanymousUser senderId;
 	private AnanymousUser recepientId;
+	private User userSource;
+	private User userTarget;
 	
 	
 	//default constructor
@@ -62,7 +65,7 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_source_id")
+	@JoinColumn(name="free_user_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	public AnanymousUser getSenderId() {
 		return senderId;
@@ -72,10 +75,10 @@ public class UserConnectedto extends BaseModel implements Serializable {
 		this.senderId = senderId;
 	}
 
-	public 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_target_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)AnanymousUser getRecepientId() {
+	@JoinColumn(name="free_user_target_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	public AnanymousUser getRecepientId() {
 		return recepientId;
 	}
 
@@ -83,26 +86,28 @@ public class UserConnectedto extends BaseModel implements Serializable {
 		this.recepientId = recepientId;
 	}
 
-	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_source")
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public Registration getUserSource() {
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUserSource() {
 		return userSource;
 	}
 
-	public void setUserSource(Registration userSource) {
+	public void setUserSource(User userSource) {
 		this.userSource = userSource;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_target")
+	@JoinColumn(name="user_target_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public Registration getUserTarget() {
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUserTarget() {
 		return userTarget;
 	}
 
-	public void setUserTarget(Registration userTarget) {
+	public void setUserTarget(User userTarget) {
 		this.userTarget = userTarget;
-	}*/
-	
+	}
+			
 }
