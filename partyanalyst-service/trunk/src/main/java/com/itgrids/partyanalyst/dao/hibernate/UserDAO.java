@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 
@@ -90,6 +91,24 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return queryObj.executeUpdate();
 	}
 	
-	
+	public List getConnectedUsersCount(Long locationId,String locationType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model.userId) ");
+		query.append(" from User model where ");
+		query.append("  model.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = ? )");
+		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			query.append(" and model.constituency.constituencyId = ? group by model.constituency.constituencyId");
+		else if (locationType.equalsIgnoreCase(IConstants.DISTRICT)) {
+			query.append(" and model.district.districtId = ? group by model.district.districtId");
+			
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, IConstants.FREE_USER);
+		queryObject.setParameter(1, locationId);
+		return queryObject.list();
+		
+	}
 	
 }
