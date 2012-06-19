@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.core.annotation.Order;
 
 @Entity
 @Table(name = "user_state_access_info")
@@ -26,15 +27,16 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userStateAccessInfoId;
-	private Registration user;
+	//private Registration user;
 	private State state ;
+	private User user;
 	
 	public UserStateAccessInfo(){
 		
 	}
 	
 	public UserStateAccessInfo(Long userStateAccessInfoId,
-			Registration user, State state) {
+			User user, State state) {
 		super();
 		this.userStateAccessInfoId = userStateAccessInfoId;
 		this.user = user;
@@ -52,7 +54,7 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 		this.userStateAccessInfoId = userStateAccessInfoId;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -63,7 +65,7 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	public void setUser(Registration user) {
 		this.user = user;
 	}
-	
+	*/
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -74,6 +76,18 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 

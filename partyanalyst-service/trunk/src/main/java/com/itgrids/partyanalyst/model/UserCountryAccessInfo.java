@@ -25,15 +25,16 @@ public class UserCountryAccessInfo extends BaseModel{
 
 	private static final long serialVersionUID = 1L;
 	private Long userCountryAccessInfoId;
-	private Registration user;
+	//private Registration user;
 	private Country country ;
+	private User user;
 	
 	public UserCountryAccessInfo(){
 		
 	}
 	
 	public UserCountryAccessInfo(Long userCountryAccessInfoId,
-			Registration user, Country country) {
+			User user, Country country) {
 		super();
 		this.userCountryAccessInfoId = userCountryAccessInfoId;
 		this.user = user;
@@ -51,7 +52,7 @@ public class UserCountryAccessInfo extends BaseModel{
 		this.userCountryAccessInfoId = userCountryAccessInfoId;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -61,7 +62,7 @@ public class UserCountryAccessInfo extends BaseModel{
 
 	public void setUser(Registration user) {
 		this.user = user;
-	}
+	}*/
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "country_id")
@@ -69,10 +70,25 @@ public class UserCountryAccessInfo extends BaseModel{
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Country getCountry() {
 		return country;
+		
 	}
 
 	public void setCountry(Country country) {
 		this.country = country;
 	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 	
 }

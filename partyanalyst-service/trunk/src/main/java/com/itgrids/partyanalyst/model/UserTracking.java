@@ -32,9 +32,11 @@ public class UserTracking extends BaseModel implements Serializable {
 	private Date time;
 	private String sessionId;
 	private Registration registration;
-	private Long registrationId;
+	//private Long registrationId;
 	private User user;
-	private Long userId;
+	//private Long userId;
+	private AnanymousUser freeUser;
+	private String userType;
 	
 	 public UserTracking()
 	 {
@@ -106,14 +108,14 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.registration = registration;
 	}
 
-	@Column(name = "registration_id", length = 10)
+	/*@Column(name = "registration_id", length = 10)
 	public Long getRegistrationId() {
 		return registrationId;
 	}
 
 	public void setRegistrationId(Long registrationId) {
 		this.registrationId = registrationId;
-	}
+	}*/
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id",updatable = false, insertable = false)
@@ -127,14 +129,35 @@ public class UserTracking extends BaseModel implements Serializable {
 		this.user = user;
 	}
 
-	@Column(name = "user_id", length = 10)
+	/*@Column(name = "user_id", length = 10)
 	public Long getUserId() {
 		return userId;
 	}
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}*/
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="free_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AnanymousUser getFreeUser() {
+		return freeUser;
 	}
 
+	public void setFreeUser(AnanymousUser freeUser) {
+		this.freeUser = freeUser;
+	}
 
+	@Column(name = "user_type", length = 25)
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	
 }
