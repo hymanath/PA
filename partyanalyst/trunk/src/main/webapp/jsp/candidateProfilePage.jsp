@@ -295,7 +295,8 @@ width: 500px;
 </script>
 
 <table width="999px" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr><td><div style="text-align:center;margin-bottom:10px;">
+<tr><td>
+<!--<div style="text-align:center;margin-bottom:10px;">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0938408694174139";
 /* CandiatePageHeader */
@@ -303,11 +304,11 @@ google_ad_slot = "2678494123";
 google_ad_width = 728;
 google_ad_height = 90;
 //-->
-</script>
+<!--</script>
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-</div></td></tr>
+</div>--></td></tr>
 <tr><td>
 <div class="ppc-title" style="margin-top:-4px;">
 <s:if test="candidateElectionDetails[0].stateId !=null">State: 
@@ -396,7 +397,7 @@ Tweet</a>
 		</s:if>
 		
 		<s:if test="false">
-		<div>
+		<!--<div>
 		<script type="text/javascript"><!--
 			google_ad_client = "ca-pub-0938408694174139";
 			/* CandidatePageLeftHandBox */
@@ -404,11 +405,11 @@ Tweet</a>
 			google_ad_width = 200;
 			google_ad_height = 200;
 			//-->
-			</script>
+			<!--</script>
 			<script type="text/javascript"
 			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		</script>
-		</div>
+		</div> -->
 		</s:if>
 
 	   <!--EMAIL ALERT SECTION START-->
@@ -575,7 +576,7 @@ Tweet</a>
 	 <div class="more"><a onClick="videoGallaryPopUp();" href="javascript:{};" style="margin-bottom: 20px;">More</a></div>
 	 </s:if>
 	
-	<div>
+	<!--<div>
 	<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-0938408694174139";
 		/* CandidatePageRightBox */
@@ -583,11 +584,11 @@ Tweet</a>
 		google_ad_width = 300;
 		google_ad_height = 250;
 		//-->
-		</script>
+		<!--</script>
 		<script type="text/javascript"
 		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		</script>
-	</div>
+	</div> -->
 
 	<div id="showContentDiv">
 	<div id="showContentDivInnerDiv"></div>
