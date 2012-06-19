@@ -44,6 +44,7 @@
 	
 	<bean name="userTrackingService" class="com.itgrids.partyanalyst.service.impl.UserTrackingService" >
 		<property name="userTrackingDAO" ref="userTrackingDAO" />
+		<property name="userDAO" ref="userDAO" />
 	</bean>
 	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
@@ -772,6 +773,7 @@
 	    <property name="mailsSendingService" ref="mailsSendingService" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
+		<property name="userDAO" ref="userDAO" />
 	</bean>
 	
 	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
