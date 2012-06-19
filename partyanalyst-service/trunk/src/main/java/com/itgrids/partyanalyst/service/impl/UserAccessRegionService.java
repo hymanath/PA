@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -37,6 +38,7 @@ private IStateDAO stateDAO;
 private IDistrictDAO districtDAO;
 private IConstituencyDAO constituencyDAO;
 private IRegistrationDAO registrationDAO;
+private IUserDAO userDAO;
 
 
 
@@ -132,6 +134,16 @@ public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
 public void setUserConstituencyAccessInfoDAO(
 		IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
 	this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+}
+
+
+public IUserDAO getUserDAO() {
+	return userDAO;
+}
+
+
+public void setUserDAO(IUserDAO userDAO) {
+	this.userDAO = userDAO;
 }
 
 
@@ -471,7 +483,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 					Long id = new Long(elements.get(i));
 					UserCountryAccessInfo userCountryAccessInfo = new UserCountryAccessInfo();
-					userCountryAccessInfo.setUser(registrationDAO.get(userId));
+					//userCountryAccessInfo.setUser(registrationDAO.get(userId));
+					userCountryAccessInfo.setUser(userDAO.get(userId));
 					userCountryAccessInfo.setCountry(countryDAO.get(id));
 					userCountryAccessInfoDAO.save(userCountryAccessInfo);
 					}
@@ -498,7 +511,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 					userDistrictAccessInfoDAO.deleteDistrictAccessByUserIdStateId(userId,id);
 					userConstituencyAccessInfoDAO.deleteAllConstituencyAccessByUserIdStateId(userId,id);
 					UserStateAccessInfo userStateAccessInfo = new UserStateAccessInfo();
-					userStateAccessInfo.setUser(registrationDAO.get(userId));
+					//userStateAccessInfo.setUser(registrationDAO.get(userId));
+                    userStateAccessInfo.setUser(userDAO.get(userId));
 					userStateAccessInfo.setState(stateDAO.get(id));
 					userStateAccessInfoDAO.save(userStateAccessInfo);
 					}
@@ -525,7 +539,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 					Long id = new Long(elements.get(i));
 					userConstituencyAccessInfoDAO.deleteAllAssemblyAccessByScopeStateIdUserIdDistrictId(2L,userId,stateId,id);
 					UserDistrictAccessInfo userDistrictAccessInfo = new UserDistrictAccessInfo();
-					userDistrictAccessInfo.setUser(registrationDAO.get(userId));
+					//userDistrictAccessInfo.setUser(registrationDAO.get(userId));
+					userDistrictAccessInfo.setUser(userDAO.get(userId));
 					userDistrictAccessInfo.setDistrict(districtDAO.get(id));
 					userDistrictAccessInfoDAO.save(userDistrictAccessInfo);
 					}
@@ -548,7 +563,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 				Long id = new Long(elements.get(i));
 				UserConstituencyAccessInfo  userConstituencyAccessInfo = new UserConstituencyAccessInfo();
-				userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
+				//userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
+				userConstituencyAccessInfo.setUser(userDAO.get(userId));
 				userConstituencyAccessInfo.setConstituency(constituencyDAO.get(id));
 				userConstituencyAccessInfoDAO.save(userConstituencyAccessInfo);
 					}
@@ -572,7 +588,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 					Long id = new Long(elements.get(i));
 					UserConstituencyAccessInfo  userConstituencyAccessInfo = new UserConstituencyAccessInfo();
-					userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
+					//userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
+					userConstituencyAccessInfo.setUser(userDAO.get(userId));
 					userConstituencyAccessInfo.setConstituency(constituencyDAO.get(id));
 					userConstituencyAccessInfoDAO.save(userConstituencyAccessInfo);
 				
