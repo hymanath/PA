@@ -39,6 +39,7 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	private User user;
 	private ApprovalDetails approvalDetails;
 	private Registration registration;
+
 	private Set<UserProblemApproval> userApprovalDetails = new HashSet<UserProblemApproval>(0);
 	
 	public UserApprovalDetails() {

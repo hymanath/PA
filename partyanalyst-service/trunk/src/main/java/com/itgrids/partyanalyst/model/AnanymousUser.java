@@ -55,8 +55,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private Set<CustomMessage> customMessageSenderId = new HashSet<CustomMessage>(0); 
 	 private Set<CustomMessage> customMessageRecepientId = new HashSet<CustomMessage>(0); 
 	 
-	 private Set<UserConnectedto> userConnectedtosenderId = new HashSet<UserConnectedto>(0); 
-	 private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
+	 //private Set<UserConnectedto> userConnectedtosenderId = new HashSet<UserConnectedto>(0); 
+	// private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
 	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
 	 private String profileImg;
@@ -274,7 +274,7 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	}
 
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "senderId")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "senderId")
 	public Set<UserConnectedto> getUserConnectedtosenderId() {
 		return userConnectedtosenderId;
 	}
@@ -293,7 +293,7 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 			Set<UserConnectedto> userConnectedtorecepientId) {
 		this.userConnectedtorecepientId = userConnectedtorecepientId;
 	}
-	
+	*/
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserProfileOpts> getUserProfileOptses() {
