@@ -554,7 +554,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		pwdVal=ananymousUserService.changeUserPassword(jObj.getString("crntPassword"),jObj.getString("newPassword"),1l,"Anuradha@aa.com");
+		pwdVal=ananymousUserService.changeUserPassword(jObj.getString("crntPassword"),jObj.getString("newPassword"),user.getRegistrationID(),user.getEmail());
 		
 		return Action.SUCCESS;
 	}

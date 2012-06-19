@@ -484,7 +484,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();
 		else if("".equalsIgnoreCase(redirectLoc))
-			return "CHANGE_PASSWORD_PAGE";
+			return "connect";
+			//return "CHANGE_PASSWORD_PAGE";
 		
 		return SUCCESS;
 		
