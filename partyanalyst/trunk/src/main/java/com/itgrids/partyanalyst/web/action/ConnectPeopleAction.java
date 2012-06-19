@@ -416,7 +416,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
 		
-		messageTypes = ananymousUserService.getAllMessageTypes();
+		//messageTypes = ananymousUserService.getAllMessageTypes();
 		
 		if(dataTransferVO.getDistrictId() != null)
 			constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(dataTransferVO.getDistrictId());	
