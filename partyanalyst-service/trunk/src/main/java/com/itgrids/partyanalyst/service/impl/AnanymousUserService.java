@@ -896,8 +896,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						if(messageType.equalsIgnoreCase(IConstants.FRIEND_REQUEST)){	
 							for(int i=0;i<recipeintId.size();i++){
 								customMessage.setSubject(subject);								
-								customMessage.setSender(registrationDAO.get(senderId.get(0)));
-								customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
+								//customMessage.setSender(registrationDAO.get(senderId.get(0)));
+								//customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
 								customMessage.setMessageType(messageTypeDAO.get(pendingId));
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessageDAO.save(customMessage);
@@ -911,8 +911,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						else if(messageType.equalsIgnoreCase(IConstants.CONNECTED)){
 							UserConnectedto userConnectedto = new UserConnectedto();
 							for(int i=0;i<recipeintId.size();i++){
-								userConnectedto.setUserTarget(registrationDAO.get(recipeintId.get(i)));
-								userConnectedto.setUserSource(registrationDAO.get(senderId.get(0)));		
+								//userConnectedto.setUserTarget(registrationDAO.get(recipeintId.get(i)));
+								//userConnectedto.setUserSource(registrationDAO.get(senderId.get(0)));		
 								userConnectedtoDAO.save(userConnectedto);
 							}
 							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
@@ -944,8 +944,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						else if(messageType.equalsIgnoreCase(IConstants.COMMENTS) || messageType.equalsIgnoreCase(IConstants.SCRAP)){
 							for(int i=0;i<recipeintId.size();i++){
 								customMessage.setSubject(subject);
-								customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
-								customMessage.setSender(registrationDAO.get(senderId.get(0)));
+								//customMessage.setRecepient(registrationDAO.get(recipeintId.get(i)));
+								//customMessage.setSender(registrationDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessage.setStatus(IConstants.MSG_UNREAD);
@@ -1067,7 +1067,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 */
 			if(dataTransferVO.getConstituencyId() != null)
 			{
-				List constCount = registrationDAO.getConnectedUsersCount(dataTransferVO.getConstituencyId(), IConstants.CONSTITUENCY);
+				List constCount = userDAO.getConnectedUsersCount(dataTransferVO.getConstituencyId(), IConstants.CONSTITUENCY);
 				if(constCount.size() == 1)
 				{
 					dataTransferVO.setConstituencyUsersCount(constCount.get(0).toString());					
@@ -1077,7 +1077,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			
 			if(dataTransferVO.getDistrictId() != null)
 			{
-				List distCount = registrationDAO.getConnectedUsersCount(dataTransferVO.getDistrictId(), IConstants.DISTRICT);
+				List distCount = userDAO.getConnectedUsersCount(dataTransferVO.getDistrictId(), IConstants.DISTRICT);
 				if(distCount.size() == 1)
 				{
 					dataTransferVO.setDistrictUsersCount(distCount.get(0).toString());					
@@ -1137,7 +1137,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			DataTransferVO friendRequest = getAllMessagesForUser(userId,IConstants.PENDING);
+			/*DataTransferVO friendRequest = getAllMessagesForUser(userId,IConstants.PENDING);
 			ResultStatus resultStatusForFriendRequest = new ResultStatus(); 
 			if(friendRequest.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForFriendRequest.setResultCode(ResultCodeMapper.FAILURE);
@@ -1150,7 +1150,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					resultStatusForFriendRequest.setResultCode(ResultCodeMapper.FAILURE);
 				}
 			} 
-			dataTransferVO.setResultStatusForFriendRequest(resultStatusForFriendRequest);
+			dataTransferVO.setResultStatusForFriendRequest(resultStatusForFriendRequest);*/
 			
 			/*
 			 * This block is used to get all the scraps for the user or users.
@@ -1161,7 +1161,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			DataTransferVO scraps = getAllMessagesForUser(userId,IConstants.SCRAP);
+			/*DataTransferVO scraps = getAllMessagesForUser(userId,IConstants.SCRAP);
 			ResultStatus resultStatusForScraps = new ResultStatus(); 
 			if(scraps.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForScraps.setResultCode(ResultCodeMapper.FAILURE);
@@ -1175,7 +1175,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				}
 			} 
 			dataTransferVO.setResultStatusForScraps(resultStatusForScraps);
-			
+			*/
 			
 			/*
 			 * This block is used to get all the comments for the user or users.
@@ -1186,7 +1186,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			DataTransferVO statusForComments = getAllMessagesForUser(userId,IConstants.COMMENTS);			
+		/*	DataTransferVO statusForComments = getAllMessagesForUser(userId,IConstants.COMMENTS);			
 			ResultStatus resultStatusForComments = new ResultStatus(); 
 			if(statusForComments.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE){
 				resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
@@ -1199,10 +1199,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
 				}
 			} 
-			dataTransferVO.setResultStatusForComments(resultStatusForComments);
+			dataTransferVO.setResultStatusForComments(resultStatusForComments);*/
 			
-			dataTransferVO.setTotalMsgCount(statusForComments.getTotalMsgCount());
-			dataTransferVO.setUnreadMsgCount(statusForComments.getUnreadMsgCount());
+			//dataTransferVO.setTotalMsgCount(statusForComments.getTotalMsgCount());
+			//dataTransferVO.setUnreadMsgCount(statusForComments.getUnreadMsgCount());
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			resultStatus.setResultPartial(false);
 			dataTransferVO.setResultStatus(resultStatus);
@@ -1280,7 +1280,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		try{
 			for(int i=0;i<levels;i++){
 				if(newList.size()!=0 && originalList.size()!=0){
-					tempIds =  getUserIds(newList,originalList);
+					//tempIds =  getUserIds(newList,originalList);
 					if(i!=1){
 						unKnownPeople.addAll(tempIds);
 					}
@@ -1424,7 +1424,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 * @param ids
 	 * @return
 	 */
-	public List<Long> getUserIds(List<Long> userId,List<Long> ids){		
+	/*public List<Long> getUserIds(List<Long> userId,List<Long> ids){		
 		Set<Long> setOfUserIds = new HashSet<Long>(0);
 		List<Long> listOfUserIds = new ArrayList<Long>(0);
 		try{
@@ -1446,7 +1446,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		}
 		
 		return listOfUserIds;
-	}
+	}*/
 	
 	public String displayMessageAndUpdateUnread(Long customMessageId){
 		CustomMessage customMessage = customMessageDAO.get(customMessageId);
@@ -1463,7 +1463,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 * @param messageType
 	 * @return
 	 */
-	public DataTransferVO getAllMessagesForUser(List<Long> userId,String messageType){
+	/*public DataTransferVO getAllMessagesForUser(List<Long> userId,String messageType){
 		ResultStatus resultStatus = new ResultStatus();
 		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
 		DataTransferVO dataTransferVO = new DataTransferVO();
@@ -1483,9 +1483,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					else
 						message = "";
 					
-					/*message = StringUtils.replace(parms[0].toString(),"\n",IConstants.HTMLENTER);
-					message = StringUtils.replace(message,"'",IConstants.HTMLSINGLEQUOTE);
-					message = StringUtils.replace(message,"\"",IConstants.HTMLDOUBLEQUOTES);*/
+					
 					
 					data = StringUtils.replace(parms[0].toString(),"\n"," ");
 					data = staticDataService.removeSpecialCharectersFromString(data);
@@ -1534,7 +1532,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				dataTransferVO.setResultStatus(resultStatus);	
 			}
 		return dataTransferVO;		
-	}	
+	}	*/
 	
 	/**
 	 * This method can be used to get all the message types.
