@@ -16,7 +16,7 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 
 	public List<CustomMessage> checkForRelationBetweenUsersBasedOnType(List<Long> senderId,List<Long> recipeintId,String type);
 	
-	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType);
+	//public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType);
 	
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate);
 	

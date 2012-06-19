@@ -71,7 +71,7 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr);
 	
-	public List getConnectedUsersCount(Long locationId,String locationType);
+	//public List getConnectedUsersCount(Long locationId,String locationType);
 	
 	public List<Registration> getDetailsForUsers(List<Long> userIds);
 	
