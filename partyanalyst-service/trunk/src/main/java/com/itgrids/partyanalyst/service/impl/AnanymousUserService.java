@@ -1943,8 +1943,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		ResultStatus resultStatus = new ResultStatus();
 		int result;
 		
-		try {			
-			result = registrationDAO.saveUserProfileImageNameToDB(userId, imageName);
+		try {
+			result = userDAO.saveUserProfileImageNameToDB(userId, imageName); 
+			//result = registrationDAO.saveUserProfileImageNameToDB(userId, imageName);
 			resultStatus.setResultCode(result);			
 			
 		} catch (Exception e) {
