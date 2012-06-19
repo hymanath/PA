@@ -25,5 +25,7 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public String getUserProfileImageNameByUserId(Long userId);
 	
 	public List<Object[]> getUserLocationDetailsByUserIds(List<Long> userIds);
-
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
+	
 }
