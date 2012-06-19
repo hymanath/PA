@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.model.User;
 
@@ -77,5 +79,17 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		query.setParameterList("userIds", userIds);
 		return query.list();
 	}
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update User model set model.profileImg =? where model.userId =?");
+		Query queryObj = getSession().createQuery(query.toString());
+		queryObj.setParameter(0, imageName);
+		queryObj.setParameter(1, userId);
+		return queryObj.executeUpdate();
+	}
+	
+	
 	
 }
