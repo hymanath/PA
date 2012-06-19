@@ -37,9 +37,9 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	public UserLoginDetails(){
 		
 	}
-	public UserLoginDetails(User user,String ipAddress,Date loginTime,Date logoutTime,String sessionId)
+	public UserLoginDetails(Long userId,String ipAddress,Date loginTime,Date logoutTime,String sessionId)
 	{
-		this.user = user;
+		this.userId = userId;
 		this.ipAddress = ipAddress;
 		this.loginTime = loginTime;
 		this.logoutTime = logoutTime;
@@ -57,7 +57,7 @@ public class UserLoginDetails extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id",insertable=false, updatable = false)
+	@JoinColumn(name="user_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {

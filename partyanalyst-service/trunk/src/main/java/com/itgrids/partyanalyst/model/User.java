@@ -68,6 +68,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
+	private Set<Cadre> cadre = new HashSet<Cadre>(0);
 	 
 	 public User(){}
 	 
@@ -460,6 +461,16 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserLoginDetails(Set<UserLoginDetails> userLoginDetails) {
 		this.userLoginDetails = userLoginDetails;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Cadre> getCadre() {
+		return cadre;
+	}
+
+	public void setCadre(Set<Cadre> cadre) {
+		this.cadre = cadre;
 	}
 
 	

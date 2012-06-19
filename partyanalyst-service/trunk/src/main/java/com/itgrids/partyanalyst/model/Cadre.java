@@ -39,6 +39,7 @@ public class Cadre extends BaseModel{
 	
 	 private Long cadreId;
 	 private Registration registration;
+	 private User user;
 	 private CadreLevel cadreLevel;
 	 private Long cadreLevelValue;
 	 private String firstName;
@@ -89,7 +90,7 @@ public class Cadre extends BaseModel{
 	 }
 	
 	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "user_id")
+	 @JoinColumn(name = "registration_id")
 	 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	 public Registration getRegistration() {
 		return registration;
@@ -444,6 +445,17 @@ public class Cadre extends BaseModel{
 
 	public void setProblemProgress(Set<AssignedProblemProgress> problemProgress) {
 		this.problemProgress = problemProgress;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
  }
