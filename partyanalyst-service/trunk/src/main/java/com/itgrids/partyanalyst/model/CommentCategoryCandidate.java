@@ -39,10 +39,11 @@ public class CommentCategoryCandidate extends BaseModel implements Serializable 
 	private Long commentCategoryCandidateId;
 	private CommentData commentData;
 	private Nomination nomination;
-	private Registration user;
+	//private Registration user;
 	private Registration paidUser;
 	private AnanymousUser freeUser;
 	private Float severity = 0f;
+	private User user;
 	
 	//default constructor
 	public CommentCategoryCandidate() {
@@ -125,7 +126,19 @@ public class CommentCategoryCandidate extends BaseModel implements Serializable 
 		this.severity = severity;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -136,7 +149,7 @@ public class CommentCategoryCandidate extends BaseModel implements Serializable 
 	public void setUser(Registration user) {
 		this.user = user;
 	}
-	
+	*/
 	
 
 }

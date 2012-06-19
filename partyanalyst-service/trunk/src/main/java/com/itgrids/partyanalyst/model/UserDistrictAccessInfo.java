@@ -24,15 +24,16 @@ public class UserDistrictAccessInfo extends BaseModel{
 
 	private static final long serialVersionUID = 1L;
 	private Long userDistrictAccessInfoId;
-	private Registration user;
+	//private Registration user;
 	private District district ;
+	private User user;
 	
 	public UserDistrictAccessInfo(){
 		
 	}
 	
 	public UserDistrictAccessInfo(Long userDistrictAccessInfoId,
-			Registration user, District district) {
+			User user, District district) {
 		super();
 		this.userDistrictAccessInfoId = userDistrictAccessInfoId;
 		this.user = user;
@@ -50,7 +51,7 @@ public class UserDistrictAccessInfo extends BaseModel{
 		this.userDistrictAccessInfoId = userDistrictAccessInfoId;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -60,7 +61,7 @@ public class UserDistrictAccessInfo extends BaseModel{
 
 	public void setUser(Registration user) {
 		this.user = user;
-	}
+	}*/
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "district_id")
@@ -72,6 +73,18 @@ public class UserDistrictAccessInfo extends BaseModel{
 
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 
