@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
@@ -77,6 +78,7 @@ public class CommentsDataService implements ICommentsDataService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IMailsSendingService mailsSendingService;
 	private IUserConnectedtoDAO userConnectedtoDAO;
+	private IUserDAO userDAO;
 	
 
 	public IUserConnectedtoDAO getUserConnectedtoDAO() {
@@ -213,6 +215,12 @@ public class CommentsDataService implements ICommentsDataService {
 		this.commentDataDAO = commentDataDAO;
 	}
 
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 	/*
 	 * This Method gets all comments on a candidate based on the input selected parameters and sets the data to VO,ElectionCommentsVO.
 	 * comments may be related to a particular election result of a candidate or all elections.
@@ -233,7 +241,7 @@ public class CommentsDataService implements ICommentsDataService {
 		else
 			hqlQuery = " and model.freeUser.userId = ?";*/
 		
-		hqlQuery = " and model.user.registrationId = ?";
+		hqlQuery = " and model.user.userId = ?";
 		
 		try{
 			candidateComments = new ArrayList<CommentCategoryCandidate>();
@@ -610,7 +618,7 @@ public class CommentsDataService implements ICommentsDataService {
 			hqlQuery = " and model.paidUser.registrationId = ?";
 		else
 			hqlQuery = " and model.freeUser.userId = ?";*/
-		hqlQuery = " and model.user.registrationId = ?";
+		hqlQuery = " and model.user.userId = ?";
 		
 		List<Object[]> candidatesIdAndReasonSeverity = commentCategoryCandidateDAO.getAllCommentsOfUserForANomination(electionId, constituencyId, 
 				candidateId, userId, hqlQuery);
@@ -762,7 +770,8 @@ public class CommentsDataService implements ICommentsDataService {
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
 					commentCategoryCandidateSaved.setCommentData(commentData);
 					
-					commentCategoryCandidateSaved.setUser(registrationDAO.get(userId));
+					//commentCategoryCandidateSaved.setUser(registrationDAO.get(userId));
+					commentCategoryCandidateSaved.setUser(userDAO.get(userId));
 					
 					/*if(IConstants.FREE_USER.equalsIgnoreCase(userType))
 						commentCategoryCandidateSaved.setFreeUser(ananymousUserDAO.get(userId));
