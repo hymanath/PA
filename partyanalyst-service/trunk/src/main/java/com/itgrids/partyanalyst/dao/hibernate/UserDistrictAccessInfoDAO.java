@@ -16,7 +16,7 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 	
 	public List findByUser(Long userId){
 		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName " +
-				"from UserDistrictAccessInfo model where model.user.registrationId = ?", userId);
+				"from UserDistrictAccessInfo model where model.user.userId = ?", userId);
 	}
 	public List findByUserAndState(Long stateId,Long userId){
 		Object[] parameters = {userId,stateId};
