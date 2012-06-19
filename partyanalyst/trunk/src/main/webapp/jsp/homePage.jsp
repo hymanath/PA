@@ -286,16 +286,20 @@ var pollStatus = [];
             </div>
             <div class="clear"></div>
              <div class="clear"></div>
-			<c:if test="${sessionScope.hasFreeUserRole == true || sessionScope.hasPartyAnalystUserRole == true}"> 
+			<!--<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
 			<div class="register-free"><span class="fleft" style="line-height:30px">Click Here for </span>
                <a href="freeUserRegistration.action"><img alt="" src="images/icons/homePage_new/updatebutton.jpg" style="padding-left:13px;" ></img></a>
             </div>
 			</c:if>
-			<c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
-			   <div class="register-free"><span class="fleft">Click Here for Free Registration</span>
+			<c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
+            <div class="register-free"><span class="fleft">Click Here for Free Registration</span>
                <a class="rf-button" href="freeUserRegistration.action"></a>
             </div>
-			</c:if>
+			</c:if>-->
+
+			<div class="register-free"><span class="fleft">
+				<a href="specialPageAction.action?specialPageId=8" title="Click here to get more information and Analysis on Andhra Pradesh 2012 Bi Election Results">Andhra Pradesh 2012 Bi Election Results & Analysis</a></span>
+            </div>
           </div>
           
           <!--BANNER SLIDE SECTION END--> 
@@ -408,10 +412,11 @@ var pollStatus = [];
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
          <marquee onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
-          <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">News</u> :
-		  
-		  <a href="javascript:{}" title="">
-		  The Andhra Pradesh High Court Saturday sent jailed MP Y.S. Jaganmohan Reddy to the custody of the Central Bureau of Investigation (CBI) for five days.  CBI judge, who granted JANARDHANA REDDY bail in illegal mining case, suspended.  Cabinate Approves new Telecom Policy.</a>&nbsp;
+          <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">AP 2012 Bi Election Live Results & Updates </u> :
+		  <a href="specialPageAction.action?specialPageId=8">YSRC won in Nellore Parliament(2,91,745 majority), Yemmiganuru(20,103 majority), Rayadurg (32,472 majority), Polavaram (35,767 majority), Prathipadu(16,779 majority), Macherla (15,479 majority), Rayachoti (56,891 majority), Railway Kodur (31,991 majority), Ananthapur(24,701 majority), Rajampet (38,219 majority), Payakaraopet(14,362 majority), Allagadda (36,896 lead), Narsannapeta(7,312 majority), Ongole, Udayagiri (30555 majority), Tirupathi (17,975 majority), INC won in Narsapuram(4,472 majority) and Ramachandra Puram (11,919 majority),TRS won in Parkal (1562 majority).</a>
+		  <a href="specialPageAction.action?specialPageId=10">Election Schedule for President of India announced by Election Commission of India, Notification will be issued on June 16, Last date for Nominations - June 30, Polling on July 19, Counting on July 22.</a>
+		  <a href="specialPageAction.action?specialPageId=8" title="click here to view information on Andhra Pradesh 2012 Bi Elections" style="color:blue;">
+		  Andhra Pradesh Bi Elections Exit Polls - YSRC : 12 - 15 Seats, INC : 1 - 2 Seats, TDP : 1 - 3 Seats, TRS : 1 Seat (Parkal).</a>&nbsp;
 
 		  <!--<a href="javascript:{}" title="">
 		  Parvathipuram MLA <a href="candidateElectionResultsAction.action?candidateId=1481" title="Click here to view JAYAMANI Profile - latest News ,Videos ,Photos">SAVARAPU JAYAMANI </a>and Kakinada MLA <a href="candidateElectionResultsAction.action?candidateId=1809" title="Click here to view CHANDRA SHEKAR REDDY Profile - latest News ,Videos ,Photos">DWARMAPUDI CHANDRA SHEKAR REDDY </a>is going to meet YSRC Party honorary president <a href="candidateElectionResultsAction.action?candidateId=156693" title="Click here to view Y S VIJAYAMMA Profile - latest News ,Videos ,Photos">Y S VIJAYAMMA</a> . Bobbili MLA <a href="candidateElectionResultsAction.action?candidateId=1502" title="Click here to view SUJAY KRISHNA RANGA RAO Profile - latest News ,Videos ,Photos">SUJAY KRISHNA RANGA RAO </a>is left from INC Party and joined in YSRC. Cabinate Approves new Telecom Policy.</a><a href="statePageAction.action?statePageId=12" title="Click here to View Karnataka State Details">Karnataka</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=709" title="Click here to View Udipi Chikmagalur Constituency Details, Election Results and Voting Trendz">Udipi Chikmagalur</a> - <a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Profile - Previous Election Results, News Updates, Photos, Videos">INC</a>.&nbsp; 
