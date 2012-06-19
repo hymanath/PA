@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import org.apache.log4j.Logger;
+
+
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.model.UserTracking;
@@ -12,6 +15,7 @@ public class UserTrackingService implements IUserTrackingService{
 	private IUserTrackingDAO userTrackingDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	public static Logger log = Logger.getLogger(UserTrackingService.class);
+	private IUserDAO userDAO;
 	
 	public IUserTrackingDAO getUserTrackingDAO() {
 		return userTrackingDAO;
@@ -19,6 +23,14 @@ public class UserTrackingService implements IUserTrackingService{
 
 	public void setUserTrackingDAO(IUserTrackingDAO userTrackingDAO) {
 		this.userTrackingDAO = userTrackingDAO;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public String saveUserTrackingDetails(UserTrackingVO userTrackingVO)
@@ -32,7 +44,7 @@ public class UserTrackingService implements IUserTrackingService{
 			userTracking.setSessionId(userTrackingVO.getSessionId());
 			
 			if(userTrackingVO.getUserId() != null && userTrackingVO.getUserId() > 0)
-				userTracking.setUserId(userTrackingVO.getUserId());
+				userTracking.setUser(userDAO.get(userTrackingVO.getUserId()));
 			
 			userTrackingDAO.save(userTracking);
 		}
