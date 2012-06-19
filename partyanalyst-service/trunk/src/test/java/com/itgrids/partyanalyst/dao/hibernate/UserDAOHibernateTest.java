@@ -49,7 +49,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(userDAO.getUserProfileImageNameByUserId(1l));
 	}*/
 	
-	public void testGetUserLocationDetailsByUserIds()
+	/*public void testGetUserLocationDetailsByUserIds()
 	{
 		List<Long> userIds = new ArrayList<Long>(0);
 		userIds.add(1l);
@@ -63,5 +63,11 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			for(Object obj : params)
 			System.out.print("----\t"+obj.toString());
 		}
+	}*/
+	
+	public void testSaveUserProfileImageNameToDB()
+	{
+		Integer result = userDAO.saveUserProfileImageNameToDB(1l, "1.jpg");
+		System.out.println(result);
 	}
 }
