@@ -70,6 +70,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	private Set<Cadre> cadre = new HashSet<Cadre>(0);
 	private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0);
+	private Set<CommentCategoryCandidate> userComments = new HashSet<CommentCategoryCandidate>(0);
 	 
 	 public User(){}
 	 
@@ -474,12 +475,23 @@ public class User extends BaseModel implements Serializable{
 		this.cadre = cadre;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<OpinionPoll> getOpinionPoll() {
 		return opinionPoll;
 	}
 
 	public void setOpinionPoll(Set<OpinionPoll> opinionPoll) {
 		this.opinionPoll = opinionPoll;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryCandidate> getUserComments() {
+		return userComments;
+	}
+
+	public void setUserComments(Set<CommentCategoryCandidate> userComments) {
+		this.userComments = userComments;
 	}
 
 	
