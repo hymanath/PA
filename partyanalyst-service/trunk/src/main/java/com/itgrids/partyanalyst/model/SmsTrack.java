@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -28,6 +30,7 @@ public class SmsTrack extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long smsTrackId;
+	private User user;
 	private Long renewalSmsCount;
 	private String renewalDate;
 	private String description;
@@ -35,6 +38,7 @@ public class SmsTrack extends BaseModel implements Serializable {
 	private String smsUsername;
 	private String smsPassword;
 	private String senderId;
+	private Long userId;
 	
 		
 	// Constructors
@@ -69,7 +73,7 @@ public class SmsTrack extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "registration_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Registration getRegistration() {
 		return registration;
@@ -131,6 +135,27 @@ public class SmsTrack extends BaseModel implements Serializable {
 
 	public void setSenderId(String senderId) {
 		this.senderId = senderId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }
