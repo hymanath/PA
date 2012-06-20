@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
@@ -2432,7 +2433,7 @@ public class MockData {
 	public static List<UserImpDate> getTodaysUserImpDates() {
 		UserImpDate importantDatesVO = new UserImpDate();
 		
-		importantDatesVO.setUser(new Registration(1L));
+		importantDatesVO.setUser(new User());
 		importantDatesVO.setTitle("My Birthday as party candidate");
 		importantDatesVO.setDescription("date that I joined into party");
 		importantDatesVO.setEffectiveDate(new Date());
