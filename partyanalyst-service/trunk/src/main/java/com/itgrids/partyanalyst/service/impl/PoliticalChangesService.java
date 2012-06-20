@@ -19,9 +19,11 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -42,6 +44,7 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	private TransactionTemplate transactionTemplate = null;
 	private PoliticalChangesVO politicalChangesVO;
 	private RegistrationDAO registrationDAO;
+	private IUserDAO userDAO;
 	private IPartyDAO partyDAO;
 	private PoliticalChangesDAO politicalChangesDAO;
 	private ProblemExternalSourceDAO problemExternalSourceDAO;
@@ -109,6 +112,15 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	public void setRegistrationDAO(RegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public ProblemExternalSourceDAO getProblemExternalSourceDAO() {
 		return problemExternalSourceDAO;
 	}
@@ -189,7 +201,7 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 					
 					//politicalChanges.setSourceOfInformation(politicalChangesVO.getSourceOfInformation());
 					politicalChanges.setParty(partyDAO.get(politicalChangesVO.getParty()));
-					politicalChanges.setRegistration(registrationDAO.get(politicalChangesVO.getUserId()));
+					politicalChanges.setUser(userDAO.get(politicalChangesVO.getUserId()));
 					InformationSource informationSource = informationSourceDAO.get(new Long(politicalChangesVO.getInformationSource())); 
 					if(informationSource.getInformationSource().equalsIgnoreCase(IConstants.CALL_CENTER) || informationSource.getInformationSource().equalsIgnoreCase(IConstants.EXTERNAL_PERSON)){
 						ProblemExternalSource problemExternalSource = new ProblemExternalSource();
