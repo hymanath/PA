@@ -518,10 +518,10 @@ function hideText(){
 	</div>	
 	
 	<c:if  test="${resultStatus == '0'}">
-	<div id="successMsg" style="color:green;" >Influencing People Registered Successfully!</div>
+	<div id="successMsg" style="color:green;" >Influencing People registered successfully!</div>
 	</c:if>	
 	<c:if  test="${resultStatus == '1'}">
-	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
+	<div id="successMsg" style="color:red;" style="color:green;">Error occurred while saving data.. please check the logs for details</div>
 	</c:if>
 	
 	<s:form action="influencingPeopleSaveAction" method="post" theme="simple" name="form">
@@ -587,13 +587,7 @@ function hideText(){
 			<td><s:select id="pConstituencyField_add" cssClass="regionSelect" name="pConstituency" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" ></s:select></td>
 		</tr>
 	</c:if>	
-	<!--<tr>
-		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
-		<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
-		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
-		<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" headerKey="0" ></s:select></td>
-	</tr>	
-	--><tr>
+	<tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 
@@ -607,7 +601,7 @@ function hideText(){
 		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="6"/></td>
 	</tr>
 	<tr>
-		<th colspan="4" width="15px" class="tdstyle" style="color:#0000AA;"><u>Booth details are not compulsory</u></th>
+		<th colspan="4" width="15px" class="tdstyle" style="color:#0000AA;"><u>Booth details are not mandatory</u></th>
 	</tr>	
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="boothField" id="boothLabel"  value="%{getText('Booth')}" /></td>

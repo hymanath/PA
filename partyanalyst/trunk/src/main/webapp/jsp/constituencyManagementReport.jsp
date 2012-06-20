@@ -906,7 +906,7 @@
 										<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
 								</div>
 								<div id="political_changes_data_head">
-									<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> gives glance of total changes that occur in that constituency and helps the user to analyze the changes and act accordingly.
+									<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> give a glance of the total changes that occur in a constituency. It helps the user to analyze the changes and act accordingly.
 								</div>
 								<div id="political_changes_data_table"></div>
 								<div id="political_changes_data_body"></div>	
@@ -931,7 +931,7 @@
 				<div id="voters_stats_body" class="containerBodyDivClass" style="padding:10px;">
 					<div id="voterStats_content" class="widgetDescPara">
 						
-							<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their their cast information upto the hamlet level.The user has to select the region according to their access level and can obtain the voter information.
+							<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their caste information upto the hamlet level. User has to select the region according to their access level and can obtain the voter information.
 						
 					</div>
 					<div style="text-align:right;padding:15px;">
@@ -940,71 +940,7 @@
 					</div>
 				</div>
 			</div>	
-			<div>
-			<!--<table width="100%" style="margin-right:10px;">
-			<tr>
-				<td style="vertical-align:top;align:left;" width="65%">
-					<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;">
-						<div id="influencing_people_head">
-							<table cellspacing="0" cellpadding="0" width="100%">
-								<tr>
-									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-									<td align="left"><div id="influencing_people_head_label" class="containerHeadLabelDivClass" style="width:890px;">Influencing People</div></td>
-									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
-								</tr>
-							</table>	
-						</div>
-						<div id="influencing_people_body" class="containerBodyDivClass">
-
-							
-							<DIV class="yui-skin-sam" style="text-align:right;"><div id="localPoliticalChangesRegistration"></DIV>
-
-							<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing People" class="linkButton" />
-							</DIV>
-					
-							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
-							<div id="influencingPeoplePopUpDiv"></div>
-							<div id="influencing_people_footer">
-								<DIV id="smsBlockAlert" class="errorMessage"></DIV>
-								<DIV id="smsConfirmation" class="confirmationMessage"></DIV>
-								<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:530px;">
-									<TABLE>
-										<TR>
-											<TD colspan="2"><DIV style="text-align:left;">Should not exceed 200 chars!</DIV></TD>
-										</TR>	
-										<TR>
-											<TD><TEXTAREA id="smsText" cols="70" onkeyup='limitText("smsText","maxcount",200)'></TEXTAREA></TD>
-											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="sendSMS()" class="button"/></TD>
-										</TR>
-										<TR>
-											<TD colspan="2" ><DIV id="remainChars" style="text-align:left;"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>
-											
-										</TR>	
-									</TABLE>
-								</div>			
-							</div>
-						</div>
-					</div>
-				</td>				
-			</tr>
-			</table>
-			
-			-->
-			<!--<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
-				<div id="political_changes_head">
-					<table cellspacing="0" cellpadding="0" width="100%">
-						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="politicalChanges_head_label" class="containerHeadLabelDivClass" style="width:892px;">Local Political Changes</div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
-						</tr>
-					</table>	
-				</div>
-				<div id="political_changes_body" class="containerBodyDivClass">
-					
-				</div>
-			</div>	-->				
-							
+			<div>						
 		</div>
 		</div>
 	</div>

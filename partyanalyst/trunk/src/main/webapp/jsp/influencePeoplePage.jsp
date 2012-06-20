@@ -335,12 +335,12 @@
 
 				str += '<tr>';
 				str += '<td></td>';
-				str += '<td><input id="smsIncludeUserName" type="checkbox" name="smsIncludeUserName"></input> Include User Name</td>';				
+				str += '<td><input id="smsIncludeUserName" type="checkbox" name="smsIncludeUserName"></input> Include user name</td>';				
 				str += '</tr>';
 
 				str += '<tr>';
 				str += '<td></td>';
-				str += '<td><input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName"></input> Include Sender Name ';
+				str += '<td><input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName"></input> Include sender name ';
 				str += '<input type="text" id="senderNameText" disabled="disabled" value="${sessionScope.UserName}" />';
 				str += '</td>';				
 				str += '</tr>';				
@@ -422,7 +422,7 @@
 			
 			if(checkedIds == '' || checkedIds == null)
 			{
-				statusElmt.innerHTML = '<font color="red"> No People Has Been Selected To Send Message .. </font>';
+				statusElmt.innerHTML = '<font color="red"> No people selected to send message.. </font>';
 				return;
 			}
 			else
@@ -459,9 +459,9 @@
 											var statusElmt = document.getElementById("smsStatus");
 
 											if(myResults.resultStatus == null)
-												statusElmt.innerHTML = '<font color="green">SMS has been sent to '+myResults.totalSmsSent+' people successfully .. </font>';
+												statusElmt.innerHTML = '<font color="green">SMS has been sent successfully, to '+myResults.totalSmsSent+' people .. </font>';
 											else
-												statusElmt.innerHTML = '<font color="red">SMS cannot been sent to selected people due to some techniccal difficulty.. </font>';
+												statusElmt.innerHTML = '<font color="red">SMS cannot be sent to the selected people due to some technical difficulty.. </font>';
 										}
 										if(jsObj.task == "deleteInfluencingPerson"){
 											alert("Succesfully Deleted");
@@ -564,7 +564,7 @@
 	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
 	<div id="influencePeopleData_main">		
 		<div id="influencePeopleData_head">
-			<center> Influencing People In ${regionName}</center>
+			<center> Influencing People in ${regionName}</center>
 		</div>
 		<div id="influencePeopleData_body" class="yui-skin-sam">		
 			<div id="selectButtonsDiv" class="selectButtonsDiv">

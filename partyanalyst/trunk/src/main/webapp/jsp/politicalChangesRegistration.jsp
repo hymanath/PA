@@ -346,6 +346,7 @@ function populateLocations(val,source)
 		callAjax(rparam,jsObj,url);
 		incrementHidden();
 		window.opener.document.location.reload(true);
+		window.close();
 	}
 
 function addDate(){
@@ -381,10 +382,10 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 		</table>
 </div>		
 <c:if  test="${resultStatus == '0'}">
-	<div id="successMsg" style="color:green;">Political Change Registered Successfully!</div>
+	<div id="successMsg" style="color:green;">Political Change registered successfully!</div>
 </c:if>	
 <c:if  test="${resultStatus == '1'}">
-	<div id="successMsg" style="color:red;">Error Raised while saving data please check log for details</div>
+	<div id="successMsg" style="color:red;">Error occurred while saving data.. please check the logs for details</div>
 </c:if>
 <s:form action="politicalChangesRegistrationAction" method="GET" theme="simple" name="form">			
 	<div id="mainPoliticalDiv" align="left">
@@ -419,10 +420,7 @@ document.getElementById('datetext').value = day + '/' + month + '/' + year;
 					<td>
 						<s:textfield READONLY="READONLY" name ="reportedDate" id="datetext" style="margin-top:0px;" size="25"/>
 						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal "></div></div>
-					</td>					
-					<!--<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
-					</td>-->
+					</td>
 				</tr>
 			</table>
 			<table border="0">	

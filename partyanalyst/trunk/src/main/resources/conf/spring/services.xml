@@ -815,7 +815,8 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
     	<property name="hamletDAO" ref="hamletDAO" />
-    	<property name="informationSourceDAO" ref="informationSourceDAO" />    	
+    	<property name="informationSourceDAO" ref="informationSourceDAO" />    
+    	<property name="userDAO" ref="userDAO" />    		
 	</bean>  
 	
 	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService" >
