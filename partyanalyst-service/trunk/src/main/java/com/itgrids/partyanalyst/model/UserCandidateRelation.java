@@ -27,19 +27,19 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "user_candidate_relation")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UserCandidateRelation implements Serializable{
+public class UserCandidateRelation extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 4639514694972954499L;
 	private Long userCandidateRelationId;
-	private Registration registration;
+	private User user;
 	private Candidate candidate;
 	
 	public UserCandidateRelation()
 	{}
 	
-	public UserCandidateRelation(Registration registration,Candidate candidate)
+	public UserCandidateRelation(User user,Candidate candidate)
 	{
-		this.registration = registration;
+		this.user = user;
 		this.candidate = candidate;
 	}
 
@@ -58,12 +58,12 @@ public class UserCandidateRelation implements Serializable{
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
+	public User getUser() {
+		return user;
 	}
 
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
