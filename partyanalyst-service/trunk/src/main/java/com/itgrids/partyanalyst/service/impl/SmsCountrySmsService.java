@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SmsTrackVO;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsTrack;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -38,7 +40,16 @@ public class SmsCountrySmsService implements ISmsService {
 	private IRegistrationDAO registrationDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private IUserDAO userDAO;
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public ISmsHistoryDAO getSmsHistoryDAO() {
 		return smsHistoryDAO;
 	}
@@ -353,10 +364,10 @@ public class SmsCountrySmsService implements ISmsService {
 		}
 		else
 		{   
-			Registration registration = registrationDAO.findByUserRegistrationId(userId).get(0);
+			User user = userDAO.get(userId);
 			
-			smsTrackVO.setFirstName(registration.getFirstName());
-			smsTrackVO.setLastName(registration.getLastName());
+			smsTrackVO.setFirstName(user.getFirstName());
+			smsTrackVO.setLastName(user.getLastName());
 			smsTrackVO.setUserSmsTrackId(0L);
 			smsTrackVO.setSmsUserName(" ");
 			smsTrackVO.setSmsPassword(" ");
@@ -365,6 +376,8 @@ public class SmsCountrySmsService implements ISmsService {
 			
 			return smsTrackVO;
 		}
+		
+		
 	}
 	
 }
