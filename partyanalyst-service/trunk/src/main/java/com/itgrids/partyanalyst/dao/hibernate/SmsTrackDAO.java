@@ -63,9 +63,10 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 		query.setParameter(1,userId);
 		return query.executeUpdate();
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserSmsDetailsByUserId(Long userId)
 	{
-		return getHibernateTemplate().find("select model.smsTrackId,model.smsUsername,model.smsPassword,model.senderId,model.renewalSmsCount,model.registration.firstName ,model.registration.lastName from SmsTrack model where model.registration.registrationId = ? ",userId);
+		return getHibernateTemplate().find("select model.smsTrackId,model.smsUsername,model.smsPassword,model.senderId,model.renewalSmsCount,model.user.firstName ,model.user.lastName from SmsTrack model where model.user.userId = ? ",userId);
 	}
 	
 }
