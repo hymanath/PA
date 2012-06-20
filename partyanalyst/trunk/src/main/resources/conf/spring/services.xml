@@ -620,7 +620,8 @@
     	<property name="smsModuleDAO" ref="smsModuleDAO"/>
     	<property name="smsHistoryDAO" ref="smsHistoryDAO"/>
     	<property name="registrationDAO" ref="registrationDAO" />
-    	<property name="transactionTemplate" ref="transactionTemplate" />	
+    	<property name="transactionTemplate" ref="transactionTemplate" />
+    	<property name="userDAO" ref="userDAO" />		
 	</bean>
 	
     <bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" >
