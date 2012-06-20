@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -32,7 +34,8 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private String mobileNumber;
 	private String smsContent;
 	private SmsModule smsModule;
-	private Registration registration;
+	private User user;
+	private Long userId;
 	
 		
 	// Constructors
@@ -105,15 +108,25 @@ public class SmsHistory extends BaseModel implements Serializable {
 		this.smsContent = smsContent;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
+	public User getUser() {
+		return user;
 	}
 
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }
