@@ -32,12 +32,12 @@ public class HomePageQuestion implements Serializable{
 	
 	 private static final long serialVersionUID = 1L;
 	 private Long homePageQuestionId;	
-	 private Registration registration;
+	 private User user;
 	 private Date questionStartDate;
 	 private Date questionEndDate;
 	 private String question;
 	 private String isDelete;
-	 
+	 private Long userId;
 	 private Set<HomePageQuestionAnswers> homePageQuestionAnswers = new HashSet<HomePageQuestionAnswers>();
 	 
 	 	
@@ -48,14 +48,13 @@ public class HomePageQuestion implements Serializable{
  	
  	/** full constructor */
  	
- 	public HomePageQuestion(Registration registration,
-			Date questionStartDate, Date questionEndDate, String question,
-			String isDelete) {
-		this.registration = registration;
+ 	public HomePageQuestion(Long userId,Date questionStartDate, Date questionEndDate, 
+ 			String question,String isDelete) {
 		this.questionStartDate = questionStartDate;
 		this.questionEndDate = questionEndDate;
 		this.question = question;
 		this.isDelete = isDelete;
+		this.userId = userId;
 	}
  	
  	@Id
@@ -67,18 +66,6 @@ public class HomePageQuestion implements Serializable{
 	
 	public void setHomePageQuestionId(Long homepageQuestionId) {
 		this.homePageQuestionId = homepageQuestionId;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-	
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
 	}
 	
 	@Temporal(TemporalType.DATE)
@@ -129,6 +116,29 @@ public class HomePageQuestion implements Serializable{
 	public void setHomePageQuestionAnswers(
 			Set<HomePageQuestionAnswers> homePageQuestionAnswers) {
 		this.homePageQuestionAnswers = homePageQuestionAnswers;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
  
  
