@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
@@ -146,7 +147,16 @@ public class CadreManagementService {
 	private ICadreRoleRelationDAO cadreRoleRelationDAO;
 	private IAssignedProblemProgressDAO assignedProblemProgressDAO;
 	private IProblemActivityDAO problemActivityDAO;
+	private IUserDAO userDAO;
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IProblemActivityDAO getProblemActivityDAO() {
 		return problemActivityDAO;
 	}
@@ -593,7 +603,8 @@ public class CadreManagementService {
 				cadre.setPermanentAddress(permanentAddress);
 				cadre.setMobile(cadreInfo.getMobile());
 				cadre.setEmail(cadreInfo.getEmail());
-				cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
+				//cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
+				cadre.setUser(userDAO.getUserByUserId(cadreInfo.getUserID()));
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				if (cadreInfo.getDobOption() != null && "Date Of Birth".equals(cadreInfo.getDobOption())) {
 					cadre.setDateOfBirth(format.parse(cadreInfo.getDateOfBirth()));

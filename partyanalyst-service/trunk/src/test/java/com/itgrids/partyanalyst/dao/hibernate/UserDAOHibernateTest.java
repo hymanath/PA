@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.model.User;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -64,10 +65,15 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.print("----\t"+obj.toString());
 		}
 	}*/
-	
 	public void testSaveUserProfileImageNameToDB()
 	{
 		Integer result = userDAO.saveUserProfileImageNameToDB(1l, "1.jpg");
 		System.out.println(result);
+	}
+	
+	public void testGetUserByUserId()
+	{
+		User user = userDAO.getUserByUserId(1l);
+		System.out.println(user.getFirstName());
 	}
 }

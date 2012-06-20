@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.User;
 
 public interface IUserDAO extends GenericDao<User,Long>{
@@ -25,6 +24,8 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public String getUserProfileImageNameByUserId(Long userId);
 	
 	public List<Object[]> getUserLocationDetailsByUserIds(List<Long> userIds);
+	
+	public User getUserByUserId(Long userId);
 	
 	public List getConnectedUsersCount(Long locationId,String locationType);
 	
