@@ -141,12 +141,12 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<tr>';
 	problems_OptionsContent += '<td style="vertical-align:top;" width="60%">';
 	problems_OptionsContent += '<div id="problemOptionsHeadingDiv" class="widgetHeaders"> Problem Search Selection Criteria</div>';
-	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to search problems posted with in selected period. Here the user has to provide the start date,end date and also the status of problem to view the set of problems.</p>';
-	problems_OptionsContent += '<P class="widgetDescPara">Click on the Calendar Icons to select the  Dates.</P>';
+	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to search for problems posted within the selected period. Here, the user has to provide the start date, end date and also the status of a problem, to view the problems posted.</p>';
+	problems_OptionsContent += '<P class="widgetDescPara">Click on the calendar icon to select the dates.</P>';
 	problems_OptionsContent += '<DIV id="alertMessageDiv" class="errorMessage"></DIV>';
 	problems_OptionsContent += '<TABLE cellspacing="5">';
 	problems_OptionsContent += '	<TR>';
-	problems_OptionsContent += '		<TH valign="top">View Problems From:</TH>';
+	problems_OptionsContent += '		<TH valign="top">View Problems from:</TH>';
 	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" readonly="readonly" style="margin-top:0px;" name="existingFromText" size="20"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" class="tinyDateCal"></DIV></DIV></TD>';
 	problems_OptionsContent += '		</TD>';
@@ -180,7 +180,7 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<div id="problemSearch_advanced_head" class="widgetHeaders">Advanced Search Selection Criteria</div>';
 	problems_OptionsContent += '<div id="problemSearch_advanced_body">';
 	problems_OptionsContent += '<p class="widgetDescPara" style="height:90px;"> ';
-	problems_OptionsContent += '<font style="color:#4B74C6"> Advanced Search Criteria</font> enables the user to search for a problem with different options like location, Status or Department.';
+	problems_OptionsContent += '<font style="color:#4B74C6"> Advanced Search Criteria</font> enables the user to search for a problem, based on location, status or department.';
 	problems_OptionsContent += '</p>';
 	problems_OptionsContent += '<p style="text-align:right;"> <A href="problemManagementReportAction.action" class="linkButton" target="_blank">Advanced Search</A></DIV></p>';
 	problems_OptionsContent += '</div>';
@@ -360,7 +360,7 @@ function buildProblemsDetailsDT(results) {
 			        				probDTColumnDefs, probDTDataSource, myConfigs);
 		}else{
 			elmt.innerHTML = '';
-			elmt.innerHTML = '<SPAN style="color:green;font-weight:bold;">Zero problems matched this selection criteria</SPAN>';
+			elmt.innerHTML = '<SPAN style="color:green;font-weight:bold;">Zero problems match this selection criteria</SPAN>';
 		}
 		
 }
@@ -605,10 +605,10 @@ function showSentSmsConfirmation(result)
 	if(result.status==0){
 		str+=" SMS sent successfully to "+result.totalSmsSent+" Members";
 		if(result.remainingSmsCount!=0){
-			str+=" You can send "+result.remainingSmsCount+"more SMS's";
+			str+=" You can send "+result.remainingSmsCount+" more SMSs'";
 		}else{
 			str+="<br>";
-			str+=" You cannot any more SMS ";
+			str+=" You cannot send any more SMS ";
 			smsRenewalMessage();
 		}	
 	}else{
@@ -619,10 +619,6 @@ function showSentSmsConfirmation(result)
 	smsTextEl.value = '';
 	buildInfluencingPeopleDT(resultsGlobal);
 }
-
-
-
-
 
 function getLocalUserGroups()
 {
@@ -873,7 +869,7 @@ function buildDataTableForLocalPoliticalChanges(results)
 	{		
 		var sourceOfInformation;
 		if(results[i].sourceOfInformation == 'External Person'){			
-			sourceOfInformation = '<A href="javascript:{}" title="Click To View Details" onclick="getExternalPersonDetails('+results[i].localPoliticalChangeId+')">'+results[i].sourceOfInformation+'</A>';  //\''+results[i].sourceOfInformation+'\'
+			sourceOfInformation = '<A href="javascript:{}" title="Click To View Details" onclick="getExternalPersonDetails('+results[i].localPoliticalChangeId+')">'+results[i].sourceOfInformation+'</A>';  
 		}else{	
 		    sourceOfInformation = results[i].sourceOfInformation;
 		}

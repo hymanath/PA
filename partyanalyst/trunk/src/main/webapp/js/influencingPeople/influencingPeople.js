@@ -83,14 +83,14 @@ function buildRegionWiseOverViewData(data,divId)
 	
 	if(subRegions.length == 0)
 	{
-		str += '<p class="zeroPeoplePara"> No regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+		str += '<p class="zeroPeoplePara"> No regions under '+data.regionName+' '+data.regionType+' have influencing people.</p>';
 		elmt.innerHTML = str;
 		return;
 	}
 
 	if(availablePeople.length == 0)
 	{
-		str += '<p class="zeroPeoplePara"> No regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+		str += '<p class="zeroPeoplePara"> No regions under '+data.regionName+' '+data.regionType+' have influencing people.</p>';
 	}
 	else
 	{
@@ -108,10 +108,10 @@ function buildRegionWiseOverViewData(data,divId)
 	str += '</div>';
 
 	str += '<div id="region_unavailable">';
-	str += '<div id="region_unavailable_head"> Regions Having Zero Influence People </div>';
+	str += '<div id="region_unavailable_head"> Regions with Zero Influencing People </div>';
 	if(zeroPeople.length == 0)
 	{
-		str += '<p class="zeroPeoplePara"> All the regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+		str += '<p class="zeroPeoplePara"> All the regions under '+data.regionName+' '+data.regionType+' have influencing people.</p>';
 	}
 	else
 	{
@@ -154,7 +154,7 @@ function buildScopeWiseOverViewData(data,divId)
 	str += '<div id="influencePeopleScopeWiseOverView_body">';	
 	if( data == null || data.length == 0)
 	{
-		str += '<p class="zeroPeoplePara"> No regions are having influence People.</p>';
+		str += '<p class="zeroPeoplePara"> No regions have influencing people.</p>';
 	}
 	else
 	{
@@ -208,7 +208,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 	{
 		aStr += '<table>';
 		aStr += '<tr>';
-		aStr += '<th>Please select report level to view its influence people</th>';
+		aStr += '<th>Please select report level to view its influencing people</th>';
 		aStr += '<td>'
 		for(var radio = 0; radio<data.areaTypeRadioOptions.length; radio++)
 		{
@@ -228,28 +228,6 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		radioelmt.innerHTML = '';
 	}
 
-	/*var rStr = '';	
-	if(jsObj.status && data.regionsList.length > 0)
-	{
-		rStr += '<table width="100%">';
-		rStr += '<tr>';
-		rStr += '<td style="font-weight:bold;font-size:11px;color:#4B74C6">Select sub regions under '+jsObj.regionName+' '+jsObj.regionType+' to view its influence people</td>';
-		rStr += '<td>';
-		rStr += '<select onchange="getSubLevelInfluenceDataLabel(this)">';
-		rStr += '<option value="0">All</option>';
-		for(var option=0; option<data.regionsList.length; option++)
-		{
-			rStr += '<option value="'+data.regionsList[option].subRegionId+'_'+data.regionsList[option].subRegionType+'">'+data.regionsList[option].subRegionName+'</option>';
-		}
-		rStr += '</select>';
-		rStr += '</td>';
-		rStr += '<td><img id="influenceBusyCursor" style="display:none;" src="images/icons/partypositions.gif"></td>';
-		rStr += '</tr>';
-		rStr += '</table>';
-		
-		//relmt.innerHTML = rStr;
-	}*/
-	
 	var display = true;
 	var str = '';
 	for(var i=0; i<results.length; i++)
@@ -298,11 +276,11 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		str += '		</td>';
 		str += '		<td width="50%" valign="top">';
 		str += '			<div id="influenceDetailData_available" class="availableRegionsData_main">';
-		str += '			<div id="influenceDetailData_available_head" class="availableRegionsData_head"> Regions Having Influencing People</div>';
+		str += '			<div id="influenceDetailData_available_head" class="availableRegionsData_head"> Regions having Influencing People</div>';
 		str += '			<div id="influenceDetailData_zero_body" class="availableRegionsData_body">';
 		if(availableRegions.length == 0)
 		{
-			str += '<p class="zeroPeoplePara"> No regions under the '+results[i].regionName+' '+results[i].regionType+' are having influencing people.</p>';
+			str += '<p class="zeroPeoplePara"> No regions under '+results[i].regionName+' '+results[i].regionType+' have influencing people.</p>';
 		}
 		else
 		{
@@ -320,11 +298,11 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		str += '			</div>';
 		str += '			</div>';
 		str += '			<div id="influenceDetailData_zero" class="zeroRegionsData_main">';
-		str += '			<div id="influenceDetailData_zero_head" class="zeroRegionsData_head"> Regions Having Zero Influencing People</div>';
+		str += '			<div id="influenceDetailData_zero_head" class="zeroRegionsData_head"> Regions with Zero Influencing People</div>';
 		str += '			<div id="influenceDetailData_zero_body" class="zeroRegionsData_body">';
 		if(zeroRegions.length == 0)
 		{
-			str += '<p class="zeroPeoplePara"> All regions under the '+results[i].regionName+' '+results[i].regionType+' are having influencing people.</p>';
+			str += '<p class="zeroPeoplePara"> All regions under '+results[i].regionName+' '+results[i].regionType+' have influencing people.</p>';
 		}
 		else
 		{
@@ -349,7 +327,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 	
 	if(availableLength == 0)
 	{
-		str = '<p class="zeroPeoplePara"> No regions are having influence people.</p>';
+		str = '<p class="zeroPeoplePara"> No regions have influencing people.</p>';
 	}
 
 	elmt.innerHTML = str;
