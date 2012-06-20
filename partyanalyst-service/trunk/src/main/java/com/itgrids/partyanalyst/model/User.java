@@ -69,10 +69,11 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	private Set<UserLoginDetails> userLoginDetails = new HashSet<UserLoginDetails>(0);
 	private Set<Cadre> cadre = new HashSet<Cadre>(0);
+	private Set<InfluencingPeople> influencingPeople = new HashSet<InfluencingPeople>(0);
 	private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0);
 	private Set<CommentCategoryCandidate> userComments = new HashSet<CommentCategoryCandidate>(0);
 	private Set<SmsTrack> userSmsDetails = new HashSet<SmsTrack>(0);
-	 
+
 	 public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -506,6 +507,16 @@ public class User extends BaseModel implements Serializable{
 	}
 
 	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<InfluencingPeople> getInfluencingPeople() {
+		return influencingPeople;
+	}
+
+	public void setInfluencingPeople(Set<InfluencingPeople> influencingPeople) {
+		this.influencingPeople = influencingPeople;
+	}
 
 	
 }
