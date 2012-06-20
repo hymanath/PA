@@ -16,7 +16,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -39,8 +38,8 @@ import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
-import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
@@ -52,7 +51,6 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
-import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -60,7 +58,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -78,6 +75,7 @@ import com.itgrids.partyanalyst.model.StaticUserDesignation;
 import com.itgrids.partyanalyst.model.StaticUserGroup;
 import com.itgrids.partyanalyst.model.StaticUsers;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -100,6 +98,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IOccupationDAO occupationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
 	private IRegistrationDAO registrationDAO;
+	private IUserDAO userDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
 	private TransactionTemplate transactionTemplate = null;
@@ -172,9 +171,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
-	}
-
-	
+	}	
 
 	public IStateDAO getStateDAO() {
 		return stateDAO;
@@ -311,6 +308,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
+	}
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -477,7 +482,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 				ResultStatus resultStatus = new ResultStatus();
 				try{
-					influencingPeople.setRegistration(registrationDAO.get(new Long(influencingPeopleBeanVO.getRegistrationId())));
+					influencingPeople.setUser(userDAO.get(new Long(influencingPeopleBeanVO.getRegistrationId())));
 					influencingPeople.setFirstName(influencingPeopleBeanVO.getFirstName());
 					influencingPeople.setLastName(influencingPeopleBeanVO.getLastName());
 					influencingPeople.setMiddleName(influencingPeopleBeanVO.getMiddleName());
@@ -743,7 +748,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			log.debug(" Getting Complete Overview Details Of Influencing People ..");
 		
 		try{
-			Registration user = registrationDAO.get(userId);
+			User user = userDAO.get(userId);
 			String accessType = user.getAccessType();
 			String accessValue = user.getAccessValue();
 			
