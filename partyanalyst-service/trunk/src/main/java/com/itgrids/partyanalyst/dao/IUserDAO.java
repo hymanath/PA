@@ -33,4 +33,5 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<Object[]> allRegisteredUsersData();
 	
+	public List<Object[]> getUserEmail(Long userId);
 }
