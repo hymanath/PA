@@ -154,7 +154,6 @@ public class UserCalendarService implements IUserCalendarService {
 		Long userID = user.getRegistrationID();
 		Long partyId = user.getParty();
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
-		//Registration user = registrationDAO.get(userID);
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN); 
 		if("ALL".equals(user.getSubscribePartyImpDate())){
 			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findByPartyId(partyId);
@@ -226,7 +225,7 @@ public class UserCalendarService implements IUserCalendarService {
 		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
 		importantDatesVO.setEventType("User");
 		importantDatesVO.setImportantDateId(impDate.getUserImpDateID());
-		importantDatesVO.setEventId(impDate.getUser().getRegistrationId());
+		importantDatesVO.setEventId(impDate.getUser().getUserId());
 		importantDatesVO.setTitle(impDate.getTitle());
 		importantDatesVO.setImportance(impDate.getDescription());
 		importantDatesVO.setStartDate(impDate.getEffectiveDate());
@@ -732,8 +731,7 @@ private UserEventVO saveUserPlannedEvents;
 				public Object doInTransaction(TransactionStatus txStatus) {
 					UserImpDate userImpDate = new UserImpDate();
 					try{
-						Registration user = registrationDAO.get(UserCalendarService.this.saveImportantDatesVO.getEventId());
-						userImpDate.setUser(user);
+						userImpDate.setUserId(UserCalendarService.this.saveImportantDatesVO.getEventId());
 						userImpDate.setUserImpDateID(UserCalendarService.this.saveImportantDatesVO.getImportantDateId());
 						userImpDate.setTitle(UserCalendarService.this.saveImportantDatesVO.getTitle());
 						userImpDate.setDescription(UserCalendarService.this.saveImportantDatesVO.getImportance());
