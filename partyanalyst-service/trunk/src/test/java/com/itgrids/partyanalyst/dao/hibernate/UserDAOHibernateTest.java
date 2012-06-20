@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.print("----\t"+obj.toString());
 		}
 	}*/
-	public void testSaveUserProfileImageNameToDB()
+	/*public void testSaveUserProfileImageNameToDB()
 	{
 		Integer result = userDAO.saveUserProfileImageNameToDB(1l, "1.jpg");
 		System.out.println(result);
@@ -91,5 +92,20 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 		
+	}*/
+	
+	public void testGetUserEmail()
+	{
+		List<Object[]> result = userDAO.getUserEmail(2l);
+		System.out.println(result.size());
+		if(result != null && result.size() > 0)
+		{
+		for(Object[] params: result)
+		{
+			System.out.println(params[0]);
+			System.out.println(params[1].toString()+" "+params[2].toString());
+			System.out.println(params[3]);
+		}
+	 }
 	}
 }
