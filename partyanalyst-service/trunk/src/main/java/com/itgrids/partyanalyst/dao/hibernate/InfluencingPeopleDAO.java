@@ -25,21 +25,21 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByStateId(Long stateId,Long registrationId){
-		Object[] params = {stateId, registrationId};
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.state.stateId = ? and model.registration.registrationId = ?",params);
+	public List<InfluencingPeople> findByStateId(Long stateId,Long userId){
+		Object[] params = {stateId, userId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.state.stateId = ? and model.user.userId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByDistrictId(Long districtId,Long registrationId){
-		Object[] params = {districtId, registrationId};
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.district.districtId = ? and model.registration.registrationId = ?",params);
+	public List<InfluencingPeople> findByDistrictId(Long districtId,Long userId){
+		Object[] params = {districtId, userId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.district.districtId = ? and model.user.userId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByConstituencyId(Long constituencyId,Long registrationId){
-		Object[] params = {constituencyId, registrationId};
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.constituency.constituencyId = ? and model.registration.registrationId = ?",params);
+	public List<InfluencingPeople> findByConstituencyId(Long constituencyId,Long userId){
+		Object[] params = {constituencyId, userId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.constituency.constituencyId = ? and model.user.userId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -65,14 +65,14 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long constituencyId) {
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId = ?",params);
+				"model.user.userId = ? and model.userAddress.constituency.constituencyId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInAssemblyConstituencies(Long userId,List<Long> constituencyIds){
 		
 		Query queryObject = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds)");
+				"model.user.userId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds)");
 		queryObject.setParameter(0,userId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
 	 return queryObject.list();
@@ -83,7 +83,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long districtId) {
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.district.districtId = ?",params);
+				"model.user.userId = ? and model.userAddress.district.districtId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long localBodyId,Long constituencyId) {
 		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? "+
+				"model.user.userId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? "+
 				"and model.userAddress.constituency.constituencyId = ?",params);
 	}
 
@@ -100,7 +100,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long stateId) {
 		Object[] params = {userId,stateId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.state.stateId = ?",params);
+				"model.user.userId = ? and model.userAddress.state.stateId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,7 +108,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long tehsilId) {
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.tehsil.tehsilId = ?",params);
+				"model.user.userId = ? and model.userAddress.tehsil.tehsilId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,14 +116,14 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long hamletId) {
 		Object[] params = {userId,hamletId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.hamlet.hamletId = ?",params);
+				"model.user.userId = ? and model.userAddress.hamlet.hamletId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInWard(Long userId, Long wardId) {
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.ward.constituencyId = ?",params);
+				"model.user.userId = ? and model.userAddress.ward.constituencyId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,7 +131,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long userId, Long districtId) {
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.constituency.constituencyId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.district.districtId = ? and "+
+				"model.user.userId = ? and model.userAddress.district.districtId = ? and "+
 				"model.userAddress.constituency is not null group by model.userAddress.constituency.constituencyId",params);
 	}
 	
@@ -139,7 +139,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List getTotalCountOfInfluencingPeopleInAssemblyConstituenciesGroupByConstituency(Long userId,List<Long> constituencyIds){
 		
 		Query queryObject = getSession().createQuery("select count(model.influencingPeopleId),model.userAddress.constituency.constituencyId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) and "+
+				"model.user.userId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) and "+
 				"model.userAddress.constituency is not null group by model.userAddress.constituency.constituencyId");
 		queryObject.setParameter(0,userId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
@@ -151,7 +151,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long stateId) {
 		Object[] params = {userId,stateId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.district.districtId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.state.stateId = ? and "+
+				"model.user.userId = ? and model.userAddress.state.stateId = ? and "+
 				"model.userAddress.district is not null group by model.userAddress.district.districtId",params);
 	}
 
@@ -160,7 +160,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long userId, Long constituencyId) {
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.localElectionBody.localElectionBodyId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId = ? and "+
+				"model.user.userId = ? and model.userAddress.constituency.constituencyId = ? and "+
 				"model.userAddress.localElectionBody is not null group by model.userAddress.localElectionBody.localElectionBodyId",params);
 	}
 
@@ -169,7 +169,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long userId, Long constituencyId) {
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.tehsil.tehsilId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId = ? and "+
+				"model.user.userId = ? and model.userAddress.constituency.constituencyId = ? and "+
 				"model.userAddress.tehsil is not null group by model.userAddress.tehsil.tehsilId",params);
 	}
 
@@ -178,7 +178,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long tehsilId) {
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.hamlet.hamletId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.tehsil.tehsilId = ? and "+
+				"model.user.userId = ? and model.userAddress.tehsil.tehsilId = ? and "+
 				"model.userAddress.hamlet is not null group by model.userAddress.hamlet.hamletId",params);
 	}
 	
@@ -187,7 +187,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long tehsilId) {
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.booth.boothId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.tehsil.tehsilId = ? and "+
+				"model.user.userId = ? and model.userAddress.tehsil.tehsilId = ? and "+
 				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
 	}
 
@@ -196,7 +196,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long localBodyId,Long constituencyId) {
 		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.ward.constituencyId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
+				"model.user.userId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
 				"model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? group by model.userAddress.ward.constituencyId",params);
 	}
 	
@@ -205,7 +205,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long localBodyId,Long constituencyId) {
 		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.booth.boothId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
+				"model.user.userId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
 				"model.userAddress.booth is not null and model.userAddress.constituency.constituencyId = ? group by model.userAddress.booth.boothId",params);
 	}
 
@@ -216,7 +216,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"model.user.userId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.tehsil is not null order by model.userAddress.tehsil.tehsilId",params);
 	}
 	
@@ -225,7 +225,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long constituencyId) {
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"model.user.userId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.tehsil is not null order by model.userAddress.tehsil.tehsilId",params);
 	}
 	
@@ -236,7 +236,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"model.user.userId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.localElectionBody is not null order by model.userAddress.localElectionBody.localElectionBodyId",params);
 	}
 	
@@ -245,7 +245,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long constituencyId) {
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"model.user.userId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.localElectionBody is not null order by model.userAddress.localElectionBody.localElectionBodyId",params);
 	}
 
@@ -256,7 +256,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position "+
-				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.district.districtId = ? "+
+				"from InfluencingPeople model where model.user.userId = ? and model.userAddress.district.districtId = ? "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId",params);
 	}
 	
@@ -266,7 +266,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Query queryObject = getSession().createQuery("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position "+
-				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
+				"from InfluencingPeople model where model.user.userId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId");
 		queryObject.setParameter(0,userId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
@@ -280,7 +280,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long districtId) {
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select model.userAddress "+
-				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.district.districtId = ? "+
+				"from InfluencingPeople model where model.user.userId = ? and model.userAddress.district.districtId = ? "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId",params);
 	}
 	
@@ -288,7 +288,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List getTotalInfluencingPeopleAddressInAssemblyConstituencies(Long userId,List<Long> constituencyIds){
 		
 		Query queryObject = getSession().createQuery("select model.userAddress "+
-				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
+				"from InfluencingPeople model where model.user.userId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId");
 		queryObject.setParameter(0,userId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
@@ -302,7 +302,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
+				"model.user.userId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
 				"and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? order by model.userAddress.ward.constituencyId",params);
 	}
 	
@@ -311,7 +311,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long localBodyId,Long constituencyId) {
 		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
+				"model.user.userId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
 				"and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? order by model.userAddress.ward.constituencyId",params);
 	}
 
@@ -322,7 +322,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
+				"model.user.userId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
 				"and model.userAddress.district is not null order by model.userAddress.district.districtId",params);
 	}
 	
@@ -331,7 +331,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long stateId) {
 		Object[] params = {userId,stateId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
+				"model.user.userId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
 				"and model.userAddress.district is not null order by model.userAddress.district.districtId",params);
 	}
 
@@ -342,7 +342,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
+				"model.user.userId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
 				"and model.userAddress.hamlet is not null order by model.userAddress.hamlet.hamletId",params);
 	}
 	
@@ -351,7 +351,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long tehsilId) {
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
+				"model.user.userId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
 				"and model.userAddress.hamlet is not null order by model.userAddress.hamlet.hamletId",params);
 	}
 
@@ -362,7 +362,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
+				"model.user.userId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
 				
 	}
 	
@@ -371,7 +371,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long hamletId) {
 		Object[] params = {userId,hamletId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
+				"model.user.userId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
 				
 	}
 
@@ -381,7 +381,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
+				"model.user.userId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -390,27 +390,27 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
+				"model.user.userId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInWard(Long userId, Long wardId) {
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
+				"model.user.userId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInBooth(Long userId, Long boothId) {
 		Object[] params = {userId,boothId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
+				"model.user.userId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId) {
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.influencingScope from InfluencingPeople model where "+
-				"model.registration.registrationId = ? group by model.influencingScope order by model.influencingScope",userId);
+				"model.user.userId = ? group by model.influencingScope order by model.influencingScope",userId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -418,7 +418,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			String influencingScope) {
 		Object[] params = {userId,influencingScope};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.influencingScopeValue from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.influencingScope = ? group by model.influencingScopeValue",params);
+				"model.user.userId = ? and model.influencingScope = ? group by model.influencingScopeValue",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -428,7 +428,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
+				"model.user.userId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -436,7 +436,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			String influencingScope, String scopeValueId) {
 		Object[] params = {userId,influencingScope,scopeValueId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
+				"model.user.userId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -446,7 +446,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.influencingScope = ? order by model.influencingScope",params);
+				"model.user.userId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -454,7 +454,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			String influencingScope) {
 		Object[] params = {userId,influencingScope};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.influencingScope = ? order by model.influencingScope",params);
+				"model.user.userId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -474,7 +474,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 			Long wardId) {
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.booth.boothId from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.ward.constituencyId = ? and "+
+				"model.user.userId = ? and model.userAddress.ward.constituencyId = ? and "+
 				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
 	}
 
