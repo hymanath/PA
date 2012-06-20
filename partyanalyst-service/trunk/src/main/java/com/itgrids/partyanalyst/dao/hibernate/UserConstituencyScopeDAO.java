@@ -19,7 +19,7 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 	{
 		Object[] params = {constituencyId,date,date};
 		return getHibernateTemplate().find("select model.userAnnouncement.announcement.title, model.userAnnouncement.announcement.discription," +
-				" model.userAnnouncement.announcement.fromDate,model.userAnnouncement.user.registrationId, model.userAnnouncement.user.firstName, " +
+				" model.userAnnouncement.announcement.fromDate,model.userAnnouncement.user.userId, model.userAnnouncement.user.firstName, " +
 				" model.userAnnouncement.user.lastName FROM UserConstituencyScope model WHERE model.constituency.constituencyId = ? " +
 				" and date(model.userAnnouncement.announcement.toDate) >= ? and date(model.userAnnouncement.announcement.fromDate) <= ? "+
 				" order by model.userAnnouncement.announcement.fromDate desc, model.userAnnouncement.announcement.announcementId desc ",params);
@@ -41,7 +41,7 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 	public List<Object[]> getAnnouncementDetailsByUserId(Long userId)
 	{
 		return	getHibernateTemplate().find("select model.userAnnouncement.announcement.announcementId,model.userAnnouncement.announcement.title,model.userAnnouncement.announcement.discription,model.userAnnouncement.announcement.fromDate, " +
-				" model.userAnnouncement.announcement.toDate,model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType from UserConstituencyScope model where model.userAnnouncement.user.registrationId = ? ",userId);
+				" model.userAnnouncement.announcement.toDate,model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType from UserConstituencyScope model where model.userAnnouncement.user.userId = ? ",userId);
 	}
 	
 	public List<Object[]> findAnnouncementDetailsByUserIdDateConstId(Long userId,Date fromDate,Date toDate,Long constituencyId)
@@ -50,7 +50,7 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 		query.append("select model.userAnnouncement.announcement.announcementId,model.userAnnouncement.announcement.title" +
 				",model.userAnnouncement.announcement.discription,model.userAnnouncement.announcement.fromDate,model.userAnnouncement.announcement.toDate " +
 				",model.constituency.constituencyId,model.constituency.name,model.constituency.electionScope.electionType.electionType "+
-				"from UserConstituencyScope model where model.userAnnouncement.user.registrationId = :userId ");
+				"from UserConstituencyScope model where model.userAnnouncement.user.userId = :userId ");
 		if(fromDate!= null)
 			query.append("  and date(model.userAnnouncement.announcement.fromDate) >= :fromDate");
 		if(toDate!= null)
