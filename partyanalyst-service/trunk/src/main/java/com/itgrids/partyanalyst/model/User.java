@@ -73,6 +73,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0);
 	private Set<CommentCategoryCandidate> userComments = new HashSet<CommentCategoryCandidate>(0);
 	private Set<SmsTrack> userSmsDetails = new HashSet<SmsTrack>(0);
+	private Set<PoliticalChanges> politicalChanges = new HashSet<PoliticalChanges>(0);
 
 	 public User(){}
 	 
@@ -516,6 +517,16 @@ public class User extends BaseModel implements Serializable{
 
 	public void setInfluencingPeople(Set<InfluencingPeople> influencingPeople) {
 		this.influencingPeople = influencingPeople;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PoliticalChanges> getPoliticalChanges() {
+		return politicalChanges;
+	}
+
+	public void setPoliticalChanges(Set<PoliticalChanges> politicalChanges) {
+		this.politicalChanges = politicalChanges;
 	}
 
 	
