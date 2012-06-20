@@ -33,6 +33,7 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	
 	// Fields
 	private Long politicalChangesId;
+	private User user;
 	private Party party;
 	private Registration registration;
 	private ProblemExternalSource externalSource;
@@ -105,7 +106,7 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "registration_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Registration getRegistration() {
 		return registration;
@@ -211,6 +212,18 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 
 	public void setEffectedLocation(Long effectedLocation) {
 		this.effectedLocation = effectedLocation;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }
