@@ -11,7 +11,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
@@ -29,7 +28,6 @@ public class AnnouncementService implements IAnnouncementService {
 	private IAnnouncementDAO announcementDAO;
 	private IUserAnnouncementDAO userAnnouncementDAO;
 	private IUserConstituencyScopeDAO userConstituencyScopeDAO;
-	private IRegistrationDAO registrationDAO;
 	private IConstituencyDAO constituencyDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private static final Logger log = Logger.getLogger(IAnnouncementService.class);
@@ -60,14 +58,6 @@ public class AnnouncementService implements IAnnouncementService {
 
 	public IUserConstituencyScopeDAO getUserConstituencyScopeDAO() {
 		return userConstituencyScopeDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public void setUserConstituencyScopeDAO(
@@ -120,7 +110,7 @@ public class AnnouncementService implements IAnnouncementService {
 		announcement = announcementDAO.save(announcement);
 				
 		userAnnouncement.setAnnouncement(announcement);
-		userAnnouncement.setUser(registrationDAO.get(announcementVO.getUserId()));
+		userAnnouncement.setUserId(announcementVO.getUserId());
 		userAnnouncement = userAnnouncementDAO.save(userAnnouncement);
 
 		userConstituencyScope.setConstituency(constituencyDAO.get(announcementVO.getConstituency()));
