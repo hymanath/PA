@@ -16,7 +16,7 @@ public class UserAnnouncementDAO extends GenericDaoHibernate<UserAnnouncement, L
 	{
 		return	getHibernateTemplate().find("select model.announcement.announcementId,model.announcement.title" +
 				",model.announcement.discription,model.announcement.fromDate,model.announcement.toDate " +
-				"from UserAnnouncement model where model.user.registrationId = ?",userId);
+				"from UserAnnouncement model where model.user.userId = ?",userId);
 	}
 	
 	@SuppressWarnings("unchecked")
