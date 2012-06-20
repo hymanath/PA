@@ -264,10 +264,10 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	
 		public List getAllCommentsAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
-		return getHibernateTemplate().find("select model.user.registrationId, model.user.firstName, model.commentData.commentDesc, " +
+		return getHibernateTemplate().find("select model.user.userId, model.user.firstName, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity, model.user.lastName from CommentCategoryCandidate model where " +
-				"model.nomination.nominationId = ? group by model.user.registrationId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+				"model.nomination.nominationId = ? group by model.user.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
 	}
 		
 	/*public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
