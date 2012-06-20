@@ -28,7 +28,7 @@ public class UserCandidateRelationDAO extends GenericDaoHibernate<UserCandidateR
 	public List<Object[]> getUserCandidateRelationDetails(Long userId)
 	{
 		return getHibernateTemplate().find("select model.userCandidateRelationId,model.candidate.candidateId," +
-				" model.candidate.lastname from UserCandidateRelation model where model.registration.registrationId=?",userId);
+				" model.candidate.lastname from UserCandidateRelation model where model.user.userId=?",userId);
 	}
 	
 	@SuppressWarnings("unchecked")
