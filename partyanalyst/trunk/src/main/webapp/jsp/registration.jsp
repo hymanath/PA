@@ -246,7 +246,11 @@
 	function showAndHide()
 	{
 		var Ele = document.getElementById('freeuserDiv');
+		var checkEle=document.getElementById('freeuser');
+		if(checkEle.checked == true)
 		Ele.style.display='block';
+		if(checkEle.checked == false)
+		Ele.style.display='none';
 	}
 
 	function getAccessValuesForSubUser(value)
@@ -418,12 +422,13 @@ var str = '<font style="color:red;font-size:12px;">';
 
 			<tr><td colspan="2">		
 			
-		<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State:<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:189px;"  theme="simple" />
+		<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State:<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width: 144px;
+		margin-left: 49px;" theme="simple" />
 						
 
 
-					<b style="color:red">*</b> 
- Select Constituency:<s:select name="constituencyId" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name" cssStyle="width:189px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+					<br><br><b style="color:red">*</b> 
+ Select Constituency:<s:select name="constituencyId" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name" cssStyle="width: 145px;margin-left: 12px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
 		 </div></td></tr>
 
 				
