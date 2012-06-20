@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -166,9 +167,16 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ISpecialPageCustomPagesDAO specialPageCustomPagesDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
+	private IUserDAO userDAO;
 	
-	
-	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
 	}
@@ -1766,7 +1774,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		{
 		  UserCandidateRelation userCandidateRelation = new UserCandidateRelation();
 		  userCandidateRelation.setCandidate(candidateDAO.get(candidateId));
-		  userCandidateRelation.setRegistration(registrationDAO.get(userId));
+		  userCandidateRelation.setUser(userDAO.get(userId));
 		  userCandidateRelationDAO.save(userCandidateRelation);
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		  return resultStatus;

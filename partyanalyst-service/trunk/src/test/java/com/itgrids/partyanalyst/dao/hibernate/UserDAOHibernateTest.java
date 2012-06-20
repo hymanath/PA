@@ -76,4 +76,20 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		User user = userDAO.getUserByUserId(1l);
 		System.out.println(user.getFirstName());
 	}
+	
+	public void testAllRegisteredUsersData()
+	{
+		List<Object[]> users = userDAO.allRegisteredUsersData();
+		System.out.println(users.size());
+		if(users != null && users.size() > 0)
+		{
+			for(Object[] result : users)
+			{
+				System.out.println(result[0]);
+				System.out.println(result[1]);
+				System.out.println(result[2]);
+			}
+		}
+		
+	}
 }
