@@ -50,7 +50,7 @@ public class UserImpDate  extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
