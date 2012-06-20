@@ -35,7 +35,6 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 	
 	private Long userGroupRelationId;
 	private User user;
-	//private Registration user;
 	private UserGroups userGroup;
 	
 	/** Default Constructor */
@@ -62,18 +61,6 @@ public class UserGroupRelation extends BaseModel implements Serializable {
 	public void setUserGroupRelationId(Long userGroupRelationId) {
 		this.userGroupRelationId = userGroupRelationId;
 	}
-
-	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}*/
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_group_id")

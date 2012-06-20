@@ -25,7 +25,6 @@ public class UserCountryAccessInfo extends BaseModel{
 
 	private static final long serialVersionUID = 1L;
 	private Long userCountryAccessInfoId;
-	//private Registration user;
 	private Country country ;
 	private User user;
 	
@@ -52,18 +51,6 @@ public class UserCountryAccessInfo extends BaseModel{
 		this.userCountryAccessInfoId = userCountryAccessInfoId;
 	}
 
-	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}*/
-	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "country_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)

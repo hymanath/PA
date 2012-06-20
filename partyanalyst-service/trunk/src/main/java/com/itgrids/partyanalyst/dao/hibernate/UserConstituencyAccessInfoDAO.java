@@ -22,20 +22,20 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public List findByElectionScopeUserState(Long electionScope,Long userId,Long stateId){
 		   Object[] parameters = {userId,electionScope,stateId};
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionScopeId = ? " +
 				"  and model.constituency.state.stateId = ? ", parameters);
 	}
 	public List findByElectionScopeUser(Long electionScope,Long userId){
 		   Object[] parameters = {userId,electionScope};
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionScopeId = ? ", parameters);
 	}
 	public void deleteAllAssemblyAccessByScopeStateIdUserId(Long electionScope,Long userId,Long stateId) {
 		Object[] parameters = {userId,electionScope,stateId};
 		List<Long> result = getHibernateTemplate().find("select model.userConstituencyAccessInfoId  " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionType.electionTypeId = ? " +
 				"  and model.constituency.state.stateId = ? ", parameters);
 		for(Long o: result){
@@ -56,7 +56,7 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public void deleteAllParliamentAccessByScopeUserId(Long electionScope,Long userId) {	
 		Object[] parameters = {userId,electionScope};
 		List<Long> result = getHibernateTemplate().find("select model.userConstituencyAccessInfoId  " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionType.electionTypeId = ? " , parameters);
 		for(Long o: result){
 			getSession().getTransaction().begin();
@@ -76,7 +76,7 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public List<Object[]> findByElectionTypeUserState(Long electionType,Long userId,Long stateId){
 		   Object[] parameters = {userId,electionType,stateId};
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionType.electionTypeId = ? " +
 				"  and model.constituency.state.stateId = ? ", parameters);
 	}
@@ -84,7 +84,7 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public void deleteAllConstituencyAccessByUserId(Long userId) {	
 		Object[] parameters = {userId};
 		List<Long> result = getHibernateTemplate().find("select model.userConstituencyAccessInfoId  " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ? ", parameters);
+				"from UserConstituencyAccessInfo model where model.user.userId = ? ", parameters);
 		for(Long o: result){
 			getSession().getTransaction().begin();
 			StringBuilder query = new StringBuilder();
@@ -102,7 +102,7 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public void deleteAllConstituencyAccessByUserIdStateId(Long userId,Long stateId) {	
 		Object[] parameters = {userId,stateId};
 		List<Long> result = getHibernateTemplate().find("select model.userConstituencyAccessInfoId  " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.state.stateId = ? ",parameters);
 		for(Long o: result){
 			getSession().getTransaction().begin();
@@ -122,7 +122,7 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public void deleteAllAssemblyAccessByScopeStateIdUserIdDistrictId(Long electionScope,Long userId,Long stateId,Long districtId) {
 		Object[] parameters = {userId,electionScope,stateId,districtId};
 		List<Long> result = getHibernateTemplate().find("select model.userConstituencyAccessInfoId  " +
-				"from UserConstituencyAccessInfo model where model.user.registrationId = ?"+
+				"from UserConstituencyAccessInfo model where model.user.userId = ?"+
 				" and model.constituency.electionScope.electionType.electionTypeId = ? " +
 				"  and model.constituency.state.stateId = ? " +
 				" and model.constituency.district.districtId = ?", parameters);

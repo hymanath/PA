@@ -27,7 +27,7 @@ public class UserEntitlementGroupRegion implements Serializable{
 
 	private static final long serialVersionUID = -8963831760162053319L;
 	private Long userEntitlementGroupRegionId;
-	private Registration registration;
+	private User user;
 	private GroupEntitlement groupEntitlement;
 	private RegionScopes regionScopes;
 	private Long regionScopeValue;
@@ -36,10 +36,10 @@ public class UserEntitlementGroupRegion implements Serializable{
 	public UserEntitlementGroupRegion()
 	{}
 	
-	public UserEntitlementGroupRegion(Registration registration,GroupEntitlement groupEntitlement,
+	public UserEntitlementGroupRegion(User user,GroupEntitlement groupEntitlement,
 			RegionScopes regionScopes,Long regionScopeValue,Integer accessCode)
 	{
-		this.registration = registration;
+		this.user = user;
 		this.groupEntitlement = groupEntitlement;
 		this.regionScopes = regionScopes;
 		this.regionScopeValue = regionScopeValue;
@@ -58,15 +58,15 @@ public class UserEntitlementGroupRegion implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
+	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
+	public User getUser() {
+		return user;
 	}
 
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)

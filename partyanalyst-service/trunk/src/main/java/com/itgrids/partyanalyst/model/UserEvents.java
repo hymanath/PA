@@ -19,6 +19,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 /**
  * 
@@ -33,6 +35,7 @@ public class UserEvents extends BaseModel {
 	private static final long serialVersionUID = 1L;
 	private Long userEventsId;
 	private Registration registration;
+	private User user;
 	private String description;
 	private String locationType;
 	private Long locationId;
@@ -44,17 +47,18 @@ public class UserEvents extends BaseModel {
 	private String isDeleted;
 	
 	@Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "user_event_id", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "user_event_id", unique = true, nullable = false)
 	public Long getUserEventsId() {
 		return userEventsId;
 	}
 	public void setUserEventsId(Long userEventsId) {
 		this.userEventsId = userEventsId;
 	}
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "user_id")
-	 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "registration_id")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Registration getRegistration() {
 		return registration;
 	}
@@ -100,8 +104,8 @@ public class UserEvents extends BaseModel {
 	}
 	@ManyToMany
 	@JoinTable(name = "user_events_organizer", 
-			joinColumns = { @JoinColumn(name = "user_event_id") }, 
-			inverseJoinColumns = { @JoinColumn(name = "cadre_id") })
+	joinColumns = { @JoinColumn(name = "user_event_id") }, 
+	inverseJoinColumns = { @JoinColumn(name = "cadre_id") })
 	public List<Cadre> getOrganizers() {
 		return organizers;
 	}
@@ -131,7 +135,18 @@ public class UserEvents extends BaseModel {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	@Override
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
