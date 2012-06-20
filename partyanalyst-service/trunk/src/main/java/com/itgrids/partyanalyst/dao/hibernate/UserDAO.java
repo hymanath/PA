@@ -129,4 +129,10 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		queryObj.setParameter(0, IConstants.PARTY_ANALYST_USER);
 		return queryObj.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserEmail(Long userId)
+	{
+		return getHibernateTemplate().find("select model.userId, model.firstName, model.lastName, model.email from User model where model.userId = ?",userId);
+	}
 }
