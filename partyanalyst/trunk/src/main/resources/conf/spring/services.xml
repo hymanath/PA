@@ -957,7 +957,6 @@
 		<property name="announcementDAO" ref="announcementDAO" />
 		<property name="userAnnouncementDAO" ref="userAnnouncementDAO" />
 		<property name="userConstituencyScopeDAO" ref="userConstituencyScopeDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 	</bean>
