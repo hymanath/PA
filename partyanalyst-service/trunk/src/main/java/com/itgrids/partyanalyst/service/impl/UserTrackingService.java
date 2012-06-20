@@ -44,7 +44,7 @@ public class UserTrackingService implements IUserTrackingService{
 			userTracking.setSessionId(userTrackingVO.getSessionId());
 			
 			if(userTrackingVO.getUserId() != null && userTrackingVO.getUserId() > 0)
-				userTracking.setUser(userDAO.get(userTrackingVO.getUserId()));
+				userTracking.setUserId(userTrackingVO.getUserId());
 			
 			userTrackingDAO.save(userTracking);
 		}

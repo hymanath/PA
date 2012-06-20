@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-
 import com.itgrids.partyanalyst.dao.IHomePageQuestionAnswersDAO;
 import com.itgrids.partyanalyst.dao.IHomePageQuestionDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.HomePageQuestionsVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.model.HomePageQuestion;
@@ -20,17 +17,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class HomePageQuestionsService implements IHomePageQuestionsService {
 
-	private IRegistrationDAO registrationDAO;
 	private IHomePageQuestionDAO homePageQuestionDAO;
 	private IHomePageQuestionAnswersDAO homePageQuestionAnswersDAO;
 	
 	
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
 	public IHomePageQuestionDAO getHomePageQuestionDAO() {
 		return homePageQuestionDAO;
 	}
@@ -55,7 +45,7 @@ public class HomePageQuestionsService implements IHomePageQuestionsService {
 		homePageQuestion.setQuestionStartDate(homePageQuestionsVO.getQuestionStartDate());
 		homePageQuestion.setQuestionEndDate(homePageQuestionsVO.getQuestionEndDate());
 		homePageQuestion.setIsDelete("false");
-		homePageQuestion.setRegistration(registrationDAO.get(userId));
+		homePageQuestion.setUserId(userId);
 		HomePageQuestion homePageQuestionobj = homePageQuestionDAO.save(homePageQuestion);
 		
 		for(QuestionsOptionsVO questionsOptionsVO:homePageQuestionsVO.getAnswerOptionsVOs()){
