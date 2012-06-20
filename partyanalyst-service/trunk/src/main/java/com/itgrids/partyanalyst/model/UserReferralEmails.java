@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -21,35 +22,26 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "user_referral_emails")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UserReferralEmails extends BaseModel implements
-		java.io.Serializable {
+public class UserReferralEmails extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 3894099756722006346L;
 
 	private Long userReferralEmailsId;
 	private String email;
 	private Date time;
-	private Registration user;
+	private User user;
 	private Long userId;
 	
-
-	/**
-	 * Default Constructor
-	 */
 
 	public UserReferralEmails() {
 
 	}
 
-	/**
-	 * 
-	 * fullConstructor
-	 */
 	public UserReferralEmails(String email, Date time,
-			Registration user) {
+			Long userId) {
 		this.email = email;
 		this.time = time;
-		this.user = user;
+		this.userId = userId;
 	}
 
 	@Id
@@ -64,14 +56,14 @@ public class UserReferralEmails extends BaseModel implements
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id",updatable = false, insertable = false)
+	@JoinColumn(name = "user_id", updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Registration user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
