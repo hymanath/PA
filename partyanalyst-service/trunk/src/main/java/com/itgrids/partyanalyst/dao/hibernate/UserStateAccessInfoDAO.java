@@ -22,7 +22,7 @@ public class UserStateAccessInfoDAO extends GenericDaoHibernate<UserStateAccessI
 	public Integer deleteAllStateAccess(Long userId) {		
 		StringBuilder query = new StringBuilder();
 		query.append(" delete from UserStateAccessInfo model ");
-		query.append(" where model.user.registrationId = ? ");
+		query.append(" where model.user.userId = ? ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, userId);
 		return queryObject.executeUpdate();		

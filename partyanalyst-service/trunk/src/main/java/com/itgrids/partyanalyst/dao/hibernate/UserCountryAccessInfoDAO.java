@@ -22,7 +22,7 @@ public class UserCountryAccessInfoDAO extends GenericDaoHibernate<UserCountryAcc
 	public Integer deleteAllCountryAccess(Long userId) {		
 		StringBuilder query = new StringBuilder();
 		query.append(" delete from UserCountryAccessInfo model ");
-		query.append(" where model.user.registrationId = ? ");
+		query.append(" where model.user.userId = ? ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, userId);
 		return queryObject.executeUpdate();		

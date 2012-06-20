@@ -30,7 +30,8 @@ public class UserImpDate  extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userImpDateID;
-	private Registration user;
+	private User user;
+	private Long userId;
 	private String title;
 	private String description;
 	private Date effectiveDate;
@@ -52,10 +53,10 @@ public class UserImpDate  extends BaseModel implements Serializable{
 	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
+	public User getUser() {
 		return user;
 	}
-	public void setUser(Registration user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 	@Column(name = "title", length = 100)
@@ -104,5 +105,13 @@ public class UserImpDate  extends BaseModel implements Serializable{
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

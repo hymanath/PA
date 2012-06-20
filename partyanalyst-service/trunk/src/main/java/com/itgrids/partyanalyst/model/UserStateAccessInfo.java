@@ -18,7 +18,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
-import org.springframework.core.annotation.Order;
 
 @Entity
 @Table(name = "user_state_access_info")
@@ -27,7 +26,6 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userStateAccessInfoId;
-	//private Registration user;
 	private State state ;
 	private User user;
 	
@@ -54,18 +52,6 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 		this.userStateAccessInfoId = userStateAccessInfoId;
 	}
 
-	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}
-	*/
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)

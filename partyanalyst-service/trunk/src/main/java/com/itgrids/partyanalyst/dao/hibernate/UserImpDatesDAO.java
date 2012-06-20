@@ -35,7 +35,7 @@ public class UserImpDatesDAO extends GenericDaoHibernate<UserImpDate, Long> impl
 
 	@SuppressWarnings("unchecked")
 	public List<UserImpDate> findTodayImportantEvents(Long userId) {
-		return getHibernateTemplate().find("from UserImpDate model where model.user.registrationId=? " +
+		return getHibernateTemplate().find("from UserImpDate model where model.user.userId = ? " +
 				"AND model.isDeleted = 'NO' " +
 				"AND EXTRACT(DAY FROM model.effectiveDate) = DAY(NOW()) " +
 				"AND EXTRACT(MONTH FROM model.effectiveDate) = MONTH(NOW())", userId);

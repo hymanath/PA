@@ -24,7 +24,6 @@ public class UserConstituencyAccessInfo extends BaseModel{
 
 	private static final long serialVersionUID = 1L;
 	private Long userConstituencyAccessInfoId;
-	//private Registration user;
 	private Constituency constituency ;
 	private User user;
 	
@@ -50,18 +49,6 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	public void setUserConstituencyAccessInfoId(Long userConstituencyAccessInfoId) {
 		this.userConstituencyAccessInfoId = userConstituencyAccessInfoId;
 	}
-
-	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}*/
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "constituency_id")
