@@ -653,14 +653,21 @@ public class CommentsDataService implements ICommentsDataService {
 		
 		if(userId != null)
 		{
-			List<Object[]> list = ananymousUserDAO.getUserEmail(userId);
+			//List<Object[]> list = ananymousUserDAO.getUserEmail(userId);
+			
+			List<Object[]> list = userDAO.getUserEmail(userId);
 			
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
 				{
+					//userName = params[1].toString()+ " " +params[2].toString();
+					if(params[1] != null)
+						userName = params[1].toString();
+					userName += " ";
+					if(params[2] != null)
+						userName += params[2].toString();
 					
-					userName = params[1].toString()+ " " +params[2].toString();
 					email = params[3].toString();
 					if(email !=null && email.trim().length() > 0)
 					{
