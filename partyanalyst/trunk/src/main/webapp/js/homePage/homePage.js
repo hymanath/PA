@@ -676,12 +676,18 @@ function postFeedbackAjaxCall()
    var feedbackAboutElmt = document.getElementById("taskId");
    var responseTypeElmt = document.getElementsByName("responseCategory");
 	
-	
    var feedbackType = '';
    var feedbackAbout = '';
    var responseType = '';
 
 	feedbackAbout = feedbackAboutElmt.value;
+	if(feedbackAbout == 0)
+	{
+		errorElmt.innerHTML = '<font size="2" color="red">Please Select Feedback</font>';
+	return;
+	}
+	else 
+		errorElmt.innerHTML = "";
    for(var i=0; i<feedbackTypeElmt.length; i++)
 		 if(feedbackTypeElmt[i].checked==true)
              feedbackType = feedbackTypeElmt[i].value;
@@ -718,6 +724,7 @@ function callHomePageAjax(jsObj,url)
 								showFeedBackStatus(myResults);
 								$("#taskId").prepend("<option value='0'>Select feedback</option>");
 								document.getElementById("taskId").value = 0;
+				
 							}	
 							else if(jsObj.task == 'submitRequirement')
 							{
@@ -773,19 +780,17 @@ function callHomePageAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-function closewindow()
-{
-	$("#feedback_window").dialog("destroy");
-}
+
 function showFeedBackStatus(result)
 {
-
+var feedback_window = document.getElementById('feedback_window');
 	if(result.exceptionEncountered == null)
 	{
 		var errorElmt = document.getElementById("feedback_window_Msg");
 			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
 			clearFeedBackFields();
-		//setTimeout("closewindow()",2000);
+			
+		setTimeout("closeFeedbackwindow()",3000);
 	}
 	else
 	{
@@ -793,12 +798,18 @@ function showFeedBackStatus(result)
 			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not " +
 					"ted.Please Try again.</font>";
 	}
+	
 }
 
 function clearFeedBackFields()
 {
 document.getElementById('commentId').value='';
 	
+}
+
+function closeFeedbackwindow()
+{
+	$("#feedback_window").dialog("destroy");
 }
 function buildHOmePageImageSlider()
 {
