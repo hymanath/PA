@@ -13,7 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -24,7 +26,8 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 	private static final long serialVersionUID = 1L;
 	private Long userAnnouncementId;
 	private Announcement announcement;
-	private Registration user;
+	private User user;
+	private Long userId;
 	private Set<UserConstituencyScope> userConstituencyScope;
 	
 	
@@ -47,7 +50,29 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 		this.announcement = announcement;
 	}
 	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+	
+	@Column(name = "user_id", length = 10)
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAnnouncement")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserConstituencyScope> getUserConstituencyScope() {
 		return userConstituencyScope;
 	}
@@ -56,14 +81,7 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 		this.userConstituencyScope = userConstituencyScope;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	public Registration getUser() {
-		return user;
-	}
-	public void setUser(Registration user) {
-		this.user = user;
-	}
+	
 	
 	
 }
