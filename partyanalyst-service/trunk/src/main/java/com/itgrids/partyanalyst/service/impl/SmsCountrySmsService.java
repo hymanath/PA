@@ -252,7 +252,7 @@ public class SmsCountrySmsService implements ISmsService {
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-			Registration registration = registrationDAO.get(userId);
+			
 			SmsModule smsModule = null;
 			
 			List<SmsModule> list = smsModuleDAO.findByModuleName(moduleName);
@@ -263,7 +263,7 @@ public class SmsCountrySmsService implements ISmsService {
 			for(String mobileNo : phoneNumbers)
 			{
 				SmsHistory smsHistory = new SmsHistory();
-				smsHistory.setRegistration(registration);
+				smsHistory.setUserId(userId);
 				smsHistory.setMobileNumber(mobileNo);
 				smsHistory.setSmsContent(message);
 				smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
