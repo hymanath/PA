@@ -23,11 +23,20 @@ public class UserCandidateRelationDAOHibernateTest extends BaseDaoTestCase{
 	{
 		userCandidateRelationDAO.deleteUserCandidateRelation(2L);
 	}*/
-	/*public void testDeleteUserCandidateRelation()
+	public void testDeleteUserCandidateRelation()
 	{
 		List<Object[]> result = userCandidateRelationDAO.getUserCandidateRelationDetails(1L);
 		System.out.println(result.size());
-	}*/
+		if(result != null && result.size() >0)
+		{
+			for(Object[] params : result)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+				System.out.println(params[2]);
+			}
+		}
+	}
 	/*public void testGetUserCandidateRelationCount()
 	{
 		List<Long> result = userCandidateRelationDAO.getUserCandidateRelationCount(2L,2757L);
@@ -35,9 +44,9 @@ public class UserCandidateRelationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(result.get(0));
 	}*/
 	
-	public void testGetCandidatesOfAUser()
+	/*public void testGetCandidatesOfAUser()
 	{
 		List<Object[]> list = userCandidateRelationDAO.getCandidatesOfAUser(1l);
 		System.out.println(list.size());
-	}
+	}*/
 }

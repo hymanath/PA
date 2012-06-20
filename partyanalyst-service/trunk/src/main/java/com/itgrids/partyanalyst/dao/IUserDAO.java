@@ -31,4 +31,6 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
 	
+	public List<Object[]> allRegisteredUsersData();
+	
 }

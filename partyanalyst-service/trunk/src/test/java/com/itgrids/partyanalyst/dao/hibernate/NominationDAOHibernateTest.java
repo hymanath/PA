@@ -879,15 +879,15 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 				System.out.println(election.getConstituency().getConstituencyId());
 	}*/
 	
-	/*public void testGetCandidatesToMapWithUser()
+	public void testGetCandidatesToMapWithUser()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(53l);ids.add(265l);
-		List<Object[]> list = nominationDAO.getCandidatesToMapWithUser("M","KALIKI YANADI REDDY",0L,1L,1L);
-		
+		List<Object[]> list = nominationDAO.getCandidatesToMapWithUser("M","Ashok",0L,1L,1L);
+		System.out.println(list.size());
 			for(Object[] result : list)
 				System.out.println("id :"+result[0]+"Name :"+result[1]);
-	}*/
+	}
 	
 	/*public void testSelectData()
 	{
@@ -1197,7 +1197,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		for(Object[] params : list)
 			System.out.println(params[0] +"---"+params[1]);
 	}*/
-	public void testGetCandidateDetailsForAParty()
+	/*public void testGetCandidateDetailsForAParty()
 	{
 		List<Object[]> list = nominationDAO.getCandidateDetailsForAParty(872l,17l);
 		
@@ -1205,6 +1205,6 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 		for(Object[] params : list)
 			System.out.println(params[0] +"---"+params[1]);
-	}
+	}*/
 }
 	

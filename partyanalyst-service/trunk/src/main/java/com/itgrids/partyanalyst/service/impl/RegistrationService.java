@@ -358,7 +358,8 @@ public class RegistrationService implements IRegistrationService{
 			selectOption.setName(IConstants.SELECT_USER_MESSAGE);
 			listOfUser.add(selectOption);
 			
-			List result =  registrationDAO.getAllRegisteredUsers();
+			
+			/*List result =  registrationDAO.getAllRegisteredUsers();
 			for(int i=0;i<result.size();i++){
 				Object[] registration = (Object[])result.get(i); 
 				SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -373,6 +374,25 @@ public class RegistrationService implements IRegistrationService{
 				}
 				selectOptionVO.setName(name);
 				listOfUser.add(selectOptionVO);				
+			}*/
+			
+			List<Object[]> result = userDAO.allRegisteredUsersData();
+			if(result != null && result.size() > 0)
+			{
+				for(Object[] params : result)
+				{
+					String name = new String();
+					if(params[1] != null)
+						name = params[1].toString();
+					name +=" ";
+					if(params[2] != null)
+						name +=params[2].toString();
+					
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(name);
+					listOfUser.add(selectOptionVO);
+				}
 			}
 			entitlementVO.setListOfUsers(listOfUser);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);			
