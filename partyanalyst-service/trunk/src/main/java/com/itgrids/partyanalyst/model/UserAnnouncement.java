@@ -60,12 +60,12 @@ public class UserAnnouncement extends BaseModel implements java.io.Serializable 
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+	@Column(name = "user_id", length = 10)
 	public Long getUserId() {
 		return userId;
 	}
 	
-	@Column(name = "user_id", length = 10)
+	
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
