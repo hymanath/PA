@@ -120,4 +120,13 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> allRegisteredUsersData()
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.userId, model.firstName,model.lastName from User model where model.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = ?)");
+		Query queryObj = getSession().createQuery(query.toString());
+		queryObj.setParameter(0, IConstants.PARTY_ANALYST_USER);
+		return queryObj.list();
+	}
 }
