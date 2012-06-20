@@ -3112,7 +3112,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		StringBuilder query = new StringBuilder();
 		query.append("select distinct model.candidate.candidateId,model.candidate.lastname  from Nomination model " +
 		" where model.candidate.candidateId not in(select model1.candidate.candidateId from UserCandidateRelation model1" +
-		" where model1.registration.registrationId=:userId )");
+		" where model1.user.userId=:userId )");
 		
 		if(name!= null && name.trim().length()>0)
 			query.append("  and model.candidate.lastname like '%"+name+"%' ");
