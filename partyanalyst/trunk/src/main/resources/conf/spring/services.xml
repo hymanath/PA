@@ -336,6 +336,7 @@
 		<property name="specialPageCustomPagesDAO" ref="specialPageCustomPagesDAO" />
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
