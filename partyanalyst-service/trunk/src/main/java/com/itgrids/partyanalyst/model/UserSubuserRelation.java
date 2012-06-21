@@ -31,14 +31,14 @@ public class UserSubuserRelation implements Serializable{
 
 	private static final long serialVersionUID = 7637873471291781621L;
 	private Long userSubuserRelationId;
-	private Registration user;
-	private Registration subuser;
+	private User user;
+	private User subuser;
 	private String isChildAccess;
 	
 	public UserSubuserRelation()
 	{}
 	
-	public UserSubuserRelation(Registration user,Registration subuser,String isChildAccess)
+	public UserSubuserRelation(User user,User subuser,String isChildAccess)
 	{
 		this.user = user;
 		this.subuser = subuser;
@@ -60,11 +60,11 @@ public class UserSubuserRelation implements Serializable{
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Registration user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -72,11 +72,11 @@ public class UserSubuserRelation implements Serializable{
 	@JoinColumn(name = "subuser_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getSubuser() {
+	public User getSubuser() {
 		return subuser;
 	}
 
-	public void setSubuser(Registration subuser) {
+	public void setSubuser(User subuser) {
 		this.subuser = subuser;
 	}
 
