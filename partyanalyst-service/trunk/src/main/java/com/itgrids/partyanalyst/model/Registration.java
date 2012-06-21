@@ -52,8 +52,6 @@ public class Registration implements java.io.Serializable {
 	 private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	 private Party party;
 	 private String includePartyImpDateStatus;
-	 private Set<UserGroupPrivileges> readWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
-	 private Set<UserGroupPrivileges> writeWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
 	 private Registration parentUser;
 	 private Set<Registration> subUsers = new HashSet<Registration>(0);
 	 private Registration mainAccountUser;
@@ -308,26 +306,6 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserCategory(UserCategory userCategory) {
 		this.userCategory = userCategory;
-	}
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "readRightUserId")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserGroupPrivileges> getReadWriteUserPrevilegesSet() {
-		return readWriteUserPrevilegesSet;
-	}
-
-	public void setReadWriteUserPrevilegesSet(
-			Set<UserGroupPrivileges> readWriteUserPrevilegesSet) {
-		this.readWriteUserPrevilegesSet = readWriteUserPrevilegesSet;
-	}
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "writeRightUserId")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserGroupPrivileges> getWriteWriteUserPrevilegesSet() {
-		return writeWriteUserPrevilegesSet;
-	}
-
-	public void setWriteWriteUserPrevilegesSet(
-			Set<UserGroupPrivileges> writeWriteUserPrevilegesSet) {
-		this.writeWriteUserPrevilegesSet = writeWriteUserPrevilegesSet;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
