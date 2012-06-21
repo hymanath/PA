@@ -87,7 +87,6 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserStateAccessInfo> userAccessedStates = new HashSet<UserStateAccessInfo>(0);
 	private Set<UserConstituencyAccessInfo> userAccessedCountries = new HashSet<UserConstituencyAccessInfo>(0);
 	private Set<UserGallary> userGalleries = new HashSet<UserGallary>(0);
-	private Set<UserGroupPrivileges> userGroupPrivileges = new HashSet<UserGroupPrivileges>(0);
 	private Set<UserMappingsHistory> userMappings = new HashSet<UserMappingsHistory>(0);
 	private Set<UserSubuserRelation> userSubUsers = new HashSet<UserSubuserRelation>(0);
 	private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
@@ -679,16 +678,6 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserGalleries(Set<UserGallary> userGalleries) {
 		this.userGalleries = userGalleries;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserGroupPrivileges> getUserGroupPrivileges() {
-		return userGroupPrivileges;
-	}
-
-	public void setUserGroupPrivileges(Set<UserGroupPrivileges> userGroupPrivileges) {
-		this.userGroupPrivileges = userGroupPrivileges;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
