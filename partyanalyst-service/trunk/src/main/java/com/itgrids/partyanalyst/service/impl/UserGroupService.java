@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupPrivilegesDAO;
 import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.model.StaticGroup;
 import com.itgrids.partyanalyst.model.StaticUserGroup;
 import com.itgrids.partyanalyst.model.StaticUsers;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -71,7 +73,8 @@ public class UserGroupService implements IUserGroupService {
 	private UserGroupMembersVO userGroupMembersVo;
 	private static final Logger log = Logger.getLogger(UserGroupService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	private ISmsService smsCountrySmsService;	
+	private ISmsService smsCountrySmsService;
+	private IUserDAO userDAO;
 	
 	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
 		return personalUserGroupDAO;
@@ -143,6 +146,14 @@ public class UserGroupService implements IUserGroupService {
 		this.myGroupDAO = myGroupDAO;
 	}
 
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	/**
 	 * To Get The List Of All Static groups From DB Into SelectOptionVO.These results are displayed in the drop down option in create a user group panel.
 	 * @return staticGroups
@@ -185,7 +196,8 @@ public class UserGroupService implements IUserGroupService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult(){
 			public void doInTransactionWithoutResult(TransactionStatus status)
 			{
-				Registration reg = null;
+				//Registration reg = null;
+				User user = null;
 				PersonalUserGroup personalUserGroup=null;				
 				ResultStatus resultStatus;
 				MyGroup myGroupObj = null;				
@@ -213,7 +225,9 @@ public class UserGroupService implements IUserGroupService {
 							log.debug("If Main Group");
 						}
 						myGroupObj = new MyGroup();
-						reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
+						
+						//reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
+						user = userDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
 						
 						myGroupObj.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
 						myGroupObj.setGroupDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
@@ -222,7 +236,8 @@ public class UserGroupService implements IUserGroupService {
 						personalUserGroup = new PersonalUserGroup();
 						personalUserGroup.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
 						personalUserGroup.setDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
-						personalUserGroup.setCreatedUserId(reg);
+						
+						personalUserGroup.setUserId(userGroupDetailsVo.getCreatedUserId());
 						personalUserGroup.setCreatedDate(now);
 						personalUserGroup.setMyGroup(myGroupObj);					
 						personalUserGroup = personalUserGroupDAO.save(personalUserGroup);						
@@ -270,14 +285,16 @@ public class UserGroupService implements IUserGroupService {
 		}
 		StaticGroup staticGroupObj = null;
 		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
-		Registration reg = null;
+		//Registration reg = null;
+		//User user = null;
 		java.util.Date now = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
-	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	   //reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	    //user = userDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		staticGroupObj = staticGroupDAO.get(new Long(userGroupDetailsToSave.getStaticGroupId()));
 		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
 		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
@@ -299,7 +316,7 @@ public class UserGroupService implements IUserGroupService {
 			personalUserGroup.setParentGroupId(null);
 			personalUserGroup.setParentGroupName(null);
 		}		
-		personalUserGroup.setCreatedUserId(reg);
+		personalUserGroup.setUserId(userGroupDetailsToSave.getCreatedUserId());
 		personalUserGroup.setCreatedDate(now);
 		
 		personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
@@ -321,7 +338,8 @@ public class UserGroupService implements IUserGroupService {
 		}
 		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
 		PersonalUserGroup parentGroupObj= new PersonalUserGroup();
-		Registration reg = null;
+		//Registration reg = null;
+		//User user = null;
 		List<MyGroup> myGroupObj = null; 
 		java.util.Date now = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
@@ -329,7 +347,8 @@ public class UserGroupService implements IUserGroupService {
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
-	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	    //reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	    //user = userDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		myGroupObj = personalUserGroupDAO.getMyGroupObjFromPersonalUserGroup(userGroupDetailsToSave.getMyGroupId());
 		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
 		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
@@ -352,7 +371,8 @@ public class UserGroupService implements IUserGroupService {
 			personalUserGroup.setParentGroupId(parentGroupObj);
 			personalUserGroup.setParentGroupName(parentGroupObj.getGroupName());
 		}		
-		personalUserGroup.setCreatedUserId(reg);
+		//personalUserGroup.setUser(user);
+		personalUserGroup.setUserId(userGroupDetailsToSave.getCreatedUserId());
 		personalUserGroup.setCreatedDate(now);
 		
 		personalUserGroup = personalUserGroupDAO.save(personalUserGroup);

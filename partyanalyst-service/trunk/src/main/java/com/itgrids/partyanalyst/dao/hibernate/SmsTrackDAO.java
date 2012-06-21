@@ -53,7 +53,7 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserSmsDetails(Long userId)
 	{
-		return getHibernateTemplate().find("select model.smsUsername,model.smsPassword,model.senderId from SmsTrack model where model.registration.registrationId = ? ",userId);
+		return getHibernateTemplate().find("select model.smsUsername,model.smsPassword,model.senderId from SmsTrack model where model.user.userId = ? ",userId);
 	}
 	
 	public Integer updateRemainingSmsLeftForUser(Long userId, Long count)
