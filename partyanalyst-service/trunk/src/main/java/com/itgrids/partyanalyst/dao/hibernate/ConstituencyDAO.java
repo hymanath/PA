@@ -406,15 +406,15 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {electionTypeId, stateId,userId};
 		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
 				" where model.electionScope.electionType.electionTypeId = ?" +
-				" and model.state.stateId= ?  and model.district.districtId not in(select model1.district.districtId from UserDistrictAccessInfo model1 where model1.user.registrationId = ? )" +
+				" and model.state.stateId= ?  and model.district.districtId not in(select model1.district.districtId from UserDistrictAccessInfo model1 where model1.user.userId = ? )" +
 				"order by model.name ",params);
 	}
 	
 	public List<Constituency> getAllParliamentConstituenciesInCountryByStateAccessAndCountryAccess(Long electionScopeId, Long countryId,Long userId) {
 		Object []params={electionScopeId, countryId,userId,userId};
 		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? and model.deformDate is null and model.state.country.countryId = ? "+
-				" and model.state.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.registrationId = ?)" +
-				" and model.state.stateId not in (select model2.state.stateId from UserStateAccessInfo model2 where model2.user.registrationId = ? )"+
+				" and model.state.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.userId = ?)" +
+				" and model.state.stateId not in (select model2.state.stateId from UserStateAccessInfo model2 where model2.user.userId = ? )"+
 				" order by model.name",params);
 	}
 	

@@ -147,13 +147,13 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	public List findStatesByCountryIdAndCountryAccess(Long countryId,Long userId) {
 		Object[] params = {countryId, userId};
 		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId = ? and "+
-	" model.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.registrationId = ?)",params);
+	" model.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.userId = ?)",params);
 	}
 	
 	public List findStatesByCountryIdAndCountryAccessAndStateAccess(Long countryId,Long userId) {
 		Object[] params = {countryId,userId,userId};
 		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId = ? and "+
-	" model.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.registrationId = ?) "+
-	" and model.stateId not in (select model2.state.stateId from UserStateAccessInfo model2 where model2.user.registrationId = ?)",params);
+	" model.country.countryId not in(select model1.country.countryId from UserCountryAccessInfo model1 where model1.user.userId = ?) "+
+	" and model.stateId not in (select model2.state.stateId from UserStateAccessInfo model2 where model2.user.userId = ?)",params);
 	}
 }

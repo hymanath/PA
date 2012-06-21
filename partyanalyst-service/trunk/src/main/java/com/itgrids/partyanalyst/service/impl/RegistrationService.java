@@ -359,23 +359,6 @@ public class RegistrationService implements IRegistrationService{
 			listOfUser.add(selectOption);
 			
 			
-			/*List result =  registrationDAO.getAllRegisteredUsers();
-			for(int i=0;i<result.size();i++){
-				Object[] registration = (Object[])result.get(i); 
-				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId((Long)registration[0]);
-				String name = new String();
-				if(registration[1]!=null){
-					name+=registration[1].toString();
-				}
-				name+=" ";
-				if(registration[2]!=null){
-					name+=registration[2].toString();
-				}
-				selectOptionVO.setName(name);
-				listOfUser.add(selectOptionVO);				
-			}*/
-			
 			List<Object[]> result = userDAO.allRegisteredUsersData();
 			if(result != null && result.size() > 0)
 			{
