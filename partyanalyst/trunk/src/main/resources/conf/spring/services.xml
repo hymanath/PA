@@ -637,7 +637,8 @@
     	<property name="townshipDAO" ref="townshipDAO" />	
     	<property name="stateDAO" ref="stateDAO" />
     	<property name="tehsilDAO" ref="tehsilDAO" />
-    	<property name="constituencyDAO" ref="constituencyDAO" />	
+    	<property name="constituencyDAO" ref="constituencyDAO" />
+    	<property name="userDAO" ref="userDAO" />	
 	</bean>
 	
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
