@@ -34,4 +34,14 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<Object[]> allRegisteredUsersData();
 	
 	public List<Object[]> getUserEmail(Long userId);
+
+	public List<User> getDetailsForUsers(List<Long> userIds);
+	
+	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
+	
+	public List<Object> getNotConnectedUsersInSelectedLocations(Long userId,List<Long> locationIds,String locationType,List<Long> otherUsers,Long retrivalCount,Long startIndex,String nameString);
+	
+	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr);
+	
+	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers);
 }
