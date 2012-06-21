@@ -3652,7 +3652,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			public Object doInTransaction(TransactionStatus status) {
 				StaticLocalGroup staticLocalGroup = new StaticLocalGroup();
 				staticLocalGroup.setGroupType(groupType);
-				//staticLocalGroup.setUser(registrationDAO.get(userId));
 				staticLocalGroup.setUpdatedDate(getCurrentDate());
 				staticLocalGroupDAO.save(staticLocalGroup);
 				return staticLocalGroup;
