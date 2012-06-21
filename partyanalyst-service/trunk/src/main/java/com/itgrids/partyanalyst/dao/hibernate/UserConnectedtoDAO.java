@@ -19,8 +19,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public Integer deleteRejectedRequest(List<Long> senderId,List<Long> recipeintId){
 		StringBuilder query = new StringBuilder();	
 		query.append(" delete from UserConnectedto model where ");
-		query.append(" (model.userSource.registrationId in (:senderId) and  model.userTarget.registrationId in (:recipeintId) ) ");
-		query.append(" or (model.userSource.registrationId in (:recipeintId) and  model.userTarget.registrationId in (:senderId)) ");
+		query.append(" (model.userSource.userId in (:senderId) and  model.userTarget.userId in (:recipeintId) ) ");
+		query.append(" or (model.userSource.userId in (:recipeintId) and  model.userTarget.userId in (:senderId)) ");
 		Query queryObject = getSession().createQuery(query.toString());		
 		queryObject.setParameterList("senderId", senderId);
 		queryObject.setParameterList("recipeintId", recipeintId);
@@ -33,8 +33,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public List<UserConnectedto> checkForRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId){
 		StringBuilder query = new StringBuilder();				
 		query.append(" from UserConnectedto model where ");
-		query.append(" (model.userSource.registrationId in (:senderId) and  model.userTarget.registrationId in (:recipeintId)) or");
-		query.append(" (model.userSource.registrationId in (:recipeintId) and model.userTarget.registrationId in (:senderId)) ");	
+		query.append(" (model.userSource.userId in (:senderId) and  model.userTarget.userId in (:recipeintId)) or");
+		query.append(" (model.userSource.userId in (:recipeintId) and model.userTarget.userId in (:senderId)) ");	
 				
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("senderId", senderId);
@@ -93,10 +93,10 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public String getCountOfAllConnectedPeopleForUser(List<Long> senderId){
 		StringBuilder query = new StringBuilder();	
-		query.append(" select count(model.userSource.registrationId) from UserConnectedto model where ");
-		query.append(" (model.userSource.registrationId in (:senderId) or  model.userTarget.registrationId in (:senderId)) ");
-		query.append(" and model.userSource.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role )");
-		query.append(" and model.userTarget.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role )");
+		query.append(" select count(model.userSource.userId) from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");
+		query.append(" and model.userSource.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role )");
+		query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role )");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("senderId", senderId);
@@ -108,8 +108,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public Long getConnectedMembersCountForAFreeUser(Long userId)
 	{
 		Query query = getSession().createQuery("select count(model.userConnectedtoId) from UserConnectedto model where " +
-				" (model.userSource.registrationId = :userId or model.userTarget.registrationId = :userId ) and  model.userSource.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) " +
-		" and model.userTarget.registrationId in (select model3.user.registrationId from UserRoles model3 where model3.role.roleType = :role ) ");
+				" (model.userSource.userId = :userId or model.userTarget.userId = :userId ) and  model.userSource.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) " +
+		" and model.userTarget.userId in (select model3.user.userId from UserRoles model3 where model3.role.roleType = :role ) ");
 		query.setParameter("userId",userId);
 		query.setParameter("role",IConstants.FREE_USER);
 		return (Long)query.uniqueResult();
@@ -119,8 +119,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public Long getConnectedUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.userSource.registrationId)");
-		query.append(" from UserConnectedto model where (model.userSource.registrationId = :userId or model.userTarget.registrationId = :userId) and ");
+		query.append("select count(model.userSource.userId)");
+		query.append(" from UserConnectedto model where (model.userSource.userId = :userId or model.userTarget.userId = :userId) and ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append("(model.userSource.state.stateId in (:locationIds) or model.userTarget.state.stateId in (:locationIds)) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
@@ -134,8 +134,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 			query.append("and ((model.userSource.firstName like '"+nameStr+"%' or model.userSource.lastName like '"+nameStr+"%') or " +
 					"(model.userTarget.firstName like '"+nameStr+"%' or model.userTarget.lastName like '"+nameStr+"%'))");
 		}
-		query.append(" and  model.userSource.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) " +
-	           " and model.userTarget.registrationId in (select model3.user.registrationId from UserRoles model3 where model3.role.roleType = :role ) ");
+		query.append(" and  model.userSource.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) " +
+	           " and model.userTarget.userId in (select model3.user.userId from UserRoles model3 where model3.role.roleType = :role ) ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setParameter("userId", userId);
@@ -147,9 +147,9 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public List<Object> getConnectedUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append("select model.firstName,model.lastName,model.registrationId,model.constituency.name,model.constituency.constituencyId, model ");
-		query.append("from Registration model, UserConnectedto model1 where (model1.userSource.registrationId = :userId or model1.userTarget.registrationId = :userId) and ");
-		query.append("(model.registrationId = model1.userTarget.registrationId or model.registrationId = model1.userSource.registrationId) and model.registrationId != :userId  ");
+		query.append("select model.firstName,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId, model ");
+		query.append("from User model, UserConnectedto model1 where (model1.userSource.userId = :userId or model1.userTarget.userId = :userId) and ");
+		query.append("(model.userId = model1.userTarget.userId or model.userId = model1.userSource.userId) and model.userId != :userId  ");
 		
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append(" and (model1.userSource.state.stateId in (:locationIds) and model1.userTarget.state.stateId in (:locationIds)) ");
@@ -164,7 +164,7 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 					"(model1.userTarget.firstName like '"+nameString+"%' or model1.userTarget.lastName like '"+nameString+"%'))");
 		}
 		
-		query.append(" and model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) order by model.registrationId desc");
+		query.append(" and model.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) order by model.userId desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
@@ -183,8 +183,8 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	public List<Long> getConnectedUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType) 
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select model.registrationId from Registration model, UserConnectedto model1 where (model1.userSource.registrationId = :userId or model1.userTarget.registrationId = :userId) and ");
-		query.append("(model.registrationId = model1.userTarget.registrationId or model.registrationId = model1.userSource.registrationId) and model.registrationId != :userId  ");
+		query.append("select model.userId from User model, UserConnectedto model1 where (model1.userSource.userId = :userId or model1.userTarget.userId = :userId) and ");
+		query.append("(model.userId = model1.userTarget.userId or model.userId = model1.userSource.userId) and model.userId != :userId  ");
 		
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append(" and (model1.userSource.state.stateId in (:locationIds) and model1.userTarget.state.stateId in (:locationIds)) ");
@@ -193,7 +193,7 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
 			query.append(" and (model1.userSource.constituency.constituencyId in (:locationIds) and model1.userTarget.constituency.constituencyId in (:locationIds)) ");
 		}
-		query.append(" and model.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) order by model.registrationId desc");
+		query.append(" and model.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) order by model.userId desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
