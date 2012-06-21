@@ -51,7 +51,8 @@ public class StaticLocalGroup extends BaseModel implements Serializable {
 	private String description;
 	private Date updatedDate;
 	private String groupScope;
-	private Registration user;
+	private User user;
+	private Long userId;
 	private Set<StaticUserDesignation> userDesignation = new HashSet<StaticUserDesignation>(0);
 	
 	//Default constructor
@@ -61,7 +62,7 @@ public class StaticLocalGroup extends BaseModel implements Serializable {
 	
 	//parameterized constructor
 	public StaticLocalGroup(String groupType, String description,
-			Date updatedDate, String groupScope, Registration user,Set<StaticUserDesignation> userDesignation) {
+			Date updatedDate, String groupScope, User user,Set<StaticUserDesignation> userDesignation) {
 		super();
 		this.groupType = groupType;
 		this.description = description;
@@ -123,11 +124,11 @@ public class StaticLocalGroup extends BaseModel implements Serializable {
 	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Registration user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -139,6 +140,15 @@ public class StaticLocalGroup extends BaseModel implements Serializable {
 
 	public void setUserDesignation(Set<StaticUserDesignation> userDesignation) {
 		this.userDesignation = userDesignation;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }
