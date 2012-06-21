@@ -29,7 +29,7 @@ public class UserEventsDAO extends GenericDaoHibernate<UserEvents, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List<UserEvents> findEventsByUserId(Long userId) {
 		Object[] params = {"NO",userId};
-		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.registration.registrationId = ?", params) ;
+		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.user.userId = ?", params) ;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,7 +37,7 @@ public class UserEventsDAO extends GenericDaoHibernate<UserEvents, Long> impleme
 			Date startDate) {
 		
 		Object[] params = {"NO",userId, new SimpleDateFormat("yyyy-MM-dd").format(startDate)};
-		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.registration.registrationId = ? and DATEDIFF(model.startDate, ?) = 0", params) ;
+		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.user.userId = ? and DATEDIFF(model.startDate, ?) = 0", params) ;
 		/*Query query = getSession().createQuery("SELECT  ue.user_event_id, ue.registration.registarion_id, ue.description, ue.location_type, ue.location_id, ue.start_date, ue.end_date, ue.title, ue.is_deleted, " +
 												"CASE " +
 												"WHEN ue.location_type='MANDAL' " +
