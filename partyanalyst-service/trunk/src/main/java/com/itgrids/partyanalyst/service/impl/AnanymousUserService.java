@@ -769,9 +769,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 								candidateVO.setImage(userData.getRecepientId().getProfileImg());
 						}
 						else{
-							AnanymousUser ananyUser = (AnanymousUser)parms[5];
-							if(ananyUser.getProfileImg() != null && !ananyUser.getProfileImg().equals(""))
-								candidateVO.setImage(ananyUser.getProfileImg());	
+					            User user = (User)parms[5];
+							if(user.getProfileImg() != null && !user.getProfileImg().equals(""))
+								candidateVO.setImage(user.getProfileImg());	
 						}					
 					}
 					
