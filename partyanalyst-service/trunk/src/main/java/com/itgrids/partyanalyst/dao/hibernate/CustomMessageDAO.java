@@ -20,13 +20,13 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId,String status){
 		StringBuilder query = new StringBuilder();		
-		query.append(" select model.recepient.registrationId,model.messageType.messageType ");
+		query.append(" select model.recepient.userId,model.messageType.messageType ");
 		query.append(" from CustomMessage model ");
-		query.append(" where model.sender.registrationId = ? and");		
+		query.append(" where model.sender.userId = ? and");		
 		if(!status.equalsIgnoreCase(IConstants.ALL)){
 			query.append(" model.messageType.messageType = ? and");
 		}		
-		query.append(" model.recepient.registrationId in (:userIds)");	
+		query.append(" model.recepient.userId in (:userIds)");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
@@ -43,8 +43,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	public List<CustomMessage> checkForRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId){
 		StringBuilder query = new StringBuilder();				
 		query.append(" from CustomMessage model where ");
-		query.append(" (model.sender.registrationId in (:senderId) and model.recepient.registrationId in (:recipeintId) )");
-		query.append(" or ( model.recepient.registrationId in (:senderId)  and model.sender.registrationId in (:recipeintId) ) ");
+		query.append(" (model.sender.userId in (:senderId) and model.recepient.userId in (:recipeintId) )");
+		query.append(" or ( model.recepient.userId in (:senderId)  and model.sender.userId in (:recipeintId) ) ");
 				
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("senderId", senderId);
@@ -95,8 +95,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate){
 		StringBuilder query = new StringBuilder();				
 		query.append(" update CustomMessage model set model.messageType.messageTypeId = ? where ");
-		query.append(" (model.sender.registrationId in (:senderId) and model.recepient.registrationId in (:recipeintId) )");
-		query.append(" or ( model.recepient.registrationId in (:senderId)  and model.sender.registrationId in (:recipeintId) ) ");
+		query.append(" (model.sender.userId in (:senderId) and model.recepient.userId in (:recipeintId) )");
+		query.append(" or ( model.recepient.userId in (:senderId)  and model.sender.userId in (:recipeintId) ) ");
 	
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, messageTypeId);
@@ -129,8 +129,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	public Long getPendingUsersCountForAUserInAFilterView(Long userId,List<Long> locationIds,String locationType,String nameStr)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.sender.registrationId)");
-		query.append(" from CustomMessage model where model.sender.registrationId = :userId and ");
+		query.append("select count(model.sender.userId)");
+		query.append(" from CustomMessage model where model.sender.userId = :userId and ");
 		query.append("model.messageType.messageType = :messageType  ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append(" and model.recepient.state.stateId in (:locationIds) ");
@@ -143,7 +143,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		{
 			query.append("and (model.recepient.firstName like '"+nameStr+"%' or model.recepient.lastName like '"+nameStr+"%')");
 		}
-		 query.append(" and model.userTarget.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) ");
+		 query.append(" and model.userTarget.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setParameter("userId", userId);
@@ -156,8 +156,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getPendingUsersInSelectedLocations(Long userId, List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.recepient.firstName,model.recepient.lastName,model.recepient.registrationId,model.recepient.constituency.name,model.recepient.constituency.constituencyId, model ");
-		query.append(" from CustomMessage model where model.sender.registrationId = :userId and ");
+		query.append(" select model.recepient.firstName,model.recepient.lastName,model.recepient.userId,model.recepient.constituency.name,model.recepient.constituency.constituencyId, model ");
+		query.append(" from CustomMessage model where model.sender.userId = :userId and ");
 		query.append(" model.messageType.messageType = :messageType and ");
 		
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
@@ -173,7 +173,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 			query.append("and (model.recepient.firstName like '"+nameString+"%' or model.recepient.lastName like '"+nameString+"%')");
 		}
 		
-		query.append("and model.recepient.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role ) order by model.recepient.registrationId ");
+		query.append("and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) order by model.recepient.userId ");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
@@ -192,7 +192,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	public List<Long> getPendingUserIdsInSelectedLocations(Long userId, List<Long> locationIds,String locationType)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.recepient.registrationId from CustomMessage model where model.sender.registrationId = :userId and ");
+		query.append(" select model.recepient.userId from CustomMessage model where model.sender.userId = :userId and ");
 		query.append(" model.messageType.messageType = :messageType  ");
 		
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
@@ -202,7 +202,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
 			query.append(" and model.recepient.constituency.constituencyId in (:locationIds)) ");
 		}
-		query.append(" and model.recepient.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role ) order by model.recepient.registrationId");
+		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) order by model.recepient.userId");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setParameter("userId", userId);
