@@ -75,7 +75,24 @@ public class User extends BaseModel implements Serializable{
 	private Set<SmsTrack> userSmsDetails = new HashSet<SmsTrack>(0);
 	private Set<PoliticalChanges> politicalChanges = new HashSet<PoliticalChanges>(0);
 	private Set<UserCandidateRelation> userCandidateRelation = new HashSet<UserCandidateRelation>(0);
-	 public User(){}
+	private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
+	private Set<UserEvents> userEvents = new HashSet<UserEvents>(0);
+	private Set<UserImpDate> userimpDates = new HashSet<UserImpDate>(0);
+	private Set<FeedBack> feedBacks = new HashSet<FeedBack>(0);
+	private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
+	private Set<UserAnnouncement> userAnnouncements = new HashSet<UserAnnouncement>(0);
+	private Set<UserCandidateRelation> userCandidates = new HashSet<UserCandidateRelation>(0);
+	private Set<UserConstituencyAccessInfo> userAccessedConstituencies = new HashSet<UserConstituencyAccessInfo>(0);
+	private Set<UserDistrictAccessInfo> userAccessedDistricts = new HashSet<UserDistrictAccessInfo>(0);
+	private Set<UserStateAccessInfo> userAccessedStates = new HashSet<UserStateAccessInfo>(0);
+	private Set<UserConstituencyAccessInfo> userAccessedCountries = new HashSet<UserConstituencyAccessInfo>(0);
+	private Set<UserGallary> userGalleries = new HashSet<UserGallary>(0);
+	private Set<UserGroupPrivileges> userGroupPrivileges = new HashSet<UserGroupPrivileges>(0);
+	private Set<UserMappingsHistory> userMappings = new HashSet<UserMappingsHistory>(0);
+	private Set<UserSubuserRelation> userSubUsers = new HashSet<UserSubuserRelation>(0);
+	private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
+	
+	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
 			 String userName, String password,  Date dateOfBirth, String email, String phone,
@@ -540,5 +557,168 @@ public class User extends BaseModel implements Serializable{
 		this.userCandidateRelation = userCandidateRelation;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserEntitlementGroupRegion> getUserEntitlementGroupRegions() {
+		return userEntitlementGroupRegions;
+	}
+
+	public void setUserEntitlementGroupRegions(
+			Set<UserEntitlementGroupRegion> userEntitlementGroupRegions) {
+		this.userEntitlementGroupRegions = userEntitlementGroupRegions;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserEvents> getUserEvents() {
+		return userEvents;
+	}
+
+	public void setUserEvents(Set<UserEvents> userEvents) {
+		this.userEvents = userEvents;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserImpDate> getUserimpDates() {
+		return userimpDates;
+	}
+
+	public void setUserimpDates(Set<UserImpDate> userimpDates) {
+		this.userimpDates = userimpDates;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<FeedBack> getFeedBacks() {
+		return feedBacks;
+	}
+
+	public void setFeedBacks(Set<FeedBack> feedBacks) {
+		this.feedBacks = feedBacks;
+	}
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SmsHistory> getSmsHistory() {
+		return smsHistory;
+	}
+
+	public void setSmsHistory(Set<SmsHistory> smsHistory) {
+		this.smsHistory = smsHistory;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserAnnouncement> getUserAnnouncements() {
+		return userAnnouncements;
+	}
+
+	public void setUserAnnouncements(Set<UserAnnouncement> userAnnouncements) {
+		this.userAnnouncements = userAnnouncements;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserCandidateRelation> getUserCandidates() {
+		return userCandidates;
+	}
+
+	public void setUserCandidates(Set<UserCandidateRelation> userCandidates) {
+		this.userCandidates = userCandidates;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserConstituencyAccessInfo> getUserAccessedConstituencies() {
+		return userAccessedConstituencies;
+	}
+
+	public void setUserAccessedConstituencies(
+			Set<UserConstituencyAccessInfo> userAccessedConstituencies) {
+		this.userAccessedConstituencies = userAccessedConstituencies;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserDistrictAccessInfo> getUserAccessedDistricts() {
+		return userAccessedDistricts;
+	}
+
+	public void setUserAccessedDistricts(
+			Set<UserDistrictAccessInfo> userAccessedDistricts) {
+		this.userAccessedDistricts = userAccessedDistricts;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserStateAccessInfo> getUserAccessedStates() {
+		return userAccessedStates;
+	}
+
+	public void setUserAccessedStates(Set<UserStateAccessInfo> userAccessedStates) {
+		this.userAccessedStates = userAccessedStates;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserConstituencyAccessInfo> getUserAccessedCountries() {
+		return userAccessedCountries;
+	}
+
+	public void setUserAccessedCountries(
+			Set<UserConstituencyAccessInfo> userAccessedCountries) {
+		this.userAccessedCountries = userAccessedCountries;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserGallary> getUserGalleries() {
+		return userGalleries;
+	}
+
+	public void setUserGalleries(Set<UserGallary> userGalleries) {
+		this.userGalleries = userGalleries;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserGroupPrivileges> getUserGroupPrivileges() {
+		return userGroupPrivileges;
+	}
+
+	public void setUserGroupPrivileges(Set<UserGroupPrivileges> userGroupPrivileges) {
+		this.userGroupPrivileges = userGroupPrivileges;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserMappingsHistory> getUserMappings() {
+		return userMappings;
+	}
+
+	public void setUserMappings(Set<UserMappingsHistory> userMappings) {
+		this.userMappings = userMappings;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserSubuserRelation> getUserSubUsers() {
+		return userSubUsers;
+	}
+
+	public void setUserSubUsers(Set<UserSubuserRelation> userSubUsers) {
+		this.userSubUsers = userSubUsers;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserReferralEmails> getUserReferralEmails() {
+		return userReferralEmails;
+	}
+
+	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
+		this.userReferralEmails = userReferralEmails;
+	}
+
 }
