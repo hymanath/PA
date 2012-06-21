@@ -28,17 +28,17 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	private Long userStateAccessInfoId;
 	private State state ;
 	private User user;
+	private Long userId;
+	private Long stateId;
 	
 	public UserStateAccessInfo(){
 		
 	}
 	
-	public UserStateAccessInfo(Long userStateAccessInfoId,
-			User user, State state) {
+	public UserStateAccessInfo(Long userId, Long stateId) {
 		super();
-		this.userStateAccessInfoId = userStateAccessInfoId;
-		this.user = user;
-		this.state = state;
+		this.userId = userId;
+		this.stateId = stateId;
 	}
 
 	@Id
@@ -53,7 +53,7 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "state_id")
+	@JoinColumn(name = "state_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public State getState() {
@@ -65,7 +65,7 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -74,6 +74,24 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	@Column(name = "state_id", length = 10)
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 	
 

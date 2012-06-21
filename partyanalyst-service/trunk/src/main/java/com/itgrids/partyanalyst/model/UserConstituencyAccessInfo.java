@@ -26,17 +26,14 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	private Long userConstituencyAccessInfoId;
 	private Constituency constituency ;
 	private User user;
+	private Long userId;
+	private Long constituencyId;
 	
-	public UserConstituencyAccessInfo(){
-		
-	}
+	public UserConstituencyAccessInfo(){}
 	
-	public UserConstituencyAccessInfo(Long userConstituencyAccessInfoId,
-			User user, Constituency constituency) {
-		super();
-		this.userConstituencyAccessInfoId = userConstituencyAccessInfoId;
-		this.user = user;
-		this.constituency = constituency;
+	public UserConstituencyAccessInfo(Long userId, Long constituencyId) {
+		this.userId = userId;
+		this.constituencyId = constituencyId;
 	}
 
 	@Id
@@ -51,7 +48,7 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "constituency_id")
+	@JoinColumn(name = "constituency_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Constituency getConstituency() {
@@ -63,7 +60,7 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -72,6 +69,24 @@ public class UserConstituencyAccessInfo extends BaseModel{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	@Column(name = "constituency_id", length = 10)
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

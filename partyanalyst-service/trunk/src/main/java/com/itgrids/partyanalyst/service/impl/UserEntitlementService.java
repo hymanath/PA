@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementRelationDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupsDAO;
@@ -38,15 +38,15 @@ public class UserEntitlementService implements IUserEntitlementService {
 	private IUserGroupEntitlementDAO userGroupEntitlementDAO;
 	private IUserGroupsDAO userGroupsDAO;
 	private IUserGroupRelationDAO userGroupRelationDAO;
-	private IRegistrationDAO registrationDAO;
+	private IUserDAO userDAO;
 	private final static Logger log = Logger.getLogger(UserEntitlementService.class);
 	
 
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
+	public IUserDAO getUserDAO() {
+		return userDAO;
 	}
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 	public IUserGroupRelationDAO getUserGroupRelationDAO() {
 		return userGroupRelationDAO;
@@ -495,7 +495,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 					if(!userIdsAndGroupIds.containsKey(id)){
 						j++;
 						UserGroupRelation relation = new UserGroupRelation();
-						//relation.setUser(registrationDAO.get(userId));
+						relation.setUser(userDAO.get(userId));
 						relation.setUserGroup(userGroupsDAO.get(id));
 						relation = userGroupRelationDAO.save(relation);	
 					}

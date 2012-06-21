@@ -16,15 +16,14 @@ import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.UserAccessRegionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.UserConstituencyAccessInfo;
+import com.itgrids.partyanalyst.model.UserCountryAccessInfo;
+import com.itgrids.partyanalyst.model.UserDistrictAccessInfo;
+import com.itgrids.partyanalyst.model.UserStateAccessInfo;
 import com.itgrids.partyanalyst.service.IUserAccessRegionService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.model.UserCountryAccessInfo;
-import com.itgrids.partyanalyst.model.UserStateAccessInfo;
-import com.itgrids.partyanalyst.model.UserDistrictAccessInfo;
-import com.itgrids.partyanalyst.model.UserConstituencyAccessInfo;
 
 
 public class UserAccessRegionService implements IUserAccessRegionService{
@@ -37,21 +36,7 @@ private ICountryDAO countryDAO;
 private IStateDAO stateDAO;
 private IDistrictDAO districtDAO;
 private IConstituencyDAO constituencyDAO;
-private IRegistrationDAO registrationDAO;
 private IUserDAO userDAO;
-
-
-
-
-public IRegistrationDAO getRegistrationDAO() {
-	return registrationDAO;
-}
-
-
-public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-	this.registrationDAO = registrationDAO;
-}
-
 
 public IConstituencyDAO getConstituencyDAO() {
 	return constituencyDAO;
@@ -147,7 +132,8 @@ public void setUserDAO(IUserDAO userDAO) {
 }
 
 
-public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
+public UserAccessRegionVO getAccessDetailsByUserId(Long userId)
+{
 	UserAccessRegionVO userAccessRegionVO = null;
 	List<UserAccessRegionVO> country = new ArrayList<UserAccessRegionVO>();
 	List<UserAccessRegionVO> state = new ArrayList<UserAccessRegionVO>();
@@ -197,7 +183,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 	
 	return userAccRegVO;
 }
-    public UserAccessRegionVO getCountryDetails(){
+    public UserAccessRegionVO getCountryDetails()
+    {
     	UserAccessRegionVO userAccessRegionVO = null;
     	
     	List<UserAccessRegionVO> country = new ArrayList<UserAccessRegionVO>();
@@ -214,7 +201,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
     	return userAccRegVO;
     }
     
-    public UserAccessRegionVO getStateDetailForDistrictAndAssConstituency(Long userId){
+    public UserAccessRegionVO getStateDetailForDistrictAndAssConstituency(Long userId)
+    {
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> state = new ArrayList<UserAccessRegionVO>();
     	UserAccessRegionVO userAccRegVO = new UserAccessRegionVO();
@@ -232,7 +220,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
     	return userAccRegVO;
     	
     }
-    public UserAccessRegionVO getDistrictDetailsByStateIdUserId(Long stateId,Long userId){
+    public UserAccessRegionVO getDistrictDetailsByStateIdUserId(Long stateId,Long userId)
+    {
     	 
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> district = new ArrayList<UserAccessRegionVO>();
@@ -280,7 +269,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 		}
     }
     
-    public UserAccessRegionVO getCountryDetailsByUserId(Long userId){
+    public UserAccessRegionVO getCountryDetailsByUserId(Long userId)
+    {
     	
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> country = new ArrayList<UserAccessRegionVO>();
@@ -327,7 +317,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 		}
     }
     
-    public UserAccessRegionVO getStateDetailsByUserId(Long userId){
+    public UserAccessRegionVO getStateDetailsByUserId(Long userId)
+    {
        	UserAccessRegionVO userAccRegVO = new UserAccessRegionVO();
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> state = new ArrayList<UserAccessRegionVO>();
@@ -374,7 +365,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
     		return userAccRegVO;
 		}
    }
-    public UserAccessRegionVO getAssemblyConsDetailsByStateIdUserId(Long stateId,Long userId){
+    public UserAccessRegionVO getAssemblyConsDetailsByStateIdUserId(Long stateId,Long userId)
+    {
     	
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> constituency = new ArrayList<UserAccessRegionVO>();
@@ -421,7 +413,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
     		return userAccRegVO;
 		}
       }
-    public UserAccessRegionVO getParliConsDetailsByUserId(Long userId){
+    public UserAccessRegionVO getParliConsDetailsByUserId(Long userId)
+    {
     	
     	UserAccessRegionVO userAccessRegionVO = null;
     	List<UserAccessRegionVO> constituency = new ArrayList<UserAccessRegionVO>();
@@ -468,7 +461,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 		}
      }
     
-    public UserAccessRegionVO saveUserCountryAccessDetail(Long userId,String countryIds){
+    public UserAccessRegionVO saveUserCountryAccessDetail(Long userId,String countryIds)
+    {
     	UserAccessRegionVO userAccessRegionVO = new UserAccessRegionVO();
     	List<String> elements = null;		
 		try{
@@ -483,9 +477,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 					Long id = new Long(elements.get(i));
 					UserCountryAccessInfo userCountryAccessInfo = new UserCountryAccessInfo();
-					//userCountryAccessInfo.setUser(registrationDAO.get(userId));
-					userCountryAccessInfo.setUser(userDAO.get(userId));
-					userCountryAccessInfo.setCountry(countryDAO.get(id));
+					userCountryAccessInfo.setUserId(userId);
+					userCountryAccessInfo.setCountryId(id);
 					userCountryAccessInfoDAO.save(userCountryAccessInfo);
 					}
 				}
@@ -511,9 +504,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 					userDistrictAccessInfoDAO.deleteDistrictAccessByUserIdStateId(userId,id);
 					userConstituencyAccessInfoDAO.deleteAllConstituencyAccessByUserIdStateId(userId,id);
 					UserStateAccessInfo userStateAccessInfo = new UserStateAccessInfo();
-					//userStateAccessInfo.setUser(registrationDAO.get(userId));
-                    userStateAccessInfo.setUser(userDAO.get(userId));
-					userStateAccessInfo.setState(stateDAO.get(id));
+                    userStateAccessInfo.setUserId(userId);
+					userStateAccessInfo.setStateId(id);
 					userStateAccessInfoDAO.save(userStateAccessInfo);
 					}
 				}	
@@ -539,9 +531,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 					Long id = new Long(elements.get(i));
 					userConstituencyAccessInfoDAO.deleteAllAssemblyAccessByScopeStateIdUserIdDistrictId(2L,userId,stateId,id);
 					UserDistrictAccessInfo userDistrictAccessInfo = new UserDistrictAccessInfo();
-					//userDistrictAccessInfo.setUser(registrationDAO.get(userId));
-					userDistrictAccessInfo.setUser(userDAO.get(userId));
-					userDistrictAccessInfo.setDistrict(districtDAO.get(id));
+					userDistrictAccessInfo.setUserId(userId);
+					userDistrictAccessInfo.setDistrictId(id);
 					userDistrictAccessInfoDAO.save(userDistrictAccessInfo);
 					}
 				}	
@@ -563,9 +554,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 				Long id = new Long(elements.get(i));
 				UserConstituencyAccessInfo  userConstituencyAccessInfo = new UserConstituencyAccessInfo();
-				//userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
-				userConstituencyAccessInfo.setUser(userDAO.get(userId));
-				userConstituencyAccessInfo.setConstituency(constituencyDAO.get(id));
+				userConstituencyAccessInfo.setUserId(userId);
+				userConstituencyAccessInfo.setConstituencyId(id);
 				userConstituencyAccessInfoDAO.save(userConstituencyAccessInfo);
 					}
 				}	
@@ -588,9 +578,8 @@ public UserAccessRegionVO getAccessDetailsByUserId(Long userId){
 				for(int i=0;i<elements.size();i++){
 					Long id = new Long(elements.get(i));
 					UserConstituencyAccessInfo  userConstituencyAccessInfo = new UserConstituencyAccessInfo();
-					//userConstituencyAccessInfo.setUser(registrationDAO.get(userId));
-					userConstituencyAccessInfo.setUser(userDAO.get(userId));
-					userConstituencyAccessInfo.setConstituency(constituencyDAO.get(id));
+					userConstituencyAccessInfo.setUserId(userId);
+					userConstituencyAccessInfo.setConstituencyId(id);
 					userConstituencyAccessInfoDAO.save(userConstituencyAccessInfo);
 				
 				}
