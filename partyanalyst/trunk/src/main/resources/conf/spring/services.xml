@@ -26,7 +26,7 @@
 		<property name="groupEntitlementRelationDAO" ref="groupEntitlementRelationDAO" />	
 		<property name="userGroupEntitlementDAO" ref="userGroupEntitlementDAO" />		
 		<property name="userGroupRelationDAO" ref="userGroupRelationDAO" />			
-		<property name="registrationDAO" ref="registrationDAO" />	
+		<property name="userDAO" ref="userDAO" />	
 		<property name="userGroupsDAO" ref="userGroupsDAO" />			
 	</bean>  
 	
@@ -973,7 +973,6 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 	</bean>
 	
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
