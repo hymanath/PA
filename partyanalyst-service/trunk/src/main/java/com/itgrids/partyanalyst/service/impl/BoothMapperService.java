@@ -16,7 +16,7 @@ import com.itgrids.partyanalyst.dao.IBoothVillageDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserMappingsHistoryDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -42,9 +42,17 @@ public class BoothMapperService implements IBoothMapperService{
 	private IBoothVillageDAO boothVillageDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;	
 	private IUserMappingsHistoryDAO userMappingsHistoryDAO;
-	private IRegistrationDAO registrationDAO;
 	private IDateService dateService;
+	private IUserDAO userDAO;
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -120,14 +128,6 @@ public class BoothMapperService implements IBoothMapperService{
 	public void setUserMappingsHistoryDAO(
 			IUserMappingsHistoryDAO userMappingsHistoryDAO) {
 		this.userMappingsHistoryDAO = userMappingsHistoryDAO;
-	}	
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}	
 
 	public IDateService getDateService() {
@@ -346,7 +346,7 @@ public class BoothMapperService implements IBoothMapperService{
 	
 		String message = null;
 		UserMappingsHistory userMappingsHistory = new UserMappingsHistory();
-		userMappingsHistory.setUser(registrationDAO.get(userId));
+		userMappingsHistory.setUser(userDAO.get(userId));
 		userMappingsHistory.setTableName(tableName);
 		userMappingsHistory.setLastUpdated(new Date());
 		userMappingsHistory.setNoOfRowsDeleted(Long.parseLong(noOfRowsDeleted+""));
