@@ -59,8 +59,8 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	public List<CustomMessage> checkForRelationBetweenUsersBasedOnType(List<Long> senderId,List<Long> recipeintId,String type){
 		StringBuilder query = new StringBuilder();				
 		query.append("  from CustomMessage model where model.messageType.messageType = ? and");
-		query.append(" (model.sender.registrationId in (:senderId) and model.recepient.registrationId in (:recipeintId) )");
-		query.append(" or (model.sender.registrationId in (:recipeintId) and model.recepient.registrationId in (:senderId) ) ");	
+		query.append(" (model.sender.userId in (:senderId) and model.recepient.userId in (:recipeintId) )");
+		query.append(" or (model.sender.userId in (:recipeintId) and model.recepient.userId in (:senderId) ) ");	
 	
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -73,15 +73,15 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		return queryObject.list();
 	}
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType){
 		StringBuilder query = new StringBuilder();				
-		query.append(" select model.subject, model.sender.registrationId, model.sender.firstName, model.sender.lastName, ");
+		query.append(" select model.subject, model.sender.userId, model.sender.firstName, model.sender.lastName, ");
 		query.append(" model.sender.state.stateName, model.sender.district.districtName, model.sender.constituency.name, " +
-				"model.customMessageId, model.status, model.sentDate, model.recepient.registrationId from CustomMessage");//7,8,9
-		query.append(" model where model.messageType.messageType = ? and model.recepient.registrationId in (:senderId)");
-		query.append(" and model.recepient.registrationId in (select model1.user.registrationId from UserRoles model1 where model1.role.roleType = :role ) ");
-		query.append(" and model.sender.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) ");
+				"model.customMessageId, model.status, model.sentDate, model.recepient.userId from CustomMessage");//7,8,9
+		query.append(" model where model.messageType.messageType = ? and model.recepient.userId in (:senderId)");
+		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) ");
+		query.append(" and model.sender.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
 		query.append(" order by model.customMessageId desc ");
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setString(0,messageType);
@@ -89,7 +89,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		queryObject.setParameter("role", IConstants.FREE_USER);
 		
 		return queryObject.list();
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate){
