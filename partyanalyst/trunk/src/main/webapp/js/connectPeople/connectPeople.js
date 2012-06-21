@@ -1140,8 +1140,8 @@ function buildPeopleYouMayKnowContent()
 		str += '	</div>';	
 	}else{
 		str += '	<div style="text-align:left;padding:5px 20px 5px 5px;">';
-		str += '	Right now there are no friend suggestion for ';
-		str += '	we will get back with more suggesstions as soon as possible.. ';
+		str += '	Right now there are no friend suggestion for you.';
+		str += '	We will get back with more suggesstions as soon as possible.. ';
 		str += '	</div>';	
 	}	
 	str += '</div>';
