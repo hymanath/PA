@@ -50,10 +50,10 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllConnectedPeopleForUser(List<Long> senderId){
 		StringBuilder query = new StringBuilder();	
-		query.append(" select model.userSource.registrationId,model.userTarget.registrationId from UserConnectedto model where ");
-		query.append(" (model.userSource.registrationId in (:senderId) or  model.userTarget.registrationId in (:senderId)) ");	
-		query.append(" and model.userSource.registrationId in (select model2.user.registrationId from UserRoles model2 where model2.role.roleType = :role ) ");
-		query.append(" and model.userTarget.registrationId in (select model3.user.registrationId from UserRoles model3 where model3.role.roleType = :role ) ");
+		query.append(" select model.userSource.userId,model.userTarget.userId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (:senderId) or  model.userTarget.userId in (:senderId)) ");	
+		query.append(" and model.userSource.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
+		query.append(" and model.userTarget.userId in (select model3.user.userId from UserRoles model3 where model3.role.roleType = :role ) ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("senderId", senderId);
 		queryObject.setParameterList("senderId", senderId);
