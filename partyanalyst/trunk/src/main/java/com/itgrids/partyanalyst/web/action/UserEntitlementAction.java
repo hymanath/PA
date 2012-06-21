@@ -189,11 +189,11 @@ ServletRequestAware, ServletContextAware{
 	public String execute(){
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ENTITLEMENT_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ENTITLEMENT_PAGE))
-			return ERROR;
+			return ERROR;*/
 		
 		allRegisteredUsersData = registrationService.getAllRegisterdUsers();
 		allEntitlements = userEntitlementService.getAllEntitlements();
