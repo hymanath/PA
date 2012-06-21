@@ -14,44 +14,12 @@ public class UserGroupPrivilegesDAO extends GenericDaoHibernate<UserGroupPrivile
 	public UserGroupPrivilegesDAO()
 	{
 		super(UserGroupPrivileges.class);
-		System.out.println("hello");
 	}
+	
 	@SuppressWarnings("unchecked")
-	public List<UserGroupPrivileges> findByUserGroupPrivilegeId(
-			Long userGroupPrivilegeId) {
-		
-		List<UserGroupPrivileges>userGroupPrivileges=getHibernateTemplate().find("from UserGroupPrivileges model where model.userGroupPrivilegeId= ?",userGroupPrivilegeId);
-		return userGroupPrivileges;
-	}
-
-	@Override
-	public boolean exists(Long arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public UserGroupPrivileges get(Long arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<UserGroupPrivileges> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(Long arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public UserGroupPrivileges save(UserGroupPrivileges arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserGroupPrivileges> findByUserGroupPrivilegeId(Long userGroupPrivilegeId)
+	{
+		return getHibernateTemplate().find("from UserGroupPrivileges model where model.userGroupPrivilegeId= ?",userGroupPrivilegeId);
 	}
 
 }
