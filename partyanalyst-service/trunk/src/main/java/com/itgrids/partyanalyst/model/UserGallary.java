@@ -32,6 +32,8 @@ public class UserGallary implements Serializable{
 	private static final long serialVersionUID = 4116973597357848823L;
 	private Long userGallaryId;
 	private Registration registration;
+	private User user;
+	private Long userId;
 	private Gallary gallary;
 	
 	public UserGallary()
@@ -76,6 +78,27 @@ public class UserGallary implements Serializable{
 
 	public void setGallary(Gallary gallary) {
 		this.gallary = gallary;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	
