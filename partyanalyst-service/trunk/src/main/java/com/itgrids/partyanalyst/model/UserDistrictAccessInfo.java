@@ -26,17 +26,17 @@ public class UserDistrictAccessInfo extends BaseModel{
 	private Long userDistrictAccessInfoId;
 	private District district ;
 	private User user;
+	private Long userId;
+	private Long districtId;
 	
 	public UserDistrictAccessInfo(){
 		
 	}
 	
-	public UserDistrictAccessInfo(Long userDistrictAccessInfoId,
-			User user, District district) {
+	public UserDistrictAccessInfo(Long userId, Long districtId) {
 		super();
-		this.userDistrictAccessInfoId = userDistrictAccessInfoId;
-		this.user = user;
-		this.district = district;
+		this.userId = userId;
+		this.districtId = districtId;
 	}
 
 	@Id
@@ -51,7 +51,7 @@ public class UserDistrictAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "district_id")
+	@JoinColumn(name = "district_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public District getDistrict() {
@@ -63,7 +63,7 @@ public class UserDistrictAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -72,6 +72,24 @@ public class UserDistrictAccessInfo extends BaseModel{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	@Column(name = "district_id", length = 10)
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 	
 

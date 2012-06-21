@@ -25,15 +25,15 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 
 	@SuppressWarnings("unchecked")
 	public List<UserGroupRelation> findByUserId(Long userId) {
-		return getHibernateTemplate().find("from UserGroupRelation model where model.user.registrationId = ?",userId);
+		return getHibernateTemplate().find("from UserGroupRelation model where model.user.userId = ?",userId);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List checkTheRelationBetweenUserAndGroup(Long userId) {
 		
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.userGroup.userGroupId,model.user.registrationId from UserGroupRelation model ");
-		query.append(" where model.user.registrationId = ? ");
+		query.append(" select model.userGroup.userGroupId,model.user.userId from UserGroupRelation model ");
+		query.append(" where model.user.userId = ? ");
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		queryObject.setLong(0,userId);		
@@ -46,7 +46,7 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		
 		StringBuilder query = new StringBuilder();
 		query.append(" delete from UserGroupRelation model ");
-		query.append(" where model.user.registrationId = ? ");
+		query.append(" where model.user.userId = ? ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, userId);
 		return queryObject.executeUpdate();

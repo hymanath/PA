@@ -27,17 +27,14 @@ public class UserCountryAccessInfo extends BaseModel{
 	private Long userCountryAccessInfoId;
 	private Country country ;
 	private User user;
+	private Long userId;
+	private Long countryId;
 	
-	public UserCountryAccessInfo(){
-		
-	}
+	public UserCountryAccessInfo(){}
 	
-	public UserCountryAccessInfo(Long userCountryAccessInfoId,
-			User user, Country country) {
-		super();
-		this.userCountryAccessInfoId = userCountryAccessInfoId;
-		this.user = user;
-		this.country = country;
+	public UserCountryAccessInfo(Long userId, Long countryId) {
+		this.userId = userId;
+		this.countryId = countryId;
 	}
 
 	@Id
@@ -52,7 +49,7 @@ public class UserCountryAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "country_id")
+	@JoinColumn(name = "country_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Country getCountry() {
@@ -65,7 +62,7 @@ public class UserCountryAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -74,6 +71,24 @@ public class UserCountryAccessInfo extends BaseModel{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	@Column(name = "user_id", length = 10)
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	@Column(name = "country_id", length = 10)
+	public Long getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(Long countryId) {
+		this.countryId = countryId;
 	}
 	
 	
