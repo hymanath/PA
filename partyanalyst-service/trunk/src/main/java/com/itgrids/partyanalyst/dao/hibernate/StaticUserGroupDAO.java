@@ -26,7 +26,7 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 		Object [] params = {registrationId, groupId};
 		return getHibernateTemplate().find("select model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId," +
 				" model.staticUser.address,model.staticUser.location,model.staticUser.designation,model.staticUser.phoneNumber" +
-				" from StaticUserGroup model where model.personalUserGroup.createdUserId.registrationId= ? " +
+				" from StaticUserGroup model where model.personalUserGroup.user.userId= ? " +
 				" and model.personalUserGroup.personalUserGroupId = ?",params);
 		}
 	
