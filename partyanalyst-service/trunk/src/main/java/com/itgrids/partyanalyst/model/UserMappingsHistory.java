@@ -47,7 +47,7 @@ public class UserMappingsHistory extends BaseModel implements Serializable {
 	   * Holds the user object . 
 	   *
 	   */
-	private Registration user;
+	private User user;
 	/**
 	   * Holds the database table name in which modifications took place. 
 	   *
@@ -75,7 +75,7 @@ public class UserMappingsHistory extends BaseModel implements Serializable {
 		super();		
 	}
 
-	public UserMappingsHistory(Long userMappingsHistoryId, Registration user,
+	public UserMappingsHistory(Long userMappingsHistoryId, User user,
 			String tableName, Date lastUpdated, Long noOfRowsUpdated,
 			Long noOfRowsDeleted) {
 		super();
@@ -101,11 +101,11 @@ public class UserMappingsHistory extends BaseModel implements Serializable {
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	 
-	public Registration getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Registration user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
