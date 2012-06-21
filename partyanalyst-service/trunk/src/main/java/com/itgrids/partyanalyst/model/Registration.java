@@ -48,20 +48,15 @@ public class Registration implements java.io.Serializable {
 	 private String accessType;
 	 private String accessValue;
 	 private UserCategory userCategory;
-	 private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	 private String userType;
 	 private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	 private Party party;
 	 private String includePartyImpDateStatus;
-	 private Set<UserEvents> userEvents = new HashSet<UserEvents>(0);
-	 private Set<UserImpDate> userImpDates = new HashSet<UserImpDate>(0);
 	 private Set<UserGroupPrivileges> readWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
 	 private Set<UserGroupPrivileges> writeWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
-	 private Set<InfluencingPeople> influencingPeople = new HashSet<InfluencingPeople>(0);
 	 private Registration parentUser;
 	 private Set<Registration> subUsers = new HashSet<Registration>(0);
 	 private Registration mainAccountUser;
-	 private Set<UserAnnouncement> userAnnouncement = new HashSet<UserAnnouncement>(0);
 	 private Set<Registration> totalSubUsers = new HashSet<Registration>(0);
 	 
 	public Registration() {
@@ -73,7 +68,7 @@ public class Registration implements java.io.Serializable {
 			Date dateOfBirth, String email, String phone, String mobile,
 			String address, String gender, String country, String pincode, String accessType, String accessValue,
 			Party party,String includePartyImpDateStatus,
-			Set<UserEvents> userEvents, String userType) {
+			String userType) {
 		super();
 		this.firstName = firstName;
 		this.middleName = middleName;
@@ -92,7 +87,6 @@ public class Registration implements java.io.Serializable {
 		this.accessValue = accessValue;
 		this.party = party;
 		this.includePartyImpDateStatus = includePartyImpDateStatus;
-		this.userEvents = userEvents;
 		this.userType = userType;
 	}
 
@@ -303,25 +297,6 @@ public class Registration implements java.io.Serializable {
 		this.includePartyImpDateStatus = includePartyImpDateStatus;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserEvents> getUserEvents() {
-	return userEvents;
-	}
-
-	public void setUserEvents(Set<UserEvents> userEvents) {
-		this.userEvents = userEvents;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserImpDate> getUserImpDates() {
-		return userImpDates;
-	}
-
-	public void setUserImpDates(Set<UserImpDate> userImpDates) {
-		this.userImpDates = userImpDates;
-	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_category_id")
@@ -355,28 +330,6 @@ public class Registration implements java.io.Serializable {
 		this.writeWriteUserPrevilegesSet = writeWriteUserPrevilegesSet;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserGroupRelation> getUserGroupRelations() {
-		return userGroupRelations;
-	}
-
-	public void setUserGroupRelations(Set<UserGroupRelation> userGroupRelations) {
-		this.userGroupRelations = userGroupRelations;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<InfluencingPeople> getInfluencingPeople() {
-		return influencingPeople;
-	}
-
-	public void setInfluencingPeople(Set<InfluencingPeople> influencingPeople) {
-		this.influencingPeople = influencingPeople;
-	}
-
-
-	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -400,15 +353,6 @@ public class Registration implements java.io.Serializable {
 	}
 
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	public Set<UserAnnouncement> getUserAnnouncement() {
-		return userAnnouncement;
-	}
-
-	public void setUserAnnouncement(Set<UserAnnouncement> userAnnouncement) {
-		this.userAnnouncement = userAnnouncement;
-	}
-
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="main_account_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
