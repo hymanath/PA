@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserEventActionPlanDAO;
 import com.itgrids.partyanalyst.dao.IUserEventsDAO;
 import com.itgrids.partyanalyst.dao.IUserImpDatesDAO;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
 import com.itgrids.partyanalyst.model.UserImpDate;
@@ -66,6 +68,7 @@ public class UserCalendarService implements IUserCalendarService {
 	private IPartyImportantDatesDAO partyImportantDatesDAO;
 	private IUserImpDatesDAO userImpDatesDAO;
 	private TransactionTemplate transactionTemplate;
+	private IUserDAO userDAO;
 
 	private final static Logger log = Logger.getLogger(UserCalendarService.class);
 	
@@ -128,6 +131,17 @@ public class UserCalendarService implements IUserCalendarService {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate){
 		this.transactionTemplate = transactionTemplate;
 	}
+	
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+
 	private Long userID;
 	private String partySubscribeImpDates;
 	public void userSubscribePartyImpDates(Long userID, String partySubscribeImpDates){
@@ -136,9 +150,10 @@ public class UserCalendarService implements IUserCalendarService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus txStatus) {
 				try{
-					Registration user = registrationDAO.get(UserCalendarService.this.userID);
+					User user = userDAO.get(UserCalendarService.this.userID);
 					user.setIncludePartyImpDateStatus(UserCalendarService.this.partySubscribeImpDates);
-					user = registrationDAO.save(user);
+					user = userDAO.save(user);
+					
 				}catch(Exception ex){
 					
 				}
@@ -580,8 +595,9 @@ private UserEventVO saveUserPlannedEvents;
 	private UserEvents convertDTO2UserEvents(UserEventVO userPlannedEvents){
 		UserEvents userEvents = new UserEvents();
 		userEvents.setUserEventsId(userPlannedEvents.getUserEventsId());
-		Registration user = registrationDAO.get(userPlannedEvents.getUserID());
-		userEvents.setRegistration(user);
+		//Registration user = registrationDAO.get(userPlannedEvents.getUserID());
+		User user = userDAO.get(userPlannedEvents.getUserID());
+		userEvents.setUser(user);
 		userEvents.setTitle(userPlannedEvents.getTitle());
 		userEvents.setDescription(userPlannedEvents.getDescription());
 		userEvents.setLocationType(userPlannedEvents.getLocationType());
@@ -628,7 +644,7 @@ private UserEventVO saveUserPlannedEvents;
 	private UserEventVO convertUserEvents2DTO(UserEvents userEvent){
 		UserEventVO userEventVO = new UserEventVO();
 		userEventVO.setUserEventsId(userEvent.getUserEventsId());
-		userEventVO.setUserID(userEvent.getRegistration().getRegistrationId());
+		userEventVO.setUserID(userEvent.getUser().getUserId());
 		userEventVO.setDescription(userEvent.getDescription());
 		userEventVO.setLocationId(userEvent.getLocationId());
 		userEventVO.setLocationType(userEvent.getLocationType());
