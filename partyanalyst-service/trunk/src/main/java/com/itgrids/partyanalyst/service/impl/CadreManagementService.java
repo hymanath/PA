@@ -2188,7 +2188,8 @@ public class CadreManagementService {
 			}
 			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 			cadreInfo.setStrCadreLevelValue(levelValue);
-			if (IConstants.USER_TYPE_PARTY.equals(cadre.getRegistration().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
+			//if (IConstants.USER_TYPE_PARTY.equals(cadre.getRegistration().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
+			if (IConstants.USER_TYPE_PARTY.equals(cadre.getUser().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
 										
 					//set party committee and designation and duration
 				    if(cadre.getDesignation() !=  null){
@@ -4429,7 +4430,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 			for(Long id:cadreIds)
 			{
-				Cadre cadre = cadreDAO.get(id);
+				//Cadre cadre = cadreDAO.get(id);
+				Cadre cadre = cadreDAO.getCadreByCadreId(id);
 				CadreInfo cadreInfo = new CadreInfo();
 				
 				cadreInfo.setCadreId(cadre.getCadreId().toString());
