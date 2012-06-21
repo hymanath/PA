@@ -39,8 +39,8 @@ public class UserGroupPrivileges implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long userGroupPrivilegeId;
 	private PersonalUserGroup personalUserGroup;
-	private Registration readRightUserId;
-	private Registration writeRightUserId;
+	private User readRightUser;
+	private User writeRightUser;
 	private Date updatedDate;
 	private Date createdDate;
 
@@ -56,13 +56,13 @@ public class UserGroupPrivileges implements Serializable {
 	}
 
 	public UserGroupPrivileges(Long userGroupPrivilegeId,
-			PersonalUserGroup personalUserGroup, Registration readRightUserId,
-			Registration writeRightUserId, Date createdDate, Date updatedDate) {
+			PersonalUserGroup personalUserGroup, User readRightUser,
+			User writeRightUser, Date createdDate, Date updatedDate) {
 
 		this.userGroupPrivilegeId = userGroupPrivilegeId;
 		this.personalUserGroup = personalUserGroup;
-		this.readRightUserId = readRightUserId;
-		this.writeRightUserId = writeRightUserId;
+		this.readRightUser = readRightUser;
+		this.writeRightUser = writeRightUser;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
@@ -90,30 +90,6 @@ public class UserGroupPrivileges implements Serializable {
 		this.personalUserGroup = personalUserGroup;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "read_right_user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getReadRightUserId() {
-		return readRightUserId;
-	}
-
-	public void setReadRightUserId(Registration readRightUserId) {
-		this.readRightUserId = readRightUserId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "write_right_user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getWriteRightUserId() {
-		return writeRightUserId;
-	}
-
-	public void setWriteRightUserId(Registration writeRightUserId) {
-		this.writeRightUserId = writeRightUserId;
-	}
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_date")
 	public Date getUpdatedDate() {
@@ -132,6 +108,30 @@ public class UserGroupPrivileges implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="read_right_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getReadRightUser() {
+		return readRightUser;
+	}
+
+	public void setReadRightUser(User readRightUser) {
+		this.readRightUser = readRightUser;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="write_right_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getWriteRightUser() {
+		return writeRightUser;
+	}
+
+	public void setWriteRightUser(User writeRightUser) {
+		this.writeRightUser = writeRightUser;
 	}
 
 }
