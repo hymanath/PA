@@ -73,11 +73,11 @@ public class UserCountryAccessInfo extends BaseModel{
 		this.user = user;
 	}
 
+	@Column(name = "user_id", length = 10)
 	public Long getUserId() {
 		return userId;
 	}
 
-	@Column(name = "user_id", length = 10)
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}

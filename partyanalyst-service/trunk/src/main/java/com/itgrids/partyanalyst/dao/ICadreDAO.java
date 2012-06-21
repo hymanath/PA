@@ -147,13 +147,13 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadreDetailsNotAssignedToBoothInWard(Long wardId,Long userId, String cadreType);
 	public List<Cadre> findCadreDetailsAssignedToBoothInWard(Long wardId, Long userId, String cadreType);
 	public List findCadresByBoothInWard(Long wardId, Long userId, String cadreType);
-	public List<Object[]> findActiveCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
-	public List<Object[]> findNormalCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
-	public List<Object[]> findNormalCadre(Long registrationId);
+	public List<Object[]> findActiveCadreForSMS(Long userId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
+	public List<Object[]> findNormalCadreForSMS(Long userId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
+	public List<Object[]> findNormalCadre(Long userId);
 	
-	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr, String sortOption,String order,Integer startIndex,Integer maxResult);
+	public List<Long> findCadreForSMS(Long userId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr, String sortOption,String order,Integer startIndex,Integer maxResult);
 	
-	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr);
+	public List<Long> findTotalCadreCountForSms(Long userId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr);
 	
 	@SuppressWarnings("unchecked")
 	public List findTownshipCadresByMandal(Long mandalID, Long userID,String cadreType);
