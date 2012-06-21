@@ -3126,6 +3126,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					personalUserGroup.setGroupName(localGroupDetails.getLocalUserGroupName());
 					personalUserGroup.setDescription(localGroupDetails.getGroupDesc());
 					personalUserGroup.setCreatedUserId(registrationDAO.get(new Long(localGroupDetails.getRegistrationId())));
+					personalUserGroup.setUserId(new Long(localGroupDetails.getRegistrationId()));
 					personalUserGroup.setStaticLocalGroup(staticLocalGroupDAO.get(localGroupDetails.getGroupCategoryId()));
 					
 					 //Scope Details
