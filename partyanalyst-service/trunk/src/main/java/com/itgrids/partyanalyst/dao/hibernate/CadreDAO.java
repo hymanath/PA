@@ -36,7 +36,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 
 	public Long findTotalCadresByUserID(Long userID, String cadreType){
-		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ?" );
+		//Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ?" );
+		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.user.userId = ? and model.memberType = ?" );
 		query.setLong(0, userID);
 		query.setString(1, cadreType);
 		Long totalCadres = (Long) query.uniqueResult();
@@ -56,7 +57,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	{		
 		Object[] params = {userID, cadreType, locationId};
 		List totalCadresByLevel = getHibernateTemplate().find("SELECT model.cadreLevel.level,count(model.cadreId) " +
-				"FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? "+
+				//"FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? "+
+				"FROM Cadre model WHERE model.user.userId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? "+
 				"group by model.cadreLevel.level order by model.cadreLevel.cadreLevelID", params); 
 		return totalCadresByLevel;
 		
@@ -79,7 +81,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findCadresByLevels(Long userID, String cadreType){
 		Object[] params = {userID, cadreType};
 		List totalCadresByLevel = getHibernateTemplate().find("SELECT model.cadreLevel.level,count(model.cadreLevel.level) " +
-				"FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? group by model.cadreLevel.level " +
+				//"FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? group by model.cadreLevel.level " +
+				"FROM Cadre model WHERE model.user.userId = ? and model.memberType = ? group by model.cadreLevel.level " +
 				"order by model.cadreLevel.cadreLevelID", params); 
 		return totalCadresByLevel;
 	}
@@ -133,7 +136,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeDistrictWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.currentAddress.district.districtId, count(model.currentAddress.district.districtId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.district.districtId is not null group by model.currentAddress.district.districtId", userID); 
+				//"where model.registration.registrationId = ? and model.currentAddress.district.districtId is not null group by model.currentAddress.district.districtId", userID);
+				"where model.user.userId = ? and model.currentAddress.district.districtId is not null group by model.currentAddress.district.districtId", userID);
 		return results;
 	}
 
@@ -147,7 +151,9 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeMandalWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, count(model.currentAddress.tehsil.tehsilId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId", userID); 
+				//"where model.registration.registrationId = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId", userID);
+				"where model.user.userId = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId", userID);
+				
 		return results;
 	}
 	
@@ -160,14 +166,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeHamletWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, count(model.currentAddress.hamlet.hamletId)from Cadre model " +
-					"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId is not null group by model.currentAddress.hamlet.hamletId", userID); 
+					//"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId is not null group by model.currentAddress.hamlet.hamletId", userID);
+					"where model.user.userId = ? and model.currentAddress.hamlet.hamletId is not null group by model.currentAddress.hamlet.hamletId", userID);
 		return results;
 		
 	}
 	
 	public List findCadreSizeConstituencywise(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.constituency.constituencyId, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId", userId); 
+				//"where model.registration.registrationId = ? and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId", userId);
+				"where model.user.userId = ? and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId", userId);
 		return results;
 	}
 	
@@ -194,13 +202,15 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 	public List findCadreSizeWardswise(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.ward.constituencyId, count(model.currentAddress.ward.constituencyId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId", userId); 
+				//"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId", userId);
+				"where model.user.userId = ? and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId", userId);
 		return results;
 	}
 	
 	public List findCadreSizeBoothwise(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId", userId); 
+				//"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId", userId);
+				"where model.user.userId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId", userId);
 		return results;
 	}
 
@@ -222,7 +232,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findDistCadresByState(Long stateID, Long userID, String cadreType){
 		Object[] params = {userID,stateID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.district.districtId, model.currentAddress.district.districtName, count(model.currentAddress.district.districtId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.state.stateId=? and model.memberType = ? group by model.currentAddress.district.districtId order by model.currentAddress.district.districtName", params); 
+				//"where model.registration.registrationId = ? and model.currentAddress.state.stateId=? and model.memberType = ? group by model.currentAddress.district.districtId order by model.currentAddress.district.districtName", params);
+				"where model.user.userId = ? and model.currentAddress.state.stateId=? and model.memberType = ? group by model.currentAddress.district.districtId order by model.currentAddress.district.districtName", params);
 		return results;
 	}
 	
@@ -275,14 +286,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID, String cadreType){
 		Object[] params = {userID,cadreLevel, cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ?", params); 
+				//"where model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ?", params);
+				"where model.user.userId = ? and model.cadreLevel.level=? and model.memberType = ?", params);
 		return results;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Cadre> findCadresByCadreLevelByUserIDInALocation(String cadreLevel, Long userID, String cadreType, String model, String idToCompare, Long locationId){
 		Object[] params = {userID,cadreLevel, cadreType, locationId};
-		List<Cadre>  results = getHibernateTemplate().find("from Cadre model WHERE model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? ", params);		
+		//List<Cadre>  results = getHibernateTemplate().find("from Cadre model WHERE model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? ", params);
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model WHERE model.user.userId = ? and model.cadreLevel.level=? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? ", params);
 		return results;
 	}
 
@@ -603,7 +616,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findConstituencyCadresByDist(Long districtID, Long userID, String cadreType){
 		Object[] params = {userID,districtID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.constituency.constituencyId, model.currentAddress.constituency.name, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.district.districtId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params); 
+				//"where model.registration.registrationId = ? and model.currentAddress.district.districtId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params);
+				"where model.user.userId = ? and model.currentAddress.district.districtId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params);
 		return results;
 	}
 	
@@ -618,7 +632,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 			Long userID, String cadreType) {
 		Object[] params = {constituencyId,userID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.localElectionBody.localElectionBodyId, model.currentAddress.localElectionBody.name, count(model.currentAddress.localElectionBody.localElectionBodyId), model.currentAddress.localElectionBody.electionType.electionType from Cadre model " +
-				"where model.currentAddress.constituency.constituencyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.localElectionBody.localElectionBodyId order by model.currentAddress.localElectionBody.name", params); 
+				//"where model.currentAddress.constituency.constituencyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.localElectionBody.localElectionBodyId order by model.currentAddress.localElectionBody.name", params);
+				"where model.currentAddress.constituency.constituencyId=? and model.user.userId = ? and model.memberType = ? group by model.currentAddress.localElectionBody.localElectionBodyId order by model.currentAddress.localElectionBody.name", params);
 		return results;
 	}
 	
@@ -626,7 +641,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findMandalCadresByMandals(String mandalIDs, Long userID, String cadreType){
 		Object[] params = {cadreType};
 		List result = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, model.currentAddress.tehsil.tehsilName, count(model.currentAddress.tehsil.tehsilId) from Cadre model " +
-				"where model.registration.registrationId = "+userID+" and model.currentAddress.tehsil.tehsilId in(" + mandalIDs + ") and model.memberType = ?" +
+				//"where model.registration.registrationId = "+userID+" and model.currentAddress.tehsil.tehsilId in(" + mandalIDs + ") and model.memberType = ?" +
+				"where model.user.userId = "+userID+" and model.currentAddress.tehsil.tehsilId in(" + mandalIDs + ") and model.memberType = ?" +
 						" group by model.currentAddress.tehsil.tehsilId order by model.currentAddress.tehsil.tehsilName",params);
 		return result;
 	}
@@ -636,7 +652,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 			String cadreType) {
 		Object[] params = {mandalID,userID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, model.currentAddress.hamlet.hamletName, count(model.currentAddress.hamlet.hamletId) from Cadre model " +
-				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params); 
+				//"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params);
+				"where model.currentAddress.tehsil.tehsilId=? and model.user.userId = ? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params);
 		return results;
 		
 	}
@@ -679,7 +696,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType){
 		Object[] params = {userID,hamletID,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params); 
+				//"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params);
+				"where model.user.userId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params);
 		return results;
 	}
 	
@@ -710,7 +728,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeBoothwiseInMandal(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", userId); 
+				//"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", userId);
+				"where model.user.userId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", userId);
 		return results;
 	}
 
@@ -727,7 +746,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 			String cadreType) {
 		Object[] params = {mandalID,userID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, model.currentAddress.booth.partNo, model.currentAddress.booth.location, count(model.currentAddress.booth.boothId) from Cadre model " +
-				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", params); 
+				//"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", params);
+				"where model.currentAddress.tehsil.tehsilId=? and model.user.userId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", params);
 		return results;
 
 	}
@@ -745,7 +765,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long tehsilId,Long userId, String cadreType) {
 		Object[] params = {tehsilId,userId,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? " +
+				//"where model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? " +
+				"where model.currentAddress.tehsil.tehsilId = ? and model.user.userId = ? and model.memberType = ? " +
 				"and model.currentAddress.booth.boothId is null and model.currentAddress.tehsil.tehsilId is not null", params); 
 		return results;
 	}
@@ -802,7 +823,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 			Long userId, String cadreType) {
 		Object[] params = {tehsilId,userId,cadreType};
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
-				" and model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null", params);
+				//" and model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null", params);
+				" and model.currentAddress.tehsil.tehsilId = ? and model.user.userId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null", params);
 	}
 
 	public List findCadresNotAssignedToBoothLocalElectionBody(Long localBodyId,
@@ -903,5 +925,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		queryObject.setParameterList("IdsList", cadreIdsList);
 		
 		return queryObject.list();
+	}
+	
+	public Cadre getCadreByCadreId(Long id){
+		
+		Query query = getSession().createQuery("select model from Cadre model where model.cadreId = ?");
+		
+		query.setParameter(0, id);
+		
+		return (Cadre)query.uniqueResult();
+		
+		
 	}
 }

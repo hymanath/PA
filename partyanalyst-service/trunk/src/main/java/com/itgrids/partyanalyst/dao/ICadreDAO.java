@@ -163,4 +163,5 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public Integer updateCadreImage(Long cadreId,String imageName);
 	
 	public List<Object> getMobileNosOfCadre(List<Long> cadreIdsList);
+	public Cadre getCadreByCadreId(Long id);
 }
