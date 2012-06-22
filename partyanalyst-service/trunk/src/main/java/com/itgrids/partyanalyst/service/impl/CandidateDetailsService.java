@@ -1193,7 +1193,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			{	
 			userGallary = new UserGallary();
 			userGallary.setGallary(gallary);
-			userGallary.setRegistration(registrationDAO.get(gallaryVO.getUserId()));
+			userGallary.setUserId(gallaryVO.getUserId());
 			userGallaryDAO.save(userGallary);
 			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
