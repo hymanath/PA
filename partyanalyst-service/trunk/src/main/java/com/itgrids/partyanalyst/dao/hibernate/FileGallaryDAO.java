@@ -493,7 +493,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  			query.append(" and model1.language.languageId = :languageId ");	
  		
   		 query.append(") and  model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
   		
   		if(fromDate != null)
  			query.append(" and date(model.file.fileDate) >= :fromDate");
@@ -515,7 +515,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  			
   		query.append(" group by  model.file.category.categoryType   ");
   		Query queryObject = getSession().createQuery(query.toString());
-  		queryObject.setLong("registrationId", regId);
+  		queryObject.setLong("userId", regId);
   		queryObject.setString("type", IConstants.NEWS_GALLARY);
   		
   		
@@ -546,7 +546,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
     		 fileVO = new FileVO();
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model1.source.source,model1.source.sourceId from FileGallary model,FileSourceLanguage model1  where model1.file.fileId=model.file.fileId and model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
   			query.append(" and date(model.file.fileDate) >= :fromDate");
@@ -574,7 +574,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		
   		query.append(" group by  model1.source.source   ");
   		Query queryObject = getSession().createQuery(query.toString());
-  		queryObject.setLong("registrationId", regId);
+  		queryObject.setLong("userId", regId);
   		queryObject.setString("type", IConstants.NEWS_GALLARY);
   		
   		if(fromDate != null)
@@ -729,7 +729,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		if(fileVO.getLanguegeId() != null)
  			query.append(" and model1.language.languageId = :languageId ");
   		 query.append(") and  model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
   			query.append(" and date(model.file.fileDate) >= :fromDate");
@@ -751,7 +751,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
  		
   		query.append(" group by  model.file.regionScopes.regionScopesId   ");
   		Query queryObject = getSession().createQuery(query.toString());
-  		queryObject.setLong("registrationId", regId);
+  		queryObject.setLong("userId", regId);
   		queryObject.setString("type", IConstants.NEWS_GALLARY);
   		
   		if(fromDate != null)
@@ -778,7 +778,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	public List<Object[]> getCountDetailsForLocationScopeValue(Date fromDate,Date toDate,String fileType,Long regId){
     	 StringBuilder query = new StringBuilder();
   		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId,model.file.locationValue from FileGallary model  where model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.registration.registrationId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  				" where model1.user.userId = :registrationId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
    		
    		if(fromDate != null)
   			query.append(" and date(model.file.fileDate) >= :fromDate");
