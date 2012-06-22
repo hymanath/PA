@@ -82,11 +82,19 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String districtSelectName;
     private String candidateId;
     private String changedUserName = "false";
-    private String userRole;
     private boolean hasPartyAnalystUserRole;
     private boolean hasFreeUserRole;
+    private List<String> userRoles;
     
-    public boolean isHasPartyAnalystUserRole() {
+    public List<String> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(List<String> userRoles) {
+		this.userRoles = userRoles;
+	}
+
+	public boolean isHasPartyAnalystUserRole() {
 		return hasPartyAnalystUserRole;
 	}
 
@@ -462,7 +470,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session.setAttribute("UserName", userFullName);
 		session.setAttribute(IConstants.USER,regVO);
 		
-		List<String> userRoles = regVO.getUserRoles();
+		userRoles = regVO.getUserRoles();
 		
 		if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
 		{
@@ -502,7 +510,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
  			url = StringUtils.split(url,".")[0].substring(1);
  			return "redirectUrl";
  		}
-    	if(userRole !=null && userRole.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+    	if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
 				return IConstants.PARTY_ANALYST_USER;
 		
     	return IConstants.FREE_USER;
