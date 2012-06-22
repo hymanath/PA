@@ -375,42 +375,42 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
-	public String execute(){
-		
-		
+	
+	
+	public String execute()
+	{
 		session = request.getSession();
-		
 		String sPath = (String)session.getAttribute("imagePath");
-		
 		Boolean savedSuccessfully;
-		
 		BufferedImage imageFile = null;
 		
-		 String  imageName=null;
-		 String constiName[]=null; 
-		 String fileName=null;; 
-		 try {
-			 if(this.uploadImage !=null)
-			 {
-			 imageFile = ImageIO.read(this.uploadImage);
-			 }
-	         //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-			 String filePath = "";
+		String  imageName=null;
+		String constiName[]=null; 
+		String fileName=null;; 
+		
+		try
+		{
+			if(this.uploadImage != null)
+				imageFile = ImageIO.read(this.uploadImage);
+			
+			String filePath = "";
 			 
-			 if(sPath != null)
-				 filePath = sPath;
-			 else
-				 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";				 
+			if(sPath != null)
+				filePath = sPath;
+			else
+				filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";				 
 				 
-             if(uploadImageContentType!=null)
-             {
-              constiName = uploadImageContentType.split("/");
-		      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
-             }
+            if(uploadImageContentType!=null)
+            {
+            	constiName = uploadImageContentType.split("/");
+            	imageName =  regVO.getRegistrationID()+"."+constiName[1];    
+            }
 	           
-             regVO.setContextPath(getPath());
-            if(registrationId != null && registrationId > 0){
-				loginUserId = registrationId;
+            regVO.setContextPath(getPath());
+            
+            if(registrationId != null && registrationId > 0)
+            {
+            	loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
 				regVO.setUserProfilePic(imageName);
 				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
@@ -420,45 +420,38 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
             	savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
             	saveUserLogInDetails(regVO , session.getId());
             }
+            
             String requestURL= request.getRequestURL().toString();
 			String requestFrom = "";
+			
 			if(requestURL.contains("www.partyanalyst.com"))
 				requestFrom = IConstants.SERVER;
 			else
 				requestFrom = IConstants.LOCALHOST;
 			
-            	// For sending notification after registration
-			 if(!(registrationId != null && registrationId > 0)){
-			mailService.sendRegistrationNotification(regVO,requestFrom);
-			 }
-         //    if(regVO.getRegistrationID()!=null){
+			if(!(registrationId != null && registrationId > 0) && savedSuccessfully)
+				 mailService.sendRegistrationNotification(regVO,requestFrom);
             
-            
-            
-            try {
-            	
-            	if(this.uploadImage !=null){
+            try
+            {
+            	if(this.uploadImage !=null)
+            	{
                     fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
                     imageName =  regVO.getRegistrationID()+"."+constiName[1];
 	                FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
-	
-	                log.info("Image Name :" + imageFile);
-	                log.info("File :" + filName);
 	                ImageIO.write(imageFile, constiName[1],filName);
 	                filName.close();
             	}
 
-			} catch (Exception e) {
-			
+			}
+            catch (Exception e)
+            {
 				log.error(e);
 			}
-            /*if(this.uploadImage !=null){
-               fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
-               imageName =  regVO.getRegistrationID()+"."+constiName[1];  
-	           ImageIO.write(imageFile, constiName[1],new File(fileName));
-             }       	*/
-			if(savedSuccessfully){	
-				regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
+			
+            if(savedSuccessfully)
+            {	
+				regVO = loginService.checkForValidUser(userName, password);
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
 				regVO.setUserStatus(IConstants.FREE_USER);
@@ -468,27 +461,29 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				session.setAttribute("UserType", "FreeUser");
 				session.setAttribute("loginStatus", "out");
 				session.setAttribute("HiddenCount", 0);
-				
-				
 				session.removeAttribute("districts");
 				session.removeAttribute("constituencies");
 			}
 			 
-        
 		 }
-		 catch(Exception e){
+		 catch(Exception e)
+		 {
 			 e.printStackTrace();
-			 
 			 return "failure";
 		 }
+		
+		if(!(registrationId != null && registrationId > 0) && savedSuccessfully)
+		{
+			return "CHANGE_PASSWORD_PAGE";
+		}
+		
 		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();
+		
 		else if("".equalsIgnoreCase(redirectLoc))
 			return "connect";
-			//return "CHANGE_PASSWORD_PAGE";
-		
+			
 		return SUCCESS;
-		
 	}
 	
 	public String saveUserLogInDetails(RegistrationVO regVO , String sessionId)
