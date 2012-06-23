@@ -488,7 +488,7 @@ var email = document.getElementById("emailField").value;
 
 
 
-function changeUserName(){
+/*function changeUserName(){
 
 var email = document.getElementById("emailField").value;
 	var resultDIVEle = document.getElementById("feedback_window_errorMsg");
@@ -529,8 +529,8 @@ var email = document.getElementById("emailField").value;
 	}
 	
 	
-}
-function showUserNameChangePanel(uname){
+}*/
+/*function showUserNameChangePanel(uname){
 
 	var alertIndicator = '${changedUserName}';
 	
@@ -612,8 +612,204 @@ $("#username_change_window").dialog({
 			$("#username_change_window").dialog("destroy");
 		});
 	}
+}*/
+
+
+
+
+
+
+function showUserNameChangePanel(uname){
+
+	var alertIndicator = '${changedUserName}';
+	
+	if(alertIndicator == null || alertIndicator == 'false')
+		return;
+
+	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	
+	if(reg.test(uname) == false)
+	{
+	$("#username_change_window").dialog({
+			resizable:false,
+			width: 600,
+			height:130,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
+		var elmt = document.getElementById("username_change_window_inner");
+
+		var str = '';
+			
+		if(emailId == ''|| emailId== null)
+		{
+			str += '<div id="feedback_window_body">';
+			str += '<div id="feedback_window_head">Enter Your Email</div>';
+			str += '	<div id="feedBackForm_div">';
+			str += '		<table id="feedbackTable" width="100%">';
+			str += '		<tr>';
+			str += '			<div id="ErrorMsgDivId"></div>';
+		 	str += '		<th><font color="red">*</font>Enter Your EmailId </th>';
+			str += '		<td><input type="text" id="emailField" size="25"/></td>';
+			str += '		</tr>';
+			str += '		</table>';
+			str += '	<input type="checkbox" checked="true" id="changeUserNameCheck"/>&nbsp;Do you want to change Email as Username';
+			str += '	</div>';
+			str += '</div>';
+			
+			str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+			str += '	<table width="100%">';
+			str += '	<tr>';
+			str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+			str += '	<td width="35%" align="right">';
+			str += '		<input id="post" type="button" value="Yes"></input>';
+			str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
+			str += '	</td>';
+			
+			str += '	</tr>';
+			str += '	</table>';	
+			str += '</div>';
+			elmt.innerHTML = str;
+
+			$("#username_change_window").css("height","160px");
+			
+			var oPushButton1 = new YAHOO.widget.Button("post");  
+			oPushButton1.on("click",function(){
+				saveEmailAndSetAsUserName();
+			});
+			var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+	
+			oPushButton2.on("click",function(){
+				$("#username_change_window").dialog("destroy");
+			});
+	 
+		}
+		else
+		{
+			str += '<div id="feedback_window_head">Do You Want To Change Your UserName As Your Email</div>';
+	        str += '<input type="hidden" value='+emailId+' id="emailField" size="25"/>'; 
+			str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+			str += '	<table width="100%">';
+			str += '	<tr>';
+			str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+			str += '	<td width="35%" align="right">';
+			str += '		<input id="post" type="button" value="Yes"></input>';
+			str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
+			str += '	</td>';
+			
+			str += '	</tr>';
+			str += '	</table>';	
+			str += '</div>';
+			elmt.innerHTML = str;
+
+			$("#username_change_window").css("height","85px");
+
+			var oPushButton1 = new YAHOO.widget.Button("post");  
+			var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+	
+			oPushButton1.on("click",function(){
+				changeUserName();
+			});
+	
+			oPushButton2.on("click",function(){
+				$("#username_change_window").dialog("destroy");
+			});
+		}
+	}
 }
+
 		
+
+		function changeUserName(){
+	
+var email = document.getElementById("emailField").value;
+	var resultDIVEle = document.getElementById("feedback_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+	if(email.length == 0)
+		resultDIVEle.innerHTML = "<font color='red'><b>Please Enter Email Id.</b></font>";
+	
+	else if(reg.test(email) == false)
+		resultDIVEle.innerHTML = "<font color='red'><b>Plase provide correct Email Address.</b></font>";
+    else if(emailId == ''|| emailId== null){
+		document.getElementById("feedback_window_errorMsg").innerHTML = " ";
+       var jsObj=
+		{		
+ 				userName:email,
+				task:"checkAnanymousUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
+	else if(reg.test(email) == true)
+	{
+        document.getElementById("feedback_window_errorMsg").innerHTML = " ";
+ 		var jsObj=
+		{		
+ 				userName:email,
+				task:"checkAnanymousUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
+	
+	
+	}
+
+	function saveEmailAndSetAsUserName()
+{
+
+	var email = document.getElementById('emailField').value;
+	var errorDivEle = document.getElementById("ErrorMsgDivId");
+	var setAsUserName = document.getElementById("changeUserNameCheck").checked;
+	var eFlag = false;
+	var str = '<font color="red">';
+	var task = null;
+	
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(email !='' && email!='your email'){
+          
+		  if(!email.match(emailExp)){
+
+				document.getElementById("ErrorMsgDivId").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("ErrorMsgDivId").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	str += '</font>';
+
+	errorDivEle.innerHTML = str;
+	if(eFlag)
+		return;
+
+	if(setAsUserName)
+		task = "saveUserEmailAndsetAsUserName";
+	else
+		task = "saveUserEmailAndSendPwd";
+
+	var jsObj=
+	{
+			userName : uname,
+			email : email,
+			task : task
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveUserEmailAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 var labelResources = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 		String regionLevel = rb.getString("regionLevel");
@@ -651,6 +847,15 @@ function callAjax(jsObj,url)
 				 
 			  if(jsObj.task == "getUserLocation")
 					fillDataOptions(myResults,jsObj);
+else if(jsObj.task == "checkAnanymousUserNameAvailability" || jsObj.task == "saveUserEmailAndsetAsUserName")
+							{
+								showUserEmailDetails(results);
+							}
+
+				else if(jsObj.task == "saveUserEmailAndSendPwd")
+							{
+								showUserEmailDetails(results);
+							}
 			  
 			  else if(jsObj.task == "fillSelectElements")
 					fillSelectElement(myResults,jsObj);
@@ -678,6 +883,135 @@ function callAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+
+function showUserEmailDetails(results)
+{
+	
+	var result = document.getElementById("feedback_window_errorMsg");
+	 str='';
+	
+	if(results == null){
+		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
+	}
+	
+	else{
+		$("#username_change_window").dialog("destroy");
+		afterUserNameChanges();
+		return;
+	}
+	result.innerHTML = str;
+	
+}
+
+
+function showEmailStatus(results)
+{
+	
+	var elemt =document.getElementById('feedback_window_head');
+	var str = '';
+	
+	if(results.resultCode == 0)
+	{
+	
+		str += '<font color="#000000">Email Saved Successfully</font>';
+		//elemt.innerHTML = str;
+		setTimeout("closewindow()",2000);
+		//showUserNameChangePanelAfterEmailSave(uname);
+		
+		//str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+		
+	}
+	else
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b></font>';
+	}
+	elemt.innerHTML = str;
+	
+}
+
+function closewindow()
+{
+	$("#username_change_window").dialog("destroy");
+}
+
+/*
+function saveEmailForUser()
+{
+
+	var email = document.getElementById('emailField').value;
+	var errorDivEle = document.getElementById("ErrorMsgDivId");
+	var eFlag = false;
+	var str = '<font color="red">';
+	
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+      if(email !='' && email!='your email'){
+          
+		  if(!email.match(emailExp)){
+
+				document.getElementById("ErrorMsgDivId").innerHTML = '<font color="red">Please enter valid Email</font>';
+				return;
+		  }
+	  }
+	 else {
+		document.getElementById("ErrorMsgDivId").innerHTML ='<font color="red">Please enter Email id</font>';  
+		return;
+	 }
+
+	str += '</font>';
+
+	errorDivEle.innerHTML = str;
+	if(eFlag)
+		return;
+
+	var jsObj=
+	{
+			userName : uname,
+			email : email,
+			task : "saveUserEmailAndSendPwd"
+
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveUserEmailAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}*/
+function afterUserNameChanges(){
+var email = document.getElementById("emailField").value;
+ $("#username_change_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:150,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
+		var elmt = document.getElementById("username_change_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Your UserName is changed </div>';
+		str += '<div id="feedback_window_body"';
+		str +='style="font-weight:bold;color:green;text-align:center;">';
+		str += 'Your New UserName Is :'+email;
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr><td>';
+		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
+		str += '   value="OK"></input></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("OkButton");
+
+		oPushButton2.on("click",function(){
+			$("#username_change_window").dialog("destroy");
+		});
+}
+
 
 function getUserLocationData(val,type)
 {			
