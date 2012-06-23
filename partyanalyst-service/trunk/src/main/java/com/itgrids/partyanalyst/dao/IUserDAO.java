@@ -44,4 +44,10 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr);
 	
 	public Long getNotConnectedUsersCountForAUserInAFilterView(Long userId, List<Long> locationIds,String locationType, String nameStr, List<Long> otherUsers);
+	
+	public List<User> getUserByUserName(String userName);
+	
+	public List<User> changeUserNameAsEmail(String email);
+	
+	public Integer saveUserNameTOEmail(Long userId,String email);
 }
