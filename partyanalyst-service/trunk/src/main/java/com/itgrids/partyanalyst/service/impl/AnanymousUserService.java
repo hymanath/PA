@@ -498,8 +498,10 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		try{
 			detailsList = userDAO.checkForUserNameAvailabiity(userName);
 			detailsListForEmail = userDAO.checkForUserNameAvailabiityForEmail(userName);
+				
 			
 			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
+				
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
@@ -2061,13 +2063,17 @@ public  ResultStatus saveEmailForAUser(String userName,final String email)
 	ResultStatus resultStatus = new ResultStatus();
 	
 	try{
-		final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
+		//final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
+		final List<User> users = userDAO.getUserByUserName(userName);
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-			AnanymousUser ananymousUser = ananymousUsers.get(0);
-			ananymousUser.setEmail(email);
-			ananymousUserDAO.save(ananymousUser);
+			//AnanymousUser ananymousUser = ananymousUsers.get(0);
+			//ananymousUser.setEmail(email);
+			//ananymousUserDAO.save(ananymousUser);
+				User user = users.get(0);
+				user.setEmail(email);
+				userDAO.save(user);
 			}
 		});
 		
@@ -2086,14 +2092,18 @@ public  ResultStatus saveEmailAndSetAsUserName(String userName,final String emai
 	ResultStatus resultStatus = new ResultStatus();
 	
 	try{
-		final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
+		final List<User> users = userDAO.getUserByUserName(userName);
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-			AnanymousUser ananymousUser = ananymousUsers.get(0);
-			ananymousUser.setEmail(email);
-			ananymousUser.setUsername(email);
-			ananymousUserDAO.save(ananymousUser);
+			//AnanymousUser ananymousUser = ananymousUsers.get(0);
+			//ananymousUser.setEmail(email);
+			//ananymousUser.setUsername(email);
+			//ananymousUserDAO.save(ananymousUser);
+				User user = users.get(0);
+				user.setEmail(email);
+				user.setUserName(email);
+				userDAO.save(user);
 			}
 		});
 		
@@ -2114,10 +2124,10 @@ public ResultStatus changeForUserNameAsEmail(String userName){
 	try{
 		detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
 		detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
-		 List<AnanymousUser> ananymousUsers = ananymousUserDAO.changeUserNameAsEmail(userName);
-			AnanymousUser ananymousUser = ananymousUsers.get(0);
-			ananymousUser.setUsername(userName);
-			ananymousUserDAO.save(ananymousUser);
+		List<User> users = userDAO.changeUserNameAsEmail(userName);
+		User user = users.get(0);
+		user.setUserName(userName);
+		userDAO.save(user);
 		
 		if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
 			
