@@ -251,4 +251,28 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	{
 		return getHibernateTemplate().find("select model.userId, model.firstName, model.lastName, model.email from User model where model.userId = ?",userId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getUserByUserName(String userName)
+	{
+		return getHibernateTemplate().find("select model from User model where model.userName= ?",userName);
+	}
+	@SuppressWarnings("unchecked")
+	public List<User> changeUserNameAsEmail(String email)
+	{
+		return getHibernateTemplate().find("select model from User model where model.email = ? ",email);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Integer saveUserNameTOEmail(Long userId,String email){
+		StringBuilder query = new StringBuilder();
+		query.append("update User model set model.userName = ?,model.email= ? where model.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, email);
+		queryObject.setParameter(1, email);	
+		queryObject.setParameter(2, userId);	
+				
+		return queryObject.executeUpdate();	
+	}
 }
