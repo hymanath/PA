@@ -513,7 +513,12 @@ public class LoginService implements ILoginService{
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			User user = userDAO.getUserByUserName(userName);
+			List<User> list = userDAO.getUserByUserName(userName);
+			User user = null;
+			
+			if(list != null && list.size() > 0)
+				user = list.get(0);
+			
 			if(user != null && user.getUserId() > 0)
 			{
 				user.setPassword(newpassword);
