@@ -24,9 +24,9 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	}
 		
 	@SuppressWarnings("unchecked")
-	public List<ProblemHistory> findProblemLocationsByUserId(Long registrationId, Long statusId){
-		Object [] params = {registrationId, statusId};
-		return getHibernateTemplate().find("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? " +
+	public List<ProblemHistory> findProblemLocationsByUserId(Long userId, Long statusId){
+		Object [] params = {userId, statusId};
+		return getHibernateTemplate().find("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userId = ? " +
 				"and model.problemStatus.problemStatusId = ? order by model.problemLocation.problemAndProblemSource.problem.identifiedOn desc",params);
 	}
 	
@@ -39,7 +39,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);		
 		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and");
-		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.userId = ? and");
 		conditionQuery.append(" model.problemLocation.problemImpactLevel in ( ");
 		conditionQuery.append(" select model1.regionScopesId from RegionScopes model1 where model1.scope = ?) ");
 		conditionQuery.append(" and model.isDelete is null");
@@ -66,7 +66,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
 		conditionQuery.append(" where model.problemLocation.problemImpactLevelValue in (  " + constituencyIds +") and");	
-		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.userId = ? and");
 		conditionQuery.append(" model.problemLocation.problemImpactLevel.scope = ? and");
 		conditionQuery.append(" model.isDelete is null");
 		
@@ -80,7 +80,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.isDelete is null");
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.userId = ? and model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString());
 	}
 
@@ -94,7 +94,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(query);
 		conditionQuery.append(" where model.problemLocation.problemImpactLevelValue = ? and ");
 		conditionQuery.append(" model.problemStatus.status = ? and ");
-		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.userId = ? and");
 		conditionQuery.append(" model.problemLocation.problemImpactLevel in ( ");
 		conditionQuery.append(" select model1.regionScopesId from RegionScopes model1 where model1.scope = ?) and");
 		conditionQuery.append(" model.isDelete is null");
@@ -117,7 +117,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				
 		StringBuilder conditionQuery = new StringBuilder();
 		conditionQuery.append(" from ProblemHistory model ");
-		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.userId = ? and");
 		
 		if(model != null && idToCompare != null)
 			conditionQuery.append("  model.problemLocation.problemCompleteLocation."+ model +"."+idToCompare+" = ? and");		
@@ -164,7 +164,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		String query = buildCommonQueryForProblems();
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemStatus.problemStatusId = ? and model.isDelete is null");
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.userId = ? and model.problemStatus.problemStatusId = ? and model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
 	
@@ -178,8 +178,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 
 	@SuppressWarnings("unchecked")
 	public List getProblemsCountInAllStatusByLocationForAUser(String locationIds,
-			Long registrationId) {
-		Object[] params = {registrationId};
+			Long userId) {
+		Object[] params = {userId};
 		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
 				"count(model.problemHistoryId) " +
 				"from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
@@ -188,7 +188,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
 				"model2.constituency.constituencyId in ("+locationIds+") group by model2.constituency.constituencyId " +
 				"order by model2.year desc)) and " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"model.problemLocation.problemAndProblemSource.user.userId = ? "+
 				"group by model.problemStatus.problemStatusId",params );
 	}
 	
@@ -209,7 +209,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public List getProblemsCountInAllStatusByLocation(Long userId) {
 		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
 				"count(model.problemHistoryId) from ProblemHistory model where " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.isDelete is null " +
+				"model.problemLocation.problemAndProblemSource.user.userId = ? and model.isDelete is null " +
 				"group by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId",userId);
 	}
 	
@@ -240,7 +240,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue "+
 				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"model.problemLocation.problemAndProblemSource.user.userId = ? "+
 				"and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
 	}
 	
@@ -272,7 +272,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemImpactLevelValue "+
 				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"model.problemLocation.problemAndProblemSource.user.userId = ? "+
 				"and model.isDelete is null",params);
 	}
 	
@@ -301,7 +301,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(Long userId, String statusIds){
 		return getHibernateTemplate().find("select count(model.problemHistoryId), model.dateUpdated, model.problemStatus.problemStatusId, " +
-				"model.problemStatus.status from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? " +
+				"model.problemStatus.status from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userId = ? " +
 				"and model.problemStatus.problemStatusId in("+statusIds+")  " +
 						" group by date(model.dateUpdated),model.problemStatus.problemStatusId order by model.dateUpdated desc",userId);
 	}
@@ -330,7 +330,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
 		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
 		query.append(" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,");
-		query.append(" model.problemLocation.problemAndProblemSource.user.registrationId");
+		query.append(" model.problemLocation.problemAndProblemSource.user.userId");
 		query.append(" from ProblemHistory model ");
 		return query.toString();		
 	}
@@ -343,7 +343,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
 		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
 		query.append(" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,");
-		query.append(" model.problemLocation.problemAndProblemSource.user.registrationId,model.problemLocation.problemImpactLevelValue");
+		query.append(" model.problemLocation.problemAndProblemSource.user.userId,model.problemLocation.problemImpactLevelValue");
 		query.append(" from ProblemHistory model ");
 		return query.toString();		
 	}
@@ -356,13 +356,13 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" model.problemLocation.problemImpactLevel.scope,");
 		conditionQuery.append(" model.problemLocation.problemImpactLevelValue,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
-		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.name,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.freeUser.firstName,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.problemId,");
 		conditionQuery.append(" model.problemHistoryId,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.existingFrom,");
 		conditionQuery.append(" model.problemStatus.status,");
 		conditionQuery.append(" model.problemLocation.problemImpactLevel.regionScopesId,");
-		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.lastName, ");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.freeUser.lastName, ");
 		conditionQuery.append(" model.isApproved ");
 		conditionQuery.append(" from ProblemHistory model ");
 		return conditionQuery.toString();
@@ -377,7 +377,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		conditionQuery.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? ");	
 		conditionQuery.append(" and model.isApproved = ? ");	
-		conditionQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		conditionQuery.append(" and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		conditionQuery.append(" order by date(model.dateUpdated)");	
 		
 		Query queryObject = getSession().createQuery(conditionQuery.toString());
@@ -395,7 +395,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(getCommonDataForAllProblems());		
 		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
 		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");	
-		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		query.append(" and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setDate(0,fromDate);
 		queryObject.setDate(1,toDate);
@@ -413,7 +413,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append("select count(model.dateUpdated),date(model.dateUpdated) from ProblemHistory model ");
 		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
 		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");
-		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		query.append(" and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		query.append(" group by date(model.dateUpdated)");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
@@ -425,7 +425,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();		
 		query.append( "select count(model.dateUpdated),model.problemLocation.problemImpactLevel.scope from ProblemHistory model ");
 		query.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? and model.isApproved = ? ");
-		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		query.append(" and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		query.append(" group by model.problemLocation.problemImpactLevel.regionScopesId");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
@@ -438,7 +438,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		locationQuery.append(" where model.problemLocation.problemImpactLevel.scope = ?");
 		locationQuery.append(" and model.isApproved = ? ");
 		locationQuery.append(" and model.problemLocation.problemImpactLevelValue in (:locationIds)");		
-		locationQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		locationQuery.append(" and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		locationQuery.append(" order by date(model.dateUpdated)");	
 		Query queryObject = getSession().createQuery(locationQuery.toString());
 		queryObject.setString(0,impactLevel);
@@ -463,7 +463,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemAndProblemSource."+
 				"problem.existingFrom,model.isDelete,model.problemLocation.problemLocationId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
-				"user.registrationId = ? and model.problemStatus.problemStatusId = ? and model.problemLocation.problemAndProblemSource."+
+				"user.userId = ? and model.problemStatus.problemStatusId = ? and model.problemLocation.problemAndProblemSource."+
 				"isPushed != ? and model.isDelete != ?",params);
 	}
 
@@ -481,7 +481,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemAndProblemSource."+
 				"problem.existingFrom,model.isDelete,model.problemLocation.problemLocationId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
-				"user.registrationId = ? and model.problemLocation.problemAndProblemSource.isPushed != ? and model.isDelete != ?",params);
+				"user.userId = ? and model.problemLocation.problemAndProblemSource.isPushed != ? and model.isDelete != ?",params);
 	}
 
 	
@@ -496,28 +496,28 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 }
 	
 	
-	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long registrationId, String reasonType){
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType){
 
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(*) from ProblemHistory model ");
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
 		
 		query.append(" and (model.isDelete = 'false' or model.isDelete is null) ");
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
-			queryObject.setParameter(0, registrationId);
+			queryObject.setParameter(0, userId);
 		
 		return (Long)queryObject.uniqueResult();
 		
@@ -528,7 +528,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	 * @see com.itgrids.partyanalyst.dao.IProblemHistoryDAO#getAllPostedProblemsByAnanymousUserId(java.lang.Long)
 	 * DAO Method that retrieves all problems data posted by a Ananymous user
 	 */
-	public List getAllPostedProblemsByAnanymousUserId(Long registrationId, Integer startIndex, Integer results, 
+	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, 
 			String order, String columnName, String reasonType)
 	{
 		StringBuilder query = new StringBuilder();
@@ -539,17 +539,17 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append("model.problemLocation.problemImpactLevel.scope,model.isApproved, model.problemHistoryId from ProblemHistory model ");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId is not null and model.isApproved = '"+IConstants.TRUE+"' ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId != ? and model.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
-			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
+			query.append("where model.problemLocation.problemAndProblemSource.freeUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
 		
 		
 		query.append(" and (model.isDelete = 'false' or model.isDelete is null) ");
@@ -558,7 +558,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
-			queryObject.setParameter(0, registrationId);
+			queryObject.setParameter(0, userId);
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(results);
 		
@@ -568,21 +568,21 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.year,model.problemLocation.problemAndProblemSource.problem.problem,"+
 				" model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue,"+				
 				" model.problemLocation.problemImpactLevel.scope,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
-				"externalUser.userId = ? ",registrationId);*/
+				"freeUser.userId = ? ",userId);*/
 	}
 	
-	public List getAllPostedProblemCount(Long registrationId)
+	public List getAllPostedProblemCount(Long userId)
 	{		
 		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId), "+
-				"model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId = ? "+
-				" and (model.isDelete = 'false' or model.isDelete is null) group by model.isApproved",registrationId);
+				"model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId = ? "+
+				" and (model.isDelete = 'false' or model.isDelete is null) group by model.isApproved",userId);
 	}
 	
-	public List getAllPostedProblemCountOtherThanLoggedInUser(Long registrationId)
+	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId)
 	{		
 		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId) "+
-				" from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ? and (model.isDelete is null "+
-				" or model.isDelete = 'false') and model.isApproved = 'true' ",registrationId);
+				" from ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId != ? and (model.isDelete is null "+
+				" or model.isDelete = 'false') and model.isApproved = 'true' ",userId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -595,7 +595,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		               .createAlias("problemLocation", "probLoc")
 		               .createAlias("problemStatus", "probStatus")
 		               .createAlias("probLoc.problemAndProblemSource", "probSource")
-		               .add(Expression.eq("user.registrationId", userId))
+		               .add(Expression.eq("user.userId", userId))
 		               .add(Expression.eq("probStatus.problemStatusId", problemStatusId))
 		               .add(Restrictions.or(
 					        Restrictions.eq( "isDelete", "false" ),
@@ -612,7 +612,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			Long userId, Long problemStatusId) {
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(*) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.problemStatus.problemStatusId = "+problemStatusId+ " and "+
 				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc").iterate().next() );
 		
@@ -623,7 +623,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			Long userId, Long problemStatusId) {
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.problemStatus.problemStatusId = "+problemStatusId+ " and "+
 				"model.isDelete is null or model.isDelete = 'false' group by date(model.dateUpdated) order by dateUpdated desc").iterate().next() );
 		
@@ -637,7 +637,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select count(model.problemHistoryId),date(model.dateUpdated) from ProblemHistory model where ");
-		query.append("model.problemLocation.problemAndProblemSource.user.registrationId= ? ");
+		query.append("model.problemLocation.problemAndProblemSource.user.userId= ? ");
 		query.append("and model.problemStatus.problemStatusId = ? and model.isDelete is null ");
 		query.append("or model.isDelete = 'false' group by date(model.dateUpdated) order by model.dateUpdated desc");
 		
@@ -656,7 +656,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			Long userId, Long problemStatusId) {
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.problemStatus.problemStatusId = "+problemStatusId+ " and "+
 				"model.isDelete is null or model.isDelete = 'false' group by month(model.dateUpdated) order by dateUpdated desc").iterate().next() );
 		
@@ -671,7 +671,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select count(model.problemHistoryId),month(model.dateUpdated),year(model.dateUpdated) from ProblemHistory model where ");
-		query.append("model.problemLocation.problemAndProblemSource.user.registrationId= ? ");
+		query.append("model.problemLocation.problemAndProblemSource.user.userId= ? ");
 		query.append("and model.problemStatus.problemStatusId = ? and model.isDelete is null ");
 		query.append("or model.isDelete = 'false' group by month(model.dateUpdated) order by model.dateUpdated desc");
 		
@@ -694,7 +694,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		query.append("select count(model.problemHistoryId),date(model.dateUpdated),model.problemStatus.status ");
 		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.");
-		query.append("user.registrationId= ? and model.isDelete is null or model.isDelete = 'false' ");
+		query.append("user.userId= ? and model.isDelete is null or model.isDelete = 'false' ");
 		query.append("group by model.problemStatus.problemStatusId,date(model.dateUpdated) order by model.dateUpdated desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -715,7 +715,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		query.append("select count(model.problemHistoryId),month(model.dateUpdated),model.problemStatus.status,year(model.dateUpdated) ");
 		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.");
-		query.append("user.registrationId= ? and model.isDelete is null or model.isDelete = 'false' ");
+		query.append("user.userId= ? and model.isDelete is null or model.isDelete = 'false' ");
 		query.append("group by model.problemStatus.problemStatusId,month(model.dateUpdated) order by model.dateUpdated desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -733,7 +733,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			Long userId){
 		
 		return getHibernateTemplate().find("select distinct date(model.dateUpdated) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc");
 	}
 	
@@ -742,7 +742,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			Long userId) {
 		
 		return getHibernateTemplate().find("select distinct month(model.dateUpdated) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc");
 		
 	}
@@ -754,7 +754,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select count(model.problemHistoryId),model.problemStatus.problemStatusId,"+
 				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problemSource.informationSourceId,"+
 				"model.problemLocation.problemAndProblemSource.problemSource.informationSource from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and model.problemStatus.status "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and model.problemStatus.status "+
 				"in ("+IConstants.PROBLEMS_LIFE_CYCLE+") and model.isDelete is null or model.isDelete = 'false' group by "+
 				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problemSource.informationSource "+
 				"order by model.problemStatus.problemStatusId");
@@ -769,7 +769,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
         .createAlias("problemLocation", "probLoc")
         .createAlias("problemStatus", "probStatus")
         .createAlias("probLoc.problemAndProblemSource", "probSource")
-        .add(Expression.eq("user.registrationId", userId))
+        .add(Expression.eq("user.userId", userId))
         
         .add(Restrictions.or(
 		        Restrictions.eq( "isDelete", "false" ),
@@ -795,7 +795,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	            "model.problemLocation.problemAndProblemSource.problem.existingFrom,"+
 	            "model.problemLocation.problemAndProblemSource.problemSource.informationSource,"+
 	            "model.problemStatus.status,model.problemLocation.problemImpactLevel from "+
-	            "ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId= ? "+
+	            "ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userId= ? "+
 	            "and model.isDelete is null or model.isDelete = 'false' order by date(model.dateUpdated) desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
@@ -811,7 +811,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public Long getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(Long userId){
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
-				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemLocation.problemAndProblemSource.user.userId = "+userId+" and "+
 				"model.isDelete is null or model.isDelete = 'false' order by date(dateUpdated) desc").iterate().next() );
 		
 	 return resultsCount;
@@ -822,7 +822,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		StringBuilder query = new StringBuilder();
 				
-		query.append("select count(model.problemHistoryId) from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? ");
+		query.append("select count(model.problemHistoryId) from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userId = ? ");
 		//If problems by problem status 
 		if(statusId != null && !statusId.equals(0L))
 			query.append("and model.problemStatus.problemStatusId = "+statusId+ " ");
@@ -868,7 +868,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		StringBuilder query = new StringBuilder();
 		
-		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? ");
+		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userId = ? ");
 		//If problems by problem status 
 		if(statusId != null && !statusId.equals(0L))
 			query.append("and model.problemStatus.problemStatusId = "+statusId+ " ");
@@ -918,7 +918,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemStatus.status from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -926,7 +926,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -934,7 +934,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemStatus.status from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ?  and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.userId = ?  and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -942,7 +942,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.userId = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	 @SuppressWarnings("unchecked")
 	public List<Object[]> getCompleteProblemDetailsBySearchString(String query,Date fromDate,Date toDate){
@@ -979,7 +979,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problem,"+
 				 "model.problemLocation.problemAndProblemSource.problem.description,model.problemStatus.status,"+
 				 "model.problemLocation.problemAndProblemSource.problem.identifiedOn FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.user.userName ="+name+" or "+
-				 "model.problemLocation.problemAndProblemSource.externalUser.username="+name+" or "+
+				 "model.problemLocation.problemAndProblemSource.freeUser.username="+name+" or "+
 				 "model.problemLocation.problemAndProblemSource.problemExternalSource.name="+name+" "+
 				 "and model.isDelete is null and model.isApproved = 'true' ");
 	}
@@ -987,13 +987,13 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId){
 	Object[] params = {userId,problemHistoryId};
-		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId=? and model.problemHistoryId=?",params);
+		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId FROM ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId=? and model.problemHistoryId=?",params);
 	}
 	
 	public Long getProblemCountOfFreeUser(Long userId)
 	{
 		Query query = getSession().createQuery("select count(model.problemHistoryId) " +
-				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId = ? "+
+				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId = ? "+
 				"and model.isApproved='true' and model.isDelete is null");
 		
 		query.setParameter(0, userId);		
@@ -1003,7 +1003,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List<Long> getAllValidProblemIds(int startIndex,int maxIndex){
 		Query query = getSession().createQuery("select model.problemHistoryId from ProblemHistory model where model.isDelete = null and model.isApproved = '"+IConstants.TRUE+"' and model.problemLocation.problemImpactLevel.regionScopesId < 5 " +
-				"  and model.problemLocation.problemAndProblemSource.externalUser is not null order by model.problemHistoryId desc ");
+				"  and model.problemLocation.problemAndProblemSource.freeUser is not null order by model.problemHistoryId desc ");
 		
 		   query.setFirstResult(startIndex);
 		   query.setMaxResults(maxIndex);
@@ -1015,7 +1015,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List<Long> getAllValidProblemIdsCount(){
 		return getHibernateTemplate().find("select count(model.problemHistoryId) from ProblemHistory model where model.isDelete = null and model.isApproved = '"+IConstants.TRUE+"' and model.problemLocation.problemImpactLevel.regionScopesId < 5 " +
-				"  and model.problemLocation.problemAndProblemSource.externalUser is not null  ");
+				"  and model.problemLocation.problemAndProblemSource.freeUser is not null  ");
 	}
 	
 	public Long getCountOfNewlyPostedProblemsByFreeUser()
@@ -1026,7 +1026,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	
 	public Long getFreeUserIdOfAProblem(Long problemHistoryId)
 	{
-		Query query = getSession().createQuery("select model.problemLocation.problemAndProblemSource.externalUser.userId from ProblemHistory model where model.problemHistoryId = ? and " +
+		Query query = getSession().createQuery("select model.problemLocation.problemAndProblemSource.freeUser.userId from ProblemHistory model where model.problemHistoryId = ? and " +
 				" model.isDelete is null ");
 		query.setParameter(0,problemHistoryId);
 		return (Long)query.uniqueResult();
@@ -1035,21 +1035,21 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getProblemHistoryIdByReferenceId(String problemRefId)
 	{
-		return getHibernateTemplate().find("select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.externalUser.userId,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.problem.referenceNo = ? and (model.isDelete is null or model.isDelete = 'false')" +
-				"and (model.problemLocation.problemAndProblemSource.externalUser.userId is not null)",problemRefId);
+		return getHibernateTemplate().find("select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.freeUser.userId,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.problem.referenceNo = ? and (model.isDelete is null or model.isDelete = 'false')" +
+				"and (model.problemLocation.problemAndProblemSource.freeUser.userId is not null)",problemRefId);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getStates()
 	{
 		return getHibernateTemplate().find("select distinct model.problemLocation.problemCompleteLocation.state.stateId , model.problemLocation.problemCompleteLocation.state.stateName from " +
-				"ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId is not null and (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' order by model.problemLocation.problemCompleteLocation.state.stateName");
+				"ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId is not null and (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' order by model.problemLocation.problemCompleteLocation.state.stateName");
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getProblemPostedUserDetails()
 	{
-		return getHibernateTemplate().find("select distinct model.problemLocation.problemAndProblemSource.externalUser.userId,model.problemLocation.problemAndProblemSource.externalUser" +
-				".name,model.problemLocation.problemAndProblemSource.externalUser.lastName from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId is not null order by model.problemLocation.problemAndProblemSource.externalUser.name");
+		return getHibernateTemplate().find("select distinct model.problemLocation.problemAndProblemSource.freeUser.userId,model.problemLocation.problemAndProblemSource.freeUser" +
+				".name,model.problemLocation.problemAndProblemSource.freeUser.lastName from ProblemHistory model where model.problemLocation.problemAndProblemSource.freeUser.userId is not null order by model.problemLocation.problemAndProblemSource.freeUser.firstName");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1060,8 +1060,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" select model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,model.problemLocation.problemAndProblemSource.problem.description, " +
 				" model.problemLocation.problemAndProblemSource.problem.existingFrom, " +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn, model.problemLocation.problemImpactLevel.regionScopesId,model.problemLocation.problemImpactLevelValue, " +
-				" model.problemLocation.problemAndProblemSource.externalUser.name, model.problemLocation.problemAndProblemSource.externalUser.lastName, model.problemLocation.problemAndProblemSource.externalUser.userId " +
-				" from ProblemHistory model where (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+				" model.problemLocation.problemAndProblemSource.freeUser.firstName, model.problemLocation.problemAndProblemSource.freeUser.lastName, model.problemLocation.problemAndProblemSource.freeUser.userId " +
+				" from ProblemHistory model where (model.isDelete is null or model.isDelete = 'false') and model.isApproved = 'true' and model.problemLocation.problemAndProblemSource.freeUser is not null ");
 		
 		if(!problemSearchVO.getScopeAll())
 		{
@@ -1090,7 +1090,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 			query.append(" and model.problemStatus.problemStatusId = :problemStatusId ");
 		
 		if(!problemSearchVO.getUsersAll())
-			query.append(" and model.problemLocation.problemAndProblemSource.externalUser.userId = :userId ");
+			query.append(" and model.problemLocation.problemAndProblemSource.freeUser.userId = :userId ");
 		
 		if(!problemSearchVO.getTypeAll())
 			query.append(" and model.problemLocation.problemAndProblemSource.problem.problemType.problemTypeId = :problemTypeId ");

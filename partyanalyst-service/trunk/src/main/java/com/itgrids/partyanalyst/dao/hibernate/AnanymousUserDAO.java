@@ -31,7 +31,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model.password from AnanymousUser model where model.password=? and model.userId=?",parameters);
 	}
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status,Date date)
+	public Integer changeUserPassword(String password,Long userId,String status,Date date)
 	{
 	StringBuilder query = new StringBuilder();
 	query.append("update AnanymousUser model set model.password = ?,model.isPwdChanged=?,model.updatedDate=? where model.userId = ?");
@@ -40,7 +40,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	queryObject.setParameter(0, password);
 	queryObject.setParameter(1, status);
 	queryObject.setParameter(2, date);
-	queryObject.setParameter(3, registrationId);
+	queryObject.setParameter(3, userId);
 	
 	
 	return queryObject.executeUpdate();	

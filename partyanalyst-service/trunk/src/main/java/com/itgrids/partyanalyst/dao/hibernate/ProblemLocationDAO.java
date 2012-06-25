@@ -39,8 +39,8 @@ public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Lon
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProblemLocation> findProblemsByUserId(Long registrationId){
-		return getHibernateTemplate().find("from ProblemLocation model where model.problemAndProblemSource.user.registrationId = ?", registrationId);
+	public List<ProblemLocation> findProblemsByUserId(Long userId){
+		return getHibernateTemplate().find("from ProblemLocation model where model.problemAndProblemSource.user.userId = ?", userId);
 	}
 
 	@SuppressWarnings("unchecked")

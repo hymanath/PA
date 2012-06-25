@@ -47,7 +47,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemHistory.problemHistoryId from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,7 +55,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemHistory.problemHistoryId from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -63,7 +63,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemHistory from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemHistory from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -79,7 +79,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find("select distinct model.cadre from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -87,7 +87,7 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select distinct model.cadre from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")

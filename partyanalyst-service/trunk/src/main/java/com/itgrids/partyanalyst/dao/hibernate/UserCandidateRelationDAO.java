@@ -35,7 +35,7 @@ public class UserCandidateRelationDAO extends GenericDaoHibernate<UserCandidateR
 	public List<Long> getUserCandidateRelationCount(Long userId,Long candidateId)
 	{
 		Object[] parameters ={userId,candidateId};
-		return getHibernateTemplate().find("select count(*) from UserCandidateRelation model where model.registration.registrationId=? " +
+		return getHibernateTemplate().find("select count(*) from UserCandidateRelation model where model.user.userId=? " +
 				" and model.candidate.candidateId=?",parameters);
 	}
 	

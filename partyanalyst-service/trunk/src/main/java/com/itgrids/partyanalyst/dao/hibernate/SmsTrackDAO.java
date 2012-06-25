@@ -39,13 +39,13 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<SmsTrack> findLatestRenewalDate(Long registrationId) {
-		return getHibernateTemplate().find("from SmsTrack model where model.registration.registrationId = ? order by model.renewalDate desc ",registrationId);
+	public List<SmsTrack> findLatestRenewalDate(Long userId) {
+		return getHibernateTemplate().find("from SmsTrack model where model.registration.userId = ? order by model.renewalDate desc ",userId);
 	}
 	
 	public Object getRemainingSMSCountForAUser(Long userId)
 	{
-		Query query = getSession().createQuery("select model.renewalSmsCount from SmsTrack model where model.registration.registrationId = ?");
+		Query query = getSession().createQuery("select model.renewalSmsCount from SmsTrack model where model.registration.userId = ?");
 		query.setParameter(0,userId);
 		return query.uniqueResult();
 	}
@@ -58,7 +58,7 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 	
 	public Integer updateRemainingSmsLeftForUser(Long userId, Long count)
 	{
-		Query query = getSession().createQuery("update SmsTrack model set model.renewalSmsCount = ? where model.registration.registrationId = ? ");
+		Query query = getSession().createQuery("update SmsTrack model set model.renewalSmsCount = ? where model.registration.userId = ? ");
 		query.setParameter(0,count);
 		query.setParameter(1,userId);
 		return query.executeUpdate();
