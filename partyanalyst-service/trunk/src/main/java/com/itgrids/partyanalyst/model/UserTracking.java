@@ -32,7 +32,6 @@ public class UserTracking extends BaseModel implements Serializable {
 	private Date time;
 	private String sessionId;
 	private Registration registration;
-	//private Long registrationId;
 	private User user;
 	private Long userId;
 	private AnanymousUser freeUser;
