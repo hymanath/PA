@@ -1854,14 +1854,14 @@ public class ProblemManagementReportService implements
 				String email = null;
 				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
 				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-				email = problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser()
+				email = problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser()
 					.getEmail();
 				if(email != null && email.trim().length() > 0)
 				{
 					emailDetailsVO.setFromAddress(problemHistory.getProblemLocation()
-							.getProblemAndProblemSource().getExternalUser().getName()+" "+
+							.getProblemAndProblemSource().getFreeUser().getFirstName()+" "+
 							problemHistory.getProblemLocation().getProblemAndProblemSource()
-							.getExternalUser().getLastName());
+							.getFreeUser().getLastName());
 					
 					emailDetailsVO.setToAddress(email);
 					
@@ -1904,7 +1904,7 @@ public class ProblemManagementReportService implements
 				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 				
 				userId = problemHistory.getProblemLocation().getProblemAndProblemSource()
-						.getExternalUser().getUserId();
+						.getFreeUser().getUserId();
 				
 				if(userId != null && userId != 0)
 				{
@@ -1924,8 +1924,8 @@ public class ProblemManagementReportService implements
 								emailDetailsVO.setToAddress(email);
 								emailDetailsVO.setFromAddress(params[1].toString()+" "+params[2].toString());
 								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getExternalUser().getName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getExternalUser().getLastName());
+										.getFreeUser().getFirstName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource()
+										.getFreeUser().getLastName());
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
 								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
@@ -1948,8 +1948,8 @@ public class ProblemManagementReportService implements
 										.getProblem().getDescription());
 								emailDetailsVO.setToAddress(email);
 								emailDetailsVO.setFromAddress(param[1].toString()+" "+param[2].toString());
-								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser()
-										.getName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getLastName());
+								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser()
+										.getFirstName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser().getLastName());
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
 								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);

@@ -141,7 +141,7 @@ public class DataApprovalService implements IDataApprovalService {
 					
 					List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
 					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
-					if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId().equals(approvalInfoVO.getUserId()) && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
+					if(problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser().getUserId().equals(approvalInfoVO.getUserId()) && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
 					{
 						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
 						rs.setResultState(1l);
