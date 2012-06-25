@@ -11,7 +11,8 @@
 </head>
 <body>
 <div style="margin-top:10px;margin-left:150px;background:#fff;width:700px;padding:10px;">
-		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.UserName}" /></span>,</p>
+<div id="changeNewUserPassword">
+		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
 		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.USER.email}" /></b></p>
 		<p>Please verify email to change your password.</p>
 		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;">
@@ -19,10 +20,10 @@
 		<div id="password_window_body_div" style="background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); width: 329px;">
 		<table style="margin: 7px;">
 		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
-		Fields marked with (<font color="red">*</font>) are mandatory</td></tr><tr><td class="tdStyle"><b style="color:red">*</b>Current Password</td><td>  <input type="password" name="currentPassword" id="currentPwdId" cssclass="textFieldStyle"></td></tr>
-		<tr><td class="tdStyle"><b style="color:red">*</b>New Password</td><td><input type="password" name="newPassword" id="newPwdId" cssclass="textFieldStyle">
+		Fields marked with (<font color="red">*</font>) are mandatory</td></tr><tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPwdId" cssclass="textFieldStyle"></td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPwdId" cssclass="textFieldStyle">
 	    </td></tr>
-		<tr><td class="tdStyle"><b style="color:red">*</b>Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPwdId" cssclass="textFieldStyle">
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPwdId" cssclass="textFieldStyle">
         </td></tr></tbody></table>
         	</div>
 		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: rgb(214, 229, 233); padding: 5px; width: 331px;">
@@ -36,8 +37,10 @@
 			</tr>
 			</tbody></table>	
 		</div>
-		<div id="password_window_errorMsg" style="margin: 10px; font-weight: bold; font-size: 13px;"></div>
 		</div>
+		</div>
+		<div id="password_window_errorMsg" style="margin: 10px; font-weight: bold; font-size: 13px;"></div>
+		
 		<div id="loginDiv" style="display:none;font-size: 13px;">
 		<div style="font-weight: bold; margin-top: 22px; margin-left: 188px;">Please Login to continue</div>
 		 <div style="border: 1px solid rgb(211, 211, 211); width: 344px; margin-top: 13px; margin-left: 188px;"">
@@ -72,5 +75,114 @@
 							
 						</s:form></div></div>
 		</div>
+
+		<script type="text/javascript">
+		
+	function changePassword()
+	{
+		
+	var cpwd = document.getElementById("currentPwdId").value;
+	var npwd = document.getElementById("newPwdId").value;
+	var cfmpwd = document.getElementById("confirmPwdId").value;
+	var resultDIVEle = document.getElementById("password_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	if(cpwd.length > 0 &&cpwd.length < 6){
+		resultDIVEle.innerHTML = "<font color='red'>Current Password Minimum Of 6 Characters.</font>";
+	        return;
+	}
+	if(npwd.length > 0 &&npwd.length < 6){
+		resultDIVEle.innerHTML = "<font color='red'>New Password Minimum Of 6 Characters.</font>";
+	        return;
+	}
+	if(cpwd.value=="")
+     resultDIVEle.innerHTML="<font color='red'>Please enter password.</font>";	
+     if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd){
+ 		resultDIVEle.innerHTML = "<font color='red'>Passwords do not match.</font>";
+         return
+	}
+	if(cpwd==''){
+     resultDIVEle.innerHTML = "<font color='red'>Please enter current password.</font>";
+	return;
+	}
+	if(npwd==''){
+     resultDIVEle.innerHTML = "<font color='red'>Please enter new password.</font>";
+	return;
+	}
+	if(cfmpwd==''){
+	resultDIVEle.innerHTML = "<font color='red'>Please enter confirm password.</font>";
+	return;
+	}
+	if(cpwd == npwd)
+		{
+		resultDIVEle.innerHTML = "<font color='green'>Your new passward is same as existing one.</font>";
+		setTimeout("closewdw()",3000);
+		return;
+		}
+	if(cpwd!='')
+		{
+		str = '<font color="#000000">Sending Your Request.Please wait</font>';
+		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+       	var jsObj={
+          crntPassword:cpwd,
+          newPassword:npwd,
+		  task:"changePassword"	 
+	};
+        var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "changeNewUserPasswordAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		}
+}
+
+
+function callAjax(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+									
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "changePassword")
+					{
+						showResults(results);
+					}
+
+			}catch (e) {   		
+			   	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+		function showResults(results)
+		{
+			
+		if(results.resultCode==0){
+			document.getElementById("changeNewUserPassword").style.display = 'none';
+			
+			var result = document.getElementById("password_window_errorMsg");
+		result.innerHTML ='<div style="color:green">Password changed successfully, Window Closing...</div>';
+        
+		setTimeout("closewdw()",3000);
+		if(document.getElementById("loginDiv"))
+			{
+		  document.getElementById("loginDiv").style.display ='block';
+			result.innerHTML ='<div style="color:green">Password changed successfully.....</div>';
+			}
+		}	
+		else if(resultsresultCode==1){
+			var result = document.getElementById("password_window_errorMsg");
+		var str='';
+			str+='<div style="color:red"> Invalid Current Password</div>';	
+		result.innerHTML = str;
+
+		}
+}
+		</script>
 </body>
 </html>
