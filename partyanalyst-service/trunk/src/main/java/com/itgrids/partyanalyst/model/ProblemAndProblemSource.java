@@ -27,18 +27,15 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProblemAndProblemSource extends BaseModel implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3768383074738249375L;
 	private Long problemAndProblemSourceId;
 	private String postedBy;
-	private Registration user;
-	private Registration subUser;
+	private User user;
+	private User subUser;
 	private Problem problem;
 	private InformationSource problemSource;
 	private ProblemExternalSource problemExternalSource;
-	private AnanymousUser externalUser;
+	private User freeUser;
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	
 	public ProblemAndProblemSource(){
@@ -50,27 +47,21 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	}
 	
 	public ProblemAndProblemSource(String postedBy,
-			Registration user, Problem problem,ProblemExternalSource problemExternalSource, 
+			Problem problem,ProblemExternalSource problemExternalSource, 
 			Set<ProblemLocation> problemLocations, InformationSource problemSource) {
 		this.postedBy = postedBy;
-		this.user = user;
 		this.problem = problem;
 		this.problemExternalSource = problemExternalSource;
 		this.problemLocations = problemLocations;
 		this.problemSource = problemSource;
 	}
 
-	public ProblemAndProblemSource(String postedBy, Registration user,
-			Problem problem, InformationSource problemSource,
-			ProblemExternalSource problemExternalSource,
-			AnanymousUser externalUser, Set<ProblemLocation> problemLocations) {
+	public ProblemAndProblemSource(String postedBy,Problem problem, InformationSource problemSource,
+			ProblemExternalSource problemExternalSource) {
 		this.postedBy = postedBy;
-		this.user = user;
 		this.problem = problem;
 		this.problemSource = problemSource;
 		this.problemExternalSource = problemExternalSource;
-		this.externalUser = externalUser;
-		this.problemLocations = problemLocations;
 	}
 
 	@Id
@@ -91,18 +82,6 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 
 	public void setPostedBy(String postedBy) {
 		this.postedBy = postedBy;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
@@ -151,28 +130,39 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "external_user_id")
+	@JoinColumn(name = "free_user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AnanymousUser getExternalUser() {
-		return externalUser;
+	public User getFreeUser() {
+		return freeUser;
 	}
 
-	public void setExternalUser(AnanymousUser externalUser) {
-		this.externalUser = externalUser;
+	public void setFreeUser(User freeUser) {
+		this.freeUser = freeUser;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "sub_user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getSubUser() {
+	public User getSubUser() {
 		return subUser;
 	}
-	
-	public void setSubUser(Registration subUser) {
-		this.subUser = subUser;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
+	public void setSubUser(User subUser) {
+		this.subUser = subUser;
+	}
 	
 }
