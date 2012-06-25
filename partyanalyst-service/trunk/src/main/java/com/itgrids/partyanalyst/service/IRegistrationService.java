@@ -13,7 +13,7 @@ public interface IRegistrationService {
 
 	 public EntitlementVO getAllRegisterdUsers();
 	 
-	 public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
+	 public RegistrationVO getDetailsOfUserByUserId(Long userId);
 	 
 	 public ResultStatus checkForUserNameAvalilability(String userName);
 	 

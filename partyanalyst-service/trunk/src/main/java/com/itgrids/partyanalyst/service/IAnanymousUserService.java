@@ -37,15 +37,15 @@ public interface IAnanymousUserService {
 	
 	public List<SelectOptionVO> findAllProfileOptsAvailableInDB();
 	
-	public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
+	public RegistrationVO getDetailsOfUserByUserId(Long userId);
 	
-	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
+	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long userId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
-	public ProblemBeanVO getAllPostedProblemsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
+	public ProblemBeanVO getAllPostedProblemsByUserId(Long userId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
-	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long registrationId);
+	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long userId);
 	
-	public ProblemDetailsVO getPostedProblemsCount(Long registrationId);
+	public ProblemDetailsVO getPostedProblemsCount(Long userId);
 	
 	public DataTransferVO getAllPeopleConnectedPeopleForUser(List<Long> userId);
 	

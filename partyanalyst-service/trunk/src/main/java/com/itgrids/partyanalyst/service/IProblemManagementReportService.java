@@ -14,9 +14,9 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IProblemManagementReportService {
 	
-	//public List<ProblemBeanVO> getHamletProblemsInfo(Long hamletId,Long registrationId,String taskType);
+	//public List<ProblemBeanVO> getHamletProblemsInfo(Long hamletId,Long userId,String taskType);
 	
-	public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long registrationId,String taskType);
+	public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long userId,String taskType);
 	
 	public List<ProblemBeanVO> getProblemsInfoBasedOnLocation(Long locationId,Long userId,Long status, Long regionScope,Long deptId);
 	
@@ -32,7 +32,7 @@ public interface IProblemManagementReportService {
 	
 	public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag,Long userId);
 	
-	public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,Long taskType);
+	public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long userId,Long taskType);
 	
 	public LocationwiseProblemStatusInfoVO getRecentProblemsWithInTheRegion(String accessType, Long accessValue, Long statusId, int limit);
 	

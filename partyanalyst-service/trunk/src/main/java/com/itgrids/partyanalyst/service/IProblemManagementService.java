@@ -26,17 +26,17 @@ public interface IProblemManagementService {
 
 	public ProblemManagementDataVO getProblemsForAHamlet(Long hamletId,String year);
 	public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave);
-	public ProblemsOfUserVO getNewProblemsForUser(Long registrationId, Long statusId);
-	public List<ProblemBeanVO> getClassifiedProblemsOfUser(Long registrationId, Long statusId);
+	public ProblemsOfUserVO getNewProblemsForUser(Long userId, Long statusId);
+	public List<ProblemBeanVO> getClassifiedProblemsOfUser(Long userId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetClassifiedProblemDataIntoDB(List<ProblemBeanVO> problemsToUpdate);
 	public List<ProblemBeanVO> updateAndGetAssignedProblems(List<ProblemBeanVO> problemsToAssign);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderProgress(List<ProblemBeanVO> problemsInProgress);
 	public List<SelectOptionVO> getDepartmentsForProblemScope(String problemScope);
-	public List<ProblemBeanVO> getAssignedProblems(Long registrationId, Long statusId);
-	public List<ProblemBeanVO> getProblemsUnderProgress(Long registrationId, Long statusId);
-	public List<ProblemBeanVO> getPendingProblemsForAnUser(Long registrationId, Long statusId);
+	public List<ProblemBeanVO> getAssignedProblems(Long userId, Long statusId);
+	public List<ProblemBeanVO> getProblemsUnderProgress(Long userId, Long statusId);
+	public List<ProblemBeanVO> getPendingProblemsForAnUser(Long userId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderFixed(List<ProblemBeanVO> problemsFixed);
-	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId, Long statusId);
+	public List<ProblemBeanVO> getFixedProblemsForUser(Long userId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderPending(List<ProblemBeanVO> pendingProblems);
 	public List<SelectOptionVO> getAllProblemImpactLevel();
 	

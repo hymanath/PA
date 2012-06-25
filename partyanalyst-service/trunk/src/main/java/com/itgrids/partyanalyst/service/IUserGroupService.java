@@ -25,7 +25,6 @@ public interface IUserGroupService {
 	public List<SelectOptionVO> getAllStaticGroupNames();
 	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId);
     
-    
 	public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
     
@@ -38,7 +37,7 @@ public interface IUserGroupService {
     
     public SmsResultVO sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName);
     
-    public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId);
+    public List<UserGroupMembersVO> getAllMembersIntheGroup(Long userId, Long groupId);
     
     public List<SelectOptionVO> getSubGroupsListInSystemGroups(Long groupId ,Long userId);
     public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId);
