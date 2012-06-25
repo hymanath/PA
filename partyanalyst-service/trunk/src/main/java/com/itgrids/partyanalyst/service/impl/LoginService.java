@@ -25,6 +25,8 @@ import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
@@ -507,4 +509,38 @@ public class LoginService implements ILoginService{
 		}
 	}
 	
+	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			User user = userDAO.getUserByUserName(userName);
+			if(user != null && user.getUserId() > 0)
+			{
+				user.setPassword(newpassword);
+				user.setIsPwdChanged(IConstants.TRUE);
+				user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+				userDAO.save(user);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception Occured During change password of a new User - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	/*public String changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
+	{   
+		
+		List<Object> userId = userDAO.getUserIdByUserName(userName);
+		Long registrationId = (Long) userId.get(0);
+		
+		List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
+		if(chkpwd.size() == 0)
+			return IConstants.NoPassword;
+		
+		Integer chkPwdVals = userDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
+			return IConstants.YesPassword;
+	}*/
 }

@@ -59,7 +59,7 @@ public interface IAnanymousUserService {
 	
 	public String getPassword(String password);
 	
-	public String changeUserPassword(String crntPassword,String newPassword,Long registrationId,String userName);
+	//public String changeUserPassword(String crntPassword,String newPassword,String userName);
 	
 	public  ResultStatus saveEmailForAUser(String userName,String email);
 	
@@ -72,5 +72,7 @@ public interface IAnanymousUserService {
 	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocationAndStatus(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex,String nameString);
 	
 	public Long getUserConstituencyId(Long userId);
+	
+	public String changeUserPassword(String crntpassword,String newpassword,Long registrationId,String userName);
 
 }	

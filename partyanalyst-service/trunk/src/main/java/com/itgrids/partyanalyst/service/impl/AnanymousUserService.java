@@ -472,11 +472,11 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 */
 	public ResultStatus checkForUserNameAvalilability(String userName){
 		ResultStatus resultStatus = new ResultStatus();
-		List<AnanymousUser> detailsList = null;
-		List<AnanymousUser> detailsListForEmail = null;
+		List<User> detailsList = null;
+		List<User> detailsListForEmail = null;
 		try{
-			detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+			detailsList = userDAO.checkForUserNameAvailabiity(userName);
+			detailsListForEmail=userDAO.checkForUserNameAvailabiityForEmail(userName);
 			if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
