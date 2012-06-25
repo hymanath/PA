@@ -64,23 +64,23 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllConnectedPeopleForFreeUser(Long senderId){
-		return getHibernateTemplate().find(" select model.userTarget.registrationId,model.userTarget.firstName,model.userTarget.lastName,model.userTarget.email from UserConnectedto model where "+
-					"model.userSource.registrationId = ? ",senderId);	
+		return getHibernateTemplate().find(" select model.userTarget.userId,model.userTarget.firstName,model.userTarget.lastName,model.userTarget.email from UserConnectedto model where "+
+					"model.userSource.userId = ? ",senderId);	
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllConnectedPeoplesForFreeUser(Long recepientId)
 	{
-		return getHibernateTemplate().find("select model.userSource.registrationId,model.userSource.firstName,model.userSource.lastName,model.userSource.email from UserConnectedto model where "+
-	"model.userTarget.registrationId = ?",recepientId);
+		return getHibernateTemplate().find("select model.userSource.userId,model.userSource.firstName,model.userSource.lastName,model.userSource.email from UserConnectedto model where "+
+	"model.userTarget.userId = ?",recepientId);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllPeopleThatMayBeKnownForUser(Long userId){
 		StringBuilder query = new StringBuilder();				
-		query.append(" select model.userSource.registrationId,model.userTarget.registrationId from UserConnectedto model where ");
-		query.append(" (model.userSource.registrationId in (select model2.userSource.registrationId from UserConnectedto model2 where ");
-		query.append(" (model2.userSource.registrationId =? or  model2.userTarget.registrationId = ?)) or");
-		query.append("  model.userTarget.registrationId in (select model3.userSource.registrationId from UserConnectedto model3 where");
-		query.append("(model3.userSource.registrationId =? or  model3.userTarget.registrationId = ?))) ");	
+		query.append(" select model.userSource.userId,model.userTarget.userId from UserConnectedto model where ");
+		query.append(" (model.userSource.userId in (select model2.userSource.userId from UserConnectedto model2 where ");
+		query.append(" (model2.userSource.userId =? or  model2.userTarget.userId = ?)) or");
+		query.append("  model.userTarget.userId in (select model3.userSource.userId from UserConnectedto model3 where");
+		query.append("(model3.userSource.userId =? or  model3.userTarget.userId = ?))) ");	
 				
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong(0, userId);

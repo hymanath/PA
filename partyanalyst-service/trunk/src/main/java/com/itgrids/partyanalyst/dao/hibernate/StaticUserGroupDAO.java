@@ -22,8 +22,8 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 	
 
 	@SuppressWarnings("unchecked")
-	public List findMembersByUserId(Long registrationId, Long groupId){
-		Object [] params = {registrationId, groupId};
+	public List findMembersByUserId(Long userId, Long groupId){
+		Object [] params = {userId, groupId};
 		return getHibernateTemplate().find("select model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId," +
 				" model.staticUser.address,model.staticUser.location,model.staticUser.designation,model.staticUser.phoneNumber" +
 				" from StaticUserGroup model where model.personalUserGroup.user.userId= ? " +
@@ -80,7 +80,7 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
 				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
 				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
-				"model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ? and model.personalUserGroup.createdUserId.registrationId = ?",params);
+				"model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ? and model.personalUserGroup.user.userId = ?",params);
 				
 	}
 	
@@ -98,7 +98,7 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
 				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
 				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
-				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.createdUserId.registrationId = ?",params);
+				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.user.userId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -115,7 +115,7 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
 				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
 				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
-				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.createdUserId.registrationId = ? "+
+				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.user.userId = ? "+
 				"and model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ?",params);
 	}
 

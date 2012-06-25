@@ -31,9 +31,9 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId){
-		Object[] params = {registrationId, statusId};
-		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
+	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long userId, Long statusId){
+		Object[] params = {userId, statusId};
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?" +
 				" and model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete is null",params );
 	}
 
@@ -46,9 +46,9 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 
 	@SuppressWarnings("unchecked")
 	public List<AssignedProblemProgress> getLatestProblemsByRegistrationIdAndStatusId(
-			Long registrationId, Long statusId, String status) {
-		Object[] params = {registrationId, statusId,status};
-		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
+			Long userId, Long statusId, String status) {
+		Object[] params = {userId, statusId,status};
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?" +
 				" and  model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete = ? ",params );
 	}
 
@@ -99,7 +99,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 		Object[] params = {userId,deptScopeId};
 		
 		return getHibernateTemplate().find("from AssignedProblemProgress model where "+
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and " +
 				" model.problemSourceScopeConcernedDepartment.problemSourceScope.problemSourceScopeId = ? and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
@@ -108,7 +108,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,String locationStr)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? " +
+		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? " +
 				" "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
 				" and model.cadre is not null ",params);
 	}
@@ -117,7 +117,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<Object> getAssignedCadreProblemsCountForAnUser(Long userId)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
 	}
 	
@@ -125,7 +125,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,String locationStr)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? "+
 				" "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
 	}
 	
@@ -133,7 +133,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<ProblemHistory> getAssignedCadreProblemsForAnUser(Long userId)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
 	}
 	
@@ -141,7 +141,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<Object> getDepartmentWiseProblemStatus(Long userId,Long deptOrgId)
 	{
 		Object[] params = {userId,deptOrgId};
-		return getHibernateTemplate().find(" select model.problemHistory.problemStatus.status from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+		return getHibernateTemplate().find(" select model.problemHistory.problemStatus.status from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.departmentOrganisation.departmentOrganisationId = ? group by model.problemHistory.problemHistoryId ",params);
 	}
 	
@@ -149,7 +149,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<ProblemHistory> getDepartmentWiseProblemsBasedOnStatus(Long userId,Long deptOrgId,String statusStr)
 	{
 		Object[] params = {userId,deptOrgId};
-		return getHibernateTemplate().find(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+		return getHibernateTemplate().find(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.departmentOrganisation.departmentOrganisationId = ? "+ statusStr +" group by model.problemHistory.problemHistoryId ",params);
 	}
 	
@@ -158,7 +158,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select max(model2.assignedProblemProgressId) from AssignedProblemProgress model2 where model2.problemHistory.problemHistoryId in (select model.problemHistory.problemHistoryId from AssignedProblemProgress model " +
-				" where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' "+deptLocationStr+" group by model.problemHistory.problemHistoryId) group by model2.problemHistory.problemHistoryId ",params);
 	}
 	
@@ -166,7 +166,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<Object[]> getProblemsStatusBasedOnAssignedProblemProgressId(Long userId,List<Long> progressIdList)
 	{
 		Query queryObject = getSession().createQuery(" select model.problemHistory.problemStatus.status,model.departmentOrganisation.departmentOrganisationId,model.departmentOrganisation.organisationName from AssignedProblemProgress model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.assignedProblemProgressId in(:progressIdList) ");
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ?  and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.assignedProblemProgressId in(:progressIdList) ");
 		
 		queryObject.setParameter(0, userId);
 		queryObject.setParameterList("progressIdList", progressIdList);
@@ -176,7 +176,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	@SuppressWarnings("unchecked")
 	public List<ProblemHistory> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr)
 	{
-		Query queryObject = getSession().createQuery(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and " +
+		Query queryObject = getSession().createQuery(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.assignedProblemProgressId in(:progressIdList) "+deptStr+" "+ statusStr);
 		
 		queryObject.setParameter(0, userId);
@@ -197,7 +197,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find("select distinct model.cadre from AssignedProblemProgress model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -205,7 +205,7 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	{
 		Object[] params = {userId};
 		return getHibernateTemplate().find(" select distinct model.cadre from AssignedProblemProgress model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.userId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")

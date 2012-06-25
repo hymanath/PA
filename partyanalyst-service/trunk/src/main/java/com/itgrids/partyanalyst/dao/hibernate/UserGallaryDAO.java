@@ -20,7 +20,7 @@ public class UserGallaryDAO extends GenericDaoHibernate<UserGallary,Long> implem
 	public List<Object[]> getAllNewsGallaryBasedOnUserId(Long userId){
 		
 		Query query =  getSession().createQuery("SELECT model.gallary.gallaryId,model.gallary.name FROM UserGallary model " +
-				"WHERE model.registration.registrationId =:userId and model.gallary.contentType.contentType =:contentType " +
+				"WHERE model.user.userId =:userId and model.gallary.contentType.contentType =:contentType " +
 				"and model.gallary.isDelete =:isDelete order by model.gallary.updateddate asc");
 		query.setParameter("userId", userId);
 		query.setParameter("contentType", IConstants.NEWS_GALLARY);

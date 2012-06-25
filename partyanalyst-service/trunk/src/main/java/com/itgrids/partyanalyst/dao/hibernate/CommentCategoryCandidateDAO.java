@@ -132,7 +132,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getTotalPostedPaidUsersGroupedByCommentCategory(Long electionId,Long partyId,String category) {
 		Object[] params = {electionId,partyId,category};
 		
-		return getHibernateTemplate().find("select count(distinct model.paidUser.registrationId) from CommentCategoryCandidate model"+
+		return getHibernateTemplate().find("select count(distinct model.paidUser.userId) from CommentCategoryCandidate model"+
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?"+
@@ -272,10 +272,10 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		
 	/*public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
-		return getHibernateTemplate().find("select model.paidUser.registrationId, model.paidUser.firstName, model.commentData.commentDesc, " +
+		return getHibernateTemplate().find("select model.paidUser.userId, model.paidUser.firstName, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
-				"model.nomination.nominationId = ? group by model.paidUser.registrationId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+				"model.nomination.nominationId = ? group by model.paidUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
 	}*/
 
 	public List getAllCommentsOfUserForANomination(Long electionId,
@@ -334,7 +334,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	}
 	
 	/*
-	public List getPostedReasonsByFreeUserId(Long registrationId)
+	public List getPostedReasonsByFreeUserId(Long userId)
 	{		
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.commentData.commentDataId,");	
@@ -354,14 +354,14 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" where model.freeUser.userId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter(0, registrationId);
+		queryObject.setParameter(0, userId);
 		queryObject.setMaxResults(100);
 		
 		return queryObject.list();
 	}*/
 	
 	@SuppressWarnings("unchecked")
-	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, 
+	public List getPostedReasonsByFreeUserId(Long userId, Integer startIndex, Integer results, 
 			String order, String columnName, String reasonType)
 	{	
 		StringBuilder query = new StringBuilder();
@@ -395,14 +395,14 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
-			queryObject.setParameter(0, registrationId);
+			queryObject.setParameter(0, userId);
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(results);
 		
 		return queryObject.list();
 	}
 	
-	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId)
+	public Long getTotalPostedReasonsCountByFreeUserId(Long userId)
 	{	
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model.commentCategoryCandidateId) ");		
@@ -410,7 +410,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" where model.freeUser.userId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter(0, registrationId);
+		queryObject.setParameter(0, userId);
 				
 		return (Long)queryObject.uniqueResult();
 	}
@@ -427,16 +427,16 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return (Long)queryObject.uniqueResult();
 	}
 	
-	public List getPostedReasonsCountByFreeUserId(Long registrationId)
+	public List getPostedReasonsCountByFreeUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select count(model.commentCategoryCandidateId), model.commentData.isApproved "+
-				"from CommentCategoryCandidate model where model.freeUser.userId = ? group by model.commentData.isApproved",registrationId);
+				"from CommentCategoryCandidate model where model.freeUser.userId = ? group by model.commentData.isApproved",userId);
 	}
 	
-	public List getPostedReasonsCountOtherThanLoginUserId(Long registrationId)
+	public List getPostedReasonsCountOtherThanLoginUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select count(*) "+
-				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",registrationId);
+				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",userId);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
