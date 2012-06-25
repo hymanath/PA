@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -112,6 +113,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -171,8 +173,17 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IMailsSendingService mailsSendingService;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IFilePathsDAO filePathsDAO;
+	private IUserDAO userDAO; 
 	
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
 	}
@@ -658,8 +669,8 @@ public class ProblemManagementService implements IProblemManagementService {
 								.getProbSourceId());
 
 					ProblemExternalSource problemExternalSource = null;
-					Registration reg = null;
-					AnanymousUser externalUser = null;
+					User user = null;
+					User freeUser = null;
 					Hamlet hamlet = null;
 					problem = new Problem();
 					problemLocation = new ProblemLocation();
@@ -716,10 +727,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					if (problemBeanVO.getProblemPostedBy().equals(
 							IConstants.PARTY_ANALYST_USER)) {
 						problemAndProblemSource.setProblemSource(problemSource);
-						reg = registrationDAO.get(problemBeanVO.getUserID());
-						problemAndProblemSource.setUser(reg);
-						problemAndProblemSource.setSubUser(registrationDAO
-								.get(problemBeanVO.getSubUserId()));
+						user = userDAO.get(problemBeanVO.getUserID());
+						problemAndProblemSource.setUser(user);
+						problemAndProblemSource.setSubUser(userDAO.get(problemBeanVO.getSubUserId()));
 						problemHistory.setIsApproved(IConstants.TRUE);
 
 						if (problemBeanVO.getProbSourceId() == 2
@@ -743,9 +753,9 @@ public class ProblemManagementService implements IProblemManagementService {
 						}
 					} else if (problemBeanVO.getProblemPostedBy().equals(
 							IConstants.FREE_USER)) {
-						externalUser = ananymousUserDAO.get(problemBeanVO
+						freeUser = userDAO.get(problemBeanVO
 								.getUserID());
-						problemAndProblemSource.setExternalUser(externalUser);
+						problemAndProblemSource.setFreeUser(freeUser);
 						problemHistory.setIsApproved(IConstants.FALSE);
 					}
 
@@ -3128,7 +3138,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemHistory = pbHistory.get(0);
 				
 				if(!problemHistory.getProblemLocation().getProblemAndProblemSource().
-						getUser().getRegistrationId().equals(userId))
+						getUser().getUserId().equals(userId))
 					return null;
 				
 				problemCompleteInfo = new ProblemCompleteDetailsVO();
@@ -4696,7 +4706,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			String message = "";
 			ProblemHistory problemHistory = null;
 			long sourceId;
-			Registration user = null;
+			User user = null;
 			List<Object> mobileNos = cadreDAO.getMobileNosOfCadre(cadreList);
 
 			if (mobileNos != null && mobileNos.size() >= 0
@@ -4854,7 +4864,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						.getInformationSourceId();
 				userId = problemHistory.getProblemLocation()
 						.getProblemAndProblemSource().getUser()
-						.getRegistrationId();
+						.getUserId();
 
 				if (ProblemSource == 1) {
 					mobile = problemHistory.getProblemLocation()
@@ -4876,10 +4886,10 @@ public class ProblemManagementService implements IProblemManagementService {
 				userType = IConstants.FREE_USER;
 						
 				mobile = problemHistory.getProblemLocation()
-						.getProblemAndProblemSource().getExternalUser()
+						.getProblemAndProblemSource().getFreeUser()
 						.getMobile();
 				userId = problemHistory.getProblemLocation()
-						.getProblemAndProblemSource().getExternalUser()
+						.getProblemAndProblemSource().getFreeUser()
 						.getUserId();
 			}
 
@@ -4945,7 +4955,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 				
 				email = problemHistory.getProblemLocation()
-						.getProblemAndProblemSource().getExternalUser()
+						.getProblemAndProblemSource().getFreeUser()
 						.getEmail();
 				
 				if(email != null && email.trim().length() > 0)
@@ -4968,9 +4978,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemDetailsVO.setProblemID(noOfFilesAttached);
 					
 					emailDetailsVO.setFromAddress(problemHistory.getProblemLocation()
-							.getProblemAndProblemSource().getExternalUser()
-							.getName()+" "+ problemHistory.getProblemLocation()
-							.getProblemAndProblemSource().getExternalUser()
+							.getProblemAndProblemSource().getFreeUser()
+							.getFirstName()+" "+ problemHistory.getProblemLocation()
+							.getProblemAndProblemSource().getFreeUser()
 							.getLastName());
 					emailDetailsVO.setToAddress(email);
 					emailDetailsVO.setElectionType(problemHistory.getProblemLocation()
@@ -5243,10 +5253,10 @@ public class ProblemManagementService implements IProblemManagementService {
 					fileVO.setScope(problemFile.getProblemHistory().getProblemLocation().getProblemImpactLevel().getScope());
 					fileVO.setIdentifiedOn(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn());
 					fileVO.setExistingFrom(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom());
-					if(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser() !=null && problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getName()!=null)
+					if(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getFreeUser() !=null && problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getFreeUser().getFirstName()!=null)
 					{
-					 fileVO.setName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getName());
-					 fileVO.setLastName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getExternalUser().getLastName());
+					 fileVO.setName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getFreeUser().getFirstName());
+					 fileVO.setLastName(problemFile.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getFreeUser().getLastName());
 					}
 					
 					
