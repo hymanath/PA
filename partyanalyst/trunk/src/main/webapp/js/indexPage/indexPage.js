@@ -1348,7 +1348,7 @@ function buildNewImpDatePopup()
 	eventStr+='<tr>';
 	eventStr+='<th>Repeat Frequency</th>';
 	eventStr+='<td>';
-	eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
+	eventStr+='<select id="repeatFreqSelect" class="timeSelect" onChange="showEndDateText(this.options[this.selectedIndex].text)">';
 	eventStr+='<option value="No Repeat">No Repeat</option>';
 	eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 	eventStr+='<th>Repeat Until</th>';
@@ -1374,8 +1374,8 @@ function buildNewImpDatePopup()
               constraintoviewport : true, 
 			  iframe :true,
 			  modal :true,
-			  x:200,
-			  y:700,
+			  x:250,
+			  y:1050,
 			  hideaftersubmit:true,
 	          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
                           { text:"Cancel", handler:handleImpDateCancel } ]
@@ -1956,4 +1956,14 @@ function buildCadresInfo(results)
 	}
 	 str+='</div>';
 	$("#cadresDiv_main").html(str);
+}
+function showEndDateText(val)
+{
+		var txtElmt = document.getElementById('ImpEndDateText_new');
+		if(val == "No Repeat")
+		{
+			txtElmt.disabled=true;
+		}
+		else
+			txtElmt.disabled=false;
 }
