@@ -240,7 +240,7 @@ public class UserCalendarService implements IUserCalendarService {
 		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
 		importantDatesVO.setEventType("User");
 		importantDatesVO.setImportantDateId(impDate.getUserImpDateID());
-		importantDatesVO.setEventId(impDate.getUser().getUserId());
+		importantDatesVO.setEventId(impDate.getUserId());  
 		importantDatesVO.setTitle(impDate.getTitle());
 		importantDatesVO.setImportance(impDate.getDescription());
 		importantDatesVO.setStartDate(impDate.getEffectiveDate());
@@ -289,7 +289,7 @@ public class UserCalendarService implements IUserCalendarService {
 			if(calendar.get(Calendar.MONTH)==11 && sMonth <=1)
 				++currentYear;
 			calendar.set(currentYear,sMonth,sDay);
-			if(calendar.after(startCalendar) &&  calendar.before(endCalendar)
+			if((calendar.after(startCalendar) || calendar.equals(startCalendar)) &&  calendar.before(endCalendar)
 					&& calendar.after(dbStartDate) &&  calendar.before(dbEndDate)){				
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
 				importantDatesVOs.add(importantDatesVO);
@@ -316,8 +316,8 @@ public class UserCalendarService implements IUserCalendarService {
 
 			monthlyCal2.add(Calendar.MONTH, 1);
 			
-			dbEndDate.add(Calendar.DAY_OF_MONTH, 1);
-			if((monthlyCal1.after(startCalendar)) && (monthlyCal1.before(endCalendar)) && monthlyCal1.before(dbEndDate) && monthlyCal1.after(dbStartDate) ){
+			dbEndDate.add(Calendar.DAY_OF_MONTH, 1);  
+			if((monthlyCal1.after(startCalendar) || monthlyCal1.equals(startCalendar)) && (monthlyCal1.before(endCalendar)) && monthlyCal1.before(dbEndDate) && monthlyCal1.after(dbStartDate) ){
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal1,impDate);
 				importantDatesVOs.add(importantDatesVO);
 			}
@@ -735,14 +735,13 @@ private UserEventVO saveUserPlannedEvents;
 		return results;
 	}
 	
-	private ImportantDatesVO saveImportantDatesVO;
+	private ImportantDatesVO saveImportantDatesVO; 
 	
 	public List<ImportantDatesVO> saveUserImpDate(ImportantDatesVO importantDatesVO){
 		this.saveImportantDatesVO = importantDatesVO;
 		log.debug("UserCalendarService.saveUserImpDate()......");
 		
-		UserImpDate userImpDate = (UserImpDate)
-			transactionTemplate.execute(new TransactionCallback() {
+		UserImpDate userImpDate = (UserImpDate)transactionTemplate.execute(new TransactionCallback() {
 
 				public Object doInTransaction(TransactionStatus txStatus) {
 					UserImpDate userImpDate = new UserImpDate();
@@ -766,6 +765,7 @@ private UserEventVO saveUserPlannedEvents;
 						return userImpDate;
 					}catch (Exception ex) {
 						txStatus.setRollbackOnly();
+						ex.printStackTrace();
 
 						UserCalendarService.this.saveImportantDatesVO.setExceptionEncountered(ex);
 					}
