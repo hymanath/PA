@@ -360,6 +360,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		String eventId = jObj.getString("eventId");
+		String[] values = eventId.split("_"); 
 		String eventType = jObj.getString("eventType");
 		if(jObj.getString("taskType").equalsIgnoreCase("impEvent"))
 		{
@@ -372,7 +373,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			cal.set(new Integer(jObj.getString("currentYear")).intValue(), new Integer(jObj.getString("currentMonth")).intValue(),new Integer(jObj.getString("currentDay")).intValue());
 			//cal.set(year, month, date);
 			cal.add(Calendar.DAY_OF_MONTH, -1);
-			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType, cal);
+			importantDatesVOs =  userCalendarService.getUserImpDate(Long.parseLong(values[0]), eventType, cal);
 			result = "impDate";
 		}
 			
