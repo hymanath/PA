@@ -418,7 +418,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
             else
             {
             	savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
-            	saveUserLogInDetails(regVO , session.getId());
+            	//saveUserLogInDetails(regVO , session.getId());
             }
             
             String requestURL= request.getRequestURL().toString();
@@ -451,18 +451,25 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
             if(savedSuccessfully)
             {	
-				regVO = loginService.checkForValidUser(userName, password);
+				//regVO = loginService.checkForValidUser(userName, password);
 				HttpSession session = request.getSession();			
 				String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
-				regVO.setUserStatus(IConstants.FREE_USER);
+				//regVO.setUserStatus(IConstants.FREE_USER);
 				session.setAttribute(IConstants.USER,regVO);
-				session.setAttribute("UserName", userFullName);
-				session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
-				session.setAttribute("UserType", "FreeUser");
-				session.setAttribute("loginStatus", "out");
-				session.setAttribute("HiddenCount", 0);
-				session.removeAttribute("districts");
-				session.removeAttribute("constituencies");
+				//session.setAttribute("UserName", userFullName);
+				//session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
+				//session.setAttribute("UserType", "FreeUser");
+				
+				//session.setAttribute("loginStatus", "out");
+				//session.setAttribute("HiddenCount", 0);
+				//session.removeAttribute("districts");
+				//session.removeAttribute("constituencies");
+				session.setAttribute("userName", regVO.getEmail());
+				session.setAttribute("name", userFullName);
+				session.setAttribute("password", regVO.getPassword());
+				//session.setAttribute("userName", userName);
+				//session.setAttribute("password", password);
+				
 			}
 			 
 		 }
@@ -508,62 +515,22 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		}
 	}
 	
-	public void validate() {		       
-		HttpSession session = request.getSession();
-		/*if(registrationId == null || registrationId == 0){
-			if(userName == null || userName.trim().length() == 0)
-				addFieldError("userName","Username is required");
-		
-			if(password == null || password.trim().length() == 0)
-				addFieldError("password","Password is required.");
-			
-			if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equals(password)){
-				addFieldError("reEnteredPassword","Entered Password and Reentered Password are not Same.");			
-			}
-		}*/
-		
-		
-		if(state==null || state.equalsIgnoreCase("0")){
+	public void validate() 
+	{		       
+				
+		if(state == null || state.equalsIgnoreCase("0"))
 			addFieldError("state","Please select a State.");
-		}
-		/*if(district==null || district.equalsIgnoreCase("0")){
-			if(Long.parseLong(state)!=0l){
-				districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(state));
-				session.setAttribute("districts", districts);
-			}
-			addFieldError("district","Please select a District.");
-		}*/
-		if(constituency==null || constituency.equalsIgnoreCase("0")){
-			/*if(Long.parseLong(district)!=0l){
-				constituencies = regionServiceDataImp.getConstituenciesByDistrictID(Long.parseLong(district));
-				
-				 * Modified by ravi 
-				 * please refer previous version to check for original code.
-				  
-				if(constituencies == null || constituencies.size() == 0)
-					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
-				
-				if(constituencies != null && constituencies.size() > 1)
-					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
-				
-				session.setAttribute("constituencies", constituencies);
-			}*/
+		
+		if(constituency == null || constituency.equalsIgnoreCase("0"))
 			addFieldError("constituency","Please select a Constituency.");
-		}
 		
 		if(registrationId == null || registrationId == 0)
 		{	
 			Long result = new Long(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
-				
-			if(result != 121L){
+			
+			if(result != 121L)
 				addFieldError("userName","UserName does not exist.");
-			}
 		}
-		
-	/*	if(accept.get(0).equalsIgnoreCase("false"))
-		{
-			addFieldError("userName","You must accept Terms of use and Policy of website to Register.");
-		}*/
 		
 	}
 	

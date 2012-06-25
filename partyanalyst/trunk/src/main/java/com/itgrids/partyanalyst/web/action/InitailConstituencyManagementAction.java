@@ -220,12 +220,12 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CONSTITUENCY_MANAGEMENT_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_MANAGEMENT_ENTITLEMENT))
 			return ERROR;
-				
+				*/
 		accessType = user.getAccessType();
 		accessValue= new Long(user.getAccessValue());
 		
