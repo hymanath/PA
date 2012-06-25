@@ -13,7 +13,7 @@ public interface IStaticUserGroupDAO extends GenericDao<StaticUserGroup ,Long> {
 
 	
 	@SuppressWarnings("unchecked")
-	public List findMembersByUserId(Long registrationId, Long groupId);
+	public List findMembersByUserId(Long userId, Long groupId);
 
 	
 	@SuppressWarnings("unchecked")

@@ -41,7 +41,7 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public List<Registration> findByUserNameAndPassword(String userName, String password);
 	
-	public List<Registration> findByUserRegistrationId(Long registrationId);
+	public List<Registration> findByUserRegistrationId(Long userId);
 	
 	public List<Registration> getAllRegisteredUsers();
 	
@@ -57,21 +57,15 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	
 	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status,Date date);
+	public Integer changeUserPassword(String password,Long userId,String status,Date date);
 	
 	public List<Registration> checkUserPassword(String password,Long userId);
-	
-	/*public List getUserProfileImageNameByUserId(Long userId);*/
-	
-	/*public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);*/
 	
 	public List<Object[]> getUserEmailByUserId(Long userId);
 
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString);
 	
 	public Long getAllUsersCountInSelectedLocations(List<Long> locationIds,String locationType, String nameStr);
-	
-	//public List getConnectedUsersCount(Long locationId,String locationType);
 	
 	public List<Registration> getDetailsForUsers(List<Long> userIds);
 	

@@ -19,6 +19,6 @@ import com.itgrids.partyanalyst.model.UserEvents;
 
 public interface IUserEventsDAO extends GenericDao<UserEvents,Long> {
 
-	public List<UserEvents> findEventsByUserId(Long registrationId);
-	public List<UserEvents> findEventsByUserIdAndStartDate(Long registrationid, Date startDate);
+	public List<UserEvents> findEventsByUserId(Long userId);
+	public List<UserEvents> findEventsByUserIdAndStartDate(Long userId, Date startDate);
 }

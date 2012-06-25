@@ -23,11 +23,11 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	//public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds,String status);
 	
-	public List<ProblemHistory> findProblemLocationsByUserId(Long registrationId, Long statusId);
+	public List<ProblemHistory> findProblemLocationsByUserId(Long userId, Long statusId);
 	
 	public List findCompleteProblems(Long problemLocationId);
 	
-	public List getProblemsCountInAllStatusByLocationForAUser(String locationIds, Long registrationId);
+	public List getProblemsCountInAllStatusByLocationForAUser(String locationIds, Long userId);
 	
 	public List getProblemsCountInAllStatusByLocation(String locationIds);
 	
@@ -82,17 +82,17 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List findProblemCompleteInfo(Long problemHistoryId);	
 	
 	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId,Boolean groupCadre,Boolean groupDept);
-	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long registrationId, String reasonType);
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType);
 	
 
 	@SuppressWarnings("unchecked")
-	public List getAllPostedProblemsByAnanymousUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
+	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
 	@SuppressWarnings("unchecked")
-	public List getAllPostedProblemCount(Long registrationId);
+	public List getAllPostedProblemCount(Long userId);
 	
 	@SuppressWarnings("unchecked")
-	public List getAllPostedProblemCountOtherThanLoggedInUser(Long registrationId);
+	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId);
 	
 	@SuppressWarnings("unchecked")
 	public List<ProblemHistory> getRecentPostedProblemsForAUserByCount(Long userId,Long problemStatusId,Integer startIndex,Integer maxResults);
