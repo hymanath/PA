@@ -117,11 +117,11 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		Long userID = user.getRegistrationID();
 		
