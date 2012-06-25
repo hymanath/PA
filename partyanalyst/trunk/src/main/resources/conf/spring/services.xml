@@ -576,6 +576,7 @@
         <property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
         <property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
         <property name="filePathsDAO" ref="filePathsDAO" />
+        <property name="userDAO" ref="userDAO" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
