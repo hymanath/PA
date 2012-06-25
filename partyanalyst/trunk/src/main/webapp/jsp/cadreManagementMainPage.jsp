@@ -1768,7 +1768,7 @@ function fillDataForCadreLevel(results,jsObj)
 		else if(jsObj.taskType == "impDate")
 		{
 				eventStr+='<td colspan="3">';
-				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea">'+results[0].importance+'</textarea>';
+				eventStr+='<textarea rows="5" cols="50" id="ImpdescTextArea1" name="ImpdescTextArea">'+results[0].importance+'</textarea>';
 				eventStr+='</td>';				
 		}
 		eventStr+='</tr>';
@@ -2077,7 +2077,7 @@ function fillDataForCadreLevel(results,jsObj)
 			var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 			var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
 			var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
-			var ImpDescVal = document.getElementById("ImpdescTextArea").value;
+			var ImpDescVal = document.getElementById("ImpdescTextArea1").value;
 
 			selectedDateObj.importantDateId = results[0].importantDateId;
 			selectedDateObj.eventId = results[0].eventId;
