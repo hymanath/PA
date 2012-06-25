@@ -559,6 +559,24 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	/*public String changeUserPassword()
+	{
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		String email = (String) session.getAttribute("userName");
+		pwdVal=ananymousUserService.changeUserPassword(jObj.getString("crntPassword"),jObj.getString("newPassword"),email);
+		
+		return Action.SUCCESS;
+	}*/
+	
 	public String getAllConnectedUsersInDistrict() throws Exception
 	{
 		String param;

@@ -192,11 +192,11 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.USER_GROUPS_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.USER_GROUPS_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		Long userID = user.getRegistrationID();
 		
