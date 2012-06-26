@@ -23,18 +23,18 @@ public List findProblemApprovalsByUser(Long userId, Long problemHistoryId) {
 											" from UserProblemApproval model where model.userApprovalDetails.user.userId = ? and model.problemHistory.problemHistoryId = ?", params);
 	}
 
-/*@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 public List findApprovalInfoForProblem(Long problemHistoryId) {
 	
-	return getHibernateTemplate().find("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
+	return getHibernateTemplate().find("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.userName, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
 			" where model.problemHistory.problemHistoryId = ? order by date(model.userApprovalDetails.approvalDetails.postedDate) desc", problemHistoryId);
-}*/
+}
 
 @SuppressWarnings("unchecked")
 public List findApprovalInfoForProblem(Long problemHistoryId, int startIndex, int maxResult) {
 	Query queryObject = getSession().createQuery("select model.userApprovalDetails.user.userId," +
-			" model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
+			" model.userApprovalDetails.user.userName, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved," +
 			" model.userApprovalDetails.approvalDetails.postedDate,model.userApprovalDetails.approvalDetails.approvalDetailsId" +
 			" from UserProblemApproval model where model.problemHistory.problemHistoryId = ?" +
