@@ -26,7 +26,7 @@ public class UserApprovalDetailsDAO extends GenericDaoHibernate<UserApprovalDeta
 	@SuppressWarnings("unchecked")
 	public List findUserApprovalStatusbetweendates(Date fromDate, Date toDate){
 		
-		StringBuffer query=new StringBuffer("select model.approvalDetails.reason, model.approvalDetails.isApproved, model.approvalDetails.postedDate, model.user.name, model.user.lastName,model.approvalDetails.approvalDetailsId from");
+		StringBuffer query=new StringBuffer("select model.approvalDetails.reason, model.approvalDetails.isApproved, model.approvalDetails.postedDate, model.user.firstName, model.user.lastName,model.approvalDetails.approvalDetailsId from");
 		query.append(" UserApprovalDetails model where date(model.approvalDetails.postedDate) between :start and :end and");
 		query.append(" model.approvalDetails.isAdminApproved is null");
 		Query queryObject=getSession().createQuery(query.toString());
