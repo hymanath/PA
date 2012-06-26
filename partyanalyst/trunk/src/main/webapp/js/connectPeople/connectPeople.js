@@ -518,7 +518,18 @@ function callAjax(jsObj,url){
 						}else{
 							hideRequestDiv();
 						}
-					}	
+					}
+					
+					else if(jsObj.task == "checkAnanymousUserNameAvailability" || jsObj.task == "saveUserEmailAndsetAsUserName")
+							{
+								showUserEmailDetails(results);
+							}
+
+				else if(jsObj.task == "saveUserEmailAndSendPwd")
+							{
+								showUserEmailDetails(results);
+							}
+			  
 					else if(jsObj.task == "acceptRequest")
 					{
 						showStatus(results);						
@@ -2016,5 +2027,92 @@ function showpostedDivImg()
 	document.getElementById('contactDiv').style.display='none';
 		
 	}
+function afterUserNameChanges(){
+var email = document.getElementById("emailField").value;
+ $("#username_change_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:150,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+		$(".ui-widget-overlay").css("width","1000px");
+		var elmt = document.getElementById("username_change_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Your UserName is changed </div>';
+		str += '<div id="feedback_window_body"';
+		str +='style="font-weight:bold;color:green;text-align:center;">';
+		str += 'Your New UserName Is :'+email;
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr><td>';
+		str += '	<input id="OkButton" type="button" width="50px" align="center"' ;
+		str += '   value="OK"></input></td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("OkButton");
+
+		oPushButton2.on("click",function(){
+			$("#username_change_window").dialog("destroy");
+		});
+}
+
+
+	function showUserEmailDetails(results)
+	{
+
+	var result = document.getElementById("feedback_window_errorMsg");
+	 str='';
+	
+	if(results == null){
+		str+='<div style="color:red"> Your request not submitted. Please try again.</div>';
+	}
+	
+	else{
+		$("#username_change_window").dialog("destroy");
+		afterUserNameChanges();
+		return;
+	}
+	result.innerHTML = str;
+	
+}
+
+
+function showEmailStatus(results)
+{
+	
+	var elemt =document.getElementById('feedback_window_head');
+	var str = '';
+	
+	if(results.resultCode == 0)
+	{
+	
+		str += '<font color="#000000">Email Saved Successfully</font>';
+		//elemt.innerHTML = str;
+		setTimeout("closewindow()",2000);
+		//showUserNameChangePanelAfterEmailSave(uname);
+		
+		//str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
+		
+	}
+	else
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b></font>';
+	}
+	elemt.innerHTML = str;
+	
+}
+
+function closewindow()
+{
+	$("#username_change_window").dialog("destroy");
+}
+
 
 	
