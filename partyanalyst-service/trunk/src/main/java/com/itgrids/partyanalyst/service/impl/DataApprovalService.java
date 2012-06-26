@@ -43,16 +43,16 @@ public class DataApprovalService implements IDataApprovalService {
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
 	private IRegistrationDAO registrationDAO;
-	//private IUserDAO userDAO;
+	private IUserDAO userDAO;
 	
-	/*public IUserDAO getUserDAO() {
+    public IUserDAO getUserDAO() {
 		return userDAO;
 	}
 
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-*/
+
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -214,8 +214,8 @@ public class DataApprovalService implements IDataApprovalService {
 						approvalDetails.setPostedDate(problemManagementService.getCurrentDateAndTime());
 						System.out.println("DAte is ::::::::::::::::::::::::::::"+problemManagementService.getCurrentDateAndTime());
 						approvalDetails.setIsAdminApproved(null);
-						userApprovalDetails.setRegistration(registrationDAO.get(approvalInfoVO.getUserId()));
-						//userApprovalDetails.setUser(userDAO.get(approvalInfoVO.getUserId()));
+						//userApprovalDetails.setRegistration(registrationDAO.get(approvalInfoVO.getUserId()));
+						userApprovalDetails.setUser(userDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setApprovalDetails(approvalDetails);
 						
 						userProblemApproval.setProblemHistory(problemHistory);
