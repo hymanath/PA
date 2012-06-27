@@ -586,6 +586,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
         <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
          <div class="news-events-fields" id="newsDisplayDiv">
+			<img style="display: block;" src="images/icons/goldAjaxLoad.gif" id="news_ImgSpan">
           </div>
        </div>
           
@@ -1580,6 +1581,7 @@ function showFirstFourNewsRecords(results)
 			str+='<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>';
           str+='</div>';
 	}
+	$("newsDisplayDiv").html('');
     document.getElementById("newsDisplayDiv").innerHTML=str;
  }
  function showNewsWithDiffSources(fileId,filSize,arrayType)
