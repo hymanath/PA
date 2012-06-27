@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -13,7 +14,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MailsSendingService implements IMailsSendingService{
 	
@@ -22,6 +22,7 @@ public class MailsSendingService implements IMailsSendingService{
 	private IMailsTemplateService mailsTemplateService;
 	
 	private IAnanymousUserDAO ananymousUserDAO;
+	private IUserDAO userDAO; 
 	
 	public IAnanymousUserDAO getAnanymousUserDAO() {
 		return ananymousUserDAO;
@@ -43,6 +44,12 @@ public class MailsSendingService implements IMailsSendingService{
 		this.mailService = mailService;
 	}
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 	public ResultStatus sendEmailFriendRequest(EmailDetailsVO emailDetailsVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
@@ -141,7 +148,8 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			String subject="Change Your Password - PartyAnalyst";
 
-			List<Object[]> usersLst = ananymousUserDAO.getPasswordNotUpdatdUsersList();
+			//List<Object[]> usersLst = ananymousUserDAO.getPasswordNotUpdatdUsersList();
+			List<Object[]> usersLst = userDAO.getPasswordNotUpdatdUsersList();
 	
 			if(usersLst != null && usersLst.size()>0)
 			{

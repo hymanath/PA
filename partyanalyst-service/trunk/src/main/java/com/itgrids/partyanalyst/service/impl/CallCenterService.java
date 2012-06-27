@@ -116,6 +116,7 @@ public class CallCenterService implements ICallCenterService{
 		 {
 			 // Retrieving subUser and parentUser ids
 			 /* List<Object[]> userIds = registrationDAO.getSubusersByParentUserId(userId);
+			  //List<Object[]> userIds = userDAO.getSubusersByParentUserId(userId);
 			    if(userIds.size()!=0)
 			    {
 					 Object[] params = (Object[])userIds.get(0);

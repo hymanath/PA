@@ -391,10 +391,9 @@ public class RegistrationService implements IRegistrationService{
 	
 	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
 		RegistrationVO registrationVO = new RegistrationVO();
-		List<Registration> users = registrationDAO.findByUserRegistrationId(registrationId);
-		
-		Registration registration = users.get(0);
-		
+		//List<Registration> users = registrationDAO.findByUserRegistrationId(registrationId);
+		List<User> users = userDAO.findByUserRegistrationId(registrationId);
+		User registration = users.get(0);
 		registrationVO.setRegistrationID(registrationId);
 		registrationVO.setUserName(registration.getUserName());
 		registrationVO.setPassword(registration.getPassword());
