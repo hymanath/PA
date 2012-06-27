@@ -430,18 +430,18 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 */
 	public RegistrationVO checkAnonymousUserLogin(String anonymousUserId,String password){	
 		RegistrationVO userDetails = null;
-		List<AnanymousUser> detailsList = null;	
+		List<User> detailsList = null;	
 		ResultStatus resultStatus = new ResultStatus();		
 		try{
 			userDetails = new RegistrationVO();
-			detailsList = ananymousUserDAO.checkAnonymousUserLogin(anonymousUserId,password);
+			detailsList = userDAO.checkAnonymousUserLogin(anonymousUserId, password);
 			if(detailsList.size()!=0){
-				for(AnanymousUser resultIterator : detailsList){
-					userDetails.setUserName(resultIterator.getUsername());
+				for(User resultIterator : detailsList){
+					userDetails.setUserName(resultIterator.getUserName());
 					userDetails.setPassword(resultIterator.getPassword());
-					userDetails.setName(resultIterator.getName());
+					userDetails.setName(resultIterator.getFirstName());
 					userDetails.setGender(resultIterator.getGender());
-					userDetails.setDateOfBirth(resultIterator.getDateofbirth().toString());
+					userDetails.setDateOfBirth(resultIterator.getDateOfBirth().toString());
 					userDetails.setEmail(resultIterator.getEmail());
 					userDetails.setPhone(resultIterator.getPhone());
 					userDetails.setMobile(resultIterator.getMobile());			
@@ -1988,7 +1988,7 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 	List detailsList = null;
 	RegistrationVO registrationVO=new RegistrationVO();
 	try{
-		detailsList = ananymousUserDAO.getUserDetails(userName);
+		detailsList = userDAO.getUserDetails(userName);
 	
 		if(detailsList!=null && detailsList.size()!=0){
 			Object ananymousUserObj[] =(Object[]) detailsList.get(0);
@@ -2013,7 +2013,7 @@ public Integer saveUserDetailsToChangeUserNameToEmail(Long userId,String userNam
 	Integer detailsList = null;
 	RegistrationVO registrationVO=new RegistrationVO();
 	try{
-		detailsList = (Integer) ananymousUserDAO.saveUserNameTOEmail(userId,userName);
+		detailsList = (Integer) userDAO.saveUserNameTOEmail(userId,userName);
 	
 		
 	}catch(Exception e){
@@ -2027,8 +2027,8 @@ public String getPassword(String password){
 	Boolean i=true;
 	try{
 	while(i){
-	if(ananymousUserDAO.getPassword(password)!=null)
- 	return password;
+		if(userDAO.getPassword(password) != null)
+			return password;
     }
 	}catch (Exception e){
 		log.debug("Exception Encountered", e);
@@ -2063,14 +2063,10 @@ public  ResultStatus saveEmailForAUser(String userName,final String email)
 	ResultStatus resultStatus = new ResultStatus();
 	
 	try{
-		//final List<AnanymousUser> ananymousUsers = ananymousUserDAO.getUserByUserName(userName);
 		final List<User> users = userDAO.getUserByUserName(userName);
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-			//AnanymousUser ananymousUser = ananymousUsers.get(0);
-			//ananymousUser.setEmail(email);
-			//ananymousUserDAO.save(ananymousUser);
 				User user = users.get(0);
 				user.setEmail(email);
 				userDAO.save(user);
@@ -2096,10 +2092,6 @@ public  ResultStatus saveEmailAndSetAsUserName(String userName,final String emai
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-			//AnanymousUser ananymousUser = ananymousUsers.get(0);
-			//ananymousUser.setEmail(email);
-			//ananymousUser.setUsername(email);
-			//ananymousUserDAO.save(ananymousUser);
 				User user = users.get(0);
 				user.setEmail(email);
 				user.setUserName(email);
@@ -2119,11 +2111,11 @@ public  ResultStatus saveEmailAndSetAsUserName(String userName,final String emai
 
 public ResultStatus changeForUserNameAsEmail(String userName){
 	ResultStatus resultStatus = new ResultStatus();
-	List<AnanymousUser> detailsList = null;
-	List<AnanymousUser> detailsListForEmail = null;
+	List<User> detailsList = null;
+	List<User> detailsListForEmail = null;
 	try{
-		detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
-		detailsListForEmail=ananymousUserDAO.checkForUserNameAvailabiityForEmail(userName);
+		detailsList = userDAO.checkForUserNameAvailabiity(userName);
+		detailsListForEmail=userDAO.checkForUserNameAvailabiityForEmail(userName);
 		List<User> users = userDAO.changeUserNameAsEmail(userName);
 		User user = users.get(0);
 		user.setUserName(userName);
@@ -2191,8 +2183,8 @@ public List<String> getUserReferencedEmails(Long userId)
 
 public Long getUserConstituencyId(Long userId){
 	try{
-	  AnanymousUser ananymousUser = ananymousUserDAO.get(userId);
-	   return ananymousUser.getConstituency().getConstituencyId();
+		User user = userDAO.get(userId);
+		return user.getConstituency().getConstituencyId();
 	}catch(Exception e){
 		log.error("Exception Occured in getUserConstituencyId() Method, Exception is - "+e);
 	}
