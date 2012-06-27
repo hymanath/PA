@@ -168,7 +168,9 @@ public interface ICandidateDetailsService {
 	 public List<CustomPageVO> getCustomPages(Long pageId,String pageName);
 	 
 	 public ResultStatus updateCustomPages(GallaryVO gallaryVO);
+	 
 	 public String getMandalName(Long mandalId);
 	 
 	 public List<FileVO> getAllNewsdetails(Long candidateId,int firstResult,int maxResult,String queryType);
+	 	 
 }

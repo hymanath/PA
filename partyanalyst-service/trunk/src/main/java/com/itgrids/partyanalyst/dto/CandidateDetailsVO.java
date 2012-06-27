@@ -61,6 +61,8 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private Long parliamentConstituencyId;
 	private String parliamentConstituencyName;
 	private Long partyId;
+	private String candidateRole;
+	
 	//getters and setters
 	
 	public void setParliamentConstituencyName(String parliamentConstituencyName) {
@@ -328,5 +330,10 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
 	}
-	
+	public String getCandidateRole() {
+		return candidateRole;
+	}
+	public void setCandidateRole(String candidateRole) {
+		this.candidateRole = candidateRole;
+	}	
 }
