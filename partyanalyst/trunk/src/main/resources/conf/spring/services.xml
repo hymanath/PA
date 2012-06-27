@@ -710,7 +710,7 @@
 		<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
 		<property name="commentDataDAO" ref="commentDataDAO" />
 		<property name="feedbackDAO" ref="feedbackDAO" />
-		
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
@@ -1102,6 +1102,7 @@
 		<property name="mailService" ref="mailService"/>
 		<property name="mailsTemplateService" ref="mailsTemplateService"/>
 		<property name="ananymousUserDAO" ref="ananymousUserDAO"/>
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
@@ -1149,6 +1150,7 @@
 	<bean name="sendUpdatesService" class="com.itgrids.partyanalyst.service.impl.SendUpdatesService">
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 </beans>		
