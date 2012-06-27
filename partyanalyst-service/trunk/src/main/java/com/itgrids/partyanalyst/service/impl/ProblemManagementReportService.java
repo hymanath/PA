@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -121,6 +123,7 @@ public class ProblemManagementReportService implements
 	private IApprovalDetailsDAO approvalDetailsDAO;
 	private ICommentDataDAO commentDataDAO;
 	private IFeedbackDAO feedbackDAO;
+	private IUserDAO userDAO;
 	
 	
 	public IFeedbackDAO getFeedbackDAO() {
@@ -405,7 +408,13 @@ public class ProblemManagementReportService implements
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
-	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
 		/**
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
@@ -930,7 +939,8 @@ public class ProblemManagementReportService implements
 		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,Long taskType,String status){
 			
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
-			List<Registration> regUser = new ArrayList<Registration>();
+			//List<Registration> regUser = new ArrayList<Registration>();
+			List<User> regUser = new ArrayList<User>();
 			List<ProblemExternalSource> extRegUser = new ArrayList<ProblemExternalSource>();
 			Long problemId=0l;
 			String dateConversion=null;
@@ -1016,8 +1026,10 @@ public class ProblemManagementReportService implements
 					userId = new Long(parms[10].toString());
 					if(userId!=0L){
 						if(parms[6]==null){
-							regUser = registrationDAO.findByUserRegistrationId(userId);					
-							for(Registration registerdUser : regUser){
+							//regUser = registrationDAO.findByUserRegistrationId(userId);
+							
+							regUser = userDAO.findByUserRegistrationId(registrationId);
+							for(User registerdUser : regUser){
 								problemBean.setPostedPersonName(registerdUser.getFirstName());
 								problemBean.setPhone(registerdUser.getMobile());
 								problemBean.setMobile(registerdUser.getPhone());
