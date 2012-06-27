@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,6 +28,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -57,6 +60,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String education;
 	private String gender;
 	private String image;
+	private Party party;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
@@ -301,6 +305,18 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setCandidatePageCustomPages(
 			Set<CandidatePageCustomPages> candidatePageCustomPages) {
 		CandidatePageCustomPages = candidatePageCustomPages;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getParty() {
+		return party;
+	}
+
+	public void setParty(Party party) {
+		this.party = party;
 	}
 
 	

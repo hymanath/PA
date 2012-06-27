@@ -16,9 +16,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.Icon;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -692,51 +695,33 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			for(CandidateResult result:candidateResults){
 				//nomination = result.getNomination();
 				candidate = result.getNomination().getCandidate();
-				party = result.getNomination().getParty();
+				Party cndtParty=result.getNomination().getCandidate().getParty();
+				if(cndtParty==null)
+					party = result.getNomination().getParty();
+				else
+					party=cndtParty;
+				
 				constituency = result.getNomination().getConstituencyElection().getConstituency();
 				election = result.getNomination().getConstituencyElection().getElection();
 				
 				CandidateDetailsVO candidateDetails = new CandidateDetailsVO();
-				
-				/*List<Object[]> districtDetails = constituencyDAO.getDistrictName(constituency.getConstituencyId());
-				if(districtDetails != null)
-				{
-				{
-					for(Object[] params : districtDetails)
-					{
-						candidateDetails.setDistrictId((Long)params[0]);
-						candidateDetails.setDistrictName(params[1].toString());
-					}
-				}}*/
-				
-				
-				
-				
-				/*List districtsInfo = delimitationConstituencyAssemblyDetailsDAO
-						.findDistrictsOfParliamentConstituency(constituency.getConstituencyId());
-				for (Object[] values : (List<Object[]>) districtsInfo)
-					districts.add(new SelectOptionVO((Long) values[0],
-							values[1].toString()));*/
-				
-			List<Object[]> districtsInfo = delimitationConstituencyAssemblyDetailsDAO
+												
+				List<Object[]> districtsInfo = delimitationConstituencyAssemblyDetailsDAO
 						.findDistrictsOfParliamentConstituencies(constituency.getConstituencyId());
 				if(districtsInfo !=null)
 				{
 					districts = new ArrayList<SelectOptionVO>();
 					SelectOptionVO optionVO = new SelectOptionVO();
-				for(Object[] districtDetails : districtsInfo)
-				{
-					optionVO = new SelectOptionVO();
-					optionVO.setId((Long)districtDetails[0]);
-					optionVO.setName(districtDetails[1].toString());
-					districts.add(optionVO);
-					
-				}
-				candidateDetails.setGetDistricts(districts);
-				
-				}
-				
-			
+					for(Object[] districtDetails : districtsInfo)
+					{
+						optionVO = new SelectOptionVO();
+						optionVO.setId((Long)districtDetails[0]);
+						optionVO.setName(districtDetails[1].toString());
+						districts.add(optionVO);
+						
+					}
+					candidateDetails.setGetDistricts(districts);				
+				}			
 		
 				candidateDetails.setCandidateId(candidate.getCandidateId());
 				String name = null;
@@ -813,11 +798,82 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				
 				
 				candidateElectionDetails.add(candidateDetails);
-			}  
+			} 
+			getCandidateRole(candidateElectionDetails);	
 			
-		 return candidateElectionDetails;
+			return candidateElectionDetails;
 		 }
 	return null; 
+	}
+
+	public String getCandidateRole(List<CandidateDetailsVO> candidateElectionDetails){
+		String cndtRole="";
+		boolean latestWon=false;
+		try{
+			if(candidateElectionDetails!=null && candidateElectionDetails.size()>0){
+				Iterator itr=candidateElectionDetails.iterator();
+				while(itr.hasNext()){
+					CandidateDetailsVO latestElectionDtlVO=(CandidateDetailsVO)itr.next();
+					if(latestElectionDtlVO.getStatus()==true){
+						latestWon=true;
+						if(latestElectionDtlVO.getElectionType().equalsIgnoreCase("Parliament")){
+							cndtRole=IConstants.MP;					
+						}
+						else if(latestElectionDtlVO.getElectionType().equalsIgnoreCase("Assembly")){
+							cndtRole=IConstants.MLA;
+						}
+					}
+					else{
+						if(!latestWon)
+							latestWon=false;
+						break;
+					}
+				}
+			}
+			
+			if(latestWon==false){
+				int wonCount=0;
+				int lostCount=0;
+				List<String> wonElctnTypeList=new ArrayList<String>();	
+				List<String> lostElctnTypeList=new ArrayList<String>();	
+				
+				for(CandidateDetailsVO cndtDtlsVO : candidateElectionDetails){
+					if(cndtDtlsVO.getStatus()==true){
+						wonCount++;
+						wonElctnTypeList.add(cndtDtlsVO.getElectionType());						
+					}
+					else{
+						lostCount++;
+						lostElctnTypeList.add(cndtDtlsVO.getElectionType());
+					}
+				}
+				if(wonCount==0){
+					if(lostElctnTypeList.contains(IConstants.PARLIAMENT_ELECTION_TYPE))
+						cndtRole=IConstants.Contested_MP;
+					else
+						cndtRole=IConstants.Contested_MLA;
+				}
+				else{
+					if(wonElctnTypeList.contains(IConstants.PARLIAMENT_ELECTION_TYPE))
+						cndtRole=IConstants.Ex_MP;
+					else
+						cndtRole=IConstants.Ex_MLA;
+				}
+			}
+			if(candidateElectionDetails!=null && candidateElectionDetails.size()>0){
+				Iterator<CandidateDetailsVO> cndtDtlsItr=candidateElectionDetails.iterator();
+				while(cndtDtlsItr.hasNext()){
+					CandidateDetailsVO cndtLatestElectionDtlVO=(CandidateDetailsVO)cndtDtlsItr.next();
+					cndtLatestElectionDtlVO.setCandidateRole(cndtRole);
+					break;
+				}
+			}
+		}
+		catch(Exception e){
+			log.error("Exception raised in getCandidateRole method of CandidateDetailsService: "+e);
+			e.printStackTrace();
+		}		
+		return cndtRole;
 	}
 	
 	public List<CandidateOppositionVO> getCandidatesOppositionList(Long candidateId,Long electionId,Long constituencyId){
@@ -3464,8 +3520,5 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		 Collections.sort(fileVOPathsList,sortData);
 		 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
 		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
-	}
+	}	
 }
-	
- 
-
