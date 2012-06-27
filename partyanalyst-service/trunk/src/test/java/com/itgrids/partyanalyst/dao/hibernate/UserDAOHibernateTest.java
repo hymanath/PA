@@ -6,8 +6,11 @@ import java.util.Date;
 
 import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Assert;
+
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.model.User;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -121,7 +124,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	 }
 	}*/
 	
-	public void testchangeUserNameAsEmail()
+	/*public void testchangeUserNameAsEmail()
 	{
 		List<User> params = userDAO.changeUserNameAsEmail("nunna@gmail.com");
 		for(User list : params)
@@ -129,5 +132,116 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(list.getLastName());
 		}
 		
+	}*/
+	
+	/*public void testGetUserDetails()
+	{
+		List result = userDAO.getUserDetails("Chintu@anu.com");
+		System.out.println(result.size());
+	}*/
+	
+	/*public void testCheckAnonymousUserLogin()
+	{
+		List<User> result = userDAO.checkAnonymousUserLogin("anuradha","anuradha");
+		System.out.println(result.size());
+		if(result != null && result.size() >0)
+		{
+		for(User userDetails : result)
+		{
+			System.out.println(userDetails.getUserName());
+			System.out.println(userDetails.getPassword());
+		}
+		}
+	}*/
+	
+	/*public void testGetPasswordNotUpdatdUsersList()
+	{
+		List<Object[]> list = userDAO.getPasswordNotUpdatdUsersList();
+		System.out.println(list.size());
+		if(list != null && list.size() >0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+			}
+		}
+	}*/
+	/*public void testGetAllUsersMobile()
+	{
+		List<Object[]> list = userDAO.getAllUsersMobile();
+		if(list != null &&list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+				System.out.println(params[2]);
+				System.out.println(params[3]);
+			}
+			
+		}
+	}*/
+	
+	/*public void testGetAllMobilenosAsUnique()
+	{
+		Object list = userDAO.getAllMobilenosAsUnique();
+		System.out.println(list);
+	}*/
+	
+	/*public void testFindByUserRegistrationId()
+	{
+		List<User> result = userDAO.findByUserRegistrationId(1l);
+		if(result != null && result.size() > 0)
+		{
+			for(User userDetails : result)
+			{
+				System.out.println(userDetails.getUserName());
+				System.out.println(userDetails.getPassword());
+			}
+		}
+	}*/
+	
+	/*public void testGetAllRegisteredUsers()
+	{
+		List<User> details = userDAO.getAllRegisteredUsers();
+		Assert.assertEquals(33, details.size());
+	}*/
+	
+	/*public void testGetSubusersByParentUserId()
+	{
+		List<Object[]> list = userDAO.getSubusersByParentUserId(1l);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+			}
+		}
+	}*/
+	
+	/*public void testGetAnanymousUserLocationDetailsByIds()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(1l);
+		List list = userDAO.getAnanymousUserLocationDetailsByIds(userIds);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetUserEmailByUserId()
+	{
+		List<Object[]> list = userDAO.getUserEmailByUserId(1l);
+		if(list != null && list.size() >0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+				System.out.println(params[2]);
+			}
+		}
 	}
+	
 }
