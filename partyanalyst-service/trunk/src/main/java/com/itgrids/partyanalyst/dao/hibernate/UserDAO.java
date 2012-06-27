@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -15,6 +16,54 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	public UserDAO()
 	{
 		super(User.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> findByProperty(RegistrationColumnNames propertyName, Object value){
+		return getHibernateTemplate().find("from User where " + propertyName + "=?", value);
+	}
+	
+	public List<User> findByFirstName(Object firstName){
+
+		return findByProperty(RegistrationColumnNames.FIRSTNAME, firstName);
+	}
+	
+	public List<User> findByUserName(Object userName){
+
+		return findByProperty(RegistrationColumnNames.USERNAME, userName);
+	}
+	
+	public List<User> findByMiddleName(Object middleName){
+
+		return findByProperty(RegistrationColumnNames.MIDDLENAME, middleName);
+		
+	}
+	
+	public List<User> findByLastName(Object lastName){
+
+		return findByProperty(RegistrationColumnNames.LASTNAME, lastName);
+	}
+	
+	public List<User> findByCountry(Object country){
+
+		return findByProperty(RegistrationColumnNames.COUNTRY, country);
+	}
+	
+	public List<User> findByEmail(Object email){
+
+		return findByProperty(RegistrationColumnNames.EMAIL, email);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> findUserName(){
+		
+		return getHibernateTemplate().find("select userName from User");
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> findPasswords(){
+		return getHibernateTemplate().find("select password from User");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -275,4 +324,75 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 				
 		return queryObject.executeUpdate();	
 	}
+	
+	public List getUserDetails(String userName)
+	{
+		return getHibernateTemplate().find("select model.email, model.password from User model where model.userName = ?",userName);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> checkAnonymousUserLogin(String userName, String password)
+	{
+		Object[] params = {userName,password};
+		return getHibernateTemplate().find("from User model where model.userName=? and model.password=?" , params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getPassword(String password)
+	{
+		return getHibernateTemplate().find("select model.password from User model where model.password = ?",password);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPasswordNotUpdatdUsersList()
+	{
+		return getHibernateTemplate().find("select model.firstName,model.lastName,DATE(model.registeredDate),model.userName,model.password,model.email " +
+				" from User model where model.isPwdChanged = 'false' and model.email is not null and model.email not like '' ");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUsersMobile()
+	{
+		return getHibernateTemplate().find("select distinct model.firstName,model.lastName,model.mobile,model.constituency.name,model.userId from User model where model.mobile is not null and model.mobile !=''");
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllMobilenosAsUnique()
+	{
+		return getHibernateTemplate().find("select distinct model.mobile from User model where model.mobile is not null and model.mobile !=''");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> findByUserRegistrationId(Long registrationId) {
+		return getHibernateTemplate().find(" from User model where model.userId = ?", registrationId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllRegisteredUsers() {
+		return getHibernateTemplate().find(" select model.userId,model.firstName,model.lastName from User model ");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSubusersByParentUserId(Long parentUserId){
+		return getHibernateTemplate().find("select model.parentUser.userId , model.userId From User model where model.parentUser.userId=?",parentUserId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.state.stateId,model.state.stateName,model.district.districtId,model.district.districtName,model.constituency.constituencyId,model.constituency.name");
+		query.append(" from User model where ");
+		query.append(" model.userId in (:userIds)");	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("userIds", userIds);
+		return queryObject.list();
+		
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUserEmailByUserId(Long userId){
+		return getHibernateTemplate().find("select model.userId , model.firstName , model.lastName , model.email from User model where model.userId = ?",userId);
+	}
+	
+	
 }
