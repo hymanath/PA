@@ -118,9 +118,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	List<Long> galleryIds = new ArrayList<Long>(0);
 	private List<Long> fileSourceId;
 	private List<Long> sourceLanguageId;
-	
-	
-	
+
 	public List<File> getUserImage() {
 		return userImage;
 	}
@@ -596,7 +594,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		electionGoverningBodyVO = electionLiveResultsAnalysisService.getAllCandidateDetailsForMinisterProfile(candidateId);
 		
-		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);		
+		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);
 		
 		StringBuffer candidateURLStringBuffer = new StringBuffer(IConstants.CANDIDATE_STATIC_PAGE_URL);
 		

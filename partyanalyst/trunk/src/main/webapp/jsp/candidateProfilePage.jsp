@@ -537,7 +537,8 @@ Tweet</a>
 
         <div class="pr-sub-fields-sec" style="margin-bottom:0px; border-bottom:0px;">
          <div class="news-events-fields" id="newsDisplayDiv">
-          </div>
+			<img style="display: block;" src="images/icons/goldAjaxLoad.gif" id="news_ImgSpan">
+          </div>		  
        </div>
           
           <!--NEWS AND EVENTS SECTION END--> 
@@ -1829,6 +1830,7 @@ function showFirstFourNewsRecords(results)
 			str+='<a href="viewFeaturesAction.action">Click Here to Learn More...</a></div>';
           str+='</div>';
 	}
+	$("newsDisplayDiv").html('');
     document.getElementById("newsDisplayDiv").innerHTML=str;
   
  }
@@ -2487,8 +2489,7 @@ window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,
 }
 
 function buildCandidateElectionInfo()
-{
-	
+{	
 	var wFlag = true;
 	var lFlag = true;
 	var str ='';
@@ -2539,13 +2540,8 @@ function candidateInfo()
 	str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg"><span class="tc-tf pa-fi">';
 	str+='<label class="c-red"><a href="candidateElectionResultsAction.action?candidateId=${candidateId} ">${candidateVO.candidateName}</a></label></span><br />';
 	
-	<s:if test="candidateElectionDetails[0].electionType == 'Assembly'">
-		str += 'MLA <br />';
-	</s:if>
-
-	<s:if test="candidateElectionDetails[0].electionType == 'Parliament'">
-		str += 'MP <br />';
-	</s:if>
+	str += '<span style="font-weight:bold;font-family:arial;">${candidateElectionDetails[0].candidateRole}</span><br />';
+	
 	str+='<s:if test="candidateElectionDetails[0].constituencyId !=null">';
 	str+='<a href="constituencyPageAction.action?constituencyId=${candidateElectionDetails[0].constituencyId}">${candidateElectionDetails[0].constituencyName} CONSTITUENCY</a><br />';
 	str+='</s:if>';
