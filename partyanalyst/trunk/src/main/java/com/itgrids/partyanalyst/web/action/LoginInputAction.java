@@ -17,8 +17,18 @@ public class LoginInputAction extends ActionSupport implements ServletRequestAwa
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpSession session;
+	private String pwdChanged;
 	
 	
+
+	public String getPwdChanged() {
+		return pwdChanged;
+	}
+
+	public void setPwdChanged(String pwdChanged) {
+		this.pwdChanged = pwdChanged;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -57,7 +67,7 @@ public class LoginInputAction extends ActionSupport implements ServletRequestAwa
 	public String execute(){
 		
 		try{
-			
+		pwdChanged = request.getParameter("pwdChanged");
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		
