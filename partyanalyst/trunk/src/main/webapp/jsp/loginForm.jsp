@@ -614,7 +614,7 @@ function showEmailStatus(results)
 		clearEmailFields();
 		
 	
-		str += '<font color="#000000">Sending Your Request. Please wait...</font>';
+		str += '<font color="#000000">Processing Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
 		
 	}
@@ -649,8 +649,8 @@ function afterPasswordSubmit(username,email){
 		var elmt = document.getElementById("forgot_password_window_inner");
 		
 		var str = '';
-		str += '<div id="feedback_window_head">ForgotPassword?</div>';
-		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
+		str += '<div id="feedback_window_head">Forgot Password?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center; padding-top: 10px; padding-bottom: 10px;">';
 		
 	if(email == null)
 	{
@@ -689,7 +689,7 @@ function afterPasswordSubmit(username,email){
 	}
 	else
 	{
-		str += 'Your password has been mailed to your email address :'+email+'</div>';
+		str += 'Your password has been mailed to your email address :&nbsp;&nbsp;'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
@@ -720,10 +720,10 @@ function afterPasswordSubmitToUser(username,email){
 
 
 		var str = '';
-		str += '<div id="feedback_window_head">ForgotPassword?</div>';
-		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
+		str += '<div id="feedback_window_head">Forgot Password?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;padding-top: 11px; padding-bottom: 10px;">';
 		
-		str += 'Your password has been mailed to your email address :'+email+'</div>';
+		str += 'Your password has been mailed to your email address : '+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
@@ -824,7 +824,7 @@ function checkAvailability()
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
 	}
 	else{ 
-		var str = '<font color="#000000">Sending Your Request. Please wait...</font>';
+		var str = '<font color="#000000">Processing Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
  		document.getElementById("feedback_window_errorMsg").innerHTML = str;
  		var jsObj=
