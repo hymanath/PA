@@ -36,7 +36,7 @@ public class UserTrackingDAO extends GenericDaoHibernate<UserTracking, Long> imp
 	    }
 	   else if(userType !=null && userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
 	   {
-			query.append("select distinct model2.sessionId , model.registration.firstName , model.registration.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
+			query.append("select distinct model2.sessionId , model.user.firstName , model.user.lastName , max(model.time) , min(model.time) , model.userType , count(model.userTrackingId) from UserTracking model , UserLoginDetails model2 " +
 					"where model.sessionId = model2.sessionId and model.userType = ? and Date(model.time) BETWEEN ? and ? group by model.sessionId order by model.userTrackingId");
 	   }
 		Query queryObj = getSession().createQuery(query.toString());
