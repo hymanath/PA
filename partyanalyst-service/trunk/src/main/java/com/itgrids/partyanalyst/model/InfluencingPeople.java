@@ -25,7 +25,6 @@ public class InfluencingPeople extends BaseModel{
 
 	private static final long serialVersionUID = 1L;	
 	private Long influencingPeopleId;
-	private Registration registration;
 	private User user;
 	private String firstName;
 	private String lastName;
@@ -77,18 +76,6 @@ public class InfluencingPeople extends BaseModel{
 
 	public void setInfluencingPeopleId(Long influencingPeopleId) {
 		this.influencingPeopleId = influencingPeopleId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
