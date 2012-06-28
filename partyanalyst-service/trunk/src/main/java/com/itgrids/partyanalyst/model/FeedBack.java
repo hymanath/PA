@@ -28,17 +28,14 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 		 */
 	private static final long serialVersionUID = 1L;
 
-	// Fields
 	private Long feedbackId;
 	private String comment;
-	//private Registration registration;
 	private String responseCategory;
 	private FeedBackComment feedBackComment;
 	private FeedBackTask feedBackTask;
 	private Date postedDate;
 	private String status;
 	private User user;
-	//private AnanymousUser ananymousUser;
 
 	/** default constructor */
 	public FeedBack() {
@@ -89,18 +86,6 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 		this.responseCategory = responseCategory;
 	}
 
-	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
-	}*/
-	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -156,18 +141,4 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}
-
-/*	public void setAnanymousUser(AnanymousUser ananymousUser) {
-		this.ananymousUser = ananymousUser;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ananymous_user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AnanymousUser getAnanymousUser() {
-		return ananymousUser;
-	}
-*/
-	
 }
