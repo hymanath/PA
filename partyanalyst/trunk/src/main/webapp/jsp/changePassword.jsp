@@ -3,30 +3,85 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.ResourceBundle;" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
+<script type="text/javascript">
+var labelResources = { <%
+
+ResourceBundle globalErrorMsgRb = ResourceBundle.getBundle("global_ErrorMessages");
+
+String currentPWD = globalErrorMsgRb.getString("currentPassword");
+String newPWD = globalErrorMsgRb.getString("newPassword");
+String confirmPWD = globalErrorMsgRb.getString("confirmPassword");
+String currentPWDLength = globalErrorMsgRb.getString("currentPWDLength");
+String newPWDLength = globalErrorMsgRb.getString("newPWDLength");
+String confirmPWDLength = globalErrorMsgRb.getString("confirmPWDLength");
+String currentAndNewPWDEqual = globalErrorMsgRb.getString("currentAndNewPWD");
+String newAndConfirmPWDEqual = globalErrorMsgRb.getString("newAndConfirmPWD");
+String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
+ %>}
+</script>
+
 <title>Change Password</title>
 </head>
 <body>
-<div style="margin-top:10px;margin-left:150px;background:#fff;width:700px;padding:10px;">
+<div style="margin-top:10px;margin-left:150px;background:#fff;width:700px;padding:10px;margin-bottom: 20px;">
 <div id="changeNewUserPassword">
 		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
 		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.USER.email}" /></b></p>
 		<p>Please verify email to change your password.</p>
+
 		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;">
-		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 331px;">Change Password</div>
-		<div id="password_window_body_div" style="background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); width: 329px;">
+		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 363px;">Change Password</div>
+		 
+		<div id="password_window_body_div" style="background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); ">
+		<!-- <s:form action="newUserChangePasswordAction.action?" method="Post" onsubmit="return  validatefields()">
+
+				<s:textfield name="currentPWD" label="Current Password" id="currentPWDId" />
+				<input type="password" name="currentPassword" id="currentPwdId" cssclass="textFieldStyle">
+				<s:password name="confirmPWD" label="Confirm Password" id="confirmPWDId" />
+				<s:submit value="Change Password" />
+				<s:submit action="homePage" value="Cancel" onclick="form.onsubmit=null" />
+		</s:form>-->
+
+		<form action="newUserChangePasswordAction.action?" method="Post" onsubmit="return  validatefields()">
 		<table style="margin: 7px;">
+		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
+		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table>
+		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
+		<table>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle"></td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
+	    </td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPWDId" cssclass="textFieldStyle">
+        </td></tr></tbody></table>
+		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: #D6E5E9; padding: 5px 5px 5px 0px; width: 356px;">
+			<table width="97%">
+			<tbody><tr>
+			
+			<td align="center" width="99px">
+				<input type="submit" value="Change Password" id="changeButton">
+				<a href="homePageAction.action"><input type="button" value="No" id="cancelButton" style="width:52px; text-align:center;"></input></a>
+			</td>
+			</tr>
+			</tbody></table>	
+		</div>
+		</form>
+<!-- 
+		
+
+	<table style="margin: 7px;">
 		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
 		Fields marked with (<font color="red">*</font>) are mandatory</td></tr><tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPwdId" cssclass="textFieldStyle"></td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPwdId" cssclass="textFieldStyle">
 	    </td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPwdId" cssclass="textFieldStyle">
-        </td></tr></tbody></table>
+        </td></tr></tbody></table> -->
         	</div>
-		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: rgb(214, 229, 233); padding: 5px; width: 331px;">
+		<!-- <div id="password_window_footer_div" class="yui-skin-sam" style="background-color: rgb(214, 229, 233); padding: 5px; width: 331px;">
 			<table width="97%">
 			<tbody><tr>
 			
@@ -36,10 +91,10 @@
 			</td>
 			</tr>
 			</tbody></table>	
+		</div>-->
 		</div>
 		</div>
-		</div>
-		<div id="password_window_errorMsg" style="margin: 10px; font-weight: bold; font-size: 13px;"></div>
+		
 		
 		<div id="loginDiv" style="display:none;font-size: 13px;">
 		<div style="font-weight: bold; margin-top: 22px; margin-left: 188px;">Please Login to continue</div>
@@ -78,7 +133,7 @@
 
 		<script type="text/javascript">
 		
-	function changePassword()
+	/*function changePassword()
 	{
 		
 	var cpwd = document.getElementById("currentPwdId").value;
@@ -131,7 +186,7 @@
 		var url = "changeNewUserPasswordAction.action?"+rparam;						
 		callAjax(jsObj,url);
 		}
-}
+}*/
 
 
 function callAjax(jsObj,url){
@@ -183,6 +238,74 @@ function callAjax(jsObj,url){
 
 		}
 }
-		</script>
+
+
+function validatefields()
+{ 
+	var eFlag = true;
+	
+	var currentPWDEle = document.getElementById("currentPWDId").value;
+	var newPWDEle = document.getElementById("newPWDId").value;
+	var confirmPWDEle = document.getElementById("confirmPWDId").value;
+
+	var resultDIVEle = document.getElementById("password_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	var str = '<font style="color:red;">';
+	
+	if(currentPWDEle.length == 0)
+	{
+		str += '<%=currentPWD%><br>';
+		eFlag = false;
+	}
+	else if(currentPWDEle.length > 0 && currentPWDEle.length < 6)
+	{
+		str += '<%=currentPWDLength%><br>';
+		eFlag = false;
+	}
+	
+	if(newPWDEle.length == 0)
+	{
+		str += '<%=newPWD%><br>';
+		eFlag = false;
+	}
+	else if(newPWDEle.length > 0 && newPWDEle.length < 6)
+	{
+		str += '<%=newPWDLength%><br>';
+		eFlag = false;
+	}
+	
+	if(confirmPWDEle.length == 0)
+	{
+		str += '<%=confirmPWD%><br>';
+		eFlag = false;
+	}
+	else if(confirmPWDEle.length > 0 && confirmPWDEle.length < 6)
+	{
+		str += '<%=confirmPWDLength%><br>';
+		eFlag = false;
+	}
+	else if(currentPWDEle == newPWDEle)
+	{
+		str += '<%=newAndConfirmPWDEqual%><br>';
+		eFlag = false;
+	}
+	else if(newPWDEle != confirmPWDEle)
+	{
+		str +='<%=newAndConfirmPWDEqual%><br>';
+		eFlag = false;
+	}
+	else if(currentPWDEle.search(" ") ==0 || newPWDEle.search(" ") ==0 || confirmPWDEle.search(" ") ==0)
+	{
+		str +='<%=passwordSpaceEle%>';
+		eFlag = false;
+	}
+	str += '</font>';
+	if(!eFlag)
+		resultDIVEle.innerHTML = str;
+	
+	return eFlag;
+}
+
+</script>
 </body>
 </html>
