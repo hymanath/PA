@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.model.FeedBack;
-import com.itgrids.partyanalyst.model.Registration;
 
 public class FeedbackDAO extends GenericDaoHibernate<FeedBack, Long> implements IFeedbackDAO {
 
