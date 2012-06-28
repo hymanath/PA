@@ -63,7 +63,6 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
@@ -130,7 +129,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IContentTypeDAO contentTypeDAO;
 	private IUserGallaryDAO userGallaryDAO;
-	private IRegistrationDAO registrationDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private ISourceDAO sourceDAO;
 	private ICountryDAO countryDAO;
@@ -390,14 +388,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	public void setFileTypeDAO(IFileTypeDAO fileTypeDAO) {
 		this.fileTypeDAO = fileTypeDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public IUserGallaryDAO getUserGallaryDAO() {

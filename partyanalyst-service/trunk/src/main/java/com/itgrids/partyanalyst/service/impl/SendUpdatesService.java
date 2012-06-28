@@ -1,16 +1,12 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO;
-import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ISendUpdatesService;
 import com.itgrids.partyanalyst.service.ISmsService;
@@ -19,7 +15,6 @@ public class SendUpdatesService implements ISendUpdatesService{
 
 	public static Logger log = Logger.getLogger(SendUpdatesService.class);
 	
-	private IAnanymousUserDAO ananymousUserDAO;
 	private ISmsService smsCountrySmsService;
 	private IUserDAO userDAO;
 	private IUserRolesDAO userRolesDAO;
@@ -44,13 +39,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 	public void setRegistrationVO(RegistrationVO registrationVO) {
 		this.registrationVO = registrationVO;
 	}
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-	
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}

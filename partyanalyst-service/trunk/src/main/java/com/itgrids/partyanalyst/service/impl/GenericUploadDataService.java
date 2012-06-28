@@ -29,12 +29,12 @@ import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.GenericUploadDataVO;
@@ -53,11 +53,11 @@ import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserRelation;
 import com.itgrids.partyanalyst.service.IGenericUploadDataService;
@@ -88,14 +88,23 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	private ICadreLevelDAO cadreLevelDAO;
 	private IOccupationDAO occupationDAO;
 	private IUserAddressDAO userAddressDAO;
-	private IRegistrationDAO registrationDAO;
 	private IUserRelationDAO userRelationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
 	private ICadreRoleRelationDAO cadreRoleRelationDAO;
 	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
 	private IEducationalQualificationsDAO educationalQualificationsDAO;
+	private IUserDAO userDAO;
 		
-	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+
 	private static Logger log = Logger.getLogger(GenericUploadDataService.class);
 	
 	
@@ -340,22 +349,6 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	 */
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
-	}
-
-
-	/**
-	 * @return the registrationDAO
-	 */
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-
-	/**
-	 * @param registrationDAO the registrationDAO to set
-	 */
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 
@@ -618,8 +611,8 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		
 		try{
 		//Get User
-		Registration user = registrationDAO.get(userId);
-		cadre.setRegistration(user);
+		User user = userDAO.get(userId);
+		cadre.setUser(user);
 		
 		//Get Educational Details
 		List<EducationalQualifications> educationList = null;

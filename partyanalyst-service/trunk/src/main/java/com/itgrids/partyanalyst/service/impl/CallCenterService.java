@@ -3,10 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.service.ICallCenterService;
@@ -15,18 +13,8 @@ public class CallCenterService implements ICallCenterService{
 
 	private IProblemHistoryDAO problemHistoryDAO;
 	
-	private IRegistrationDAO registrationDAO;
-	
 	public IProblemHistoryDAO getProblemHistoryDAO() {
 		return problemHistoryDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public void setProblemHistoryDAO(IProblemHistoryDAO problemHistoryDAO) {
@@ -114,25 +102,6 @@ public class CallCenterService implements ICallCenterService{
 		 }
 		 if(userId != null)
 		 {
-			 // Retrieving subUser and parentUser ids
-			 /* List<Object[]> userIds = registrationDAO.getSubusersByParentUserId(userId);
-			  //List<Object[]> userIds = userDAO.getSubusersByParentUserId(userId);
-			    if(userIds.size()!=0)
-			    {
-					 Object[] params = (Object[])userIds.get(0);
-					 userIdsList.add(params[0].toString());
-					 userIdsList.add(params[1].toString());
-					 StringBuilder subUserIdAndparentIds = new StringBuilder();
-					 subUserIdAndparentIds.append(params[0]).append(",").append(params[1]);
-						 
-					 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";
-				}
-		
-			    else
-			    {
-					hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+userId+")";
-				}*/
-			 
 			 StringBuilder subUserIdAndparentIds = new StringBuilder();
 			 subUserIdAndparentIds.append(userId.toString());
 			 hbQuery+=" and model.problemLocation.problemAndProblemSource.user.registrationId in("+subUserIdAndparentIds+")";

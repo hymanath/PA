@@ -38,7 +38,6 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -91,7 +90,6 @@ public class ProblemManagementReportService implements
 	private IProblemHistoryDAO problemHistoryDAO = null;	
 	private IAssignedProblemProgressDAO assignedProblemProgressDAO = null;
 	private IProblemStatusDAO problemStatusDAO = null;
-	private IRegistrationDAO registrationDAO = null;
 	private IProblemExternalSourceDAO problemExternalSourceDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
@@ -126,6 +124,14 @@ public class ProblemManagementReportService implements
 	private IUserDAO userDAO;
 	
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public IFeedbackDAO getFeedbackDAO() {
 		return feedbackDAO;
 	}
@@ -302,18 +308,7 @@ public class ProblemManagementReportService implements
 		this.problemStatusDAO = problemStatusDAO;
 	}
 
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-
-
-		public IProblemHistoryDAO getProblemHistoryDAO() {
+	public IProblemHistoryDAO getProblemHistoryDAO() {
 		return problemHistoryDAO;
 	}
 
@@ -408,20 +403,12 @@ public class ProblemManagementReportService implements
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
-	public IUserDAO getUserDAO() {
-		return userDAO;
-	}
-
-	public void setUserDAO(IUserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
-		/**
-		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
+	/**
+		 * This method takes hamletId,userId and taskType and generates a report of problems for the
 		 * selected Tehsil by location-wise,department-wise as well as  status-wise.
 		 * @author Ravi Kiran.Y
 		 */
-		public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long registrationId,String taskType) {
+		public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long userId,String taskType) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
 			/*
@@ -435,7 +422,7 @@ public class ProblemManagementReportService implements
 				if(taskType!=null && taskType!=""){
 			//Ends here...
 				try{
-					//result = problemHistoryDAO.findProblemsByStatusForALocationsByTehsilId(tehsilId,taskType,registrationId);
+					//result = problemHistoryDAO.findProblemsByStatusForALocationsByTehsilId(tehsilId,taskType,userId);
 				}catch(Exception e){
 					e.printStackTrace();
 					System.out.println("Exception Raised--->"+e);
@@ -444,14 +431,14 @@ public class ProblemManagementReportService implements
 			}
 			else{
 				try{
-				//result = problemHistoryDAO.findProblemsForALocationsByTehsilId(tehsilId,registrationId);
+				//result = problemHistoryDAO.findProblemsForALocationsByTehsilId(tehsilId,userId);
 				}catch(Exception e){
 						e.printStackTrace();
 						System.out.println("Exception Raised--->"+e);
 					return null;			
 				}
 			}
-			//problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
+			//problemBeanVO = populateProblemInfo(result,userId,taskType,null);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
@@ -461,7 +448,7 @@ public class ProblemManagementReportService implements
 		}
 		
 		/**
-		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
+		 * This method takes hamletId,userId and taskType and generates a report of problems for the
 		 * selected Constituency by location-wise,department-wise as well as  status-wise by grouping problems
 		 * based on department or cadre.
 		 * @author Sai Krishna
@@ -761,7 +748,7 @@ public class ProblemManagementReportService implements
 		}
 
 		/**
-		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
+		 * This method takes hamletId,userId and taskType and generates a report of problems for the
 		 * selected Constituency by location-wise,department-wise as well as  status-wise.
 		 * @author Ravi Kiran.Y
 		 */
@@ -936,11 +923,9 @@ public class ProblemManagementReportService implements
 		 * @author Ravi Kiran.Y
 		 */
 		@SuppressWarnings("unchecked")
-		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,Long taskType,String status){
+		public List<ProblemBeanVO> populateProblemInfo(List list,Long regId,Long taskType,String status){
 			
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
-			//List<Registration> regUser = new ArrayList<Registration>();
-			List<User> regUser = new ArrayList<User>();
 			List<ProblemExternalSource> extRegUser = new ArrayList<ProblemExternalSource>();
 			Long problemId=0l;
 			String dateConversion=null;
@@ -1026,16 +1011,12 @@ public class ProblemManagementReportService implements
 					userId = new Long(parms[10].toString());
 					if(userId!=0L){
 						if(parms[6]==null){
-							//regUser = registrationDAO.findByUserRegistrationId(userId);
-							
-							regUser = userDAO.findByUserRegistrationId(registrationId);
-							for(User registerdUser : regUser){
-								problemBean.setPostedPersonName(registerdUser.getFirstName());
-								problemBean.setPhone(registerdUser.getMobile());
-								problemBean.setMobile(registerdUser.getPhone());
-								problemBean.setEmail(registerdUser.getEmail());
-								problemBean.setAddress(registerdUser.getAddress());			
-							}
+							User user = userDAO.get(userId);					
+							problemBean.setPostedPersonName(user.getFirstName());
+							problemBean.setPhone(user.getMobile());
+							problemBean.setMobile(user.getPhone());
+							problemBean.setEmail(user.getEmail());
+							problemBean.setAddress(user.getAddress());			
 						}
 						else {
 							extRegUser = problemExternalSourceDAO.findByProblemExternalSourceId(Long.parseLong(parms[6].toString()));
@@ -1556,7 +1537,7 @@ public class ProblemManagementReportService implements
 			return locationwiseProblemStatusInfoVO;
 		}
 		
-		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,Long status) {
+		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long userId,Long status) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
@@ -1570,16 +1551,16 @@ public class ProblemManagementReportService implements
 			 */
 			if(status!=null && status!=0){
 				//result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(registrationId,status);
+				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(userId,status);
 			}
 			/**
 			 * modification ends here...
 			 */
 			else{
 				//result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
-				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(registrationId);	
+				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(userId);	
 			}
-			problemBeanVO = populateProblemInfo(result,registrationId,status,IConstants.PROBLEMS_MANAGEMENT);
+			problemBeanVO = populateProblemInfo(result,userId,status,IConstants.PROBLEMS_MANAGEMENT);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);

@@ -10,12 +10,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -29,7 +31,6 @@ import com.itgrids.partyanalyst.dao.ILocalGroupRegionDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStaticLocalGroupDAO;
@@ -67,7 +68,6 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.LocalGroupRegion;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.StaticLocalGroup;
@@ -97,7 +97,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IUserAddressDAO userAddressDAO;
 	private IOccupationDAO occupationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
-	private IRegistrationDAO registrationDAO;
 	private IUserDAO userDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
@@ -302,14 +301,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		this.occupationDAO = occupationDAO;
 	}
 
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-	
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -2106,7 +2097,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			log.debug(" Getting Complete Overview Details Of Influencing People Local User Groups ..");
 		
 		try{
-			Registration user = registrationDAO.get(userId);
+			User user = userDAO.get(userId);
 			String userAccessType = user.getAccessType();
 			String accessValue = user.getAccessValue();
 			
@@ -3125,7 +3116,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					  // Group Details
 					personalUserGroup.setGroupName(localGroupDetails.getLocalUserGroupName());
 					personalUserGroup.setDescription(localGroupDetails.getGroupDesc());
-					personalUserGroup.setCreatedUserId(registrationDAO.get(new Long(localGroupDetails.getRegistrationId())));
+					personalUserGroup.setUser(userDAO.get(new Long(localGroupDetails.getRegistrationId())));
 					personalUserGroup.setUserId(new Long(localGroupDetails.getRegistrationId()));
 					personalUserGroup.setStaticLocalGroup(staticLocalGroupDAO.get(localGroupDetails.getGroupCategoryId()));
 					

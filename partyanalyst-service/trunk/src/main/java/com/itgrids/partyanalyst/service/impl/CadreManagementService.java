@@ -47,14 +47,12 @@ import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
@@ -113,7 +111,6 @@ public class CadreManagementService {
 	private IDistrictDAO districtDAO;
 	private ITehsilDAO tehsilDAO;
 	private ITownshipDAO townshipDAO;
-	private IRegistrationDAO registrationDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
@@ -192,10 +189,6 @@ public class CadreManagementService {
 
 	public void setTownshipDAO(ITownshipDAO townshipDAO) {
 		this.townshipDAO = townshipDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
@@ -603,7 +596,6 @@ public class CadreManagementService {
 				cadre.setPermanentAddress(permanentAddress);
 				cadre.setMobile(cadreInfo.getMobile());
 				cadre.setEmail(cadreInfo.getEmail());
-				//cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
 				cadre.setUser(userDAO.getUserByUserId(cadreInfo.getUserID()));
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				if (cadreInfo.getDobOption() != null && "Date Of Birth".equals(cadreInfo.getDobOption())) {
@@ -2188,8 +2180,8 @@ public class CadreManagementService {
 			}
 			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 			cadreInfo.setStrCadreLevelValue(levelValue);
-			//if (IConstants.USER_TYPE_PARTY.equals(cadre.getRegistration().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
-			if (IConstants.USER_TYPE_PARTY.equals(cadre.getUser().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
+
+			if (IConstants.USER_TYPE_PARTY.equals(cadre.getUser().getUserType()) && IConstants.BJP.equals(cadre.getUser().getParty().getShortName())) {
 										
 					//set party committee and designation and duration
 				    if(cadre.getDesignation() !=  null){

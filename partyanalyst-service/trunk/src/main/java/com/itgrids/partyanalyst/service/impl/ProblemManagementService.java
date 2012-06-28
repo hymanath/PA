@@ -26,7 +26,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -58,7 +57,6 @@ import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -79,7 +77,6 @@ import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -90,7 +87,6 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
-import com.itgrids.partyanalyst.model.FileType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -109,7 +105,6 @@ import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.ProblemType;
 import com.itgrids.partyanalyst.model.RegionScopes;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
@@ -126,7 +121,6 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemLocationDAO problemLocationDAO = null;
 	private static final Logger log = Logger
 			.getLogger("ProblemManagementService.class");
-	private IRegistrationDAO registrationDAO = null;
 	private IHamletDAO hamletDAO = null;
 	private ITownshipDAO townshipDAO = null;
 	private IProblemExternalSourceDAO problemExternalSourceDAO = null;
@@ -140,7 +134,6 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IInformationSourceDAO informationSourceDAO = null;
 	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO = null;
 	private IAssignedProblemProgressDAO assignedProblemProgressDAO = null;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IProblemImpactLevelDAO problemImpactLevelDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
@@ -362,14 +355,6 @@ public class ProblemManagementService implements IProblemManagementService {
 		return problemLocationDAO;
 	}
 
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -457,14 +442,6 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setProblemExternalSourceDAO(
 			IProblemExternalSourceDAO problemExternalSourceDAO) {
 		this.problemExternalSourceDAO = problemExternalSourceDAO;
-	}
-
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public IHamletDAO getHamletDAO() {
@@ -953,7 +930,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	/**
 	 * To Get The New Problems Of A User From DB
 	 */
-	public ProblemsOfUserVO getNewProblemsForUser(Long registrationId,
+	public ProblemsOfUserVO getNewProblemsForUser(Long userId,
 			Long statusId) {
 		if (log.isDebugEnabled()) {
 			log.debug("Inside the method :getProblemsForUser:");
@@ -965,10 +942,10 @@ public class ProblemManagementService implements IProblemManagementService {
 		List<SelectOptionVO> problemTypes = new ArrayList<SelectOptionVO>();
 		if (log.isDebugEnabled()) {
 			log.debug("Entered Into getProblemsForUser  Method.....");
-			log.debug("registrationId: " + registrationId);
+			log.debug("userId: " + userId);
 		}
 		List<ProblemHistory> problemHistories = problemHistoryDAO
-				.findProblemLocationsByUserId(registrationId, statusId);
+				.findProblemLocationsByUserId(userId, statusId);
 		if (problemHistories.size() > 0) {
 			problemBeanVOs = getUserProblems(problemHistories);
 		}
@@ -988,7 +965,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 
 		Long stateId = staticDataService
-				.getStateIdForUserByAccessValue(registrationId);
+				.getStateIdForUserByAccessValue(userId);
 
 		problemsOfUserVO
 				.setProblemRegionScopes(getAllDepartmentScopes(stateId));
@@ -1121,12 +1098,12 @@ public class ProblemManagementService implements IProblemManagementService {
 	/**
 	 * To Get The Classified Problem From DB OF A Particular User
 	 */
-	public List<ProblemBeanVO> getClassifiedProblemsOfUser(Long registrationId,
+	public List<ProblemBeanVO> getClassifiedProblemsOfUser(Long userId,
 			Long statusId) {
 		List<ProblemBeanVO> problemsFromDB = new ArrayList<ProblemBeanVO>();
 		ProblemBeanVO problemFromDB = null;
 		List<ProblemHistory> problemHistories = problemHistoryDAO
-				.findProblemLocationsByUserId(registrationId, statusId);
+				.findProblemLocationsByUserId(userId, statusId);
 		List<SelectOptionVO> departmentVOs = null;
 		Date iDate;
 		for (ProblemHistory problemHistory : problemHistories) {
@@ -1539,10 +1516,10 @@ public class ProblemManagementService implements IProblemManagementService {
 		return problemsInProgressFromDB;
 	}
 
-	public List<ProblemBeanVO> getProblemsUnderProgress(Long registrationId,
+	public List<ProblemBeanVO> getProblemsUnderProgress(Long userId,
 			Long statusId) {
 		List<AssignedProblemProgress> problemsUnderProgress = assignedProblemProgressDAO
-				.findByRegistrationIdAndStatusId(registrationId, statusId);
+				.findByRegistrationIdAndStatusId(userId, statusId);
 		List<ProblemBeanVO> problemsUnderProgressFromDB = new ArrayList<ProblemBeanVO>();
 		for (AssignedProblemProgress problemProgerss : problemsUnderProgress) {
 			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
@@ -1700,11 +1677,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	/*
 	 * To get all the problems under pending state
 	 */
-	public List<ProblemBeanVO> getPendingProblemsForAnUser(Long registrationId,
+	public List<ProblemBeanVO> getPendingProblemsForAnUser(Long userId,
 			Long statusId) {
 		List<ProblemBeanVO> pendingProblemsFromDB = new ArrayList<ProblemBeanVO>();
 		List<AssignedProblemProgress> pendingProblems = assignedProblemProgressDAO
-				.findByRegistrationIdAndStatusId(registrationId, statusId);
+				.findByRegistrationIdAndStatusId(userId, statusId);
 		ProblemBeanVO problemBeanVO = null;
 		for (AssignedProblemProgress pendingProblem : pendingProblems) {
 			problemBeanVO = new ProblemBeanVO();
@@ -1740,11 +1717,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	/*
 	 * To get all the problem under assgined state
 	 */
-	public List<ProblemBeanVO> getAssignedProblems(Long registrationId,
+	public List<ProblemBeanVO> getAssignedProblems(Long userId,
 			Long statusId) {
 		List<ProblemBeanVO> assignedProblemsFromDB = new ArrayList<ProblemBeanVO>();
 		List<AssignedProblemProgress> assignedProblems = assignedProblemProgressDAO
-				.findByRegistrationIdAndStatusId(registrationId, statusId);
+				.findByRegistrationIdAndStatusId(userId, statusId);
 		ProblemBeanVO problemBeanVO = null;
 		for (AssignedProblemProgress assignedProblem : assignedProblems) {
 			if (!(assignedProblem.getProblemHistory().getIsDelete() != null && assignedProblem
@@ -1890,11 +1867,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	/*
 	 * To Get all Fixed Probelm's Details
 	 */
-	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId,
+	public List<ProblemBeanVO> getFixedProblemsForUser(Long userId,
 			Long statusId) {
 		List<ProblemBeanVO> fixedProblemsFromDB = new ArrayList<ProblemBeanVO>();
 		List<AssignedProblemProgress> problemsUnderFixed = assignedProblemProgressDAO
-				.findByRegistrationIdAndStatusId(registrationId, statusId);
+				.findByRegistrationIdAndStatusId(userId, statusId);
 		for (AssignedProblemProgress problemsFixed : problemsUnderFixed) {
 			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 			problemBeanVO.setAssignedProblemProgressId(problemsFixed
@@ -2808,7 +2785,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		chartMainVO.setChartDataVO(chartDataVO);
 		chartMainVO.setChartLegends(getChartLegendsFromSet(problemInfSources));
 
-		Registration user = registrationDAO.get(userId);
+		User user = userDAO.get(userId);
 		String userName = "";
 		if (user.getFirstName() != null)
 			userName = userName + user.getFirstName();
@@ -3053,7 +3030,6 @@ public class ProblemManagementService implements IProblemManagementService {
 	public ProblemsOfUserVO getUserProblemsInDifferentStagesByFilters(
 			Long userId, Long statusId, Date startDate, Date endDate,
 			Integer startIndex, Integer maxResults) {
-			Long registrationId = null;
 		
 		if (log.isDebugEnabled())
 			log.debug("Started To Get User Problems Based On Input filters ..");
@@ -3072,7 +3048,6 @@ public class ProblemManagementService implements IProblemManagementService {
 			if (problemHistorysList != null && problemHistorysList.size() > 0) {
 				List<ProblemBeanVO> problemsByUser = setUserProblemsToVO(problemHistorysList);
 				
-				//registrationId = problemHistoryDAO.getFreeUserIdOfAProblem(problemsByUser);
 				
 				problemsOfUserVO.setProblemsByUser(problemsByUser);
 			}

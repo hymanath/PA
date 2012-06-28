@@ -12,7 +12,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -39,13 +38,10 @@ import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.IPartyProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.IPartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.FileSourceLanguageDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
@@ -88,7 +84,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private PartyProfileDescription partyProfileDescription;
 	private IGallaryDAO gallaryDAO;
 	private IContentTypeDAO contentTypeDAO;
-	private IRegistrationDAO registrationDAO;
 	private IUserGallaryDAO userGallaryDAO;
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -275,14 +270,6 @@ public class PartyDetailsService implements IPartyDetailsService {
 
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public IContentTypeDAO getContentTypeDAO() {
@@ -858,8 +845,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 				userGallary = new UserGallary();
 				userGallary.setGallary(gallary);
-				userGallary.setRegistration(registrationDAO.get(gallaryVO
-						.getUserId()));
+				userGallary.setUserId(gallaryVO.getUserId());
 				userGallaryDAO.save(userGallary);
 			}
 			

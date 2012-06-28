@@ -22,18 +22,13 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO;
-import com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PoliticalChanges;
-import com.itgrids.partyanalyst.model.PoliticalChangesInformationSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
-import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IPoliticalChangesService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -43,7 +38,6 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	
 	private TransactionTemplate transactionTemplate = null;
 	private PoliticalChangesVO politicalChangesVO;
-	private RegistrationDAO registrationDAO;
 	private IUserDAO userDAO;
 	private IPartyDAO partyDAO;
 	private PoliticalChangesDAO politicalChangesDAO;
@@ -105,13 +99,6 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 		this.hamletDAO = hamletDAO;
 	}
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	
-	public RegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-	public void setRegistrationDAO(RegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
 	
 	public IUserDAO getUserDAO() {
 		return userDAO;
