@@ -47,7 +47,6 @@ public class PersonalUserGroup implements java.io.Serializable {
 	private StaticGroup staticGroup;
 	private PersonalUserGroup parentGroupId;
 	private String parentGroupName;
-	private Registration createdUserId;
 	private User user;
 	private Long userId;
 	private Set<UserGroupPrivileges> userGroupPrivileges = new HashSet<UserGroupPrivileges>(
@@ -74,7 +73,7 @@ public class PersonalUserGroup implements java.io.Serializable {
 
 	public PersonalUserGroup(Long personalUserGroupId, String groupName,
 			String description, StaticGroup staticGroup,
-			PersonalUserGroup parentGroupId, Registration createdUserId,
+			PersonalUserGroup parentGroupId,
 			Set<UserGroupPrivileges> userGroupPrivileges, Date createdDate,
 			String parentGroupName, MyGroup myGroup,
 			Set<StaticUserGroup> staticUserGroups) {
@@ -84,7 +83,6 @@ public class PersonalUserGroup implements java.io.Serializable {
 		this.description = description;
 		this.staticGroup = staticGroup;
 		this.parentGroupId = parentGroupId;
-		this.createdUserId = createdUserId;
 		this.userGroupPrivileges = userGroupPrivileges;
 		this.createdDate = createdDate;
 		this.parentGroupName = parentGroupName;
@@ -94,9 +92,8 @@ public class PersonalUserGroup implements java.io.Serializable {
 
 	public PersonalUserGroup(String groupName, String description,
 			StaticGroup staticGroup, PersonalUserGroup parentGroupId,
-			String parentGroupName, Registration createdUserId,
-			Set<UserGroupPrivileges> userGroupPrivileges, Date updatedDate,
-			Date createdDate, MyGroup myGroup,
+			String parentGroupName, Set<UserGroupPrivileges> userGroupPrivileges, 
+			Date updatedDate, Date createdDate, MyGroup myGroup,
 			StaticLocalGroup staticLocalGroup,
 			Set<StaticUserGroup> staticUserGroups,
 			LocalGroupRegion localGroupRegion) {
@@ -106,7 +103,6 @@ public class PersonalUserGroup implements java.io.Serializable {
 		this.staticGroup = staticGroup;
 		this.parentGroupId = parentGroupId;
 		this.parentGroupName = parentGroupName;
-		this.createdUserId = createdUserId;
 		this.userGroupPrivileges = userGroupPrivileges;
 		this.updatedDate = updatedDate;
 		this.createdDate = createdDate;
@@ -166,18 +162,6 @@ public class PersonalUserGroup implements java.io.Serializable {
 
 	public void setParentGroupId(PersonalUserGroup parentGroupId) {
 		this.parentGroupId = parentGroupId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Registration getCreatedUserId() {
-		return createdUserId;
-	}
-
-	public void setCreatedUserId(Registration createdUserId) {
-		this.createdUserId = createdUserId;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "personalUserGroup")
