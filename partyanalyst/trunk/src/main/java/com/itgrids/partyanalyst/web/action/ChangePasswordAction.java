@@ -17,6 +17,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class ChangePasswordAction implements ServletRequestAware ,ServletResponseAware{
 
@@ -28,6 +30,10 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 	private ILoginService loginService;
 	private String pwdVal;
 	private ResultStatus resuStatus;
+	private String currentPassword;
+	private String newPassword;
+	private String confirmPassword;
+	private String invalidPassword;
 	
 	public String getTask() {
 		return task;
@@ -104,6 +110,41 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 		this.resuStatus = resuStatus;
 	}
 
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter CurrentPassword ", minLength = "1")	
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter NewPassword ", minLength = "1")	
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter ConfirmPassword ", minLength = "1")	
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	
+	
+	public String getInvalidPassword() {
+		return invalidPassword;
+	}
+
+	public void setInvalidPassword(String invalidPassword) {
+		this.invalidPassword = invalidPassword;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -127,6 +168,29 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 			//pwdVal = loginService.changePasswordOfANewUser(jObj.getString("crntPassword"),jObj.getString("newPassword"),email);
 			resuStatus = loginService.changePasswordOfANewUser(jObj.getString("crntPassword"),jObj.getString("newPassword"),userName);
 			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String newUserChangePassword()
+	{
+		try{
+			session = request.getSession();
+			String userName = (String) session.getAttribute("userName");
+			resuStatus = loginService.changePasswordOfANewUser(currentPassword,newPassword,userName);
+			if(resuStatus.getExceptionEncountered() == null && resuStatus.getResultCode() == 0)
+			{
+				session.removeAttribute("USER");
+				return "loginPage";
+			}
+			else
+			{
+				invalidPassword="Invalid Password.";
+				return "changePassword";
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
