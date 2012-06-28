@@ -21,11 +21,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 	
-	private IRegistrationDAO registrationDAO;
 	
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
 	
 /*	Registration reg = new Registration("Ram","middleName","Charan2","itgrids2","password2",java.sql.Date.valueOf("2009-08-06"),"email@gmail.com","99655652","5846526",
 			"address","gender","India","517325","access","type");

@@ -7,29 +7,17 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 
 	private CustomMessageDAO customMessageDAO;
 	private IUserConnectedtoDAO  userConnectedtoDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
-	
-	
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
 
 	public IUserConnectedtoDAO getUserConnectedtoDAO() {
 		return userConnectedtoDAO;
