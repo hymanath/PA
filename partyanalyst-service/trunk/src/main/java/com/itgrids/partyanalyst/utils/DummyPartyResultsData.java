@@ -15,28 +15,28 @@ import com.itgrids.partyanalyst.model.Party;
 public class DummyPartyResultsData {
 	private static final List<Party> parties = new ArrayList<Party> ();	
 	static{
-		Party dummy1 = new Party(new Long(1), "Indian National Congress", "INC",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy2 = new Party(new Long(2), "Bharatiya Janata Party", "BJP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy3 = new Party(new Long(3), "Bahujan Samaj Party", "BSP",null, null, null,null, null,null,null,null,null,null,null);
+		Party dummy1 = new Party(new Long(1), "Indian National Congress", "INC",null, null, null,null, null,null,null,null,null,null);
+		Party dummy2 = new Party(new Long(2), "Bharatiya Janata Party", "BJP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy3 = new Party(new Long(3), "Bahujan Samaj Party", "BSP",null, null, null,null, null,null,null,null,null,null);
 
-		Party dummy4 = new Party(new Long(4), "Communist Party of India (Marxist)", "CPM",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy5 = new Party(new Long(5), "Samajwadi Party", "SP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy6 = new Party(new Long(6), "Praja Rajyam Party", "PRP",null, null, null,null, null,null,null,null,null,null,null);
+		Party dummy4 = new Party(new Long(4), "Communist Party of India (Marxist)", "CPM",null, null, null,null, null,null,null,null,null,null);
+		Party dummy5 = new Party(new Long(5), "Samajwadi Party", "SP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy6 = new Party(new Long(6), "Praja Rajyam Party", "PRP",null, null, null,null, null,null,null,null,null,null);
 		
-		Party dummy7 = new Party(new Long(7), "Telangana Rashtra Samithi", "TRP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy8 = new Party(new Long(8), "Telugu Desam", "TDP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy9 = new Party(new Long(9), "Lok Satta Party", "LSP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy10 = new Party(new Long(10), "Independent", "IND",null, null, null,null, null,null,null,null,null,null,null);
+		Party dummy7 = new Party(new Long(7), "Telangana Rashtra Samithi", "TRP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy8 = new Party(new Long(8), "Telugu Desam", "TDP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy9 = new Party(new Long(9), "Lok Satta Party", "LSP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy10 = new Party(new Long(10), "Independent", "IND",null, null, null,null, null,null,null,null,null,null);
 		
 
-		Party dummy11 = new Party(new Long(11), "Pyramid Party of India", "PPOI",null, null, null,null,null,null,null,null,null,null,null);
-		Party dummy12 = new Party(new Long(12), "Trilinga Praja Pragati Party", null,null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy13 = new Party(new Long(13), "Republican Party of India (A)", null,null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy14 = new Party(new Long(14), "B.C.United Front", null,null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy15 = new Party(new Long(15), "Rajyadhikara Party", null,null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy16 = new Party(new Long(16), "Bharatiya Jan Shakti", null,null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy17 = new Party(new Long(17), "Bharatiya Rashtravadi Paksha", "BRP",null, null, null,null, null,null,null,null,null,null,null);
-		Party dummy18 = new Party(new Long(18), "NTR Telugu Desam Party (Lakshmi Parvathi)", "NTRTDP(LP)",null, null, null,null, null,null,null,null,null,null,null);
+		Party dummy11 = new Party(new Long(11), "Pyramid Party of India", "PPOI",null, null, null,null,null,null,null,null,null,null);
+		Party dummy12 = new Party(new Long(12), "Trilinga Praja Pragati Party", null,null, null, null,null, null,null,null,null,null,null);
+		Party dummy13 = new Party(new Long(13), "Republican Party of India (A)", null,null, null, null,null, null,null,null,null,null,null);
+		Party dummy14 = new Party(new Long(14), "B.C.United Front", null,null, null, null,null, null,null,null,null,null,null);
+		Party dummy15 = new Party(new Long(15), "Rajyadhikara Party", null,null, null, null,null, null,null,null,null,null,null);
+		Party dummy16 = new Party(new Long(16), "Bharatiya Jan Shakti", null,null, null, null,null, null,null,null,null,null,null);
+		Party dummy17 = new Party(new Long(17), "Bharatiya Rashtravadi Paksha", "BRP",null, null, null,null, null,null,null,null,null,null);
+		Party dummy18 = new Party(new Long(18), "NTR Telugu Desam Party (Lakshmi Parvathi)", "NTRTDP(LP)",null, null,null, null,null,null,null,null,null,null);
 		parties.add(dummy1);	parties.add(dummy2);	parties.add(dummy3);		parties.add(dummy5);
 		parties.add(dummy6);    parties.add(dummy7);	parties.add(dummy8);		parties.add(dummy9);	
 		parties.add(dummy10);	parties.add(dummy11);	parties.add(dummy12);		parties.add(dummy13);	
