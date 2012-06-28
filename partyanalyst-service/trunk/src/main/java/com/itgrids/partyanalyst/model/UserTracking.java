@@ -31,10 +31,8 @@ public class UserTracking extends BaseModel implements Serializable {
 	private String ipAddress;
 	private Date time;
 	private String sessionId;
-	private Registration registration;
 	private User user;
 	private Long userId;
-	private AnanymousUser freeUser;
 	private String userType;
 	
 	 public UserTracking()
@@ -96,18 +94,6 @@ public class UserTracking extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id",updatable = false, insertable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -126,18 +112,6 @@ public class UserTracking extends BaseModel implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_id",updatable = false, insertable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AnanymousUser getFreeUser() {
-		return freeUser;
-	}
-
-	public void setFreeUser(AnanymousUser freeUser) {
-		this.freeUser = freeUser;
 	}
 
 	@Column(name = "user_type", length = 25)
