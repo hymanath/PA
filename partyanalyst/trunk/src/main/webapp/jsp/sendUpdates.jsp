@@ -249,9 +249,13 @@ function callAjax(jsObj,url)
 				   success : function( o ) {
 						try
 						{
-							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							myResults = YAHOO.lang.JSON.parse(o.responseText);
+							if(jsObj.task == 'sendSMSForUserIds')
+							{
+								showSmsStatus(myResults);
+							}	
 							
-							}
+						}
 						catch(e)
 						{   
 							alert("Invalid JSON result" + e);  
@@ -317,12 +321,23 @@ function sendSmsToUsersTable()
 				
 	var myDataTable = new YAHOO.widget.DataTable("table",resultsColumnDefs, myDataSource,myConfigs);  
 }
-
+function showSmsStatus(result)
+{
+	
+	var errorEle = document.getElementById('errorDiv');
+	
+	if(result == null)
+	{
+		errorEle.innerHTML='<font color="green">message send successfully</font>';
+		return;
+	}
+errorEle.innerHTML ="";
+}
 
 </script>
 </head>
 <body>
-<div style="width:998px;background:#ffffff;">
+<div style="width:998px;background:#ffffff;margin-left:auto;margin-right:auto;">
 <br>
 <div class="questionHeader">
 <span style="margin-top:2px;">Send Updates to Mobile</span>
