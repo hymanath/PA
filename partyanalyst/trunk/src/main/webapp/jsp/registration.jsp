@@ -428,7 +428,7 @@ var str = '<font style="color:red;font-size:12px;">';
 
 
 					<br><br><b style="color:red">*</b> 
- Select Constituency<s:select name="constituencyId" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name" cssStyle="width: 145px;margin-left: 12px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+ Select Constituency<s:select name="constituencyId" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width: 145px;margin-left: 12px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
 		 </div></td></tr>
 
 				
