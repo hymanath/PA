@@ -16,7 +16,7 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<User> checkUserPassword(String password,Long userId); 
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status,Date date);
+	public Integer changeUserPassword(String password,Long userId,String status,Date date);
 	
 	public List<Object> getUserIdByUserName(String userName);
 	
