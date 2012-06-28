@@ -85,7 +85,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return getHibernateTemplate().find("select model.password from User model where model.password = ? and model.userId = ?",parameters);
 	}
 	
-	public Integer changeUserPassword(String password,Long registrationId,String status,Date date)
+	public Integer changeUserPassword(String password,Long userId,String status,Date date)
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("update User model set model.password =?, model.isPwdChanged =?, model.updatedDate =? where model.userId =?");
@@ -93,7 +93,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		queryObj.setParameter(0, password);
 		queryObj.setParameter(1, status);
 		queryObj.setParameter(2, date);
-		queryObj.setParameter(3, registrationId);
+		queryObj.setParameter(3, userId);
 		return queryObj.executeUpdate();
 	}
 	
