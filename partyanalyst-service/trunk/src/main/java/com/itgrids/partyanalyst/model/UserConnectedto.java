@@ -30,8 +30,6 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 2371208767651956601L;
 
 	private Long userConnectedtoId;
-	private AnanymousUser senderId;
-	private AnanymousUser recepientId;
 	private User userSource;
 	private User userTarget;
 	
@@ -47,9 +45,9 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	}
 	
 	//Full key constructor
-	public UserConnectedto(AnanymousUser senderId,AnanymousUser recepientId){
-		this.senderId = senderId;
-		this.recepientId = recepientId;
+	public UserConnectedto(User userSource,User userTarget){
+		this.userSource = userSource;
+		this.userTarget = userTarget;
 	}
 
 	
@@ -64,27 +62,6 @@ public class UserConnectedto extends BaseModel implements Serializable {
 		this.userConnectedtoId = userConnectedtoId;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_source_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public AnanymousUser getSenderId() {
-		return senderId;
-	}
-
-	public void setSenderId(AnanymousUser senderId) {
-		this.senderId = senderId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_target_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public AnanymousUser getRecepientId() {
-		return recepientId;
-	}
-
-	public void setRecepientId(AnanymousUser recepientId) {
-		this.recepientId = recepientId;
-	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="user_source_id")
