@@ -574,8 +574,8 @@ var pollStatus = [];
                   <ul>
 					<!--<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Elections In Telangana"><img src="./images/new_homepage/Chadra Babu _ KCR.png" alt="Bye Elections In Telangana" /> <span>AP Bye Elections - 2012</span> </a></li>-->
 
-					<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Elections In Telangana"><img src="./images/new_homepage/presidentElection.png" alt="President Elections In India" /> <span>President Elections-2012</span> </a></li>
-					<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Election In Kovur"><img src="./images/new_homepage/Kiran Kumar _Y.S. Jagan.png" alt="Bye Election In Kovur" /> <span>AP Bye Elections - 2012</span> </a></li>
+					<li> <a href="specialPageAction.action?specialPageId=10" title="Presidential Elections - 2012"><img src="./images/new_homepage/presidentElection.png" alt="Presidential Elections - 2012" /> <span>Presidential Elections </span> </a></li>
+					<li> <a href="specialPageAction.action?specialPageId=8" title="AP Bye Elections - 2012"><img src="./images/new_homepage/Kiran Kumar _Y.S. Jagan.png" alt="AP Bye Elections - 2012" /> <span>AP Bye Elections - 2012</span> </a></li>
     				 <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh_Mulayam.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
 				  	<li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
 				  	<li> <a href="specialPageAction.action?specialPageId=5" title="Uttarakhand 2012 Election"><img src="./images/new_homepage/uttaranchal.png" alt="Uttarakhand 2012 Election"/> <span>Uttarakhand</span> </a></li>
