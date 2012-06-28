@@ -17,6 +17,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.context.ServletContextAware;
 
@@ -115,8 +116,9 @@ public class SendUpdatesAction extends ActionSupport implements ServletRequestAw
 			
 			mobilenumbers[i] = usersArray.getString(i);
 		
-		smsCountrySmsService.sendSmsFromAdmin(jObj.getString("txtAreaValue"),true,mobilenumbers[i]);
+			resultstatus = smsCountrySmsService.sendSmsFromAdmin(jObj.getString("txtAreaValue"),true,mobilenumbers[i]);
 		}
+		
 		return Action.SUCCESS;
 	}
 	
