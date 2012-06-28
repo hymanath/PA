@@ -1151,6 +1151,7 @@
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="userDAO" ref="userDAO"/>
+		<property name="userRolesDAO" ref="userRolesDAO"/>
 	</bean>
 	
 </beans>		
