@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
-
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.model.SmsTrack;
 
@@ -40,12 +37,12 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 	
 	@SuppressWarnings("unchecked")
 	public List<SmsTrack> findLatestRenewalDate(Long userId) {
-		return getHibernateTemplate().find("from SmsTrack model where model.registration.userId = ? order by model.renewalDate desc ",userId);
+		return getHibernateTemplate().find("from SmsTrack model where model.user.userId = ? order by model.renewalDate desc ",userId);
 	}
 	
 	public Object getRemainingSMSCountForAUser(Long userId)
 	{
-		Query query = getSession().createQuery("select model.renewalSmsCount from SmsTrack model where model.registration.userId = ?");
+		Query query = getSession().createQuery("select model.renewalSmsCount from SmsTrack model where model.user.userId = ?");
 		query.setParameter(0,userId);
 		return query.uniqueResult();
 	}
@@ -58,7 +55,7 @@ public class SmsTrackDAO extends GenericDaoHibernate<SmsTrack, Long> implements
 	
 	public Integer updateRemainingSmsLeftForUser(Long userId, Long count)
 	{
-		Query query = getSession().createQuery("update SmsTrack model set model.renewalSmsCount = ? where model.registration.userId = ? ");
+		Query query = getSession().createQuery("update SmsTrack model set model.renewalSmsCount = ? where model.user.userId = ? ");
 		query.setParameter(0,count);
 		query.setParameter(1,userId);
 		return query.executeUpdate();
