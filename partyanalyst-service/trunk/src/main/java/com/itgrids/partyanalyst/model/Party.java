@@ -54,7 +54,6 @@ public class Party implements java.io.Serializable {
 	private String partyFlag;	
 	private State state;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
-	private Set<Registration> registrations = new HashSet<Registration>(0);
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
@@ -101,7 +100,7 @@ public class Party implements java.io.Serializable {
 			String symbol, String address, String comments,
 			String partyRecognization,
 			Set<Nomination> nominations,
-			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
+			Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
 			Set<CommentCategoryParty> commentCategoryParty,State state) {
 		this.partyId = partyId;
 		this.longName = longName;
@@ -111,7 +110,6 @@ public class Party implements java.io.Serializable {
 		this.comments = comments;
 		this.partyRecognization = partyRecognization;	
 		this.nominations = nominations;
-		this.registrations = registrations;
 		this.partyImportantDates = partyImportantDates;
 		this.partyElectionResult = partyElectionResult;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
@@ -212,16 +210,6 @@ public class Party implements java.io.Serializable {
 
 	public void setNominations(Set<Nomination> nominations) {
 		this.nominations = nominations;
-	}
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-		public Set<Registration> getRegistrations() {
-		return registrations;
-	}
-
-	public void setRegistrations(Set<Registration> registrations) {
-		this.registrations = registrations;
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
