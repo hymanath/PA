@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -21,7 +22,14 @@ public class SendUpdatesService implements ISendUpdatesService{
 	private IAnanymousUserDAO ananymousUserDAO;
 	private ISmsService smsCountrySmsService;
 	private IUserDAO userDAO;
+	private IUserRolesDAO userRolesDAO;
 	
+	public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
 	private RegistrationVO registrationVO;
 	
 	public ISmsService getSmsCountrySmsService() {
@@ -57,7 +65,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 			RegistrationVO registrationVO = null;
 			try
 			{
-				List<Object[]> userDetails = userDAO.getAllUsersMobile();
+				List<Object[]> userDetails = userRolesDAO.getAllFreeusertoSendSms();
 				
 				for(Object[] params : userDetails)
 				{
@@ -85,7 +93,7 @@ public class SendUpdatesService implements ISendUpdatesService{
 			RegistrationVO  registrationVO = null;
 			try
 			{
-			List<Object> userDetails = userDAO.getAllMobilenosAsUnique();
+			List<Object> userDetails = userRolesDAO.getAllMobilenosAsUnique();
 			
 			String[] mobilenumbers = new String[userDetails.size()];
 			
