@@ -33,4 +33,20 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles,Long> implements
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllUsersMobile(String roleType)
+	{
+		return getHibernateTemplate().find("select distinct model.firstName,model.lastName,model.mobile,model.constituency.name,model.userId from UserR model where model.role.roleType = ?",roleType);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllMobilenosAsUnique()
+	{
+		return getHibernateTemplate().find("select distinct model.user.mobile from UserRoles model where role.roleType='FREE_USER' and model.user.mobile is not null");
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllFreeusertoSendSms()
+	{
+		return getHibernateTemplate().find("select model.user.firstName,model.user.lastName,model.user.mobile,model.user.constituency.name,model.user.userId from UserRoles model where role.roleType='FREE_USER' and model.user.mobile is not null ");
+	}
+	
 }
