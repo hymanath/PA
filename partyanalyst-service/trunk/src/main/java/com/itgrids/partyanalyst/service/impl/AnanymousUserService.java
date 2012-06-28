@@ -18,7 +18,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
@@ -31,7 +30,6 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -52,12 +50,10 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserConnectedto;
@@ -83,7 +79,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IConstituencyDAO constituencyDAO;
 	private ICustomMessageDAO customMessageDAO;
 	private IMessageTypeDAO messageTypeDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IStaticDataService staticDataService;
@@ -101,9 +96,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IRoleDAO roleDAO;
 	private IUserRolesDAO userRolesDAO;
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
-	private IRegistrationDAO registrationDAO;
 	private IUserDAO userDAO;
-	
 	
 	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
 		return userReferralEmailsDAO;
@@ -272,29 +265,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-	
-	
 	public IProfileOptsDAO getProfileOptsDAO() {
 		return profileOptsDAO;
 	}
 
 	public void setProfileOptsDAO(IProfileOptsDAO profileOptsDAO) {
 		this.profileOptsDAO = profileOptsDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public IRoleDAO getRoleDAO() {
@@ -767,8 +743,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					if(parms[5] != null){
 						if(status.equalsIgnoreCase(IConstants.PENDING)){
 							CustomMessage userData=(CustomMessage)parms[5];
-							if(userData.getRecepientId().getProfileImg()!=null && !userData.getRecepientId().getProfileImg().equals(""))
-								candidateVO.setImage(userData.getRecepientId().getProfileImg());
+							if(userData.getRecepient().getProfileImg()!=null && !userData.getRecepient().getProfileImg().equals(""))
+								candidateVO.setImage(userData.getRecepient().getProfileImg());
 						}
 						else{
 					            User user = (User)parms[5];
@@ -810,8 +786,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					Set<Long> userIds = new HashSet<Long>();
 					if(detailsList!=null && detailsList.size()!=0){
 						for(UserConnectedto userConnectedto : detailsList){
-							userIds.add(userConnectedto.getSenderId().getUserId());
-							userIds.add(userConnectedto.getRecepientId().getUserId());
+							userIds.add(userConnectedto.getUserSource().getUserId());
+							userIds.add(userConnectedto.getUserTarget().getUserId());
 						}
 						userIds.remove(loginId);
 					}	
@@ -1300,7 +1276,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			if(levels>1 && newList.size()!=0){
 				List<CustomMessage> customMessageresult = customMessageDAO.checkForRelationBetweenUsers(userId,newList);
 				for(CustomMessage users : customMessageresult){
-					Long id = users.getRecepientId().getUserId();
+					Long id = users.getRecepient().getUserId();
 					if(newList.contains(id)){
 						newList.remove(id);
 					}
@@ -1945,7 +1921,6 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		
 		try {
 			result = userDAO.saveUserProfileImageNameToDB(userId, imageName); 
-			//result = registrationDAO.saveUserProfileImageNameToDB(userId, imageName);
 			resultStatus.setResultCode(result);			
 			
 		} catch (Exception e) {
@@ -2036,23 +2011,20 @@ public String getPassword(String password){
 	return password;
 }
 @SuppressWarnings("unchecked")
-public String changeUserPassword(String crntpassword,String newpassword,Long registrationId,String userName)
+public String changeUserPassword(String crntpassword,String newpassword,Long regId,String userName)
 {   
 	
-	/*List chkPwd=ananymousUserDAO.checkUserPassword(crntpassword, registrationId);
-	if(chkPwd.size()==0)
-		return IConstants.NoPassword;
-	Integer chkPwdVals=ananymousUserDAO.changeUserPassword(newpassword,registrationId,IConstants.TRUE,dateUtilService.getCurrentDateAndTime());
-	return IConstants.YesPassword;*/
-	if(registrationId == 0l)
+	if(regId == 0l)
 	{
 		List<Object> userId = userDAO.getUserIdByUserName(userName);
-		registrationId = (Long) userId.get(0);
+		regId = (Long) userId.get(0);
 	}
-	List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
+	
+	List chkpwd = userDAO.checkUserPassword(crntpassword,regId);
+	
 	if(chkpwd.size() == 0)
 		return IConstants.NoPassword;
-	Integer chkPwdVals = userDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
+	Integer chkPwdVals = userDAO.changeUserPassword(newpassword, regId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
 	return IConstants.YesPassword;
 }
 
