@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,10 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -57,13 +56,12 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -122,10 +120,10 @@ import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.ProblemStatus;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
@@ -188,6 +186,15 @@ public class StaticDataService implements IStaticDataService {
 	private IProblemStatusDAO problemStatusDAO;
 	private IPartyStrengthService partyStrengthService;
 	private IHamletBoothElectionDAO hamletBoothElectionDAO;
+	private IUserDAO userDAO;
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
@@ -215,20 +222,9 @@ public class StaticDataService implements IStaticDataService {
 		this.problemStatusDAO = problemStatusDAO;
 	}
 
-	private IRegistrationDAO registrationDAO;
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
-  
   
   	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
@@ -7309,7 +7305,7 @@ public class StaticDataService implements IStaticDataService {
 			if (log.isInfoEnabled())
 				log.info("Getting User Object By User Id ..");
 
-			Registration user = registrationDAO.get(userId);
+			User user = userDAO.get(userId);
 
 			String userAccessType = user.getAccessType();
 			String userAccessValue = user.getAccessValue();

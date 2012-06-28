@@ -21,8 +21,6 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryPartyDAO;
@@ -34,7 +32,6 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
@@ -72,8 +69,6 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentCategoryPartyDAO commentCategoryPartyDAO;
 	private ICommentCategoryConstituencyDAO commentCategoryConstituencyDAO;
 	private ICommentDataCategoryDAO commentDataCategoryDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
-	private IRegistrationDAO registrationDAO;
 	private ICommentDataDAO commentDataDAO; 	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IMailsSendingService mailsSendingService;
@@ -191,22 +186,6 @@ public class CommentsDataService implements ICommentsDataService {
 		this.commentDataCategoryDAO = commentDataCategoryDAO;
 	}
 
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-	
 	public ICommentDataDAO getCommentDataDAO() {
 		return commentDataDAO;
 	}
@@ -236,11 +215,6 @@ public class CommentsDataService implements ICommentsDataService {
 		List<CommentCategoryCandidate> candidateComments = null;
 		
 		String hqlQuery = "";
-		/*if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
-			hqlQuery = " and model.paidUser.registrationId = ?";
-		else
-			hqlQuery = " and model.freeUser.userId = ?";*/
-		
 		hqlQuery = " and model.user.userId = ?";
 		
 		try{
@@ -614,10 +588,6 @@ public class CommentsDataService implements ICommentsDataService {
 		Float tempSeverity = 0f;
 		String hqlQuery = "";
 	
-		/*if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
-			hqlQuery = " and model.paidUser.registrationId = ?";
-		else
-			hqlQuery = " and model.freeUser.userId = ?";*/
 		hqlQuery = " and model.user.userId = ?";
 		
 		List<Object[]> candidatesIdAndReasonSeverity = commentCategoryCandidateDAO.getAllCommentsOfUserForANomination(electionId, constituencyId, 
@@ -653,8 +623,6 @@ public class CommentsDataService implements ICommentsDataService {
 		
 		if(userId != null)
 		{
-			//List<Object[]> list = ananymousUserDAO.getUserEmail(userId);
-			
 			List<Object[]> list = userDAO.getUserEmail(userId);
 			
 			if(list != null && list.size() > 0)
@@ -777,13 +745,7 @@ public class CommentsDataService implements ICommentsDataService {
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
 					commentCategoryCandidateSaved.setCommentData(commentData);
 					
-					//commentCategoryCandidateSaved.setUser(registrationDAO.get(userId));
 					commentCategoryCandidateSaved.setUser(userDAO.get(userId));
-					
-					/*if(IConstants.FREE_USER.equalsIgnoreCase(userType))
-						commentCategoryCandidateSaved.setFreeUser(ananymousUserDAO.get(userId));
-					else
-						commentCategoryCandidateSaved.setPaidUser(registrationDAO.get(userId));*/
 					
 					commentCategoryCandidateSaved.setSeverity(severity);
 					commentCategoryCandidateSaved = commentCategoryCandidateDAO.save(commentCategoryCandidateSaved);

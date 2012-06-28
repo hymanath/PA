@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +14,6 @@ import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
@@ -32,7 +30,6 @@ public class MailService implements IMailService{
 
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private static final Logger log = Logger.getLogger(MailService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IMailsTemplateService mailsTemplateService;
@@ -60,13 +57,6 @@ public class MailService implements IMailService{
     
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
-	}
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public synchronized ResultStatus sendMailFromLocalHost(QuickRequestVO quickRequestVO){

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.List;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -10,7 +11,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
@@ -18,7 +18,6 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SmsTrackVO;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsTrack;
@@ -37,7 +36,6 @@ public class SmsCountrySmsService implements ISmsService {
 	private ISmsTrackDAO smsTrackDAO;
 	private ISmsModuleDAO smsModuleDAO;
 	private ISmsHistoryDAO smsHistoryDAO;
-	private IRegistrationDAO registrationDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserDAO userDAO;
@@ -72,14 +70,6 @@ public class SmsCountrySmsService implements ISmsService {
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public ISmsTrackDAO getSmsTrackDAO() {
@@ -297,7 +287,7 @@ public class SmsCountrySmsService implements ISmsService {
 				List<SmsTrack> trackId = smsTrackDAO.findLatestRenewalDate(userId);
 				if(trackId.size()==0){		
 						SmsTrack track = new SmsTrack();
-						track.setRegistration(registrationDAO.get(userId));
+						track.setUserId(userId);
 						track.setRenewalDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 						track.setRenewalSmsCount(10000l);
 						track = smsTrackDAO.save(track);
@@ -331,7 +321,7 @@ public class SmsCountrySmsService implements ISmsService {
 		if(smsTrackVO.getUserSmsTrackId()!=null && smsTrackVO.getUserSmsTrackId()!=0L)
 		    smsTrack = smsTrackDAO.get(smsTrackVO.getUserSmsTrackId());		   
 			smsTrack.setSmsUsername(smsTrackVO.getSmsUserName());
-		    smsTrack.setRegistration(registrationDAO.get(smsTrackVO.getUserId()));			
+		    smsTrack.setUserId(smsTrackVO.getUserId());			
 			smsTrack.setSmsPassword(smsTrackVO.getSmsPassword());		
 			smsTrack.setSenderId(smsTrackVO.getSenderId());
 			smsTrack.setRenewalSmsCount(smsTrackVO.getRenewalSmsCount());

@@ -16,7 +16,6 @@ import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
@@ -68,7 +67,6 @@ public class SpecialPageService implements ISpecialPageService{
 	private SpecialPageGallery specialPageGallery;
 	private IContentTypeDAO contentTypeDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
-	private IRegistrationDAO registrationDAO;
 	private IUserGallaryDAO userGallaryDAO;
 	private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	private ISourceDAO sourceDAO;
@@ -224,14 +222,6 @@ public class SpecialPageService implements ISpecialPageService{
 
 	public void setUserGallaryDAO(IUserGallaryDAO userGallaryDAO) {
 		this.userGallaryDAO = userGallaryDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public IContentTypeDAO getContentTypeDAO() {
@@ -766,8 +756,7 @@ public class SpecialPageService implements ISpecialPageService{
 			
 				userGallary = new UserGallary();
 				userGallary.setGallary(gallary);
-				userGallary.setRegistration(registrationDAO.get(gallaryVO
-						.getUserId()));
+				userGallary.setUserId(gallaryVO.getUserId());
 				userGallaryDAO.save(userGallary);
 			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

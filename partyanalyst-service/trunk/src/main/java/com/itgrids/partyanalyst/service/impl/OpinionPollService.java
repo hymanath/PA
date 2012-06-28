@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -18,7 +16,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackCommentDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackTaskDAO;
@@ -27,10 +24,7 @@ import com.itgrids.partyanalyst.dao.IOpinionPollQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
 import com.itgrids.partyanalyst.dao.IQuestionsRepositoryDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
@@ -38,7 +32,6 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserFeedbackVO;
-import com.itgrids.partyanalyst.model.CensusParameter;
 import com.itgrids.partyanalyst.model.FeedBack;
 import com.itgrids.partyanalyst.model.FeedBackComment;
 import com.itgrids.partyanalyst.model.FeedBackTask;
@@ -61,8 +54,6 @@ public class OpinionPollService implements IOpinionPollService {
 	private IOpinionPollQuestionOptionsDAO opinionPollQuestionOptionsDAO;
 	private IQuestionsRepositoryDAO questionsRepositoryDAO;
 	private IOpinionPollDAO opinionPollDAO;
-	private IRegistrationDAO registrationDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IFeedbackCommentDAO feedbackCommentDAO;
 	private IFeedbackTaskDAO feedbackTaskDAO;
 	private IFeedbackDAO feedbackDAO;
@@ -80,22 +71,6 @@ public class OpinionPollService implements IOpinionPollService {
 		this.userDAO = userDAO;
 	}
 
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-     
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-	
 	public IQuestionsRepositoryDAO getQuestionsRepositoryDAO() {
 		return questionsRepositoryDAO;
 	}
@@ -541,10 +516,6 @@ public class OpinionPollService implements IOpinionPollService {
 		         
 	        	feedbackVO.setUserName(feedback.getUser().getUserName());
 	        }
-	       /* else if(feedback.getAnanymousUser()!=null){
-	        	feedbackVO.setUserName(feedback.getAnanymousUser().getUsername());
-	        }*/
-	       
 	        userFeedbackVO.add(feedbackVO);
 		}
 	        return userFeedbackVO;

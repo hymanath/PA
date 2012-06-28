@@ -11,13 +11,9 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -26,12 +22,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IMyGroupDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.IUserGroupPrivilegesDAO;
 import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -42,14 +36,12 @@ import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
-import com.itgrids.partyanalyst.dto.UserGroupsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.StaticGroup;
 import com.itgrids.partyanalyst.model.StaticUserGroup;
@@ -65,7 +57,6 @@ public class UserGroupService implements IUserGroupService {
 	private IMyGroupDAO myGroupDAO;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
 	private IStaticUsersDAO staticUsersDAO;
-	private IRegistrationDAO registrationDAO;	
 	private IStaticUserGroupDAO staticUserGroupDAO;
 	private IStaticGroupDAO staticGroupDAO;
 	private TransactionTemplate transactionTemplate;
@@ -98,14 +89,6 @@ public class UserGroupService implements IUserGroupService {
 
 	public void setStaticGroupDAO(IStaticGroupDAO staticGroupDAO) {
 		this.staticGroupDAO = staticGroupDAO;
-	}
-	
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 	
 	public List<UserGroupMembersVO> addMembersToGroup() {
@@ -196,7 +179,6 @@ public class UserGroupService implements IUserGroupService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult(){
 			public void doInTransactionWithoutResult(TransactionStatus status)
 			{
-				//Registration reg = null;
 				User user = null;
 				PersonalUserGroup personalUserGroup=null;				
 				ResultStatus resultStatus;
@@ -285,8 +267,6 @@ public class UserGroupService implements IUserGroupService {
 		}
 		StaticGroup staticGroupObj = null;
 		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
-		//Registration reg = null;
-		//User user = null;
 		java.util.Date now = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -855,14 +835,14 @@ public class UserGroupService implements IUserGroupService {
 		/*
 		 * This method is used for retrieving all the group members in the group.This info is used when displaying the group members details list in a data table  
 		 */
-		public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId){
+		public List<UserGroupMembersVO> getAllMembersIntheGroup(Long userId, Long groupId){
 			if(log.isDebugEnabled())
 				log.debug(" Inside getAllMembersIntheGroup() Method ......");
 			List result = null;
 			List<UserGroupMembersVO> userGroupMembersVO = null;
 			try{
 				userGroupMembersVO = new ArrayList<UserGroupMembersVO>(0);
-				result =  staticUserGroupDAO.findMembersByUserId(registrationId,groupId);
+				result =  staticUserGroupDAO.findMembersByUserId(userId,groupId);
 				for(int i=0;i<result.size();i++){
 					UserGroupMembersVO userGroupMembers= new  UserGroupMembersVO();
 					Object[] parms = (Object[])result.get(i);

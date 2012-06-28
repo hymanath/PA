@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
@@ -20,16 +19,7 @@ public class MailsSendingService implements IMailsSendingService{
 	private static final Logger log = Logger.getLogger(MailsSendingService.class);
 	private IMailService mailService;
 	private IMailsTemplateService mailsTemplateService;
-	
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserDAO userDAO; 
-	
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
 	
 	public IMailsTemplateService getMailsTemplateService() {
 		return mailsTemplateService;
@@ -148,7 +138,6 @@ public class MailsSendingService implements IMailsSendingService{
 			
 			String subject="Change Your Password - PartyAnalyst";
 
-			//List<Object[]> usersLst = ananymousUserDAO.getPasswordNotUpdatdUsersList();
 			List<Object[]> usersLst = userDAO.getPasswordNotUpdatdUsersList();
 	
 			if(usersLst != null && usersLst.size()>0)

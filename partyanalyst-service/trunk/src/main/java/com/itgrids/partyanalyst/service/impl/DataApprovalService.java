@@ -10,14 +10,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -36,13 +33,11 @@ public class DataApprovalService implements IDataApprovalService {
 	private static final Logger log = Logger.getLogger("DataApprovalService.class");
 	private TransactionTemplate transactionTemplate = null;
 	private IProblemHistoryDAO problemHistoryDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserProblemApprovalDAO userProblemApprovalDAO; 
 	private IUserApprovalDetailsDAO userApprovalDetailsDAO; ; 
 	private ApprovalInfoVO approvalInfoVO;
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
-	private IRegistrationDAO registrationDAO;
 	private IUserDAO userDAO;
 	
     public IUserDAO getUserDAO() {
@@ -51,14 +46,6 @@ public class DataApprovalService implements IDataApprovalService {
 
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
-	}
-
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
 	}
 
 	public IApprovalDetailsDAO getApprovalDetailsDAO() {
@@ -94,14 +81,6 @@ public class DataApprovalService implements IDataApprovalService {
 		this.problemHistoryDAO = problemHistoryDAO;
 	}
 
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-    
 	public IUserProblemApprovalDAO getUserProblemApprovalDAO() {
 		return userProblemApprovalDAO;
 	}
@@ -214,7 +193,6 @@ public class DataApprovalService implements IDataApprovalService {
 						approvalDetails.setPostedDate(problemManagementService.getCurrentDateAndTime());
 						System.out.println("DAte is ::::::::::::::::::::::::::::"+problemManagementService.getCurrentDateAndTime());
 						approvalDetails.setIsAdminApproved(null);
-						//userApprovalDetails.setRegistration(registrationDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setUser(userDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setApprovalDetails(approvalDetails);
 						

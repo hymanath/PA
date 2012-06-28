@@ -7,14 +7,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -29,7 +27,6 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
@@ -46,13 +43,11 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class LoginService implements ILoginService{
 	
-	private IRegistrationDAO registrationDAO;
 	private IUserCountryAccessInfoDAO userCountryAccessInfoDAO;
 	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IGroupEntitlementDAO groupEntitlementDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
@@ -123,10 +118,6 @@ public class LoginService implements ILoginService{
 		this.tehsilDAO = tehsilDAO;
 	}
 
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
-		this.registrationDAO = registrationDAO;
-	}
-	
 	public IUserCountryAccessInfoDAO getUserCountryAccessInfoDAO() {
 		return userCountryAccessInfoDAO;
 	}
@@ -134,14 +125,6 @@ public class LoginService implements ILoginService{
 	public void setUserCountryAccessInfoDAO(
 			IUserCountryAccessInfoDAO userCountryAccessInfoDAO) {
 		this.userCountryAccessInfoDAO = userCountryAccessInfoDAO;
-	}
-
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public IUserStateAccessInfoDAO getUserStateAccessInfoDAO() {
@@ -177,10 +160,6 @@ public class LoginService implements ILoginService{
 
 	public void setGroupEntitlementDAO(IGroupEntitlementDAO groupEntitlementDAO) {
 		this.groupEntitlementDAO = groupEntitlementDAO;
-	}
-
-	public IRegistrationDAO getRegistrationDAO() {
-		return registrationDAO;
 	}
 
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
@@ -340,7 +319,8 @@ public class LoginService implements ILoginService{
 	public RegistrationVO checkForValidNormalUser(String userName,
 			String password) {
 		RegistrationVO regVO = new RegistrationVO();
-		List<AnanymousUser> anamymousUser = ananymousUserDAO.checkAnonymousUserLogin(userName, password);
+		/*List<AnanymousUser> anamymousUser = new ArrayList<AnanymousUser>(0);
+		//List<AnanymousUser> anamymousUser = ananymousUserDAO.checkAnonymousUserLogin(userName, password);
 		
 		if(anamymousUser == null || anamymousUser.size() != 1)
 			return regVO;
@@ -358,7 +338,7 @@ public class LoginService implements ILoginService{
 		regVO.setUserType(IConstants.FREE_USER);
 		regVO.setUserStatus(IConstants.FREE_USER);
 		regVO.setUserProfilePic(user.getProfileImg());
-		regVO.setEmail(user.getEmail());
+		regVO.setEmail(user.getEmail());*/
 		
 		return regVO;
 	}
@@ -538,17 +518,4 @@ public class LoginService implements ILoginService{
 		}
 	}
 	
-	/*public String changePasswordOfANewUser(String crntpassword,String newpassword,String userName)
-	{   
-		
-		List<Object> userId = userDAO.getUserIdByUserName(userName);
-		Long registrationId = (Long) userId.get(0);
-		
-		List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
-		if(chkpwd.size() == 0)
-			return IConstants.NoPassword;
-		
-		Integer chkPwdVals = userDAO.changeUserPassword(newpassword, registrationId, IConstants.TRUE, dateUtilService.getCurrentDateAndTime());
-			return IConstants.YesPassword;
-	}*/
 }

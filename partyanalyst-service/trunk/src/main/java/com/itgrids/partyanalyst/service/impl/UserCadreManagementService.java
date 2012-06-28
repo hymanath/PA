@@ -76,7 +76,6 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		userCadreInfo.setUserAccessType(user.getAccessType());
 		userCadreInfo.setUserAccessValue(user.getAccessValue());
 		
-		//Long userID = user.getRegistrationID();
 		try{
 							
 			//Cadres By Level

@@ -1,18 +1,15 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IRoleDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -23,7 +20,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.User;
@@ -36,12 +32,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationService implements IRegistrationService{
 	
-	private IRegistrationDAO registrationDAO;
 	private IPartyDAO partyDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IStateDAO stateDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IAnanymousUserService ananymousUserService;
 	private IDateService dateService;
 	private IRoleDAO roleDAO;
@@ -86,14 +80,6 @@ public class RegistrationService implements IRegistrationService{
 		this.ananymousUserService = ananymousUserService;
 	}
 
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
-	}
-
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -118,10 +104,6 @@ public class RegistrationService implements IRegistrationService{
 		this.districtDAO = districtDAO;
 	}
 
-	public void setRegistrationDAO(IRegistrationDAO registrationDAO){
-		this.registrationDAO = registrationDAO;
-	}
-	
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
@@ -253,7 +235,7 @@ public class RegistrationService implements IRegistrationService{
 	public boolean checkUserName(String userName){
 		boolean finalStatus = false;
 		List<Registration> regCheck = new ArrayList<Registration>();
-		regCheck = registrationDAO.findByUserName(userName);
+		//regCheck = registrationDAO.findByUserName(userName);
 		if(regCheck.size()>0){
 			finalStatus = true;
 			/*ResultStatus resultStatus = ananymousUserService.checkForUserNameAvalilability(userName);
@@ -391,9 +373,10 @@ public class RegistrationService implements IRegistrationService{
 	
 	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
 		RegistrationVO registrationVO = new RegistrationVO();
-		//List<Registration> users = registrationDAO.findByUserRegistrationId(registrationId);
-		List<User> users = userDAO.findByUserRegistrationId(registrationId);
-		User registration = users.get(0);
+		/*List<Registration> users = registrationDAO.findByUserRegistrationId(registrationId);
+		
+		Registration registration = users.get(0);
+		
 		registrationVO.setRegistrationID(registrationId);
 		registrationVO.setUserName(registration.getUserName());
 		registrationVO.setPassword(registration.getPassword());
@@ -415,7 +398,7 @@ public class RegistrationService implements IRegistrationService{
 			registrationVO.setParty(registration.getParty().getPartyId());
 			registrationVO.setPartyShortName(registration.getParty().getShortName());
 		}
-		
+		*/
 		return registrationVO;
 	}
 	public ResultStatus checkForUserNameAvalilability(String userName){
@@ -423,8 +406,8 @@ public class RegistrationService implements IRegistrationService{
 		List<Registration> detailsList = null;
 		List<Registration> detailsListForEmail = null;
 		try{
-			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			//detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
+			//detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
 			if(detailsList!=null && detailsList.size()!=0 && detailsListForEmail!=null && detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
@@ -444,8 +427,8 @@ public class RegistrationService implements IRegistrationService{
 		List<Registration> detailsList = null;
 		List<Registration> detailsListForEmail = null;
 		try{
-			detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
-			detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
+			//detailsList = registrationDAO.checkForUserNameAvailabiity(userName);
+			//detailsListForEmail=registrationDAO.checkForUserNameAvailabiityForEmail(userName);
 			if(detailsList.size()!=0 || detailsListForEmail.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
@@ -464,7 +447,7 @@ public class RegistrationService implements IRegistrationService{
 		Integer detailsList = null;
 		RegistrationVO registrationVO=new RegistrationVO();
 		try{
-			detailsList = (Integer) registrationDAO.saveUserNameTOEmail(userId,userName);
+			//detailsList = (Integer) registrationDAO.saveUserNameTOEmail(userId,userName);
 		
 			
 		}catch(Exception e){
