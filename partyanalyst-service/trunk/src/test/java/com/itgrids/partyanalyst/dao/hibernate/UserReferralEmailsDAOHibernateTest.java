@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserReferralEmailsDAOHibernateTest extends BaseDaoTestCase{
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
 		return userReferralEmailsDAO;
 	}
@@ -18,13 +16,6 @@ public class UserReferralEmailsDAOHibernateTest extends BaseDaoTestCase{
 	public void setUserReferralEmailsDAO(
 			IUserReferralEmailsDAO userReferralEmailsDAO) {
 		this.userReferralEmailsDAO = userReferralEmailsDAO;
-	}
-	public IAnanymousUserDAO getAnanymousUserDAO() {
-		return ananymousUserDAO;
-	}
-
-	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
-		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public void test()

@@ -492,7 +492,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 		
-		 //query+= "model.problemLocation.problemAndProblemSource.problemExternalSource.name like '%"+name+"%' or model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.firstName like '%"+name+"%' ) and model.problemLocation.problemAndProblemSource.user.registrationId in(1,285)";
+		 //query+= "model.problemLocation.problemAndProblemSource.problemExternalSource.name like '%"+name+"%' or model.problemHistoryId in (from CadreProblemDetails model1 where model1.cadre.firstName like '%"+name+"%' ) and model.problemLocation.problemAndProblemSource.user.userId in(1,285)";
 		//query +="and model.problemLocation.problemAndProblemSource.user.mobile ="+mobileNum+"";
 		
 		//query+="model.dateUpdated >='"+startDate+"' and model.dateUpdated <='"+endDate+"'";

@@ -26,7 +26,7 @@ public class SmsTrackDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetLatestRenewalDateForUser(){
 		List<SmsTrack> result = smsTrackDAO.findLatestRenewalDate(7l);
 		for(SmsTrack latestDate : result){
-			System.out.println(latestDate.getRenewalDate()+"\t\t"+latestDate.getRegistration().getRegistrationId());
+			System.out.println(latestDate.getRenewalDate()+"\t\t"+latestDate.getUser().getUserId());
 		}
 	}*/
 	
