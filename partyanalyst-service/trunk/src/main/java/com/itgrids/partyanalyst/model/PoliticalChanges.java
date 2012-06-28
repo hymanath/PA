@@ -35,7 +35,6 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	private Long politicalChangesId;
 	private User user;
 	private Party party;
-	private Registration registration;
 	private ProblemExternalSource externalSource;
 	private InformationSource politicalChangesInformationSource;
 	private String title;
@@ -60,13 +59,12 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 
 	/** full constructor */
 	public PoliticalChanges(Long politicalChangesId,String sourceOfInformation,
-			                     Party party,Registration registration,ProblemExternalSource externalSource,
+			                     Party party,ProblemExternalSource externalSource,
 			                     Date identifiedDate,Date occuredDate,
 			                     Date updatedDate,String description,InformationSource politicalChangesInformationSource
 								 ,String title,String isDelete,String effectedRange,Long effectedLocation) {
 		this.politicalChangesId = politicalChangesId;
 		this.party = party;
-		this.registration = registration;
 		this.externalSource = externalSource;
 		this.politicalChangesInformationSource = politicalChangesInformationSource;		
 		this.title = title;
@@ -104,17 +102,6 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	public void setParty(Party party) {
 		this.party = party;
 	}
-	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "registration_id")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-	
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
-	}	 
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "external_source_id")
