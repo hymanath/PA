@@ -26,7 +26,7 @@ public class CadreParticipatedTrainingCampsDAO extends GenericDaoHibernate<Cadre
 	@SuppressWarnings("unchecked")
 	public List getCadreIdsByCadreCampsAndUser(Long userId, Long campId) {
 		Object[] params = {userId,campId};
-		return getHibernateTemplate().find("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.registration.userId = ?"+
+		return getHibernateTemplate().find("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.user.userId = ?"+
 				" and model.partyTrainingCamps.partyTrainingCampsId = ?",params);
 	}
 
@@ -42,7 +42,7 @@ public class CadreParticipatedTrainingCampsDAO extends GenericDaoHibernate<Cadre
 	@SuppressWarnings("unchecked")
 	public List getCadreIdsByCadreCampsListAndUser(Long userId,
 			List<Long> campIds) {
-		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.registration.userId = ?"+
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.user.userId = ?"+
 				" and model.partyTrainingCamps.partyTrainingCampsId in (:campIds)");
 		queryObject.setParameter(0, userId);
 		queryObject.setParameterList("campIds", campIds);
