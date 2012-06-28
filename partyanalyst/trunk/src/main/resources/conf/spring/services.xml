@@ -26,7 +26,7 @@
 		<property name="groupEntitlementRelationDAO" ref="groupEntitlementRelationDAO" />	
 		<property name="userGroupEntitlementDAO" ref="userGroupEntitlementDAO" />		
 		<property name="userGroupRelationDAO" ref="userGroupRelationDAO" />			
-		<property name="userDAO" ref="userDAO" />	
+		<property name="userDAO" ref="userDAO" />
 		<property name="userGroupsDAO" ref="userGroupsDAO" />			
 	</bean>  
 	
@@ -49,7 +49,6 @@
 	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
 		<property name="mailsSendingService" ref="mailsSendingService" />
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -69,7 +68,6 @@
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="userReferralEmailsDAO" ref="userReferralEmailsDAO"/>
-		<property name="registrationDAO" ref="registrationDAO"/>
 		<property name="roleDAO" ref="roleDAO"/>
 		<property name="userRolesDAO" ref="userRolesDAO"/>
 		<property name="userDAO" ref="userDAO"></property>
@@ -80,13 +78,11 @@
 		<property name="opinionPollResultDAO" ref="opinionPollResultDAO" /> 
 		<property name="opinionPollQuestionOptionsDAO" ref="opinionPollQuestionOptionsDAO" /> 
 		<property name="transactionTemplate" ref="transactionTemplate" />
-		<!-- <property name="registrationDAO" ref="registrationDAO" /> -->
 		<property name="opinionPollDAO" ref="opinionPollDAO" /> 
 		<property name="questionsRepositoryDAO" ref="questionsRepositoryDAO" /> 
 		<property name="feedbackCommentDAO" ref="feedbackCommentDAO" /> 
 		<property name="feedbackTaskDAO" ref="feedbackTaskDAO" /> 
 		<property name="feedbackDAO" ref="feedbackDAO" /> 
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="problemManagementService" ref="problemManagementService" /> 
 		<property name="userDAO" ref="userDAO"></property>
 	</bean>
@@ -144,10 +140,11 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="informationSourceDAO" ref="informationSourceDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
 		<property name="partyStrengthService" ref="partyStrengthService" />
 		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+		<property name="userDAO" ref="userDAO" />
+		
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -172,7 +169,6 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="occupationDAO" ref="occupationDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
@@ -193,12 +189,10 @@
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
 		<property name="groupEntitlementDAO" ref="groupEntitlementDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
 		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
 		<property name="countryDAO" ref="countryDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
@@ -212,10 +206,8 @@
 	</bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="stateDAO" ref="stateDAO" />		
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="ananymousUserService" ref="ananymousUserService" />	
@@ -307,7 +299,6 @@
 		<property name="countryDAO" ref="countryDAO" />
 		<property name="contentTypeDAO" ref="contentTypeDAO" />
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="fileTypeDAO" ref="fileTypeDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
@@ -423,7 +414,6 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
@@ -535,7 +525,6 @@
 	<bean name="problemManagementService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementService" >		
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
 		<property name="problemSourceScopeDAO" ref="problemSourceScopeDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
@@ -548,7 +537,6 @@
 		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" /> 
 		<property name="problemImpactLevelDAO" ref="problemImpactLevelDAO" />
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -620,13 +608,11 @@
     	<property name="smsTrackDAO" ref="smsTrackDAO"/>
     	<property name="smsModuleDAO" ref="smsModuleDAO"/>
     	<property name="smsHistoryDAO" ref="smsHistoryDAO"/>
-    	<property name="registrationDAO" ref="registrationDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
     	<property name="userDAO" ref="userDAO" />		
 	</bean>
 	
     <bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" >
-    	<property name="registrationDAO" ref="registrationDAO"/>
     	<property name="userEventsDAO" ref="userEventsDAO" />
     	<property name="userEventActionPlanDAO" ref="userEventActionPlanDAO"/>
     	<property name="partyDAO" ref="partyDAO"/>
@@ -680,7 +666,6 @@
 	<bean name="problemManagementReportService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementReportService" >		
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
 		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO" />	
-		<property name="registrationDAO" ref="registrationDAO" />	
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />	
 		<property name="hamletDAO" ref="hamletDAO" />	
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -710,7 +695,7 @@
 		<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
 		<property name="commentDataDAO" ref="commentDataDAO" />
 		<property name="feedbackDAO" ref="feedbackDAO" />
-		<property name="userDAO" ref="userDAO"/>
+		<property name="userDAO" ref="userDAO" />
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
@@ -719,7 +704,6 @@
 		<property name="staticUserGroupDAO" ref="staticUserGroupDAO" />
 		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
 		<property name="staticUsersDAO" ref="staticUsersDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="userDAO" ref="userDAO" />
@@ -773,8 +757,6 @@
 	    <property name="commentCategoryConstituencyDAO" ref="commentCategoryConstituencyDAO" />
 	    <property name="commentCategoryPartyDAO" ref="commentCategoryPartyDAO" />
 	    <property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />
-	    <property name="ananymousUserDAO" ref="ananymousUserDAO" />
-	    <property name="registrationDAO" ref="registrationDAO" />
 	    <property name="commentDataDAO" ref="commentDataDAO" />
 	    <property name="mailsSendingService" ref="mailsSendingService" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
@@ -810,7 +792,6 @@
 		<property name="partyDAO" ref="partyDAO"/>
 		<property name="politicalChangesDAO" ref="politicalChangesDAO"/>
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO"/>
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
@@ -886,12 +867,10 @@
 	<bean id="dataApprovalService" class="com.itgrids.partyanalyst.service.impl.DataApprovalService" >
     	<property name="transactionTemplate" ref="transactionTemplate" />
     	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
-    	<property name="ananymousUserDAO" ref="ananymousUserDAO" />
     	<property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
     	<property name="problemManagementService" ref="problemManagementService" /> 
     	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
     	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
-    	<property name="registrationDAO" ref="registrationDAO"/>
     	<property name="userDAO" ref="userDAO" />
     	
 	</bean>
@@ -928,13 +907,13 @@
 	    <property name="cadreLevelDAO" ref="cadreLevelDAO" />
 	    <property name="occupationDAO" ref="occupationDAO" />
 	    <property name="userAddressDAO" ref="userAddressDAO" />
-	    <property name="registrationDAO" ref="registrationDAO" />
 	    <property name="userRelationDAO" ref="userRelationDAO" />
 	    <property name="socialCategoryDAO" ref="socialCategoryDAO" />
 	    <property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />
 	    <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
 	    <property name="cadreRoleDAO" ref="cadreRoleDAO" />	    
-	    <property name="cadreRoleRelationDAO" ref="cadreRoleRelationDAO" />	 
+	    <property name="cadreRoleRelationDAO" ref="cadreRoleRelationDAO" />	
+	    <property name="userDAO" ref="userDAO" /> 
 	</bean>
 	
 	<bean name="electionAnalyzeService" class="com.itgrids.partyanalyst.service.impl.ElectionAnalyzeService" >
@@ -979,7 +958,6 @@
 	
 	<bean name="callCenterService" class="com.itgrids.partyanalyst.service.impl.CallCenterService">
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 	</bean>
 	
 	<bean name="callTrackingService" class="com.itgrids.partyanalyst.service.impl.CallTrackingService">
@@ -994,7 +972,6 @@
 		<property name="partyGalleryDAO" ref="partyGalleryDAO" /> 
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="contentTypeDAO" ref="contentTypeDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -1024,7 +1001,6 @@
 		<property name="contentTypeDAO" ref="contentTypeDAO" />
 		<property name="gallaryDAO" ref="gallaryDAO" />
 		<property name="userGallaryDAO" ref="userGallaryDAO" />
-		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="sourceDAO" ref="sourceDAO" />
 		<property name="sourceLanguageDAO" ref="sourceLanguageDAO" />
 		<property name="specialPageGalleryDAO" ref="specialPageGalleryDAO"/>
@@ -1101,7 +1077,6 @@
 	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
 		<property name="mailService" ref="mailService"/>
 		<property name="mailsTemplateService" ref="mailsTemplateService"/>
-		<property name="ananymousUserDAO" ref="ananymousUserDAO"/>
 		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
@@ -1148,7 +1123,6 @@
 	</bean>
 	
 	<bean name="sendUpdatesService" class="com.itgrids.partyanalyst.service.impl.SendUpdatesService">
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="userDAO" ref="userDAO"/>
 		<property name="userRolesDAO" ref="userRolesDAO"/>
