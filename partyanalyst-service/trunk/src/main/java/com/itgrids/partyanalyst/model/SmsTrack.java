@@ -34,7 +34,6 @@ public class SmsTrack extends BaseModel implements Serializable {
 	private Long renewalSmsCount;
 	private String renewalDate;
 	private String description;
-	private Registration registration;
 	private String smsUsername;
 	private String smsPassword;
 	private String senderId;
@@ -53,9 +52,8 @@ public class SmsTrack extends BaseModel implements Serializable {
 	}
 
 	/** full constructor */
-	public SmsTrack(Long smsTrackId,Registration registration,Long renewalSmsCount,String renewalDate,String description) {
+	public SmsTrack(Long smsTrackId,Long renewalSmsCount,String renewalDate,String description) {
 		this.smsTrackId = smsTrackId;
-		this.registration = registration;
 		this.renewalSmsCount = renewalSmsCount;
 		this.renewalDate = renewalDate;
 		this.description = description;
@@ -72,17 +70,6 @@ public class SmsTrack extends BaseModel implements Serializable {
 		this.smsTrackId = smsTrackId;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "registration_id")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Registration registration) {
-		this.registration = registration;
-	}
-	
 	@Column(name = "renewal_sms_count", length = 250)
 	public Long getRenewalSmsCount() {
 		return renewalSmsCount;
