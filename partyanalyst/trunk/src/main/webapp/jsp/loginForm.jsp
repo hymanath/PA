@@ -12,7 +12,9 @@
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 
-
+<script type="text/javascript">
+var pwdChanged = '${pwdChanged}';
+</script>
 
 
 <%
@@ -396,6 +398,10 @@ if(request.getParameter("showMessage")!=null){
 							<c:remove var="USER_REG_SUCCESS" scope="session" />
 							
 							<table class="loginDetailTable" width="100%">
+							<c:if test="${pwdChanged != null || pwdChanged == 'true'}">
+							<span style="color:green">Password changed successfully.Please Login here.</span>
+							</c:if>
+							
 								<tr>
 									<td width="10"><img src="images/icons/indexPage/listIcon.png"></img></td>
 									<th style="font-size:12px;color:#AB6413;text-decoration:underline;">Sign in with your Party Analyst account</th>
