@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -33,7 +32,6 @@ public class AnanymousUserServiceServiceTest {
 	private IConstituencyDAO constituencyDAO;
 	private ICustomMessageDAO customMessageDAO;
 	private IMessageTypeDAO messageTypeDAO;
-	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
@@ -45,7 +43,6 @@ public class AnanymousUserServiceServiceTest {
 		constituencyDAO = EasyMock.createMock(IConstituencyDAO.class);
 		customMessageDAO = EasyMock.createMock(ICustomMessageDAO.class);
 		messageTypeDAO = EasyMock.createMock(IMessageTypeDAO.class);
-		ananymousUserDAO = EasyMock.createMock(IAnanymousUserDAO.class);
 		userConnectedtoDAO = EasyMock.createMock(IUserConnectedtoDAO.class);
 		delimitationConstituencyAssemblyDetailsDAO = EasyMock.createMock(IDelimitationConstituencyAssemblyDetailsDAO.class);
 	}

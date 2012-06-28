@@ -30,7 +30,7 @@ import com.itgrids.partyanalyst.util.DummyRegistrationDAOStuff;
 		public void setUp() throws Exception {
 			registrationDAO = EasyMock.createMock(IRegistrationDAO.class);
 			loginService = new LoginService();
-			loginService.setRegistrationDAO(registrationDAO);
+			//loginService.setRegistrationDAO(registrationDAO);
 		}
 		
 		@Test
