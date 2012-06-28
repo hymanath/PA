@@ -519,14 +519,17 @@ public class LoginService implements ILoginService{
 			if(list != null && list.size() > 0)
 				user = list.get(0);
 			
-			if(user != null && user.getUserId() > 0)
+			if(user != null && user.getUserId() > 0 && user.getPassword().equals(crntpassword))
 			{
 				user.setPassword(newpassword);
 				user.setIsPwdChanged(IConstants.TRUE);
 				user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 				userDAO.save(user);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			}
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			else
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			
 			return resultStatus;
 		}catch (Exception e) {
 			log.error("Exception Occured During change password of a new User - "+e);
