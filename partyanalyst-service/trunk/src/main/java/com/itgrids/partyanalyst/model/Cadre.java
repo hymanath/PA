@@ -38,7 +38,6 @@ public class Cadre extends BaseModel{
 	private static final long serialVersionUID = 1L;
 	
 	 private Long cadreId;
-	 private Registration registration;
 	 private User user;
 	 private CadreLevel cadreLevel;
 	 private Long cadreLevelValue;
@@ -88,18 +87,6 @@ public class Cadre extends BaseModel{
 	 public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
 	 }
-	
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "registration_id")
-	 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	 public Registration getRegistration() {
-		return registration;
-	 }
-	
-	 public void setRegistration(Registration registration) {
-		this.registration = registration;
-	 }
-	
 	
 	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	 @JoinColumn(name = "cadre_level_id")
