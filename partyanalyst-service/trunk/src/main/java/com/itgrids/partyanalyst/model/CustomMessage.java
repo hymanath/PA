@@ -34,8 +34,6 @@ public class CustomMessage extends BaseModel implements Serializable {
 	private String subject;
 	private String status;
 	private Date sentDate;
-	private AnanymousUser senderId;
-	private AnanymousUser recepientId;
     private MessageType messageType;
     private User sender;
     private User recepient;
@@ -50,12 +48,12 @@ public class CustomMessage extends BaseModel implements Serializable {
 	}
 	
 	//Full Constructor
-	public CustomMessage(String subject,String status,Date sentDate,AnanymousUser senderId,AnanymousUser recepientId){
+	public CustomMessage(String subject,String status,Date sentDate,User sender,User recepient){
 		this.subject = subject;
 		this.status = status;
 		this.sentDate = sentDate;
-		this.senderId = senderId;
-		this.recepientId = recepientId;
+		this.sender = sender;
+		this.recepient= recepient;
 	}
 
 	@Id
@@ -96,28 +94,6 @@ public class CustomMessage extends BaseModel implements Serializable {
 		this.status = status;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_sender_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public AnanymousUser getSenderId() {
-		return senderId;
-	}
-
-	public void setSenderId(AnanymousUser senderId) {
-		this.senderId = senderId;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="free_user_recepient_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public AnanymousUser getRecepientId() {
-		return recepientId;
-	}
-
-	public void setRecepientId(AnanymousUser recepientId) {
-		this.recepientId = recepientId;
-	}
-
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="message_type_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
