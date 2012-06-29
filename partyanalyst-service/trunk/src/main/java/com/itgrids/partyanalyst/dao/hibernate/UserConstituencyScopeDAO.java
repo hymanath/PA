@@ -54,7 +54,7 @@ public class UserConstituencyScopeDAO extends GenericDaoHibernate<UserConstituen
 		if(fromDate!= null)
 			query.append("  and date(model.userAnnouncement.announcement.fromDate) >= :fromDate");
 		if(toDate!= null)
-			query.append("  and date(model.userAnnouncement.announcement.toDate) < :toDate");	
+			query.append("  and date(model.userAnnouncement.announcement.toDate) <= :toDate");	
 		if(constituencyId!= 0 && constituencyId!= null)
 			query.append("  and model.constituency.constituencyId = :constituencyId");	
 		
