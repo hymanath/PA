@@ -517,5 +517,16 @@ public class LoginService implements ILoginService{
 			return resultStatus;
 		}
 	}
-	
+		
+	public String checkUserCurrentPassword(String crntpassword,String userName)
+	{
+		List<Object> userId = userDAO.getUserIdByUserName(userName);
+		Long registrationId = (Long) userId.get(0);
+		List chkpwd = userDAO.checkUserPassword(crntpassword,registrationId);
+		if(chkpwd.size() == 0)
+			return IConstants.NoPassword;
+		else 
+			return IConstants.YesPassword;
+		
+	}
 }
