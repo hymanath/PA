@@ -46,6 +46,7 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 	 private String is_delete;
 
 	 private Set<OpinionPollQuestions> opinionPollQuestions = new HashSet<OpinionPollQuestions>(0);
+	 private Set<OpinionPollComments> opinionPollComments = new HashSet<OpinionPollComments>(0);
 
 	 /** default constructor */  
 	
@@ -142,8 +143,15 @@ public class OpinionPoll extends BaseModel implements java.io.Serializable  {
 
 	public void setIs_delete(String is_delete) {
 		this.is_delete = is_delete;
+	}	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "comment")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<OpinionPollComments> getOpinionPollComments() {
+		return opinionPollComments;
 	}
-	
-	
-	
+
+	public void setOpinionPollComments(Set<OpinionPollComments> opinionPollComments) {
+		this.opinionPollComments = opinionPollComments;
+	}
 	}
