@@ -263,6 +263,9 @@
 				<value>com.itgrids.partyanalyst.model.Role</value>
 				<value>com.itgrids.partyanalyst.model.UserRoles</value>
 				<value>com.itgrids.partyanalyst.model.User</value>
+				<value>com.itgrids.partyanalyst.model.Comment</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollComments</value>
+				<value>com.itgrids.partyanalyst.model.AbusedComments</value>
 			</list>
 		</property>
 	</bean>
@@ -1407,6 +1410,18 @@
 	</bean>	
 	
 	<bean id="roleDAO" class="com.itgrids.partyanalyst.dao.hibernate.RoleDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="commentDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollCommentsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="abusedCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AbusedCommentsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
