@@ -3409,5 +3409,11 @@
 	   		<result type="redirect" name="loginPage">loginInputAction.action?pwdChanged=true</result>
 	   		<result type="redirect" name="changePassword">changePasswordAction.action</result>
 	   	</action>
+	   	
+	   	<action name="checkCurrentPasswordAction" class="changePasswordAction" method="AjaxHandler">
+		    <result type="json" name="success">
+			<param name="root">pwdVal</param>				
+		</result>	
+		</action>
 	</package>
 </struts>      
