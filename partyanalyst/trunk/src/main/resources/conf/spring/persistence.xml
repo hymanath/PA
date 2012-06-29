@@ -247,6 +247,9 @@
 				<value>com.itgrids.partyanalyst.model.Role</value>
 				<value>com.itgrids.partyanalyst.model.UserRoles</value>
 				<value>com.itgrids.partyanalyst.model.User</value>
+				<value>com.itgrids.partyanalyst.model.Comment</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollComments</value>
+				<value>com.itgrids.partyanalyst.model.AbusedComments</value>
 			</list>
 		</property>
 	</bean>
