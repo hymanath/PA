@@ -219,7 +219,7 @@ function callAjax(jsObj,url){
 	              }
 	    };
 
-	YAHOO.util.Connect.asyncRequest('POST', url, callback);
+	YAHOO.util.Connect.asyncRequest('Get', url, callback);
 }
 
 		function showResults(results)
@@ -317,6 +317,7 @@ function validatefields()
 
 function getUserPassword()
 {
+
 	var eFlag = true;
 	var currentPWDEle = document.getElementById("currentPWDId").value;
 	var resultDIVEle = document.getElementById("password_window_errorMsg");
@@ -359,9 +360,13 @@ if(results==0)
 
 	var result = document.getElementById("pwdErrorMsg");
 	var str='';
-	str+='<div style="color:red"> Invalid Current Password</div>';	
+	str+='<font style="color:red"> Invalid Current Password</font>';	
   result.innerHTML = str;
 }
+else if(results==121)
+	{
+	document.getElementById("pwdErrorMsg").innerHTML = '';
+	}
 }
 
 </script>
