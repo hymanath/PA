@@ -90,6 +90,8 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserMappingsHistory> userMappings = new HashSet<UserMappingsHistory>(0);
 	private Set<UserSubuserRelation> userSubUsers = new HashSet<UserSubuserRelation>(0);
 	private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
+	private Set<OpinionPollComments> opinionPollComments = new HashSet<OpinionPollComments>(0);
+	private Set<AbusedComments> abusedComments = new HashSet<AbusedComments>(0);
 	
 	public User(){}
 	 
@@ -708,6 +710,27 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUserReferralEmails(Set<UserReferralEmails> userReferralEmails) {
 		this.userReferralEmails = userReferralEmails;
+	}	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<OpinionPollComments> getOpinionPollComments() {
+		return opinionPollComments;
 	}
+
+	public void setOpinionPollComments(Set<OpinionPollComments> opinionPollComments) {
+		this.opinionPollComments = opinionPollComments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<AbusedComments> getAbusedComments() {
+		return abusedComments;
+	}
+
+	public void setAbusedComments(Set<AbusedComments> abusedComments) {
+		this.abusedComments = abusedComments;
+	}
+	
 
 }
