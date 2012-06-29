@@ -821,4 +821,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="commentDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollCommentsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="abusedCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AbusedCommentsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
