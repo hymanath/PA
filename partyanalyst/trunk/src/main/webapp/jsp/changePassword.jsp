@@ -28,13 +28,14 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 <title>Change Password</title>
 </head>
 <body>
-<div style="margin-top:10px;margin-left:150px;background:#fff;width:700px;padding:10px;margin-bottom: 20px;">
+<div style="margin-top: 10px; margin-left: 150px; padding: 10px; margin-bottom: 20px; width: 707px;">
+<fieldset style="background:#FFF; margin-bottom: 3px; padding-bottom: 44px; border-radius: 6px 6px 6px 6px; padding-left: 16px; padding-top: 17px;">
 <div id="changeNewUserPassword">
 		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
-		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.USER.email}" /></b></p>
+		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.userName}" /></b></p>
 		<p>Please verify email to change your password.</p>
 
-		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;">
+		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;" style="padding-top: 11px; padding-left: 7px;">
 		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 363px;">Change Password</div>
 		 
 		<div id="password_window_body_div" style="background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); ">
@@ -51,20 +52,22 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 		<table style="margin: 7px;">
 		<tbody><tr><td colspan="2"><img src="images/icons/infoicon.png">
 		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table>
+		<div id="pwdErrorMsg" style="color: red; margin-left: 125px; margin-top: -8px; margin-bottom: 6px;"></div>
 		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
+		
 		<table>
-		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle"></td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" onBlur="getUserPassword()"></td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
 	    </td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPWDId" cssclass="textFieldStyle">
         </td></tr></tbody></table>
-		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: #D6E5E9; padding: 5px 5px 5px 0px; width: 356px;">
+		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: rgb(214, 229, 233); padding: 2px 5px 1px 0px; width: 356px; margin: 16px 0px 3px;">
 			<table width="97%">
 			<tbody><tr>
 			
 			<td align="center" width="99px">
-				<input type="submit" value="Change Password" id="changeButton">
-				<a href="homePageAction.action"><input type="button" value="No" id="cancelButton" style="width:52px; text-align:center;"></input></a>
+				<input type="submit" value="Change Password" id="changeButton" style="background: none repeat scroll 0% 0% rgb(120, 152, 188); color: rgb(255, 255, 255); padding: 0px; margin-left: 0px; margin-right: 30px; margin-top: 0px;">
+				<a href="homePageAction.action"><input type="button" value="Skip" id="cancelButton" style="width: 52px; text-align: center; background: none repeat scroll 0% 0% rgb(120, 152, 188); color: rgb(255, 255, 255); padding: 0px; border-top-width: 2px;"></input></a>
 			</td>
 			</tr>
 			</tbody></table>	
@@ -93,6 +96,7 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 			</tbody></table>	
 		</div>-->
 		</div>
+		</fieldset>
 		</div>
 		
 		
@@ -200,6 +204,10 @@ function callAjax(jsObj,url){
 					{
 						showResults(results);
 					}
+					else if(jsObj.task == "checkCurrentPassword")
+					{
+						getCurrentPassword(results);
+					}
 
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -211,7 +219,7 @@ function callAjax(jsObj,url){
 	              }
 	    };
 
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 
 		function showResults(results)
@@ -300,10 +308,60 @@ function validatefields()
 		eFlag = false;
 	}
 	str += '</font>';
+	
 	if(!eFlag)
 		resultDIVEle.innerHTML = str;
 	
 	return eFlag;
+}
+
+function getUserPassword()
+{
+	var eFlag = true;
+	var currentPWDEle = document.getElementById("currentPWDId").value;
+	var resultDIVEle = document.getElementById("password_window_errorMsg");
+	resultDIVEle.innerHTML = "";
+	var str = '<font style="color:red;">';
+	
+	if(currentPWDEle.length == 0)
+	{
+		str += '<%=currentPWD%><br>';
+		eFlag = false;
+	}
+	else if(currentPWDEle.length > 0 && currentPWDEle.length < 6)
+	{
+		str += '<%=currentPWDLength%><br>';
+		eFlag = false;
+	}
+	str += '</font>';
+	if(!eFlag)
+	{
+		resultDIVEle.innerHTML = str;
+		return;
+	}
+	
+	
+	var jsObj={
+		  time : new Date().getTime(),
+          crntPassword:currentPWDEle,
+    	  task:"checkCurrentPassword"	 
+	};
+        var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "checkCurrentPasswordAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+
+function getCurrentPassword(results)
+{
+if(results==0)
+  {
+
+	var result = document.getElementById("pwdErrorMsg");
+	var str='';
+	str+='<div style="color:red"> Invalid Current Password</div>';	
+  result.innerHTML = str;
+}
 }
 
 </script>
