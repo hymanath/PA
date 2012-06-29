@@ -21,4 +21,6 @@ public interface ILoginService {
 	public ResultStatus changePasswordOfANewUser(String crntpassword,String newpassword,String userName);
 	
 	//public String changePasswordOfANewUser(String crntpassword,String newpassword,String userName);
+	
+	public String checkUserCurrentPassword(String crntpassword,String userName);
 }
