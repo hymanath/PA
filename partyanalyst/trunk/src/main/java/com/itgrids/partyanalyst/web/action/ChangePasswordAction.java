@@ -169,6 +169,12 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 			resuStatus = loginService.changePasswordOfANewUser(jObj.getString("crntPassword"),jObj.getString("newPassword"),userName);
 			
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("checkCurrentPassword"))
+		{
+			session = request.getSession();
+			String userName = (String) session.getAttribute("userName");
+			pwdVal=loginService.checkUserCurrentPassword(jObj.getString("crntPassword"),userName);
+		}
 		return Action.SUCCESS;
 	}
 	
