@@ -62,7 +62,7 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal </value>
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
-				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemBackup</value>
 				<value>com.itgrids.partyanalyst.model.ProblemHistory</value>
 				<value>com.itgrids.partyanalyst.model.ProblemSourceScope</value>
 				<value>com.itgrids.partyanalyst.model.ProblemStatus</value>
@@ -250,6 +250,17 @@
 				<value>com.itgrids.partyanalyst.model.Comment</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollComments</value>
 				<value>com.itgrids.partyanalyst.model.AbusedComments</value>
+				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.Visibility</value>
+				<value>com.itgrids.partyanalyst.model.CadreProblems</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFiles</value>
+				<value>com.itgrids.partyanalyst.model.ProblemComments</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLikes</value>
+				<value>com.itgrids.partyanalyst.model.UserProblem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemProgress</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAssignedDepartment</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAssignedCadre</value>
+				<value>com.itgrids.partyanalyst.model.ClassifiedProblems</value>
 			</list>
 		</property>
 	</bean>
