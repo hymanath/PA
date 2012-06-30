@@ -32,6 +32,8 @@ public class Comment extends BaseModel implements Serializable{
 	
 	private Set<OpinionPollComments> opinionPollComments = new HashSet<OpinionPollComments>(0);
 	private Set<AbusedComments> abusedComments = new HashSet<AbusedComments>(0);
+	private Set<ProblemComments> problemComments = new HashSet<ProblemComments>(0);
+	private Set<ProblemProgress> problemProgresses = new HashSet<ProblemProgress>(0);
 	
 	public Comment(){}
 	
@@ -99,6 +101,26 @@ public class Comment extends BaseModel implements Serializable{
 
 	public void setAbusedComments(Set<AbusedComments> abusedComments) {
 		this.abusedComments = abusedComments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "comment")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemComments> getProblemComments() {
+		return problemComments;
+	}
+
+	public void setProblemComments(Set<ProblemComments> problemComments) {
+		this.problemComments = problemComments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "comment")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemProgress> getProblemProgresses() {
+		return problemProgresses;
+	}
+
+	public void setProblemProgresses(Set<ProblemProgress> problemProgresses) {
+		this.problemProgresses = problemProgresses;
 	}
 
 }

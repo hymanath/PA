@@ -59,6 +59,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private Set<ProblemFile> ProblemFile = new HashSet<ProblemFile>();
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	private Set<FileSourceLanguage> fileSourceLanguage = new HashSet<FileSourceLanguage>(0);
+	private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
 
 	/** default constructor */
 	public File() {
@@ -261,6 +262,16 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setFileSourceLanguage(Set<FileSourceLanguage> fileSourceLanguage) {
 		this.fileSourceLanguage = fileSourceLanguage;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "file")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemFiles> getProblemFiles() {
+		return problemFiles;
+	}
+
+	public void setProblemFiles(Set<ProblemFiles> problemFiles) {
+		this.problemFiles = problemFiles;
 	}
   
 }

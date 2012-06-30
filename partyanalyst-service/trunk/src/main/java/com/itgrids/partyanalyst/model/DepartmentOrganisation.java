@@ -54,7 +54,7 @@ public class DepartmentOrganisation extends BaseModel implements Serializable {
 	private ProblemSourceScope problemSourceScope;
 	
 	private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>(0);
-	
+	private Set<ProblemAssignedDepartment> problemAssignedDepartments = new HashSet<ProblemAssignedDepartment>(0);
 	
 	//default constructor
 	public DepartmentOrganisation(){
@@ -150,6 +150,17 @@ public class DepartmentOrganisation extends BaseModel implements Serializable {
 
 	public void setProblemProgress(Set<AssignedProblemProgress> problemProgress) {
 		this.problemProgress = problemProgress;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departmentOrganisation")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemAssignedDepartment> getProblemAssignedDepartments() {
+		return problemAssignedDepartments;
+	}
+
+	public void setProblemAssignedDepartments(
+			Set<ProblemAssignedDepartment> problemAssignedDepartments) {
+		this.problemAssignedDepartments = problemAssignedDepartments;
 	}
 
 }

@@ -39,7 +39,7 @@ public class ProblemType implements Serializable{
 	private Long problemTypeId;
 	private String problemType;
 	private String description;
-	private Set<Problem> problems = new HashSet<Problem>(0);
+	private Set<ProblemBackup> problems = new HashSet<ProblemBackup>(0);
 	
 	public ProblemType()
 	{
@@ -79,10 +79,10 @@ public class ProblemType implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemType")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<Problem> getProblems() {
+	public Set<ProblemBackup> getProblems() {
 		return problems;
 	}
-	public void setProblems(Set<Problem> problems) {
+	public void setProblems(Set<ProblemBackup> problems) {
 		this.problems = problems;
 	}
 }

@@ -75,6 +75,8 @@ public class Cadre extends BaseModel{
 	 private Set<CadreProblemDetails> cadreProblemDetails =  new HashSet<CadreProblemDetails>();
 	 private Set<CadreRoleRelation> cadreRoleRelation =  new HashSet<CadreRoleRelation>();
 	 private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>(0);
+	 private Set<CadreProblems> cadreProblems = new HashSet<CadreProblems>(0);
+	 private Set<ProblemAssignedCadre> problemAssignedCadres = new HashSet<ProblemAssignedCadre>(0);
 	 	
 	 
 	 @Id
@@ -443,6 +445,27 @@ public class Cadre extends BaseModel{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreProblems> getCadreProblems() {
+		return cadreProblems;
+	}
+
+	public void setCadreProblems(Set<CadreProblems> cadreProblems) {
+		this.cadreProblems = cadreProblems;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemAssignedCadre> getProblemAssignedCadres() {
+		return problemAssignedCadres;
+	}
+
+	public void setProblemAssignedCadres(
+			Set<ProblemAssignedCadre> problemAssignedCadres) {
+		this.problemAssignedCadres = problemAssignedCadres;
 	}
 
  }
