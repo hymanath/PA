@@ -872,5 +872,8 @@
 	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="problemLikesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLikesDAO">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	
 </beans>		
