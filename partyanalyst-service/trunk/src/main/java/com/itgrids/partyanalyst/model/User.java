@@ -92,6 +92,10 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserReferralEmails> userReferralEmails = new HashSet<UserReferralEmails>(0);
 	private Set<OpinionPollComments> opinionPollComments = new HashSet<OpinionPollComments>(0);
 	private Set<AbusedComments> abusedComments = new HashSet<AbusedComments>(0);
+	private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
+	private Set<ProblemComments> problemComments = new HashSet<ProblemComments>(0);
+	private Set<ProblemLikes> problemLikes = new HashSet<ProblemLikes>(0);
+	private Set<UserProblem> userProblems = new HashSet<UserProblem>(0);
 	
 	public User(){}
 	 
@@ -731,6 +735,45 @@ public class User extends BaseModel implements Serializable{
 	public void setAbusedComments(Set<AbusedComments> abusedComments) {
 		this.abusedComments = abusedComments;
 	}
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemFiles> getProblemFiles() {
+		return problemFiles;
+	}
+
+	public void setProblemFiles(Set<ProblemFiles> problemFiles) {
+		this.problemFiles = problemFiles;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemComments> getProblemComments() {
+		return problemComments;
+	}
+
+	public void setProblemComments(Set<ProblemComments> problemComments) {
+		this.problemComments = problemComments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemLikes> getProblemLikes() {
+		return problemLikes;
+	}
+
+	public void setProblemLikes(Set<ProblemLikes> problemLikes) {
+		this.problemLikes = problemLikes;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserProblem> getUserProblems() {
+		return userProblems;
+	}
+
+	public void setUserProblems(Set<UserProblem> userProblems) {
+		this.userProblems = userProblems;
+	}
 
 }
