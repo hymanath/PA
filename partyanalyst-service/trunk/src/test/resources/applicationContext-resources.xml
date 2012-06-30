@@ -78,7 +78,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
 				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
-				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemBackup</value>
 				<value>com.itgrids.partyanalyst.model.ProblemHistory</value>
 				<value>com.itgrids.partyanalyst.model.ProblemSourceScope</value>
 				<value>com.itgrids.partyanalyst.model.ProblemStatus</value>
@@ -266,11 +266,62 @@
 				<value>com.itgrids.partyanalyst.model.Comment</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollComments</value>
 				<value>com.itgrids.partyanalyst.model.AbusedComments</value>
+				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.Visibility</value>
+				<value>com.itgrids.partyanalyst.model.CadreProblems</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFiles</value>
+				<value>com.itgrids.partyanalyst.model.ProblemComments</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLikes</value>
+				<value>com.itgrids.partyanalyst.model.UserProblem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemProgress</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAssignedDepartment</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAssignedCadre</value>
+				<value>com.itgrids.partyanalyst.model.ClassifiedProblems</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="classifiedProblemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ClassifiedProblemsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemAssignedCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedCadreDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemAssignedDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedDepartmentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemProgressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemFilesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="cadreProblemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="visibilityDAO" class="com.itgrids.partyanalyst.dao.hibernate.VisibilityDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="userDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -798,7 +849,7 @@
 		class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionVoterDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
+	<bean id="problemBackupDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemBackupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="problemStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemStatusDAO">
