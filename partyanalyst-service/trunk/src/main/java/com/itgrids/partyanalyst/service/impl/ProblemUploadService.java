@@ -16,7 +16,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
-import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
@@ -33,7 +33,7 @@ import com.itgrids.partyanalyst.excel.problem.ProblemDataUploadVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -53,7 +53,6 @@ public class ProblemUploadService implements IProblemUploadService {
 	private ITehsilDAO tehsilDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IBoothDAO boothDAO;
-	private IProblemDAO problemDAO;
 	private IProblemLocationDAO problemLocationDAO;
 	private IProblemExternalSourceDAO problemExternalSourceDAO;
 	
@@ -110,14 +109,6 @@ public class ProblemUploadService implements IProblemUploadService {
 		this.boothDAO = boothDAO;
 	}
 
-	public IProblemDAO getProblemDAO() {
-		return problemDAO;
-	}
-
-	public void setProblemDAO(IProblemDAO problemDAO) {
-		this.problemDAO = problemDAO;
-	}
-	
 	public IProblemLocationDAO getProblemLocationDAO() {
 		return problemLocationDAO;
 	}
@@ -294,7 +285,7 @@ public class ProblemUploadService implements IProblemUploadService {
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered Into checkAndInsertHamletProblems method.......");
-		Problem problem = null;
+		ProblemBackup problem = null;
 		ProblemAndProblemSource problemAndProblemSource = null;
 		ProblemLocation problemLocation = null;
 				
@@ -305,7 +296,7 @@ public class ProblemUploadService implements IProblemUploadService {
         now = sdf.parse(strDateNew);
         
        	for(HamletProblemVO hamletProblem:hamletProblems){
-			problem = new Problem();
+			problem = new ProblemBackup();
 			problem = insertProblemData(hamletProblem,now,year);
 			
 			problemAndProblemSource = new ProblemAndProblemSource();
@@ -331,12 +322,12 @@ public class ProblemUploadService implements IProblemUploadService {
 	 * @param hamletProblem contains data for a problem in a hamlet.
 	 * @return Problem.
 	 */
-	public Problem insertProblemData(HamletProblemVO hamletProblem,Date problemIdentifiedDate,String year){
-		Problem problem = null;
+	public ProblemBackup insertProblemData(HamletProblemVO hamletProblem,Date problemIdentifiedDate,String year){
+		ProblemBackup problem = null;
 		if(log.isDebugEnabled())
 			log.debug("Entered Into insertProblemData method.......");
 		
-		    problem = new Problem();
+		    problem = new ProblemBackup();
 			problem.setDescription(hamletProblem.getProblemDesc());
 			problem.setIdentifiedOn(problemIdentifiedDate);
 			problem.setYear(year);

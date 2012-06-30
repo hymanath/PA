@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
@@ -65,7 +64,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -106,7 +105,6 @@ public class ProblemManagementReportService implements
 	private List result = null;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IDateService dateService;
-	private IProblemDAO problemDAO;
 	private TransactionTemplate transactionTemplate;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IProblemLocationDAO problemLocationDAO;
@@ -227,14 +225,6 @@ public class ProblemManagementReportService implements
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
-	}
-
-	public IProblemDAO getProblemDAO() {
-		return problemDAO;
-	}
-
-	public void setProblemDAO(IProblemDAO problemDAO) {
-		this.problemDAO = problemDAO;
 	}
 
 	public IDateService getDateService() {
@@ -2715,7 +2705,7 @@ public class ProblemManagementReportService implements
 					for(ProblemHistory problemHistory : list)
 					{
 						ProblemBeanVO problemBeanVO = new ProblemBeanVO();
-						Problem problem = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem();
+						ProblemBackup problem = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem();
 						Set<AssignedProblemProgress> set = problemHistory.getAssignedProblemProgresses();
 						AssignedProblemProgress assignedProblemProgress = null;
 						
