@@ -30,7 +30,7 @@ import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
-import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.Registration;
@@ -2323,7 +2323,7 @@ public class MockData {
 	public static List<ProblemLocation> getProblemsForUser(){
 		List<ProblemLocation> list = new ArrayList<ProblemLocation>();
 		
-		Problem problem1 = new Problem();
+		ProblemBackup problem1 = new ProblemBackup();
 		problem1.setProblem("No Trasportation FAcilities");
 		problem1.setDescription("No Bus service provided to Ramanthapur Hamlet");
 		problem1.setIdentifiedOn(Calendar.getInstance().getTime());
@@ -2343,7 +2343,7 @@ public class MockData {
 		problemLocation1.setProblemAndProblemSource(problemAndProblemSource1);
 		list.add(problemLocation1);
 			
-		Problem problem2 = new Problem();
+		ProblemBackup problem2 = new ProblemBackup();
 		problem2.setProblem("No Street Lights");
 		problem2.setDescription("No Street Lights in Harijamwada Colony");
 		problem2.setIdentifiedOn(Calendar.getInstance().getTime());
