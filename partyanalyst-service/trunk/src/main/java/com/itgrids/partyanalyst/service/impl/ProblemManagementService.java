@@ -46,7 +46,7 @@ import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemCompleteLocationDAO;
-import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
@@ -90,7 +90,7 @@ import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemActivity;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemClassification;
@@ -128,7 +128,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemSourceScopeDAO problemSourceScopeDAO = null;
 	private IProblemAndProblemSourceDAO problemAndProblemSourceDAO = null;
 	private IProblemClassificationDAO problemClassificationDAO = null;
-	private IProblemDAO problemDAO = null;
+	private IProblemBackupDAO problemBackupDAO = null;
 	private IProblemHistoryDAO problemHistoryDAO = null;
 	private IProblemStatusDAO problemStatusDAO = null;
 	private IInformationSourceDAO informationSourceDAO = null;
@@ -325,16 +325,16 @@ public class ProblemManagementService implements IProblemManagementService {
 		this.problemAndProblemSourceDAO = problemAndProblemSourceDAO;
 	}
 
-	public IProblemDAO getProblemDAO() {
-		return problemDAO;
-	}
-
-	public void setProblemDAO(IProblemDAO problemDAO) {
-		this.problemDAO = problemDAO;
-	}
-
 	public IProblemClassificationDAO getProblemClassificationDAO() {
 		return problemClassificationDAO;
+	}
+
+	public IProblemBackupDAO getProblemBackupDAO() {
+		return problemBackupDAO;
+	}
+
+	public void setProblemBackupDAO(IProblemBackupDAO problemBackupDAO) {
+		this.problemBackupDAO = problemBackupDAO;
 	}
 
 	public void setProblemClassificationDAO(
@@ -584,7 +584,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		List<HamletProblemVO> hamletProblemsVO = null;
 		if (problemLocations != null) {
-			Problem problem = null;
+			ProblemBackup problem = null;
 			ProblemAndProblemSource problemAndProblemSource = null;
 			ProblemExternalSource problemExternalSource = null;
 			hamletProblemsVO = new ArrayList<HamletProblemVO>();
@@ -630,7 +630,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				ProblemBeanVO problemBeanFromDB = new ProblemBeanVO();
-				Problem problem = null;
+				ProblemBackup problem = null;
 				ProblemAndProblemSource problemAndProblemSource = null;
 				ProblemLocation problemLocation = null;
 				ProblemHistory problemHistory = null;
@@ -649,7 +649,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					User user = null;
 					User freeUser = null;
 					Hamlet hamlet = null;
-					problem = new Problem();
+					problem = new ProblemBackup();
 					problemLocation = new ProblemLocation();
 					problemAndProblemSource = new ProblemAndProblemSource();
 					problemHistory = new ProblemHistory();
@@ -1009,7 +1009,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			List<ProblemHistory> problemHistories) {
 		List<ProblemBeanVO> problemBean = null;
 		if (problemHistories != null) {
-			Problem problem = null;
+			ProblemBackup problem = null;
 			ProblemLocation problemLocation = null;
 			ProblemAndProblemSource problemAndProblemSource = null;
 			problemBean = new ArrayList<ProblemBeanVO>();
@@ -1150,7 +1150,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		List<ProblemBeanVO> updatedProblemsFromDB = (List<ProblemBeanVO>) transactionTemplate
 				.execute(new TransactionCallback() {
 					public Object doInTransaction(TransactionStatus status) {
-						Problem problem;
+						ProblemBackup problem;
 						ProblemLocation problemLocation;
 						ProblemClassification problemClassification;
 						ProblemHistory problemHistory;
@@ -2886,7 +2886,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 
-			Problem problem = pblmHistory.getProblemLocation()
+			ProblemBackup problem = pblmHistory.getProblemLocation()
 					.getProblemAndProblemSource().getProblem();
 			ProblemAndProblemSource pblmAndPblmSource = pblmHistory
 					.getProblemLocation().getProblemAndProblemSource();
@@ -3661,7 +3661,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			// get Problem History and Problem Details
 			ProblemHistory problemHistory = problemHistoryDAO
 					.get(problemHistoryId);
-			Problem problem = problemHistory.getProblemLocation()
+			ProblemBackup problem = problemHistory.getProblemLocation()
 					.getProblemAndProblemSource().getProblem();
 
 			if (problem != null) {
@@ -3760,7 +3760,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @return void
 	 * @author Sai Krishna
 	 */
-	private void setProblemBasicDataToVO(Problem problem,
+	private void setProblemBasicDataToVO(ProblemBackup problem,
 			ProblemStatusDataVO problemStatusData) throws Exception {
 
 		if (log.isDebugEnabled())
@@ -3865,7 +3865,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			// get Problem History and Problem Details
 			ProblemHistory problemHistory = problemHistoryDAO
 					.get(problemHistoryId);
-			Problem problem = problemHistory.getProblemLocation()
+			ProblemBackup problem = problemHistory.getProblemLocation()
 					.getProblemAndProblemSource().getProblem();
 
 			// DAO Call To get activities data
@@ -3986,7 +3986,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 							ProblemHistory problemHistory = problemHistoryDAO
 									.get(problemHistoryId);
-							Problem problem = problemHistory
+							ProblemBackup problem = problemHistory
 									.getProblemLocation()
 									.getProblemAndProblemSource().getProblem();
 
@@ -4087,7 +4087,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 							ProblemHistory problemHistory = problemHistoryDAO
 									.get(problemHistoryId);
-							Problem problem = problemHistory
+							ProblemBackup problem = problemHistory
 									.getProblemLocation()
 									.getProblemAndProblemSource().getProblem();
 
@@ -4193,7 +4193,7 @@ public class ProblemManagementService implements IProblemManagementService {
 									.get(statusId);
 							ProblemHistory problemHistory = problemHistoryDAO
 									.get(problemHistoryId);
-							Problem problem = problemHistory
+							ProblemBackup problem = problemHistory
 									.getProblemLocation()
 									.getProblemAndProblemSource().getProblem();
 
@@ -4309,7 +4309,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 							ProblemHistory problemHistory = problemHistoryDAO
 									.get(problemHistoryId);
-							Problem problem = problemHistory
+							ProblemBackup problem = problemHistory
 									.getProblemLocation()
 									.getProblemAndProblemSource().getProblem();
 
@@ -4406,7 +4406,7 @@ public class ProblemManagementService implements IProblemManagementService {
 							// get problem history and problem
 							ProblemHistory problemHistory = problemHistoryDAO
 									.get(problemHistoryId);
-							Problem problem = problemHistory
+							ProblemBackup problem = problemHistory
 									.getProblemLocation()
 									.getProblemAndProblemSource().getProblem();
 
@@ -4796,7 +4796,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		boolean i = true;
 		try {
 			while (i) {
-				if (problemDAO.getProblemReferenceNo(refNo) != null)
+				if (problemBackupDAO.getProblemReferenceNo(refNo) != null)
 					return type + str;
 			}
 		} catch (Exception e) {
