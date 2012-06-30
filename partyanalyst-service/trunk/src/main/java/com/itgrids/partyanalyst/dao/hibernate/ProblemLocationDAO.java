@@ -6,7 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
-import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 
 public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Long> implements IProblemLocationDAO{
@@ -21,7 +21,7 @@ public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Lon
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Problem> findByHamletIdAndYear(Long hamletId,String year){
+	public List<ProblemBackup> findByHamletIdAndYear(Long hamletId,String year){
 		Object[] params ={hamletId,year};
 		return getHibernateTemplate().find("select model.problemAndProblemSource.problem  from ProblemLocation model where model.hamlet.hamletId = ? and model.problemAndProblemSource.problem.year = ?",params);
 	}
