@@ -277,6 +277,8 @@
 				<value>com.itgrids.partyanalyst.model.ProblemAssignedDepartment</value>
 				<value>com.itgrids.partyanalyst.model.ProblemAssignedCadre</value>
 				<value>com.itgrids.partyanalyst.model.ClassifiedProblems</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLikes</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -1475,5 +1477,9 @@
 	<bean id="abusedCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AbusedCommentsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="problemLikesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLikesDAO">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
 	
 </beans>
