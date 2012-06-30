@@ -268,7 +268,7 @@
 	</bean>
 	
 	<!-- Problem Management -->
-	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO" >
+	<bean id="problemBackupDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemBackupDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="problemStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemStatusDAO">
@@ -832,4 +832,45 @@
 	<bean id="abusedCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AbusedCommentsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="classifiedProblemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ClassifiedProblemsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemAssignedCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedCadreDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemAssignedDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedDepartmentDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemProgressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userProblemDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemFilesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="cadreProblemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="visibilityDAO" class="com.itgrids.partyanalyst.dao.hibernate.VisibilityDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

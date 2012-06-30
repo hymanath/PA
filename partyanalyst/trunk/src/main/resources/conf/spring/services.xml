@@ -480,7 +480,6 @@
 	    <property name="townshipDAO" ref="townshipDAO" />
 	    <property name="constituencyDAO" ref="constituencyDAO" />
 	    <property name="boothDAO" ref="boothDAO" />
-	    <property name="problemDAO" ref="problemDAO" />
 	    <property name="problemLocationDAO" ref="problemLocationDAO" />
 	    <property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
@@ -553,7 +552,7 @@
 		<property name="problemCompleteLocationDAO" ref="problemCompleteLocationDAO" />
 		<property name="problemActivityDAO" ref="problemActivityDAO" />
 		<property name="stringUtilService" ref="stringUtilService" />
-		<property name="problemDAO" ref="problemDAO" />
+		<property name="problemBackupDAO" ref="problemBackupDAO" />
 		<property name="problemTypeDAO" ref="problemTypeDAO" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
@@ -680,7 +679,6 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="stateDAO" ref="stateDAO"/>
 		<property name="dateService" ref="dateService"/> 
-		<property name="problemDAO" ref="problemDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
