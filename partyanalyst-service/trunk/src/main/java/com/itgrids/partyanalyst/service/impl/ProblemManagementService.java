@@ -8,7 +8,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
@@ -45,12 +45,14 @@ import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
+import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemCompleteLocationDAO;
-import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
+import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
+import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLikesDAO;
@@ -66,8 +68,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserProblemDAO;
+import com.itgrids.partyanalyst.dao.IVisibilityDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -86,7 +87,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.CadreProblemDetails;
+import com.itgrids.partyanalyst.model.CadreProblems;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
@@ -96,13 +97,15 @@ import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.ProblemBackup;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemActivity;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemClassification;
 import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemFile;
+import com.itgrids.partyanalyst.model.ProblemFiles;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemImpactLevel;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -121,6 +124,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStringUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemManagementService implements IProblemManagementService {
@@ -174,6 +178,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IUserDAO userDAO; 
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IProblemDAO problemDAO;
+	private IProblemFilesDAO problemFilesDAO;
+	private ICadreProblemsDAO cadreProblemsDAO;
+	private IVisibilityDAO visibilityDAO;
 	private IUserProblemDAO userProblemDAO;
 	private IProblemCommentsDAO problemCommentsDAO;
 	private IProblemLikesDAO problemLikesDAO;
@@ -201,6 +210,30 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
 		this.userProblemDAO = userProblemDAO;
+	}
+
+	public IVisibilityDAO getVisibilityDAO() {
+		return visibilityDAO;
+	}
+
+	public void setVisibilityDAO(IVisibilityDAO visibilityDAO) {
+		this.visibilityDAO = visibilityDAO;
+	}
+
+	public ICadreProblemsDAO getCadreProblemsDAO() {
+		return cadreProblemsDAO;
+	}
+
+	public void setCadreProblemsDAO(ICadreProblemsDAO cadreProblemsDAO) {
+		this.cadreProblemsDAO = cadreProblemsDAO;
+	}
+
+	public IProblemFilesDAO getProblemFilesDAO() {
+		return problemFilesDAO;
+	}
+
+	public void setProblemFilesDAO(IProblemFilesDAO problemFilesDAO) {
+		this.problemFilesDAO = problemFilesDAO;
 	}
 
 	public IUserDAO getUserDAO() {
@@ -572,6 +605,14 @@ public class ProblemManagementService implements IProblemManagementService {
 		this.userProblemApprovalDAO = userProblemApprovalDAO;
 	}
 
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
+
 	/**
 	 * Used To Get The Problems Of a Hamlet In a Particular Year
 	 */
@@ -656,6 +697,206 @@ public class ProblemManagementService implements IProblemManagementService {
 	/**
 	 * Used To Save The New Problem Data And Return The Data Saved
 	 */
+	
+	public ProblemCompleteLocation saveProblemCompleteLocation(ProblemBeanVO problemBeanVO)
+	{
+		ProblemCompleteLocation problemCompleteLocation = null;
+		try
+		{
+			if(problemBeanVO == null)
+			{
+				log.info("problemBeanVO is null in saveProblemCompleteLocation()");
+				return problemCompleteLocation;
+			}
+			else if(problemBeanVO != null)
+			{
+				problemCompleteLocation = new ProblemCompleteLocation();
+				problemCompleteLocation.setState(stateDAO.get(new Long(
+						problemBeanVO.getState())));
+				if (problemBeanVO.getIsParliament())
+					problemCompleteLocation
+							.setParliamentConstituency(constituencyDAO
+									.get(problemBeanVO.getPConstituencyId()));
+				 
+				if (problemBeanVO.getDistrict() != null
+						&& !"0".equals(problemBeanVO.getDistrict()))
+					problemCompleteLocation.setDistrict(districtDAO
+							.get(new Long(problemBeanVO.getDistrict())));
+				if (problemBeanVO.getConstituency() != null
+						&& !"0".equals(problemBeanVO.getConstituency()))
+					problemCompleteLocation
+							.setConstituency(constituencyDAO.get(new Long(
+									problemBeanVO.getConstituency())));
+				if (problemBeanVO.getTehsil() != null
+						&& !"0".equals(problemBeanVO.getTehsil())) {
+					if (IConstants.RURAL_TYPE.equals(problemBeanVO
+							.getTehsil().substring(0, 1)))
+						problemCompleteLocation.setTehsil(tehsilDAO
+								.get(new Long(problemBeanVO.getTehsil()
+										.substring(1))));
+					else if (IConstants.URBAN_TYPE.equals(problemBeanVO
+							.getTehsil().substring(0, 1))) {
+						Long assemblyLocalElectionBodyId = new Long(
+								problemBeanVO.getTehsil().substring(1));
+						List localElectionBodyIdsList = assemblyLocalElectionBodyDAO
+								.getLocalElectionBodyId(assemblyLocalElectionBodyId);
+						Object object = (Object) localElectionBodyIdsList
+								.get(0);
+						problemCompleteLocation
+								.setLocalElectionBody(localElectionBodyDAO
+										.get((Long) object));
+					}
+				}
+				if (problemBeanVO.getVillage() != null
+						&& !"0".equals(problemBeanVO.getVillage())) {
+					if (IConstants.RURAL_TYPE.equals(problemBeanVO
+							.getVillage().substring(0, 1)))
+						problemCompleteLocation.setHamlet(hamletDAO
+								.get(new Long(problemBeanVO.getVillage()
+										.substring(1))));
+					else if (IConstants.URBAN_TYPE.equals(problemBeanVO
+							.getVillage().substring(0, 1))) {
+						problemCompleteLocation.setWard(constituencyDAO
+								.get(new Long(problemBeanVO.getVillage()
+										.substring(1))));
+					}
+				}
+
+				if (problemBeanVO.getBooth() != null
+						&& !"0".equals(problemBeanVO.getBooth()))
+					problemCompleteLocation.setBooth(boothDAO.get(new Long(
+							problemBeanVO.getBooth())));
+				
+				problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+			}
+			return problemCompleteLocation;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in saveProblemCompleteLocation(), Exception is - "+e);
+			return null;
+		}
+		
+	}
+	
+	public ProblemExternalSource saveProblemExternalSource(ProblemBeanVO problemBeanVO)
+	{
+		ProblemExternalSource problemExternalSource = null;
+		try
+		{
+			if(problemBeanVO == null)
+			{
+				log.info("problemBeanVO is null in saveProblemExternalSource() Method");
+				return problemExternalSource;
+			}
+			else if(problemBeanVO != null && problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER))
+			{
+				if (problemBeanVO.getProbSourceId() == 2
+						|| problemBeanVO.getProbSourceId() == 3) {
+					problemExternalSource = new ProblemExternalSource();
+					problemExternalSource.setName(problemBeanVO
+							.getName());
+					problemExternalSource.setMobile(problemBeanVO
+							.getMobile());
+					problemExternalSource.setEmail(problemBeanVO
+							.getEmail());
+					problemExternalSource.setAddress(problemBeanVO
+							.getAddress());
+					problemExternalSource.setTelePhone(problemBeanVO
+							.getPhone());
+					problemExternalSource = problemExternalSourceDAO
+							.save(problemExternalSource);
+
+				}
+				
+			}
+			return problemExternalSource;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in saveProblemExternalSource() Method, Exception - "+e);
+			return null;
+		}
+	}
+	
+	public String getProblemReferenceNo()
+	{
+		String refNo = null;
+		try{
+			String str = ((Long) System.currentTimeMillis()).toString();
+			refNo = str.substring(str.length() - 5, str.length());
+			
+			return refNo;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getProblemReferenceNo() Method, Exception is - "+e);
+			return refNo;
+		}
+		
+	}
+	public void saveCadreProblemDetails(ProblemBeanVO problemBeanVO, Problem problem)
+	{
+		try{
+			if(problemBeanVO == null || problem == null)
+			{
+				log.info("problemBeanVO null in saveCadreProblemDetails() Method");
+				return;
+			}
+			else if(problemBeanVO != null && problem != null && problemBeanVO.getProbSourceId() == 4)
+			{
+				CadreProblems cadreProblems = new CadreProblems();
+				Cadre cadre = cadreDAO.get(problemBeanVO.getCadreId());
+				cadreProblems.setCadre(cadre);
+				cadreProblems.setProblem(problem);
+				cadreProblems.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				cadreProblems.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				cadreProblemsDAO.save(cadreProblems);
+			}
+		}
+		
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public UserProblem saveUserProblemDetails(ProblemBeanVO problBeanVO, Problem problem)
+	{
+		UserProblem userProblem = null;
+		try{
+			
+		if(problBeanVO == null || problem == null)
+		{
+			log.info("problBeanVO is null in saveUserProblemDetails() Method");
+			return userProblem;
+		}
+		else if(problBeanVO != null && problem != null)
+		{
+			userProblem = new UserProblem();
+			if(problemBeanVO.getProblemVisibility() == null && problemBeanVO.getProblemPostedBy().equals(IConstants.FREE_USER))
+				userProblem.setVisibility(visibilityDAO.get(1l));
+			else if(problemBeanVO.getProblemVisibility() == null && problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER))
+				userProblem.setVisibility(visibilityDAO.get(2l));
+			
+			else if(problemBeanVO.getProblemVisibility() != null && problemBeanVO.getProblemVisibility().equalsIgnoreCase("public"))
+					userProblem.setVisibility(visibilityDAO.get(1l));
+			else if(problemBeanVO.getProblemVisibility() != null && problemBeanVO.getProblemVisibility().equalsIgnoreCase("private"))
+				userProblem.setVisibility(visibilityDAO.get(2l));
+			userProblem.setUser(userDAO.get(problemBeanVO.getUserID()));
+			userProblem.setIsOwner(IConstants.TRUE);
+			userProblem.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			userProblem.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			userProblem.setProblem(problem);
+			userProblem = userProblemDAO.save(userProblem);
+			
+		}
+		return userProblem;
+		}
+		
+		catch (Exception e) {
+			return userProblem;
+		}
+	}
+	
 	public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave) {
 		this.problemBeanVO = problemBeanVOToSave;
 		if (log.isDebugEnabled()) {
@@ -664,40 +905,64 @@ public class ProblemManagementService implements IProblemManagementService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				ProblemBeanVO problemBeanFromDB = new ProblemBeanVO();
-				ProblemBackup problem = null;
-				ProblemAndProblemSource problemAndProblemSource = null;
-				ProblemLocation problemLocation = null;
-				ProblemHistory problemHistory = null;
+				Problem problem = null;
 				ProblemCompleteLocation problemCompleteLocation = null;
-
 				try {
-					// InformationSource problemSource =
-					// informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
 					InformationSource problemSource = null;
-					if (problemBeanVO.getProbSourceId() != null
-							&& problemBeanVO.getProbSourceId() > 0)
-						problemSource = informationSourceDAO.get(problemBeanVO
-								.getProbSourceId());
-
-					ProblemExternalSource problemExternalSource = null;
-					User user = null;
-					User freeUser = null;
-					Hamlet hamlet = null;
-					problem = new ProblemBackup();
-					problemLocation = new ProblemLocation();
-					problemAndProblemSource = new ProblemAndProblemSource();
-					problemHistory = new ProblemHistory();
+					problem = new Problem();
 					problemCompleteLocation = new ProblemCompleteLocation();
 					ProblemType problemType = new ProblemType();
-
+					ProblemExternalSource problemExternalSource = null; 
+					UserProblem userProblem = new UserProblem();
+					if(problemCompleteLocation != null)
+						  problem.setProblemCompleteLocation(problemCompleteLocation);
+					
+					problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
+					if (problemBeanVO.getProbSourceId() != null	&& problemBeanVO.getProbSourceId() > 0)
+					{
+						problemSource = informationSourceDAO.get(problemBeanVO.getProbSourceId());
+						problem.setInformationSource(problemSource);
+						
+						if(problemBeanVO.getProbSourceId().equals(2L) || problemBeanVO.getProbSourceId().equals(3L))
+						{
+							problemExternalSource = saveProblemExternalSource(problemBeanVO);
+							problem.setExternalSource(problemExternalSource);
+						}
+					}
+					
+					
+					refNo = getProblemReferenceNo();
+						if(refNo != null)
+						{
+							if (new Long(0).equals(problemBeanVO.getProbSourceId()))
+								problem.setReferenceNo(getRefNo(refNo, "FU"));
+							else if (new Long(1)
+									.equals(problemBeanVO.getProbSourceId()))
+								problem.setReferenceNo(getRefNo(refNo, "PU"));
+							else if (new Long(2)
+									.equals(problemBeanVO.getProbSourceId()))
+								problem.setReferenceNo(getRefNo(refNo, "EU"));
+							else if (new Long(3)
+									.equals(problemBeanVO.getProbSourceId()))
+								problem.setReferenceNo(getRefNo(refNo, "CC"));
+							else if (new Long(4)
+									.equals(problemBeanVO.getProbSourceId()))
+								problem.setReferenceNo(getRefNo(refNo, "CD"));
+						}
+					
+					RegionScopes problemImpactLevel = regionScopesDAO
+							.get(problemBeanVO.getProblemImpactLevelId());
+					
+					problem.setRegionScopes(regionScopesDAO.get(new Long(problemBeanVO.getProblemImpactLevelId())));
+					
 					if (!problemBeanVO.getProblem().contains(" ")) {
-						problem.setProblem(stringUtilService
+						problem.setTitle(stringUtilService
 								.fragmentARegularString(problemBeanVO
 										.getProblem(), 100, " "));
 					} else {
-						problem.setProblem(problemBeanVO.getProblem());
+						problem.setTitle(problemBeanVO.getProblem());
 					}
-
+					
 					if (!problemBeanVO.getDescription().contains(" ")) {
 						problem.setDescription(stringUtilService
 								.fragmentARegularString(problemBeanVO
@@ -705,214 +970,55 @@ public class ProblemManagementService implements IProblemManagementService {
 					} else {
 						problem.setDescription(problemBeanVO.getDescription());
 					}
+					
+					
 					if (problemBeanVO.getProblemTypeId() != 0) {
 						problemType = problemTypeDAO.get(problemBeanVO
 								.getProblemTypeId());
 						problem.setProblemType(problemType);
 					}
-					// problem.setProblem(problemBeanVO.getProblem());
-					// problem.setDescription(problemBeanVO.getDescription());
-					problem.setYear(problemBeanVO.getYear());
+					
 					Date iDate = sdf.parse(problemBeanVO.getReportedDate());
 					Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
 					problem.setIdentifiedOn(iDate);
 					problem.setExistingFrom(eDate);
-					String str = ((Long) System.currentTimeMillis()).toString();
-					refNo = str.substring(str.length() - 5, str.length());
-					if (new Long(0).equals(problemBeanVO.getProbSourceId()))
-						problem.setReferenceNo(getRefNo(refNo, "FU"));
-					else if (new Long(1)
-							.equals(problemBeanVO.getProbSourceId()))
-						problem.setReferenceNo(getRefNo(refNo, "PU"));
-					else if (new Long(2)
-							.equals(problemBeanVO.getProbSourceId()))
-						problem.setReferenceNo(getRefNo(refNo, "EU"));
-					else if (new Long(3)
-							.equals(problemBeanVO.getProbSourceId()))
-						problem.setReferenceNo(getRefNo(refNo, "CC"));
-					else if (new Long(4)
-							.equals(problemBeanVO.getProbSourceId()))
-						problem.setReferenceNo(getRefNo(refNo, "CD"));
-					problemAndProblemSource.setProblem(problem);
-					// Check for Party_Analyst Or Free User
+					problem.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
+					
+					
+					problem.setIsDelete(IConstants.FALSE);
+					
+					if(problemSource != null && problemSource.getInformationSource() != null)
+					problem.setInformationSource(problemSource);
+					
+					
+					problem.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					problem.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					
+					problem.setImpactLevelValue(getProblemImpactValue(
+							problemBeanVO.getProblemImpactLevelId(),
+							problemBeanVO.getProblemImpactLevelValue()));
+					
+					
 					if (problemBeanVO.getProblemPostedBy().equals(
 							IConstants.PARTY_ANALYST_USER)) {
-						problemAndProblemSource.setProblemSource(problemSource);
-						user = userDAO.get(problemBeanVO.getUserID());
-						problemAndProblemSource.setUser(user);
-						problemAndProblemSource.setSubUser(userDAO.get(problemBeanVO.getSubUserId()));
-						problemHistory.setIsApproved(IConstants.TRUE);
-
-						if (problemBeanVO.getProbSourceId() == 2
-								|| problemBeanVO.getProbSourceId() == 3) {
-							problemExternalSource = new ProblemExternalSource();
-							problemExternalSource.setName(problemBeanVO
-									.getName());
-							problemExternalSource.setMobile(problemBeanVO
-									.getMobile());
-							problemExternalSource.setEmail(problemBeanVO
-									.getEmail());
-							problemExternalSource.setAddress(problemBeanVO
-									.getAddress());
-							problemExternalSource.setTelePhone(problemBeanVO
-									.getPhone());
-							problemExternalSource = problemExternalSourceDAO
-									.save(problemExternalSource);
-
-							problemAndProblemSource
-									.setProblemExternalSource(problemExternalSource);
-						}
+						problem.setIsApproved(IConstants.TRUE);
+						
 					} else if (problemBeanVO.getProblemPostedBy().equals(
 							IConstants.FREE_USER)) {
-						freeUser = userDAO.get(problemBeanVO
-								.getUserID());
-						problemAndProblemSource.setFreeUser(freeUser);
-						problemHistory.setIsApproved(IConstants.FALSE);
-					}
-
-					problemCompleteLocation.setState(stateDAO.get(new Long(
-							problemBeanVO.getState())));
-					if (problemBeanVO.getIsParliament())
-						problemCompleteLocation
-								.setParliamentConstituency(constituencyDAO
-										.get(problemBeanVO.getPConstituencyId()));
-					/*
-					 * if(!problemBeanVO.getIsParliament())
-					 * problemCompleteLocation.setDistrict(districtDAO.get(new
-					 * Long(problemBeanVO.getDistrict())));
-					 */
-					if (problemBeanVO.getDistrict() != null
-							&& !"0".equals(problemBeanVO.getDistrict()))
-						problemCompleteLocation.setDistrict(districtDAO
-								.get(new Long(problemBeanVO.getDistrict())));
-					if (problemBeanVO.getConstituency() != null
-							&& !"0".equals(problemBeanVO.getConstituency()))
-						problemCompleteLocation
-								.setConstituency(constituencyDAO.get(new Long(
-										problemBeanVO.getConstituency())));
-					if (problemBeanVO.getTehsil() != null
-							&& !"0".equals(problemBeanVO.getTehsil())) {
-						if (IConstants.RURAL_TYPE.equals(problemBeanVO
-								.getTehsil().substring(0, 1)))
-							problemCompleteLocation.setTehsil(tehsilDAO
-									.get(new Long(problemBeanVO.getTehsil()
-											.substring(1))));
-						else if (IConstants.URBAN_TYPE.equals(problemBeanVO
-								.getTehsil().substring(0, 1))) {
-							Long assemblyLocalElectionBodyId = new Long(
-									problemBeanVO.getTehsil().substring(1));
-							List localElectionBodyIdsList = assemblyLocalElectionBodyDAO
-									.getLocalElectionBodyId(assemblyLocalElectionBodyId);
-							Object object = (Object) localElectionBodyIdsList
-									.get(0);
-							problemCompleteLocation
-									.setLocalElectionBody(localElectionBodyDAO
-											.get((Long) object));
+						problem.setIsApproved(IConstants.FALSE);
+						
 						}
-					}
-					if (problemBeanVO.getVillage() != null
-							&& !"0".equals(problemBeanVO.getVillage())) {
-						if (IConstants.RURAL_TYPE.equals(problemBeanVO
-								.getVillage().substring(0, 1)))
-							problemCompleteLocation.setHamlet(hamletDAO
-									.get(new Long(problemBeanVO.getVillage()
-											.substring(1))));
-						else if (IConstants.URBAN_TYPE.equals(problemBeanVO
-								.getVillage().substring(0, 1))) {
-							problemCompleteLocation.setWard(constituencyDAO
-									.get(new Long(problemBeanVO.getVillage()
-											.substring(1))));
-						}
-					}
-
-					if (problemBeanVO.getBooth() != null
-							&& !"0".equals(problemBeanVO.getBooth()))
-						problemCompleteLocation.setBooth(boothDAO.get(new Long(
-								problemBeanVO.getBooth())));
-
-					/*
-					 * hamlet = hamletDAO.get(new
-					 * Long(problemBeanVO.getHamlet()));
-					 * problemLocation.setHamlet(hamlet);
-					 */
-					RegionScopes problemImpactLevel = regionScopesDAO
-							.get(problemBeanVO.getProblemImpactLevelId());
-					problemLocation.setProblemImpactLevel(problemImpactLevel);
-					problemLocation
-							.setProblemImpactLevelValue(getProblemImpactValue(
-									problemBeanVO.getProblemImpactLevelId(),
-									problemBeanVO.getProblemImpactLevelValue()));
-					problemLocation
-							.setProblemAndProblemSource(problemAndProblemSource);
-					problemLocation
-							.setProblemCompleteLocation(problemCompleteLocation);
-					problemHistory.setProblemLocation(problemLocationDAO
-							.save(problemLocation));
-					problemHistory.setProblemStatus(problemStatusDAO
-							.get(problemBeanVO.getProblemStatusId()));
-					problemHistory.setDateUpdated(getCurrentDateAndTime());
-					problemHistory = problemHistoryDAO.save(problemHistory);
-					problemBeanVO.setProblemHistoryId(problemHistory
-							.getProblemHistoryId());
-
-					saveProblemRelatedFiles(problemBeanVO);
-
-					if (problemBeanVO.getProblemPostedBy().equals(
-							IConstants.PARTY_ANALYST_USER)
-							&& problemBeanVO.getProbSourceId() == 4) {
-						CadreProblemDetails cadreProblemDetails = new CadreProblemDetails();
-						Cadre cadre = cadreDAO.get(problemBeanVO.getCadreId());
-
-						cadreProblemDetails.setCadre(cadre);
-						cadreProblemDetails.setProblemHistory(problemHistory);
-						cadreProblemDetails
-								.setStatus(IConstants.CADRE_PERSONAL);
-						cadreProblemDetails.setUpdatedDate(iDate);
-
-						cadreProblemDetailsDAO.save(cadreProblemDetails);
-					}
-
-					problemBeanFromDB.setProblemHistoryId(problemHistory
-							.getProblemHistoryId());
-					problemBeanFromDB.setProblemLocationId(problemHistory
-							.getProblemLocation().getProblemLocationId());
-					problemBeanFromDB.setProblem(problemHistory
-							.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getProblem());
-					problemBeanFromDB.setDescription(problemHistory
-							.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getDescription());
-					Date iDateOfAddNewProb = problemHistory
-							.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getIdentifiedOn();
-					Date eDateOfAddNewProb = problemHistory
-							.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getExistingFrom();
-					problemBeanFromDB.setProblemRefNum(problemHistory
-							.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getReferenceNo());
-					problemBeanFromDB.setReportedDate(sdf
-							.format(iDateOfAddNewProb));
-					problemBeanFromDB.setExistingFrom(sdf
-							.format(eDateOfAddNewProb));
-
-					if (problemSource != null
-							&& problemSource.getInformationSource() != null)
-						problemBeanFromDB.setProbSource(problemSource
-								.getInformationSource());
-
-					problemBeanFromDB
-							.setProblemImpactLevelId(problemImpactLevel
-									.getRegionScopesId());
-
-					problemBeanFromDB
-							.setProblemImpactLevelValue(getProblemImpactValue(
-									problemImpactLevel.getRegionScopesId(),
-									problemLocation
-											.getProblemImpactLevelValue()));
-					problemBeanFromDB.setIsApproved(problemHistory
-							.getIsApproved());
-
+				
+				problem = problemDAO.save(problem);
+				
+				if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER) && problemBeanVO.getProbSourceId() == 4)
+				saveCadreProblemDetails(problemBeanVO,problem);
+				
+				userProblem = saveUserProblemDetails(problemBeanVO, problem);
+				
+				saveProblemRelatedFiles(problemBeanVO,problem);
+					
+					
 				} catch (Exception e) {
 					status.setRollbackOnly();
 					if (log.isDebugEnabled()) {
@@ -929,6 +1035,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		});
 		return this.problemBeanVO;
 	}
+	
 
 	public Long getProblemImpactValue(Long impactLevelId, Long impactLevelValue) {
 
@@ -5079,6 +5186,8 @@ public class ProblemManagementService implements IProblemManagementService {
 		File file = new File();
 		FilePaths filePaths = new FilePaths();
 		FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
+		ProblemFiles problemFiles = new ProblemFiles();
+		
 		List<File> filesList = new ArrayList<File>();
 		Long orderNo = 0L;
 
@@ -5113,6 +5222,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					filePaths.setFilePath(problemBeanVO.getFileVO().getFilePath().get(i));
 					filePathsDAO.save(filePaths);
 					filesList.add(file);
+					problemFiles.setFile(file);
 				}
 
 			}
@@ -5123,7 +5233,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 	}
 
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO) {
+	/*public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO) {
 		List<File> files = new ArrayList<File>();
 		ProblemFile problemFile = null;
 		files = uploadFiles(problemBeanVO);
@@ -5138,10 +5248,43 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemFile.setIsApproved(IConstants.TRUE);
 
 				problemFile.setFile(fileObj);
+				
+			
 				ProblemHistory problemHistory = problemHistoryDAO
 						.get(problemBeanVO.getProblemHistoryId());
 				problemFile.setProblemHistory(problemHistory);
+				
 				problemFileDAO.save(problemFile);
+			}
+		}
+	}*/
+	
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem)
+	{
+		List<File> files = new ArrayList<File>(0);
+		ProblemFiles problemFile = null;
+		
+		files = uploadFiles(problemBeanVO);
+		
+		if (files != null)
+		{
+			for (File fileObj : files)
+			{
+				problemFile = new ProblemFiles();
+
+				if(problemBeanVO.getHasPartyAnalystUserRole() != null && problemBeanVO.getHasPartyAnalystUserRole())
+					problemFile.setIsApproved(IConstants.TRUE);
+				else
+					problemFile.setIsApproved(IConstants.FALSE);
+					
+				problemFile.setFile(fileObj);
+				problemFile.setProblem(problem); 
+				problemFile.setUser(userDAO.get(problemBeanVO.getUserID()));
+				problemFile.setIsDelete(IConstants.FALSE);
+				problemFile.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				problemFile.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			
+				problemFilesDAO.save(problemFile);
 			}
 		}
 	}
