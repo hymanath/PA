@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IUserReferralEmailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
@@ -97,7 +98,16 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserRolesDAO userRolesDAO;
 	private IUserReferralEmailsDAO userReferralEmailsDAO;
 	private IUserDAO userDAO;
+	private IUserProblemDAO userProblemDAO;
 	
+	public IUserProblemDAO getUserProblemDAO() {
+		return userProblemDAO;
+	}
+
+	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
+		this.userProblemDAO = userProblemDAO;
+	}
+
 	public IUserReferralEmailsDAO getUserReferralEmailsDAO() {
 		return userReferralEmailsDAO;
 	}
@@ -1729,72 +1739,74 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		return dbColumnName;
 	}
 	
-	
-	public ProblemDetailsVO getPostedProblemsCount(Long registrationId)
+	public ProblemDetailsVO getPostedProblemsCount(Long userId)
 	{
-		ProblemDetailsVO problemVO = new ProblemDetailsVO() ;
-		problemVO.setNotConsideredProblemsCount(0L);
-		problemVO.setApprovedProblemsCount(0L);
-		problemVO.setRejectedProblemsCount(0L);
-		problemVO.setPostedProblemsCountByOtherUsers(0L);
-		problemVO.setTotalPostedProblemsCount(0L);
-		problemVO.setPostedProblemsCountByLoggedInUsers(0L);
-		
-		try {
-			List problems = problemHistoryDAO.getAllPostedProblemCount(registrationId);
-			
-			if(problems != null && problems.size() > 0)
+		ProblemDetailsVO problemVO = new ProblemDetailsVO();
+		problemVO.setNotConsideredProblemsCount(0l);
+		problemVO.setApprovedProblemsCount(0l);
+		problemVO.setRejectedProblemsCount(0l);
+		problemVO.setPostedProblemsCountByLoggedInUsers(0l);
+		problemVO.setPostedProblemsCountByOtherUsers(0l);
+		problemVO.setTotalPostedProblemsCount(0l);
+		try
+		{
+			List problems = userProblemDAO.getAllPostedProblemCount(userId);
+			if(problems !=null && problems.size() > 0)
 			{
-				for (int i = 0; i < problems.size(); i++) {
-					Object[] params = (Object[])problems.get(i);
-					
-					if(params[1].toString().equalsIgnoreCase("false"))
-						problemVO.setNotConsideredProblemsCount(((Long)params[0]));					
-					else if(params[1].toString().equalsIgnoreCase("true"))
-						problemVO.setApprovedProblemsCount((Long)params[0]);
-					else 
-						problemVO.setRejectedProblemsCount((Long)params[0]);
-				}	
-				
-			}
-				
-				List commentsCount = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(registrationId);
-				
-				if(commentsCount != null && commentsCount.size() == 1)
+				for(int i=0;i<problems.size();i++)
 				{
-					problemVO.setPostedProblemsCountByOtherUsers((Long)commentsCount.get(0));				
+				Object[] params = (Object[])problems.get(i);
+				if(params[1].toString().equalsIgnoreCase("false"))
+					problemVO.setNotConsideredProblemsCount((Long)params[0]);
+				else if(params[1].toString().equalsIgnoreCase("true"))
+					problemVO.setApprovedProblemsCount((Long)params[0]);
+				else 
+					problemVO.setRejectedProblemsCount((Long)params[0]);
+					
+					
+				
 				}
-				problemVO.setTotalPostedProblemsCount(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers());
-				problemVO.setPostedProblemsCountByLoggedInUsers(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount());
-			} 
-		catch (Exception e) {
+			}
+			
+			List commentsCount = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(userId);
+			if(commentsCount != null && commentsCount.size() == 1)
+			{
+				problemVO.setPostedProblemsCountByOtherUsers((Long)commentsCount.get(0));				
+			}
+			problemVO.setTotalPostedProblemsCount(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers());
+			problemVO.setPostedProblemsCountByLoggedInUsers(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount());
+		} 
+		catch(Exception e)
+		{
 			e.printStackTrace();
+			return problemVO;
 		}
-		
-		
 		return problemVO;
 	}
 	
 	
-	public String getProblemTableColoumnName(String coloumnType)
+
+	public String getProblemTableColoumnName(String columnType)
 	{
-		String dbColoumnName = "";
+		String dbColumnName = "";
+		if(columnType.equalsIgnoreCase("definition"))
+			dbColumnName = "model.problem.title";
+		else if(columnType.equalsIgnoreCase("description"))
+			dbColumnName = "model.problem.description";
 		
-		if(coloumnType.equalsIgnoreCase("definition"))
-			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.problem";
-		else if(coloumnType.equalsIgnoreCase("description"))
-			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.description";
-		else if(coloumnType.equalsIgnoreCase("existingFrom"))
-			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.existingFrom";
-		else if(coloumnType.equalsIgnoreCase("identifiedDate"))
-			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.identifiedOn";
-		else if(coloumnType.equalsIgnoreCase("locationType"))
-			dbColoumnName = "model.problemLocation.problemImpactLevelValue";
-		else if(coloumnType.equalsIgnoreCase("problemId"))
-			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.problemId";
+		else if(columnType.equalsIgnoreCase("existingFrom"))
+			dbColumnName = "model.problem.existingFrom";
+		else if(columnType.equalsIgnoreCase("identifiedDate"))
+			dbColumnName = "model.problem.identifiedOn";
+		else if(columnType.equalsIgnoreCase("locationType"))
+			dbColumnName = "model.problem.regionScopes.regionScopesId";
+		else if(columnType.equalsIgnoreCase("problemId"))
+			dbColumnName = "model.problem.problemId";
+		return dbColumnName;
 		
-		return dbColoumnName;
+		
 	}
+	
 	public ProblemBeanVO getAllPostedProblemsByUserId(Long registrationId, Integer startIndex, Integer results, 
 			String order, String columnName, String reasonType)
 	{
@@ -1802,22 +1814,11 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 		List<ProblemDetailsVO> problemList = null;
 		ProblemBeanVO problemDetailsVO = new ProblemBeanVO();
 		Long totalRecords = 0l;
-		/*
-		 * Problem
-				
-			Description
-				
-			Existing From
-				
-			Posted On
-				
-			Location
-				
-			Location Type*/
+		
 		try
 		{			
-			List problems = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType);
-			totalRecords = problemHistoryDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(registrationId, reasonType);
+			List problems = userProblemDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType);
+			totalRecords = userProblemDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(registrationId, reasonType);
 			
 			if(problems != null && problems.size() > 0 )
 			{
@@ -1826,69 +1827,67 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 				for (int i = 0; i < problems.size(); i++)
 				{
 					Object[] params = (Object[])problems.get(i);
-					ProblemDetailsVO problem = new ProblemDetailsVO();
-					problem.setProblemID(params[0] != null?(Long)params[0]:0);
-					problem.setDescription(params[1] != null?params[1].toString():"");
-					problem.setIdentifiedDate(params[2] != null?params[2].toString():"");
-					problem.setYear(params[3] != null?params[3].toString():"");
-					problem.setDefinition(params[4] != null?params[4].toString():"");
-					problem.setExistingFrom(params[5] != null?params[5].toString():"");
-					
+					ProblemDetailsVO problem= new ProblemDetailsVO(); 
+					problem.setProblemID(params[0]!=null?(Long)params[0]:0);
+					problem.setDescription(params[2]!=null?params[2].toString():"");
+					problem.setIdentifiedDate(params[3]!=null?params[3].toString():"");
+					problem.setDefinition(params[1]!=null?params[1].toString():"");
+					problem.setExistingFrom(params[4]!=null?params[4].toString():"");
 					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
 					{
-						if(params[6] != null)
-							problem.setLocation(stateDAO.get(Long.parseLong(params[6].toString())).getStateName() + " State");
+						if(params[5] != null)
+							problem.setLocation(stateDAO.get(Long.parseLong(params[5].toString())).getStateName() + " State");
 						else
 							problem.setLocation(" ");
 					}
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.DISTRICT))
 					{
-						if(params[6] != null)
-							problem.setLocation(districtDAO.get(Long.parseLong(params[6].toString())).getDistrictName() + " District");
+						if(params[5] != null)
+							problem.setLocation(districtDAO.get(Long.parseLong(params[5].toString())).getDistrictName() + " District");
 						else
 							problem.setLocation(" ");
 					}						
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					{
-						if(params[6] != null)
-							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName() + " Constituency");
+						if(params[5] != null)
+							problem.setLocation(constituencyDAO.get(Long.parseLong(params[5].toString())).getName() + " Constituency");
 						else
 							problem.setLocation(" ");
 						
 					}	
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.VILLAGE))
 					{
-						if(params[6] != null)
-							problem.setLocation(hamletDAO.get(Long.parseLong(params[6].toString())).getHamletName() + " Village");
+						if(params[5] != null)
+							problem.setLocation(hamletDAO.get(Long.parseLong(params[5].toString())).getHamletName() + " Village");
 						else
 							problem.setLocation(" ");
 						
 					}else if(params[7] != null && (params[7].toString().equalsIgnoreCase(IConstants.MANDAL) || params[7].toString().equalsIgnoreCase(IConstants.TEHSIL)))
 					{
-						if(params[6] != null)
-							problem.setLocation(tehsilDAO.get(Long.parseLong(params[6].toString())).getTehsilName() + " Mandal");
+						if(params[5] != null)
+							problem.setLocation(tehsilDAO.get(Long.parseLong(params[5].toString())).getTehsilName() + " Mandal");
 						else
 							problem.setLocation(" ");
 						
 					}else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.WARD))
 					{
-						if(params[6] != null)
-							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName() + " Ward");
+						if(params[5] != null)
+							problem.setLocation(constituencyDAO.get(Long.parseLong(params[5].toString())).getName() + " Ward");
 						else
 							problem.setLocation(" ");
 						
 					}
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.BOOTH))
 					{
-						if(params[6] != null)
-							problem.setLocation(boothDAO.get(Long.parseLong(params[6].toString())).getPartNo() + " Booth");
+						if(params[5] != null)
+							problem.setLocation(boothDAO.get(Long.parseLong(params[5].toString())).getPartNo() + " Booth");
 						else
 							problem.setLocation(" ");
 						
 					}else if(params[7] != null && params[7].toString().equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
 					{
-						if(params[6] != null)
-							problem.setLocation(localElectionBodyDAO.get(Long.parseLong(params[6].toString())).getName());
+						if(params[5] != null)
+							problem.setLocation(localElectionBodyDAO.get(Long.parseLong(params[5].toString())).getName());
 						else
 							problem.setLocation(" ");
 						
