@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,12 +46,14 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
+import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemCompleteLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
+import com.itgrids.partyanalyst.dao.IProblemLikesDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
@@ -62,6 +65,9 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserProblemDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -109,6 +115,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -167,8 +174,35 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IUserDAO userDAO; 
+	private IUserProblemDAO userProblemDAO;
+	private IProblemCommentsDAO problemCommentsDAO;
+	private IProblemLikesDAO problemLikesDAO;
 	
 	
+	public IProblemLikesDAO getProblemLikesDAO() {
+		return problemLikesDAO;
+	}
+
+	public void setProblemLikesDAO(IProblemLikesDAO problemLikesDAO) {
+		this.problemLikesDAO = problemLikesDAO;
+	}
+
+	public IProblemCommentsDAO getProblemCommentsDAO() {
+		return problemCommentsDAO;
+	}
+
+	public void setProblemCommentsDAO(IProblemCommentsDAO problemCommentsDAO) {
+		this.problemCommentsDAO = problemCommentsDAO;
+	}
+
+	public IUserProblemDAO getUserProblemDAO() {
+		return userProblemDAO;
+	}
+
+	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
+		this.userProblemDAO = userProblemDAO;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -2067,7 +2101,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId) {
 		if (log.isDebugEnabled())
 			log.info("Entered in to getProblemCompleteInfo");
@@ -2085,7 +2119,8 @@ public class ProblemManagementService implements IProblemManagementService {
 		Constituency ward = null;
 		Booth booth = null;
 		try {
-			List list1 = problemHistoryDAO.findProblemCompleteInfo(problemHistoryId);
+			//List list1 = problemHistoryDAO.findProblemCompleteInfo(problemHistoryId);
+			List list1 = userProblemDAO.getAllProblemDetails(problemId);
 
 			if (list1.size() != 0) {
 				result = new ProblemBeanVO();
@@ -2206,7 +2241,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 
 		return result;
-	}
+	}*/
 
 	private ProblemBeanVO setConstDistStateTOResult(Long tehsilId,
 			ProblemBeanVO result) {
@@ -5248,7 +5283,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return fileVOList;
 	}
-	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex)
+	/*public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex)
 	{
 		if (log.isDebugEnabled())
 			log.debug(" Enter into getProblemDetailsForHomePage method ..");
@@ -5295,21 +5330,220 @@ public class ProblemManagementService implements IProblemManagementService {
 		      }
 		        returnVal.add(problemBeanVO) ;
 			}
-			
+			 
 		}
 		catch(Exception e){
 			log.error("Exception Rised in getProblemDetailsForHomePage method ..", e);
 		}
 		return returnVal;
 	}
+	*/
 	
+	
+	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex)
+	{
+		log.debug("Entered into getProblemDetailsForHomePage()...");
+		
+		ProblemBeanVO problemBeanVO = null;
+		List<ProblemBeanVO> problemDetails = new ArrayList<ProblemBeanVO>();
+		try
+		{
+			List<Long> problemIds = userProblemDAO.getAllValidProblemIds(startIndex,maxIndex);
+			
+			if(problemIds != null && problemIds.size() > 0)
+			{
+				for(Long problemId : problemIds)
+				{
+					problemBeanVO = getProblemCompleteInfo(problemId);
+								 
+					int regionScope = problemBeanVO.getProblemImpactLevelId().intValue();
+					
+					if(regionScope == 4)
+						problemBeanVO.setUrl("constituencyPageAction.action?constituencyId="+problemBeanVO.getProblemImpactLevelValue()+"");
+					else if(regionScope == 3)
+						problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
+		            else if(regionScope == 2)
+		             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+				}
+			}
+			problemDetails.add(problemBeanVO);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getProblemDetailsForHomePage() method of PromblemManagementService");
+			return problemDetails;
+		}
+		return problemDetails;
+	
+	}
+	
+	
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public ProblemBeanVO getProblemCompleteInfo(Long problemId) {
+		
+			log.info("Entered in to getProblemCompleteInfo");
+			
+			ProblemBeanVO result = null;
+			
+			State state = null;
+			District district = null;
+			Constituency constituency = null;
+			Tehsil tehsil = null;
+			Hamlet hamlet = null;
+			LocalElectionBody localBody = null;
+			Constituency ward = null;
+			Booth booth = null;
+			
+			  
+		try
+		{
+			List<UserProblem> userProblem = userProblemDAO.getAllProblemDetails(problemId);
+			for(UserProblem problemDetails : userProblem)
+			{
+				result = new ProblemBeanVO();
+						
+				result.setProblemId(problemDetails.getProblem().getProblemId());
+				result.setProblem(problemDetails.getProblem().getTitle().toString());
+				result.setDescription(problemDetails.getProblem().getDescription().toString());
+				result.setExistingFrom(problemDetails.getProblem().getExistingFrom().toString());
+				result.setIdentifiedOn(problemDetails.getProblem().getIdentifiedOn().toString());
+				//result.setPostedPersonName(problemDetails.getUser().getFirstName().toString());
+				result.setProblemImpactLevelId(problemDetails.getProblem().getRegionScopes().getRegionScopesId());
+				result.setName(problemDetails.getUser().getFirstName().toString());
+				result.setLastName(problemDetails.getUser().getLastName().toString());
+				result.setImpactLevel(problemDetails.getProblem().getRegionScopes().getScope().toString());
+				result.setProblemImpactLevelValue(problemDetails.getProblem().getImpactLevelValue());
+				
+				switch (result.getProblemImpactLevelId().intValue()) {
+
+				case 2: {
+					state = stateDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(state.getStateName());
+					break;
+				}
+				case 3: {
+					district = districtDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(district.getDistrictName());
+					result.setState(district.getState().getStateName());
+					break;
+				}
+				case 4: {
+					constituency = constituencyDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(constituency.getName());
+					if (IConstants.PARLIAMENT_ELECTION_TYPE.equals(constituency
+							.getElectionScope().getElectionType()
+							.getElectionType())) {
+						result.setState(constituency.getState().getStateName());
+					} else {
+						result.setState(constituency.getState().getStateName());
+						result.setDistrict(constituency.getDistrict()
+								.getDistrictName()
+								+ "(Dt.)");
+					}
+					break;
+				}
+				case 5: {
+					tehsil = tehsilDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(tehsil.getTehsilName());
+					result = setConstDistStateTOResult(tehsil.getTehsilId(),
+							result);
+					result.setTehsil(tehsil.getTehsilName());
+					break;
+				}
+				case 6: {
+					hamlet = hamletDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(hamlet.getHamletName());
+					result = setConstDistStateTOResult(hamlet.getTownship()
+							.getTehsil().getTehsilId(), result);
+					result.setTehsil(hamlet.getTownship().getTehsil()
+							.getTehsilName());
+					break;
+				}
+				case 7: {
+					localBody = localElectionBodyDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(localBody.getName());
+					result.setDistrict(localBody.getDistrict()
+							.getDistrictName());
+					result.setState(localBody.getDistrict().getState()
+							.getStateName());
+					break;
+				}
+				case 8: {
+					ward = constituencyDAO.get(new Long(result.getProblemImpactLevelValue()));
+					result.setProblemLocation(ward.getName());
+					result.setLocalBody(ward.getLocalElectionBody().getName());
+					result.setDistrict(ward.getLocalElectionBody()
+							.getDistrict().getDistrictName());
+					result.setState(ward.getLocalElectionBody().getDistrict()
+							.getState().getStateName());
+					break;
+				}
+				case 9: {
+					booth = boothDAO.get(new Long(result.getProblemImpactLevelValue()));
+					if (booth.getTehsil() != null) {
+						result.setTehsil(booth.getTehsil().getTehsilName());
+						result = setConstDistStateTOResult(booth.getTehsil()
+								.getTehsilId(), result);
+					} else if (booth.getLocalBody() != null) {
+						if (booth.getBoothLocalBodyWard() != null)
+							result.setWard(booth.getBoothLocalBodyWard()
+									.getLocalBodyWard().getName());
+						result.setLocalBody(booth.getLocalBody().getName());
+						result.setDistrict(booth.getLocalBody().getDistrict()
+								.getDistrictName());
+						result.setState(booth.getLocalBody().getDistrict()
+								.getState().getStateName());
+
+					}
+					result.setProblemLocation(booth.getPartName()
+							+ booth.getLocation());
+					break;
+				}
+				default:
+					System.out.println("Invalid Scope.");
+					break;
+				}
+				
+				
+				result.setProblemLocationId(new Long(result.getProblemImpactLevelId().intValue()));
+				
+				
+				
+				}
+			List<Long> approvecommentsCount = problemCommentsDAO.getAllApprovedComments(problemId);
+			result.setCommentCount(approvecommentsCount.get(0));
+			List<Long> problemLikesCount = problemLikesDAO.getAllLikes(problemId);
+			result.setLikesCount(problemLikesCount.get(0));
+			List<Long> problemDisLikesCount = problemLikesDAO.getAllDisLikes(problemId);
+			result.setDislikesCount(problemDisLikesCount.get(0));
+			
+			return result;
+		}
+		
+			
+		//set problem Location
+		
+		
+		catch(Exception e)
+		{
+			log.debug("Exception Occured in getProblemCompleteInfo() method of ProblemMAnagement service");
+			return result;
+		}
+		
+			}
+
 	public Long getProblemsCount()
 	{
 		try
 		{
-		List<Long> problemHistoryCount = problemHistoryDAO.getAllValidProblemIdsCount();
-		 if(problemHistoryCount.get(0).longValue() < 31l)
-			 return problemHistoryCount.get(0);
+		//List<Long> problemHistoryCount = problemHistoryDAO.getAllValidProblemIdsCount();
+			List<Long> problemsCount = userProblemDAO.getAllValidProblemIdsCount();
+		 if(problemsCount.get(0).longValue() < 31l)
+			 return problemsCount.get(0);
 		 else
 			 return 30L;
 		}
