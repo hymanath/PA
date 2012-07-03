@@ -52,6 +52,7 @@ public class Problem extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private String isApproved;
 	private String isDelete;
+	private ProblemStatus problemStatus;
 	
 	private Set<CadreProblems> cadreProblems = new HashSet<CadreProblems>(0);
 	private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
@@ -296,6 +297,17 @@ public class Problem extends BaseModel implements Serializable{
 
 	public void setUserProblems(Set<UserProblem> userProblems) {
 		this.userProblems = userProblems;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="problem_status_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemStatus getProblemStatus() {
+		return problemStatus;
+	}
+
+	public void setProblemStatus(ProblemStatus problemStatus) {
+		this.problemStatus = problemStatus;
 	}
 	
 	
