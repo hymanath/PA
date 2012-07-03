@@ -82,10 +82,27 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private List<String> fileDescription;
     private HttpServletRequest servletRequest;
     private ServletContext context;
-    private List<String>fileNameList;
-	
-		
+    private List<String> fileNameList;
+    private String problemVisibility;
+	private Boolean hasFreeUserRole;
+	private Boolean hasPartyAnalystUserRole;
     
+	public Boolean getHasFreeUserRole() {
+		return hasFreeUserRole;
+	}
+
+	public void setHasFreeUserRole(Boolean hasFreeUserRole) {
+		this.hasFreeUserRole = hasFreeUserRole;
+	}
+
+	public Boolean getHasPartyAnalystUserRole() {
+		return hasPartyAnalystUserRole;
+	}
+
+	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
+		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
+	}
+
 	public List<String> getFileNameList() {
 		return fileNameList;
 	}
@@ -211,7 +228,18 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		this.isSuccessfullyInserted = isSuccessfullyInserted;
 	}
 
+	
+
 	//form input setters and getters
+	
+	public String getProblemVisibility() {
+		return problemVisibility;
+	}
+
+	public void setProblemVisibility(String problemVisibility) {
+		this.problemVisibility = problemVisibility;
+	}
+	
 	public String getProblem() {
 		return problemBeanVO.getProblem();
 	}
@@ -487,9 +515,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole"); 
+		hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
+		
 		
 		if(user==null)
 			return ERROR;
+		problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
+		problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
 		
 		if(user.getParentUserId() == null || user.getParentUserId() == 0)
 		{
@@ -574,16 +607,18 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		problemBeanVO.setFileVO(fileVO);
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
+		problemBeanVO.setProblemVisibility(getProblemVisibility());
 		
-		 problemBeanFromDB = problemManagementService.saveNewProblemData(problemBeanVO);
+		problemBeanFromDB =  problemManagementService.saveNewProblemData(problemBeanVO);
+		
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
 			 isSuccessfullyInserted = true;
-			 problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getProblemHistoryId());
+			// problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getProblemHistoryId());
 			 
 			 if(user.getUserType() == IConstants.FREE_USER)
 			 {
-				 problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getProblemHistoryId());
+				 //problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getProblemHistoryId());
 			 }
 			 problemBeanVO = new ProblemBeanVO();
 			 

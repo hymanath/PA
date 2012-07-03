@@ -655,7 +655,7 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			
 			fileVO.setFilePath(problemFilepath);
 			problemBeanVO.setFileVO(fileVO);
-			problemManagementService.saveProblemRelatedFiles(problemBeanVO);
+			problemManagementService.saveProblemRelatedFiles(problemBeanVO,null);
 			 
 			return "redirectToJSP";
 		
