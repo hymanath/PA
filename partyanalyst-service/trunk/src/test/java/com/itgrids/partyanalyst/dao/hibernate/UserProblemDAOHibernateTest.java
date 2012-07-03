@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.model.UserProblem;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 
@@ -15,7 +16,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		this.userProblemDAO = userProblemDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		userProblemDAO.getAll();
 	}
@@ -26,7 +27,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		
 		
-	}
+	}*/
 	
 	/*public void testgetAllValidProblemsCount()
 	{
@@ -52,4 +53,23 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(list.getProblem().getTitle());
 		}
 	}
-*/}
+*/
+	/*public void testgetAllPostedProblemsByAnanymousUserId(){
+	
+	List list1 = userProblemDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "desc", "model.problem.problemId", IConstants.TOTAL);
+	System.out.println(list1.size());
+}
+	*/
+	/*public void testgetAllPostedPRoblemCount()
+	{
+		 List list = userProblemDAO.public List getAllPostedProblemCount(2l);
+		 System.out.println(list.size());
+	}*/
+	
+	public void testgetAllPostedProblemCountOtherThanLoggedInUser()
+	{
+		List list = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(2l);
+		System.out.println(list.size());
+	}
+
+}
