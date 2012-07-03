@@ -99,7 +99,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String lastName;
     private String url;
     private Integer problemCount;
+    private String identifiedOn;
 	
+	public String getIdentifiedOn() {
+		return identifiedOn;
+	}
+
+	public void setIdentifiedOn(String identifiedOn) {
+		this.identifiedOn = identifiedOn;
+	}
+
 	public Integer getProblemCount() {
 		return problemCount;
 	}
