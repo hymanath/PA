@@ -564,10 +564,13 @@
         <property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
         <property name="filePathsDAO" ref="filePathsDAO" />
         <property name="userDAO" ref="userDAO" />
-		<property name="userProblemDAO" ref="userProblemDAO" />
-		<property name="problemCommentsDAO" ref="problemCommentsDAO" />
+        <property name="problemDAO" ref="problemDAO"/>
+        <property name="problemFilesDAO" ref="problemFilesDAO"/>
+        <property name="cadreProblemsDAO" ref="cadreProblemsDAO"/>
+        <property name="visibilityDAO" ref="visibilityDAO"/>
+        <property name="userProblemDAO" ref="userProblemDAO"/>
+        <property name="problemCommentsDAO" ref="problemCommentsDAO" />
 		<property name="problemLikesDAO" ref="problemLikesDAO" />
-
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
