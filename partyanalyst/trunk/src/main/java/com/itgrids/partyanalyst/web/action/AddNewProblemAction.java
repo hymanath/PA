@@ -388,7 +388,92 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.INFO_SOURCES,problemSourcesList);
 		
 		try{
-		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true))
+			if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true))
+			{
+				String accessType =user.getAccessType();
+				Long accessValue= new Long(user.getAccessValue());
+				
+				if("MLA".equals(accessType))
+				{
+					log.debug("Access Type = MLA ****");
+					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+					
+					stateList = regionServiceDataImp.getStatesByCountry(1l);			
+					districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
+					constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
+					mandalList = regionServiceDataImp.getSubRegionsInConstituency(list.get(2).getId(), IConstants.PRESENT_YEAR, null);
+					mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
+					stateId = list.get(0).getId();
+					districtId = list.get(1).getId();
+					constituencyId = list.get(2).getId();
+					 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
+					setProblemLocation(constituencyId);
+					setScope(4l);
+								
+				}else if("COUNTRY".equals(accessType))
+				{
+					log.debug("Access Type = Country ****");
+					stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+					stateList.add(0,new SelectOptionVO(0L, "Select State"));
+					problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(0l);
+					setProblemLocation(0l);
+					setScope(0l);
+					
+					
+				}else if("STATE".equals(accessType)){
+					log.debug("Access Type = State ****");
+					
+					String name = cadreManagementService.getStateName(accessValue);
+					SelectOptionVO obj2 = new SelectOptionVO();
+					obj2.setId(accessValue);
+					obj2.setName(name);			
+					stateList.add(obj2);
+					districtList = staticDataService.getDistricts(accessValue);
+					districtList.add(0,new SelectOptionVO(0l,"Select District"));
+					stateId = accessValue;	
+					setProblemLocation(stateId);
+					 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
+					setScope(2l);
+					
+				}else if("DISTRICT".equals(accessType)){
+					log.debug("Access Type = District ****");			
+					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+					stateList = regionServiceDataImp.getStatesByCountry(1l);			
+					districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+					constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
+					constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
+					stateId = list.get(0).getId();
+					districtId = accessValue;	
+					 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(3l);
+					setProblemLocation(districtId);
+					setScope(3l);
+					
+				} else if("MP".equals(accessType)){
+					List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+					stateId = list.get(0).getId();
+					stateList = regionServiceDataImp.getStatesByCountry(1l);
+					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
+					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+					constituencyList = constituencyInfoVO.getAssembyConstituencies();
+					problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
+										
+					/*
+					log.debug("Access Type = MP ****");
+					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+					pConstituencyList = new ArrayList<SelectOptionVO>();
+					
+					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+					constituencyList = constituencyInfoVO.getAssembyConstituencies();
+					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+					pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+					*/
+					setIsParliament(true);
+					setPConstituencyId(accessValue);
+					setScope(4l);
+				}
+			}
+			else if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true))
 		{	
 			setScope(new Long(requestSrc));
 			if("2".equalsIgnoreCase(requestSrc))	
@@ -456,91 +541,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
 				setProblemLocation(0l);
 			}		
-		} else if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true))
-		{
-			String accessType =user.getAccessType();
-			Long accessValue= new Long(user.getAccessValue());
-			
-			if("MLA".equals(accessType))
-			{
-				log.debug("Access Type = MLA ****");
-				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
-				
-				stateList = regionServiceDataImp.getStatesByCountry(1l);			
-				districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
-				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
-				mandalList = regionServiceDataImp.getSubRegionsInConstituency(list.get(2).getId(), IConstants.PRESENT_YEAR, null);
-				mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
-				stateId = list.get(0).getId();
-				districtId = list.get(1).getId();
-				constituencyId = list.get(2).getId();
-				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
-				setProblemLocation(constituencyId);
-				setScope(4l);
-							
-			}else if("COUNTRY".equals(accessType))
-			{
-				log.debug("Access Type = Country ****");
-				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
-				stateList.add(0,new SelectOptionVO(0L, "Select State"));
-				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(0l);
-				setProblemLocation(0l);
-				setScope(0l);
-				
-				
-			}else if("STATE".equals(accessType)){
-				log.debug("Access Type = State ****");
-				
-				String name = cadreManagementService.getStateName(accessValue);
-				SelectOptionVO obj2 = new SelectOptionVO();
-				obj2.setId(accessValue);
-				obj2.setName(name);			
-				stateList.add(obj2);
-				districtList = staticDataService.getDistricts(accessValue);
-				districtList.add(0,new SelectOptionVO(0l,"Select District"));
-				stateId = accessValue;	
-				setProblemLocation(stateId);
-				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
-				setScope(2l);
-				
-			}else if("DISTRICT".equals(accessType)){
-				log.debug("Access Type = District ****");			
-				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
-				stateList = regionServiceDataImp.getStatesByCountry(1l);			
-				districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
-				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
-				constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
-				stateId = list.get(0).getId();
-				districtId = accessValue;	
-				 problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(3l);
-				setProblemLocation(districtId);
-				setScope(3l);
-				
-			} else if("MP".equals(accessType)){
-				List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
-				stateId = list.get(0).getId();
-				stateList = regionServiceDataImp.getStatesByCountry(1l);
-				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-				pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
-				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-				constituencyList = constituencyInfoVO.getAssembyConstituencies();
-				problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(4l);
-									
-				/*
-				log.debug("Access Type = MP ****");
-				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-				pConstituencyList = new ArrayList<SelectOptionVO>();
-				
-				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-				constituencyList = constituencyInfoVO.getAssembyConstituencies();
-				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-				pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
-				*/
-				setIsParliament(true);
-				setPConstituencyId(accessValue);
-				setScope(4l);
-			}
-		}
+		} 
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM,stateId);
 		//problemTypes = regionServiceDataImp.getProblemTypesByRegionScopeId(2l);
 		session.setAttribute(ISessionConstants.PROBLEM_TYPES, problemTypes);
