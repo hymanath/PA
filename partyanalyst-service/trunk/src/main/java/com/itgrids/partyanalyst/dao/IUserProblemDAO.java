@@ -16,5 +16,14 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Object[]> getProblemCompleteInfo(Long problemId);
 	
 	public List<UserProblem> getAllProblemDetails(Long problemId);
+	
+	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, 
+			String order, String columnName, String reasonType);
+	
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType);
+	
+	public List getAllPostedProblemCount(Long userId);
+	
+	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId);
 
 }
