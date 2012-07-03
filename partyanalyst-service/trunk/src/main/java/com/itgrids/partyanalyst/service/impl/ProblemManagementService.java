@@ -5405,7 +5405,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			for(UserProblem problemDetails : userProblem)
 			{
 				result = new ProblemBeanVO();
-						
+				result.setProblemHistoryId(problemDetails.getUserProblemId());		
 				result.setProblemId(problemDetails.getProblem().getProblemId());
 				result.setProblem(problemDetails.getProblem().getTitle().toString());
 				result.setDescription(problemDetails.getProblem().getDescription().toString());
