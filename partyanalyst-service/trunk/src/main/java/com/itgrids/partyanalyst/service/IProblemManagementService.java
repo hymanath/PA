@@ -21,6 +21,10 @@ import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
+import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.model.UserProblem;
 
 public interface IProblemManagementService {
 
@@ -103,7 +107,7 @@ public interface IProblemManagementService {
 	
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
 	
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO);
+	//public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO);
 	
 	public List<FileVO> getImageDetails();
 	
@@ -136,4 +140,17 @@ public interface IProblemManagementService {
 	public List<SelectOptionVO> getProblemTypes();
 	
 	public List<ProblemBeanVO> getProblemDetailsForFreeUser(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex);
+	
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem);
+	
+	public ProblemCompleteLocation saveProblemCompleteLocation(ProblemBeanVO problemBeanVO);
+	
+	public ProblemExternalSource saveProblemExternalSource(ProblemBeanVO problemBeanVO);
+	
+	public String getProblemReferenceNo();
+	
+	public void saveCadreProblemDetails(ProblemBeanVO problemBeanVO, Problem problem);
+	
+	public UserProblem saveUserProblemDetails(ProblemBeanVO problBeanVO, Problem problem);
+	
 }
