@@ -25,7 +25,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		query.setParameter(0,IConstants.PUBLIC);
 		query.setParameter(1,IConstants.TRUE);
 		query.setParameter(2,IConstants.TRUE);
-		query.setParameter(2,IConstants.FALSE);
+		query.setParameter(3,IConstants.FALSE);
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
 		return query.list();
