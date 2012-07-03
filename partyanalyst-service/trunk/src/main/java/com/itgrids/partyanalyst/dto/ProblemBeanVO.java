@@ -100,6 +100,9 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
     private String url;
     private Integer problemCount;
     private String identifiedOn;
+    private String problemVisibility;
+    private Boolean hasFreeUserRole;
+	private Boolean hasPartyAnalystUserRole;
 	
 	public String getIdentifiedOn() {
 		return identifiedOn;
@@ -108,7 +111,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public void setIdentifiedOn(String identifiedOn) {
 		this.identifiedOn = identifiedOn;
 	}
-
+	
 	public Integer getProblemCount() {
 		return problemCount;
 	}
@@ -837,6 +840,30 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getProblemVisibility() {
+		return problemVisibility;
+	}
+
+	public void setProblemVisibility(String problemVisibility) {
+		this.problemVisibility = problemVisibility;
+	}
+
+	public Boolean getHasFreeUserRole() {
+		return hasFreeUserRole;
+	}
+
+	public void setHasFreeUserRole(Boolean hasFreeUserRole) {
+		this.hasFreeUserRole = hasFreeUserRole;
+	}
+
+	public Boolean getHasPartyAnalystUserRole() {
+		return hasPartyAnalystUserRole;
+	}
+
+	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
+		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
 	}
 
 	
