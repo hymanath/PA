@@ -50,4 +50,80 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return getHibernateTemplate().find("from UserProblem model where  model.userProblemId = ?",userProblemId);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List getAllPostedProblemsByAnanymousUserId(Long userId, Integer startIndex, Integer results, 
+			String order, String columnName, String reasonType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.problem.problemId, ");
+		query.append(" model.problem.title,model.problem.description,model.problem.identifiedOn,model.problem.existingFrom, ");
+		query.append(" model.problem.impactLevelValue,model.problem.regionScopes.regionScopesId,model.problem.regionScopes.scope, ");
+		query.append(" model.problem.isApproved,model.userProblemId from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) ");
+		
+		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERS))
+			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.REJECTED+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");
+		
+		query.append(" order by "+columnName+" "+order);
+
+		Query queryObject = getSession().createQuery(query.toString());
+
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+			queryObject.setParameter(0, userId);
+		
+		queryObject.setFirstResult(startIndex);		
+		queryObject.setMaxResults(results);
+		
+		
+
+		return queryObject.list();
+		
+	}
+	
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType){
+
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(*) from UserProblem model ");
+		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
+			query.append("where model.user.userId is not null and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append("where model.user.userId .userId = ? ");			
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+			query.append("where model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");			
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.REJECTED+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");	
+		
+		query.append(" and (model.problem.isDelete = 'false' or model.problem.isDelete is null) ");
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+			queryObject.setParameter(0, userId);
+		
+		return (Long)queryObject.uniqueResult();
+		
+	}
+	
+	
+	public List getAllPostedProblemCount(Long userId)
+	{
+		return getHibernateTemplate().find("select count(distinct model.problem.problemId),model.problem.isApproved from UserProblem model where model.user.userId = ? and (model.problem.isDelete ='false'or model.problem.isDelete is null) group by model.problem.isApproved",userId);
+	}
+	
+	
+	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId)
+	{
+		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
+	}
 }
