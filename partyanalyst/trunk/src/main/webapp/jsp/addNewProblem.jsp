@@ -532,6 +532,12 @@ function clearSuccessMsg(){
 					<table>
 					<tr><td>
 			<div id="dynamicDiv" ></div></td></tr>
+			<c:if test="${sessionScope.hasFreeUserRole && sessionScope.hasPartyAnalystUserRole}">
+			<tr>
+			<td><input type="radio" name="problemVisibility" id="publicProblem" value="private" checked=true>Make this Problem Private to me</input></td></tr>
+			<tr><td><input type="radio" name="problemVisibility" id="privateProblem" value="public">Show this Problem to Public </input></td>
+			</tr>
+			</c:if>
 				<tr id="problemSourceRowId">
 					<td colspan="2"><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
