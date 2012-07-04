@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
@@ -120,8 +121,17 @@ public class ProblemManagementReportService implements
 	private ICommentDataDAO commentDataDAO;
 	private IFeedbackDAO feedbackDAO;
 	private IUserDAO userDAO;
+	private IUserProblemDAO userProblemDAO;
 	
 	
+	public IUserProblemDAO getUserProblemDAO() {
+		return userProblemDAO;
+	}
+
+	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
+		this.userProblemDAO = userProblemDAO;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -2126,7 +2136,8 @@ public class ProblemManagementReportService implements
 		 */
 		@SuppressWarnings("unchecked")
 		public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType) {
-			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			//List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			List<Object> constituencyResult = userProblemDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			if(constituencyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> urbanConstituencies = new ArrayList<Long>();
 				List<Long> ruralConstituencies = new ArrayList<Long>();
@@ -2195,13 +2206,25 @@ public class ProblemManagementReportService implements
 		 * @return List<Object>
 		 * @date 06-10-10
 		 */
-		public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
+		/*public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
 			List<Object> districtResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			if(districtResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
 				List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
 				districtResult.addAll(consituencyResult);
 			}			
+			return districtResult;
+		}*/
+		
+		public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
+			List<Object> districtResult = userProblemDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			if(districtResult.size()<IConstants.MAX_PROBLEMS_DISPLAY)
+			{
+				List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
+				List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
+				districtResult.addAll(consituencyResult);
+				
+			}
 			return districtResult;
 		}
 
@@ -2215,7 +2238,7 @@ public class ProblemManagementReportService implements
 		 * @return List<Object>
 		 * @date 06-10-10
 		 */
-		public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType) {			
+		/*public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType) {			
 			List<Object> stateResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			if(stateResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
@@ -2223,7 +2246,22 @@ public class ProblemManagementReportService implements
 				stateResult.addAll(districtResult);
 			}		
 			return stateResult;
+		}*/
+		
+		public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds,String locationType)
+		{
+			List<Object> stateResult = userProblemDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
+			if(stateResult.size()<IConstants.MAX_PROBLEMS_DISPLAY)
+			{
+				List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
+				List<Object> districtResult = getAllAcceptedProblemsInADistrict(listOfDistricts,IConstants.DISTRICT_LEVEL);
+				stateResult.addAll(districtResult);
+			}
+			return stateResult;
 		}
+		
+		
+		
 
 		public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId)
 		{
