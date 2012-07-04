@@ -30,4 +30,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved);
 
+	public List<Object[]> getStates();
+
 }
