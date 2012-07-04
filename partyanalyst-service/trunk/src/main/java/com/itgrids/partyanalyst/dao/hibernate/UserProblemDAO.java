@@ -172,5 +172,13 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		
 	}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getStates()
+		{
+			return getHibernateTemplate().find("select distinct model.problem.problemCompleteLocation.state.stateId , model.problem.problemCompleteLocation.state.stateName from " +
+					" UserProblem model where model.visibility.type = 'Public' and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+							" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.problem.problemCompleteLocation.state.stateName");
+		}
 	
 }
