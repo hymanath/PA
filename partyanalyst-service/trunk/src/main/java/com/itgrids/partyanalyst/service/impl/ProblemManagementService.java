@@ -5507,9 +5507,11 @@ public class ProblemManagementService implements IProblemManagementService {
 						problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
 		            else if(regionScope == 2)
 		             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+					problemDetails.add(problemBeanVO);
 				}
+				
 			}
-			problemDetails.add(problemBeanVO);
+			
 		}
 		catch(Exception e)
 		{
@@ -5657,6 +5659,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				
 				
 				}
+			
 			List<Long> approvecommentsCount = problemCommentsDAO.getAllApprovedComments(problemId);
 			result.setCommentCount(approvecommentsCount.get(0));
 			List<Long> problemLikesCount = problemLikesDAO.getAllLikes(problemId);
