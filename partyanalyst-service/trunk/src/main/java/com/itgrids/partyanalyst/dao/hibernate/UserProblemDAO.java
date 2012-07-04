@@ -20,7 +20,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	public List<Long> getAllValidProblemIds(Integer startIndex, Integer maxIndex)
 	{
 		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where model.visibility.type = ? and model.isOwner = ? " +
-				" and model.problem.isApproved = ?  and model.problem.isDelete = ? and model.problem.regionScopes.regionScopesId <= 4 ");
+				" and model.problem.isApproved = ?  and model.problem.isDelete = ? and model.problem.regionScopes.regionScopesId <= 5 ");
 		 
 		query.setParameter(0,IConstants.PUBLIC);
 		query.setParameter(1,IConstants.TRUE);
@@ -33,8 +33,9 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 	public List<Long> getAllValidProblemIdsCount()
 	{
-	return getHibernateTemplate().find("select count(model.userProblemId) from UserProblem model where model.visibility.type ='public' and model.isOwner = '"+IConstants.TRUE+"' and model.problem.isApproved = '"+IConstants.TRUE+"' " +
-				" and model.problem.isDelete = null and model.problem.regionScopes.regionScopesId < 5");
+	return getHibernateTemplate().find("select count(model.userProblemId) from UserProblem model where model.visibility.type ='"+IConstants.PUBLIC+"' and model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"' " +
+				" and model.problem.isDelete ='"+IConstants.FALSE+"' and model.problem.regionScopes.regionScopesId < 5");
+	
 	
 }
 	
@@ -126,4 +127,5 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	{
 		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
 	}
+	
 }
