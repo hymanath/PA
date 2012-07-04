@@ -702,6 +702,7 @@
 		<property name="commentDataDAO" ref="commentDataDAO" />
 		<property name="feedbackDAO" ref="feedbackDAO" />
 		<property name="userDAO" ref="userDAO" />
+		<property name="userProblemDAO" ref="userProblemDAO"/>
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
