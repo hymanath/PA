@@ -25,5 +25,9 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List getAllPostedProblemCount(Long userId);
 	
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId);
+	
+	public String getCommonDataForAllProblems();
+	
+	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved);
 
 }
