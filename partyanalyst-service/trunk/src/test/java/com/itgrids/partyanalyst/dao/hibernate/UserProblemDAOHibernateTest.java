@@ -91,4 +91,19 @@ public void testgetAllValidProblemsCount()
 		
 		
 	}*/
+
+	public void testGetStates()
+	{
+		List<Object[]> list = userProblemDAO.getStates();
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+			}
+		}
+		
+	}
 }
