@@ -29,11 +29,11 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void testgetAllValidProblemsCount()
+public void testgetAllValidProblemsCount()
 	{
 		List<Long> list = userProblemDAO.getAllValidProblemIdsCount();
 		System.out.println(list.size());
-	}*/
+	}
 	
 /*public void testgetProblemCompleteInfo()
 	{
@@ -66,10 +66,29 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println(list.size());
 	}*/
 	
-	public void testgetAllPostedProblemCountOtherThanLoggedInUser()
+	/*public void testgetAllPostedProblemCountOtherThanLoggedInUser()
 	{
 		List list = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(2l);
 		System.out.println(list.size());
 	}
-
+*/
+	
+	/*public void testgetCommonDataForAllProblems()
+	{
+		String result = userProblemDAO.getCommonDataForAllProblems();
+		System.out.println(result);
+	}*/
+	
+	/*public void testgetAllProblemHistoryIdsForGivenLocationByTheirIds(){
+		
+		List<Long> locationIds =  new ArrayList<Long>(0);
+		locationIds.add(10l);
+		String impactLevel = "District";
+		String isApproved = "true";
+		List list = userProblemDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,impactLevel,isApproved);
+		System.out.println(list.size());
+		
+		
+		
+	}*/
 }
