@@ -914,10 +914,12 @@ public class ProblemManagementService implements IProblemManagementService {
 					ProblemType problemType = new ProblemType();
 					ProblemExternalSource problemExternalSource = null; 
 					UserProblem userProblem = new UserProblem();
+					
+					problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
+					
 					if(problemCompleteLocation != null)
 						  problem.setProblemCompleteLocation(problemCompleteLocation);
 					
-					problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
 					if (problemBeanVO.getProbSourceId() != null	&& problemBeanVO.getProbSourceId() > 0)
 					{
 						problemSource = informationSourceDAO.get(problemBeanVO.getProbSourceId());
