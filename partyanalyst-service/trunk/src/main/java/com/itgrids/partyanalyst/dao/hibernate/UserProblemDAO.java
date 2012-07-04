@@ -128,4 +128,49 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
 	}
 	
+	public String getCommonDataForAllProblems(){
+		
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append("select model.problem.title,");
+		conditionQuery.append(" model.problem.description,");
+		conditionQuery.append(" model.problem.regionScopes.scope,");
+		conditionQuery.append(" model.problem.impactLevelValue,");
+		conditionQuery.append(" model.problem.identifiedOn,");
+		conditionQuery.append(" model.user.firstName,");
+		conditionQuery.append(" model.problem.problemId,");
+		conditionQuery.append(" model.userProblemId,");
+		conditionQuery.append(" model.problem.existingFrom,");
+		conditionQuery.append(" model.problem.problemStatus.status,");
+		conditionQuery.append(" model.problem.regionScopes.regionScopesId,");
+		conditionQuery.append(" model.user.lastName,");
+		conditionQuery.append(" model.problem.isApproved ");
+		conditionQuery.append(" from UserProblem model");
+		return conditionQuery.toString();
+		
+		}
+	
+		public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved){
+		StringBuilder locationQuery = new StringBuilder();
+		locationQuery.append(getCommonDataForAllProblems());
+		locationQuery.append(" where model.problem.regionScopes.scope = ?");
+		locationQuery.append(" and model.problem.isApproved = ? ");
+		locationQuery.append(" and model.visibility.type = ? ");
+		locationQuery.append(" and model.problem.impactLevelValue in(:locationIds)");
+		locationQuery.append(" and model.user is not null ");
+		
+		locationQuery.append(" order by date(model.updatedTime)");
+		Query queryObject = getSession().createQuery(locationQuery.toString());
+		queryObject.setString(0,impactLevel);
+		queryObject.setString(1, isApproved);
+		queryObject.setString(2,IConstants.PUBLIC);
+		queryObject.setParameterList("locationIds",locationIds);
+		
+		
+		queryObject.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
+		return queryObject.list();
+		
+		
+		
+	}
+	
 }
