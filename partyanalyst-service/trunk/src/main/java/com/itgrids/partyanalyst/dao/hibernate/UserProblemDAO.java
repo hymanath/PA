@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -64,7 +65,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
-		else if(reasonType.equalsIgnoreCase(IConstants.OTHERS))
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
 			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
@@ -96,7 +97,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
 			query.append("where model.user.userId is not null and model.problem.isApproved = '"+IConstants.TRUE+"' ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
-			query.append("where model.user.userId .userId = ? ");			
+			query.append("where model.user.userId = ? ");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
 			query.append("where model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
@@ -149,7 +150,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		}
 	
-		public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved){
+	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved){
 		StringBuilder locationQuery = new StringBuilder();
 		locationQuery.append(getCommonDataForAllProblems());
 		locationQuery.append(" where model.problem.regionScopes.scope = ?");
@@ -181,4 +182,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 							" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.problem.problemCompleteLocation.state.stateName");
 		}
 	
+
+ 
 }
+	
