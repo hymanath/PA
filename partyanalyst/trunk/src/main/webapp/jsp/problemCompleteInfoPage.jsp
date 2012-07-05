@@ -560,7 +560,7 @@ function focusOnTextareas()
 			</c:if>
 			<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Impact Level: <span class="bluetext">${problemBeanVO.impactLevel}</span><BR>
 			<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Status: <span class="bluetext">${problemBeanVO.status}</span></p><hr>
-			<p><img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported Date: <span class="bluetext">${problemBeanVO.postedDate}</span><BR>
+			<p><img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported Date: <span class="bluetext">${problemBeanVO.identifiedOn}</span><BR>
 			<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Existing From: <span class="bluetext">${problemBeanVO.existingFrom}</span><BR>
 			<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported By: <span class="bluetext">${problemBeanVO.name}</span></p><hr>
 			</div>
