@@ -879,6 +879,7 @@
     	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
     	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
     	<property name="userDAO" ref="userDAO" />
+    	<property name="userProblemDAO" ref="userProblemDAO"/>
     	
 	</bean>
 	
