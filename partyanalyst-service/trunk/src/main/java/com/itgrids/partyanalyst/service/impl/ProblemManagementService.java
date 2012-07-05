@@ -2192,7 +2192,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					return problemBeanVO;
 				else
 				{
-					freeUserId = problemHistoryDAO.getFreeUserIdOfAProblem(problemHistoryId);
+					//freeUserId = problemHistoryDAO.getFreeUserIdOfAProblem(problemHistoryId);
+					freeUserId = userProblemDAO.getFreeUserIdOfAProblem(problemHistoryId);
 					if(freeUserId!= null && freeUserId.longValue() != 0 && 
 							userId != null && userId.longValue() != 0 && freeUserId.equals(userId))
 							return problemBeanVO;
@@ -5509,6 +5510,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						problemBeanVO.setUrl("districtPageAction.action?districtId="+problemBeanVO.getProblemImpactLevelValue()+"&districtName="+problemBeanVO.getProblemLocation()+"");
 		            else if(regionScope == 2)
 		             	problemBeanVO.setUrl("statePageAction.action?stateId="+problemBeanVO.getProblemImpactLevelValue()+"");
+					
 					problemDetails.add(problemBeanVO);
 				}
 				
@@ -5564,6 +5566,11 @@ public class ProblemManagementService implements IProblemManagementService {
 				result.setLastName(problemDetails.getUser().getLastName().toString());
 				result.setImpactLevel(problemDetails.getProblem().getRegionScopes().getScope().toString());
 				result.setProblemImpactLevelValue(problemDetails.getProblem().getImpactLevelValue());
+				result.setReferenceNo(problemDetails.getProblem().getReferenceNo().toString());
+				result.setStatus(problemDetails.getProblem().getProblemStatus().getStatus().toString());
+				result.setIsApproved(problemDetails.getProblem().getIsApproved().toString());
+				result.setTotalResultsCount(getProblemsCount().toString());
+				
 				
 				switch (result.getProblemImpactLevelId().intValue()) {
 
@@ -5669,6 +5676,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			List<Long> problemDisLikesCount = problemLikesDAO.getAllDisLikes(problemId);
 			result.setDislikesCount(problemDisLikesCount.get(0));
 			
+			
 			return result;
 		}
 		
@@ -5744,7 +5752,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	{
 		List<SelectOptionVO> selectOptionList = new ArrayList<SelectOptionVO>(); 
 		try{
-			List<Object[]> states = problemHistoryDAO.getStates();
+			//List<Object[]> states = problemHistoryDAO.getStates();
+			List<Object[]> states = userProblemDAO.getStates();
 			if(states != null && states.size() > 0)
 			{
 				for(Object[] result : states)
@@ -5792,7 +5801,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	{
 		List<SelectOptionVO> userList = new ArrayList<SelectOptionVO>();
 		try{
-			List<Object[]> list = problemHistoryDAO.getProblemPostedUserDetails();
+			//List<Object[]> list = problemHistoryDAO.getProblemPostedUserDetails();
+			List<Object[]> list = userProblemDAO.getProblemPostedUserDetails();
 			if(list != null && list.size() > 0)
   			 {
 				for(Object[] params : list)
@@ -5807,7 +5817,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			return userList;
 		}catch (Exception e) {
 			log.error("Exception Occured in getProblemPostedUserDetails() Method , Exception - "+e);
-			return null;
+			return userList;
 		}
 	}
 	
@@ -5841,7 +5851,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			log.error("problemSearchVO is null in getProblemDetailsForFreeUser() method");
 			return null;
 		}
-		List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>();
+		List<ProblemBeanVO> problemBeanVOList =  new ArrayList<ProblemBeanVO>(0);
 		try{
 		
 		Long scopeId = problemSearchVO.getScopeId();
@@ -5862,13 +5872,16 @@ public class ProblemManagementService implements IProblemManagementService {
 			problemSearchVO.setLocationValue(locationValue);
 		}
 		
-		List<Object[]> list = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,false);
-		List<Object[]> countList = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,true);
+		//List<Object[]> list = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,false);
+		//List<Object[]> countList = problemHistoryDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,true);
+		List<Object[]> list = userProblemDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,false);
+		List<Object[]> countList = userProblemDAO.getFreeUserProblemsInSearch(problemSearchVO,startIndex,maxIndex,true);
 		if(list != null && list.size() > 0)
 		{
 			for(Object[] params : list)
 			{
 				ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+				
 				problemBeanVO.setProblemHistoryId((Long)params[0]);
 				problemBeanVO.setProblem(params[1].toString());
 				problemBeanVO.setDescription(params[2].toString());
@@ -5879,14 +5892,18 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemBeanVO.setUserID((Long)params[9]);
 				problemBeanVO.setProblemCount(countList.size());
 				problemBeanVOList.add(problemBeanVO);
+				
 			}
+			
+			
 		}
-		return problemBeanVOList;
+		
 		}catch (Exception e) {
 			log.error("Exception Occured in getProblemDetailsForFreeUser() Method , Exception - "+e);
-			return null;
+			return problemBeanVOList;
 		}
-					
+		
+		return problemBeanVOList;			
 	}
 
 }
