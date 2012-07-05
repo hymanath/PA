@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.UserProblem;
 
 public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
@@ -32,4 +33,11 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 
 	public List<Object[]> getStates();
 
+	public List<Object[]> getProblemPostedUserDetails();
+	
+	public List<Object[]> getFreeUserProblemsInSearch(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex,boolean countReq);
+	
+	public Long getFreeUserIdOfAProblem(Long problemHistoryId);
+	
+	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId);
 }
