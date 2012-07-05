@@ -31,7 +31,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		query.setMaxResults(maxIndex);
 		return query.list();
 	}
-	
+	@SuppressWarnings("unchecked")
 	public List<Long> getAllValidProblemIdsCount()
 	{
 	return getHibernateTemplate().find("select count(model.userProblemId) from UserProblem model where model.visibility.type ='"+IConstants.PUBLIC+"' and model.isOwner ='"+IConstants.TRUE+"' and model.problem.isApproved ='"+IConstants.TRUE+"' " +
@@ -40,7 +40,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 }
 	
-	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getProblemCompleteInfo(Long problemId)
 	{
 		return getHibernateTemplate().find("select model.problem.title,model.problem.description,model.problem.existingFrom,model.problem.identifiedOn,model.user.firstName,model.user.lastName,model.problem.regionScopes.regionScopesId,model.problem.impactLevelValue from UserProblem model where model.problem.problemId = ?",problemId);
@@ -89,7 +89,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return queryObject.list();
 		
 	}
-	
+	@SuppressWarnings("unchecked")
 	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long userId, String reasonType){
 
 		StringBuilder query = new StringBuilder();
@@ -117,18 +117,18 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemCount(Long userId)
 	{
 		return getHibernateTemplate().find("select count(distinct model.problem.problemId),model.problem.isApproved from UserProblem model where model.user.userId = ? and (model.problem.isDelete ='false'or model.problem.isDelete is null) group by model.problem.isApproved",userId);
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId)
 	{
 		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
 	}
-	
+	@SuppressWarnings("unchecked")
 	public String getCommonDataForAllProblems(){
 		
 		StringBuilder conditionQuery = new StringBuilder();
@@ -149,7 +149,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return conditionQuery.toString();
 		
 		}
-	
+	@SuppressWarnings("unchecked")
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved){
 		StringBuilder locationQuery = new StringBuilder();
 		locationQuery.append(getCommonDataForAllProblems());
@@ -173,6 +173,24 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		
 		
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public Long getFreeUserIdOfAProblem(Long problemHistoryId)
+	{
+		Query query = getSession().createQuery("select model.user.userId from UserProblem model where model.userProblemId = ? and " +
+					" model.visibility.type = '"+IConstants.PUBLIC+"' and (model.problem.isDelete is null or model.problem.isDelete = 'false')" +
+					" and model.problem.isApproved = 'true' and model.isOwner = 'true'");
+		query.setParameter(0,problemHistoryId);
+		return (Long)query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId){
+		Object[] params = {userId,problemHistoryId};
+		return getHibernateTemplate().find("select model.problem.problemId from UserProblem model where model.user.userId=? and model.userProblemId=?",params);
+		
+	}
 		
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getStates()
@@ -182,7 +200,71 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 							" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.problem.problemCompleteLocation.state.stateName");
 		}
 	
-
- 
-}
+		@SuppressWarnings("unchecked")
+		
+		public List<Object[]> getProblemPostedUserDetails()
+		{
+			return getHibernateTemplate().find("select distinct model.user.userId,model.user.firstName,model.user.lastName from UserProblem model where model.user.userId is not null and model.visibility.type = '"+IConstants.PUBLIC+"' " +
+					"and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+					" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.user.firstName");
+		}
+		
 	
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getFreeUserProblemsInSearch(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex,boolean countReq)
+		{
+			StringBuilder query = new StringBuilder();
+			query.append("select model.userProblemId,model.problem.title,model.problem.description,model.problem.existingFrom,model.problem.identifiedOn," +
+					" model.problem.regionScopes.regionScopesId,model.problem.impactLevelValue,model.user.firstName,model.user.lastName,model.user.userId " +
+					" from UserProblem model where model.user.userId is not null and model.visibility.type = '"+IConstants.PUBLIC+"' and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+					" and model.problem.isApproved = 'true' and model.isOwner = 'true'");
+			if(!problemSearchVO.getScopeAll())
+			{
+				query.append(" and model.problem.problemCompleteLocation."); 
+				if(problemSearchVO.getScopeId().equals(2l))
+					query.append("state.stateId ");
+				else if(problemSearchVO.getScopeId().equals(3l))
+					query.append("district.districtId ");
+				else if(problemSearchVO.getScopeId().equals(4l))
+					query.append("constituency.constituencyId ");
+				else if(problemSearchVO.getScopeId().equals(5L))
+					query.append("tehsil.tehsilId ");
+				else if(problemSearchVO.getScopeId().equals(6L))
+					query.append("hamlet.hamletId ");
+				else if(problemSearchVO.getScopeId().equals(7L))
+					query.append("localElectionBody.localElectionBodyId ");
+				else if(problemSearchVO.getScopeId().equals(8L))
+					query.append("ward.constituencyId ");
+				else if(problemSearchVO.getScopeId().equals(9L))
+					query.append("booth.boothId ");
+				
+				query.append("  = :localtionValue ");
+					
+			}
+			if(!problemSearchVO.getStatusAll())
+				query.append(" and model.problem.problemStatus.problemStatusId = :problemStatusId");
+			if(!problemSearchVO.getUsersAll())
+				query.append(" and model.user.userId = :userId");
+			if(!problemSearchVO.getTypeAll())
+				query.append(" and model.problemType.problemTypeId = :problemTypeId");
+			Query queryObj = getSession().createQuery(query.toString());
+			if(!problemSearchVO.getScopeAll())
+				queryObj.setParameter("localtionValue", problemSearchVO.getLocationValue());
+			if(!problemSearchVO.getStatusAll())
+				queryObj.setParameter("problemStatusId", problemSearchVO.getStatusId());
+			if(!problemSearchVO.getUsersAll())
+				queryObj.setParameter("userId", problemSearchVO.getUserId());
+			if(!problemSearchVO.getTypeAll())
+				queryObj.setParameter("problemTypeId", problemSearchVO.getTypeId());
+			 if(!countReq)
+			   {
+				queryObj.setFirstResult(startIndex);
+				queryObj.setMaxResults(maxIndex);
+			   }
+			return queryObj.list();
+		
+		
+						
+		}
+		
+}
