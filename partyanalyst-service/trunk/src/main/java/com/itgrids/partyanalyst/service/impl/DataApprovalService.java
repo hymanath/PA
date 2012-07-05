@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -39,8 +40,17 @@ public class DataApprovalService implements IDataApprovalService {
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
 	private IUserDAO userDAO;
+	private IUserProblemDAO userProblemDAO;
 	
-    public IUserDAO getUserDAO() {
+    public IUserProblemDAO getUserProblemDAO() {
+		return userProblemDAO;
+	}
+
+	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
+		this.userProblemDAO = userProblemDAO;
+	}
+
+	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
 
@@ -366,7 +376,8 @@ public class DataApprovalService implements IDataApprovalService {
 	
 	public Boolean checkUserFileUploadRight(Long userId, Long problemHistoryId)
 	{
-		List<Object[]> no =	problemHistoryDAO.checkUserFileUploadRight(userId ,problemHistoryId);
+		//List<Object[]> no =	problemHistoryDAO.checkUserFileUploadRight(userId ,problemHistoryId);
+		List<Object[]> no =userProblemDAO.checkUserFileUploadRight(userId, problemHistoryId);
 	
 		if(no.size()>=1)
 		{	
