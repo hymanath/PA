@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -29,11 +30,11 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-public void testgetAllValidProblemsCount()
+/*public void testgetAllValidProblemsCount()
 	{
 		List<Long> list = userProblemDAO.getAllValidProblemIdsCount();
 		System.out.println(list.size());
-	}
+	}*/
 	
 /*public void testgetProblemCompleteInfo()
 	{
@@ -92,7 +93,7 @@ public void testgetAllValidProblemsCount()
 		
 	}*/
 
-	public void testGetStates()
+	/*public void testGetStates()
 	{
 		List<Object[]> list = userProblemDAO.getStates();
 		System.out.println(list.size());
@@ -105,5 +106,55 @@ public void testgetAllValidProblemsCount()
 			}
 		}
 		
+	}*/
+
+/*public void testgetProblemPostedUserDetails()
+{
+	 List<Object[]> list = userProblemDAO.getProblemPostedUserDetails();
+	 for(Object[] params : list)
+	 {
+		 System.out.println(params[0]);
+		 System.out.println(params[1].toString());
+	 }
+}*/
+
+/*public void testgetFreeUserProblemsInSearch()
+{
+	ProblemSearchVO problemSearchVO = new ProblemSearchVO();
+	problemSearchVO.setScopeAll(true);
+	problemSearchVO.setTypeAll(true);
+	problemSearchVO.setStatusAll(true);
+	problemSearchVO.setUsersAll(true);
+	problemSearchVO.setUserId(2l);
+	problemSearchVO.setScopeId(3l);
+	problemSearchVO.setTypeId(1l);
+	problemSearchVO.setLocationValue(223l);
+	List<Object[]> list = userProblemDAO.getFreeUserProblemsInSearch(problemSearchVO, 0, 3, false);
+			System.out.println(list.size());
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1].toString());
+			}
+		
+}*/
+	
+	/*public void testgetFreeUserIdOfAProblem()
+	{
+		Long value = userProblemDAO.getFreeUserIdOfAProblem(1l);
+		System.out.println(value);
+	}*/
+	
+	/*public void testcheckUserFileUploadRight(){
+		Long userId = 7l;
+		Long problemHistoryId = 20l;
+		List<Object[]> list = userProblemDAO.checkUserFileUploadRight(userId, problemHistoryId);
+		System.out.println(list.size());
+		
+		for(Object obj:list)
+		{
+			System.out.println(obj.toString());
+		}
 	}
+*/
 }
