@@ -45,4 +45,26 @@ public String getCommonDataForAllProblems();
 	public Long getFreeUserIdOfAProblem(Long problemHistoryId);
 	
 	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId);
+	
+	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,String locationStr);
+	
+	public List<Object> getTotalProblemsStatusForAnUser(Long userId);
+	
+	public List<UserProblem> getStatusWiseProblemsForAnUserInARegion(Long userId,String locationStr,String statusStr);
+	
+	public List<UserProblem> getStatusWiseProblemsForAnUser(Long userId,String statusStr);
+	
+	public List getProblemsCountInAllStatusByLocation(Long userId);
+	
+	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(String tehsilIds, String statusIds);
+	
+	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(Long userId, String statusIds);
+	
+	public List findLatestProblemsByMandals(String tehsilIds, Long statusId);
+	
+	public String buildCommonQueryForProblems();
+	
+	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, Long status);
+	
+	public List findProblemsForALocationsByConstituencyId(Long userId);
 }
