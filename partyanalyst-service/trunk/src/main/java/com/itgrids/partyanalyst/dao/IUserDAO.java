@@ -92,4 +92,6 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<Object[]> getUserEmailByUserId(Long userId);
 	
+	public List<Object[]> findByUserId(Long userId);
+	
 }

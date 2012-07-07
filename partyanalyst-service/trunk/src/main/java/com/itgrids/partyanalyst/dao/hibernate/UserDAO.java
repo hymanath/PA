@@ -395,4 +395,13 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	}
 	
 	
+	public List<Object[]> findByUserId(Long userId)
+	{
+		Query queryObject = getSession().createQuery("select model.stateId,model.constituencyId from User model where model.userId=? ");
+		queryObject.setParameter(0, userId);
+		return queryObject.list(); 
+	}
+	
+
+	
 }
