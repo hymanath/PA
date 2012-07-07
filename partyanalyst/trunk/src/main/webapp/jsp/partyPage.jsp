@@ -14,6 +14,7 @@
 
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
+<link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
 <style type="text/css">#videogallery a#videolb{display:none}</style>
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
@@ -340,6 +341,8 @@ width: 500px;
 
 <div id="fb-root"></div>
 <script>
+
+
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
@@ -474,12 +477,34 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
           
           <div class="ea-fc-sec">
             <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
-            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email alert to get<br />
-              updates of<br />
-              <span class="li-red">${partyVO.partyLongName}</span>
-              <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
+            <div class="ea-fc-cont-sec" style="font-size:13px;">
+              			  
+				<span id="subscribeSpan">
+		 
+					
+					<s:if test="isSubscribed == true ">
+					Unsubscribe to stop<br/>
+					updates of<br />
+					<span class="li-red">${partyVO.partyLongName}</span><br/>
+					<input  class="unsubscribebtn" type="button" onclick=
+					"unsubscriptionDetails()" value="UNSUBSCRIBE"/>
+					</s:if>
+					
+					<s:else>
+					Subscribe and get <br/>
+					updates of<br />
+					<span class="li-red">${partyVO.partyLongName}</span><br/>
+					<input  class="subscribebtn" type="button" onclick=
+					"subscriptionDetails()" value="SUBSCRIBE"/>
+					</s:else>
+
+					
+				
+
+				</span>
+              <!--<input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
               <div id="alertMsg" style="dispaly:none"></div>
-			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>
+			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>-->
             </div>
           </div>
           
@@ -717,7 +742,12 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
    var newsPopUpData;
    var selectedContentFile;
    var videosNewData;
-function sendMessage()
+   var stateId='${stateId}';
+   var cnstuencyId='${constituencyId}';
+   var userName = '${sessionScope.UserName}';
+   var isSubscribed = '${sessionScope.isSubscribed}';
+   
+ function sendMessage()
  {
   var name = document.getElementById("name").value;
   var stateSelect=document.getElementById("stateSelect").value;
@@ -778,6 +808,70 @@ function sendMessage()
 	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
 
+}
+function subscriptionDetails()
+ {
+	if(userName==''){
+       showNotLogIn();
+    return false;}
+	
+	else{	
+	var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: partyId,
+			task: "subscriptionDetails",
+			page:"partyPage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+   }
+ }
+ 
+ function unsubscriptionDetails()
+ {
+		
+    var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: partyId,
+			task: "unsubscriptionDetails",
+			page:"partyPage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+ }
+function unSubscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+
+
+//alert('in unsubscribe');
+var str='';
+str+='Unsubscribe to stop<br/>updates of<br />';
+ str+='<span class="li-red">${partyVO.partyLongName}</span><br/>';
+str+='<input  class="unsubscribebtn" type="button" onclick="unsubscriptionDetails()" value="UNSUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+subscribeAlert();
+}
+
+function subscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+var str='';
+str+='subscribe to get<br/>updates of<br />';
+ str+='<span class="li-red">${partyVO.partyLongName}</span><br/>';
+str+='<input  class="subscribebtn" type="button" onclick="subscriptionDetails()" value="SUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+unSubscribeAlert();
 }
 function showAssessMentDiv()
 {
@@ -913,7 +1007,11 @@ function showAssemblyData()
 
    str +=' <table>';
    document.getElementById("constituencySelectDiv").innerHTML=str;
+   $('#name').val(userName);
    getStates();
+   if(stateId!=null && stateId!="null" && stateId!="")
+   getAllConstituenciesInStateByType(2,stateId,"constituency");
+   else
    getAllConstituenciesInStateByType(2,1,"constituency");
  }
  function showBusyImgWithId(elmtId)
@@ -1023,6 +1121,9 @@ function showResults(results,divId)
 		 {
 			elmt.add(option); // IE only
 		 }
+	 }
+	 if(cnstuencyId!=null && cnstuencyId!="null" && cnstuencyId!=""){
+	 $('#'+divId).val(cnstuencyId);
 	 }
  }
   function clearAll(elmtId)
@@ -1245,6 +1346,14 @@ function callAjax(jsObj,url)
 			   buildData("yearTypeSel",myResults);
 			   document.getElementById("year_ImgSpan").style.display = 'none';
 			   
+			}
+			else if(jsObj.task == "subscriptionDetails")
+			{
+				unSubscribeBtnBuild();
+			}
+			else if(jsObj.task == "unsubscriptionDetails")
+			{
+				subscribeBtnBuild();
 			}
 		}
 		catch(e)
@@ -3293,6 +3402,9 @@ function buildResults1(results,divId)
 			elmt.add(option); // IE only
 		 }
 	 }
+	 if(stateId!=null && stateId!="null" && stateId!=""){
+	$('#'+divId).val(stateId);
+	}
  }
  
 function buildResults(results,divId){
@@ -3758,6 +3870,53 @@ message_Obj.initialize();
 getElectionProfile(false,false);
 buildElectionProfile();
 //showAssessMentDiv();
+
+function showNotLogIn()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+
+function subscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+function unSubscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
 </script>
 
 </body>

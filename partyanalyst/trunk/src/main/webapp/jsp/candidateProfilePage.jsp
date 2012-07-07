@@ -35,6 +35,9 @@
 	color:none;
 	font-weight:bold;
 	}
+	.unsc{
+	color:red;
+	}
 .imageButton{
 	
 	-moz-border-radius: 4px 4px 4px 4px;
@@ -271,6 +274,7 @@ width: 500px;
   
   color:#FF4500;
 }
+
 </style>
 
 </head>
@@ -284,6 +288,8 @@ width: 500px;
 
 <div id="fb-root"></div>
 <script>
+var isSubscribed = '${sessionScope.isSubscribed}';
+var userName = '${sessionScope.UserName}';
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
@@ -329,7 +335,8 @@ District:
 <div class="clear"></div>
 <div class="main-title-sec">
  <div class="main-mbg">${candidateVO.candidateName} 'S  Profile
- <span style="margin-top:10px;margin-right:30px;float:right">
+
+<span style="margin-top:10px;margin-right:10px;float:right">
 <g:plusone size="medium"></g:plusone>
 
 <script type="text/javascript">
@@ -341,7 +348,7 @@ District:
 </script>
 </span>
 
-<span style="margin-top:10px;float:right">
+<span style="margin-top:10px;margin-right:0px;float:right;">
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}">
 Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
@@ -352,6 +359,7 @@ Tweet</a>
  <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/candidateElectionResultsAction.action?candidateId=${candidateId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 </span>
 </div>
+<div id="logInDiv"></div>
 
 <div class="main-bbg"></div></div><br></td></tr></table>
 
@@ -417,13 +425,35 @@ Tweet</a>
           <div class="ea-fc-sec">
             <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
             
-            <div class="ea-fc-cont-sec" style="font-size:13px;"> Set an email alert to get<br />
-              updates of<br />
-              <span class="li-red">${candidateVO.candidateName}</span>
-              <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
+            <div class="ea-fc-cont-sec" style="font-size:13px;">
+		
+		<span id="subscribeSpan">
+ 
+			<s:if test="isSubscribed == true ">
+			Unsubscribe to stop<br/>
+            updates of<br />
+            <span class="li-red">${candidateVO.candidateName}</span><br/>
+            <input  class="unsubscribebtn" type="button" onclick=
+            "unsubscriptionDetails()" value="UNSUBSCRIBE"/>
+            </s:if>
+			
+			<s:else >
+			Subscribe and get <br/>
+            updates of<br />
+            <span class="li-red">${candidateVO.candidateName}</span><br/>
+			<input  class="subscribebtn" type="button" onclick=
+			"subscriptionDetails()" value="SUBSCRIBE"/>
+ 			</s:else>
+
+            
+
+		</span>
+		
+             <!-- <input name="" type="text" id="emailId" class="ea-text-fields" value="your email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';document.getElementById('alertMsg').innerHTML = '';"/>
                <div id="alertmsg"> </div>
               <div id="alertMsg" style="dispaly:none"></div>
-			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>
+			  <div class="pl-sub-but"><a onclick="validateEmailField()" href="javascript:{};"><strong>Set alert</strong></a></div>-->
+
 			 
             </div>
           </div>
@@ -615,9 +645,9 @@ Tweet</a>
  </tr>
 </table>
 <script>
+
   $(document).ready(function() {
     $("#tabs").tabs();
-	
    $("a[rel=photo_gallery]").fancybox({
 				'transitionIn'		: 'none',
 				'transitionOut'		: 'none',
@@ -643,6 +673,8 @@ if(loadingFirstTime == 'true'){
    var descriptions = '${descriptions}';
    var timeST = new Date().getTime();
    var candidateId = '${candidateId}';
+   var cnstuencyId='${constituencyId}';;
+   var stateId='${stateId}';
    var fileIdArray = new Array();
    var initialFileIdArray = new Array();
    var initialArraySize =0;
@@ -778,6 +810,8 @@ var news_Obj = {
    	custom_paginator.initialize();					
    	 
    },
+   
+   
    
    getNewsBySource:function(source)
    {
@@ -1134,6 +1168,46 @@ function openAnalyzeConstituencyWindow(type)
 	}
 }
 
+
+ function subscriptionDetails()
+ {
+	if(userName==''){
+       showNotLogIn();
+    return false;}
+	
+	else{	
+	var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: '${candidateId}',
+			task: "subscriptionDetails",
+			page:"candidatePage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+   }
+ }
+ 
+ function unsubscriptionDetails()
+ {
+		
+    var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: '${candidateId}',
+			task: "unsubscriptionDetails",
+			page:"candidatePage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+ }
+ 
 function sendMessage()
 {
 	var isprivate='';
@@ -1198,6 +1272,7 @@ function sendMessage()
 }
 function showAssemblyData()
  {
+    var stateId='${stateId}';
    var str='';
    
    str+='  <div class="pr-sub-fields-sec">';
@@ -1208,11 +1283,13 @@ function showAssemblyData()
    str+=' <table>';
    str += '<tr>';
    str+='<td style = "padding-top:9px;">Name <font class="requiredFont"> * </font></td>';
-   str+='<td> <input type = "text" id="name" size = "20" class="sm-text-fields"> </td>';
+   str+='<td><input type = "text" id="name" size = "20" class="sm-text-fields"></td>';
    str+='</tr>';
    str+='   <tr>';
    str+='     <td>State</td>';
    str+='     <td style="padding-top: 5px;">';
+   
+ 
    str+='       <select id="stateSelect"  onchange="clearAll(\'constituencySelect\');getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,\'constituency\')" style = "width:192px;background-color:#EBE8E8; border:1px solid #ffffff;"/>';
    str+='     </td>';
    str+='   </tr>';
@@ -1237,8 +1314,12 @@ function showAssemblyData()
    str+= '</tr>';
    str+=' <table>';
    document.getElementById("constituencySelectDiv").innerHTML=str;
+   $('#name').val(userName);
    getStates();
-   getAllConstituenciesInStateByType(2,1,"constituency");
+   if(stateId!=null && stateId!="null" && stateId!="")
+       getAllConstituenciesInStateByType(2,stateId,"constituency");
+	else
+	 getAllConstituenciesInStateByType(2,1,"constituency");
  }
  
  function getAllConstituenciesInStateByType(electionType, stateId, element)
@@ -1275,6 +1356,9 @@ function getStates()
  function buildResults(results,divId)
  {
   var elmt = document.getElementById(divId);
+  var stateId='${stateId}';
+  
+     
 	for(var i in results)
 	  {
 		var option = document.createElement('option');
@@ -1290,13 +1374,20 @@ function getStates()
 		 {
 			elmt.add(option); // IE only
 		 }
+		 
+		
 	 }
+	if(stateId!=null && stateId!="null" && stateId!=""){
+	$('#'+divId).val(stateId);
+	}
+	 
+	
  }
  
  function showResults(results,divId)
  {
   var elmt = document.getElementById(divId);
-
+  var cnstuencyId='${constituencyId}';
    if(results.length<=0 && divId=="constituencySelect")
      {
    	   var option1 = document.createElement('option');
@@ -1324,6 +1415,9 @@ function getStates()
 		 {
 			elmt.add(option); // IE only
 		 }
+	 }
+	 if(cnstuencyId!=null && cnstuencyId!="null" && cnstuencyId!=""){
+	 $('#'+divId).val(cnstuencyId);
 	 }
  }
  
@@ -1405,6 +1499,7 @@ function callAjax(jsObj,url)
 			 {  
 				clearOptionsListForSelectElmtId("constituencySelect");
 				showResults(myResults,"constituencySelect");
+				
 			 }
 	    else if(jsObj.task == "saveMessage") 
 			 {   
@@ -1460,6 +1555,14 @@ function callAjax(jsObj,url)
 				showContentResultList = myResults;
 				buildContentDetails();
 			}
+			else if(jsObj.task == "subscriptionDetails")
+			{
+				unSubscribeBtnBuild();
+			}
+			else if(jsObj.task == "unsubscriptionDetails")
+			{
+				subscribeBtnBuild();
+			}
 		
 			
 	  }
@@ -1478,6 +1581,32 @@ function callAjax(jsObj,url)
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function unSubscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+
+
+//alert('in unsubscribe');
+ var str='';
+ str+='Unsubscribe to stop<br/>updates of<br />';
+ str+='<span class="li-red">${candidateVO.candidateName}</span><br/>';
+ str+='<input  class="unsubscribebtn" type="button" onclick="unsubscriptionDetails()" value="UNSUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+subscribeAlert();
+}
+
+function subscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+ var str='';
+ str+='Subscribe to get<br/>updates of<br />';
+ str+='<span class="li-red">${candidateVO.candidateName}</span><br/>';
+ str+='<input  class="subscribebtn" type="button" onclick="subscriptionDetails()" value="SUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+unSubscribeAlert();
+}
 function displayUserDetails(results)
 { 
 	
@@ -3182,6 +3311,53 @@ getTotalNews('getFirstFourNewsRecordsToDisplay');
 getFirstThreePhotoRecords();
 buildAnalyzeConstituencyWindow();
 message_Obj.getUserDetails();
+
+function showNotLogIn()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+
+function subscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+function unSubscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
 
 </script>
 </body>

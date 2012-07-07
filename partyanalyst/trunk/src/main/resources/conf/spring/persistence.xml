@@ -261,6 +261,9 @@
 				<value>com.itgrids.partyanalyst.model.ProblemAssignedDepartment</value>
 				<value>com.itgrids.partyanalyst.model.ProblemAssignedCadre</value>
 				<value>com.itgrids.partyanalyst.model.ClassifiedProblems</value>
+				<value>com.itgrids.partyanalyst.model.CandidateSubscriptions</value>
+				<value>com.itgrids.partyanalyst.model.PartySubscriptions</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageSubscriptions</value>
 			</list>
 		</property>
 	</bean>
