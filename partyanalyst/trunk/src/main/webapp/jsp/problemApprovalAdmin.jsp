@@ -416,8 +416,8 @@ function showAllNewPostedReasons()
 					<tr>
 						<td width="80%" align="right"><div id="approveCommentsErrorDiv" class="errorMsgDiv"></div></td>					
 						<td width="20%">
-							<input type="button" class="buttonClass" value="Approve" onclick="controlSelectedApprovals(true)"></input>
-							<input type="button" class="buttonClass" value="Reject" onclick="controlSelectedApprovals(false)"></input>
+							<input type="button" class="buttonClass" value="Approve" onclick="controlSelectedApprovals('Approved')"></input>
+							<input type="button" class="buttonClass" value="Reject" onclick="controlSelectedApprovals('Rejected')"></input>
 						</td>
 					</tr>
 				</table>
