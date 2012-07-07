@@ -42,11 +42,14 @@ public class RegistrationAction extends ActionSupport implements
     private List<SelectOptionVO> constituencies;
     private Long stateId = null;
     private Long districtId = null;
-    private Long constituencyId = null;
    
 	private String district;
 	
+	private String constituency;
 	
+	
+	
+
 	public List<SelectOptionVO> getStates() {
 	return states;
 	}
@@ -150,33 +153,35 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setFreeuser(freeuser);
 	}
 	
-	public Long getConstituencyId() {
-		return regVO.getConstituencyId();
+	
+	
+	
+	/*public Long getConstituencyId() {
+		return constituencyId;
 	}
+
 	public void setConstituencyId(Long constituencyId) {
-		//this.constituencyId = constituencyId;
+		this.constituencyId = constituencyId;
 		this.regVO.setConstituencyId(constituencyId);
-		
-	}
-	
-	
+	}*/
+
 	public void setStateId(Long stateId) {
 		//this.state = state;
 		this.regVO.setStateId(stateId);
 	}
+	
 	public Long getStateId() {
 		return regVO.getStateId();
 	}
 		
-	
-	/*public void setConstituencyId1(Long constituencyId) {
-		//this.constituency = constituency;
-		this.regVO.setConstituencyId(constituencyId);
+	public String getConstituency() {
+		return regVO.getConstituency();
+				}
+
+	public void setConstituency(String constituency) {
+		this.regVO.setConstituency(constituency);
 	}
 	
-	public Long getConstituencyId() {
-		return regVO.getConstituencyId();
-	}*/
 	
 	public String execute() throws Exception
 	{
