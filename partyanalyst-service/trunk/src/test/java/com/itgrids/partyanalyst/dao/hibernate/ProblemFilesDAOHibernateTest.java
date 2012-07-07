@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 
@@ -12,8 +16,31 @@ public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 		this.problemFilesDAO = problemFilesDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		problemFilesDAO.getAll();
+	}
+	*/
+	
+	public void testfindUserApprovalStatusbetweendates()throws Exception
+	{  
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+					
+		System.out.println("details");
+		List<Object[]> list = problemFilesDAO. getCurrentDateFiles(sdf.parse("2012/07/04"),null,null);				
+			System.out.println("size"+list.size());
+		for(Object[] obj : list)
+		{
+			System.out.println("1"+obj[0]);
+			System.out.println("2"+obj[1]);
+			System.out.println("3"+obj[2]);
+			System.out.println("4"+obj[3]);
+			System.out.println("5"+obj[4]);
+			System.out.println("6"+obj[5]);
+			System.out.println("7"+obj[6]);
+			System.out.println("8"+obj[7]);
+			System.out.println("9"+obj[8]);		
+			
+		}
 	}
 }
