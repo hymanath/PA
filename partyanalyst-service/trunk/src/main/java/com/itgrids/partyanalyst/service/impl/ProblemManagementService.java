@@ -5836,6 +5836,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				result.setImpactLevel(problemDetails.getProblem().getRegionScopes().getScope().toString());
 				result.setProblemImpactLevelValue(problemDetails.getProblem().getImpactLevelValue());
 				result.setReferenceNo(problemDetails.getProblem().getReferenceNo().toString());
+				if(problemDetails.getProblem().getProblemStatus() != null)
 				result.setStatus(problemDetails.getProblem().getProblemStatus().getStatus().toString());
 				result.setIsApproved(problemDetails.getProblem().getIsApproved().toString());
 				result.setTotalResultsCount(getProblemsCount().toString());
