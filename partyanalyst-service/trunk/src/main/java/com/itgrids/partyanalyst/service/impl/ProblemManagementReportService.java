@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
@@ -65,12 +66,12 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemStatus;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
@@ -79,6 +80,7 @@ import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.GenericException;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ProblemsCountByStatusComparator;
@@ -122,8 +124,17 @@ public class ProblemManagementReportService implements
 	private IFeedbackDAO feedbackDAO;
 	private IUserDAO userDAO;
 	private IUserProblemDAO userProblemDAO;
+	private IProblemDAO problemDAO;
 	
 	
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
+
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
 	}
@@ -1671,14 +1682,25 @@ public class ProblemManagementReportService implements
 		 * @param list
 		 * @return NavigationVO
 		 */
-		public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String status,String type){
+		public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String choice){
 			List<Object> list = null;
 			NavigationVO navigationVO = null;	
+			String isApproved = null;
 			try{
 				Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
 				Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
-				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,getUserSelectedChoice(type));
-				navigationVO = generateVoContainingAllApprovalProblems(list);
+				//list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,getUserSelectedChoice(type));
+				
+				//SimpleDateFormat yearFormatSdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+				if(choice.equalsIgnoreCase(IConstants.NEW))
+					isApproved = IConstants.FALSE;
+				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
+					isApproved = IConstants.TRUE;
+				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
+					isApproved = IConstants.REJECTED;
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(firstDate,secondDate,isApproved);
+				//navigationVO = generateVoContainingAllApprovalProblems(list);
+				navigationVO = 	displayPostedProblemOnAdmin(list);	
 				return navigationVO;
 			}catch(Exception e){				
 				return navigationVO;
@@ -1694,19 +1716,69 @@ public class ProblemManagementReportService implements
 		 * @param list
 		 * @return NavigationVO
 		 */
-		public NavigationVO getAllApprovalProblemsForTheCurrentDay(String status,String type){
+		public NavigationVO getAllApprovalProblemsForTheCurrentDay(){
 			List<Object> list = null;
-			NavigationVO navigationVO = null;	
-			Date todayDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);			
+			NavigationVO navigationVO = null;
+			DateUtilService dateUtilService = new DateUtilService();
+			//Date todayDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);
+			Date todayDate = dateUtilService.getCurrentDateAndTime();
 			try{
-				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
-				navigationVO = generateVoContainingAllApprovalProblems(list);
-								
+				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(todayDate,null,null);
+				//navigationVO = generateVoContainingAllApprovalProblems(list);
+				navigationVO = 	displayPostedProblemOnAdmin(list);			
 				return navigationVO;
 			}catch(Exception e){
 				return navigationVO;
 			}	
 		}
+		public NavigationVO displayPostedProblemOnAdmin(List<Object> list){
+			List<ProblemBeanVO> problemBeanVO = null;
+			NavigationVO carryingObject = null;
+			ResultStatus resultStatus = new ResultStatus();
+			
+			String problemDesc;
+			try{
+				carryingObject = new NavigationVO();
+				problemBeanVO = new ArrayList<ProblemBeanVO>();		
+				if(list.size()!=0){
+					for(int i=0;i<list.size();i++){
+						Object[] parms = (Object[])list.get(i);
+						ProblemBeanVO resultStorage = new ProblemBeanVO();
+						
+						resultStorage.setProblemHistoryId((Long)parms[0]);
+						problemDesc = parms[1].toString(); 						
+						resultStorage.setDescription(problemDesc.length()>35 ? problemDesc.substring(0,35).concat("..."):problemDesc);
+						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.FALSE))
+						    resultStorage.setIsApproved(IConstants.NEW);
+						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.TRUE))
+						    resultStorage.setIsApproved(IConstants.APPROVED);
+						if(parms[2] != null && parms[2].toString().equalsIgnoreCase(IConstants.REJECTED))
+							resultStorage.setIsApproved(IConstants.REJECTED);
+						
+						resultStorage.setPostedDate(parms[3].toString());
+						resultStorage.setName(parms[4].toString()+" "+parms[5].toString());
+						resultStorage.setProblem(parms[6].toString());
+						/*acceptCount = dataApprovalService.getCountOfPosts((Long)parms[0]).getAcceptedCount();
+						rejectCount = dataApprovalService.getCountOfPosts((Long)parms[0]).getRejectedCount();
+						resultStorage.setAcceptedCount(acceptCount==null?"0":acceptCount);
+						resultStorage.setRejectedCount(rejectCount==null?"0":rejectCount);*/
+						
+						problemBeanVO.add(resultStorage);
+					}
+				}
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				carryingObject.setApprovalProblems(problemBeanVO);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject; 
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject;
+			}	
+		}
+		
 		
 		/** 
 		 * This method retrives all the approval problems that are needed to be approved by the user for a particular date.
@@ -1716,14 +1788,24 @@ public class ProblemManagementReportService implements
 		 * @param list
 		 * @return NavigationVO
 		 */
-		public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String status,String type){
+		public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String choice){
 			List<Object> list = null;
-			NavigationVO navigationVO = null;			
+			NavigationVO navigationVO = null;	
+			String isApproved = null;
 			try{
 				
-				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,getUserSelectedChoice(type));
-				navigationVO = generateVoContainingAllApprovalProblems(list);
-								
+				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,getUserSelectedChoice(type));
+				
+				if(choice.equalsIgnoreCase(IConstants.NEW))
+					isApproved = IConstants.FALSE;
+				else if(choice.equalsIgnoreCase(IConstants.APPROVED))
+					isApproved = IConstants.TRUE;
+				else if(choice.equalsIgnoreCase(IConstants.REJECTED))
+					isApproved = IConstants.REJECTED;
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(date,null,isApproved);
+				//navigationVO = generateVoContainingAllApprovalProblems(list);
+				navigationVO = 	displayPostedProblemOnAdmin(list);
+				
 				return navigationVO;
 			}catch(Exception e){
 				return navigationVO;
@@ -1800,15 +1882,17 @@ public class ProblemManagementReportService implements
 		 * @author Ravi Kiran.Y
 		 */
 		public void deleteSelectedProblemsByAdmin(final Integer[] problemIds){
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {
+			
 					for(int i=0;i<problemIds.length;i++){
-						ProblemHistory problemHistory = problemHistoryDAO.get(problemIds[i].longValue());				
+						/*ProblemHistory problemHistory = problemHistoryDAO.get(problemIds[i].longValue());				
 						problemHistory.setIsApproved(IConstants.REJECTED);
-						problemHistoryDAO.save(problemHistory);
+						problemHistoryDAO.save(problemHistory);*/
+						Problem problem = problemDAO.get(problemIds[i].longValue());
+						
+						 problem.setIsApproved(IConstants.REJECTED);
+						 problemDAO.save(problem);
 					}	
-				}
-			});
+				
 		}
 		
 		
@@ -1818,19 +1902,21 @@ public class ProblemManagementReportService implements
 		 * @author Ravi Kiran.Y
 		 */
 		public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds){
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {
-					for(int i=0;i<problemHistoryIds.length;i++){						
-						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());						
-						problemHistory.setIsApproved(IConstants.TRUE);
-						problemHistory = problemHistoryDAO.save(problemHistory);
+			
+					for(int i=0;i<problemHistoryIds.length;i++){
+						Problem problem = problemDAO.get(problemHistoryIds[i].longValue());
+						
+						 problem.setIsApproved(IConstants.TRUE);
+						 problemDAO.save(problem);
+						/*ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());						
+						 problemHistory.setIsApproved(IConstants.TRUE);
+						  problemHistory = problemHistoryDAO.save(problemHistory);
 						ProblemLocation problemLocation = problemLocationDAO.get(problemHistory.getProblemLocation().getProblemLocationId());
 						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
 						problemLocationDAO.save(problemLocation);
-						sendEmailToFreeUserAfterProblemApproval(problemHistory);
+						sendEmailToFreeUserAfterProblemApproval(problemHistory);*/
 					}
-				}
-			});
+				
 		}
 		
 		private ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemHistory problemHistory)
