@@ -10,7 +10,6 @@ import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.model.User;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
