@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -312,4 +313,128 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 						
 		}
 		
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,String locationStr)
+		{
+			Object[] params = {userId};
+			return getHibernateTemplate().find("select model.problem.problemStatus.status from UserProblem model where " +
+			"model.user.userId = ? "+locationStr+" and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
+		}
+		
+		
+		
+		@SuppressWarnings("unchecked")
+		public List<Object> getTotalProblemsStatusForAnUser(Long userId)
+		{
+			Object[] params = {userId};
+			return getHibernateTemplate().find("select model.problem.problemStatus.status from UserProblem model where "+
+					"model.user.userId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
+		}
+		
+	
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> getStatusWiseProblemsForAnUserInARegion(Long userId,String locationStr,String statusStr)
+		{
+			Object[] params = {userId};
+			return getHibernateTemplate().find(" from UserProblem model where " +
+			" model.user.userId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
+		}
+		
+
+		
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> getStatusWiseProblemsForAnUser(Long userId,String statusStr)
+		{
+		Object[] params = {userId};
+		return getHibernateTemplate().find("from UserProblem model where " +
+		" model.user.userId = ? "+statusStr+" and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
+		}
+		
+		
+		
+		public List getProblemsCountInAllStatusByLocation(Long userId) {
+			return getHibernateTemplate().find("select model.problem.problemStatus.problemStatusId, model.problem.problemStatus.status," +
+		"count(model.userProblemId) from UserProblem model where "+
+					"model.user.userId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null)" +
+		"group by model.problem.problemStatus.problemStatusId order by model.problem.problemStatus.problemStatusId",userId);
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(String tehsilIds, String statusIds)
+		{
+			return getHibernateTemplate().find("select count(model.userProblemId),model.updatedTime,model.problem.problemStatus.problemStatusId, " +
+					"model.problem.problemStatus.status from UserProblem model where model.problem.problemCompleteLocation.hamlet.township.tehsil.tehsilId in " +
+					"(" + tehsilIds +") and model.problem.problemStatus.problemStatusId in("+statusIds+") " +
+					" group by date(model.updatedTime),model.problem.problemStatus.problemStatusId order by model.updatedTime desc");
+					
+		}
+		
+		
+		
+		public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(Long userId, String statusIds){
+			
+			return getHibernateTemplate().find("select  count(model.userProblemId),model.updatedTime,model.problem.problemStatus.problemStatusId, " +
+					"model.problem.problemStatus.status from UserProblem model where model.user.userId = ? " +
+					"and model.problem.problemStatus.problemStatusId in("+statusIds+") " +
+					" group by date(model.updatedTime),model.problem.problemStatus.problemStatusId order by model.updatedTime desc",userId);
+			
+					
+		
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List findLatestProblemsByMandals(String tehsilIds, Long statusId){		
+			return getHibernateTemplate().find("select model.problem.problemId, " +
+					"model.problem.title,"+
+					"model.problem.description,"+
+					"model.problem.problemCompleteLocation.hamlet.hamletName," +
+					" model.problem.informationSource.informationSource," +
+					
+					"model.problem.problemStatus.status," +
+					"model.problem.identifiedOn"+
+					" from UserProblem model where model.problem.problemCompleteLocation.hamlet.township.tehsil.tehsilId in " +
+					"(" + tehsilIds +") and model.problem.problemStatus.problemStatusId = ?" +
+							" and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) order by model.updatedTime desc", statusId);
+		}
+		@SuppressWarnings("unchecked")
+		public String buildCommonQueryForProblems(){		
+			StringBuilder query = new StringBuilder();
+			query.append(" select model.problem.problemStatus.status," );
+			query.append(" model.problem.regionScopes.regionScopesId,");
+			query.append(" model.problem.identifiedOn,");
+			query.append(" model.problem.title,");
+			query.append(" model.problem.existingFrom,");
+			query.append(" model.userProblemId,model.problem.externalSource.problemExternalSourceId,"); 
+			query.append(" model.problem.description,model.updatedTime,model.problem.problemId,");
+			query.append(" model.user.userId,model.problem.impactLevelValue");
+			
+			query.append(" from UserProblem model ");
+			return query.toString();		
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List findProblemsByStatusForALocationsByConstituencyId(Long userId, Long status) {
+			Object[] params = {userId,status};
+			String query = buildCommonQueryForProblems();
+			StringBuilder conditionQuery = new StringBuilder();		
+			conditionQuery.append(query);
+			conditionQuery.append(" where model.user.userId = ? and model.problem.problemStatus.problemStatusId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null)");
+			return getHibernateTemplate().find(conditionQuery.toString(),params);
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List findProblemsForALocationsByConstituencyId(Long userId) {
+			Object[] params = {userId};
+			String query = buildCommonQueryForProblems();
+			
+			StringBuilder conditionQuery = new StringBuilder();		
+			conditionQuery.append(query);
+			conditionQuery.append(" where model.user.userId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null)");
+			
+			return getHibernateTemplate().find(conditionQuery.toString());
+		}
+
 }
