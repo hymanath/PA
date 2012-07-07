@@ -261,7 +261,8 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 			Long status =  jObj.getLong("status");
 			Long locationId = new Long(jObj.getLong("locationId"));//contains access value
 			String accessType = jObj.getString("accessType");	
-			problemsList = problemManagementReportService.getProblemsInfoByStatusInALocation(locationId, accessType, user.getRegistrationID(), status);
+			//problemsList = problemManagementReportService.getProblemsInfoByStatusInALocation(locationId, accessType, user.getRegistrationID(), status);
+			problemsList = problemManagementReportService.getProblemsInfoByStatusInALocationForUser(locationId,accessType,user.getRegistrationID(),status);
 		
 		return SUCCESS;
 	}
