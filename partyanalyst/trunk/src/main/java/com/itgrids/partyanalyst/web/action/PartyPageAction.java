@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
@@ -62,7 +63,46 @@ public class PartyPageAction extends ActionSupport implements
     private CandidateElectionResultVO candidateElectionResultVO;
     private Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
     private List<SelectOptionVO> data;
+    private Long stateId;
+    private Long constituencyId;
+    private ICandidateDetailsService candidateDetailsService;
+    private Boolean isSubscribed;
     
+    
+    
+	public Boolean getIsSubscribed() {
+		return isSubscribed;
+	}
+
+	public void setIsSubscribed(Boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public void setResultMap(Map<String,List<PartyInfoVO>> resultMap) {
 		this.resultMap = resultMap;
 	}
@@ -204,6 +244,23 @@ public class PartyPageAction extends ActionSupport implements
 		return task;
 	}
 	public String execute() throws Exception {
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		if(regVO != null){
+			
+			//Getting State and Constituency of a Logged 
+		Long regId=regVO.getRegistrationID();
+		RegistrationVO regisVO =  candidateDetailsService.getStateAndConstituency(regId);
+		stateId=regisVO.getStateId();
+		constituencyId=regisVO.getConstituencyId();
+		String page="pPage";
+		isSubscribed = candidateDetailsService.getSubscriptionDetails(regId,partyId,page);
+	    }else{
+	    	stateId=null;
+			constituencyId=null;
+	    }
+
 		log.debug("Entered into party page action");
 		request.setAttribute("partyId", partyId);
 		partyVO = partyDetailsService.getPartyDetails(partyId);
@@ -225,7 +282,7 @@ public class PartyPageAction extends ActionSupport implements
 		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-	
+		
 		if(jObj.getString("task").equalsIgnoreCase("getParliamentElectionResultsByState"))
 		{
 			ElectionScopeLevelEnum level = ElectionScopeLevelEnum.STATE_LEVEL;
