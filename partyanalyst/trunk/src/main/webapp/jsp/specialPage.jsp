@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/videolightbox.css"/>
 <style type="text/css">#videogallery a#videolb{display:none}</style>
 <link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
+<link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
 <script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
 <script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
@@ -205,10 +206,75 @@ width: 500px;
 
 </style>
 <script type="text/javascript">
+var isSubscribed = '${sessionScope.isSubscribed}';
+var userName = '${sessionScope.UserName}';
 
 var specialPageId = '${specialPageId}';
 var showContentResultList = null;
 
+
+function unSubscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+
+var str='';
+str+='Unsubscribe to stop<br/>updates of<br />';
+str+='<span class="li-red">${specialPageVO.heading}</span><br/>';
+str+='<input  class="unsubscribebtn" type="button" onclick="unsubscriptionDetails()" value="UNSUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+subscribeAlert();
+}
+
+function subscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+var str='';
+str+='Subscribe to get<br/>updates of<br />';
+str+='<span class="li-red">${specialPageVO.heading}</span><br/>';
+str+='<input  class="subscribebtn" type="button" onclick="subscriptionDetails()" value="SUBSCRIBE"/>';
+
+$('#subscribeSpan').html(str);
+unSubscribeAlert();
+}
+function subscriptionDetails()
+ {
+	if(userName==''){
+       showNotLogIn();
+    return false;}
+	
+	else{	
+	var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: specialPageId,
+			task: "subscriptionDetails",
+			page:"specialPage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+   }
+ }
+ 
+ function unsubscriptionDetails()
+ {
+		
+    var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: specialPageId,
+			task: "unsubscriptionDetails",
+			page:"specialPage"
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+ }
  function displayProfile()
  {
    var profileInfoElmt = document.getElementById("pm-inner-cont-sec");
@@ -697,6 +763,14 @@ function getTotalProfile()
 			{
                buildCandidatePhotoGallary(myResults);
 			}
+			else if(jsObj.task == "subscriptionDetails")
+			{
+				unSubscribeBtnBuild();
+			}
+			else if(jsObj.task == "unsubscriptionDetails")
+			{
+				subscribeBtnBuild();
+			}
 
 		}catch(e){   
 			// alert("Invalid JSON result" + e);   
@@ -1001,6 +1075,52 @@ $(document).ready(function() {
 					}
 				});
 	  });
+	  function showNotLogIn()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+
+function subscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+function unSubscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
 </script>
 </head>
 
@@ -1051,6 +1171,7 @@ Tweet</a>
 <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
 </span>
 </div>
+ <div id="logInDiv"></div>
 <s:if test="customPages != null && customPages.size() > 0">
 <s:iterator value="customPages" var="custom"> 
 <s:if test="#custom.type == 'banner'">
@@ -1093,14 +1214,35 @@ Tweet</a>
              <div class="ea-fc-sec">
               <h2 class="ea-fc-title">email alert <span class="blue-down-arrow">
                <img	src="images/icons/candidatePage/blue-down-arrow.png" alt="" /></span></h2>
-                  <div class="ea-fc-cont-sec">Subscribe an email alert to get
-                         updates of <br />
-                  <span class="li-red">${specialPageVO.heading}</span> <input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
+                  <div class="ea-fc-cont-sec" style="font-size:13px;">
+                 
+			<span id="subscribeSpan">
+ 
+			<s:if test="isSubscribed == true ">
+			Unsubscribe to stop<br/>
+			updates of<br />
+			<span class="li-red">${specialPageVO.heading}</span><br/>
+            <input  class="unsubscribebtn" type="button" onclick=
+            "unsubscriptionDetails()" value="UNSUBSCRIBE"/>
+            </s:if>
+			
+			<s:else>
+			Subscribe and get <br/>
+			updates of<br />
+			<span class="li-red">${specialPageVO.heading}</span><br/>
+			<input  class="subscribebtn" type="button" onclick=
+			"subscriptionDetails()" value="SUBSCRIBE"/>
+ 			</s:else>
+
+            
+
+			</span>
+				  <!--<input name="" type="text" id="emailId" class="ea-text-fields" value="your email"
 					onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value=''; document.getElementById('alertMsg').innerHTML = '';" />
 
 			<div id="alertMsg" style="dispaly:block"></div>
 			<div class="pl-sub-but"><a onclick="validateEmailField()"
-				href="javascript:{};"><strong>Subscribe Alert</strong></a></div>
+				href="javascript:{};"><strong>Subscribe Alert</strong></a></div>-->
 
 		</div>
 		</div>

@@ -4,6 +4,18 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	
+	<bean id="partySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartySubscriptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageSubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageSubscriptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateSubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateSubscriptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
     <bean id="messageToPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageToPartyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />

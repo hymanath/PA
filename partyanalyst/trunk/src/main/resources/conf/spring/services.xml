@@ -329,6 +329,9 @@
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 		<property name="userDAO" ref="userDAO"/>
+		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO"/>
+		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO"/>
+		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
