@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,30 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	/*public void test()
 	{
 		userProblemDAO.getAll();
-	}
-	public void testgetAllValidProblemIds()
+	}*/
+	/*public void testGetUserProblemId()
+	{
+		List<UserProblem> userProblem = userProblemDAO.getUserProblemId(1l,1l);
+		System.out.println(userProblem.get(0));
+	}*/
+	/*public void testGetAllProblemsOfCurrentDateByFreeUser()throws Exception
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+		List<Object> list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(sdf.parse("2012/07/01"),sdf.parse("2012/07/05"),IConstants.FALSE);
+		System.out.println("size" +list.size());
+		for(int i=0;i<list.size();i++){
+	     Object[] obj =(Object[])list.get(i);
+		
+			System.out.println("1"+obj[0]);
+			System.out.println("1"+obj[1]);
+			System.out.println("1"+obj[2]);
+			System.out.println("1"+obj[3]);
+			System.out.println("1"+obj[4]);
+			System.out.println("1"+obj[5]);
+			System.out.println("1"+obj[6]);
+		}
+	}*/
+	/*public void testgetAllValidProblemIds()
 	{
 		
 		List<Long> list = userProblemDAO.getAllValidProblemIds(1, 3);
@@ -71,8 +94,8 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List list = userProblemDAO.getAllPostedProblemCountOtherThanLoggedInUser(2l);
 		System.out.println(list.size());
-	}
-*/
+	}*/
+
 	
 	/*public void testgetCommonDataForAllProblems()
 	{
@@ -157,4 +180,39 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 */
+	
+	/*public void testgetCommonDataForAllProblems()
+	{
+		String result = userProblemDAO.getCommonDataForAllProblems();
+		System.out.println(result);
+	}*/
+	
+	/*public void testgetAllProblemHistoryIdsForGivenLocationByTheirIds(){
+		
+		List<Long> locationIds =  new ArrayList<Long>(0);
+		locationIds.add(10l);
+		String impactLevel = "District";
+		String isApproved = "true";
+		List list = userProblemDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,impactLevel,isApproved);
+		System.out.println(list.size());
+		
+		
+		
+	}*/
+
+	/*public void testGetStates()
+	{
+		List<Object[]> list = userProblemDAO.getStates();
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+			}
+		}
+		
+	}*/
+
 }
