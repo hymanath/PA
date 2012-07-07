@@ -115,10 +115,11 @@ public interface IProblemManagementService {
 	
 	public void deleteSelectedImagesByAdmin(final Integer[] problemFileIds);
 	
-	public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDate,String toDate,String status,String type);
+	//public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDate,String toDate,String status,String type);
+	public List<FileVO> getProblemFilesBetweanDates(String fromDatestr, String toDatestr,String choice);
 	
-	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDate,String status,String type);
-	
+	//public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDate,String status,String type);
+	public List<FileVO> getProblemFilesForParticularDate(String particularDateStr,String choice);
 	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers);
 	
 	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId);
