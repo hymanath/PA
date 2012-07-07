@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.ISpecialPageService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -45,7 +46,28 @@ public class SpecialPageAction extends ActionSupport implements
 	private MetaInfoVO metaInfoVO;
 	private Long contentId;
 	private String isAdmin;
+	private Boolean isSubscribed;
+	private ICandidateDetailsService candidateDetailsService;
 	
+	
+	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public Boolean getIsSubscribed() {
+		return isSubscribed;
+	}
+
+	public void setIsSubscribed(Boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+
 	public Long getContentId() {
 		return contentId;
 	}
@@ -159,8 +181,13 @@ public class SpecialPageAction extends ActionSupport implements
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(regVO != null)
+		if(regVO != null){
 			isAdmin = regVO.getIsAdmin();
+			Long regId = regVO.getRegistrationID();
+			String page="sPage";
+			isSubscribed = candidateDetailsService.getSubscriptionDetails(regId,specialPageId,page);
+			
+		}
 		
 		descriptions  = specialPageService.getSpecialPageDescription(specialPageId);
 		specialPageVO = specialPageService.getSpecialPageBasicDetails(specialPageId);
@@ -169,6 +196,7 @@ public class SpecialPageAction extends ActionSupport implements
 		metaInfoVO    = specialPageService.getMetaInfoForASpecialPage(specialPageId);
 	return SUCCESS;
 	}
+	
 
 	public String setEmailAlertsForEvent() {
 		try {

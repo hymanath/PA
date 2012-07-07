@@ -118,6 +118,44 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	List<Long> galleryIds = new ArrayList<Long>(0);
 	private List<Long> fileSourceId;
 	private List<Long> sourceLanguageId;
+	private Long stateId;
+    private Long constituencyId;
+	private Boolean isSubscribed = false;
+	private Long regId;
+	
+	
+	
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
+
+	public Boolean getIsSubscribed() {
+		return isSubscribed;
+	}
+
+	public void setIsSubscribed(Boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 
 	public List<File> getUserImage() {
 		return userImage;
@@ -586,7 +624,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO != null)
+		{
 			isAdmin = regVO.getIsAdmin();
+			Long regId = regVO.getRegistrationID();
+			RegistrationVO regisVO =  candidateDetailsService.getStateAndConstituency(regId);
+			stateId = regisVO.getStateId();
+			constituencyId = regisVO.getConstituencyId();
+			String page="cPage";
+			isSubscribed = candidateDetailsService.getSubscriptionDetails(regId,candidateId,page);
+	    }else
+	    {
+	    	stateId=null;
+			constituencyId=null;
+	    }
 			
 		descriptions= candidateDetailsService.getCandidateProfileDescriptionByCandidateID(candidateId);
 		
@@ -1256,16 +1306,35 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(getTask());
-		} catch (ParseException e) {
+			String category=jObj.getString("page");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			 if(jObj.getString("task").equalsIgnoreCase("subscriptionDetails"))
+			 {
+				 
+				 if(regVO != null){
+					 Long id=jObj.getLong("id");
+					 Long userId=regVO.getRegistrationID();
+					 result = candidateDetailsService.subscriberDetails(id,userId,category);
+				 }
+			 }
+			  else if(jObj.getString("task").equalsIgnoreCase("unsubscriptionDetails"))
+			  {
+				  if(regVO != null)
+				  {
+					  Long id=jObj.getLong("id");
+					  Long userId=regVO.getRegistrationID();
+					  result = candidateDetailsService.unSubscriptionDetails(id,userId,category);
+				  }
+			  }
+			 else{
+				String email = jObj.getString("emailId");
+				result = candidateDetailsService.subScribeEmailAlertForAUser(email,jObj.getLong("candidateId"));
+			 }
+			} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		
-		String email = jObj.getString("emailId");
-		result = candidateDetailsService.subScribeEmailAlertForAUser(email,jObj.getLong("candidateId"));
-		
 		return Action.SUCCESS;
 	}
 
