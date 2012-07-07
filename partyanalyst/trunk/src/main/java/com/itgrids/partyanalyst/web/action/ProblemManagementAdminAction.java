@@ -244,19 +244,21 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	public String getAllProblemsNeededToBeApprovalForAdmin(){
 		if(task != null){
 			try{
-				jObj = new JSONObject(getTask());
+				jObj = new JSONObject(getTask());  
 				
 				if(jObj.getString("task").equals("betweenDates")){	
-					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
+					//result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
+					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getString("choice"));
 				}
 				
 				if(jObj.getString("task").equals("currentDate")){	
-					result = problemManagementReportService.getAllApprovalProblemsForTheCurrentDay(IConstants.NEW,IConstants.FALSE);
+					result = problemManagementReportService.getAllApprovalProblemsForTheCurrentDay();
 				}
 				
 				else if(jObj.getString("task").equals("selectedDate")){
 					Date selectedDate = DateService.convertStringToDate(jObj.getString("selectedDate"),IConstants.DATE_PATTERN);
-					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,jObj.getString("choice"));
+					//result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,jObj.getString("choice"));
+					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,jObj.getString("choice"));
 				}
 				
 				else if(jObj.getString("task").equals("performDeletionOrAcceptenceProblems")){	
@@ -265,6 +267,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 					for(int i=0; i<selectedProblemIds.length(); i++){
 						problemIds[i] = (Integer)selectedProblemIds.get(i);
 					}
+					
 					if(jObj.get("choice").equals("accept")){						
 						problemManagementReportService.acceptSelectedProblemsByAdmin(problemIds);
 					}			
@@ -293,7 +296,8 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 		}
 		
 		if(jObj.getString("task").equals("betweenDatesImages")){
-			filevoList = problemManagementService.getAllApprovalProblemImagesBetweenEventDates(jObj.getString("fromDate"), jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
+			//filevoList = problemManagementService.getAllApprovalProblemImagesBetweenEventDates(jObj.getString("fromDate"), jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
+			filevoList = problemManagementService.getProblemFilesBetweanDates(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("choice"));
 		}
 	return Action.SUCCESS;
 	}
@@ -310,7 +314,8 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equals("particularDateImages")){
-			filevoList = problemManagementService.getAllApprovalProblemImagesForParticularDate(jObj.getString("particularDate"),IConstants.NEW,jObj.getString("choice"));
+			//filevoList = problemManagementService.getAllApprovalProblemImagesForParticularDate(jObj.getString("particularDate"),IConstants.NEW,jObj.getString("choice"))
+			filevoList = problemManagementService.getProblemFilesForParticularDate(jObj.getString("particularDate"),jObj.getString("choice"));
 		}
 		return Action.SUCCESS;
 		}
