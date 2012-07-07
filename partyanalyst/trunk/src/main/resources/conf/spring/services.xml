@@ -575,6 +575,7 @@
         <property name="userProblemDAO" ref="userProblemDAO"/>
         <property name="problemCommentsDAO" ref="problemCommentsDAO" />
 		<property name="problemLikesDAO" ref="problemLikesDAO" />
+		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -705,7 +706,8 @@
 		<property name="commentDataDAO" ref="commentDataDAO" />
 		<property name="feedbackDAO" ref="feedbackDAO" />
 		<property name="userDAO" ref="userDAO" />
-		<property name="userProblemDAO" ref="userProblemDAO"/>
+		<property name="userProblemDAO" ref="userProblemDAO" />
+		<property name="problemDAO" ref="problemDAO" />
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
@@ -882,8 +884,14 @@
     	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
     	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
     	<property name="userDAO" ref="userDAO" />
-    	<property name="userProblemDAO" ref="userProblemDAO"/>
     	
+    	<property name="problemCommentsDAO" ref="problemCommentsDAO" />
+    	<property name="commentDAO" ref="commentDAO" />
+    	<property name="problemDAO" ref="problemDAO" />
+    	<property name="problemProgressDAO" ref="problemProgressDAO" />
+    	<property name="userProblemDAO" ref="userProblemDAO" />
+    	<property name="visibilityDAO" ref="visibilityDAO" />
+    	<property name="problemActivityDAO" ref="problemActivityDAO" />
 	</bean>
 	
 	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">
