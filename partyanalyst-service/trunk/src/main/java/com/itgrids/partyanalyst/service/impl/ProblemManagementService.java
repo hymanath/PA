@@ -12,7 +12,6 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
+import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
@@ -186,8 +186,17 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IUserProblemDAO userProblemDAO;
 	private IProblemCommentsDAO problemCommentsDAO;
 	private IProblemLikesDAO problemLikesDAO;
+	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	
-	
+	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
+		return problemAssignedDepartmentDAO;
+	}
+
+	public void setProblemAssignedDepartmentDAO(
+			IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO) {
+		this.problemAssignedDepartmentDAO = problemAssignedDepartmentDAO;
+	}
+
 	public IProblemLikesDAO getProblemLikesDAO() {
 		return problemLikesDAO;
 	}
@@ -4647,6 +4656,140 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		return resultStatus;
 	}
+	/*public ResultStatus updateProblemDepartment22(final Long problemHistoryId,
+			final Long departmentId, final Long scopeId, final Long regionId,
+			final String pbStatus) {
+
+		if (log.isDebugEnabled())
+			log.debug(" Started " + pbStatus
+					+ " Department Details For a Problem ..");
+
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+
+						ResultStatus rs = new ResultStatus();
+						try {
+
+							
+							UserProblem userProblem = userProblemDAO.get(problemHistoryId);
+							
+							
+							
+							
+						    List<ProblemAssignedDepartment> assigneDepartment = problemAssignedDepartmentDAO.getAllActivitesByProblem(userProblem.getUserProblemId());
+							if (assigneDepartment != null && assigneDepartment.size() > 0) {
+
+								ProblemAssignedDepartment existingProblemProgress = assigneDepartment.get(0);
+                                 
+								//problemAssignedDepartment.setUserProblem(existingProblemProgress.getUserProblem());
+								
+								if (departmentId != null && !departmentId.equals(0L)) {
+									
+									ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+									DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+									ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+									problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+									existingProblemProgress.setDepartmentLocation(problemCompleteLocation);
+									existingProblemProgress.setDepartmentOrganisation(departmentOrganisation);
+									
+								 }
+
+								
+								existingProblemProgress.setStatus(IConstants.DEPARTMENT_MODIFY);
+								
+								existingProblemProgress.setUpdatedTime(getCurrentDateAndTime());
+								
+								problemAssignedDepartmentDAO.save(existingProblemProgress);
+							}
+							else
+							{
+								ProblemAssignedDepartment problemAssignedDepartment = new ProblemAssignedDepartment();
+								problemAssignedDepartment.setUserProblem(userProblem);
+                               if (departmentId != null && !departmentId.equals(0L)) {
+									
+									ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+									DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+									ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+									problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+									problemAssignedDepartment.setDepartmentLocation(problemCompleteLocation);
+									problemAssignedDepartment.setDepartmentOrganisation(departmentOrganisation);
+									
+								 }
+                                 problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_MODIFY);
+								
+                                 problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
+								
+								problemAssignedDepartmentDAO.save(problemAssignedDepartment);
+				
+							}
+
+							// setting history and updated date details
+							assignedProblemProgress
+									.setPerformedDate(getCurrentDateAndTime());
+							assignedProblemProgress
+									.setProblemHistory(problemHistory);
+
+							if (departmentId != null
+									&& !departmentId.equals(0L)) {
+								ProblemSourceScope problemSourceScope = problemSourceScopeDAO
+										.get(scopeId);
+								DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO
+										.get(departmentId);
+								ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(
+										regionId, problemSourceScope.getScope());
+								problemCompleteLocation = problemCompleteLocationDAO
+										.save(problemCompleteLocation);
+
+								assignedProblemProgress
+										.setDepartmentLocation(problemCompleteLocation);
+								assignedProblemProgress
+										.setDepartmentOrganisation(departmentOrganisation);
+								assignedProblemProgress
+										.setProblemSourceScopeConcernedDepartment(departmentOrganisation
+												.getProblemDepartmentCategory());
+							}
+
+							if (pbStatus.equals(IConstants.DEPARTMENT_ADD)) {
+								List<ProblemActivity> problemActivityLst = problemActivityDAO
+										.getProblemActivityByName("DEPARTMENT_ADD");
+								assignedProblemProgress
+										.setProblemActivity(problemActivityLst
+												.get(0));
+							} else if (pbStatus
+									.equals(IConstants.DEPARTMENT_MODIFY)) {
+								List<ProblemActivity> problemActivityLst = problemActivityDAO
+										.getProblemActivityByName("DEPARTMENT_UPDATE");
+								assignedProblemProgress
+										.setProblemActivity(problemActivityLst
+												.get(0));
+							} else if (pbStatus
+									.equals(IConstants.DEPARTMENT_DELETE)) {
+								List<ProblemActivity> problemActivityLst = problemActivityDAO
+										.getProblemActivityByName("DEPARTMENT_DELETE");
+								assignedProblemProgress
+										.setProblemActivity(problemActivityLst
+												.get(0));
+							}
+
+							// save data
+							assignedProblemProgressDAO
+									.save(assignedProblemProgress);
+
+						} catch (Exception ex) {
+							log.error("Exception Raised :" + ex);
+							rs.setExceptionEncountered(ex);
+							rs.setExceptionMsg(ex.getMessage());
+							return rs;
+						}
+
+						return rs;
+					}
+
+				});
+
+		return resultStatus;
+	}*/
 
 	public ResultStatus updateProblemClassificationData(Long problemHistoryId,
 			String classification, String type) {
@@ -5121,7 +5264,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 	}
 
-	public List<FileVO> getImageDetails()
+	/*public List<FileVO> getImageDetails()
 	{
 		List<FileVO> fileVOList  = new ArrayList<FileVO>();
 		List<ProblemFile> result1 = problemFileDAO.getAllNonApprovedFilesAndProblemDetails();
@@ -5130,16 +5273,84 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 		return fileVOList;
 		
+	}*/
+	public List<FileVO> getImageDetails()
+	{
+		List<FileVO> fileVOList  = new ArrayList<FileVO>();
+		DateUtilService dateUtilService = new DateUtilService();
+		try
+		{
+			if(log.isDebugEnabled())
+				log.debug("Entered into getImageDetails() of problemManagementService");
+		
+		    List<Object[]> object = problemFilesDAO.getCurrentDateFiles(dateUtilService.getCurrentDateAndTime(),null,null);
+		    fileVOList = setFilesToVO(object);
+		}   
+		catch(Exception e)
+		{
+			log.error("Exception occured in getImageDetails() of problemManagementService", e);
+		}
+		return fileVOList;
 	}
+	public List<FileVO> setFilesToVO(List<Object[]> object)
+	{
+		List<FileVO> fileVOList =null;
+		FileVO fileVO = null;
+		try
+		{
+			if(log.isDebugEnabled())
+				log.debug("Entered into setFilesToVO() of problemManagementService");
+		
+		  if(object != null && object.size()>0)
+		  {
+			  fileVOList = new ArrayList<FileVO>();
+			for(Object[] params : object)
+			{
+				fileVO = new FileVO();
+				fileVO.setProblemFileId((Long)params[0]);
+				fileVO.setFileTitle1(params[1].toString());
+				fileVO.setFileDescription1(params[2].toString());
+				fileVO.setProblem(params[3].toString());
+				if(params[4]!= null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
+					fileVO.setScope(IConstants.NEW);
+				if(params[4]!= null && params[4].toString().equalsIgnoreCase(IConstants.TRUE))
+					fileVO.setScope(IConstants.APPROVED);
+				if(params[4]!= null && params[4].toString().equalsIgnoreCase(IConstants.REJECTED))
+					fileVO.setScope(IConstants.REJECTED);
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+				
+				fileVO.setExistingFrom(dateFormat.parse(params[5].toString()));
+				fileVO.setIdentifiedOn(dateFormat.parse(params[6].toString()));
+				
+				/*fileVO.setExistingFrom((Date)params[5]);
+				fileVO.setIdentifiedOn((Date)params[6]);*/
+				fileVO.setName(params[7].toString()+" "+params[8].toString());
+				
+			
+				fileVOList.add(fileVO);
+			}
+		  }
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in setFilesToVO() of problemManagementService", e);
+		}
+		return fileVOList;
+	}
+	
 
 	public void acceptSelectedImagesByAdmin(final Integer[] problemFileIds) {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				for (int i = 0; i < problemFileIds.length; i++) {
-					ProblemFile problemFile = problemFileDAO
+					/*ProblemFile problemFile = problemFileDAO
 							.get(problemFileIds[i].longValue());
 					problemFile.setIsApproved(IConstants.TRUE);
-					problemFileDAO.save(problemFile);
+					problemFileDAO.save(problemFile);*/
+					ProblemFiles problemFiles = problemFilesDAO.get(problemFileIds[i].longValue());
+					problemFiles.setIsApproved(IConstants.TRUE);
+					problemFilesDAO.save(problemFiles);
 				}
 			}
 		});
@@ -5149,10 +5360,13 @@ public class ProblemManagementService implements IProblemManagementService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				for (int i = 0; i < problemFileIds.length; i++) {
-					ProblemFile problemFile = problemFileDAO
+					/*ProblemFile problemFile = problemFileDAO
 							.get(problemFileIds[i].longValue());
 					problemFile.setIsApproved(IConstants.REJECTED);
-					problemFileDAO.save(problemFile);
+					problemFileDAO.save(problemFile);*/
+					ProblemFiles problemFiles = problemFilesDAO.get(problemFileIds[i].longValue());
+					problemFiles.setIsApproved(IConstants.REJECTED);
+					problemFilesDAO.save(problemFiles);
 				}
 			}
 		});
@@ -5296,7 +5510,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * This method retrives the problem details for BetweenDates
 	 */
 
-	public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDatestr, String toDatestr, String status, String type) {
+	/*public List<FileVO> getAllApprovalProblemImagesBetweenEventDates(String fromDatestr, String toDatestr, String status, String type) {
 		List<FileVO> problemImages = new ArrayList<FileVO>();
 		List<ProblemFile> result = null;
 		FileVO fileVO = null;
@@ -5332,9 +5546,37 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return problemImages;
 
+	}*/
+	public List<FileVO> getProblemFilesBetweanDates(String fromDatestr, String toDatestr,String choice)
+	{
+		List<FileVO> fileVOList  = new ArrayList<FileVO>();
+		DateUtilService dateUtilService = new DateUtilService();
+		try
+		{
+			
+			String isApproved = null;
+			if(log.isDebugEnabled())
+				log.debug("Entered into getImageDetails() of problemManagementService");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			if(choice.equalsIgnoreCase(IConstants.NEW))
+				isApproved = IConstants.FALSE;
+			else if(choice.equalsIgnoreCase(IConstants.APPROVED))
+				isApproved = IConstants.TRUE;
+			else if(choice.equalsIgnoreCase(IConstants.REJECTED))
+				isApproved = IConstants.REJECTED;
+		    List<Object[]> object = problemFilesDAO.getCurrentDateFiles(dateFormat.parse(fromDatestr),dateFormat.parse(toDatestr),isApproved);
+		    fileVOList = setFilesToVO(object);
+		}   
+		catch(Exception e)
+		{
+			log.error("Exception occured in getImageDetails() of problemManagementService", e);
+		}
+		return fileVOList; 
+		
+		
 	}
 
-	public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDateStr, String status, String type) {
+	/*public List<FileVO> getAllApprovalProblemImagesForParticularDate(String particularDateStr, String status, String type) {
 
 		List<FileVO> problemImageDetails = new ArrayList<FileVO>();
 		List<ProblemFile> result = null;
@@ -5363,7 +5605,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				
 				problemImageDetails = setProblemFileToFileVO(result);
 				
-				/*for (Object[] objects : result) {
+				for (Object[] objects : result) {
 					fileVO = new FileVO();
 					fileVO.setProblemFileId((Long) objects[0]);
 					fileVO.setProblem(objects[1].toString());
@@ -5378,7 +5620,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					fileVO.setFileName1(objects[9].toString());
 				
 					problemImageDetails.add(fileVO);
-					}*/
+					}
 
 			}
 
@@ -5389,7 +5631,34 @@ public class ProblemManagementService implements IProblemManagementService {
 			return problemImageDetails;
 		}
 
+	}*/
+	public List<FileVO> getProblemFilesForParticularDate(String particularDateStr,String choice) 
+	{
+		List<FileVO> fileVOList  = new ArrayList<FileVO>();
+		DateUtilService dateUtilService = new DateUtilService();
+		try
+		{
+			String isApproved = null;
+			if(log.isDebugEnabled())
+				log.debug("Entered into getImageDetails() of problemManagementService");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			if(choice.equalsIgnoreCase(IConstants.NEW))
+				isApproved = IConstants.FALSE;
+			else if(choice.equalsIgnoreCase(IConstants.APPROVED))
+				isApproved = IConstants.TRUE;
+			else if(choice.equalsIgnoreCase(IConstants.REJECTED))
+				isApproved = IConstants.REJECTED;
+		    List<Object[]> object = problemFilesDAO.getCurrentDateFiles(dateFormat.parse(particularDateStr),null,isApproved);
+		    fileVOList = setFilesToVO(object);
+		}   
+		catch(Exception e)
+		{
+			log.error("Exception occured in getImageDetails() of problemManagementService", e);
+		}
+		return fileVOList;
+		
 	}
+	
 	public List<FileVO> setProblemFileToFileVO(List<ProblemFile> imageFilesList)
 	{
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
