@@ -281,6 +281,112 @@ function displayDateText1(type, args, obj) {
 	divElmt.style.display = 'none';
 }
 
+
+
+
+
+function buildProblemsDetailsDataTable(results,jsObj) {
+
+
+	caption = "Problems in " + jsObj.status + " Status";
+
+	var contentStr = '';
+	contentStr += '<div id="problems_Datatable"></div>';
+
+	var myPanel = new YAHOO.widget.Dialog("problemsByStatusPanelDiv", {
+
+		width : "620px",
+		fixedcenter : false,
+		visible : true,
+		constraintoviewport : true,
+		iframe : true,
+		modal : true,
+		hideaftersubmit : true,
+		close : true
+	});
+	myPanel.setHeader("Problems Details");
+	myPanel.setBody(contentStr);
+	myPanel.render();
+
+	
+		var problemsArr = new Array();
+		
+		for(var i in results){
+			var problem = {
+					problem:results[i].problem, 
+				  	description:results[i].description,
+					existingFrom:results[i].existingFrom,
+					
+					location : results[i].problemLocation,
+					status:results[i].status,
+					};
+			
+			problemsArr.push(problem);
+		problemDetails=problemsArr;	
+		}
+	
+		var emptyArr = new Array();
+	    if(results.length == 0)
+		{	problemDetails = emptyArr;				
+		}
+	    initializeResultsTable("problems_Datatable",problemDetails,caption);
+	}
+
+
+
+
+
+
+function initializeResultsTable(divId, problemDetails, caption) {
+	var elmt = document.getElementById("problemsDetailsDTDiv");
+
+	if (!elmt)
+		return;
+
+	var probDTColumnDefs = [ {
+		key : "problem",
+		label : problemDetails.Problem,
+		sortable : true
+	}, {
+		key : "description",
+		label : problemDetails.description
+	}, {
+		key : "existingFrom",
+		label : problemDetails.existingFrom
+		},
+			 {
+		key : "status",
+		label : problemDetails.status,
+		sortable : true
+	} ];
+
+	var probDTDataSource = new YAHOO.util.DataSource(problemDetails);
+	probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	probDTDataSource.responseSchema = {
+		fields : [ "problem", "description", "existingFrom",
+				 
+				"status" ]
+	};
+
+	if (problemDetails.length > 10) {
+		var myConfigs = {
+			paginator : new YAHOO.widget.Paginator( {
+				rowsPerPage : 10
+			}),
+			caption : caption
+		};
+	}
+	var probDataTable = new YAHOO.widget.DataTable(divId, probDTColumnDefs,
+			probDTDataSource, myConfigs);
+
+}
+
+
+
+
+
+
+
 function buildProblemsDetailsDT(results) {
 		var problemsArr = new Array();
 		
