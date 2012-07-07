@@ -278,12 +278,26 @@
 				<value>com.itgrids.partyanalyst.model.ProblemAssignedCadre</value>
 				<value>com.itgrids.partyanalyst.model.ClassifiedProblems</value>
 				<value>com.itgrids.partyanalyst.model.ProblemLikes</value>
-				
+				<value>com.itgrids.partyanalyst.model.CandidateSubscriptions</value>
+				<value>com.itgrids.partyanalyst.model.SpecialPageSubscriptions</value>
+				<value>com.itgrids.partyanalyst.model.PartySubscriptions</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="partySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartySubscriptionsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="specialPageSubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialPageSubscriptionsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateSubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateSubscriptionsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="classifiedProblemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ClassifiedProblemsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />

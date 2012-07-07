@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.File;
@@ -172,5 +173,12 @@ public interface ICandidateDetailsService {
 	 public String getMandalName(Long mandalId);
 	 
 	 public List<FileVO> getAllNewsdetails(Long candidateId,int firstResult,int maxResult,String queryType);
-	 	 
+	 
+	 public RegistrationVO getStateAndConstituency(Long userId);	
+	 
+	 public Boolean getSubscriptionDetails(Long userId,Long candidateId,String page);
+	 
+	 public ResultStatus subscriberDetails(Long candidateId,Long userId,String category);
+	 
+	 public ResultStatus unSubscriptionDetails(Long candidateId,Long userId,String category);
 }

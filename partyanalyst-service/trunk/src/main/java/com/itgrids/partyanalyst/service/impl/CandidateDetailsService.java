@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ICandidateProfileDescriptionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -62,12 +63,14 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IPartyPageCustomPagesDAO;
+import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageCustomPagesDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageGalleryDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
@@ -81,6 +84,7 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -90,6 +94,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidatePageCustomPages;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
 import com.itgrids.partyanalyst.model.CandidateResult;
+import com.itgrids.partyanalyst.model.CandidateSubscriptions;
 import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -107,11 +112,13 @@ import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyPageCustomPages;
+import com.itgrids.partyanalyst.model.PartySubscriptions;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.SpecialPage;
 import com.itgrids.partyanalyst.model.SpecialPageCustomPages;
+import com.itgrids.partyanalyst.model.SpecialPageSubscriptions;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserCandidateRelation;
 import com.itgrids.partyanalyst.model.UserGallary;
@@ -169,7 +176,39 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IFilePathsDAO filePathsDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IUserDAO userDAO;
+	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
+	private IPartySubscriptionsDAO partySubscriptionsDAO;
+	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
+		
 	
+	
+	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
+		return partySubscriptionsDAO;
+	}
+
+	public void setPartySubscriptionsDAO(
+			IPartySubscriptionsDAO partySubscriptionsDAO) {
+		this.partySubscriptionsDAO = partySubscriptionsDAO;
+	}
+
+	public ISpecialPageSubscriptionsDAO getSpecialPageSubscriptionsDAO() {
+		return specialPageSubscriptionsDAO;
+	}
+
+	public void setSpecialPageSubscriptionsDAO(
+			ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO) {
+		this.specialPageSubscriptionsDAO = specialPageSubscriptionsDAO;
+	}
+
+	public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
+		return candidateSubscriptionsDAO;
+	}
+
+	public void setCandidateSubscriptionsDAO(
+			ICandidateSubscriptionsDAO candidateSubscriptionsDAO) {
+		this.candidateSubscriptionsDAO = candidateSubscriptionsDAO;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -1982,7 +2021,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	}
 	
 	public ResultStatus subScribeEmailAlertForAUser(String emailId ,Long candidateId)
-	{
+	{/*sasi*/
 		 DateUtilService dateUtilService = new DateUtilService();
 		 ResultStatus statusCode = new ResultStatus()  ;
 		 try {
@@ -3510,5 +3549,196 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		 Collections.sort(fileVOPathsList,sortData);
 		 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
 		 fileVOSourceLanguageList.add(fileVOSourceLanguage);
-	}	
+	}
+	
+	public RegistrationVO getStateAndConstituency(Long userId)
+	{
+		try{
+			RegistrationVO regVO = new RegistrationVO();
+			List<Object[]> userDtlsList = userDAO.findByUserId(userId);
+			Object[] userDtls = userDtlsList.get(0);
+			  if(userDtls[0] != null)
+				  regVO.setConstituencyId((Long)userDtls[1]);
+			      regVO.setStateId((Long)userDtls[0]);
+			return regVO;
+		}catch (Exception e) {
+			log.error("Exception Occured in getStateAndConstituency() Method");
+			return null;
+		}
+	}
+	
+	public Boolean getSubscriptionDetails(Long userId,Long candidateId,String page)
+	{
+		Boolean flag = false;
+		try
+		{
+			if(page.equalsIgnoreCase("cPage")){
+			Long count = candidateSubscriptionsDAO.getSubscriptionCount(userId,candidateId);
+			
+			if(count.longValue() > 0)
+				flag = true;
+			
+			return flag;
+		}
+			else if(page.equalsIgnoreCase("pPage")){
+				Long count = partySubscriptionsDAO.getSubscriptionCount(userId,candidateId);
+				
+				if(count.longValue() > 0)
+					flag = true;
+				
+				return flag;
+			}
+			else if(page.equalsIgnoreCase("sPage")){
+				Long count = specialPageSubscriptionsDAO.getSubscriptionCount(userId,candidateId);
+				
+				if(count.longValue() > 0)
+					flag = true;
+				
+				return flag;
+			}
+			else {
+				return flag;
+			}
+			
+		}catch (Exception e) {
+			log.error("Exception occured in getSubscriptionDetails() Method, Exception is - "+e);
+			return flag;
+		}
+			
+		
+	}
+	public ResultStatus subscriberDetails(Long id,Long userId,String category)
+	{
+		log.debug("Entered Into subscriberDetails() Method of CandidateDetailsService");
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			if(category.equalsIgnoreCase("candidatePage"))
+			{
+			    List<CandidateSubscriptions> candidateUpdatesEmails = candidateSubscriptionsDAO.getSubscriberDetails(id, userId);
+			   
+			    if(!(candidateUpdatesEmails.size() > 0))
+			    {
+					CandidateSubscriptions candidateSubscriptions = new CandidateSubscriptions();
+					
+					candidateSubscriptions.setCandidateId(id);
+					candidateSubscriptions.setUserId(userId);
+					candidateSubscriptions.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					candidateSubscriptions.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					candidateSubscriptions = candidateSubscriptionsDAO.save(candidateSubscriptions);
+			    }
+			}
+			
+			else if(category.equalsIgnoreCase("partyPage"))
+			{
+			    List<PartySubscriptions> candidateUpdatesEmails = partySubscriptionsDAO.getSubscriberDetails(id, userId);
+			    
+			    if(!(candidateUpdatesEmails.size() >0))
+			    {
+			    	PartySubscriptions partySubscriptions = new PartySubscriptions();
+				
+			    	partySubscriptions.setPartyId(id);
+			    	partySubscriptions.setUserId(userId);
+			    	partySubscriptions.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			    	partySubscriptions.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			    	partySubscriptions = partySubscriptionsDAO.save(partySubscriptions);
+			    }
+			}
+			
+			else if(category.equalsIgnoreCase("specialPage"))
+			{
+			    List<SpecialPageSubscriptions> candidateUpdatesEmails = specialPageSubscriptionsDAO.getSubscriberDetails(id, userId);
+			    
+			    if(!(candidateUpdatesEmails.size() >0))
+			    {
+			    	SpecialPageSubscriptions specialPageSubscriptions = new SpecialPageSubscriptions();
+				
+			    	specialPageSubscriptions.setSpecialPageId(id);
+			    	specialPageSubscriptions.setUserId(userId);
+			    	specialPageSubscriptions.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			    	specialPageSubscriptions.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			    	specialPageSubscriptions = specialPageSubscriptionsDAO.save(specialPageSubscriptions);
+			    }
+			}
+		    else
+		    {
+		    	resultStatus.setExceptionMsg("You have already subscribed for this candidate"); 
+		    }
+		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		    return resultStatus;
+		}catch(Exception e){
+			
+			log.error("Exception occured in subscriberDetails() Method, Exception is - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+					
+	}
+	public ResultStatus unSubscriptionDetails(Long id,Long userId,String category)
+	{
+		log.debug("Entered Into unSubscriptionDetails() Method of CandidateDetailsService");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(category.equalsIgnoreCase("candidatePage"))
+			{
+					int flag=candidateSubscriptionsDAO.unSubscriptionDetails(id,userId);
+						
+							if (flag != 0)
+							{
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							return resultStatus;
+						    }
+							else
+							{
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+							return resultStatus;
+							}
+						
+			}
+			if(category.equalsIgnoreCase("partyPage"))
+			{
+					int flag=partySubscriptionsDAO.unSubscriptionDetails(id,userId);
+						
+							if (flag != 0)
+							{
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							return resultStatus;
+						    }
+							else
+							{
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+							return resultStatus;
+							}
+						
+			}
+			if(category.equalsIgnoreCase("specialPage"))
+			{
+					int flag=specialPageSubscriptionsDAO.unSubscriptionDetails(id,userId);
+						
+							if (flag != 0)
+							{
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							return resultStatus;
+						    }
+							else
+							{
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+							return resultStatus;
+							}
+						
+			}else{
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}		
+		}
+		catch(Exception e){
+			
+			log.error("Exception occured in unSubscriptionDetails() Method, Exception is - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+	}
 }
