@@ -40,9 +40,10 @@ public interface IProblemManagementReportService {
 	
 	public NavigationVO getProblemsCountInAWeek(Date fromDate,Date toDate,String status,String type);
 	
-	public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String status,String type);
+	//public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String status,String type);
+	public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String choice);
 	
-	public NavigationVO getAllApprovalProblemsForTheCurrentDay(String status,String type);
+	public NavigationVO getAllApprovalProblemsForTheCurrentDay();
 	
 	public NavigationVO getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String type);
 
@@ -50,9 +51,9 @@ public interface IProblemManagementReportService {
 	
 	public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds);
 	
-	public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String status,String type);
-	
-	
+	//public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String status,String type);
+	//public NavigationVO getAllApprovalProblemsForSelectedDate(Date date);
+	public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String choice);
 	
 	//Problem Retrival Methods (can be retrived based on locationIds and locationType)
 	
@@ -101,4 +102,6 @@ public interface IProblemManagementReportService {
 	public String getProblemLocation(Long impactLevel,Long impactValue);
 	
 	public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser();
+	
+
 }
