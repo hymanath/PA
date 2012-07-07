@@ -588,7 +588,8 @@
 											populateInfluencingPeople(jsObj,myResults);
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
-											buildProblemsByStatusDialog(myResults,jsObj);
+											buildProblemsDetailsDataTable(myResults,jsObj);
+											//buildProblemsByStatusDialog(myResults,jsObj);
 										}else if(jsObj.task == "getProblemDetails")
 										{
 											showProblemsHistoryReport(myResults);			
