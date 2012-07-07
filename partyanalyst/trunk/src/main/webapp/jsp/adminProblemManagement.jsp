@@ -205,7 +205,7 @@
 		            {key:"problemHistoryId", hidden: true}, 
 		            {key:"problem", label: "<%=problemLabel%>", sortable:true, maxAutoWidth:150}, 
 		            {key:"description", label: "<%=description%>", sortable:true, maxAutoWidth:250}, 
-					{key:"impactLevel", label: "Severity", sortable:true},						
+					{key:"isApproved", label: "Severity", sortable:true},						
 					{key:"postedDate", 	label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},			
 					{key:"name", label: "<%=source%>", sortable:true}	
 		        ]; 
@@ -213,7 +213,7 @@
 		        var myDataSource = new YAHOO.util.DataSource(results); 
 		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		        myDataSource.responseSchema = { 
-		            fields:["problemId","problemHistoryId","problem","description","impactLevel","postedDate","name"] 
+		            fields:["problemId","problemHistoryId","problem","description","isApproved","postedDate","name"] 
 		        }; 
 				
 				var myConfigs = { 
@@ -375,7 +375,7 @@
 		<td style="padding-left:22px;"><h4>Select To View Problems Posted In Between Dates</h4>
 			<fieldset>
 			<legend style="font-family:arial,helvetica,clean,sans-serif;">Between Dates</legend>
-			<s:radio theme="simple" list="{'Newly Posted', 'Approved','Rejected'}" name="problemRetrivalType"></s:radio>
+			<s:radio theme="simple" list="{'New', 'Approved','Rejected'}" name="problemRetrivalType"></s:radio>
 			<table border="0">
 				<tr>							
 					<td><font class="requiredFont"> * </font></td>	
@@ -420,7 +420,7 @@
 							<td>
 								<fieldset>
 								<legend style="font-family:arial,helvetica,clean,sans-serif;">Particular Date</legend>
-								<s:radio theme="simple" list="{'Newly Posted', 'Approved','Rejected'}" name="problemType"></s:radio>
+								<s:radio theme="simple" list="{'New', 'Approved','Rejected'}" name="problemType"></s:radio>
 								<table>
 									<tr>							
 										<td><font class="requiredFont"> * </font></td>	
