@@ -428,7 +428,7 @@ var str = '<font style="color:red;font-size:12px;">';
 
 
 	<br><br><b style="color:red">*</b> 
- Select Constituency<select name="constituencyId" id="constituency"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:12px;" style="margin-left:12px;"/>
+ Select Constituency<select name="constituency" id="constituency"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:12px;" style="margin-left:12px;"/>
  <option>Select Constituency</option>
  </select><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
 		 </div></td></tr>
