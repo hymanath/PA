@@ -144,8 +144,8 @@ public class RegistrationService implements IRegistrationService{
 			if(values.getStateId() !=null && values.getStateId()!=0)
 				user.setStateId(values.getStateId());
 			
-			if(values.getConstituencyId()!= null && values.getConstituencyId()!=0)
-			user.setConstituencyId(values.getConstituencyId());
+			if(values.getConstituency()!= null && !values.getConstituency().equalsIgnoreCase("Select Constituency"))
+			user.setConstituencyId(Long.parseLong(values.getConstituency().toString()));
 			
 			user = userDAO.save(user);
 			saveDataInToUserRolesTable(user,values);
