@@ -1407,7 +1407,8 @@ public class ProblemManagementReportService implements
 				List newProblems = new ArrayList();
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
 				if(!tehsilIds.equalsIgnoreCase("")){
-				newProblems = problemHistoryDAO.findLatestProblemsByMandals(tehsilIds, statusId);
+				//newProblems = problemHistoryDAO.findLatestProblemsByMandals(tehsilIds, statusId);
+					newProblems = userProblemDAO.findLatestProblemsByMandals(tehsilIds, statusId);
 				}
 				if(newProblems.size() > limit)
 					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems.subList(0, limit-1)));
@@ -1429,8 +1430,8 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setDescription(values[2].toString());
 				problemBeanVO.setHamlet(values[3].toString());
 				problemBeanVO.setProbSource(values[4].toString());
-				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
-				problemBeanVO.setStatus(values[6].toString());
+				//problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
+				problemBeanVO.setStatus(values[5].toString());
 				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
@@ -1481,9 +1482,9 @@ public class ProblemManagementReportService implements
 					}
 				}
 				if(constituencyIds.length() > 0)
-					problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(userId);
+					/*problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(userId);*/
 					//problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
-				
+					problemsCountByStatusRawList = userProblemDAO.getProblemsCountInAllStatusByLocation(userId);
 				for(int i=0;i<problemsCountByStatusRawList.size();i++){
 					Object[] parms = (Object[])problemsCountByStatusRawList.get(i);
 					problemsCountByStatusObj = new ProblemsCountByStatus();	
@@ -1497,8 +1498,9 @@ public class ProblemManagementReportService implements
 				
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
 				//problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
-				problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId,"1,6");
+				/*problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId,"1,6");*/
 				
+				problemsByStatusAndDateRawList = userProblemDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId, "1,6");
 				for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
 					date = dateFormater.format((Date)values[1]);
 					status = values[3].toString();
@@ -1548,6 +1550,42 @@ public class ProblemManagementReportService implements
 			return locationwiseProblemStatusInfoVO;
 		}
 		
+		
+		public List<ProblemBeanVO> getProblemsInfoByStatusInALocationForUser(Long accessValue,String accessType,Long userId,Long status)
+		{
+			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
+			try{
+				
+				if(status != null && status != 0)
+				{
+					result = userProblemDAO.findProblemsByStatusForALocationsByConstituencyId(userId, status);
+					if(result != null)
+					{
+					for(int i=0;i<result.size();i++)
+					{
+						ProblemBeanVO problemBean = new ProblemBeanVO();
+						Object[] params = (Object[])result.get(i);
+						problemBean.setProblem(params[3].toString());
+						problemBean.setDescription(params[7].toString());
+						problemBean.setExistingFrom(params[4].toString());
+						problemBean.setStatus(params[0].toString());
+						problemBean.setProblemLocation(getProblemLocation(Long.parseLong(params[1].toString()),Long.parseLong(params[11].toString())));
+						
+						problemBeanVO.add(problemBean);
+						
+					}
+					}
+				}
+				
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return problemBeanVO;
+			}
+			return problemBeanVO;
+		}
+		
 		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long userId,Long status) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
@@ -1562,14 +1600,16 @@ public class ProblemManagementReportService implements
 			 */
 			if(status!=null && status!=0){
 				//result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(userId,status);
+				/*result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(userId,status);*/
+				result = userProblemDAO.findProblemsByStatusForALocationsByConstituencyId(userId, status);
 			}
 			/**
 			 * modification ends here...
 			 */
 			else{
 				//result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
-				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(userId);	
+				/*result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(userId);*/
+				result = userProblemDAO.findProblemsForALocationsByConstituencyId(userId);
 			}
 			problemBeanVO = populateProblemInfo(result,userId,status,IConstants.PROBLEMS_MANAGEMENT);
 			}catch(Exception e){
