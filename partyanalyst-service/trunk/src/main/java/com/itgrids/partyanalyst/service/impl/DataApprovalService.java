@@ -11,21 +11,32 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICommentDAO;
+import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
+import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
+import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.IVisibilityDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApprovalDetails;
+import com.itgrids.partyanalyst.model.Comment;
+import com.itgrids.partyanalyst.model.ProblemComments;
 import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.UserApprovalDetails;
+import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.model.UserProblemApproval;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -40,14 +51,69 @@ public class DataApprovalService implements IDataApprovalService {
 	private IProblemManagementService  problemManagementService;
 	private IApprovalDetailsDAO approvalDetailsDAO;
 	private IUserDAO userDAO;
+	private IProblemDAO problemDAO;
+	private IProblemCommentsDAO problemCommentsDAO;
+	private ICommentDAO commentDAO;
+	private IProblemProgressDAO problemProgressDAO;
 	private IUserProblemDAO userProblemDAO;
+	private IVisibilityDAO visibilityDAO;
+	private IProblemActivityDAO problemActivityDAO;
 	
-    public IUserProblemDAO getUserProblemDAO() {
+	
+    public IProblemActivityDAO getProblemActivityDAO() {
+		return problemActivityDAO;
+	}
+
+	public void setProblemActivityDAO(IProblemActivityDAO problemActivityDAO) {
+		this.problemActivityDAO = problemActivityDAO;
+	}
+
+	public IVisibilityDAO getVisibilityDAO() {
+		return visibilityDAO;
+	}
+
+	public void setVisibilityDAO(IVisibilityDAO visibilityDAO) {
+		this.visibilityDAO = visibilityDAO;
+	}
+
+	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
 	}
 
 	public void setUserProblemDAO(IUserProblemDAO userProblemDAO) {
 		this.userProblemDAO = userProblemDAO;
+	}
+
+	public IProblemProgressDAO getProblemProgressDAO() {
+		return problemProgressDAO;
+	}
+
+	public void setProblemProgressDAO(IProblemProgressDAO problemProgressDAO) {
+		this.problemProgressDAO = problemProgressDAO;
+	}
+
+	public ICommentDAO getCommentDAO() {
+		return commentDAO;
+	}
+
+	public void setCommentDAO(ICommentDAO commentDAO) {
+		this.commentDAO = commentDAO;
+	}
+
+	public IProblemCommentsDAO getProblemCommentsDAO() {
+		return problemCommentsDAO;
+	}
+
+	public void setProblemCommentsDAO(IProblemCommentsDAO problemCommentsDAO) {
+		this.problemCommentsDAO = problemCommentsDAO;
+	}
+
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
 	}
 
 	public IUserDAO getUserDAO() {
@@ -169,14 +235,46 @@ public class DataApprovalService implements IDataApprovalService {
 		final ResultStatus rs = new ResultStatus();
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
-				ApprovalDetails approvalDetails = new ApprovalDetails();
+				/*ApprovalDetails approvalDetails = new ApprovalDetails();
 				UserApprovalDetails userApprovalDetails = new UserApprovalDetails();
-				UserProblemApproval userProblemApproval = new UserProblemApproval(); 
+				UserProblemApproval userProblemApproval = new UserProblemApproval();*/
+				Comment comment = new Comment();
+				ProblemComments problemComments =new ProblemComments();
+				ProblemProgress problemProgress = new ProblemProgress();
+				DateUtilService dateUtilService = new DateUtilService();
+				
+				
+				
 				try{
+					//save comment details in Comment class
+					comment.setComment(approvalInfoVO.getReason());
+					comment.setIsAbused(IConstants.FALSE);
+					comment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
-					List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
+					//save problem details in problemComments class
+					problemComments.setProblem(problemDAO.get(approvalInfoVO.getProblemHistoryId()));
+					//problemComments.setComment(comment);(or)
+					problemComments.setComment(commentDAO.save(comment));
+					problemComments.setUser(userDAO.get(approvalInfoVO.getUserId()));
+					problemComments.setIsApproved(IConstants.FALSE);
+					problemComments.setIsDelete(IConstants.FALSE);
+					problemComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					problemCommentsDAO.save(problemComments);
+					
+					List<UserProblem>  userProblemId = userProblemDAO.getUserProblemId(approvalInfoVO.getProblemHistoryId(),approvalInfoVO.getUserId());
+					 
+					problemProgress.setUserProblem(userProblemId.get(0));
+					problemProgress.setProblemActivity(problemActivityDAO.get(11l));
+					problemProgress.setComment(commentDAO.save(comment));
+					problemProgress.setVisibility(visibilityDAO.get(1l));
+					problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					
+					problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					problemProgress.setIsDelete(IConstants.FALSE);
+					problemProgressDAO.save(problemProgress);
+					/*List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
 					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
-					/*if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
+					if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
 					{	
 						rs.setExceptionMsg("You have already posted your comment!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);
@@ -191,7 +289,7 @@ public class DataApprovalService implements IDataApprovalService {
 						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);						
 					}
-					else {*/
+					else {
 						java.util.Date today = new java.util.Date();
 						String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 						SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -209,7 +307,7 @@ public class DataApprovalService implements IDataApprovalService {
 						userProblemApproval.setProblemHistory(problemHistory);
 						userProblemApproval.setUserApprovalDetails(userApprovalDetails);
 						userProblemApprovalDAO.save(userProblemApproval);
-						rs.setResultCode(ResultCodeMapper.SUCCESS);						
+						rs.setResultCode(ResultCodeMapper.SUCCESS);	*/				
 					}
 					
 				catch(Exception e){
@@ -310,7 +408,7 @@ public class DataApprovalService implements IDataApprovalService {
 		try {
 			
 			
-			List result=userApprovalDetailsDAO.findUserApprovalStatusbetweendates(yearFormatSdf.parse(fromDate),yearFormatSdf.parse(toDate));
+			List result=problemCommentsDAO.findUserApprovalStatusbetweendates(yearFormatSdf.parse(fromDate),yearFormatSdf.parse(toDate));
 			
 			if(log.isInfoEnabled())
 				log.info("userapprovaldetailsSize:"+result.size());
@@ -323,19 +421,29 @@ public class DataApprovalService implements IDataApprovalService {
 				{
 					ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
 					Object[] parms = (Object[])result.get(i);
-					
-					approvalInfoVO.setReason(parms[0].toString());
-					
-					approvalInfoVO.setIsApproved(parms[1].toString());
-					
+					approvalInfoVO.setApprovalDetailsId(parms[0].toString());
+					approvalInfoVO.setReason(parms[1].toString());
+				
 					String postedDate = sdf.format((Date)parms[2]);
 					approvalInfoVO.setPostedDate(postedDate);
 					
 					approvalInfoVO.setUserName(parms[3].toString()+" "+parms[4].toString());
+					if(parms[5] != null && parms[5].toString().equalsIgnoreCase(IConstants.FALSE))
+						approvalInfoVO.setIsApproved(IConstants.NEW);
+					if(parms[5] != null && parms[5].toString().equalsIgnoreCase(IConstants.TRUE))
+						approvalInfoVO.setIsApproved(IConstants.APPROVED);
+					if(parms[5] != null && parms[5].toString().equalsIgnoreCase(IConstants.REJECTED))
+						approvalInfoVO.setIsApproved(IConstants.REJECTED);
+					/*if(parms[5]==null)
+						approvalInfoVO.setIsApproved(IConstants.NEW);
+					if(parms[5] != null && parms[5].toString().equalsIgnoreCase(IConstants.FALSE))
+						approvalInfoVO.setIsApproved(IConstants.REJECTED);
 					
-					approvalInfoVO.setApprovalDetailsId(parms[5].toString());
+					if(parms[5] != null && parms[5].toString().equalsIgnoreCase(IConstants.TRUE))
+						approvalInfoVO.setIsApproved(IConstants.APPROVED);*/
 					
-					approval.add(approvalInfoVO);				
+					
+				    approval.add(approvalInfoVO);				
 				}
 			
 			}
@@ -354,14 +462,18 @@ public class DataApprovalService implements IDataApprovalService {
 	{
 		if(log.isDebugEnabled())
 			log.debug("userApprovalDetailsbetweenDates(String fromDate,String toDate)");
-				
+			String isApproved = null;	
 		List<ApprovalInfoVO> approval = new ArrayList<ApprovalInfoVO>(0);
 				
 		try {
 			
 			ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
-			
-			int count =  approvalDetailsDAO.updateSetIsApprovedStatusToPostedProblems(approvalDetailsIds, approvedStatus);
+			if(approvedStatus.toString().equalsIgnoreCase(IConstants.APPROVED))
+				isApproved = IConstants.TRUE;
+			else if(approvedStatus.toString().equalsIgnoreCase(IConstants.REJECTED))
+				isApproved = IConstants.REJECTED;
+			//int count =  approvalDetailsDAO.updateSetIsApprovedStatusToPostedProblems(approvalDetailsIds, approvedStatus);
+			int count =  problemCommentsDAO.updatesCommentsByAdmin(approvalDetailsIds, isApproved);
 			approvalInfoVO.setCount(count);
 			
 		    }
