@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -39,6 +40,50 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 	
 }
+	public List<UserProblem> getUserProblemId(Long problemId,Long userId)
+	{
+		StringBuffer query=new StringBuffer("select model.userProblemId from UserProblem model where model.problem.problemId =:problemId and model.user.userId =:userId and model.visibility.type =:type");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("problemId",problemId);
+		queryObject.setParameter("userId",userId);
+		queryObject.setParameter("type","public");
+		
+		return queryObject.list();
+		
+		
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved)
+	{
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append("select model.problem.problemId,model.problem.description,model.problem.isApproved,model.problem.identifiedOn,model.user.firstName,model.user.lastName,model.problem.title ");
+		conditionQuery.append(" from UserProblem model where  model.visibility.type =:status and model.problem.isDelete =:isDelete ");
+		if(firstDate != null)
+			conditionQuery.append(" and date(model.problem.insertedTime) >=:initialDate ");
+		
+		 if(lastDate != null)
+			conditionQuery.append(" and date(model.problem.insertedTime) <=:endDate ");
+		
+		 if(isApproved != null)
+			conditionQuery.append(" and model.problem.isApproved =:isApproved ");
+		
+		Query queryObject = getSession().createQuery(conditionQuery.toString());
+		
+		if(firstDate != null)
+		    queryObject.setParameter("initialDate", firstDate);
+		
+	    if(lastDate != null)
+		    queryObject.setParameter("endDate", lastDate);
+		
+		 if(isApproved != null)
+		    queryObject.setParameter("isApproved", isApproved);   
+		
+		queryObject.setParameter("status", "Public");
+		queryObject.setParameter("isDelete", "false");
+		return queryObject.list();	
+	}
+	
+
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getProblemCompleteInfo(Long problemId)
