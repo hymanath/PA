@@ -695,9 +695,9 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			pbStatus = IConstants.DEPARTMENT_DELETE;
 		
 		if(pbStatus.equals(IConstants.DEPARTMENT_DELETE))
-			resultStatus = problemManagementService.updateProblemDepartment(problemHistoryId, 0L, 0L, 0L, pbStatus);
+			resultStatus = problemManagementService.updateProblemDepartment(problemHistoryId, 0L, 0L, 0L, pbStatus,user.getRegistrationID());
 		else
-			resultStatus = problemManagementService.updateProblemDepartment(problemHistoryId, departmentId, scopeId, regionId, pbStatus);
+			resultStatus = problemManagementService.updateProblemDepartment(problemHistoryId, departmentId, scopeId, regionId, pbStatus,user.getRegistrationID());
 	   
 	   return Action.SUCCESS;
    }
