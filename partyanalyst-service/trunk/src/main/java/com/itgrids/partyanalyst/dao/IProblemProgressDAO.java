@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.ProblemProgress;
 
 public interface IProblemProgressDAO extends GenericDao<ProblemProgress,Long>{
+	
+	public List<ProblemProgress>  getProblemPrograss(Long userProblemId);
 
 }
