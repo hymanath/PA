@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.model.ProblemClassification;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemClassificationDAOHibernateTest extends BaseDaoTestCase{
 
@@ -28,5 +29,13 @@ public class ProblemClassificationDAOHibernateTest extends BaseDaoTestCase{
 	public void testFindByClassification(){
 		List<ProblemClassification> list = problemClassificationDAO.findByClassification("SOCIAL");
 		assertEquals(1, list.size());
+	}
+	
+	public void testGetProblemClassificationId(){
+		List<Long> clsfctnIdList=problemClassificationDAO.getProblemClassificationId(IConstants.PROBLEM_CLASSIFICATION_ECONOMICAL);
+		if(clsfctnIdList!=null && clsfctnIdList.size()>0){
+			System.out.println(clsfctnIdList.get(0));
+		}
+		
 	}
 }

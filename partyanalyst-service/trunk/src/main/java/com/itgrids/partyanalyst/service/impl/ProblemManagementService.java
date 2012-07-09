@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
+import com.itgrids.partyanalyst.dao.IClassifiedProblemsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLikesDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
+import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -88,6 +90,7 @@ import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreProblems;
+import com.itgrids.partyanalyst.model.ClassifiedProblems;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
@@ -108,7 +111,9 @@ import com.itgrids.partyanalyst.model.ProblemFile;
 import com.itgrids.partyanalyst.model.ProblemFiles;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemImpactLevel;
+import com.itgrids.partyanalyst.model.ProblemLikes;
 import com.itgrids.partyanalyst.model.ProblemLocation;
+import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
@@ -119,6 +124,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserProblem;
+import com.itgrids.partyanalyst.model.Visibility;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -186,8 +192,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IUserProblemDAO userProblemDAO;
 	private IProblemCommentsDAO problemCommentsDAO;
 	private IProblemLikesDAO problemLikesDAO;
+	private IClassifiedProblemsDAO classifiedProblemsDAO;
+	private IProblemProgressDAO problemProgressDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	
+
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -620,6 +629,23 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setProblemDAO(IProblemDAO problemDAO) {
 		this.problemDAO = problemDAO;
+	}
+	
+	public IClassifiedProblemsDAO getClassifiedProblemsDAO() {
+		return classifiedProblemsDAO;
+	}
+
+	public void setClassifiedProblemsDAO(
+			IClassifiedProblemsDAO classifiedProblemsDAO) {
+		this.classifiedProblemsDAO = classifiedProblemsDAO;
+	}
+	
+	public IProblemProgressDAO getProblemProgressDAO() {
+		return problemProgressDAO;
+	}
+
+	public void setProblemProgressDAO(IProblemProgressDAO problemProgressDAO) {
+		this.problemProgressDAO = problemProgressDAO;
 	}
 
 	/**
@@ -4681,172 +4707,173 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		return resultStatus;
 	}
+
 	/*public ResultStatus updateProblemDepartment22(final Long problemHistoryId,
-			final Long departmentId, final Long scopeId, final Long regionId,
-			final String pbStatus) {
+	final Long departmentId, final Long scopeId, final Long regionId,
+	final String pbStatus) {
 
-		if (log.isDebugEnabled())
-			log.debug(" Started " + pbStatus
-					+ " Department Details For a Problem ..");
+if (log.isDebugEnabled())
+	log.debug(" Started " + pbStatus
+			+ " Department Details For a Problem ..");
 
-		ResultStatus resultStatus = (ResultStatus) transactionTemplate
-				.execute(new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus status) {
+ResultStatus resultStatus = (ResultStatus) transactionTemplate
+		.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
 
-						ResultStatus rs = new ResultStatus();
-						try {
+				ResultStatus rs = new ResultStatus();
+				try {
 
+					
+					UserProblem userProblem = userProblemDAO.get(problemHistoryId);
+					
+					
+					
+					
+				    List<ProblemAssignedDepartment> assigneDepartment = problemAssignedDepartmentDAO.getAllActivitesByProblem(userProblem.getUserProblemId());
+					if (assigneDepartment != null && assigneDepartment.size() > 0) {
+
+						ProblemAssignedDepartment existingProblemProgress = assigneDepartment.get(0);
+                         
+						//problemAssignedDepartment.setUserProblem(existingProblemProgress.getUserProblem());
+						
+						if (departmentId != null && !departmentId.equals(0L)) {
 							
-							UserProblem userProblem = userProblemDAO.get(problemHistoryId);
+							ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+							DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+							ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+							problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+							existingProblemProgress.setDepartmentLocation(problemCompleteLocation);
+							existingProblemProgress.setDepartmentOrganisation(departmentOrganisation);
 							
+						 }
+
+						
+						existingProblemProgress.setStatus(IConstants.DEPARTMENT_MODIFY);
+						
+						existingProblemProgress.setUpdatedTime(getCurrentDateAndTime());
+						
+						problemAssignedDepartmentDAO.save(existingProblemProgress);
+					}
+					else
+					{
+						ProblemAssignedDepartment problemAssignedDepartment = new ProblemAssignedDepartment();
+						problemAssignedDepartment.setUserProblem(userProblem);
+                       if (departmentId != null && !departmentId.equals(0L)) {
 							
+							ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+							DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+							ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+							problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+							problemAssignedDepartment.setDepartmentLocation(problemCompleteLocation);
+							problemAssignedDepartment.setDepartmentOrganisation(departmentOrganisation);
 							
-							
-						    List<ProblemAssignedDepartment> assigneDepartment = problemAssignedDepartmentDAO.getAllActivitesByProblem(userProblem.getUserProblemId());
-							if (assigneDepartment != null && assigneDepartment.size() > 0) {
-
-								ProblemAssignedDepartment existingProblemProgress = assigneDepartment.get(0);
-                                 
-								//problemAssignedDepartment.setUserProblem(existingProblemProgress.getUserProblem());
-								
-								if (departmentId != null && !departmentId.equals(0L)) {
-									
-									ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
-									DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
-									ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
-									problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
-									existingProblemProgress.setDepartmentLocation(problemCompleteLocation);
-									existingProblemProgress.setDepartmentOrganisation(departmentOrganisation);
-									
-								 }
-
-								
-								existingProblemProgress.setStatus(IConstants.DEPARTMENT_MODIFY);
-								
-								existingProblemProgress.setUpdatedTime(getCurrentDateAndTime());
-								
-								problemAssignedDepartmentDAO.save(existingProblemProgress);
-							}
-							else
-							{
-								ProblemAssignedDepartment problemAssignedDepartment = new ProblemAssignedDepartment();
-								problemAssignedDepartment.setUserProblem(userProblem);
-                               if (departmentId != null && !departmentId.equals(0L)) {
-									
-									ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
-									DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
-									ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
-									problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
-									problemAssignedDepartment.setDepartmentLocation(problemCompleteLocation);
-									problemAssignedDepartment.setDepartmentOrganisation(departmentOrganisation);
-									
-								 }
-                                 problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_MODIFY);
-								
-                                 problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
-								
-								problemAssignedDepartmentDAO.save(problemAssignedDepartment);
-				
-							}
-
-							// setting history and updated date details
-							assignedProblemProgress
-									.setPerformedDate(getCurrentDateAndTime());
-							assignedProblemProgress
-									.setProblemHistory(problemHistory);
-
-							if (departmentId != null
-									&& !departmentId.equals(0L)) {
-								ProblemSourceScope problemSourceScope = problemSourceScopeDAO
-										.get(scopeId);
-								DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO
-										.get(departmentId);
-								ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(
-										regionId, problemSourceScope.getScope());
-								problemCompleteLocation = problemCompleteLocationDAO
-										.save(problemCompleteLocation);
-
-								assignedProblemProgress
-										.setDepartmentLocation(problemCompleteLocation);
-								assignedProblemProgress
-										.setDepartmentOrganisation(departmentOrganisation);
-								assignedProblemProgress
-										.setProblemSourceScopeConcernedDepartment(departmentOrganisation
-												.getProblemDepartmentCategory());
-							}
-
-							if (pbStatus.equals(IConstants.DEPARTMENT_ADD)) {
-								List<ProblemActivity> problemActivityLst = problemActivityDAO
-										.getProblemActivityByName("DEPARTMENT_ADD");
-								assignedProblemProgress
-										.setProblemActivity(problemActivityLst
-												.get(0));
-							} else if (pbStatus
-									.equals(IConstants.DEPARTMENT_MODIFY)) {
-								List<ProblemActivity> problemActivityLst = problemActivityDAO
-										.getProblemActivityByName("DEPARTMENT_UPDATE");
-								assignedProblemProgress
-										.setProblemActivity(problemActivityLst
-												.get(0));
-							} else if (pbStatus
-									.equals(IConstants.DEPARTMENT_DELETE)) {
-								List<ProblemActivity> problemActivityLst = problemActivityDAO
-										.getProblemActivityByName("DEPARTMENT_DELETE");
-								assignedProblemProgress
-										.setProblemActivity(problemActivityLst
-												.get(0));
-							}
-
-							// save data
-							assignedProblemProgressDAO
-									.save(assignedProblemProgress);
-
-						} catch (Exception ex) {
-							log.error("Exception Raised :" + ex);
-							rs.setExceptionEncountered(ex);
-							rs.setExceptionMsg(ex.getMessage());
-							return rs;
-						}
-
-						return rs;
+						 }
+                         problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_MODIFY);
+						
+                         problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
+						
+						problemAssignedDepartmentDAO.save(problemAssignedDepartment);
+		
 					}
 
-				});
+					// setting history and updated date details
+					assignedProblemProgress
+							.setPerformedDate(getCurrentDateAndTime());
+					assignedProblemProgress
+							.setProblemHistory(problemHistory);
 
-		return resultStatus;
-	}*/
+					if (departmentId != null
+							&& !departmentId.equals(0L)) {
+						ProblemSourceScope problemSourceScope = problemSourceScopeDAO
+								.get(scopeId);
+						DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO
+								.get(departmentId);
+						ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(
+								regionId, problemSourceScope.getScope());
+						problemCompleteLocation = problemCompleteLocationDAO
+								.save(problemCompleteLocation);
 
-	public ResultStatus updateProblemClassificationData(Long problemHistoryId,
-			String classification, String type) {
+						assignedProblemProgress
+								.setDepartmentLocation(problemCompleteLocation);
+						assignedProblemProgress
+								.setDepartmentOrganisation(departmentOrganisation);
+						assignedProblemProgress
+								.setProblemSourceScopeConcernedDepartment(departmentOrganisation
+										.getProblemDepartmentCategory());
+					}
 
-		if (log.isDebugEnabled())
-			log.debug(" Started setting problem as " + classification);
+					if (pbStatus.equals(IConstants.DEPARTMENT_ADD)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_ADD");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					} else if (pbStatus
+							.equals(IConstants.DEPARTMENT_MODIFY)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_UPDATE");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					} else if (pbStatus
+							.equals(IConstants.DEPARTMENT_DELETE)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_DELETE");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					}
 
-		ResultStatus rs = new ResultStatus();
+					// save data
+					assignedProblemProgressDAO
+							.save(assignedProblemProgress);
 
-		try {
+				} catch (Exception ex) {
+					log.error("Exception Raised :" + ex);
+					rs.setExceptionEncountered(ex);
+					rs.setExceptionMsg(ex.getMessage());
+					return rs;
+				}
 
-			List<ProblemClassification> problemClassification = problemClassificationDAO
-					.findByClassification(classification);
+				return rs;
+			}
 
-			if (problemClassification != null
-					&& problemClassification.size() > 0)
-				rs = updateProblemClassification(problemHistoryId,
-						problemClassification.get(0)
-								.getProblemClassificationId(), type);
+		});
 
-		} catch (Exception ex) {
+return resultStatus;
+}*/
 
-			log.error("Exception Raised :" + ex);
-			rs.setExceptionEncountered(ex);
-			rs.setExceptionMsg(ex.getMessage());
-			rs.setResultCode(ResultCodeMapper.FAILURE);
+public ResultStatus updateProblemClassificationData(Long problemHistoryId,
+	String classification, String type) {
 
-			return rs;
-		}
+if (log.isDebugEnabled())
+	log.debug(" Started setting problem as " + classification);
 
-		return rs;
-	}
+ResultStatus rs = new ResultStatus();
+
+try {
+
+	List<ProblemClassification> problemClassification = problemClassificationDAO
+			.findByClassification(classification);
+
+	if (problemClassification != null
+			&& problemClassification.size() > 0)
+		rs = updateProblemClassification(problemHistoryId,
+				problemClassification.get(0)
+						.getProblemClassificationId(), type);
+
+} catch (Exception ex) {
+
+	log.error("Exception Raised :" + ex);
+	rs.setExceptionEncountered(ex);
+	rs.setExceptionMsg(ex.getMessage());
+	rs.setResultCode(ResultCodeMapper.FAILURE);
+
+	return rs;
+}
+
+return rs;
+}
 
 	public ResultStatus updateProblemStatusData(Long problemHistoryId,
 			String status) {
@@ -6200,5 +6227,215 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 		return problemBeanVOList;			
 	}
+	
+	public ResultStatus updateClassificationOfProblem(Long problemId, Long userId, String classification, String status){
+		ResultStatus resultStatus = null;
 
+		if (log.isDebugEnabled()) {
+			log.debug("Entered Into updateProblemClassification Method.....");
+			log.debug("Problem Id:: " + problemId);
+			log.debug("User Id" + userId);
+		}
+		try {
+			Long userProblemId=getUserProblemIdByUserIdAndProblemId(userId, problemId);
+			Long problemClassificationId=getUserProblemClassificationId(classification);
+			if(problemClassificationId!=null && userProblemId!=null)
+				resultStatus=saveOrUpdateClassifiedProblems(userProblemId, problemClassificationId);						
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return resultStatus;		
+	}
+	public Long getUserProblemIdByUserIdAndProblemId(Long userId, Long problemId){
+		List<Long> usrProbLst=userProblemDAO.getUserProblemIdByUserIdAndProblemId(userId, problemId);
+		Long userProblemId=null;
+		if(usrProbLst!=null && usrProbLst.size()>0){
+			userProblemId=usrProbLst.get(0);
+		}
+		return userProblemId;
+	}
+	public Long getUserProblemClassificationId(String classification){
+		List<Long> probClssfctnLst=problemClassificationDAO.getProblemClassificationId(classification);
+		Long problemClassificationId=null;
+		if(probClssfctnLst!=null && probClssfctnLst.size()>0){
+			problemClassificationId=probClssfctnLst.get(0);
+		}
+		return problemClassificationId;
+	}
+	public ResultStatus saveOrUpdateClassifiedProblems(final Long userProblemId, final Long problemClassificationId){
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus rs = new ResultStatus();
+				try {
+					String problemActivityStr="";
+					UserProblem userProblem=userProblemDAO.get(userProblemId);
+					List<Long> classifiedProblemsIdList=classifiedProblemsDAO.checkIfProblemAlreadyClassified(userProblemId);
+					Long classifiedProblemId=null;
+					if(classifiedProblemsIdList!=null && classifiedProblemsIdList.size()>0){
+						classifiedProblemId=classifiedProblemsIdList.get(0);
+						ClassifiedProblems classifiedProblemObj=classifiedProblemsDAO.get(classifiedProblemId);
+						ProblemClassification problemClassificationObj=problemClassificationDAO.get(problemClassificationId);
+						if(classifiedProblemObj!=null && problemClassificationObj!=null){							
+							classifiedProblemObj.setProblemClassification(problemClassificationObj);
+							classifiedProblemObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							classifiedProblemsDAO.save(classifiedProblemObj);
+							problemActivityStr=IConstants.PROBLEM_TYPE_UPDATE;							
+						}
+					}
+					else{
+						ClassifiedProblems classifiedProblems=new ClassifiedProblems();
+						ProblemClassification problemClassification=problemClassificationDAO.get(problemClassificationId);
+						classifiedProblems.setUserProblem(userProblem);
+						classifiedProblems.setProblemClassification(problemClassification);
+						classifiedProblems.setInsertedTime(new Date());
+						classifiedProblemsDAO.save(classifiedProblems);
+						problemActivityStr=IConstants.PROBLEM_TYPE_ADD;
+					}
+					updateProblemProgress(problemActivityStr, userProblem);
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+					rs.setExceptionMsg("Problem classification successful");
+				}
+				catch(Exception e){
+					rs.setResultCode(ResultCodeMapper.FAILURE);
+					rs.setExceptionEncountered(e);
+					rs.setExceptionMsg(e.getMessage());
+				}
+				return rs;
+			}
+		});
+		return resultStatus;
+	}
+	public void updateProblemProgress(String problemActvtyStr, UserProblem userProblem){
+		log.debug("Entered into updateProblemProgress method of ProblemManagementService");
+		
+		try{
+			List<ProblemActivity> problemActivityLst=problemActivityDAO.getProblemActivityByName(problemActvtyStr);
+			ProblemActivity problemActivity=null;
+			if(problemActivityLst!=null && problemActivityLst.size()>0){
+				problemActivity=problemActivityLst.get(0);
+			}
+			Long privateVisibility=2L;
+			Visibility visibility=visibilityDAO.get(privateVisibility);
+			ProblemProgress problemProgress=new ProblemProgress();
+			problemProgress.setProblemActivity(problemActivity);
+			problemProgress.setUserProblem(userProblem);
+			problemProgress.setComment(null);
+			problemProgress.setVisibility(visibility);
+			Date currentDateTime=dateUtilService.getCurrentDateAndTime();
+			problemProgress.setInsertedTime(currentDateTime);
+			problemProgress.setUpdatedTime(currentDateTime);
+			problemProgress.setIsDelete(IConstants.FALSE);
+			problemProgressDAO.save(problemProgress);
+		}
+		catch(Exception e){
+			log.error("Exception raised in updateProblemProgress method of ProblemManagementService");
+		}
+	}
+	public ResultStatus updateStatusOfProblem(Long problemId, Long userId, String probStatus){
+		ResultStatus resultStatus=new ResultStatus();
+		if (log.isDebugEnabled()) {
+			log.debug("Entered Into updateStatusOfProblem Method.....");
+			log.debug("Problem Id: " + problemId);
+			log.debug("Status: " + probStatus);
+		}
+		try {
+			Problem problem=problemDAO.get(problemId);
+			ProblemStatus problemStatus=null;
+			String status = "";
+			if (probStatus.equalsIgnoreCase(IConstants.PROGRESS))
+				status = IConstants.PROGRESS;
+			else if (probStatus.equalsIgnoreCase(IConstants.PENDING))
+				status = IConstants.PENDING;
+			else if (probStatus.equalsIgnoreCase(IConstants.FIXED))
+				status = IConstants.FIXED;
+			else if (probStatus.equalsIgnoreCase(IConstants.NEW))
+				status = IConstants.NEW;
+
+			List<ProblemStatus> problemStatusLst = problemStatusDAO
+					.getByStatus(status);
+			if(problemStatusLst!=null && problemStatusLst.size()>0){
+				problemStatus=problemStatusLst.get(0);
+			}
+			if(problem!=null){
+				if(problem.getProblemStatus()!=null){
+					if(problem.getProblemStatus().getStatus().equalsIgnoreCase(problemStatus.getStatus())){
+						resultStatus.setExceptionMsg("Please update to some other status ..");
+						return resultStatus;
+					}
+					else{
+						problem.setProblemStatus(problemStatus);
+						problem.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						problemDAO.save(problem);
+						
+						Long userProblemId=getUserProblemIdByUserIdAndProblemId(userId, problemId);
+						UserProblem userProblem=userProblemDAO.get(userProblemId);
+						updateProblemProgress(IConstants.PROBLEM_STATUS_CHANGE, userProblem);
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						resultStatus.setResultState(problemId);
+					}
+				}
+			}											
+		}
+		catch (Exception ex) {
+			log.error("Exception raised in updateStatusOfProblem method of ProblemManagementService");
+			ex.printStackTrace();
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setExceptionMsg(ex.getMessage());
+		}
+		return resultStatus;	
+	}
+	public ResultStatus setProblemLikeOrDislike(Long problemId, Long userId, String userAction){
+		ResultStatus resultStatus=new ResultStatus();
+		try{
+			String isLiked="";
+			String msg="";
+			if(userAction.equalsIgnoreCase("like")){
+				msg="liked";
+				isLiked=IConstants.TRUE;
+			}
+			else if(userAction.equalsIgnoreCase("dislike")){
+				msg="disliked";
+				isLiked=IConstants.FALSE;
+			}
+			
+			List<ProblemLikes> problemLikesLst=problemLikesDAO.checkIfUserAlreadyLikedOrDisliked(problemId, userId);
+			ProblemLikes problemLikes=null;
+			if(problemLikesLst!=null && problemLikesLst.size()>0){
+				problemLikes=problemLikesLst.get(0);
+			}
+			if(problemLikes==null){
+				ProblemLikes problemLikesObj=new ProblemLikes();
+				User user=userDAO.get(userId);
+				Problem problem=problemDAO.get(problemId);
+				problemLikesObj.setUser(user);
+				problemLikesObj.setProblem(problem);
+				problemLikesObj.setIsLiked(isLiked);
+				problemLikesObj.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				problemLikesDAO.save(problemLikesObj);
+			}
+			else{
+				if(problemLikes.getIsLiked()!=null){
+					if(problemLikes.getIsLiked().equalsIgnoreCase(isLiked)){
+						resultStatus.setResultState(userId);
+						resultStatus.setExceptionMsg("You have already "+msg+" this problem");
+						return resultStatus;
+					}
+					else{
+						problemLikesDAO.updateUserLikeOrDislike(userId, problemId, isLiked);
+					}
+				}				
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		catch(Exception e){
+			log.error("Exception raised in setProblemLikeOrDislike method of ProblemManagementService");
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setExceptionMsg(e.getMessage());
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}		
+		return resultStatus;
+	}
 }

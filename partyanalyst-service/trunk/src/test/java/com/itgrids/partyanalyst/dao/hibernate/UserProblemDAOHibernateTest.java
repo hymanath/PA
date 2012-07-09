@@ -214,5 +214,15 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 	}*/
+	
+	public void testGetUserProblemIdByUserIdAndProblemId(){
+		List<Long> userPrbIdList=userProblemDAO.getUserProblemIdByUserIdAndProblemId(25L, 1L);
+		if(userPrbIdList!=null && userPrbIdList.size()>0){
+			System.out.println(userPrbIdList.get(0)); 
+		}
+		else{
+			System.out.println("not available"); 
+		}
+	}
 
 }

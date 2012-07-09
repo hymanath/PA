@@ -33,10 +33,8 @@ public class ProblemStatusDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	@Test
-	public void testGetProblemStatus(){
-		
-		List<ProblemStatus> pbstatus = problemStatusDAO.getByStatus(IConstants.NEW);
-		
+	public void testGetProblemStatus(){		
+		List<ProblemStatus> pbstatus = problemStatusDAO.getByStatus(IConstants.NEW);		
 		System.out.println(" PB Status : " + pbstatus.get(0).getStatus()) ;
 	}
 }
