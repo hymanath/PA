@@ -575,6 +575,7 @@
         <property name="userProblemDAO" ref="userProblemDAO"/>
         <property name="problemCommentsDAO" ref="problemCommentsDAO" />
 		<property name="problemLikesDAO" ref="problemLikesDAO" />
+		<property name="classifiedProblemsDAO" ref="classifiedProblemsDAO" />		
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
    </bean>
    
@@ -884,6 +885,7 @@
     	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
     	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />
     	<property name="userDAO" ref="userDAO" />
+    	<property name="userProblemDAO" ref="userProblemDAO"/>
     	
     	<property name="problemCommentsDAO" ref="problemCommentsDAO" />
     	<property name="commentDAO" ref="commentDAO" />

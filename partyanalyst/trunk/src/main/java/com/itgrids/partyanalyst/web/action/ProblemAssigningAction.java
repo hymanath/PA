@@ -448,39 +448,39 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	}
 	
 	
-	public String changeProblemStatus(){
-		
+	public String changeProblemStatus(){		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-	if(user != null)
-	{		
-		
-		try {
-			jObj = new JSONObject(getTask());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		if(jObj.getString("task").equalsIgnoreCase("changeProblemStatus"))
-		{
-			Long problemHistoryId = jObj.getLong("pHistoryId");
-			String problemStatus  = jObj.getString("status");
+		if(user != null){		
+			try {
+				jObj = new JSONObject(getTask());
+			}
+			catch (ParseException e) {
+				e.printStackTrace();
+			}
 			
-			resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
-			resultStatus.setResultCode(1);
+			if(jObj.getString("task").equalsIgnoreCase("changeProblemStatus")){
+				Long problemHistoryId = jObj.getLong("pHistoryId");
+				//Long problemId=jObj.getLong("problemId");
+				//Long userId=user.getRegistrationID();
+				String problemStatus  = jObj.getString("status");
+				
+				resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
+				//resultStatus = problemManagementService.updateStatusOfProblem(problemId, userId, problemStatus);
+				resultStatus.setResultCode(1);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("sendSMS"))	{
+				String message = jObj.getString("message");
+				String [] phoneNumbers = {jObj.getString("MobileNo")};
+				resultStatus = problemManagementService.sendSMS(user.getRegistrationID(),message,IConstants.PROBLEM_MANAGEMENT,phoneNumbers);
+			}
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
-		{
-			String message = jObj.getString("message");
-			String [] phoneNumbers = {jObj.getString("MobileNo")};
-			resultStatus = problemManagementService.sendSMS(user.getRegistrationID(),message,IConstants.PROBLEM_MANAGEMENT,phoneNumbers);
-		}
-	}else{
-		resultStatus = new ResultStatus();
-		resultStatus.setResultCode(0);
-	    }	
-	 return Action.SUCCESS;
+		else{
+			resultStatus = new ResultStatus();
+			resultStatus.setResultCode(0);
+		}	
+		return Action.SUCCESS;
 	}
 	
     public String changeProbClassification(){
@@ -498,6 +498,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		}
 		
 		Long problemHistoryId = jObj.getLong("pHistoryId");
+		//Long problemId=jObj.getLong("problemId");
+		//Long userId=user.getRegistrationID();
 		String classification = jObj.getString("typeValue");
 		String typeValue  = jObj.getString("status");
 		
@@ -506,8 +508,9 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			status = IConstants.PROBLEM_TYPE_ADD;
 		else if(typeValue.equalsIgnoreCase("Change"))
 			status = IConstants.PROBLEM_TYPE_MODIFY;
-		
+	
 		resultStatus = problemManagementService.updateProblemClassificationData(problemHistoryId, classification, status);
+		//resultStatus = problemManagementService.updateClassificationOfProblem(problemId, userId, classification, status);
 		resultStatus.setResultCode(1);
 	}else{
 		
