@@ -567,5 +567,16 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			
 			return getHibernateTemplate().find(conditionQuery.toString());
 		}
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> getUserProblem(Long problemId, Long userId)
+		{
+			Object[] params = {problemId,userId};
+			
+			StringBuilder conditionQuery = new StringBuilder();		
+			
+			conditionQuery.append(" from UserProblem model where  model.problem.problemId = ? and model.user.userId =?");
+			return getHibernateTemplate().find(conditionQuery.toString(),params);
+			
+		}
 
 }
