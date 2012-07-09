@@ -19,7 +19,7 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 	public List<Object[]> getCurrentDateFiles(Date currentDate,Date endDate,String isApproved)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.problemFilesId,model.file.fileTitle,model.file.fileDescription,model.problem.title,model.isApproved,date(model.problem.existingFrom),date(model.problem.identifiedOn),model.user.firstName,model.user.lastName");
+		query.append(" select model.problemFilesId,model.file.fileTitle,model.file.fileDescription,model.problem.title,model.isApproved,model.problem.existingFrom,model.problem.identifiedOn,model.user.firstName,model.user.lastName");
 		query.append(" from ProblemFiles model where model.isDelete =:isDelete and model.problem.isDelete =:isDelete ");
 		if(currentDate != null)
 			query.append(" and date(model.insertedTime) >=:currentDate");
