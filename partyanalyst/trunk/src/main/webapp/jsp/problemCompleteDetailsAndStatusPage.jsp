@@ -305,6 +305,7 @@ text-align:left;
  var status = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
  
  var pHistoryId = <%=request.getParameter("pHistoryId")%>;
+ //var problemId = <%=request.getParameter("problemId")%>;
  var problemStatus = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
  var cadreProblemDetails = null;
 
@@ -1521,6 +1522,20 @@ function hideProbClassification()
 	var elmt = document.getElementById("probClassification_row");
 	elmt.style.display = "none";
 }
+/*function changeProbClassification(){
+	var elmt = document.getElementById("probClassification");
+	var typeValue = elmt.options[elmt.selectedIndex].text;
+	var jsObj = {
+					typeValue:typeValue,
+					problemId:problemId,
+					status:'Change',
+					task:"changeProbClassification"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProbClassificationAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}*/
 
 function changeProbClassification()
 {
@@ -1537,6 +1552,20 @@ function changeProbClassification()
 	var url = "changeProbClassificationAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+
+/*function changeProblemStatus(status)
+{
+	var jsObj = {
+					status:status,
+					pHistoryId:pHistoryId,
+					problemId:problemId,
+					task:"changeProblemStatus"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemStatusAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}*/
 
 function changeProblemStatus(status)
 {
@@ -1628,6 +1657,8 @@ function initializePage()
 	var detailsButton = new YAHOO.widget.Button("detailsButton");
 	sliderFunc();
 	getProblemPresentStatus(pHistoryId);
+	//getProblemPresentStatus(problemId);
+
 	getProblemActivities(pHistoryId);
 	getProblemRelatedImages(pHistoryId);
 }

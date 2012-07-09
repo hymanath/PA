@@ -1294,6 +1294,8 @@
 	function openProblemDetailsWindow(pHistoryId)
 	{
 		var problemWindow = window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+		
+		//?problemId="+problemId,
 	}
 	
 	function handleRecommLetrsTabClick()
