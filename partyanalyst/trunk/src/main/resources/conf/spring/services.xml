@@ -891,7 +891,6 @@
     	<property name="commentDAO" ref="commentDAO" />
     	<property name="problemDAO" ref="problemDAO" />
     	<property name="problemProgressDAO" ref="problemProgressDAO" />
-    	<property name="userProblemDAO" ref="userProblemDAO" />
     	<property name="visibilityDAO" ref="visibilityDAO" />
     	<property name="problemActivityDAO" ref="problemActivityDAO" />
 	</bean>
