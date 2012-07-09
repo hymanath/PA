@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
+
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
+import com.itgrids.partyanalyst.model.ProblemProgress;
 
 public class ProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 
@@ -11,8 +15,13 @@ public class ProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		this.problemProgressDAO = problemProgressDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		problemProgressDAO.getAll();
+	}*/
+	public void testGetProblemPrograss()
+	{
+		List<ProblemProgress> list = problemProgressDAO.getProblemPrograss(2l);
+		System.out.println(list.size());
 	}
 }
