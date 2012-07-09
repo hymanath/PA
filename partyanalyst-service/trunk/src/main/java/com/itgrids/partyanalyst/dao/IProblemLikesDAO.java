@@ -9,5 +9,6 @@ public interface IProblemLikesDAO extends GenericDao<ProblemLikes,Long>{
 	
 	public List<Long> getAllLikes(Long problemId);
 	public List<Long> getAllDisLikes(Long problemId);
-
+	public List<ProblemLikes> checkIfUserAlreadyLikedOrDisliked(Long problemId, Long userId);
+	public Integer updateUserLikeOrDislike(Long userId, Long problemId, String isLiked);
 }

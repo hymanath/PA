@@ -246,6 +246,16 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 					" UserProblem model where model.visibility.type = 'Public' and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
 							" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.problem.problemCompleteLocation.state.stateName");
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Long> getUserProblemIdByUserIdAndProblemId(Long userId, Long problemId){
+			Query query = getSession().createQuery("select model.userProblemId from UserProblem model where model.problem.problemId = ? and model.user.userId = ?");
+			 
+			query.setParameter(0,problemId);
+			query.setParameter(1,userId);
+			return query.list();
+		}
+		
 		public List getProblemsCountPostedByUserInDifferentLifeCycleStages(
 				Long userId) {
 			
@@ -367,7 +377,6 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			return queryObject.list();
 			
 		}
-		
 		@SuppressWarnings("unchecked")
 		
 		public List<Object[]> getProblemPostedUserDetails()

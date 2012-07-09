@@ -14,16 +14,12 @@ public class ProblemStatusDAO extends GenericDaoHibernate<ProblemStatus, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getDefaultProblemStatus(String statusValues) {
-		
+	public List getDefaultProblemStatus(String statusValues) {		
 		return getHibernateTemplate().find("select model.problemStatusId,model.status from ProblemStatus model where model.status in ("+statusValues+") order by model.problemStatusId");
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ProblemStatus> getByStatus(String status) {
-		
+	public List<ProblemStatus> getByStatus(String status) {		
 		return getHibernateTemplate().find("from ProblemStatus model where model.status = ? ",status);
-	}
-	
-	
+	}	
 }

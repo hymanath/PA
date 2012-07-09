@@ -28,16 +28,18 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List getAllPostedProblemCount(Long userId);
 	
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId);
-public String getCommonDataForAllProblems();
+	
+	public String getCommonDataForAllProblems();
 	
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String isApproved);
 
 	public List<Object[]> getStates();
 	
+	public List<Long> getUserProblemIdByUserIdAndProblemId(Long userId, Long problemId);
+	
 	public List<UserProblem> getUserProblemId(Long problemId,Long userId);
 	
 	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved);
-	
 
 	public List<Object[]> getProblemPostedUserDetails();
 	

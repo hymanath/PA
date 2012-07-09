@@ -26,8 +26,7 @@ public class ProblemActivityDAO extends GenericDaoHibernate<ProblemActivity, Lon
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ProblemActivity> getProblemActivityByName(String activityName) {
-		
+	public List<ProblemActivity> getProblemActivityByName(String activityName) {		
 		return getHibernateTemplate().find("from ProblemActivity model where model.activityDescription = ?",activityName);
 	}
 

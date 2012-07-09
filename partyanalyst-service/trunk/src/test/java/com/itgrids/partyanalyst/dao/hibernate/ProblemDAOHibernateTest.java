@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemDAOHibernateTest extends BaseDaoTestCase{
 

@@ -427,11 +427,13 @@ public interface IConstants {
     
     public static final String PROBLEM_TYPE_ADD = "PROBLEM_TYPE_ADD";
     public static final String PROBLEM_TYPE_MODIFY = "PROBLEM_TYPE_MODIFY";
+    public static final String PROBLEM_TYPE_UPDATE = "PROBLEM_TYPE_UPDATE";
 
           
     public static final String PROBLEM_STATUS_ADD = "PROBLEM_STATUS_ADD";
     public static final String PROBLEM_STATUS_MODIFY = "PROBLEM_STATUS_MODIFY";
-    
+    public static final String PROBLEM_STATUS_CHANGE = "PROBLEM_STATUS_CHANGE";
+
     public static final String PROBLEM_COMMENTS_ADD = "PROBLEM_COMMENTS_ADD";
     public static final String PROBLEM_COMMENTS_MODIFY = "PROBLEM_COMMENTS_MODIFY";
     
@@ -514,5 +516,8 @@ public interface IConstants {
 	public static final String Ex_MP="Ex MP";
 	public static final String Contested_MLA="Contested for MLA";
 	public static final String Contested_MP="Contested for MP";
-
+	
+	public static final String PROBLEM_CLASSIFICATION_SOCIAL="SOCIAL";
+	public static final String PROBLEM_CLASSIFICATION_ECONOMICAL="ECONOMICAL";
+	public static final String PROBLEM_CLASSIFICATION_PERSONAL="PERSONAL";
 }

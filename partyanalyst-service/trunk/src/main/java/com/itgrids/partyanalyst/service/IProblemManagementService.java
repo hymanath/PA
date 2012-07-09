@@ -153,5 +153,7 @@ public interface IProblemManagementService {
 	public void saveCadreProblemDetails(ProblemBeanVO problemBeanVO, Problem problem);
 	
 	public UserProblem saveUserProblemDetails(ProblemBeanVO problBeanVO, Problem problem);
-	
+	public ResultStatus updateClassificationOfProblem(Long problemId, Long userId, String classification, String status);
+	public ResultStatus updateStatusOfProblem(Long problemId, Long userId, String probStatus);
+	public ResultStatus setProblemLikeOrDislike(Long problemId, Long userId, String userAction);	
 }

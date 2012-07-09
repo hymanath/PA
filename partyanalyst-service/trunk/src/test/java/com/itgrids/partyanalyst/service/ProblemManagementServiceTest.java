@@ -17,8 +17,10 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.util.MockData;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemManagementServiceTest extends BaseDaoTestCase{
 
@@ -30,9 +32,7 @@ public class ProblemManagementServiceTest extends BaseDaoTestCase{
 */	
 
 	private IProblemManagementService problemManagementService;
-	
-	
-	
+		
 	/*@Before
 	public void init()
 	{
@@ -56,16 +56,10 @@ public class ProblemManagementServiceTest extends BaseDaoTestCase{
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
 	}
-
-
-
 	public void setProblemManagementService(
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
-
-
-
 	/*public void testGetUserProblems(){
 		ProblemsOfUserVO obj = problemManagementService.getProblemsForUser(new Long(5));
 		System.out.println(obj.getProblemRegionScopes().size());
@@ -73,9 +67,15 @@ public class ProblemManagementServiceTest extends BaseDaoTestCase{
 		System.out.println(obj.getProblemsByUser().size());
 	}*/
 	
-	public void testSaveUpdatedProblems(){
+	/*public void testSaveUpdatedProblems(){
 		problemManagementService.updateAndGetClassifiedProblemDataIntoDB(MockData.getProblemBeanVOsToSave());
 		setComplete();
+	}*/
+	
+	public void testUpdateStatusOfProblem(){
+		ResultStatus resultStatus=problemManagementService.updateStatusOfProblem(1L, 25L, IConstants.PENDING);
+		System.out.println(resultStatus.getResultCode());
+		System.out.println(resultStatus.getExceptionMsg());		
 	}
 	
 }
