@@ -71,6 +71,24 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String orderName;
 	private int multipleSource = 0;
 	private int multipleNews = 0;
+	private String existingDateFrom;
+	private String identifiedDateOn;
+	
+	public String getExistingDateFrom() {
+		return existingDateFrom;
+	}
+
+	public void setExistingDateFrom(String existingDateFrom) {
+		this.existingDateFrom = existingDateFrom;
+	}
+
+	public String getIdentifiedDateOn() {
+		return identifiedDateOn;
+	}
+
+	public void setIdentifiedDateOn(String identifiedDateOn) {
+		this.identifiedDateOn = identifiedDateOn;
+	}
 	
 	public Boolean getIsSelectedContent() {
 		return isSelectedContent;
