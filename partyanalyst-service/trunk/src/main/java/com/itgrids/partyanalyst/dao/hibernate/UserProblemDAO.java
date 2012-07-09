@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -245,7 +246,128 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 					" UserProblem model where model.visibility.type = 'Public' and (model.problem.isDelete is null or model.problem.isDelete = 'false') " +
 							" and model.problem.isApproved = 'true' and model.isOwner = 'true' order by model.problem.problemCompleteLocation.state.stateName");
 		}
+		public List getProblemsCountPostedByUserInDifferentLifeCycleStages(
+				Long userId) {
+			
+			return getHibernateTemplate().find("select count(model.userProblemId),model.problem.problemStatus.problemStatusId,"+
+					"model.problem.problemStatus.status,model.problem.informationSource.informationSourceId,"+
+					"model.problem.informationSource.informationSource,model.userProblemId from UserProblem model where "+
+					"model.user.userId = "+userId+" and model.problem.problemStatus.status "+
+					"in ("+IConstants.PROBLEMS_LIFE_CYCLE+") and (model.problem.isDelete is null or model.problem.isDelete = 'false') and (model.problem.isApproved = 'true') group by "+
+					"model.problem.problemStatus.status,model.problem.informationSource.informationSource "+
+					"order by model.problem.problemStatus.problemStatusId");
+		}
+		public List<Problem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults) {
 	
+			Query queryObject = getSession().createQuery("select model.problem from UserProblem model where " +
+					"model.user.userId = :userId and  model.problem.isDelete = 'false' and (model.problem.isApproved = 'true') order by  model.problem.identifiedOn desc");
+			queryObject.setParameter("userId", userId);
+			queryObject.setFirstResult(startIndex);
+			queryObject.setMaxResults(maxResults);
+			return queryObject.list();
+		}
+		public List<Long> getProblemsPostedByUserInDifferentLifeCycleStagesByDateCount(Long userId) {
+			
+			Query queryObject = getSession().createQuery("select count(model.problem.problemId) from UserProblem model where " +
+					"model.user.userId = :userId and  model.problem.isDelete = 'false' and (model.problem.isApproved = 'true') ");
+			queryObject.setParameter("userId", userId);
+			return queryObject.list();
+		}
+		public List<Problem> getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(
+				Long userId,Long statusId, Date startDate, Date endDate, Integer startIndex,
+				Integer maxResults) {
+			
+			StringBuilder query = new StringBuilder();
+			
+			query.append("select model.problem from UserProblem model where model.user.userId = :userId ");
+			//If problems by problem status 
+			if(statusId != null && !statusId.equals(0L))
+				query.append("and model.problem.problemStatus.problemStatusId = "+statusId+ " ");
+			
+			if(startDate != null && endDate != null){
+				query.append("and date(model.problem.identifiedOn) >= :startDate and date(model.problem.identifiedOn) <= :endDate ");
+				
+			}
+			else{
+				if(startDate != null)
+					query.append("and date(model.problem.identifiedOn) >= :startDate ");
+							
+				if(endDate != null)
+					query.append("and date(model.problem.identifiedOn) <= :endDate ");
+					
+			}
+			
+			query.append("and  model.problem.isDelete = 'false' and model.problem.isApproved = 'true' ");
+			query.append("order by date(model.problem.identifiedOn) desc");
+			
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setParameter("userId", userId);
+			
+			if(startDate != null && endDate != null){
+				queryObject.setParameter("startDate", startDate);
+				queryObject.setParameter("endDate", endDate);
+			}else{
+				if(startDate != null)
+					queryObject.setParameter("startDate", startDate);
+				if(endDate != null)
+					queryObject.setParameter("endDate", endDate);				
+			}
+			queryObject.setFirstResult(startIndex);		
+			queryObject.setMaxResults(maxResults);
+					
+	     return queryObject.list();
+		}
+		public List<Long> getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate){
+			
+			StringBuilder query = new StringBuilder();
+					
+			query.append("select count(model.problem.problemId) from UserProblem model where model.user.userId = :userId ");
+			//If problems by problem status 
+			if(statusId != null && !statusId.equals(0L))
+				query.append("and model.problem.problemStatus.problemStatusId = "+statusId+ " ");
+			
+			if(startDate != null && endDate != null){
+				query.append("and date(model.problem.identifiedOn) >= :startDate and date(model.problem.identifiedOn) <= :endDate ");
+				
+			}
+			else{
+				if(startDate != null)
+					query.append("and date(model.problem.identifiedOn) >= :startDate ");
+							
+				if(endDate != null)
+					query.append("and date(model.problem.identifiedOn) <= :endDate ");
+					
+			}
+			
+			query.append("and  model.problem.isDelete = 'false' and model.problem.isApproved = 'true' ");
+			
+			Query queryObject = getSession().createQuery(query.toString());
+					
+             queryObject.setParameter("userId", userId);
+			
+			if(startDate != null && endDate != null){
+				queryObject.setParameter("startDate", startDate);
+				queryObject.setParameter("endDate", endDate);
+			}else{
+				if(startDate != null)
+					queryObject.setParameter("startDate", startDate);
+				if(endDate != null)
+					queryObject.setParameter("endDate", endDate);				
+			}
+			
+							
+	     return queryObject.list();
+		}
+		public List<Problem> getProblemHistoryBasedOnId(Long problemId,Long userId){
+			
+			Query queryObject = getSession().createQuery("select model.problem from UserProblem model where " +
+					"model.user.userId = :userId and model.problem.problemId = :problemId and model.problem.isDelete = 'false' and model.problem.isApproved = 'true' ");
+			queryObject.setParameter("userId", userId);
+			queryObject.setParameter("problemId", problemId);
+			return queryObject.list();
+			
+		}
+		
 		@SuppressWarnings("unchecked")
 		
 		public List<Object[]> getProblemPostedUserDetails()
