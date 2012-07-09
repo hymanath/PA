@@ -83,4 +83,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Long> getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate);
 	
 	public List<Problem> getProblemHistoryBasedOnId(Long problemId,Long userId);
+	
+	public List<UserProblem> getUserProblem(Long problemId, Long userId);
 }
