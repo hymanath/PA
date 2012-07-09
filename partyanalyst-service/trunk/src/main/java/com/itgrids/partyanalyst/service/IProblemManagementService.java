@@ -87,7 +87,7 @@ public interface IProblemManagementService {
 	
 	public ResultStatus updateProblemComments(Long problemHistoryId,String comments,String status);
 	
-	public ResultStatus updateProblemDepartment(Long problemHistoryId,Long departmentId,Long scopeId,Long regionId,String status);
+	public ResultStatus updateProblemDepartment(Long problemHistoryId,Long departmentId,Long scopeId,Long regionId,String status,Long userId);
 	
 	public ResultStatus updateProblemClassificationData(Long problemHistoryId,String classification,String type);
 	
