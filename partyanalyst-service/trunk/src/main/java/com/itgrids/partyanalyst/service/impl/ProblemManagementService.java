@@ -2779,7 +2779,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			Map<Long, String> problemInfSources = new HashMap<Long, String>();
 
 			// DAO call to get overall problems posted by an user
-			List problemsList = problemHistoryDAO
+			List problemsList = userProblemDAO
 					.getProblemsCountPostedByUserInDifferentLifeCycleStages(userId);
 			if (problemsList != null && problemsList.size() > 0) {
 				getProblemsAssignedToMap(problemsList, problemDetailsMap,
@@ -2993,19 +2993,21 @@ public class ProblemManagementService implements IProblemManagementService {
 			if (userId != null && !userId.equals(0L)) {
 
 				// Get Problems Overall Info
-				List<ProblemHistory> problemHistorysList = problemHistoryDAO
+				List<Problem> problemList = userProblemDAO
 						.getProblemsPostedByUserInDifferentLifeCycleStagesByDate(
 								userId, startIndex, maxResults);
-				if (problemHistorysList != null
-						&& problemHistorysList.size() > 0) {
-					List<ProblemBeanVO> problemsByUser = setUserProblemsToVO(problemHistorysList);
+				if (problemList != null
+						&& problemList.size() > 0) {
+					List<ProblemBeanVO> problemsByUser = setProblemsToVO(problemList);
 					problemsOfUserVO.setProblemsByUser(problemsByUser);
 				}
 				
 				// Get Total Problems Count
-				Long totalProblemsCount = problemHistoryDAO
-						.getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(userId);
-				problemsOfUserVO.setTotalResultsCount(totalProblemsCount);
+				/*Long totalProblemsCount = problemHistoryDAO
+						.getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(userId);*/
+				List<Long> totalProblemsCount = userProblemDAO
+						.getProblemsPostedByUserInDifferentLifeCycleStagesByDateCount(userId);
+				problemsOfUserVO.setTotalResultsCount(totalProblemsCount.get(0));
 			}
 			
 		} catch (Exception ex) {
@@ -3020,6 +3022,37 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 
 		return problemsOfUserVO;
+	}
+	public List<ProblemBeanVO> setProblemsToVO(List<Problem> problemList) throws Exception {
+		if (log.isDebugEnabled())
+			log.debug("Started Setting Data To VO ..");
+		List<ProblemBeanVO> problemBeanVOLst = new ArrayList<ProblemBeanVO>();
+
+		for (Problem problem : problemList) {
+
+			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+			ProblemCompleteLocation problemCompleteLocation = problem.getProblemCompleteLocation();
+
+			// Problem Basic Details
+			problemBeanVO.setProblemHistoryId(problem.getProblemId());
+			problemBeanVO.setProblem(problem.getTitle());
+			problemBeanVO.setDescription(problem.getDescription());
+			problemBeanVO.setExistingFrom(problem.getExistingFrom().toString());
+			problemBeanVO.setReportedDate(problem.getIdentifiedOn().toString());
+			problemBeanVO.setProblemStatus(problem.getProblemStatus().getStatus());
+
+			// Problem Source Details
+			if(problem.getInformationSource() != null)
+			  problemBeanVO.setProbSource(problem.getInformationSource().getInformationSource());
+			else
+				problemBeanVO.setProbSource("");
+			// Problem Location Details
+			problemBeanVO.setProblemLocation(getProblemLocationString(problemCompleteLocation));
+
+			problemBeanVOLst.add(problemBeanVO);
+		}
+
+		return problemBeanVOLst;
 	}
 
 	/**
@@ -3195,27 +3228,26 @@ public class ProblemManagementService implements IProblemManagementService {
 			
 			
 			// Get Problems Overall Info
-			List<ProblemHistory> problemHistorysList = problemHistoryDAO
+			List<Problem> problemList = userProblemDAO
 					.getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(
 							userId, statusId, startDate, endDate, startIndex,
 							maxResults);
-			if (problemHistorysList != null && problemHistorysList.size() > 0) {
-				List<ProblemBeanVO> problemsByUser = setUserProblemsToVO(problemHistorysList);
+			if (problemList != null && problemList.size() > 0) {
+				List<ProblemBeanVO> problemsByUser = setProblemsToVO(problemList);
 				
 				
 				problemsOfUserVO.setProblemsByUser(problemsByUser);
 			}
 
 			// Get Total Problems Count
-			List totalProblemsCount = problemHistoryDAO
+			List<Long> totalProblemsCount = userProblemDAO
 					.getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(
 							userId, statusId, startDate, endDate);
 
 			// Set total problems count to VO
 			if (totalProblemsCount != null && totalProblemsCount.size() > 0) {
 
-				Object values = (Object) totalProblemsCount.get(0);
-				problemsOfUserVO.setTotalResultsCount((Long) values);
+				problemsOfUserVO.setTotalResultsCount(totalProblemsCount.get(0));
 			}
 
 		} catch (Exception ex) {
@@ -3256,41 +3288,34 @@ public class ProblemManagementService implements IProblemManagementService {
 		try {
 
 			log.info("DAO Call To Get History Object ..");
-			List<ProblemHistory> pbHistory = problemHistoryDAO
-					.getProblemHistoryBasedOnId(problemHistoryId);
-			ProblemHistory problemHistory = null;
+			List<Problem> problemList = userProblemDAO
+					.getProblemHistoryBasedOnId(problemHistoryId,userId);
+			Problem problem = null;
 			Long problemId = 0L;
 
 			// Problem basic details
-			if (pbHistory != null && pbHistory.size() > 0) {
+			if (problemList != null && problemList.size() > 0) {
 
-				problemHistory = pbHistory.get(0);
-				
-				if(!problemHistory.getProblemLocation().getProblemAndProblemSource().
-						getUser().getUserId().equals(userId))
-					return null;
+				problem = problemList.get(0);
 				
 				problemCompleteInfo = new ProblemCompleteDetailsVO();
 				problemLifeCycleData = new ArrayList<ProblemStatusDataVO>();
 
-				problemId = problemHistory.getProblemLocation()
-						.getProblemAndProblemSource().getProblem()
-						.getProblemId();
-				problemBeanVOLst = setUserProblemsToVO(pbHistory);
+				problemId = problem.getProblemId();
+				problemBeanVOLst = setProblemsToVO(problemList);
 				problemCompleteInfo.setProblemBasicDetails(problemBeanVOLst
 						.get(0));
 
 				problemLifeCycleData
-						.add(getLifeCycleDataForNewProblem(problemHistory));
+						.add(getLifeCycleDataForNewProblem(problem));
 
 				// set problem status label
 				problemCompleteInfo
-						.setProblemStatusLabel(getProblemStatusLabel(problemHistory
-								.getProblemStatus().getStatus()));
+						.setProblemStatusLabel(getProblemStatusLabel(problem.getProblemStatus().getStatus()));
 			
 
 			// Set Problem Life Cycle Data in different stages
-			List<AssignedProblemProgress> assignedProblemProgress = assignedProblemProgressDAO
+			/*List<AssignedProblemProgress> assignedProblemProgress = assignedProblemProgressDAO
 					.getProblemDifferentStagesByByProblemId(problemId);
 
 			// this problem gone thru different stages
@@ -3301,8 +3326,10 @@ public class ProblemManagementService implements IProblemManagementService {
 							.add(getLifeCycleDataForNewProblem(probProgress));
 				}
 			}
-
+*/
 			problemCompleteInfo.setProblemLifeCycleData(problemLifeCycleData);
+			}else{
+				return null;
 			}
 		} catch (Exception ex) {
 
@@ -3327,19 +3354,17 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @return
 	 */
 	private ProblemStatusDataVO getLifeCycleDataForNewProblem(
-			ProblemHistory problemHistory) throws Exception {
+			Problem problem) throws Exception {
 
 		if (log.isDebugEnabled())
 			log.debug("Stated Executing Method To Set New Problem Data ..");
 
 		ProblemStatusDataVO problemStatusData = new ProblemStatusDataVO();
 
-		if (problemHistory != null) {
+		if (problem != null) {
 
 			problemStatusData.setProblemStatus("NEW");
-			problemStatusData.setUpdatedDate(problemHistory
-					.getProblemLocation().getProblemAndProblemSource()
-					.getProblem().getIdentifiedOn().toString());
+			problemStatusData.setUpdatedDate(problem.getIdentifiedOn().toString());
 			problemStatusData.setCadre("Not Yet Assigned");
 			problemStatusData.setDepartment("Not Yet Assigned");
 			problemStatusData.setDepartmentOrganisation("Not Yet Assigned");
