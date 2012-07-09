@@ -81,7 +81,7 @@ public class ProblemProgress extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="problem_activity_id")
+	@JoinColumn(name="activity_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ProblemActivity getProblemActivity() {
