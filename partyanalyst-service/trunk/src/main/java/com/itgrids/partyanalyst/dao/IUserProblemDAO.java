@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-
+import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.UserProblem;
 
@@ -66,5 +67,18 @@ public String getCommonDataForAllProblems();
 	
 	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, Long status);
 	
-	public List findProblemsForALocationsByConstituencyId(Long userId);
+	public List findProblemsForALocationsByConstituencyId(Long userId);	
+	public List getProblemsCountPostedByUserInDifferentLifeCycleStages(Long userId);
+	
+	public List<Problem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults);
+
+	public List<Long> getProblemsPostedByUserInDifferentLifeCycleStagesByDateCount(Long userId);
+	
+	public List<Problem> getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(
+			Long userId,Long statusId, Date startDate, Date endDate, Integer startIndex,
+			Integer maxResults);
+	
+	public List<Long> getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate);
+	
+	public List<Problem> getProblemHistoryBasedOnId(Long problemId,Long userId);
 }
