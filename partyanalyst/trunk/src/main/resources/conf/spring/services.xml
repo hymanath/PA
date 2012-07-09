@@ -577,6 +577,7 @@
 		<property name="problemLikesDAO" ref="problemLikesDAO" />
 		<property name="classifiedProblemsDAO" ref="classifiedProblemsDAO" />		
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
+		<property name="problemProgressDAO" ref="problemProgressDAO" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
