@@ -78,7 +78,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
+	private List<SelectOptionVO> states;
 	
+	public List<SelectOptionVO> getStates() {
+		return states;
+	}
+	public void setStates(List<SelectOptionVO> states) {
+		this.states = states;
+	}
+
+
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public ServletContext getContext() {
 		return context;
@@ -437,6 +446,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			
 			if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 				statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getStates"))
+		{	
+			Long electionTypeId = new Long(jObj.getLong("electionType"));
+			states = staticDataService.getParticipatedStatesForAnElectionType(electionTypeId);
 		}
 		return Action.SUCCESS;
 	}
