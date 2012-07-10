@@ -567,6 +567,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			
 			return getHibernateTemplate().find(conditionQuery.toString());
 		}
+		
 		@SuppressWarnings("unchecked")
 		public List<UserProblem> getUserProblem(Long problemId, Long userId)
 		{
@@ -577,6 +578,35 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			conditionQuery.append(" from UserProblem model where  model.problem.problemId = ? and model.user.userId =?");
 			return getHibernateTemplate().find(conditionQuery.toString(),params);
 			
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List findProblemsByDateAndLocation(Long userId, Date fromDate, Date toDate){
+			Object[] params = {fromDate, toDate,userId};
+			return getHibernateTemplate().find("select model.problem.impactLevelValue," +
+					" model.problem.title,model.problem.description,model.problem.regionScopes.regionScopesId," +
+					" model.problem.informationSource.informationSource,model.problem.problemStatus.status," +
+					" model.problem.identifiedOn,model.problem.problemId from UserProblem model where date(model.updatedTime) >= ? and date(model.updatedTime) <= ? and " +
+					" model.user.userId = ? and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"')",params);
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate){
+			Object[] params = {fromDate,toDate,userId,statusId};
+			return getHibernateTemplate().find("select model.problem.impactLevelValue," +
+					" model.problem.title,model.problem.description,model.problem.regionScopes.regionScopesId," +
+					" model.problem.informationSource.informationSource,model.problem.problemStatus.status," +
+					" model.problem.existingFrom,model.problem.problemId from UserProblem model where date(model.updatedTime) >= ? and date(model.updatedTime) <= ? and " +
+					" model.user.userId = ? and model.problem.problemStatus.problemStatusId = ? and (model.problem.isDelete is null or model.problem.isDelete = '"+IConstants.FALSE+"')",params);
+					
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> findProblemDetailsByProblemId(Long problemId) {
+			Object [] params = {problemId};
+			return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ?" +
+					" and (model.problem.isDelete is null or model.problem.isDelete='"+IConstants.FALSE+"')",params );
 		}
 
 }
