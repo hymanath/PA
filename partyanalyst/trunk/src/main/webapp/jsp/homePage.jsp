@@ -384,14 +384,34 @@ var pollStatus = [];
 						<tr>
 							<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
 									
-						</tr>			<tr>
+						</tr>			<!--<tr>
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
 									</tr>		
 									
 									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage((this.options[this.selectedIndex].text))" ></select></td></tr>
 									
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
-								</table>
+								</table>-->
+<tr>
+		<td><select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 200px;"
+		onchange="checkElectionType(this.options[this.selectedIndex].value)"/>
+		<option value="0">Select Type</option>
+		<option value="2">Assembly</option>
+		<option value="1">Parliament</option>
+		</select>	</td></tr>
+						
+			
+
+		<tr><td>
+		<select id="states" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+		width: 200px;"
+		onchange="getElectionYearsInHomePage('Assembly')">
+			</select></td></tr>
+
+		<tr><td><select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+			width: 200px;"></select></td></tr></table>
+
+
                     <div class="view-results"><a href="javascript:{}" onclick="viewElectionResults()">view results</a></div>
                   </div>
                 </div>
@@ -1051,7 +1071,7 @@ if(loadingFirstTime == 'true'){
 	});
 //buildHOmePageChartsSlider();
 	initializeHomePage();
-	getElectionTypeValue(1);
+	//getElectionTypeValue(1);
 	showVotesObtainedForOpinionPoll();
 	<c:if test="${loginStatus == 'true' && sessionScope.hasFreeUserRole == true }">
 	showUserNameChangePanel(uname);
@@ -1787,6 +1807,44 @@ function showProblemDescriptionByProblemRefId(results)
 	
 }
 
+
+function checkElectionType(electionTypeId)
+{
+var electionType = document.getElementById('electionTypeId').value;
+
+if(electionType == 1)
+	{
+getStates();
+document.getElementById('states').style.display="none";
+getElectionYearsInHomePage('Parliament');
+	}
+
+if(electionType == 2)
+	{
+	document.getElementById('states').style.display="block";
+
+getStates();
+
+	}
+}
+function getStates()
+{
+
+	var electionType = document.getElementById('electionTypeId').value;
+
+	var jsObj=
+		{						
+				
+				electionType:electionType,
+				task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;						
+	callHomePageAjax(jsObj,url);
+
+}
 //buildPolls();
 
 </script>
