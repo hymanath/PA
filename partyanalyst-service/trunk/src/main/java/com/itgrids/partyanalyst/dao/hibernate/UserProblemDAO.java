@@ -423,7 +423,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			if(!problemSearchVO.getUsersAll())
 				query.append(" and model.user.userId = :userId");
 			if(!problemSearchVO.getTypeAll())
-				query.append(" and model.problemType.problemTypeId = :problemTypeId");
+				query.append(" and model.problem.problemType.problemTypeId = :problemTypeId");
 			Query queryObj = getSession().createQuery(query.toString());
 			if(!problemSearchVO.getScopeAll())
 				queryObj.setParameter("localtionValue", problemSearchVO.getLocationValue());
