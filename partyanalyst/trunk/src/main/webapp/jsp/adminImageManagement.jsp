@@ -182,8 +182,8 @@ function buildNewImageDataTable(result)
 					{key:"fileDescription1", label: "Description", sortable: true},
 						{key:"problem", label: "Problem", sortable: true},
 					{key:"scope", label: "Approved/Rejected", sortable: true},
-					 {key:"existingFrom", label: "Existing From", sortable: true},
-					 {key:"identifiedOn", label: "Identification Date", sortable: true},
+					 {key:"existingDateFrom", label: "Existing From", sortable: true},
+					 {key:"identifiedDateOn", label: "Identification Date", sortable: true},
 					{key:"name", label: "Source", sortable: true}
 					/*{key:"description", label: "Status", sortable: true}*/
 		    	 ]; 
@@ -200,7 +200,7 @@ function buildNewImageDataTable(result)
 	var myDataSource = new YAHOO.util.DataSource(result);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1"]
+						 fields : [ "problemFileId","fileName1","fileTitle1","fileDescription1","filePath1","problem","existingDateFrom","identifiedDateOn","name"]
 					};
 
 		 ResultDataTable = new YAHOO.widget.DataTable("imageTable", ColumnDefs,myDataSource, myConfigs);
@@ -291,8 +291,8 @@ var ColumnDefs = [
 					{key:"fileDescription1", label: "Description", sortable: true},
 						{key:"problem", label: "Problem", sortable: true},
 					{key:"scope", label: "Severity", sortable: true},
-					 {key:"existingFrom", label: "Existing From", sortable: true},
-					 {key:"identifiedOn", label: "Identification Date", sortable: true},
+					 {key:"existingDateFrom", label: "Existing From", sortable: true},
+					 {key:"identifiedDateOn", label: "Identification Date", sortable: true},
 					{key:"name", label: "Source", sortable: true}
 				]; 
 var DataSource = new YAHOO.util.DataSource(result); 
