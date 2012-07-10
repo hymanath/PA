@@ -710,6 +710,8 @@
 		<property name="userDAO" ref="userDAO" />
 		<property name="userProblemDAO" ref="userProblemDAO" />
 		<property name="problemDAO" ref="problemDAO" />
+		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
+		
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
