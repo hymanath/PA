@@ -345,18 +345,18 @@ function initializeResultsTable(divId, problemDetails, caption) {
 
 	var probDTColumnDefs = [ {
 		key : "problem",
-		label : problemDetails.Problem,
+		label : localizationObj.problemLabel,
 		sortable : true
 	}, {
 		key : "description",
-		label : problemDetails.description
+		label : localizationObj.description
 	}, {
 		key : "existingFrom",
-		label : problemDetails.existingFrom
+		label : localizationObj.existingFrom
 		},
 			 {
 		key : "status",
-		label : problemDetails.status,
+		label : localizationObj.status,
 		sortable : true
 	} ];
 
@@ -400,7 +400,10 @@ function buildProblemsDetailsDT(results) {
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
 					status:results[i].status,
 					problemSource:results[i].probSource,
-					more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
+					//more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
+					more:'<a href="javascript:{}" onclick="openProblemDetailsWindow('+results[i].problemId+')">More Info</a>'
+
+					
 			};
 			
 			problemsArr.push(problem);
@@ -471,6 +474,11 @@ function buildProblemsDetailsDT(results) {
 		
 }
 
+
+function openProblemDetailsWindow(problemId)
+{
+	var problemWindow = window.open("problemDetailsAndStatusAction.action?pHistoryId="+problemId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+}
 function buildSubRegionsPieChart(results,type)
 {	
 	for(var i=0; i<results.length; i++)
