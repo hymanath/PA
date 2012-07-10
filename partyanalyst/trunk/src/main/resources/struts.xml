@@ -3415,5 +3415,10 @@
 			<param name="root">pwdVal</param>				
 		</result>	
 		</action>
+		<action name="getStatesForHomepage" class="homePageAction" method="ajaxCallHandler">
+		    <result type="json" name="success">
+			<param name="root">states</param>				
+		</result>	
+		</action>
 	</package>
 </struts>      
