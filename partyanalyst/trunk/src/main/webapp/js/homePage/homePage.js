@@ -766,6 +766,11 @@ function callHomePageAjax(jsObj,url)
 							{
 								showProblemDescriptionByProblemRefId(myResults);
 							}
+
+							else if(jsObj.task == "getStates")
+							{
+								buildElectionTypes(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -2260,10 +2265,11 @@ function getElectionTypeValue(stateId)
 
 function buildElectionTypes(myResult)
 {	
+	
 	if(myResult == null || myResult.length == 0)
 		return;
 	
-	var electionTypeElmt = document.getElementById("electionLists");
+	var electionTypeElmt = document.getElementById("states");
 	electionTypeElmt.options.length=0;
 
 	for(var i in myResult)
@@ -2281,7 +2287,7 @@ function buildElectionTypes(myResult)
 		}
 	}	
 
-	hideBusyImgWithId("stateLists");
+	hideBusyImgWithId("states");
 
 }
 
@@ -2301,8 +2307,12 @@ function buildElectionTypes(myResult)
 
  function getElectionYearsInHomePage(electionType)
 {
-	var stateEle = document.getElementById("stateLists");
+
+	var stateEle = document.getElementById("states");
+	if(electionType == 'Assembly')
 	var stateId = stateEle.options[stateEle.selectedIndex].value;
+	if(electionType == 'Parliament')
+		stateId = 1;
 	document.getElementById("electionYears").length = 0;
 	
 	if(electionType == null || electionType == 'Select Type' || stateId == 0)
@@ -2349,9 +2359,9 @@ function viewElectionResults()
 	var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
   try
 	{
-	  var stateSelectEle = document.getElementById("stateLists");
+	  var stateSelectEle = document.getElementById("states");
 	  var electionYearEle = document.getElementById("electionYears");
-	  var electionTypeEle = document.getElementById("electionLists");
+	  var electionTypeEle = document.getElementById("electionTypeId");
 	  
 
 	  var stateId = stateSelectEle.options[stateSelectEle.selectedIndex].value;
