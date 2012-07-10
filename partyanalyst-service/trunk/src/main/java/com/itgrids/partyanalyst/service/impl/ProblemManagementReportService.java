@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
@@ -75,6 +76,7 @@ import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -126,7 +128,18 @@ public class ProblemManagementReportService implements
 	private IUserProblemDAO userProblemDAO;
 	private IProblemDAO problemDAO;
 	
+	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	
+	
+	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
+		return problemAssignedDepartmentDAO;
+	}
+
+	public void setProblemAssignedDepartmentDAO(
+			IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO) {
+		this.problemAssignedDepartmentDAO = problemAssignedDepartmentDAO;
+	}
+
 	public IProblemDAO getProblemDAO() {
 		return problemDAO;
 	}
@@ -1233,9 +1246,11 @@ public class ProblemManagementReportService implements
 			try{
 				//tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
 				if(statusId.equals(0L))
-					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					/*problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));*/
+					problemsRawData = userProblemDAO.findProblemsByDateAndLocation(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)),sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 				else
-					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(userId, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					/*problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(userId, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));*/
+					problemsRawData = userProblemDAO.findProblemsByStatusDateAndLocation(userId, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)),sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 					//problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 				
 					//problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));	
@@ -1252,13 +1267,14 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setDescription(values[2].toString());
 				//problemBeanVO.setHamlet(values[3].toString());
 				Long impactLevelId = (Long)values[3];
-				Long impactLevelValue = (Long)values[8];
+				Long impactLevelValue = (Long)values[0];
 				problemBeanVO.setHamlet(problemManagementService.getLocationDetails(impactLevelId,impactLevelValue));
 				
 				problemBeanVO.setProblemSourceScope(values[4].toString());
-				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
-				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[7].toString()));
+				//problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
+				problemBeanVO.setStatus(values[5].toString());
+				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[6].toString()));
+				problemBeanVO.setProblemId((Long)values[7]);
 				problems.add(problemBeanVO);
 			}
 			
@@ -1947,7 +1963,7 @@ public class ProblemManagementReportService implements
 						Problem problem = problemDAO.get(problemHistoryIds[i].longValue());
 						
 						 problem.setIsApproved(IConstants.TRUE);
-						 problemDAO.save(problem);
+						problem =  problemDAO.save(problem);
 						/*ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());						
 						 problemHistory.setIsApproved(IConstants.TRUE);
 						  problemHistory = problemHistoryDAO.save(problemHistory);
@@ -1955,11 +1971,14 @@ public class ProblemManagementReportService implements
 						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
 						problemLocationDAO.save(problemLocation);
 						sendEmailToFreeUserAfterProblemApproval(problemHistory);*/
+						// sendEmailToFreeUserAfterProblemApproval(problem);
 					}
 				
 		}
 		
-		private ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemHistory problemHistory)
+		
+		
+		/*private ResultStatus sendEmailToFreeUserAfterProblemApproval(Problem problem)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			
@@ -2007,7 +2026,7 @@ public class ProblemManagementReportService implements
 			}
 			
 		}
-		
+		*/
 		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemHistory problemHistory)
 		{
 			ResultStatus resultStatus = new ResultStatus();
