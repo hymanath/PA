@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -215,7 +217,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetUserProblemIdByUserIdAndProblemId(){
+	/*public void testGetUserProblemIdByUserIdAndProblemId(){
 		List<Long> userPrbIdList=userProblemDAO.getUserProblemIdByUserIdAndProblemId(25L, 1L);
 		if(userPrbIdList!=null && userPrbIdList.size()>0){
 			System.out.println(userPrbIdList.get(0)); 
@@ -223,6 +225,55 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		else{
 			System.out.println("not available"); 
 		}
-	}
+	}*/
+	
+	/*public void testgetProblemDetailsOfUserToSendEmailAfterProblemApproval()
+	{
+		//List<Long> problemIds =  new ArrayList<Long>(0);
+		//problemIds.add(1l);
+		List<UserProblem> params = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(1l);
+		for(UserProblem problem :params)
+		{
+			System.out.println(problem.getUser().getEmail().toString());
+		}
+	}*/
 
+	/*public void testfindProblemsByDateAndLocation() throws Exception
+	{
+		 DateFormat format = 
+				 new SimpleDateFormat("yyyy-MM-dd");
+			 Date startDate = 
+				 format.parse("2012-07-05");
+			 Date endDate = 
+				format.parse("2012-07-09");
+		List list = userProblemDAO.findProblemsByDateAndLocation(2l,startDate,endDate);
+		for(int i=0;i<list.size();i++)
+		{
+			Object[] params = (Object[])list.get(i);
+			System.out.println(params[0]);
+			System.out.println(params[1]);
+		}
+	}*/
+	
+	/*public void testfindProblemsByStatusDateAndLocation() throws Exception{
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate = format.parse("2012-07-05");
+		Date endDate = format.parse("2012-07-09");
+		List list = userProblemDAO.findProblemsByStatusDateAndLocation(2l,1l,startDate,endDate);
+		for(int i=0;i<list.size();i++)
+		{
+			Object[] params = (Object[])list.get(i);
+			System.out.println(params[0]);
+			System.out.println(params[1]);
+		}
+	}*/
+	
+	public void testfindProblemDetailsByProblemId() 
+	{
+		List<UserProblem> userProblem = userProblemDAO.findProblemDetailsByProblemId(22l);
+		for(UserProblem problemDetails : userProblem)
+		{
+			System.out.println(problemDetails.getProblem().getDescription());
+		}
+	}
 }
