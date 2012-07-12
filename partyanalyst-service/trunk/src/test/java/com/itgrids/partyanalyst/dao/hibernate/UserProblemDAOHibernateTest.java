@@ -86,11 +86,11 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	System.out.println(list1.size());
 }
 	*/
-	/*public void testgetAllPostedPRoblemCount()
+	public void testgetAllPostedPRoblemCount()
 	{
-		 List list = userProblemDAO.public List getAllPostedProblemCount(2l);
+		 List list = userProblemDAO.getAllPostedProblemCount(2l);
 		 System.out.println(list.size());
-	}*/
+	}
 	
 	/*public void testgetAllPostedProblemCountOtherThanLoggedInUser()
 	{
@@ -276,6 +276,15 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		for(UserProblem problemDetails : userProblem)
 		{
 			System.out.println(problemDetails.getProblem().getDescription());
+		}
+	}*/
+	
+	public void testgetCadreProblemsInARegionByUserProblemId()
+	{
+		List<UserProblem> list = userProblemDAO.getCadreProblemsInARegionByUserProblemId(1l,30l);
+		for(UserProblem problem : list)
+		{
+			System.out.println(problem.getProblem().getDescription());
 		}
 	}
 	
