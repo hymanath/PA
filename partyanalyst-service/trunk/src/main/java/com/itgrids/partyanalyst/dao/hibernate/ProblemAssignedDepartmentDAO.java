@@ -109,5 +109,10 @@ public class ProblemAssignedDepartmentDAO extends GenericDaoHibernate<ProblemAss
 		queryObject.setParameterList("progressIdList", progressIdList);
 		return queryObject.list();
 	}
-
+	
+	public List<ProblemAssignedDepartment> getAllActivitesByProblemId(Long userProblemId)
+	{
+		return getHibernateTemplate().find("from ProblemAssignedDepartment model where model.userProblem.userProblemId = ?  order by model.updatedTime desc",userProblemId);
+				
+	}
 }
