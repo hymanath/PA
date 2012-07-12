@@ -1,21 +1,36 @@
+</table>
+<div class="background">
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
 
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<!--  BootStrap Code-->
+ 
+
 
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
+<link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
+<!--  BootStrap Stating -->
+ <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<!--  BootStrap Ending	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="styles/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="styles/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="styles/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="styles/assets/ico/apple-touch-icon-57-precomposed.png">
+ -->
 
+<style>
+.service-box{width:265px;margin:10px;float:left;padding:5px;height:267px;}
 
-<script type="text/javascript">
-var pwdChanged = '${pwdChanged}';
-</script>
-
+</style>
 
 <%
 String src = "";
@@ -304,10 +319,21 @@ if(request.getParameter("showMessage")!=null){
 		width: 450px;
 		border-bottom: 2px solid #06ABEA;
 	}
+	body{background:#5d5d5d !important;}
+	
+    #cnstituencyDiv{
+	   heigth:263px;
+	}
+	[if IE]
+	    #cnstituencyDiv{
+	      heigth:244px;
+	   }
+    [endif]
 
 	</style>	
 	</head>
-	<body><center>
+	<body style="background-color:#5d5d5d;">
+	
 		<div id="forgot_password_window" style="background-color: #C7CFD2;">
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
@@ -320,207 +346,127 @@ if(request.getParameter("showMessage")!=null){
 
 		</div>
 		</div>
-		<div id="loginPanel_main" class="background" style="align:center">
-		
-		<div style="width:360px;">
-			<table width="100%" cellpadding="0" cellspacing="0" style="width:360px;">
-				<tr>
-					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_left_login.jpg">
-					</img></td>
-					<td><div id="loginHeadCenter_center" class="containerHeader_center">
-							<span class="containerHeader_center_label">Member Login</span>
-						</div>
-					</td>
-					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_right_login.jpg"></img></td>
-				</tr>
-			</table>
-		</div>
-		<div id="loginPanelContentOuter" class="rounded"> 						
-			<!--<div class="corner topLeft"></div>-->
-			<!--<div class="corner topRight"></div>-->
-			<div class="corner bottomLeft"></div>
-			<div class="corner bottomRight"></div>
-		
-			<div id="loginPanel_Main" class="innerLayoutDivClass">
-				<div id="loginPanel_Head" class="layoutHeadersClass"></div>
-				<div id="loginPanel_Body" class="layoutBodyClass yui-skin-sam">
-					<div id="loginPanel" class="panelContainer">
-					
-						<table>
-							<tr>
-								<td colspan="2" style="color:red"><s:actionerror /></td>
-							</tr>
-						</table>
-						
-						<s:form name="loginForm" action="loginAction" method="POST">
-							<%
-							if(src != ""){
-							%>
-							<input type="hidden" name="src" value="<%=src %>" />
-							<% } %>
-							<input type="hidden" name="url" value="<%=url %>" />
-							<input type="hidden" name="electionId" value="<%=electionId %>" />
-							<input type="hidden" name="stateID" value="<%=stateID %>" />
-							<input type="hidden" name="electionType" value="<%=electionType %>" />
-							<input type="hidden" name="electionTypeId" value="<%=electionTypeId %>" />
-							<input type="hidden" name="stateName" value="<%=stateName %>" />
-							<input type="hidden" name="year" value="<%=year %>" />
-							<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-							<input type="hidden" name="task" value="<%=task %>" />
-							<input type="hidden" name="name" value="<%=name %>" />
-							<input type="hidden" name="stateId" value="<%=stateId %>" />
-							<input type="hidden" name="districtId" value="<%=districtId %>" />
-							<input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-							<input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
-							<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
-							<input type="hidden" name="districtName" value="<%=districtName %>" />
-							<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
-							<input type="hidden" name="taskType" value="<%=taskType %>" />
-							<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />
-							<input type="hidden" name="problemHistoryId" value="<%=problemHistoryId%>" />
-							<input type="hidden" name="electionId1" value="<%=electionId1%>" />
-							<input type="hidden" name="electionId2" value="<%=electionId2%>" />
-							<input type="hidden" name="party" value="<%=party%>" />
-							<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />
-							<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />
-							<input type="hidden" name="selectedPartyShortName" value="<%=selectedPartyShortName%>"/>
-							<input type="hidden" name="selectedPartyId" value="<%=selectedPartyId%>"/>
-							<input type="hidden" name="selectedElectionTypeName" value="<%=selectedElectionTypeName%>"/>
-							<input type="hidden" name="selectedLocationName" value="<%=selectedLocationName%>"/>
-							<input type="hidden" name="reportLevel" value="<%=reportLevel%>"/>
-							<input type="hidden" name="stateSelectName" value="<%=stateSelectName%>"/>
-							<input type="hidden" name="partySelectName" value="<%=partySelectName%>"/>
-							<input type="hidden" name="constituencySelectName" value="<%=constituencySelectName%>"/>
-							<input type="hidden" name="districtSelectName" value="<%=districtSelectName%>"/>
-							<input type="hidden" name="candidateId" value="<%=candidateId%>"/>
-								
-							<c:out value="${sessionScope.USER_REG_SUCCESS}" />
-							<c:remove var="USER_REG_SUCCESS" scope="session" />
-							
-							<table class="loginDetailTable" width="100%">
-							<c:if test="${pwdChanged != null || pwdChanged == 'true'}">
-							<span style="color:green">Password changed successfully.Please Login here.</span>
-							</c:if>
-							
-								<tr>
-									<td width="10"><img src="images/icons/indexPage/listIcon.png"></img></td>
-									<th style="font-size:12px;color:#AB6413;text-decoration:underline;">Sign in with your Party Analyst account</th>
-								</tr>
-							</table>
-							<table class="loginDetailTable">								
-								<!--<tr>
-									<th>Sign In As</th>
-									<td>
-										<input id="paUserRadio" type="radio" name="userType" value="1"/>&nbsp;&nbsp;Customer
-										<input id="freeUserRadio" type="radio" name="userType" value="2" checked="checked"/>&nbsp;&nbsp;Free User
-									</td>
-								</tr>-->
-								<tr>
-									<th><s:label theme="simple" value="%{getText('userName')}"></s:label></th>
-									<td>
-									<div id="validate"></div>
-										<s:textfield theme="simple" name="userName" id="userName" label="%{getText('userName')}"/>
-									</td>
-								</tr>
-								<tr>
-									<th><s:label theme="simple" value="%{getText('password')}"></s:label></th>
-									<td>
-										<s:password theme="simple" name="password" label="%{getText('password')}"/>
-									</td>
-								</tr>
-								<tr>
-									<td align="right"><s:submit value="Sign In" cssClass="btnStyle" align="center"/></td></tr><tr>
-									<td colspan="2"><a href="javascript:{}" onclick="showForgotPasswordPanel()" style="margin-left:179px;color:#0174DF;" >Forgot Password</a></td>
-								</tr>
-							</table>							
-						
-					</div>
-				</div>
-			</div>		
-		</div>
-		
-		<div style="width:360px;">
-			<table width="100%" cellpadding="0" cellspacing="0" style="width:360px;">
-				<tr>
-					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_left_login.jpg"></img></td>
-					<td>
-						<div id="registerHeadCenter_center" class="containerHeader_center">
-							<span class="containerHeader_center_label">New Free User Signup</span>
-						</div>
-					</td>
-					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_right_login.jpg"></img></td>
-				</tr>
-			</table>
-		</div>
-		<div id="registerContentOuter" class="rounded"> 						
-			<!--<div class="corner topLeft"></div>-->
-			<!--<div class="corner topRight"></div>-->
-			<div class="corner bottomLeft"></div>
-			<div class="corner bottomRight"></div>
-		
-			<div id="registerInfo_Main" class="innerLayoutDivClass">
-				<div id="registerInfo_Head" class="layoutHeadersClass"></div>
-				<div id="registerInfo_Body" class="layoutBodyClass yui-skin-sam">
-					 <div id="registerPanel" class="panelContainer">
-						<!--<table>
-							<tr>
-								<td colspan="2"><s:actionerror /></td>
-							</tr>
-						</table>-->
-						<div>
-							
-								<!-- <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-								<input type="hidden" name="task" value="<%=task %>" />
-								<input type="hidden" name="name" value="<%=name %>" />
-								<input type="hidden" name="stateId" value="<%=stateId %>" />
-								<input type="hidden" name="districtId" value="<%=districtId %>" />
-								<input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-								<input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
-								<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />			 
-								<input type="hidden" name="districtName" value="<%=districtName %>" />
-								<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />	
-								<input type="hidden" name="taskType" value="<%=taskType %>" />
-								<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />		
-								<input type="hidden" name="electionId1" value="<%=electionId1%>" />
-								<input type="hidden" name="electionId2" value="<%=electionId2%>" />
-								<input type="hidden" name="party" value="<%=party%>" />
-								<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />	
-								<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />
-								<input type="hidden" name="selectedPartyShortName" value="<%=selectedPartyShortName%>"/>
-								<input type="hidden" name="selectedPartyId" value="<%=selectedPartyId%>"/>
-								<input type="hidden" name="selectedElectionTypeName" value="<%=selectedElectionTypeName%>"/>
-								<input type="hidden" name="selectedLocationName" value="<%=selectedLocationName%>"/>
-								<input type="hidden" name="reportLevel" value="<%=reportLevel%>"/>
-								<input type="hidden" name="stateSelectName" value="<%=stateSelectName%>"/>
-								<input type="hidden" name="partySelectName" value="<%=partySelectName%>"/>
-								<input type="hidden" name="constituencySelectName" value="<%=constituencySelectName%>"/>
-								<input type="hidden" name="districtSelectName" value="<%=districtSelectName%>"/>
-								<input type="hidden" name="candidateId" value="<%=candidateId%>"/> -->
-								
-								<table  class="loginDetailTable">
-									<tr>
-										<td>
-											<p class="signUpLabelPara">New to Party Analyst ? Sign up to connect to your people, post your area problems and access to many features. </p>
-										</td>
-									</tr>
-									<tr>	
-										<td align="right">
-											<h3><a href="freeUserRegistration.action"><img src="images/icons/homePage_new/signup_button.gif"></a></h3>
-										</td>
-									</tr>	
-								</table>
-								<!--<h3><a href="freeUserRegistration.action">Register</a></h3>-->
-							</s:form>
-						</div>
-					</div>
-				</div>
-			</div>		
-		</div>
-        <div id="showLoginErrorMsgDiv"></div>
-       
-		</div>
+		<!-- bootstap code(html 5)-->
+	<div class="container">
+	
+	<div class="span12">
 
-		<script type="text/javascript">
+           
+       
+
+
+	    <div class="row">
+		    <div class="span8">
+			 
+		        <h2>PARTY ANALYST</h2>
+                <p style="lead">Hundreds of aspirants used Party Analyst as a platform to
+                   share their problems, opinions and polls.</p>
+            
+                <div class="">
+				   			    
+			                 <div class="">
+							 
+						         <div class="service-box">
+				                 <a href="electionAnalysisAndManagementTool.action?src=homePageAd"><span style="padding: 16px 15px;">Election Analysis and Management Tool</span></a>
+                                 <img src="images/new_homepage/sp-pa.jpg"/>
+                                 <span style = "padding: 24px;"><p>Analyze your constituency,   track your constituency problems,manage your cadres,  share your updates to <font size="2px"><strong>Cadre, Influencing people and Voters</strong></font>.</p></span>
+                                 </div>  
+			                 </div>
+
+                            <div class="">
+				                 <div class="service-box">
+                                 <a href="VotersPulse.action?src=homePageAd"><span>Voters Pulse</span></a>
+                                 <img src="images/new_homepage/checklist.jpg"/>
+                                 <span style = "padding: 34px;"><p>Now, you can drive your survey's through Party Analyst...
+                                 Ask, Analyze, Improve.</p></span>
+                                 </div>
+				            </div>
+							
+					    
+                   </div>  
+					
+					<div class="">
+					    
+			                 <div class="" >
+							    
+						         <div id ="cnstituencyDiv" class="service-box">
+                                 <a href="constituencyProfileReport.action?src=homePageAd"><span>Constituency Profile Report</span></a>
+                                 <img src="images/site/imgpartyperf.jpg">
+                                 <span style = "padding: 39px;"><p>Are you aspirant candidate for
+                                 2014 elections in Andhra Pradesh get the complete picture of your constituency profile report.</p></span>
+                                </div>
+			                 </div>
+
+                            <div class="" >
+				                 
+                                 <div class="service-box">
+                                 <a href="newsMonitoringService.action?src=homePageAd"><span>News Monitoring Service</span></a>
+                                 <img src="images/new_homepage/NewsTracker.png"/>
+                                 <span style = "padding: 40px;"><p>As a Politician or Political Party, News Monitoring and analyzing is very important &nbsp;to keep upper hand in the political arena.</p></span>
+                                 </div>
+				            </div>
+					   
+                    </div>
+					
+		        </div> 
+           
+			
+		    <div class="span4">
+			              <div>
+			                <jsp:include page="loginPage.jsp" flush="true" />
+						 </div>
+		                 <div class="span4 well"style="margin-left: 5px;">
+		                      <h3 style="margin-bottom: 7px;">New to Party Analyst?</h3>
+		                      <a href="freeUserRegistration.action" class="btn btn-success pull-right">Create an Account</a>
+		                 </div>
+		        
+						
+			
+                  <div id="showLoginErrorMsgDiv"></div>
+       
+		    </div>
+	 
+			
+	</div>	
+</div>	
+	
+</div>	
+
+
+		
+
+	<script type="text/javascript">  
+function handleErrorMessage()
+{ 
+                 //document.getElementById("getLoginErrorMessageDiv").innerHTML = '';
+				 
+                 var emailId = document.getElementById("userName").value;
+                 var securityName = document.getElementById("passWord_Id").value;
+                 var errorDivEle = document.getElementById("getLoginErrorMessageDiv");
+	             var eFlag = false;
+
+	             var str = '<font color="red">';
+
+	              if(emailId.length == 0 || emailId == "Email" )
+	               {
+		              str += ' username is required<br>';
+		              eFlag = true;
+	               }
+	
+	              if(securityName.length == 0 || securityName =="Password")
+	               {
+		               str += ' password is required<br>';
+		                eFlag = true;
+	               }
+	                str += '</font>';
+	                errorDivEle.innerHTML = str;
+	
+	                if(eFlag)
+		                return false;
+						
+					return true;
+						  
+}
 
 
 function callAJAX(jsObj,url){
@@ -620,7 +566,7 @@ function showEmailStatus(results)
 		clearEmailFields();
 		
 	
-		str += '<font color="#000000">Processing Your Request. Please wait...</font>';
+		str += '<font color="#000000">Sending Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
 		
 	}
@@ -655,8 +601,8 @@ function afterPasswordSubmit(username,email){
 		var elmt = document.getElementById("forgot_password_window_inner");
 		
 		var str = '';
-		str += '<div id="feedback_window_head">Forgot Password?</div>';
-		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center; padding-top: 10px; padding-bottom: 10px;">';
+		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
 		
 	if(email == null)
 	{
@@ -695,7 +641,7 @@ function afterPasswordSubmit(username,email){
 	}
 	else
 	{
-		str += 'Your password has been mailed to your email address :&nbsp;&nbsp;'+email+'</div>';
+		str += 'Your password has been mailed to your email address :'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
@@ -726,10 +672,10 @@ function afterPasswordSubmitToUser(username,email){
 
 
 		var str = '';
-		str += '<div id="feedback_window_head">Forgot Password?</div>';
-		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;padding-top: 11px; padding-bottom: 10px;">';
+		str += '<div id="feedback_window_head">ForgotPassword?</div>';
+		str += '<div id="feedback_window_body" style="font-weight:bold;color:green;text-align:center;">';
 		
-		str += 'Your password has been mailed to your email address : '+email+'</div>';
+		str += 'Your password has been mailed to your email address :'+email+'</div>';
 		str += '</div>';
 		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
 		str += '	<table width="100%">';
@@ -830,7 +776,7 @@ function checkAvailability()
 		document.getElementById("feedback_window_errorMsg").innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
 	}
 	else{ 
-		var str = '<font color="#000000">Processing Your Request. Please wait...</font>';
+		var str = '<font color="#000000">Sending Your Request. Please wait...</font>';
 		str += '<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">'
  		document.getElementById("feedback_window_errorMsg").innerHTML = str;
  		var jsObj=
@@ -913,7 +859,7 @@ function saveEmailAndSendPassword()
 function clearDialogBox()
 {
 	document.getElementById('forgot_password_window').style.display = 'none';
-document.getElementById('forgot_password_window_inner').style.display = 'none';
+    document.getElementById('forgot_password_window_inner').style.display = 'none';
 }
 
 </script>
@@ -948,3 +894,4 @@ if('<%=showMessage%>' == 'yes')
 </script>
 </body>
 </html>
+
