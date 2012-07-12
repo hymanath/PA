@@ -327,7 +327,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	
 	public List getUserDetails(String userName)
 	{
-		return getHibernateTemplate().find("select model.email, model.password from User model where model.userName = ?",userName);
+		return getHibernateTemplate().find("select model.email, model.password,model.firstName,model.lastName from User model where model.userName = ?",userName);
 	}
 	
 	@SuppressWarnings("unchecked")

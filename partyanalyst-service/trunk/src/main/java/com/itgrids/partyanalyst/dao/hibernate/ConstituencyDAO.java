@@ -445,4 +445,11 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model where model.district.districtId=? order by model.name",districtId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> getAllParliamentConstituenciesInAState(Long electionScopeId, Long StateId) {
+		Object []params={electionScopeId, StateId};
+		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? and model.deformDate is null and model.state.stateId= ? order by model.name",params);
+	}
+	
+	
 }

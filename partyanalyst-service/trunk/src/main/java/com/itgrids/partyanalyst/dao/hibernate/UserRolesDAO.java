@@ -36,7 +36,7 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles,Long> implements
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllUsersMobile(String roleType)
 	{
-		return getHibernateTemplate().find("select distinct model.firstName,model.lastName,model.mobile,model.constituency.name,model.userId from UserR model where model.role.roleType = ?",roleType);
+		return getHibernateTemplate().find("select distinct model.firstName,model.lastName,model.mobile,model.constituency.name,model.userId from UserRoles model where model.role.roleType = ?",roleType);
 	}
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllMobilenosAsUnique()

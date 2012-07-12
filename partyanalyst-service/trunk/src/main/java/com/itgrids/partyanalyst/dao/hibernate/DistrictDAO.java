@@ -103,4 +103,5 @@ IDistrictDAO {
 		query.setParameter(0,districtId);
 		return query.uniqueResult();
 	}
+	
 }

@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -13,4 +17,13 @@ public class ProblemDAO extends GenericDaoHibernate<Problem,Long> implements IPr
 	{
 		super(Problem.class);
 	}	
+	
+	public Integer deleteProblemDetails(Long problemId,Date currentDate)
+	{
+		Query queryObj = getSession().createQuery("update Problem model set model.isDelete = 'true', model.updatedTime = :updatedTime where model.problemId = :problemId");
+		queryObj.setParameter("problemId", problemId);
+		queryObj.setParameter("updatedTime", currentDate);
+		return queryObj.executeUpdate();
+	}	
+	
 }

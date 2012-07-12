@@ -48,12 +48,12 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter("problemId",problemId);
 		queryObject.setParameter("userId",userId);
-		queryObject.setParameter("type","public");
+		queryObject.setParameter("type","Public");
 		
 		return queryObject.list();
 		
-		
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved)
 	{
@@ -235,7 +235,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	@SuppressWarnings("unchecked")
 	public List<Object[]> checkUserFileUploadRight(Long userId,Long problemHistoryId){
 		Object[] params = {userId,problemHistoryId};
-		return getHibernateTemplate().find("select model.problem.problemId from UserProblem model where model.user.userId=? and model.userProblemId=?",params);
+		return getHibernateTemplate().find("select model.problem.problemId from UserProblem model where model.user.userId=? and model.problem.problemId=?",params);
 		
 	}
 		
@@ -608,5 +608,34 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ?" +
 					" and (model.problem.isDelete is null or model.problem.isDelete='"+IConstants.FALSE+"')",params );
 		}
-
+		
+		/*@SuppressWarnings("unchecked")
+		public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId, String locationStr)
+		{
+			Object[] params = {userId};
+			return getHibernateTemplate().find(" select model.problem.problemStatus.status from UserProblem model where " +
+					" model.user.userId = ? "+locationStr+" and (model.problem.isDelete is null or model.problem.isDelete is 'false') and model.problem.isApproved = 'true' ",params);
+		}*/
+		
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> getUserProblemIdForCadreProblems(Long problemId,Long userId)
+		{
+			StringBuffer query=new StringBuffer("select model from UserProblem model where model.problem.problemId =:problemId and model.user.userId =:userId");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setParameter("problemId",problemId);
+			queryObject.setParameter("userId",userId);
+			
+			return queryObject.list();
+			
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<UserProblem> getProblemDetailsOfUserToSendEmailAfterProblemApproval(Long problemId)
+		{
+		Query query = getSession().createQuery("from UserProblem model where model.problem.problemId = ?");
+			query.setParameter(0, problemId);
+		
+		return query.list();
+		}
+ 
 }

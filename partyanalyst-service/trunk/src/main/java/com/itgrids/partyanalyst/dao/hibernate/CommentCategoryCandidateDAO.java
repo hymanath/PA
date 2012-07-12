@@ -439,9 +439,17 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",userId);
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
+	/*public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
 	{
 		Query queryObject = getSession().createQuery("select model.freeUser.userId,model.freeUser.email,model.commentData.commentBy,model.nomination.candidate.lastname,model.nomination.candidateResult.rank, model.nomination.constituencyElection.constituency.name,model.nomination.constituencyElection.election.electionScope.electionType.electionType,model.freeUser.lastName from CommentCategoryCandidate model where model.commentData.commentDataId in (:reasonIds)");
+		queryObject.setParameterList("reasonIds", reasonIds);
+		return queryObject.list();
+			
+	}*/
+	
+	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
+	{
+		Query queryObject = getSession().createQuery("select model.user.userId,model.user.email,model.commentData.commentBy,model.nomination.candidate.lastname,model.nomination.candidateResult.rank, model.nomination.constituencyElection.constituency.name,model.nomination.constituencyElection.election.electionScope.electionType.electionType,model.user.lastName,model.user.firstName from CommentCategoryCandidate model where model.commentData.commentDataId in (:reasonIds)");
 		queryObject.setParameterList("reasonIds", reasonIds);
 		return queryObject.list();
 			
