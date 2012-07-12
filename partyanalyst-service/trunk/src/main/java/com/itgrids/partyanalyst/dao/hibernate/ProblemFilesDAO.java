@@ -38,4 +38,11 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 		queryObject.setParameter("isDelete", "false");
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getNoOfFilesUploadedForAUser(Long problemId)
+	{
+		return getHibernateTemplate().find("select count(model.problemFilesId) from ProblemFiles model where model.problem.problemId =?",problemId);
+	}
+
 }
