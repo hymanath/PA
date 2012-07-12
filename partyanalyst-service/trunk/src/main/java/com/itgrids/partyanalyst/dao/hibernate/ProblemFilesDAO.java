@@ -44,5 +44,9 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 	{
 		return getHibernateTemplate().find("select count(model.problemFilesId) from ProblemFiles model where model.problem.problemId =?",problemId);
 	}
-
+	
+	public List<Object[]> getProblemRelatedFilesForAUser(Long problemId,Long userId){
+		Object[] params = {problemId,userId};
+		return getHibernateTemplate().find("select model.file.fileName ,model.file.fileTitle,model.file.fileDescription ,model.file.filePath from ProblemFiles model where model.isApproved='true' and model.isDelete ='false' and model.problem.problemId =? and model.user.userId = ?",params);
+	}
 }
