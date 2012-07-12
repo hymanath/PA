@@ -63,4 +63,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getUserStateList(String accessType,Long accessValue);
 	public List<SelectOptionVO> getProblemTypesByRegionScopeId(Long regionScopeId);
 	
+	public List<SelectOptionVO> getAllParliamentConstituenciesForAState(
+			Long electionScopeId , Long stateId) ;
+	
 }

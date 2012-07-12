@@ -83,7 +83,7 @@ public interface IProblemManagementService {
 	
 	public ResultStatus updateProblemStatus(Long problemHistoryId,Long statusId,String status);
 	
-	public ResultStatus updateAssignedCadre(Long problemHistoryId,Long cadreId,String status);
+	//public ResultStatus updateAssignedCadre(Long problemHistoryId,Long cadreId,String status);
 	
 	public ResultStatus updateProblemComments(Long problemHistoryId,String comments,String status);
 	
@@ -122,7 +122,7 @@ public interface IProblemManagementService {
 	public List<FileVO> getProblemFilesForParticularDate(String particularDateStr,String choice);
 	public ResultStatus sendSMSFromAdmin(String message,String[] phoneNumbers);
 	
-	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId);
+	//public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId);
 	
 	public List<ProblemBeanVO> getProblemDetailsForHomePage(int startIndex,int maxIndex);
 	
@@ -156,4 +156,12 @@ public interface IProblemManagementService {
 	public ResultStatus updateClassificationOfProblem(Long problemId, Long userId, String classification, String status);
 	public ResultStatus updateStatusOfProblem(Long problemId, Long userId, String probStatus);
 	public ResultStatus setProblemLikeOrDislike(Long problemId, Long userId, String userAction);	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(ProblemBeanVO problemBeanVO);
+	public ResultStatus deleteProblemDetails(Long problemId);
+	
+	public ResultStatus updateAssignedCadre(final Long problemId,
+			final Long cadreId, final String pbStatus,final Long userId) ;
+	
+	public ResultStatus addProblemRelatedFiles(ProblemBeanVO problemBeanVO);
+	
 }
