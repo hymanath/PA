@@ -98,4 +98,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List<UserProblem> getCadreProblemsInARegionByUserProblemId(Long userId,Long problemId);
 	
+	public List<String> checkIsProblemOwner(Long problemId,Long userId);
+	
+	public List<Object[]> getProblemOwnerName(Long problemId);
 }
