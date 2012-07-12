@@ -520,4 +520,6 @@ public interface IConstants {
 	public static final String PROBLEM_CLASSIFICATION_SOCIAL="SOCIAL";
 	public static final String PROBLEM_CLASSIFICATION_ECONOMICAL="ECONOMICAL";
 	public static final String PROBLEM_CLASSIFICATION_PERSONAL="PERSONAL";
+	public static final String MODIFIED = "MODIFIED";
+	public static final String DELETED = "DELETED";
 }
