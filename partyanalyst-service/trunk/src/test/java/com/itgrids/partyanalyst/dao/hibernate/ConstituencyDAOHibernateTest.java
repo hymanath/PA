@@ -318,7 +318,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetConstituenciesByDistrictId()
+	/*public void testGetConstituenciesByDistrictId()
 	{
 		List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(10l);
 		System.out.println(list.size());
@@ -327,6 +327,18 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			for(Object[] params: list)
 			{
 				System.out.println(params[0]+"------"+params[1].toString());
+			}
+		}
+	}*/
+	
+	public void testGetAllParliamentConstituenciesInAState()
+	{
+		List<Constituency> resuList = constituencyDAO.getAllParliamentConstituenciesInAState(1l,1l);
+		if(resuList != null && resuList.size() > 0)
+		{
+			for(Constituency list : resuList)
+			{
+				System.out.println(list.getName());
 			}
 		}
 	}
