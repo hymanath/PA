@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
@@ -46,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
@@ -69,10 +72,13 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
+import com.itgrids.partyanalyst.model.ProblemAssignedDepartment;
 import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemLocation;
+import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -126,10 +132,29 @@ public class ProblemManagementReportService implements
 	private ICommentDataDAO commentDataDAO;
 	private IFeedbackDAO feedbackDAO;
 	private IUserDAO userDAO;
-	private IUserProblemDAO userProblemDAO;
-    private IProblemDAO problemDAO;
+	 private IUserProblemDAO userProblemDAO;
+	 private IProblemDAO problemDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
+	private ICadreProblemsDAO cadreProblemsDAO;
+	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
 	
+	public IProblemAssignedCadreDAO getProblemAssignedCadreDAO() {
+		return problemAssignedCadreDAO;
+	}
+
+	public void setProblemAssignedCadreDAO(
+			IProblemAssignedCadreDAO problemAssignedCadreDAO) {
+		this.problemAssignedCadreDAO = problemAssignedCadreDAO;
+	}
+
+	public ICadreProblemsDAO getCadreProblemsDAO() {
+		return cadreProblemsDAO;
+	}
+
+	public void setCadreProblemsDAO(ICadreProblemsDAO cadreProblemsDAO) {
+		this.cadreProblemsDAO = cadreProblemsDAO;
+	}
+
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -1974,57 +1999,6 @@ public class ProblemManagementReportService implements
 					}
 				
 		}
-		
-		/*private ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemHistory problemHistory)
-		{
-			ResultStatus resultStatus = new ResultStatus();
-			
-			if(problemHistory == null)
-			{
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				return resultStatus;
-			}
-			try
-			{
-				String email = null;
-				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
-				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-				email = problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser()
-					.getEmail();
-				if(email != null && email.trim().length() > 0)
-				{
-					emailDetailsVO.setFromAddress(problemHistory.getProblemLocation()
-							.getProblemAndProblemSource().getFreeUser().getFirstName()+" "+
-							problemHistory.getProblemLocation().getProblemAndProblemSource()
-							.getFreeUser().getLastName());
-					
-					emailDetailsVO.setToAddress(email);
-					
-					problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getProblem());
-					problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getDescription());
-					problemDetailsVO.setSource(problemHistory.getProblemLocation().getProblemAndProblemSource()
-							.getProblem().getReferenceNo());
-					problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
-					
-					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
-					mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
-					
-					sendEmailToConnectedUsersAfterProblemApproval(problemHistory);
-					
-					}
-				return resultStatus;	
-			}catch (Exception e) {
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				resultStatus.setExceptionEncountered(e);
-				log.error("Exception Occured in sendEmailToFreeUserAfterProblemApproval() , Exception is - "+e);
-				return resultStatus;
-			}
-			
-		}
-		*/
-		
 		private ResultStatus sendEmailToFreeUserAfterProblemApproval(Problem problem)
 		{
 		ResultStatus resultStatus = new ResultStatus();
@@ -2070,7 +2044,89 @@ public class ProblemManagementReportService implements
 
 		}
 
-
+		
+		/*public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemHistory problemHistory)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			Long userId = null;
+			if(problemHistory == null)
+				{
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+				}
+			try
+			{
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				
+				userId = problemHistory.getProblemLocation().getProblemAndProblemSource()
+						.getFreeUser().getUserId();
+				
+				if(userId != null && userId != 0)
+				{
+					String email = null;
+				
+					List<Object[]> senderId = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
+					if(senderId != null && senderId.size() > 0)
+					{
+						for(Object[] params : senderId)
+						{
+							email = params[3].toString();
+							if(email != null && email.trim().length() > 0)
+							{
+								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
+								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
+								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
+								emailDetailsVO.setToAddress(email);
+								emailDetailsVO.setFromAddress(params[1].toString()+" "+params[2].toString());
+								if(userProblem.getUser().getFirstName() != null)
+									senderName = userProblem.getUser().getFirstName();
+								if(userProblem.getUser().getLastName() != null)
+									senderName +=" "+userProblem.getUser().getLastName();
+								emailDetailsVO.setSenderName(senderName);
+								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+								
+								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+							}
+						}
+					}
+					
+				  List<Object[]> recepientId = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
+					if(recepientId != null && recepientId.size() > 0)
+					{
+						for(Object[] param : recepientId)
+						{
+							email = param[3].toString();
+							if(email != null && email.trim().length() > 0)
+							{
+								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
+								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
+								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
+								emailDetailsVO.setToAddress(email);
+								emailDetailsVO.setFromAddress(param[1].toString()+" "+param[2].toString());
+								if(userProblem.getUser().getFirstName() != null)
+									senderName = userProblem.getUser().getFirstName();
+								if(userProblem.getUser().getLastName() != null)
+									senderName +=" "+userProblem.getUser().getLastName();
+								emailDetailsVO.setSenderName(senderName);
+								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+								
+								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+							}
+						}
+					}
+				}
+				
+			return resultStatus;	
+			}catch (Exception e) {
+				
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setExceptionEncountered(e);
+				log.error("Exception occured in sendEmailToConnectedUsersAfterProblemApproval() , Exception is - "+e);
+				return resultStatus;
+			}
+		}*/
+		
 		
 		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(UserProblem userProblem)
 		{
@@ -2456,7 +2512,7 @@ public class ProblemManagementReportService implements
 		
 		
 
-		public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId)
+		/*public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId)
 		{
 			try{
 				String locationStr = null;
@@ -2483,7 +2539,71 @@ public class ProblemManagementReportService implements
 			}catch(Exception e){
 				return null;
 			}
+		}*/
+		
+		
+		//Modified for customer problems Count
+		
+		public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String locationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					locationStr = " and model.problem.problemCompleteLocation.state.stateId = "+locationId;
+				else if(regionId == 3)
+					locationStr = " and model.problem.problemCompleteLocation.district.districtId = "+locationId;
+				else if(regionId == 4)
+					locationStr = " and model.problem.problemCompleteLocation.constituency.constituencyId = "+locationId;
+				else if(regionId == 5)
+					locationStr = " and model.problem.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+				else if(regionId == 6)
+					locationStr = " and model.problem.problemCompleteLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					locationStr = " and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+				else if(regionId == 8)
+					locationStr = " and model.problem.problemCompleteLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					locationStr = " and model.problem.problemCompleteLocation.booth.boothId = "+locationId;
+				
+				return locationStr;
+			}catch(Exception e){
+				return null;
+			}	
 		}
+		
+		
+		
+		public String getLocationStringFromAssignedCadreProblemDetails(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String locationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.state.stateId = "+locationId;
+				else if(regionId == 3)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.district.districtId = "+locationId;
+				else if(regionId == 4)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.constituency.constituencyId = "+locationId;
+				else if(regionId == 5)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+				else if(regionId == 6)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+				else if(regionId == 8)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					locationStr = " and model.userProblem.problem.problemCompleteLocation.booth.boothId = "+locationId;
+				
+				return locationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
 		
 		public String getLocationStringFromProblem(Long impactedRegionId,Long locationId)
 		{
@@ -2514,7 +2634,6 @@ public class ProblemManagementReportService implements
 			}
 		}
 		
-		
 		public String getLocationStringFromCadreProblemDetails(Long impactedRegionId,Long locationId)
 		{
 			try{
@@ -2522,21 +2641,21 @@ public class ProblemManagementReportService implements
 				long regionId = impactedRegionId.longValue();
 				
 				if(regionId == 2)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.state.stateId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.state.stateId = "+locationId;
 				else if(regionId == 3)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.district.districtId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.district.districtId = "+locationId;
 				else if(regionId == 4)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.constituency.constituencyId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.constituency.constituencyId = "+locationId;
 				else if(regionId == 5)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.tehsil.tehsilId = "+locationId;
 				else if(regionId == 6)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.hamlet.hamletId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.hamlet.hamletId = "+locationId;
 				else if(regionId == 7)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
 				else if(regionId == 8)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.ward.constituencyId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.ward.constituencyId = "+locationId;
 				else if(regionId == 9)
-					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.booth.boothId = "+locationId;
+					locationStr = " and model.problem.problemCompleteLocation.booth.boothId = "+locationId;
 				
 				return locationStr;
 			}catch(Exception e){
@@ -2544,12 +2663,13 @@ public class ProblemManagementReportService implements
 			}
 		}
 		
+		//customer problems count
 		public List<SelectOptionVO> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId)
 		{
 			try{
-				List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId, locationId));
+				//List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId, locationId));
+				List<Object> params = userProblemDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId, locationId));
 				
-				//List<Object> params = userProblemDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblem(impactedRegionId, locationId));
 				return getStatusWiseProblemsCount(params);
 				
 			}catch(Exception e){
@@ -2560,7 +2680,8 @@ public class ProblemManagementReportService implements
 		public List<SelectOptionVO> getTotalProblemsStatusForAnUser(Long userId)
 		{
 			try{
-				List<Object> params = problemHistoryDAO.getTotalProblemsStatusForAnUser(userId);
+				//List<Object> params = problemHistoryDAO.getTotalProblemsStatusForAnUser(userId);
+				List<Object> params = userProblemDAO.getTotalProblemsStatusForAnUser(userId);
 				
 				return getStatusWiseProblemsCount(params);
 				
@@ -2605,16 +2726,18 @@ public class ProblemManagementReportService implements
 				return null;
 			}
 		}
-		
+		//customer search
 		public List<ProblemBeanVO> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String status)
 		{
 			try{
-				String statusStr = " and model.problemStatus.status = '"+status+"' ";
+				String statusStr = " and model.problem.problemStatus.status = '"+status+"' ";
 				if(status.equalsIgnoreCase("Total"))
 					statusStr = " ";
-				List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId,locationId),statusStr);
+				//List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId,locationId),statusStr);
+				List<UserProblem> list = userProblemDAO.getStatusWiseProblemsForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId,locationId),statusStr);
 				
-				return convetProblemHistotyToProblemBeanVO(list);
+				//return convetProblemHistotyToProblemBeanVO(list);
+				return convetUserProblemToProblemBeanVO(list);
 				
 			}catch(Exception e){
 				return null;
@@ -2624,12 +2747,14 @@ public class ProblemManagementReportService implements
 		public List<ProblemBeanVO> getStatusWiseProblemsForAnUser(Long userId,String status)
 		{
 			try{
-			String statusStr = " and model.problemStatus.status = '"+status+"' ";
+			String statusStr = " and model.problem.problemStatus.status = '"+status+"' ";
 			if(status.equalsIgnoreCase("Total"))
 				statusStr = " ";
-			List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(userId,statusStr);
+			//List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(userId,statusStr);
 			
-			return convetProblemHistotyToProblemBeanVO(list);
+			//return convetProblemHistotyToProblemBeanVO(list);
+			List<UserProblem> list = userProblemDAO.getStatusWiseProblemsForAnUser(userId,statusStr);
+			return convetUserProblemToProblemBeanVO(list);
 			
 			}catch(Exception e){
 				return null;
@@ -2647,13 +2772,18 @@ public class ProblemManagementReportService implements
 				
 				if(impactedRegionId == null || locationId == null)
 				{
-					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountForAnUser(userId);
-					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountForAnUser(userId);
+					//cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountForAnUser(userId);
+					cadreprob = cadreProblemsDAO.getCadreProblemsCountForAnUser(userId);
+					//cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountForAnUser(userId);
+					cadreAssprob = problemAssignedCadreDAO.getAssignedCadreProblemsCountForAnUser(userId);
 				}
 				else
 				{
-					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
-					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					//cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					cadreprob = cadreProblemsDAO.getCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					
+					//cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					cadreAssprob = problemAssignedCadreDAO.getAssignedCadreProblemsCountInARegion(userId,getLocationStringFromAssignedCadreProblemDetails(impactedRegionId,locationId));
 				}
 				
 				if(cadreprob != null && cadreAssprob != null)
@@ -2691,33 +2821,64 @@ public class ProblemManagementReportService implements
 		public List<ProblemBeanVO> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status)
 		{
 			try{
-				List<ProblemHistory> cadreProblemsList = null;
-				List<ProblemHistory> cadreAssignedProblemsList = null;
-				List<ProblemHistory> totalProblemsList = new ArrayList<ProblemHistory>(0);
+				
+				
+				List<Problem> cadreProblemsList = null;
+				List<UserProblem> cadreAssignedProblemsList = null;
+				List<UserProblem> cadreProblems = null;
+				List<UserProblem> totalCadreProblemsList = new ArrayList<UserProblem>(0);
+				List<UserProblem> totalAssignedCadreProblemsList = new ArrayList<UserProblem>(0);
 				
 				if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL) || status.equalsIgnoreCase(IConstants.TOTAL))
 				{
 					if(impactedRegionId != null && locationId != null)
-						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+						//cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+						cadreProblemsList = cadreProblemsDAO.getCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+						if(cadreProblemsList != null)
+							for(Problem problemDetails : cadreProblemsList)
+								{
+								ProblemBeanVO problemBean = new ProblemBeanVO();
+								problemBean.setProblemId(problemDetails.getProblemId());
+								cadreProblems = userProblemDAO.getCadreProblemsInARegionByUserProblemId(userId,problemBean.getProblemId());
+							    }
 					else
-						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsForAnUser(userId);
-				}
+						//cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsForAnUser(userId);
+						cadreProblemsList = cadreProblemsDAO.getCadreProblemsForAnUser(userId); 
+						
+						if(cadreProblemsList != null)
+							for(Problem problemDetails : cadreProblemsList)
+								{
+								ProblemBeanVO problemBean = new ProblemBeanVO();
+								problemBean.setProblemId(problemDetails.getProblemId());
+								cadreProblems = userProblemDAO.getCadreProblemsInARegionByUserProblemId(userId,problemBean.getProblemId());
+							    }
+						}
 				
 				if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED) || status.equalsIgnoreCase(IConstants.TOTAL))
 				{
 					if(impactedRegionId != null && locationId != null)
-						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+						//cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+						cadreAssignedProblemsList = problemAssignedCadreDAO.getAssignedCadreProblemsInARegion(userId,getLocationStringFromAssignedCadreProblemDetails(impactedRegionId,locationId));
 					else
-						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsForAnUser(userId);
+						//cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsForAnUser(userId);
+						cadreAssignedProblemsList = problemAssignedCadreDAO.getAssignedCadreProblemsForAnUser(userId);
 				}
 				
-				if(cadreProblemsList != null && cadreProblemsList.size() > 0)
-					addProblemsToMainList(totalProblemsList,cadreProblemsList);
 				
 				if(cadreAssignedProblemsList != null && cadreAssignedProblemsList.size() > 0)
-					addProblemsToMainList(totalProblemsList,cadreAssignedProblemsList);
+				{
+					//addProblemsToMainList(totalProblemsList,cadreAssignedProblemsList);
+					addAssignedCadreProblemsToMainList(totalAssignedCadreProblemsList,cadreAssignedProblemsList);
+					//return convetUserProblemToProblemBeanVO(totalAssignedCadreProblemsList);
+				}
+				if(cadreProblems != null && cadreProblems.size() > 0)
+					//addProblemsToMainList(totalProblemsList,cadreProblemsList);
 				
-				return convetProblemHistotyToProblemBeanVO(totalProblemsList);
+					addCadreProblemsToMainList(totalAssignedCadreProblemsList,cadreProblems);
+					return convetUserProblemToProblemBeanVO(totalAssignedCadreProblemsList);
+				
+				
+				
 				
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -2734,16 +2895,21 @@ public class ProblemManagementReportService implements
 			if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL))
 			{
 				if(impactedRegionId != null && locationId != null)
-					cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					//cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					cadreList = cadreProblemsDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
 				else
-					cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsForAnUser(userId);
+					//cadreList = cadreProblemDetailsDAO.getCadreForCadreProblemsForAnUser(userId);
+					cadreList = cadreProblemsDAO.getCadreForCadreProblemsForAnUser(userId);
 			}
 			else if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED))
 			{
 				if(impactedRegionId != null && locationId != null)
-					cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					//cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					cadreList = problemAssignedCadreDAO.getCadreForCadreProblemsInARegion(userId,getLocationStringFromAssignedCadreProblemDetails(impactedRegionId,locationId));
+				
 				else
-					cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsForAnUser(userId);
+					//cadreList = assignedProblemProgressDAO.getCadreForCadreProblemsForAnUser(userId);
+					cadreList = problemAssignedCadreDAO.getCadreForCadreProblemsForAnUser(userId);
 			}
 			
 			for(Cadre cadre : cadreList)
@@ -2754,9 +2920,10 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemLocation(cadreManagementService.setAddress(cadre));
 				
 				if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL))
-					problemBeanVO.setDepartments(getStatusWiseProblemsCount(cadreProblemDetailsDAO.getProblemStatusOfACadre(cadre.getCadreId())));
+					//problemBeanVO.setDepartments(getStatusWiseProblemsCount(cadreProblemDetailsDAO.getProblemStatusOfACadre(cadre.getCadreId())));
+					problemBeanVO.setDepartments(getStatusWiseProblemsCount(cadreProblemsDAO.getProblemStatusOfACadre(cadre.getCadreId())));
 				else if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED))
-					problemBeanVO.setDepartments(getStatusWiseProblemsCount(assignedProblemProgressDAO.getProblemStatusOfACadre(cadre.getCadreId())));
+					problemBeanVO.setDepartments(getStatusWiseProblemsCount(cadreProblemsDAO.getProblemStatusOfACadre(cadre.getCadreId())));
 				
 				list.add(problemBeanVO);
 			}
@@ -2777,18 +2944,21 @@ public class ProblemManagementReportService implements
 				if(status.equalsIgnoreCase(IConstants.TOTAL))
 					statusStr = "";
 				else
-					statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'"; 
+					//statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'";
+					statusStr = " and model.userProblem.problem.problemStatus.status = '"+status+"'";
 				
 				if(deptId != null && deptId.longValue() > 0)
 					deptStr = " and model.departmentOrganisation.departmentOrganisationId = "+deptId;
 				else
-					deptStr = "and model.departmentOrganisation.departmentOrganisationId is not null";
+					deptStr = " and model.departmentOrganisation.departmentOrganisationId is not null";
 				
-				List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				//List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				List<Long> progressIdList = problemAssignedDepartmentDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
 				
 				if(progressIdList != null && progressIdList.size() > 0)
 				{
-					return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getProblemsBasedOnAssignedProblemProgressIdAndStatus(userId,progressIdList,deptStr,statusStr));
+					//return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getProblemsBasedOnAssignedProblemProgressIdAndStatus(userId,progressIdList,deptStr,statusStr));
+					return convetUserProblemToProblemBeanVO(problemAssignedDepartmentDAO.getProblemsBasedOnAssignedProblemProgressIdAndStatus(userId,progressIdList,deptStr,statusStr));
 				}
 				else
 					return null;
@@ -2797,13 +2967,16 @@ public class ProblemManagementReportService implements
 				return null;
 			}
 		}
+		
 		public List<ProblemBeanVO> getDeptWiseProblemsCountInALocation(Long userId,Long impactedRegionId,Long locationId)
 		{
 			try{
 				
-				List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				//List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				List<Long> progressIdList = problemAssignedDepartmentDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
 				
-				List<Object[]> deptInfoList = assignedProblemProgressDAO.getProblemsStatusBasedOnAssignedProblemProgressId(userId,progressIdList);
+				//List<Object[]> deptInfoList = assignedProblemProgressDAO.getProblemsStatusBasedOnAssignedProblemProgressId(userId,progressIdList);
+				List<Object[]> deptInfoList = problemAssignedDepartmentDAO.getProblemsStatusBasedOnAssignedProblemProgressId(userId,progressIdList);
 				
 				if(deptInfoList != null && deptInfoList.size() > 0)
 				{
@@ -2882,6 +3055,8 @@ public class ProblemManagementReportService implements
 				return null;
 			}
 		}
+		
+		
 		public List<ProblemBeanVO> getDeptWiseProblemsCountForAnUser(Long userId,Long deptScopeId)
 		{
 			try{
@@ -2898,7 +3073,10 @@ public class ProblemManagementReportService implements
 						problemBeanVO.setDepartmentId(dept.getId());
 						problemBeanVO.setDeptName(dept.getName());
 						
-						List<Object> list = assignedProblemProgressDAO.getDepartmentWiseProblemStatus(userId,dept.getId());
+						//List<Object> list = assignedProblemProgressDAO.getDepartmentWiseProblemStatus(userId,dept.getId());
+						
+						List<Object> list = problemAssignedDepartmentDAO.getDepartmentWiseProblemStatus(userId,dept.getId());
+						
 						
 						if(list != null && list.size() > 0)
 							problemBeanVO.setProblemsCount((long)(list.size()));
@@ -2924,9 +3102,9 @@ public class ProblemManagementReportService implements
 				if(status.equalsIgnoreCase(IConstants.TOTAL))
 					statusStr = "";
 				else
-					statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'"; 
-				
-				return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getDepartmentWiseProblemsBasedOnStatus(userId,deptId,statusStr));
+					statusStr = " and model.userProblem.problem.problemStatus.status = '"+status+"'"; 
+				return convetUserProblemToProblemBeanVO(problemAssignedDepartmentDAO.getDepartmentWiseProblemsBasedOnStatus(userId, deptId, statusStr));
+				//return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getDepartmentWiseProblemsBasedOnStatus(userId,deptId,statusStr));
 				
 			}catch(Exception e){
 				return null;
@@ -2957,7 +3135,63 @@ public class ProblemManagementReportService implements
 			}
 		}
 		
-		public List<ProblemBeanVO> convetProblemHistotyToProblemBeanVO(List<ProblemHistory> list)
+		
+		public List<ProblemBeanVO> convetUserProblemToProblemBeanVO(List<UserProblem> list)
+		{
+			try
+			{
+				if(list != null && list.size() > 0)
+				{
+					List<ProblemBeanVO> problemBeanList = new ArrayList<ProblemBeanVO>(0);
+					for(UserProblem userProblem : list)
+					{
+						ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+						Set<ProblemAssignedCadre> set = userProblem.getProblemAssignedCadres();
+						Set<ProblemProgress> problemProgresset = userProblem.getProblemProgresses();
+						Set<ProblemAssignedDepartment> problemAssignedDepartmentset =userProblem.getProblemAssignedDepartments();
+						ProblemProgress problemProgress = null;
+						ProblemAssignedCadre problemAssignedCadre = null;
+						ProblemAssignedDepartment problemAssignedDepartment = null;
+						problemBeanVO.setProblem(userProblem.getProblem().getTitle().toString());
+						problemBeanVO.setDescription(userProblem.getProblem().getDescription().toString());
+						problemBeanVO.setReportedDate(userProblem.getProblem().getIdentifiedOn().toString());
+						problemBeanVO.setProblemStatus(userProblem.getProblem().getProblemStatus().getStatus().toString());
+						problemBeanVO.setProblemHistoryId(userProblem.getUserProblemId());
+						problemBeanVO.setProblemLocation(getProblemLocation(userProblem.getProblem().getRegionScopes().getRegionScopesId(),userProblem.getProblem().getImpactLevelValue()));
+						for(ProblemAssignedCadre assigned : set)
+						{
+							if(assigned.getProblemAssignedCadreId() != null && assigned.getCadre()!=null)
+								problemBeanVO.setCadreId(assigned.getCadre().getCadreId());
+								problemBeanVO.setCadreName(assigned.getCadre().getFirstName() + " " + assigned.getCadre().getLastName());
+							
+						}
+						
+						for(ProblemProgress progress : problemProgresset)
+						{
+							if(progress != null && progress.getProblemActivity()!= null)
+								problemBeanVO.setRecentActivity(progress.getProblemActivity().getComments());
+							if(progress != null && progress.getComment() != null)
+								problemBeanVO.setComments(progress.getComment().getComment());
+						}
+						for(ProblemAssignedDepartment department : problemAssignedDepartmentset)
+						{
+							if(department != null && department.getDepartmentOrganisation() != null)
+								problemBeanVO.setDepartment(department.getDepartmentOrganisation().getOrganisationName().toString());
+						}
+						problemBeanList.add(problemBeanVO);
+					}
+					return problemBeanList;
+				}
+				else
+					return null;
+
+			}catch(Exception e)
+			{
+				return null;
+			}
+		}
+		
+		/*public List<ProblemBeanVO> convetProblemHistotyToProblemBeanVO(List<ProblemHistory> list)
 		{
 			try{
 				if(list != null && list.size() > 0)
@@ -3016,7 +3250,7 @@ public class ProblemManagementReportService implements
 			{
 				return null;
 			}
-		}
+		}*/
 		
 		public String getProblemLocation(Long impactLevel,Long impactValue)
 		{
@@ -3115,13 +3349,46 @@ public class ProblemManagementReportService implements
 			}
 		}
 	
-		public List<ProblemHistory> addProblemsToMainList(List<ProblemHistory> mainList,List<ProblemHistory> subList)
+		/*public List<ProblemHistory> addProblemsToMainList(List<ProblemHistory> mainList,List<ProblemHistory> subList)
 		{
 			try{
 				for(ProblemHistory problemHistory:subList)
 				{
 					if(!mainList.contains(problemHistory))
 					mainList.add(problemHistory);
+				}
+				return mainList;
+			}catch(Exception e){
+				return mainList;
+			}
+		}*/
+		
+		public List<UserProblem> addCadreProblemsToMainList(List<UserProblem> mainList,List<UserProblem> subList)
+		
+		{
+		try
+		{
+			for(UserProblem problem : subList)
+			{
+				if(!mainList.contains(problem))
+					mainList.add(problem);
+				}
+				return mainList;
+			}catch(Exception e){
+				return mainList;
+			}
+		}
+		
+		
+public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> mainList,List<UserProblem> subList)
+		
+		{
+		try
+		{
+			for(UserProblem userproblem : subList)
+			{
+				if(!mainList.contains(userproblem))
+					mainList.add(userproblem);
 				}
 				return mainList;
 			}catch(Exception e){
