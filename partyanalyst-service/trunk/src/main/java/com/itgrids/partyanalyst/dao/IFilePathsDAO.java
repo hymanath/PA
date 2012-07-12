@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.FilePaths;
 public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 
 	public List<Object> getMaxOrderNo();
+	public List<Object[]> getProblemRelatedFiles(Long problemId,Long userId);
 }
