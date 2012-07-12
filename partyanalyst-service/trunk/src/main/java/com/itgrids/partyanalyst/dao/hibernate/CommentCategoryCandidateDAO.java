@@ -376,17 +376,17 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" from CommentCategoryCandidate model ");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
-			query.append(" where model.freeUser.userId is not null ");
+			query.append(" where model.user.userId is not null ");
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
-			query.append(" where model.freeUser.userId = ? ");
+			query.append(" where model.user.userId = ? ");
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append(" where model.freeUser.userId != ? ");
+			query.append(" where model.user.userId != ? ");
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
-			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved = '"+IConstants.TRUE+"' ");
+			query.append(" where model.user.userId = ? and model.commentData.isApproved = '"+IConstants.TRUE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
-			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved = '"+IConstants.FALSE+"' ");
+			query.append(" where model.user.userId = ? and model.commentData.isApproved = '"+IConstants.FALSE+"' ");
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
-			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved is null");		
+			query.append(" where model.user.userId = ? and model.commentData.isApproved is null");		
 		
 			
 			
@@ -407,7 +407,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model.commentCategoryCandidateId) ");		
 		query.append(" from CommentCategoryCandidate model ");
-		query.append(" where model.freeUser.userId = ?");
+		query.append(" where model.user.userId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, userId);
@@ -420,7 +420,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model.commentCategoryCandidateId) ");		
 		query.append(" from CommentCategoryCandidate model ");
-		query.append(" where model.freeUser.userId is not null");
+		query.append(" where model.user.userId is not null");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 						
@@ -430,13 +430,13 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getPostedReasonsCountByFreeUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select count(model.commentCategoryCandidateId), model.commentData.isApproved "+
-				"from CommentCategoryCandidate model where model.freeUser.userId = ? group by model.commentData.isApproved",userId);
+				"from CommentCategoryCandidate model where model.user.userId = ? group by model.commentData.isApproved",userId);
 	}
 	
 	public List getPostedReasonsCountOtherThanLoginUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select count(*) "+
-				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",userId);
+				"from CommentCategoryCandidate model where model.user.userId != ? and model.user.userId != null",userId);
 	}
 	@SuppressWarnings("unchecked")
 	/*public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds)
