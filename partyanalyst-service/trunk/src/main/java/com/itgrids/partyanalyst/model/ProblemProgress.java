@@ -40,6 +40,9 @@ public class ProblemProgress extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isDelete;
+	private ProblemAssignedCadre problemAssignedCadre;
+	private ProblemAssignedDepartment problemAssignedDepartment;
+	private ClassifiedProblems classifiedProblems;
 	
 	public ProblemProgress()
 	{}
@@ -141,6 +144,47 @@ public class ProblemProgress extends BaseModel implements Serializable{
 
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="problem_assigned_cadre_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemAssignedCadre getProblemAssignedCadre() {
+		return problemAssignedCadre;
+	}
+
+	public void setProblemAssignedCadre(ProblemAssignedCadre problemAssignedCadre) {
+		this.problemAssignedCadre = problemAssignedCadre;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="problem_assigned_department_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemAssignedDepartment getProblemAssignedDepartment() {
+		return problemAssignedDepartment;
+	}
+
+	public void setProblemAssignedDepartment(
+			ProblemAssignedDepartment problemAssignedDepartment) {
+		this.problemAssignedDepartment = problemAssignedDepartment;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="classified_problems_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ClassifiedProblems getClassifiedProblems() {
+		return classifiedProblems;
+	}
+
+	public void setClassifiedProblems(ClassifiedProblems classifiedProblems) {
+		this.classifiedProblems = classifiedProblems;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }
