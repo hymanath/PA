@@ -76,30 +76,30 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-/*public void testgetAllConnectedPeopleForFreeUser()
+public void testgetAllConnectedPeopleForFreeUser()
 	{
 		List<Long> senderId = new ArrayList<Long>();
 		senderId.add(1L);
 		
 		
-		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(10l);
+		List<Object[]> list = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(1219l);
 		
 		for(Object[] params : list){
 			System.out.println(params[1].toString());
 		}
-	}*/
+	}
 
 
 /*public void testgetAllConnectedPeoplesForFreeUser()
 {
-	List<Object[]> list = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(10l);
+	List<Object[]> list = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(1219l);
 	for(Object[] params : list)
 	{
 		System.out.println(params[1].toString());
 	}
 }
-	
-	public void testGetConnectedMembersCountForAFreeUser()
+	*/
+/*public void testGetConnectedMembersCountForAFreeUser()
 	{
 		System.out.println(userConnectedtoDAO.getConnectedMembersCountForAFreeUser(411l));
 	}*/

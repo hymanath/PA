@@ -26,7 +26,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	/*public void testGetUserProblemId()
 	{
-		List<UserProblem> userProblem = userProblemDAO.getUserProblemId(1l,1l);
+		List<UserProblem> userProblem = userProblemDAO.getUserProblemId(5l,1l);
 		System.out.println(userProblem.get(0));
 	}*/
 	/*public void testGetAllProblemsOfCurrentDateByFreeUser()throws Exception
@@ -179,6 +179,8 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		for(Object obj:list)
 		{
 			System.out.println(obj.toString());
+			
+			and model.problem.problemCompleteLocation.state.stateId = "+locationId;
 		}
 	}
 */
@@ -268,7 +270,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testfindProblemDetailsByProblemId() 
+	/*public void testfindProblemDetailsByProblemId() 
 	{
 		List<UserProblem> userProblem = userProblemDAO.findProblemDetailsByProblemId(22l);
 		for(UserProblem problemDetails : userProblem)
@@ -276,4 +278,28 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(problemDetails.getProblem().getDescription());
 		}
 	}
+	
+	public void testGetTotalProblemsCountForAnUserInARegion()
+	{
+		List<Object> result = userProblemDAO.getTotalProblemsCountForAnUserInARegion(1l, "and model.problem.problemCompleteLocation.state.stateId = "+1l+"");
+		System.out.println(result.size());
+	}*/
+	
+	public void testGetUserProblemIdForCadreProblems()
+	{
+		List<UserProblem> result = userProblemDAO.getUserProblemIdForCadreProblems(8l, 1219l);
+		System.out.println(result.get(0).getUser().getFirstName());
+	}
+	
+	/*public void testGetProblemDetailsOfUserToSendEmailAfterProblemApproval()
+	{
+		List<UserProblem> userProblemDet = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(7l);
+		if(userProblemDet != null && userProblemDet.size() > 0)
+		{
+			for(UserProblem userDetails : userProblemDet)
+			{
+				System.out.println(userDetails.getUser().getFirstName());
+			}
+		}
+	}*/
 }
