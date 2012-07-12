@@ -27,6 +27,4 @@ public interface IMailsSendingService {
 	
 	public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemDetailsVO problemDetailsVO);
 	
-	//public ResultStatus sendEmailToNewUserAfterPasswordChanged(RegistrationVO regVo,String requestFrom);
-	
 }
