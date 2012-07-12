@@ -608,6 +608,15 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ?" +
 					" and (model.problem.isDelete is null or model.problem.isDelete='"+IConstants.FALSE+"')",params );
 		}
+		//to get cadreproblems
+		@SuppressWarnings("unchecked")
+			public List<UserProblem> getCadreProblemsInARegionByUserProblemId(Long userId,Long problemId)
+			{
+			Object [] params = {userId,problemId};
+			return getHibernateTemplate().find("from UserProblem model where model.user.userId =? and model.problem.problemId =?  and (model.problem.isDelete is null or model.problem.isDelete='"+IConstants.FALSE+"') and model.problem.isApproved = 'true'",params);
+			
+			
+			}
 		
 		/*@SuppressWarnings("unchecked")
 		public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId, String locationStr)
