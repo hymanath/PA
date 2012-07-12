@@ -94,4 +94,8 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<UserProblem> getUserProblemIdForCadreProblems(Long problemId,Long userId);
 	
 	public List<UserProblem> getProblemDetailsOfUserToSendEmailAfterProblemApproval(Long problemId);
+
+	
+	public List<UserProblem> getCadreProblemsInARegionByUserProblemId(Long userId,Long problemId);
+	
 }
