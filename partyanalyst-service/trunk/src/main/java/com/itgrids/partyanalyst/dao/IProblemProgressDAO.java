@@ -8,5 +8,6 @@ import com.itgrids.partyanalyst.model.ProblemProgress;
 public interface IProblemProgressDAO extends GenericDao<ProblemProgress,Long>{
 	
 	public List<ProblemProgress>  getProblemPrograss(Long userProblemId);
+	public List<ProblemProgress>  getProblemPrograssDetails(Long userProblemId);
 
 }
