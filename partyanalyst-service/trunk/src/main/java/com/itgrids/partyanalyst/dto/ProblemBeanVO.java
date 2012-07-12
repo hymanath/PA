@@ -102,8 +102,9 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
     private String identifiedOn;
     private String problemVisibility;
     private Boolean hasFreeUserRole;
-	private Boolean hasPartyAnalystUserRole;
+    private Boolean hasPartyAnalystUserRole;
 	private String referenceNo;
+	private Long userProblemId;
 	
 	public String getReferenceNo() {
 		return referenceNo;
@@ -111,6 +112,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setReferenceNo(String referenceNo) {
 		this.referenceNo = referenceNo;
+	}
+	
+	public Long getUserProblemId() {
+		return userProblemId;
+	}
+
+	public void setUserProblemId(Long userProblemId) {
+		this.userProblemId = userProblemId;
 	}
 
 	public String getIdentifiedOn() {
