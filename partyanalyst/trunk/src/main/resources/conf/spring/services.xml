@@ -713,6 +713,8 @@
 		<property name="userProblemDAO" ref="userProblemDAO" />
 		<property name="problemDAO" ref="problemDAO" />
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
+		<property name="cadreProblemsDAO" ref="cadreProblemsDAO"></property>
+		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"></property>
 		
 	</bean>
 	
