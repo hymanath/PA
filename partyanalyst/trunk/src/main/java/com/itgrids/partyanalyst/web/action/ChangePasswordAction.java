@@ -198,18 +198,6 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 			resuStatus = loginService.changePasswordOfANewUser(currentPassword,newPassword,userName);
 			if(resuStatus.getExceptionEncountered() == null && resuStatus.getResultCode() == 0)
 			{
-				/*String requestURL = request.getRequestURL().toString();
-					String requestFrom = null;
-					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
-						requestFrom = IConstants.SERVER;
-					else
-						requestFrom = IConstants.LOCALHOST;
-					
-					ResultStatus rs = mailsSendingService.sendEmailToNewUserAfterPasswordChanged(regVO,requestFrom);
-					if(rs.getResultCode() == 1)
-						 regVO = null;*/
-				
-
 				session.removeAttribute("USER");
 				return "loginPage";
 			}
