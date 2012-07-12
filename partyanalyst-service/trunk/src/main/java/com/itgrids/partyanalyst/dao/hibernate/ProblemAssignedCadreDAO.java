@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+
 import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
@@ -79,5 +80,8 @@ public class ProblemAssignedCadreDAO extends GenericDaoHibernate<ProblemAssigned
 	
 	
 	
-	
+		
+	public List<ProblemAssignedCadre> getProblemAssignedCadreByUserProblemId(Long userProblemId){
+		return getHibernateTemplate().find("from ProblemAssignedCadre model where model.userProblem.userProblemId =?  order by model.updatedTime desc",userProblemId);
+	}
 }
