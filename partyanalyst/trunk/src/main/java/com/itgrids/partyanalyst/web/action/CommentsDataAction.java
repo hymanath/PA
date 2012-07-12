@@ -32,7 +32,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 	private ICommentsDataService commentsDataService;
 	private ElectionCommentsVO electionCommentsVO;
 	private List<SelectOptionVO> commentsClassificationList;                         
-	
+	private Boolean hasFreeUserRole;
+	private Boolean hasPartyAnalystUserRole;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -86,6 +87,22 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 	public List<SelectOptionVO> getCommentsClassificationList() {
 		return commentsClassificationList;
 	}
+	
+	public Boolean getHasFreeUserRole() {
+		return hasFreeUserRole;
+	}
+
+	public void setHasFreeUserRole(Boolean hasFreeUserRole) {
+		this.hasFreeUserRole = hasFreeUserRole;
+	}
+
+	public Boolean getHasPartyAnalystUserRole() {
+		return hasPartyAnalystUserRole;
+	}
+
+	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
+		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
+	}
 
 	public String execute () throws Exception 
 	{
@@ -104,6 +121,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 		
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+		hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole");
+		hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
 		
 		if(regVO != null){
 			registrationId = regVO.getRegistrationID();
@@ -140,15 +159,19 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			{			
 				log.debug(category+"block:");
 				electionCommentsVO.setPartyCommentsSaved(commentsDataService.savePartyCommentsToDB(electionType, electionYear, electionId, 
-						partyId, commentDesc, commentedBy, commentCategoryId));
+						partyId, commentDesc, commentedBy, commentCategoryId,hasFreeUserRole,hasPartyAnalystUserRole));
 				log.debug("After Save!!!!!!!!!!!!!!!!");
 				log.debug("Saved Party Comments Obj::::::::::::::"+electionCommentsVO.getPartyCommentsSaved());				
 				
 			} if(category.equals("candidate"))
 			{
 				log.debug(category+"block:");				
+				/*electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
+						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity));*/
+				
 				electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
-						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity));
+						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity,hasFreeUserRole,hasPartyAnalystUserRole));
+				
 				log.debug("After Save!!!!!!!!!!!!!!!!");
 				log.debug("Saved Candidate Comments Obj::::::::::::::"+electionCommentsVO.getCandidateCommentsSaved());
 				
