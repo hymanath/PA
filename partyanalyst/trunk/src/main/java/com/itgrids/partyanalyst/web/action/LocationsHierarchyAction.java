@@ -45,6 +45,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<SelectOptionVO> regionsList;
 	private List<BoothInfo> boothsCompleteDetails;
 	private Set<RegionalMappingInfoVO> regions;
+	private List<SelectOptionVO> parliamentConstituencies;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -131,6 +132,16 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 		
 	}
+	
+	public List<SelectOptionVO> getParliamentConstituencies() {
+		return parliamentConstituencies;
+	}
+
+	public void setParliamentConstituencies(
+			List<SelectOptionVO> parliamentConstituencies) {
+		this.parliamentConstituencies = parliamentConstituencies;
+	}
+
 	public String ajaxCallHandler() throws Exception{
 		session = request.getSession();
 		String param = null;
@@ -166,14 +177,20 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		 else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
 		{
 			//to fetch all districts in state
-			Long stateId = jObj.getLong("id");
-			List<SelectOptionVO> districts = getRegionServiceDataImp().getDistrictsByStateID(stateId);
-			districts.add(0, new SelectOptionVO(0l,"Select Location"));
-			setRegionsList(districts);
-			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
-			{
-				session.setAttribute(ISessionConstants.DISTRICTS_O, districts);
-			}
+				Long stateId = jObj.getLong("id");
+				if(jObj.getString("isParliament").equals("true"))
+				{
+					parliamentConstituencies = getRegionServiceDataImp().getAllParliamentConstituenciesForAState(1l,stateId);
+					parliamentConstituencies.add(0,new SelectOptionVO(0l,"Select Location"));
+					setRegionsList(parliamentConstituencies);
+					Collections.sort(parliamentConstituencies);
+				}
+				else if(!jObj.getString("isParliament").equals("true"))
+				{
+				List<SelectOptionVO> districts = getRegionServiceDataImp().getDistrictsByStateID(stateId);
+				districts.add(0, new SelectOptionVO(0l,"Select Location"));
+				setRegionsList(districts);
+				
 			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
 				session.setAttribute(ISessionConstants.DISTRICTS, districts);
@@ -347,7 +364,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			localBodies.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(localBodies);
 		} 	
-		
+	}
 		return Action.SUCCESS;
 	
 	}

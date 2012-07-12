@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -34,7 +35,14 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> selectOptionList;
 	private List<ProblemBeanVO> problemBeanVOList;
 	private ProblemSearchVO problemSearchVO;
+	private ResultStatus resultStatus;
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public ProblemSearchVO getProblemSearchVO() {
 		return problemSearchVO;
 	}
@@ -127,6 +135,11 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 			{
 				selectOptionList = problemManagementService.getProblemTypes();
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("deleteProblemDetails"))
+			{
+				resultStatus = problemManagementService.deleteProblemDetails(jObj.getLong("problemId"));
+			}
+		    
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in AjaxHandler() Method in ProblemSearchAction class , Exception - "+e);

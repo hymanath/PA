@@ -18,11 +18,14 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -69,6 +72,9 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
     private Long problemHistoryId;
     private InputStream inputStream;
     private String uploadResult;
+    private IProblemDAO problemDAO;
+    private Boolean hasFreeUserRole;
+	private Boolean hasPartyAnalystUserRole;
     
 	
 	public String getUploadResult() {
@@ -348,6 +354,30 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		this.statusToChange = statusToChange;
 	}
 
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
+	
+	public Boolean getHasFreeUserRole() {
+		return hasFreeUserRole;
+	}
+
+	public void setHasFreeUserRole(Boolean hasFreeUserRole) {
+		this.hasFreeUserRole = hasFreeUserRole;
+	}
+
+	public Boolean getHasPartyAnalystUserRole() {
+		return hasPartyAnalystUserRole;
+	}
+
+	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
+		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
+	}
+
 	public String execute() throws Exception{
 		
 		if(resolvingDeptScope == 1)
@@ -549,11 +579,11 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
         
         if(status.equalsIgnoreCase(IConstants.CADRE_DELETE))
         	{
-        	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, 0L, status);
+        	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, 0L, status,user.getRegistrationID());
             resultStatus.setResultCode(1);
         	}
         else{
-        	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, cadreId, status);
+        	resultStatus = problemManagementService.updateAssignedCadre(problemHistoryId, cadreId, status,user.getRegistrationID());
         	resultStatus.setResultCode(1);
             }
 	}else{
@@ -598,6 +628,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	   
    		session = request.getSession();
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole");
+		hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
 		
    		if(user!=null)
    		{		
@@ -658,7 +690,22 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			
 			fileVO.setFilePath(problemFilepath);
 			problemBeanVO.setFileVO(fileVO);
-			problemManagementService.saveProblemRelatedFiles(problemBeanVO,null);
+			problemBeanVO.setProblemStatus("PROBLEM_FILE_ADD");
+			problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
+			problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
+			if(user.getParentUserId() == null || user.getParentUserId() == 0)
+			{
+				problemBeanVO.setUserID(user.getRegistrationID());
+				problemBeanVO.setSubUserId(user.getRegistrationID());
+			}
+			else
+			{
+				problemBeanVO.setUserID(user.getMainAccountId());
+				problemBeanVO.setSubUserId(user.getRegistrationID());
+			}
+			
+			//problemManagementService.saveProblemRelatedFiles(problemBeanVO,null);
+			problemManagementService.addProblemRelatedFiles(problemBeanVO);
 			 
 			return "redirectToJSP";
 		

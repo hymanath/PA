@@ -43,7 +43,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> parliamentConstituencyList;
 	private IRegionServiceData regionServiceDataImp;
-	
+	private List<SelectOptionVO> parliamentConstituencies;
 	
 	public String getWindowTask() {
 		return windowTask;
@@ -196,6 +196,15 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
+	public List<SelectOptionVO> getParliamentConstituencies() {
+		return parliamentConstituencies;
+	}
+
+	public void setParliamentConstituencies(
+			List<SelectOptionVO> parliamentConstituencies) {
+		this.parliamentConstituencies = parliamentConstituencies;
+	}
+
 	public String execute() throws Exception
 	{
 		session = request.getSession();
@@ -218,6 +227,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
+		parliamentConstituencies = regionServiceDataImp.getAllParliamentConstituenciesForAState(1l,accessValue);
 		if("MLA".equals(accessType))
 		{
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
