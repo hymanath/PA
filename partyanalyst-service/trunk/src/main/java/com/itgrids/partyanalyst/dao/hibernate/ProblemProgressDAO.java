@@ -20,5 +20,10 @@ public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long
 	public List<ProblemProgress>  getProblemPrograss(Long userProblemId)
 	{
 		return getHibernateTemplate().find("from ProblemProgress model where model.userProblem.userProblemId = ? ",userProblemId);
-	}	
+	}
+	public List<ProblemProgress>  getProblemPrograssDetails(Long userProblemId)
+	{
+		Object[] parameters = {userProblemId,"false"};
+		return getHibernateTemplate().find("from ProblemProgress model where model.userProblem.userProblemId = ? and model.isDelete =? order by model.insertedTime desc",parameters);
+	}
 }
