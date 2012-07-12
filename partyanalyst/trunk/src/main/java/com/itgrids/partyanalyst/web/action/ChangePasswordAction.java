@@ -15,6 +15,8 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IMailService;
+import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
@@ -34,6 +36,7 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 	private String newPassword;
 	private String confirmPassword;
 	private String invalidPassword;
+	private IMailsSendingService mailsSendingService;
 	
 	public String getTask() {
 		return task;
@@ -145,6 +148,15 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 		this.invalidPassword = invalidPassword;
 	}
 
+
+	public IMailsSendingService getMailsSendingService() {
+		return mailsSendingService;
+	}
+
+	public void setMailsSendingService(IMailsSendingService mailsSendingService) {
+		this.mailsSendingService = mailsSendingService;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -186,6 +198,18 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 			resuStatus = loginService.changePasswordOfANewUser(currentPassword,newPassword,userName);
 			if(resuStatus.getExceptionEncountered() == null && resuStatus.getResultCode() == 0)
 			{
+				/*String requestURL = request.getRequestURL().toString();
+					String requestFrom = null;
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailsSendingService.sendEmailToNewUserAfterPasswordChanged(regVO,requestFrom);
+					if(rs.getResultCode() == 1)
+						 regVO = null;*/
+				
+
 				session.removeAttribute("USER");
 				return "loginPage";
 			}

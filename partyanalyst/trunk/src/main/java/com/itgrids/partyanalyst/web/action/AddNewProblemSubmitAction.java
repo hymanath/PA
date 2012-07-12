@@ -614,11 +614,13 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
 			 isSuccessfullyInserted = true;
-			// problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getProblemHistoryId());
+			 problemManagementService.sendSuccessMsgToMobile(problemBeanFromDB.getUserProblemId());
 			 
 			 if(user.getUserType() == IConstants.FREE_USER)
 			 {
-				 //problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getProblemHistoryId());
+				 //problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB.getUserProblemId());
+				 problemManagementService.sendEmailToFreeUserAfterProblemAdded(problemBeanFromDB);
+				 
 			 }
 			 problemBeanVO = new ProblemBeanVO();
 			 
@@ -674,5 +676,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		
 		user = null;
 	 }
-
+	
+	
 }

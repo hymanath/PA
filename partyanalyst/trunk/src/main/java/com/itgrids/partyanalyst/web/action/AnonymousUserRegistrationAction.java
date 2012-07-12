@@ -431,6 +431,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
 			if(!(registrationId != null && registrationId > 0) && savedSuccessfully)
 				 mailService.sendRegistrationNotification(regVO,requestFrom);
+			
             
             try
             {

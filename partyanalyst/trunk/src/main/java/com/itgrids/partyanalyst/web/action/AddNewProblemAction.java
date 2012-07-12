@@ -381,7 +381,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
+		session.setttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
 		*/
 		
 		problemSourcesList = staticDataService.getAllInformationSources();
