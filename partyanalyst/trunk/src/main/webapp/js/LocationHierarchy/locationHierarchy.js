@@ -32,7 +32,7 @@ function hideBusyImgWithId(elmtId)
 }
 function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId)
 {	
-
+	var isParliament = null;
 	//showBusyImgWithId('ajaxImgId');
 	if(selectedId ==0)
 	{
@@ -40,6 +40,12 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 	 return;
 	}
 	 
+	var parliRadioEle = document.getElementById('10');
+
+	if(parliRadioEle != null)
+	{
+		isParliament = "true";
+	}
 
 	var jsObj=
 		{				
@@ -49,7 +55,8 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 			selectElementId: elementId ,
 			address: addressType,
 			areaType: areaType,
-			constId: constituencyId 
+			constId: constituencyId,
+			isParliament : isParliament,
 			
 		}
 	
