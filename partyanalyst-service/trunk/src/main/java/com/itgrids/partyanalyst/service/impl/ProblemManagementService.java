@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
+import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemBackupDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
@@ -133,6 +134,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStringUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 
 public class ProblemManagementService implements IProblemManagementService {
 
@@ -196,6 +198,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IClassifiedProblemsDAO classifiedProblemsDAO;
 	private IProblemProgressDAO problemProgressDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
+	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
 	
 
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
@@ -649,6 +652,15 @@ public class ProblemManagementService implements IProblemManagementService {
 		this.problemProgressDAO = problemProgressDAO;
 	}	
 
+	public IProblemAssignedCadreDAO getProblemAssignedCadreDAO() {
+		return problemAssignedCadreDAO;
+	}
+
+	public void setProblemAssignedCadreDAO(
+			IProblemAssignedCadreDAO problemAssignedCadreDAO) {
+		this.problemAssignedCadreDAO = problemAssignedCadreDAO;
+	}
+
 	/**
 	 * Used To Get The Problems Of a Hamlet In a Particular Year
 	 */
@@ -950,7 +962,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					ProblemType problemType = new ProblemType();
 					ProblemExternalSource problemExternalSource = null; 
 					UserProblem userProblem = new UserProblem();
-					
+					String userName = null;
+					ProblemActivity problemActivity = null;
 					problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
 					
 					if(problemCompleteLocation != null)
@@ -1053,7 +1066,23 @@ public class ProblemManagementService implements IProblemManagementService {
 				saveCadreProblemDetails(problemBeanVO,problem);
 				
 				userProblem = saveUserProblemDetails(problemBeanVO, problem);
+				problemBeanFromDB.setUserProblemId(userProblem.getUserProblemId());
+				if(userProblem.getUser().getFirstName() != null)
+					userName = userProblem.getUser().getFirstName().toString();
+				if(userProblem.getUser().getLastName() != null)
+					userName += " "+userProblem.getUser().getLastName().toString();
 				
+				problemBeanFromDB.setProblemId(problem.getProblemId());
+				problemBeanFromDB.setProblemRefNum(problem.getReferenceNo());
+				problemBeanFromDB.setExistingFrom(problem.getExistingFrom().toString());
+				problemBeanFromDB.setReportedDate(problem.getIdentifiedOn().toString());
+				problemBeanFromDB.setProblem(problem.getTitle());
+				problemBeanFromDB.setDescription(problem.getDescription());
+				problemBeanFromDB.setEmail(userProblem.getUser().getEmail());
+				problemBeanFromDB.setName(userName);
+				problemBeanFromDB.setProblemImpactLevelValue(problem.getImpactLevelValue());
+				problemBeanFromDB.setProblemImpactLevelId(problem.getRegionScopes().getRegionScopesId());
+				//problemActivity = problemActivityDAO.get(1l);
 				saveProblemRelatedFiles(problemBeanVO,problem);
 					
 					
@@ -4177,7 +4206,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @author Sai Krishna
 	 * @return ResultStatus
 	 */
-	public ResultStatus updateAssignedCadre(final Long problemHistoryId,
+	/*public ResultStatus updateAssignedCadre(final Long problemHistoryId,
 			final Long cadreId, final String pbStatus) {
 
 		if (log.isDebugEnabled())
@@ -4277,6 +4306,97 @@ public class ProblemManagementService implements IProblemManagementService {
 		return resultStatus;
 	}
 
+	*/
+	public ResultStatus updateAssignedCadre(final Long problemId,
+			final Long cadreId, final String pbStatus,final Long userId) {
+
+		if (log.isDebugEnabled())
+			log.debug("Started Executing Method To Update Assigned Cadre ..");
+
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+
+						ResultStatus rs = new ResultStatus();
+						try {
+							
+							ProblemAssignedCadre problemAssignedCadre = new ProblemAssignedCadre();
+							ProblemProgress problemProgress = new ProblemProgress();
+							
+							Problem problem = problemDAO.get(problemId);
+							
+							List<UserProblem> userProblemDetails = userProblemDAO.getUserProblemIdForCadreProblems(problemId, userId);
+							if(userProblemDetails != null && userProblemDetails.size() > 0)
+							{
+								problemAssignedCadre.setUserProblem(userProblemDetails.get(0));
+								problemProgress.setUserProblem(userProblemDetails.get(0));
+								
+							}
+							
+														
+							if (cadreId != null && !cadreId.equals(0L)) {
+								Cadre cadre = cadreDAO.get(cadreId);
+								problemAssignedCadre.setCadre(cadre);
+								
+							}
+							// setting activity
+							if (pbStatus.equals(IConstants.CADRE_ADD)) {
+
+								List<ProblemActivity> problemActivityLst = problemActivityDAO
+										.getProblemActivityByName("ASSIGN_CADRE_ADD");
+								
+								problemAssignedCadre.setStatus(IConstants.ASSIGNED);
+								problemProgress.setProblemActivity(problemActivityLst.get(0));
+								problemAssignedCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								
+							} else if (pbStatus.equals(IConstants.CADRE_MODIFY)) {
+
+							List<ProblemActivity> problemActivityLst = problemActivityDAO
+									.getProblemActivityByName("ASSIGN_CADRE_UPDATE");
+							
+							problemAssignedCadre.setStatus(IConstants.MODIFIED);
+							problemProgress.setProblemActivity(problemActivityLst.get(0));
+							problemAssignedCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							
+								
+							} else if (pbStatus.equals(IConstants.CADRE_DELETE)) {
+
+								List<ProblemActivity> problemActivityLst = problemActivityDAO
+										.getProblemActivityByName("ASSIGN_CADRE_DELETE");
+								
+								problemAssignedCadre.setStatus(IConstants.DELETED);
+								problemProgress.setProblemActivity(problemActivityLst.get(0));
+								problemAssignedCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							}
+							problemAssignedCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							
+							problemAssignedCadreDAO.save(problemAssignedCadre);
+							
+							
+							problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							problemProgress.setVisibility(visibilityDAO.get(2l));
+							problemProgress.setIsDelete(IConstants.FALSE);
+							problemProgressDAO.save(problemProgress);
+							
+
+						} catch (Exception ex) {
+							log.error("Exception Raised :" + ex);
+							rs.setExceptionEncountered(ex);
+							rs.setExceptionMsg(ex.getMessage());
+							return rs;
+						}
+
+						return rs;
+					}
+
+				});
+		return resultStatus;
+	}
+
+	
 	public ResultStatus updateProblemClassification(
 			final Long problemHistoryId, final Long classificationId,
 			final String pbStatus) {
@@ -4761,6 +4881,206 @@ public class ProblemManagementService implements IProblemManagementService {
 		return rs;
 	}
 
+	/*public ResultStatus updateProblemDepartment22(final Long problemHistoryId,
+	final Long departmentId, final Long scopeId, final Long regionId,
+	final String pbStatus) {
+
+if (log.isDebugEnabled())
+	log.debug(" Started " + pbStatus
+			+ " Department Details For a Problem ..");
+
+ResultStatus resultStatus = (ResultStatus) transactionTemplate
+		.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+
+				ResultStatus rs = new ResultStatus();
+				try {
+
+					
+					UserProblem userProblem = userProblemDAO.get(problemHistoryId);
+					
+					
+					
+					
+				    List<ProblemAssignedDepartment> assigneDepartment = problemAssignedDepartmentDAO.getAllActivitesByProblem(userProblem.getUserProblemId());
+					if (assigneDepartment != null && assigneDepartment.size() > 0) {
+
+						ProblemAssignedDepartment existingProblemProgress = assigneDepartment.get(0);
+                         
+						//problemAssignedDepartment.setUserProblem(existingProblemProgress.getUserProblem());
+						
+						if (departmentId != null && !departmentId.equals(0L)) {
+							
+							ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+							DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+							ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+							problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+							existingProblemProgress.setDepartmentLocation(problemCompleteLocation);
+							existingProblemProgress.setDepartmentOrganisation(departmentOrganisation);
+							
+						 }
+
+						
+						existingProblemProgress.setStatus(IConstants.DEPARTMENT_MODIFY);
+						
+						existingProblemProgress.setUpdatedTime(getCurrentDateAndTime());
+						
+						problemAssignedDepartmentDAO.save(existingProblemProgress);
+					}
+					else
+					{
+						ProblemAssignedDepartment problemAssignedDepartment = new ProblemAssignedDepartment();
+						problemAssignedDepartment.setUserProblem(userProblem);
+                       if (departmentId != null && !departmentId.equals(0L)) {
+							
+							ProblemSourceScope problemSourceScope = problemSourceScopeDAO.get(scopeId);
+							DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO.get(departmentId);
+							ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(regionId, problemSourceScope.getScope());
+							problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+							problemAssignedDepartment.setDepartmentLocation(problemCompleteLocation);
+							problemAssignedDepartment.setDepartmentOrganisation(departmentOrganisation);
+							
+						 }
+                         problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_MODIFY);
+						
+                         problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
+						
+						problemAssignedDepartmentDAO.save(problemAssignedDepartment);
+		
+					}
+
+					// setting history and updated date details
+					assignedProblemProgress
+							.setPerformedDate(getCurrentDateAndTime());
+					assignedProblemProgress
+							.setProblemHistory(problemHistory);
+
+					if (departmentId != null
+							&& !departmentId.equals(0L)) {
+						ProblemSourceScope problemSourceScope = problemSourceScopeDAO
+								.get(scopeId);
+						DepartmentOrganisation departmentOrganisation = departmentOrganisationDAO
+								.get(departmentId);
+						ProblemCompleteLocation problemCompleteLocation = getProblemCompleteLocation(
+								regionId, problemSourceScope.getScope());
+						problemCompleteLocation = problemCompleteLocationDAO
+								.save(problemCompleteLocation);
+
+						assignedProblemProgress
+								.setDepartmentLocation(problemCompleteLocation);
+						assignedProblemProgress
+								.setDepartmentOrganisation(departmentOrganisation);
+						assignedProblemProgress
+								.setProblemSourceScopeConcernedDepartment(departmentOrganisation
+										.getProblemDepartmentCategory());
+					}
+
+					if (pbStatus.equals(IConstants.DEPARTMENT_ADD)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_ADD");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					} else if (pbStatus
+							.equals(IConstants.DEPARTMENT_MODIFY)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_UPDATE");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					} else if (pbStatus
+							.equals(IConstants.DEPARTMENT_DELETE)) {
+						List<ProblemActivity> problemActivityLst = problemActivityDAO
+								.getProblemActivityByName("DEPARTMENT_DELETE");
+						assignedProblemProgress
+								.setProblemActivity(problemActivityLst
+										.get(0));
+					}
+
+					// save data
+					assignedProblemProgressDAO
+							.save(assignedProblemProgress);
+
+						return rs;
+					}
+
+				});
+
+		return resultStatus;
+	}
+
+	public ResultStatus updateProblemClassificationData(Long problemHistoryId,
+			String classification, String type) {
+
+		if (log.isDebugEnabled())
+			log.debug(" Started setting problem as " + classification);
+
+		ResultStatus rs = new ResultStatus();
+
+		try {
+
+			List<ProblemClassification> problemClassification = problemClassificationDAO
+					.findByClassification(classification);
+
+			if (problemClassification != null
+					&& problemClassification.size() > 0)
+				rs = updateProblemClassification(problemHistoryId,
+						problemClassification.get(0)
+								.getProblemClassificationId(), type);
+
+		} catch (Exception ex) {
+
+			log.error("Exception Raised :" + ex);
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+
+			return rs;
+		}
+
+		return rs;
+	}
+
+	public ResultStatus updateProblemStatusData(Long problemHistoryId,
+			String status) {
+
+		if (log.isDebugEnabled())
+			log.debug(" Setting  problem status to " + status);
+
+		ResultStatus rs = new ResultStatus();
+
+		try {
+
+			String problemStatus = "";
+			if (status.equalsIgnoreCase(IConstants.PROGRESS))
+				problemStatus = IConstants.PROGRESS;
+			else if (status.equalsIgnoreCase(IConstants.PENDING))
+				problemStatus = IConstants.PENDING;
+			else if (status.equalsIgnoreCase(IConstants.FIXED))
+				problemStatus = IConstants.FIXED;
+			else if (status.equalsIgnoreCase(IConstants.NEW))
+				problemStatus = IConstants.NEW;
+
+			List<ProblemStatus> problemStatusLst = problemStatusDAO
+					.getByStatus(problemStatus);
+
+			if (problemStatusLst != null && problemStatusLst.size() > 0)
+				rs = updateProblemStatus(problemHistoryId, problemStatusLst
+						.get(0).getProblemStatusId(), status);
+
+		} catch (Exception ex) {
+
+			log.error("Exception Raised :" + ex);
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+
+			return rs;
+		}
+
+		return rs;
+	}
+
 	/**
 	 * Method to get departments for a resolving area scope
 	 * 
@@ -4858,7 +5178,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		return problemBeanVO;
 	}
 
-	public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId, Long pHistoryId) {
+	/*public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId, Long pHistoryId) {
 		try {
 			List<SelectOptionVO> list = new ArrayList<SelectOptionVO>(0);
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -4943,7 +5263,86 @@ public class ProblemManagementService implements IProblemManagementService {
 			return null;
 		}
 	}
+*/
+	
+	public List<SelectOptionVO> getCadreProblemDetailsForSms(Long userId,Long cadreId, Long pHistoryId) {
+		try {
+			List<SelectOptionVO> list = new ArrayList<SelectOptionVO>(0);
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			List<Long> cadreList = new ArrayList<Long>(0);
+			cadreList.add(cadreId);
+			String message = "";
+			List<UserProblem> userProblem = null;
+			Problem problem = null;
+			long sourceId;
+			User user = null;
+			List<Object> mobileNos = cadreDAO.getMobileNosOfCadre(cadreList);
 
+			if (mobileNos != null && mobileNos.size() >= 0
+					&& mobileNos.get(0).toString().trim().length() > 0)
+				selectOptionVO.setId(Long
+						.parseLong(mobileNos.get(0).toString()));
+			else
+				selectOptionVO.setId(0L);
+			
+			problem = problemDAO.get(pHistoryId);
+			
+			userProblem = userProblemDAO.getUserProblemIdForCadreProblems(pHistoryId, userId);
+			if(userProblem != null && userProblem.size() >0)
+				user = userProblem.get(0).getUser();
+				
+			
+			sourceId = problem.getInformationSource().getInformationSourceId();
+
+			if (sourceId == 1) {
+				
+				message += user.getFirstName() + IConstants.SPACE
+						+ user.getLastName() + IConstants.COMMA;
+				message += user.getMobile() != null ? user.getMobile()
+						+ IConstants.COMMA : "";
+			} else if (sourceId == 2 || sourceId == 3) {
+				
+				
+				message += problem.getExternalSource().getName()+IConstants.COMMA;
+				message += problem.getExternalSource().getMobile()+IConstants.COMMA;
+			}
+
+			else if (sourceId == 4) {
+				List<Object[]> cadreDetails = cadreProblemsDAO
+						.getCadreDetailsAndMobileNoByProblemId(problem.getProblemId());
+				if (cadreDetails != null && cadreDetails.size() > 0) {
+					message += cadreDetails.get(0)[0].toString()
+							+ IConstants.SPACE
+							+ cadreDetails.get(0)[1].toString()
+							+ IConstants.COMMA;
+					message += cadreDetails.get(0)[2] != null ? cadreDetails
+							.get(0)[2].toString()
+							+ IConstants.COMMA : "";
+				}
+			}
+
+			
+			message += problemManagementReportService.getProblemLocation(problem.getRegionScopes().getRegionScopesId()
+					     ,problem.getImpactLevelValue());
+			
+			message += "\nPlease Help them in Problem Resolving.";
+			
+			message += "\nProblem : "
+					+ problem.getTitle()+ ".";
+			message += "\nDescription : "
+					+ problem.getDescription() + ".";
+
+			selectOptionVO.setName(message);
+			list.add(selectOptionVO);
+			return list;
+		} catch (Exception e) {
+			log.error("Exception Ocuured in getCadreProblemDetailsForSms() "
+					+ e);
+			return null;
+		}
+	}
+
+	
 	public ResultStatus sendSMS(Long userId, String message, String moduleName,
 			String[] phoneNumbers) {
 		ResultStatus resultStatus = new ResultStatus();
@@ -5001,7 +5400,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * 
 	 * 
 	 */
-	public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId) {
+	/*public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId) {
 		ResultStatus resultStatus = new ResultStatus();
 		try {
 			if (problemHistoryId == null || problemHistoryId <= 0)
@@ -5092,8 +5491,95 @@ public class ProblemManagementService implements IProblemManagementService {
 			return resultStatus;
 		}
 	}
+	*/
 	
-	public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId)
+	public ResultStatus sendSuccessMsgToMobile(Long userProblemId) {
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			if (userProblemId == null || userProblemId <= 0)
+				return null;
+
+			String message = null;
+			String[] mobileArray = new String[1];
+			String mobile = null;
+			/*ProblemHistory problemHistory = problemHistoryDAO
+					.get(problemHistoryId);*/
+			UserProblem userProblem = userProblemDAO.get(userProblemId);
+			Long userId = null;
+			String userType = null;
+
+			if (userProblem.getProblem().getInformationSource() != null)
+			{
+				userType = IConstants.PARTY_ANALYST_USER;
+				
+				long ProblemSource = userProblem.getProblem().getInformationSource().getInformationSourceId();
+				userId = userProblem.getUser().getUserId();
+
+				if (ProblemSource == 1) 
+					mobile = userProblem.getUser().getMobile();
+				
+				else if (ProblemSource == 2 || ProblemSource == 3)
+					mobile = userProblem.getProblem().getExternalSource().getMobile();
+				
+				else if (ProblemSource == 4) 
+				{
+					List<Object[]> cadreDetails = cadreProblemsDAO.getCadreDetailsAndMobileNoByProblemId(userProblem.getProblem().getProblemId());
+						
+					if (cadreDetails != null && cadreDetails.size() > 0) {
+						mobile = cadreDetails.get(0)[2].toString();
+					}
+				}
+			}
+			else {
+				
+				userType = IConstants.FREE_USER;
+					
+				mobile = userProblem.getUser().getMobile();
+				userId = userProblem.getUser().getUserId();
+						
+			}
+
+			message = "Your Problem Posted Successfully.";
+			message += "\nYour Problem Reference Number is : "
+					+ userProblem.getProblem().getReferenceNo()+ ".";
+			message += "\nThis Will be usefull for Further Reference";
+
+			if (mobile != null && mobile.length() >= 10) 
+			{
+				mobileArray[0] = mobile;
+				ResultStatus result = null;
+				
+				if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+					result = sendSMS(userId, message,IConstants.PROBLEM_MANAGEMENT, mobileArray);
+				else
+					result = sendSMSFromAdmin(message,mobileArray);
+				
+				if (result.getResultCode() == ResultCodeMapper.SUCCESS) {
+					log.debug("Message Sent Successfully To - " + mobile);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				} else {
+					log.warn("Message Not Reached To - " + mobile);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					resultStatus.setExceptionEncountered(result
+							.getExceptionEncountered());
+				}
+			} else {
+				log.debug("Mobile Number is Not Valid");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setExceptionMsg("Mobile NO is Not Valid");
+			}
+			return resultStatus;
+		} catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			log.error("Exception Occured & Exception is - " + e);
+			return resultStatus;
+		}
+	}
+	
+	
+	
+	/*public ResultStatus sendEmailToFreeUserAfterProblemAdded(Long problemHistoryId)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		
@@ -5161,7 +5647,60 @@ public class ProblemManagementService implements IProblemManagementService {
 			return resultStatus;
 		}
 	}
-
+*/
+	
+	public ResultStatus sendEmailToFreeUserAfterProblemAdded(ProblemBeanVO problemBeanVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		
+		if(problemBeanVO == null)
+		{
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+		try
+		{
+			String email = null;
+			Long noOfFilesAttached = null;
+				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+				
+				email = problemBeanVO.getEmail();
+				
+				if(email != null && email.trim().length() > 0)
+				{
+					List<Object> obj = problemFilesDAO.getNoOfFilesUploadedForAUser(problemBeanVO.getProblemId());
+					
+					noOfFilesAttached = (Long)obj.get(0);
+					
+					problemDetailsVO.setDescription(problemBeanVO.getDescription());
+					problemDetailsVO.setDefinition(problemBeanVO.getProblem());
+					problemDetailsVO.setIdentifiedDate(problemBeanVO.getExistingFrom().toString());
+					problemDetailsVO.setExistingFrom(problemBeanVO.getReportedDate().toString());
+					problemDetailsVO.setLocation(problemManagementReportService.getProblemLocation(problemBeanVO.getProblemImpactLevelId(),
+							problemBeanVO.getProblemImpactLevelValue()));
+					
+					problemDetailsVO.setProblemID(noOfFilesAttached);
+					
+					emailDetailsVO.setFromAddress(problemBeanVO.getName());
+					emailDetailsVO.setToAddress(problemBeanVO.getEmail());
+					emailDetailsVO.setElectionType(problemBeanVO.getProblemRefNum());
+					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+					
+					mailsSendingService.sendEmailToFreeUserAfterProblemAdded(problemDetailsVO);
+				}
+			
+		return resultStatus;
+				}
+		catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			log.error("Exception Occured in sendEmailToFreeUserAfterProblemAdded() , Exception is - "+e);
+			return resultStatus;
+		}
+	}
+	
 	/*public List<FileVO> getImageDetails()
 	{
 		List<FileVO> fileVOList  = new ArrayList<FileVO>();
@@ -5344,7 +5883,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 	}
 
-	/*public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO) {
+	/*public void saveProblemFiles(ProblemBeanVO problemBeanVO) {
 		List<File> files = new ArrayList<File>();
 		ProblemFile problemFile = null;
 		files = uploadFiles(problemBeanVO);
@@ -5372,8 +5911,13 @@ public class ProblemManagementService implements IProblemManagementService {
 	
 	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem)
 	{
+		try{
+		
 		List<File> files = new ArrayList<File>(0);
 		ProblemFiles problemFile = null;
+		ProblemProgress problemProgress = null;
+		List<UserProblem> userProblem = null;
+		List<ProblemActivity> problemActivity = null;
 		
 		files = uploadFiles(problemBeanVO);
 		
@@ -5391,6 +5935,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemFile.setFile(fileObj);
 				problemFile.setProblem(problem); 
 				problemFile.setUser(userDAO.get(problemBeanVO.getUserID()));
+				
 				problemFile.setIsDelete(IConstants.FALSE);
 				problemFile.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				problemFile.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -5398,6 +5943,53 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemFilesDAO.save(problemFile);
 			}
 		}
+		if(problemBeanVO.getProblemStatus() != null && problemBeanVO.getProblemStatus().equals("PROBLEM_FILE_ADD"))
+		{
+			problemProgress = new ProblemProgress();
+			problemActivity = problemActivityDAO.getProblemActivityByName(problemBeanVO.getProblemStatus());
+			userProblem = userProblemDAO.getUserProblemIdForCadreProblems(problem.getProblemId(), problemBeanVO.getUserID());
+			problemProgress.setProblemActivity(problemActivity.get(0));
+			problemProgress.setUserProblem(userProblem.get(0));
+			problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			problemProgress.setIsDelete(IConstants.FALSE);
+			if(userProblem.get(0).getVisibility().getType() != null && userProblem.get(0).getVisibility().getType().equals(IConstants.PUBLIC))
+				problemProgress.setVisibility(visibilityDAO.get(1l));
+			else if(userProblem.get(0).getVisibility().getType() != null && userProblem.get(0).getVisibility().getType().equals(IConstants.PRIVATE))
+			   problemProgress.setVisibility(visibilityDAO.get(2l));
+			problemProgressDAO.save(problemProgress);
+			
+		}
+		
+		}catch (Exception e) {
+			log.error("Exception occured in saveProblemRelatedFiles() Method, Exception - "+e);
+			e.printStackTrace();
+		}
+	}
+	
+	public ResultStatus addProblemRelatedFiles(ProblemBeanVO problemBeanVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		if(problemBeanVO == null)
+		{
+			log.error("problemBeanVO is null in addProblemRelatedFiles()");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		try{
+			if(problemBeanVO != null && problemBeanVO.getProblemHistoryId() > 0)
+			{
+				Problem problem = problemDAO.get(problemBeanVO.getProblemHistoryId());
+				saveProblemRelatedFiles(problemBeanVO,problem);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			}
+			return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception occured in addProblemRelatedFiles() Method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
 	}
 
 	/*
@@ -5732,7 +6324,8 @@ public class ProblemManagementService implements IProblemManagementService {
 				result.setReferenceNo(problemDetails.getProblem().getReferenceNo().toString());
 				if(problemDetails.getProblem().getProblemStatus() != null)
 				result.setStatus(problemDetails.getProblem().getProblemStatus().getStatus().toString());
-				result.setIsApproved(problemDetails.getProblem().getIsApproved().toString());
+				if(problemDetails.getProblem() != null && problemDetails.getProblem().getIsApproved() !=null)
+				result.setIsApproved(problemDetails.getProblem().getIsApproved());
 				result.setTotalResultsCount(getProblemsCount().toString());
 				
 				
@@ -6279,5 +6872,81 @@ public class ProblemManagementService implements IProblemManagementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		}		
 		return resultStatus;
+	}	
+	/*public ResultStatus deleteProblemDetails(Long problemId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Problem problem = problemDAO.get(problemId);
+			if(problem == null)
+			{
+				log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			else if(problem != null && problem.getProblemId() > 0)
+			{
+				problem.setIsDelete(IConstants.TRUE);
+				problemDAO.save(problem);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.info("Exception Occured in deleteProblemDetails() Method, Exception is - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
+	}
+*/
+	
+	public ResultStatus deleteProblemDetails(Long problemId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		Date currentDate = dateUtilService.getCurrentDateAndTime();
+		//List<Long> problemId = new ArrayList<Long>();
+		try{
+			/*if(problemIds == null)
+			{
+				log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			else if(problemIds != null)
+			{
+				for(Object list : problemIds)
+				{
+				problemId.add((Long)list);
+				Integer result = problemDAO.deleteProblem(problemId, currentDate);
+				if(result != 0)
+					{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					}
+				}
+				
+			}*/
+			if(problemId == 0)
+			{
+				log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			else if(problemId !=0 && problemId > 0)
+			{
+				Integer result = problemDAO.deleteProblemDetails(problemId, currentDate);
+				if(result != 0)
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				else if(result == 0)
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.info("Exception Occured in deleteProblemDetails() Method, Exception is - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		
 	}
 }

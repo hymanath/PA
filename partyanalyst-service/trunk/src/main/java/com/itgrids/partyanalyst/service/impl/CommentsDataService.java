@@ -1198,7 +1198,7 @@ public class CommentsDataService implements ICommentsDataService {
 					
 					userId = (Long)params[0];
 					emailDetailsVO.setToAddress(params[1].toString());
-					emailDetailsVO.setFromAddress(params[2].toString()+" "+params[7].toString());
+					emailDetailsVO.setFromAddress(params[8].toString()+" "+params[7].toString());
 					emailDetailsVO.setCandidateName(params[3].toString());
 					if((Long)params[4] == 1)
 					

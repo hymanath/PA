@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsTemplateService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -33,6 +34,7 @@ public class MailService implements IMailService{
 	private static final Logger log = Logger.getLogger(MailService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IMailsTemplateService mailsTemplateService;
+	private IStaticDataService staticDataService;
 	
 	 
     public IMailsTemplateService getMailsTemplateService() {
@@ -57,6 +59,14 @@ public class MailService implements IMailService{
     
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	public synchronized ResultStatus sendMailFromLocalHost(QuickRequestVO quickRequestVO){
@@ -161,11 +171,13 @@ public class MailService implements IMailService{
     	subject = "Mail From www.partyanalyst.com";
     	
     	text = "";
-    	text = "Here are the login details for your PartyAnalyst Account.<br>";
-    	text +="User Name is:" +registrationVO.getUserName()+"<br>";
+    	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
+    			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</b></div>" +
+    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the login details for your PartyAnalyst Account.<br>";
+    	text += "User Name is : " + " " +registrationVO.getUserName()+"<br>";
     	if(registrationVO.getPassword()!= null)
-    	text += "<b><font color=\"green\">Your Password is:</font></b>" +"  "+ registrationVO.getPassword();
-    	
+    	text += "Your Password is :" +"  <b>"+ registrationVO.getPassword()+"</b>";
+    	text +="</div><div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
     	quickRequestVO.setToEmailId(registrationVO.getEmail());
     	quickRequestVO.setSubject(subject);
     	quickRequestVO.setText(text);
@@ -189,7 +201,8 @@ public class MailService implements IMailService{
     	try{
     	QuickRequestVO quickRequestVO = new QuickRequestVO();
     	String constituency=registrationVO.getContextPath()+"/constituencyPageAction.action?constituencyId="+registrationVO.getConstituency();
-    	String district=registrationVO.getContextPath()+"/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+registrationVO.getDistrict();
+    	String districtName = staticDataService.getDistrictNameByDistrictId(registrationVO.getDistrictId());
+    	String district=registrationVO.getContextPath()+"/districtPageAction.action?districtId="+registrationVO.getDistrictId()+"&districtName="+districtName;
     	String login = registrationVO.getContextPath()+"/loginInputAction.action";
     	String sendMail="mailto:info@partyanalyst.com";
     	String subject;
@@ -203,7 +216,7 @@ public class MailService implements IMailService{
     	
 
     	
-    	text +="<div style='margin-left:20px; margin-top:15px;'><b><font style='color:blue'>Hey  "+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</font></div>";
+    	text +="<div style='margin-left:20px; margin-top:15px;'>Hi  <b>"+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</div>";
     	
     	text +="<div style='margin-left:30px;margin-right:15px;margin-bottom:30px;'></b></font><br>Just a quick note to confirm that you are now a registered member of our family.";
     	
@@ -229,14 +242,20 @@ public class MailService implements IMailService{
     	text +="<br>Explore more about your constituency : <b><a href="+constituency+">"+constituencyDAO.get((new Long(registrationVO.getConstituency()))).getName()+"</a></b>";
     	text +="<br><br><a href="+constituency+" target='_blank'>"+constituency+"</a><br>";
     	
-    	text +="<br>Explore more about your district : <b><a href="+district+">"+registrationVO.getDistrict()+"</a></b><br>";
+    	text +="<br>Explore more about your district : <b><a href="+district+">"+districtName+"</a></b><br>";
     	text +="<br><a href="+district+" target='_blank'>"+district+"</a>";
     	
     	text +="<br><br>We hope to see you around and take part in our community!!!";
     	text +="<br><br>For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></b>";
     	text +="<br><br>Have a good day!";
-    	text +="<br><br>-&nbsp;&nbsp;&nbsp;PartyAnalyst Team.";
-    	text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us dont end up in your junk folder.";
+    	//text +="<div style='margin-left: -28px;'>"+mailsTemplateService.getFooter()+"</div>";
+    	//text +="<br><br>-&nbsp;&nbsp;&nbsp;PartyAnalyst Team.";
+    	//text +="<br><br><b>PS:</b> Please add this email to your address book so that the emails from us dont end up in your junk folder.";
+    	text +="<div style='line-height: 1.8em'>" +
+				"<br>Thanks," +
+				"<br>Party Analyst Team<br>" +
+				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst</a><br>" +
+				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us dont end up in your junk folder.</p></div></div>";
     	text +="</div></div>";
     	
     	/*text +="<br><br>PS: Now that you are part of our community, why not invite your friends to join our community? You can not only connect and share your thoughts with them but also make them part of the change.";

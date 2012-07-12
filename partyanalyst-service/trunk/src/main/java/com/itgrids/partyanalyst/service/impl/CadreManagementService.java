@@ -4268,6 +4268,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String name           = cadreInputVO.getCadreName().trim();
 			String taskName 	  = cadreInputVO.getTaskName();
 			String SearchCriteria = new String();
+			
 			String cadreType      = new String();
 			String sortOption     = new String();
 			
@@ -4304,7 +4305,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString().substring(1);
 				else if(cadreLevelId == 9)
 					SearchCriteria = "and model.currentAddress.booth.boothId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 10)
+				{
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(cadreLocationId);
+					List<Long> constIds = new ArrayList<Long>(0);
+					String parliamentId = "";
+					for(Object[] params : list)
+					{
+						parliamentId = parliamentId+params[0].toString()+",";
+					}
+					parliamentId = parliamentId.substring(0,parliamentId.length()-1);
+					SearchCriteria = "and model.currentAddress.constituency.constituencyId in ("+parliamentId+")";
+				}
 			}
+			
 			
 			if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
 				SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
@@ -4422,8 +4436,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 			for(Long id:cadreIds)
 			{
-				//Cadre cadre = cadreDAO.get(id);
-				Cadre cadre = cadreDAO.getCadreByCadreId(id);
+				Cadre cadre = cadreDAO.get(id);
 				CadreInfo cadreInfo = new CadreInfo();
 				
 				cadreInfo.setCadreId(cadre.getCadreId().toString());
