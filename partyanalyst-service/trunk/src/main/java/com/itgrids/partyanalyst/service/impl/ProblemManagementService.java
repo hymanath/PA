@@ -104,6 +104,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemActivity;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
+import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 import com.itgrids.partyanalyst.model.ProblemAssignedDepartment;
 import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemClassification;
@@ -199,8 +200,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemProgressDAO problemProgressDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
-	
-
+    
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -651,7 +651,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setProblemProgressDAO(IProblemProgressDAO problemProgressDAO) {
 		this.problemProgressDAO = problemProgressDAO;
 	}	
-
+	
 	public IProblemAssignedCadreDAO getProblemAssignedCadreDAO() {
 		return problemAssignedCadreDAO;
 	}
@@ -3884,7 +3884,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @author sai Krishna
 	 * @return ProblemStatusDataVO
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public ProblemStatusDataVO getProblemRecentDetailsByProblemHistoryId(
 			Long problemHistoryId) {
 
@@ -3940,8 +3940,181 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 
 		return problemStatusData;
+	}*/
+	public ProblemStatusDataVO getProblemRecentDetailsByProblemId(Long problemId,Long userId) {
+		
+		ProblemStatusDataVO problemStatusData = new ProblemStatusDataVO();
+		
+		Problem  problem = problemDAO.get(problemId);
+		
+		if(problem != null){			
+			
+			setProblemDetailsToVO(problem,problemStatusData);
+			
+			problemStatusData.setProblemStatus(problem.getProblemStatus().getStatus());
+			if(problem.getInformationSource() != null)
+			  problemStatusData.setPostedBy(problem.getInformationSource().getInformationSource());		
+			else{
+				List<String> isOwnerList = userProblemDAO.checkIsProblemOwner(problemId, userId);
+				if(isOwnerList != null && isOwnerList.size() > 0 && isOwnerList.get(0).equalsIgnoreCase("false")){
+					problemStatusData.setPostedBy("Public");
+				}else{
+					problemStatusData.setPostedBy("");
+				}
+			}
+			
+			//String problemLocation = problemManagementReportService.getProblemLocation(problem.getRegionScopes().getRegionScopesId(),problem.getImpactLevelValue());
+			
+			//problemStatusData.setProblemLocation(problemLocation);
+			
+			problemStatusData.setPostedByName(getProblemPostedPerson(problem,problem.getExternalSource(),problem.getInformationSource(),userId));
+			problemStatusData.setProblemLocation(getProblemLocationString(problem.getProblemCompleteLocation()));
+			
+		}
+		
+					
+			List<UserProblem> userProblemList = userProblemDAO.getUserProblem(problemId, userId);
+			
+			
+			Long userProblemId = userProblemList.get(0).getUserProblemId();
+		 
+			//set problem Assigned details to VO
+			
+			setProblemAssignedDetailsToVO(problem,problemStatusData,userProblemId);
+			
+			//set problem assigned cadre details to VO
+			
+			setProblemAssignedCadredetailsToVO(problemStatusData,userProblemId);
+		 
+	
+		   //set problem classification details to VO
+			
+			setProblemClassificationDetailsToVO(problemStatusData,userProblemId);	
+		
+		
+		return problemStatusData;		
+	}
+    private ProblemStatusDataVO setProblemDetailsToVO(Problem problem,ProblemStatusDataVO problemStatusData){		
+		
+		
+		try{
+		
+		problemStatusData.setProblemId(problem.getProblemId());
+		problemStatusData.setProblem(problem.getTitle());
+		problemStatusData.setProblemDesc(problem.getDescription());
+		problemStatusData.setPostedDate(problem.getIdentifiedOn().toString());
+		problemStatusData.setExistingFrom(problem.getExistingFrom().toString());
+		DateUtilService dateUtilService = new DateUtilService();
+		Date today = dateUtilService.getCurrentDateAndTime();
+		Date postedDate = problem.getIdentifiedOn();
+
+		long diffDate = today.getTime() - postedDate.getTime();
+
+		problemStatusData.setDiffDays((diffDate / (1000 * 60 * 60 * 24)));		
+		
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			
+			
+		}
+		return problemStatusData;	
+	}
+    private String getProblemPostedPerson(Problem problem,ProblemExternalSource problemExternalSource,InformationSource informationSource,Long userId){
+		
+		String name="";
+		
+		if(problemExternalSource != null)			
+			name = problem.getExternalSource().getName();
+		else if(informationSource != null && informationSource.getInformationSourceId().longValue() == 1l){
+			   User user = userDAO.get(userId);
+			   name = user.getFirstName()+" "+user.getLastName();
+		}else if(informationSource != null && informationSource.getInformationSourceId().longValue() == 4l){
+			List<Object[]> caderDetailsList = cadreProblemsDAO.getProblemPostedCadreName(problem.getProblemId());
+			  if(caderDetailsList != null && caderDetailsList.size() > 0){
+				  Object[] caderDetails = caderDetailsList.get(0);
+			     name = caderDetails[0].toString()+" "+caderDetails[1].toString();
+			  }
+		}else {
+			
+			List<Object[]> userLst = userProblemDAO.getProblemOwnerName(problem.getProblemId());
+			
+			if(userLst != null && userLst.size() > 0){
+				
+				Object[] obj = (Object[])userLst.get(0);				
+				name=obj[0].toString()+" "+obj[1].toString();	
+			}	
+		}
+		
+		return name;	
 	}
 
+	/**
+	 * This method is to set the problem assignment details
+	 * @param problem
+	 * @param problemStatusData
+	 * @param userProblemId
+	 */
+	
+	private void setProblemAssignedDetailsToVO(Problem problem,ProblemStatusDataVO problemStatusData ,Long userProblemId){
+		
+		 List<ProblemAssignedDepartment> prblmAssgndLst = problemAssignedDepartmentDAO.getAllActivitesByProblemId(userProblemId);
+		  
+		  if(prblmAssgndLst != null && prblmAssgndLst.size() > 0){
+			  
+			 ProblemAssignedDepartment problemAssignedDepartment = (ProblemAssignedDepartment)prblmAssgndLst.get(0);
+			  if(problemAssignedDepartment.getStatus().equalsIgnoreCase("assigned") || problemAssignedDepartment.getStatus().equalsIgnoreCase("modified")){
+			    problemStatusData.setDepartmentOrganisation(problemAssignedDepartment.getDepartmentOrganisation().getOrganisationName());
+			    problemStatusData.setDepartment(problemAssignedDepartment.getDepartmentOrganisation().getProblemDepartmentCategory().getDepartment());
+			    problemStatusData.setDeptLocation(getProblemLocationString(problem.getProblemCompleteLocation()));
+			 }else{
+				  problemStatusData.setDepartmentOrganisation("");
+				  problemStatusData.setDepartment("");
+			 }
+		 }else{				  
+				  problemStatusData.setDepartmentOrganisation("");
+				  problemStatusData.setDepartment("");  
+				  
+		 }
+		  
+		
+	}
+	/**
+	 * This method is to set the problem assigned cadre details to VO.
+	 * @param problemStatusData
+	 * @param userProblemId
+	 */
+	
+	
+	private void setProblemAssignedCadredetailsToVO(ProblemStatusDataVO problemStatusData ,Long userProblemId){
+		
+	List<ProblemAssignedCadre> prblmAsgndCdrLst = problemAssignedCadreDAO.getProblemAssignedCadreByUserProblemId(userProblemId);
+		
+		if(prblmAsgndCdrLst != null && prblmAsgndCdrLst.size() >0){			
+			  ProblemAssignedCadre problemAssignedCadre = (ProblemAssignedCadre)prblmAsgndCdrLst.get(0);
+			  if(problemAssignedCadre.getStatus().equalsIgnoreCase("assigned") || problemAssignedCadre.getStatus().equalsIgnoreCase("modified")){
+			  problemStatusData.setCadre(problemAssignedCadre.getCadre().getFirstName());			
+			}
+		}	
+		
+	}
+	/**
+	 * This method is to set the problem classification details to VO
+	 * @param problemStatusData
+	 * @param userProblemId
+	 */
+	private void setProblemClassificationDetailsToVO(ProblemStatusDataVO problemStatusData ,Long userProblemId){
+		
+    List<ClassifiedProblems> clsfdPrblmsLst = classifiedProblemsDAO.getClassifiedproblemByUserProblemId(userProblemId);
+		
+		if(clsfdPrblmsLst != null && clsfdPrblmsLst.size() > 0){
+			
+			ClassifiedProblems classifiedProblems = (ClassifiedProblems) clsfdPrblmsLst.get(0);
+			
+			problemStatusData.setProbClassification(classifiedProblems.getProblemClassification().getClassification());
+		}		
+		
+	}
 	/**
 	 * 
 	 * @param probAndProbSource
@@ -4088,7 +4261,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * 
 	 */
 	public List<ProblemStatusDataVO> getAllProblemRecentActivityDetails(
-			Long problemHistoryId) {
+			Long problemId,Long userId) {
 
 		if (log.isDebugEnabled())
 			log.debug("Entered To Get Problem All Recent Activity Details ..");
@@ -4097,19 +4270,17 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		try {
 
-			// get Problem History and Problem Details
+			/*// get Problem History and Problem Details
 			ProblemHistory problemHistory = problemHistoryDAO
-					.get(problemHistoryId);
-			ProblemBackup problem = problemHistory.getProblemLocation()
-					.getProblemAndProblemSource().getProblem();
+					.get(problemHistoryId);*/
+			List<UserProblem> userProblemList = userProblemDAO.getUserProblem(problemId,userId);
 
 			// DAO Call To get activities data
-			List<AssignedProblemProgress> problemDetailsLst = assignedProblemProgressDAO
-					.getProblemAllActivitiesByProblemId(problem.getProblemId());
+			List<ProblemProgress> problemDetailsLst = problemProgressDAO.getProblemPrograssDetails(userProblemList.get(0).getUserProblemId());
 			if (problemDetailsLst != null && problemDetailsLst.size() > 0) {
 
 				// Iterate Different Activities List and set to List
-				for (AssignedProblemProgress problemProgress : problemDetailsLst) {
+				for (ProblemProgress problemProgress : problemDetailsLst) {
 
 					problemRecentActivityList
 							.add(getProblemActivityDetailsSetToVO(problemProgress));
@@ -4138,7 +4309,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @return
 	 */
 	private ProblemStatusDataVO getProblemActivityDetailsSetToVO(
-			AssignedProblemProgress problemProgress) throws Exception {
+			ProblemProgress problemProgress) throws Exception {
 
 		if (log.isDebugEnabled())
 			log
@@ -4146,8 +4317,7 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		ProblemStatusDataVO problemStatusData = new ProblemStatusDataVO();
 
-		problemStatusData.setUpdatedDate(problemProgress.getPerformedDate()
-				.toString());
+		problemStatusData.setUpdatedDate(problemProgress.getInsertedTime().toString());
 		if (problemProgress.getProblemActivity() != null) {
 			problemStatusData.setActivityHapened(problemProgress
 					.getProblemActivity().getComments());
@@ -4156,36 +4326,35 @@ public class ProblemManagementService implements IProblemManagementService {
 					.intValue()) {
 
 			case 1:
-			case 2:
-				problemStatusData.setProbClassification(problemProgress
-						.getProblemClassification().getClassification());
+			case 2:if(problemProgress.getClassifiedProblems() != null)
+				problemStatusData.setProbClassification(problemProgress.getClassifiedProblems().getProblemClassification().getClassification());
 				break;
 			case 3:
-			case 4:
-				problemStatusData.setDepartmentOrganisation(problemProgress
+			case 4:if(problemProgress.getProblemAssignedDepartment() != null){
+				problemStatusData.setDepartmentOrganisation(problemProgress.getProblemAssignedDepartment()
 						.getDepartmentOrganisation().getOrganisationName());
-				problemStatusData.setDepartment(problemProgress
+				problemStatusData.setDepartment(problemProgress.getProblemAssignedDepartment()
 						.getDepartmentOrganisation()
 						.getProblemDepartmentCategory().getDepartment());
+			     }
 				break;
 			case 5:
 				problemStatusData.setDepartmentOrganisation("N/A");
 				problemStatusData.setDepartment("N/A");
 				break;
 			case 6:
-			case 7:
-				problemStatusData.setCadre(problemProgress.getCadre()
-						.getFirstName());
+			case 7:if(problemProgress.getProblemAssignedCadre() != null)
+				problemStatusData.setCadre(problemProgress.getProblemAssignedCadre().getCadre().getFirstName());
 				break;
 			case 8:
 				problemStatusData.setCadre("Removed ");
 				break;
-			case 11:
-				problemStatusData.setComments(problemProgress.getComments());
+			case 11:if(problemProgress.getComment() != null)
+				problemStatusData.setComments(problemProgress.getComment().getComment());
 				break;
-			case 12:
+			case 12:if(problemProgress.getUserProblem()!= null)
 				problemStatusData.setProblemStatus(problemProgress
-						.getProblemHistory().getProblemStatus().getStatus());
+						.getUserProblem().getProblem().getProblemStatus().getStatus());
 				break;
 			default:
 				if (log.isInfoEnabled())
@@ -4762,7 +4931,7 @@ public class ProblemManagementService implements IProblemManagementService {
 								
                                 problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
 								
-								problemAssignedDepartmentDAO.save(problemAssignedDepartment);
+                                problemAssignedDepartment = problemAssignedDepartmentDAO.save(problemAssignedDepartment);
 				
                                //saving details in problemprograss
                         	   ProblemProgress problemProgress = new ProblemProgress();
@@ -4787,6 +4956,7 @@ public class ProblemManagementService implements IProblemManagementService {
                         	   problemProgress.setVisibility(visibilityDAO.get(2l));
                         	   problemProgress.setInsertedTime(getCurrentDateAndTime());
                         	   problemProgress.setIsDelete(IConstants.FALSE);
+                        	   problemProgress.setProblemAssignedDepartment(problemAssignedDepartment);
                         	   
                         	   problemProgressDAO.save(problemProgress);
                         	   
@@ -5805,20 +5975,19 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		});
 	}
 
-	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId) {
+	public List<FileVO> getAllProblemRelatedImages(Long problemId,Long userId) {
 
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
 		FileVO fileVO = new FileVO();
 
-		List<Object[]> imagesList = problemFileDAO
-				.getProblemImagesBasedHistoryId(problemHistoryId);
+		List<Object[]> imagesList = filePathsDAO.getProblemRelatedFiles(problemId,userId);
 		for (Object[] images : imagesList) {
 			fileVO = new FileVO();
-			fileVO.setFile(images[0].toString());
-			fileVO.setTitle(images[1].toString());
-			fileVO.setDescription(images[2].toString());
+			fileVO.setFile(images[2].toString());
+			fileVO.setTitle(images[0].toString());
+			fileVO.setDescription(images[1].toString());
 			fileVO.setPathOfFile(IConstants.UPLOADED_FILES + "/Problem_Files/"
-					+ images[0]);
+					+ images[2]);
 			fileVOList.add(fileVO);
 		}
 		return fileVOList;
