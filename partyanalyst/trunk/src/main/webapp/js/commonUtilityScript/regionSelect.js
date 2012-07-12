@@ -596,6 +596,7 @@ function getCadresResults(btnType)
 	var villageSelectElmt = document.getElementById("hamletField_s");
 	var boothSelectElmt = document.getElementById("boothField_s");
 	var genderRadioEls = document.getElementsByName("genderTypeRadio");
+	var parliamentConstituencyEls = document.getElementById("parliamentConstituencyField_s");
 	var genderOption; 
 	if(REPORTLEVEL == '') 
 	{
@@ -724,6 +725,20 @@ function getCadresResults(btnType)
 				locationValue = boothSelectElmt.options[boothSelectElmt.selectedIndex].value;
 			}
 		}
+		else if(REPORTLEVEL == "10")
+		{
+			if(!parliamentConstituencyEls || parliamentConstituencyEls.options[parliamentConstituencyEls.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Constituency';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = parliamentConstituencyEls.options[parliamentConstituencyEls.selectedIndex].value;
+			}
+		}
+		
 		REPORTLOCATIONVALUE = locationValue;
 	}
 	else
@@ -1466,8 +1481,12 @@ function buildRegionsSelectBoxes(jsObj,results)
 			REPORTLEVEL = results.regions[i].id;
 			firstValue = results.regions[i].name+'_'+results.regions[i].id;				
 		}
+	
+		else if(i == 10)
+			str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\'),getLocationHierarchies(results.states[0].id,\'districtsInState\',\'cadreSearch\',\'districtField_s\',\'cadreSearch\', \'null\')"/>'+results.regions[i].name+'';
+
 		else
-			str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\')" /> '+results.regions[i].name+'';
+			str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
 	}
 	if(radioElmt)
 		radioElmt.innerHTML=str;
@@ -1554,6 +1573,15 @@ function buildRegionsSelectBoxes(jsObj,results)
 		//selectElmt.innerHTML=regionStr;
 
 	//displayRegionsSelect(firstValue,regTask);
+	
+	if(results.parliamentConstituencies != null)
+	{
+		for(var parliamentConstituencyList in results.parliamentConstituencies)
+		{
+			regionStr+='<option value="'+results.parliamentConstituencies[parliamentConstituencyList].id+'">'+results.parliamentConstituencies[parliamentConstituencyList].name+'</option>';
+		}
+	}
+
 	populateLocations(results.regions[0].id,'onLoad');
 
 }
