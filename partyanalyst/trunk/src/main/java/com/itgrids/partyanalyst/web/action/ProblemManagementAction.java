@@ -804,8 +804,14 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userId = null;
 		
-		problemStatusDataVO = problemManagementService.getProblemRecentDetailsByProblemHistoryId(jObj.getLong("pHistoryId"));
+		if(user==null)
+			return ERROR;
+		
+			userId = user.getRegistrationID();
+		problemStatusDataVO = problemManagementService.getProblemRecentDetailsByProblemId(jObj.getLong("pHistoryId"),userId);
 		
 		return Action.SUCCESS;
 	}
@@ -820,8 +826,15 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userId = null;
 		
-		problemStatusDataVOList = problemManagementService.getAllProblemRecentActivityDetails(jObj.getLong("pHistoryId"));
+		if(user==null)
+			return ERROR;
+		
+			userId = user.getRegistrationID();
+		
+		problemStatusDataVOList = problemManagementService.getAllProblemRecentActivityDetails(jObj.getLong("pHistoryId"),userId);
 		
 		return Action.SUCCESS;
 	}
@@ -829,8 +842,15 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		
 		try  {
 		jObj = new JSONObject(getTask());
-		Long problemHistoryId = jObj.getLong("pHistoryId");
-		uploadFilesList = problemManagementService.getAllProblemRelatedImages(problemHistoryId);
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userId = null;
+		
+		if(user==null)
+			return ERROR;
+		
+			userId = user.getRegistrationID();
+		Long problemId = jObj.getLong("pHistoryId");
+		uploadFilesList = problemManagementService.getAllProblemRelatedImages(problemId,userId);
 		}catch(ParseException e){
 			e.printStackTrace();
 		}
