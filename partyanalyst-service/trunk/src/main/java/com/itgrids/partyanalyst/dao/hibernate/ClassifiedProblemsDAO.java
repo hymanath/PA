@@ -1,10 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IClassifiedProblemsDAO;
 import com.itgrids.partyanalyst.model.ClassifiedProblems;
@@ -19,5 +17,9 @@ public class ClassifiedProblemsDAO extends GenericDaoHibernate<ClassifiedProblem
 	public List<Long> checkIfProblemAlreadyClassified(Long userProblemId){
 		return getHibernateTemplate().find("select model.classifiedProblemsId from ClassifiedProblems model where " +
 				"model.userProblem.userProblemId=?", userProblemId);
+	}
+	public List<ClassifiedProblems> getClassifiedproblemByUserProblemId(Long userProblemId){
+		return getHibernateTemplate().find("from ClassifiedProblems model where " +
+				"model.userProblem.userProblemId=? order by model.updatedTime desc", userProblemId);
 	}	
 }
