@@ -24,4 +24,5 @@ public interface IProblemAssignedDepartmentDAO extends GenericDao<ProblemAssigne
 	
 	public List<UserProblem> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr);
 
+	public List<ProblemAssignedDepartment> getAllActivitesByProblemId(Long userProblemId);
 }
