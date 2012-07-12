@@ -22,6 +22,19 @@
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
+<!--  BootStrap Stating and pasted 'assert' folder in webapp folder-->
+<link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+<!--  BootStrap Ending -->
+<!--  BootStrap Stating -->
+ <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<!--  BootStrap Ending -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="styles/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="styles/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="styles/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="styles/assets/ico/apple-touch-icon-57-precomposed.png">
 
 <link type="text/css" href="styles/menu.css" rel="stylesheet" />
     <script type="text/javascript" src="js/jquery.js"></script>
@@ -516,7 +529,7 @@ function buildAccordion()
         <input name="email" id="quickRequestEmailTextbox" type="text" class="text-fields" value="Email" onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
       </li>
       <li style="width:307px;">
-        <textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" Value="Comment" style="height:78px;width:297px;border:1px solid #7f7f7f;background-color:#7f7f7f"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';" >Comment</textarea>
+        <textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" Value="Comment" style="height:78px;width:287px;border:1px solid #7f7f7f;background-color:#7f7f7f"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';" >Comment</textarea>
       </li>
       <li style="width:307px;text-align:left;">
        <input name="mobileNO" id="quickRequestMobileTextbox" type="text" class="text-fields" value="Mobile No"  onblur="if(this.value=='')this.value=this.defaultValue;" onfocus="if(this.value==this.defaultValue)this.value='';"/>
