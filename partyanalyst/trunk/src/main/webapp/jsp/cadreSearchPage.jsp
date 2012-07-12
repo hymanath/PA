@@ -69,7 +69,6 @@ var isProblemAdding = <%=request.getParameter("addProblem")%>;
 
 function populateLocations(val,source)
 {	
-
 	REPORTLEVEL = val;
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
@@ -77,6 +76,7 @@ function populateLocations(val,source)
 	var row4El = document.getElementById("row4");
 	var row5El = document.getElementById("row5");
 	var row6El = document.getElementById("row6");
+	var row7El = document.getElementById("row7");
 	var stateFieldEl = document.getElementById("stateField_s");
 	var districtFieldEl = document.getElementById("districtField_s"); 
 	var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
@@ -84,7 +84,7 @@ function populateLocations(val,source)
 	var mandalFieldEl = document.getElementById("mandalField_s");
 	var hamletFieldEl = document.getElementById("hamletField_s");		
 	var boothFieldEl = document.getElementById("boothField_s");
-	
+	var parliamentConstituencyEl = document.getElementById("parliamentConstituencyField_s");
 		
  if(source == 'onChange')
 {
@@ -142,23 +142,27 @@ function populateLocations(val,source)
 	row3El.style.display = 'none';
 	row4El.style.display = 'none';
 	row5El.style.display = 'none';
-	row6El.style.display = 'none';		
+	row6El.style.display = 'none';	
+	row7El.style.display == 'none';
 	var value = val;
 	if(value == 1)
 	{
 		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
+			row1El.style.display = '';	
+		    row7El.style.display = 'none';
 		
 	} else if(value == 2)
 	{
 		if(row1El.style.display == 'none')
-			row1El.style.display = '';			
+			row1El.style.display = '';
+		   row7El.style.display = 'none';
 	} else if(value == 3)
 	{
 		if(row1El.style.display == 'none')
 			row1El.style.display = '';			 
 		if(row2El.style.display == 'none')
-			row2El.style.display = '';					
+			row2El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 4)
 	{
 		if(row1El.style.display == 'none')
@@ -166,7 +170,8 @@ function populateLocations(val,source)
 		if(row2El.style.display == 'none')
 			row2El.style.display = '';
 		if(row3El.style.display == 'none')
-			row3El.style.display = '';			
+			row3El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 5)
 	{
 		if(row1El.style.display == 'none')
@@ -176,7 +181,8 @@ function populateLocations(val,source)
 		if(row3El.style.display == 'none')
 			row3El.style.display = '';
 		if(row4El.style.display == 'none')
-			row4El.style.display = '';				
+			row4El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 6)
 	{
 		if(row1El.style.display == 'none')
@@ -188,7 +194,8 @@ function populateLocations(val,source)
 		if(row4El.style.display == 'none')
 			row4El.style.display = '';
 		if(row5El.style.display == 'none')
-			row5El.style.display = '';			
+			row5El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 7)
 	{
 		if(row1El.style.display == 'none')
@@ -198,7 +205,8 @@ function populateLocations(val,source)
 		if(row3El.style.display == 'none')
 			row3El.style.display = '';
 		if(row4El.style.display == 'none')
-			row4El.style.display = '';				
+			row4El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 8)
 	{
 		if(row1El.style.display == 'none')
@@ -210,7 +218,8 @@ function populateLocations(val,source)
 		if(row4El.style.display == 'none')
 			row4El.style.display = '';
 		if(row5El.style.display == 'none')
-			row5El.style.display = '';			
+			row5El.style.display = '';
+		    row7El.style.display = 'none';
 	} else if(value == 9)
 	{
 		if(row1El.style.display == 'none')
@@ -222,7 +231,15 @@ function populateLocations(val,source)
 		if(row4El.style.display == 'none')
 			row4El.style.display = '';
 		if(row6El.style.display == 'none')
-			row6El.style.display = '';			
+			row6El.style.display = '';
+		    row7El.style.display = 'none';
+	}
+	else if(value == 10)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';
+		if(row7El.style.display == 'none')
+			row7El.style.display = '';
 	}
 			 
 }
@@ -360,7 +377,16 @@ function setCadreIdToProblem()
 									<td>
 										<s:select id="constituencyField_s" theme="simple" cssClass="regionSelect" list="constituencyList" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreSearch','mandalField_s','cadreSearch')"></s:select>
 									</td>
-								</tr>								
+								</tr>
+								
+
+								<tr id="row7" style="display:none;">
+									<td><span>Parliament Constituency <font color="#FF0000">*</font></span></td>
+									<td><s:select id="parliamentConstituencyField_s" theme="simple" cssClass="regionSelect" list="parliamentConstituencies" listKey="id" listValue="name"></s:select></td>
+
+								</tr>
+
+
 								<tr id="row4" style="display:none;">
 									<td width="200"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /><font color="#FF0000"> * </font></td>
 									<td>
@@ -518,7 +544,7 @@ function setCadreIdToProblem()
 						<input type="button" class="btnClass" onclick="getCadresResults('search')" value="Search"/>
 						
 						<c:if test="${windowTask == 'Sms'}">
-						<input type="button" class="btnClass" onclick="getCadresResults('sms')" value="Send SMS"/>
+						<input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/>
 						</c:if>
 						
 					</td>
