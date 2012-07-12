@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 import com.itgrids.partyanalyst.model.UserProblem;
 
 public interface IProblemAssignedCadreDAO extends GenericDao<ProblemAssignedCadre,Long>{
+	public List<ProblemAssignedCadre> getProblemAssignedCadreByUserProblemId(Long userProblemId);
 	
 	public List<UserProblem> getAssignedCadreProblemsInARegion(Long userId,String locationStr);
 	
