@@ -383,40 +383,5 @@ public class MailsSendingService implements IMailsSendingService{
 		}
 	}
 	
-	/*public ResultStatus sendEmailToNewUserAfterPasswordChanged(RegistrationVO regVo,String requestFrom)
-	{
-		ResultStatus resultStatus = new ResultStatus();
-		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
-		if(regVo == null)
-		{
-			log.error("RegistrationVO is null in sendEmailToNewUserAfterPasswordChanged()");
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;
-		}
-		try{
-			String name = null;
-			if(regVo.getFirstName() != null)
-				name = regVo.getFirstName();
-			if(regVo.getLastName() != null)
-				name +=" "+regVo.getLastName(); 
-			String toAddress = regVo.getEmail();
-			
-			String subject = "PartyAnalyst.";
-			String content = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" +
-					"<div style='margin-left:26px;margin-top:20px;margin-bottom: 8px;>Hi <b>"+name+"</b><br>" +
-							"Password Saved Successfully.</div>" +
-					"</div>" ;
-			emailDetailsVO.setSubject(subject);
-			emailDetailsVO.setContent(content);
-			emailDetailsVO.setToAddress(toAddress);
-			mailService.sendEmail(emailDetailsVO);
-		
-		return resultStatus;
-		}catch (Exception e) {
-			log.error("Exception Occured in sendEmailToNewUserAfterPasswordChanged() Method, Exception is - "+e);
-			e.printStackTrace();
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			return resultStatus;
-		}
-	}*/
+	
 }
