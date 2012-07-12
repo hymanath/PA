@@ -40,6 +40,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="mailsTemplateService" ref="mailsTemplateService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>  
 	
 	<bean name="userTrackingService" class="com.itgrids.partyanalyst.service.impl.UserTrackingService" >
@@ -578,6 +579,7 @@
 		<property name="classifiedProblemsDAO" ref="classifiedProblemsDAO" />		
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
 		<property name="problemProgressDAO" ref="problemProgressDAO" />
+		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"/>
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
