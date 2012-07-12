@@ -504,7 +504,7 @@ public class LoginService implements ILoginService{
 				user.setPassword(newpassword);
 				user.setIsPwdChanged(IConstants.TRUE);
 				user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-				userDAO.save(user);
+				user = userDAO.save(user);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			else

@@ -7,12 +7,16 @@ public class MailsTemplateService implements IMailsTemplateService{
 	public String getHeader(){
 		
 		
-		String header = "<img src='http://www.partyanalyst.com/PartyAnalyst/images/icons/homePage_new/homePage_header_beta2.jpg' height='100px' width='100%'/>";
+		String header = "<img src='http://www.partyanalyst.com/images/icons/homePage_new/homePage_header_beta2.jpg' height='100px' width='100%'/>";
 		
 		return header;
 	}
 	public String getFooter(){
-		String footer = "";
+		String footer = "<div style='line-height: 1.8em;margin-left: 36px; margin-top: -26px; margin-right: 3px;'>" +
+				"<br>Thanks," +
+				"<br>Party Analyst Team<br>" +
+				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst</a><br>" +
+				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us dont end up in your junk folder.</p></div></div>";
 		return footer;
 	}
 }

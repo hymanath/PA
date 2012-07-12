@@ -1969,7 +1969,11 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 			registrationVO.setEmail((String)ananymousUserObj[0]);
 			
 			if(registrationVO.getEmail() != null && registrationVO.getEmail().trim().length() > 0)
+			{
 				registrationVO.setPassword((String)ananymousUserObj[1]);
+				registrationVO.setFirstName((String)ananymousUserObj[2]);
+				registrationVO.setLastName((String)ananymousUserObj[3]);
+			}
 			else
 				registrationVO.setEmail(null);
 			

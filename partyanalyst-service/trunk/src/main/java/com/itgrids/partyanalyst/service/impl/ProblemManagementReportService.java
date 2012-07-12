@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
@@ -126,10 +127,8 @@ public class ProblemManagementReportService implements
 	private IFeedbackDAO feedbackDAO;
 	private IUserDAO userDAO;
 	private IUserProblemDAO userProblemDAO;
-	private IProblemDAO problemDAO;
-	
+    private IProblemDAO problemDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
-	
 	
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
@@ -1971,14 +1970,12 @@ public class ProblemManagementReportService implements
 						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
 						problemLocationDAO.save(problemLocation);
 						sendEmailToFreeUserAfterProblemApproval(problemHistory);*/
-						// sendEmailToFreeUserAfterProblemApproval(problem);
+						 sendEmailToFreeUserAfterProblemApproval(problem);
 					}
 				
 		}
 		
-		
-		
-		/*private ResultStatus sendEmailToFreeUserAfterProblemApproval(Problem problem)
+		/*private ResultStatus sendEmailToFreeUserAfterProblemApproval(ProblemHistory problemHistory)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			
@@ -2027,11 +2024,60 @@ public class ProblemManagementReportService implements
 			
 		}
 		*/
-		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemHistory problemHistory)
+		
+		private ResultStatus sendEmailToFreeUserAfterProblemApproval(Problem problem)
+		{
+		ResultStatus resultStatus = new ResultStatus();
+		if(problem == null)
+		{
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+		}
+		try
+		{
+		String email = null;
+		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
+		EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
+		Long problemId = problem.getProblemId();
+		List<UserProblem> userProblem = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(problemId);
+		if(userProblem != null)
+		{
+		for(UserProblem problemDetails:userProblem)
+		{
+		email = problemDetails.getUser().getEmail();
+		if(email != null && email.trim().length() > 0)
+		emailDetailsVO.setFromAddress(problemDetails.getUser().getFirstName()+""+problemDetails.getUser().getLastName());
+		emailDetailsVO.setToAddress(email);
+		problemDetailsVO.setDefinition(problemDetails.getProblem().getTitle());
+		problemDetailsVO.setDescription(problemDetails.getProblem().getDescription());
+		problemDetailsVO.setSource(problemDetails.getProblem().getReferenceNo());
+		problemDetailsVO.setProblemHistoryId(problemDetails.getUserProblemId());
+		problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
+		mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
+		sendEmailToConnectedUsersAfterProblemApproval(problemDetails);
+		}
+		}
+		}
+		catch(Exception e)
+		{
+
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		resultStatus.setExceptionEncountered(e);
+		log.error("Exception Occured in ProblemManagementReportService ");
+		return resultStatus;
+		}
+		return resultStatus;
+
+		}
+
+
+		
+		public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(UserProblem userProblem)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			Long userId = null;
-			if(problemHistory == null)
+			String senderName = null;
+			if(userProblem == null)
 				{
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
@@ -2041,8 +2087,7 @@ public class ProblemManagementReportService implements
 				ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO();
 				EmailDetailsVO emailDetailsVO = new EmailDetailsVO();
 				
-				userId = problemHistory.getProblemLocation().getProblemAndProblemSource()
-						.getFreeUser().getUserId();
+				userId = userProblem.getUser().getUserId();
 				
 				if(userId != null && userId != 0)
 				{
@@ -2056,14 +2101,16 @@ public class ProblemManagementReportService implements
 							email = params[3].toString();
 							if(email != null && email.trim().length() > 0)
 							{
-								problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
-								problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-								problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
+								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
+								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
 								emailDetailsVO.setToAddress(email);
 								emailDetailsVO.setFromAddress(params[1].toString()+" "+params[2].toString());
-								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getFreeUser().getFirstName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getFreeUser().getLastName());
+								if(userProblem.getUser().getFirstName() != null)
+									senderName = userProblem.getUser().getFirstName();
+								if(userProblem.getUser().getLastName() != null)
+									senderName +=" "+userProblem.getUser().getLastName();
+								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
 								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
@@ -2079,15 +2126,16 @@ public class ProblemManagementReportService implements
 							email = param[3].toString();
 							if(email != null && email.trim().length() > 0)
 							{
-								problemDetailsVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
-								problemDetailsVO.setDefinition(problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getProblem().getProblem());
-								problemDetailsVO.setDescription(problemHistory.getProblemLocation().getProblemAndProblemSource()
-										.getProblem().getDescription());
+								problemDetailsVO.setProblemHistoryId(userProblem.getProblem().getProblemId());
+								problemDetailsVO.setDefinition(userProblem.getProblem().getTitle());
+								problemDetailsVO.setDescription(userProblem.getProblem().getDescription());
 								emailDetailsVO.setToAddress(email);
 								emailDetailsVO.setFromAddress(param[1].toString()+" "+param[2].toString());
-								emailDetailsVO.setSenderName(problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser()
-										.getFirstName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource().getFreeUser().getLastName());
+								if(userProblem.getUser().getFirstName() != null)
+									senderName = userProblem.getUser().getFirstName();
+								if(userProblem.getUser().getLastName() != null)
+									senderName +=" "+userProblem.getUser().getLastName();
+								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
 								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
@@ -2437,6 +2485,36 @@ public class ProblemManagementReportService implements
 			}
 		}
 		
+		public String getLocationStringFromProblem(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String locationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					locationStr = " and model.problem.problemCompleteLocation.state.stateId = "+locationId;
+				else if(regionId == 3)
+					locationStr = " and model.problem.problemCompleteLocation.district.districtId = "+locationId;
+				else if(regionId == 4)
+					locationStr = " and model.problem.problemCompleteLocation.constituency.constituencyId = "+locationId;
+				else if(regionId == 5)
+					locationStr = " and model.problem.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+				else if(regionId == 6)
+					locationStr = " and model.problem.problemCompleteLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					locationStr = " and model.problem.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+				else if(regionId == 8)
+					locationStr = " and model.problem.problemCompleteLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					locationStr = " and model.problem.problemCompleteLocation.booth.boothId = "+locationId;
+				
+				return locationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		
 		public String getLocationStringFromCadreProblemDetails(Long impactedRegionId,Long locationId)
 		{
 			try{
@@ -2471,6 +2549,7 @@ public class ProblemManagementReportService implements
 			try{
 				List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId, locationId));
 				
+				//List<Object> params = userProblemDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblem(impactedRegionId, locationId));
 				return getStatusWiseProblemsCount(params);
 				
 			}catch(Exception e){
