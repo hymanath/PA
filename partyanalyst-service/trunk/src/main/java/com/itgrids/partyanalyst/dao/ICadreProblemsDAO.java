@@ -25,4 +25,5 @@ public interface ICadreProblemsDAO extends GenericDao<CadreProblems,Long>{
 	
 	public List<Object> getProblemStatusOfACadre(Long cadreId);
 
+	public List<Object[]> getProblemPostedCadreName(Long problemId);
 }
