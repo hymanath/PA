@@ -75,9 +75,9 @@ public interface IProblemManagementService {
 	
 	public ResultStatus changePostedProblemStatusForAnUser(Long problemHistoryId,Long classificationId,Long scopeId,Long departmentId,Long cadreId,Long problemDeptLocId,String comments,String statusToChange);
 	
-	public ProblemStatusDataVO getProblemRecentDetailsByProblemHistoryId(Long problemHistoryId);
+	public ProblemStatusDataVO getProblemRecentDetailsByProblemId(Long problemId,Long userId);
 	
-	public List<ProblemStatusDataVO> getAllProblemRecentActivityDetails(Long problemHistoryId);
+	public List<ProblemStatusDataVO> getAllProblemRecentActivityDetails(Long problemHistoryId,Long userId);
 	
 	public ResultStatus updateProblemClassification(Long problemHistoryId,Long classificationId,String status);	
 	
@@ -103,7 +103,7 @@ public interface IProblemManagementService {
 	
 	public ResultStatus sendSuccessMsgToMobile(Long problemHistoryId);
 	
-	public List<FileVO> getAllProblemRelatedImages(Long problemHistoryId);
+	public List<FileVO> getAllProblemRelatedImages(Long problemId,Long userId);
 	
 	public List<File> uploadFiles(ProblemBeanVO problemBeanVO);
 	
