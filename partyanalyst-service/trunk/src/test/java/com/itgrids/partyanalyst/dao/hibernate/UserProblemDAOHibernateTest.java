@@ -292,7 +292,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List<Object> result = userProblemDAO.getTotalProblemsCountForAnUserInARegion(1l, "and model.problem.problemCompleteLocation.state.stateId = "+1l+"");
 		System.out.println(result.size());
-	}*/
+	}
 	
 	public void testGetUserProblemIdForCadreProblems()
 	{
