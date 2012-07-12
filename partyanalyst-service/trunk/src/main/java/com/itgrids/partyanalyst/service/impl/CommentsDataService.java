@@ -577,7 +577,7 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
 			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, 
-			Long userId, String userType, Long severityPercent){
+			Long userId, String userType, Long severityPercent,Boolean hasFreeUserRole, Boolean hasPartyAnalystUserRole){
 		
 		
 		String userName = "";
@@ -605,7 +605,7 @@ public class CommentsDataService implements ICommentsDataService {
 		
 		CandidateCommentsVO candidateComments = null;
 		commentCategoryCandidate = saveCandidateCommentForAnElection(electionType, electionYear, electionId, 
-				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType, severity);
+				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType, severity,hasFreeUserRole,hasPartyAnalystUserRole);
 		try{
 		if(commentCategoryCandidate != null){
 			candidateComments = new CandidateCommentsVO();
@@ -677,7 +677,7 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType, String electionYear, Long electionId,
 			Long constituencyId, Long candidateId,final String commentDesc,	final String commentedBy,Long commentCategoryId, 
-			final Long userId, final String userType, final Float severity) {
+			final Long userId, final String userType, final Float severity,final Boolean hasFreeUserRole, final Boolean hasPartyAnalystUserRole) {
 		
 		log.debug("Inside saveCandidateCommentForAnElection Method ......");
 		
@@ -740,6 +740,11 @@ public class CommentsDataService implements ICommentsDataService {
 					commentData.setCommentBy(commentedBy);
 					commentData.setCommentDate(today);
 					commentData.setCommentDataCategory(commentDataCategory);
+					if(hasPartyAnalystUserRole != null && hasPartyAnalystUserRole.equals(true))
+						commentData.setIsApproved(IConstants.TRUE);
+					
+					else if(hasFreeUserRole != null && hasFreeUserRole.equals(true))
+					  commentData.setIsApproved(IConstants.FALSE);
 					
 					commentCategoryCandidateSaved = new CommentCategoryCandidate();
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
@@ -859,12 +864,12 @@ public class CommentsDataService implements ICommentsDataService {
 	 * Method to save the comments placed for a party to DB
 	 */
 	public PartyCommentsVO savePartyCommentsToDB(String electionType, String electionYear, Long electionId,
-			Long partyId,String commentDesc,String commentedBy,Long commentCategoryId){
+			Long partyId,String commentDesc,String commentedBy,Long commentCategoryId,Boolean hasFreeUserRole,Boolean hasPartyAnalystUserRole){
 		
 		log.debug("Inside savePartyCommentsToDB Method ......");
 		
 		PartyCommentsVO partyComments = null;
-		CommentCategoryParty commentCategoryParty = savePartyCommentForAnElection(electionType,electionYear,electionId,partyId,commentDesc,commentedBy,commentCategoryId);
+		CommentCategoryParty commentCategoryParty = savePartyCommentForAnElection(electionType,electionYear,electionId,partyId,commentDesc,commentedBy,commentCategoryId,hasFreeUserRole,hasPartyAnalystUserRole);
 		
 		if(commentCategoryParty != null){
 			partyComments = new PartyCommentsVO();
@@ -885,7 +890,7 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CommentCategoryParty savePartyCommentForAnElection(
 			String electionType, String electionYear, Long electionId,
-			final Long partyId,final String commentDesc,final String commentedBy,Long commentCategoryId) {
+			final Long partyId,final String commentDesc,final String commentedBy,Long commentCategoryId,final Boolean hasFreeUserRole,final Boolean hasPartyAnalystUserRole) {
 		
 		log.debug("Inside savePartyCommentForAnElection Method ......");
 		
@@ -920,6 +925,10 @@ public class CommentsDataService implements ICommentsDataService {
 					commentData.setCommentBy(commentedBy);
 					commentData.setCommentDate(today);
 					commentData.setCommentDataCategory(commentDataCategory);
+					if(hasPartyAnalystUserRole != null && hasPartyAnalystUserRole.equals(IConstants.TRUE))
+					  commentData.setIsApproved(IConstants.FALSE);
+					else if(hasFreeUserRole !=null && hasFreeUserRole.equals(IConstants.TRUE))
+						commentData.setIsApproved(IConstants.FALSE);
 					
 					commentCategoryPartySaved = new CommentCategoryParty();
 					commentCategoryPartySaved.setCommentData(commentData);
