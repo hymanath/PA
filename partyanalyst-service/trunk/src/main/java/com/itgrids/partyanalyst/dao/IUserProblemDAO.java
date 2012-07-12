@@ -84,11 +84,14 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List<Problem> getProblemHistoryBasedOnId(Long problemId,Long userId);
 	public List<UserProblem> getUserProblem(Long problemId, Long userId);
-
+	
 	public List findProblemsByDateAndLocation(Long userId, Date fromDate, Date toDate);
 	
 	public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate);
 	
 	public List<UserProblem> findProblemDetailsByProblemId(Long problemId);
 	
+	public List<UserProblem> getUserProblemIdForCadreProblems(Long problemId,Long userId);
+	
+	public List<UserProblem> getProblemDetailsOfUserToSendEmailAfterProblemApproval(Long problemId);
 }

@@ -8,5 +8,7 @@ import com.itgrids.partyanalyst.model.ProblemFiles;
 
 public interface IProblemFilesDAO extends GenericDao<ProblemFiles,Long>{
 	public List<Object[]> getCurrentDateFiles(Date currentDate,Date endDate,String isApproved);
+	
+	public List<Object> getNoOfFilesUploadedForAUser(Long problemId);
 
 }
