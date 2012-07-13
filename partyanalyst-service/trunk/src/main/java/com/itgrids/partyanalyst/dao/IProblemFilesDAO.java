@@ -12,5 +12,7 @@ public interface IProblemFilesDAO extends GenericDao<ProblemFiles,Long>{
 	public List<Object> getNoOfFilesUploadedForAUser(Long problemId);
 	
 	public List<Object[]> getProblemRelatedFilesForAUser(Long problemId,Long userId);
+	
+	public Long getCountOfNewlyPostedImagesByFreeUser();
 
 }

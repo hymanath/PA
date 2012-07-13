@@ -11,4 +11,6 @@ public interface IProblemDAO extends GenericDao<Problem,Long>{
 	
 	public Integer deleteProblemDetails(Long problemId,Date currentDate);
 	
+	public Long getCountOfNewlyPostedProblemsByFreeUser();
+	
 }
