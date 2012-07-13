@@ -40,4 +40,10 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 		return queryObject.executeUpdate();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemComments(Long problemId)
+	{
+		return getHibernateTemplate().find("select model.comment.comment,model.comment.commentId from ProblemComments model where model.problem.problemId = ? and model.isApproved='"+IConstants.TRUE+"' and model.isDelete = null",problemId);
+	}
 }
