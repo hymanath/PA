@@ -13,5 +13,7 @@ public interface IProblemCommentsDAO extends GenericDao<ProblemComments,Long>{
 	@SuppressWarnings("unchecked")
 	public List findUserApprovalStatusbetweendates(Date fromDate, Date toDate);
 	public int updatesCommentsByAdmin(List<Long> approvalDetailsIds, String isApproved);
+	
+	public List<Object[]> getProblemComments(Long problemId);
 
 }
