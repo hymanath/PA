@@ -19,8 +19,8 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 	public List<Object[]> getCurrentDateFiles(Date currentDate,Date endDate,String isApproved)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.problemFilesId,model.file.fileTitle,model.file.fileDescription,model.problem.title,model.isApproved,model.problem.existingFrom,model.problem.identifiedOn,model.user.firstName,model.user.lastName");
-		query.append(" from ProblemFiles model where model.isDelete =:isDelete and model.problem.isDelete =:isDelete ");
+		query.append(" select model.problemFilesId,model.file.fileTitle,model.file.fileDescription,model.problem.title,model.isApproved,model.problem.existingFrom,model.problem.identifiedOn,model.user.firstName,model.user.lastName,model.file.fileName");
+		query.append(" from ProblemFiles model where (model.isDelete =:isDelete or model.isDelete is null) and (model.problem.isDelete =:isDelete or model.problem.isDelete is null)");
 		if(currentDate != null)
 			query.append(" and date(model.insertedTime) >=:currentDate");
 		 if(endDate != null)
@@ -43,6 +43,12 @@ public class ProblemFilesDAO extends GenericDaoHibernate<ProblemFiles,Long> impl
 	public List<Object> getNoOfFilesUploadedForAUser(Long problemId)
 	{
 		return getHibernateTemplate().find("select count(model.problemFilesId) from ProblemFiles model where model.problem.problemId =?",problemId);
+	}
+	
+	public Long getCountOfNewlyPostedImagesByFreeUser()
+	{
+		Query query = getSession().createQuery("select count(model.problemFilesId) from ProblemFiles model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false')");
+		return (Long) query.uniqueResult();
 	}
 	
 	public List<Object[]> getProblemRelatedFilesForAUser(Long problemId,Long userId){

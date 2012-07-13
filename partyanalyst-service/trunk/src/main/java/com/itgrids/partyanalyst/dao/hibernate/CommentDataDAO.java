@@ -32,7 +32,7 @@ public class CommentDataDAO extends GenericDaoHibernate<CommentData, Long> imple
 	}
 	public Long getcountOfNewlyPostedReasonByFreeUser()
 	{
-		Query query = getSession().createQuery("select count(*) from CommentData model where model.isApproved is null");
+		Query query = getSession().createQuery("select count(*) from CommentData model where model.isApproved is null or model.isApproved = 'false'");
 		return (Long)query.uniqueResult();
 	}
 }

@@ -647,14 +647,26 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return query.list();
 		}
  		
-       public List<String> checkIsProblemOwner(Long problemId,Long userId){
-    	   Object [] params = {problemId,userId};
-    	   return getHibernateTemplate().find("select model.isOwner from UserProblem model where model.problem.problemId = ?" +
-					" and model.user.userId = ?",params );
-       }
-       public List<Object[]> getProblemOwnerName(Long problemId){
-    	   Object [] params = {problemId,IConstants.TRUE};
-    	   return getHibernateTemplate().find("select model.user.firstName,model.user.lastName from UserProblem model where model.problem.problemId = ?" +
-					" and model.isOwner = ?",params );
-       }
+	       public List<String> checkIsProblemOwner(Long problemId,Long userId){
+	    	   Object [] params = {problemId,userId};
+	    	   return getHibernateTemplate().find("select model.isOwner from UserProblem model where model.problem.problemId = ?" +
+						" and model.user.userId = ?",params );
+	       }
+	       public List<Object[]> getProblemOwnerName(Long problemId){
+	    	   Object [] params = {problemId,IConstants.TRUE};
+	    	   return getHibernateTemplate().find("select model.user.firstName,model.user.lastName from UserProblem model where model.problem.problemId = ?" +
+						" and model.isOwner = ?",params );
+	       }
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> getProblemDetailsByProblemReferenceNo(String problemReferenceNo)
+		{
+			Query query = getSession().createQuery("select model.problem.problemId, model.problem.title, model.user.userId," +
+					"model.problem.isApproved from UserProblem model where model.problem.referenceNo= ? and " +
+					"(model.problem.isDelete is null or model.problem.isDelete = 'false') " +
+					"and model.user.userId is not null and model.visibility.type='Public'");
+			query.setParameter(0, problemReferenceNo);
+			return query.list();
+		}
+ 
 }
