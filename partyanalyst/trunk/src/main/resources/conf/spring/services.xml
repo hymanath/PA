@@ -715,6 +715,7 @@
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
 		<property name="cadreProblemsDAO" ref="cadreProblemsDAO"></property>
 		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"></property>
+		<property name="problemCommentsDAO" ref="problemCommentsDAO"></property>
 		
 	</bean>
 	
