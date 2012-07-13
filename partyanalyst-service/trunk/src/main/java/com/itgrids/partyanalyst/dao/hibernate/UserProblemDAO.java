@@ -470,7 +470,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		{
 			Object[] params = {userId};
 			return getHibernateTemplate().find(" from UserProblem model where " +
-			" model.user.userId = ? and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
+			" model.user.userId = ? "+locationStr+" "+statusStr+" and (model.problem.isDelete = '"+IConstants.FALSE+"' or model.problem.isDelete is null) and model.problem.isApproved ='"+IConstants.TRUE+"'",params);
 		}
 		
 
