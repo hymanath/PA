@@ -67,5 +67,20 @@ public class DateUtilService {
 			return null;
 		}
 	}
+	
+	public String getCurrentDateInStringFormat()
+	{
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			return sdf.format(new Date());
+			
+		}catch(Exception e){
+			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
+					" check for log details");
+			return null;
+		}
+	}
+	
 
 }
