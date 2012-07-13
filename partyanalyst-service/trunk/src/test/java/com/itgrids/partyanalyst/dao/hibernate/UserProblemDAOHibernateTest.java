@@ -279,27 +279,27 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetCadreProblemsInARegionByUserProblemId()
-	{
-		List<UserProblem> list = userProblemDAO.getCadreProblemsInARegionByUserProblemId(1l,30l);
-		for(UserProblem problem : list)
-		{
-			System.out.println(problem.getProblem().getDescription());
-		}
-	}
-	
-	public void testGetTotalProblemsCountForAnUserInARegion()
-	{
-		List<Object> result = userProblemDAO.getTotalProblemsCountForAnUserInARegion(1l, "and model.problem.problemCompleteLocation.state.stateId = "+1l+"");
-		System.out.println(result.size());
-	}
-	
-	public void testGetUserProblemIdForCadreProblems()
-	{
-		List<UserProblem> result = userProblemDAO.getUserProblemIdForCadreProblems(8l, 1219l);
-		System.out.println(result.get(0).getUser().getFirstName());
-	}
-	
+//	public void testgetCadreProblemsInARegionByUserProblemId()
+//	{
+//		List<UserProblem> list = userProblemDAO.getCadreProblemsInARegionByUserProblemId(1l,30l);
+//		for(UserProblem problem : list)
+//		{
+//			System.out.println(problem.getProblem().getDescription());
+//		}
+//	}
+//	
+//	public void testGetTotalProblemsCountForAnUserInARegion()
+//	{
+//		List<Object> result = userProblemDAO.getTotalProblemsCountForAnUserInARegion(1l, "and model.problem.problemCompleteLocation.state.stateId = "+1l+"");
+//		System.out.println(result.size());
+//	}
+//	
+//	public void testGetUserProblemIdForCadreProblems()
+//	{
+//		List<UserProblem> result = userProblemDAO.getUserProblemIdForCadreProblems(8l, 1219l);
+//		System.out.println(result.get(0).getUser().getFirstName());
+//	}
+//	
 	/*public void testGetProblemDetailsOfUserToSendEmailAfterProblemApproval()
 	{
 		List<UserProblem> userProblemDet = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(7l);
@@ -311,4 +311,12 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}*/
+	
+	public void testgetStatusWiseProblemsForAnUserInARegion()
+	{
+		String locationStr=" and model.problem.problemCompleteLocation.state.stateId = 1";
+		String statusStr = " and model.problem.problemStatus.status = 'PROGRESS' ";
+		List<UserProblem> list = userProblemDAO.getStatusWiseProblemsForAnUserInARegion(1l,locationStr,statusStr);
+		System.out.println(list.size());
+	}
 }
