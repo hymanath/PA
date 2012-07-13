@@ -235,12 +235,16 @@ function getAllProblemsBetweenDates()
 			var startDate = document.getElementById("identifiedFromText").value;
 			var endDate = document.getElementById("reportedFromText").value;
 			var selection = document.getElementsByName("problemRetrivalType");
-			var selectedRadio;
+			var selectedRadio = null;
 			for(var i=0;i<selection.length;i++){
 				if(selection[i].checked == true){
 					selectedRadio = selection[i].value;					
 				}
-			}			
+			}
+			
+			if(selectedRadio == null)
+			
+				selectedRadio = 'NEW';
 			var jsObj=
 			{		
 					choice:selectedRadio,
