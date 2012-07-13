@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
@@ -138,6 +139,16 @@ public class ProblemManagementReportService implements
 	private ICadreProblemsDAO cadreProblemsDAO;
 	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
 	
+	private IProblemCommentsDAO problemCommentsDAO;
+	
+	public IProblemCommentsDAO getProblemCommentsDAO() {
+		return problemCommentsDAO;
+	}
+
+	public void setProblemCommentsDAO(IProblemCommentsDAO problemCommentsDAO) {
+		this.problemCommentsDAO = problemCommentsDAO;
+	}
+
 	public IProblemAssignedCadreDAO getProblemAssignedCadreDAO() {
 		return problemAssignedCadreDAO;
 	}
@@ -3158,6 +3169,16 @@ public class ProblemManagementReportService implements
 						problemBeanVO.setProblemStatus(userProblem.getProblem().getProblemStatus().getStatus().toString());
 						problemBeanVO.setProblemHistoryId(userProblem.getUserProblemId());
 						problemBeanVO.setProblemLocation(getProblemLocation(userProblem.getProblem().getRegionScopes().getRegionScopesId(),userProblem.getProblem().getImpactLevelValue()));
+						//problem Comments
+						List<Object[]> problemComments = problemCommentsDAO.getProblemComments(userProblem.getProblem().getProblemId());
+						if(problemComments != null &&problemComments.size() > 0)
+						{
+							for(Object[] params : problemComments)
+							{
+								problemBeanVO.setComments(params[0].toString());
+							}
+						}
+						
 						for(ProblemAssignedCadre assigned : set)
 						{
 							if(assigned.getProblemAssignedCadreId() != null && assigned.getCadre()!=null)
@@ -3170,9 +3191,10 @@ public class ProblemManagementReportService implements
 						{
 							if(progress != null && progress.getProblemActivity()!= null)
 								problemBeanVO.setRecentActivity(progress.getProblemActivity().getComments());
-							if(progress != null && progress.getComment() != null)
-								problemBeanVO.setComments(progress.getComment().getComment());
+							
 						}
+						
+						
 						for(ProblemAssignedDepartment department : problemAssignedDepartmentset)
 						{
 							if(department != null && department.getDepartmentOrganisation() != null)
