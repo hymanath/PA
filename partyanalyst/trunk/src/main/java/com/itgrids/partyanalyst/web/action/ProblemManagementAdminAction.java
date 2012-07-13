@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -50,6 +51,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	private IDateService dateService;
 	private IProblemManagementService problemManagementService;
 	private List<FileVO>filevoList;
+	private DateUtilService dateUtilService = new DateUtilService();
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
 	}
@@ -248,7 +250,16 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				
 				if(jObj.getString("task").equals("betweenDates")){	
 					//result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
-					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getString("choice"));
+					String fromDate = jObj.getString("fromDate");
+					String toDate = jObj.getString("toDate");
+					String choice = jObj.getString("choice");
+					if(fromDate == null || fromDate.equals(""))
+						fromDate = dateUtilService.getCurrentDateInStringFormat();
+					if(toDate == null || toDate.equals(""))
+						toDate = dateUtilService.getCurrentDateInStringFormat();
+					if(choice == null)
+						choice = "NEW";
+					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(fromDate,toDate,choice);
 				}
 				
 				if(jObj.getString("task").equals("currentDate")){	
