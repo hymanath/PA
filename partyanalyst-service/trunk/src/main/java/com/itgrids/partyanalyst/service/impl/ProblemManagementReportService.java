@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
@@ -38,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemFileDAO;
+import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
@@ -48,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
@@ -138,6 +138,7 @@ public class ProblemManagementReportService implements
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	private ICadreProblemsDAO cadreProblemsDAO;
 	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
+	private IProblemFilesDAO problemFilesDAO;
 	
 	private IProblemCommentsDAO problemCommentsDAO;
 	
@@ -165,7 +166,8 @@ public class ProblemManagementReportService implements
 	public void setCadreProblemsDAO(ICadreProblemsDAO cadreProblemsDAO) {
 		this.cadreProblemsDAO = cadreProblemsDAO;
 	}
-
+ 
+	
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -460,6 +462,14 @@ public class ProblemManagementReportService implements
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public IProblemFilesDAO getProblemFilesDAO() {
+		return problemFilesDAO;
+	}
+
+	public void setProblemFilesDAO(IProblemFilesDAO problemFilesDAO) {
+		this.problemFilesDAO = problemFilesDAO;
 	}
 
 	/**
@@ -1815,7 +1825,7 @@ public class ProblemManagementReportService implements
 			Date todayDate = dateUtilService.getCurrentDateAndTime();
 			try{
 				//list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
-				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(todayDate,null,null);
+				list = userProblemDAO.getAllProblemsOfCurrentDateByFreeUser(todayDate,null,"false");
 				//navigationVO = generateVoContainingAllApprovalProblems(list);
 				navigationVO = 	displayPostedProblemOnAdmin(list);			
 				return navigationVO;
@@ -3417,7 +3427,7 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 				return mainList;
 			}
 		}
-		public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser() 
+		/*public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser() 
 		{
 			ProblemBeanVO problemBeanVO = null;
 			try{
@@ -3450,5 +3460,41 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 	    	}
 	    	return problemBeanVO;
 		}
+*/	
 		
+		public ProblemBeanVO getCountOfNewlyPostedProblemsByFreeUser() 
+		{
+			ProblemBeanVO problemBeanVO = null;
+			try{
+	    		if(log.isDebugEnabled())
+	    			log.debug("Entered into getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService");
+	    		//Count of newly Posted problems by free user.
+	    		Long countofNewlyProblems = problemDAO.getCountOfNewlyPostedProblemsByFreeUser();
+	    		//Count of newly Posted images by free user.
+	    		Long countofNewlyImages = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser();
+	    		//count of newly posted comments by free user.
+	    		//Long countofNewlyComments = approvalDetailsDAO.getCountOfNewlyPostedCommentsByUser();
+	    		Long countofNewlyComments = problemCommentsDAO.getCountOfNewlyPostedProblemCommentsByUser();
+	    		//count of newly posted political reason
+	    		Long countofNewlyReasons = commentDataDAO.getcountOfNewlyPostedReasonByFreeUser();
+	    		//count of newly posted Feedbacks
+	    		Long countOfNewlyFeedBack =  feedbackDAO.getCountOfNewlyPostedFeedbackByFreeUser();
+	    		if(countofNewlyProblems != null || countofNewlyImages !=null || countofNewlyComments != null || countofNewlyReasons != null || countOfNewlyFeedBack != null)
+	    		{ 
+	    			problemBeanVO = new ProblemBeanVO();
+	    		    problemBeanVO.setProblemsCount(countofNewlyProblems);
+	    		    problemBeanVO.setImageCount(countofNewlyImages);
+	    		    problemBeanVO.setDiscommentCount(countofNewlyComments);
+	    		    problemBeanVO.setPoliticalCount(countofNewlyReasons);
+	    		    problemBeanVO.setFeedBackCount(countOfNewlyFeedBack);
+	    		    
+	    		}
+	    	}catch(Exception e){
+	    		
+	    		 log.error("Exception Occured in getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService "+e);
+	    		
+	    	}
+	    	return problemBeanVO;
+		}
+
 }
