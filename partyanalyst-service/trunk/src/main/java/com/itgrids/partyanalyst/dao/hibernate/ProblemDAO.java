@@ -26,4 +26,10 @@ public class ProblemDAO extends GenericDaoHibernate<Problem,Long> implements IPr
 		return queryObj.executeUpdate();
 	}	
 	
+	public Long getCountOfNewlyPostedProblemsByFreeUser()
+	{
+		Query query = getSession().createQuery("select count(model.problemId) from Problem model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false')");
+		return (Long) query.uniqueResult();
+	}
+	
 }

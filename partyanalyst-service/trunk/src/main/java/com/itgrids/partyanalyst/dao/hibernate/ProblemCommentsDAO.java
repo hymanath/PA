@@ -45,5 +45,10 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 	public List<Object[]> getProblemComments(Long problemId)
 	{
 		return getHibernateTemplate().find("select model.comment.comment,model.comment.commentId from ProblemComments model where model.problem.problemId = ? and model.isApproved='"+IConstants.TRUE+"' and model.isDelete = null",problemId);
+	}	
+	public Long getCountOfNewlyPostedProblemCommentsByUser()
+	{
+		Query query = getSession().createQuery("select count(*) from ProblemComments model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false') ");
+		return (Long) query.uniqueResult();
 	}
 }
