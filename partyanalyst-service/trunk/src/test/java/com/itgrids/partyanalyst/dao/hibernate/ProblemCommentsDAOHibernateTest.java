@@ -21,7 +21,7 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 		problemCommentsDAO.getAll();
 	}*/
 	
-	
+	/*
 	public void testfindUserApprovalStatusbetweendates()throws Exception
 	{  
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
@@ -38,6 +38,16 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("4"+obj[3]);
 			//System.out.println("5"+obj[4]);		
 			
+		}
+	}*/
+	
+	public void testgetProblemComments()
+	{
+		List<Object[]> list = problemCommentsDAO.getProblemComments(30l);
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0].toString());
 		}
 	}
 
