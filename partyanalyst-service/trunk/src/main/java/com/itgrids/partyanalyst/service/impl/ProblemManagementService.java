@@ -5890,7 +5890,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			if(log.isDebugEnabled())
 				log.debug("Entered into getImageDetails() of problemManagementService");
 		
-		    List<Object[]> object = problemFilesDAO.getCurrentDateFiles(dateUtilService.getCurrentDateAndTime(),null,null);
+		    List<Object[]> object = problemFilesDAO.getCurrentDateFiles(null,null,"false");
 		    fileVOList = setFilesToVO(object);
 		}   
 		catch(Exception e)
@@ -5928,6 +5928,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				fileVO.setExistingDateFrom(params[5].toString());
 				fileVO.setIdentifiedDateOn(params[6].toString());
 				fileVO.setName(params[7].toString()+""+params[8].toString());
+				fileVO.setFileName1(params[9].toString());
 				
 				
 			
@@ -6641,7 +6642,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		ProblemBeanVO problemBeanVO = null;
 		try
 		{
-			List<Object[]> list = problemHistoryDAO.getProblemHistoryIdByReferenceId(problemReferenceId);
+			//List<Object[]> list = problemHistoryDAO.getProblemHistoryIdByReferenceId(problemReferenceId);
+			List<Object[]> list = userProblemDAO.getProblemDetailsByProblemReferenceNo(problemReferenceId);
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
