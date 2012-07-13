@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
+import org.hibernate.Query;
 
 
 import com.itgrids.partyanalyst.model.ProblemComments;
@@ -15,5 +16,7 @@ public interface IProblemCommentsDAO extends GenericDao<ProblemComments,Long>{
 	public int updatesCommentsByAdmin(List<Long> approvalDetailsIds, String isApproved);
 	
 	public List<Object[]> getProblemComments(Long problemId);
-
+	
+	public Long getCountOfNewlyPostedProblemCommentsByUser();
+	
 }
