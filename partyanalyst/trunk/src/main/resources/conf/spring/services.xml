@@ -716,7 +716,8 @@
 		<property name="cadreProblemsDAO" ref="cadreProblemsDAO"></property>
 		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"></property>
 		<property name="problemCommentsDAO" ref="problemCommentsDAO"></property>
-		
+		<property name="problemFilesDAO" ref="problemFilesDAO"/>
+				
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
