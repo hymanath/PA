@@ -278,7 +278,6 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(problemDetails.getProblem().getDescription());
 		}
 	}*/
-	
 //	public void testgetCadreProblemsInARegionByUserProblemId()
 //	{
 //		List<UserProblem> list = userProblemDAO.getCadreProblemsInARegionByUserProblemId(1l,30l);
@@ -294,12 +293,12 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 //		System.out.println(result.size());
 //	}
 //	
-//	public void testGetUserProblemIdForCadreProblems()
-//	{
-//		List<UserProblem> result = userProblemDAO.getUserProblemIdForCadreProblems(8l, 1219l);
-//		System.out.println(result.get(0).getUser().getFirstName());
-//	}
-//	
+	/*public void testGetUserProblemIdForCadreProblems()
+	{
+		List<UserProblem> result = userProblemDAO.getUserProblemIdForCadreProblems(8l, 1219l);
+		System.out.println(result.get(0).getUser().getFirstName());
+	}
+	*/
 	/*public void testGetProblemDetailsOfUserToSendEmailAfterProblemApproval()
 	{
 		List<UserProblem> userProblemDet = userProblemDAO.getProblemDetailsOfUserToSendEmailAfterProblemApproval(7l);
@@ -311,12 +310,26 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}*/
-	
 	public void testgetStatusWiseProblemsForAnUserInARegion()
 	{
 		String locationStr=" and model.problem.problemCompleteLocation.state.stateId = 1";
 		String statusStr = " and model.problem.problemStatus.status = 'PROGRESS' ";
 		List<UserProblem> list = userProblemDAO.getStatusWiseProblemsForAnUserInARegion(1l,locationStr,statusStr);
 		System.out.println(list.size());
+	}
+	
+	public void testGetProblemDetailsByProblemReferenceNo()
+	{
+		List<Object[]> result = userProblemDAO.getProblemDetailsByProblemReferenceNo("FU01296");
+		if(result != null && result.size() > 0)
+		{
+			for(Object[] params : result)
+			{
+				System.out.println(params[0]);
+				System.out.println(params[1]);
+				System.out.println(params[2]);
+				System.out.println(params[3]);
+			}
+		}
 	}
 }

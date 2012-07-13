@@ -27,7 +27,7 @@ public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 					
 		System.out.println("details");
-		List<Object[]> list = problemFilesDAO. getCurrentDateFiles(sdf.parse("2012/07/04"),null,null);				
+		List<Object[]> list = problemFilesDAO. getCurrentDateFiles(null,null,"false");				
 			System.out.println("size"+list.size());
 		for(Object[] obj : list)
 		{
@@ -43,4 +43,10 @@ public class ProblemFilesDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 	}
+	
+	/*public void testGetCountOfNewlyPostedImagesByFreeUser()
+	{
+		Long newlyPostedImagesCount = problemFilesDAO.getCountOfNewlyPostedImagesByFreeUser();
+		System.out.println(newlyPostedImagesCount);
+	}*/
 }
