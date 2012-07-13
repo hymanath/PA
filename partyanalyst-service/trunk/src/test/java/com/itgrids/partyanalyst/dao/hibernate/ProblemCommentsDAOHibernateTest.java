@@ -40,7 +40,6 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 	}*/
-	
 	public void testgetProblemComments()
 	{
 		List<Object[]> list = problemCommentsDAO.getProblemComments(30l);
@@ -49,6 +48,11 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0].toString());
 		}
+	}
+	public void testGetCountOfNewlyPostedProblemCommentsByUser()
+	{
+		Long newlyPostedProbCOmmentsCount = problemCommentsDAO.getCountOfNewlyPostedProblemCommentsByUser();
+		System.out.println(newlyPostedProbCOmmentsCount);
 	}
 
 }
