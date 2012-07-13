@@ -106,7 +106,7 @@
 							results = YAHOO.lang.JSON.parse(o.responseText);		
 							if(jsObj.task == "performDeletionOrAcceptenceProblems"){
 								selectedProblemHistoryIdsArray = "" ;
-								getAllProblems();	
+								getAllProblemsBetweenDates();	
 							} else if(jsObj.task == "currentDate" || jsObj.task == "betweenDates" || jsObj.task == "selectedDate"){
 								buildNewProblemsDataTable(results.approvalProblems);
 							}	
@@ -128,12 +128,14 @@
 			var startDate = document.getElementById("identifiedFromText").value;
 			var endDate = document.getElementById("reportedFromText").value;
 			var selection = document.getElementsByName("problemRetrivalType");
-			var selectedRadio;
+			var selectedRadio = null;
 			for(var i=0;i<selection.length;i++){
 				if(selection[i].checked == true){
 					selectedRadio = selection[i].value;					
 				}
-			}			
+			}
+			if(selectedRadio == null)
+				selectedRadio = 'NEW';
 			var jsObj=
 			{		
 					choice:selectedRadio,
@@ -147,7 +149,7 @@
 			callAjax(rparam,jsObj,url);
 		}
 
-		function getAllProblems()
+		/* function getAllProblems()
 		{
 			var jsObj=
 			{					
@@ -157,7 +159,7 @@
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
 			callAjax(rparam,jsObj,url);
-		}
+		}*/
 
 		function getAllProblemsForParticularDate()			
 		{
@@ -205,7 +207,7 @@
 		            {key:"problemHistoryId", hidden: true}, 
 		            {key:"problem", label: "<%=problemLabel%>", sortable:true, maxAutoWidth:150}, 
 		            {key:"description", label: "<%=description%>", sortable:true, maxAutoWidth:250}, 
-					{key:"isApproved", label: "Severity", sortable:true},						
+					{key:"isApproved", label: "Status", sortable:true},						
 					{key:"postedDate", 	label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},			
 					{key:"name", label: "<%=source%>", sortable:true}	
 		        ]; 
@@ -356,7 +358,7 @@
 	<table>
 		<tr>
 			<td style="font-family:verdana;font-weight:bold;">
-				<input type="checkbox" onclick="getAllProblems()" checked="true"/> All Problems Posted For Today 
+				<input type="checkbox" onclick="getAllProblemsBetweenDates()" checked="true"/> All Problems Posted For Today 
 			</td>		
 			<td style="padding-left:450px">
 				<div id="advancedSearchDiv" class="button">
@@ -479,7 +481,8 @@
 </table>	
 </div>
 <script type="text/javascript">
-getAllProblems();
+//getAllProblems();
+getAllProblemsBetweenDates();
 </script>
 </body>
 </html>
