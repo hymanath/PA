@@ -2307,10 +2307,11 @@ function getDeptWiseProblemsBasedOnStatusInARegion(deptId,status)
 
 function buildResultDataTable(result)
 {
+	
 	 var statusWiseProblemInfoDivBodyEle = document.getElementById("statusWiseProblemInfoDivBody");
 	 
-	 if(!statusWiseProblemInfoDivBodyEle || result == null)
-		 return;
+	/* if(!statusWiseProblemInfoDivBodyEle || result == null)
+		 return;*/
 	
 	var str = '';
 
