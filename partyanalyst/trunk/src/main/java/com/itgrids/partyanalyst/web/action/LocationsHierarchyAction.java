@@ -203,7 +203,8 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			{
 				session.setAttribute(ISessionConstants.DISTRICTS_AP, districts);
 			}
-		} else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
+		} 
+		}else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
 		{
 			//to fetch all assembly constituencies in district
 			Long districtId = jObj.getLong("id");
@@ -364,7 +365,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			localBodies.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(localBodies);
 		} 	
-	}
+	
 		return Action.SUCCESS;
 	
 	}
