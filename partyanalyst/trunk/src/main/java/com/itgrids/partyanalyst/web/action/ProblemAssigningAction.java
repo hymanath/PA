@@ -529,7 +529,7 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		
 		Long problemHistoryId = jObj.getLong("pHistoryId");
 		//Long problemId=jObj.getLong("problemId");
-		//Long userId=user.getRegistrationID();
+		Long userId=user.getRegistrationID();
 		String classification = jObj.getString("typeValue");
 		String typeValue  = jObj.getString("status");
 		
@@ -539,8 +539,8 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		else if(typeValue.equalsIgnoreCase("Change"))
 			status = IConstants.PROBLEM_TYPE_MODIFY;
 	
-		resultStatus = problemManagementService.updateProblemClassificationData(problemHistoryId, classification, status);
-		//resultStatus = problemManagementService.updateClassificationOfProblem(problemId, userId, classification, status);
+		//resultStatus = problemManagementService.updateProblemClassificationData(problemHistoryId, classification, status);
+		resultStatus = problemManagementService.updateClassificationOfProblem(problemHistoryId, userId, classification, status);
 		resultStatus.setResultCode(1);
 	}else{
 		
