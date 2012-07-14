@@ -2271,7 +2271,9 @@ function buildElectionTypes(myResult)
 	
 	var electionTypeElmt = document.getElementById("states");
 	electionTypeElmt.options.length=0;
-
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select State";
 	for(var i in myResult)
 	{
 		var option = document.createElement('option');
