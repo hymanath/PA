@@ -1166,6 +1166,8 @@ if(userImageEle.length == 0)
 
 function buildProblemPresentStatus(jsObj,results)
 {
+
+	
 	var elmt = document.getElementById("problemContentData_status_dataDiv");
 
 	var str = '';	
@@ -1206,14 +1208,14 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '					</tr>';
 	str += '				</table>';								
 	str += '			</td>';
-	if(results.department == "" || results.department == null)
+	if(results.departmentOrganisation == "" || results.departmentOrganisation == null)
 		str += '			<td class="statusData_table_data">Currently not assigned to any department</td>';
 	else
 		str += '			<td class="statusData_table_data">Currently assigned to <font color="#FF8000"><B>'+results.departmentOrganisation+'</B></font></td>';
 	str += '		</tr>';
 	str += '		<tr>';	
 	str += '			<td class="statusData_table_links">';
-	if(results.department == "" || results.department == null)
+	if(results.departmentOrganisation == "" || results.departmentOrganisation == null)
 		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="handleDepartmentChange(\'Assign\')" class="changeAnc">Assign</a>';
 	else
 	{
