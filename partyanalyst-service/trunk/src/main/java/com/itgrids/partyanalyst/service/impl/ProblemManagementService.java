@@ -3980,7 +3980,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		 
 			//set problem Assigned details to VO
 			
-			setProblemAssignedDetailsToVO(problem,problemStatusData,userProblemId);
+			//setProblemAssignedDetailsToVO(problem,problemStatusData,userProblemId);
 			
 			//set problem assigned cadre details to VO
 			
@@ -3989,7 +3989,10 @@ public class ProblemManagementService implements IProblemManagementService {
 	
 		   //set problem classification details to VO
 			
-			setProblemClassificationDetailsToVO(problemStatusData,userProblemId);	
+			setProblemClassificationDetailsToVO(problemStatusData,userProblemId);
+			
+			//set problem Assigned Department Details to VO
+			setProblemAssignedToDepartmentToVO(problemStatusData,userProblemId);
 		
 		
 		return problemStatusData;		
@@ -4097,6 +4100,30 @@ public class ProblemManagementService implements IProblemManagementService {
 			}
 		}	
 		
+	}
+	
+	
+	public void setProblemAssignedToDepartmentToVO(ProblemStatusDataVO problemStatusData,Long userProblemId)
+	{
+		log.debug("Entered into setProblemAssignedToDepartmentToVO() of PRoblemManagementService");
+		try
+		{
+		List<ProblemAssignedDepartment> problemAsgndDeptList = problemAssignedDepartmentDAO.getAllActivitesByProblemId(userProblemId);
+		if(problemAsgndDeptList != null && problemAsgndDeptList.size() >0)
+		{
+			ProblemAssignedDepartment problemAssignedDepartment = (ProblemAssignedDepartment)problemAsgndDeptList.get(0);
+			if(problemAssignedDepartment.getStatus().equalsIgnoreCase("assigned") || problemAssignedDepartment.getStatus().equalsIgnoreCase("modified")){
+			
+				problemStatusData.setDepartmentOrganisation(problemAssignedDepartment.getDepartmentOrganisation().getOrganisationName());
+			}
+			
+		}
+		}
+		catch(Exception e)
+		{
+			log.error("Error Occured in setProblemAssignedToDepartmentToVO of ProblemManagement Service");
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * This method is to set the problem classification details to VO
@@ -4915,18 +4942,18 @@ public class ProblemManagementService implements IProblemManagementService {
 									
 								 }
                                  if (pbStatus.equals(IConstants.DEPARTMENT_ADD)) {
-                            	   problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_ADD);
+                            	   problemAssignedDepartment.setStatus(IConstants.ASSIGNED);
                           		   
                           	      }
                                  else if (pbStatus.equals(IConstants.DEPARTMENT_MODIFY)) {
-                                	 problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_MODIFY);
+                                	 problemAssignedDepartment.setStatus(IConstants.MODIFIED);
                           		   
                           	     }
                           	     else if (pbStatus.equals(IConstants.DEPARTMENT_DELETE)) {
-                          	    	 problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_DELETE);
+                          	    	 problemAssignedDepartment.setStatus(IConstants.DELETED);
                           	     }
                                  
-                                problemAssignedDepartment.setStatus(IConstants.DEPARTMENT_ADD);
+                                problemAssignedDepartment.setStatus(IConstants.ASSIGNED);
                                 problemAssignedDepartment.setInsertedTime(getCurrentDateAndTime());
 								
                                 problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
