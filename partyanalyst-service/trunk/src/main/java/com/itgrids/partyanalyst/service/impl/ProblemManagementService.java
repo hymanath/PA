@@ -4564,7 +4564,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				});
 		return resultStatus;
 	}
-
+	
 	
 	public ResultStatus updateProblemClassification(
 			final Long problemHistoryId, final Long classificationId,
@@ -6875,6 +6875,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				ResultStatus rs = new ResultStatus();
 				try {
 					String problemActivityStr="";
+					ClassifiedProblems classifiedProblems=null;
 					UserProblem userProblem=userProblemDAO.get(userProblemId);
 					List<Long> classifiedProblemsIdList=classifiedProblemsDAO.checkIfProblemAlreadyClassified(userProblemId);
 					Long classifiedProblemId=null;
@@ -6885,20 +6886,20 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 						if(classifiedProblemObj!=null && problemClassificationObj!=null){							
 							classifiedProblemObj.setProblemClassification(problemClassificationObj);
 							classifiedProblemObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							classifiedProblemsDAO.save(classifiedProblemObj);
+							classifiedProblems = classifiedProblemsDAO.save(classifiedProblemObj);
 							problemActivityStr=IConstants.PROBLEM_TYPE_UPDATE;							
 						}
 					}
 					else{
-						ClassifiedProblems classifiedProblems=new ClassifiedProblems();
+						classifiedProblems=new ClassifiedProblems();
 						ProblemClassification problemClassification=problemClassificationDAO.get(problemClassificationId);
 						classifiedProblems.setUserProblem(userProblem);
 						classifiedProblems.setProblemClassification(problemClassification);
 						classifiedProblems.setInsertedTime(new Date());
-						classifiedProblemsDAO.save(classifiedProblems);
+						classifiedProblems = classifiedProblemsDAO.save(classifiedProblems);
 						problemActivityStr=IConstants.PROBLEM_TYPE_ADD;
 					}
-					updateProblemProgress(problemActivityStr, userProblem);
+					updateProblemProgress(problemActivityStr, userProblem,classifiedProblems);
 					rs.setResultCode(ResultCodeMapper.SUCCESS);
 					rs.setExceptionMsg("Problem classification successful");
 				}
@@ -6912,7 +6913,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		});
 		return resultStatus;
 	}
-	public void updateProblemProgress(String problemActvtyStr, UserProblem userProblem){
+	public void updateProblemProgress(String problemActvtyStr, UserProblem userProblem,ClassifiedProblems classifiedProblems){
 		log.debug("Entered into updateProblemProgress method of ProblemManagementService");
 		
 		try{
@@ -6932,6 +6933,14 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			problemProgress.setInsertedTime(currentDateTime);
 			problemProgress.setUpdatedTime(currentDateTime);
 			problemProgress.setIsDelete(IConstants.FALSE);
+			problemProgress.setClassifiedProblems(classifiedProblems);
+			/*List<Object[]> classifiedProblems = classifiedProblemsDAO.getClassifiedProblemId(userProblem.getUserProblemId());
+			if(classifiedProblems != null)
+				for(Object[] params : classifiedProblems)
+				{
+					problemProgress.setClassifiedProblems(params[0]);
+				}
+			*/
 			problemProgressDAO.save(problemProgress);
 		}
 		catch(Exception e){
@@ -6976,7 +6985,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 						
 						Long userProblemId=getUserProblemIdByUserIdAndProblemId(userId, problemId);
 						UserProblem userProblem=userProblemDAO.get(userProblemId);
-						updateProblemProgress(IConstants.PROBLEM_STATUS_CHANGE, userProblem);
+						updateProblemProgress(IConstants.PROBLEM_STATUS_CHANGE, userProblem,null);
 						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 						resultStatus.setResultState(problemId);
 					}
