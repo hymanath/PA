@@ -126,6 +126,7 @@
 		<pattern>/sendUpdatesAction*</pattern>
 		<pattern>/problemSearchAction*</pattern>
 		<pattern>/changePasswordAction*</pattern>
+		<pattern>/completeProblemDetailsAction*</pattern>
     </decorator>
 
 </decorators>
