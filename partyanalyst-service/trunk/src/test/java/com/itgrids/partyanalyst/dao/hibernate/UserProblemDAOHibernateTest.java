@@ -332,4 +332,12 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}
+	/*public void testCheckIsPublicProblem(){
+		List<Long> probCountList = userProblemDAO.checkIsPublicProblem(1L);
+		System.out.println(probCountList.get(0));
+	}*/
+	public void testCheckIsTakenUpProblem(){
+		List<Long> probCountList = userProblemDAO.checkIsTakenUpProblem(1L,1L);
+		System.out.println(probCountList.get(0));
+	}
 }
