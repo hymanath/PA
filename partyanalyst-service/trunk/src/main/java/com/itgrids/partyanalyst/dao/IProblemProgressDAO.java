@@ -9,5 +9,5 @@ public interface IProblemProgressDAO extends GenericDao<ProblemProgress,Long>{
 	
 	public List<ProblemProgress>  getProblemPrograss(Long userProblemId);
 	public List<ProblemProgress>  getProblemPrograssDetails(Long userProblemId);
-
+	public List<ProblemProgress> getAllProblemProgressDetails(Long problemId,String visibility);
 }
