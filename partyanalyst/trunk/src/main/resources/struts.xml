@@ -3420,5 +3420,8 @@
 			<param name="root">states</param>				
 		</result>	
 		</action>
+		<action name="completeProblemDetailsAction" class="completeProblemDetailsAction">
+			<result name="success">/jsp/completeProblemDetails.jsp</result>
+		</action>
 	</package>
 </struts>      
