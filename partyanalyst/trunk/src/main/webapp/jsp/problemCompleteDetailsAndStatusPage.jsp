@@ -929,12 +929,13 @@ function handleDepartmentChange(type)
 		str += '<td><input type="button" class="button" value="No" onclick="clearDepartmentDiv()"/></td>';
 		str += '</tr>';
 		str += '</table>';		
-
+		
 		elmt.innerHTML = str;
-
-
+	
+		return;
 	}
 
+	var elmt = document.getElementById("departmentPanel_content");
 	getProblemDepartments(0,'getProblemResolvingDeptScopes');
 	$( "#departmentPanel_main" ).dialog({
 		title:"",
@@ -946,7 +947,7 @@ function handleDepartmentChange(type)
 		hide: "explode"
 	});
 
-var elmt = document.getElementById("departmentPanel_content");
+
 if(!elmt)
 	return;
 
