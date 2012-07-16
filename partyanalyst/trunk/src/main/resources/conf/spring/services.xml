@@ -1157,5 +1157,12 @@
 		<property name="userRolesDAO" ref="userRolesDAO"/>
 	</bean>
 	
+	<bean name="completeProblemDetailsService" class="com.itgrids.partyanalyst.service.impl.CompleteProblemDetailsService">
+		<property name="userProblemDAO" ref="userProblemDAO" />
+		<property name="problemManagementService" ref="problemManagementService"/>
+		<property name="problemProgressDAO" ref="problemProgressDAO"/>
+		<property name="filePathsDAO" ref="filePathsDAO"/>
+	</bean>
+	
 </beans>		
 	
