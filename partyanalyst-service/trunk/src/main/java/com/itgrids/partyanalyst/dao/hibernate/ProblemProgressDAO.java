@@ -3,10 +3,11 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
-import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemProgress;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long> implements IProblemProgressDAO{
 
@@ -25,5 +26,20 @@ public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long
 	{
 		Object[] parameters = {userProblemId,"false"};
 		return getHibernateTemplate().find("from ProblemProgress model where model.userProblem.userProblemId = ? and model.isDelete =? order by model.insertedTime desc",parameters);
+	}
+	public List<ProblemProgress> getAllProblemProgressDetails(Long problemId,String visibility){
+		StringBuilder query = new StringBuilder();
+		query.append("from ProblemProgress model where model.userProblem.problem.problemId = :problemId  and model.isDelete = :isDelete ");
+		if(visibility != null)
+			query.append(" and model.visibility.type = :visibility and model.userProblem.visibility.type = :visibility ");	
+		query.append(" order by model.insertedTime desc");
+		
+		Query queryObj = getSession().createQuery(query.toString());
+		
+		queryObj.setParameter("problemId", problemId);
+		queryObj.setParameter("isDelete", IConstants.FALSE);
+		if(visibility != null)
+			queryObj.setParameter("visibility", visibility);
+		return queryObj.list();
 	}
 }
