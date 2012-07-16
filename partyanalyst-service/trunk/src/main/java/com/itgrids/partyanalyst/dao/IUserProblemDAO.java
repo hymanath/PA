@@ -102,5 +102,13 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List<Object[]> getProblemOwnerName(Long problemId);
 	
-	public List<Object[]> getProblemDetailsByProblemReferenceNo(String problemReferenceNo);
+	public List<Object[]> getProblemDetailsByProblemReferenceNo(String problemReferenceNo);	
+
+	public List<Long> checkIsPublicProblem(Long problemId);
+	
+	public List<UserProblem> getProblemAndOwnerDetails(Long problemId);
+	
+	public List<Long> checkIsTakenUpProblem(Long problemId,Long userId);
+	
+	public List<Long> checkIsTakenUpProblemIsInPublicVisiblty(Long problemId);
 }
