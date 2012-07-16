@@ -522,4 +522,5 @@ public interface IConstants {
 	public static final String PROBLEM_CLASSIFICATION_PERSONAL="PERSONAL";
 	public static final String MODIFIED = "MODIFIED";
 	public static final String DELETED = "DELETED";
+	public static final String BOTH ="BOTH";
 }
