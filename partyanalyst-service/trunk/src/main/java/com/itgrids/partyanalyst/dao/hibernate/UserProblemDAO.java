@@ -669,4 +669,23 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			return query.list();
 		}
  
+       public List<Long> checkIsPublicProblem(Long problemId){
+    	   Object [] params = {problemId,new Long(1),IConstants.FALSE,IConstants.TRUE,IConstants.TRUE};
+    	   return getHibernateTemplate().find("select count(model.problem.problemId) from UserProblem model where model.problem.problemId = ?" +
+					" and model.visibility.visibilityId = ? and model.problem.isDelete =? and model.problem.isApproved =? and model.isOwner = ?",params);
+       }
+       public List<UserProblem> getProblemAndOwnerDetails(Long problemId){
+    	   Object [] params = {problemId,IConstants.TRUE};
+    	   return getHibernateTemplate().find(" from UserProblem model where model.problem.problemId = ? and model.isOwner = ? ",params);
+       }
+       public List<Long> checkIsTakenUpProblem(Long problemId,Long userId){
+    	   Object [] params = {problemId,IConstants.FALSE,userId};
+    	   return getHibernateTemplate().find(" select count(model.problem.problemId) from UserProblem model where model.problem.problemId = ? and model.isOwner = ? " +
+    	   		" and model.user.userId = ?",params);
+       }
+       public List<Long> checkIsTakenUpProblemIsInPublicVisiblty(Long problemId){
+    	   Object [] params = {problemId,IConstants.TRUE,IConstants.PUBLIC};
+    	   return getHibernateTemplate().find(" select count(model.problem.problemId) from UserProblem model where model.problem.problemId = ? and model.isOwner = ? " +
+    	   		" and model.visibility.type = ?",params);
+       }
 }
