@@ -4569,12 +4569,13 @@ public class ProblemManagementService implements IProblemManagementService {
 							}
 							problemAssignedCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							
-							problemAssignedCadreDAO.save(problemAssignedCadre);
+							problemAssignedCadre = problemAssignedCadreDAO.save(problemAssignedCadre);
 							
 							
 							problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							problemProgress.setVisibility(visibilityDAO.get(2l));
 							problemProgress.setIsDelete(IConstants.FALSE);
+							problemProgress.setProblemAssignedCadre(problemAssignedCadre);
 							problemProgressDAO.save(problemProgress);
 							
 
