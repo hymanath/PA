@@ -3189,15 +3189,19 @@ public class ProblemManagementReportService implements
 							}
 						}
 						
-						for(ProblemAssignedCadre assigned : set)
+					List<ProblemAssignedCadre> assignedCadre = problemAssignedCadreDAO.getProblemAssignedCadreByUserProblemId(userProblem.getUserProblemId());
 						{
-						if(assigned.getProblemAssignedCadreId() != null && assigned.getCadre()!= null && assigned.getCadre().getCadreId() > 0 && !assigned.getStatus().equalsIgnoreCase("DELETED"))
-						{
-						problemBeanVO.setCadreId(assigned.getCadre().getCadreId());
-						problemBeanVO.setCadreName(assigned.getCadre().getFirstName() + " " + assigned.getCadre().getLastName());
-						}
-
-						}
+						if(assignedCadre != null && assignedCadre.size() > 0)
+							if(assignedCadre.get(0).getProblemAssignedCadreId() != null && assignedCadre.get(0).getCadre()!= null && assignedCadre.get(0).getCadre().getCadreId() > 0 )
+								if(!assignedCadre.get(0).getStatus().equalsIgnoreCase("DELETED")) 
+								{
+									problemBeanVO.setCadreId(assignedCadre.get(0).getCadre().getCadreId());
+									problemBeanVO.setCadreName(assignedCadre.get(0).getCadre().getFirstName() + " " + assignedCadre.get(0).getCadre().getLastName());
+								}
+							}
+						
+						
+						
 						for(ProblemProgress progress : problemProgresset)
 						{
 							if(progress != null && progress.getProblemActivity()!= null)
