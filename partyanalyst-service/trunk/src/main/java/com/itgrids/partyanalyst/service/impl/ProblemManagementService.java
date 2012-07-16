@@ -72,6 +72,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IVisibilityDAO;
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -135,7 +136,6 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStringUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 
 public class ProblemManagementService implements IProblemManagementService {
 
@@ -3161,7 +3161,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		return problemBeanVOLst;
 	}
 
-	private String getProblemLocationString(
+	public String getProblemLocationString(
 			ProblemCompleteLocation problemCompleteLocation) {
 
 		String problemLocation = "";
@@ -4335,7 +4335,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * @param problemProgress
 	 * @return
 	 */
-	private ProblemStatusDataVO getProblemActivityDetailsSetToVO(
+	public ProblemStatusDataVO getProblemActivityDetailsSetToVO(
 			ProblemProgress problemProgress) throws Exception {
 
 		if (log.isDebugEnabled())
@@ -7157,4 +7157,5 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		}
 		
 	}
+
 }
