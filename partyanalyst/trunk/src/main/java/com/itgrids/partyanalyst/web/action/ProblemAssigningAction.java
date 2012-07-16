@@ -492,12 +492,12 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 			
 			if(jObj.getString("task").equalsIgnoreCase("changeProblemStatus")){
 				Long problemHistoryId = jObj.getLong("pHistoryId");
-				//Long problemId=jObj.getLong("problemId");
-				//Long userId=user.getRegistrationID();
+				this.problemHistoryId = problemHistoryId;
+				Long userId=user.getRegistrationID();
 				String problemStatus  = jObj.getString("status");
 				
-				resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
-				//resultStatus = problemManagementService.updateStatusOfProblem(problemId, userId, problemStatus);
+				//resultStatus = problemManagementService.updateProblemStatusData(problemHistoryId, problemStatus);
+				resultStatus = problemManagementService.updateStatusOfProblem(problemHistoryId, userId, problemStatus);
 				resultStatus.setResultCode(1);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("sendSMS"))	{
