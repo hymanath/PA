@@ -3191,7 +3191,7 @@ public class ProblemManagementReportService implements
 						
 						for(ProblemAssignedCadre assigned : set)
 						{
-							if(assigned.getProblemAssignedCadreId() != null && assigned.getCadre()!=null)
+							if(assigned.getProblemAssignedCadreId() != null && assigned.getCadre()!= null && assigned.getCadre().getCadreId()!= null && !assigned.getStatus().equalsIgnoreCase("DELETED"))
 								problemBeanVO.setCadreId(assigned.getCadre().getCadreId());
 								problemBeanVO.setCadreName(assigned.getCadre().getFirstName() + " " + assigned.getCadre().getLastName());
 							
