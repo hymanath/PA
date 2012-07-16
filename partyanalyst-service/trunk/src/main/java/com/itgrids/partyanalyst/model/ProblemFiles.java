@@ -36,6 +36,7 @@ public class ProblemFiles extends BaseModel implements Serializable{
 	private Problem problem;
 	private File file;
 	private User user;
+	private Visibility visibility;
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isApproved;
@@ -138,6 +139,18 @@ public class ProblemFiles extends BaseModel implements Serializable{
 	
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="visibility_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
 	}
 	
 }
