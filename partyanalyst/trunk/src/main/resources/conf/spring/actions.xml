@@ -926,5 +926,8 @@
 	</bean>
 	<bean id="changePasswordAction" class="com.itgrids.partyanalyst.web.action.ChangePasswordAction" singleton="false">
 		<property name="loginService" ref="loginService" />
+	</bean>
+	<bean id="completeProblemDetailsAction" class="com.itgrids.partyanalyst.web.action.CompleteProblemDetailsAction" singleton="false">
+		<property name="completeProblemDetailsService" ref="completeProblemDetailsService" />
 	</bean>			
 </beans>	
