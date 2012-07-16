@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.UserProblem;
 
 public interface IProblemManagementService {
@@ -164,4 +165,7 @@ public interface IProblemManagementService {
 	
 	public ResultStatus addProblemRelatedFiles(ProblemBeanVO problemBeanVO);
 	
+	public String getProblemLocationString(ProblemCompleteLocation problemCompleteLocation);
+	
+	public ProblemStatusDataVO getProblemActivityDetailsSetToVO(ProblemProgress problemProgress) throws Exception; 
 }
