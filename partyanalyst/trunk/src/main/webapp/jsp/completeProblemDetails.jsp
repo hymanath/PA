@@ -367,7 +367,89 @@ $(".icon-star-empty").hover(
       }
     );*/
 	
-	
+	function callAjax(jsObj,url)
+{	
+	var callback = {			
+	               success : function( o ) {
+					try {
+
+						myResults = YAHOO.lang.JSON.parse(o.responseText);
+
+						if(jsObj.task =="saveProblemRatingDetails")
+						{
+							saveProblemRatingResults(myResults);
+							
+						}
+						else if(jsObj.task =="getAvgProblemRating")
+						{
+							getAvgProblemRatingResults(myResults);
+							
+						}
+						else if(jsObj.task =="saveProblemRatingDetails")
+						{
+							getRateWiseCountOfAProblem(myResults);
+							
+						}
+
+						
+					}catch (e) {   
+					  // 	alert("Invalid JSON result" + e);   
+					}  
+	               },
+	               scope : this,
+	               failure : function( o ) {
+	                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	                         }
+	               };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+/* function saveRatingOfAProblem()
+  {
+
+	var jsObj = {
+		time       : new Date().getTime(),
+		problemId  : 17,
+		rating     : 3,
+		task       : "saveProblemRatingDetails"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "saveProblemRatingDetailsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+  }
+  
+  function getAvgProblemRating()
+  {
+
+	var jsObj = {
+		time       : new Date().getTime(),
+		problemId  : 17,
+		task       : "getAvgProblemRating"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "getAvgProblemRatingAction.action?"+rparam;
+	 callAjax(jsObj,url);
+  }
+function rateWiseCountOfAProblem()
+  {
+
+	var jsObj = {
+		time       : new Date().getTime(),
+		problemId  : 17,
+		task       : "rateWiseCountOfAProblem"
+
+	};
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "rateWiseCountOfAProblemAction.action?"+rparam;
+	 callAjax(jsObj,url);
+  }
+  */
+ 
+ 
+ 
 
 </script>
 
