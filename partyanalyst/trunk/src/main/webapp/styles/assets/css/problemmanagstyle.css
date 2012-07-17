@@ -3,7 +3,7 @@
 
 .subheader{background:#5e5e5e;color:#fff;box-shadow:2px 0px 2px #888;margin-left:0px;padding:5px;}
 .subheader i{margin-top:2px;margin-right:4px;}
-.subheader-problem{color:#000;margin-left:0px;padding:5px;width:520px;}
+.subheader-problem{color:#000;margin-left:0px;padding:5px;width:525px;float:right;}
 .subheader-problem > i{margin-top:2px;margin-right:4px;}
 .subheader-problem  a > i{margin-top:0px;margin-right:4px;}
 .filter-box{border: 1px solid #DDDDDD;
@@ -110,3 +110,19 @@ padding:5px;
 .dl-horizontal dd{margin-left:105px;}
 .graycolor{background:#d3d3d3;border-radius:3px;}
 .m0-left{margin-left:0px;}
+
+#userdiv .thumbnail{padding:0px;width:auto;display:table;}
+
+#userdiv .userdesc{display:none;
+background:#eeeeee;border:2px solid #333;
+position:absolute;
+top:-42px;
+left:0px;
+border-radius:3px;
+padding:3px;
+width:150px;
+}
+#userdiv .userdesc:after{content:"";border:8px solid transparent;border-top:8px solid #333;
+border-left:8px solid #333;position:absolute;left:50%;top:100%;}
+#userdiv{position:relative;}
+#userdiv:hover .userdesc{display:block;}
