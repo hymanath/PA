@@ -82,7 +82,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	{
 		User user = userDAO.getUserByUserId(1l);
 		System.out.println(user.getFirstName());
-	}
+	}*/
 	
 	public void testAllRegisteredUsersData()
 	{
@@ -92,13 +92,11 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		{
 			for(Object[] result : users)
 			{
-				System.out.println(result[0]);
-				System.out.println(result[1]);
-				System.out.println(result[2]);
+				System.out.println(result[0]+" ----- "+result[1]+" "+result[2]);
 			}
 		}
 		
-	}*/
+	}
 	/*public void testGetUserByUserName()
 	{
 		List<User> params = userDAO.getUserByUserName("a.dakavaram@itgrids.com");
@@ -229,7 +227,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetUserEmailByUserId()
+	/*public void testGetUserEmailByUserId()
 	{
 		List<Object[]> list = userDAO.getUserEmailByUserId(1l);
 		if(list != null && list.size() >0)
@@ -241,6 +239,6 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[2]);
 			}
 		}
-	}
+	}*/
 	
 }
