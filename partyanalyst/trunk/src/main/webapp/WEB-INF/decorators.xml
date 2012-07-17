@@ -127,6 +127,7 @@
 		<pattern>/problemSearchAction*</pattern>
 		<pattern>/changePasswordAction*</pattern>
 		<pattern>/completeProblemDetailsAction*</pattern>
+		<pattern>/assigningPartyToUserAction*</pattern>
     </decorator>
 
 </decorators>
