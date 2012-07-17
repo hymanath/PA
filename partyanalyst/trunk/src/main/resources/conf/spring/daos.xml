@@ -888,4 +888,11 @@
 	<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
+	<bean id="problemRatingDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemRatingDAO">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="userPartyRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserPartyRelationDAO">
+	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 </beans>		
