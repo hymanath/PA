@@ -20,8 +20,10 @@ import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Comment;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemComments;
 import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemProgress;
@@ -168,4 +170,21 @@ public interface IProblemManagementService {
 	public String getProblemLocationString(ProblemCompleteLocation problemCompleteLocation);
 	
 	public ProblemStatusDataVO getProblemActivityDetailsSetToVO(ProblemProgress problemProgress) throws Exception; 
+	
+	public ResultStatus freeUserProblemAssignedToCustomer(Long userId, String visibility, Long problemId);
+	
+	public ResultStatus saveRatingOfAProblem(Long userId, Long problemId, String rating);
+	
+	public String getAverageRatingOfAProblem(Long problemId);
+	
+	public List<SelectOptionVO> getRatingWiseCountOfAProblem(Long problemId);
+	
+	public ResultStatus saveProblemRelatedComments(final ProblemBeanVO problemBeanVO);
+	
+	public Comment saveProblemCommentDetails(ProblemBeanVO problemBeanVO);
+	
+	public ProblemComments saveCommentDataInProblemComments(ProblemBeanVO problemBeanVO, Comment comment);
+	
+	public ProblemProgress saveCommentDataInProblemProgress(ProblemBeanVO problemBeanVO, Comment comment);
+	
 }

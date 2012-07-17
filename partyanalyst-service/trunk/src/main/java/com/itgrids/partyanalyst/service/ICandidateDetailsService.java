@@ -181,4 +181,10 @@ public interface ICandidateDetailsService {
 	 public ResultStatus subscriberDetails(Long candidateId,Long userId,String category);
 	 
 	 public ResultStatus unSubscriptionDetails(Long candidateId,Long userId,String category);
+	 
+	 public List<SelectOptionVO> getAllRegisterUsersForAssigningParty();
+	 
+	 public List<FileVO> getAllPartyDetailsAssignedToAUser(Long userId);
+	 
+	 public ResultStatus deleteUserPartyRelation(String userPartyRelationIds);
 }
