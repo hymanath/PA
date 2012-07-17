@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemsDAO;
 import com.itgrids.partyanalyst.dao.IClassifiedProblemsDAO;
+import com.itgrids.partyanalyst.dao.ICommentDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
@@ -60,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLikesDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IProblemRatingDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -93,6 +96,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreProblems;
 import com.itgrids.partyanalyst.model.ClassifiedProblems;
+import com.itgrids.partyanalyst.model.Comment;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
@@ -109,6 +113,7 @@ import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 import com.itgrids.partyanalyst.model.ProblemAssignedDepartment;
 import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemClassification;
+import com.itgrids.partyanalyst.model.ProblemComments;
 import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemFile;
@@ -118,6 +123,7 @@ import com.itgrids.partyanalyst.model.ProblemImpactLevel;
 import com.itgrids.partyanalyst.model.ProblemLikes;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemProgress;
+import com.itgrids.partyanalyst.model.ProblemRating;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
@@ -200,7 +206,9 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemProgressDAO problemProgressDAO;
 	private IProblemAssignedDepartmentDAO problemAssignedDepartmentDAO;
 	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
-    
+    private IProblemRatingDAO problemRatingDAO;
+    private ICommentDAO commentDAO;
+	
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
 	}
@@ -659,6 +667,22 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setProblemAssignedCadreDAO(
 			IProblemAssignedCadreDAO problemAssignedCadreDAO) {
 		this.problemAssignedCadreDAO = problemAssignedCadreDAO;
+	}
+
+	public IProblemRatingDAO getProblemRatingDAO() {
+		return problemRatingDAO;
+	}
+
+	public void setProblemRatingDAO(IProblemRatingDAO problemRatingDAO) {
+		this.problemRatingDAO = problemRatingDAO;
+	}
+
+	public ICommentDAO getCommentDAO() {
+		return commentDAO;
+	}
+
+	public void setCommentDAO(ICommentDAO commentDAO) {
+		this.commentDAO = commentDAO;
 	}
 
 	/**
@@ -4900,6 +4924,154 @@ public class ProblemManagementService implements IProblemManagementService {
 		return resultStatus;
 	}
 
+	
+	public ResultStatus saveProblemRelatedComments(final ProblemBeanVO problemBeanVO) {
+		if (log.isDebugEnabled())
+			log.debug("Started Executing Method To Update Assigned Cadre ..");
+
+		ResultStatus resultStatus = (ResultStatus) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+
+						ResultStatus rs = new ResultStatus();
+						
+						try {
+
+							Comment comment = null;
+							ProblemComments problemComments = null;
+							ProblemProgress problemProgress = null;
+							if(problemBeanVO == null)
+							{
+								log.info("problemBeanVO is null in saveProblemRelatedComments()");
+								rs.setResultCode(ResultCodeMapper.FAILURE);
+								return rs;
+							}
+							else if(problemBeanVO != null)
+							{
+							comment = saveProblemCommentDetails(problemBeanVO);
+							problemComments = saveCommentDataInProblemComments(problemBeanVO, comment);
+							problemProgress = saveCommentDataInProblemProgress(problemBeanVO, comment);
+							rs.setResultCode(ResultCodeMapper.SUCCESS);
+							}
+						} catch (Exception ex) {
+							log.error("Exception Raised :" + ex);
+							rs.setResultCode(ResultCodeMapper.FAILURE);
+							rs.setExceptionEncountered(ex);
+							rs.setExceptionMsg(ex.getMessage());
+							return rs;
+						}
+
+						return rs;
+					}
+
+				});
+		return resultStatus;
+	}
+
+	public Comment saveProblemCommentDetails(ProblemBeanVO problemBeanVO)
+	{
+		Comment comment = null;
+		
+		try{
+			if(problemBeanVO == null)
+			{
+				log.info("problemBeanVO is null in saveProblemCommentDetails()");
+				return comment;
+			}
+			else if(problemBeanVO != null)
+			{
+				comment = new Comment();
+				comment.setIsAbused(IConstants.FALSE);
+				comment.setComment(problemBeanVO.getDescription());
+				comment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				comment = commentDAO.save(comment);
+			}
+			log.info("Entered into saveProblemCommentDetails() Method");
+			return comment;
+		}catch (Exception e) {
+			log.error("Exception Occured in saveProblemCommentDetails(), Exception - "+e);
+			e.printStackTrace();
+			return comment;
+		}
+	}
+	public ProblemComments saveCommentDataInProblemComments(ProblemBeanVO problemBeanVO, Comment comment)
+	{
+		ProblemComments problemComments = null;
+		
+		try{
+			if(problemBeanVO == null || comment == null)
+			{
+				log.info("problemBeanVO is null in saveCommentDataInProblemComments()");
+				return problemComments;
+			}
+			else if(problemBeanVO != null || comment != null)
+			{
+				problemComments = new ProblemComments();
+				problemComments.setComment(comment);
+				problemComments.setUser(userDAO.get(problemBeanVO.getUserID()));
+				problemComments.setProblem(problemDAO.get(problemBeanVO.getProblemId()));
+				problemComments.setIsDelete(IConstants.FALSE);
+				problemComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				if(problemBeanVO.getHasPartyAnalystUserRole() != null && problemBeanVO.getHasPartyAnalystUserRole())
+					problemComments.setIsApproved(IConstants.TRUE);
+				else if(problemBeanVO.getHasFreeUserRole() != null && problemBeanVO.getHasFreeUserRole())
+					problemBeanVO.setIsApproved(IConstants.FALSE);
+				problemCommentsDAO.save(problemComments);
+		}
+			return problemComments;
+		}catch (Exception e) {
+			log.error("Exception Occured in saveCommentDataInProblemComments(), Exception - "+e);
+			e.printStackTrace();
+			return problemComments;
+		}
+	}
+	public ProblemProgress saveCommentDataInProblemProgress(ProblemBeanVO problemBeanVO, Comment comment)
+	{
+		ProblemProgress problemProgress = null;
+		List<UserProblem> userProblemDetails = null;
+		
+		try{
+			if(problemBeanVO == null || comment == null)
+			{
+				log.info("problemBeanVO is null in saveCommentDataInProblemComments()");
+				return problemProgress;
+			}
+			else if(problemBeanVO != null && comment != null)
+			{
+				problemProgress = new ProblemProgress();
+				
+			 userProblemDetails = userProblemDAO.getUserProblemIdForCadreProblems(problemBeanVO.getProblemId(), problemBeanVO.getUserID());
+				if(userProblemDetails != null && userProblemDetails.get(0).getUserProblemId() > 0)
+					problemProgress.setUserProblem(userProblemDetails.get(0));
+				
+				if (problemBeanVO.getStatus().equals(IConstants.PROBLEM_COMMENTS_ADD)) 
+				{
+					List<ProblemActivity> problemActivityLst = problemActivityDAO
+							.getProblemActivityByName("POSTED_COMMENTS");
+					problemProgress
+							.setProblemActivity(problemActivityLst.get(0));
+				}
+				problemProgress.setComment(comment);
+				
+				if(problemBeanVO.getHasPartyAnalystUserRole() != null && problemBeanVO.getHasPartyAnalystUserRole())
+					problemProgress.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PRIVATE).get(0));
+				else if(problemBeanVO.getHasFreeUserRole() != null && problemBeanVO.getHasFreeUserRole())
+					problemProgress.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PUBLIC).get(0));
+				
+				problemProgress.setIsDelete(IConstants.FALSE);
+				problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				problemProgressDAO.save(problemProgress);
+			}
+			return problemProgress;
+		}catch (Exception e) {
+			log.error("Exception Occured in saveCommentDataInProblemProgress(), Exception - "+e);
+			e.printStackTrace();
+			return problemProgress;
+		}
+	}
+		
+	
 	/**
 	 * Method To Update/Add Department For a Problem
 	 * 
@@ -6152,9 +6324,9 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			problemProgress.setIsDelete(IConstants.FALSE);
 			if(userProblem.get(0).getVisibility().getType() != null && userProblem.get(0).getVisibility().getType().equals(IConstants.PUBLIC))
-				problemProgress.setVisibility(visibilityDAO.get(1l));
+				problemProgress.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PUBLIC).get(0));
 			else if(userProblem.get(0).getVisibility().getType() != null && userProblem.get(0).getVisibility().getType().equals(IConstants.PRIVATE))
-			   problemProgress.setVisibility(visibilityDAO.get(2l));
+			   problemProgress.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PRIVATE).get(0));
 			problemProgressDAO.save(problemProgress);
 			
 		}
@@ -7156,6 +7328,98 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			return resultStatus;
 		}
 		
+	}
+	
+	public ResultStatus freeUserProblemAssignedToCustomer(Long userId, String visibility, Long problemId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			log.info("Entered into freeUserProblemAssignedToCustomer() Method");
+			UserProblem userProblem = new UserProblem();
+				userProblem.setUser(userDAO.get(userId));
+				userProblem.setProblem(problemDAO.get(problemId));
+				userProblem.setIsOwner(IConstants.FALSE);
+				userProblem.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				userProblem.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				if(visibility != null && visibility.equals(IConstants.PUBLIC))
+					userProblem.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PUBLIC).get(0));
+				else if(visibility != null && visibility.equals(IConstants.PRIVATE))
+					userProblem.setVisibility(visibilityDAO.getVisibilityByVisibilityType(IConstants.PRIVATE).get(0));
+				userProblemDAO.save(userProblem);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in freeUserProblemAssignedToCustomer() Method, Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	public ResultStatus saveRatingOfAProblem(Long userId, Long problemId, String rating)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			ProblemRating problemRating = new ProblemRating();
+			problemRating.setUser(userDAO.get(userId));
+			problemRating.setProblem(problemDAO.get(problemId));
+			problemRating.setRating(Integer.parseInt(rating));
+			problemRating.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			problemRating.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			problemRatingDAO.save(problemRating);
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in saveRatingOfAProblem() Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	public String getAverageRatingOfAProblem(Long problemId)
+	{
+		String avgRatingOfAProblem = null;
+		try{
+			Double rating = problemRatingDAO.getAverageRatingOfAProblem(problemId);
+			if(rating != null && rating > 0.0)
+			{
+				DecimalFormat resString = new DecimalFormat("#.##");
+				Double twoDecimal =  Double.valueOf(resString.format(rating));
+				avgRatingOfAProblem = twoDecimal.toString();
+			}
+			return avgRatingOfAProblem;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getAverageRatingOfAProblem() Exception - "+e);
+			return avgRatingOfAProblem;
+		}
+		
+	}
+	
+	public List<SelectOptionVO> getRatingWiseCountOfAProblem(Long problemId)
+	{
+		try{
+			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+			List<Object[]> result = problemRatingDAO.getRatingWiseCountOfAProblem(problemId);
+			if(result != null && result.size() >0)
+			{
+				for(Object[] params : result)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(((Integer)params[0]).longValue());
+					selectOptionVO.setName(params[1].toString());
+					selectOptionVOs.add(selectOptionVO);
+				}
+			}
+			return selectOptionVOs;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getRatingWiseCountOfAProblem(), Exception - "+e);
+			return null;
+		}
 	}
 
 }

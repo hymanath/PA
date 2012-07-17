@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateMinistriesVO;
@@ -179,7 +180,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
 	private IPartySubscriptionsDAO partySubscriptionsDAO;
 	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
-		
+	private IUserPartyRelationDAO userPartyRelationDAO;	
 	
 	
 	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
@@ -590,6 +591,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 
 	public void setNewsImportanceDAO(INewsImportanceDAO newsImportanceDAO) {
 		this.newsImportanceDAO = newsImportanceDAO;
+	}
+
+	public IUserPartyRelationDAO getUserPartyRelationDAO() {
+		return userPartyRelationDAO;
+	}
+
+	public void setUserPartyRelationDAO(IUserPartyRelationDAO userPartyRelationDAO) {
+		this.userPartyRelationDAO = userPartyRelationDAO;
 	}
 
 	public List<FileVO> getScopesForNewSearch()
@@ -3741,4 +3750,87 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 		}
 		
 	}
+	
+	public List<SelectOptionVO> getAllRegisterUsersForAssigningParty()
+	{
+		List<SelectOptionVO> listOfUsers = null; 
+		try{
+			log.info("Entered into getAllRegisterUsersForAssigningParty()");
+			List<Object[]> userList = userDAO.allRegisteredUsersData();
+			if(userList != null && userList.size() > 0)
+			{
+				listOfUsers = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params : userList)
+				{
+					String name = new String();
+					if(params[1] != null)
+						name = params[1].toString();
+					name +=" ";
+					if(params[2] != null)
+						name +=params[2].toString();
+					
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(name.toString());
+					listOfUsers.add(selectOptionVO);
+				}
+			}
+			return listOfUsers;
+		}catch (Exception e) {
+			log.error("Exception Occured in getAllRegisterUsersForAssigningParty(), Exception - "+e);
+			e.printStackTrace();
+			return  null;
+		}
+	}
+	public List<FileVO> getAllPartyDetailsAssignedToAUser(Long userId)
+	{
+		List<FileVO> returnValue = new ArrayList<FileVO>();
+		try
+		{
+		   List<Object[]> results = userPartyRelationDAO.getUserPartyRelationDetails(userId);
+		   for(Object[] candidateDetails: results)
+		   {
+			   FileVO fileVO = new FileVO();
+			   fileVO.setIds((Long)candidateDetails[0]);
+			   fileVO.setCandidateId((Long)candidateDetails[1]);
+			   fileVO.setNames(candidateDetails[2] != null ? candidateDetails[2].toString() :"");
+			  returnValue.add(fileVO);
+		   }
+		  return returnValue;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return returnValue;
+		}
+	}
+	
+	public ResultStatus deleteUserPartyRelation(String userPartyRelationIds)
+	{   List<String> elements = null;
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			if(userPartyRelationIds.length()>0)
+			{
+				elements = new ArrayList<String>(new HashSet<String>(Arrays.asList(new String(userPartyRelationIds).split(","))));	
+				for(int i=0;i<elements.size();i++)
+				  {
+					Long id = new Long(elements.get(i));
+					userPartyRelationDAO.deleteUserPartyRelation(id);
+					
+				  }
+			}
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
 }

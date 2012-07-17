@@ -3191,19 +3191,19 @@ public class ProblemManagementReportService implements
 						
 					List<ProblemAssignedCadre> assignedCadre = problemAssignedCadreDAO.getProblemAssignedCadreByUserProblemId(userProblem.getUserProblemId());
 						{
-						if(assignedCadre != null && assignedCadre.size() > 0)
-							if(assignedCadre.get(0).getProblemAssignedCadreId() != null && assignedCadre.get(0).getCadre()!= null && assignedCadre.get(0).getCadre().getCadreId() > 0 )
-								if(!assignedCadre.get(0).getStatus().equalsIgnoreCase("DELETED")) 
-								{
-									problemBeanVO.setCadreId(assignedCadre.get(0).getCadre().getCadreId());
-									problemBeanVO.setCadreName(assignedCadre.get(0).getCadre().getFirstName() + " " + assignedCadre.get(0).getCadre().getLastName());
+							if(assignedCadre != null && assignedCadre.size() > 0)
+								if(assignedCadre.get(0).getProblemAssignedCadreId() != null && assignedCadre.get(0).getCadre()!= null && assignedCadre.get(0).getCadre().getCadreId() > 0 )
+									if(!assignedCadre.get(0).getStatus().equalsIgnoreCase("DELETED")) 
+									{
+										problemBeanVO.setCadreId(assignedCadre.get(0).getCadre().getCadreId());
+										problemBeanVO.setCadreName(assignedCadre.get(0).getCadre().getFirstName() + " " + assignedCadre.get(0).getCadre().getLastName());
+									}
 								}
-							}
-						
-						
-						
-						for(ProblemProgress progress : problemProgresset)
-						{
+							
+							
+							
+							for(ProblemProgress progress : problemProgresset)
+							{
 							if(progress != null && progress.getProblemActivity()!= null)
 								problemBeanVO.setRecentActivity(progress.getProblemActivity().getComments());
 							
