@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -7,11 +10,16 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProblemCompleteInfoAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
@@ -28,7 +36,11 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 	private String userType = null;
 	private boolean hasFileUploadRight;
 	private IDataApprovalService dataApprovalService;
-	
+	private String task;
+	JSONObject jObj = null;
+	private ResultStatus resultStatus;
+	private String avgRatingOfAProblem; 
+	private List<SelectOptionVO> rateWiseCountOfAProblem;
 	
 	public IDataApprovalService getDataApprovalService() {
 		return dataApprovalService;
@@ -102,6 +114,39 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		this.request = request;
 	}
 	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public String getAvgRatingOfAProblem() {
+		return avgRatingOfAProblem;
+	}
+
+	public void setAvgRatingOfAProblem(String avgRatingOfAProblem) {
+		this.avgRatingOfAProblem = avgRatingOfAProblem;
+	}
+
+	public List<SelectOptionVO> getRateWiseCountOfAProblem() {
+		return rateWiseCountOfAProblem;
+	}
+
+	public void setRateWiseCountOfAProblem(
+			List<SelectOptionVO> rateWiseCountOfAProblem) {
+		this.rateWiseCountOfAProblem = rateWiseCountOfAProblem;
+	}
+
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
 	public String execute()
 	{
 		Long userId = null;
@@ -132,8 +177,37 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 				log.error("Exception occured in getProblemCompleteInfo() method , Exception is - "+e);
 				return ERROR;
 			}
-			
-			
+	}
+	
+	public String ajaxCallHandler()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+		Long userId = null;
+		if(regVO == null)
+			return ERROR;
+		userId = regVO.getRegistrationID();
+		
+		try{
+			jObj = new JSONObject(getTask());
+		}catch (ParseException e) {
+			e.printStackTrace();
+			log.error("Exception Occured in ajaxCallHandler() Method in ProblemCompleteInfoAction," +
+					" Exception - "+e);
+		}
+		if(jObj.getString("task").equals("saveProblemRatingDetails"))
+		{
+			resultStatus = problemManagementService.saveRatingOfAProblem(userId, jObj.getLong("problemId"),jObj.getString("rating"));
+		}
+		else if(jObj.getString("task").equals("getAvgProblemRating"))
+		{
+			avgRatingOfAProblem = problemManagementService.getAverageRatingOfAProblem(jObj.getLong("problemId"));
+		}
+		else if(jObj.getString("task").equals("rateWiseCountOfAProblem"))
+		{
+			rateWiseCountOfAProblem = problemManagementService.getRatingWiseCountOfAProblem(jObj.getLong("problemId"));
+		}
+		return Action.SUCCESS;
 	}
 	
 }
