@@ -59,6 +59,7 @@ public class Problem extends BaseModel implements Serializable{
 	private Set<ProblemComments> problemComments = new HashSet<ProblemComments>(0);
 	private Set<ProblemLikes> problemLikes = new HashSet<ProblemLikes>(0);
 	private Set<UserProblem> userProblems = new HashSet<UserProblem>(0);
+	private Set<ProblemRating> problemRatings = new HashSet<ProblemRating>(0);
 	
 	public Problem()
 	{}
@@ -308,6 +309,16 @@ public class Problem extends BaseModel implements Serializable{
 
 	public void setProblemStatus(ProblemStatus problemStatus) {
 		this.problemStatus = problemStatus;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problem")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<ProblemRating> getProblemRatings() {
+		return problemRatings;
+	}
+
+	public void setProblemRatings(Set<ProblemRating> problemRatings) {
+		this.problemRatings = problemRatings;
 	}
 	
 	
