@@ -929,5 +929,10 @@
 	</bean>
 	<bean id="completeProblemDetailsAction" class="com.itgrids.partyanalyst.web.action.CompleteProblemDetailsAction" singleton="false">
 		<property name="completeProblemDetailsService" ref="completeProblemDetailsService" />
-	</bean>			
+	</bean>	
+	<bean id="assigningPartyToUserAction" class="com.itgrids.partyanalyst.web.action.AssigningPartyToUserAction" singleton="false">
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="partyDetailsService" ref="partyDetailsService" />
+	</bean>	
+		
 </beans>	
