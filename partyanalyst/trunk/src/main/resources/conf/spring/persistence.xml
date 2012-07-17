@@ -264,6 +264,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidateSubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.PartySubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.SpecialPageSubscriptions</value>
+				<value>com.itgrids.partyanalyst.model.ProblemRating</value>
+				<value>com.itgrids.partyanalyst.model.UserPartyRelation</value>
 			</list>
 		</property>
 	</bean>
