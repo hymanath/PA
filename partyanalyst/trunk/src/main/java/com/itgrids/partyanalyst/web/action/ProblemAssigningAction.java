@@ -609,12 +609,24 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		}
 		
 		Long problemHistoryId = jObj.getLong("pHistoryId");
-		String titleValue = jObj.getString("titleValue");
-		String descriptionValue = jObj.getString("descriptionValue");
-		String fileValue = jObj.getString("fileValue");
-	
+		//String titleValue = jObj.getString("titleValue");
+		//String descriptionValue = jObj.getString("descriptionValue");
+		//String fileValue = jObj.getString("fileValue");
 		
-	    resultStatus = problemManagementService.updateProblemComments(problemHistoryId, comments, IConstants.PROBLEM_COMMENTS_ADD); 
+		hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole");
+		hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
+		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
+		problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
+		problemBeanVO.setProblemId(jObj.getLong("pHistoryId"));
+		problemBeanVO.setDescription(jObj.getString("comments"));
+		problemBeanVO.setStatus(IConstants.PROBLEM_COMMENTS_ADD);
+		problemBeanVO.setUserID(user.getRegistrationID());
+		
+	   // resultStatus = problemManagementService.updateProblemComments(problemHistoryId, comments, IConstants.PROBLEM_COMMENTS_ADD);
+	    
+	    resultStatus = problemManagementService.saveProblemRelatedComments(problemBeanVO);
+	    
 	    resultStatus.setResultCode(1);
 	}else{
 		resultStatus = new ResultStatus();

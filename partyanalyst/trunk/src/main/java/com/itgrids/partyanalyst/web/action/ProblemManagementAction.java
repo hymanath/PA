@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.hibernate.transaction.JOnASTransactionManagerLookup;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -62,6 +64,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	private List<ProblemStatusDataVO> problemStatusDataVOList;
 	private ProblemBeanVO problemBeanVO;
 	private List<FileVO> uploadFilesList;
+	private ResultStatus resultStatus;
 	
 	
 	public void setUploadFilesList(List<FileVO> uploadFilesList) {
@@ -244,7 +247,13 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		return requestFrom;
 	}
 
-	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 
 	public String execute() throws Exception{
 			problemManagementDataVO = new ProblemManagementDataVO();
@@ -855,6 +864,28 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			e.printStackTrace();
 		}
 		
+		return SUCCESS;
+	}
+	
+	public String freeUserProblemAssignedToCustomer()
+	{
+		try{
+			Long userId = null;
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return ERROR;
+			if(regVO != null && regVO.getRegistrationID() > 0)
+			{
+				userId = regVO.getRegistrationID();
+				resultStatus = problemManagementService.freeUserProblemAssignedToCustomer(userId,jObj.getString("problemVisibility"),jObj.getLong("problemId"));
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in freeUserProblemAssignedToCustomer() Method, Exception - "+e);
+		}
 		return SUCCESS;
 	}
 }
