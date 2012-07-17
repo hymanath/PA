@@ -333,6 +333,7 @@
 		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO"/>
 		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO"/>
 		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO"/>
+		<property name="userPartyRelationDAO" ref="userPartyRelationDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
@@ -580,6 +581,9 @@
 		<property name="problemAssignedDepartmentDAO" ref="problemAssignedDepartmentDAO" />
 		<property name="problemProgressDAO" ref="problemProgressDAO" />
 		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"/>
+		<property name="problemRatingDAO" ref="problemRatingDAO" />
+		<property name="commentDAO" ref="commentDAO" />
+		
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
