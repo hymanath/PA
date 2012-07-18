@@ -11,4 +11,8 @@ public interface IUserPartyRelationDAO extends GenericDao<UserPartyRelation, Lon
 	public List<Object[]> getUserPartyRelationDetails(Long userId);
 	
 	public void deleteUserPartyRelation(Long userPartyRelationId);
+	
+	public Long checkPartyForUser(Long userId,Long partyId);
+	
+	public List<Object[]> getPartiesByUser(Long userId);
 }
