@@ -786,7 +786,7 @@ public class User extends BaseModel implements Serializable{
 	public void setProblemRatings(Set<ProblemRating> problemRatings) {
 		this.problemRatings = problemRatings;
 	}
-
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserPartyRelation> getUserPartyRelations() {
