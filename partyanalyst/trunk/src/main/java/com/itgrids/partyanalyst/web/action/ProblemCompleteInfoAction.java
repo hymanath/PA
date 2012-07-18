@@ -147,6 +147,14 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		this.jObj = jObj;
 	}
 
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public String execute()
 	{
 		Long userId = null;
