@@ -465,18 +465,18 @@ function showCreateGallery(selectedId,contentType,userOption,galSelectId)
 	var str='';
 	str+= '<div id="galErrorMsgDiv"></div>';
 	str += '<fieldset class="imgFieldset" style="width:400px;">';
-	str += '<h2 align="center">Create '+contentType+'</h2>';
+	str += '<h2 align="center" style="color:#669900;">Create '+contentType+'</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="galNameId" size="25" maxlength="100"></td></tr>';
+	str += '<table width="94%" style="margin-left:13px;"><tr><td><b><font color="#4B74C6">Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="galNameId" size="25" maxlength="100"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="galDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="publicId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="privateId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicId" checked="true"><b><font color="#4B74C6" style="padding-left:5px;">Visible to Public Also</font></b></input></div>';
+	str += '<div style="margin-left:45px;margin-top:-16px;"><input type="radio" value="private" name="visibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right:40px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createPopupGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectId+'\')"></td>';
-	str+=  '<td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin-left: auto;margin-right: auto;"><tr><td><input type="button" class="imageButton" style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createPopupGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectId+'\')"></td>';
+	str+=  '<td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 	str += '</fieldset>';
 		
@@ -1642,7 +1642,7 @@ function  buildUploadNews()
     str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
+	str += '       <td style="margin-top:-16px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
 	str += '   </tr>';
 	str +='    <tr>';
     str +='	   <td class="tdWidth1">Location Scope</td>';
@@ -3843,7 +3843,7 @@ function otherProfiles(divElmt,requestFrom,contentType)
 	if(requestFrom == 'fromPartyProfile')
 	{
 		str+= '<span style="font-weight: bold; font-size: 13px;"><input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages(\'spSelectId\')">   Special Pages</span>';
-		str+= '<span style="float: right;"><input class="imageButton" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
+		str+= '<span style="float: right;"><input class="imageButton" style="height:24px;" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
 		str+= '<div id="spOptionDiv"></div><div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\',\'uploadSpecialPageGalleryId\');"></select></div>';
 		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;" onchange="showAddedGallery(\'spOptionDiv\',\'spSelectId\',this.id)"></select></div>';
 		str+= '<div id="addMoreSPDiv"></div>';
@@ -3863,7 +3863,7 @@ function otherProfiles(divElmt,requestFrom,contentType)
 		str+= '<div id="candidateGallerySelectDiv"><select id="uploadCandidateGalleryId" name="uploadCandidateGalleryId" style="display:none;width: 250px; margin: 10px;" onchange="showAddedGallery(\'canOptionDiv\',\'candidateSelectId\',this.id)"></select></div>';
 		str+= '<div id="addMoreCandidatesDiv"></div>';
 		str+= '<div style="font-weight: bold; font-size: 13px; margin-top: 15px; margin-right: 127px;"><input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties(\'partySelectId\')">   Party Profile Page</div>';
-		str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
+		str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" style="height:24px;" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
 		str+= '<div id="partyOptionDiv"></div><div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\',\'uploadPartyGalleryId\');"></select></div>';
 		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;" onchange="showAddedGallery(\'partyOptionDiv\',\'partySelectId\',this.id)"></select></div>';
 		str+= '<div id="addMorePartiesDiv"></div>';
@@ -3872,12 +3872,12 @@ function otherProfiles(divElmt,requestFrom,contentType)
 	else if(requestFrom == 'fromCandidateProfile')
 	{
 		str+= '<span style="font-weight: bold; font-size: 13px;"><input type="checkbox" id="spcheckboxId" name="spcheckbox" onclick="getSpecialPages(\'spSelectId\')">   Special Page</span>';
-		str+= '<span style="float: right;"><input class="imageButton" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
+		str+= '<span style="float: right;"><input class="imageButton" style="height:24px;" type="button" value="Add More Special Pages" onclick="addMoreSpecialPage(\''+contentType+'\')"></span>';
 		str+= '<div id="spOptionDiv"></div><div id="spSelectionDiv"><select id="spSelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'SpecialPage\',\'uploadSpecialPageGalleryId\');"></select></div>';
 		str+= '<div id="spGallerySelectDiv"><select id="uploadSpecialPageGalleryId" name="uploadSpecialPageGalleryId" style="display:none;width: 250px; margin: 10px;" onchange="showAddedGallery(\'spOptionDiv\',\'spSelectId\',this.id)"></select></div>';
 		str+= '<div id="addMoreSPDiv"></div>';
 		str+= '<div style="font-weight: bold; font-size: 13px; margin-top: 15px; margin-right: 127px;"><input type="checkbox" id="pcheckboxId" name="pcheckbox" onclick="getParties(\'partySelectId\')">   Party Profile Page</div>';
-	    str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
+	    str+= '<span style="float: right; margin-top: -17px;"><input class="imageButton" style="height:24px;" type="button" value="Add More Parties" onclick="addMoreParties(\''+contentType+'\')"></span>';
 		str+= '<div id="partyOptionDiv"></div><div id="partySelectionDiv"><select id="partySelectId" style="display:none;width: 250px; margin: 10px;" onchange="getGallaries(this.options[this.selectedIndex].value,\''+contentType+'\',\'Party\',\'uploadPartyGalleryId\');"></select></div>';
 		str+= '<div id="partyGallerySelectDiv"><select id="uploadPartyGalleryId" name="uploadPartyGalleryId" style="display:none;width: 250px; margin: 10px;" onchange="showAddedGallery(\'partyOptionDiv\',\'partySelectId\',this.id)"></select></div>';
 		str+= '<div id="addMorePartiesDiv"></div>';
