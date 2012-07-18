@@ -33,8 +33,14 @@ public class UserPartyRelationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testDeleteUserPartyRelation()
+	/*public void testDeleteUserPartyRelation()
 	{
 		 userPartyRelationDAO.deleteUserPartyRelation(1l);
+	}*/
+	public void testcheckPartyForUser()
+	{
+		Long count = userPartyRelationDAO.checkPartyForUser(1l,2l);
+		System.out.println(count);
 	}
+	
 }
