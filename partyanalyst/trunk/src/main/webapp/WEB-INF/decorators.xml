@@ -128,6 +128,7 @@
 		<pattern>/changePasswordAction*</pattern>
 		<pattern>/completeProblemDetailsAction*</pattern>
 		<pattern>/assigningPartyToUserAction*</pattern>
+		<pattern>/adminUpload*</pattern>
     </decorator>
 
 </decorators>
