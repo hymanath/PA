@@ -129,6 +129,7 @@
 		<pattern>/completeProblemDetailsAction*</pattern>
 		<pattern>/assigningPartyToUserAction*</pattern>
 		<pattern>/adminUpload*</pattern>
+		<pattern>/profileManagePageAction*</pattern>
     </decorator>
 
 </decorators>
