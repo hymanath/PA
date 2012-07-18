@@ -268,7 +268,7 @@ function buildAccordion()
 	accordionElmtId.style.display = 'block';
 
 	getStatesInQuickView('siteSearch','stateList_s');
-	getElectionTypeValue(1);
+	//getElectionTypeValue(1);
 	getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
 	hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
 	getAllStatesHavingLocalBody("stateList_l");
@@ -575,7 +575,7 @@ function openAddNewProblemWindow()
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
 								<table>
 									
-									<tr>
+									<!--<tr>
 										<td style="height:40px;color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
@@ -588,6 +588,26 @@ function openAddNewProblemWindow()
 									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
 									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
 								</table>
+							</div>-->
+
+							<tr>
+		<td><select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 200px;"
+		onchange="checkElectionType(this.options[this.selectedIndex].value)"/>
+		<option value="0">Select Type</option>
+		<option value="2">Assembly</option>
+		<option value="1">Parliament</option>
+		</select>	</td></tr>
+						
+			
+
+		<tr><td>
+		<select id="states" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+		width: 200px;"
+		onchange="getElectionYearsInHomePage('Assembly')">
+			</select></td></tr>
+
+		<tr><td><select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+			width: 200px;"></select></td></tr></table>
 							</div>
 							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
 								<table width="90%"><tr>
@@ -722,6 +742,47 @@ function getStatesInQuickView( task,selId)
 	var url = "getStatesAjaxAction.action?"+rparam;						
 	callQuickViewAjax(jsObj,url);
 }
+
+function checkElectionType(electionTypeId)
+{
+var electionType = document.getElementById('electionTypeId').value;
+
+if(electionType == 1)
+	{
+getStates();
+document.getElementById('states').style.display="none";
+getElectionYearsInHomePage('Parliament');
+	}
+
+if(electionType == 2)
+	{
+	document.getElementById('states').style.display="block";
+
+getStates();
+
+	}
+}
+function getStates()
+{
+
+	var electionType = document.getElementById('electionTypeId').value;
+
+	var jsObj=
+		{						
+				
+				electionType:electionType,
+				task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;						
+	callHomePageAjax(jsObj,url);
+
+}
+
+
+
 function callQuickViewAjax(jsObj, url){
 
 
