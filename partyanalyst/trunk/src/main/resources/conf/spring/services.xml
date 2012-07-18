@@ -1025,6 +1025,8 @@
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 		<property name="filePathsDAO" ref="filePathsDAO" />
+		<property name="userPartyRelationDAO" ref="userPartyRelationDAO" />
+		<property name="userDAO" ref="userDAO" />
 	</bean>
 	
 	<bean name="specialPageService" class="com.itgrids.partyanalyst.service.impl.SpecialPageService">
