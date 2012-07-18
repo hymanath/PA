@@ -94,4 +94,8 @@ public interface IPartyDetailsService {
 	public List<SelectOptionVO> getElecYears(Long partyId,Long electionType,Long stateId);
 	
 	public List<SelectOptionVO> getCandidateDetailsForAParty(Long partyId,Long electionId);
+	
+	public List<SelectOptionVO> getAllPartysNamesByUser(Long userId);
+	
+	public ResultStatus saveDataToUserPartyRelation(Long userId,Long partyId);
 }
