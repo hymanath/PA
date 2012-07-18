@@ -20,7 +20,7 @@
     border-radius: 5px 5px 5px 5px;
     color: #FFFFFF;
     font-size: 17px;
-    margin-left: 320px;
+    margin-left: 354px;
     text-align: center;
     width: 250px;
 	}
@@ -43,8 +43,9 @@
 border:2px solid #CFD6DF;
 margin-bottom:10px;
 padding:10px;
-width:591px;
+width:552px;
 padding-bottom: 10px;
+margin-left: -16px;
 }
 .l2 {
 color:navy;
@@ -66,15 +67,15 @@ border-bottom-width: 0px;
 <script type="text/javascript">
 function showParties()
 {
-	//debugger;
-	 var  userE = document.getElementById("userId");
+   var  userE = document.getElementById("userId");
    var userId =  userE.options[userE.selectedIndex].value;
    document.getElementById("userErrorMessageDiv").innerHTML='';
     
    if(userId !=0)
    {
 	   document.getElementById("partyDiv").style.display='block';
-       
+	   document.getElementById("UpdatespartyDiv").style.display='none';
+    
    }
    else
    {
@@ -83,14 +84,15 @@ function showParties()
 }
 function clearPartyResults()
 {
-	document.getElementById("partyDiv").innerHTML='';
+	//document.getElementById("partyDiv").innerHTML='';
+	document.getElementById("partyDiv").style.display ='none';
 }
 function clearAllData()
 {
-   //document.getElementById("candidateDeleteErrorMessage").innerHTML='';
-   document.getElementById("partyDiv").style.display='none';
-   //document.getElementById("showUpdateDeleteDiv").style.display='none';
-   //document.getElementById("showSearchResultsDiv").innerHTML='';
+  document.getElementById("partyDeleteErrorMessage").innerHTML='';
+  // document.getElementById("partyDiv").style.display='none';
+   document.getElementById("UpdatespartyDiv").style.display='none';
+   
 }
 
 function showUpdateDeleteParty()
@@ -101,8 +103,8 @@ function showUpdateDeleteParty()
    if(userId!=0)
    {
      document.getElementById("UpdatespartyDiv").style.display='block';
-     document.getElementById("addCandidateDiv").style.display='none';
-   	 //document.getElementById("candidateDeleteErrorMessage").innerHTML=''; 
+     document.getElementById("partyDiv").style.display='none';
+   	 document.getElementById("partyDeleteErrorMessage").innerHTML=''; 
      getPartiesAssignedToAUser();
    }
    else
@@ -140,6 +142,14 @@ function callAjax(jsObj,url)
 			 if(jsObj.task == "getAllPartyDetailsAssignedToAUser")
 			 {   
 				showPartyDetails(myResults);
+			 }
+			 else if(jsObj.task == "deleteUserPartyRelation")
+			{
+				 showPartyDeleteResult(myResults);
+			}
+			else if(jsObj.task == "saveDataToUserPartyRelation")
+			 {
+			   assignedMessgae(myResults);
 			 }
 			  
 		  }
@@ -183,17 +193,17 @@ function showPartyDetails(results)
 	  str+='</table>';
 	  str+='<table>';
 	  str+='    <tr>';
-	  str+='       <td><input type="button" class="buttonStyle" value="Update" onclick="updateUserPartyRelation();" /></td>';
+	  str+='       <td><input type="button" class="buttonStyle" value="Update" onclick="updateUserPartyRelation();" style="margin-left: 69px; border-right-width: 0px; margin-right: 15px;" /></td>';
 	  str+='       <td><input type="button" class="buttonStyle" value="Cancel" onclick="clearUpdateDeleteCandidateDiv();" /></td>';
 	  str+='    </tr>';
 	  str+='</table>';
     }	  
-	  document.getElementById("updateDeleteCandidateDiv").innerHTML=str;
+	  document.getElementById("updateDeletePartyDiv").innerHTML=str;
   }
 
   function updateUserPartyRelation()
   {
-
+    
 	  var timeST = new Date().getTime();
     var relationIds = "";
 		var elements = document.getElementsByName("userPartyCheckBox");
@@ -203,6 +213,7 @@ function showPartyDetails(results)
 				relationIds =relationIds+",";
 			}
 		}
+	if(relationIds != ""){
 	var jsObj =
 		{ 
             time : timeST,
@@ -213,7 +224,64 @@ function showPartyDetails(results)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "saveUserPartyRelationAction.action?"+rparam;						
 	callAjax(jsObj,url);
+	}
+	
   }
+
+  function showPartyDeleteResult(result)
+ {
+   showUpdateDeleteParty();
+   var str='';
+   if(result.resultCode==0)
+   {
+   str+='<b><font color="green">Records Deleted Successfully</font></b>';
+   document.getElementById("partyDeleteErrorMessage").innerHTML=str;
+   }
+   else if(result.resultCode==1)
+   {
+   str+='<b><font color="red">Unable To Delete The Records</font></b>';
+  document.getElementById("partyDeleteErrorMessage").innerHTML=str;
+   }
+ }
+  function clearUpdateDeleteCandidateDiv()
+ {
+      document.getElementById("updateDeletePartyDiv").innerHTML='';
+	  document.getElementById("UpdatespartyDiv").style.display='none';
+	  
+ }
+ function assignData()
+ {
+   var timeST = new Date().getTime();
+   var  userEle = document.getElementById("userId");
+   var userId =  userEle.options[userEle.selectedIndex].value;
+   var  partyEle = document.getElementById("partyId");
+   var partyId =  partyEle.options[partyEle.selectedIndex].value;
+    if(partyId!=0)
+	{
+     var jsObj =
+		{ 
+            time : timeST,
+			userId:userId,
+			partyId:partyId,
+			task:"saveDataToUserPartyRelation"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "saveDataToUserPartyRelationAction.action?"+rparam;						
+	 callAjax(jsObj,url);
+     }
+	 else
+	 {
+	      document.getElementById("userErrorMessageDiv").innerHTML='<b><font color="red">Pleace Select A Party</font></b>';
+	 }
+	 
+ }
+ function assignedMessgae(results) 
+  {   if(results.resultCode == 0)
+            document.getElementById("userErrorMessageDiv").innerHTML='<b><font color="blue">Successfuly Assigned</font></b>';
+	  else if(results.resultCode == 121)
+             document.getElementById("userErrorMessageDiv").innerHTML='<b><font color="blue">Already Assigned</font></b>';	  
+  }
+  
 
 </script>
 </head>
@@ -221,12 +289,13 @@ function showPartyDetails(results)
 <div id="assignPartyMainDiv"> 
 	<div id="headingDIv" style="margin-bottom: 20px;">
 		<h2 class="headingStyle">Assign Party To A User</h2>
-		<table>
-            <tr><td><div id="userErrorMessageDiv" /></td></tr>
-    </table>
+		
 	</div>
 
 	<div id="contentDiv" style="background:#FFF;margin-bottom: 20px; padding-top: 20px; margin-left: 0px; padding-left: 0px; padding-bottom: 25px;">
+	<table>
+            <tr><td><div id="userErrorMessageDiv" style="margin-left: 350px; margin-bottom: 11px;"></div></td></tr>
+    </table>
 		<div style="margin-left: 296px;">
 			<span style="font-weight: bold; padding-left: 0px; margin-left: 0px; padding-right: 20px;">All Users</span>
 
@@ -240,8 +309,8 @@ function showPartyDetails(results)
 		<div class="buttonsStyle">
 			<table>
 		   <tr>
-			  <td><input type="button" class="buttonStyle" value="Add A Party" onClick="showParties();" style="padding-right: 6px; margin-right: 27px; margin-left: 54px;"></td>
-			  <td><input type="button" class="buttonStyle" value="Update Parties" onClick="showUpdateDeleteParty();"></td>
+			  <td><input type="button" class="buttonStyle" value="Add A Party" onClick="showParties();" style="padding-right: 17px; padding-left: 17px; margin-right: 13px; margin-left: 81px;"></td>
+			  <td><input type="button" class="buttonStyle" value="Update Parties"  onClick="showUpdateDeleteParty();"></td>
 		   </tr>
 		</table>	
 	</div>
@@ -249,6 +318,7 @@ function showPartyDetails(results)
 	<div id="partyDiv" style="margin-left: 200px;display:none" >
 	   <fieldset class="f3">
 		  <legend class="l2" style="width:68px;">Add A Party</legend> 
+		 
 			<div style="margin-left: 140px;">
 				<span style="font-weight: bold; padding-left: 0px; margin-left: 0px; padding-right: 20px;">Select Party</span>
 
@@ -262,7 +332,7 @@ function showPartyDetails(results)
 				<div class="buttonsStyle" style="margin-left: 35px;">
 					<table>
 					   <tr>
-						  <td><input type="button" class="buttonStyle" value="Assign" onClick="showAddCandidate();" style="padding-right: 6px; margin-right: 27px; margin-left: 54px;"></td>
+						  <td><input type="button" class="buttonStyle" value="Assign" onClick="assignData();" style="padding-right: 10px; margin-right: 13px; margin-left: 66px;"></td>
 						  <td><input type="button" class="buttonStyle" value="Cancel" onClick="clearPartyResults();"></td>
 					   </tr>
 					 </table>	
@@ -271,24 +341,24 @@ function showPartyDetails(results)
 	  </fieldset>
 	</div>
 
-	<div id="UpdatespartyDiv" style="margin-left: 200px;display:none;">
-	   <fieldset class="f3">
-		<legend class="l2" style="width:82px;">Update Parties</legend> 
-		<div style="margin-left: 140px;">
-			<span style="font-weight: bold; padding-left: 0px; margin-left: 0px; padding-right: 20px;">Unselect To Delete Parties</span>
-			 
-		</div>
-		<div class="buttonsStyle" style="margin-left: 35px;">
-			<table>
-		   <tr>
-			  <td><input type="button" class="buttonStyle" value="Update" onClick="showAddCandidate();" style="padding-right: 6px; margin-right: 27px; margin-left: 110px;"></td>
-			  <td><input type="button" class="buttonStyle" value="Cancel" onClick="showUpdateDeleteCandidate();"></td>
-		   </tr>
-		  </table>	
-		</div>
-	  </div>
-	  </fieldset>
-	</div>
+	
+	<div id="UpdatespartyDiv" style="margin-left: 200px;display:none;"> 
+ <fieldset class="f3">
+  <legend class="l2" style="width:82px;">Update Parties</legend>
+   <table>
+     <tr>
+	   <td><div id="partyDeleteErrorMessage" /></td>
+	 </tr>
+  </table>
+   <table>
+     <tr>
+	   <td>
+         <div id="updateDeletePartyDiv" style="margin-left: 148px; margin-bottom: 9px;"></div>
+       </td>
+	 </tr>
+   </table> 
+ </fieldset>
+</div>
 	
 
 	</div>
