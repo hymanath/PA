@@ -351,7 +351,7 @@ public String execute()
 	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 	if (registrationVO != null) 
 	{
-	 partyList= partyDetailsService.getAllPartysNames();
+	 partyList= partyDetailsService.getAllPartysNamesByUser(registrationVO.getRegistrationID());
 	 return Action.SUCCESS;
 	}
 	else
