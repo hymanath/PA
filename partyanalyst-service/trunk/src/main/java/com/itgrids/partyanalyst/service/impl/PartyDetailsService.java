@@ -41,7 +41,9 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGallaryDAO;
+import com.itgrids.partyanalyst.dao.IUserPartyRelationDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
@@ -68,6 +70,7 @@ import com.itgrids.partyanalyst.model.PartyManifesto;
 import com.itgrids.partyanalyst.model.PartyProfileDescription;
 import com.itgrids.partyanalyst.model.PartyUpdatesEmail;
 import com.itgrids.partyanalyst.model.UserGallary;
+import com.itgrids.partyanalyst.model.UserPartyRelation;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -107,8 +110,25 @@ public class PartyDetailsService implements IPartyDetailsService {
 	private IAllianceGroupDAO allianceGroupDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IFilePathsDAO filePathsDAO;
+	private IUserPartyRelationDAO userPartyRelationDAO;
+	private IUserDAO userDAO;
 	
-	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public IUserPartyRelationDAO getUserPartyRelationDAO() {
+		return userPartyRelationDAO;
+	}
+
+	public void setUserPartyRelationDAO(IUserPartyRelationDAO userPartyRelationDAO) {
+		this.userPartyRelationDAO = userPartyRelationDAO;
+	}
+
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
 	}
@@ -728,7 +748,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 
 			List<SelectOptionVO> partySelectList = null;
 			List<Object[]> list = partyDAO.findAllPartyNames();
-
+			
 			if (list != null && list.size() > 0) {
 				partySelectList = new ArrayList<SelectOptionVO>(0);
 				SelectOptionVO selectOptionVO = null;
@@ -1511,6 +1531,63 @@ public class PartyDetailsService implements IPartyDetailsService {
 		}
 		
 		return returnValue;
+	}
+	public List<SelectOptionVO> getAllPartysNamesByUser(Long userId) {
+		try {
+			log.debug("Entered into getAllPartysNamesByUser() Method");
+
+			List<SelectOptionVO> partySelectList = null;
+			//List<Object[]> list = partyDAO.findAllPartyNames();
+			List<Object[]> list = userPartyRelationDAO.getPartiesByUser(userId);
+
+			if (list != null && list.size() > 0) {
+				partySelectList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for (Object[] params : list) {
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long) params[0]);
+					selectOptionVO.setName(params[1].toString());
+					partySelectList.add(selectOptionVO);
+				}
+			}
+			return partySelectList;
+		} catch (Exception e) {
+			log
+					.error("Exception Occured in  getAllPartysNamesByUser() method - "
+							+ e);
+			return null;
+		}
+	}
+	public ResultStatus saveDataToUserPartyRelation(Long userId,Long partyId)
+	{
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  if(log.isDebugEnabled())
+				 log.debug("Entered Into saveDataToUserPartyRelation() of PartyDetailsSer");
+		  
+		  UserPartyRelation userPartyRelation = new UserPartyRelation();
+		 Long object = userPartyRelationDAO.checkPartyForUser(userId,partyId);
+		  if(object == null || (object != null && object.longValue()==0l))
+		  {
+		  userPartyRelation.setUser(userDAO.get(userId));
+		  userPartyRelation.setParty(partyDAO.get(partyId));
+		  
+		  userPartyRelationDAO.save(userPartyRelation);
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  }
+		  else {
+			  resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+		  }
+		 
+		  
+	  }catch(Exception e)
+	  {
+		  log.error("Exception occured in saveDataToUserPartyRelation() Method in partyDetailsService - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  
+	  }
+	  return resultStatus;
 	}
 }
 	
