@@ -2271,9 +2271,19 @@ function buildElectionTypes(myResult)
 	
 	var electionTypeElmt = document.getElementById("states");
 	electionTypeElmt.options.length=0;
+
 	var option = document.createElement('option');
 	option.value = "0";
 	option.text = "Select State";
+	try
+	{
+		electionTypeElmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		electionTypeElmt.add(option); // IE only
+	}
+	
 	for(var i in myResult)
 	{
 		var option = document.createElement('option');
@@ -2293,7 +2303,7 @@ function buildElectionTypes(myResult)
 
 }
 
- /* function getUniqueElements(arrayObj) {
+	/* function getUniqueElements(arrayObj) {
     var a = [];
     var l = arrayObj.length;
     for(var i=0; i<l; i++) {
@@ -2372,7 +2382,8 @@ function viewElectionResults()
 	  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
 	  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
 	  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
-	 
+		if(electionType == 'Parliament')
+			stateId = 1;
 		if(stateId == 0 || electionTypeId == 0 || electionId == 0)
 		{
 			errorMsgDivEle.style.display = 'block';
