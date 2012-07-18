@@ -150,6 +150,8 @@ public class AssigningPartyToUserAction extends ActionSupport implements Servlet
 				  resultStatus  = candidateDetailsService.deleteUserPartyRelation(jObj.getString("userPartyRelationIds"));
 			// else if(jObj.getString("task").equalsIgnoreCase("saveUserPartyRelation"))
 			// resultStatus  = candidateDetailsService.saveUserPartyRelation(jObj.getLong("userId"),jObj.getLong("candidateId"));
+			 else if(jObj.getString("task").equalsIgnoreCase("saveDataToUserPartyRelation"))
+				  resultStatus  = partyDetailsService.saveDataToUserPartyRelation(jObj.getLong("userId"),jObj.getLong("partyId"));
 			
 			
 		}
