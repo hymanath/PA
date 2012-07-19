@@ -51,4 +51,26 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 		Query query = getSession().createQuery("select count(*) from ProblemComments model where (model.isApproved = 'false' or model.isApproved is null) and (model.isDelete is null or model.isDelete = 'false') ");
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getAllProblemComments(Long problemId,Long userId,List<Long> userIds){
+		StringBuilder query = new StringBuilder();
+		query.append("select model.comment.comment,model.user.firstName,model.user.lastName,model.user.userId,model.insertedTime from ProblemComments model,UserProblem model1 where model.problem.problemId = model1.problem.problemId and (");
+		if(userId != null)
+			query.append(" model.user.userId = :userId or ");
+		query.append(" (  model1.visibility.visibilityId = :visibilityId  ");
+		if(!userIds.isEmpty())
+		query.append("and model.user.userId not in(:userIds)");
+		query.append(" )) and model.problem.problemId = :problemId  and model.isApproved = :isApproved and model.comment.isAbused = :isAbused and model.isDelete = :isDelete order by model.insertedTime desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		if(userId != null)
+		  queryObject.setParameter("userId", userId);
+		queryObject.setParameter("visibilityId", 1l);
+		if(!userIds.isEmpty())
+			queryObject.setParameterList("userIds",userIds);
+		queryObject.setParameter("problemId", problemId);
+		queryObject.setParameter("isApproved", IConstants.TRUE);
+		queryObject.setParameter("isAbused", IConstants.FALSE);
+		queryObject.setParameter("isDelete", IConstants.FALSE);
+		return queryObject.list();
+	}
+	
 }
