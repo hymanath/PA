@@ -338,13 +338,13 @@ if(request.getParameter("showMessage")!=null){
 		<div id="forgot_password_window_inner" style="font-size:0.8em"></div>
 		</div>
 		<div><br>
-		<div style="display:none;" id="accessDiv">
+		<!-- <div style="display:none;" id="accessDiv">
 			<img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color:#ff0000;display:inline;position:relative;top:-10px;font-weight:bold;">Only Registered users can view this content.<br>
 			Already a member, Please Login Here.<br>
 			(OR)<br>
 			Not a member, Click here for <a href="freeUserRegistration.action">FREE REGISTRATION</a>.</h3>
 
-		</div>
+		</div>-->
 		</div>
 		<!-- bootstap code(html 5)-->
 	<div class="container">
