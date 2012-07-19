@@ -131,6 +131,7 @@
 		<pattern>/adminUpload*</pattern>
 		<pattern>/profileManagePageAction*</pattern>
 		<pattern>/initailConstituencyManagementAction*</pattern>
+		<pattern>/censusReportAction*</pattern>
     </decorator>
 
 </decorators>
