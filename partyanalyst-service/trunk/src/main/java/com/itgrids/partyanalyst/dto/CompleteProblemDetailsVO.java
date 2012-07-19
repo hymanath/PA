@@ -24,6 +24,7 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String changedToPrivate;
     private String isPublic;
     private String isConnectPeopleReq;
+    private Long problemId;
     private String isTaken;
     private String status;      //problem status NEW,PROGRESS,PENDING,FIXED
     private String modifyAccess; //whether user has access to modified the problem states
@@ -157,6 +158,12 @@ public class CompleteProblemDetailsVO implements Serializable {
 	}
 	public void setPostedUserId(Long postedUserId) {
 		this.postedUserId = postedUserId;
+	}
+	public Long getProblemId() {
+		return problemId;
+	}
+	public void setProblemId(Long problemId) {
+		this.problemId = problemId;
 	}
     
 }
