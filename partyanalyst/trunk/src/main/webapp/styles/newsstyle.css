@@ -251,7 +251,7 @@ position:absolute;opacity:.23;  filter: alpha(opacity = 23);
 
 .service-box a span{display:block;padding:25px 15px;text-align:center;}
 
-.adboard{display:block;clear:both;width:900px;background:#F55306;color:#000;font:13px Arial; height:75px;margin:10px;margin-left:auto;margin-right:auto;text-align:center;
+.adboard{display:block;clear:both;background:#F55306;color:#000;font:13px Arial; width:716px;height:75px;margin:10px;margin-left:auto;margin-right:auto;text-align:center;
 
 background: #a7cfdf; /* Old browsers */
 background: -moz-linear-gradient(top,  #a7cfdf 0%, #23538a 100%); /* FF3.6+ */
@@ -262,6 +262,7 @@ background: -ms-linear-gradient(top,  #a7cfdf 0%,#23538a 100%); /* IE10+ */
 background: linear-gradient(top,  #a7cfdf 0%,#23538a 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a',GradientType=0 ); /* IE6-9 */
 padding:10px;
+margin-left: 20px;
 
 }
 .Sample-Report-top{left:100%;top:50%;float:right;font:14px Arial;margin-top:11px;}
