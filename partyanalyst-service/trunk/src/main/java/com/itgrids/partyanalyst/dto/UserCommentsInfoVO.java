@@ -10,6 +10,10 @@ public class UserCommentsInfoVO extends ResultStatus{
 	private Long commentCategoryId;
 	private List<CandidateCommentsVO> candidateComments;
 	private Long totalResultsCount;
+	private String firstName;
+	private String lastName;
+	private Long userId;
+	private String date;
 	
 	public Long getTotalResultsCount() {
 		return totalResultsCount;
@@ -59,6 +63,38 @@ public class UserCommentsInfoVO extends ResultStatus{
 
 	public void setCommentCategory(String commentCategory) {
 		this.commentCategory = commentCategory;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 		
 	
