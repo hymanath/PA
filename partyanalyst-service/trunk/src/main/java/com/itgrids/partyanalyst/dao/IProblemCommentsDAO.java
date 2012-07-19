@@ -19,4 +19,6 @@ public interface IProblemCommentsDAO extends GenericDao<ProblemComments,Long>{
 	
 	public Long getCountOfNewlyPostedProblemCommentsByUser();
 	
+	public List<Object[]> getAllProblemComments(Long problemId,Long userId,List<Long> userIds);
+	
 }
