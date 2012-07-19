@@ -1236,8 +1236,9 @@ select
 								}
 								else if(jsObj.task == "censusByParty")
 								{
-									buildPartyResultsByRanges(jsObj,myResults);
 									hidePartySelectAjaxImage();
+									buildPartyResultsByRanges(jsObj,myResults);
+									
 								}
 								else if(jsObj.task == "getLatestElectionYears")
 								{
