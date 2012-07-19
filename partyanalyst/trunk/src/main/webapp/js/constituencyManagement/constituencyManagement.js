@@ -137,14 +137,14 @@ function showProblemsStatusCount(results) {
 	problemStats_bodyEl.innerHTML = problemStats_bodyElContent;
 
 	var problems_OptionsContent = '';
-	problems_OptionsContent += '<table cellspacing="10" cellpadding="10" border="1">';
+	problems_OptionsContent += '<table class="betweenDates" cellspacing="10" cellpadding="10" border="1">';
 	problems_OptionsContent += '<tr>';
-	problems_OptionsContent += '<td style="vertical-align:top;" width="60%">';
+	problems_OptionsContent += '<td style="vertical-align:top;" width="68%">';
 	problems_OptionsContent += '<div id="problemOptionsHeadingDiv" class="widgetHeaders"> Problem Search Selection Criteria</div>';
 	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to search for problems posted within the selected period. Here, the user has to provide the start date, end date and also the status of a problem, to view the problems posted.</p>';
 	problems_OptionsContent += '<P class="widgetDescPara">Click on the calendar icon to select the dates.</P>';
 	problems_OptionsContent += '<DIV id="alertMessageDiv" class="errorMessage"></DIV>';
-	problems_OptionsContent += '<TABLE cellspacing="5">';
+	problems_OptionsContent += '<TABLE cellspacing="5" class="probStatsCountTable">';
 	problems_OptionsContent += '	<TR>';
 	problems_OptionsContent += '		<TH valign="top">View Problems from:</TH>';
 	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" readonly="readonly" style="margin-top:0px;" name="existingFromText" size="20"/>';
@@ -161,10 +161,12 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal1()"><IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '	</TR>';
+
 	problems_OptionsContent += '	<TR>';
-	problems_OptionsContent += '		<TH valign="top">Problem Status:</TH>';
-	problems_OptionsContent += '		<TD valign="top">';
-	problems_OptionsContent += '			<SELECT id="selectStatus" theme="simple"  name="selectStatus" list="statusList" listKey="id" listValue="name" onchange="getProblemDetailsInSelectedDates(this.options[this.selectedIndex].value)"/>';
+	
+	problems_OptionsContent += '		<TH>Problem Status:</TH>';
+	problems_OptionsContent += '		<TD>';
+	problems_OptionsContent += '			<SELECT style="margin-top:10px;" id="selectStatus" theme="simple"  name="selectStatus" list="statusList" listKey="id" listValue="name" onchange="getProblemDetailsInSelectedDates(this.options[this.selectedIndex].value)"/>';
 	for ( var i in problemMgmtObj.problemsStatusArr) {
 		problems_OptionsContent += '<option value='
 				+ problemMgmtObj.problemsStatusArr[i].id + '>'
@@ -765,7 +767,7 @@ function buildDifferentViewsRadio(info,divId,type)
 	if(data.length > 0 && radioDiv)
 	{
 		var str = '';
-		str += '<table>';
+		str += '<table cellspacing="10" cellpadding="0" style="margin-left:15px;">';
 		str += '<tr>';
 		str += '<th>Select scope to view its '+type+' </th>';
 		str += '<th style="font-size:11px">';
@@ -773,15 +775,15 @@ function buildDifferentViewsRadio(info,divId,type)
 		for(var i=0; i<data.length; i++)
 		{
 			if(i == 0)
-				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
+				str += '<input type="radio" style="margin-left:5px;" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">&nbsp;'+data[i].name;
 			else
-				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
+				str += '<input type="radio" style="margin-left:5px;" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" value="'+data[i].name+'" name="diffViews_'+type+'">&nbsp;'+data[i].name;
 		}
 		str += '</th>';
 		str += '</tr>';
 		str += '<tr>';
-		str += '<th><div id="scopeSelectBoxLabel_'+type+'"></div></th>';
-		str += '<th><div id="scopeSelectBoxData_'+type+'"></div></th>';
+		str += '<th style="font-size:10px;"><div id="scopeSelectBoxLabel_'+type+'"></div></th>';
+		str += '<th style="font-size:10px;"><div id="scopeSelectBoxData_'+type+'"></div></th>';
 		str += '</tr>';
 		str += '</table>';
 		
@@ -826,7 +828,7 @@ function buildInfluencePeopleScopeSelectBox(jsObj,results)
 	}
 	else
 	{
-		var lstr = 'Please select region';
+		var lstr = '<font size="2">Please select region</font>';
 		var dstr = '';
 		dstr += '<table>';
 		dstr += '<tr>';
@@ -836,9 +838,9 @@ function buildInfluencePeopleScopeSelectBox(jsObj,results)
 			dstr += '<td>';
 
 			if(jsObj.taskType == "influence people")
-				dstr += '<select onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+				dstr += '<select style="width:auto;height:auto;" onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
 			else if(jsObj.taskType == "local groups")
-				dstr += '<select onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+				dstr += '<select style="width:auto;height:auto;" onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
 
 			for(var j=0; j<results[i].optionsList.length; j++)
 			{
