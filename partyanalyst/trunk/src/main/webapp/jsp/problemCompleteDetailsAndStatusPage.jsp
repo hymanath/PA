@@ -751,13 +751,13 @@ str+= '<td><table><tr><td>';
 str+= '<a  href="javascript:{}" title="View file" ">';
 
 if(fileType[(fileType.length-1)] == "pdf"  ){
-str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
+str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].file+'\')}"/>';
 }
 else if(fileType[(fileType.length-1)] == 'text'){
-str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].pathOfFile+'\')}"/>';
+str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+results[i].file+'\')}"/>';
 }
 else if(fileType[(fileType.length-1)].indexOf('word') != -1){
-str+= '<a href="'+results[i].pathOfFile+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
+str+= '<a href="'+results[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
 }
 
 str+= '</a></td>';
@@ -767,7 +767,7 @@ str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].title+'</div
 }
 else{
 str+= '<td><table><tr><td>';
-str+= '<a rel="photo_gallery" href="'+results[i].pathOfFile+'" title="'+results[i].description+'"><img alt="" src="'+results[i].pathOfFile+'" height="100px" /></a></td>';
+str+= '<a rel="photo_gallery" href="'+results[i].file+'" title="'+results[i].description+'"><img alt="" src="'+results[i].file+'" height="100px" /></a></td>';
 str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+results[i].title+'</div></td></tr></table></td>';
 
 }
