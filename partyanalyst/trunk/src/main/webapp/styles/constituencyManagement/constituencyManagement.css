@@ -8,7 +8,8 @@
 	background-image:url("../../images/icons/constituencyManagement/pageheader.jpg");
 	background-repeat:no-repeat;
 	height:200px;
-	text-align:left;	
+	text-align:left;
+	
 }
 
 #constituencyMgmt_text
@@ -169,7 +170,8 @@
 	font-weight:bold;
 }
 .linkButton  {
-background-color:#483D8B;
+/*background-color:#483D8B;*/
+
 /*background-image:url("../../images/icons/electionResultsReport/linkBtn.png");*/
 border-left:1px solid #9999CC;
 border-right:1px solid #9999CC;
@@ -178,7 +180,8 @@ font-size:12px;
 font-weight:bold;
 margin-left:10px;
 padding:5px;
-text-decoration:none;
+text-decoration:none;background-color :#0066cc;
+	border-radius :5px;
 }
 
 .probStatsCountTable th
@@ -196,7 +199,9 @@ text-decoration:none;
 	color:#73787E;
 	line-height:20px;
 	text-align:justify;
-	word-spacing:3px;
+	word-spacing:3px;	
+	font-size:12px;
+	font-family:verdana,arial,sans-serif;
 }
 .errorMessage
 {
@@ -602,13 +607,13 @@ fieldset {
 	font-size:10px;
 }
 
-.differentViewsDivClass
+/*.differentViewsDivClass
 {
 	background-color:#F5EFEA;
 	padding:5px;
 	position:relative;
 	text-align:left;
-}
+}*/
 
 .differentViewsDivClass table th
 {
@@ -634,5 +639,5 @@ fieldset {
 
 #influencePeopleDetail_Outer,#localGroupsDetail_Outer
 {
-	 width: 587px;
+	 width: 595px;
 }
