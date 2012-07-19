@@ -116,7 +116,7 @@ padding:5px;
 #userdiv .userdesc{display:none;
 background:#eeeeee;border:2px solid #333;
 position:absolute;
-top:-42px;
+top:-58px;
 left:0px;
 border-radius:3px;
 padding:3px;
@@ -126,3 +126,10 @@ width:150px;
 border-left:8px solid #333;position:absolute;left:50%;top:100%;}
 #userdiv{position:relative;}
 #userdiv:hover .userdesc{display:block;}
+#imagesdisplaydiv{display:table;clear:both;padding:5px;margin-left:12px;}
+#imagesdisplaydiv a{width:135px;border-radius:3px;border:1px solid #ccc;margin:5px;padding:3px; display:inline-block;}
+
+#lA ul li,#problemactivities ul  li{padding:5px;margin-bottom:5px;border-bottom:1px solid #ccc; }
+#lA ul li:hover,#problemactivities ul  li:hover{background:#f2f2f2;}
+#lA ul li:nth-child(even){background:#fff;}
+#lA ul li:nth-child(even):hover{background:#f2f2f2;}
