@@ -59,9 +59,9 @@
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">
 	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
-
+		
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/localUserGroups.js"></script>
@@ -70,7 +70,74 @@
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	
+	<style type="text/css">
+	#contenttable
+	{
+		margin-left:auto;
+		margin-right:auto;
+		width:990px;
+	}
+	.probStatsCountTable th
+	{
+	color:#73787E;
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+	}
+	.problemsStatsTable
+	{
+		margin-left: 9px;
+	}
+
+	.betweenDates
+	{
+	 direction: ltr;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+	color : #000000;
+	}
+
+	#constituencyManagement_mainTabContainer .ui-tabs .ui-tabs-nav li a {
+    color: #1A496E;
+    font-weight: bold;
+    font-size: 12px;
+}
+.differentViewsDivClass
+{
+	background-color:#F5EFEA;
+	padding:0px;
+	position:relative;
+	text-align:left;
+}
+.differentViewsDivClass table th {
+    color: #77471D;
+    text-align: left;
+	font-size:11px;
+}
+
+#constituencyManagement_mainTabContainer #tabs
+{
+	border:1px solid #75A0C2;
+	width:936px;
+	margin-left:15px;
+}
+#political_changes_data_table
+{
+	width : 100px;font-size : 12px;
+	
+}
+#political_changes_data_head
+{
+	color:#73787E;
+	line-height:18px;
+	padding:10px;
+	text-align:justify;
+	word-spacing:2px;font-size :12px;
+	
+}
+
+	</style>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 	<script type="text/javascript">
 		google.load("visualization", "1", {packages:["corechart"]});
@@ -697,14 +764,14 @@
 	
 </head>
 <body>
-	
-	<div id="errorMessageDIV" class="yui-skin-sam">
+
+		<div id="errorMessageDIV" class="yui-skin-sam">
 		<div id="smsErrorPopupDiv">
 		</div>
 	</div>
 
-	<div id="constituencyMgmtDiv_main" style="padding:10px;">
-		<div id="constituencyMgmt_main_header">
+	<div id="constituencyMgmtDiv_main" style="padding-right:10px;padding-left:0px;">
+		<div id="constituencyMgmt_main_header" style="margin-left:27px;">
 			<div id="constituencyMgmt_head_label">Constituency Management</div>
 			<DIV id="constMgmtDesc">
 				<UL>
@@ -716,31 +783,31 @@
 				</UL>
 			</DIV>
 		</div>
-		<div id="constituencyMgmt_main_content">
-			<div id="problem_stats_main" style="margin-bottom:10px;">
+		</div>
+		<div id="constituencyMgmt_main_content" style="width:960px;margin-left:10px;">
+			<div id="problem_stats_main" style="margin-bottom:10px;width:910px;margin-left:15px;">
 				<div id="problem_stats_head">
 					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
 							<td width="1px"><img width="24" height="30" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="problem_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;height:14px;">Problem Statistics</div></td>
+							<td><div id="problem_stats_head_label" class="containerHeadLabelDivClass" style="width:895px;height:14px;">Problem Statistics</div></td>
 							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
-				</div>
-				<div id="problem_stats_body" class="containerBodyDivClass">
-					<div style="text-align:right;padding:15px;">
+				</div><div id="problem_stats_body" class="containerBodyDivClass" style="width:940px;margin-left:1px;">
+					<div style="text-align:right;padding:15px;background:#ffffff;">
 						<a class="linkButton" href="javascript:{}" onclick="openAddNewProblemWindow()">Add New Problem</a>						
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a>
 					</div>
-					<div id="problems_outline_Div"></div>
-					<DIV id="problems_Options" ></DIV>
+					<div id="problems_outline_Div" style="background:#ffffff;"></div>
+					<DIV id="problems_Options" style="background:#ffffff;"></DIV>
 					<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>
 					
 					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 				</div>
 			</div>
-			
+
 			<!-- New Layout (Start)-->
 			<div id="constituencyManagement_mainTabContainer">
 				<div id="tabs">					
@@ -753,16 +820,16 @@
 						<table width="100%" cellpadding="0" cellspacing="5">
 						<tr>
 							<td colspan="2">
-								<div id="influencePeopleChartDiv_Outer" class="rounded" style="margin:0px;"> 						
+								<div id="influencePeopleChartDiv_Outer" class="rounded" style="width:903px;margin-top:9px;"> 						
 									<div class="corner topLeft"></div>
 									<div class="corner topRight"></div>
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
 
-									<div id="differentViewsRadioDiv_influencingPeople" class="differentViewsDivClass"></div>
+									<div id="differentViewsRadioDiv_influencingPeople" class="differentViewsDivClass" style="font-size:13px;"></div>
 									<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
-										<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing People" class="linkButton" />
+										<input type="button" style="margin-right:10px;margin-top:10px;font-size:12px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing People" class="linkButton" />
 									</DIV>
 									<div id="influencePeopleChartDiv_main" class="contentDivClass">										
 									</div>	
@@ -795,7 +862,7 @@
 
 						</td>
 						<td width="70%" valign="top">
-							<div id="influencePeopleDetail_Outer" class="rounded" style="margin:0px;"> 						
+							<div id="influencePeopleDetail_Outer" class="rounded" style="margin-left:9px;"> 						
 								<div class="corner topLeft"></div>
 								<div class="corner topRight"></div>
 								<div class="corner bottomLeft"></div>
@@ -830,17 +897,17 @@
 						<table width="100%" cellpadding="0" cellspacing="5">
 						<tr>
 							<td colspan="2">
-								<div id="localGroupsChartDiv_Outer" class="rounded" style="margin:0px;"> 						
+								<div id="localGroupsChartDiv_Outer" class="rounded" style="margin-top:9px;"> 						
 									<div class="corner topLeft"></div>
 									<div class="corner topRight"></div>
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
 
-										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass">	</div>
+										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass" style="padding:0px;">	</div>
 										<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
-											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupCreation('new',0,0)" value="Create A Group" class="linkButton" />
-											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupMember(0,0)" value="Create A Group Member" class="linkButton" />
+											<input type="button" style="margin-right:10px;margin-top:10px;font-size:12px;height:28px;" onclick="redirectToNewLocalGroupCreation('new',0,0)" value="Create A Group" class="linkButton" />
+											<input type="button" style="margin-right:10px;margin-top:10px;font-size:12px;height:28px;" onclick="redirectToNewLocalGroupMember(0,0)" value="Create A Group Member" class="linkButton" />
 								        </DIV>
 										<div id="localGroupsChartDiv_main" class="contentDivClass">										
 										</div>	
@@ -863,7 +930,7 @@
 
 						</td>
 						<td width="70%" valign="top">
-							<div id="localGroupsDetail_Outer" class="rounded" style="margin:0px;"> 						
+							<div id="localGroupsDetail_Outer" class="rounded" style="margin-left:9px;"> 						
 								<div class="corner topLeft"></div>
 								<div class="corner topRight"></div>
 								<div class="corner bottomLeft"></div>
@@ -904,12 +971,12 @@
 
 							<div id="localPoliticalChanges_main" class="contentDivClass yui-skin-sam" >
 								<DIV ><div id="localPoliticalChangesRegistration"></DIV>
-										<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
+										<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;font-size:12px;height:28px;"/>
 								</div>
 								<div id="political_changes_data_head">
 									<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> give a glance of the total changes that occur in a constituency. It helps the user to analyze the changes and act accordingly.
 								</div>
-								<div id="political_changes_data_table"></div>
+							<div id="political_changes_data_table"></div>
 								<div id="political_changes_data_body"></div>	
 							</div>	
 						</div>
@@ -919,18 +986,18 @@
 			</div>
 			<!-- New Layout (End)-->
 
-			<div id="voters_stats_main" style="margin-bottom:10px;">
+			<div id="voters_stats_main" style="margin-bottom:10px;margin-left:15px;background:#ffffff;">
 				<div id="voters_stats_head">
 					<table cellspacing="0" cellpadding="0"  width="100%">
 						<tr>
 							<td width="1px"><img width="24" height="29" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;height:13px;">Voters Details</div></td>
+							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:897px;height:13px;">Voters Details</div></td>
 							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
 				</div>
-				<div id="voters_stats_body" class="containerBodyDivClass" style="padding:10px;">
-					<div id="voterStats_content" class="widgetDescPara">
+				<div id="voters_stats_body" class="containerBodyDivClass" style="width:942px;margin-left:1px;">
+					<div id="voterStats_content" class="widgetDescPara" style="margin-left:5px;">
 						
 							<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their caste information upto the hamlet level. User has to select the region according to their access level and can obtain the voter information.
 						
