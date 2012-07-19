@@ -130,6 +130,7 @@
 		<pattern>/assigningPartyToUserAction*</pattern>
 		<pattern>/adminUpload*</pattern>
 		<pattern>/profileManagePageAction*</pattern>
+		<pattern>/initailConstituencyManagementAction*</pattern>
     </decorator>
 
 </decorators>
