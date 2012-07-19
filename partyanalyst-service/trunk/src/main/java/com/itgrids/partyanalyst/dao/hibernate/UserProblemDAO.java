@@ -688,4 +688,9 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
     	   return getHibernateTemplate().find(" select count(model.problem.problemId) from UserProblem model where model.problem.problemId = ? and model.isOwner = ? " +
     	   		" and model.visibility.type = ?",params);
        }
+       
+       public List<Long> getUserIds(Long problemId){
+    	   Object [] params = {problemId,2l};
+   		return getHibernateTemplate().find("select model.user.userId from UserProblem model where model.problem.problemId = ? and  model.visibility.visibilityId = ?",params);
+   	}
 }
