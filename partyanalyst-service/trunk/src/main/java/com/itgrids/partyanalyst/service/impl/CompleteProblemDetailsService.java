@@ -2,16 +2,19 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
+import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
+import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.service.ICompleteProblemDetailsService;
@@ -25,6 +28,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	private IProblemManagementService problemManagementService;
 	private IProblemProgressDAO problemProgressDAO;
 	private IFilePathsDAO filePathsDAO;
+	private IProblemCommentsDAO problemCommentsDAO;
 	
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
@@ -58,14 +62,21 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
 		this.filePathsDAO = filePathsDAO;
 	}
-
 	
+	public IProblemCommentsDAO getProblemCommentsDAO() {
+		return problemCommentsDAO;
+	}
+
+	public void setProblemCommentsDAO(IProblemCommentsDAO problemCommentsDAO) {
+		this.problemCommentsDAO = problemCommentsDAO;
+	}
+
 	public CompleteProblemDetailsVO getProblemCompleteDetails(final Long problemId,final Long userId,final String userStatus){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemCompleteDetails method ");
 		}
 		CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
-		
+		completeProblemDetailsVO.setProblemId(problemId);
 		try{
 			if(userStatus.equalsIgnoreCase(IConstants.NOT_LOGGED_IN)){
 				getProblemDetailsForNotLoggedUser(problemId,completeProblemDetailsVO);		
@@ -220,6 +231,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,IConstants.PUBLIC));
 			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,IConstants.PUBLIC));
 			completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
+			completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
 		}
 		if(LOG.isDebugEnabled()){
 			LOG.debug(" getProblemAndItsOwnerDetails method executed successfully");
@@ -250,6 +262,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,null));
 			completeProblemDetailsVO.setProblemStatus(problemManagementService.getProblemRecentDetailsByProblemId(problemId,userId));
 			completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
+			completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
 		}
 		if(LOG.isDebugEnabled()){
 			LOG.debug(" getProblemAndItsOwnerDetailsForCustmor method executed successfully");
@@ -317,5 +330,37 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		}
 		
 		return returnVal;
+	}
+	
+	public List<UserCommentsInfoVO> getPostedComments(final Long problemId,final Long userId){
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Enter into getPostedComments method ");
+		}
+		List<UserCommentsInfoVO> userCommentsInfoVOList = new ArrayList<UserCommentsInfoVO>();
+		try{
+	      List<Long> userIdsList = userProblemDAO.getUserIds(problemId);
+		  List<Object[]> commentDetails = problemCommentsDAO.getAllProblemComments(problemId,userId,userIdsList);
+		  popolateDataToVo(commentDetails,userCommentsInfoVOList);
+		}catch(Exception e){
+			LOG.error("Exception rised in getPostedComments method ",e);
+		}
+		return userCommentsInfoVOList;
+	}
+	private void popolateDataToVo(List<Object[]> commentDetails,List<UserCommentsInfoVO> userCommentsInfoVOList){
+		UserCommentsInfoVO userCommentsInfoVO = null;
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:MM");
+		for(Object[] comment:commentDetails){
+		 try{
+			userCommentsInfoVO = new UserCommentsInfoVO();
+			userCommentsInfoVO.setComment(comment[0]!= null?comment[0].toString():"");
+			userCommentsInfoVO.setFirstName(comment[1]!= null?comment[1].toString():"");
+			userCommentsInfoVO.setLastName(comment[2]!= null?comment[2].toString():"");
+			userCommentsInfoVO.setUserId((Long)comment[3]);
+			userCommentsInfoVO.setDate(comment[4]!= null?dateFormat.format((Date)comment[4]):"");
+			userCommentsInfoVOList.add(userCommentsInfoVO);
+		 }catch(Exception e){
+			 LOG.error("Exception rised in popolateDataToVo method while iterating and getting problem related files data ",e);
+		 }
+		}
 	}
 }
