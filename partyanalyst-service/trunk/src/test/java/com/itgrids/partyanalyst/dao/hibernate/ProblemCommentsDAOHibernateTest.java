@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 
@@ -40,7 +39,7 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 	}*/
-	public void testgetProblemComments()
+	/*public void testgetProblemComments()
 	{
 		List<Object[]> list = problemCommentsDAO.getProblemComments(30l);
 		
@@ -53,6 +52,12 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 	{
 		Long newlyPostedProbCOmmentsCount = problemCommentsDAO.getCountOfNewlyPostedProblemCommentsByUser();
 		System.out.println(newlyPostedProbCOmmentsCount);
+	}*/
+	public void testGetAllProblemComments(){
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(3l);
+		List<Object[]> data = problemCommentsDAO.getAllProblemComments(1l,1l, userIds);
+		System.out.println(data.size());
 	}
 
 }
