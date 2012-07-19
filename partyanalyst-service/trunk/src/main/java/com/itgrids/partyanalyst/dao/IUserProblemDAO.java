@@ -111,4 +111,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Long> checkIsTakenUpProblem(Long problemId,Long userId);
 	
 	public List<Long> checkIsTakenUpProblemIsInPublicVisiblty(Long problemId);
+	
+	public List<Long> getUserIds(Long problemId);
 }
