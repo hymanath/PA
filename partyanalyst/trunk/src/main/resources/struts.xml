@@ -3463,6 +3463,10 @@
            		<param name="root">resultStatus</param>
         	</result>	
 		</action>
-		
+		<action name="getCompleteProblemCommentsAction" class="completeProblemDetailsAction" method="getProblemComments">
+			<result type="json" name="success">
+           		<param name="root">userCommentsInfoVOList</param>
+        	</result>
+		</action>
 	</package>
 </struts>      
