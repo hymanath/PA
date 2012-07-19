@@ -21,8 +21,25 @@
 
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
 <link type="text/css" rel="stylesheet" href="styles/bubble.css">
+<!-- start of vedio files -->
+
+<link rel="stylesheet" type="text/css" href="styles/videoGallary/overlay-minimal.css"/>
+<script type="text/javascript" src="js/videoGallary/jquery.tools.min.js"></script> 
+<script type="text/javascript" src="js/videoGallary/swfobject.js" ></script>  
+<script type="text/javascript" src="js/videoGallary/videolightbox.js" ></script>
+
+<!-- End of vedio files-->
 </head>
 <body>
+<style>
+  
+  .image_styles{
+    border: 1px solid #CCCCCC;
+	width: 186px;
+	margin-left:6px
+  }
+ 
+</style>
 <div class="mainnewsdiv">
 <div class="Promo-box-left gradfill">
 <h1 class="gradlightblack">Constituency Profile Report  <div class="Sample-Report-top">
@@ -74,7 +91,7 @@ In this competitive Politics, how you will know the past election results in a b
 </ul>
 
 </div>
-<div class="helpbox-red" style="top:0px;">
+<div class="helpbox-red" style="top:0px;margin-left: 22px;">
 <div class="Sample-Report">
 <a class="inline" href="#fancydivbox">View Sample</a>
 </div>
@@ -91,35 +108,57 @@ Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a> </sp
  </span>
 </div>
 </div>
+<div class="adboard" style="width: 678px; margin-left: 15px;"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>
 </div>
 
 <div class="sevices-right">
-<h3>Our Services</h3>
+<div class="image_styles">
+   <!--<h3 style="border-bottom: 1px solid #CCCCCC;">Our Services</h3>-->
+  <div id="videogallery">
+    <div>
+	    <a rel="#voverlay" href='http://www.youtube.com/v/PKZpPe1pYIw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer'>
+		<img src='http://img.youtube.com/vi/PKZpPe1pYIw/0.jpg' style="width: 155px; height: 130px;margin-left:14px;margin-top: 7px;"/></a>
+    </div>
+	
+    <div>
+       <a rel="#voverlay"  href="http://www.youtube.com/v/mMTRWXNVXCw?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+        <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px; " src="http://img.youtube.com/vi/mMTRWXNVXCw/0.jpg">
+       </a>
+    </div>
+   <div>
+      <a rel="#voverlay"  href="http://www.youtube.com/v/3k9vFj0Ca54?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">
+       <img style="width:155px;height:130px;margin-left:14px;margin-top: 7px;margin-bottom: 7px;" src="http://img.youtube.com/vi/3k9vFj0Ca54/0.jpg">
+      </a>
+   </div>
+   
+  </div>
+</div>
 <!--<div class="service-box">
 <a href="#"><span>Constituency Profile Report</span></a>
 <img src="images/site/imgpartyperf.jpg"/>
 Get Constituency Reports
 </div>-->
-<div class="service-box">
+<h3 >Our Services</h3>
+<div class="service-box" style="width: 176px; margin-left:6px">
 <a href="electionAnalysisAndManagementTool.action"><span>Political Management Tool</span></a>
-<img src="images/new_homepage/sp-pa.jpg"/>
+<img src="images/new_homepage/sp-pa.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
 Analyze your constituency, track your progress and pending facilities.
 </div>
-<div class="service-box">
+<div class="service-box" style="width: 176px; margin-left:6px">
 <a href="VotersPulse.action"><span>Voters Pulse</span></a>
-<img src="images/new_homepage/checklist.jpg"/>
+<img src="images/new_homepage/checklist.jpg" style="width: 110px; height: 100px; margin-left: 43px;"/>
 Now, you can drive your survey's through Party Analyst...
 Ask, Analyze, Improve
 </div>
-<div class="service-box">
+<div class="service-box" style="width: 176px; margin-left:6px">
 <a href="newsMonitoringService.action"><span>News Monitoring Service</span></a>
-<img src="images/new_homepage/NewsTracker.png"/>
+<img src="images/new_homepage/NewsTracker.png" style="width: 114px; height: 100px; margin-left: 43px;"/>
 As a Politician or Political Party, News Monitoring and analyzing is very important to keep upper hand in the political arena.
 </div>
 
 </div>
 </div>
-<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>
+<!--<div class="adboard"><span>To place your advertisement in this page please contact us at <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span> </div>-->
 
 
 <div id="promodiv" style="display:none;">
