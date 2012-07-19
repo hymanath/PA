@@ -22,73 +22,74 @@
 <title>Census Report</title>
 
 <style type="text/css">
-	
-	#censusReport_main
-	{
-		padding:20px;
-	}
-	#censusReportHeading
-	{
-		color:#6C3C05;
-		font-size:20px;
-		font-weight:normal;
-		padding:20px;
-		text-decoration:underline;
-	}
-	
-	#censusReport_body
-	{
-		text-align:left;
-	}
-	
-	#censusReport_body_heading
-	{
-		border-bottom:1px solid #ADADAD;
-	}
+#censusReport_main
+{
+	margin-left: auto;
+    margin-right: auto;
+    float: none;
+    width: 960px;
+}
+#censusReportHeading
+{
+	/* background: #87CEFA;*/
+	background:#003399;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFF;
+    float: none;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    text-align: center;
+    width: 200px;
+   
+}
+#censusReport_body_heading
+{
+	font-size: 15px;
+	color: #3D362E;
 
-	#censusReport_body_heading_table td
+}
+#censusReport_body
+{
+margin-bottom: 20px; 
+padding: 15px;
+border-radius: 3px 3px 3px 3px;
+text-align:left;
+}
+select
+{
+	width:150px !important;
+	padding:0px;
+	
+}
+
+#censusPopulationRange
+{
+	margin-top:20px;
+}
+#censusPopulationRange_body_head
 	{
-		color:#3D362E;
-		font-size:14px;
+		background-color:#EEF4F6;
+		color:#444F52;
 		font-weight:bold;
-		padding:10px;
+		margin:5px;
+		padding:2px;
+		margin-top:15px;
+	    padding-left: 10px;
+		padding-top: 5px; 
+		padding-bottom: 5px; 
+		border-radius: 6px 6px 6px 6px;
+		width: 510px;
 	}
-		
-	#censusReport_body_input_table th
+	.censusPopulationRange_body_table_inner_head th
 	{
-		padding:10px;
-		width:75px;
+		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		padding:5px;
+		color:#64420F;
 	}
-
-	#censusReport_body_input_table td
-	{
-		padding:10px;
-	}
-
-	#censusPopulationRange
-	{
-		margin-top:20px;
-	}
-
-	.dataHeaderDiv
-	{
-		color:#3D362E;
-		font-size:14px;
-		font-weight:bold;
-		height:40px;
-		text-decoration:underline;
-	}
-
-	#performanceGraphDiv
-	{
-		margin-top:30;
-	}
-	
-	#censusPopulationRange_body_table_outer td
-	{
-		padding:10px;
-	}
-
 	#censusPopulationRange_body_table_inner th
 	{
 		padding:5px;
@@ -98,7 +99,29 @@
 	{
 		padding:5px;
 	}
+	.mainWidgetsBody
+	{
+		border-bottom:1px solid #E0E0D6;
+		border-left:1px solid #E0E0D6;
+		border-right:1px solid #E0E0D6;
+		padding:10px;
+		font-size:11px;
+		
+	}
 
+	.mainWidgetsDiv
+	{
+		margin:10px;
+	}
+	#censusPopulationRange_body_table_outer td
+	{
+		padding:10px;
+	}
+
+	#censusPopulationRange_body_table_inner th
+	{
+		padding:5px;
+	}
 	.censusWidgetHeader
 	{
 		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
@@ -110,17 +133,6 @@
 		background-image:url("images/icons/districtPage/header_body.png");
 		height:36px;
 	}
-
-	#partyResultsTableDiv_main
-	{
-		border-bottom:1px solid #E0E0D6;
-		border-left:1px solid #E0E0D6;
-		border-right:1px solid #E0E0D6;
-		padding:10px;
-		overflow:auto;
-		width:868px;
-	}
-	
 	.censusWidgetHeader_span
 	{
 		position:relative;
@@ -129,77 +141,30 @@
 		color:#4B74C6;
 		font-weight:bold;
 	}
-
-	.mainWidgetsBody
-	{
-		border-bottom:1px solid #E0E0D6;
-		border-left:1px solid #E0E0D6;
-		border-right:1px solid #E0E0D6;
-		padding:10px;
-	}
-
-	.mainWidgetsDiv
-	{
-		margin:10px;
-	}
-
-	.censusPopulationRange_body_table_inner th
-	{
-		padding:5px;
-		background-color:#EEF0F2;
-	}
-
-	.censusPopulationRange_body_table_inner td
+.censusPopulationRange_body_table_inner th
+{
+	background:#EEF0F2;
+	padding:5px;
+}
+.censusPopulationRange_body_table_inner td
 	{
 		padding:5px;
 	}
-
 	.ajaxImgClass
 	{
 		position:relative;
 		left:10px;
 	}
-
-	.censusPopulationRange_body_table_inner_head th
+	#censusPopulationRange_body
 	{
-		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
-		padding:5px;
-		color:#64420F;
+		background:#FFF;
+	}
+	#partyResultsPerformance_body
+	{
+		background:#FFF;
 	}
 	
-	#censusPopulationRange_body_head
-	{
-		background-color:#EEF4F6;
-		color:#444F52;
-		font-weight:bold;
-		margin:5px;
-		padding:2px;
-	}
 
-	.graphHeadTable th
-	{
-		color:#4B74C6;
-	}
-	.newTh
-	{
-		background-color:#EEF0F2;
-		padding:5px;
-	}
-	#censusReporterror_Div
-	{
-		color:red;
-		font-size:12px;
-		text-align:center;
-	}
-
-	.selectWidth
-	{
-		width:151px;
-	}
-	.selectBoxWidth {
-    padding: 0;
-    width: 144px;
-}
 </style>
 
 <script type="text/javascript">
@@ -437,12 +402,12 @@
 		var ctitle = 'All Parties Results based on Votes Percentage';
 
 		var gStr = '';
-		gStr += '<table class="graphHeadTable">';
+		gStr += '<table class="graphHeadTable" cellpadding="3">';
 		gStr += '<tr>';
 		gStr += '<th>Constituencies Count</th>';
-		gStr += '<th><input type="radio" name="graphRadioName1" checked="checked" value="percentage" onclick="getAllPartyResultsByRanges(this.value)">By Percentage</input></th>';
-		gStr += '<th><input type="radio" name="graphRadioName1" value="seats" onclick="getAllPartyResultsByRanges(this.value)">By Seats Won</input></th>';
-		gStr += '<th><input type="radio" name="graphRadioName1" value="cpAvg" onclick="getAllPartyResultsByRanges(this.value)">By CP* Avg</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName1" checked="checked" value="percentage" onclick="getAllPartyResultsByRanges(this.value)" style="margin-right: 3px;">By Percentage</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName1" value="seats" onclick="getAllPartyResultsByRanges(this.value)" style="margin-right: 3px;">By Seats Won</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName1" value="cpAvg" onclick="getAllPartyResultsByRanges(this.value)" style="margin-right: 3px;">By CP* Avg</input></th>';
 		gStr += '</tr>';
 		gStr += '</table>';
 		graphHeadElmt.innerHTML = gStr;
@@ -526,12 +491,12 @@
 		
 		var radioElmt = document.getElementById("onePartyCensusResults_head");
 		var rStr = '';
-		rStr += '<table class="graphHeadTable">';
+		rStr += '<table class="graphHeadTable" cellpadding="3">';
 		rStr += '<tr>';
 		rStr += '<th>Constituencies Count</th>';
-		rStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="percentage" onclick="getPartyResultsByRanges(this.value)">By Percentage</input></th>';
-		rStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';	
-		rStr += '<th><input type="radio" name="graphRadioName" value="cpAvg" onclick="getPartyResultsByRanges(this.value)">By CP* - Avg </input></th>';	
+		rStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="percentage" onclick="getPartyResultsByRanges(this.value)" style="margin-right: 3px;">By Percentage</input></th>';
+		rStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)" style="margin-right: 3px;">By Seats Won</input></th>';	
+		rStr += '<th><input type="radio" name="graphRadioName" value="cpAvg" onclick="getPartyResultsByRanges(this.value)" style="margin-right: 3px;">By CP* - Avg </input></th>';	
 		rStr += '</tr>';
 		rStr += '</table>';
 		radioElmt.innerHTML = rStr;
@@ -559,7 +524,7 @@
 			str += '<td class="newTh" align="center"><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<td class="newTh" align="center">'+resultByRanges[i].range+'</th>';
 			if(resultByRanges[i].count != 0)
-				str += '<td align="center"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+resultByRanges[i].count+'</a></td>';
+				str += '<td align="center"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+resultByRanges[i].count+' Constituencies Having '+jsObj.censusText+' Between '+resultByRanges[i].range+'">'+resultByRanges[i].count+'</a></td>';
 			else
 				str += '<td align="center">'+resultByRanges[i].count+'</td>';
 
@@ -654,7 +619,7 @@
 		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
 		graphHeadElmt.innerHTML = '';
 
-		var cpStr = '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body_head\')">View Party wise Results By Census Percentage Range</a></div>';
+		var cpStr = '<div><a href="javascript:{}" title="Click Here To View Party wise Results By Census Percentage Range" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body_head\')">Click Here To View Party wise Results By Census Percentage Range</a></div>';
 		censusPopulationHead.innerHTML = cpStr;
 
 		if(rangeElmt && rangeElmt.style.display == "none")
@@ -701,7 +666,7 @@
 			str += '<th width="10px"><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<th width="50px">'+results[i].range+'</th>';
 			if(results[i].count != 0)
-				str += '<td width="30px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+results[i].count+'</a></td>';
+				str += '<td width="30px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')" title="Click Here To View Election Results of All Parties in '+results[i].count+' Constituencies Having '+jsObj.censusText+' Between '+results[i].range+'">'+results[i].count+'</a></td>';
 			else
 				str += '<td width="30px">'+results[i].count+'</td>';
 
@@ -762,7 +727,7 @@
 		str += '<table>';
 		str += '<tr>';
 		str += '<td>Select Party To View Results By Census Percentage Range:</td>';
-		str += '<td><select id="partySelectElmt" onchange="getAjaxResultForPartyResultsByRanges(this.options[this.selectedIndex].value)">';
+		str += '<td><select id="partySelectElmt" style="margin-left:10px;" onchange="getAjaxResultForPartyResultsByRanges(this.options[this.selectedIndex].value)">';
 		for(var i=0; i<partiesList.length; i++)
 			str += '<option value="'+partiesList[i].id+'">'+partiesList[i].name+'</option>';
 		str += '</select></td>';
@@ -1014,18 +979,18 @@
 		optionStr += '<table width="100%">';
 		optionStr += '<tr>';
 		optionStr += '<th valign="top">Select options to change view </th>';
-		optionStr += '<td valign="top"><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio" checked="checked" value="all"/> All </td>';
-		optionStr += '<td valign="top"><input name="partyResultsRadio" type="radio" value="district" onclick="showSelectOptions(this.value)"/> District </td>';
+		optionStr += '<td ><input name="partyResultsRadio" onclick="showSelectOptions(this.value)" type="radio" checked="checked" value="all"/> All </td>';
+		optionStr += '<td><input name="partyResultsRadio" type="radio" value="district" onclick="showSelectOptions(this.value)"/> District </td>';
 		optionStr += '<td valign="top"><div id="district_select" style="display:none;"><select id="district_selectElmt" multiple="multiple" size="3">';
 		for(var i=0; i<results.districts.length; i++)
 			optionStr += '<option value="'+results.districts[i].id+'">'+results.districts[i].name+'</option>';
 		optionStr += '</select></div></td>';
-		optionStr += '<td valign="top"><input name="partyResultsRadio" type="radio" value="parties" onclick="showSelectOptions(this.value)"/> Parties </td>';
+		optionStr += '<td ><input name="partyResultsRadio" type="radio" value="parties" onclick="showSelectOptions(this.value)"/> Parties </td>';
 		optionStr += '<td valign="top"><div id="parties_select" style="display:none;"><select id="parties_selectElmt" multiple="multiple" size="3">';
 		for(var i=0; i<results.parties.length; i++)
 			optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
 		optionStr += '</select></div></td>';
-		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.range+'\')"></td>';
+		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.range+'\')" style="color:#FFF; font-weight: bold; padding-left: 10px; padding-right: 10px; border-radius: 5px 5px 5px 5px; background:#4B74C6"></td>';
 		optionStr += '</tr>';
 		optionStr += '</table>';
 		optionStr += '<div id="partyResultsTable_errorDiv" style="color:red;font-size:11px;"></div>';
@@ -1149,8 +1114,8 @@
 			var gStr = '';
 			gStr += '<div id="graphOptionsDiv" style="text-align:center;color:#4B74C6;font-weight:bold;">';
 			gStr += 'Party Performance - ';
-			gStr += '<input type="radio" value="seats" name="graphOptionRadio" checked="checked" onclick="buildGraph(this.value)">By Seats Won';
-			gStr += '<input type="radio" value="percentage" name="graphOptionRadio" onclick="buildGraph(this.value)">By Percentage';
+			gStr += '<input type="radio" value="seats" name="graphOptionRadio" checked="checked" onclick="buildGraph(this.value)" style="margin-right:4px;">By Seats Won';
+			gStr += '<input type="radio" value="percentage" name="graphOptionRadio" onclick="buildGraph(this.value)" style="margin-left: 15px;margin-right:4px;">By Percentage';
 			gStr += '</div>';
 			gStr += '<div id="graphDiv"></div>';
 
@@ -1306,32 +1271,29 @@
 	}
 
 </script>
-
 </head>
 <body>
 	<div id="censusReport_main">
 	<div id="censusReportHeading"> Elections Vs Census</div>
 		<div id="censusReport_body">
-		<div id="censusReport_body_heading">
-			<table id="censusReport_body_heading_table">
+		  <div style="background:#FFF; padding: 20px; border-radius:10px;">
+		   <div style="padding-bottom: 15px;border-bottom:1px solid #ADADAD;">
+				  <div id="censusReport_body_heading">
+					<img src="images/icons/infoicon.png" style="margin-left: 35px; padding-left: 0px; padding-right: 20px;"/>
+					Select the following Options to view Election Results Comparision With Census details
+				  </div>
+		    </div>
+			<div>
+				<table cellpadding="2" >
 				<tr>
-					<td><img src="images/icons/infoicon.png"/></td>
-					<td>Select the following options to view Election Results </td>
+				   <th>Please Select Report Level :&nbsp;&nbsp;</th>
+					<td><input  id="stRadioId" type="radio" name="location" value="state" onclick="hideDistrictSelect()" checked="checked"></input></td>
+					<th>State Wise Report</th>
+					<td><input  id="diRadioId" type="radio" name="location" value="district" onclick="showDistrictSelect()" style="margin-left: 15px;"></input></td>
+					<th>District Wise Report</th>
 				</tr>
-			</table>
-		</div>
-		<div>
-		<table>	
-		<tr>
-			<th>Please Select Report Level :&nbsp;&nbsp;</th>
-			<td><input  id="stRadioId" type="radio" name="location" value="state" onclick="hideDistrictSelect()" checked="checked"></input></td>
-			<th>State Wise Report</th>
-			<td><input  id="diRadioId" type="radio" name="location" value="district" onclick="showDistrictSelect()"></input></td>
-			<th>District Wise Report</th>
-		</tr>
-		</table>
-		
-		<table id="censusReport_body_input_table">
+			 </table>
+			 <table id="censusReport_body_input_table" cellpadding="5">
 			
 			<tr>
 				<th>State</th>
@@ -1362,6 +1324,7 @@
 		<div id="censusReporterror_Div"></div>
 		</div>
 		<div id="ajaxImageDiv" style="display:none;"></div>
+		</div>
 		<div id="censusPopulationRange" style="display:none;">
 			<div id="censusPopulationRange_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
@@ -1389,8 +1352,6 @@
 			</div>
 			
 		</div>
-
-		
 		<div id="partyResultsPerformance_main" class="yui-skin-sam" style="display:none;margin-top:10px;">
 			<div id="partyResultsPerformance_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
@@ -1441,11 +1402,11 @@
 				</div>
 			</div>
 		</div>
-		
-		</div>
-	</div>
+	 </div>
+  </div>
 	<script>
 	hideDistrictSelect();
+	
 	</script>
 </body>
 </html>
