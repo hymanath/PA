@@ -204,6 +204,12 @@ width: 500px;
   color:#FF4500;
 }
 
+#videoGallaryPopUpDiv {
+    height: 526px;
+    min-height: 0;
+    width: auto;
+}
+
 </style>
 <script type="text/javascript">
 var isSubscribed = '${sessionScope.isSubscribed}';
