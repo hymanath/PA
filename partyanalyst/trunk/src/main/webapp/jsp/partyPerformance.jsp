@@ -28,7 +28,7 @@
 			border-color: #666666;
 			border-style: solid;
 			border-width: 1px;
-			padding: 11px;
+			padding: 5px;
 		}
 
 		table.partyPerformanceCriteriaTable td {
@@ -36,13 +36,29 @@
 			border-color: #666666;
 			border-style: solid;
 			border-width: 1px;
-			padding: 11px;
+			padding: 5px;
 		}
 		.ajaxImageStyle
 		{
 		   float:left;
 		   margin-left:125px;
 		   margin-top:-19px;
+		}
+		label
+		{
+			display:inline !important;
+		}
+		#partyPerformanceReport_partyPerformanceReport
+		{
+		background-color: #4B74C6; 
+		font-weight: bold; 
+		padding: 5px;
+		border-radius: 5px 5px 5px 5px; 
+		color: #FFF;
+		}
+		#partyPerformanceReport_11,#partyPerformanceReport_12
+		{
+			margin-right: 3px;
 		}
 	</style>
 	<script type="text/javascript">
@@ -496,15 +512,15 @@
 		<s:hidden name="country" value="1" id="country"/>
 			<table class="partyPerformanceCriteriaTable">
 				<tr>
-					<th colspan="2">
+					<th colspan="2" style="padding: 10px;">
 						<span style="margin: 0px; text-align: center;">Party Performance</span>
 					</th>
 				</tr>
 				<tr>
 					<th align="left"><%=electionType%></th>
 					<td>
-						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
-					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
+						<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);" style="margin-right: 3px;"/>Assembly
+					<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);" style="margin-right: 3px;"/>Parliament
 					</td>
 				</tr>
 				<tr>
@@ -514,8 +530,8 @@
 			<tr>
 				<th align="left"><%=state%></th>
 				<td>
-					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/></div>
-					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
+					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:150px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/></div>
+					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden" style="margin-right: 3px;"/>
 					<div class="ajaxImageStyle"><img id="stateSelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
 				</td>
 			</tr>
@@ -524,7 +540,7 @@
 				<th align="left"><%=party%></th>
 				<td>
 					<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
-					<div><s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" /></div>
+					<div><s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:150px;" /></div>
 					<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
 					<div class="ajaxImageStyle"><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
 				</td>
@@ -533,7 +549,7 @@
 			<tr>
 				<th align="left"><%=electionYear%></th>
 				<td>
-				    <div><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></div>
+				    <div><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:150px;"/></div>
 				</td>
 			</tr>
 			
@@ -544,7 +560,7 @@
 			<tr>		
 				<th align="left"><%=dist%></th>
 				<td>
-					<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name" cssStyle="width:120px;"/>	
+					<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name" cssStyle="width:150px;"/>	
 				</td>
 			</tr>	
 			<tr id="allianceRow">
