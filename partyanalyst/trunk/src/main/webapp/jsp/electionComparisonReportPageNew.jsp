@@ -55,10 +55,10 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	
-	<link type="text/css" rel="stylesheet" href="styles/indexPage/indexPage.css">
+	
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
+	
 		
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
@@ -95,15 +95,17 @@
 	width:350px;
 	border-collapse:collapse;
 	}
-
+	
 	.partyElecResultTable th
 	{
 		padding:4px;
+		font-size : 11px;
 	}
 
 	.partyElecResultTable td
 	{
 		padding:4px;
+		font-size : 11px;
 	}
 
 	.labelDisplay
@@ -227,6 +229,7 @@
 		font-weight:bold;
 		margin:10px;
 		text-align:left;
+		font-size:12px;
   	}
 	legend {
 		background-color:#9696C0;
@@ -360,16 +363,7 @@
 		padding:5px;
 		text-align:left;
 	}
-	#description 
-	{
-		line-height:1.5em;
-		padding:10px;
-		text-align:justify;
-		word-spacing:2px;
-		width:90%;
-		color:#192535;
-		font-size:12px;
-	}
+	
 
 	#twoYearpanel_body table
 	{
@@ -379,7 +373,7 @@
 	#electionComparisonGraphCarousel .yui-carousel-element li
 	{
 		height:360px;
-		width:880px;
+		width:932px;
 	}
 
 	#electionComparisonGraphCarousel .yui-carousel-item-selected 
@@ -446,7 +440,40 @@
     text-align: center;
     width: 577px;
 }
+#contenttable
+{
+		margin-left:auto;margin-right:auto;
+		width:990px;
 
+		
+}
+#description {
+    color: #192535;
+    font-size: 13px;
+    line-height: 1.5em;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: justify;
+    width: 902px;
+    word-spacing: 2px;
+	background:#fff;
+	border-radius:3px;
+}
+
+.productFeatureHeaderBackground_center {
+    background-image: url("images/icons/homePage_new/blue_header_center.jpg");
+    height: 39px;
+}
+.headerLabelSpan {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+    left: 10px;
+    position: relative;
+    top: 10px;
+}
 </style>
 <script type="text/javascript">	
 var labelResources = { <%		
@@ -978,7 +1005,7 @@ function overallResultsForYearOne()
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
 	str+='	<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='	<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right">&nbsp;<font color="green">Total Seats Won : '+totalSeatsWonYearOne+'</font><span></span></div></td>';
+	str+='	<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections &nbsp;&nbsp;<span align="right"><font color="green">Total Seats Won : '+totalSeatsWonYearOne+'</font><span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
 	
@@ -1869,7 +1896,8 @@ function createCoulmnChart()
 	</tr>
 </tbody></table>
 
-<br/><br/>
+<br/>
+
 <div id="description"><font style="color: rgb(75, 116, 198);font-weight:bold;">Elections Comparison Report</font> gives a glance of compared election results for a party participated in any two elections in detailed view.This report gives an overview for a user to know whether the party has improved or lost its performance in selected present year when compared to selected previous year.
 </div>
 <div id = "partyPositions" class="yui-skin-sam">
@@ -1890,11 +1918,11 @@ function createCoulmnChart()
 	<div id="ecr_ElectionAnalysis_data_div">
 		<fieldset>			
 				<div class="productFeatureHeader">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
 					  <tr>                                    
 						<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 						<td width="98%">
-							<div class="productFeatureHeaderBackground_center">
+						<div class="productFeatureHeaderBackground_center">
 								<span class="headerLabelSpan">
 									Election Results Analysis  
 								</span>
@@ -1967,7 +1995,7 @@ function createCoulmnChart()
 <!-- New UI Changes end -->
 
 <c:if test="${hasECRPage}">
-<table style="width:70%;" border="0">
+<table style="width:94%;" border="0">
 <tr>
 	<td id="tdThr" align="left" width="70%" colspan="2">
 	     <div id="diffPercentDiv" class="yui-skin-sam" style="margin-left:10px;">
@@ -1983,25 +2011,25 @@ function createCoulmnChart()
 				<li>
 					<div id="percentageChartDiv">	
 						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
-							<div id="percentageChartDiv_head" class="graphHeader">Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
+							<div id="percentageChartDiv_head" class="graphHeader" style="background:#ffffff;">Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
 						</c:if>
 						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
-							<div id="percentageChartDiv_head" class="graphHeader">Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
+							<div id="percentageChartDiv_head" class="graphHeader" style="background:#ffffff;">Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
 						</c:if>	
-						<div id="percentageChartDiv_img"><img src="charts/${electionComparisonReportVO.percentageChart}"/></div>
+						<div id="percentageChartDiv_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.percentageChart}"/></div>
 						
 					</div>
 				</li>
 				<li>
 					<div id="seatsWonChart" >
 						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
-							<div id="seatsWonChart_head" class="graphHeader">Seats Won By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
+							<div id="seatsWonChart_head" class="graphHeader" style="background:#ffffff">Seats Won By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
 						</c:if>
 						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">
-							<div id="seatsWonChart_head" class="graphHeader">Seats Won By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
+							<div id="seatsWonChart_head" class="graphHeader" style="background:#ffffff">Seats Won By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
 						</c:if>
 							
-							<div id="seatsWonChart_img"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>
+							<div id="seatsWonChart_img" style="background:#ffffff;"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>
 							
 					</div>
 				</li>
@@ -2011,9 +2039,9 @@ function createCoulmnChart()
 </tr>
 
  <tr>
-	  <td id="twoYearPanel" colspan="2" align="center">
+	  <td id="twoYearPanel" colspan="2" align="center" >
 		  <div id="panelFortwoYear" class="yui-skin-sam">
-				<div id="twoYearpanel" class="panelOuterDiv">
+				<div id="twoYearpanel" class="panelOuterDiv" style="margin-bottom:6px;">
 					<div id="twoYearpanel_head" class="resultsHeadClass"></div>
 					<div id="twoYearpanel_head_compare"></div>						
 					<div id="twoYearpanel_body"></div>
