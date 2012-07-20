@@ -711,7 +711,7 @@ function buildUploadPhotosDiv()
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
 	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
 	str += '<div id="photoPublicRadioId" style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicPhotoRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:45px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div id="photoPrivateRadioId" style="margin-left:45px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 
 	str +='<input type="hidden" name="profileType" value="candidate_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
@@ -976,64 +976,71 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 }
 function hideCandidateVisibility(myResults)
 {
-	
+	//private gallaries
 	if(myResults.fileType == "true")
 	{
-		document.getElementById("vedioPublicRadioId").style.display ="none";
-		document.getElementById("vprivateRadioId").checked =true;
-		//document.getElementById("vedioPublicRadioId").style.display ="none";
-		//document.getElementById("visiblePublicText").style.display ="none";
+		document.getElementById("vedioPublicRadioId").style.display ="block";
+		
+		 document.getElementById("vedioprivateRadioId").style.display ="block";
+	 document.getElementById("vedioPublicRadioId").checked = true;
 		
 
 		
 	}
+	//public gallaries
 else
 	{	
 		
-       document.getElementById("vedioPublicRadioId").style.display ="block";
-	//document.getElementById("visiblePublicText").style.display ="block";
-		document.getElementById("vpublicRadioId").checked =true;
-	//document.getElementById("vpublicRadioId").style.display ="block";
-	//document.getElementById("visiblePublicText").style.display ="block";
-
+      document.getElementById("vedioprivateRadioId").style.display ="none";
+		
+		 document.getElementById("vedioPublicRadioId").style.display ="block";
+		  document.getElementById("vpublicRadioId").checked = true;
 	}
 }
 
 
 function hideCandidateNewsVisibility(myResults){
-	
+
+	//private gallaries
 	if(myResults.fileType == "true")
 	{
-		document.getElementById("newsPublicRadioId").style.display ="none";
-		//document.getElementById("visiblePublicText").style.display ="none";
-		document.getElementById("privateRadioId").checked =true;
-		//document.getElementById("publicRadioId").style.display ="none";
+		document.getElementById("newsPublicRadioId").style.display ="block";
+		
+		document.getElementById("newsPrivateRadioId").style.display
+			="block";
+		document.getElementById("publicRadioId").checked = true;
+		
 		
 	}
+	//public gallaries
 	else
 	{
 		document.getElementById("newsPublicRadioId").style.display ="block";
-		//document.getElementById("visiblePublicText").style.display ="block";
-		document.getElementById("publicRadioId").checked =true;
+		
+		document.getElementById("newsPrivateRadioId").style.display
+			="none";
+		document.getElementById("publicRadioId").checked = true;
 		
 
 	}
 }
 
 function hideCandidatePhotoVisibility(myResults){
-	
+	//private gallaries
 	if(myResults.fileType == "true")
 	{
-document.getElementById("photoPublicRadioId").style.display ="none";
-document.getElementById("privatePhotoRadioId").checked =true;
-//document.getElementById("publicPhotoRadioId").style.display ="none";
-//document.getElementById("visiblePublicText").style.display ="none";
+document.getElementById("photoPublicRadioId").style.display ="block";
+document.getElementById("photoPrivateRadioId").style.display = "block";
+document.getElementById("publicPhotoRadioId").checked = true;
 	}
+
+	//public gallaries
 	else
 	{
 		document.getElementById("photoPublicRadioId").style.display ="block";
-		document.getElementById("publicPhotoRadioId").checked =true;
-		//document.getElementById("visiblePublicText").style.display ="block";
+	document.getElementById("photoPrivateRadioId").style.display = "none";
+
+	document.getElementById("publicPhotoRadioId").checked = true;	
 
 
 	}
@@ -1922,7 +1929,7 @@ function  buildUploadNews()
     str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></td>';
+	str += '       <td id="newsPrivateRadioId"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></td>';
 	str += '   </tr>';
 	str +='    <tr>';
     str +='	   <td class="tdWidth1">Location Scope</td>';
@@ -2057,7 +2064,7 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	
 	str += '<div id="vedioPublicRadioId" style="margin-left:50px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:50px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div id="vedioprivateRadioId" style="margin-left:50px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" style="margin-left:50px;" onclick="otherProfiles(\'otherProVideoDiv\',\'fromCandidateProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
 	str += '<table align="center" style="margin:5px;margin-left:auto;width:26%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" style="height:24px;" id="uploadVideoBtnId" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
