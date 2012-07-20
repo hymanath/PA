@@ -518,7 +518,8 @@
 					type:"cadreDetails",
 					reportLevel:name,
 					selected:value,
-					changed:choice
+					changed:choice,
+					addresstype:"cadreLevel"
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
@@ -567,12 +568,12 @@
 			}
 			else if(jsObj.reportLevel=="district")
 			{
-				var elmt=document.getElementById("cadreLevelConstituency");
+				var elmt=document.getElementById("cadreLevelMandal");
 				
 			}
 			else if(jsObj.reportLevel=="constituency")
 			{
-				var elmt=document.getElementById("cadreLevelMandal");
+				var elmt=document.getElementById("cadreLevelConstituency");
 			}
 			else if(jsObj.reportLevel=="mandal")
 			{
