@@ -132,6 +132,7 @@
 		<pattern>/profileManagePageAction*</pattern>
 		<pattern>/initailConstituencyManagementAction*</pattern>
 		<pattern>/censusReportAction*</pattern>
+		<pattern>/electionComparisonReportAction*</pattern>
     </decorator>
 
 </decorators>
