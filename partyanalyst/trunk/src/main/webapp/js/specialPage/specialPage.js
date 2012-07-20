@@ -2944,8 +2944,8 @@ function buildVideoGallaryDiv(result)
 function videoGallaryPopUp()
 {
    $("#videoGallaryPopUpDiv").dialog({ stack: false,
-							    height: 350,
-								width: 520,
+							    height: 590,
+								width: 630,
 								position:[150,120],								
 								modal: true,
 								title:'<font color="Navy">Video Galleries</font>',
@@ -2973,7 +2973,7 @@ function showAllVideoGalleries(){
 	callAjaxForSpecialPage(jsObj,url);
 	}
 
-function buildVideoGallaries(results)
+/*function buildVideoGallaries(results)
 {
     var str ='';
     str+='<table>';
@@ -2990,6 +2990,34 @@ function buildVideoGallaries(results)
 		 }
 		 str+='</tr>';
 		 str+='</table>';
+		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
+}*/
+
+
+function buildVideoGallaries(results)
+{
+    var str ='';
+    str +='<table width="100%">';
+	for(var i=0;i<results.length;i++)
+	{
+		if(i%4 == 0)
+			str +='<tr height="185px;">';
+			str +='<td valign="top" width="25%">';
+			str +='<table width="100%">';
+			str +='<tr><td style="padding-left:4px;"><img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/>';
+			str +='</td></tr>';
+			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</td></tr>';
+			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div> </td></tr>';
+			str +='</table>';
+			str +='</td>';
+			
+			if((i+1)% 4 == 0)
+			str += '</tr>';
+
+
+	}
+
+		str += '</table>';
 		document.getElementById("videoGallaryPopUpDiv").innerHTML = str;
 }
 
@@ -3058,7 +3086,7 @@ function buildAllVideosInGallary(results){
 			str += '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
 		
 			//str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-			str+='<img style="border: 2px solid #CCCCCC;padding:5px;" src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
+			str+='<img style="border: 2px solid #CCCCCC;padding:5px;background:#cccccc;" src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="110px;" height="100px;"/></td></a>';
 			str+='</tr>';
 			str+='<tr>';
 			str+='<td width="30%">'+results[i].description+'';
