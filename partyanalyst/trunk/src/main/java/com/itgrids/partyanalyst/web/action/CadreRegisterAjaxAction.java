@@ -284,7 +284,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				setNamesList(stateNames);
 				try 
 				{
-					if("cadreLevel".equals(jObj.getString("addresstype")))
+					if("cadreLevel".equals(jObj.getString("type")))
 					{
 						session.setAttribute(ISessionConstants.STATES_C, stateNames);
 					}
