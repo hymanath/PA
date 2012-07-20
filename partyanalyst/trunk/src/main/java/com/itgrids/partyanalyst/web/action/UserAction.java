@@ -175,13 +175,13 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
 		
 		states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
-		constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(registrationVO.getState())).getConstituencies();
+		//constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(registrationVO.getState())).getConstituencies();
 		districts = new ArrayList<SelectOptionVO>(0);
 		 //constituencies = new ArrayList<SelectOptionVO>(0);
 		 HttpSession session = request.getSession();	
 		 session.setAttribute("states", states);
 		//session.setAttribute("districts", districts);
-		session.setAttribute("constituencies", constituencies);
+		//session.setAttribute("constituencies", constituencies);
 		if(registrationVO !=null && registrationVO.getIsAdmin().equalsIgnoreCase("true"))
 		{
 			List<String> type = new ArrayList<String>();
