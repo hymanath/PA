@@ -474,6 +474,11 @@
     position: relative;
     top: 10px;
 }
+.yui-carousel-content
+{
+	 width: 936px;
+	background : #ffffff;
+}
 </style>
 <script type="text/javascript">	
 var labelResources = { <%		
