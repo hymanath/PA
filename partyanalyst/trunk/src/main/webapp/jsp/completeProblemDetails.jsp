@@ -38,6 +38,10 @@
   #imagesdiv{
     margin-bottom:5px;
   }
+  h2 {
+    font-size: 19px;
+	line-height: 30px;
+}
 </style>
 
 <script type="text/javascript">
@@ -59,7 +63,12 @@ var cadreProblemDetails;
 	</c:forEach>
 	</c:if>
 	$(document).ready(function() {
-        if(problemFilesArray.length > 4)
+   
+	 buildInitalfiles(problemFilesArray);
+	 
+	});
+	function buildInitalfiles(result){
+	       if(result.length > 4)
 		   document.getElementById("moreimags").style.display="block";
       var problemRelatedImagesElmt = document.getElementById("imagesdisplaydiv");
 	  if(problemRelatedImagesElmt == null)
@@ -67,12 +76,12 @@ var cadreProblemDetails;
       var str ='';
  
        var count = 0;
-      for(var i in problemFilesArray)
+      for(var i in result)
       {
 	  count = count+1;
 	  if(count == 5)
 	   break;
-      var fileType = problemFilesArray[i].file.split(".");
+      var fileType = result[i].file.split(".");
       
       if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
        
@@ -83,14 +92,14 @@ var cadreProblemDetails;
       str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick=""/>';
       }
       else if(fileType[(fileType.length-1)].indexOf('word') != -1){
-      str+= '<a href="'+problemFilesArray[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
+      str+= '<a href="'+result[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
       }
       
       
       }
       else{
       
-      str+= '<a rel="photo_gallery" href="'+problemFilesArray[i].file+'" title="'+problemFilesArray[i].description+'"><img alt="" src="'+problemFilesArray[i].file+'" height="100px" /></a>';
+      str+= '<a rel="photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" /></a>';
       
       }
       
@@ -100,19 +109,19 @@ var cadreProblemDetails;
       problemRelatedImagesElmt.innerHTML = str;
       
 
-	
-	 $("a[rel=photo_gallery]").fancybox({
-'transitionIn'		: 'none',
-'transitionOut'		: 'none',
-'titlePosition' 	: 'over',
-'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-	return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
-}
-});
-	 
-	 
+		
+		 $("a[rel=photo_gallery]").fancybox({
+	'transitionIn'		: 'none',
+	'transitionOut'		: 'none',
+	'titlePosition' 	: 'over',
+	'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+		return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
+	}
 	});
-	function showtotalImages(){
+		
+  }
+	function showtotalImages(result){
+	result = result.problemFiles;
 	  $( "#gallaryOutrDiv" ).dialog({
 		title:"Problem Related Files",
 		autoOpen: true,
@@ -126,14 +135,14 @@ var cadreProblemDetails;
       var str ='';
       str+='<div id="content">';
       str+='<table>'
-      for(var i in problemFilesArray)
+      for(var i in result)
       {
       no_of_imagesPerRow = 4; 
       j = i;
       if(j++ % no_of_imagesPerRow == 0){
       str+= '<tr>';
       }
-      var fileType = problemFilesArray[i].file.split(".");
+      var fileType = result[i].file.split(".");
       
       if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
       
@@ -142,24 +151,24 @@ var cadreProblemDetails;
       str+= '<a  href="javascript:{}" title="View file" ">';
       
       if(fileType[(fileType.length-1)] == "pdf"  ){
-      str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+problemFilesArray[i].file+'\')}"/>';
+      str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+result[i].file+'\')}"/>';
       }
       else if(fileType[(fileType.length-1)] == 'text'){
-      str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+problemFilesArray[i].file+'\')}"/>';
+      str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+result[i].file+'\')}"/>';
       }
       else if(fileType[(fileType.length-1)].indexOf('word') != -1){
-      str+= '<a href="'+problemFilesArray[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
+      str+= '<a href="'+result[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
       }
       
       str+= '</a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+problemFilesArray[i].title+'</div></td></tr></table></td>';
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
       
       
       }
       else{
       str+= '<td><table><tr><td>';
-      str+= '<a rel="more_photo_gallery" href="'+problemFilesArray[i].file+'" title="'+problemFilesArray[i].description+'"><img alt="" src="'+problemFilesArray[i].file+'" height="100px" /></a></td>';
-      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+problemFilesArray[i].title+'</div></td></tr></table></td>';
+      str+= '<a rel="more_photo_gallery" href="'+result[i].file+'" title="'+result[i].description+'"><img alt="" src="'+result[i].file+'" height="100px" /></a></td>';
+      str+= '</tr><tr><td><div class="fancyBoxImageDivTitle">'+result[i].title+'</div></td></tr></table></td>';
       
       }
       
@@ -241,7 +250,7 @@ var cadreProblemDetails;
    }
     function getMessage()
 		{
-			 location.reload(true);
+			 getNewImagesDetails('initial');
 		}
 		
   function deleteDepartment()
@@ -265,6 +274,9 @@ var cadreProblemDetails;
 	var url = "changeProblemDepartmentAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
  }
+}
+function getDepartmentAndActivities(){
+
 }
 function alltrim(str) {
                 return str.replace(/^\s+|\s+$/g, '');
@@ -668,9 +680,24 @@ function callAjax(jsObj,url)
 								clearOptionsListForSelectElmtId('resolvingDeptScopeId');
 								fillOptionsForSelectedElmt('resolvingDeptScopeId', myResults);
 							}
-							else if(jsObj.task == "changeProbClassification" || jsObj.task == "addCadreToProblem" || jsObj.task == "changeDepartmentForProblem" || jsObj.task == "changeProblemStatus")
+							else if(jsObj.task == "changeProbClassification" )
 							{
-							    location.reload(true);
+							    getNewProblemTypeDetails();
+						
+							}
+							else if( jsObj.task == "addCadreToProblem" )
+							{
+							    getNewCadreDetails();
+						
+							}
+							else if( jsObj.task == "changeDepartmentForProblem" )
+							{
+							    getNewDepartmentDetails();
+						
+							}
+							else if(jsObj.task == "changeProblemStatus")
+							{
+							   getNewStatsDetails();
 						
 							}
 							else if(jsObj.task == "getDepartmentCategories")
@@ -709,6 +736,20 @@ function callAjax(jsObj,url)
 						   }else if(jsObj.task == "PostCommentsToProblem"){
 						   document.getElementById("commenttext").value ='';
                               getcomments();
+						   }else if(jsObj.task == "getactivitydetails"){
+						       buildActivitiesData(myResults);
+						   }else if(jsObj.task == "getphotodetails"  && jsObj.type == "initial"){
+						     buildphotodetailsData(myResults);
+						   }else if(jsObj.task == "getphotodetails"  && jsObj.type == "final"){
+						     buildphotodetailsDatafinal(myResults);
+						   }else if(jsObj.task == "getotheractvdetails" && jsObj.type == "department"){
+						     builddepartmentdetailsData(myResults);
+						   }else if(jsObj.task == "getotheractvdetails" && jsObj.type == "problemtype"){
+						     buildproblemtypeData(myResults);
+						   }else if(jsObj.task == "getotheractvdetails" && jsObj.type == "cadre"){
+						       buildcadredetailsData(myResults);
+						   }else if(jsObj.task == "getstatustypedetails"){
+						      buildstatusdetailsData(myResults);
 						   }
 						}
 						catch(e)
@@ -871,6 +912,8 @@ function openCadreSmsPopup(cadreId,pHistoryId)
 		
 }
 function getcomments(){
+	var problemId = '${completeProblemDetailsVO.problemId}';
+	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
 	var jsObj = {
 					problemId:'${completeProblemDetailsVO.problemId}',
 					task:"getproblemcomments"
@@ -880,6 +923,254 @@ function getcomments(){
 	var url = "getCompleteProblemCommentsAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+}
+function getNewImagesDetails(type){
+  var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getphotodetails",
+					type:type
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function getNewDepartmentDetails(){
+ var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getotheractvdetails",
+					type:"department"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function getNewProblemTypeDetails(){
+ var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getotheractvdetails",
+					type:"problemtype"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function getNewCadreDetails(){
+  var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getotheractvdetails",
+					type:"cadre"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function getNewStatsDetails(){
+  var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getstatustypedetails"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function getNewActivityDetails(){
+   var jsObj = {
+					problemId:'${completeProblemDetailsVO.problemId}',
+					task:"getactivitydetails"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "problemStatusChangeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+  function buildActivitiesData(result){
+     var activitiesDiv = document.getElementById("problemActivitiesChgDiv");
+	if(activitiesDiv == null || result == null || result.length == 0)
+	return;
+        var str ='';
+		str+='<h2>Activities</h2>';
+       if(result.problemRecentActivity == null || result.problemRecentActivity.length == 0 ){	
+         str+='<div>No Problem Activities are taken place</div>';
+      }
+	  else{
+	  str+='<div id="problemactivities">';
+	  str+='<ul>';
+	  for(var i in result.problemRecentActivity){
+	  str+='<li class="span6">';
+	  str+='  <div>'+result.problemRecentActivity[i].activityHapened+''; 
+		
+		if(result.problemRecentActivity[i].cadre != null){	
+		str+='   <div>Cadre</div>';		
+		str+='     <div>'+result.problemRecentActivity[i].cadre+'</div>';		 
+		}
+		if(result.problemRecentActivity[i].departmentOrganisation != null && result.problemRecentActivity[i].department != null && result.problemRecentActivity[i].deptLocation == null){		
+			
+		str+='	<div>Name ';
+			if(result.problemRecentActivity[i].departmentOrganisation == '' || result.problemRecentActivity[i].departmentOrganisation == null){
+		str+='		 Not Assigned';
+			}
+			else{
+		str+='	 '+result.problemRecentActivity[i].departmentOrganisation+' ';
+            }
+		str+='     Category';
+			if(result.problemRecentActivity[i].department == '' || result.problemRecentActivity[i].department == null ){
+		str+='		Not Assigned ';
+			}
+			else{
+		str+='		 '+result.problemRecentActivity[i].department+'';
+            }
+		str+='	<br>Location';
+			if(result.problemRecentActivity[i].deptLocation == '' || result.problemRecentActivity[i].deptLocation == null){
+		str+='		 Not Assigned';
+			}
+			else{
+		str+='		'+result.problemRecentActivity[i].deptLocation+'';
+			}
+		str+='	</div>';
+		}
+		if (result.problemRecentActivity[i].probClassification != null){
+		str+='	to '+result.problemRecentActivity[i].probClassification+'';
+		}
+		if(result.problemRecentActivity[i].problemStatus != null){
+		str+='   to '+result.problemRecentActivity[i].problemStatus+'';
+		}
+		str+=' <small class="label label-info pull-right"> ?  On '+result.problemRecentActivity[i].updatedDate+' </small>';
+        str+='</div>';
+		str+='</li>';
+		}
+		str+='</ul>';
+		str+='</div>';
+		}
+		activitiesDiv.innerHTML = str;
+ }
+ function buildphotodetailsData(result){
+   buildInitalfiles(result);
+ }
+ function buildphotodetailsDatafinal(result){
+   showtotalImages(result);
+ }
+ function builddepartmentdetailsData(result){
+    var deptDiv = document.getElementById("departmentChangeDiv");
+	if(deptDiv == null || result == null || result.length == 0)
+	return;
+	
+	var str ='';
+		str+='<h3>Department</h3>';
+		if( result.problemStatus.departmentOrganisation != null){
+		str+='    <p>Currently Assigned To <b>'+result.problemStatus.departmentOrganisation+'</b>.</p>';
+			if( result.modifyAccess == 'true' ){
+		str+='	<div>';
+		str+='    <a href="javascript:{}" onclick="handleDepartmentChange(\'Change\')" class="pull-left btn">Change</a>';
+		str+='    <a href="javascript:{}" onclick="deleteDepartment()" class="pull-right btn">Remove</a>'; 		  
+		 str+='  </div>';
+		  }
+		  }
+		else{
+		str+='    <p>Not Assigned To Any Department.</p>';
+		if (result.modifyAccess == 'true'){
+		str+='	<div>';
+		str+='    <a href="javascript:{}" onclick="handleDepartmentChange(\'Assign\')" class="pull-left btn">Assign</a>';	  
+		str+='   </div>';
+		   }
+		   }
+ deptDiv.innerHTML = str;
+ buildActivitiesData(result);
+ }
+ function buildproblemtypeData(result){
+  var problemDiv = document.getElementById("problemTypeChangeDiv");
+	if(problemDiv == null || result == null || result.length == 0)
+	return;
+	
+	var str ='';
+    str+='<h3>Problem Type</h3>';
+		if(result.problemStatus.probClassification != null){
+	str+='	   <p>Currenly Assigned To <b>'+result.problemStatus.probClassification+'</b>.</p>';
+		   if(result.modifyAccess == 'true' ){
+	str+='	   <div>';
+	str+='	    Change to : <select id="problemtypeId" onchange="changeProbClassification(this.options[this.selectedIndex].text);" >';		   
+	str+='	                <option value="SOCIAL">Social</option>';
+	str+='					<option value="ECONOMICAL">Economical</option>';
+	str+='					<option value="PERSONAL">Personal</option>';
+	str+='	                </select>'; 
+	str+='	   </div>';
+		   }
+		}
+		if(result.problemStatus.probClassification == null){
+	str+='	   <p>Not Assigned To Any Problem Type.</p>';
+		   if(result.modifyAccess == 'true' ){
+	str+='	   <div>';
+	str+='	    Assign to : <select id="problemtypeId" onchange="changeProbClassification(this.options[this.selectedIndex].text);" >';
+     str+='                   <option value="Select">Select</option>';		   
+	str+='	                <option value="SOCIAL">Social</option>';
+	str+='					<option value="ECONOMICAL">Economical</option>';
+	str+='					<option value="PERSONAL">Personal</option>';
+	str+='	                </select> '; 
+	str+='	   </div>';
+		   }
+		   }
+ problemDiv.innerHTML = str;
+ if(document.getElementById("problemtypeId") != null)
+  document.getElementById("problemtypeId").value= result.problemStatus.probClassification;
+  buildActivitiesData(result);
+ }
+ function buildcadredetailsData(result){
+  var cadreDiv = document.getElementById("cadreChangeDiv");
+	if(cadreDiv == null || result == null || result.length == 0)
+	return;
+	
+    var str ='';
+		str+='<h3>Cadre</h3>';
+		if(result.problemStatus.cadre != null){
+		str+='<p>This Problem Has Been Assigned To <b>'+result.problemStatus.cadre+'</b>.</p>';
+		  if(result.modifyAccess == 'true'){
+		str+='  <div>';
+		str+='    <a href="javascript:{}" onclick="getCadreDetails(\'Change\')" class="pull-left btn">Change</a>';
+		 str+='   <a href="javascript:{}" onclick="getCadreDetails(\'Delete\')" class="pull-right btn">Remove</a> ';		  
+		 str+='  </div>';
+		  }
+		}
+		else{
+		str+='<p>This Problem Has Not Been Assigned To Any Cadre.</p>';
+		  if(result.modifyAccess == 'true'){
+		str+='  <div>';
+		 str+='   <a href="javascript:{}" onclick="getCadreDetails(\'Assign\')" class="pull-left btn">Assign</a>';		  
+		 str+='  </div>';
+		 }
+		 }
+	cadreDiv.innerHTML = str;
+	buildActivitiesData(result);
+ }
+ function buildstatusdetailsData(result){
+    var statusDiv = document.getElementById("StatusChangeDiv");
+	if(statusDiv == null || result == null || result.length == 0)
+	return;
+	
+	 var str ='';
+		str+='<h3>Status:</h3>';
+		str+='<p>This Problem Is Under <b>'+result.status+'</b> Stage.</p>';
+        if(result.modifyAccess == 'true' ){	
+	    str+='<div>';
+		str+='   Move to : <select id="problemstatusId" onchange="changeProblemStatus(this.options[this.selectedIndex].text);" >';
+        str+='                <option value="Select">Select</option>	';	   
+		 str+='               <option value="PENDING">Pending</option>';
+		str+='				<option value="PROGRESS">Progress</option>';
+		str+='				<option value="FIXED">Fixed</option>';
+		str+='             </select>';
+		
+					   
+			
+		str+='</div>';
+		}
+		statusDiv.innerHTML = str;
+		if(document.getElementById("problemstatusId") != null)
+		document.getElementById("problemstatusId").value=result.status;
+		buildActivitiesData(result);
+ }
 </script>
 </table>
 
@@ -901,10 +1192,10 @@ function getcomments(){
 			<div class="userdesc">
 			
 			 <h5>${completeProblemDetailsVO.firstName}&nbsp; ${completeProblemDetailsVO.lastName}</h5>
-			    <span>Friends(25)</span>
+			   <!-- <span>Friends(25)</span>
 				<s:if test=" (completeProblemDetailsVO.userStatus == 'both' || completeProblemDetailsVO.userStatus == 'freeuser') && completeProblemDetailsVO.isConnectPeopleReq !='false' ">
 			      <a href="#"><i class="icon-plus-sign"></i>Connect Now</a>
-			    </s:if>
+			    </s:if> -->
 			 </div>
 			 
           <a class="thumbnail" href="#" >
@@ -970,7 +1261,7 @@ function getcomments(){
 		 <div id="imagesdisplaydiv" class="thumbnails">
 		 </div>
 		 <div id="moreimags" style="display:none;" class="pager">
-		   <a href="javascript:{}" onclick="showtotalImages();" class="pull-right">More ...</a>
+		   <a href="javascript:{}" onclick="getNewImagesDetails('final');" class="pull-right">More ...</a>
 		</div>
 		<div id="gallaryOutrDiv"><div id="gallaryinnerDiv"></div></div>
 </div>
@@ -988,6 +1279,7 @@ function getcomments(){
 		<s:if test="completeProblemDetailsVO.problemStatus != null  && completeProblemDetailsVO.modifyAccess == 'true'  && (completeProblemDetailsVO.userStatus == 'customer' || completeProblemDetailsVO.userStatus == 'both') " >
 		
         <li class="span6">
+		<div id="departmentChangeDiv">
 		<h3>Department</h3>
 		<s:if test="completeProblemDetailsVO.problemStatus.departmentOrganisation != null" >
 		    <p>Currently Assigned To <b>${completeProblemDetailsVO.problemStatus.departmentOrganisation}</b>.</p>
@@ -1006,10 +1298,11 @@ function getcomments(){
 		   </div>
 		   </s:if>
 		</s:if>
-
+        </div>
         </li>
 		
         <li class="span6">
+		<div id="problemTypeChangeDiv">
 		<h3>Problem Type</h3>
 		<s:if test="completeProblemDetailsVO.problemStatus.probClassification != null" >
 		   <p>Currenly Assigned To <b>${completeProblemDetailsVO.problemStatus.probClassification}</b>.</p>
@@ -1039,9 +1332,10 @@ function getcomments(){
 		   </div>
 		   </s:if>
 		</s:if>
+		</div>
         </li>
         <li class="span6">
-
+         <div id="cadreChangeDiv">
 		<h3>Cadre</h3>
 		<s:if test="completeProblemDetailsVO.problemStatus.cadre != null" >
 		<p>This Problem Has Been Assigned To <b>${completeProblemDetailsVO.problemStatus.cadre}</b>.</p>
@@ -1060,10 +1354,11 @@ function getcomments(){
 		   </div>
 		  </s:if>
 		 </s:if>
+		 </div>
         </li>
 		</s:if>
         <li class="span6">
-
+         <div id="StatusChangeDiv">
 		<h3>Status:</h3>
 		<p>This Problem Is Under <b>${completeProblemDetailsVO.status}</b> Stage.</p>
         <s:if test="completeProblemDetailsVO.modifyAccess == 'true' " >		
@@ -1079,6 +1374,7 @@ function getcomments(){
 					 </script>
 		</div>
 		</s:if>
+		</div>
         </li>
 		<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <li class="span6">
@@ -1098,7 +1394,9 @@ function getcomments(){
       </ul></p>
           </div>
           <div id="lB" class="tab-pane">
+		  <div id="problemActivitiesChgDiv">
 		  <h2>Activities</h2>
+		
        <s:if test="completeProblemDetailsVO.problemRecentActivity == null || completeProblemDetailsVO.problemRecentActivity.size() == 0 " >	
          <div>No Problem Activities are taken place</div>
       </s:if>
@@ -1151,6 +1449,7 @@ function getcomments(){
 		</ul>
 		</div>
 		</s:else>
+		</div>
           </div>
          <!-- <div id="lC" class="tab-pane">
 		  <h2>PROBLEM Status</h2>
