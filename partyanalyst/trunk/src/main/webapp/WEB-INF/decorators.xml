@@ -133,6 +133,7 @@
 		<pattern>/initailConstituencyManagementAction*</pattern>
 		<pattern>/censusReportAction*</pattern>
 		<pattern>/electionComparisonReportAction*</pattern>
+		<pattern>/partyPerformanceReport*</pattern>
     </decorator>
 
 </decorators>
