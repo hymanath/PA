@@ -140,11 +140,11 @@ import com.opensymphony.xwork2.Action;
 	     String userStatus = null;
 		if(regVO != null){
 			userId = regVO.getRegistrationID();
-			if((Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+			if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 				userStatus = IConstants.PARTY_ANALYST_USER;
-			if((Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
+			if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
 				userStatus = IConstants.FREE_USER;
-			if((Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+			if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 				userStatus = IConstants.BOTH;
 
             if(regVO.getAccessType() != null && regVO.getAccessValue() != null)
@@ -153,7 +153,7 @@ import com.opensymphony.xwork2.Action;
 		}else{
 			userStatus = IConstants.NOT_LOGGED_IN;
 		}
-		completeProblemDetailsVO = completeProblemDetailsService.getProblemCompleteDetails(problemId, userId, userStatus);
+		completeProblemDetailsVO = completeProblemDetailsService.getProblemCompleteDetails(problemId, userId, userStatus,null);
 	   }catch(Exception e){
 		   log.error("Exception rised in execute method ",e);
 	   }
@@ -214,17 +214,49 @@ import com.opensymphony.xwork2.Action;
 	  try {
 		  
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	     Long userId = null;
-	     String userStatus = null;
 		if(regVO != null){
 			userId = regVO.getRegistrationID();
 		}
 	  userCommentsInfoVOList = completeProblemDetailsService.getPostedComments(jObj.getLong("problemId"),userId);
+	  return Action.SUCCESS;
+  }
+  public String getProblemUpdatedDetails(){
+	  try{
+		  jObj = new JSONObject(getTask());
+		  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		     Long userId = null;
+		     String userStatus = null;
+			if(regVO != null){
+				userId = regVO.getRegistrationID();
+				if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+					userStatus = IConstants.PARTY_ANALYST_USER;
+				if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
+					userStatus = IConstants.FREE_USER;
+				if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+					userStatus = IConstants.BOTH;
+				
+			}else{
+				userStatus = IConstants.NOT_LOGGED_IN;
+			}
+			String reqTask = null;
+		  if(jObj.getString("task").equalsIgnoreCase("getactivitydetails")){
+			  reqTask ="getactivitydetails";
+		  }else if(jObj.getString("task").equalsIgnoreCase("getphotodetails")){
+			  reqTask ="getphotodetails";
+		  }else if(jObj.getString("task").equalsIgnoreCase("getotheractvdetails")){
+			  reqTask ="getotheractvdetails";
+		  }else if(jObj.getString("task").equalsIgnoreCase("getstatustypedetails")){
+			  reqTask ="getstatustypedetails";
+		  }
+		  completeProblemDetailsVO = completeProblemDetailsService.getProblemCompleteDetails(jObj.getLong("problemId"), userId, userStatus,reqTask);
+	  }catch(Exception e){
+		  log.error("Exception rised in getProblemUpdatedDetails method ",e);
+	  }
 	  return Action.SUCCESS;
   }
 }
