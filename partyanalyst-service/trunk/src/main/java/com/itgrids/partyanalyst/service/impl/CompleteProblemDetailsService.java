@@ -71,7 +71,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		this.problemCommentsDAO = problemCommentsDAO;
 	}
 
-	public CompleteProblemDetailsVO getProblemCompleteDetails(final Long problemId,final Long userId,final String userStatus){
+	public CompleteProblemDetailsVO getProblemCompleteDetails(final Long problemId,final Long userId,final String userStatus,String queryReq){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemCompleteDetails method ");
 		}
@@ -79,13 +79,13 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		completeProblemDetailsVO.setProblemId(problemId);
 		try{
 			if(userStatus.equalsIgnoreCase(IConstants.NOT_LOGGED_IN)){
-				getProblemDetailsForNotLoggedUser(problemId,completeProblemDetailsVO);		
+				getProblemDetailsForNotLoggedUser(problemId,completeProblemDetailsVO,queryReq);		
 			}else if(userStatus.equalsIgnoreCase(IConstants.FREE_USER)){
-				getProblemDetailsForFreeLoggedUser(problemId,userId,completeProblemDetailsVO);			
+				getProblemDetailsForFreeLoggedUser(problemId,userId,completeProblemDetailsVO,queryReq);			
 			}else if(userStatus.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER)){
-				getProblemDetailsForCustomerLoggedUser(problemId,userId,completeProblemDetailsVO,"customer");	
+				getProblemDetailsForCustomerLoggedUser(problemId,userId,completeProblemDetailsVO,"customer",queryReq);	
 			}else if(userStatus.equalsIgnoreCase(IConstants.BOTH)){
-				getProblemDetailsForCustomerLoggedUser(problemId,userId,completeProblemDetailsVO,"both");	
+				getProblemDetailsForCustomerLoggedUser(problemId,userId,completeProblemDetailsVO,"both",queryReq);	
 			}
 			if(checkIsPublicProblem(problemId)){
 				completeProblemDetailsVO.setIsPublic("true");
@@ -101,14 +101,14 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		return completeProblemDetailsVO;
 	}
 	
-	private void getProblemDetailsForNotLoggedUser(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO ){
+	private void getProblemDetailsForNotLoggedUser(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq ){
 	  if(LOG.isDebugEnabled()){
 		LOG.debug("Enter into getProblemDetailsForNotLoggedUser method ");
 	  }
 	  try{
 		completeProblemDetailsVO.setUserStatus("notlogged");
 		if(checkIsPublicProblem(problemId)){
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO);
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
 			completeProblemDetailsVO.setModifyAccess(IConstants.FALSE);
 		}else{
 			completeProblemDetailsVO.setNoAccess(IConstants.TRUE);
@@ -118,14 +118,14 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	  }
 	}
 
-	private void getProblemDetailsForFreeLoggedUser(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO ){
+	private void getProblemDetailsForFreeLoggedUser(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq){
 	  if(LOG.isDebugEnabled()){
 		LOG.debug("Enter into getProblemDetailsForFreeLoggedUser method ");
 	  }
 	  try{
 		completeProblemDetailsVO.setUserStatus("freeuser");
 		if(checkIsPublicProblem(problemId)){
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO);
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
 			if(checkIsProblemOwner(problemId,userId)){
 			  completeProblemDetailsVO.setModifyAccess(IConstants.TRUE);
 			}else{
@@ -139,7 +139,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	   }
 	}
 	
-	private void getProblemDetailsForCustomerLoggedUser(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO,String userType){
+	private void getProblemDetailsForCustomerLoggedUser(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO,String userType,String queryReq){
 	  if(LOG.isDebugEnabled()){
 		LOG.debug("Enter into getProblemDetailsForCustomerLoggedUser method ");
 	  }
@@ -155,10 +155,10 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 				}
 			}
 			completeProblemDetailsVO.setModifyAccess(IConstants.TRUE);
-			getProblemAndItsOwnerDetailsForCustmor(problemId,userId,completeProblemDetailsVO);			
+			getProblemAndItsOwnerDetailsForCustmor(problemId,userId,completeProblemDetailsVO,queryReq);			
 		}else if(checkIsPublicProblem(problemId)){
 			completeProblemDetailsVO.setModifyAccess(IConstants.FALSE);
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO);			
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);			
 		}else{
 			completeProblemDetailsVO.setNoAccess(IConstants.TRUE);
 		}
@@ -211,7 +211,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		return false;
 	}
 	
-	private void getProblemAndItsOwnerDetails(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO){
+	private void getProblemAndItsOwnerDetails(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemAndItsOwnerDetails method ");
 		}
@@ -219,19 +219,24 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		final List<UserProblem> userProblemList = userProblemDAO.getProblemAndOwnerDetails(problemId);
 		if(!userProblemList.isEmpty()){
 			final UserProblem userProblem = userProblemList.get(0);
-			completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
-			completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
-			completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
-			completeProblemDetailsVO.setFirstName(userProblem.getUser().getFirstName());
-			completeProblemDetailsVO.setLastName(userProblem.getUser().getLastName());
-			final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy");
-			completeProblemDetailsVO.setExistingFrom(dateFormat.format(userProblem.getProblem().getExistingFrom()));
-			completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
+			if(queryReq == null){
+			  completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
+			  completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
+			  completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
+			  completeProblemDetailsVO.setFirstName(userProblem.getUser().getFirstName());
+			  completeProblemDetailsVO.setLastName(userProblem.getUser().getLastName());
+			  final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy");
+			  completeProblemDetailsVO.setExistingFrom(dateFormat.format(userProblem.getProblem().getExistingFrom()));
+			  completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
+			  completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
+			  completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			}
+			if(queryReq == null || queryReq.equalsIgnoreCase("getstatustypedetails"))
 			completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,IConstants.PUBLIC));
+			if(queryReq == null || queryReq.equalsIgnoreCase("getphotodetails"))
 			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,IConstants.PUBLIC));
-			completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
-			completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			
 		}
 		if(LOG.isDebugEnabled()){
 			LOG.debug(" getProblemAndItsOwnerDetails method executed successfully");
@@ -241,7 +246,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	   }
 	}
 	
-	private void getProblemAndItsOwnerDetailsForCustmor(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO){
+	private void getProblemAndItsOwnerDetailsForCustmor(Long problemId,Long userId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemAndItsOwnerDetailsForCustmor method ");
 		}
@@ -249,20 +254,26 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		final List<UserProblem> userProblemList = userProblemDAO.getProblemAndOwnerDetails(problemId);
 		if(!userProblemList.isEmpty()){
 			final UserProblem userProblem = userProblemList.get(0);
-			completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
-			completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
-			completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
-			completeProblemDetailsVO.setFirstName(userProblem.getUser().getFirstName());
-			completeProblemDetailsVO.setLastName(userProblem.getUser().getLastName());
-			final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy");
-			completeProblemDetailsVO.setExistingFrom(dateFormat.format(userProblem.getProblem().getExistingFrom()));
-			completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
-			completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
+			if(queryReq == null){
+			  completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
+			  completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
+			  completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
+			  completeProblemDetailsVO.setFirstName(userProblem.getUser().getFirstName());
+			  completeProblemDetailsVO.setLastName(userProblem.getUser().getLastName());
+			  final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy");
+			  completeProblemDetailsVO.setExistingFrom(dateFormat.format(userProblem.getProblem().getExistingFrom()));
+			  completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
+			  completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
+			  completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			}
+			if(queryReq == null || queryReq.equalsIgnoreCase("getstatustypedetails"))
+			 completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,null));
-			completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,null));
+			if(queryReq == null || queryReq.equalsIgnoreCase("getphotodetails"))
+			 completeProblemDetailsVO.setProblemFiles(getProblemRelatedFiles(problemId,null,null));
+			if(queryReq == null || queryReq.equalsIgnoreCase("getotheractvdetails"))
 			completeProblemDetailsVO.setProblemStatus(problemManagementService.getProblemRecentDetailsByProblemId(problemId,userId));
-			completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
-			completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			
 		}
 		if(LOG.isDebugEnabled()){
 			LOG.debug(" getProblemAndItsOwnerDetailsForCustmor method executed successfully");
