@@ -5126,7 +5126,7 @@ public class ProblemManagementService implements IProblemManagementService {
                           	    	 problemAssignedDepartment.setStatus(IConstants.DELETED);
                           	     }
                                  
-                                problemAssignedDepartment.setStatus(IConstants.ASSIGNED);
+                               /* problemAssignedDepartment.setStatus(IConstants.ASSIGNED);*/
                                 problemAssignedDepartment.setInsertedTime(getCurrentDateAndTime());
 								
                                 problemAssignedDepartment.setUpdatedTime(getCurrentDateAndTime());
