@@ -967,9 +967,11 @@ public class SpecialPageService implements ISpecialPageService{
 			log.error("Entered into createNewSpecialPage() Method");
 			SpecialPage specialPage = new SpecialPage();
 			specialPage.setName(gallaryVO.getGallaryName());
-			specialPage.setTitle(gallaryVO.getContentType());
+			specialPage.setTitle(gallaryVO.getVisibility());
 			specialPage.setHeading(gallaryVO.getContentType());
 			specialPage.setIsDelete(IConstants.FALSE);
+			specialPage.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			specialPage.setUpdateddate(dateUtilService.getCurrentDateAndTime());
 			
 			specialPageDAO.save(specialPage);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
