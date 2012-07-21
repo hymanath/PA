@@ -66,7 +66,7 @@ function getProblemsPostedUsersList()
 	callAjax(jsObj,url);
 
 }
-function getStates()
+function getStatesForProblem()
 {
 
 		var jsObj = {
@@ -405,7 +405,7 @@ function getLocations(id)
 		str +='</tr>';
 		str +='</table>';
 		document.getElementById("showLocationDiv").innerHTML = str;
-	getStates();
+	getStatesForProblem();
 	}
 	else if(id==3)
 	{
@@ -423,7 +423,7 @@ function getLocations(id)
 		str +='</tr>';
 		str +='</table>';
 		document.getElementById("showLocationDiv").innerHTML = str;
-	getStates();
+	getStatesForProblem();
 	}
 
 	else if(id==4)
@@ -444,7 +444,7 @@ function getLocations(id)
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showLocationDiv").innerHTML = str;
-   getStates();
+   getStatesForProblem();
   }
 	 else if(id==5 || id==7)
   {
@@ -480,7 +480,7 @@ function getLocations(id)
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showLocationDiv").innerHTML = str;
-   getStates();
+   getStatesForProblem();
   }
  
    else if(id==6 || id==8)
@@ -520,7 +520,7 @@ function getLocations(id)
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showLocationDiv").innerHTML = str;
-   getStates();
+   getStatesForProblem();
    }
     else if(id==9)
   {
@@ -548,7 +548,7 @@ function getLocations(id)
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showLocationDiv").innerHTML = str;
-   getStates();
+   getStatesForProblem();
   }
   }
 
