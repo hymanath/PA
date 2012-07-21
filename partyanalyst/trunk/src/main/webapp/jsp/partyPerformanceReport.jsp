@@ -1116,7 +1116,9 @@ function callMarginVotes(partyId)
 	#partyPerformanceReportMainDiv
 	{
 		text-align:left;
-		margin-left:50px;
+		margin-left:auto;
+		margin-right:auto;
+		width:914px;
 		font-size:12px;
 	}
 	#partyPositions
@@ -1254,7 +1256,7 @@ function callMarginVotes(partyId)
 		color:#FBAD2B;
 		font-size:15px;
 		font-weight:bold;
-		margin-left:15px;
+		margin-left:43px;
 		margin-right:100px;
 		padding:8px;
 		width:792px;
@@ -1383,7 +1385,12 @@ function callMarginVotes(partyId)
     padding: 5px;
     width: 100%;
 }
-	
+.partyPerformanceReportTable th
+{
+	background-color : #A6BAD1;
+}
+
+
 </style>
 </head> 
 <body>
@@ -1393,11 +1400,11 @@ function callMarginVotes(partyId)
 	   ${reportTitle}	
 </div>
 </center>
-<br/><br/><br/>
-<div style="margin-left: 15px;">
-<div id="electionSummary">
+<br/>
+<div style="margin-left: 43px;">
+<div id="electionSummary" style="width:812px;background:#ffffff;">
 	<div id="electionSummary_head"><%=electionSummaryHeading%></div>
-	<div id="electionSummary_body" >
+	<div id="electionSummary_body" style="width:800px;">
 		<table width="100%">		
 			<tr>
 				<td>
@@ -1461,7 +1468,7 @@ function callMarginVotes(partyId)
 	</div>
 </div>
 
-<table>
+<table style="background:#ffffff;">
 	<tr>
 		<td colspan="2">
 			<div class="partyInfoHeading"> 					
@@ -1522,12 +1529,12 @@ function callMarginVotes(partyId)
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
-<br/><br/>
+<br/>
 
 <div id="votesMarginInfo_main">
 	<div id="votesMarginInfo_head"  class="partyInfoHeading"><%=analysisHeading%></div>
-	<div id="votesMarginInfo_body">
-		<table width="85%">
+	<div id="votesMarginInfo_body" style="background:#ffffff;width:811px;">
+		<table width="85%" style="margin-left:19px;">
 			<tr>
 				<td colspan="2" >
 					<%=votesMarginOptionText%> : 
@@ -1555,13 +1562,13 @@ function callMarginVotes(partyId)
 	callMarginVotes('${party}');	
 </script>
 
-<br/><br/>
+<br/>
 
 <div class="partyInfoHeading">
 	<B><U>Detailed Report...</U></B>
 </div>
-<br/>
-<div>
+
+<div style="background:#ffffff;width:811px;">
 <c:set var="constituencyPositionsList" value="stateData.constituencyPositions" scope="session" />
 <c:forEach var="constPositions" items="${stateData.constituencyPositions}" >
 	<c:choose>
@@ -1757,21 +1764,21 @@ function callMarginVotes(partyId)
 
 </c:forEach> 
 </div>
-<br/><br/>
+<br/>
 <!--ref-->
 
 <s:if test="stateData.toPartySwing.size > 0">
-<div class="partyInfoHeading">
+
 	<c:if test="${stateData.diffOfTotalPercentageWinWithPrevElection > 0}">
-		<s:label labelposition="left"><b><U>Votes from any one of the below parties are flown to you</U></b></s:label>
+		<div class="partyInfoHeading">Votes from any one of the below parties are flown to you</div>
 	</c:if>
 	<c:if test="${stateData.diffOfTotalPercentageWinWithPrevElection < 0}">
-		<s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties</U></b></s:label>
+		<div class="partyInfoHeading">Your votes are flown to any one of the below parties</div>
 	</c:if>
-</div>
 
-<div style="margin-left: 15px;"> 
-<table class="partyPerformanceReportTable" border="1">
+<div style="background:#ffffff;width:811px;">
+<div style="margin-left: 43px;clear:both;background:#ffffff;margin-top:3px;"> 
+<table border="1" class="partyPerformanceReportTable">
 	<c:forEach var="p" items="${stateData.toPartySwing}" >
 	<tr>
 		<th>${p.key}</th>
@@ -1822,10 +1829,11 @@ partyObj.rebelsPerformanceArray.push(rebelPerformanceObj);
 <input type="hidden" name="type" value="detailed" />
 <input type="submit" value="Generate Detailed PDF">
 </s:form>
-</div>
+</div> </div>
 <script language="javascript">
 viewResizeablePanel();
 viewPartyBasicResults();
+
 </script>
 </div>
 </body>
