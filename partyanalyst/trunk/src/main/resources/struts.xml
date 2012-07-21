@@ -3468,5 +3468,10 @@
            		<param name="root">userCommentsInfoVOList</param>
         	</result>
 		</action>
+		<action name="problemStatusChangeAction" class="completeProblemDetailsAction" method="getProblemUpdatedDetails">
+			<result type="json" name="success">
+           		<param name="root">completeProblemDetailsVO</param>
+        	</result>
+		</action>
 	</package>
 </struts>      
