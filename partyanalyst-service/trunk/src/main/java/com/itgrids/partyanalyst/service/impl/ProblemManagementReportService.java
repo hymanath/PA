@@ -3208,13 +3208,22 @@ public class ProblemManagementReportService implements
 								problemBeanVO.setRecentActivity(progress.getProblemActivity().getComments());
 							
 						}
-						
-						
-						for(ProblemAssignedDepartment department : problemAssignedDepartmentset)
+						List<ProblemAssignedDepartment> assignedDept = problemAssignedDepartmentDAO.getAllActivitesByProblemId(userProblem.getUserProblemId());
 						{
-							if(department != null && department.getDepartmentOrganisation() != null)
-								problemBeanVO.setDepartment(department.getDepartmentOrganisation().getOrganisationName().toString());
+						if(assignedDept != null && assignedDept.size() > 0)
+							if(assignedDept.get(0).getProblemAssignedDepartmentId() != null && assignedDept.get(0).getDepartmentOrganisation() != null && assignedDept.get(0).getDepartmentOrganisation().getDepartmentOrganisationId() > 0)
+								if(!assignedDept.get(0).getStatus().equalsIgnoreCase("DELETED"))
+								{
+									problemBeanVO.setDepartment(assignedDept.get(0).getDepartmentOrganisation().getOrganisationName().toString());
+								}
 						}
+						
+							/*for(ProblemAssignedDepartment department : problemAssignedDepartmentset)
+							{
+								if(department != null && department.getDepartmentOrganisation() != null)
+									problemBeanVO.setDepartment(department.getDepartmentOrganisation().getOrganisationName().toString());
+							}*/
+							
 						problemBeanList.add(problemBeanVO);
 					}
 					return problemBeanList;
