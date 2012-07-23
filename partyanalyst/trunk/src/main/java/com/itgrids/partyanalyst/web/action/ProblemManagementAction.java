@@ -65,8 +65,27 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	private ProblemBeanVO problemBeanVO;
 	private List<FileVO> uploadFilesList;
 	private ResultStatus resultStatus;
+	private ResultStatus actvtyState;
+	private ResultStatus prblmStatus;
 	
 	
+	
+	public ResultStatus getPrblmStatus() {
+		return prblmStatus;
+	}
+
+	public void setPrblmStatus(ResultStatus prblmStatus) {
+		this.prblmStatus = prblmStatus;
+	}
+
+	public ResultStatus getActvtyState() {
+		return actvtyState;
+	}
+
+	public void setActvtyState(ResultStatus actvtyState) {
+		this.actvtyState = actvtyState;
+	}
+
 	public void setUploadFilesList(List<FileVO> uploadFilesList) {
 		this.uploadFilesList = uploadFilesList;
 	}
@@ -885,6 +904,43 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in freeUserProblemAssignedToCustomer() Method, Exception - "+e);
+		}
+		return SUCCESS;
+	}
+	
+	public String changeProblemActivity(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long prblmPrgrssId=jObj.getLong("prblmPrgrssId");
+			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null)
+			return ERROR;
+		
+			String task=jObj.getString("task");
+			actvtyState = problemManagementService.changeActivityState(prblmPrgrssId,task);
+					
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	public String makeProblemPublic(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long problemId = jObj.getLong("pHistoryId");
+			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null)
+			return ERROR;
+			
+			String task=jObj.getString("task");
+			prblmStatus= problemManagementService.changeProblemToPublic(problemId,task);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
