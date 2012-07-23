@@ -267,9 +267,9 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 					"model.problem.problemStatus.status,model.problem.informationSource.informationSource "+
 					"order by model.problem.problemStatus.problemStatusId");
 		}
-		public List<Problem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults) {
+		public List<UserProblem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults) {
 	
-			Query queryObject = getSession().createQuery("select model.problem from UserProblem model where " +
+			Query queryObject = getSession().createQuery("select model from UserProblem model where " +
 					"model.user.userId = :userId and  model.problem.isDelete = 'false' and (model.problem.isApproved = 'true') order by  model.problem.identifiedOn desc");
 			queryObject.setParameter("userId", userId);
 			queryObject.setFirstResult(startIndex);
@@ -668,7 +668,14 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			query.setParameter(0, problemReferenceNo);
 			return query.list();
 		}
- 
+		
+		public int makeProblemPublic(Long problemId,Long visibility)
+		{
+			Query queryObject=getSession().createQuery("update UserProblem model set model.visibility.visibilityId=? where model.problem.problemId=?");
+			queryObject.setParameter(0,visibility);
+			queryObject.setParameter(1,problemId);
+			return queryObject.executeUpdate();
+		}
        public List<Long> checkIsPublicProblem(Long problemId){
     	   Object [] params = {problemId,new Long(1),IConstants.FALSE,IConstants.TRUE,IConstants.TRUE};
     	   return getHibernateTemplate().find("select count(model.problem.problemId) from UserProblem model where model.problem.problemId = ?" +
