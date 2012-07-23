@@ -4771,4 +4771,52 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return constituencyNominationsVO;
 	}
 	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituencyForCensus(Long constituencyId,String electionYear,String electionType, 
+			Boolean includeOthers){	
+		try{
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain = null;
+			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal = null;
+			List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(constituencyId, electionYear, electionType);
+			
+			if(list.size() > 0)
+				constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(list,constituencyId,
+					null, electionYear, electionType, false, true);
+			
+			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+				List result = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId, Long.parseLong(electionYear));
+				String pcNames = "";
+				if(result != null && result.size() > 0)
+				{
+					for(Object[] values:(List<Object[]>)result)
+						pcNames += ","+values[1];
+					if(constituencyRevenueVillagesVOMain != null){
+						constituencyRevenueVillagesVOMain.setConstituencyId((Long)((Object[])result.get(0))[0]);
+						constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));
+						constituencyRevenueVillagesVOMain.setElectionType(electionType);
+						constituencyRevenueVillagesVOMain.setElectionYear(electionYear);
+					}
+				}
+			}
+			
+			//Others Calculation
+			if(constituencyRevenueVillagesVOMain != null && includeOthers){
+				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();
+				constituencyOrMandalWiseElectionVo.setLocationName(IConstants.OTHERS);
+				constituencyOrMandalWiseElectionVo.setTotalPolledVotes(0l);
+				constituencyOrMandalWiseElectionVo.setPartyElectionResultVOs(OtherVotesDataForAnAssembly(constituencyRevenueVillagesVOMain.
+						getConstituencyOrMandalWiseElectionVO(), constituencyId, electionYear, electionType));
+				constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().add(constituencyOrMandalWiseElectionVo);	
+			}
+			
+			return constituencyRevenueVillagesVOMain;		
+		}catch(Exception e){
+			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.debug("Exception raised in getMandalElectionInfoForAConstituency() method of Constituency Page Service.");
+			}
+			return null;
+		}		
+	}
+	
 }
