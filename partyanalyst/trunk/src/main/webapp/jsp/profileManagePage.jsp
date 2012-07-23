@@ -429,7 +429,10 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{
 				hideCandidatePhotoVisibility(myResults);
 			}
-		
+		    else if(jsObj.task == "createNewGallary" && jsObj.contentType == "Photo Gallary")  
+			{ 
+               showPhotoGallaryCreateMsg(myResults,jsObj.createOrUpdate);
+			}
 			else if(jsObj.task == "createNewGallary")  
 			{ 
                showGallaryCreateMsg(myResults,jsObj.createOrUpdate);
@@ -787,7 +790,30 @@ showBusyImgWithId('ajaxImgId');
 	var url = "createNewGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+function showPhotoGallaryCreateMsg(result,createOrUpdate)
+{
+	var errorDivEle = document.getElementById('galErrorMsgDivId');
+	var str = '';
+	
+	if(result.resultCode == 0)
+	{
+		
 
+	    document.getElementById('pGallaryNameId').value = '';
+	    document.getElementById('pGallaryDescId').value = '';
+	    document.getElementById('publicPhotoRadioId').checked = true;
+
+		if(createOrUpdate=='Create')
+		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+		str += '<font color="green"><b>Gallery Updated Successfully.</b>';
+	}
+	else
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+
+	errorDivEle.innerHTML = str;
+	
+}
 function showGallaryCreateMsg(result,createOrUpdate)
 {
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
@@ -2774,9 +2800,9 @@ function updateGallary(gallaryId)
 	document.getElementById("updateGallaryDiv").innerHTML = str;
 	document.getElementById("pGallaryNameId").value=myResults.gallaryName;
 	if(myResults.fileName1 != 'false')
-	document.getElementById("privateRadioId").checked= true;
+	document.getElementById("privatePhotoRadioId").checked= true;
 	else
-	document.getElementById("publicRadioId").checked= true;
+	document.getElementById("publicPhotoRadioId").checked= true;
  }
  
  function  updateGallaryStatus(myResults)
