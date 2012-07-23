@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.mail.iap.Response;
@@ -47,7 +48,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public ServletContext getContext() {
 		return context;
 	}
@@ -164,7 +165,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 			        	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;	
 			        
 			        else
-					 chartPath = chartProducerURL + chartName;
+			        	chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			        questionsAndChoicesPercentage.setImagePath(chartName);
 					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 				}else{

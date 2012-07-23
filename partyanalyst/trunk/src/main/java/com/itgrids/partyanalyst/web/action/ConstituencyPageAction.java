@@ -146,7 +146,6 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private ConstituencyNominationsVO constituencyNominationsVO; 
     private String taskType;
     List<CensusVO> censusVO = new ArrayList<CensusVO>();
-    private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
     
     private ICommentsDataService commentsDataService;
     private List<SelectOptionVO> constituencyElectionsVO;
@@ -154,10 +153,9 @@ public class ConstituencyPageAction extends ActionSupport implements
     private Boolean isSubscribed;
     private IConstituencyManagementService constituencyManagementService;
     private ResultStatus result;
+    private Long parliamentCinstiId;
     
-    
-    
-	public ResultStatus getResult() {
+    public ResultStatus getResult() {
 		return result;
 	}
 	public void setResult(ResultStatus result) {
@@ -176,7 +174,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 	public void setIsSubscribed(Boolean isSubscribed) {
 		this.isSubscribed = isSubscribed;
 	}
-	
+    
+	public Long getParliamentCinstiId() {
+		return parliamentCinstiId;
+	}
+	public void setParliamentCinstiId(Long parliamentCinstiId) {
+		this.parliamentCinstiId = parliamentCinstiId;
+	}
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
 	}
@@ -767,7 +771,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 			   pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
 			else
-			   pieChartPath = chartProducerURL+ pieChart;
+				pieChartPath = IWebConstants.CHART_URL_IN_SERVER + pieChart;
 			
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
@@ -822,7 +826,7 @@ public class ConstituencyPageAction extends ActionSupport implements
         if(cPath.contains("PartyAnalyst"))
             chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         else
-        	chartPath = chartProducerURL+ chartName;
+        	chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
         
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
@@ -833,7 +837,7 @@ public class ConstituencyPageAction extends ActionSupport implements
    		if(cPath.contains("PartyAnalyst"))
    			enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
    		else
-   			enlargedChartPath = chartProducerURL + enlargedChartName;
+   			enlargedChartPath = IWebConstants.CHART_URL_IN_SERVER + enlargedChartName;
         
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
@@ -860,7 +864,8 @@ public class ConstituencyPageAction extends ActionSupport implements
    		}
    		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
-   		
+   		if(navigationVO.getPcsInfo()!= null && navigationVO.getPcsInfo().size() > 0)
+   		   parliamentCinstiId = navigationVO.getPcsInfo().get(0).getId();
    		Long startIndex = 0L;
    		String nameString = "";
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -1083,7 +1088,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		 			if(cPath.contains("PartyAnalyst"))
 		 				chartPath = context.getRealPath("/") + "charts\\" + barChartName;
 		 			else
-		 				chartPath = chartProducerURL + barChartName;
+		 				chartPath = IWebConstants.CHART_URL_IN_SERVER + barChartName;
 		 	       
 		 			  	ChartProducer.createALineChartforVotingTrendzNew(constituencyName + " Voting Trendz" ,createDataset2(electionTrendzReportVO.getElectionTrendzOverviewVO().getPartyElectionTrendzVO()),createDataset1(electionTrendzReportVO.getElectionTrendzOverviewVO().getPartyElectionTrendzVO()), chartPath);
 		 	        	request.setAttribute("barChartName", barChartName);
@@ -1095,7 +1100,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		 			 if(cPath.contains("PartyAnalyst"))
 		 				 pollingChartPath = context.getRealPath("/") + "charts\\" + pollingChartName;
 		 			 else
-		 				 pollingChartPath = chartProducerURL + pollingChartName;
+		 				pollingChartPath = IWebConstants.CHART_URL_IN_SERVER + pollingChartName;
 			 			
 		 			List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
 		 	        
@@ -1131,7 +1136,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 				 	if(cPath.contains("PartyAnalyst"))
 				 		wonCandVotesChartPath = context.getRealPath("/") + "charts\\" + wonCandVotesChartName;
 				 	else
-				 	    wonCandVotesChartPath = chartProducerURL + wonCandVotesChartName;
+				 		wonCandVotesChartPath = IWebConstants.CHART_URL_IN_SERVER + wonCandVotesChartName;
 				 	
 				 	String wonCandTotVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getTotalVotesPercent();
 		 		    String wonCandMaleVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getMaleVotesPercentInConstiVotes();
@@ -1325,7 +1330,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
  		if(cPath.contains("PartyAnalyst"))
  		    wonCandChartPathNew = context.getRealPath("/") + "charts\\" + wonCandChartNameNew;
  		else
- 		    wonCandChartPathNew =chartProducerURL + wonCandChartNameNew;
+ 			wonCandChartPathNew =IWebConstants.CHART_URL_IN_SERVER + wonCandChartNameNew;
 				
 		    String maleLabelForVoting = "Male";
 		    String femaleLabelForVotingPercent = "Female";
@@ -1343,7 +1348,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	 	if(cPath.contains("PartyAnalyst"))
 	 	   wonCandVotesChartPath = context.getRealPath("/") + "charts\\" + wonCandVotesChartName;
 	 	else 
-	 	   wonCandVotesChartPath =chartProducerURL + wonCandVotesChartName;
+	 		wonCandVotesChartPath = IWebConstants.CHART_URL_IN_SERVER + wonCandVotesChartName;
 	 	
 	 	   ChartProducer.createPieChart("", createPieDataSetForCandidateVotes(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,candTotPercent,maleVotesPercentInConstiVotes,femaleVotesPercentInConstiVotes,maleOrFemaleVotesPercentInConstiVotes), wonCandVotesChartPath);
            request.setAttribute("wonCandVotesChartName", wonCandVotesChartName);
@@ -1437,7 +1442,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		if(cPath.contains("PartyAnalyst"))
 	      chartPath = context.getRealPath("/") + "charts\\" + chartName;	
 		else
-		  chartPath = chartProducerURL + chartName;		
+			chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
 		Double otherPartyVotesPercent = 0D;
 		ElectionTypeChartVO electionTypeChartVO = new ElectionTypeChartVO();
@@ -1663,7 +1668,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		if(cPath.contains("PartyAnalyst"))
 			 chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-          chartPath = chartProducerURL + chartName;
+			 chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 
         constituencyRevenueVillagesVO.setChartPath(chartName);
         partiesInChart = new LinkedHashSet<String>();
@@ -1672,7 +1677,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
         if(cPath.contains("PartyAnalyst"))
         	 detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         else
-            detailedChartPath = chartProducerURL + detailedChartName;
+        	detailedChartPath = IWebConstants.CHART_URL_IN_SERVER + detailedChartName;
 
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
         partiesInChart = new LinkedHashSet<String>();
@@ -1714,8 +1719,25 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  String chartPath = "",detailedChartPath = null;
 	  String chartName = "",detailedChartName = null;
 	  String domainAxisName = "Mandals",detailedDomainAxisName = null;
-	  constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.PARLIAMENT_ELECTION_TYPE, false);
-	  
+	    String censusYear          = jObj.getString("censusYear");
+		String delimitationYear    = jObj.getString("delimitationYear");
+		String censusSelectedIndex = jObj.getString("seletedIndex");
+		String censusText        = jObj.getString("seletedText");
+		if(delimitationYear != null && delimitationYear.trim().length()>0 && censusYear != null && censusYear.trim().length() > 0){
+	      censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(jObj.getLong("constituencyId"),new Long(delimitationYear),new Long(censusYear));
+	      constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAConstituencyForCensus(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.PARLIAMENT_ELECTION_TYPE, false);
+	      List<String> censusFieldList = new ArrayList<String>();
+			censusFieldList.add(censusText);
+			if(censusVO != null && censusVO.size() > 0)
+			{
+				censusVO.get(0).setCensusFields(censusFieldList);
+				censusVO.get(0).setCensusSelectedIndex(new Long(censusSelectedIndex));
+			}
+			constituencyRevenueVillagesVO.setCensusVO(censusVO);
+			 return SUCCESS;
+		}else{
+	      constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.PARLIAMENT_ELECTION_TYPE, false);
+		}
 	  if(constituencyRevenueVillagesVO != null){
 		  chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  chartName = "mandalWiseParliamentElectionsResults_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
@@ -1723,7 +1745,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  if(cPath.contains("PartyAnalyst"))
 		      chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			else
-		      chartPath = chartProducerURL+ chartName;
+		      chartPath = IWebConstants.CHART_URL_IN_SERVER+ chartName;
 
 		  Set<String> partiesInChart = null;
 		  partiesInChart = new LinkedHashSet<String>();
@@ -1736,7 +1758,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  if(cPath.contains("PartyAnalyst"))
 		   detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
 		  else
-		   detailedChartPath = chartProducerURL + detailedChartName;
+		   detailedChartPath = IWebConstants.CHART_URL_IN_SERVER + detailedChartName;
 
 		   partiesInChart = new LinkedHashSet<String>();
 		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);
@@ -1744,7 +1766,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  }
 	 
 	  return SUCCESS;
-  }
+ }
   
   public String getCandidateNominationDetails(){
 	  

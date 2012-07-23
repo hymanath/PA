@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -65,7 +66,6 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	public void setFilevoList(List<FileVO> filevoList) {
 		this.filevoList = filevoList;
 	}
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	public String getProblemsInAWeekGraphDataAvailability() {
 		return problemsInAWeekGraphDataAvailability;
@@ -202,7 +202,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 					if(cPath.contains("PartyAnalyst"))
 						chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;
 					else
-						chartPath = chartProducerURL + chartNameForAllProblemsCount;				
+						chartPath = IWebConstants.CHART_URL_IN_SERVER + chartNameForAllProblemsCount;								
 
 			         ChartProducer.create3DBarChart("Problems for the past 7 days", "Range",createDataset(allProblemsCount.getProblemsCount()), chartPath);
 					 problemsInAWeekGraphDataAvailability = "dataAvailable";
@@ -220,7 +220,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 						if(cPath.contains("PartyAnalyst"))
 							chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;
 						else
-							chartPath = chartProducerURL + chartNameForAllProblemsCount;				
+							chartPath = IWebConstants.CHART_URL_IN_SERVER + chartNameForAllProblemsCount;				
 
 					 ChartProducer.create3DBarChart("All Non-Approved Problems By Location Wise ", "Range",createDataset(currentDayProblemsCount.getProblemsCount()), chartPath);
 					 problemsForCurrentDayGraphDataAvailability = "dataAvailable";

@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -55,7 +56,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
 	
 	private EntitlementsHelper entitlementsHelper;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
 		return votesMarginAnalysisVO;
 	}
@@ -330,7 +331,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	 		if(cPath.contains("PartyAnalyst"))
 	           analysisMainPartyChartPath = context.getRealPath("/") + "charts\\" + analysisMainPartyChartName;
 	 		else
-	 		   analysisMainPartyChartPath = chartProducerURL + analysisMainPartyChartName;
+	 		   analysisMainPartyChartPath = IWebConstants.CHART_URL_IN_SERVER + analysisMainPartyChartName;
 	 		
 	        String title = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Analysis Details");
 	       	ChartProducer.create3DBarChartWithInputParams(title,"Analysis","Party","Results",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyAnalysisResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), analysisMainPartyChartPath,width,height, null,false);
@@ -345,7 +346,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	 		if(cPath.contains("PartyAnalyst"))
 	           resultsMainPartyChartPath = context.getRealPath("/") + "charts\\" + resultsMainPartyChartName;
 	 		else
-	 	       resultsMainPartyChartPath = chartProducerURL + resultsMainPartyChartName;
+	 	       resultsMainPartyChartPath = IWebConstants.CHART_URL_IN_SERVER + resultsMainPartyChartName;
 	 		
 	        String title1 = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Election Results");
 	       	ChartProducer.create3DBarChartWithInputParams(title1,"Results","Party","Seats",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyElectionResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), resultsMainPartyChartPath,width,height, null,false);
@@ -363,7 +364,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		 		if(cPath.contains("PartyAnalyst"))
 					analysisAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + analysisAlliancPartyChartName;
 		 		else
-		 			analysisAlliancPartyChartPath = chartProducerURL+ analysisAlliancPartyChartName;
+		 			analysisAlliancPartyChartPath = IWebConstants.CHART_URL_IN_SERVER + analysisAlliancPartyChartName;
 		 		
 		        String title2 = alliancAnalysis.getPartyName().concat(" Analysis Details");
 		      	ChartProducer.create3DBarChartWithInputParams(title2,"Analysis","Party","Results",alliancAnalysis.getPartyName(),createDatasetForPartyAnalysisResults(alliancAnalysis), analysisAlliancPartyChartPath,width,height, null,false);
@@ -377,7 +378,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		 		if(cPath.contains("PartyAnalyst"))
 		 	        resultsAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + resultsAlliancPartyChartName;
 		 		else
-		 	        resultsAlliancPartyChartPath = chartProducerURL + resultsAlliancPartyChartName;
+		 	        resultsAlliancPartyChartPath = IWebConstants.CHART_URL_IN_SERVER + resultsAlliancPartyChartName;
 		 		
 		        String title3 = alliancAnalysis.getPartyName().concat(" Election Results");
 		       	ChartProducer.create3DBarChartWithInputParams(title3,"Results","Party","Seats",alliancAnalysis.getPartyName(),createDatasetForPartyElectionResults(alliancAnalysis), resultsAlliancPartyChartPath,width,height, null,false);

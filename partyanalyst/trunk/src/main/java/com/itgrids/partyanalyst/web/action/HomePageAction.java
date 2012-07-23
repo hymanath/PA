@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -397,7 +398,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			        	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;	
 			        
 			        else
-					 chartPath = chartProducerURL + chartName;
+					 chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			        questionsAndChoicesPercentage.setImagePath(chartName);
 					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath1,"votesPoll");*/
 				}
@@ -453,6 +454,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			Long electionTypeId = new Long(jObj.getLong("electionType"));
 			states = staticDataService.getParticipatedStatesForAnElectionType(electionTypeId);
 		}
+		if(jObj.getString("task").equalsIgnoreCase("getStates"))
+		{	
+			Long electionTypeId = new Long(jObj.getLong("electionType"));
+			states = staticDataService.getParticipatedStatesForAnElectionType(electionTypeId);
+		}
+		
 		return Action.SUCCESS;
 	}
 	
@@ -488,10 +495,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		String pathSeperator = System.getProperty("file.separator");
 		String osDetails     = System.getProperty("os.name");
 		
-		//chartPath = "/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+		//chartPath = IWebConstants.CHART_URL_IN_SERVER;
 		
 		if(requestURL.contains("www.partyanalyst.com"))
-			chartPath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + "charts" + pathSeperator;
+			chartPath = IWebConstants.CHART_URL_IN_SERVER;
 		else
 			chartPath = context.getRealPath("/") + "charts\\";
 		
@@ -508,7 +515,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		String osDetails     = System.getProperty("os.name");
 		
 		if(requestURL.contains("www.partyanalyst.com"))
-			imagePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + "pictures" + pathSeperator + "profiles" + pathSeperator;
+			imagePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + "profiles" + pathSeperator;
 		else
 			imagePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
 		

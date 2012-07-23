@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStateRegionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -67,7 +68,6 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private IStateRegionService stateRegionService;	
 	private StateElectionsVO partyResultsInRegionVO; 
 	private PartyPositionsVO partyPositionsVO = new PartyPositionsVO();
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	private List<PartyElectionResultVO> partyElectionResultVO;
 	private Boolean hasDeatiledAnalysis = false;
 	private EntitlementsHelper entitlementsHelper;
@@ -412,7 +412,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 			      alliancePartiesChartPath = context.getRealPath("/")+ "charts\\" + alliancePartiesChartName;
 			else
-				  alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
+				  alliancePartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + alliancePartiesChartName;
 			
 			ChartProducer.createLineChart("", "", "Seats",
 					createDataSetForAlliancPartyOverallResults(alliancParties
@@ -452,7 +452,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 			    alliancePartiesChartPath = context.getRealPath("/")+ "charts\\" + alliancePartiesChartName;
 			else
-		        alliancePartiesChartPath = chartProducerURL+alliancePartiesChartName;
+		        alliancePartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + alliancePartiesChartName;
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					alliancParties.getPartiesInAlliance(), colors);
 			log
@@ -495,7 +495,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 			   partyDistrictResultsChartPath = context.getRealPath("/")+ "charts\\" + partyDistrictResultsChartName;
 			else
-			   partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
+			   partyDistrictResultsChartPath = IWebConstants.CHART_URL_IN_SERVER + partyDistrictResultsChartName;
 
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					allPartiesResults, colors);
@@ -539,7 +539,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 			    allPartiesChartPath = context.getRealPath("/") + "charts\\"+ allPartiesChartName;
 			else
-			   allPartiesChartPath = chartProducerURL+allPartiesChartName;
+			   allPartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + allPartiesChartName;
 
 			ChartProducer.createLineChart(title, "", "Seats",
 					createDataSetForAlliancPartyOverallResults(

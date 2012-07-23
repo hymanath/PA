@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class RevenueVillagePartyAllElecAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -27,7 +28,7 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 	private String partyName;
 	private String mandalName; 
 	private String tehsilId;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -93,7 +94,7 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else 
-			chartPath = chartProducerURL + chartName;
+			chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
         if(constituencyRevenueVillagesVO.getElectionInfoByLocations().size() > 0)
         	ChartProducer.createLineChart("" , "Revenue Villages", "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,300,880, null,false);
         constituencyRevenueVillagesVO.setChartPath(chartName);

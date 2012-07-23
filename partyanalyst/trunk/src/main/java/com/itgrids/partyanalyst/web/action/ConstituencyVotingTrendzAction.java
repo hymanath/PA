@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultPartyVOByElectionType;
@@ -128,7 +129,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<PartyElectionVotersVO> partiesElecsResults;
 	private String windowType;
 	private Long recentAssemblyElecId;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
@@ -691,7 +691,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			  if(cPath.contains("PartyAnalyst"))
 				  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  else
-				  chartPath = chartProducerURL + chartName;
+				  chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			  
 			  chartColorsAndDataSetVO = createDatasetForChart(electionResList,selectdElections);
 			  ChartProducer.createLineChartWithThickness(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,500,1000,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
@@ -752,7 +752,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						if(cPath.contains("PartyAnalyst"))
 							 chartPath = context.getRealPath("/") + "charts\\" + chartName;
 						else
-							 chartPath = chartProducerURL+ chartName;
+							chartPath = IWebConstants.CHART_URL_IN_SERVER+ chartName;
 						
 						String chartTitle = ""+results.getElectionType()+" - "+results.getElectionYear();
 						final DefaultPieDataset dataset = new DefaultPieDataset();

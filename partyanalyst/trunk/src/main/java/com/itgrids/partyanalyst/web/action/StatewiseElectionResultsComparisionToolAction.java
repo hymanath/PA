@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -46,7 +47,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	JSONObject jObj = null;
 	private ServletContext context;
 	private HttpSession session;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -217,7 +218,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			if(cPath.contains("PartyAnalyst"))
 				partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
 			else
-	         partyResultsChartPath =chartProducerURL + partyResultsChartName;
+	         partyResultsChartPath = IWebConstants.CHART_URL_IN_SERVER + partyResultsChartName;
 	 		
 	 		ChartProducer.create3DBarChart("Party","Seats",createDatasetForPartyResults(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults()), partyResultsChartPath);
 		    request.setAttribute("partyResultsChartName1", partyResultsChartName);
@@ -248,7 +249,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		if(cPath.contains("PartyAnalyst"))
 			alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
 		else
-			alliancePartiesChartPath =chartProducerURL + alliancePartiesChartName;
+			alliancePartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + alliancePartiesChartName;
  		
         ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart"), alliancePartiesChartPath,300,600, null,true);
 	    request.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
@@ -278,7 +279,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			if(cPath.contains("PartyAnalyst"))
 				allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
 			else
-				allPartiesChartPath = chartProducerURL+ allPartiesChartName;
+				allPartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + allPartiesChartName;
 	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart"), allPartiesChartPath,300,600, null,true);
 		    request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);

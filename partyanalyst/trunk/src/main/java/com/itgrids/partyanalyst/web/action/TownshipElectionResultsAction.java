@@ -61,8 +61,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private IBiElectionPageService biElectionPageService; 
 	private List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO;
     private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
-	private String resultFor;
+
+    private String resultFor;
 	
 	public String getResultFor() {
 		return resultFor;
@@ -227,7 +227,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			else
-				chartPath = chartProducerURL+ chartName;
+				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
 	        
 	        if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
@@ -261,7 +261,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/") + "charts\\" + chartName;
 			else
-				chartPath = chartProducerURL + chartName;
+				chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
 				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
 			}else{

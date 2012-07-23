@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -962,7 +963,7 @@ public class CadreRegisterAction extends ActionSupport implements
 			String filePath = null;
 			
 			if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-				filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator +"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
+				filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
 			else
 				filePath = context.getRealPath("/")+"images\\"+IConstants.CADRE_IMAGES+"\\";
 			

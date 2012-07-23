@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
@@ -92,7 +93,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private NavigationVO messageTypes;
 	private EntitlementsHelper entitlementsHelper;
 	private List yearsList;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";	
 	
 	public List getYearsList() {
 		return yearsList;
@@ -588,7 +588,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-		    chartPath = chartProducerURL+ chartName;
+		    chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
         districtWisePartyResultVO.setChartPath(chartName);
         String electionType = jObj.getString("electionType");
@@ -608,7 +608,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         if(cPath.contains("PartyAnalyst"))
         	detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         else
-            detailedChartPath = chartProducerURL+ detailedChartName;
+            detailedChartPath = IWebConstants.CHART_URL_IN_SERVER + detailedChartName;
         
         districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
         String detailedChartElectionType = jObj.getString("electionType").toUpperCase();
@@ -815,7 +815,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(cPath.contains("PartyAnalyst"))
 		   chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-		   chartPath = chartProducerURL+ chartName;
+		   chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDatasetForPartyPositions(partyPositions);
         allPartiesPositionsInElection.setPasitionsChart(chartName);

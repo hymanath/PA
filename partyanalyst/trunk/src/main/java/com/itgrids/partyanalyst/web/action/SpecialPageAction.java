@@ -179,6 +179,15 @@ public class SpecialPageAction extends ActionSupport implements
 
 	public String execute() {
 		
+		session = request.getSession();
+		
+		if(session.getAttribute("loadingFirstTime")== null){
+			if(contentId == null){
+			   session.setAttribute("loadingFirstTime", "true");
+			}
+		}else{ 
+			session.setAttribute("loadingFirstTime", "false");
+		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO != null){

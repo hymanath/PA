@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -80,8 +81,6 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	private Long zptcElectionId; 
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
-	
 	
 	public List<SelectOptionVO> getZptcElectionYears() {
 		return zptcElectionYears;
@@ -428,12 +427,12 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		if(cPath.contains("PartyAnalyst"))
 			 chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		else
-			chartPath = chartProducerURL + chartName;
+			chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
 		if(cPath.contains("PartyAnalyst"))
 		    allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
 		else
-		   allPartychartPath = chartProducerURL+ allPartychartName;
+		   allPartychartPath = IWebConstants.CHART_URL_IN_SERVER + allPartychartName;
 		Double otherPartyVotesPercent = 0D;
 		
 		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
@@ -595,7 +594,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			  if(cPath.contains("PartyAnalyst"))
 			      chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  else
-			       chartPath = chartProducerURL + chartName;
+			       chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
 			  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
 			  
@@ -621,7 +620,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 				  if(cPath.contains("PartyAnalyst"))
 				       pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
 				  else
-				       pieChartPath = chartProducerURL + pieChart;
+				       pieChartPath = IWebConstants.CHART_URL_IN_SERVER + pieChart;
 				if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 					if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 						title = "Each Mandal Voters Share* After Delimitation";
