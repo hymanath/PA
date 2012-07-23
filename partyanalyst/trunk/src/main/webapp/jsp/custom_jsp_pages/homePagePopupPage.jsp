@@ -126,7 +126,7 @@ Are you aspirant candidate for<br/>
 To know more call us : +91  9676696760 &nbsp;(OR) <br />Email us : <a href="mailto:info@partyanalyst.com">info@partyanalyst.com</a></span></div>-->
 <div class="ElectionInfo boxdiv" style="height: 92px; padding-left: 10px; width: 308px; padding-right: 10px; margin-right: -15px; margin-left: 123px;">
 <h1 style="background:url('images/icons/homePage/report.png') no-repeat left;background-size:50px 50px;padding-left:55px;padding-top:10px;font-size: 20px;">Election Information</h1>
-<p style="margin:1px;"><a href="specialPageAction.action?specialPageId=8">View Andhra Pradesh 2012 Bye Election</a></p>
+<p style="margin:1px;"><a href="specialPageAction.action?specialPageId=10">View Presidential Election 2012</a></p>
 </div>
 <div class="ElectionInfo boxdiv" style="height: 92px; width: 275px; padding-left: 0px; padding-right: 0px; margin-left: 21px;">
 <h1 style="background-size:50px 50px;padding-left: 17px;padding-top:10px;font-size: 20px;">Latest Updates</h1>
