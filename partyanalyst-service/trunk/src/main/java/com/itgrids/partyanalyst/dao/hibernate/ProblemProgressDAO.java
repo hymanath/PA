@@ -27,6 +27,7 @@ public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long
 		Object[] parameters = {userProblemId,"false"};
 		return getHibernateTemplate().find("from ProblemProgress model where model.userProblem.userProblemId = ? and model.isDelete =? order by model.insertedTime desc",parameters);
 	}
+	
 	public List<ProblemProgress> getAllProblemProgressDetails(Long problemId,String visibility){
 		StringBuilder query = new StringBuilder();
 		query.append("from ProblemProgress model where model.userProblem.problem.problemId = :problemId  and model.isDelete = :isDelete ");
@@ -42,4 +43,14 @@ public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long
 			queryObj.setParameter("visibility", visibility);
 		return queryObj.list();
 	}
+	
+	public int updateActivityVisibility(Long prblmPrgrssId,Long visibility)
+	{
+		Query queryObject=getSession().createQuery("update ProblemProgress model set model.visibility.visibilityId=? where model.problemProgressId=?");
+		queryObject.setParameter(0,visibility);
+		queryObject.setParameter(1,prblmPrgrssId);
+		return queryObject.executeUpdate();
+	}
+	
+	
 }
