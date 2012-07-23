@@ -86,11 +86,11 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 	System.out.println(list1.size());
 }
 	*/
-	public void testgetAllPostedPRoblemCount()
+	/*public void testgetAllPostedPRoblemCount()
 	{
 		 List list = userProblemDAO.getAllPostedProblemCount(2l);
 		 System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testgetAllPostedProblemCountOtherThanLoggedInUser()
 	{
@@ -309,7 +309,7 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(userDetails.getUser().getFirstName());
 			}
 		}
-	}*/
+	}
 	public void testgetStatusWiseProblemsForAnUserInARegion()
 	{
 		String locationStr=" and model.problem.problemCompleteLocation.state.stateId = 1";
@@ -331,6 +331,11 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(params[3]);
 			}
 		}
+	}*/
+	public void testMakeProblemPublic()
+	{
+		int result=userProblemDAO.makeProblemPublic(182l,1l);
+		System.out.println(result);
 	}
 	/*public void testCheckIsPublicProblem(){
 		List<Long> probCountList = userProblemDAO.checkIsPublicProblem(1L);

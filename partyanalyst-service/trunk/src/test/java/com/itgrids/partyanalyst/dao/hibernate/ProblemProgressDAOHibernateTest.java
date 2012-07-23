@@ -18,10 +18,15 @@ public class ProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 	/*public void test()
 	{
 		problemProgressDAO.getAll();
-	}*/
+	}
 	public void testGetProblemPrograss()
 	{
 		List<ProblemProgress> list = problemProgressDAO.getProblemPrograss(2l);
 		System.out.println(list.size());
+	}*/
+	public void testa(){
+	int result=problemProgressDAO.updateActivityVisibility(2l,1l);
+	System.out.println(result);
+
 	}
 }
