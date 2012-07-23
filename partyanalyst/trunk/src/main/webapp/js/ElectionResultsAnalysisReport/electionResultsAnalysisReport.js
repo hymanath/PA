@@ -452,7 +452,7 @@ function showBasicAnalysisDetails(jsObj,results,tools)
 			toolsDivElContent+='<TR>';
 			toolsDivElContent+='<TD>Party Name:</TD>';
 			toolsDivElContent+='<TD>';
-			toolsDivElContent+='<select id="selectPartyPPR" name="selectParty" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,\'PPR\')">';
+			toolsDivElContent+='<select id="selectPartyPPR" name="selectParty" style="width:150px;margin-top:3px;" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,\'PPR\')" >';
 			for(var l in results.partiesList)
 			{		
 				 toolsDivElContent+='<OPTION value='+results.partiesList[l].id+'>'+results.partiesList[l].name+'</OPTION>';			
