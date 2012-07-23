@@ -669,7 +669,22 @@ function buildUploadPhotosDiv()
 	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
 	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
-	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
+	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
+	str += '   <TR>';
+	str += '     <td colspan="2">';
+	str += '<table>';
+	str += '   <tr>';
+	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
+	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '     <TD>';
+	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '     </TD>';
+	str += '   </tr>';
+	str += '</table>';
+	str += '     </td>';
+	str += '   </TR></table>';
 
 	str += '<div id="photoPublicRadioDiv" style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
@@ -938,10 +953,17 @@ function validateFileUpload()
 	var canGalId = document.getElementById("uploadCandidateGalleryId");
 	var candidateSelectId = document.getElementById("candidateSelectId");
 	var ccheckboxIdElmt = document.getElementById("ccheckboxId");
+	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required';
+		flag = false;
+	}
+
 	if(galId == 0)
 	{
 		str += 'Select Gallary';
@@ -1014,6 +1036,7 @@ function validateNewsFileUpload()
 	var languageId = document.getElementById("language").value;
 	var keywords = document.getElementById("keywords").value;
 	var galEle = document.getElementById("gallaryId").value;
+	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
@@ -1021,6 +1044,11 @@ function validateNewsFileUpload()
 	if(galEle == 0)
 	{
 		str += 'Select Gallary';
+		flag = false;
+	}
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required';
 		flag = false;
 	}
 	if(fileTitle.length == 0)
@@ -1130,6 +1158,7 @@ function clearNewsUploadFileFields()
 	document.getElementById('source').value = '';
 	document.getElementById('newsfileId').value = '';	
 	//document.getElementById('publicRadioId').checked = true;
+	document.getElementById('existingFromText').value = '';
 	getScopes();
 }
 	
@@ -1141,6 +1170,8 @@ function clearUploadFileFields()
 	document.getElementById('photofileDescId').value = '';
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('photofileId').value = '';
+	
+	document.getElementById('existingFromText').value = '';
 }
 
 function clearGallaryFields()
@@ -1806,7 +1837,7 @@ function  buildUploadNews()
 	str += '     <td colspan="2">';
 	str += '<table>';
 	str += '   <tr>';
-	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date</font></b></td>';
+	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
@@ -1974,7 +2005,7 @@ function buildUploadVideoDiv()
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
-	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
@@ -3093,7 +3124,7 @@ function updatePhoto(fileId,fileGallaryId)
 			    	<td style="padding-left:350px"><b>Select Party</b></td>
 				    <!-- <td><input type="text" id ="partyId" name = "partyId" value="163">
 					 </td>-->
-					 <td><s:select cssClass="canSelect" theme="simple" id="partyId" name="party" list="partyList" listKey="id" listValue="name"/>
+					<td><s:select cssClass="canSelect" theme="simple" id="partyId" name="party" list="partyList" listKey="id" listValue="name"/>
 					 </td>
 					 <span id="alertMsg1" style="padding-left:410px"></span>
 				  </tr>
