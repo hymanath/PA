@@ -283,11 +283,16 @@
 				<value>com.itgrids.partyanalyst.model.PartySubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.ProblemRating</value>
 				<value>com.itgrids.partyanalyst.model.UserPartyRelation</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencySubscriptions</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="constituencySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencySubscriptionsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="partySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartySubscriptionsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
