@@ -12,23 +12,30 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IConstituencySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
+import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.CandidateSubscriptions;
+import com.itgrids.partyanalyst.model.ConstituencySubscriptions;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyManagementService implements IConstituencyManagementService{
@@ -39,8 +46,30 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private IElectionDAO electionDAO;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
+	private IProblemProgressDAO problemProgressDAO;
+	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 
 	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
+	
+	
+	public IConstituencySubscriptionsDAO getConstituencySubscriptionsDAO() {
+		return constituencySubscriptionsDAO;
+	}
+
+	public void setConstituencySubscriptionsDAO(
+			IConstituencySubscriptionsDAO constituencySubscriptionsDAO) {
+		this.constituencySubscriptionsDAO = constituencySubscriptionsDAO;
+	}
+
+	public IProblemProgressDAO getProblemProgressDAO() {
+		return problemProgressDAO;
+	}
+
+	public void setProblemProgressDAO(IProblemProgressDAO problemProgressDAO) {
+		this.problemProgressDAO = problemProgressDAO;
+	}
+
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -459,5 +488,90 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		
 		return userGroups;
 	}
+	public Boolean getIsSubscribed(Long userId,Long constituencyId)
+	{
+		Boolean flag = false;
+		try
+		{
+			Long count = constituencySubscriptionsDAO.getSubscriptionCount(userId,constituencyId);
+			if(count.longValue() > 0)
+				flag = true;
+			return flag;
+		}
+			catch (Exception e) {
+			log.error("Exception occured in getSubscriptionDetails() Method, Exception is - "+e);
+			return flag;
+		}
+			
+		
+	}
+	
+	public ResultStatus subscriberDetails(Long id,Long userId)
+	{
+		log.debug("Entered Into subscriberDetails() Method of CandidateDetailsService");
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			   List<ConstituencySubscriptions> constiuencyUpdatesEmails = constituencySubscriptionsDAO.getSubscriberDetails(id, userId);
+			   
+			    if(!(constiuencyUpdatesEmails.size() > 0))
+			    {
+			    	ConstituencySubscriptions constituencySubscriptions = new ConstituencySubscriptions();
+					
+			    	constituencySubscriptions.setConstituencyId(id);
+			    	constituencySubscriptions.setUserId(userId);
+			    	constituencySubscriptions.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			    	constituencySubscriptions.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			    	constituencySubscriptions = constituencySubscriptionsDAO.save(constituencySubscriptions);
+			    }
+			    return resultStatus;
+			}
+			catch(Exception e){
+		
+			log.error("Exception occured in subscriberDetails() Method, Exception is - "+e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		  }
+		}
+		
+		public ResultStatus unSubscriptionDetails(Long id,Long userId)
+		{
+			log.debug("Entered Into unSubscriptionDetails() Method of CandidateDetailsService");
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				int flag=constituencySubscriptionsDAO.unSubscriptionDetails(id,userId);
+				if (flag != 0)
+					{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					return resultStatus;
+				    }
+				else
+					{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;
+					}
+							
+				}
+				catch(Exception e){
+					
+					log.error("Exception occured in unSubscriptionDetails() Method, Exception is - "+e);
+					resultStatus.setExceptionEncountered(e);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;
+				}
+	}
+	/*
+	public Long getProblemVisibility(Long problemId){
+		Long vsbltyId=0l;
+			try{
+				vsbltyId=problemProgressDAO.getVisibility(problemId);
+				return vsbltyId;
+			}
+			catch(Exception e){
+				log.error("Exception occured in getProblemVisibility() Method, Exception is - "+e);
+				return vsbltyId;
+			}
+	}*/
 	
 }
