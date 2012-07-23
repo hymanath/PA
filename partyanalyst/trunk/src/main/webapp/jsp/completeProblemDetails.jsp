@@ -13,6 +13,35 @@
 <script src="styles/assets/js/bootstrap-tab.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <style>
+.button {
+    background-attachment: scroll;
+    background-color: #335291;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+	font-weight: bold;
+    color: #FFFFFF;
+}
+#departmentassignid{
+  width:88px;
+}
+table {
+    font-size: inherit;
+}
+.requiredFont {
+    color: red;
+    margin-left: 5px;
+}
+.problemDetailsTable td, th {
+    text-align: left;
+	width: 252px;
+}
+#thId {
+    color: #0000AA;
+    font-family: verdana;
+    font-weight: bold;
+    text-align: left;
+}
 .textareaid {
     background-color: #FFFFFF !important;
     border: 1px solid #CCCCCC !important;
@@ -324,8 +353,8 @@ function uploadFormValidation()
 		title:"",
 		autoOpen: true,
 		show: "blind",
-		width: 550,
-		minHeight:300,
+		width: 580,
+		minHeight:250,
 		modal: true,
 		hide: "explode"
 	});
@@ -336,7 +365,7 @@ function uploadFormValidation()
 	cadreVar +='<th>';
 	cadreVar += cadreName;
 	cadreVar +='</th>';
-	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
+	cadreVar +='<td><input type="button" style="width:108px;height:25px;" value="Show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblemAndSendingSMS(\''+cadreId+'\')"/></td>';
 	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Cancel" class="button" onclick="clearCadreDiv()"/></td></tr>';
 	cadreVar +='</table>';
@@ -344,7 +373,7 @@ function uploadFormValidation()
 }
 function clearCadreDiv()
 {
-	$( "#selectedCadreDivouter").dialog("close");;
+	$("#selectedCadreDivouter").dialog("close");
 }
 function addCadreToProblem(cadreId)
 {
@@ -426,7 +455,7 @@ str += '<DIV id="problemAssigningDiv">';
 str += '<TABLE>';
 str += '	<tr>';
 str += '		<th width="225px">';
-str += '		<s:label for="resolvingDeptScopeId" id="resolvingDeptScope" theme="simple" value="Problem Resolving Dept Scope"/>';
+str += '		<b>Problem Resolving Dept Scope </b>';
 str += '		</th>';
 str += '		<td>';
 str += '		<select id="resolvingDeptScopeId" class="selectWidth" name="resolvingDeptScope" onchange="javascript:{getProblemDepartments(this.options[this.selectedIndex].value,\'getDepartmentCategories\');populateDeptLocations(this.options[this.selectedIndex].value);}">';
@@ -434,7 +463,7 @@ str += '<option value="0">Select Problem Scope</option>';
 str += '</select></td>';
 str += '	</tr>';
 str += '	<tr>';
-str += '		<th><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Select Department"/></th>';
+str += '		<th><b>Select Department</b></th>';
 str += '		<td>';
 str += '			<select id="deptId" class="selectWidth" name="dept">';
 str += '				<option value="0">Select Dept</option>';
@@ -445,7 +474,7 @@ str += '	<tr id="deptAreaHeadId" style="display:none;">';
 str += '		<th id="thId" colspan="4"><u>Problem Resolving Dept Area</u></th>';
 str += '	</tr>';
 str += '	<tr id="row1" style="display:none;">';
-str += '	<th><s:label for="stateId" id="stateLabelId" theme="simple" value="Select State"/><font class="requiredFont"> * </font></th>';
+str += '	<th>Select State <font class="requiredFont"> * </font></th>';
 str += '		<td>';
 str += '<select id="StateId" class="selectWidth" name="state" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'districtsInState\',\'influencingPeopleReg\',\'DistrictId\', \'currentAdd\');showBusyImgWithId(\'stateajaxImgId\');">';
 <c:forEach var="options" items="${statesListForProb}">
@@ -458,7 +487,7 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row2" style="display:none;">';
-str += '		<th><s:label for="districtId" id="districtLabelId" theme="simple" value="Select District"/><font class="requiredFont"> * </font></th>';
+str += '		<th>Select District <font class="requiredFont"> * </font></th>';
 str += '		<td>';
 str += '<select id="DistrictId" cssClass="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');showBusyImgWithId(\'districtajaxImgId\');">';
 <c:forEach var="options" items="${districtsListForProb}">
@@ -471,7 +500,7 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row3" style="display:none;">';
-str += '		<th><s:label for="constituencyId" id="constituencyLabelId" theme="simple" value="Select Constituency"/><font class="requiredFont"> * </font></th>';
+str += '		<th>Select Constituency <font class="requiredFont"> * </font></th>';
 str += '		<td>';
 str += '<select id="ConstituencyId" class="selectWidth" name="constituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'influencingPeopleReg\',\'MandalId\',\'currentAdd\', \'null\');showBusyImgWithId(\'constituencyajaxImgId\');">';
 <c:forEach var="options" items="${costituenciesListForProb}">
@@ -483,7 +512,7 @@ str += '		</td>';
 str += '	</tr>';
 
 str += '	<tr id="row4" style="display:none;">';
-str += '		<th><s:label for="mandalId" id="mandalLabelId" theme="simple" value="Select Mandal/CORP/GMC"/><font class="requiredFont"> * </font></th>';
+str += '		<th>Select Mandal/CORP/GMC <font class="requiredFont"> * </font></th>';
 str += '		<td>';
 str += '<select id="MandalId" class="selectWidth" name="mandal" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'influencingPeopleReg\',\'VillageId\',\'currentAdd\');">';
 <c:forEach var="options" items="${mandalsListForProb}">
@@ -497,7 +526,7 @@ str += '	</tr>';
 
 str += '	<tr id="row5" style="display:none;">';
 
-str += '		<th><s:label for="villageId" id="villageLabelId" theme="simple" value="Select village"/><font class="requiredFont"> * </font></th>';
+str += '		<th>Select village <font class="requiredFont"> * </font></th>';
 str += '		<td>';
 
 str += '<select id="VillageId" class="selectWidth" name="village">';
@@ -517,7 +546,7 @@ str += '</div>';
 
 str += '<div id="departmentAssignedStatusDiv"></div>';
 str += '<div style="text-align:right;padding:10px;">';
-str += '<input type="button" class="button" style="float:none;" value="Proceed" onclick="saveDepartmentToProblem(\''+type+'\')"/>';
+str += '<input type="button" id="departmentassignid" class="button" style="float:none;" value="Proceed" onclick="saveDepartmentToProblem(\''+type+'\')"/>';
 str += '</div>';
 str += '<div id="departmentAssignedStatusDiv"></div>'
 
@@ -561,6 +590,7 @@ function populateDeptLocations(index)
 }
 function saveDepartmentToProblem(type)
 {
+    $("#departmentPanel_content").dialog("close");
 	var errorDiv = document.getElementById("errorMsgDiv");
 	
 	var deptScopeElmt = document.getElementById("resolvingDeptScopeId");
@@ -736,6 +766,7 @@ function callAjax(jsObj,url)
 						   }else if(jsObj.task == "PostCommentsToProblem"){
 						   document.getElementById("commenttext").value ='';
                               getcomments();
+							  getNewActivityDetails();
 						   }else if(jsObj.task == "getactivitydetails"){
 						       buildActivitiesData(myResults);
 						   }else if(jsObj.task == "getphotodetails"  && jsObj.type == "initial"){
@@ -886,11 +917,11 @@ function openCadreSmsPopup(cadreId,pHistoryId)
 	str += '<DIV id="cadreSMSErrDiv"></DIV>'
 	str += '<TABLE>';
 	str += '	<tr>';
-	str += '		<th width="110px" style="color:royalBlue">Mobile No</th>';
+	str += '		<th width="80px" style="color:royalBlue">Mobile No</th>';
 	str += '		<td><input type="text" id="mobileNoTextId" maxlength="12"></td>';
 	str += '	</tr>';
 	str += '	<tr>';
-	str += '		<th width="110px" style="color:royalBlue">Message</th>';
+	str += '		<th width="80px" style="color:royalBlue">Message</th>';
 	str += '        <td><textarea class="textareaid" rows="6" cols="45" id="messageTextId" theme="simple" name="message" maxlength="800"></textarea></td>';
 	str += '	</tr>';
 	str += '</TABLE>';
