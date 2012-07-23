@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -65,6 +66,7 @@ import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
+import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
@@ -149,7 +151,32 @@ public class ConstituencyPageAction extends ActionSupport implements
     private ICommentsDataService commentsDataService;
     private List<SelectOptionVO> constituencyElectionsVO;
     private ConstituencyNominationsVO constituencyAssetsVO;
+    private Boolean isSubscribed;
+    private IConstituencyManagementService constituencyManagementService;
+    private ResultStatus result;
     
+    
+    
+	public ResultStatus getResult() {
+		return result;
+	}
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
+	public IConstituencyManagementService getConstituencyManagementService() {
+		return constituencyManagementService;
+	}
+	public void setConstituencyManagementService(
+			IConstituencyManagementService constituencyManagementService) {
+		this.constituencyManagementService = constituencyManagementService;
+	}
+	public Boolean getIsSubscribed() {
+		return isSubscribed;
+	}
+	public void setIsSubscribed(Boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+	
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
 	}
@@ -837,6 +864,7 @@ public class ConstituencyPageAction extends ActionSupport implements
    		Long startIndex = 0L;
    		String nameString = "";
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+   		
    		if(user==null){
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex,nameString);	
    		}else{
@@ -846,6 +874,8 @@ public class ConstituencyPageAction extends ActionSupport implements
    		//	Free User
    		if(user !=null)
    		{
+   			Long userId=user.getRegistrationID();
+   			isSubscribed=constituencyManagementService.getIsSubscribed(userId,constituencyId);
 	   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
 				userDetails.setLoginStatus("true");
 				userDetails.setUserId(user.getRegistrationID());
@@ -1765,6 +1795,37 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  return Action.SUCCESS;
   }
+  public String setEmailAlertsForUser(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			 if(jObj.getString("task").equalsIgnoreCase("subscriptionDetails"))
+			 {
+				 
+				 if(regVO != null){
+					 Long id=jObj.getLong("id");
+					 Long userId=regVO.getRegistrationID();
+					 result = constituencyManagementService.subscriberDetails(id,userId);
+				 }
+			 }
+			  else if  (jObj.getString("task").equalsIgnoreCase("unsubscriptionDetails"))
+			  {
+				  if(regVO != null)
+				  {
+					  Long id=jObj.getLong("id");
+					  Long userId=regVO.getRegistrationID();
+					  result = constituencyManagementService.unSubscriptionDetails(id,userId);
+				  }
+			  }
+			} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+
   
   
 }
