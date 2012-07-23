@@ -1162,6 +1162,8 @@ function uploadVideoGallary(){
 	var spcheckboxIdElmt = document.getElementById('spcheckboxId');
 	var pcheckboxIdElmt = document.getElementById('pcheckboxId');
 	var ccheckboxIdElmt =  document.getElementById('ccheckboxId');
+	var fileDate = document.getElementById("existingFromText").value;
+
 	var spSelectId ='';
 	var SPGalleryId='';
 	var partySelectId='';
@@ -1230,7 +1232,12 @@ function uploadVideoGallary(){
 		if(canGalleryId !="")
 		  canGalIdArray.push(canGalleryId);
 	}
-	
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required';
+		eFlag =true;
+	}
+
 	if(galSelectId == 0)
 	{
 		str += 'Select Gallery<br>';
@@ -3843,7 +3850,22 @@ function buildUploadPhotosDiv()
 	str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
 	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
-	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
+	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
+	str += '   <TR>';
+	str += '     <td colspan="2">';
+	str += '<table>';
+	str += '   <tr>';
+	str += '     <td class="tdWidth2" style="width:68px;"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
+	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '     <TD>';
+	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '     </TD>';
+	str += '   </tr>';
+	str += '</table>';
+	str += '     </td>';
+	str += '   </TR></table>';
 	str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 
@@ -4115,6 +4137,7 @@ function clearUploadFileFields()
 	document.getElementById('fileTitleId').value='';
 	document.getElementById('fileDescId').value='';
 	document.getElementById('fileId').value='';
+	document.getElementById('existingFromText').value = '';
 	
 }
 
@@ -4130,10 +4153,16 @@ function validateFileUpload()
 	var partyGalId = document.getElementById("uploadPartyGalleryId");
 	var partySelectId = document.getElementById("partySelectId");
 	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
+	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required';
+		flag = false;
+	}
 
 	if(fileTitle.length == 0)
 	{
