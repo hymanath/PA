@@ -379,7 +379,12 @@
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
 		}
-		
+		timedRefresh();		
+	}
+	
+	function timedRefresh()
+	{
+	   setTimeout("document.location.reload(true);");
 	}
 
 	function setCadreValue(value)

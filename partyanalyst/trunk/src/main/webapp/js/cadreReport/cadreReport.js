@@ -126,7 +126,9 @@ function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 			width: 1000,
 			minHeight:400,
 			modal: true,
-			hide: "explode"
+			hide: "explode",
+		    close: function(ev, ui) { dialogClose(); }
+
 		});
 	
 	
@@ -148,6 +150,11 @@ function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 
 	   var myDataTable = new YAHOO.widget.DataTable("cadreDiv",
 				myColumnDefs, myDataSource,configs);
+}
+function dialogClose()
+{
+  //alert('close dialogBox');
+  window.location.reload(true);
 }
 
 function buildZeroCadreTable(myResults, cadreData)

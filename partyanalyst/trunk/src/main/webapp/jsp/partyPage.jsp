@@ -334,6 +334,11 @@ width: 500px;
   
   color:#FF4500;
 }
+ #contentAjaxCallImg{ 
+	padding-left: 369px;
+    padding-top: 110px;
+	display:none;
+  }
 </style>
 
 </head>
@@ -684,7 +689,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</div>  -->
 			
 	<div id="showContentDiv">
-	<div id="showContentDivInnerDiv"></div>
+	 <div id="contentAjaxCallImg"><img src="images/icons/goldAjaxLoad.gif"></div>
+	 <div id="showContentDivInnerDiv"></div>
 	</div>
 	<div id="videoGallaryPopUpDiv"></div>
 	<div id="emailAlertDiv"></div>
@@ -3014,6 +3020,7 @@ callAjax(jsObj,url);
 
 function getContentDetails(contentId)
 {
+	document.getElementById("contentAjaxCallImg").style.display="block";
 	var jsObj =
 		{   
 		    contentId : contentId,
@@ -3050,6 +3057,7 @@ function showSelectedContentAndRelatedGalleries()
 
 function buildContentDetails()
 {
+	document.getElementById("contentAjaxCallImg").style.display="none";
 	result = showContentResultList;
 	if(result == null)
 		return;

@@ -203,14 +203,18 @@ width: 500px;
   
   color:#FF4500;
 }
+ #contentAjaxCallImg{ 
+	padding-left: 369px;
+    padding-top: 110px;
+	display:none;
+  }
+
 
 #videoGallaryPopUpDiv {
     height: 526px;
     min-height: 0;
     width: auto;
-}
-
-</style>
+}</style>
 <script type="text/javascript">
 var isSubscribed = '${sessionScope.isSubscribed}';
 var userName = '${sessionScope.UserName}';
@@ -312,6 +316,7 @@ function subscriptionDetails()
 
 function getContentDetails(contentId)
 {
+	document.getElementById("contentAjaxCallImg").style.display="block";
 	var jsObj =
 		{   
 		    contentId : contentId,
@@ -348,6 +353,7 @@ function showSelectedContentAndRelatedGalleries()
 
 function buildContentDetails()
 {
+	document.getElementById("contentAjaxCallImg").style.display="none";
 	result = showContentResultList;
 	if(result == null)
 		return;
@@ -849,7 +855,7 @@ function buildFirstThreePhotoRecords(results)
 	  {
 	   count++;
 	   str+='<li><img alt="" src="'+results[0].path+'" style="height: 120px;width: 115px;border: 1px solid #CDCDCD;padding:3px;border-radius: 3px;"  onclick="getCandidatesPhotosInAGallary('+results[0].gallaryId+')"/><br />';
-	  str+=''+results[0].gallaryName+'</li>';
+	   str+=''+results[0].gallaryName+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
@@ -871,7 +877,7 @@ function buildFirstThreePhotoRecords(results)
 	   {
 		count++;
 		str+='<li><img alt="" src="'+results[i].path+'" style="height:120px;width:127px;" onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
-	    str+=''+results[i].gallaryName+'</li>';
+		str+=''+results[i].gallaryName+'</li>';
 	   }
 	  }
 	  str+='</ul>';
@@ -1361,9 +1367,10 @@ Tweet</a>
 	 </s:if>
 
 	<div id="showContentDiv">
+	<div id="contentAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
 	<div id="showContentDivInnerDiv"></div>
 	</div>
-	<div id="videoGallaryPopUpDiv"></div>
+	<div id="videoGallaryPopUpDiv" style="width:auto;"></div>
 
 <!--<div>
 	<script type="text/javascript"><!--
@@ -1406,7 +1413,7 @@ displayProfile();
 getFirstThreePhotoRecords();
 var loadingFirstTime = '${sessionScope.loadingFirstTime}';
 $(document).ready(function(){
-if(loadingFirstTime != 'false'){
+	if(loadingFirstTime  == 'true'){
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
 		}

@@ -42,7 +42,7 @@
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 	<script type="text/javascript">
-	
+	var censusResultForParl = null;
 	$(document).ready(function(){
 	$("#MandalsDelimit a").click(function(){
 		$("#MandalsDelimit a").removeClass("active");
@@ -112,11 +112,11 @@
 	.detailed-ele-inf * th, #mandalsVotersInfoDiv_Body div div table th{text-align:left;
     padding:10px;font-weight:bold;background-color:#CDE6FC;font-size:13px;}
 
-	#CorporationTableDiv_0 > table,#greaterTableDiv_0 > table,#elecResDiv > table,#parliamentElecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
-	#CorporationTableDiv_0 > table * th,#greaterTableDiv_0 > table * th,#elecResDiv > table * th,#parliamentElecResDiv > table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
-	#CorporationTableDiv_0 > table * td,#greaterTableDiv_0 > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
-	#elecResDiv > table * tr:nth-child(even),#parliamentElecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
-	#CorporationTableDiv_0 > table * a,#greaterTableDiv_0 > table * a,#elecResDiv > table * a{text-decoration:none;color:#3d3d3d;font-weight:bold;}
+	#CorporationTableDiv_0 > table,#greaterTableDiv_0 > table,#elecResDiv > table,#elecResDivForPal > table,#parliamentElecResDiv > table{border-collapse:collapse;border:1px solid #d3d3d3;width:100%;}
+	#CorporationTableDiv_0 > table * th,#greaterTableDiv_0 > table * th,#elecResDivForPal > table * th,#elecResDiv > table * th,#parliamentElecResDiv > table * th{height:20px;text-align:left;background-color:#ceedf0; padding:5px;font-weight:bold;border:1px solid #d3d3d3;}
+	#CorporationTableDiv_0 > table * td,#greaterTableDiv_0 > table * td,#elecResDivForPal > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td{padding:3px;padding-left:5px;font-weight:normal;border:1px solid #d3d3d3;}
+	#elecResDivForPal > table * tr:nth-child(even),#elecResDiv > table * tr:nth-child(even),#parliamentElecResDiv > table * tr:nth-child(even){background:#f9f9f9;}
+	#CorporationTableDiv_0 > table * a,#greaterTableDiv_0 > table * a,#elecResDivForPal > table * a,#elecResDiv > table * a{text-decoration:none;color:#3d3d3d;font-weight:bold;}
 	
 	.detailed-ele-inf * td, #mandalsVotersInfoDiv_Body div div table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 	.detailed-ele-inf * tr:nth-child(even),#mandalsVotersInfoDiv_Body div div table tr:nth-child(even){background:#f9f9f9;}
@@ -168,18 +168,18 @@
 	#mptcElectionIdsSelectDiv,#mptcCandidateLink{width:auto;display:inline-block;}
 	#mptcElectionIdsSelectDiv{position:relative;top:-13px;padding-left:10px;}
 	#zptcPartyTrendsDetailsDiv{border:1px solid #d3d3d3;}
-	#CorporationTableDiv_0 > table * td, #greaterTableDiv_0 > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td {
+	#CorporationTableDiv_0 > table * td, #greaterTableDiv_0 > table * td, #elecResDivForPal > table * td, #elecResDiv > table * td,#parliamentElecResDiv > table * td {
     font-weight: normal;
     font: small-caption;
    }
-#CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDiv > table * th,#parliamentElecResDiv > table * th{background-color: #CDE6FC;}
+#CorporationTableDiv_0 > table * th, #greaterTableDiv_0 > table * th, #elecResDivForPal > table * th, #elecResDiv > table * th,#parliamentElecResDiv > table * th{background-color: #CDE6FC;}
 
 .electionTrendzHeaderBackground_center
 {	
 	background-image:url(images/icons/homePage_new/newsheader_center.jpg);
 	height:40px;
 }
-#elecResDiv caption {background: none repeat scroll 0 0 #3897A5;
+#elecResDivForPal caption ,#elecResDiv caption {background: none repeat scroll 0 0 #3897A5;
     color: #FFFFFF;
     font-size: 14px;
     font-weight: bold;
@@ -240,7 +240,9 @@ margin-top: 4px;
 	margin-top:2px;
 
 }
-
+#parliamentElectionResultsDivNew{
+  border: 1px solid #E7E7E7;
+}
 	  </style>
 	  </head>
 	<div class="clear"></div>
@@ -955,6 +957,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 				<div class="corner bottomRight"></div>
 				<div id="MandalVotingTrendz_head"></div>
 				<div id="electionIdsSelectDiv" style="padding-left:13px;"></div>
+				<div id="parliamentElectionResultsDivNew" style="display:none;overflow:auto;margin-top:10px;"></div>
 				<div id="censusSelectDiv"></div>
 				<div id="censusErrorMsgDiv" style="padding-left:10px;"></div>
 				<div id="mandalOrConstiElecResultDiv">
@@ -974,8 +977,80 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 	<script type="text/javascript">
+	if('${candidateDetailsForConstituency.ispartial}' == 'true'){
+	        getcandidateAssetsAndLiabilities(constiId);
+			getAssetsElectionYearsInfo(constiId);
+	}
+	buildPolls();
+function getConstiElecYearsForAss(){
+   var jsObj = {
+			constituencyId:'${parliamentCinstiId}',
+			task:"getConstituencyElectionsYersForAss"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getElectionYearsAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+function buildConstituencyElectionsYersForAss(optionsList)
+{	
+    document.getElementById("constituencyParlYearsDiv").style.display="block";
 	
-	<!--constituency subscription functions*-->
+	var elmt = document.getElementById("constituencyParlYears");
+	
+	if( !elmt || optionsList == null)
+		return;
+	var len=elmt.length;			
+	for(i=len-1;i>=1;i--)
+	{
+		elmt.remove(i);
+	}	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].name;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+}
+function showUrbanDivIfPresent()
+{
+   if(changeReq == 0)
+ {
+ 
+ if(muncipalityPresent && corporationPresent && greaterPresent)
+ {
+  document.getElementById("hideAllUrbanLocalElections").style.display ="none";  
+ }
+ if(muncipalityPresent == false)
+
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#muncipalityDiv a").addClass("active");
+    showMunicipalityResults();
+ }
+ else if(corporationPresent == false)
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#corporationTabDiv a").addClass("active");
+    showCorporationDetails();
+ }
+ else if(greaterPresent == false)
+ {
+   $("#LocalElectionsNav a").removeClass("active");
+   $("#greterMunicipalDiv a").addClass("active");
+    showGreterElectionDetails();	
+ }
+}
+}
+
+<!--constituency subscription functions*-->
 function subscriptionDetails()
  {
 	if(userName==''){
@@ -1085,40 +1160,6 @@ function unSubscribeAlert()
 /*constituency subscriptions functions end*/
 
 
-if('${candidateDetailsForConstituency.ispartial}' == 'true'){
-    getcandidateAssetsAndLiabilities(constiId);
-	getAssetsElectionYearsInfo(constiId);
-	}
-buildPolls();
-function showUrbanDivIfPresent()
-{
-   if(changeReq == 0)
- {
- 
- if(muncipalityPresent && corporationPresent && greaterPresent)
- {
-  document.getElementById("hideAllUrbanLocalElections").style.display ="none";  
- }
- if(muncipalityPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#muncipalityDiv a").addClass("active");
-    showMunicipalityResults();
- }
- else if(corporationPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#corporationTabDiv a").addClass("active");
-    showCorporationDetails();
- }
- else if(greaterPresent == false)
- {
-   $("#LocalElectionsNav a").removeClass("active");
-   $("#greterMunicipalDiv a").addClass("active");
-    showGreterElectionDetails();	
- }
-}
-}
 function showRuralDivIfPresent()
 { 
  if(changeReq == 0)
@@ -1521,12 +1562,14 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 									buildElectionsSelectBox(myResults);									
 								}else if(jsObj.task == "getParliamentConstituencyElectionResults")
 								{		
+								    document.getElementById("censusAjaxImgDivForParlinit").style.display ="none";	
 									parliamentResult = myResults;
-									buildParliamentResults(myResults);			
+									buildParliamentResults(jsObj.electionYear,myResults);			
 								}
 
 								else if(jsObj.task == "getConstituencyResultsBySubLocations")
-								{		
+								{	
+                                    document.getElementById("parliamentElectionResultsDivNew").innerHTML ="";								
 									constituencyResults = myResults;
 									buildCensusSelect(constituencyResults);
 									buildConstituencyElecResultsDataTable("number");
@@ -1536,10 +1579,20 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 
 								else if(jsObj.task == "getCensusDetailsForAConstituency")
 								{
-								     document.getElementById("censusAjaxImgDiv").style.display="none";
+								    document.getElementById("censusAjaxImgDiv").style.display="none";
 									censusResult = myResults;
 									buildCensusChartForAConstituency(myResults);
-									buiidCensusRadioSelect();	buildConstituencyElectionResultsDataTableWithCensus(myResults,"number")
+									buiidCensusRadioSelect();	
+									buildConstituencyElectionResultsDataTableWithCensus(myResults,"number");
+								}
+								else if(jsObj.task == "getParliamentConstituencyElectionResultsCensus")
+								{
+								  document.getElementById("censusAjaxImgDivForParl").style.display ="none";
+								  censusResultForParl = myResults;
+								  
+								  buiidCensusRadioSelectForParl();
+								  buildConstituencyElectionResultsDataTableWithCensusParl(myResults,"number");
+								  buildCensusChartForAConstituencyParl(myResults);
 								}
 								else if(jsObj.task == "getAnnouncementDetailsOfAConstituency")
 								{
@@ -1621,9 +1674,11 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 									   buildAssetsAndLiabilities(myResults);
 
 								   }
-								   hideBusyImgWithId("electionYearSelectForAssets");
+                                   hideBusyImgWithId("electionYearSelectForAssets");
 								}
-
+                                else if(jsObj.task == "getConstituencyElectionsYersForAss"){
+								    buildConstituencyElectionsYersForAss(myResults);
+								}
 								else if(jsObj.task == "getAllConnectedUsers")
 								{	
 									showAllConnectedUsersInPanel(jsObj,myResults);
@@ -1796,8 +1851,9 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 		var electionSelect = document.getElementById("electionYearSelect");
 		var elecYear = electionSelect.options[electionSelect.selectedIndex].text;
 		str += "<table><tr>";
-		str += '<td><div class="view-all"><a style="cursor:pointer;" onclick="getParliamentResults('+elecYear+')"/> Parliament(s)</a></td>';
-
+		str += '<td><div class="view-all"><a style="cursor:pointer;" onclick="getConstiElecYearsForAss();"/> Parliament(s)</a></td>';
+        str += '<td><div style="display:none" id="constituencyParlYearsDiv"><b>Select Parliament Election Year :&nbsp;<select id="constituencyParlYears" onchange="getParliamentResults(this.options[this.selectedIndex].value)"/> <option value="0">Select Year</option></select></div></td>';
+		str += '<td><div id="censusAjaxImgDivForParlinit" align="center" style="display:none;"><img width="16px" height="16px" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
 		// Detailed Chart is disabled for Assembly.
 		// modified by sai
 		/*str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';*/
@@ -1847,38 +1903,79 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 	}
 
 	function getParliamentResults(elecYear){
-	counter++;	
-	var jsObj = {
-			constituencyId:${constituencyId},
-			electionYear:elecYear,
-			task:"getParliamentConstituencyElectionResults"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
-	callAjax(jsObj, url);
-	}
-
-
-	function buildParliamentResults(){
-		var parliamentDivElmt = document.getElementById("parliamentElectionResultsDiv");
-		if(parliamentDivElmt.style.display == "none")
-		{
-			parliamentDivElmt.style.display = "block";
+		if(elecYear == 0 || elecYear == '0')
+		 return;
+		counter++;
+	    document.getElementById("censusAjaxImgDivForParlinit").style.display ="block";	
+		var jsObj = {
+				constituencyId:${constituencyId},
+				electionYear:elecYear,
+				censusYear:'',
+				delimitationYear:'',
+				seletedIndex:'',
+				seletedText:'',
+				task:"getParliamentConstituencyElectionResults"
+			};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
+		callAjax(jsObj, url);
 		}
-		var str = '';
-		str+='<span id="heading"></span>';
-		str += '<table  style="margin-left: 13px; margin-bottom: -43px;">';
-		str += '<th>Select Format You Want:</th>';
-		str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Votes</td>';
-		str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Percentage</td>';
-		str += '</table>';
-		str += '<div id="resultDataTableDiv"></div>';
-		parliamentDivElmt.innerHTML = str;
-		buildParliamentResultDT("number");
-	}
+
+
+	function buildParliamentResults(parlyear,results){
+		if(results != null){
+			var parliamentDivElmt = document.getElementById("parliamentElectionResultsDivNew");
+			if(parliamentDivElmt.style.display == "none")
+			{
+				parliamentDivElmt.style.display = "block";
+			}
+			var str = '';
+			str += '<table  style="padding-left:11px;padding-top:20px;">';
+		    str += '<tr>';
+		    str += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:';
+		    
+		    str += '&nbsp;&nbsp;';
+		    str += '<select id="censusSelectForParl" onchange = "getParliamentResultsForCensus(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'+parlyear+')">';
+		    str += '<option value=\'0\'>Select Census</option>';
+		    str += '<option value=\'1\'>SC Population</option>';
+		    str += '<option value=\'2\'>ST Population</option>';
+		    str += '<option value=\'3\'>Literates</option>';
+		    str += '<option value=\'4\'>illiterates</option>';
+		    str += '<option value=\'5\'>Working People</option>';
+		    str += '<option value=\'6\'>Non Working People</option>';
+		    str += '</select>';
+		    str += '</th>'
+		    str += '<td><div id="censusAjaxImgDivForParl" align="center" style="display:none;"><img width="16px" height="16px" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+		    str += '</tr>';
+		    str += '<tr>';
+		    str += '<td><b>(In the graph Census Details are in Percentages, these Percentages Calculated Over Total Population)</b></td>';
+		    str += '</tr>';
+		    str += '</table>';
+			str+='<span id="heading"></span>';
+			str += '<div id="newCensusSelForConParl">';
+			str += '<table  style="margin-left: 13px; margin-bottom: -43px;">';
+			str += '<th>Select Format You Want:</th>';
+			str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Votes</td>';
+			str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)" style="margin: 3px;">By Percentage</td>';
+			str += '</table>';
+			str += '</div>';
+			str += '<div id="resultDataTableDivForParl"></div>';
+			str += '<div id="resultGraphDivForParl"></div>';
+			parliamentDivElmt.innerHTML = str;
+			buildParliamentResultDT("number");
+		 }else{
+		    var parliamentDivElmt = document.getElementById("parliamentElectionResultsDivNew");
+			if(parliamentDivElmt.style.display == "none")
+			{
+				parliamentDivElmt.style.display = "block";
+			}
+			parliamentDivElmt.innerHTML = "<span style='margin-left:400px;'><b>No Records Found</span></b>";
+		 }
+			
+		}
 
 function buildParliamentResultDT(checked){
-	var parliamentDiv = document.getElementById("resultDataTableDiv");
+	var parliamentDiv = document.getElementById("resultDataTableDivForParl");
 	var str = '';
 	var details = document.getElementById("detailsDiv");
 	var detailsDIV = '';
@@ -2891,7 +2988,7 @@ function removeCensusNotAvailableErrorMessage()
 	var censelectEle = document.getElementById("censusSelectDiv");
 	
 	var cenvar = '';
-	cenvar += '<table  style="padding-left:11px;">';
+	cenvar += '<table  style="padding-left:11px;padding-top:20px;">';
 	cenvar += '<tr>';
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 	{
@@ -2977,7 +3074,10 @@ function removeCensusNotAvailableErrorMessage()
 	str+='<br>';
 	}
 	electionYearSelect += '<table>';
-	electionYearSelect += '<th>Select Election Year :</th>';
+	if('${constituencyDetails.constituencyType}' == 'Assembly')
+		  electionYearSelect += '<th>Select Assembly Election Year :</th>';
+		else
+		  electionYearSelect += '<th>Select Parliament Election Year :</th>';
 	electionYearSelect += '<th>';
 	electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getConstituencyResults(this.options[this.selectedIndex].text)">';
 	for(var i in myResults)
@@ -2996,6 +3096,7 @@ function removeCensusNotAvailableErrorMessage()
 
 
 	function getConstituencyResults(elecYear){
+	document.getElementById("parliamentElectionResultsDivNew").style.display ="none";
 	var imgElmt = document.getElementById('AjaxImgDiv');
 	var parliamentDiv = document.getElementById('parliamentElectionResultsDiv');
 	parliamentDiv.style.display = "none";
@@ -3563,6 +3664,235 @@ function removeCss(id)
  $("#"+id).removeClass("electionInformationClassNew");
  $("#"+id).addClass("electionInformationClass");
 }
+
+function buildCensusChartForAConstituencyParl(myResults){
+	if(myResults.censusVO == null || myResults.censusVO.length == 0)
+	{
+		
+		return;
+	}
+
+	else if(myResults.censusVO.length != myResults.constituencyOrMandalWiseElectionVO.length)
+	{
+		
+		return;
+	}
+	
+	else if(myResults.censusVO.length > 0)
+	{
+    var chartColumns = myResults.candidateNamePartyAndStatus;
+	var chartRows    = myResults.constituencyOrMandalWiseElectionVO;
+	var census       = myResults.censusVO;
+    var partiesArray = new Array();
+	var selectedIndex= census[0].censusSelectedIndex;
+	
+	 var data = new google.visualization.DataTable();
+	 data.addColumn('string', 'Party');
+
+	 var colData = census[0].censusFields[0];
+	 data.addColumn('number',colData);
+	 partiesArray.push(colData);
+
+	 //for chart columns
+	 for(var i in chartColumns)
+	 {
+	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
+	   data.addColumn('number',colData);
+
+	   partiesArray.push(chartColumns[i].party);
+	 }
+      //for chart rows
+	  for(var j in chartRows)
+	  {
+		  var array = new Array();
+		  array.push(chartRows[j].locationName);
+		
+		if(selectedIndex == 1)
+		var censusPercentage = census[j].populationSCPercent;
+		else if(selectedIndex == 2)
+		var censusPercentage = census[j].populationSTPercent;
+		else if(selectedIndex == 3)
+		var censusPercentage = census[j].literatesPercent;
+		else if(selectedIndex == 4)
+		var censusPercentage = census[j].illiteratesPercent;
+		else if(selectedIndex == 5)
+		var censusPercentage = census[j].workingPeoplePercent;
+		else if(selectedIndex == 6)
+		var censusPercentage = census[j].nonWorkingPeoplePercent;
+	  
+	     array.push(censusPercentage);
+
+		  for(var k in chartRows[j].partyElectionResultVOs)
+		  {
+			  var percentage = parseFloat(chartRows[j].partyElectionResultVOs[k].votesPercentage);
+              array.push(percentage);
+		  }
+
+		  data.addRow(array);
+	  }
+    var chartResultDiv = document.getElementById("resultGraphDivForParl");
+
+	
+		ctitle = "Mandal Wise Election Results V/S Census Chart ";
+	
+	
+	
+	var staticColors = setStaticColorsForInteractiveChartsForCensusAndPartiesArray(partiesArray);
+    
+	 if(chartRows.length == 1)
+	{
+		if(staticColors != null && staticColors.length > 0)
+		{
+		  new google.visualization.ColumnChart(chartResultDiv).
+		      draw(data, {width:800, height: 500,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+		else
+		{
+		 new google.visualization.ColumnChart(chartResultDiv).
+		  draw(data, {width: 800, height: 500,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+	}
+	 if(chartRows.length > 1)
+	{
+		 if(staticColors != null && staticColors.length > 0)
+		{
+		 new google.visualization.LineChart(chartResultDiv).
+		      draw(data, {curveType: "function",width: 800, height: 500,title:ctitle,colors:staticColors,pointSize: 6,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+		else
+		{
+		   new google.visualization.ColumnChart(chartResultDiv).
+		  draw(data, {width: 800, height: 500,title:ctitle,pointSize: 6,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+	 }
+  }
+
+  }
+  function buiidCensusRadioSelectForParl(){
+    var cenRadioselectEle = document.getElementById("newCensusSelForConParl");
+	
+	var cenRadiovar = '';
+
+	cenRadiovar += '<table style="margin-bottom: -14px;"><tr>';
+	cenRadiovar += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
+	cenRadiovar += '<td><input type="radio" name="dispalyforparl" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTableWithCensusParl(censusResultForParl,this.value)">By Votes </td>';
+	cenRadiovar += '<td><input type="radio" name="dispalyforparl" value="percentage" onclick="buildConstituencyElectionResultsDataTableWithCensusParl(censusResultForParl,this.value)"/>By Percentage </td>';
+	cenRadiovar += '</tr></table>';
+
+	cenRadioselectEle.innerHTML = cenRadiovar;
+  }
+  function buildConstituencyElectionResultsDataTableWithCensusParl(myResults,value){
+	var resultDiv = document.getElementById("resultDataTableDivForParl");	
+	var selectedIndex = myResults.censusVO[0].censusSelectedIndex;
+	
+	var str = '';
+	str += '<div id="elecResDivForPal" style="width=250px;overflow-x:auto;margin-top:20px;">';
+	str += '<table id = "elecResTableForParl">';
+
+	for(var i in myResults.constituencyOrMandalWiseElectionVO)
+	{
+		str += '<tr>';
+			
+		
+			str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+myResults.constituencyOrMandalWiseElectionVO[i].locationId+'&MANDAL_NAME='+myResults.constituencyOrMandalWiseElectionVO[i].locationName+'">'+myResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		
+		
+		if(value == 'number')
+		{
+			if(selectedIndex == 1)
+				str += '<td>'+myResults.censusVO[i].populationSC+'</td>';
+			else if(selectedIndex == 2)
+				str += '<td>'+myResults.censusVO[i].populationST+'</td>';
+			else if(selectedIndex == 3)
+				str += '<td>'+myResults.censusVO[i].literates+'</td>';
+			else if(selectedIndex == 4)
+				str += '<td>'+myResults.censusVO[i].illiterates+'</td>';
+			else if(selectedIndex == 5)
+				str += '<td>'+myResults.censusVO[i].workingPeople+'</td>';
+			else if(selectedIndex == 6)
+				str += '<td>'+myResults.censusVO[i].nonWorkingPeople+'</td>';
+
+		}
+		else
+		{
+			if(selectedIndex == 1)
+				str += '<td>'+myResults.censusVO[i].populationSCPercentage+'</td>';
+			else if(selectedIndex == 2)
+				str += '<td>'+myResults.censusVO[i].populationSTPercentage+'</td>';
+			else if(selectedIndex == 3)
+				str += '<td>'+myResults.censusVO[i].literatesPercentage+'</td>';
+			else if(selectedIndex == 4)
+				str += '<td>'+myResults.censusVO[i].illiteratesPercentage+'</td>';
+			else if(selectedIndex == 5)
+				str += '<td>'+myResults.censusVO[i].workingPeoplePercentage+'</td>';
+			else if(selectedIndex == 6)
+				str += '<td>'+myResults.censusVO[i].nonWorkingPeoplePercentage+'</td>';
+		}
+
+		for(var j in myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs)
+		{
+			if(value == 'number')
+				str += '<td>'+myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
+			else
+				str += '<td>'+myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesPercentage+'</td>';
+		}
+			str += '</tr>';
+	}		
+	str += '</table>';
+	str += '</div>';
+	resultDiv.innerHTML = str;
+
+	 var myColumnDefs = new Array();
+	 var myFields = new Array();
+	 
+	
+		 var villageHead = {
+		 			key:"Mandal",
+		 			lable: "Mandal",
+		 			sortable:true
+			   }
+
+		 var villageValue = {key:"Mandal"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+	 
+	 
+	 var cenObj1 = {
+			key:myResults.censusVO[0].censusFields[0],
+			label:myResults.censusVO[0].censusFields[0],
+			sortable:true
+	    }
+	
+	 var cenObj2 = {
+			 key:myResults.censusVO[0].censusFields[0],
+			 parser:"number"
+		}
+		myColumnDefs.push(cenObj1);
+		myFields.push(cenObj2);
+	 for(var i in myResults.candidateNamePartyAndStatus){
+		var obj1 = {
+					key:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					label:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					sortable:true
+				}
+		var obj2 = {
+					key:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					parser:"number"
+				}
+		myColumnDefs.push(obj1);
+		myFields.push(obj2);
+	 }
+
+	 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("elecResTableForParl")); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+	 myDataSource.responseSchema = { 
+							            fields:myFields    
+							       };
+
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDivForPal",myColumnDefs, myDataSource);
+  }
+  
 getCoroporationResults();
 showRuralDivIfPresent();
 showUrbanDivIfPresent();

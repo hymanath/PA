@@ -8,14 +8,14 @@
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results ${year}</TITLE></c:if>
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName}&nbsp;${electionType} Election Results ${year}</TITLE></c:if>
 <c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results  </TITLE></c:if>
 
 <meta http-equiv="Content-Language" content="en">
 
-<meta name="description" content="${stateName} ${electionType} Election Details in india ${year},${stateName} ${electionType} Election results ${year},ditrist wise results ,partywise results in all districts .">
+<meta name="description" content="${stateName}&nbsp;${electionType} Election Details in india ${year},${stateName}&nbsp;${electionType} Election results ${year},ditrist wise results ,partywise results in all districts .">
 
-<meta name="keywords" content="election details in india, ${stateName} ${electionType} Election Results  ${year}  ,election analysis, ${stateName} ${electionType} Election Details in india ${year}, district wise results, Party Results in all Districts with alliance and without alliance , party results with graphs, election commission of india,election commissioner of india, elections in india, indian elections ${year}, general elections india, forthcoming indian elections, india-elections, elections ${year}, parliament election, forthcoming indian elections, ${year} election results, assembly elections,upcoming indian elections, general elections ${year} schedule india, election schedule, opinion polls, key contenders of forthcoming general elections in india, party profiles, party manifestoes, india. ">
+<meta name="keywords" content="election details in india, ${stateName}&nbsp;${electionType} Election Results  ${year}  ,election analysis, ${stateName}&nbsp;${electionType} Election Details in india ${year}, district wise results, Party Results in all Districts with alliance and without alliance , party results with graphs, election commission of india,election commissioner of india, elections in india, indian elections ${year}, general elections india, forthcoming indian elections, india-elections, elections ${year}, parliament election, forthcoming indian elections, ${year} election results, assembly elections,upcoming indian elections, general elections ${year} schedule india, election schedule, opinion polls, key contenders of forthcoming general elections in india, party profiles, party manifestoes, india. ">
 
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></SCRIPT> 
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></SCRIPT>
@@ -267,7 +267,7 @@ table.searchresultsTable,table.searchresultsTable * td,table.searchresultsTable 
 var electionId = '${electionId}';
 var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
-var stateName = '${stateName}';
+var stateName = '${stateName} ';
 var year = '${year}';
 var electionTypeId = '${electionTypeId}';
 var chkSize= 3;
@@ -429,7 +429,7 @@ function buildTopStoriesTable(result,id){
    {
    var value='';
    <c:if test="${electionType != 'Parliament'}">
-       value = '${stateName} ${electionType} Election ${year}'; 
+       value = '${stateName}&nbsp;${electionType} Election ${year}'; 
    </c:if>
    <c:if test="${electionType == 'Parliament'}">
     value+= ' ${electionType} Election ${year} ';
@@ -861,7 +861,7 @@ function buildConstituencyAreaTypeWiseOverviewTable(result)
 	str += '<table cellspacing="0px" cellpadding="0px"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>';
 
 	if('${electionType}' == 'Assembly')
-		str += '${stateName} ';
+		str += '${stateName}&nbsp;';
 	
 	str +='${electionType} Election Rural/Urban Constituencies Overview </td></tr></table>';
 
@@ -1614,7 +1614,7 @@ function showPartywiseDetailsDataTable(results)
 		var str ='';
 		
 		if('${electionType}' == 'Assembly')
-		str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>${stateName}  ${electionType} Election Details Overview : </td></tr></table>';
+		str +='	<table cellspacing="0px" cellpadding="0px" align="center"><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>${stateName}&nbsp;${electionType} Election Details Overview : </td></tr></table>';
 
 		else if('${electionType}' == 'Parliament')
 		str +='	<table cellspacing="0px" cellpadding="0px" width=62%><tr style="font-weight: bold; font-family: verdana; font-size: 12px; color: rgb(0, 87, 144);"><td>${electionType} Election Details Overview : </td></tr></table>';
@@ -3299,7 +3299,7 @@ function removeOptionSelected()
 <div id="candidateResultAccessDiv"></div>
 <div id="districtAccessPopupDiv"></div>
 
- <div class="main-mbg"><h1 style = "font-size:15px;"><c:if test="${electionType != 'Parliament'}">${stateName} ${electionType} Election Results ${year}</c:if></h1>
+ <div class="main-mbg"><h1 style = "font-size:15px;"><c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;${electionType} Election Results ${year}</c:if></h1>
 <h1 style = "font-size:15px;"><c:if test="${electionType == 'Parliament'}">Parliament Election Results ${year}</c:if></h1>
 
  <span style="margin-top:-26px;margin-right:18px;float:right">
@@ -3315,7 +3315,8 @@ share_url="www.partyanalyst.com/electionDetailsReportAction.action?electionId=${
 <div class="clear"></div>
 
 <div id="topStoriesDIV">
-   <DIV class="graphTop"> Highlights Of ${year} Andhra Pradesh Assembly Elections</DIV>
+   <DIV class="graphTop"> Highlights Of ${year} 
+   <c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
    <div class="topStories">
        <div id="topStoriesMenu" style="width:100%;">
           <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">

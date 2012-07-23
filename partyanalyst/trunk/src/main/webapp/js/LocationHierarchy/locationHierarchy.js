@@ -34,11 +34,11 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 {	
 	var isParliament = null;
 	//showBusyImgWithId('ajaxImgId');
-	if(selectedId ==0)
+	/*if(selectedId ==0)
 	{
 		alert("Please Select Valid Location");
 	 return;
-	}
+	}*/
 	 
 	var parliRadioEle = document.getElementById('10');
 
@@ -56,7 +56,7 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 			address: addressType,
 			areaType: areaType,
 			constId: constituencyId,
-			isParliament : isParliament,
+			isParliament : isParliament
 			
 		}
 	

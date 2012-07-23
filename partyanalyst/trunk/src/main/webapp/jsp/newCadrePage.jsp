@@ -401,6 +401,7 @@
 		}*/
 		manageDOBOptions('onLoad');		 
 	}
+	var selectedState=0;
 	function populateLocations(val,source)
 	{	
 		var row1El = document.getElementById("row1");
@@ -414,7 +415,6 @@
 		var districtFieldEl = document.getElementById("districtField_s");
 
 
-		var selectedState=0;
 		var selectedDistrict=0;
 		var selectedConstituency=0;
 
@@ -474,7 +474,10 @@
 				setCadreValue(accessValue,'onLoad');
 				if(val == 9)
 				{
+				
+				   if(mandalFieldEl.options.length >0){
 					mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
+					
 					var flag = mandalField_sVal.search("Greater Municipal Corp");
 					if(flag == '-1')
 					{
@@ -486,6 +489,7 @@
 						if(row6El.style.display == 'none')
 							row6El.style.display = '';
 					}
+				 }
 				}
 			}	
 				
@@ -614,7 +618,17 @@
 			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
 		}
 	}
-
+	function validationMethod()
+    {
+	   //alert("Please Select Valid Location");
+	  if(selectedState == 0 && currentTask == 'new'){
+	   alert("Please Select Valid Location");
+         return false;
+	   }
+	   else
+	     return true;
+	
+    }
 </script>
 <style type="text/css">
 	
@@ -725,8 +739,8 @@
 
 </style>
 </head>
-<body class="bodyStyle" onunload="loadOnUnload()">
-<s:form action="cadreRegisterAction" method="post" enctype="multipart/form-data" theme="simple">
+<body class="bodyStyle" onunload="closeWindow();">
+<s:form action="cadreRegisterAction" onsubmit=" return validationMethod();" method="post" enctype="multipart/form-data" theme="simple">
 	<CENTER>
 		<TABLE cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
@@ -818,6 +832,7 @@
 					</table>
 				</td>			
 			</tr>
+		
 		<tr>
 			<td width="162"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
 			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="1" maxlength="2"/></td>
@@ -1235,7 +1250,7 @@
 			<div style="text-align: center;">			
 				<s:submit  value="Register" cssClass="button"></s:submit>
 				<a href="cadreManagementAction.action" class="anchor">Go To Cadre Management Home Page</a>
-				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>			
+				<a href="cadreReportAction.action" class="anchor">Go To Cadre Details Page</a>			
 			</div>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
@@ -1257,6 +1272,11 @@
 	</s:form>
 <script type="text/javascript">
 	executeOnload();
+	
+	if (window.opener) {
+	       window.opener.callback();
+	}
+
 </script>
 </body>
 </html>
