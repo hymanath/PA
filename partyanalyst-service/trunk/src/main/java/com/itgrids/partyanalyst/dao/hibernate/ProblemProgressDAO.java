@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
+import com.itgrids.partyanalyst.model.ProblemAssignedDepartment;
 import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -52,5 +53,11 @@ public class ProblemProgressDAO extends GenericDaoHibernate<ProblemProgress,Long
 		return queryObject.executeUpdate();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<ProblemProgress> getAllActivitesByProblemId(Long userProblemId)
+	{
+		return getHibernateTemplate().find("from ProblemProgress model where model.userProblem.userProblemId = ?  order by model.updatedTime desc",userProblemId);
+				
+	}
+
 }
