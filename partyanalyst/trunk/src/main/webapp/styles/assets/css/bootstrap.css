@@ -770,8 +770,7 @@ textarea {
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 select,
@@ -797,7 +796,7 @@ input[type="color"],
  
   font-size: 13px;
   line-height: 18px;
-  color: #555555;
+  color: #000000;
 }
 
 input,
@@ -868,7 +867,7 @@ input[type="color"]:focus,
 
 input[type="radio"],
 input[type="checkbox"] {
-  margin: 3px 0;
+  margin: 3px 5px;
   *margin-top: 0;
   /* IE7 */
 
@@ -882,7 +881,7 @@ input[type="button"],
 input[type="radio"],
 input[type="checkbox"] {
   width: auto;
-  height:33px
+  height:auto;
 }
 
 .uneditable-textarea {
@@ -1517,7 +1516,7 @@ legend + .control-group {
   padding-left: 160px;
 }
 
-table {
+.table {
   max-width: 100%;
   background-color: transparent;
   border-collapse: collapse;
@@ -1632,145 +1631,145 @@ table {
   background-color: #f5f5f5;
 }
 
-table .span1 {
+.boottable .span1 {
   float: none;
   width: 44px;
   margin-left: 0;
 }
 
-table .span2 {
+.boottable .span2 {
   float: none;
   width: 124px;
   margin-left: 0;
 }
 
-table .span3 {
+.boottable .span3 {
   float: none;
   width: 204px;
   margin-left: 0;
 }
 
-table .span4 {
+.boottable .span4 {
   float: none;
   width: 284px;
   margin-left: 0;
 }
 
-table .span5 {
+.boottable .span5 {
   float: none;
   width: 364px;
   margin-left: 0;
 }
 
-table .span6 {
+.boottable .span6 {
   float: none;
   width: 444px;
   margin-left: 0;
 }
 
-table .span7 {
+.boottable .span7 {
   float: none;
   width: 524px;
   margin-left: 0;
 }
 
-table .span8 {
+.boottable .span8 {
   float: none;
   width: 604px;
   margin-left: 0;
 }
 
-table .span9 {
+.boottable .span9 {
   float: none;
   width: 684px;
   margin-left: 0;
 }
 
-table .span10 {
+.boottable .span10 {
   float: none;
   width: 764px;
   margin-left: 0;
 }
 
-table .span11 {
+.boottable .span11 {
   float: none;
   width: 844px;
   margin-left: 0;
 }
 
-table .span12 {
+.boottable .span12 {
   float: none;
   width: 924px;
   margin-left: 0;
 }
 
-table .span13 {
+.boottable .span13 {
   float: none;
   width: 1004px;
   margin-left: 0;
 }
 
-table .span14 {
+.boottable .span14 {
   float: none;
   width: 1084px;
   margin-left: 0;
 }
 
-table .span15 {
+.boottable .span15 {
   float: none;
   width: 1164px;
   margin-left: 0;
 }
 
-table .span16 {
+.boottable .span16 {
   float: none;
   width: 1244px;
   margin-left: 0;
 }
 
-table .span17 {
+.boottable .span17 {
   float: none;
   width: 1324px;
   margin-left: 0;
 }
 
-table .span18 {
+.boottable .span18 {
   float: none;
   width: 1404px;
   margin-left: 0;
 }
 
-table .span19 {
+.boottable .span19 {
   float: none;
   width: 1484px;
   margin-left: 0;
 }
 
-table .span20 {
+.boottable .span20 {
   float: none;
   width: 1564px;
   margin-left: 0;
 }
 
-table .span21 {
+.boottable .span21 {
   float: none;
   width: 1644px;
   margin-left: 0;
 }
 
-table .span22 {
+.boottable .span22 {
   float: none;
   width: 1724px;
   margin-left: 0;
 }
 
-table .span23 {
+.boottable .span23 {
   float: none;
   width: 1804px;
   margin-left: 0;
 }
 
-table .span24 {
+.boottable .span24 {
   float: none;
   width: 1884px;
   margin-left: 0;
