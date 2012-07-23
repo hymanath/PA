@@ -75,7 +75,6 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IVisibilityDAO;
-import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -3073,12 +3072,12 @@ public class ProblemManagementService implements IProblemManagementService {
 			if (userId != null && !userId.equals(0L)) {
 
 				// Get Problems Overall Info
-				List<Problem> problemList = userProblemDAO
+				List<UserProblem> problemList = userProblemDAO
 						.getProblemsPostedByUserInDifferentLifeCycleStagesByDate(
 								userId, startIndex, maxResults);
 				if (problemList != null
 						&& problemList.size() > 0) {
-					List<ProblemBeanVO> problemsByUser = setProblemsToVO(problemList);
+					List<ProblemBeanVO> problemsByUser = setUserProblemToVO(problemList);
 					problemsOfUserVO.setProblemsByUser(problemsByUser);
 				}
 				
@@ -3103,6 +3102,37 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		return problemsOfUserVO;
 	}
+	public List<ProblemBeanVO> setUserProblemToVO(List<UserProblem> problemList) throws Exception {
+		if (log.isDebugEnabled())
+			log.debug("Started Setting Data To VO ..");
+		List<ProblemBeanVO> problemBeanVOLst = new ArrayList<ProblemBeanVO>();
+
+		for (UserProblem userProblem : problemList) {
+			Problem problem=userProblem.getProblem();
+			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+			ProblemCompleteLocation problemCompleteLocation = problem.getProblemCompleteLocation();
+
+			// Problem Basic Details
+			problemBeanVO.setProblemHistoryId(problem.getProblemId());
+			problemBeanVO.setProblem(problem.getTitle());
+			problemBeanVO.setDescription(problem.getDescription());
+			problemBeanVO.setExistingFrom(problem.getExistingFrom().toString());
+			problemBeanVO.setReportedDate(problem.getIdentifiedOn().toString());
+			problemBeanVO.setProblemStatus(problem.getProblemStatus().getStatus());
+			problemBeanVO.setVisibility(userProblem.getVisibility().getVisibilityId());
+
+			// Problem Source Details
+			if(problem.getInformationSource() != null)
+			  problemBeanVO.setProbSource(problem.getInformationSource().getInformationSource());
+			else
+				problemBeanVO.setProbSource("");
+			// Problem Location Details
+			problemBeanVO.setProblemLocation(getProblemLocationString(problemCompleteLocation));
+
+			problemBeanVOLst.add(problemBeanVO);
+		}
+		return problemBeanVOLst;
+		}
 	public List<ProblemBeanVO> setProblemsToVO(List<Problem> problemList) throws Exception {
 		if (log.isDebugEnabled())
 			log.debug("Started Setting Data To VO ..");
@@ -4379,6 +4409,9 @@ public class ProblemManagementService implements IProblemManagementService {
 			case 1:
 			case 2:if(problemProgress.getClassifiedProblems() != null)
 				problemStatusData.setProbClassification(problemProgress.getClassifiedProblems().getProblemClassification().getClassification());
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				
 				break;
 			case 3:
 			case 4:if(problemProgress.getProblemAssignedDepartment() != null){
@@ -4387,25 +4420,37 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemStatusData.setDepartment(problemProgress.getProblemAssignedDepartment()
 						.getDepartmentOrganisation()
 						.getProblemDepartmentCategory().getDepartment());
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 			     }
 				break;
 			case 5:
 				problemStatusData.setDepartmentOrganisation("N/A");
 				problemStatusData.setDepartment("N/A");
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 				break;
 			case 6:
 			case 7:if(problemProgress.getProblemAssignedCadre() != null)
 				problemStatusData.setCadre(problemProgress.getProblemAssignedCadre().getCadre().getFirstName());
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 				break;
 			case 8:
 				problemStatusData.setCadre("Removed ");
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 				break;
 			case 11:if(problemProgress.getComment() != null)
 				problemStatusData.setComments(problemProgress.getComment().getComment());
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 				break;
 			case 12:if(problemProgress.getUserProblem()!= null)
 				problemStatusData.setProblemStatus(problemProgress
 						.getUserProblem().getProblem().getProblemStatus().getStatus());
+				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
+				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
 				break;
 			default:
 				if (log.isInfoEnabled())
@@ -7421,5 +7466,67 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			return null;
 		}
 	}
+	public ResultStatus changeActivityState(Long prblmPrgrssId,String task)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		Long visibility;
+		int result;
+		try{
+			if(prblmPrgrssId == 0)
+			{
+				log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			else if(prblmPrgrssId !=0 && prblmPrgrssId > 0)
+			{
+				if(task.equalsIgnoreCase("makeActivityPublic")){
+					visibility=1l;
+					result = problemProgressDAO.updateActivityVisibility(prblmPrgrssId,visibility);
+				}
+				else{
+					visibility=2l;
+					result = problemProgressDAO.updateActivityVisibility(prblmPrgrssId,visibility);
+				}
+				if(result != 0)
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			return resultStatus;
+		}
+		catch(Exception e){
+			log.info("Exception Occured in changeActivityState() Method, Exception is - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
 
+	}
+	public ResultStatus changeProblemToPublic(Long problemId,String task)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		Long visibility;
+		int result;
+		try{
+			if(problemId == 0)
+			{
+				log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			else if(problemId !=0 && problemId > 0)
+			{
+				if(task.equalsIgnoreCase("makeProblemPublic")){
+				visibility=1l;
+				result = userProblemDAO.makeProblemPublic(problemId,visibility);
+				}
+			}
+			return resultStatus;
+			}
+			catch(Exception e){
+				log.info("Exception Occured in changeActivityState() Method, Exception is - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+
+			
+	}
 }
