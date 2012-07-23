@@ -105,7 +105,18 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
     private Boolean hasPartyAnalystUserRole;
 	private String referenceNo;
 	private Long userProblemId;
+	private Long visibility;
 	
+	
+	
+	public Long getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Long visibility) {
+		this.visibility = visibility;
+	}
+
 	public String getReferenceNo() {
 		return referenceNo;
 	}
