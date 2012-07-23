@@ -41,7 +41,6 @@ var electionId = '${stateData.electionId}';
 var electionType = '${electionTypeLiteral}';
 var reportLevel = '${stateData.reportLevel}';
 var districtId = '${stateData.districtId}';
-
 var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
 	String electionYear = rb.getString("electionYear");
@@ -101,7 +100,6 @@ var labelResources = { <%
 	String votesPcntGained =  pprRb.getString("votesPcntGained");
 	String diffVotesPctn =  pprRb.getString("diffVotesPctn");
 %> }
-
 function showBand(divtag)
 { 
 	var divElmt=document.getElementById(divtag);
@@ -644,13 +642,12 @@ function buildPartyPositionDataTable(info,rank)
 			str+='<td align="center">'+arr[i].overallVotesPercent+'</td>';
 			str+='</tr>';
 			}
-			str+='<tr>';
-			str+='<th colspan="8" style="color:#FF0000">';
-			str+='<b>* <%=mainParty%> , PC* - <%=participatedConsts%></b>';
+			
+			
+			
 			str+='<span id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></span>';
-			str+='</th>';
-			str+='</tr>';
 			str+='</table>';
+			str+='<b>* <%=mainParty%> , PC* - <%=participatedConsts%></b>';
 
 		 myPanel = new YAHOO.widget.Panel("resizablepanel", {
 					 width: "800px", 

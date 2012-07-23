@@ -78,6 +78,7 @@
 	fieldset {
 		border:4px solid #F6DFC9;
 		margin-bottom:10px;
+		
 	}		
 	.greenColorClass{
 		color:green;
@@ -159,7 +160,9 @@
 	}
 </style>
 </head>
+
 <script type="text/javascript">
+
 var labelResources = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
 		String firstPos = rb.getString("firstPos");			
@@ -245,6 +248,7 @@ function getComparedResults()
 	  callAjax(param,jsObj, url);
 }
 function callAjax(param,jsObj, url){
+debugger;
 	var myResults;
 	var url = "<%=request.getContextPath()%>/electionComparisonAjax.action?"+param;
 	var callback = {			
@@ -410,7 +414,7 @@ function displayComparedResults(jsObj,data)
 	str+='</tr>';
 	str+='</table>';
 	
-	str+='<fieldset id="electionProfileField">';
+	str+='<fieldset id="electionProfileField" >';
 	str+='<legend><%=votesPcntInc%></legend>';	
 	str+='<div id="votesPercentageIncDiv">';
 	
@@ -545,10 +549,11 @@ function buildYearDataTable(divId,data)
 		key : "reason",
 		label : "Reason",
 		sortable : true
-	},
+	}
 	]
 	
 	myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
+
 }
 
 function getConstituencyElecResultsWindow(constiId,elecType,elecYear)

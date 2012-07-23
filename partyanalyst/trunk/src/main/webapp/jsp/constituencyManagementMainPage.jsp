@@ -51,7 +51,7 @@
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
 	<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
-
+	<script type="text/javascript" src="js/jQuery/jquery-ui.min.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 	<link rel="stylesheet" type="text/css" href="styles/problemManagement/problemManagement.css">	
@@ -411,14 +411,36 @@
 									} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
 									{
 										showInfluencePeople(myResults);
-									} else if(jsObj.task == "sendSMS")
+									} 
+									else if(jsObj.task=="getProblemRecentActivities")
+									{
+										var pHistoryId=jsObj.pHistoryId;
+										activitesPopup(myResults,pHistoryId);
+									}
+									else if(jsObj.task == "sendSMS")
 									{
 										showSentSmsConfirmation(myResults);
 									} 
+									else if(jsObj.task=="makeActivityPublic")
+									{
+										var prblmPrgrssId=jsObj.prblmPrgrssId;
+										buildActivityPrivateBtn(prblmPrgrssId);
+									}
+									else if(jsObj.task=="makeActivityPrivate")
+									{
+										var prblmPrgrssId=jsObj.prblmPrgrssId;
+										buildActivityPublicBtn(prblmPrgrssId);
+									}
+									else if(jsObj.task="makeProblemPublic")
+									{
+										buildProblemPublished();
+									}
 									else
 									{
-										buildSelectOption(myResults,jsObj);										
+										
+										buildSelectOption(myResults,jsObj);				
 									} 
+									
 									
 							}catch (e) {   
 								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
@@ -434,7 +456,28 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
-	
+	function buildProblemPublished()
+	{
+	alert('Problem published to public Successfully..');
+	$('#publishProblemToPublic').html('');
+	var str='';
+	str+='<span style="color:white;">Problem Published</span>';
+	$('#publishProblemToPublic').html(str);
+	}
+	function buildActivityPrivateBtn(prblmPrgrssId)
+	{
+	$('#'+prblmPrgrssId).html('');
+	var str='';
+	str+='<input type="button" id="actvtyprivatebtn" name="private" value="Make It Private" onClick="makeActivityPrivate('+prblmPrgrssId+');"/>';
+	$('#'+prblmPrgrssId).html(str);
+	}
+	function buildActivityPublicBtn(prblmPrgrssId)
+	{
+	$('#'+prblmPrgrssId).html('');
+	var str='';
+	str+='<input type="button" id="actvtypublicbtn" name="public" value="Make It Public" onClick="makeActivityPublic('+prblmPrgrssId+');"/>';
+	$('#'+prblmPrgrssId).html(str);
+	}
 	
 	function fillHamletOptions(results)
 	{
@@ -3543,16 +3586,12 @@
 			elmt.remove(i);
 		}	
 	}
-	
-	
 
-	
 </script>
 </head>
 <body>
-
 <div id="problemManagementDiv_main">
-
+	<div id="activities"></div>
 	<div id="problemManagementDiv_head">
 		<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
 		<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">PROBLEM MANAGEMENT</div>
