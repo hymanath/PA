@@ -167,7 +167,7 @@ function buildAccordion()
 	accordionElmtId.style.display = 'block';
 
 	getStatesInQuickView('siteSearch','stateList_s');
-	//getElectionTypeValue(1);
+	
 	getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
 	hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
 	getAllStatesHavingLocalBody("stateList_l");
@@ -907,6 +907,70 @@ function shareInFacebook(url)
 {	
 	var shareInFacebook_window = window.open("http://www.facebook.com/sharer.php?u="+url+"&src=sp","Share In Facebbok","scrollbars=no,height=400,width=650,left=0,top=0");
 	shareInFacebook_window.focus();
+}
+
+function getElectionYearsInHomePage(electionType)
+{
+
+	var stateEle = document.getElementById("states");
+	if(electionType == 'Assembly')
+	var stateId = stateEle.options[stateEle.selectedIndex].value;
+	if(electionType == 'Parliament')
+		stateId = 1;
+	document.getElementById("electionYears").length = 0;
+	
+	if(electionType == null || electionType == 'Select Type' || stateId == 0)
+		return;
+	
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callHomePageAjax(jObj,url);
+}
+
+
+
+function checkElectionType(electionTypeId)
+{
+var electionType = document.getElementById('electionTypeId').value;
+
+if(electionType == 1)
+	{
+getStates();
+document.getElementById('states').style.display="none";
+getElectionYearsInHomePage('Parliament');
+	}
+
+if(electionType == 2)
+	{
+	document.getElementById('states').style.display="block";
+
+getStates();
+
+	}
+}
+function getStates()
+{
+
+	var electionType = document.getElementById('electionTypeId').value;
+
+	var jsObj=
+		{						
+				
+				electionType:electionType,
+				task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;						
+	callHomePageAjax(jsObj,url);
+
 }
 
 function callQuickViewAjax(jsObj, url){
