@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IProblemFileDAO;
 import com.itgrids.partyanalyst.dao.IProblemFilesDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
+import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -141,7 +142,16 @@ public class ProblemManagementReportService implements
 	private IProblemFilesDAO problemFilesDAO;
 	
 	private IProblemCommentsDAO problemCommentsDAO;
+	private IProblemProgressDAO problemProgressDAO;
 	
+	public IProblemProgressDAO getProblemProgressDAO() {
+		return problemProgressDAO;
+	}
+
+	public void setProblemProgressDAO(IProblemProgressDAO problemProgressDAO) {
+		this.problemProgressDAO = problemProgressDAO;
+	}
+
 	public IProblemCommentsDAO getProblemCommentsDAO() {
 		return problemCommentsDAO;
 	}
@@ -3188,8 +3198,8 @@ public class ProblemManagementReportService implements
 								problemBeanVO.setComments(params[0].toString());
 							}
 						}
-						
-					List<ProblemAssignedCadre> assignedCadre = problemAssignedCadreDAO.getProblemAssignedCadreByUserProblemId(userProblem.getUserProblemId());
+						//assined cadre 
+						List<ProblemAssignedCadre> assignedCadre = problemAssignedCadreDAO.getProblemAssignedCadreByUserProblemId(userProblem.getUserProblemId());
 						{
 							if(assignedCadre != null && assignedCadre.size() > 0)
 								if(assignedCadre.get(0).getProblemAssignedCadreId() != null && assignedCadre.get(0).getCadre()!= null && assignedCadre.get(0).getCadre().getCadreId() > 0 )
@@ -3202,27 +3212,25 @@ public class ProblemManagementReportService implements
 							
 							
 							
-							for(ProblemProgress progress : problemProgresset)
+						//assigned dept	
+							List<ProblemAssignedDepartment> assignedDept = problemAssignedDepartmentDAO.getAllActivitesByProblemId(userProblem.getUserProblemId());
 							{
-							if(progress != null && progress.getProblemActivity()!= null)
-								problemBeanVO.setRecentActivity(progress.getProblemActivity().getComments());
-							
-						}
-						List<ProblemAssignedDepartment> assignedDept = problemAssignedDepartmentDAO.getAllActivitesByProblemId(userProblem.getUserProblemId());
-						{
-						if(assignedDept != null && assignedDept.size() > 0)
-							if(assignedDept.get(0).getProblemAssignedDepartmentId() != null && assignedDept.get(0).getDepartmentOrganisation() != null && assignedDept.get(0).getDepartmentOrganisation().getDepartmentOrganisationId() > 0)
+								if(assignedDept != null && assignedDept.size() > 0)
+									if(assignedDept.get(0).getProblemAssignedDepartmentId() != null && assignedDept.get(0).getDepartmentOrganisation() != null && assignedDept.get(0).getDepartmentOrganisation().getDepartmentOrganisationId() > 0)
 								if(!assignedDept.get(0).getStatus().equalsIgnoreCase("DELETED"))
 								{
 									problemBeanVO.setDepartment(assignedDept.get(0).getDepartmentOrganisation().getOrganisationName().toString());
 								}
-						}
-						
-							/*for(ProblemAssignedDepartment department : problemAssignedDepartmentset)
+							}
+						//Recent Activities
+							List<ProblemProgress> recentActivities = problemProgressDAO.getAllActivitesByProblemId(userProblem.getUserProblemId());
+							if(recentActivities != null && recentActivities.size() > 0)
 							{
-								if(department != null && department.getDepartmentOrganisation() != null)
-									problemBeanVO.setDepartment(department.getDepartmentOrganisation().getOrganisationName().toString());
-							}*/
+								if(recentActivities.get(0).getProblemProgressId() != null && recentActivities.get(0).getProblemActivity() != null)
+								{
+									problemBeanVO.setRecentActivity(recentActivities.get(0).getProblemActivity().getComments());
+								}
+							}
 							
 						problemBeanList.add(problemBeanVO);
 					}
