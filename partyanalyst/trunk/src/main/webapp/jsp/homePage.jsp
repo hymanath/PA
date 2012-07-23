@@ -5,7 +5,7 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Party Analyst - An Election Analysis &amp; Political Management Platform</title>
+<title>Party Analyst - An Election Analysis &amp; Management Platform</title>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
 
 <meta http-equiv="Content-Language" content="en" />
@@ -384,34 +384,40 @@ var pollStatus = [];
 						<tr>
 							<td width="65%"><div id="electionDetailsErrorMsgDiv" style="display:none;"><font color="red"><b>*Select All Inputs</b></font></div></td>
 									
-						</tr>			<!--<tr>
+						</tr>			
+						
+						<!--<tr>
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td><td><div id="stateLists_ImgSpan" style="display:none;"><img src="images/icons/search.gif" /></div></td>			
 									</tr>		
 									
 									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYearsInHomePage((this.options[this.selectedIndex].text))" ></select></td></tr>
 									
-									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
-								</table>-->
-<tr>
+									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>-->
+
+
+
+									
+		<tr>
 		<td><select id="electionTypeId" name="electionType"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;width: 200px;"
 		onchange="checkElectionType(this.options[this.selectedIndex].value)"/>
 		<option value="0">Select Type</option>
 		<option value="2">Assembly</option>
 		<option value="1">Parliament</option>
-		</select>	</td></tr>
+		</select>	</div></td></tr>
 						
 			
 
 		<tr><td>
-		<select id="states" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
+		<select id="states" name="state_s" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
 		width: 200px;"
 		onchange="getElectionYearsInHomePage('Assembly')">
+		
 			</select></td></tr>
 
 		<tr><td><select id="electionYears" cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:0px;" style="margin-left:12px;padding: 1px;
 			width: 200px;"></select></td></tr></table>
-
-
+						
+								
                     <div class="view-results"><a href="javascript:{}" onclick="viewElectionResults()">view results</a></div>
                   </div>
                 </div>
@@ -432,23 +438,11 @@ var pollStatus = [];
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
          <marquee onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
-          <font class="scrollDataStyle" color="blue"><u style="color:#BF00FF;">AP 2012 Bi Election Live Results & Updates </u> :
-		  <a href="specialPageAction.action?specialPageId=8">YSRC won in Nellore Parliament(2,91,745 majority), Yemmiganuru(20,103 majority), Rayadurg (32,472 majority), Polavaram (35,767 majority), Prathipadu(16,779 majority), Macherla (15,479 majority), Rayachoti (56,891 majority), Railway Kodur (31,991 majority), Ananthapur(24,701 majority), Rajampet (38,219 majority), Payakaraopet(14,362 majority), Allagadda (36,896 lead), Narsannapeta(7,312 majority), Ongole, Udayagiri (30555 majority), Tirupathi (17,975 majority), INC won in Narsapuram(4,472 majority) and Ramachandra Puram (11,919 majority),TRS won in Parkal (1562 majority).</a>
-		  <a href="specialPageAction.action?specialPageId=10">Election Schedule for President of India announced by Election Commission of India, Notification will be issued on June 16, Last date for Nominations - June 30, Polling on July 19, Counting on July 22.</a>
-		  <a href="specialPageAction.action?specialPageId=8" title="click here to view information on Andhra Pradesh 2012 Bi Elections" style="color:blue;">
-		  Andhra Pradesh Bi Elections Exit Polls - YSRC : 12 - 15 Seats, INC : 1 - 2 Seats, TDP : 1 - 3 Seats, TRS : 1 Seat (Parkal).</a>&nbsp;
-
-		  <!--<a href="javascript:{}" title="">
-		  Parvathipuram MLA <a href="candidateElectionResultsAction.action?candidateId=1481" title="Click here to view JAYAMANI Profile - latest News ,Videos ,Photos">SAVARAPU JAYAMANI </a>and Kakinada MLA <a href="candidateElectionResultsAction.action?candidateId=1809" title="Click here to view CHANDRA SHEKAR REDDY Profile - latest News ,Videos ,Photos">DWARMAPUDI CHANDRA SHEKAR REDDY </a>is going to meet YSRC Party honorary president <a href="candidateElectionResultsAction.action?candidateId=156693" title="Click here to view Y S VIJAYAMMA Profile - latest News ,Videos ,Photos">Y S VIJAYAMMA</a> . Bobbili MLA <a href="candidateElectionResultsAction.action?candidateId=1502" title="Click here to view SUJAY KRISHNA RANGA RAO Profile - latest News ,Videos ,Photos">SUJAY KRISHNA RANGA RAO </a>is left from INC Party and joined in YSRC. Cabinate Approves new Telecom Policy.</a><a href="statePageAction.action?statePageId=12" title="Click here to View Karnataka State Details">Karnataka</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=709" title="Click here to View Udipi Chikmagalur Constituency Details, Election Results and Voting Trendz">Udipi Chikmagalur</a> - <a href="partyPageAction.action?partyId=362" title="Click here to View INC Party Profile - Previous Election Results, News Updates, Photos, Videos">INC</a>.&nbsp; 
-		  <a href="statePageAction?action?stateId=24" title="Click here to view Tamil Nadu State Details">Tamil Nadu</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1353" title="Click here to View Sankarankoil Constituency Details, Election Results and Voting Trendz">Sankarankoil</a> - <a href="partyPageAction.action?partyId=987" title="Click here to view ADMK Party Profile - Previous Election Results, News Updates, Photos, Videos">ADMK</a>.&nbsp;
-
-		 <a href="statePageAction.action?statePageId=13" title="Click here to view Kerala State Details">Kerala</a> Bye Election Results : <a href="constituencyPageAction.action?constituencyId=1694" title="Click here to View Piravom Constituency Details, Election Results and Voting Trendz">Piravom</a> - <a href="partyPageAction.action?partyId=1149" title="Click here to view UDF Party Profile - Previous Election Results, News Updates, Photos, Videos">UDF</a>.&nbsp;
-
-		 <a href="statePageAction.action?statePageId=7" title="Click here to view Gujarat State Details">Gujarat</a> Bye Election Results :  <a href="constituencyPageAction.action?constituencyId=34860" title="Click here to view Mansa Constituency Details, Election Results and Voting Trendz">Mansa</a> - <a href="partyPageAction.action?partyId=362" title="Click here to view INC Party Details">INC</a>.-->
-
-		</font>
-
-        </marquee>
+		 <font class="scrollDataStyle" color="blue">
+			<a href="candidateElectionResultsAction.action?candidateId=170603">Jagadish Shettar was sworn in as Karnataka chief minister on Thursday 12-july . </a>
+			<a href="candidateElectionResultsAction.action?candidateId=2157">Kodali Sri Venkateswara Rao(Nani) is going to join in ysrcp
+		 </font>
+         </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
         </div>
         
@@ -594,7 +588,7 @@ var pollStatus = [];
                   <ul>
 					<!--<li> <a href="specialPageAction.action?specialPageId=8" title="Bye Elections In Telangana"><img src="./images/new_homepage/Chadra Babu _ KCR.png" alt="Bye Elections In Telangana" /> <span>AP Bye Elections - 2012</span> </a></li>-->
 
-					<li> <a href="specialPageAction.action?specialPageId=10" title="Presidential Elections - 2012"><img src="./images/new_homepage/presidentElection.png" alt="Presidential Elections - 2012" /> <span>Presidential Elections </span> </a></li>
+					<li> <a href="specialPageAction.action?specialPageId=10" title="Presidential Elections-2012"><img src="./images/new_homepage/presidentElection.png" alt="President Elections In India" /><span>Presidential Elections</span> </a></li>
 					<li> <a href="specialPageAction.action?specialPageId=8" title="AP Bye Elections - 2012"><img src="./images/new_homepage/Kiran Kumar _Y.S. Jagan.png" alt="AP Bye Elections - 2012" /> <span>AP Bye Elections - 2012</span> </a></li>
     				 <li> <a href="specialPageAction.action?specialPageId=3" title="UttarPradesh 2012 Election"><img src="./images/new_homepage/uttarpradesh_Mulayam.png" alt="UttarPradesh 2012 Election" /> <span>UttarPradesh</span> </a></li>
 				  	<li> <a href="specialPageAction.action?specialPageId=4" title="Punjab 2012 Election"><img src="images/new_homepage/punjab.png" alt="Punjab 2012 Election" /> <span>Punjab</span> </a></li>
@@ -751,7 +745,7 @@ var pollStatus = [];
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
 		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Election Analysis And <br/>Management Tool</a>
 		                </div>
-						<div style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
+						<div id="opinionPollDiv" style="width:350px;float:right;margin-top: 10px;margin-right: 40px;">
 						<div id="pollsWidgetHeader" >
 										<table width="97%" border="0" cellspacing="0" cellpadding="0">
 										
@@ -1602,6 +1596,11 @@ function showVotesObtainedForOpinionPoll()
 
 
 	var elmt = document.getElementById("pollsWidgetBody");
+	if(${opinionPollVO.quesitons[0].question == null})
+	{
+		document.getElementById("opinionPollDiv").style.display = 'none';
+		return;
+	}
 	var str = '';
 	str+='<div id="chart"></div>';
 	str += '<table><tr><td>';
@@ -1845,6 +1844,45 @@ function getStates()
 	callHomePageAjax(jsObj,url);
 
 }
+
+function checkElectionType(electionTypeId)
+{
+var electionType = document.getElementById('electionTypeId').value;
+
+if(electionType == 1)
+	{
+getStates();
+document.getElementById('states').style.display="none";
+getElectionYearsInHomePage('Parliament');
+	}
+
+if(electionType == 2)
+	{
+	document.getElementById('states').style.display="block";
+
+getStates();
+
+	}
+}
+function getStates()
+{
+
+	var electionType = document.getElementById('electionTypeId').value;
+
+	var jsObj=
+		{						
+				
+				electionType:electionType,
+				task:"getStates"
+		}
+
+		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStatesForHomepage.action?"+rparam;						
+	callHomePageAjax(jsObj,url);
+
+}
+
 //buildPolls();
 
 </script>

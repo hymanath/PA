@@ -2247,7 +2247,7 @@ elmt.innerHTML = str;
 }
 
 
-function getElectionTypeValue(stateId)
+/*function getElectionTypeValue(stateId)
 {
 	showBusyImgWithId("stateLists");
 	clearOptionsListForSelectElmtId("electionLists");
@@ -2261,7 +2261,7 @@ function getElectionTypeValue(stateId)
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "electionTypesAjaxAction.action?"+rparam;
 	callHomePageAjax(jObj,url);
-}
+}*/
 
 function buildElectionTypes(myResult)
 {	
@@ -2303,6 +2303,35 @@ function buildElectionTypes(myResult)
 
 }
 
+
+/*function buildElectionTypes(myResult)
+{	
+	if(myResult == null || myResult.length == 0)
+		return;
+	
+	var electionTypeElmt = document.getElementById("electionLists");
+	electionTypeElmt.options.length=0;
+
+	for(var i in myResult)
+	{
+		var option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionTypeElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionTypeElmt.add(option); // IE only
+		}
+	}	
+
+	hideBusyImgWithId("stateLists");
+
+}
+*/
+
 	/* function getUniqueElements(arrayObj) {
     var a = [];
     var l = arrayObj.length;
@@ -2316,8 +2345,32 @@ function buildElectionTypes(myResult)
 	
     return a;
   } */
-
+/*
  function getElectionYearsInHomePage(electionType)
+{
+
+	var stateEle = document.getElementById("states");
+	if(electionType == 'Assembly')
+	var stateId = stateEle.options[stateEle.selectedIndex].value;
+	if(electionType == 'Parliament')
+		stateId = 1;
+	document.getElementById("electionYears").length = 0;
+	
+	if(electionType == null || electionType == 'Select Type' || stateId == 0)
+		return;
+	
+	var jObj = {
+			stateId : stateId,
+		electionType: electionType,
+				task: 'getElectionYearsForAState'
+				};
+
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "electionYearsForstateAndElectionTypeAction.action?"+rparam;
+	callHomePageAjax(jObj,url);
+}
+*/
+function getElectionYearsInHomePage(electionType)
 {
 
 	var stateEle = document.getElementById("states");
@@ -2368,7 +2421,7 @@ function buildElectionYearsSelect(myResult)
 
 function viewElectionResults()
 {
-	var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
+   var errorMsgDivEle = document.getElementById("electionDetailsErrorMsgDiv");
   try
 	{
 	  var stateSelectEle = document.getElementById("states");
@@ -2382,8 +2435,8 @@ function viewElectionResults()
 	  var electionType = electionTypeEle.options[electionTypeEle.selectedIndex].text;
 	  var electionId = electionYearEle.options[electionYearEle.selectedIndex].value;
 	  var electionYear = electionYearEle.options[electionYearEle.selectedIndex].text;
-		if(electionType == 'Parliament')
-			stateId = 1;
+	if(electionType == 'Parliament')
+		stateId = 1;
 		if(stateId == 0 || electionTypeId == 0 || electionId == 0)
 		{
 			errorMsgDivEle.style.display = 'block';
