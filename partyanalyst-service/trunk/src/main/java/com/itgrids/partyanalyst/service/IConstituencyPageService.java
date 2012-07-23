@@ -128,5 +128,7 @@ public interface IConstituencyPageService {
 	
 	public List<PartyVotesEarnedVO> getPanchayatWiseElectionsForTehsil(String boothIdStr,Long electionId);
 	
-	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInPanchayatsGroupByMandal(Long tehsilId, Long electionId);	
+	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInPanchayatsGroupByMandal(Long tehsilId, Long electionId);
+	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituencyForCensus(Long constituencyId,String electionYear,String electionType,Boolean includeOthers);
 }
