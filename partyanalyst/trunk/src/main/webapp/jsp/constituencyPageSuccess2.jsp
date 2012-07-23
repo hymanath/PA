@@ -978,7 +978,6 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	<!--constituency subscription functions*-->
 function subscriptionDetails()
  {
-	
 	if(userName==''){
        showNotLogIn();
     return false;}
@@ -988,7 +987,7 @@ function subscriptionDetails()
 	var jsObj=
 	{		
             time : timeST,	
-			id: constituencyId,
+			id: constituencyPageMainObj.constituencyInfo.constituencyId,
 			task: "subscriptionDetails",
 			
 	}
@@ -1001,12 +1000,11 @@ function subscriptionDetails()
  
  function unsubscriptionDetails()
  {
-		
-    var timeST = new Date().getTime();
+	var timeST = new Date().getTime();
 	var jsObj=
 	{		
             time : timeST,	
-			id: constituencyId,
+			id: constituencyPageMainObj.constituencyInfo.constituencyId,
 			task: "unsubscriptionDetails",
 			
 	}
