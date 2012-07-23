@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CompleteResultForAPollAction extends ActionSupport implements
@@ -37,7 +38,6 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	private QuestionsOptionsVO questionsOptionsVO;
 	private Long questionId;
 		
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -105,7 +105,7 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-		    chartPath = chartProducerURL + chartName;
+		    chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
 		questionsOptionsVO.setImagePath(chartName);
 		ChartProducer.createBarChartForVotesPoll(questionsOptionsVO.getQuestion(), "", "", createDataset(questionsOptionsVO), chartPath,"completeResults");

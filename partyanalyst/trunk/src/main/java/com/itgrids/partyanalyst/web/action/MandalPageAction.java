@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -52,7 +53,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal;
 	private CastWiseElectionVotersVO castWiseElectionVoters;
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public List<InfluencingPeopleVO> getInfluencingPeopleInMandal() {
 		return influencingPeopleInMandal;
 	}
@@ -241,7 +242,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
          if(cPath.contains("PartyAnalyst"))
         	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;
          else
-		  chartPath = chartProducerURL+ chartName;
+		  chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
          
         mandalDataWithChartVO = new MandalDataWithChartVO();
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());

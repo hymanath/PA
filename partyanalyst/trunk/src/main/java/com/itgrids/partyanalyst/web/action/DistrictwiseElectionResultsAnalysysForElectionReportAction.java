@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -47,7 +48,6 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	JSONObject jObj = null;
 	private ServletContext context;
 	private HttpSession session;
-    private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 		
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -255,7 +255,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	 		if(cPath.contains("PartyAnalyst"))
 	 			 partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
 	 		else
-	 		     partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
+	 		     partyDistrictResultsChartPath = IWebConstants.CHART_URL_IN_SERVER + partyDistrictResultsChartName;
 	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,300,880, null,true);
 	        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
@@ -281,7 +281,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
  		if(cPath.contains("PartyAnalyst"))
  			alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		else
- 			alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
+ 			alliancePartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + alliancePartiesChartName;
  		
         ChartProducer.createLineChart("","","Seats", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800, null,true);
 	    request.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);

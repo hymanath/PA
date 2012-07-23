@@ -58,8 +58,7 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			return ERROR;
 		problemBeanVO = problemManagementReportService.getCountOfNewlyPostedProblemsByFreeUser();
 		
-		
-		
 		return SUCCESS;
 	}
+	
 }

@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -92,7 +93,7 @@ public class BiElectionAction extends ActionSupport implements
 	private String mptcElectionType,zptcElectionType;
 	private List<SelectOptionVO> partiesList;
 	private EntitlementsHelper entitlementsHelper;
-    private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	
 	public String getEnlargedPresentYearResultsChartName() {
 		return enlargedPresentYearResultsChartName;
 	}
@@ -438,7 +439,7 @@ public class BiElectionAction extends ActionSupport implements
  		if(cPath.contains("PartyAnalyst"))
  			chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
  		else
- 			chartPath = chartProducerURL+ lineChartName;
+ 			chartPath = IWebConstants.CHART_URL_IN_SERVER + lineChartName;
  		String title = year+" Assembly Election Results in Bye-Election Constituencies";
         Set<String> partiesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,600,920, ChartUtils.getLineChartColors(partiesInChart),true);
@@ -466,7 +467,7 @@ public class BiElectionAction extends ActionSupport implements
 		if(cPath.contains("PartyAnalyst"))
 			enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
 		else
-			enlargedChartPath = chartProducerURL + enlargedLineChartName;
+			enlargedChartPath = IWebConstants.CHART_URL_IN_SERVER + enlargedLineChartName;
 		
         String enlargedTitle = year+" Assembly Election Results in Bye-Election Constituencies";
         Set<String> partiesInChart = new LinkedHashSet<String>();
@@ -536,7 +537,7 @@ public class BiElectionAction extends ActionSupport implements
 		    if(cPath.contains("PartyAnalyst"))
 		        enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
 		    else
-		    	enlargedChartPath = chartProducerURL+ enlargedLineChartName;
+		    	enlargedChartPath = IWebConstants.CHART_URL_IN_SERVER + enlargedLineChartName;
 		    
 		    Set<String> partiesInChart = new LinkedHashSet<String>();
 		    ChartProducer.createLineChartWithThickness(enlargedTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), enlargedChartPath,600,920,ChartUtils.getLineChartColors(partiesInChart),true);
@@ -559,7 +560,7 @@ public class BiElectionAction extends ActionSupport implements
 		  if(cPath.contains("PartyAnalyst"))
 			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		  else
-			  chartPath =  chartProducerURL + chartName;
+			  chartPath =  IWebConstants.CHART_URL_IN_SERVER + chartName;
 		  
 		  Set<String> partiesInChart = new LinkedHashSet<String>();
 		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), chartPath,300,820,ChartUtils.getLineChartColors(partiesInChart),true);
@@ -612,7 +613,7 @@ public class BiElectionAction extends ActionSupport implements
 			 if(cPath.contains("PartyAnalyst"))
 			     pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
 			 else
-			     pieChartPath = chartProducerURL + pieChart;
+			     pieChartPath = IWebConstants.CHART_URL_IN_SERVER + pieChart;
 			
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))

@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -52,7 +53,6 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private ServletContext context;
 	private String selectedPartyShortName;
 	private Long selectedPartyId;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyResultsAction.class);
 	
@@ -246,7 +246,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		if(cPath.contains("PartyAnalyst"))
            chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-		   chartPath = chartProducerURL + chartName;
+		   chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
         request.setAttribute("chartName", chartName);
         List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();

@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalRevenueVillagesElecAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -40,7 +41,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String tehsilName;
 	private String chartPath; 
 	private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
 	}
@@ -139,7 +140,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			if(cPath.contains("PartyAnalyst"))
 	            chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
 			else
-			   chartLocation = chartProducerURL + chartPath;
+			   chartLocation = IWebConstants.CHART_URL_IN_SERVER + chartPath;
 	        //Set<String> partiesInChart = new LinkedHashSet<String>();
 	        if(partiesResults.size() > 0)
 	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
@@ -166,7 +167,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			if(cPath.contains("PartyAnalyst"))
 			    chartPath = context.getRealPath("/") + "charts\\" + chartName;
 			else
-			    chartPath = chartProducerURL+ chartName;
+			    chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
 				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
 			}else{

@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,7 +37,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 	private Set<SelectOptionVO> partiesInTownship;
 	private IStaticDataService staticDataService;
 	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -106,7 +107,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-			chartPath = chartProducerURL+ chartName;
+			chartPath =  IWebConstants.CHART_URL_IN_SERVER + chartName;
     	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath,260,600, null,false);
 		
 		return SUCCESS;

@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -78,12 +79,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private String year;
 	private String electionType;
 	private String electionYear;
-	String electionTypeLiteral = "/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	String electionTypeLiteral = IWebConstants.CHART_URL_IN_SERVER;
 	private AnalysisReportService analysisReportService;
 	private String partyNameHidden;
 	private String stateNameHidden;
 	private EntitlementsHelper entitlementsHelper;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	
 	public String getStateNameHidden() {
 		return stateNameHidden;
 	}
@@ -501,7 +502,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(cPath.contains("PartyAnalyst"))
 			chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		else
-			chartPath = chartProducerURL + chartName;
+			chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
 		//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
         if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
@@ -524,7 +525,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			if(cPath.contains("PartyAnalyst"))
 				chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
 			else
-				chartPath = chartProducerURL + lineChartName;
+				chartPath = IWebConstants.CHART_URL_IN_SERVER + lineChartName;
 			
 			//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
 	         if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null && reportVO.getPrevYeartotalPercentageOfVotesWon() != null){

@@ -615,12 +615,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		session = request.getSession();
 		
-		if(session.getAttribute("loadingFirstTime")== null)
+		if(session.getAttribute("loadingFirstTime")== null){
+			if(contentId == null){
 			   session.setAttribute("loadingFirstTime", "true");
-		
-		else 
+			}
+		}else{ 
 			session.setAttribute("loadingFirstTime", "false");
-		
+		}
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO != null)
@@ -1044,7 +1045,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		
 		if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-			filePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + IConstants.UPLOADED_FILES + pathSeperator;
+			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
 		else
 			filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
 		

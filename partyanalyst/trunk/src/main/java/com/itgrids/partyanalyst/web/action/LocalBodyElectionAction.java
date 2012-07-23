@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -74,7 +75,6 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	private ConstituencyVO greaterInfo;
 	private List<ProblemBeanVO> problemBean;		
 	private IProblemManagementReportService problemManagementReportService;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
@@ -327,7 +327,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		if(cPath.contains("PartyAnalyst"))
 		   chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		else
-		   chartPath = chartProducerURL+ chartName;
+		   chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
 		
 		String title = "All Parties Performance In ".concat(localBodyName).concat(" ").concat(localBodyType).concat(" In ").concat(electionYear);
 		ChartProducer.createLineChart(title, "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,650, null,true );
@@ -382,7 +382,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 			if(cPath.contains("PartyAnalyst"))
 				pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
 			else
-				pieChartPath = chartProducerURL+ pieChartName;
+				pieChartPath = IWebConstants.CHART_URL_IN_SERVER + pieChartName;
 			
 			if(lebParty.getMuncipalityVO().size() > 0)
 				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(lebParty.getMuncipalityVO()), pieChartPath, 
@@ -417,7 +417,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 				if(cPath.contains("PartyAnalyst"))
 					 chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
 				else
-					 chartPath = chartProducerURL+ lebChartName;
+					 chartPath = IWebConstants.CHART_URL_IN_SERVER + lebChartName;
 				
 		        partiesInChart = new LinkedHashSet<String>();
 		   		if(electionInfoVO.getWardwiseResultsForParty().size() > 0)

@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
@@ -69,7 +70,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private List<PartyResultVO> allElectionResults;
 	private NavigationVO navigationVO;
 	private EntitlementsHelper entitlementsHelper;
-	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	
 	private ICandidateDetailsService candidateDetailsService; 
 	
 	public ICandidateDetailsService getCandidateDetailsService() {
@@ -323,7 +324,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		if(cPath.contains("PartyAnalyst"))
              chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		else
-		   chartPath = chartProducerURL + chartName;
+		   chartPath = IWebConstants.CHART_URL_IN_SERVER + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
         Set<String> paritesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+"", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);
