@@ -816,9 +816,14 @@ function buildcomments(myResults){
   
 
 }
+function closewindow()
+{
+    $("#selectedCadreDivouter").dialog("destroy");
+	$("#departmentPanel_main").dialog("destroy");
+}
 function showSMSResult(result)
 {
-	hideAjaxImage('cadreSmsAjaxImgDiv');
+	//hideAjaxImage('cadreSmsAjaxImgDiv');
 	var errorDivEle = document.getElementById("cadreSMSErrDiv");
 	str = '';
 	if(result.resultCode == 0)
@@ -887,7 +892,7 @@ function sendSMSToCadre(cadreId)
 	}
 
 	addCadreToProblem(cadreId);
-	showAjaxImage('cadreSmsAjaxImgDiv');
+	//showAjaxImage('cadreSmsAjaxImgDiv');
 	var jsObj=
 		{
 			MobileNo	 : mobileNo,
