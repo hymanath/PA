@@ -305,12 +305,44 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	margin:15px 0;
 	padding:10px;
 }
+
+#registrationForm label{
+	
+  font-weight: normal;
+   display: inline;
+   font-size:11px; 
+ 
+}
+
+
+.textBoxClass{
+
+ border-radius: 2px 2px 2px 2px;
+ background: none repeat scroll 0 0 #FFFFFF;
+ border-color: #DDDDDD;
+ border-style: solid;
+ border-width: 1px 1px 1px;
+ height: 28px;
+ padding-left: 8px;
+ font: 12px/22px Arial,Helvetica,sans-serif;
+ padding-left:10px;font-weight:lighter;
+}
+
+#registrationForm input[type="checkbox"] {
+  width: auto;
+ height:auto;
+}
+
+.errorClass{
+	color:red;font-weight:normal;
+}
+
 </style>
 
 </head>  
 <body><center>  
 
-<s:form action="anonymousUserRegistrationAction.action?" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
+<s:form action="anonymousUserRegistrationAction.action?" id="registrationForm" method="POST" theme="simple" enctype="multipart/form-data" onsubmit="return validatefields()">  
    <br><br>
   <div id="registrationMainDiv" style="padding-bottom:5px;">
 		<table class="registrationTable">
@@ -356,8 +388,8 @@ Your password will be sent to this Email address
  <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
- <s:textfield theme="simple" name="email" value="Username (Email)" maxlength = "40" id="emailField" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
- <span id="mobileDiv" style="padding-left:10px;font-weight:lighter"></span>
+ <s:textfield theme="simple" name="email" value="Username (Email)" maxlength = "40" id="emailField" cssClass="textBoxClass" size="30" onClick="removeTextInTextBoxes(this.id)" onBlur="validateEmail(),checkAvailability(),showTextInTextBoxes(this.id)"/>
+ <span id="mobileDiv"></span>
   </td>
   
   </tr>
@@ -381,8 +413,8 @@ Your password will be sent to this Email address
   <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="firstName" value="First Name" id="firstNameId" maxlength = "20" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
-  <span id="fstNameId" style="padding-left:10px;font-weight:lighter">
+  <s:textfield name="firstName" value="First Name" id="firstNameId" maxlength = "20" cssClass="textBoxClass" size="30" onClick="removeTextInTextBoxes(this.id)" theme="simple" onBlur="showTextInTextBoxes(this.id),validateFirstName()"/>
+  <span id="fstNameId">
   </span>
   </td>
   
@@ -391,8 +423,8 @@ Your password will be sent to this Email address
   <td style="font-size: 12px;
     font-weight: bold;
 	font-family: verdana,arial;"><b style="color:red">*</b> 
-  <s:textfield name="lastName" value="Last Name" id="lastNameId"  maxlength = "20" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;	height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" size="30"  onClick="removeTextInTextBoxes(this.id)" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
-  <span id="lstNameId" style="padding-left:10px;font-weight:lighter">
+  <s:textfield name="lastName" value="Last Name" id="lastNameId"  maxlength = "20"  size="30"  onClick="removeTextInTextBoxes(this.id)" cssClass="textBoxClass" onBlur="showTextInTextBoxes(this.id),validateLastName()" theme="simple"/>
+  <span id="lstNameId">
   </span>
   </td>
   </tr>
@@ -441,12 +473,12 @@ Your password will be sent to this Email address
   </c:if>
   <tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width:189px;"  theme="simple" /><span id="SelectState" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+   <s:select name="state" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"  theme="simple" /><span id="SelectState" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
   </td>
 
   </tr><tr>
   <td class="tdStyle"><b style="color:red">*</b> 
-  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:189px;" theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+  <s:select name="constituency" id="constituency"  cssClass="textFieldStyle" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name"  theme="simple" /><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
   </td>
 
   </tr>
@@ -464,7 +496,7 @@ Your password will be sent to this Email address
 	</c:if>
   <tr>
   <td>
-        <div style="margin:5px;margin-left:26px" id="acceptErrId"></div>
+        <div style="margin:5px;margin-left:91px" id="acceptErrId"></div>
 		<div style="margin:5px; margin:0px 0px 0px 90px !important; margin:0px 0px 0px 140px; font:11px Arial,Helvetica,sans-serif;">
 			<c:if test="${registrationId == '0'}">
 			 <s:checkbox name="accept" id="acceptId"/>
@@ -655,10 +687,10 @@ function checkAvailability()
 	var reg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 	if(name.length == 0)
-		resultDIVEle.innerHTML="<font color='red'>UserName Sholud Not Be Empty.</font>";
+		resultDIVEle.innerHTML="<span class='errorClass'>UserName Sholud Not Be Empty.</span>";
 	
 	else if(reg.test(name) == false)
-		resultDIVEle.innerHTML = "<font color='red'>Please Provide Valid Email Address.</font>";
+		resultDIVEle.innerHTML = "<span class='errorClass'>Please Provide Valid Email Address.</span>";
 		
 	else {		
 
@@ -683,12 +715,12 @@ function validUsername()
 	resultDIVEle.innerHTML = "";
 	if(textEle.value.length > 0 && textEle.value.length < 6)
 	{
-		resultDIVEle.innerHTML = "<font color='red'>UserName must be between 6 and 20 characters long.</font>";
+		resultDIVEle.innerHTML = "<span class='errorClass'>UserName must be between 6 and 20 characters long.</span>";
 		return;
 	}
 		
 	if(textEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>UserName Should not contain Special Characters</font>";
+		resultDIVEle.innerHTML = "<span class='errorClass'>UserName Should not contain Special Characters</span>";
 	else
 		resultDIVEle.innerHTML = "";
 		
@@ -745,7 +777,7 @@ function validNames(id)
 
 	resultDIVEle.innerHTML = "";
 	if(textEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>"+name+" Should not contain Special Characters</font>";
+		resultDIVEle.innerHTML = "<span class='errorClass'>"+name+" Should not contain Special Characters</span>";
 	else
 		resultDIVEle.innerHTML = "";
 		
@@ -756,17 +788,17 @@ function showDetails(results)
 	var result = document.getElementById("mobileDiv");
 	var str='';
 	if(results==121){		
-		str+="<font color='green'> Username is available.</font>";
+		str+="<span style='color:green;font-weight:normal;'> Username is available.</span>";
 		result.innerHTML = str;
 		return true;
 	}else if(textEle.value == 'Username (Email)'){
-		str+="<font color='red'>Please Enter Username.</font>";	
+		str+="<span class='errorClass'>Please Enter Username.</span>";	
         result.innerHTML = str;
 		return false;
 		}
 	else
 	{
-		str+="<font color='red'> Username is not available.</font>";	
+		str+="<span class='errorClass'> Username is not available.</span>";	
 	    result.innerHTML = str;
 		return false;
 	}
@@ -784,11 +816,11 @@ function validateMobile()
               return true;
 	}	
 	if(isNaN(mobile)|| mobile.indexOf(" ")!=-1){
-		resultDIVEle.innerHTML = "<font color='red'><b>Mobile Number Contains Only Numbers.</b></font>";
+		resultDIVEle.innerHTML = "<span style='color:red;'><b>Mobile Number Contains Only Numbers.</b></span>";
 	   return false;
 	}
 	else if((mobile.length > 0 && mobile.length < 10) || mobile.length > 12){
-		resultDIVEle.innerHTML = "<font color='red'><b>Please Provide Correct Mobile Number.</b></font>";
+		resultDIVEle.innerHTML = "<span style='color:red;'><b>Please Provide Correct Mobile Number.</b></span>";
 		return false;
 	}
 	else
@@ -804,7 +836,7 @@ function validateAddress()
 	resultDIVEle.innerHTML = "";
 	
 	if(mobilEle.value.match(r[spvar]))
-		resultDIVEle.innerHTML = "<font color='red'>Address Should Not Contain Special Characters</font>";
+		resultDIVEle.innerHTML = "<span class='errorClass'>Address Should Not Contain Special Characters</span>";
 	else
 		resultDIVEle.innerHTML = "";
 		
@@ -817,7 +849,7 @@ function validateFirstName()
 	fstEleErr.innerHTML = "";
 	
     if(fstEle.value== 'First Name'){
-		fstEleErr.innerHTML = "<font color='red'>&nbsp;Please Enter First Name.</font>";
+		fstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Enter First Name.</span>";
 	    return false;
 	}
 	if(fstEle.value.match(r[spvar])){
@@ -832,7 +864,7 @@ var acpt=document.getElementById("acceptId").checked;
 acptErr=document.getElementById("acceptErrId");
 if(!acpt)
 	{
-acptErr.innerHTML="<font color='red'>You Should Accept Terms of use</font>";
+acptErr.innerHTML="<span class='errorClass'>You Should Accept Terms of use</span>";
 	return false;
 	}
 else 
@@ -847,11 +879,11 @@ function validateLastName()
 	var lstEleErr=document.getElementById("lstNameId");
 	lstEleErr.innerHTML = "";
     if(lstEle.value== 'Last Name'){
-		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Enter Last Name.</font>";
+		lstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Enter Last Name.</span>";
 	    return false;
 	}
 	if(lstEle.value.match(r[spvar])){
-		lstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
+		lstEleErr.innerHTML = "<span class='errorClass'>Should Not Contain Special Characters</span>";
 		 return false;
 	}
 	
@@ -865,7 +897,7 @@ function validateState()
 	lstEleErrs.innerHTML = "";
 
 	if(lstElmt.value== '0'){
-		lstEleErrs.innerHTML = "<font color='red'>&nbsp;Please Select State.</font>";
+		lstEleErrs.innerHTML = "<span class='errorClass'>&nbsp;Please Select State.</span>";
          return false;
 }
 else 
@@ -878,7 +910,7 @@ function validateConstituency()
 	lstEleErr.innerHTML = "";
 
 	if(lstEle.value== '0'||lstEle.value== ''){
-		lstEleErr.innerHTML = "<font color='red'>&nbsp;Please Select Constituency.</font>";
+		lstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Select Constituency.</span>";
 		return false;
 	}
 	else 
@@ -1014,18 +1046,10 @@ function showTextInTextBoxes(id){
    
 	 if($("#addressField").val() ==''){
          $("#addressField").val('Address');
-	 }
-      
+	 }      
 }
 
-
-
-
-
 </script>
- 
-
-
 </center>
 </body>  
 </html>

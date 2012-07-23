@@ -373,6 +373,11 @@ function buildProblemsData(jsObj,results)
 		bStr += '</font>';
 		bStr += '</div></td>';
 		bStr += '</tr>';
+		if(newProblems[i].visibility==2){
+		bStr += '<div id="publishProblem"><span onclick="publishProblem('+newProblems[i].problemHistoryId+')" style="cursor:pointer;color:white;">Publish Problem</span></div>'
+		}
+		else
+		bStr += '<div id="publishProblem"><span style="color:white;">Problem Published</span>';
 		bStr += '</tr>';
 		bStr += '</table>';
 		bStr += '</div>';
@@ -382,6 +387,20 @@ function buildProblemsData(jsObj,results)
 		elmtBody.innerHTML = bStr;
    
 		
+}
+
+function publishProblem(pHistoryId)
+{
+var jsObj= 
+		{	
+			pHistoryId:pHistoryId,
+			task: "getProblemRecentActivities"
+		};
+		
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getProblemRecentActivitiesAjaxAction.action?"+param;
+		
+		callAjax(param,jsObj,url);	
 }
 
 function displayDateText(type, args, obj) {
@@ -395,4 +414,80 @@ function displayDateText(type, args, obj) {
 	txtDate1.value = year + "-" + month + "-" + day;
 	minDate = month + "-" + day + "-" + year;
 	divElmt.style.display = 'none';
+}
+
+function activitesPopup(results,pHistoryId)
+{
+
+console.log(results);
+if(results.length>0)
+{
+   document.getElementById("activities").style.display='block';
+			var str='';
+		$("#activities").dialog({ stack: false,
+									height: 'auto',
+									width: 700,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">Activities Performed on the Problem</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+						
+     for(var i=0;i<results.length;i++)
+	 {
+		var prblmPrgrssId=results[i].prblmPrgrssId;
+		str+='<div class="container"><h4><div id="activitiesPopup"><imgsrc="images/icons/homePage_new/widgetHeaderIcon.jpeg">'+results[i].activityHapened+':'+results[i].departmentOrganisation+'\'s  '+results[i].department;
+		if(results[i].visibility==2){
+		str+='<div id='+prblmPrgrssId+' style="float:left;"><input type="button" id="actvtypublicbtn" name="public" value="Make It Public" onClick="makeActivityPublic('+prblmPrgrssId+');"/></div></div></div>';
+		}
+		else
+		str+='<div id='+prblmPrgrssId+' style="float:left;"><input type="button" id="actvtyprivatebtn" name="private" value="Make It Private" onClick="makeActivityPrivate('+prblmPrgrssId+');" /></div></div></div>';
+	}
+		str+='<div id=publishProblemToPublic><span onClick=makeProblemPublic('+pHistoryId+')>Publish To Public</span></div>';
+		document.getElementById("activities").innerHTML = str;
+		
+	}
+	else{
+	makeProblemPublic(pHistoryId);
+	}
+	
+}
+function makeProblemPublic(pHistoryId)
+{
+var jsObj=
+		   {
+		   pHistoryId:pHistoryId,
+		   task:"makeProblemPublic"
+		   };
+		   var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		   var url="makeProblemPublicAction.action?"+param;
+		   
+		   callAjax(param,jsObj,url);
+}
+function makeActivityPublic(prblmPrgrssId){
+var jsObj=
+			{
+			prblmPrgrssId:prblmPrgrssId,
+			task:"makeActivityPublic"
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url="changeProblemActivityAction.action?"+param;
+			
+			
+			callAjax(param,jsObj,url);
+			
+}
+function makeActivityPrivate(prblmPrgrssId){
+var jsObj=
+		  {
+		   prblmPrgrssId:prblmPrgrssId,
+		   task:"makeActivityPrivate"
+		  };
+			
+		  var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		  var url="changeProblemActivityAction.action?"+param;
+		  
+		  callAjax(param,jsObj,url);
 }

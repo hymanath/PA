@@ -95,11 +95,12 @@
 	var greaterPresent = false;
 	var mptcPresent = false;
 	var zptcPresent = false;
-	
+	var userName = '${sessionScope.UserName}';
+		
 	function setImage(img)
-{
+	{
 		img.src = "images/constituencyPage/cp-thumb.jpg";
-}
+	}
 	</script>
 	<style>
      
@@ -271,7 +272,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 	
 		<div id="inner-content-mainsec">
-		
+		<div id="logInDiv" "></div>
 		<div class="cd-left-sec">
         <div class="cd-mid-cont-sec">
 
@@ -823,6 +824,31 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 		                    <a href="constituencyProfileReport.action" title="Reports">Constituency Management Reports</a>
 		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Election Analysis And<br/>Management Tool</a>
 		                </div>
+<!--EMail Alert Section Start-->						
+		 <div class="our-services">
+            <h2 class="ea-fc-title">email alert <span class="blue-down-arrow"><img src="images/icons/candidatePage/blue-down-arrow.png" alt=""/></span> </h2>
+            <div class="" style="font-size:15px;text-align:center;">             			  
+				<span id="subscribeSpan">
+					<s:if test="isSubscribed == true ">
+					Unsubscribe to stop<br/>
+					updates of<br />
+					<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>
+					<input  class="unsubscribebtn" type="button" onclick=
+					"unsubscriptionDetails()" value="UNSUBSCRIBE"/>
+					</s:if>
+					
+					<s:else>
+					Subscribe and get <br/>
+					updates of<br />
+					<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>
+					<input  class="subscribebtn" type="button" onclick=
+					"subscriptionDetails()" value="SUBSCRIBE"/>
+					</s:else>
+				</span>
+            </div>
+          </div>
+<!--EMail Alert Section End-->		
+						  
 <!--
 <div style="margin-left:11px;">
 	<script type="text/javascript"><!--
@@ -948,11 +974,124 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</c:if>	
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 	<script type="text/javascript">
-	if('${candidateDetailsForConstituency.ispartial}' == 'true'){
-	        getcandidateAssetsAndLiabilities(constiId);
-			getAssetsElectionYearsInfo(constiId);
+	
+	<!--constituency subscription functions*-->
+function subscriptionDetails()
+ {
+	
+	if(userName==''){
+       showNotLogIn();
+    return false;}
+	
+	else{	
+	var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: constituencyId,
+			task: "subscriptionDetails",
+			
 	}
-	buildPolls();
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "constituencyEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+   }
+ }
+ 
+ function unsubscriptionDetails()
+ {
+		
+    var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: constituencyId,
+			task: "unsubscriptionDetails",
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "constituencyEmailAlertsForUserAction.action?"+rparam;						
+   callAjax(jsObj,url);
+ }
+function unSubscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+var str='';
+str+='Unsubscribe to stop<br/>updates of<br />';
+str+='<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>';
+str+='<input  class="unsubscribebtn" type="button" onclick="unsubscriptionDetails()" value="UNSUBSCRIBE"/>';
+$('#subscribeSpan').html(str);
+subscribeAlert();
+}
+
+function subscribeBtnBuild()
+{
+$('#subscribeSpan').html('');
+var str='';
+str+='subscribe to get<br/>updates of<br />';
+str+='<span class="li-red">${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency</span><br/>';
+str+='<input  class="subscribebtn" type="button" onclick="subscriptionDetails()" value="SUBSCRIBE"/>';
+$('#subscribeSpan').html(str);
+unSubscribeAlert();
+}
+
+function showNotLogIn()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';
+		document.getElementById("logInDiv").innerHTML = str;
+}
+
+function subscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+function unSubscribeAlert()
+{
+   document.getElementById("logInDiv").style.display='block';
+			var str='';
+		$("#logInDiv").dialog({ stack: false,
+									height: 'auto',
+									width: 500,
+									position:'center',								
+									modal: true,
+									title:'<font color="#000">ALERT</font>',
+									overlay: { opacity: 0.5, background: 'black'},
+									
+							});
+		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+}
+/*constituency subscriptions functions end*/
+
+
+if('${candidateDetailsForConstituency.ispartial}' == 'true'){
+    getcandidateAssetsAndLiabilities(constiId);
+	getAssetsElectionYearsInfo(constiId);
+	}
+buildPolls();
 function showUrbanDivIfPresent()
 {
    if(changeReq == 0)
@@ -1533,6 +1672,14 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 										showGreaterInfo(myResults);
 									
 										
+								}
+								else if(jsObj.task == "subscriptionDetails")
+								{
+									unSubscribeBtnBuild();
+								}
+								else if(jsObj.task == "unsubscriptionDetails")
+								{
+									subscribeBtnBuild();
 								}
 
 
@@ -3428,6 +3575,7 @@ getGreaterResults();
 buildConstituencyInfo();
 initializeConstituencyPage();
 detailedElectionResult();
+
  </script>
  
   </body>
