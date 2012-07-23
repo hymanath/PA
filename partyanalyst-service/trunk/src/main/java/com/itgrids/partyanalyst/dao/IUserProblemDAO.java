@@ -72,7 +72,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List findProblemsForALocationsByConstituencyId(Long userId);	
 	public List getProblemsCountPostedByUserInDifferentLifeCycleStages(Long userId);
 	
-	public List<Problem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults);
+	public List<UserProblem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults);
 
 	public List<Long> getProblemsPostedByUserInDifferentLifeCycleStagesByDateCount(Long userId);
 	
@@ -102,8 +102,8 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List<Object[]> getProblemOwnerName(Long problemId);
 	
-	public List<Object[]> getProblemDetailsByProblemReferenceNo(String problemReferenceNo);	
-
+	public List<Object[]> getProblemDetailsByProblemReferenceNo(String problemReferenceNo);
+	
 	public List<Long> checkIsPublicProblem(Long problemId);
 	
 	public List<UserProblem> getProblemAndOwnerDetails(Long problemId);
@@ -113,4 +113,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Long> checkIsTakenUpProblemIsInPublicVisiblty(Long problemId);
 	
 	public List<Long> getUserIds(Long problemId);
+	
+	public int makeProblemPublic(Long problemId,Long visibility);
 }
