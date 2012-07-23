@@ -671,7 +671,7 @@ function buildCreateGallaryDiv()
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicPhotoRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:45px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 	
 	str += '<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="createPhotoGalId" type="button" class="imageButton"style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"><img id="ajaxImgId" width="16" height="16" style="display: none; float: right;" src="images/icons/search.gif"/></td><td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
@@ -712,9 +712,18 @@ function buildUploadPhotosDiv()
 	str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
 	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="fileId" style="margin-top:8px;"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
-	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr></table>';
+	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
+	 str += '<TR>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD style="padding-right: 31px;"><input type="text" style="margin-top:8px;" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	str += '</TR></table>';
 	str += '<div id="photoPublicRadioId" style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicPhotoRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div id="photoPrivateRadioId" style="margin-left:45px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div id="photoPrivateRadioId" style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 
 	str +='<input type="hidden" name="profileType" value="candidate_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempCandidateId+'">';
@@ -1141,10 +1150,16 @@ function validateFileUpload()
 	var partyGalId = document.getElementById("uploadPartyGalleryId");
 	var partySelectId = document.getElementById("partySelectId");
 	var pcheckboxIdElmt = document.getElementById("pcheckboxId");
+	var fileDate = document.getElementById("existingFromText").value;
 	var flag = true;
 
 	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	var str = '<font color="red">';
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required';
+		flag = false;
+	}
 	if(galId == 0)
 	{
 		str += 'Select Gallery';
@@ -1358,6 +1373,7 @@ function clearUploadFileFields()
 	document.getElementById('fileDescId').value = '';
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('fileId').value = '';
+	document.getElementById('existingFromText').value = '';
 }
 
 function clearGallaryFields()
@@ -1435,7 +1451,7 @@ function buildCreateNewsCategory()
 	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></tr></td></table>';*/
 
 	str += '<div style="margin-left:50px;"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:50px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:50px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 
 	
 	str += '<table align="center" style="margin-left:auto;width:34%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="createNewsgalId" type="button" class="imageButton" style="height:24px;" value="Create Category" style="background-color:#57B731" onClick="createCategory()"><img id="ajaxImgId" width="16" height="16" style="display: none; float: right;" src="images/icons/search.gif"/></td><td><input type="button" class="imageButton" style="height:24px;" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
@@ -2040,7 +2056,7 @@ function buildCreateVideoGallaryDiv()
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pVGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<div style="margin-left:50px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:50px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:50px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 	
 	str += '<table align="center" style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="createVedioGalId" type="button" class="imageButton" style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"><img id="ajaxImgId" width="16" height="16" style="display: none; float: right;" src="images/icons/search.gif"/></td><td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"      style="background-color:#CF4740"></td></tr></table>';
 
@@ -2090,7 +2106,7 @@ function buildUploadVideoDiv()
 	str += '</table>';
 	
 	str += '<div id="vedioPublicRadioId" style="margin-left:50px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div id="vedioprivateRadioId" style="margin-left:50px;margin-top:-17px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div id="vedioprivateRadioId" style="margin-left:50px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
 	str+='<input type="radio" style="margin-left:50px;" onclick="otherProfiles(\'otherProVideoDiv\',\'fromCandidateProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
 	str += '<table align="center" style="margin:5px;margin-left:auto;width:26%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" style="height:24px;" id="uploadVideoBtnId" value="Upload Video" style="background-color:#57B731" onClick="uploadVideoGallary()"></td><td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
