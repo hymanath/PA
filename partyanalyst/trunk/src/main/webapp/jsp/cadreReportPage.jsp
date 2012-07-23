@@ -622,7 +622,7 @@
 	<s:form name="cadrereport" action="cadreRegisterPageAction" method="get" theme="simple">	
 
 	<div id="cadreReportMain">
-		<div id="cadreReportLayout_main"></div>
+		<div id="cadreReportLayout_main" style="background:#ffffff;"></div>
 		
 		<div  class="yui-skin-sam">
 			<div id="cadreDetailsPopup"></div>
