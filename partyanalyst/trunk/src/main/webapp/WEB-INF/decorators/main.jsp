@@ -268,7 +268,7 @@ function buildAccordion()
 	accordionElmtId.style.display = 'block';
 
 	getStatesInQuickView('siteSearch','stateList_s');
-	//getElectionTypeValue(1);
+
 	getDistrictsComboBoxForAStateInQuickView(1, 'districtList_d');
 	hideUnhideSelectBoxInQuickView('a_radio', 'constituency');
 	getAllStatesHavingLocalBody("stateList_l");
