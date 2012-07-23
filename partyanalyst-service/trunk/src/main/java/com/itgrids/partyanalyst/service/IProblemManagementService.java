@@ -167,7 +167,7 @@ public interface IProblemManagementService {
 	
 	public ResultStatus addProblemRelatedFiles(ProblemBeanVO problemBeanVO);
 	
-	public String getProblemLocationString(ProblemCompleteLocation problemCompleteLocation);
+public String getProblemLocationString(ProblemCompleteLocation problemCompleteLocation);
 	
 	public ProblemStatusDataVO getProblemActivityDetailsSetToVO(ProblemProgress problemProgress) throws Exception; 
 	
@@ -186,5 +186,9 @@ public interface IProblemManagementService {
 	public ProblemComments saveCommentDataInProblemComments(ProblemBeanVO problemBeanVO, Comment comment);
 	
 	public ProblemProgress saveCommentDataInProblemProgress(ProblemBeanVO problemBeanVO, Comment comment);
+	
+	public ResultStatus changeActivityState(Long prblmPrgrssId,String task);
+	
+	public ResultStatus changeProblemToPublic(Long problemId,String task);
 	
 }
