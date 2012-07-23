@@ -40,10 +40,24 @@ public class ProblemStatusDataVO extends ResultStatus implements Serializable{
 	private String problemLocation;
 	private String probClassification;
 	private long diffDays;
+	private Long visibility;
+	private Long prblmPrgrssId;
 	
 	private String activityHapened;
 	
 	
+	public Long getPrblmPrgrssId() {
+		return prblmPrgrssId;
+	}
+	public void setPrblmPrgrssId(Long prblmPrgrssId) {
+		this.prblmPrgrssId = prblmPrgrssId;
+	}
+	public Long getVisibility() {
+		return visibility;
+	}
+	public void setVisibility(Long visibility) {
+		this.visibility = visibility;
+	}
 	public String getProblemStatus() {
 		return problemStatus;
 	}
