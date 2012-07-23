@@ -282,7 +282,6 @@
 		<property name="panchayatDAO" ref="panchayatDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
-		
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
@@ -659,7 +658,9 @@
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
-	</bean>
+    	<property name="problemProgressDAO" ref="problemProgressDAO"/>
+    	<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
+    </bean>
 	
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
