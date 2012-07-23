@@ -433,6 +433,7 @@ public interface IConstants {
     public static final String PROBLEM_STATUS_ADD = "PROBLEM_STATUS_ADD";
     public static final String PROBLEM_STATUS_MODIFY = "PROBLEM_STATUS_MODIFY";
     public static final String PROBLEM_STATUS_CHANGE = "PROBLEM_STATUS_CHANGE";
+    public static final String STATUS_CHANGE = "STATUS_CHANGE";
 
     public static final String PROBLEM_COMMENTS_ADD = "PROBLEM_COMMENTS_ADD";
     public static final String PROBLEM_COMMENTS_MODIFY = "PROBLEM_COMMENTS_MODIFY";
