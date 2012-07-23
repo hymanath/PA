@@ -579,14 +579,18 @@ function openPartyPerformanceWindow(electionTypeId)
 
 <BODY>
 <center>
-	<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>
-	<DIV id="page_layout_right" style="background:#ffffff;">
+	<!--<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>-->
+	<div class="container" style="width:980px;">
+	
+	<DIV id="page_layout_right" style="background:#ffffff;width:260px;margin:0px;" class="pull-right">
 		<DIV id="sideHeader"></DIV>
 		<DIV id="toolsDiv"></DIV>
 		
 	</DIV>
-	<DIV id="page_layout_center" style="background:#ffffff;">
-		<DIV id="pageHeading" >
+	<DIV id="page_layout_center" style="background:#ffffff;width:712px;" class="pull-left">
+	<h3 style="background:#05A8E9;color:#fff;padding:5px;text-align:center;
+	border-radius:5px;margin:2px;">Election Results Analysis Report</h3>
+		<!--<DIV id="pageHeading" >
 			<TABLE cellspacing="0" cellpadding="0" border="0" width="90%">
 				<TR>
 					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-left:-1px;"/></TD>
@@ -594,7 +598,7 @@ function openPartyPerformanceWindow(electionTypeId)
 					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
 				</TR>
 			</TABLE>
-		</DIV>	
+		</DIV>	-->
 		<DIV id="errorsDiv" style="color:red;font-weight:bold;font-size:12px;"></DIV>
 		<DIV id="inputsTags" style="border:2px solid #DBDCDB;margin-left:15px;margin-right:15px;">
 				<TABLE width="100%" class="inputsTable">
@@ -625,7 +629,7 @@ function openPartyPerformanceWindow(electionTypeId)
 					</TR>					
 				</TABLE>			
 		</DIV>
-		<DIV id="electionPageAjaxImgDiv" style="display:none">
+		<DIV id="electionPageAjaxImgDiv" style="display:none;height:80px;">
 			<DIV>Please Wait..</DIV>
 			<IMG src="images/icons/barloader.gif"/>
 		</DIV>
@@ -639,7 +643,7 @@ function openPartyPerformanceWindow(electionTypeId)
 		<DIV id="wonPosAnalisisDetails" class="analysisDetails">		
 		</DIV>						
 		</DIV>			
-	</DIV>
+	</DIV></DIV>
 	</center>
 <SCRIPT>
 initializePage();
