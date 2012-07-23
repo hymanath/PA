@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
@@ -26,5 +27,13 @@ public interface IConstituencyManagementService {
 	
 	public List<UserGroupDetailsVO> findUserGroupsByLocationCategoryAndUserId(Long userId, Long categoryId, String locationType);
 	
+	public Boolean getIsSubscribed(Long userId,Long constituencyId);
+	
+	public ResultStatus subscriberDetails(Long id,Long userId);
+	
+	public ResultStatus unSubscriptionDetails(Long id,Long userId);
+	//public Long getProblemVisibility(Long problemId);
+	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
+	
 }
