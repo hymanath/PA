@@ -132,7 +132,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getTotalPostedPaidUsersGroupedByCommentCategory(Long electionId,Long partyId,String category) {
 		Object[] params = {electionId,partyId,category};
 		
-		return getHibernateTemplate().find("select count(distinct model.paidUser.userId) from CommentCategoryCandidate model"+
+		return getHibernateTemplate().find("select count(distinct model.user.userId) from CommentCategoryCandidate model"+
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?"+
@@ -143,7 +143,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getTotalPostedFreeUsersGroupedByCommentCategory(Long electionId,Long partyId,String category) {
 		Object[] params = {electionId,partyId,category};
 		
-		return getHibernateTemplate().find("select count(distinct model.freeUser.userId) from CommentCategoryCandidate model"+
+		return getHibernateTemplate().find("select count(distinct model.user.userId) from CommentCategoryCandidate model"+
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?"+
@@ -272,10 +272,10 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		
 	/*public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
-		return getHibernateTemplate().find("select model.paidUser.userId, model.paidUser.firstName, model.commentData.commentDesc, " +
+		return getHibernateTemplate().find("select model.user.userId, model.user.firstName, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
-				"model.nomination.nominationId = ? group by model.paidUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+				"model.nomination.nominationId = ? group by model.user.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
 	}*/
 
 	public List getAllCommentsOfUserForANomination(Long electionId,
