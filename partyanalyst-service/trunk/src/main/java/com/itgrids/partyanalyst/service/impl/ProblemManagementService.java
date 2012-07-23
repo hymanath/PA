@@ -4642,6 +4642,7 @@ public class ProblemManagementService implements IProblemManagementService {
 							
 							
 							problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							problemProgress.setVisibility(visibilityDAO.get(2l));
 							problemProgress.setIsDelete(IConstants.FALSE);
 							problemProgress.setProblemAssignedCadre(problemAssignedCadre);
@@ -5199,7 +5200,8 @@ public class ProblemManagementService implements IProblemManagementService {
                         	   
                         	   problemProgress.setProblemActivity(problemActivity.get(0));
                         	   problemProgress.setVisibility(visibilityDAO.get(2l));
-                        	   problemProgress.setInsertedTime(getCurrentDateAndTime());
+                        	   problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+                        	   problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
                         	   problemProgress.setIsDelete(IConstants.FALSE);
                         	   problemProgress.setProblemAssignedDepartment(problemAssignedDepartment);
                         	   
@@ -7123,7 +7125,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					ClassifiedProblems classifiedProblems=null;
 					UserProblem userProblem=userProblemDAO.get(userProblemId);
 					List<Long> classifiedProblemsIdList=classifiedProblemsDAO.checkIfProblemAlreadyClassified(userProblemId);
-					Long classifiedProblemId=null;
+					/*Long classifiedProblemId=null;
 					if(classifiedProblemsIdList!=null && classifiedProblemsIdList.size()>0){
 						classifiedProblemId=classifiedProblemsIdList.get(0);
 						ClassifiedProblems classifiedProblemObj=classifiedProblemsDAO.get(classifiedProblemId);
@@ -7135,15 +7137,19 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 							problemActivityStr=IConstants.PROBLEM_TYPE_UPDATE;							
 						}
 					}
-					else{
+					else{*/
 						classifiedProblems=new ClassifiedProblems();
 						ProblemClassification problemClassification=problemClassificationDAO.get(problemClassificationId);
 						classifiedProblems.setUserProblem(userProblem);
 						classifiedProblems.setProblemClassification(problemClassification);
-						classifiedProblems.setInsertedTime(new Date());
+						classifiedProblems.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						classifiedProblems.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						classifiedProblems = classifiedProblemsDAO.save(classifiedProblems);
+						if(classifiedProblemsIdList != null && classifiedProblemsIdList.size() > 0 )
+							problemActivityStr=IConstants.PROBLEM_TYPE_UPDATE;
+						else
 						problemActivityStr=IConstants.PROBLEM_TYPE_ADD;
-					}
+					//}
 					updateProblemProgress(problemActivityStr, userProblem,classifiedProblems);
 					rs.setResultCode(ResultCodeMapper.SUCCESS);
 					rs.setExceptionMsg("Problem classification successful");
@@ -7230,7 +7236,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 						
 						Long userProblemId=getUserProblemIdByUserIdAndProblemId(userId, problemId);
 						UserProblem userProblem=userProblemDAO.get(userProblemId);
-						updateProblemProgress(IConstants.PROBLEM_STATUS_CHANGE, userProblem,null);
+						updateProblemProgress(IConstants.STATUS_CHANGE, userProblem,null);
 						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 						resultStatus.setResultState(problemId);
 					}
