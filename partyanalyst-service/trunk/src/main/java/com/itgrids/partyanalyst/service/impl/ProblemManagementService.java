@@ -5189,7 +5189,7 @@ public class ProblemManagementService implements IProblemManagementService {
                         		   
                         	   }
                         	   else if (pbStatus.equals(IConstants.DEPARTMENT_MODIFY)) {
-                        		   problemActivity =  problemActivityDAO.getProblemActivityByName("DEPARTMENT_MODIFY");
+                        		   problemActivity =  problemActivityDAO.getProblemActivityByName("DEPARTMENT_UPDATE");
                         		   
                         	   }
                         	   else if (pbStatus.equals(IConstants.DEPARTMENT_DELETE)) {
