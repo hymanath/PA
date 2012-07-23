@@ -115,10 +115,10 @@ var cadreProblemDetails;
       if(fileType[(fileType.length-1)].indexOf('word') != -1 || fileType[(fileType.length-1)] == 'pdf' || fileType[(fileType.length-1)] == 'text'){
        
       if(fileType[(fileType.length-1)] == "pdf"  ){
-      str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick=""/>';
+      str+= '<img alt="" src="images/doc_images/PDFImage.png" height="100px" 				onclick="javascript:{openFile(\''+result[i].file+'\')}"/>';
       }
       else if(fileType[(fileType.length-1)] == 'text'){
-      str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick=""/>';
+      str+= '<img alt="" src="images/doc_images/docImage.png" height="100px" 				onclick="javascript:{openFile(\''+result[i].file+'\')}"/>';
       }
       else if(fileType[(fileType.length-1)].indexOf('word') != -1){
       str+= '<a href="'+result[i].file+'"><img alt="" src="images/doc_images/wordImage.png" height="100px" ></img></a>';
@@ -220,6 +220,9 @@ var cadreProblemDetails;
       });
 
 	}
+	function openFile(filePath){
+    window.open(filePath, "browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+}
   function showUploadFilePopUp(){
      $( "#uploadfileOutrDiv" ).dialog({
 		title:"Upload Problem Related Files",
@@ -590,7 +593,7 @@ function populateDeptLocations(index)
 }
 function saveDepartmentToProblem(type)
 {
-    $("#departmentPanel_content").dialog("close");
+    $("#departmentPanel_main").dialog("close");
 	var errorDiv = document.getElementById("errorMsgDiv");
 	
 	var deptScopeElmt = document.getElementById("resolvingDeptScopeId");
@@ -1035,11 +1038,11 @@ function getNewActivityDetails(){
 	  str+='<li class="span6">';
 	  str+='  <div>'+result.problemRecentActivity[i].activityHapened+''; 
 		
-		if(result.problemRecentActivity[i].cadre != null){	
+		if(result.problemRecentActivity[i].cadre != null && result.problemRecentActivity[i].activityHapened != 'Assigned cadre has been deleted' ){	
 		str+='   <div>Cadre</div>';		
 		str+='     <div>'+result.problemRecentActivity[i].cadre+'</div>';		 
 		}
-		if(result.problemRecentActivity[i].departmentOrganisation != null && result.problemRecentActivity[i].department != null && result.problemRecentActivity[i].deptLocation == null){		
+		if(result.problemRecentActivity[i].departmentOrganisation != null && result.problemRecentActivity[i].department != null && result.problemRecentActivity[i].deptLocation == null  && result.problemRecentActivity[i].activityHapened != 'Department has been deleted' ){		
 			
 		str+='	<div>Name ';
 			if(result.problemRecentActivity[i].departmentOrganisation == '' || result.problemRecentActivity[i].departmentOrganisation == null){
@@ -1438,11 +1441,11 @@ function getNewActivityDetails(){
 	  <li class="span6">
 	    <div><s:property value="activityHapened"/> 
 		
-		<s:if test="%{#recentActivities.cadre != null}" >	
+		<s:if test="%{#recentActivities.cadre != null && #recentActivities.activityHapened != 'Assigned cadre has been deleted' }" >	
 		   <div>Cadre</div>		
 		     <div><s:property value="cadre"/></div>		 
 		</s:if>
-		<s:if test="%{#recentActivities.departmentOrganisation != null && #recentActivities.department != null && #recentActivities.deptLocation == null}" >		
+		<s:if test="%{#recentActivities.departmentOrganisation != null && #recentActivities.department != null && #recentActivities.deptLocation == null && #recentActivities.activityHapened != 'Department has been deleted' }" >		
 			
 			<div>Name 
 			<s:if test="%{#recentActivities.departmentOrganisation == '' || #recentActivities.departmentOrganisation == null}" >
