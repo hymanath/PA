@@ -5,6 +5,10 @@
 
 <beans>
 	
+	<bean id="constituencySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencySubscriptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="partySubscriptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartySubscriptionsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

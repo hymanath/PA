@@ -168,6 +168,7 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="localBodyElectionService" ref="localBodyElectionService" />
 		<property name="commentsDataService" ref="commentsDataService" />
+		<property name="constituencyManagementService" ref="constituencyManagementService" />
 	</bean>
 	
 
