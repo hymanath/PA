@@ -1823,6 +1823,14 @@ public class CadreManagementService {
 			name = mandal.getTehsilName();
 		return name;
 	}
+	
+	public String getWardName(Long wardId){
+		Constituency constituency = constituencyDAO.get(new Long(wardId));
+		String name = "";
+		if (constituency != null)
+			name = constituency.getName()+" "+constituency.getLocalElectionBody().getName();
+		return name;
+	}
 
 	public String getCountryName(Long countryID) {
 		Country country = countryDAO.get(countryID);
@@ -2158,19 +2166,24 @@ public class CadreManagementService {
 				levelValue = getStateName(new Long(levelValueID));
 			} else if ("DISTRICT".equals(level)) {
 				levelValue = getDistrictName(new Long(levelValueID));
-			} else if ("CONSTITUENCY".equals(level) || "WARD".equals(level) ) {
+			} else if ("CONSTITUENCY".equals(level)  ) {
 				//levelValueID =levelValueID.substring(1);
 				levelValue = getConstituencyName(new Long(levelValueID));
-			} else if ("MANDAL".equals(level)) {
+			}else if("WARD".equals(level)){
+				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
+				String type = levelValueID.substring(0, 1);
+				Long id = new Long(levelValueID.substring(1));
+				levelValue = getWardName(new Long(id));
+			}else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));
 			} else if ("VILLAGE".equals(level)) {
 				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
 				String type = levelValueID.substring(0, 1);
-				Long id = new Long(levelValueID.substring(1));
+				//Long id = new Long(levelValueID.substring(1));
 				if (IConstants.HAMLET_TYPE.equals(type)) {
-					levelValue = getHamletName(id);
+					levelValue = getHamletName(new Long(levelValueID));
 				} else if (IConstants.TOWNSHIP_TYPE.equals(type)) {
-					levelValue = getTownshipName(id);
+					levelValue = getTownshipName(new Long(levelValueID));
 				}
 				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
 			} else if ("MUNICIPAL-CORP-GMC".equals(level)) {
@@ -4314,7 +4327,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					{
 						parliamentId = parliamentId+params[0].toString()+",";
 					}
-					parliamentId = parliamentId.substring(0,parliamentId.length()-1);
+					parliamentId = parliamentId.substring(0,parliamentId.lastIndexOf(",")-1);
 					SearchCriteria = "and model.currentAddress.constituency.constituencyId in ("+parliamentId+")";
 				}
 			}
@@ -4364,21 +4377,25 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				if(castCategory == 0)
 					castStr = " ";
 				else
-					castStr =" model.casteCategory.socialCategoryId = "+castCategory+" "+andOrStr+" ";
+					castStr =" model.casteCategory.socialCategoryId = "+castCategory;
 				
-				Long eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
+				
+				Long eduCategory = 0L;
+				if( cadreInputVO.getCadreEducationQualification() != null)
+				 eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
 				
 				if(eduCategory == 0)
 					eduStr = " ";
 				else
-					eduStr = " model.education.eduQualificationId = "+eduCategory+" "+andOrStr+" ";
-				
-				Long occCategory = cadreInputVO.getCadreOccupation().get(0).getCadreCategoryId();
+					eduStr = andOrStr+" model.education.eduQualificationId = "+eduCategory;
+				Long occCategory=0L;
+				if(cadreInputVO.getCadreOccupation()!=null)
+				occCategory = cadreInputVO.getCadreOccupation().get(0).getCadreCategoryId();
 				
 				if(occCategory == 0)
 					occStr = " ";
 				else
-					occStr = " model.occupation.occupationId = "+occCategory+" ";
+					occStr = andOrStr+" model.occupation.occupationId = "+occCategory;
 				
 				socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
 				
