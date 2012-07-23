@@ -1,4 +1,6 @@
 
+
+
 #constituencyMgmtHeaderDiv
 {
 	color:BurlyWood;
@@ -444,3 +446,12 @@ text-align:left;
 	padding:5px;
 	width:50px;
 }
+
+#activitiesPopup{margin: 10px;color:blue;padding:5px;position:relative;}
+#actvtyprivatebtn{position:absolute;right:0px;padding:4px;border-radius:4px;}
+#actvtypublicbtn{position:absolute;right:0px;padding:4px;border-radius:4px;width:114px;}
+
+#publishProblemToPublic{border: 1px solid #3E3E3E;color: white; cursor: pointer;float: right;margin-right: 8px;
+    padding: 4px;background: #3EAF39;}
+#publishProblem{border: 1px solid #3E3E3E;color: white;float: left;margin-left: 8px;
+    padding: 2px;background: #3EAF39;}
