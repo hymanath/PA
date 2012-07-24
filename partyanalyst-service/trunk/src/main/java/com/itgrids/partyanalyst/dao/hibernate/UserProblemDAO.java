@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -699,5 +700,92 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
        public List<Long> getUserIds(Long problemId){
     	   Object [] params = {problemId,2l};
    		return getHibernateTemplate().find("select model.user.userId from UserProblem model where model.problem.problemId = ? and  model.visibility.visibilityId = ?",params);
-   	}
+   	  }
+     
+       public List<Problem> getUserProblemsByProblemTyp(Long problemId ,String problemTyp){
+			
+			
+			Query query = getSession().createQuery("select model.problem from UserProblem model"+
+					" where model.problem.problemType.problemType = ? and model.problem.problemId != ? and model.problem.isDelete = ? and model.visibility.visibilityId = ?");
+			
+			
+			query.setParameter(0, problemTyp);
+			query.setParameter(1, problemId);
+			query.setParameter(2, IConstants.FALSE);
+			query.setParameter(3, 1L);
+			
+			query.setFirstResult(0);
+			query.setMaxResults(IConstants.MAX_PROBLES);
+			
+			return query.list();
+			
+		}
+       public List<Problem> geUserProblemsByConstituency(List<Long> problemIds,Long cnstncyId,Long userId){
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select model.problem from UserProblem model" +
+    				" where model.problem.problemCompleteLocation.constituency.constituencyId = :cnstncyId " +
+    				" and model.problem.problemId not in (:problemIds) and model.problem.isDelete = :isDelete  ");		
+    		if(userId != null)
+    			queryString.append(" and ( model.user.userId = :userId or  model.visibility.visibilityId = :visibilityId )  order by model.problem.insertedTime desc ");
+    		else
+    			queryString.append(" and model.visibility.visibilityId = :visibilityId order by model.problem.insertedTime desc");
+    		Query query = getSession().createQuery(queryString.toString());
+    		query.setParameter("cnstncyId", cnstncyId);
+    		query.setParameterList("problemIds", problemIds);
+    		query.setParameter("isDelete", IConstants.FALSE);
+    		if(userId != null)
+    			query.setParameter("userId", userId);
+    		query.setParameter("visibilityId", 1L);
+    		query.setFirstResult(0);
+    		query.setMaxResults(IConstants.MAX_PROBLES);
+    		
+    		return query.list();
+    		
+    		
+    	}
+       public List<Problem> getProblemsByDistrictId(List<Long> problemIds,Long districtId,Long userId){
+   		
+    	   StringBuilder queryString = new StringBuilder();
+    	   queryString.append("select model.problem from  UserProblem model where model.problem.problemCompleteLocation.district.districtId = :districtId " +
+   				" and model.problem.problemId not in (:problemIds) and model.problem.isDelete = :isDelete   ");
+   		
+   		if(userId != null)
+			queryString.append(" and ( model.user.userId = :userId or  model.visibility.visibilityId = :visibilityId )  order by model.problem.insertedTime desc ");
+		else
+			queryString.append(" and model.visibility.visibilityId = :visibilityId order by model.problem.insertedTime desc");
+   		Query query = getSession().createQuery(queryString.toString());
+   		query.setParameter("districtId",districtId);
+   		query.setParameterList("problemIds", problemIds);
+   		query.setParameter("isDelete", IConstants.FALSE);
+   		if(userId != null)
+			query.setParameter("userId", userId);
+		query.setParameter("visibilityId", 1L);
+   		query.setFirstResult(0);
+   		query.setMaxResults(IConstants.MAX_PROBLES);
+   		
+   		return query.list();  		
+      }
+       public List<Problem> getProblemsByUserId(List<Long> problemIds,Long userId){
+      		StringBuilder queryString = new StringBuilder();
+      		queryString.append("select model.problem from  UserProblem model where model.problem.problemId not in (:problemIds) and model.problem.isDelete = :isDelete ");
+      		if(userId != null)
+      			queryString.append(" and  model.user.userId = :userId ");
+      		else
+      			queryString.append(" and  model.visibility.visibilityId = :visibilityId ");
+      		queryString.append(" order by model.problem.insertedTime desc ");
+      		Query query = getSession().createQuery(queryString.toString());
+      		
+      		if(userId != null)
+      		  query.setParameter("userId",userId);
+      		else
+      		  query.setParameter("visibilityId", 1L);
+      		query.setParameterList("problemIds", problemIds);
+      		query.setParameter("isDelete", IConstants.FALSE);
+
+      		query.setFirstResult(0);
+      		query.setMaxResults(IConstants.MAX_PROBLES);
+      		
+      		return query.list();  		
+      	}
+    
 }
