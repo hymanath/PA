@@ -34,7 +34,7 @@ public class UserEvents extends BaseModel {
 
 	private static final long serialVersionUID = 1L;
 	private Long userEventsId;
-	private Registration registration;
+	//private Registration registration;
 	private User user;
 	private String description;
 	private String locationType;
@@ -56,7 +56,7 @@ public class UserEvents extends BaseModel {
 		this.userEventsId = userEventsId;
 	}
 	 
-	@ManyToOne(fetch = FetchType.LAZY)
+	/*@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "registration_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Registration getRegistration() {
@@ -64,7 +64,7 @@ public class UserEvents extends BaseModel {
 	}
 	public void setRegistration(Registration registration) {
 		this.registration = registration;
-	}
+	}*/
 	@Column(name = "description", length = 300)
 	public String getDescription() {
 		return description;
