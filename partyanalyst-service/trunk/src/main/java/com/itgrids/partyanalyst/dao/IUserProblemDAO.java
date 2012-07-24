@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -115,4 +116,12 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Long> getUserIds(Long problemId);
 	
 	public int makeProblemPublic(Long problemId,Long visibility);
+	
+	public List<Problem> getUserProblemsByProblemTyp(Long problemId ,String problemTyp);
+	
+	public List<Problem> geUserProblemsByConstituency(List<Long> problemIds,Long cnstncyId,Long userId);
+	
+	public List<Problem> getProblemsByDistrictId(List<Long> problemIds,Long districtId,Long userId);
+	
+	public List<Problem> getProblemsByUserId(List<Long> problemIds,Long userId);
 }
