@@ -3,21 +3,27 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
+import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemProgress;
 import com.itgrids.partyanalyst.model.UserProblem;
 import com.itgrids.partyanalyst.service.ICompleteProblemDetailsService;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -29,6 +35,8 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	private IProblemProgressDAO problemProgressDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IProblemCommentsDAO problemCommentsDAO;
+	private IProblemDAO problemDAO;
+	private IProblemManagementReportService problemManagementReportService;
 	
 	public IUserProblemDAO getUserProblemDAO() {
 		return userProblemDAO;
@@ -71,6 +79,23 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		this.problemCommentsDAO = problemCommentsDAO;
 	}
 
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
+
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
 	public CompleteProblemDetailsVO getProblemCompleteDetails(final Long problemId,final Long userId,final String userStatus,String queryReq){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemCompleteDetails method ");
@@ -110,6 +135,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		if(checkIsPublicProblem(problemId)){
 			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
 			completeProblemDetailsVO.setModifyAccess(IConstants.FALSE);
+			completeProblemDetailsVO.setRelatedProblems(getRelatedProblemsByProblemId(problemId,null,"notlogged"));
 		}else{
 			completeProblemDetailsVO.setNoAccess(IConstants.TRUE);
 		}
@@ -126,6 +152,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		completeProblemDetailsVO.setUserStatus("freeuser");
 		if(checkIsPublicProblem(problemId)){
 			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
+			completeProblemDetailsVO.setRelatedProblems(getRelatedProblemsByProblemId(problemId,userId,"freeuser"));
 			if(checkIsProblemOwner(problemId,userId)){
 			  completeProblemDetailsVO.setModifyAccess(IConstants.TRUE);
 			}else{
@@ -162,6 +189,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		}else{
 			completeProblemDetailsVO.setNoAccess(IConstants.TRUE);
 		}
+		completeProblemDetailsVO.setRelatedProblems(getRelatedProblemsByProblemId(problemId,userId,userType));
 	  }catch(Exception e){
 		LOG.error("Exception rised in getProblemDetailsForCustomerLoggedUser method ",e);
 	 }
@@ -373,5 +401,148 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			 LOG.error("Exception rised in popolateDataToVo method while iterating and getting problem related files data ",e);
 		 }
 		}
+	}
+	
+	/**
+	 * This method is to get related problems by ProblemId		
+	 * @param problemId
+	 */
+			
+	public List<CompleteProblemDetailsVO> getRelatedProblemsByProblemId(Long problemId,Long userId,String userType){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getRelatedProblemsByProblemId service method");
+		List<CompleteProblemDetailsVO> completeProblemDetailsVOList = new ArrayList<CompleteProblemDetailsVO>();
+		Map<Long,Problem> problemMap = new HashMap<Long,Problem>();
+		try{
+			Problem problem = problemDAO.get(problemId);			
+			Map<Long,Problem> problemsMap = getAllRelatedProblems(problem ,problemMap,userId);
+			convertMapToCompleteProblemDetailsVOList(problemsMap,completeProblemDetailsVOList,userType,userId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRelatedProblemsByProblemId method",e);
+		}
+		
+		return completeProblemDetailsVOList;	
+		
+	}
+	
+	public Map<Long,Problem> getAllRelatedProblems(Problem problem ,Map<Long,Problem> problemMap,Long userId){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getAllRelatedProblems service method");	
+		try{
+			if(problem.getProblemType() != null && problem.getProblemType().getProblemType() != null){
+				List<Problem> problemsList = getRelatedProblemsByProblemType(problem.getProblemId(),problem.getProblemType().getProblemType());
+				populateDataToMap(problemsList,problemMap);
+				if(problemMap.size() >= IConstants.MAX_PROBLES)
+					return problemMap;
+			}
+			if(problem.getProblemCompleteLocation() != null){
+				if(problem.getProblemCompleteLocation().getConstituency() != null){
+					Set<Long> keys = problemMap.keySet();
+					List<Long> problemIds = getProblemIdsList(keys);
+					problemIds.add(problem.getProblemId());
+					List<Problem> problemsList = getRelatedProblemsByConstituencyType(problemIds,problem.getProblemCompleteLocation().getConstituency().getConstituencyId(),userId);
+					populateDataToMap(problemsList,problemMap);
+					if(problemMap.size() >= IConstants.MAX_PROBLES)
+						return problemMap;
+				}
+				if(problem.getProblemCompleteLocation().getDistrict() != null){
+					Set<Long> keys = problemMap.keySet();
+					List<Long> problemIds = getProblemIdsList(keys);
+					problemIds.add(problem.getProblemId());
+					List<Problem> problemsList = getRelatedProblemsByDistrictType(problemIds,problem.getProblemCompleteLocation().getDistrict().getDistrictId(),userId);
+					populateDataToMap(problemsList,problemMap);
+					if(problemMap.size() >= IConstants.MAX_PROBLES)
+						return problemMap;
+				}
+			 }
+			Set<Long> keys = problemMap.keySet();
+			List<Long> problemIds = getProblemIdsList(keys);
+			problemIds.add(problem.getProblemId());
+			List<Problem> problemsList = getRelatedProblemsByUser(problemIds,userId);
+			populateDataToMap(problemsList,problemMap);
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getAllRelatedProblems method",e);
+		}
+		return problemMap;
+	}
+    
+	public List<Problem> getRelatedProblemsByProblemType(Long problemId,String problemTyp){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getRelatedProblemsByProblemType service method");	
+		try{
+		   return userProblemDAO.getUserProblemsByProblemTyp(problemId ,problemTyp);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRelatedProblemsByProblemType method",e);
+			return new ArrayList<Problem>();
+		}
+	}
+	public List<Problem> getRelatedProblemsByConstituencyType(List<Long> problemIds,Long cnstncyId,Long userId){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getRelatedProblemsByConstituencyType service method");	
+		try{
+		  return userProblemDAO.geUserProblemsByConstituency(problemIds,cnstncyId,userId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRelatedProblemsByConstituencyType method",e);
+			return new ArrayList<Problem>();
+		}
+	}
+	public List<Problem> getRelatedProblemsByDistrictType(List<Long> problemIds,Long districtId,Long userId){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getRelatedProblemsByDistrictType service method");	
+		try{
+		  return userProblemDAO.getProblemsByDistrictId(problemIds,districtId,userId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRelatedProblemsByDistrictType method",e);
+			return new ArrayList<Problem>();
+		}
+	}
+	public List<Problem> getRelatedProblemsByUser(List<Long> problemIds,Long userId){
+		if(LOG.isDebugEnabled())
+			   LOG.debug("Entered into the getRelatedProblemsByUser service method");	
+		try{
+		  return userProblemDAO.getProblemsByUserId(problemIds,userId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRelatedProblemsByUser method",e);
+			return new ArrayList<Problem>();
+		}
+	}
+	
+	private void populateDataToMap(List<Problem> problemsList,Map<Long,Problem> problemMap){
+		 for(Problem problem: problemsList){
+			 if(problemMap.size() >= IConstants.MAX_PROBLES)
+				 return;
+			 problemMap.put(problem.getProblemId(), problem);
+		 }
+	}
+	private void convertMapToCompleteProblemDetailsVOList(Map<Long,Problem> problemsMap,List<CompleteProblemDetailsVO> completeProblemDetailsVOList,String userType,Long userId){
+		
+		CompleteProblemDetailsVO completeProblemDetailsVO = null;
+	        for(Problem problem : problemsMap.values()){
+	         try{
+	        	completeProblemDetailsVO = new CompleteProblemDetailsVO();
+	        	completeProblemDetailsVO.setProblemId(problem.getProblemId());
+	        	if(!userType.equalsIgnoreCase("notlogged") && userId != null){
+	        		if(checkIsTakenUpProblem(problem.getProblemId(),userId))
+	        		    completeProblemDetailsVO.setIsTaken(IConstants.TRUE);
+	        		if(checkIsProblemOwner(problem.getProblemId(),userId))
+	        		    completeProblemDetailsVO.setIsOwner(IConstants.TRUE);
+	        		
+	        	}
+	        	completeProblemDetailsVO.setProblemTitle(problem.getTitle());
+	        	if(problem.getRegionScopes() != null && problem.getRegionScopes().getRegionScopesId() != null && problem.getImpactLevelValue() != null)
+	        		completeProblemDetailsVO.setProblemCompleteLoc(problemManagementReportService.getProblemLocation(problem.getRegionScopes().getRegionScopesId(),problem.getImpactLevelValue()));
+	        	completeProblemDetailsVOList.add(completeProblemDetailsVO);
+	          }catch(Exception e){
+	        	 LOG.error("Exception rised in convertMapToCompleteProblemDetailsVOList method",e);
+	          }
+	         }
+	}
+	public List<Long> getProblemIdsList(Set<Long> keys){
+		List<Long> problemIds = new ArrayList<Long>();
+		for(Long key : keys){
+			problemIds.add(key);
+		}
+		return problemIds;
 	}
 }
