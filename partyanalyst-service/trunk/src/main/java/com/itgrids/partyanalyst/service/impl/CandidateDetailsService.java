@@ -2387,6 +2387,10 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			 
 			 if(result.get(i).getFile().getFileDate()!= null)
 				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
+			 if(result.get(i).getGallary().getContentType().getContentType().equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+			 	fileVO.setPathOfFile(filePath);
+			 if(result.get(i).getFile().getFileDate() != null)
+				 fileVO.setFileDate(result.get(i).getFile().getFileDate().toString());
 			 
 			 if(source != null)
 				 fileVO.setSource(source);
