@@ -1504,7 +1504,27 @@ function getNewActivityDetails(){
 <h3>Related Problems</h3>
 <!-- Problesm Display Collection -->
 <ul class="unstyled relatedproblem" style="width:200px;">
-			<li>
+<s:if test="completeProblemDetailsVO.relatedProblems == null || completeProblemDetailsVO.relatedProblems.size() == 0 " >	
+         <div>No Problem Activities are taken place</div>
+      </s:if>
+	  <s:else>
+<s:iterator value="completeProblemDetailsVO.relatedProblems" var="relatedProblems">
+ <li>
+						<h5><a href="completeProblemDetailsAction.action?problemId=<s:property value='problemId'/>"><s:property value="problemTitle"/></a> </h5>
+						<div>
+							<span>
+								<a href=# class="icon-star"></a>
+								<a href=# class="icon-star"></a>
+								<a href=# class="icon-star-empty"></a>
+								<a href=# class="icon-star-empty"></a>
+								<a href=# class="icon-star-empty"></a>
+							</span>
+							<h6><s:property value="problemCompleteLoc"/></h6>
+						</div>
+			</li>
+</s:iterator>
+</s:else>
+	<!--		<li>
 						<h5>Electricity Problem</h5>
 						<div>
 							<span>
@@ -1601,7 +1621,7 @@ function getNewActivityDetails(){
 						</span>
 						<h6>Hyderabad</h6>
 					</div>
-			</li>
+			</li>-->
 </ul>
 <!-- Problem Display Collection End-->
 
