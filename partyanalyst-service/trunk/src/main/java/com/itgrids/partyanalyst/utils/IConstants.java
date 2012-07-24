@@ -524,4 +524,6 @@ public interface IConstants {
 	public static final String MODIFIED = "MODIFIED";
 	public static final String DELETED = "DELETED";
 	public static final String BOTH ="BOTH";
+	
+	public static final int MAX_PROBLES = 8;
 }
