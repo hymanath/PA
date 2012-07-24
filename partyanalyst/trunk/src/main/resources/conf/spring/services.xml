@@ -1170,6 +1170,8 @@
 		<property name="problemProgressDAO" ref="problemProgressDAO"/>
 		<property name="filePathsDAO" ref="filePathsDAO"/>
 		<property name="problemCommentsDAO" ref="problemCommentsDAO" />
+	    <property name="problemDAO" ref="problemDAO" />
+	    <property name="problemManagementReportService" ref="problemManagementReportService" />
 	</bean>
 	
 </beans>		
