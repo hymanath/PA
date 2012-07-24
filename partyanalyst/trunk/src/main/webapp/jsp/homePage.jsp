@@ -297,7 +297,7 @@ var pollStatus = [];
             </div>
 			</c:if>
 
-		 </div>
+			 </div>
           
           <!--BANNER SLIDE SECTION END--> 
           
@@ -534,8 +534,14 @@ var pollStatus = [];
 					<s:if test="%{#photogallaryDetails.fileType == 'Special Page'}" >
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
 			        </s:if>
-			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
+					<h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
 			           New Photo Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> Photo Gallary.</a>
+					<s:if test="%{#photogallaryDetails.fileDate != '' && #photogallaryDetails.fileDate != null}" >
+					
+						<div style="margin-left:5px;margin-top:6px;">
+					   <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+					   </div>
+					 </s:if>
 				  </td>
 			     </tr>
 			    </table>
