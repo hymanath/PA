@@ -43,7 +43,7 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(PartyManagementAction.class);
-	private List<SelectOptionVO> partyList;
+	private List<SelectOptionVO> partyList = new ArrayList<SelectOptionVO>(0);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
