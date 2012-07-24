@@ -26,11 +26,13 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String isConnectPeopleReq;
     private Long problemId;
     private String isTaken;
+    private String isOwner;
     private String status;      //problem status NEW,PROGRESS,PENDING,FIXED
     private String modifyAccess; //whether user has access to modified the problem states
     private List<ProblemStatusDataVO> problemRecentActivity;  //All activities performed by all users
     private List<FileVO> problemFiles; //contains all uploaded problem related files
     private ProblemStatusDataVO problemStatus; //contains department,cadre,problemtype details for customer problems only
+    private List<CompleteProblemDetailsVO> relatedProblems;
     
 	public String getUserStatus() {
 		return userStatus;
@@ -164,6 +166,18 @@ public class CompleteProblemDetailsVO implements Serializable {
 	}
 	public void setProblemId(Long problemId) {
 		this.problemId = problemId;
+	}
+	public String getIsOwner() {
+		return isOwner;
+	}
+	public void setIsOwner(String isOwner) {
+		this.isOwner = isOwner;
+	}
+	public List<CompleteProblemDetailsVO> getRelatedProblems() {
+		return relatedProblems;
+	}
+	public void setRelatedProblems(List<CompleteProblemDetailsVO> relatedProblems) {
+		this.relatedProblems = relatedProblems;
 	}
     
 }
