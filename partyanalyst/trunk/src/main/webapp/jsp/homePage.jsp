@@ -286,7 +286,7 @@ var pollStatus = [];
             </div>
             <div class="clear"></div>
              <div class="clear"></div>
-			<!--<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
+			<c:if test="${sessionScope.UserType == 'PartyAnalyst' || sessionScope.UserType == 'FreeUser'}"> 
 			<div class="register-free"><span class="fleft" style="line-height:30px">Click Here for </span>
                <a href="freeUserRegistration.action"><img alt="" src="images/icons/homePage_new/updatebutton.jpg" style="padding-left:13px;" ></img></a>
             </div>
@@ -295,12 +295,9 @@ var pollStatus = [];
             <div class="register-free"><span class="fleft">Click Here for Free Registration</span>
                <a class="rf-button" href="freeUserRegistration.action"></a>
             </div>
-			</c:if>-->
+			</c:if>
 
-			<div class="register-free"><span class="fleft">
-				<a href="specialPageAction.action?specialPageId=8" title="Click here to get more information and Analysis on Andhra Pradesh 2012 Bi Election Results">Andhra Pradesh 2012 Bi Election Results & Analysis</a></span>
-            </div>
-          </div>
+		 </div>
           
           <!--BANNER SLIDE SECTION END--> 
           
