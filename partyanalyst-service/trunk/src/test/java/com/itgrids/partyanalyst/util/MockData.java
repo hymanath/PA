@@ -2179,7 +2179,7 @@ public class MockData {
 		user.setFirstName("sample");
 		user.setLastName("sample");
 		user.setParty(new Party(1L));
-		userEvents1.setRegistration(user);
+		//userEvents1.setRegistration(user);
 		userEvents1.setDescription("Village level meeting with party candidates");
 		userEvents1.setLocationType("MANDAL");
 		userEvents1.setLocationId(833L);
@@ -2208,12 +2208,15 @@ public class MockData {
 		UserEvents userEvents2 = new UserEvents();
 		
 		userEvents1.setUserEventsId(1L);
-		Registration user = new Registration();
-		user.setRegistrationId(1L);
+		//Registration user = new Registration();
+		User user=new User();
+		//user.setRegistrationId(1L);
+		user.setUserId(1L);
 		user.setFirstName("fName");
 		user.setLastName("lName");
 		user.setParty(new Party(1L));
-		userEvents1.setRegistration(user);
+		//userEvents1.setRegistration(user);
+		userEvents1.setUser(user);
 		userEvents1.setDescription("Event 1 Description.....");
 		userEvents1.setLocationType("DISTRICT");
 		userEvents1.setLocationId(1L);
@@ -2232,7 +2235,8 @@ public class MockData {
 		userEventsList.add(userEvents1);
 		
 		userEvents2.setUserEventsId(2L);
-		userEvents2.setRegistration(user);
+		//userEvents2.setRegistration(user);
+		userEvents2.setUser(user);
 		userEvents2.setDescription("Event 2 Description.....");
 		userEvents2.setLocationType("MANDAL");
 		userEvents2.setLocationId(11L);
