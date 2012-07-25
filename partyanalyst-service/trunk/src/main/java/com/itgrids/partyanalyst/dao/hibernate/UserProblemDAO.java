@@ -43,17 +43,6 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	
 	
 }
-	public List<UserProblem> getUserProblemId(Long problemId,Long userId)
-	{
-		StringBuffer query=new StringBuffer("select model.userProblemId from UserProblem model where model.problem.problemId =:problemId and model.user.userId =:userId and model.visibility.type =:type");
-		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter("problemId",problemId);
-		queryObject.setParameter("userId",userId);
-		queryObject.setParameter("type","Public");
-		
-		return queryObject.list();
-		
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved)
