@@ -230,6 +230,7 @@ font-size:18px;
 #fileDescId,#profileDescId,#descId_0,#pGallaryDescId,#galDescId
 {
 	background-color : #ffffff !important;margin-top : 8px;
+	width:214px;
 	
 }
 
@@ -411,7 +412,7 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 
 			else if(jsObj.task == "createNewGallary" && jsObj.contentType =='Photo Gallary')
 			{
-				 showPhotosGallaryCreateMsg(myResults);
+				 showPhotosGallaryCreateMsg(myResults,jsObj.createOrUpdate);
 			}
 
 			else if(jsObj.task == "candidateVisibility")
@@ -429,10 +430,10 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{
 				hideCandidatePhotoVisibility(myResults);
 			}
-		    else if(jsObj.task == "createNewGallary" && jsObj.contentType == "Photo Gallary")  
+		   /* else if(jsObj.task == "createNewGallary" && jsObj.contentType == "Photo Gallary")  
 			{ 
                showPhotoGallaryCreateMsg(myResults,jsObj.createOrUpdate);
-			}
+			}*/
 			else if(jsObj.task == "createNewGallary")  
 			{ 
                showGallaryCreateMsg(myResults,jsObj.createOrUpdate);
@@ -782,7 +783,7 @@ function buildUploadPhotosDiv()
 	if(isPublic)
 		makeThis = 'false';
 	disableButton('createPhotoGalId');
-showBusyImgWithId('ajaxImgId');
+	showBusyImgWithId('ajaxImgId');
 	var jsObj =
 		{ 
             name : galName,
@@ -861,7 +862,7 @@ function showNewsGallaryCreateMsg(result)
 	document.getElementById('newsCateName').value='';
 	document.getElementById('newsCateDesc').value='';
 }
-function showPhotosGallaryCreateMsg(myResults)
+function showPhotosGallaryCreateMsg(myResults,createOrUpdate)
 {
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var ajaxImgId = document.getElementById('ajaxImgId');
@@ -870,7 +871,10 @@ function showPhotosGallaryCreateMsg(myResults)
 	if(myResults.resultCode == 0)
 	{
 		hideAjaxImg('ajaxImgId');
-		str +='<font color="green"><b>Gallery Created Successfully.</b>';
+		if(createOrUpdate=='Create')
+		str += '<font color="green"><b>Gallery Created Successfully.</b>';
+		else
+		str += '<font color="green"><b>Gallery Updated Successfully.</b>';
 		enableButton('createPhotoGalId');
 
 	}
@@ -1931,7 +1935,7 @@ function  buildUploadNews()
 	str += '<table>';
 	str += '   <tr>';
 	str += '     <td class="tdWidth1" style="width:162px;">File Date<font class="requiredFont">*</font></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25" style="margin-top:8px;"/>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25" style="margin-top:8px;width:184px;"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1959,7 +1963,7 @@ function  buildUploadNews()
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" style="margin-top:8px;"/></td>';
-	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+	str += '       <td class="selectWidthPadd" style="padding-left:24px;"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
@@ -2090,7 +2094,7 @@ function buildUploadVideoDiv()
 	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td ><input type="text" id="fileTitleId" name="videoTitle" size="25" style="margin-top:8px;" maxlength="200"></td></tr>';
     str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
     str += '<TR>';
-	str += ' <td><b><font color="#4B74C6">File Date</font></b></td>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" style="margin-top:8px;" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
@@ -2810,7 +2814,7 @@ function updateGallary(gallaryId)
 	str +='<input type ="hidden" name = "gallaryId" id ="gallaryId" value ='+myResults.gallaryId+'>';
 	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicPhotoRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
 	str += '<div style="margin-left:45px;"><input type="radio" value="private" name="visibility" id="privatePhotoRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731;height:24px;" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740;height:24px;"></td></tr></table>';
+	str += '<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="createPhotoGalId" type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731;height:24px;" onClick="createGallary(\'Photo Gallary\',\'Update\')"><img id="ajaxImgId" width="16" height="16" style="display: none; float: right;" src="images/icons/search.gif"/></td><td><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740;height:24px;"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
