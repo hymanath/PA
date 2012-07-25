@@ -354,7 +354,7 @@ function buildProblemsData(jsObj,results)
 		bStr += '<div class="newProblemData_head"></div>';
 		bStr += '<table width="100%">';
 		bStr += '<tr><td colspan="2"><div class="problem_title">Title : ';
-		bStr += '<a class="problem_title" href="javascript:{}" onclick="openProblemDetailsWindow(\''+newProblems[i].problemHistoryId+'\')">'+newProblems[i].problem+'</a></div></td>';
+		bStr += '<a class="problem_title" href="completeProblemDetailsAction.action?problemId='+newProblems[i].problemHistoryId+'" >'+newProblems[i].problem+'</a></div></td>';
 		bStr += '<td><img width="48" height="48" src="images/icons/'+newProblems[i].problemStatus+'.png"></td>';
 		bStr += '</tr>';
 		bStr += '<tr><td colspan="2"><div class="problem_desc">Desc : '+newProblems[i].description+'</div></td></tr>';
