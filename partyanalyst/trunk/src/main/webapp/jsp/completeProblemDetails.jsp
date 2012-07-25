@@ -276,6 +276,7 @@ var cadreProblemDetails;
   
   function postFilesAndImages()
 {
+   $( "#uploadfileOutrDiv" ).dialog("close");
    if(!uploadFormValidation()){
 	var uploadHandler = {
 			upload: function(o) {
@@ -1098,7 +1099,7 @@ function getNewActivityDetails(){
 		activitiesDiv.innerHTML = str;
  }
  function buildphotodetailsData(result){
-   buildInitalfiles(result);
+   buildInitalfiles(result.problemFiles);
  }
  function buildphotodetailsDatafinal(result){
    showtotalImages(result);
