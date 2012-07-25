@@ -1628,7 +1628,7 @@ function buildResults(results,divId){
 	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
 	 callAjax(jsObj,url);
    }
-function getStates()
+function getStatesForLocationScope()
 {
   var jsObj =
 		{ 
@@ -1721,7 +1721,7 @@ function clearAllElmts(scopeId,value){
   str +='<table>';
   str +='  <tr>';
   str +='	   <td style="color:#4B74C6;font-weight:bold;">Location Scope :</td>';
-  str +='	   <td style="width:172px;padding-left:10px;"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
+ str +='<td style="width:172px;padding-left:10px;"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='</table>';
   str +='  <span id="showScopeSubs" />'; 
@@ -1759,7 +1759,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
   else if(id==3)
   {
@@ -1775,7 +1775,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
   else if(id==4)
   {
@@ -1795,7 +1795,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
   else if(id==5 || id==7)
   {
@@ -1830,7 +1830,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
   else if(id==6 || id==8)
   {
@@ -1868,7 +1868,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
   else if(id==9)
   {
@@ -1896,7 +1896,7 @@ function getLocations(id){
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForLocationScope();
   }
 }
 
