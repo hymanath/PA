@@ -1536,7 +1536,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 		try {
 			log.debug("Entered into getAllPartysNamesByUser() Method");
 
-			List<SelectOptionVO> partySelectList = new ArrayList<SelectOptionVO>(0);;
+			List<SelectOptionVO> partySelectList = new ArrayList<SelectOptionVO>(0);
 			//List<Object[]> list = partyDAO.findAllPartyNames();
 			List<Object[]> list = userPartyRelationDAO.getPartiesByUser(userId);
 
