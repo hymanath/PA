@@ -98,4 +98,6 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Object[]> getAllNewsDetails(Long candidateId,int firstResult,int maxResult,String queryType);
     
     public List<Long> getAllRecordCountInGallary(Long gallaryId);
+    
+    public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList);
 }
