@@ -1437,7 +1437,7 @@ function getNewActivityDetails(){
 		  <h2>Activities</h2>
 		
        <s:if test="completeProblemDetailsVO.problemRecentActivity == null || completeProblemDetailsVO.problemRecentActivity.size() == 0 " >	
-         <div>No Problem Activities are taken place</div>
+         <div>No Related Problems Exists</div>
       </s:if>
 	  <s:else>
 	  <div id="problemactivities">
