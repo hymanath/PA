@@ -71,6 +71,16 @@ table {
     font-size: 19px;
 	line-height: 30px;
 }
+
+.clear-b{clear:both;}
+
+#postedcomments ul{list-style-type:none;margin:0px;}
+#postedcomments ul li{display:inline-block;width:90%;clear:both;margin:7px 0px; background:#f5f5f5;padding:5px;}
+#postedcomments ul li p{width:98%;background:#fcfcfc;clear:both;display:table;padding:5px;}
+#postedcomments ul li div{float:left;display:inline-block;margin:5px 5px;}
+#postedcomments ul li .commentimage img{width:40px;height:40px;vertical-align:middle;}
+.commentname{font-weight:bold;font-size:14px;color:#06ABEA;}
+.commentdate{color:#888;font-size:10px;}
 </style>
 
 <script type="text/javascript">
@@ -806,8 +816,8 @@ function buildcomments(myResults){
 	  str+='<ul>';
 	for(var i in myResults){
      str +='<li>';
-	 str+='<div>'+myResults[i].comment+'';
-     str+='<small class="label label-info pull-right"> by '+myResults[i].firstName+' '+myResults[i].lastName+' </small></div>';
+	 str+='<div class="commentimage"><img alt="" src="http://placehold.it/45x45"> </div><div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">July 23rd, 2012 at 2:28 pm</span></div>';
+	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
 	 }
 	str+='</ul>';
@@ -1078,7 +1088,7 @@ function getNewActivityDetails(){
 		if(result.problemRecentActivity[i].problemStatus != null){
 		str+='   to '+result.problemRecentActivity[i].problemStatus+'';
 		}
-		str+=' <small class="label label-info pull-right"> ?  On '+result.problemRecentActivity[i].updatedDate+' </small>';
+		str+=' <small class="label label-info pull-right">  On '+result.problemRecentActivity[i].updatedDate+' </small>';
         str+='</div>';
 		str+='</li>';
 		}
@@ -1284,7 +1294,7 @@ function getNewActivityDetails(){
       </div>
 
 
-<div class="row m-t10">
+<div class="row clear-b" style="margin:5px;padding:5px;">
 		<div class="span pull-left">
                      <p>${completeProblemDetailsVO.problemDesc}</p>
 					
@@ -1415,21 +1425,7 @@ function getNewActivityDetails(){
 		</s:if>
 		</div>
         </li>
-		<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
-        <li class="span6">
-
-		<h3>Comments:</h3>
-		 <div><div><textarea class="textareaid" id="commenttext"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info">Post</a></div></div>
-         <div id="postedcomments"></div>		
-		</li>
-		</s:if>
-		<s:else>
-		 <li class="span6">
-		  <h3>Comments:</h3>
-            <div id="postedcomments"></div>		
-		</li>
-
-		</s:else>
+		
       </ul></p>
           </div>
           <div id="lB" class="tab-pane">
@@ -1437,7 +1433,7 @@ function getNewActivityDetails(){
 		  <h2>Activities</h2>
 		
        <s:if test="completeProblemDetailsVO.problemRecentActivity == null || completeProblemDetailsVO.problemRecentActivity.size() == 0 " >	
-         <div>No Related Problems Exists</div>
+         <div>No Problem Activities are taken place</div>
       </s:if>
 	  <s:else>
 	  <div id="problemactivities">
@@ -1481,7 +1477,7 @@ function getNewActivityDetails(){
 		<s:if test="%{#recentActivities.problemStatus != null}" >
 		   to <s:property value="problemStatus"/>
 		</s:if>
-		 <small class="label label-info pull-right"> ?  On <s:property value="updatedDate"/> </small>
+		 <small class="label label-info pull-right">  On <s:property value="updatedDate"/> </small>
         </div>
 		</li>
 		</s:iterator>
@@ -1497,7 +1493,22 @@ function getNewActivityDetails(){
         </div>
       </div>
 
-					
+			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
+        <div class="span8">
+
+		<h3>Comments:</h3>
+		 <div><div>
+		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info">Post</a></div></div>
+         <div id="postedcomments"></div>		
+		</div>
+		</s:if>
+		<s:else>
+		 <div class="span8">
+		  <h3>Comments:</h3>
+            <div id="postedcomments"></div>		
+		</div>
+
+		</s:else>		
 </div> <!-- Left Panel _ Closed-->
 
 <div class="span3 left-panel" >
