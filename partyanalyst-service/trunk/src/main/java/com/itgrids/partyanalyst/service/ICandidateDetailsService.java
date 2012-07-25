@@ -187,4 +187,8 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getAllPartyDetailsAssignedToAUser(Long userId);
 	 
 	 public ResultStatus deleteUserPartyRelation(String userPartyRelationIds);
+	 
+	 public List<CandidateCommentsVO> getAbuseComment(String fromDate, String toDate,String selectstatus);
+	 
+	 public ResultStatus controlAbuseComments(List<CandidateCommentsVO> VO,String actionType);
 }
