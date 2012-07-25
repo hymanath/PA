@@ -134,6 +134,8 @@
 		<pattern>/censusReportAction*</pattern>
 		<pattern>/electionComparisonReportAction*</pattern>
 		<pattern>/partyPerformanceReport*</pattern>
+		<pattern>/abuseCommentaction*</pattern>
+		
     </decorator>
 
 </decorators>
