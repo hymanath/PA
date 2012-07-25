@@ -38,7 +38,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	
 	public List<Long> getUserProblemIdByUserIdAndProblemId(Long userId, Long problemId);
 	
-	public List<UserProblem> getUserProblemId(Long problemId,Long userId);
 	
 	public List<Object> getAllProblemsOfCurrentDateByFreeUser(Date firstDate,Date lastDate,String isApproved);
 
