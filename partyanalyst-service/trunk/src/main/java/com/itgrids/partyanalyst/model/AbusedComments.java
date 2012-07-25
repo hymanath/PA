@@ -36,6 +36,7 @@ public class AbusedComments extends BaseModel implements Serializable{
 	
 	private Long userId;
 	private Long commentId;
+	private String isDelete;
 	
 	
 	@Id
@@ -109,6 +110,14 @@ public class AbusedComments extends BaseModel implements Serializable{
 
 	public void setCommentId(Long commentId) {
 		this.commentId = commentId;
+	}
+	@Column(name = "is_delete")
+	public String getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
 	}
 	
 	
