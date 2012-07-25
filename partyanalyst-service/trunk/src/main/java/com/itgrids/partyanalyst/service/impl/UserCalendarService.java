@@ -347,7 +347,7 @@ public class UserCalendarService implements IUserCalendarService {
 			ImportantDatesVO importantDatesVO;
 			calendar.setTime(startDate);
 			importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
-			importantDatesVOs.add(importantDatesVO);
+			//importantDatesVOs.add(importantDatesVO);
 			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
 				importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
 				importantDatesVOs.add(importantDatesVO);
