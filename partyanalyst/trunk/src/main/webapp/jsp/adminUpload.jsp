@@ -225,6 +225,10 @@
 										<a class="alinkstyle" href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval :&nbsp;(${problemBeanVO.discommentCount})</b>
 										</a>
 
+									</span><br>
+									
+									<span class="fontStyle" style="margin-left: 28px;">Abuse Comments&nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href='<s:url action="abuseCommentaction"/>'>Click Here</a>
 									</span>
 
 									<h4 class="tdsubstyle" style="margin-bottom: 10px;">Other Approvals
@@ -269,6 +273,7 @@
 										To Manage Candidate Profiles :
 										<a class="alinkstyle" href='<s:url action="profileManagePageAction"/>'><b>Click Here</b></a>
 									</span><br>
+									
                                     </fieldset>
                                 </td>
 								
