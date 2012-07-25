@@ -333,6 +333,8 @@
 		<property name="partySubscriptionsDAO" ref="partySubscriptionsDAO"/>
 		<property name="specialPageSubscriptionsDAO" ref="specialPageSubscriptionsDAO"/>
 		<property name="userPartyRelationDAO" ref="userPartyRelationDAO"/>
+		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
+		<property name="commentDAO" ref="commentDAO"/>
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
