@@ -261,17 +261,7 @@ public class DataApprovalService implements IDataApprovalService {
 					problemComments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					problemCommentsDAO.save(problemComments);
 					
-					List<UserProblem>  userProblemId = userProblemDAO.getUserProblemId(approvalInfoVO.getProblemHistoryId(),approvalInfoVO.getUserId());
-					 
-					problemProgress.setUserProblem(userProblemId.get(0));
-					problemProgress.setProblemActivity(problemActivityDAO.get(11l));
-					problemProgress.setComment(commentDAO.save(comment));
-					problemProgress.setVisibility(visibilityDAO.get(1l));
-					problemProgress.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
-					problemProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					problemProgress.setIsDelete(IConstants.FALSE);
-					problemProgressDAO.save(problemProgress);
 					/*List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
 					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
 					if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
