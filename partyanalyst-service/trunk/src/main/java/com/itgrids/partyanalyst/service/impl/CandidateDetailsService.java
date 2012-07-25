@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.Icon;
-
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.util.StringUtils;
@@ -30,6 +28,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -39,6 +38,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICandidateUpdatesEmailDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
+import com.itgrids.partyanalyst.dao.ICommentDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentTypeDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -85,12 +85,13 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.MetaInfoVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AbusedComments;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidatePageCustomPages;
 import com.itgrids.partyanalyst.model.CandidateProfileDescription;
@@ -98,6 +99,7 @@ import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.CandidateSubscriptions;
 import com.itgrids.partyanalyst.model.CandidateUpdatesEmail;
 import com.itgrids.partyanalyst.model.Category;
+import com.itgrids.partyanalyst.model.Comment;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ContentType;
 import com.itgrids.partyanalyst.model.CustomPage;
@@ -181,8 +183,26 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IPartySubscriptionsDAO partySubscriptionsDAO;
 	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
 	private IUserPartyRelationDAO userPartyRelationDAO;	
+	private IAbusedCommentsDAO abusedCommentsDAO;
+	private ICommentDAO commentDAO;
 	
 	
+	public ICommentDAO getCommentDAO() {
+		return commentDAO;
+	}
+
+	public void setCommentDAO(ICommentDAO commentDAO) {
+		this.commentDAO = commentDAO;
+	}
+
+	public IAbusedCommentsDAO getAbusedCommentsDAO() {
+		return abusedCommentsDAO;
+	}
+
+	public void setAbusedCommentsDAO(IAbusedCommentsDAO abusedCommentsDAO) {
+		this.abusedCommentsDAO = abusedCommentsDAO;
+	}
+
 	public IPartySubscriptionsDAO getPartySubscriptionsDAO() {
 		return partySubscriptionsDAO;
 	}
@@ -3836,5 +3856,117 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			return resultStatus;
 		}
 	}
+	
+	public List<CandidateCommentsVO> getAbuseComment(String fromDate, String toDate,String selectstatus)
+	 {
+		 List<CandidateCommentsVO> candidateComments = new ArrayList<CandidateCommentsVO>();
+		 if(log.isDebugEnabled())
+			 log.debug("Enterd into getAbuseComment()method of CandidateDetailsServive......");
+			try{
+				
+				
+				Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+				Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+				
+				
+				List comments = abusedCommentsDAO.getAllAbuseComment(firstDate, secondDate,selectstatus);
+				candidateComments = commentsDetailsFromAbuseCommeentList(comments);
+							
+			}catch(Exception e){
+				log.error("Exception in getAbuseComment in candidate details service",e);
+			}
+			return candidateComments;
+	 }
+	public List<CandidateCommentsVO> commentsDetailsFromAbuseCommeentList(List comments)
+	{
+		List<CandidateCommentsVO> commentsList = new ArrayList<CandidateCommentsVO>();
+		 if(log.isDebugEnabled())
+			 log.debug("commentsDetailsFromList()method ......");
+		
+		if(comments != null || comments.size() > 0)
+		{
+			
+			for (int i = 0; i < comments.size(); i++)
+			{  
+				String username = null;
+				CandidateCommentsVO comment = new CandidateCommentsVO();
+				Object[] params = (Object[])comments.get(i);
+				comment.setCandidate(params[0].toString()!= null ? params[0].toString():"");
+				if(params[1].toString()!=null && params[2].toString()!=null)
+					 username = params[1].toString()+" "+params[2].toString();
+				
+				comment.setPostedBY(username);
+				comment.setMessage(params[3].toString()!= null ? params[3].toString():"");
+				
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.TRUE))
+					comment.setStatus(IConstants.APPROVED);
+				if(params[4] != null && params[4].toString().equalsIgnoreCase(IConstants.FALSE))
+					comment.setStatus(IConstants.NEW);
+				if(params[5] != null && params[5].toString().equalsIgnoreCase(IConstants.TRUE))
+					comment.setStatus(IConstants.REJECTED);
+				comment.setTime(params[6].toString() != null ? params[6].toString():"");
+				
+				commentsList.add(comment);
+				
+			}
+		}			
+		
+		return commentsList;
+	}
+	public ResultStatus controlAbuseComments(List<CandidateCommentsVO> VO,String actionType)
+	 {
+			String status = null;
+			String isDelete = null;
+			String isAbused = null;
+			ResultStatus resultStatus = new ResultStatus();
+			DateUtilService dateUtilService = new DateUtilService();
+			
+			try {
+				if(log.isDebugEnabled())
+					log.debug("Enterd into controlMessages in candidate details service");
+				
+				if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+				{
+					status = IConstants.TRUE;
+					isAbused = IConstants.TRUE;
+				}
+				
+				else if(actionType.equalsIgnoreCase(IConstants.REJECTED))
+				{
+					isDelete = IConstants.TRUE;
+					isAbused = IConstants.FALSE;
+				}
+				
+	           for(CandidateCommentsVO candidateCommentsVO :VO)
+	           {
+	        	   
+	        	   Long id = candidateCommentsVO.getMessageToCandidateId();
+	        	   if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+					{
+	        		   if(candidateCommentsVO.getMessage().equalsIgnoreCase(IConstants.REJECTED))
+	        			    isDelete = IConstants.FALSE;
+					}
+
+	        	   AbusedComments abusedComments =  abusedCommentsDAO.get(id);
+	        	   Comment comment = abusedComments.getComment();
+	        	   comment.setIsAbused(isAbused);
+	        	   comment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+	        	   commentDAO.save(comment);
+	        	   
+	        	   abusedCommentsDAO.controlAbuseComments(id,status,isDelete);
+	        	   
+	        	   
+	           }
+	           resultStatus.setResultState(1l);
+				
+			} catch (Exception e) {
+				if(log.isDebugEnabled())
+					log.error("Exception in controlMessages in candidate details service",e);
+				 resultStatus.setResultState(0l);
+				 resultStatus.setExceptionEncountered(e);
+			}
+			return resultStatus;
+	 }
+	 
 	
 }
