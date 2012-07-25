@@ -109,7 +109,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		query.append(" select model.problem.problemId, ");
 		query.append(" model.problem.title,model.problem.description,model.problem.identifiedOn,model.problem.existingFrom, ");
 		query.append(" model.problem.impactLevelValue,model.problem.regionScopes.regionScopesId,model.problem.regionScopes.scope, ");
-		query.append(" model.problem.isApproved,model.userProblemId from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) ");
+		query.append(" model.problem.isApproved,model.userProblemId from UserProblem model where (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type = '"+IConstants.PUBLIC+"'");
 		
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
@@ -155,7 +155,8 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
 			query.append("where model.user.userId = ? and model.problem.isApproved = '"+IConstants.FALSE+"'");	
 		
-		query.append(" and (model.problem.isDelete = 'false' or model.problem.isDelete is null) ");
+		query.append(" and (model.problem.isDelete = 'false' or model.problem.isDelete is null) and model.visibility.type ='"+IConstants.PUBLIC+"'");
+		
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
@@ -168,13 +169,13 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemCount(Long userId)
 	{
-		return getHibernateTemplate().find("select count(distinct model.problem.problemId),model.problem.isApproved from UserProblem model where model.user.userId = ? and (model.problem.isDelete ='false'or model.problem.isDelete is null) group by model.problem.isApproved",userId);
+		return getHibernateTemplate().find("select count(distinct model.problem.problemId),model.problem.isApproved from UserProblem model where model.user.userId = ? and model.visibility.type = '"+IConstants.PUBLIC+"' and (model.problem.isDelete ='false'or model.problem.isDelete is null) group by model.problem.isApproved",userId);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long userId)
 	{
-		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
+		return getHibernateTemplate().find("select count(distinct model.problem.problemId) from UserProblem model where model.user.userId != ? and model.visibility.type = '"+IConstants.PUBLIC+"' and (model.problem.isDelete is null or model.problem.isDelete = 'false') and model.problem.isApproved = 'true' ",userId);
 	}
 	@SuppressWarnings("unchecked")
 	public String getCommonDataForAllProblems(){
