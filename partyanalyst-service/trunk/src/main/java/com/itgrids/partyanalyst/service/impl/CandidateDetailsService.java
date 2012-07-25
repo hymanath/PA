@@ -2292,7 +2292,7 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 	 
 	 String queryStr1 = "where model.gallary.contentType.contentType = 'News Gallary'";
 	 List<Long> newsList = fileGallaryDAO.getRecentlyUploadedFileIds(startIndex, maxResults, queryStr1);
-	 newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsList(newsList);
+	 newsGallaryresultList = fileGallaryDAO.getFileGallaryByFileIdsListForNews(newsList);
 	 resultList = setToFileVO(newsGallaryresultList);
 	 resultMap.put("NewsGallary", resultList);
 	 
