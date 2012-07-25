@@ -395,6 +395,15 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList)
+	{
+		Query query = getSession().createQuery("select model from FileGallary model where model.file.fileId in (:fileIdsList) and model.isDelete = 'false' " +
+				"and model.isPrivate = 'false' and model.file.regionScopes.regionScopesId < 4 order by model.file.fileDate desc,model.updateddate desc");
+		query.setParameterList("fileIdsList",fileIdsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsByGalleryId(List galleryIds){
 		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +
 		 		"model.file.fileTitle,model.file.fileDescription,model.file.fileType.type,model.file.regionScopes.scope," +
