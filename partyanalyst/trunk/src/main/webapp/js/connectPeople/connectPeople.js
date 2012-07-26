@@ -617,7 +617,7 @@ function showStatus(results)
 	var str = '';
 	str += '<div id="statusMessageDIV">';
 	if(results.resultCode==0){
-		str += '<span style="color:green;font-weight:bold;">Successfuly Connected</span>';	
+		str += '<span style="color:green;font-weight:bold;">Successfuly Rejected</span>';	
 	}else if(results.resultCode==1){
 		str += '<span style="color:red;font-weight:bold;">There was an error in processing your request</span>';
 	}		
