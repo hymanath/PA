@@ -1,4 +1,4 @@
-/*!
+ /*!
  * Bootstrap v2.0.4
  *
  * Copyright 2012 Twitter, Inc
@@ -730,12 +730,14 @@ form {
 }
 
 fieldset {
-  padding: 0;
+ /* padding: 0;  /*comment because impact in special page*/
   margin: 0;
   border: 0;
 }
 
-legend {
+/**Impact in special pages so commented legend*/
+
+/*legend {
   display: block;
   width: 100%;
   padding: 0;
@@ -745,7 +747,7 @@ legend {
   color: #333333;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
-}
+}*/
 
 legend small {
   font-size: 13.5px;
@@ -901,7 +903,9 @@ input[type="file"] {
 }
 
 select {
-  width: 220px;
+  /**changed to 100px because datatable select box is effecting */
+  /*width: 220px;*/
+  Width:100px;
   border: 1px solid #bbb;
 }
 
