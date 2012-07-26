@@ -597,7 +597,10 @@ function getCadresResults(btnType)
 	var boothSelectElmt = document.getElementById("boothField_s");
 	var genderRadioEls = document.getElementsByName("genderTypeRadio");
 	var parliamentConstituencyEls = document.getElementById("parliamentConstituencyField_s");
-	var genderOption; 
+	var genderOption;
+	var bloodGroupEle = document.getElementById("bloodGroupId");
+	var bloodGroupId = bloodGroupEle.options[bloodGroupEle.selectedIndex].value;
+	
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
@@ -809,6 +812,7 @@ function getCadresResults(btnType)
 			performSearch		: PERFORMSEARCH,
 			txtAreaValue		: SMSTEXTAREAVALUE,
 			includeCadreName	: SMSINCLUDECADRENAME,
+			bloodGroupId		: bloodGroupId,
 			taskType			: btnType,
 			senderName			: SENDERNAME,
 			task				: taskName	
