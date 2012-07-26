@@ -3448,7 +3448,7 @@
 		
 		<action name="getAvgProblemRatingAction" class="problemCompleteInfoAction" method="ajaxCallHandler">
 			<result type="json" name="success">
-				<param name="root">avgRatingOfAProblem</param>
+				<param name="root">completeProblemDetailsVO</param>
 			</result>
 		</action>
 		
