@@ -191,7 +191,12 @@ function buildCadreInfo(jsObj,results)
 	str += '				<th style="width:125px">Date Of Birth</th>';
 	str += '				<th>:</th>';
 	str += '				<td>'+results.dateOfBirth+'</td>';
-	str += '			</tr>';	
+	str += '			</tr>';
+	str += '				<th style="width:125px">Blood Group</th>';
+	str += '				<th>:</th>';
+	str += '				<td>'+results.bloodGroupStr+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">No Of Family Members </th>';
 	str += '				<th> : </th>';

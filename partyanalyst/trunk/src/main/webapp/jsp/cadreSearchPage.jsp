@@ -426,7 +426,13 @@ function setCadreIdToProblem()
 						<input type="radio" name="genderTypeRadio" value="Male"/> Male
 						<input type="radio" name="genderTypeRadio" value="Female"/> Female
 					</td>
-				</tr>			
+				</tr>
+				
+				<tr>
+					<th align="left">&nbsp;&nbsp;&nbsp;<s:label for="bloodGroupId" id="bloodGroupLabel" theme="simple" value="Blood Group"/></th>
+					<td>&nbsp;&nbsp;<s:select id="bloodGroupId" cssClass="regionSelect" theme="simple" style="width:75px;" list="bloodGroupList" listKey="id" listValue="name"></s:select></td>
+				</tr>
+
 				</table>
 			</div>
 

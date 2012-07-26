@@ -834,6 +834,11 @@
 			</tr>
 		
 		<tr>
+			<td width="162"><s:label for="bloodGroupId" id="bloodGroupId" value="Blood Group"/></td>
+			<td align="left"> <s:select id="bloodGroupId" cssClass="regionSelect" name="bloodGroup" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select></td>
+		</tr>
+		
+		<tr>
 			<td width="162"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
 			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="1" maxlength="2"/></td>
 
