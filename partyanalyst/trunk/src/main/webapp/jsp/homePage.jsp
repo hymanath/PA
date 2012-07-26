@@ -635,20 +635,18 @@ var pollStatus = [];
         <!--SNEAK PEAK - PARTY ANALYST SECTION START-->
         
         <div class="sneak-peak-sec" style="width:580px;padding:0px;margin:5px;border-radius:5px;position:relative;border:1px solid #cccccc;">
-          <span class="problem-h1" style="margin-bottom: 30px; padding-bottom: 21px; padding-top: 7px;"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
+          <div class="problem-h1"> <img src="images/alerticons.png" alt="Problem Icon" class="problemicon"/><span style="display:table;position:relative;width:auto;margin-left:75px;"><h2>PROBLEMS?</h2></span>
 		  <h2 class="problem-h2"><b><font style="color:#000;"> New or Existing</font></b> - Our Platform elevates your problems to the external world.</h2>
 
-		  <a href="problemSearchAction.action" class="problem-register" style="margin-right: 290px; margin-bottom: -30px; margin-top: 8px;">View All Problems</a>
+		  <a href="problemSearchAction.action" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">View All Problems</a>
 
 		  <c:if test="${sessionScope.hasFreeUserRole != true && sessionScope.hasPartyAnalystUserRole != true}"> 
-			 <a href="javascript:{}" onclick="showNotLogIn();" class="problem-register" style="display: inline;
-    float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
+			 <a href="javascript:{}" onclick="showNotLogIn();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
 		   </c:if>
 			<c:if test="${sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true}">
-		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="problem-register" style="display: inline;
-    float: none;margin: 0px 0px 0px 331px;">Post Your Problems</a>
+		     <a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard();" class="btn btn-danger btn-xlarge pull-right" style="margin:5px;">Post Your Problems</a>
 			</c:if>
-		</span>
+		</div>
 		<div id="logInDiv"></div>
 		  <!-- <h2 class="problem-cont-h2"><b><font style="color:#F55C41"> Post your problem</font></b> -It's quick and free</h2>-->
            <!-- <c:if test="${sessionScope.UserType != 'PartyAnalyst' && sessionScope.UserType != 'FreeUser'}"> 
@@ -1012,7 +1010,7 @@ function showProblemDetails(result)
 	for(var i in result)
 	{
 	   str += '<div class ="problemheadClass">';
-	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><img width="20" height="20" src="images/icons/accept.png" title="Like"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font></td> <td><img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
+	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="problemCompleteInfoAction.action?problemHistoryId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><img width="20" height="20" src="images/icons/accept.png" title="Like"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font></td> <td><img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
 	   str += '   <div style="padding-top:5px;font-family:arial;">'+result[i].description+' </div>';
 	   if(result[i].url != null){
 	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td><a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'"> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+'</a> &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
