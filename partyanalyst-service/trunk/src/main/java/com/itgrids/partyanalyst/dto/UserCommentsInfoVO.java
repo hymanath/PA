@@ -14,6 +14,7 @@ public class UserCommentsInfoVO extends ResultStatus{
 	private String lastName;
 	private Long userId;
 	private String date;
+	private String profileImg;
 	
 	public Long getTotalResultsCount() {
 		return totalResultsCount;
@@ -95,6 +96,14 @@ public class UserCommentsInfoVO extends ResultStatus{
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}
 		
 	
