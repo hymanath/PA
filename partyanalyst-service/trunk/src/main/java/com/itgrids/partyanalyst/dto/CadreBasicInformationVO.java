@@ -30,10 +30,16 @@ public class CadreBasicInformationVO implements Serializable {
 	private Boolean isAndSearch;	//search based on AND/OR
 	private Boolean isOrSearch;
 	private String genderSearchType;
-	
+	private Long bloodGroupId;
 	
 	//Getters and Setters
 	
+	public Long getBloodGroupId() {
+		return bloodGroupId;
+	}
+	public void setBloodGroupId(Long bloodGroupId) {
+		this.bloodGroupId = bloodGroupId;
+	}
 	public String getSkillsSearchType() {
 		return skillsSearchType;
 	}

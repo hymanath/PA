@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
@@ -145,6 +147,15 @@ public class CadreManagementService {
 	private IAssignedProblemProgressDAO assignedProblemProgressDAO;
 	private IProblemActivityDAO problemActivityDAO;
 	private IUserDAO userDAO;
+	private IBloodGroupDAO bloodGroupDAO;
+	
+	public IBloodGroupDAO getBloodGroupDAO() {
+		return bloodGroupDAO;
+	}
+
+	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
+		this.bloodGroupDAO = bloodGroupDAO;
+	}
 	
 	public IUserDAO getUserDAO() {
 		return userDAO;
@@ -482,6 +493,7 @@ public class CadreManagementService {
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
+				cadre.setBloodGroupId(cadreInfo.getBloodGroup() != 0 ? cadreInfo.getBloodGroup() : null);
 				
 				// setting address
 				currentAddress.setHouseNo(cadreInfo.getHouseNo());
@@ -1878,6 +1890,8 @@ public class CadreManagementService {
 		cadreInfo.setFirstName(cadre.getFirstName());
 		cadreInfo.setMiddleName(cadre.getMiddleName());
 		cadreInfo.setLastName(cadre.getLastName());
+		cadreInfo.setBloodGroup(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroupId() : null);
+		cadreInfo.setBloodGroupStr(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroup() : "");
 		cadreInfo.setFatherOrSpouseName(cadre.getFatherOrSpouseName()!=null?cadre.getFatherOrSpouseName():"");
 		cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null?cadre.getNoOfFamilyMembers():"");
 		cadreInfo.setNoOfVoters(cadre.getNoOfVoters());
@@ -4279,6 +4293,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String cdType         = cadreInputVO.getCadreType();
 			String searchType     = cadreInputVO.getSearchType();
 			String name           = cadreInputVO.getCadreName().trim();
+			Long bloodGroupId 	  = cadreInputVO.getBloodGroupId();
 			String taskName 	  = cadreInputVO.getTaskName();
 			String SearchCriteria = new String();
 			
@@ -4294,6 +4309,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String mobileStr = new String();
 			String cadreNameStr = null;
 			String roleStr = null;
+			String bloodGroupStr = "";
 		
 			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
 			{
@@ -4408,6 +4424,9 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			else 
 				genderStr =" ";
 			
+			if(!bloodGroupId.equals(0L))
+				bloodGroupStr = " and model.bloodGroup.bloodGroupId = "+bloodGroupId + "";
+			
 			if(windowTask.equalsIgnoreCase("Sms"))
 				mobileStr=" and length(model.mobile) > 0";
 			
@@ -4438,7 +4457,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			else if(taskName.equalsIgnoreCase(IConstants.PROBLEM_ADDING))
 				roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
 			 
-			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr).get(0);
+			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr).get(0);
 			
 			if(maxResult < 0)
 			{
@@ -4449,7 +4468,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreInfoListTotal;
 			}
 			
-			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,sortOption,order,startIndex,maxResult);
+			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,bloodGroupStr,sortOption,order,startIndex,maxResult);
 			
 			for(Long id:cadreIds)
 			{
@@ -4557,6 +4576,39 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.debug(updated +" Photo Upadted..");
 			return IConstants.SUCCESS;
 		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	/**
+	 * This method will return all Blood Group Types
+	 * 
+	 * @author kamalakar Dandu
+	 * @return List
+	 * 
+	 */
+	public List<SelectOptionVO> getAllBloodGroupTypes()
+	{
+		log.debug("Entered into getAllBloodGroupTypes() Method");
+		try{
+			List<SelectOptionVO> bloodGroups = null;
+			
+			List<BloodGroup> list = bloodGroupDAO.getAll();
+			
+			if(list != null && list.size() > 0)
+			{
+				bloodGroups = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(BloodGroup bloodGroup : list)
+				{
+					selectOptionVO = new SelectOptionVO(bloodGroup.getBloodGroupId(),
+							bloodGroup.getBloodGroup());
+					bloodGroups.add(selectOptionVO);
+				}
+			}
+			return bloodGroups;
+		}catch (Exception e) {
+			log.error("Exception occured in getAllBloodGroupTypes() Method - "+e);
 			return null;
 		}
 	}
