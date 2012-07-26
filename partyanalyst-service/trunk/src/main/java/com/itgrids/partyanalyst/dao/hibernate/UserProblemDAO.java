@@ -25,7 +25,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 	public List<Long> getAllValidProblemIds(Integer startIndex, Integer maxIndex)
 	{
 		Query query = getSession().createQuery("select model.userProblemId from UserProblem model where model.visibility.type = ? and model.isOwner = ? " +
-				" and model.problem.isApproved = ?  and model.problem.isDelete = ? and model.problem.regionScopes.regionScopesId <= 5 ");
+				" and model.problem.isApproved = ?  and model.problem.isDelete = ? and model.problem.regionScopes.regionScopesId <= 5 order by model.problem.problemId desc ");
 		 
 		query.setParameter(0,IConstants.PUBLIC);
 		query.setParameter(1,IConstants.TRUE);
