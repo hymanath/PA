@@ -6733,6 +6733,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				result.setExistingFrom(problemDetails.getProblem().getExistingFrom().toString());
 				result.setIdentifiedOn(problemDetails.getProblem().getIdentifiedOn().toString());
 				//result.setPostedPersonName(problemDetails.getUser().getFirstName().toString());
+				result.setPostedDate(problemDetails.getProblem().getIdentifiedOn().toString());
 				result.setProblemImpactLevelId(problemDetails.getProblem().getRegionScopes().getRegionScopesId());
 				result.setName(problemDetails.getUser().getFirstName().toString());
 				result.setLastName(problemDetails.getUser().getLastName().toString());
