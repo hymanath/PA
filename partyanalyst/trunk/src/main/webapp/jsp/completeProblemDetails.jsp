@@ -12,6 +12,16 @@
 <script src="styles/assets/js/bootstrap-dropdown.js"></script>
 <script src="styles/assets/js/bootstrap-tab.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/rating/jquery.rateit.js" type="text/javascript"></script>
+<link href="styles/rating/rateit.css" rel="stylesheet" type="text/css">
+
+
+<link href="styles/rating/bigstars.css" rel="stylesheet" type="text/css">
+    <link href="styles/rating/antenna.css" rel="stylesheet" type="text/css">
+    <!-- syntax highlighter -->
+    <link href="styles/rating/shCore.css" rel="stylesheet" type="text/css">
+    <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
+	
 <style>
 .button {
     background-attachment: scroll;
@@ -760,17 +770,37 @@ function callAjax(jsObj,url)
 							}
 							if(jsObj.task =="saveProblemRatingDetails")
 						    {
-							saveProblemRatingResults(myResults);
-						  	
+							getAvgProblemRating();
+							document.getElementById("initialchangDiv").style.display = 'none';
+							document.getElementById("afterchangeDiv").style.display = 'block';
+							$('#rateitbyuserchange').rateit('value',jsObj.rating);
+						  	  $("#rateitbyuserchange").rateit('readonly',!$("#rateitbyuserchange").rateit('readonly'));
 						     }
 						    else if(jsObj.task =="getAvgProblemRating")
 						    {
-							getAvgProblemRatingResults(myResults);
-							
+							if(myResults != null && myResults != '' && myResults != 'null'){
+							   if(document.getElementById("rateitmainrating")!= null)
+							   $('#rateitmainrating').rateit('value',parseFloat(myResults) );
+							    if(document.getElementById("rateitavgall")!= null){
+								 if(myResults.avgRating != null){
+							       $('#rateitavgall').rateit('value',parseFloat(myResults.avgRating) );
+								   document.getElementById("avgratingnumeric").innerHTML = myResults.avgRating; 
+								  } 
+								 else{
+								    $('#rateitavgall').rateit('value',0);
+									document.getElementById("avgratingnumeric").innerHTML = 0;
+									}
+									if(myResults.totalpeople != null){
+									  document.getElementById("avgratpeplcount").innerHTML = myResults.totalpeople;
+									}else{
+									  document.getElementById("avgratpeplcount").innerHTML = 0;
+									}
+								}
+							}
 						    }
 						   else if(jsObj.task =="saveProblemRatingDetails")
 						   {
-							getRateWiseCountOfAProblem(myResults);
+							//getRateWiseCountOfAProblem(myResults);
 							
 						   }
 						   else if(jsObj.task =="getproblemcomments")
@@ -817,7 +847,11 @@ function buildcomments(myResults){
 	  str+='<ul>';
 	for(var i in myResults){
      str +='<li>';
-	 str+='<div class="commentimage"><img alt="" src="http://placehold.it/45x45"> </div><div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">July 23rd, 2012 at 2:28 pm</span></div>';
+	 if(myResults[i].profileImg != null)
+	   str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/'+myResults[i].profileImg+'" /> </div>';
+	 else
+	  str+='<div class="commentimage"><img alt="" src="http://placehold.it/45x45" > </div>';
+	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span></div>';
 	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
 	 }
@@ -1273,16 +1307,32 @@ function getNewActivityDetails(){
 			<li class="divider"></li>            
           </ul>
          </div>
-		 <div class="m-t10">
-                        <span >
+		<div class="m-t10">
+                     <!--    <span >
 						   
 							<a href=# class="icon-star"></a>
 							<a href=# class="icon-star"></a>
 							<a href=# class="icon-star-empty"></a>
 							<a href=# class="icon-star-empty"></a>
 							<a href=# class="icon-star-empty"></a>
-						</span></div>
+						</span> -->
+						</div>
+						<div class="rateit" id="rateitmainrating"></div>
         </div>
+		<script type="text/javascript">
+		<s:if test="completeProblemDetailsVO.rating == null " >
+	$(document).ready(function() {
+	  $("#rateitmainrating").rateit('value',0);
+	  $("#rateitmainrating").rateit('readonly',!$("rateitmainrating").rateit('readonly'));
+	  });
+	</s:if>
+	<s:else>
+	$(document).ready(function() {
+	  $("#rateitmainrating").rateit('value',parseFloat(${completeProblemDetailsVO.rating}));
+	  $("#rateitmainrating").rateit('readonly',!$("#rateitmainrating").rateit('readonly'));
+	  });
+	</s:else>
+		</script>
         </s:if>
 		
 		  <div class="row m-t10">
@@ -1493,7 +1543,28 @@ function getNewActivityDetails(){
           </div>-->
         </div>
       </div>
-
+<div id="userratingchangedDiv" >
+    <s:if test="completeProblemDetailsVO.isAlreadyRated =='true' ">
+	<div class="pull-left" style="margin-left:150px;"> <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuser"></div></div>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	  $('#rateitbyuser').rateit('value',parseFloat(${completeProblemDetailsVO.ratingByyou}) );
+	  $("#rateitbyuser").rateit('readonly',!$("#rateitbyuser").rateit('readonly'));
+	});
+	</script>
+	</s:if>
+	<s:if test="completeProblemDetailsVO.isAlreadyRated !='true' && completeProblemDetailsVO.userStatus != 'notlogged' ">
+     <div id="initialchangDiv" class="pull-left" style="margin-left:150px;"><div style="color: #06ABEA;">Are you facing the same Problem ? </div>
+	 <input type="range"  step="1" id="rateitbyuser" >
+     <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false"  data-rateit-ispreset="true"
+    data-rateit-min="0" data-rateit-max="5"></div>	
+      </div>
+	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:150px;" >
+	    <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuserchange"></div>
+	  </div>
+	</s:if>
+	<div class="pull-right" style="margin-right:200px;"><div style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-left:30px;"></div> <div class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-left:30px;"></div></div>
+</div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
 
@@ -1521,19 +1592,27 @@ function getNewActivityDetails(){
       </s:if>
 	  <s:else>
 <s:iterator value="completeProblemDetailsVO.relatedProblems" var="relatedProblems">
- <li>
+            <li>
 						<h5><a href="completeProblemDetailsAction.action?problemId=<s:property value='problemId'/>"><s:property value="problemTitle"/></a> </h5>
 						<div>
-							<span>
-								<a href=# class="icon-star"></a>
-								<a href=# class="icon-star"></a>
-								<a href=# class="icon-star-empty"></a>
-								<a href=# class="icon-star-empty"></a>
-								<a href=# class="icon-star-empty"></a>
-							</span>
+							<div class="rateit" id="rateit<s:property value='problemId'/>"></div>
 							<h6><s:property value="problemCompleteLoc"/></h6>
 						</div>
 			</li>
+    <script type="text/javascript">
+	<s:if test="completeProblemDetailsVO.relatedProblems.rating == null " >
+	$(document).ready(function() {
+	  $("#rateit<s:property value='problemId'/>").rateit('value',0);
+	  $("#rateit<s:property value='problemId'/>").rateit('readonly',!$("#rateit9<s:property value='problemId'/>").rateit('readonly'));
+	  });
+	</s:if>
+	<s:else>
+	$(document).ready(function() {
+	  $("#rateit<s:property value='problemId'/>").rateit('value',parseFloat(<s:property value='rating'/>));
+	  $("#rateit<s:property value='problemId'/>").rateit('readonly',!$("#rateit<s:property value='problemId'/>").rateit('readonly'));
+	  });
+	</s:else>
+    </script>
 </s:iterator>
 </s:else>
 	<!--		<li>
@@ -1678,48 +1757,54 @@ $(".icon-star-empty").hover(
     );*/
 	
 	
-/* function saveRatingOfAProblem()
+ function saveRatingOfAProblem()
   {
-
+    var problemId = '${completeProblemDetailsVO.problemId}';
+	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
 	var jsObj = {
 		time       : new Date().getTime(),
-		problemId  : 17,
-		rating     : 3,
+		problemId  : problemId,
+		rating     : $('#ratingtest').rateit('value'),
 		task       : "saveProblemRatingDetails"
 
 	};
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "saveProblemRatingDetailsAction.action?"+rparam;
 	 callAjax(jsObj,url);
+	}
   }
   
   function getAvgProblemRating()
   {
-
+var problemId = '${completeProblemDetailsVO.problemId}';
+	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
 	var jsObj = {
 		time       : new Date().getTime(),
-		problemId  : 17,
+		problemId  : problemId,
 		task       : "getAvgProblemRating"
 
 	};
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "getAvgProblemRatingAction.action?"+rparam;
 	 callAjax(jsObj,url);
+	}
   }
 function rateWiseCountOfAProblem()
   {
-
+   var problemId = '${completeProblemDetailsVO.problemId}';
+	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
 	var jsObj = {
 		time       : new Date().getTime(),
-		problemId  : 17,
+		problemId  : problemId,
 		task       : "rateWiseCountOfAProblem"
 
 	};
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "rateWiseCountOfAProblemAction.action?"+rparam;
 	 callAjax(jsObj,url);
+	}
   }
-  */
+  
  
  
  
@@ -1743,6 +1828,17 @@ function rateWiseCountOfAProblem()
 				}
 			});
   });
+  $(document).ready(function(){
+  if(document.getElementById("rateitbyuser") != null){
+     $('#rateitbyuser').rateit('step',1);
+	 $('#rateitbyuser').rateit('max', 5);
+	 }
+	 });
+<s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
+getAvgProblemRating();
+rateWiseCountOfAProblem();
+</s:if>
+
 
 </script>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
