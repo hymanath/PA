@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dao.IVisibilityDAO;
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
@@ -7412,7 +7413,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			
+			String saveReq = getIsUserRatedAProblem(userId,problemId);
+			if(saveReq == null || saveReq.equalsIgnoreCase("false")){
 			ProblemRating problemRating = new ProblemRating();
 			problemRating.setUser(userDAO.get(userId));
 			problemRating.setProblem(problemDAO.get(problemId));
@@ -7420,7 +7422,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			problemRating.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			problemRating.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			problemRatingDAO.save(problemRating);
-			
+			}
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		  return resultStatus;
 		}catch (Exception e) {
@@ -7430,23 +7432,59 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			return resultStatus;
 		}
 	}
-	
-	public String getAverageRatingOfAProblem(Long problemId)
+	public Integer getUserRatingOfAProblem(Long problemId, Long userId)
+	{
+		try{
+			
+			List<Integer>  ratingList = problemRatingDAO.getRatingGivenByUser(problemId, userId);
+			if(!ratingList.isEmpty()){
+				return ratingList.get(0);
+			}
+			return null;
+		}catch (Exception e) {
+			log.error("Exception Occured in getUserRatingOfAProblem() Exception - "+e);
+			return null;
+		}
+	}
+	public String getIsUserRatedAProblem(Long userId, Long problemId)
+	{
+		try{
+			List<Long>  countList = problemRatingDAO.getIsRatingGivenByUser(problemId,userId);
+            String returnVal = "false";
+			if(!countList.isEmpty()){
+				if(countList.get(0).longValue() > 0l){
+					returnVal = "true";
+				}
+			}
+			return returnVal;
+		}catch (Exception e) {
+			log.error("Exception Occured in getIsUserRatedAProblem() Exception - "+e);
+			return null;
+		}
+	}
+	public CompleteProblemDetailsVO getAverageRatingOfAProblem(Long problemId)
 	{
 		String avgRatingOfAProblem = null;
+		CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
 		try{
-			Double rating = problemRatingDAO.getAverageRatingOfAProblem(problemId);
-			if(rating != null && rating > 0.0)
+			List<Object[]> result = problemRatingDAO.getAverageRatingOfAProblem(problemId);
+			if(!result.isEmpty() && result.size() >0)
 			{
+				Object[] avgRating = result.get(0);
 				DecimalFormat resString = new DecimalFormat("#.##");
-				Double twoDecimal =  Double.valueOf(resString.format(rating));
-				avgRatingOfAProblem = twoDecimal.toString();
+				if(avgRating[1] != null){
+				  Double twoDecimal =  Double.valueOf(resString.format(avgRating[1]));
+				  avgRatingOfAProblem = twoDecimal.toString();
+				  completeProblemDetailsVO.setAvgRating(avgRatingOfAProblem);
+				}
+				if(avgRating[0] != null)
+					completeProblemDetailsVO.setTotalpeople(avgRating[0].toString());
 			}
-			return avgRatingOfAProblem;
+			return completeProblemDetailsVO;
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in getAverageRatingOfAProblem() Exception - "+e);
-			return avgRatingOfAProblem;
+			return completeProblemDetailsVO;
 		}
 		
 	}
