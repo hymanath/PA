@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
@@ -175,7 +176,7 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public ResultStatus saveRatingOfAProblem(Long userId, Long problemId, String rating);
 	
-	public String getAverageRatingOfAProblem(Long problemId);
+	public CompleteProblemDetailsVO getAverageRatingOfAProblem(Long problemId);
 	
 	public List<SelectOptionVO> getRatingWiseCountOfAProblem(Long problemId);
 	
@@ -190,5 +191,9 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	public ResultStatus changeActivityState(Long prblmPrgrssId,String task);
 	
 	public ResultStatus changeProblemToPublic(Long problemId,String task);
+	
+	public Integer getUserRatingOfAProblem(Long problemId, Long userId);
+	
+	public String getIsUserRatedAProblem(Long userId, Long problemId);
 	
 }
