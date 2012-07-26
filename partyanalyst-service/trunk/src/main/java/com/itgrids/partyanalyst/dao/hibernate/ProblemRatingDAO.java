@@ -14,11 +14,11 @@ public class ProblemRatingDAO extends GenericDaoHibernate<ProblemRating, Long> i
 		super(ProblemRating.class);
 	}
 	
-	public Double getAverageRatingOfAProblem(Long problemId)
+	public List<Object[]> getAverageRatingOfAProblem(Long problemId)
 	{
-		Query query = getSession().createQuery("select avg(model.rating) from ProblemRating model where model.problem.problemId = ?");
+		Query query = getSession().createQuery("select count(*),avg(model.rating) from ProblemRating model where model.problem.problemId = ?");
 		query.setParameter(0, problemId);
-		return (Double)query.uniqueResult();
+		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -26,6 +26,20 @@ public class ProblemRatingDAO extends GenericDaoHibernate<ProblemRating, Long> i
 	{
 		Query query = getSession().createQuery("select model.rating,count(model.problemRatingId) from ProblemRating model where model.problem.problemId = ? GROUP BY model.rating ");
 		query.setParameter(0, problemId);
+		return query.list();
+	}
+	
+	public List<Long> getIsRatingGivenByUser(Long problemId,Long userId){
+		Query query = getSession().createQuery("select count(model.problemRatingId) from ProblemRating model where model.problem.problemId = ? and model.user.userId = ? ");
+		query.setParameter(0, problemId);
+		query.setParameter(1, userId);
+		return query.list();
+	}
+	
+	public List<Integer> getRatingGivenByUser(Long problemId,Long userId){
+		Query query = getSession().createQuery("select model.rating from ProblemRating model where model.problem.problemId = ? and model.user.userId = ? ");
+		query.setParameter(0, problemId);
+		query.setParameter(1, userId);
 		return query.list();
 	}
 
