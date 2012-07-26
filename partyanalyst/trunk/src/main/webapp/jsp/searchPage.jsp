@@ -189,10 +189,10 @@ table.searchCriteria{
 			Constituency Type
 		</th>	
 		<td align="left" class="middle">		
-			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect();getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');" checked="checked"/>&nbsp;&nbsp;MLA
+			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect();" checked="checked"/>&nbsp;&nbsp;MLA
 		</td>
 		<td align="left" class="edge">	
-			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect();getStates(1,'stateSelect','siteSearch','stateSelect','current','null');"/>&nbsp;&nbsp;MP	
+			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect();"/>&nbsp;&nbsp;MP	
 		</td>		
 	</tr>
 	<tr>
