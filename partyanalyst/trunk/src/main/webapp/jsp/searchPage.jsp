@@ -217,18 +217,20 @@ table.searchCriteria{
 			<div id="labelDiv">Enter Search String</div>
 		</th>
 		<td colspan="2" class="edge">		
-			<div id="textFldDiv"></div>				
+			<div id="textFldDiv" style="display:table;"></div>				
 		</td>
 	</tr>
 	<tr>
 	
-	    <td style="text-align: left"class="middle">
-			<a class="viewReportButtonSpan" style = "padding: 9px 10px 6px 10px; text-decoration: none;"href="searchInPartyAnalyst.action">
+	    <td style="text-align:center" class="middle">
+			<!--<a class="viewReportButtonSpan" style = "padding: 9px 10px 6px 10px; -->
+			<a class="btn btn-inverse" href="searchInPartyAnalyst.action">
                User Google Custom Search
             </a>
 		</td>
-		<td colspan="4" style="text-align: right"class="middle">
-			<input type="submit" name="searchButton" class="viewReportButtonSpan" value="Search"/>	
+		<td colspan="4" style="text-align:center" class="middle">
+			<!--<input type="submit" name="searchButton" class="viewReportButtonSpan" value="Search"/>	-->
+			<input type="submit" name="searchButton" class="btn btn-inverse" value="Search"/>	
 		</td>
 		
 	</tr>		
