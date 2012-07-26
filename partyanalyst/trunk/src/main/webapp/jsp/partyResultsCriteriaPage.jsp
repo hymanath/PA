@@ -653,6 +653,11 @@ table.PartyResultsReportInputSelection {
 		</td>
 	 </tr>
  </table>
+ <div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
+	<span><b>Processing Request ...</b> </span>
+	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
+</div>
+
 </center>
 
  </s:form>
@@ -665,10 +670,6 @@ table.PartyResultsReportInputSelection {
  </table>
 </div>
 
-<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
-	<span><b>Processing Request ...</b> </span>
-	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
-</div>
 
 </div>
 </center>
