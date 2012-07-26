@@ -668,7 +668,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			   <input style="margin:5px;" type="radio" name="elecType" id="<s:property value='partyVO.electionTypes[#stat.index]' />Id" onclick="selectedState('stateDiv');"><s:property value="partyVO.electionTypes[#stat.index]" />
 			   </s:if>
 			   </s:iterator>
-			   <div id="selectStatediv" style="display:none;margin-top: -17px; margin-left: 138px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>
+			   <div id="selectStatediv" style="display:none;margin-top: 0px; margin-left: 100px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth" style="width:160px;"></select></div>
 				<div id="manifestoFilesDiv" style="margin-top: 7px;"></div>
 			   </div>
 			</s:if>
@@ -2826,7 +2826,6 @@ function builPartyDiv()
 {     
  var partyManifestoDivElmt = document.getElementById("partyManifestoDiv");
 	var str ='';
-	
 	str+='<h1 class="pr-title" style="margin-top:15px;"> ${partyVO.partyLongName} Party Manifestoes <span class="or-down-arrow">';
    str += '  <img src="images/icons/or-down-arrow.png" alt=""/></span> </h1>';
 	str+= '<fieldset class="imgFieldset">';
@@ -2834,7 +2833,7 @@ function builPartyDiv()
 	str+='<input style="margin:5px;" type="radio" name="elecType"><s:property value="partyVO.electionTypes[#stat.index]" />';
 	str+='</s:iterator>';
 	//str+='Select State';
-	str+='<div id="selectStatediv" style="display: none;margin-top: -17px; margin-left: 138px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth"></select></div>';
+	str+='<div id="selectStatediv" style="display: none;margin-top:0px; margin-left: 100px;"><select id="stateDiv" name="stateDiv" onchange="getPartyManifestoBasedOnStateId();" class="selectWidth" style="width:160px;"></select></div>';
 	str+='<div id="manifestoFilesDiv"></div>';
 	
 }
