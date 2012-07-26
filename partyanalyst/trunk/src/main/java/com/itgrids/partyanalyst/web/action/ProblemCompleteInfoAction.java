@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -41,6 +42,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 	private ResultStatus resultStatus;
 	private String avgRatingOfAProblem; 
 	private List<SelectOptionVO> rateWiseCountOfAProblem;
+	private CompleteProblemDetailsVO completeProblemDetailsVO;
 	
 	public IDataApprovalService getDataApprovalService() {
 		return dataApprovalService;
@@ -155,6 +157,15 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		this.resultStatus = resultStatus;
 	}
 
+	public CompleteProblemDetailsVO getCompleteProblemDetailsVO() {
+		return completeProblemDetailsVO;
+	}
+
+	public void setCompleteProblemDetailsVO(
+			CompleteProblemDetailsVO completeProblemDetailsVO) {
+		this.completeProblemDetailsVO = completeProblemDetailsVO;
+	}
+
 	public String execute()
 	{
 		Long userId = null;
@@ -209,7 +220,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		}
 		else if(jObj.getString("task").equals("getAvgProblemRating"))
 		{
-			avgRatingOfAProblem = problemManagementService.getAverageRatingOfAProblem(jObj.getLong("problemId"));
+			completeProblemDetailsVO = problemManagementService.getAverageRatingOfAProblem(jObj.getLong("problemId"));
 		}
 		else if(jObj.getString("task").equals("rateWiseCountOfAProblem"))
 		{
