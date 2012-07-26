@@ -20,16 +20,17 @@ public class ProblemRatingDAOHibernateTest extends BaseDaoTestCase{
 		problemRatingDAO.getAll();
 	}*/
 	
-	/*public void testGetAverageRatingOfAProblem()
+	public void testGetAverageRatingOfAProblem()
 	{
-		Double result = problemRatingDAO.getAverageRatingOfAProblem(17l);
-		System.out.println(result);
+		List<Object[]> result = problemRatingDAO.getAverageRatingOfAProblem(17l);
+		Object[] data = result.get(0);
 		DecimalFormat resString = new DecimalFormat("#.##");
-		double twoDecimal =  Double.valueOf(resString.format(result));
+		double twoDecimal =  Double.valueOf(resString.format(data[1]));
 		System.out.println(twoDecimal);
-	}*/
+		System.out.println(data[0].toString());
+	}
 	
-	public void testGetRatingWiseCountOfAProblem()
+	/*public void testGetRatingWiseCountOfAProblem()
 	{
 		 List<Object[]> result = problemRatingDAO.getRatingWiseCountOfAProblem(17l);
 		 for(Object[] paraDouble : result)
@@ -37,5 +38,5 @@ public class ProblemRatingDAOHibernateTest extends BaseDaoTestCase{
 			 System.out.println(paraDouble[0] +" -- "+paraDouble[1]);
 		 }
 		
-	}
+	}*/
 }
