@@ -14,7 +14,9 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String profileImg;    //posted user profile image
     private String problemTitle;   
     private String problemDesc;
-    private float rating;
+    private String rating;
+    private String ratingByyou;
+    private String isAlreadyRated;
     private Long postedUserId;
     private String firstName;
     private String lastName;
@@ -33,6 +35,8 @@ public class CompleteProblemDetailsVO implements Serializable {
     private List<FileVO> problemFiles; //contains all uploaded problem related files
     private ProblemStatusDataVO problemStatus; //contains department,cadre,problemtype details for customer problems only
     private List<CompleteProblemDetailsVO> relatedProblems;
+    private String avgRating;
+    private String totalpeople;
     
 	public String getUserStatus() {
 		return userStatus;
@@ -64,10 +68,10 @@ public class CompleteProblemDetailsVO implements Serializable {
 	public void setProblemDesc(String problemDesc) {
 		this.problemDesc = problemDesc;
 	}
-	public float getRating() {
+	public String getRating() {
 		return rating;
 	}
-	public void setRating(float rating) {
+	public void setRating(String rating) {
 		this.rating = rating;
 	}
 	public String getFirstName() {
@@ -178,6 +182,30 @@ public class CompleteProblemDetailsVO implements Serializable {
 	}
 	public void setRelatedProblems(List<CompleteProblemDetailsVO> relatedProblems) {
 		this.relatedProblems = relatedProblems;
+	}
+	public String getRatingByyou() {
+		return ratingByyou;
+	}
+	public void setRatingByyou(String ratingByyou) {
+		this.ratingByyou = ratingByyou;
+	}
+	public String getIsAlreadyRated() {
+		return isAlreadyRated;
+	}
+	public void setIsAlreadyRated(String isAlreadyRated) {
+		this.isAlreadyRated = isAlreadyRated;
+	}
+	public String getAvgRating() {
+		return avgRating;
+	}
+	public void setAvgRating(String avgRating) {
+		this.avgRating = avgRating;
+	}
+	public String getTotalpeople() {
+		return totalpeople;
+	}
+	public void setTotalpeople(String totalpeople) {
+		this.totalpeople = totalpeople;
 	}
     
 }
