@@ -266,7 +266,7 @@ width:223px; height:66px; color:#9394a8; padding:0px;}
 /*ACCOUNT INF SECTION END*/
 
 /* INNER CONTENT SECTION START */
-.problem-h1{color:#CF6E17;padding:7px 5px;border-radius:5px 5px 0px 0px;font-size:20px;border-bottom:1px solid #cccccc;background:#fff;display:block;}
+.problem-h1{color:#CF6E17;padding:7px 5px;border-radius:5px 5px 0px 0px;font-size:20px;border-bottom:1px solid #cccccc;background:#fff;display:inline-block;}
 
 .problem-h2{font-weight:normal;padding:5px;font-size:16px;padding-left:75px;display:inline-block;}
 .problem-cont-h2{font-weight:normal;padding:5px;margin-bottom:10px;font-size:16px;padding-left:75px;}
