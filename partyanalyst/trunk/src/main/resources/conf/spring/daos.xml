@@ -888,15 +888,20 @@
 	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="problemLikesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLikesDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
 	<bean id="problemRatingDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemRatingDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
 	<bean id="userPartyRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserPartyRelationDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="bloodGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>		

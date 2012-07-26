@@ -451,6 +451,7 @@
 		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO" />
 		<property name="problemActivityDAO" ref="problemActivityDAO" />
 		<property name="userDAO" ref="userDAO" />
+		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
