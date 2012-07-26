@@ -90,4 +90,5 @@ public interface ISessionConstants {
 	public static final String VILLAGES_PROB 		= "villagesListForProb";
 	
 	public static final String WINDOW_TASK = "windowTask";
+	public static final String BLOOD_GROUPS = "bloodGroups";
 }

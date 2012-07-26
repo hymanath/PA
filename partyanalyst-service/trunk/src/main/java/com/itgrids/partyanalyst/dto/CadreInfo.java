@@ -115,6 +115,21 @@ public class CadreInfo implements Serializable{
 	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	private Boolean childrenFlag;
 	private String cadreLevelBooth;
+	private Long bloodGroup;
+	private String bloodGroupStr;
+	
+	public String getBloodGroupStr() {
+		return bloodGroupStr;
+	}
+	public void setBloodGroupStr(String bloodGroupStr) {
+		this.bloodGroupStr = bloodGroupStr;
+	}
+	public Long getBloodGroup() {
+		return bloodGroup;
+	}
+	public void setBloodGroup(Long bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;

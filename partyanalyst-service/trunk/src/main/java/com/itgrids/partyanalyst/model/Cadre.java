@@ -68,6 +68,8 @@ public class Cadre extends BaseModel{
 	 private String noOfVoters;
 	 private String exactDateOfBirth;
 	 private String image;
+	 private BloodGroup bloodGroup;
+	 private Long bloodGroupId;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
 	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
@@ -258,6 +260,18 @@ public class Cadre extends BaseModel{
 		this.currentAddress = currentAddress;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "blood_group_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public BloodGroup getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(BloodGroup bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
+	
 	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "permanent_address")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -376,6 +390,15 @@ public class Cadre extends BaseModel{
 		this.noOfVoters = noOfVoters;
 	}
 
+	@Column(name = "blood_group_id", length = 10)
+	public Long getBloodGroupId() {
+		return bloodGroupId;
+	}
+
+	public void setBloodGroupId(Long bloodGroupId) {
+		this.bloodGroupId = bloodGroupId;
+	}
+	
 	/**
 	 * @return the memberOfPartySince
 	 */
