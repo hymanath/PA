@@ -44,6 +44,16 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> parliamentConstituencyList;
 	private IRegionServiceData regionServiceDataImp;
 	private List<SelectOptionVO> parliamentConstituencies;
+	private List<SelectOptionVO> bloodGroupList;
+	
+	
+	public List<SelectOptionVO> getBloodGroupList() {
+		return bloodGroupList;
+	}
+
+	public void setBloodGroupList(List<SelectOptionVO> bloodGroupList) {
+		this.bloodGroupList = bloodGroupList;
+	}
 	
 	public String getWindowTask() {
 		return windowTask;
@@ -217,6 +227,8 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		Long accessValue= new Long(regVO.getAccessValue());
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		socialStatus.add(0, new SelectOptionVO(0L,"All"));
+		bloodGroupList = cadreManagementService.getAllBloodGroupTypes();
+		bloodGroupList.add(0, new SelectOptionVO(0L,"All"));
 		
 		eduStatus = staticDataService.getAllEducationalQualifications();
 		eduStatus.add(0, new SelectOptionVO(0L,"All"));

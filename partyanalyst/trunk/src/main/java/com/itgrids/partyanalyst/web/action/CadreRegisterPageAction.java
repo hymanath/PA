@@ -83,7 +83,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private Long defaultDistId = 0l;
 	private Long defaultConstId = 0l;	
 	private Long defaultCadreLevelId;
+	private List<SelectOptionVO> bloodGroupTypes;
 	
+	public List<SelectOptionVO> getBloodGroupTypes() {
+		return bloodGroupTypes;
+	}
+
+	public void setBloodGroupTypes(List<SelectOptionVO> bloodGroupTypes) {
+		this.bloodGroupTypes = bloodGroupTypes;
+	}
 	
 	public ServletContext getContext() {
 		return context;
@@ -399,7 +407,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		relationshipList = cadreManagementService.getAllRelationships();
 		cadreRolesList = new ArrayList<SelectOptionVO>(0);
 		
-		cadreRolesList = cadreManagementService.getCadreRoles(); 
+		cadreRolesList = cadreManagementService.getCadreRoles();
+		bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
+		
 		//all states in country
 		stateList_o = regionServiceDataImp.getStatesByCountry(1l);
 		stateList_o.add(0,new SelectOptionVO(0l,"Select State"));
@@ -582,6 +592,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.GENDERS, gender);
 		session.setAttribute(ISessionConstants.DOB_OPTIONS, dobOptionsList);
 		session.setAttribute(ISessionConstants.FAMILY_RELATIONS,relationshipList);
+		session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
+		
 		//social status		
 		session.setAttribute(ISessionConstants.LANGUAGES, languagesList);
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);

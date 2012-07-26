@@ -129,7 +129,16 @@ public class CadreRegisterAction extends ActionSupport implements
 	
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
+	private Long bloodGroup;
 	
+	public Long getBloodGroup() {
+		return this.cadreInfo.getBloodGroup();
+	}
+
+	public void setBloodGroup(Long bloodGroup) {
+		this.cadreInfo.setBloodGroup(bloodGroup);
+	}
+
 	public File getUploadImage() {
 		return uploadImage;
 	}
