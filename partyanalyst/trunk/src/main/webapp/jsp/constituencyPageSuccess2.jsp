@@ -274,7 +274,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 	
 		<div id="inner-content-mainsec">
-		<div id="logInDiv" "></div>
+		<div id="logInDiv"></div>
 		<div class="cd-left-sec">
         <div class="cd-mid-cont-sec">
 
