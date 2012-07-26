@@ -133,7 +133,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	  try{
 		completeProblemDetailsVO.setUserStatus("notlogged");
 		if(checkIsPublicProblem(problemId)){
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq,null);
 			completeProblemDetailsVO.setModifyAccess(IConstants.FALSE);
 			completeProblemDetailsVO.setRelatedProblems(getRelatedProblemsByProblemId(problemId,null,"notlogged"));
 		}else{
@@ -151,7 +151,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	  try{
 		completeProblemDetailsVO.setUserStatus("freeuser");
 		if(checkIsPublicProblem(problemId)){
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq,userId);
 			completeProblemDetailsVO.setRelatedProblems(getRelatedProblemsByProblemId(problemId,userId,"freeuser"));
 			if(checkIsProblemOwner(problemId,userId)){
 			  completeProblemDetailsVO.setModifyAccess(IConstants.TRUE);
@@ -185,7 +185,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			getProblemAndItsOwnerDetailsForCustmor(problemId,userId,completeProblemDetailsVO,queryReq);			
 		}else if(checkIsPublicProblem(problemId)){
 			completeProblemDetailsVO.setModifyAccess(IConstants.FALSE);
-			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq);			
+			getProblemAndItsOwnerDetails(problemId,completeProblemDetailsVO,queryReq,userId);			
 		}else{
 			completeProblemDetailsVO.setNoAccess(IConstants.TRUE);
 		}
@@ -239,7 +239,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		return false;
 	}
 	
-	private void getProblemAndItsOwnerDetails(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq){
+	private void getProblemAndItsOwnerDetails(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq,Long userId){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemAndItsOwnerDetails method ");
 		}
@@ -248,6 +248,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		if(!userProblemList.isEmpty()){
 			final UserProblem userProblem = userProblemList.get(0);
 			if(queryReq == null){
+			  completeProblemDetailsVO.setRating(problemManagementService.getAverageRatingOfAProblem(problemId).getAvgRating());
 			  completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
 			  completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
 			  completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
@@ -258,7 +259,12 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			  completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
 			  completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
 			  completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
-			}
+			  if(userId != null){
+			   completeProblemDetailsVO.setIsAlreadyRated(problemManagementService.getIsUserRatedAProblem(userId,problemId));
+			   Integer rating = problemManagementService.getUserRatingOfAProblem(problemId,userId);
+			    completeProblemDetailsVO.setRatingByyou(rating!= null?rating.toString():null);
+			   }
+			  }
 			if(queryReq == null || queryReq.equalsIgnoreCase("getstatustypedetails"))
 			completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
 			completeProblemDetailsVO.setProblemRecentActivity(getProblemProgressDetails(problemId,IConstants.PUBLIC));
@@ -283,6 +289,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		if(!userProblemList.isEmpty()){
 			final UserProblem userProblem = userProblemList.get(0);
 			if(queryReq == null){
+			  completeProblemDetailsVO.setRating(problemManagementService.getAverageRatingOfAProblem(problemId).getAvgRating());
 			  completeProblemDetailsVO.setProblemTitle(userProblem.getProblem().getTitle());
 			  completeProblemDetailsVO.setProblemDesc(userProblem.getProblem().getDescription());
 			  completeProblemDetailsVO.setProblemCompleteLoc(problemManagementService.getProblemLocationString(userProblem.getProblem().getProblemCompleteLocation()));
@@ -293,6 +300,11 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			  completeProblemDetailsVO.setIdentifiedOn(dateFormat.format(userProblem.getProblem().getIdentifiedOn()));
 			  completeProblemDetailsVO.setPostedUserId(userProblem.getUser().getUserId());
 			  completeProblemDetailsVO.setProfileImg(userProblem.getUser().getProfileImg());
+			  if(userId != null){
+				   completeProblemDetailsVO.setIsAlreadyRated(problemManagementService.getIsUserRatedAProblem(userId,problemId));
+				   Integer rating = problemManagementService.getUserRatingOfAProblem(problemId,userId);
+				    completeProblemDetailsVO.setRatingByyou(rating!= null?rating.toString():null);
+				 }
 			}
 			if(queryReq == null || queryReq.equalsIgnoreCase("getstatustypedetails"))
 			 completeProblemDetailsVO.setStatus(userProblem.getProblem().getProblemStatus().getStatus());
@@ -387,7 +399,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	}
 	private void popolateDataToVo(List<Object[]> commentDetails,List<UserCommentsInfoVO> userCommentsInfoVOList){
 		UserCommentsInfoVO userCommentsInfoVO = null;
-		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:MM");
+		final SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:MM");
 		for(Object[] comment:commentDetails){
 		 try{
 			userCommentsInfoVO = new UserCommentsInfoVO();
@@ -396,6 +408,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			userCommentsInfoVO.setLastName(comment[2]!= null?comment[2].toString():"");
 			userCommentsInfoVO.setUserId((Long)comment[3]);
 			userCommentsInfoVO.setDate(comment[4]!= null?dateFormat.format((Date)comment[4]):"");
+			userCommentsInfoVO.setProfileImg(comment[5]!= null?comment[5].toString():null);
 			userCommentsInfoVOList.add(userCommentsInfoVO);
 		 }catch(Exception e){
 			 LOG.error("Exception rised in popolateDataToVo method while iterating and getting problem related files data ",e);
@@ -529,6 +542,7 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 	        		    completeProblemDetailsVO.setIsOwner(IConstants.TRUE);
 	        		
 	        	}
+	        	completeProblemDetailsVO.setRating(problemManagementService.getAverageRatingOfAProblem(problem.getProblemId()).getAvgRating());
 	        	completeProblemDetailsVO.setProblemTitle(problem.getTitle());
 	        	if(problem.getRegionScopes() != null && problem.getRegionScopes().getRegionScopesId() != null && problem.getImpactLevelValue() != null)
 	        		completeProblemDetailsVO.setProblemCompleteLoc(problemManagementReportService.getProblemLocation(problem.getRegionScopes().getRegionScopesId(),problem.getImpactLevelValue()));
