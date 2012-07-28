@@ -61,6 +61,8 @@ table.PartyResultsReportInputSelection {
 
 </style>
 <script type="text/javascript">
+
+alert('1');
   var ELECTIONTYPE;
   var REPORTLEVEL;
   var STATELIST;
@@ -143,8 +145,8 @@ table.PartyResultsReportInputSelection {
 				
 				var str="";
 				//str+='<input type="radio" name="reportLevel" value="Country"/>Country';
-				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectOptions(this.value, ELECTIONTYPE)"/>State';				
-				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectOptions(this.value, ELECTIONTYPE)"/>Constituency';
+				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectOptions(this.value, ELECTIONTYPE)" style="margin:5px;"/>State';				
+				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectOptions(this.value, ELECTIONTYPE)" style="margin:5px;"/>Constituency';
 				radioElmt.innerHTML=str;
 			}
 		}
