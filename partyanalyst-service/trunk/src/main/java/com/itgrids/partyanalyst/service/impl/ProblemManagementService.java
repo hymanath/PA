@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7489,28 +7491,54 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		
 	}
 	
-	public List<SelectOptionVO> getRatingWiseCountOfAProblem(Long problemId)
+	public List<CompleteProblemDetailsVO> getRatingWiseCountOfAProblem(Long problemId)
 	{
 		try{
-			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+			List<CompleteProblemDetailsVO> completeProblemDetailsVOList = new ArrayList<CompleteProblemDetailsVO>();
+			Map<Integer,CompleteProblemDetailsVO> ratingMap = new HashMap<Integer,CompleteProblemDetailsVO>();
 			List<Object[]> result = problemRatingDAO.getRatingWiseCountOfAProblem(problemId);
 			if(result != null && result.size() >0)
 			{
+				int totalCount = 0;
 				for(Object[] params : result)
 				{
-					SelectOptionVO selectOptionVO = new SelectOptionVO();
-					selectOptionVO.setId(((Integer)params[0]).longValue());
-					selectOptionVO.setName(params[1].toString());
-					selectOptionVOs.add(selectOptionVO);
+					CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
+					completeProblemDetailsVO.setRatingGiven(((Integer)params[0]));
+					completeProblemDetailsVO.setTotalpeople(params[1].toString());
+					totalCount = totalCount+ new Integer(params[1].toString());
+					ratingMap.put(((Integer)params[0]), completeProblemDetailsVO);
 				}
+				for(int i = 1;i < 6;i++){
+					if(ratingMap.get(new Integer(i)) == null){
+						CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
+						completeProblemDetailsVO.setRatingGiven(i);
+						completeProblemDetailsVO.setTotalpeople("0");
+						completeProblemDetailsVO.setRating("0");
+						ratingMap.put(new Integer(i), completeProblemDetailsVO);
+					}else{
+						CompleteProblemDetailsVO completeProblemDetailsVO = ratingMap.get(new Integer(i));
+						  Integer rating = (new Integer(completeProblemDetailsVO.getTotalpeople())/totalCount)*100;
+						  completeProblemDetailsVO.setRating(rating.toString());
+					}
+				}
+				completeProblemDetailsVOList = new ArrayList<CompleteProblemDetailsVO>(ratingMap.values());
+				Collections.sort(completeProblemDetailsVOList,ProblemManagementService.completeProblemDetailsVOSort);
 			}
-			return selectOptionVOs;
+			return completeProblemDetailsVOList;
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in getRatingWiseCountOfAProblem(), Exception - "+e);
 			return null;
 		}
 	}
+	public static Comparator<CompleteProblemDetailsVO> completeProblemDetailsVOSort = new Comparator<CompleteProblemDetailsVO>()
+			{
+						  
+					  public int compare(CompleteProblemDetailsVO completeProblemDetailsVO1, CompleteProblemDetailsVO completeProblemDetailsVO2)
+						{
+						   return (completeProblemDetailsVO1.getRatingGiven().intValue()) - (completeProblemDetailsVO2.getRatingGiven().intValue());
+						}
+			};
 	public ResultStatus changeActivityState(Long prblmPrgrssId,String task)
 	{
 		ResultStatus resultStatus = new ResultStatus();
