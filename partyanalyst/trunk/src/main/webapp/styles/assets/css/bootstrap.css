@@ -903,9 +903,8 @@ input[type="file"] {
 }
 
 select {
-  /**changed to 100px because datatable select box is effecting */
+  /**commented because datatable select box is effecting */
   /*width: 220px;*/
-  Width:100px;
   border: 1px solid #bbb;
 }
 
