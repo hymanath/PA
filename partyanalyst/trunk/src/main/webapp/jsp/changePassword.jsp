@@ -7,8 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style>
+#currentPWDId,#newPWDId,#confirmPWDId{margin-left:15px;}
+</style>
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 <script type="text/javascript">
+
 var labelResources = { <%
 
 ResourceBundle globalErrorMsgRb = ResourceBundle.getBundle("global_ErrorMessages");
@@ -29,16 +33,16 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 </head>
 <body>
 <div style="margin-top: 10px; margin-left: 150px; padding: 10px; margin-bottom: 20px; width: 707px;">
-<fieldset style="background:#FFF; margin-bottom: 3px; padding-bottom: 44px; border-radius: 6px 6px 6px 6px; padding-left: 16px; padding-top: 17px;">
+<fieldset style="background:#FFF; margin-bottom: 3px; padding-bottom: 44px; border-radius: 6px 6px 6px 6px; padding-left: 16px; padding-top: 17px;font-family:verdana;font-size:15px;">
 <div id="changeNewUserPassword">
 		<p>Thanks <span style="font-weight:bold;"><c:out value="${sessionScope.name}" /></span>,</p>
 		<p>Your registration completed successfully. We sent password to your email : <b><c:out value="${sessionScope.userName}" /></b></p>
 		<p>Please verify email to change your password.</p>
 
 		<div id="changePasswordDiv" style="margin-top: 21px; width: 373px; margin-left: 192px;" style="padding-top: 11px; padding-left: 7px;">
-		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 363px;">Change Password</div>
+		<div id="password_window" style="background-color: rgb(120, 152, 188); color: rgb(255, 255, 255); font-weight: bold; padding: 5px; width: 421px;float:right;">Change Password</div>
 		 
-		<div id="password_window_body_div" style="background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); ">
+		<div id="password_window_body_div" style="width:419px;float:right;background-color: rgb(255, 255, 255); color: rgb(58, 67, 71); padding: 5px; border: 1px solid rgb(211, 211, 211); ">
 		<!-- <s:form action="newUserChangePasswordAction.action?" method="Post" onsubmit="return  validatefields()">
 
 				<s:textfield name="currentPWD" label="Current Password" id="currentPWDId" />
@@ -61,13 +65,13 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 	    </td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPWDId" cssclass="textFieldStyle">
         </td></tr></tbody></table>
-		<div id="password_window_footer_div" class="yui-skin-sam" style="background-color: rgb(214, 229, 233); padding: 2px 5px 1px 0px; width: 356px; margin: 16px 0px 3px;">
+		<div id="password_window_footer_div" class="yui-skin-sam" style="padding: 2px 5px 1px 0px; width: 356px; margin: 16px 0px 3px;">
 			<table width="97%">
 			<tbody><tr>
 			
 			<td align="center" width="99px">
-				<input type="submit" value="Change Password" id="changeButton" style="background: none repeat scroll 0% 0% rgb(120, 152, 188); color: rgb(255, 255, 255); padding: 0px; margin-left: 0px; margin-right: 30px; margin-top: 0px;">
-				<a href="homePageAction.action"><input type="button" value="Skip" id="cancelButton" style="width: 52px; text-align: center; background: none repeat scroll 0% 0% rgb(120, 152, 188); color: rgb(255, 255, 255); padding: 0px; border-top-width: 2px;"></input></a>
+				<input type="submit" value="Change Password" id="changeButton" class="btn btn-primary btn-small">
+				<a href="homePageAction.action"><input type="button" value="Skip" id="cancelButton" class="btn btn-primary btn-small"></input></a>
 			</td>
 			</tr>
 			</tbody></table>	
