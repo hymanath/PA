@@ -918,28 +918,32 @@
 	</bean>
 	
 	<bean id="sendUpdatesAction" class="com.itgrids.partyanalyst.web.action.SendUpdatesAction" singleton="false">
-	<property name="sendUpdatesService" ref="sendUpdatesService"/>
-	<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="sendUpdatesService" ref="sendUpdatesService"/>
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 	</bean>
 	
 	<bean id="problemSearchAction" class="com.itgrids.partyanalyst.web.action.ProblemSearchAction">
 		<property name="problemManagementService" ref="problemManagementService" />
 	</bean>
+	
 	<bean id="changePasswordAction" class="com.itgrids.partyanalyst.web.action.ChangePasswordAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
+	
 	<bean id="completeProblemDetailsAction" class="com.itgrids.partyanalyst.web.action.CompleteProblemDetailsAction" singleton="false">
 		<property name="completeProblemDetailsService" ref="completeProblemDetailsService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"></property>
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
 		<property name="staticDataService" ref="staticDataService"></property>
 	</bean>
+	
 	<bean id="assigningPartyToUserAction" class="com.itgrids.partyanalyst.web.action.AssigningPartyToUserAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="partyDetailsService" ref="partyDetailsService" />
-	</bean>	
+	</bean>
+	
 	<bean id="abuseCommentaction" class="com.itgrids.partyanalyst.web.action.AbuseCommentAction" singleton="false">
-			<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
 	</bean>
 			
 </beans>	
