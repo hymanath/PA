@@ -1214,7 +1214,7 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 			if(queryType.equals("Private"))
 			  query.append("  and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
 			
-			query.append(" order by model.createdDate desc ");
+			query.append(" order by model.file.fileDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());
 			
 			queryObject.setLong("candidateId", candidateId);
