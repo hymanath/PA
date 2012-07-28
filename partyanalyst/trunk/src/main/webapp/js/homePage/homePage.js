@@ -1221,7 +1221,7 @@ function savePollResult(questionId){
 }
 
 function showVotesObtainedForOptions(myResults){
-
+  if(myResults!=null && myResults.length>0){
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
 	
@@ -1262,6 +1262,7 @@ function showVotesObtainedForOptions(myResults){
 	
 		chart.draw(data,{width: 300, height: 280,legend:'right', 
 legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
+}
 
 	
 	
@@ -1395,7 +1396,8 @@ function homePageAjaxCall(param,jsObj,url){
 									showResults(myResults);
 								} 
 								else if(jsObj.task == "getAllPolls")
-								{
+								{  
+								    
 									if(myResults.description==null){
 										showVotesObtainedForOptions(myResults.questionsOptionsVO);
 
