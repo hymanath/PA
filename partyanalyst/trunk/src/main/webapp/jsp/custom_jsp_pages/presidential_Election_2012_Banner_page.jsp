@@ -41,7 +41,7 @@
 .electionResultsTable tr:nth-child(odd){background:#f3f3f3;}
 .electionResultsTable th:nth-child(1){color:#000;}
 .electionResultsTable th:nth-child(1) a{color:#000;}
-.electionResultsTable td {text-align:center;font-weight:bold}
+.electionResultsTable td {text-align:left;font-weight:bold}
 .winTD{background-color : GreenYellow;}
 
 .resulth3{border-bottom:2px solid #999999;margin-top:0px;background:#ED5B21;color:#fff;padding:2px;width:550px; -moz-border-radius:2px;margin-left:3px; padding-left: 10px;}
@@ -74,6 +74,7 @@ padding-bottom: 38px;
     width: 50px;
 }
  
+#electionResultsMLAWise a{text-decoration:none;color:#3d3d3d;}
 </style>
 </head>
 
@@ -86,7 +87,7 @@ padding-bottom: 38px;
 <div class="row">
 	
 	<table><tr>
-	<td valign="top"><div class="span4" style="margin-left:10px;margin-top:0px;"><img src="images/specialPage/pranab-mukherjee.jpg" width="295" height="295" style="margin-bottom:40px;margin-top:12px;"></img>
+	<td valign="top"><div class="span4" style="margin-left:35px;margin-top:0px;margin-right:70px;"><img src="images/specialPage/pranab-mukherjee.jpg" width="295" height="295" style="margin-bottom:40px;margin-top:20px;"></img>
 	</div></td>
 
 	<td valign="top"><div class="span8" style="margin-left:0px;margin-top:10px;">
@@ -112,15 +113,16 @@ padding-bottom: 38px;
 </div>
 
 <div class="row" style="margin-left:0px;">
-<div class="span6" style="float:right; margin-top:-55px;margin-right:55px;">
-<span id="votesShareSpan" style="background:#21B2ED;cursor:pointer" onClick="getPresidents();" title="Click here to view Former Indian Presidents & their duration">Former Indian Presidents & their duration</span>
+<div class="span6" style="float:left; margin-top:-35px;margin-right:55px;margin-left:358px;">
+<span id="votesShareSpan" style="background:#21B2ED;cursor:pointer;margin-top:20px;" onClick="getPresidents();" title="Click here to view Former Indian Presidents & their duration">Former Indian Presidents & their duration</span>
 </div></div>
 
-<div class="span12" style="margin-bottom:10px;margin-left:15px;">
+<div class="span12" 
+style="margin-bottom:10px;margin-left:16px;margin-right:20px;margin-top:20px;">
 <span id="votesShareSpan">Highlights of 2012 Presidential Elections</span>
 <div style="margin-top:15px;margin-bottom:10px;margin-left:10px;">
 <span style="line-height:1.7em;font-family:verdana,arial,sans-serif;font-size:12px;"><img src="images/icons/diamond.png" />&nbsp;&nbsp;Cross-voting in favour of Mr. Mukherjee in the BJP-ruled Karnataka
-he got votes of 117 MLAs, against the BJP’s 103 in the 224-member Assembly.
+he got votes of 117 MLAs, against the BJPâ€™s 103 in the 224-member Assembly.
 While three votes were declared invalid, one MLA did not vote.</span><br>
 <span style="line-height: 1.7em;font-family: verdana,arial,sans-serif;font-size: 12px;"><img src="images/icons/diamond.png" />&nbsp;&nbsp;In Kerala, Mr. Mukherjee made a clean sweep, polling all 124 votes; one was invalid. Mr. Sangma drew a blank. The CPI and RSP MLAs abstained from voting.</span><br>
 <span style="line-height: 1.7em;font-family: verdana,arial,sans-serif;font-size: 12px;"><img src="images/icons/diamond.png" />&nbsp;&nbsp;In Nagaland Mr. Sangma draws a blank. Pranab Mukherjee gets all the state legislator's votes.</span><br>
@@ -129,9 +131,48 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 </div>
 
 <div class="span12" style="margin:20px;margin-left:16px;margin-top:20px;">
-<span id="votesShareSpan">States Wise Votes Share in Presidential Election 2012 </span>
+<span id="votesShareSpan">Votes Share in Presidential Election 2012 </span>
 
-<table width="955px" class="electionResultsTable" style="margin-top:20px;font-family:sans-serif">
+<table class="electionResultsTable" width='650' style="margin-top:20px;font-family:sans-serif;">
+
+<thead>
+<th colspan='2' style="background:#21B2ED;color:#fff;">MP's</th><th colspan='2'>MLA's</th>
+</thead>
+
+<tbody>
+
+<tr style="background:#fff;">
+	<td>Total Polled MP Votes</td><td>733</td><td>Total Polled MLA Votes</td><td>3873</td>
+<tr>
+<tr>
+	<td>Value of MP Votes</td><td>518964</td><td>Value of MLA Votes</td><td>502983</td>
+</tr>
+<tr>
+	<td>Pranab Gained(MP Votes)</td><td>527</td><td>Pranab Gained(MLA Votes)</td><td>2601</td>
+</tr>
+<tr>
+	<td>Value of Votes Gained by Pranab</td><td>3,73,116</td><td>Value of Votes Gained by Pranab</td><td>3,34,821</td>
+</tr>
+<tr>
+	<td>Sangma Gained(MP Votes)</td><td>206</td><td>Sangma Gained(MLA Votes)</td><td>1272</td>
+</tr>
+
+<tr>
+	<td>Value of Votes Gained by Sangma</td><td>1,45,848</td><td>Value of Votes Gained by Sangma</td><td>1,68,162</td>
+</tr>
+
+</tbody>
+
+</table>
+</div
+
+
+
+
+<div class="span12" style="margin:20px;margin-left:16px;margin-top:20px;">
+<span id="votesShareSpan" style="margin-left:15px;">MLA'S Votes Share in Presidential Election 2012  </span>
+
+<table width="955px" class="electionResultsTable" id="electionResultsMLAWise" style="margin-top:20px;font-family:sans-serif;margin-left:15px;margin-bottom:20px;">
   
   <tr>
 	 <th rowspan='2' style="background:#F3F3F3;">State</th>
@@ -152,24 +193,11 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 	<th style="background:#F3F3F3;color:#3D3D3D;">Total</th>
 	<th style="background:#F3F3F3;color:#3D3D3D;">Value Of Votes</th>
   </tr>
-  
-   <tr>
-	<th style="background:#FFF;color:#3D3D3D;">MP'S</th>
-	<th style="background:#FFF;color:#3D3D3D;">527</th>
-	<th style="background:#FFF;color:#3D3D3D;">3,73,116</th>
-	<th style="background:#FFF;color:#3D3D3D;">206</th>
-	<th style="background:#FFF;color:#3D3D3D;">1,45,848</th>
-	<th style="background:#FFF;color:#3D3D3D;"></th>
-	<th style="background:#FFF;color:#3D3D3D;"></th>
-	<th style="background:#FFF;color:#3D3D3D;"></th>
-	<th style="background:#FFF;color:#3D3D3D;"></th>
-	<th style="background:#FFF;color:#3D3D3D;"></th>
-   </tr>
   </thead>
    
   <tbody>
     <tr>
-		<td>Andhrapradesh</td>
+		<td><a href="statePageAction.action?stateId=1" title="Click here to View Andhra Pradesh State Details, Election Results, Census Details and Ministry Details">Andhrapradesh</a></td>
 		<td>182</td>
 		<td>26,936</td>
 		<td>3</td>
@@ -182,7 +210,7 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
     </tr>
 
 	<tr>
-	<td>Assam</td>
+	<td><a href="statePageAction.action?stateId=3" title="Click here to View Assam State Details, Election Results, Census Details and Ministry Details" >Assam</a></td>
 	<td>110</td>
 	<td>12,760</td>
 	<td>13</td>
@@ -208,39 +236,39 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 	</tr>
 	
 	<tr>
-	<td>Goa</td>
+	<td><a href="statePageAction.action?stateId=6" title="Click here to View Goa State Details, Election Results, Census Details and Ministry Details">Goa</a></td>
 	<td>9</td>
 	<td>180</td>
 	<td>31</td>
 	<td>620</td>
-	<td>Gujarat</td>
+	<td><a href="statePageAction.action?stateId=7" title="Click here to View Gujarat State Details, Election Results, Census Details and Ministry Details" >Gujarat</a></td>
 	<td>59</td>
 	<td>8,673</td>
 	<td>123</td>
 	<td>18,081</td>
 	</tr>
 
-	<tr><td>Haryana</td> <td>53</td> <td>5,936</td> <td>29</td> <td>3,248</td><td>Himachalpradesh</td> <td>23</td> <td>1,173</td> <td>41</td> <td>2,091</td></tr>
+	<tr><td>Haryana</td> <td>53</td> <td>5,936</td> <td>29</td> <td>3,248</td><td><a href="statePageAction.action?stateId=9" title="Click here to View HimachalPradesh State Details, Election Results, Census Details and Ministry Details" >Himachalpradesh</a></td> <td>23</td> <td>1,173</td> <td>41</td> <td>2,091</td></tr>
 
 	<tr><td>Jammu and kashmir</td> <td>68</td> <td>4,896</td> <td>15</td> <td>1,080</td><td>Jharkand</td> <td>60</td> <td>4,560</td> <td>20</td> <td>1,520</td></tr>
 
-	<tr><td>Karnataka</td> <td>117</td> <td>15,327</td> <td>103</td> <td>13,493</td> <td>Kerala</td> <td>124</td> <td>18,848</td> <td>0</td> <td>0</td> </tr>
+	<tr><td><a href="statePageAction.action?stateId=12" title="Click here to View Karnataka State Details, Election Results, Census Details and Ministry Details">Karnataka</a></td> <td>117</td> <td>15,327</td> <td>103</td> <td>13,493</td> <td><a href="statePageAction.action?stateId=13" title="Click here to View Kerala State Details, Election Results, Census Details and Ministry Details" >Kerala</a></td> <td>124</td> <td>18,848</td> <td>0</td> <td>0</td> </tr>
 
 	<tr><td>Madhyapradesh</td> <td>74</td> <td>9,694</td> <td>149</td> <td>19,519</td> <td>Maharastra</td> <td>225</td> <td>39,375</td> <td>47</td> <td>8,225</td> </tr>
 
-	<tr><td>Manipur</td> <td>58</td> <td>1,044</td> <td>1</td> <td>18</td> <td>Mizoram</td> <td>32</td> <td>256</td> <td>7</td> <td>56</td> </tr>
+	<tr><td><a href="statePageAction.action?stateId=16" title="Click here to View Manipur State Details, Election Results, Census Details and Ministry Details" >Manipur</a></td> <td>58</td> <td>1,044</td> <td>1</td> <td>18</td> <td>Mizoram</td> <td>32</td> <td>256</td> <td>7</td> <td>56</td> </tr>
 
 	<tr><td>Meghalaya</td> <td>34</td> <td>578</td> <td>23</td> <td>391</td><td>Nagaland</td> <td>58</td> <td>522</td> <td>0</td> <td>0</td> </tr>
 
-	<tr><td>Odisha</td> <td>26</td> <td>3,874</td> <td>115</td> <td>17,135</td><td>Punjab</td> <td>44</td> <td>5,104</td> <td>70</td> <td>8,120</td> </tr>
+	<tr><td>Odisha</td> <td>26</td> <td>3,874</td> <td>115</td> <td>17,135</td><td><a href="statePageAction.action?stateId=21" title="Click here to View Punjab State Details, Election Results, Census Details and Ministry Details">Punjab</a></td> <td>44</td> <td>5,104</td> <td>70</td> <td>8,120</td> </tr>
 
 	<tr><td>Rajastan</td> <td>113</td> <td>14,577</td> <td>85</td> <td>10,965</td> <td>Sikkim</td> <td>28</td> <td>196</td> <td>1</td> <td>7</td> </tr>
 
-	<tr><td>Tamilanadu</td> <td>45</td> <td>7,920</td> <td>149</td> <td>26,224</td> <td>Tripura</td> <td>56</td> <td>1,456</td> <td>1</td> <td>26</td> </tr>
+	<tr><td><a href="statePageAction.action?stateId=24" title="Click here to View Tamilnadu State Details, Election Results, Census Details and Ministry Details">Tamilanadu</a></td> <td>45</td> <td>7,920</td> <td>149</td> <td>26,224</td> <td>Tripura</td> <td>56</td> <td>1,456</td> <td>1</td> <td>26</td> </tr>
 
-	<tr><td>Uttarakand</td> <td>39</td> <td>2,496</td> <td>30</td> <td>1,920</td> <td>Uttarpradesh</td> <td>352</td> <td>73,216</td> <td>46</td> <td>9,568</td> </tr>
+	<tr><td>Uttarakand</td> <td>39</td> <td>2,496</td> <td>30</td> <td>1,920</td> <td><a href="statePageAction.action?stateId=27" title="Click here to View UttarPradesh State Details, Election Results, Census Details and Ministry Details">Uttarpradesh</a></td> <td>352</td> <td>73,216</td> <td>46</td> <td>9,568</td> </tr>
 
-	<tr><td>Westbengal</td> <td>275</td> <td>41,525</td> <td>3</td> <td>453</td> <td>Puducherry</td> <td>23</td> <td>368</td> <td>5</td> <td>80</td> </tr>
+	<tr><td><a href="statePageAction.action?stateId=28" title="Click here to View Westbengal State Details, Election Results, Census Details and Ministry Details" >Westbengal</a></td> <td>275</td> <td>41,525</td> <td>3</td> <td>453</td> <td><a href="statePageAction.action?stateId=35" title="Click here to View Puducherry State Details, Election Results, Census Details and Ministry Details">Puducherry</a></td> <td>23</td> <td>368</td> <td>5</td> <td>80</td> </tr>
 	</tbody>
 </table>
 </div>
@@ -256,10 +284,10 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 	   <tr><th style="background:#21B2ED;color:#ffffff;">Name</th><th style="background:#21B2ED;color:#ffffff;">In Office</th></tr>
 		<tr><td>Rajendra Prasad</td> <td>26 January 1950 - 13 May 1962</td></tr>
 		<tr><td>Sarvepalli Radhakrishnan </td> <td> 13 May 1962 - 13 May 1967</td></tr>
-		<tr><td>Zakir Hussain</td> <td>13 May 1967 - 3 May 1969</td></tr>
+		<tr><td><span style="color:red;" >*</span>Zakir Hussain</td> <td>13 May 1967 - 3 May 1969</td></tr>
 		<tr><td>Varahagiri Venkata Giri</td>  <td>24 August 1969 - 24 August 1974  </td></tr>
 		<tr><td>Mohammad Hidayatullah </td>   <td>20 July 1969 - 24 August 1969</td></tr>
-		<tr><td>Fakhruddin Ali Ahmed </td>    <td>24 August 1974 - 11 February 1977</td></tr>
+		<tr><td><span style="color:red;" >*</span>Fakhruddin Ali Ahmed </td>    <td>24 August 1974 - 11 February 1977</td></tr>
 		<tr><td>Basappa Danappa Jatti</td>    <td>11 February 1977 - 25 July 1977</td></tr>
 		<tr><td>Neelam Sanjiva Reddy </td>    <td>25 July 1977 - 25 July 1982</td></tr>
 		<tr><td> Giani Zail Singh </td>       <td>25 July 1982 - 25 July  1987</td></tr>
@@ -269,8 +297,8 @@ While three votes were declared invalid, one MLA did not vote.</span><br>
 		<tr><td>A.P.J. Abdul Kalam </td><td> 25 July 2002 - 25 July 2007</td></tr>
 		<tr><td>Pratibha Devi Singh Patil</td>  <td>25 July 2007 - 25 July 2012</td></tr>
 		<tr><td>Pranab Mukherjee</td>  <td>25 July 2012 - Till Date</td></tr>
-	   
-	   </table>
+	    </table>
+		<span style="color:#000080;"><span style="color:red;" >*</span> Indicates Presidents Died in their Presidential Duration</span>
 	   </div>
 	   </div>
    </div>
