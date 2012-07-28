@@ -41,7 +41,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 	JSONObject jObj = null;
 	private ResultStatus resultStatus;
 	private String avgRatingOfAProblem; 
-	private List<SelectOptionVO> rateWiseCountOfAProblem;
+	private List<CompleteProblemDetailsVO> rateWiseCountOfAProblem;
 	private CompleteProblemDetailsVO completeProblemDetailsVO;
 	
 	public IDataApprovalService getDataApprovalService() {
@@ -132,12 +132,12 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		this.avgRatingOfAProblem = avgRatingOfAProblem;
 	}
 
-	public List<SelectOptionVO> getRateWiseCountOfAProblem() {
+	public List<CompleteProblemDetailsVO> getRateWiseCountOfAProblem() {
 		return rateWiseCountOfAProblem;
 	}
 
 	public void setRateWiseCountOfAProblem(
-			List<SelectOptionVO> rateWiseCountOfAProblem) {
+			List<CompleteProblemDetailsVO> rateWiseCountOfAProblem) {
 		this.rateWiseCountOfAProblem = rateWiseCountOfAProblem;
 	}
 
