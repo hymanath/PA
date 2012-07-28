@@ -178,7 +178,7 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public CompleteProblemDetailsVO getAverageRatingOfAProblem(Long problemId);
 	
-	public List<SelectOptionVO> getRatingWiseCountOfAProblem(Long problemId);
+	public List<CompleteProblemDetailsVO> getRatingWiseCountOfAProblem(Long problemId);
 	
 	public ResultStatus saveProblemRelatedComments(final ProblemBeanVO problemBeanVO);
 	
