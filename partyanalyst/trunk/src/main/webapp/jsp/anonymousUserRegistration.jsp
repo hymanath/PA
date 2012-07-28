@@ -189,6 +189,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	height: 28px;
     padding-left: 8px;
     font: 12px/22px Arial,Helvetica,sans-serif;
+	width:222px;
 	}
  #headerDiv{
    -moz-border-radius: 9px 9px 9px 9px;

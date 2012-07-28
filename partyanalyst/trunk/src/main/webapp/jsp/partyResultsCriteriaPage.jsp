@@ -62,7 +62,6 @@ table.PartyResultsReportInputSelection {
 </style>
 <script type="text/javascript">
 
-alert('1');
   var ELECTIONTYPE;
   var REPORTLEVEL;
   var STATELIST;
