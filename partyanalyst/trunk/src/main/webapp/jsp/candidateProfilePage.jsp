@@ -1920,7 +1920,7 @@ function showFirstFourNewsRecords(results)
 	   source  = source.slice(0, -2); 
 	   
      initialFileIdArray[i]=results[i].fileId;
-     str+='<a href="javascript:{}" onclick="showNewsWithDiffSources('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
+     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">';
 	 
 	 if(results[i].fileTitle1.length > 30)
 		str +='<li><strong>'+results[i].fileTitle1.substring(0,40)+'..</strong>';
@@ -2319,7 +2319,7 @@ function showFirstFourNewsRecords(results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="showNewsWithDiffSources('+results[i].fileId+','+i+',\'array\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
 	 var sourcedata ='';
@@ -2917,7 +2917,10 @@ function buildAllVideosInGallary(results){
 
 function getContentDetails(contentId)
 {
-	document.getElementById("contentAjaxCallImg").style.display="block";
+	var ajaximgEle = document.getElementById("contentAjaxCallImg");
+	if(ajaximgEle != null)
+		ajaximgEle.style.display="block";
+
 	var jsObj =
 		{   
 		    contentId : contentId,
@@ -2954,7 +2957,10 @@ function showSelectedContentAndRelatedGalleries()
 
 function buildContentDetails()
 {
-	document.getElementById("contentAjaxCallImg").style.display="none";
+	var ajaximgEle = document.getElementById("contentAjaxCallImg");
+	if(ajaximgEle != null)
+		ajaximgEle.style.display="none";
+
 	result = showContentResultList;
 	if(result == null)
 		return;
