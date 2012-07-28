@@ -938,5 +938,8 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
 		<property name="partyDetailsService" ref="partyDetailsService" />
 	</bean>	
+	<bean id="abuseCommentaction" class="com.itgrids.partyanalyst.web.action.AbuseCommentAction" singleton="false">
+			<property name="candidateDetailsService" ref="candidateDetailsService" />
+	</bean>
 			
 </beans>	
