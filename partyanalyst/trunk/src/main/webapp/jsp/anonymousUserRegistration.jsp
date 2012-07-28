@@ -453,7 +453,7 @@ Your password will be sent to this Email address
   </tr>
   <tr>
   <td style="padding-left:18px"><s:textfield id="dateOfBirthField"  name="dateOfBirth" readOnly="true" size="30" style=" border-radius: 2px 2px 2px 2px;background: none repeat scroll 0 0 #FFFFFF;border-color: #DDDDDD;border-style: solid;border-width: 1px 1px 1px;height: 28px;padding-left: 8px;font: 12px/22px Arial,Helvetica,sans-serif;" theme="simple" cssClass="textFieldStyle" onBlur="showTextInTextBoxes(this.id)" onclick="removeTextInTextBoxes(this.id)" onfocus="showCalendar(this.id)"/>
-    <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)"/>
+    <input id="dateOfBirthField" type="button" class="calBtn" title="Click To Select A Date" size="30px"  theme="simple" cssClass="textFieldStyle" onclick="focusCalTextElmt(this.id)" style="width:24px;height:24px;"/>
 </td>
 
 
