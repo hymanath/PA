@@ -430,24 +430,27 @@ public class PartyDetailsService implements IPartyDetailsService {
 	{
 		List<FileVO> retValue = new ArrayList<FileVO>();
 		try {
-			List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,firstResult, maxResult, queryType);
+			//List<File> file = partyGalleryDAO.getFirstFourNewsForParty(partyId,firstResult, maxResult, queryType);
 			
-			if(file != null && file.size() > 0)
+			List<Object[]> filesList = partyGalleryDAO.getNewsForParty(partyId,firstResult, maxResult, queryType);
+			if(filesList != null && filesList.size() > 0)
 			{
-				for (File file2 : file) 
+				for (Object[] params : filesList) 
 				{
+					File file = (File)params[0];
 					FileVO fileVO = new FileVO();
-					fileVO.setFileId((Long) file2.getFileId());
-					fileVO.setFileName1(file2.getFileName() != null ? file2.getFileName() : "");
-					fileVO.setPath(file2.getFilePath());
-					fileVO.setFileTitle1(file2.getFileTitle() != null ? file2.getFileTitle() : "");
-					fileVO.setFileDescription1(file2.getFileDescription() != null ? file2.getFileDescription(): "");
-					fileVO.setSource(file2.getSourceObj() != null ? file2.getSourceObj().getSource() : "");
-					fileVO.setLanguage(file2.getLanguage() != null ? file2.getLanguage().getLanguage() : "");
-					fileVO.setFileDate(file2.getFileDate() != null ? file2.getFileDate().toString() : "");
+					fileVO.setFileId((Long) file.getFileId());
+					fileVO.setFileName1(file.getFileName() != null ? file.getFileName() : "");
+					fileVO.setPath(file.getFilePath());
+					fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() : "");
+					fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
+					fileVO.setSource(file.getSourceObj() != null ? file.getSourceObj().getSource() : "");
+					fileVO.setLanguage(file.getLanguage() != null ? file.getLanguage().getLanguage() : "");
+					fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString() : "");
+					fileVO.setContentId((Long)params[1]);
 					
 					List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
-					 Set<FileSourceLanguage> fileSourceLanguageSet = file2.getFileSourceLanguage();
+					 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 					 
 						 
 					 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){

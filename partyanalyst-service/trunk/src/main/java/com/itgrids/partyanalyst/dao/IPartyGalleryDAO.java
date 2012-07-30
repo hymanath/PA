@@ -24,4 +24,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	public List<Object> getPartyVisibility(Long gallaryId);
 	
 	public List<Object> getOtherGalleries(Long partyId,List<Long>gallaryIds,String contentType);
+	
+	public List<Object[]> getNewsForParty(Long partyId,int firstResult,int maxResult,String queryType);
 }

@@ -365,24 +365,27 @@ public class SpecialPageService implements ISpecialPageService{
 		
 		List<FileVO> fileVOList = new ArrayList<FileVO>();
 		try{
-		List<File> fileObject = specialPageGalleryDAO.getGalleryBasedOnSpecialPageId(specialPageId, startingRecord, maxRecord, IConstants.NEWS_GALLARY);
+		List<Object[]> fileObject = specialPageGalleryDAO.getGalleriesBasedOnSpecialPageId(specialPageId, startingRecord, maxRecord, IConstants.NEWS_GALLARY);
 		List<Long> totalRecords = specialPageGalleryDAO.getGalleryCountBasedOnSpecialPageId(specialPageId,  IConstants.NEWS_GALLARY);
+		
 		if(fileObject != null && fileObject.size() >0){
 			
-			for (File file2 : fileObject) 
+			for (Object[] params : fileObject) 
 			{
+				File file = (File)params[0];
 				FileVO fileVO = new FileVO();
-				fileVO.setFileId((Long) file2.getFileId());
-				fileVO.setFileName1(file2.getFileName() != null ? file2.getFileName() : "");
+				fileVO.setFileId((Long) file.getFileId());
+				fileVO.setFileName1(file.getFileName() != null ? file.getFileName() : "");
+				fileVO.setContentId((Long)params[1]);
 				
-				fileVO.setFileTitle1(file2.getFileTitle() != null ? file2.getFileTitle() : "");
-				fileVO.setFileDescription1(file2.getFileDescription() != null ? file2.getFileDescription(): "");
+				fileVO.setFileTitle1(file.getFileTitle() != null ? file.getFileTitle() : "");
+				fileVO.setFileDescription1(file.getFileDescription() != null ? file.getFileDescription(): "");
 				
-				fileVO.setFileDate(file2.getFileDate() != null ? file2.getFileDate().toString() : "");
+				fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString() : "");
 				fileVO.setCount(totalRecords.get(0).intValue());
 				
 				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
-				 Set<FileSourceLanguage> fileSourceLanguageSet = file2.getFileSourceLanguage();
+				 Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 				 
 					 
 				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){

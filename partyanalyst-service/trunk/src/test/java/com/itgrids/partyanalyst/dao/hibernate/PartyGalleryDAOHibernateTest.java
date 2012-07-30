@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -85,13 +86,25 @@ public List<Object[]> getAllRecordInGallary(Long gallaryId){
 	}
 	}*/
 	
-	public void testGetOtherGalleries()
+	/*public void testGetOtherGalleries()
 	{
 		List<Long> gallaryIds = new ArrayList<Long>(0);
 		gallaryIds.add(1197l);
 		List<Object> result = partyGalleryDAO.getOtherGalleries(872l,gallaryIds,IConstants.VIDEO_GALLARY);
 		
 		System.out.println(result.size());
+	}*/
+	
+	public void testGetNewsForParty()
+	{
+		List<Object[]> result = partyGalleryDAO.getNewsForParty(362l,0,20,"Public");
+		
+		for(Object[] params : result)
+		{
+			File file = (File)params[0];
+			System.out.println(params[1].toString());
+			System.out.println(file.getFileName());
+		}
 	}
 	
 }
