@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <style type="text/css">
 
 	.calBtn
@@ -226,10 +227,17 @@
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 	
+								
 								if(jsObj.taskType == "subUser")
 									buildSubUsersRegionSelect(jsObj,myResults);									
 								else if(jsObj.taskType == "mainUser")
-									buildSelectBox(myResults.namesList,param);								
+									buildSelectBox(myResults.namesList,param);
+
+								else if(jsObj.taskType =="checkAnanymousUserNameAvailability")
+								{
+									getUserNameAvailabilityResult(myResults);
+								}
+
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -242,6 +250,28 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
+
+function getUserNameAvailabilityResult(results)
+{  
+	var result = document.getElementById("userNameAvlDiv");
+	var submitButtonEle = document.getElementById("RegistrationAction_Save");
+
+	var str = '';
+
+	if(results == 121)
+	{		
+		str+="<font style='color:green;'> Username is available</font>";
+		submitButtonEle.disabled = false;
+	}
+	else
+	{
+		str+="<font style='color:red;'> Username is not available</font>";
+	    submitButtonEle.disabled = true;
+	}
+	result.innerHTML = str;
+
+}
+
 
 	function showAndHide()
 	{
@@ -314,6 +344,46 @@ var str = '<font style="color:red;font-size:12px;">';
 	return true;
 	
 }
+
+function checkUserNameAvailability()
+{
+	var userName = document.getElementById("userNameField").value;
+	var errorDiv = document.getElementById('userNameAvlDiv');
+	var submitButtonEle = document.getElementById("RegistrationAction_Save");
+	//var userName = trim(userNameEle);
+	
+	
+	if(userName.length == 0)
+	{
+		errorDiv.innerHTML = '<font style="color:red">UserName Sholud Not Be Empty</font>';
+		submitButtonEle.disabled = true;
+	}
+	else if(userName.indexOf(" ")!= -1)
+	{
+		errorDiv.innerHTML = '<font style="color:red">UserName Sholud Not Contain Spaces.</font>';
+		submitButtonEle.disabled = true;
+
+	}
+	else if(userName.length > 0 && userName.length < 6)
+	{
+		errorDiv.innerHTML = '<font style="color:red">UserName Name Minimum Of 6 Characters.</font>';
+	}
+	else 
+	{
+		var jsObj=
+		{		
+ 				userName:userName,
+				taskType:"checkAnanymousUserNameAvailability"				
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/checkAnanymousFreashUserNameAvailabilityAction.action?"+rparam;						
+		callAjax(jsObj,url,rparam);
+	}
+	
+}
+
+
+
 </script>
 
 </head>  
@@ -333,13 +403,17 @@ var str = '<font style="color:red;font-size:12px;">';
 		</table>
 
 		 <div id="loginDetailsDiv" class="accessDivMain">
+		 <div id="errorMsgDiv"></div>
 			<div id="loginDetailsDivHead" class="accessDivHead"><u>Login Details...</u></div>
 			<div id="loginDetailsDivBody" class="accessDivBody">
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
-						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
+						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName" onBlur="checkUserNameAvailability()" /></td>
+						<td><div id="userNameAvlDiv"></div></td>
 					</tr>
+					</table>
+					<table class="registrationTable">
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
 						<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
@@ -476,5 +550,6 @@ var str = '<font style="color:red;font-size:12px;">';
 		</div>
 </div>
 </s:form>  
+
 </body>  
 </html>
