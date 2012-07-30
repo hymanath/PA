@@ -800,10 +800,20 @@ function uploadUserPic()
 	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
 	
 	oPushButton1.on("click",function(){
-		var photoStatusElmt = document.getElementById("uploadPic_window_status");
-		photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+	   
+		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
+		var str = '<font color="red">';
+		if(uploadPhotoId.length == 0)
+	     {   
+		     str += ' Please Select a image .<br>';
+		     document.getElementById("uploadPic_window_status").innerHTML = str;
+	     }
+		 else{
+		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
 		
-		getUploadpic();
+		 getUploadpic();
+		}
 	});
 
 	oPushButton2.on("click",function(){
