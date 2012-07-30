@@ -315,3 +315,51 @@ function disableButton(id)
 {
 	document.getElementById(id).disabled  = true;
 }
+
+function ltrim(str)
+{
+	if(str != null && str.length > 0)
+	{
+		var tempStr = str;
+		for(var i=0; i<str.length; i++)
+		{
+			if(str.charAt(i) == ' ')
+				tempStr = tempStr.substring(1);
+			else
+				return tempStr;
+		}
+		return tempStr;
+	}
+	else
+		return str;
+}
+
+function rtrim(str)
+{
+	if(str != null && str.length > 0)
+	{
+		var tempStr = str;
+		for(var i=str.length-1; i>=0; i--)
+		{
+			if(str.charAt(i) == ' ')
+				tempStr = tempStr.substring(0,tempStr.length-1);
+			else
+				return tempStr;
+		}
+		return tempStr;
+	}
+	else
+		return str;
+}
+
+function trim(str)
+{
+	if(str != null && str.length > 0)
+	{
+		str = ltrim(str);
+		str = rtrim(str);
+		return str;
+	}
+	else
+		return str;
+}
