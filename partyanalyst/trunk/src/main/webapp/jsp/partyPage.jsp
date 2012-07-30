@@ -1652,7 +1652,7 @@ function showFirstFourNewsRecords(results)
 	   
 	   source  = source.slice(0, -2); 
      initialFileIdArray[i]=results[i].fileId;
-     str+='<a href="javascript:{}" onclick="showNewsWithDiffSources('+results[i].fileId+','+i+',\'initialArray\')" class="titleStyle"\">';
+     str+='<a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">';
 	 
 	 if(results[i].fileTitle1.length > 42)
 		str +='<li><strong>'+results[i].fileTitle1.substring(0,42)+'..</strong>';
@@ -2028,7 +2028,7 @@ function showFirstFourNewsRecords(results)
    { 
 	 fileIdArray[i]=results[i].fileId;	    	  
      str+='     <tr>';
-     str+='       <td><a href="javascript:{}" onclick="showNewsWithDiffSources('+results[i].fileId+','+i+',\'array\')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
+     str+='       <td><a href="javascript:{}" onclick="getVideoDetails('+results[i].contentId+')" class="titleStyle"\">'+results[i].fileTitle1+'</a></td>';
      str+='     </tr>';
      str+='     <tr>';
 	 var sourcedata ='';
