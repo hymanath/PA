@@ -404,7 +404,7 @@ public String execute()
 			}
 			result = partyDetailsService.createNewGallaryOrUpdateGallary(gallaryVO,jObj.getString("createOrUpdate").trim());
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("partyGallariesForUplaod"))
+		else if(jObj.getString("task").trim().equalsIgnoreCase("partyGallariesForUplaod"))
 		{
 			selectOptionList = partyDetailsService.getPartyGallarySelectList(jObj.getLong("partyId"),jObj.getString("contentType"));
 		}
