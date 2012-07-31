@@ -45,7 +45,7 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-<link rel="stylesheet" href="styles/style.css" />
+
 
 <!-- JQuery files (End) -->
 
@@ -60,11 +60,13 @@ body {
 	line-height:1.3em;
 }
 h2 {
-	font-size:20px;
-    font-weight:normal;
+	font-size:15px;
+    font-weight:bold;
     margin-bottom:20px;
     margin-top:8px;
     padding:0;
+	font-family:verdana;
+	color:#669900;
 }
 hr {
 	-moz-background-clip:border;
@@ -155,6 +157,8 @@ h3 {
 	border			: 4px solid #9F81F7;
     margin-bottom	: 10px;
 	margin-top		: 5px;
+	width:499px;
+	margin-left:auto;margin-right:auto;
 }
 
 
@@ -202,6 +206,35 @@ font-size:18px;
 {
 	width : 230px;
 }
+
+#content
+{
+	
+	margin: 24px auto 24px auto;
+	padding: 0 60px 30px 60px;
+	border: solid 1px #cbcbcb;
+	background: #fafafa;
+	-moz-box-shadow: 0px 0px 10px #cbcbcb;
+	-webkit-box-shadow: 0px 0px 10px #cbcbcb;
+	
+}
+#pGallaryDescId,#photofileDescId,#pVGallaryDescId,#fileDescId,#profileDescId,#newsCateDesc,#newsfileDescription,#fileDescription,#galDescId{background : #ffffff !important;margin-top: 8px;width: 214px;}
+#contenttable {
+    /*padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;*/
+    background: #fff;
+	margin-left:auto;
+	margin-right:auto;
+	padding-left:auto;
+	padding-right:auto;width : 980px;
+	
+}
+
+
+
+
 </style>
 
 <script type="text/javascript">
@@ -219,12 +252,15 @@ document.getElementById("profileManagementMainOuterDiv2").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv5").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv7").style.display = 'none';
 $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#developmentGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#profileGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
  $("#manifestoId").css({"background":"none repeat scroll 0 0 #0063DC"});
+ 
 }
 return;
 }
@@ -552,7 +588,8 @@ function buildCandidatePhotoGallary(results)
 	
 		str+='<div id="content" style="width:650px;">';
 		
-		str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+		//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+		str +='<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-top:7px;">';
 		str += '<tr>';
 		str += '	<td><input type="button" class="imageButton" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
 		str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
@@ -614,14 +651,15 @@ function buildCreateGallaryDiv()
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-top:7px;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
 	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
 	str += '</tr>';
 	str += '</table>';
 
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset"  style="width:540px;margin-left:auto;margin-right:auto;">';
 	str += '<h2 align="center">Create A Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
@@ -629,10 +667,10 @@ function buildCreateGallaryDiv()
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:52px;"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div style="margin-left:52px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td ><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 
 	str += '</fieldset>';
@@ -648,7 +686,8 @@ function buildUploadPhotosDiv()
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-top:7px;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
 	str += '	<td><input type="button" class="imageButton" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
@@ -657,24 +696,24 @@ function buildUploadPhotosDiv()
 	
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadFilesForm">';
 
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:540px;">';
 	str += '<h2 align="center">Upload A Photo</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select onchange=" buildPhotoVisibility()" id="gallaryPhotoSelectId" name="gallaryId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="photofileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="photofileTitleId" name="fileTitle" size="25" maxlength="50" style="margin-top:8px;"></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
-	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"/></td>';
+	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement" style="margin-top:8px;"></textarea></td></tr>';
+	str +='<tr><td><b><font color="#4B74C6">File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId" style="margin-top:8px;"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
 	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
-	str += '   <TR>';
+	/*str += '   <TR>';
 	str += '     <td colspan="2">';
 	str += '<table>';
 	str += '   <tr>';
-	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '     <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
@@ -684,17 +723,26 @@ function buildUploadPhotosDiv()
 	str += '   </tr>';
 	str += '</table>';
 	str += '     </td>';
-	str += '   </TR></table>';
+	str += '   </TR></table>';*/
+	str += '<TR>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	str += '</TR></table>';
 
-	str += '<div id="photoPublicRadioDiv" style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div id="photoPublicRadioDiv" style="margin-left:52px;"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div id="photoPrivateRadioDiv" style="margin-left:52px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
-	str+='<input type="radio" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromPartyProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<input type="radio" style="margin-left:57px;" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromPartyProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>'; 
-	str += '<table style="margin-top: 30px;"><tr><td style="padding-right: 20px;"><input type="button" id="uploadPhotoId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td style="padding-right: 41px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" id="uploadPhotoId" class="imageButton" value="Upload Photo" style="background-color:#57B731" onClick="uploadAFile()"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"  style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -872,7 +920,8 @@ function getCompleteGallaries(gallaryId){
 
 function getPartyGallariesForUplaod(contentType)
 {
-var partyId=document.getElementById("partyId").value;
+	
+	var partyId=document.getElementById("partyId").value;
 	var jsObj =
 		{ 
             partyId : partyId,
@@ -1234,23 +1283,24 @@ function buildCreateNewsCategory()
 {
    var str ='';
 	str+='<div id="content" style="width:650px;">';
-	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;width:37%;margin-left:auto;margin-right:auto;margin-top:7px;">';
 	str +=  '<tr>';
 	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
 	str += 	 '</tr>';
 	str += 	'</table>';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:449px;">';
 	str += '<h2 align="center">Create A News Category</h2>';
 	str+='<table align="left" class="paddingCss"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
 	str += '<table width="75%"><tr><td><b><font color="#4B74C6">Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></tr></td>';
+	str += '<table style="margin-left:48px;"><tr><td><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></tr></td>';
 	str += '<tr><td><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font color="#4B74C6">Make This Private</font></b></input></tr></td></table>';
 	
-	str += '<table><tr><td><input type="button" class="imageButton" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin-left:auto;width:34%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 
 	str += '<div>';
 	str += '</fieldset>';
@@ -1456,7 +1506,7 @@ function buildResultsForElectType(results){
 	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
 	 callAjax(jsObj,url);
    }
-function getStates()
+function getStatesForPartyManifesto()
 {
   var jsObj =
 		{ 
@@ -1560,10 +1610,10 @@ function clearAllElmts(scopeId,value){
 function buildAssmblParlElecYears(electionType)
 { 
      var str ='';
-		 str +='<table>';
+		 str +='<table style="margin-left:45px;">';
 		 str +='  <tr>';
-		 str +='	   <td style="width:134px;font-weight:bold;color:#4b74c6;text-align:left;">Election Year<font class="requiredFont">*</font></td>';
-		 str +='	   <td><select id="assmblParlElecYearsSelect" style="width:175px;text-align:left;" name="electionId"/></td>';
+		 str +='	   <td class="tdWidth1" style="width:153px;">Election Year<font class="requiredFont">*</font></td>';
+		 str +='	   <td class="selectWidthPadd"><select class="selectWidth" id="assmblParlElecYearsSelect" style="width:175px;text-align:left;" name="electionId"/></td>';
 		 str +='  </tr>';
 		 str +='</table>';
 		 document.getElementById("assmblParlElecYears").innerHTML = str; 
@@ -1592,14 +1642,14 @@ function buildStatesForAssParl(type)
 {   
     document.getElementById("assmblParlElecYears").innerHTML="";
     var str ='';
-		 str +='<table>';
+		 str +='<table style="margin-left:45px;">';
 		 str +='  <tr>';
-		 str +='	   <td style="width:134px;font-weight:bold;color:#4b74c6;text-align:left;">State<font class="requiredFont">*</font></td>';
-		 str +='	   <td><select id="stateDiv" style="width:175px;text-align:left;" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
+		 str +='	   <td class="tdWidth1" style="width:153px;">State<font class="requiredFont">*</font></td>';
+		 str +='	   <td><select id="stateDiv" class="selectWidth" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
 		 str +='  </tr>';
 		 str +='</table>';
 		 document.getElementById("assemblyStates").innerHTML = str;
-		 getStates(); 
+		 getStatesForPartyManifesto(); 
 }
  function getLocationsForPartyManifUpld(id){
   document.getElementById("assemblyStates").innerHTML = "";
@@ -1609,7 +1659,7 @@ function buildStatesForAssParl(type)
      if(id==1)
 	 {
 	   var str ='';
-		 str +='<table style="padding-left:135px;">';
+		 str +='<table style="padding-left:203px;">';
 		 str +='  <tr>';
 		 str +='	   <td><input type="radio" name="assemblyRadio" id="CountryRadio" checked="checked" onclick="buildParlCountryYears();">Country</input></td>';
 		 str +='	   <td><input type="radio" name="assemblyRadio" id="stateRadio" onclick="buildStatesForAssParl(\'Parliament\');">State</input></td>';
@@ -1657,48 +1707,48 @@ function getLocations(id){
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv" name="locationValue"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select class="selectWidth" id="stateDiv" name="locationValue"/></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
   else if(id==3)
   {
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">District :</td>';
-  str +='	   <td><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">District :</td>';
+  str +='	   <td  class="selectWidthPadd"><select id="districtDiv" class="selectWidth" name="locationValue" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
   else if(id==4)
   {
    var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth"  onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">District :</td>';
-  str +='	   <td><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth"  onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
-  str +='	   <td><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Assembly Constituency :</td>';
+  str +='	   <td  class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
   else if(id==5 || id==7)
   {
@@ -1716,24 +1766,24 @@ function getLocations(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"   class="selectWidth" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">District :</td>';
-  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
-  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
   else if(id==6 || id==8)
   {
@@ -1750,56 +1800,56 @@ function getLocations(id){
     var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv"  class="selectWidth" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">District :</td>';
-  str +='	   <td><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  class="selectWidth" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
-  str +='	   <td><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  class="selectWidth" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"  class="selectWidth" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
-  str +='	   <td><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
   else if(id==9)
   {
      var str ='';
   str +='<table>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">State :</td>';
-  str +='	   <td><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">State :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">District :</td>';
-  str +='	   <td><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">District :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Assembly Constituency :</td>';
-  str +='	   <td><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Assembly Constituency :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Mandal/Municipality/Corp/GMC :</td>';
-  str +='	   <td><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Mandal/Municipality/Corp/GMC :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" class="selectWidth" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth">Village/Ward/Division :</td>';
-  str +='	   <td><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="tdWidth1" style="width:101px;">Village/Ward/Division :</td>';
+  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
    document.getElementById("showScopeSubs").innerHTML = str;
-   getStates();
+   getStatesForPartyManifesto();
   }
 }
 
@@ -1808,13 +1858,14 @@ function  buildUploadNews()
    var tempPartyId = document.getElementById("partyId").value;
    var str ='';
 	str+='<div id="content" style="width:650px;">';
-	str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;width:37%;margin-left:auto;margin-right:auto;margin-top:7px;">';
 	str +=  '<tr>';
 	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
 	str += 	 '</tr>';
 	str += 	'</table>';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:504px;">';
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table  align="left" class="paddingCss"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
@@ -1824,21 +1875,21 @@ function  buildUploadNews()
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title<font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50"></text></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="50" style="margin-top:8px;"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription"></textarea></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" style="margin-top:8px;"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords</td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></text></td></tr>';
-	str += '   <TR>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" style="margin-top:8px;"></text></td></tr>';
+	/*str += '   <TR>';
 	str += '     <td colspan="2">';
 	str += '<table>';
 	str += '   <tr>';
-	str += '     <td class="tdWidth2"><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25"/>';
+	str += '     <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="25" style="margin-top:8px;"/>';
 	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '     <TD>';
 	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
@@ -1847,22 +1898,31 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '</table>';
 	str += '     </td>';
-	str += '   </TR>';
+	str += '   </TR>';*/
+	str += '<TR>';
+	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
+	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
+	str += '<TD>';
+	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
+	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	str += '</TD>';
+	str += '</TR>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Source<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" style="width:175px;margin-top:8px;"><option value="0">Select Source</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" style="width:175px;margin-top:8px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Importance<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;"><option value="0">Select NewsImportance</option></select></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" style="width:175px;margin-top:8px;"><option value="0">Select NewsImportance</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" /></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;"/></td>';
 	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
 	str += '   </tr>';
 	str += '   <tr>';
@@ -1875,7 +1935,7 @@ function  buildUploadNews()
     str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
-	str += '       <td><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
+	str += '       <td id="newsprivateRadioDiv"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></td>';
 	str += '   </tr>';
 	str +='    <tr>';
     str +='	   <td class="tdWidth1">Location Scope</td>';
@@ -1891,9 +1951,9 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-	str+='<input type="radio" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
+	str+='<input type="radio" style="margin-left:55px;" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str += '<table><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -1957,14 +2017,15 @@ function buildCreateVideoGallaryDiv()
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="width:35%;margin-top:7px;margin-left:auto;margin-right:auto;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
 	str += '	<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
 	str += '</tr>';
 	str += '</table>';
 
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:449px;">';
 	str += '<h2 align="center">Create A Video Gallery</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
@@ -1972,10 +2033,10 @@ function buildCreateVideoGallaryDiv()
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="pVGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="padding-right: 63px"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 78px"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:50px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div style="margin-left:50px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
 	
-	str += '<table><tr><td style="padding-right: 40px"><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"      style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"      style="background-color:#CF4740"></td></tr></table>';
 
 	
 	str += '</fieldset>';
@@ -1989,41 +2050,42 @@ function buildUploadVideoDiv()
 	var str ='';
 	str+='<div id="content" style="width:650px;">';
 		
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="width:35%;margin-top:7px;margin-left:auto;margin-right:auto;">';
 	str += '<tr>';
 	str += '	<td><input type="button" class="imageButton" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
 	str += '	<td><input type="button" class="imageButton" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
 	str += '</tr>';
 	str += '</table>';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:504px;">';
 	str += '<h2 align="center">Upload A Video</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
     str += '<table align="left" class="paddingCss"><tr><td>';
 	str+='<div id="fileSuccessDiv"></div><div id="galErrorMsgDivId"></div></td></tr></table>';
 	str += '<table width="75%">';
 	str += '<tr><td><b><font color="#4B74C6">Select Gallery</font></b></td><td><select onchange="buildPartyVedioVisibility()" id="gallarySelectId" name="gallarySelectId" style="width:175px;"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50"></td></tr>';
-    str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50" style="margin-top:8px;"></td></tr>';
+    str += '<tr><td><b><font color="#4B74C6">Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement" style="margin-top:8px;"></textarea></td></tr>';
     str += '<TR>';
 	str += ' <td><b><font color="#4B74C6">File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20"/>';
+	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
 	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
 	str += '<TD>';
 	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
 	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	str += '</TD>';
 	str += '</TR>';
-	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200"></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td></tr>';
-	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td><td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreVideos()" title="Click here to add more Videos" alt="Click here to add more images"/></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200" style="margin-top:8px;"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200" style="margin-top:8px;"></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="fileSourceId" style="width:175px;margin-top:8px;"><option value="0">Select Source</option></select></td></tr>';
+	str += '<tr><td><b><font color="#4B74C6">Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="sourceLanguageId" style="width:175px;margin-top:8px;"><option value="0">Select Language</option></select></td><td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreVideos()" title="Click here to add more Videos" alt="Click here to add more images"/></td></tr>';
 	str += '<tr><td colspan="3"><div id="addMoreVideosDiv"></div></td></tr>';
 	str += '</table>';
-	str += '<div id="vedioPublicDiv" style="padding-right: 72px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 88px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str+='<input type="radio" onclick="otherProfiles(\'otherProVideoDiv\',\'fromPartyProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
+	str += '<div id="vedioPublicDiv" style=" margin-left: 52px;"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
+	str += '<div id="vedioPrivateDiv" style="margin-top:1px;margin-left:52px;"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str+='<input type="radio" style="margin-left:57px;" onclick="otherProfiles(\'otherProVideoDiv\',\'fromPartyProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
-	str += '<table><tr><td style="padding-right: 18px;"><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td style="padding-right: 31px;"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin:5px;margin-left:auto;width:26%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" id="uploadVideoBtnId" class="imageButton" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"   style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("videoGallaryDiv").innerHTML = str;
@@ -2334,14 +2396,15 @@ function profileDiscriptionDiv()
 
 	var str ='';
 	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;margin-left:auto;width:37%;margin-right:auto;margin-top:7px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
 	str += '</tr>';
 	str += '</table>'
     str += '<fieldset class="imgFieldset" style="width:400px;">';	
-	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The Profile Description </font> </b> </center>';
+	str += '<center><b style="font-size:15px"><font color="#669900">Add The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
@@ -2349,7 +2412,7 @@ function profileDiscriptionDiv()
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Profile  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin:5px;margin-left:auto;margin-right:auto;margin-bottom:7px;width:33%"><tr><td><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'discriptionDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -2361,14 +2424,15 @@ function profileDiscriptionDiv()
  {
  var str ='';
 	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table style="margin:5px;margin-left:auto;width:37%;margin-right:auto;margin-top:7px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
 	str += '</tr>';
 	str += '</table>'
     str += '<fieldset class="imgFieldset" style="width:400px;">';	
-	str += '<center><b style="font-size:15px"><font color="#4B74C6">Add The Profile Description </font> </b> </center>';
+	str += '<center><b style="font-size:15px"><font color="#669900">Add The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
@@ -2376,7 +2440,7 @@ function profileDiscriptionDiv()
 	str += '<td>';
 	str += '<b><font color="#4B74C6">Profile  Description</font></b></td><td><textarea id="profileDescId" name="profileDescription" cols="30" rows="5"></textarea></td></tr>';
 	str += '</table>';
-	str += '<table><tr><td style="padding-left: 82px"><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin:5px;margin-left:auto;margin-right:auto;margin-bottom:7px;width:33%"><tr><td><input type="button" class="imageButton" value="Add Discription" style="background-color:#57B731" onClick="addProfileDiscription()"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'discriptionDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -2407,15 +2471,16 @@ function  showPartyDescription(myResults)
 	sizeOfArray = listSize;
 	var i;
 	var str ='';
-	str += '<div id="content" style="width:650px;">';
-	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str += '<div id="content" style="width:750px;">';
+	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
+	str +='<table align="center" style="width:32%;margin-top:7px;">';
 	str += '<tr>';
 	str += '<td><input type="button" class="imageButton" value="Add Description" onclick="addDescriptionDiv()"></td>';
 	str += '<td><input type="button" class="imageButton" value="Update Description" onclick="updateDescriptionDiv()"></td>';
 	str += '</tr>';
 	str += '</table>'
-	str += '<fieldset class="imgFieldset" style="width:400px;">';	
-	str += '<center><b style="font-size:15px"><font color="#4B74C6">Update The Profile Description </font> </b> </center>';
+	str += '<fieldset class="imgFieldset" style="margin-left:-16px;width:718px;">';	
+	str += '<center><b style="font-size:15px"><font color="#669900">Update The Profile Description </font> </b> </center>';
 	str += '<table style="margin:5px;width:40%;margin-left:50px;">';
 	str += '<div id="galErrorMsgDivId"></div>';
 	str += '<div id="fileUploadErrorMsgDivId"></div>';
@@ -2424,13 +2489,13 @@ function  showPartyDescription(myResults)
 	str += '<b><font color="#4B74C6">Order No</font></b></td><td style="padding-left: 82px"><b><font color="#4B74C6">Description </font></b></td></tr>';
 	for(i=0 ; i<listSize ; i++)
 	{
-	str += ' <tr><td style="padding-right:150px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5"></td>';
-	str += ' <td style="padding-right: 82px"> <textarea id="descId_'+i+'" cols="25" rows="4"> '+myResults[i].description+'</textarea> </td>';
+	str += ' <tr><td style="padding-right:38px"><input type="text" id="orderNoId_'+i+'" value= "'+myResults[i].orderNo+'" size="5"></td>';
+	str += ' <td style="padding-right: 29px"> <textarea id="descId_'+i+'" cols="25" rows="4" style="background:#ffffff !important;"> '+myResults[i].description+'</textarea> </td>';
 	str += ' <td style="padding-right: 82px"> <input type = "button" id="delete_'+i+'" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" onClick="deleteProfileById('+myResults[i].partyProfileDescriptionId+')"></td></tr>';
 	str += ' <input type="hidden" id="partyProfileDescriptionId_'+i+'" value="'+myResults[i].partyProfileDescriptionId+'">';
 	}
 	str += '</table>';
-	str += '<table><tr><td style="padding-right: 23px"><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td style="padding-left: 20px"><input type="button" class="imageButton" value="Cancel" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table style="margin:5px;margin-left:auto;margin-right:auto;margin-bottom:7px;width:23%"><tr><td><input type="button" class="imageButton" value="Update Discription" style="background-color:#57B731" onClick="updateProfileDiscription()"></td><td><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'discriptionDiv\')" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	
@@ -2691,8 +2756,8 @@ function updateGallary(gallaryId)
 	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.description+'</textarea></td></tr></table>';
 	str +='<input type = "hidden" name ="gallaryId" id ="gallaryId" value ='+myResults.gallaryId+'>';
 	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font color="#4B74C6">Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-right: 123px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
-	str += '<table><tr><td style="padding-right: 35px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
+	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font color="#4B74C6">Make This Private</font></b></input></div>';
+	str += '<table style="margin-left:auto;margin-right:auto;"><tr><td style="padding-right: 4px;"><input type="button" class="imageButton" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="imageButton" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
 	str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("updateGallaryDiv").innerHTML = str;
@@ -2849,26 +2914,26 @@ function updatePhoto(fileId,fileGallaryId)
 	
 	str += '<form name="uploadmanifestoForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadmanifestoForm">';
 	
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
+	str += '<fieldset class="imgFieldset" style="width:567px;">';
 	str += '<h2 align="center">Upload Party Manifesto</h2>';
 	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
 	str += '<table align="left" class="paddingCss"><tr><td><div id="partyManifestoErrorMsgDiv"></div></td></tr></table>';
-	str += '<table align="left" width="100%">';
+	str += '<table align="left" width="100%" style="padding-left:50px;">';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Manifesto Description<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1" style="width:97px;">Manifesto Description<font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="fileDescription" cols="19" rows="3" name="fileDescription"></textarea></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Language<font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="language" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	str += '       <td class="tdWidth1" style="width:97px;">Language<font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd" ><select id="language" name="language" style="width:175px;margin-top:8px;"><option value="0">Select Language</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">File Path<font class="requiredFont">*</font></td>';
-	str += '       <td><input type="file" name="userImage" id="fileId" size="25" /></td>';
+	str += '       <td class="tdWidth1" style="width:97px;">File Path<font class="requiredFont">*</font></td>';
+	str += '       <td><input type="file" name="userImage" id="fileId" size="25" style="margin-top:8px;"/></td>';
 	str += '   </tr>';
 	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Election Type<font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="electionType" name="electionType" class="selectWidth" onchange="getLocationsForPartyManifUpld(this.options[this.selectedIndex].value)"><option value="0">Select Election Type</option></select></td>';
+    str +='	   <td class="tdWidth1" style="width:97px;">Election Type<font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="electionType" name="electionType" class="selectWidth" onchange="getLocationsForPartyManifUpld(this.options[this.selectedIndex].value)" style="margin-top:8px;"><option value="0">Select Election Type</option></select></td>';
     str +='  </tr>';
 	str += '</table>';
 	str += '<table  align="left" width="100%">';
@@ -2891,7 +2956,7 @@ function updatePhoto(fileId,fileGallaryId)
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="manifestoes">';
 
-	str += '<table  align="left" style="padding-left:115px;"><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table  align="left" style="padding-left:205px;"><tr><td><input type="button" class="imageButton" value="Upload Manifesto" style="background-color:#57B731" onClick="uploadManifesto()"></td><td><input type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'manifestoDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '<input type="hidden" name="partyId" value=\''+document.getElementById("partyId").value+'\' />';
 	str += '<input type="hidden" name="time" value=\''+new Date().getTime()+'\' />';
 	str += '</form>';
@@ -3041,14 +3106,15 @@ function updatePhoto(fileId,fileGallaryId)
 		
 
 		  if(myResults.isPrivate == "true"){
-			  document.getElementById('vedioPublicDiv').style.display = 'none';
-			document.getElementById('vprivateRadioId').checked = true;
-			document.getElementById('vedioPublicDiv').style.display = 'none';
+			  document.getElementById('vedioPublicDiv').style.display = 'block';
+			document.getElementById('vpublicRadioId').checked = true;
+			document.getElementById('vedioPrivateDiv').style.display = 'block';
 		  }
 		  else
 		  {
 			document.getElementById('vedioPublicDiv').style.display = 'block';
 		   document.getElementById('vpublicRadioId').checked = true;
+		   document.getElementById('vedioPrivateDiv').style.display = 'none';
 		  }
 	  }
 
@@ -3057,16 +3123,17 @@ function updatePhoto(fileId,fileGallaryId)
 	  {
 		  if(myResults.isPrivate == "true")
 		  {
-			  document.getElementById('newsPublicRadioDiv').style.display = 'none';
+			  document.getElementById('newsPublicRadioDiv').style.display = 'block';
 			  // document.getElementById('newsfontDiv').style.display = 'none';
-			document.getElementById('newsprivateRadioId').checked = true;
-			document.getElementById('newsPublicRadioDiv').style.display = 'none';
+			document.getElementById('newsPublicRadioId').checked = true;
+			document.getElementById('newsprivateRadioDiv').style.display = 'block';
 		  }
 		  else
 		  {
 			    // document.getElementById('newsfontDiv').style.display = 'block';
 			  document.getElementById('newsPublicRadioDiv').style.display = 'block';
 			
+		   document.getElementById('newsprivateRadioDiv').style.display='none';
 		   document.getElementById('newsPublicRadioId').checked = true;
 		   
 
@@ -3079,14 +3146,15 @@ function updatePhoto(fileId,fileGallaryId)
 		  
 		if(myResults.isPrivate == "true")
 		  {
-			  document.getElementById('photoPublicRadioDiv').style.display = 'none';
-			document.getElementById('photoprivateRadioId').checked = true;
-			//document.getElementById('photoPublicRadioDiv').style.display = 'none';
+			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
+			document.getElementById('PhotopublicRadioId').checked = true;
+			document.getElementById('photoPrivateRadioDiv').style.display = 'block';
 		  }
 		  else
 		  {
 			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
 		   document.getElementById('PhotopublicRadioId').checked = true;
+		   document.getElementById('photoPrivateRadioDiv').style.display = 'none';
 
 		  }
 	  }
