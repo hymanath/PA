@@ -959,7 +959,7 @@ function showFreeUserProblemDetails(result)
 	for(var i in result)
 	{
 		str +='<div style="border: 1px solid #CCCCCC;margin-bottom: 10px;margin-left: 74px;margin-top: 21px; padding: 9px 9px 9px 9px;width: 790px;border-radius: 4px;">';
-		str +='<div style="font-size: 16px;font-weight:bold; margin-bottom: 10px;border-bottom: 1px solid #CCCCCC;padding-bottom: 6px;"><a href="problemCompleteInfoAction.action?problemHistoryId='+result[i].problemHistoryId+'" style="color: #357EC7;">'+result[i].problem+'</a></div></td>';
+		str +='<div style="font-size: 16px;font-weight:bold; margin-bottom: 10px;border-bottom: 1px solid #CCCCCC;padding-bottom: 6px;"><a href="completeProblemDetailsAction.action?problemId='+result[i].problemHistoryId+'" style="color: #357EC7;">'+result[i].problem+'</a></div></td>';
 		str +='<div>'+result[i].description+'</div>';
 		str +='<div style="padding-top: 4px; padding-bottom: 4px;"><table>';
 		str +='<tr>';
