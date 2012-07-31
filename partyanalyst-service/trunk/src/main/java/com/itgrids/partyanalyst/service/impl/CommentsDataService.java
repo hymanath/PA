@@ -744,7 +744,7 @@ public class CommentsDataService implements ICommentsDataService {
 						commentData.setIsApproved(IConstants.TRUE);
 					
 					else if(hasFreeUserRole != null && hasFreeUserRole.equals(true))
-					  commentData.setIsApproved(IConstants.FALSE);
+					  commentData.setIsApproved(IConstants.TRUE);
 					
 					commentCategoryCandidateSaved = new CommentCategoryCandidate();
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
