@@ -1082,7 +1082,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						
 					} else if (problemBeanVO.getProblemPostedBy().equals(
 							IConstants.FREE_USER)) {
-						problem.setIsApproved(IConstants.FALSE);
+						problem.setIsApproved(IConstants.TRUE);
 						
 						}
 				
@@ -5064,7 +5064,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				if(problemBeanVO.getHasPartyAnalystUserRole() != null && problemBeanVO.getHasPartyAnalystUserRole())
 					problemComments.setIsApproved(IConstants.TRUE);
 				else if(problemBeanVO.getHasFreeUserRole() != null && problemBeanVO.getHasFreeUserRole())
-					problemBeanVO.setIsApproved(IConstants.FALSE);
+					problemComments.setIsApproved(IConstants.TRUE);
 				problemCommentsDAO.save(problemComments);
 		}
 			return problemComments;
@@ -6350,7 +6350,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				if(problemBeanVO.getHasPartyAnalystUserRole() != null && problemBeanVO.getHasPartyAnalystUserRole())
 					problemFile.setIsApproved(IConstants.TRUE);
 				else
-					problemFile.setIsApproved(IConstants.FALSE);
+					problemFile.setIsApproved(IConstants.TRUE);
 					
 				problemFile.setFile(fileObj);
 				problemFile.setProblem(problem); 
@@ -6359,7 +6359,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				problemFile.setIsDelete(IConstants.FALSE);
 				problemFile.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				problemFile.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			
+				
 				problemFilesDAO.save(problemFile);
 			}
 		}
