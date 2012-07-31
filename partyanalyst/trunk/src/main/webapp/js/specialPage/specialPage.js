@@ -351,6 +351,7 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 				   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
 				   createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 				   $('#noGalDiv'+jsObj.galSelectOPtionId+'').html('');
+				   buildCreateGalleryDiv(jsObj.partyId,jsObj.contentType,jsObj.userOption,jsObj.galSelectOPtionId);
 			  }
 			  else
 				{
@@ -367,6 +368,7 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 				   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
 				   createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 				   $('#noGalDiv'+jsObj.galSelectOPtionId+'').html('');
+				   buildCreateGalleryDiv(jsObj.candidateId,jsObj.contentType,jsObj.userOption,jsObj.galSelectOPtionId);
 				}
 				else
 				{
@@ -383,6 +385,7 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 				   $("#"+jsObj.galSelectOPtionId+"").prepend("<option value='0'>Select Gallery</option>");
 				   createOptionsForSelectElmtId(jsObj.galSelectOPtionId,myResults);
 				   $('#noGalDiv'+jsObj.galSelectOPtionId+'').html('');
+				   buildCreateGalleryDiv(jsObj.specialPageId,jsObj.contentType,jsObj.userOption,jsObj.galSelectOPtionId);
 				}
 				else
 				{
@@ -443,9 +446,12 @@ function callAjaxForMultiPagesUpload(jsObj,url){
 
 function buildCreateGalleryDiv(selectedId,contentType,userOption,galSelectOPtionId)
 {
+    if(document.getElementById("noGalDiv"+galSelectOPtionId) != null){
+           $("#noGalDiv"+galSelectOPtionId).remove();
+	}
 	var nogalleryDivElmt = document.getElementById(galSelectOPtionId);
 	var str='';
-	str+='<div id="noGalDiv'+galSelectOPtionId+'"><b>No Galleries found . <a href="javascript:{}" onclick="showCreateGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectOPtionId+'\')">Create Gallery</a></b>';
+	str+='<div id="noGalDiv'+galSelectOPtionId+'" ><b><a href="javascript:{}" onclick="showCreateGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectOPtionId+'\')">Create Gallery</a></b>';
 	str+='<div id="galleryInnerPopupDiv" style="display:none;"></div></div>';
 	$(nogalleryDivElmt).after(str);
 
