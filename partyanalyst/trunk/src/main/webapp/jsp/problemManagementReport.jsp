@@ -2332,7 +2332,7 @@ function buildResultDataTable(result)
 	{
 		var problem = oData;
 		var pHId= oRecord.getData("problemHistoryId");
-		elLiner.innerHTML ="<a href='javascript:{}' onClick='openProblemDetailsWindow("+pHId+")'>"+problem+"</a>";
+		elLiner.innerHTML ="<a href='completeProblemDetailsAction.action?problemId="+pHId+" '>"+problem+"</a>";
 			
 	};
 
