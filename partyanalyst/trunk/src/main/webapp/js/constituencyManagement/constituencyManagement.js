@@ -403,7 +403,7 @@ function buildProblemsDetailsDT(results) {
 					status:results[i].status,
 					problemSource:results[i].probSource,
 					//more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
-					more:'<a href="javascript:{}" onclick="openProblemDetailsWindow('+results[i].problemId+')">More Info</a>'
+					more:'<a href="completeProblemDetailsAction.action?problemId='+results[i].problemId+'">More Info</a>'
 
 					
 			};
