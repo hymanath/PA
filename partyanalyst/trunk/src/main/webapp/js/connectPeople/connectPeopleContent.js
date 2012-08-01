@@ -1110,7 +1110,7 @@ function showMailPopup(id,name,type)
 			title:"Send Message to "+name,
 			autoOpen: true,
 			show: "blind",
-			width: 400,
+			width: "auto",
 			minHeight:300,
 			modal: true,
 			hide: "explode"
