@@ -13,6 +13,7 @@
 <script src="styles/assets/js/bootstrap-tab.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script src="js/rating/jquery.rateit.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link href="styles/rating/rateit.css" rel="stylesheet" type="text/css">
 
 
@@ -898,7 +899,7 @@ function postCommentForProblem()
 	
 	var jsObj = {
 					pHistoryId:'${completeProblemDetailsVO.problemId}',
-					comments:textAreaValue,
+					comments:removeAllUnwantedCharacters(textAreaValue),
 					task:"PostCommentsToProblem"
 				};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1266,7 +1267,7 @@ function getNewActivityDetails(){
  function deleteProblemDetails()
  {
 	var problemId = '${completeProblemDetailsVO.problemId}';
-	var r=confirm("Do you want to delete Department");
+	var r=confirm("Do you want to delete This Problem");
     if (r==true)
     {
   	 if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
@@ -1309,6 +1310,7 @@ function showDeleteStatus(myResult)
 <div class="container" ><!-- Container Opening -->
 
 <h2 class="h1header"> Your Locality Problems</h2>
+<s:if test="completeProblemDetailsVO.isProblemDel != 'true' ">
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
 <s:if test="completeProblemDetailsVO.userStatus == 'both' && completeProblemDetailsVO.isTaken == 'true' && completeProblemDetailsVO.changedToPrivate == 'true' ">
   <div class="errStyle">We Are Sorry To Inform,This Problem Is Moved To Private State By The Posted User</div>
@@ -1367,14 +1369,7 @@ function showDeleteStatus(myResult)
           </ul>
          </div>
 		<div class="m-t10">
-                     <!--    <span >
-						   
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span> -->
+                     
 						</div>
 						<div class="rateit" id="rateitmainrating"></div>
         </div>
@@ -1615,12 +1610,17 @@ function showDeleteStatus(myResult)
 	<s:if test="completeProblemDetailsVO.isAlreadyRated !='true' && completeProblemDetailsVO.userStatus != 'notlogged' ">
      <div id="initialchangDiv" class="pull-left" style="margin-left:150px;"><div style="color: #06ABEA;">Are you facing the same Problem ? </div>
 	 <input type="range"  step="1" id="rateitbyuser" >
-     <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false"  data-rateit-ispreset="true"
-    data-rateit-min="0" data-rateit-max="5"></div>	
+     <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false" style="max-width:0px;" data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5"></div>	
       </div>
 	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:150px;" >
 	    <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuserchange"></div>
 	  </div>
+	  <script type="text/javascript">
+
+      $(document).ready(function() {
+	     $(".rateit-selected").css("width","0px");
+	   });
+	</script>
 	</s:if>
 	<div class="pull-right" style="margin-right:200px;"><div style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-left:30px;"></div> <div class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-left:30px;"></div></div>
 </div>
@@ -1674,104 +1674,7 @@ function showDeleteStatus(myResult)
     </script>
 </s:iterator>
 </s:else>
-	<!--		<li>
-						<h5>Electricity Problem</h5>
-						<div>
-							<span>
-								<a href=# class="icon-star"></a>
-								<a href=# class="icon-star"></a>
-								<a href=# class="icon-star-empty"></a>
-								<a href=# class="icon-star-empty"></a>
-								<a href=# class="icon-star-empty"></a>
-							</span>
-							<h6>Hyderabad</h6>
-						</div>
-			</li>
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>
-
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>
-
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>
-
-
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>
-
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>
-
-
-			<li>
-					<h5>Electricity Problem</h5>
-					<div>
-						<span>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-							<a href=# class="icon-star-empty"></a>
-						</span>
-						<h6>Hyderabad</h6>
-					</div>
-			</li>-->
+	
 </ul>
 <!-- Problem Display Collection End-->
 
@@ -1789,6 +1692,10 @@ function showDeleteStatus(myResult)
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess == 'true' ">
 <div class="errStyle">You Didn't Have Access To View This Content </div>
 </s:if>
+</s:if>
+<s:else>
+  <div class="errStyle"> This Problem is not Existed. </div>
+</s:else>
 <div id="selectedCadreDivouter"><div id="selectedCadreDiv"></div></div>
 <input type="hidden" id="cadreInputId" name="cadreId"/>
 </div><!-- container Closing-->
