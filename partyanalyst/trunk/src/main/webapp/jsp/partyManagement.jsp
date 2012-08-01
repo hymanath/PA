@@ -953,6 +953,11 @@ function uploadAFile()
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
+		var photoprivateRadioId = document.getElementById('photoprivateRadioId').checked;
+		if(photoprivateRadioId == true)
+		document.getElementById('photoprivateRadioId').checked= 'true';
+		if(photoprivateRadioId == false)
+		document.getElementById('PhotopublicRadioId').checked= 'true';
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
@@ -974,6 +979,11 @@ function uploadNews()
 	if(validateNewsFileUpload())
 	{
 		disableButton('uploadNewsBtnId');
+	var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
+		if(newsprivateRadioId == true)
+	document.getElementById('newsprivateRadioId').checked = 'true';
+		if(newsprivateRadioId == false)
+	document.getElementById('newsPublicRadioId').checked = 'true';
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
