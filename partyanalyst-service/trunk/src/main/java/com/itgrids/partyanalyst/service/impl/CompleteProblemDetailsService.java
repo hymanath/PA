@@ -103,6 +103,10 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
 		completeProblemDetailsVO.setProblemId(problemId);
 		try{
+			if(checkIsProblemNotExist(problemId)){
+				completeProblemDetailsVO.setIsProblemDel("true");
+				return completeProblemDetailsVO;
+			}
 			if(userStatus.equalsIgnoreCase(IConstants.NOT_LOGGED_IN)){
 				getProblemDetailsForNotLoggedUser(problemId,completeProblemDetailsVO,queryReq);		
 			}else if(userStatus.equalsIgnoreCase(IConstants.FREE_USER)){
@@ -239,6 +243,15 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 		return false;
 	}
 	
+	private boolean checkIsProblemNotExist(Long problemId){
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Enter into checkIsProblemExist method ");
+		}
+		List<Long> problemNotExistCount = problemDAO.isProblemDeleted(problemId);
+		if(!problemNotExistCount.isEmpty() && problemNotExistCount.get(0).longValue() >0l)
+		   return false;
+		return true;
+	}
 	private void getProblemAndItsOwnerDetails(Long problemId,CompleteProblemDetailsVO completeProblemDetailsVO,String queryReq,Long userId){
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Enter into getProblemAndItsOwnerDetails method ");
