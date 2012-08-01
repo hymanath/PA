@@ -826,6 +826,10 @@ function callAjax(jsObj,url)
 						   }else if(jsObj.task == "getstatustypedetails"){
 						      buildstatusdetailsData(myResults);
 						   }
+						   else if(jsObj.task == "deleteProblemDetails")
+							{
+							  showDeleteStatus(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -1255,6 +1259,48 @@ function getNewActivityDetails(){
 		document.getElementById("problemstatusId").value=result.status;
 		buildActivitiesData(result);
  }
+
+
+ //delete
+
+ function deleteProblemDetails()
+ {
+	var problemId = '${completeProblemDetailsVO.problemId}';
+	var r=confirm("Do you want to delete Department");
+    if (r==true)
+    {
+  	 if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
+	 var jsObj = {
+		time       : new Date().getTime(),
+		problemId  : problemId,
+		task       : "deleteProblemDetails"
+
+	};
+	
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "deleteProblemDetailsAction.action?"+rparam;
+	 callAjax(jsObj,url);
+	}
+ }
+}
+
+function showDeleteStatus(myResult)
+{
+	var errorDivEle = document.getElementById('errorMsgDivEle');
+		var str = '';
+
+		if(myResult.resultCode == 0)
+		{
+			window.location.reload();
+			//str += '<font color="green"><b>Problem Deleted Successfully.</b>';
+		}
+		else if(myResult.resultCode == 1) 
+		{
+			str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+		}
+		
+		errorDivEle.innerHTML = str;
+}
 </script>
 </table>
 
@@ -1293,8 +1339,21 @@ function getNewActivityDetails(){
           </a>
 		  <!--<a class="label">Posted by: <b>${completeProblemDetailsVO.firstName}&nbsp; ${completeProblemDetailsVO.lastName}</b></a>-->
 </div>
-<div class="span7 subheader-problem" >
+<div class="span7 subheader-problem">
       <h2 class="span5 pull-left">${completeProblemDetailsVO.problemTitle} </h2>
+
+<c:if test="${completeProblemDetailsVO.isOwner && completeProblemDetailsVO.userStatus != 'NOT_LOGGED_IN'}">
+<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
+
+<div id="errorMsgDivEle"></div>
+<div style="width: 100px; margin-left: 333px; margin-top: 0px; padding-top: 0px;">
+	<a href="javascript:{}" onclick="deleteProblemDetails()" title="Click Here to Delete the Problem">
+		<img src="images/icons/delete.png" style="text-decoration: none; border: 0px none; margin: 0px 0px -47px -15px; padding-top: 0px;">
+	</a>
+</div>
+ </c:if>
+</c:if>
+
        <s:if test="completeProblemDetailsVO.isPublic == 'true' ">
 	   <div class="pull-right">
         <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
