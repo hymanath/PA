@@ -659,8 +659,9 @@ function showAllRequestMessagesForUser(results){
 		str += '<tr>';
 		str+='<td>';
 		str+='<div id="userFriendRequestInfo">';
-		str+='<img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-		str += '<td colspan="3">'+results.friendRequest[i].data+'</td>';
+		str+='<img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></div></td>';
+		str += '<td colspan="3">';
+		str +='<table><tr><td><div>'+results.friendRequest[i].message+'</div></td></tr></table></td>';
 		str += '</tr>';
 		str += '<tr>';
 		str += '<td align="left" class="connectPeopleNames"><span>'+results.friendRequest[i].candidateName+'</span></td>';
@@ -672,6 +673,7 @@ function showAllRequestMessagesForUser(results){
 	str += '</table>';
 	elmt.innerHTML = str;
 }
+
 
 function blockRequest(requestId)
 {
