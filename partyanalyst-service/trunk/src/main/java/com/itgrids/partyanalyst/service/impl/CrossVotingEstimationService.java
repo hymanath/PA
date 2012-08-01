@@ -375,7 +375,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	}
 
 	public List<CrossVotedBoothVO> getCrossVotingDetails(Map<Long, Object[]> assemblyInfoMap, Map<Long, Object[]> parliamentInfoMap,
-			CrossVotedMandalVO crossVotedMandalVO){
+			CrossVotedMandalVO crossVotedMandalVO)
+	{
 		List<CrossVotedBoothVO> crossVotingInfoVOs = new ArrayList<CrossVotedBoothVO>();
 		CrossVotedBoothVO crossVotedBoothVO = null;
 		Object[] acRawData = null;
@@ -393,8 +394,9 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		String acPercentage = "";
 		String pcPercentage = "";
 		String percentageDiff = ""; 
-		
+		try{
 		for(Map.Entry<Long, Object[]> entry:assemblyInfoMap.entrySet()){
+			
 			acRawData = entry.getValue();
 			pcRawData = parliamentInfoMap.get(entry.getKey());
 			totalVoters = (Long)acRawData[3];
@@ -402,10 +404,16 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			acEarnedVotes = (Long)acRawData[5];
 			pcValidVotes = (Long)pcRawData[4];
 			pcEarnedVotes = (Long)pcRawData[5];
-			acPercentage = new BigDecimal(acEarnedVotes*100.0/acValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			pcPercentage = new BigDecimal(pcEarnedVotes*100.0/pcValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			percentageDiff = new BigDecimal(Double.parseDouble(acPercentage)-Double.parseDouble(pcPercentage)).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
 			
+			try
+			{
+				acPercentage = new BigDecimal(acEarnedVotes*100.0/acValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				pcPercentage = new BigDecimal(pcEarnedVotes*100.0/pcValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				percentageDiff = new BigDecimal(Double.parseDouble(acPercentage)-Double.parseDouble(pcPercentage)).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}catch (Exception e) {
+				percentageDiff = "0.0";
+				log.error("Exception Occured - "+e);
+			}
 			crossVotedBoothVO = new CrossVotedBoothVO();
 			crossVotedBoothVO.setBoothId((Long)acRawData[0]);
 			crossVotedBoothVO.setPartNO(acRawData[1].toString());			
@@ -441,7 +449,10 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		crossVotedMandalVO.setTotalVoters(totalVotersInMandal);
 		crossVotedMandalVO.setPolledVotes(acValidVotesInMandal);
 		crossVotedMandalVO.setPercentageDifferenceInMandal(percentageDiffInMandal);
-		
+		}catch(Exception e){
+			log.error("Exception Occured in getCrossVotingDetails(), Exception is - "+e);
+			return crossVotingInfoVOs;
+		}
 		return crossVotingInfoVOs;
 	}
 	
