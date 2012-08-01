@@ -38,6 +38,7 @@ public class CompleteProblemDetailsVO implements Serializable {
     private String avgRating;
     private String totalpeople;
     private Integer ratingGiven;
+    private String isProblemDel;
     
 	public String getUserStatus() {
 		return userStatus;
@@ -213,6 +214,12 @@ public class CompleteProblemDetailsVO implements Serializable {
 	}
 	public void setRatingGiven(Integer ratingGiven) {
 		this.ratingGiven = ratingGiven;
+	}
+	public String getIsProblemDel() {
+		return isProblemDel;
+	}
+	public void setIsProblemDel(String isProblemDel) {
+		this.isProblemDel = isProblemDel;
 	}
     
 }
