@@ -1310,7 +1310,7 @@ function showDeleteStatus(myResult)
 <div class="container" ><!-- Container Opening -->
 
 <h2 class="h1header"> Your Locality Problems</h2>
-<s:if test="completeProblemDetailsVO.isProblemDel != 'true' ">
+<s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
 <s:if test="completeProblemDetailsVO.userStatus == 'both' && completeProblemDetailsVO.isTaken == 'true' && completeProblemDetailsVO.changedToPrivate == 'true' ">
   <div class="errStyle">We Are Sorry To Inform,This Problem Is Moved To Private State By The Posted User</div>
@@ -1702,7 +1702,9 @@ function showDeleteStatus(myResult)
 </article>
 
 <script>
+<s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 getcomments();
+</s:if>
 $('.dropdown-toggle').dropdown();
 /*
 $('#myTab a').click(function (e) {
@@ -1800,11 +1802,12 @@ function rateWiseCountOfAProblem()
 	 $('#rateitbyuser').rateit('max', 5);
 	 }
 	 });
+<s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
 getAvgProblemRating();
 rateWiseCountOfAProblem();
 </s:if>
-
+</s:if>
 
 </script>
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
