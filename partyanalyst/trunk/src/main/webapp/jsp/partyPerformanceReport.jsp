@@ -593,7 +593,7 @@ function buildPartyPositionDataTable(info,rank)
 					arr.push(obj);
 		</c:forEach>
             var str='';
-			str+='<table border="1" id="partyPositionDetailsTable">';
+			str+='<table border="1" id="partyPositionDetailsTable" style="margin-bottom: 10px;">';
 			str+='<tr>';
 			str+='<th align="center"><%=party%></th>';
 			str+='<th align="center"><%=pc%></th>';
@@ -647,7 +647,12 @@ function buildPartyPositionDataTable(info,rank)
 			
 			str+='<span id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></span>';
 			str+='</table>';
-			str+='<b>* <%=mainParty%> , PC* - <%=participatedConsts%></b>';
+
+			if(${stateData.hasAlliances == true})
+			str+='<b style="color: red;">* <%=mainParty%>&nbsp;,&nbsp;</b>';
+			str+='<b style="color: red;">PC* - <%=participatedConsts%></b>';
+			
+			
 
 		 myPanel = new YAHOO.widget.Panel("resizablepanel", {
 					 width: "800px", 
@@ -1386,6 +1391,10 @@ function callMarginVotes(partyId)
 {
 	background-color : #A6BAD1;
 }
+.bd
+{
+	font-family: verdana;
+}
 
 
 </style>
@@ -1773,7 +1782,7 @@ function callMarginVotes(partyId)
 		<div class="partyInfoHeading">Your votes are flown to any one of the below parties</div>
 	</c:if>
 
-<div style="background:#ffffff;width:811px;">
+<div style="background:#FFFFFF; margin-top: -3px; padding-left: 64px; width: 746px;margin-bottom: 15px; padding-bottom: 20px;padding-top: 15px;">
 <div style="margin-left: 43px;clear:both;background:#ffffff;margin-top:3px;"> 
 <table border="1" class="partyPerformanceReportTable">
 	<c:forEach var="p" items="${stateData.toPartySwing}" >
