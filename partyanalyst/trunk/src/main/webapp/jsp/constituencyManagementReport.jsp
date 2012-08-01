@@ -862,7 +862,7 @@
 
 						</td>
 						<td width="70%" valign="top">
-							<div id="influencePeopleDetail_Outer" class="rounded" style="margin-left:9px;"> 						
+							<div id="influencePeopleDetail_Outer" class="rounded" style="margin-left:1px;"> 						
 								<div class="corner topLeft"></div>
 								<div class="corner topRight"></div>
 								<div class="corner bottomLeft"></div>
