@@ -39,9 +39,15 @@ public class ProblemDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(result);
 	}*/
 	
-	public void testGetCountOfNewlyPostedProblemsByFreeUser()
+	/*public void testGetCountOfNewlyPostedProblemsByFreeUser()
 	{
 		Long newlyPostedProbCount = problemDAO.getCountOfNewlyPostedProblemsByFreeUser();
 		System.out.println(newlyPostedProbCount);
+	}*/
+	public void testIsProblemDeleted()
+	{
+		List<Long> isdelprob = problemDAO.isProblemDeleted(1l);
+		System.out.println(isdelprob.get(0));
 	}
+
 }
