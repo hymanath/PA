@@ -419,7 +419,7 @@ function displayDateText(type, args, obj) {
 function activitesPopup(results,pHistoryId)
 {
 
-console.log(results);
+
 if(results.length>0)
 {
    document.getElementById("activities").style.display='block';
@@ -437,12 +437,13 @@ if(results.length>0)
      for(var i=0;i<results.length;i++)
 	 {
 		var prblmPrgrssId=results[i].prblmPrgrssId;
-		str+='<div class="container"><h4><div id="activitiesPopup"><imgsrc="images/icons/homePage_new/widgetHeaderIcon.jpeg">'+results[i].activityHapened+':'+results[i].departmentOrganisation+'\'s  '+results[i].department;
+		str +='<div class="container"><h4><div id="activitiesPopup"><img src="images/icons/homePage_new/widgetHeaderIcon.jpeg">'+results[i].activityHapened+'';
+		//str+='<div class="container"><h4><div id="activitiesPopup"><imgsrc="images/icons/homePage_new/widgetHeaderIcon.jpeg">'+results[i].activityHapened+':'+results[i].departmentOrganisation+'\'s  '+results[i].department;
 		if(results[i].visibility==2){
-		str+='<div id='+prblmPrgrssId+' style="float:left;"><input type="button" id="actvtypublicbtn" name="public" value="Make It Public" onClick="makeActivityPublic('+prblmPrgrssId+');"/></div></div></div>';
+		str+='<div id='+prblmPrgrssId+' style="float: left;"><input type="button" id="actvtypublicbtn" name="public" value="Make It Public" onClick="makeActivityPublic('+prblmPrgrssId+');"/></div></div></div>';
 		}
 		else
-		str+='<div id='+prblmPrgrssId+' style="float:left;"><input type="button" id="actvtyprivatebtn" name="private" value="Make It Private" onClick="makeActivityPrivate('+prblmPrgrssId+');" /></div></div></div>';
+		str+='<div id='+prblmPrgrssId+' style="float: left;"><input type="button" id="actvtyprivatebtn" name="private" value="Make It Private" onClick="makeActivityPrivate('+prblmPrgrssId+');" /></div></div></div>';
 	}
 		str+='<div id=publishProblemToPublic><span onClick=makeProblemPublic('+pHistoryId+')>Publish To Public</span></div>';
 		document.getElementById("activities").innerHTML = str;
