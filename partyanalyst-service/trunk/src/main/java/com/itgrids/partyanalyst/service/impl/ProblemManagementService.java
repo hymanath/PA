@@ -4403,8 +4403,8 @@ public class ProblemManagementService implements IProblemManagementService {
 
 		problemStatusData.setUpdatedDate(problemProgress.getInsertedTime().toString());
 		if (problemProgress.getProblemActivity() != null) {
-			problemStatusData.setActivityHapened(problemProgress
-					.getProblemActivity().getComments());
+			//problemStatusData.setActivityHapened(problemProgress
+					//.getProblemActivity().getComments());
 
 			switch (problemProgress.getProblemActivity().getProblemActivityId()
 					.intValue()) {
@@ -4414,6 +4414,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemStatusData.setProbClassification(problemProgress.getClassifiedProblems().getProblemClassification().getClassification());
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments()+" : "+problemProgress.getClassifiedProblems().getProblemClassification().getClassification());
 				
 				break;
 			case 3:
@@ -4425,6 +4426,8 @@ public class ProblemManagementService implements IProblemManagementService {
 						.getProblemDepartmentCategory().getDepartment());
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments()+" : " +problemProgress.getProblemAssignedDepartment()
+						.getDepartmentOrganisation().getOrganisationName());
 			     }
 				break;
 			case 5:
@@ -4432,28 +4435,35 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemStatusData.setDepartment("N/A");
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments());
 				break;
 			case 6:
 			case 7:if(problemProgress.getProblemAssignedCadre() != null)
 				problemStatusData.setCadre(problemProgress.getProblemAssignedCadre().getCadre().getFirstName());
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments()+" : " +problemProgress.getProblemAssignedCadre().getCadre().getFirstName());
 				break;
 			case 8:
 				problemStatusData.setCadre("Removed ");
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments());
 				break;
 			case 11:if(problemProgress.getComment() != null)
 				problemStatusData.setComments(problemProgress.getComment().getComment());
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments()+" : "+problemProgress.getComment().getComment());
+				
 				break;
 			case 12:if(problemProgress.getUserProblem()!= null)
 				problemStatusData.setProblemStatus(problemProgress
 						.getUserProblem().getProblem().getProblemStatus().getStatus());
 				problemStatusData.setVisibility(problemProgress.getVisibility().getVisibilityId());
 				problemStatusData.setPrblmPrgrssId(problemProgress.getProblemProgressId());
+				problemStatusData.setActivityHapened(problemProgress.getProblemActivity().getComments());
+				
 				break;
 			default:
 				if (log.isInfoEnabled())
