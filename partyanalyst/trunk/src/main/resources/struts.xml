@@ -3524,5 +3524,10 @@
            		<param name="root">resultStatus</param>
         	</result>	
 	   </action>
+	   <action name="deletePartyGallaryAction" class="candidateElectionResultsAction" method="AjaxHandler">
+			<result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>	
+		</action>
 	</package>
 </struts>      
