@@ -786,6 +786,59 @@ function callHomePageAjax(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+
+function showVotesObtainedForOptions(myResults){
+	
+	
+
+  if(myResults!=null && myResults.length>0)
+	
+	var str = '';
+	var elmt = document.getElementById("pollsWidgetBody");
+	
+	str += '<table><tr><td>';
+	str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
+	str += '</div>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
+	//str += '<img src="charts/'+myResults.imagePath+'"></img>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
+	str += '<div id="viewPollResDiv">';
+	str += '<table><tr>';
+	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a>';
+	str += '</td>';
+	str += '<td><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a>';
+	str += '</td>';	
+	str += '</tr></table>';
+	str += '</div>';
+	str += '</tr></table>';
+
+	str+='<div id="pollsChartDiv" style=" height: auto;width: 324px; overflow: hidden;"></div>';
+	elmt.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+		data.addColumn('string','option');
+		data.addColumn('number','votesObtained');
+		data.addRows(myResults.options.length);
+		for(var j=0; j<myResults.options.length; j++)
+		{
+			data.setValue(j,0,myResults.options[j].option);
+			data.setValue(j,1,myResults.options[j].votesObtained);
+			
+		}
+	var chart = new google.visualization.LineChart(document.getElementById('pollsChartDiv'));
+	
+		chart.draw(data,{width: 300, height: 280,legend:'right', 
+legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
+
+
+	
+	
+}
+
 function showFeedBackStatus(result)
 {
 var feedback_window = document.getElementById('feedback_window');
@@ -1220,53 +1273,6 @@ function savePollResult(questionId){
 	homePageAjaxCall(rparam,jsObj,url);	
 }
 
-function showVotesObtainedForOptions(myResults){
-  if(myResults!=null && myResults.length>0){
-	var elmt = document.getElementById("pollsWidgetBody");
-	var str = '';
-	
-	str += '<table><tr><td>';
-	str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
-	str += '</div>';
-	str += '</td></tr>';
-	
-	str += '<tr><td>';
-	//str += '<img src="charts/'+myResults.imagePath+'"></img>';
-	str += '</td></tr>';
-	
-	str += '<tr><td>';
-	str += '<div id="viewPollResDiv">';
-	str += '<table><tr>';
-	str += '<td><a href="completeResultForAPollAction.action?questionId='+myResults.questionId+'" style="cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 5px; margin: 2px;"> View Current Poll Result</a>';
-	str += '</td>';
-	str += '<td><a href="getAllPollsAction.action?.action" style="text-align: right; cursor: pointer; color:#0C67AC; font-weight: bold; text-decoration: none; background:#e3e3e3; padding: 4px; border-radius: 4px;"> View All Polls</a>';
-	str += '</td>';	
-	str += '</tr></table>';
-	str += '</div>';
-	str += '</tr></table>';
-
-	str+='<div id="pollsChart" style=" height: auto;width: 324px; overflow: hidden;"></div>';
-	elmt.innerHTML = str;
-
-	var data = new google.visualization.DataTable();
-		data.addColumn('string','option');
-		data.addColumn('number','votesObtained');
-		data.addRows(myResults.options.length);
-		for(var j=0; j<myResults.options.length; j++)
-		{
-			data.setValue(j,0,myResults.options[j].option);
-			data.setValue(j,1,myResults.options[j].votesObtained);
-			
-		}
-	var chart = new google.visualization.LineChart(document.getElementById('pollsChart'));
-	
-		chart.draw(data,{width: 300, height: 280,legend:'right', 
-legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
-}
-
-	
-	
-}
 
 function buildLogoImage()
 {
