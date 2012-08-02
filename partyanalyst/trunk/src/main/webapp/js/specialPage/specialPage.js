@@ -1689,6 +1689,11 @@ function uploadNews()
 	if(validateNewsFileUpload())
 	{
 		disableButton('uploadNewsBtnId');
+		var privateRadioId = document.getElementById('privateRadioId').checked;
+		if(privateRadioId == true)
+		document.getElementById('privateRadioId').checked = true;
+		if(privateRadioId == false)
+		document.getElementById('publicRadioId').checked = true;
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
@@ -4094,9 +4099,15 @@ function getPhotoGallariesForUpload(contentType)
 
 function uploadAFile()
 {
+	
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
+		var privateRadioId = document.getElementById('privateRadioId').checked;
+		if(privateRadioId == true)
+	document.getElementById('privateRadioId').checked = 'true';
+		if(privateRadioId == false)
+	document.getElementById('publicRadioId').checked = 'true';
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
