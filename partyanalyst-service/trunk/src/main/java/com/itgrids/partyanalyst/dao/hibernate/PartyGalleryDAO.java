@@ -190,4 +190,13 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public Integer deletePartyGallary(Long gallaryId)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("update PartyGallery model set model.isDelete='true' where model.gallery.gallaryId = ?");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, gallaryId);
+		return queryObject.executeUpdate();
+	}
 }
