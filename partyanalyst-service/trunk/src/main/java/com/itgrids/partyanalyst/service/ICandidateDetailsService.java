@@ -191,4 +191,6 @@ public interface ICandidateDetailsService {
 	 public List<CandidateCommentsVO> getAbuseComment(String fromDate, String toDate,String selectstatus);
 	 
 	 public ResultStatus controlAbuseComments(List<CandidateCommentsVO> VO,String actionType);
+	 
+	 public ResultStatus deletePartyGallary(Long gallaryId);
 }
