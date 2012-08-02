@@ -197,6 +197,9 @@
 									</span><br>
 									<span class="fontStyle">Assign Candidates To User&nbsp;:&nbsp;&nbsp;
 										<a class="alinkstyle" href="<s:url action="assigningCandidatesToUserAction"/>">Assign</a>
+									</span><br>
+									<span class="fontStyle">Assign Party To User&nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="assigningPartyToUserAction"/>">Assign</a>
 									</span>
 									</fieldset>
 								</td>
