@@ -146,7 +146,7 @@ public interface IProblemManagementService {
 	
 	public List<ProblemBeanVO> getProblemDetailsForFreeUser(ProblemSearchVO problemSearchVO,int startIndex,int maxIndex);
 	
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem);
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem,UserProblem userProblem);
 	
 	public ProblemCompleteLocation saveProblemCompleteLocation(ProblemBeanVO problemBeanVO);
 	
