@@ -337,10 +337,11 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			{
            showDeleteFilesAndPhotosStatus(myResults);  
 			}	
-        else if(jsObj.task == "deleteGallary")  
+        else if(jsObj.task == "deletePartyGallary")  
 			{
            showDeleteGallary(myResults);  
-			}		
+			}
+			
 		else if(jsObj.task == "UpdatePartyGallary")  
 			{
            updateGallaryDiv(myResults);  
@@ -2721,11 +2722,12 @@ var r=confirm("Do you want to delete!");
  var jsObj =
 		{ 
      		gallaryId : gallaryId,
-		   	task : "deleteGallary"
+		   	task : "deletePartyGallary"
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;
+	//var url = "createNewGallaryAction.action?"+rparam;
+	var url = "deletePartyGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);	
 	}
 }
