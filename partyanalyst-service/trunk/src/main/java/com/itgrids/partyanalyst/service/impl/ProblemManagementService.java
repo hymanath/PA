@@ -1109,7 +1109,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemBeanFromDB.setProblemImpactLevelValue(problem.getImpactLevelValue());
 				problemBeanFromDB.setProblemImpactLevelId(problem.getRegionScopes().getRegionScopesId());
 				//problemActivity = problemActivityDAO.get(1l);
-				saveProblemRelatedFiles(problemBeanVO,problem);
+				saveProblemRelatedFiles(problemBeanVO,problem,userProblem);
 					
 					
 				} catch (Exception e) {
@@ -6339,7 +6339,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 		}
 	}*/
 	
-	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem)
+	public void saveProblemRelatedFiles(ProblemBeanVO problemBeanVO,Problem problem,UserProblem userProb)
 	{
 		try{
 		
@@ -6365,7 +6365,10 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 				problemFile.setFile(fileObj);
 				problemFile.setProblem(problem); 
 				problemFile.setUser(userDAO.get(problemBeanVO.getUserID()));
-				
+				if(userProb != null)
+					problemFile.setVisibility(userProb.getVisibility());
+				else
+					problemFile.setVisibility(visibilityDAO.get(1l));
 				problemFile.setIsDelete(IConstants.FALSE);
 				problemFile.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				problemFile.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -6410,7 +6413,11 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			if(problemBeanVO != null && problemBeanVO.getProblemHistoryId() > 0)
 			{
 				Problem problem = problemDAO.get(problemBeanVO.getProblemHistoryId());
-				saveProblemRelatedFiles(problemBeanVO,problem);
+				List<UserProblem> userProblemList = userProblemDAO.getUserProblemByUserAndProblemId(problem.getProblemId(),problemBeanVO.getUserID());
+				if(userProblemList.size() > 0)
+				  saveProblemRelatedFiles(problemBeanVO,problem,userProblemList.get(0));
+				else
+				  saveProblemRelatedFiles(problemBeanVO,problem,null);	 
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}
 			return resultStatus;
