@@ -787,15 +787,13 @@ function callHomePageAjax(jsObj,url)
 }
 
 
-function showVotesObtainedForOptions(myResults){
+	function showVotesObtainedForOptions(myResults){
 	
-	
+	if(myResults!=null)
+		{
 
-  if(myResults!=null && myResults.length>0)
-	
 	var str = '';
-	var elmt = document.getElementById("pollsWidgetBody");
-	
+	//var elmt = document.getElementById("pollsWidgetBody");
 	str += '<table><tr><td>';
 	str += '<div id="pollQuestionDiv">Q)  '+myResults.question;
 	str += '</div>';
@@ -817,7 +815,7 @@ function showVotesObtainedForOptions(myResults){
 	str += '</tr></table>';
 
 	str+='<div id="pollsChartDiv" style=" height: auto;width: 324px; overflow: hidden;"></div>';
-	elmt.innerHTML = str;
+	document.getElementById('pollsWidgetBody').innerHTML = str;
 
 	var data = new google.visualization.DataTable();
 		data.addColumn('string','option');
@@ -834,11 +832,8 @@ function showVotesObtainedForOptions(myResults){
 		chart.draw(data,{width: 300, height: 280,legend:'right', 
 legendTextStyle:{fontSize:12},title:''+myResults.title+'',titleTextStyle:{fontName:'verdana',fontSize:9}});
 
-
-	
-	
 }
-
+}
 function showFeedBackStatus(result)
 {
 var feedback_window = document.getElementById('feedback_window');
