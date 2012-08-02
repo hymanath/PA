@@ -165,7 +165,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 			query.append(" model.recepient.district.districtId in (:locationIds) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-			query.append(" model.recepient.constituency.constituencyId in (:locationIds)) ");
+			query.append(" model.recepient.constituency.constituencyId in (:locationIds) ");
 		}
 
 		if(nameString != null && !nameString.trim().equalsIgnoreCase(""))
@@ -200,7 +200,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 			query.append(" and model.recepient.district.districtId in (:locationIds) ");
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-			query.append(" and model.recepient.constituency.constituencyId in (:locationIds)) ");
+			query.append(" and model.recepient.constituency.constituencyId in (:locationIds) ");
 		}
 		query.append(" and model.recepient.userId in (select model1.user.userId from UserRoles model1 where model1.role.roleType = :role ) order by model.recepient.userId");
 		Query queryObject = getSession().createQuery(query.toString());
