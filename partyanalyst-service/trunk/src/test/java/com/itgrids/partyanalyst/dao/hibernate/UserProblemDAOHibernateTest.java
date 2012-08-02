@@ -332,17 +332,23 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}*/
-	public void testMakeProblemPublic()
+	/*public void testMakeProblemPublic()
 	{
 		int result=userProblemDAO.makeProblemPublic(182l,1l);
 		System.out.println(result);
-	}
+	}*/
 	/*public void testCheckIsPublicProblem(){
 		List<Long> probCountList = userProblemDAO.checkIsPublicProblem(1L);
 		System.out.println(probCountList.get(0));
 	}*/
-	public void testCheckIsTakenUpProblem(){
+	/*public void testCheckIsTakenUpProblem(){
 		List<Long> probCountList = userProblemDAO.checkIsTakenUpProblem(1L,1L);
 		System.out.println(probCountList.get(0));
+	}*/
+	public void testGetUserProblemByUserAndProblemId(){
+		List<UserProblem> userProblemList = userProblemDAO.getUserProblemByUserAndProblemId(1L,2L);
+		System.out.println(userProblemList.size());
+		if(userProblemList.size() > 0)
+		System.out.println(userProblemList.get(0).getVisibility().getType());
 	}
 }
