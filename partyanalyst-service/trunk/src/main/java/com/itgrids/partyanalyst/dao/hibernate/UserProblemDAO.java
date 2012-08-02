@@ -777,5 +777,8 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
       		
       		return query.list();  		
       	}
-    
+    public List<UserProblem> getUserProblemByUserAndProblemId(Long problemId,Long userId){
+    	 Object [] params = {problemId,userId,IConstants.TRUE,IConstants.FALSE};
+    	return getHibernateTemplate().find("from UserProblem model where model.problem.problemId = ? and model.user.userId = ? and model.problem.isApproved =? and model.problem.isDelete =? ",params);
+    }
 }
