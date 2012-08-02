@@ -1744,6 +1744,33 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			return resultStatus;
 		   }
 	}
+  public ResultStatus deletePartyGallary(Long gallaryId)
+  {
+	  log.debug("Entered into deletePartyGallary() method");
+	  ResultStatus resultStatus = new ResultStatus();
+	  try
+	  {
+		int flag =partyGalleryDAO.deletePartyGallary(gallaryId);
+		if(flag!=0)
+		{
+			deleteGallary(gallaryId);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		}
+  	 else
+  	 {
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	   	
+  	 }
+	  }
+	  
+	  catch(Exception e)
+	  {
+		  log.error("Exception Occured in deletePartyGallary() method of CandidateDetailsService"+e);
+	  }
+	return resultStatus;
+  }
 	/**
 	 * This Method will give Videos Details As List<FileVO> when we pass candidateId,start Index and Max results As Arguements
 	 * @author Kamalakar Dandu
