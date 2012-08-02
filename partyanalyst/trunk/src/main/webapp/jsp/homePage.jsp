@@ -1594,14 +1594,7 @@ function closewindow()
 
 function showVotesObtainedForOpinionPoll()
 {
-
-
 	var elmt = document.getElementById("pollsWidgetBody");
-	if(${opinionPollVO.quesitons[0].question == null})
-	{
-		document.getElementById("opinionPollDiv").style.display = 'none';
-		return;
-	}
 	var str = '';
 	str+='<div id="chart"></div>';
 	str += '<table><tr><td>';
