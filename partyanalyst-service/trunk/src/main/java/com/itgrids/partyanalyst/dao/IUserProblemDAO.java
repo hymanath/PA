@@ -123,4 +123,7 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	public List<Problem> getProblemsByDistrictId(List<Long> problemIds,Long districtId,Long userId);
 	
 	public List<Problem> getProblemsByUserId(List<Long> problemIds,Long userId);
+	
+	public List<UserProblem> getUserProblemByUserAndProblemId(Long problemId,Long userId);
+	
 }
