@@ -261,7 +261,7 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		public List<UserProblem> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId,Integer startIndex, Integer maxResults) {
 	
 			Query queryObject = getSession().createQuery("select model from UserProblem model where " +
-					"model.user.userId = :userId and  model.problem.isDelete = 'false' and (model.problem.isApproved = 'true') order by  model.problem.identifiedOn desc");
+					"model.user.userId = :userId and  model.problem.isDelete = 'false' and (model.problem.isApproved = 'true') order by  model.problem.updatedTime desc");
 			queryObject.setParameter("userId", userId);
 			queryObject.setFirstResult(startIndex);
 			queryObject.setMaxResults(maxResults);
