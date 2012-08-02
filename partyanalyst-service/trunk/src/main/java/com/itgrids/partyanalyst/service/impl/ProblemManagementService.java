@@ -990,7 +990,66 @@ public class ProblemManagementService implements IProblemManagementService {
 					UserProblem userProblem = new UserProblem();
 					String userName = null;
 					ProblemActivity problemActivity = null;
-					problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
+					//problemCompleteLocation = saveProblemCompleteLocation(problemBeanVO);
+										
+					problemCompleteLocation.setState(stateDAO.get(new Long(
+							problemBeanVO.getState())));
+					if (problemBeanVO.getIsParliament())
+						problemCompleteLocation
+								.setParliamentConstituency(constituencyDAO
+										.get(problemBeanVO.getPConstituencyId()));
+					 
+					if (problemBeanVO.getDistrict() != null
+							&& !"0".equals(problemBeanVO.getDistrict()))
+						problemCompleteLocation.setDistrict(districtDAO
+								.get(new Long(problemBeanVO.getDistrict())));
+					if (problemBeanVO.getConstituency() != null
+							&& !"0".equals(problemBeanVO.getConstituency()))
+						problemCompleteLocation
+								.setConstituency(constituencyDAO.get(new Long(
+										problemBeanVO.getConstituency())));
+					if (problemBeanVO.getTehsil() != null
+							&& !"0".equals(problemBeanVO.getTehsil())) {
+						if (IConstants.RURAL_TYPE.equals(problemBeanVO
+								.getTehsil().substring(0, 1)))
+							problemCompleteLocation.setTehsil(tehsilDAO
+									.get(new Long(problemBeanVO.getTehsil()
+											.substring(1))));
+						else if (IConstants.URBAN_TYPE.equals(problemBeanVO
+								.getTehsil().substring(0, 1))) {
+							Long assemblyLocalElectionBodyId = new Long(
+									problemBeanVO.getTehsil().substring(1));
+							List localElectionBodyIdsList = assemblyLocalElectionBodyDAO
+									.getLocalElectionBodyId(assemblyLocalElectionBodyId);
+							Object object = (Object) localElectionBodyIdsList
+									.get(0);
+							problemCompleteLocation
+									.setLocalElectionBody(localElectionBodyDAO
+											.get((Long) object));
+						}
+					}
+					if (problemBeanVO.getVillage() != null
+							&& !"0".equals(problemBeanVO.getVillage())) {
+						if (IConstants.RURAL_TYPE.equals(problemBeanVO
+								.getVillage().substring(0, 1)))
+							problemCompleteLocation.setHamlet(hamletDAO
+									.get(new Long(problemBeanVO.getVillage()
+											.substring(1))));
+						else if (IConstants.URBAN_TYPE.equals(problemBeanVO
+								.getVillage().substring(0, 1))) {
+							problemCompleteLocation.setWard(constituencyDAO
+									.get(new Long(problemBeanVO.getVillage()
+											.substring(1))));
+						}
+					}
+
+					if (problemBeanVO.getBooth() != null
+							&& !"0".equals(problemBeanVO.getBooth()))
+						problemCompleteLocation.setBooth(boothDAO.get(new Long(
+								problemBeanVO.getBooth())));
+					
+					problemCompleteLocation = problemCompleteLocationDAO.save(problemCompleteLocation);
+		
 					
 					if(problemCompleteLocation != null)
 						  problem.setProblemCompleteLocation(problemCompleteLocation);
