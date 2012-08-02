@@ -15,7 +15,10 @@
 <script src="js/rating/jquery.rateit.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link href="styles/rating/rateit.css" rel="stylesheet" type="text/css">
-
+<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
+	</script>
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
+	</script>
 
 <link href="styles/rating/bigstars.css" rel="stylesheet" type="text/css">
     <link href="styles/rating/antenna.css" rel="stylesheet" type="text/css">
@@ -1812,7 +1815,4 @@ rateWiseCountOfAProblem();
 </s:if>
 
 </script>
-<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js">
-	</script>
-	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
-	</script>
+
