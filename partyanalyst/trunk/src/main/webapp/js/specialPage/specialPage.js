@@ -290,6 +290,13 @@ function callAjax(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function deleteFile(fileTableId)
+{
+	var confirmFile = confirm('Do you want to delete file');
+	if(confirmFile)
+		$("#"+fileTableId+"").html('');
+
+}
 function showUploadVideoStatus(result)
 {
 	var errorDivEle = document.getElementById('fileSuccessDiv');
@@ -1006,7 +1013,7 @@ function addMorePhotos()
 	var str='';
 	str+='<table id="photosTableId'+fileCount+'" style="background:#e3e3e3; border-radius: 6px 6px 6px 6px; padding: 4px; margin-top: 11px; width: 364px;">';
 	str+='<tr><td><input type="file" name="userImage" id="addMoreFileId'+fileCount+'"/></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'videosTableId'+fileCount+'\')"></td></tr>';
+	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'photosTableId'+fileCount+'\')"></td></tr>';
 	str+='</table>';
 	addMorePhotosDivElmt.innerHTML = str;
 document.getElementById("addMorePhotosDiv").appendChild(addMorePhotosDivElmt);
@@ -1088,13 +1095,7 @@ function addMoreSpecialPage(contentType)
 	SPCount++;
 	document.getElementById("addMoreSPDiv").appendChild(moreSPDiv);
 }
-function deleteFile(fileTableId)
-{
-	var confirmFile = confirm('Do you want to delete file');
-	if(confirmFile)
-		$("#"+fileTableId+"").html('');
 
-}
 function getSource(selectOptionId){
 	
 	if(sourceObj ==null)
