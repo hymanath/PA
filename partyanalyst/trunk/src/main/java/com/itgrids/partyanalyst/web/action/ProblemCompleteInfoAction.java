@@ -200,12 +200,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 	
 	public String ajaxCallHandler()
 	{
-		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
-		Long userId = null;
-		if(regVO == null)
-			return ERROR;
-		userId = regVO.getRegistrationID();
+		
 		
 		try{
 			jObj = new JSONObject(getTask());
@@ -216,6 +211,12 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 		}
 		if(jObj.getString("task").equals("saveProblemRatingDetails"))
 		{
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+			Long userId = null;
+			if(regVO == null)
+				return Action.SUCCESS;
+			userId = regVO.getRegistrationID();
 			resultStatus = problemManagementService.saveRatingOfAProblem(userId, jObj.getLong("problemId"),jObj.getString("rating"));
 		}
 		else if(jObj.getString("task").equals("getAvgProblemRating"))
