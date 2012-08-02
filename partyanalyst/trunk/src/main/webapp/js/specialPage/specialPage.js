@@ -489,7 +489,7 @@ function showCreateGallery(selectedId,contentType,userOption,galSelectId)
 	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">Make This Private</font></b></input></div>';
 	
 	str += '<table style="margin-left: auto;margin-right: auto;"><tr><td><input type="button" class="imageButton" style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createPopupGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectId+'\')"></td>';
-	str+=  '<td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')" style="background-color:#CF4740"></td></tr></table>';
+	str+=  '<td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'galleryInnerPopupDiv\')" style="background-color:#CF4740"></td></tr></table>';
 
 	str += '</fieldset>';
 		
