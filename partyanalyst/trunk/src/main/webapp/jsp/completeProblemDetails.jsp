@@ -862,6 +862,8 @@ function buildcomments(myResults){
 	 }
 	str+='</ul>';
 	document.getElementById("postedcomments").innerHTML = str;
+  }else{
+    document.getElementById("postedcomments").innerHTML = "<span style='margin-left:10px;'>No Comments Posted</span>";
   }
   
 
