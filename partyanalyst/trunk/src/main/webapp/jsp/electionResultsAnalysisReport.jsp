@@ -582,12 +582,12 @@ function openPartyPerformanceWindow(electionTypeId)
 	<!--<DIV id="page_layout_main" class="yui-skin-sam" style="background:#ffffff; margin-left:auto;margin-right:auto;float:none;"></DIV>-->
 	<div class="container" style="width:980px;">
 	
-	<DIV id="page_layout_right" style="background:#ffffff;width:260px;margin:0px;" class="pull-right">
-		<DIV id="sideHeader"></DIV>
-		<DIV id="toolsDiv"></DIV>
+	<DIV id="page_layout_right" style="width:260px;margin:0px;" class="pull-right">
+		<DIV id="sideHeader" style="margin-top: 0px;"></DIV>
+		<DIV id="toolsDiv" style="background:#FFF;"></DIV>
 		
 	</DIV>
-	<DIV id="page_layout_center" style="background:#ffffff;width:712px;" class="pull-left">
+	<DIV id="page_layout_center" style=";width:712px;" class="pull-left">
 	<h3 style="background:#05A8E9;color:#fff;padding:5px;text-align:center;
 	border-radius:5px;margin:2px;">Election Results Analysis Report</h3>
 		<!--<DIV id="pageHeading" >
@@ -599,6 +599,7 @@ function openPartyPerformanceWindow(electionTypeId)
 				</TR>
 			</TABLE>
 		</DIV>	-->
+		<div style="margin-top: 10px;padding-top: 15px;background:#FFF;">
 		<DIV id="errorsDiv" style="color:red;font-weight:bold;font-size:12px;"></DIV>
 		<DIV id="inputsTags" style="border:2px solid #DBDCDB;margin-left:15px;margin-right:15px;">
 				<TABLE width="100%" class="inputsTable">
@@ -633,7 +634,7 @@ function openPartyPerformanceWindow(electionTypeId)
 			<DIV>Please Wait..</DIV>
 			<IMG src="images/icons/barloader.gif"/>
 		</DIV>
-		<DIV id="resultInfoDiv">
+		<DIV id="resultInfoDiv" style="margin-bottom: 15px;">
 		<DIV id="basicDetailsHead" style="margin-top:10px;"></DIV>
 		<DIV id="basicDetails" class="yui-skin-sam"></DIV>
 		<DIV id="analysisDetails" class="analysisDetails">		
