@@ -25,7 +25,7 @@
     <!-- syntax highlighter -->
     <link href="styles/rating/shCore.css" rel="stylesheet" type="text/css">
     <link href="styles/rating/shCoreDefault.css" rel="stylesheet" type="text/css">
-	
+	<title>Problem Details</title>
 <style>
 .button {
     background-attachment: scroll;
