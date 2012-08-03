@@ -135,7 +135,7 @@ public class MailService implements IMailService{
     		String subject;
     		String text;
     		subject = "";
-    		subject= "User Requirements From PartyAnalyst"; 
+    		subject= "User Requirements From Party Analyst"; 
            
            
             text = "";
@@ -173,7 +173,7 @@ public class MailService implements IMailService{
     	text = "";
     	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
     			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</b></div>" +
-    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the login details for your PartyAnalyst Account.<br>";
+    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the login details for your Party Analyst Account.<br>";
     	text += "User Name is : " + " " +registrationVO.getUserName()+"<br>";
     	if(registrationVO.getPassword()!= null)
     	text += "Your Password is :" +"  <b>"+ registrationVO.getPassword()+"</b>";
@@ -208,7 +208,7 @@ public class MailService implements IMailService{
     	String subject;
 		String text;
     	subject = "";
-    	subject = "Welcome to PartyAnalyst";
+    	subject = "Welcome to Party Analyst";
     	
     	
     	text = "";
@@ -328,7 +328,7 @@ public class MailService implements IMailService{
 		    		String subject;
 		    		String text;
 		    		subject = "";
-		    		subject= "User Interesting to Post Articles to PartyAnalyst"; 
+		    		subject= "User Interesting to Post Articles to Party Analyst"; 
 		           
 		           
 		            text = "";
@@ -350,7 +350,7 @@ public class MailService implements IMailService{
 		            	rs = sendMailFromServer(quickRequestVO);
 		            }
 		            text="ThankYou for your interest we will get back to you as soon as possible";
-		    		subject= " Articles On PartyAnalyst"; 
+		    		subject= " Articles On Party Analyst"; 
 
 		            quickRequestVO.setText(text);
 		            quickRequestVO.setToEmailId(quickRequestVO.getEmailId());
@@ -491,8 +491,8 @@ public class MailService implements IMailService{
 	
 	public ResultStatus freeUserSendingMailsToFriends(List<EmailDetailsVO> emaildtlslist,String host)
 	{
-		String subject="Invitation From PartyAnalyst";
-		String text="PartyAnalyst inviting you to connect to your people,";
+		String subject="Invitation From Party Analyst";
+		String text="Party Analyst inviting you to connect to your people,";
 		text+="post your area problems and access to many features<br/><br/><br/>";
 		text+="Please <a href=http://www.partyanalyst.com/freeUserRegistration.action> Click Here</a> To Register";
 		List<EmailDetailsVO> mainEmailDetailsVoList = new ArrayList<EmailDetailsVO>(0);
