@@ -92,7 +92,7 @@
 	    margin-bottom: 24px;
         margin-top: -29px;
 	}
-	#contenttable{background:#ffffff;}
+	#contenttable{background:#ffffff;margin-left:auto;margin-right:auto;width:980px;margin-bottom:10px;}
 </style>
 <script type="text/javascript">
 	function getCompletePollResult(questionId){  
