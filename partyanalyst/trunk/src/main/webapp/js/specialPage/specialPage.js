@@ -458,7 +458,7 @@ function buildCreateGalleryDiv(selectedId,contentType,userOption,galSelectOPtion
 	}
 	var nogalleryDivElmt = document.getElementById(galSelectOPtionId);
 	var str='';
-	str+='<div id="noGalDiv'+galSelectOPtionId+'" ><b><a href="javascript:{}" onclick="showCreateGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectOPtionId+'\')">Create Gallery</a></b>';
+	str+='<div id="noGalDiv'+galSelectOPtionId+'" class="noGalDiv'+galSelectOPtionId+''+selectedId+'" ><b><a href="javascript:{}" onclick="showCreateGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectOPtionId+'\')">Create Gallery</a></b>';
 	str+='<div id="galleryInnerPopupDiv" style="display:none;"></div></div>';
 	$(nogalleryDivElmt).after(str);
 
@@ -4061,20 +4061,23 @@ function showAddedGallery(divElmt,selectedId,galleryId)
 {
 	var spOptionDivElmt = document.getElementById(divElmt);
 	var selected = document.getElementById(selectedId).options[document.getElementById(selectedId).selectedIndex].text;
+	var selectedVal = document.getElementById(selectedId).options[document.getElementById(selectedId).selectedIndex].value;
 	var galleryName = document.getElementById(galleryId).options[document.getElementById(galleryId).selectedIndex].text;
+	var deletId = '.noGalDiv'+galleryId+''+selectedVal+'';
 	var str='';
 	str+= '<div id="addedDiv'+divElmt+'" style="border-radius:5px;margin-top: 10px; padding: 4px; width: auto; font-weight: bold; color:#000; background: #e3e3e3;">File added to  <font style="color:Highlight;">'+selected+'</font> in <font style="color:Highlight;">'+galleryName+'</font> Gallery';
-	str+='<span style="float: right;"><img src="images/icons/delete.png" onclick="deleteAddedGal(\'addedDiv'+divElmt+'\',\''+selectedId+'\',\''+galleryId+'\')"></span></div>';
+	str+='<span style="float: right;"><img src="images/icons/delete.png" onclick="deleteAddedGal(\'addedDiv'+divElmt+'\',\''+selectedId+'\',\''+galleryId+'\',\''+deletId+'\')"></span></div>';
 	$(spOptionDivElmt).html(str);
 	document.getElementById(selectedId).style.display='none';
 	document.getElementById(galleryId).style.display='none';
 
 }
-function deleteAddedGal(divElmt,selectOptionId,galId)
+function deleteAddedGal(divElmt,selectOptionId,galId,id)
 {
 	var confirmDelete = confirm('Do you want to added gallery');
 	if(confirmDelete)
 	{
+	    $(id).remove();
 		document.getElementById(divElmt).style.display = 'none';
 		document.getElementById(selectOptionId).innerHTML = '';
 		document.getElementById(galId).innerHTML = '';
