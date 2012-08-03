@@ -1734,7 +1734,8 @@ var arrData = pollStatus;
 
 	function getProblemReferenceId()
 	{
-		var problemRefId = document.getElementById("problemReferenceId").value;
+
+		var problemRefId = document.getElementById("problemReferenceId").value.replace(/^\s+|\s+$/g,"");
 		var errorDivEle = document.getElementById('problemErrorMsgDiv');
 
 		var problemDescDivEle = document.getElementById("problemDescriptionDiv");
