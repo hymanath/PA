@@ -658,9 +658,9 @@ var pollStatus = [];
 		  <!-- <h3 class="problem-cont-h3"><b><font style="color:#F55C41">VIEW HERE</font></b> -Problems in your AREA</h3>-->
 			<div style="margin-top: 8px; margin-left: 0px; margin-bottom: 10px;">
 			
-				<div style="margin-left: 25px; margin-bottom: 0px; margin-top: 15px;font-weight: bold;">
+				<div style="margin-left: 9px; margin-bottom: 0px; margin-top: 15px;font-weight: bold;">
 				
-					To Quick View the Problem, Enter the Reference Id : <input type="text" id="problemReferenceId" size="10" />
+					To Quick View the Problem, Enter the Reference Id : <input type="text" id="problemReferenceId" size="10" style="width:137px;" />
 					
 					<input type="button" value="Search" onclick="getProblemReferenceId()" style=" background: #0063DC;color: #FFF; font-weight: bold;padding: 4px 5px 4px 5px;border-radius: 5px;cursor: pointer; border: medium;" />
 					<span id="searchAjaxImgSpan" style="margin-left: 515px; display: none; margin-top: -24px;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span>
@@ -1010,14 +1010,20 @@ function showProblemDetails(result)
 	for(var i in result)
 	{
 	   str += '<div class ="problemheadClass">';
-	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><img width="20" height="20" src="images/icons/accept.png" title="Like"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].likesCount+'</b></font></td> <td><img width="20" style="margin-left:15px;" height="20" src="images/icons/reject.png" title="Dislike"></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].dislikesCount+'</b></font></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
+	   str += '   <div ><table><tr><td><span><a title="Click Here To View Problem Complete details" class ="problemTitleClass" href="completeProblemDetailsAction.action?problemId='+result[i].problemHistoryId+'" >'+(result[i].problem).toUpperCase()+'</a></span></td> <td><span style="color:#A71100;margin-left:15px;">Comments:</span></td><td><font color="#FF4500;"><b style="margin-left:5px;">'+result[i].commentCount+'</b></font></td></tr></table></div>';
 	   str += '   <div style="padding-top:5px;font-family:arial;">'+result[i].description+' </div>';
 	   if(result[i].url != null){
 	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td><a title="Click Here To View  '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' Details, Election Results and Different Parties Performances" href="'+result[i].url+'"> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+'</a> &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
 	   }else{
 	     str += '   <div style="padding-top:5px;"><table><tr><td> <span style="color:#028D35;">Location:&nbsp;&nbsp;</span></td><td> '+initialCap(result[i].problemLocation)+' '+initialCap(result[i].impactLevel)+' &nbsp;&nbsp;&nbsp;&nbsp;</td><td><span style="color:#028D35;">Posted By:&nbsp;&nbsp;</span></td><td>'+initialCap(result[i].name)+' '+initialCap(result[i].lastName)+'</td><tr></table></div>';
 	   }
-       str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Existing From :&nbsp;&nbsp;</span> '+result[i].existingFrom+' &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#028D35;">Identified On :&nbsp;&nbsp;</span>'+result[i].identifiedOn+' </div>';
+	   
+       str += '   <div style="padding-top:5px; margin-left: 3px;">';
+	   if(result[i].referenceNo != null && result[i].referenceNo != '')
+		{
+		str += '<Span style="color:#028D35;">Ref No :&nbsp;&nbsp;</span> '+result[i].referenceNo+'&nbsp;&nbsp;&nbsp;&nbsp;';
+		}
+	   str +='<span style="color:#028D35;">Existing From :&nbsp;&nbsp;</span> '+result[i].existingFrom+' &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#028D35;">Identified On :&nbsp;&nbsp;</span>'+result[i].identifiedOn+' </div>';
        //str += '   <div style="padding-top:5px;"> <span style="color:#028D35;">Files Attached :&nbsp;&nbsp;</span>'+result[i].fileCount+' </div>';	   
 	   str += '</div>';
 	}
