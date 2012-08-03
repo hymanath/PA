@@ -90,6 +90,7 @@
 		padding-bottom:4px;
 		font-weight:normal;
 	}
+	#contenttable{width:980px;margin-right:auto;margin-left:auto;margin-bottom:5px;}
 	#contenttable table{background:#ffffff;margin-right:auto;margin-left:auto;padding-bottom:10px;} 
 		
 </style>
@@ -209,7 +210,7 @@ function initializeResultsTable() {
 								</tr>
 							</table>
 			</td>	
-			<td align="right">
+			<td align="right" valign="top">
 				<table style="margin-left:-58px;margin-top:37px;">
 						<tr>
 							<td>
