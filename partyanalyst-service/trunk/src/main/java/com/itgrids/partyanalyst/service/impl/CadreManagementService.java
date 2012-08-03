@@ -3663,6 +3663,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		try {
 			Long smsRemainingStatus = 0l;
 			Long smsSentStatus = 0l;
+			int smsCountNos = 0;
 			if (userId != null) {
 				Long remainingSMS = smsCountrySmsService
 						.getRemainingSmsLeftForUser(userId)
@@ -3678,6 +3679,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 						int i = -1;
 						for (SmsVO mobileInfo : cadreList) {
 							cadreMobileNos[++i] = mobileInfo.getMobileNO();
+							if(mobileInfo.getMobileNO() != null && mobileInfo.getMobileNO().trim().length() >0)
+								smsCountNos = smsCountNos+1;
 						}
 						if (cadreMobileNos != null && cadreMobileNos.length > 0)
 							smsSentStatus = smsCountrySmsService
@@ -3688,6 +3691,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 						// to do ICONSTANTS.SMS_DEAR
 						for (SmsVO mobiles : cadreList) {
 							String mobile = mobiles.getMobileNO();
+							if(mobile != null && mobile.trim().length() >0)
+								smsCountNos = smsCountNos+1;
 							StringBuilder cadreMessage = new StringBuilder(
 									IConstants.SMS_DEAR);
 							cadreMessage.append(IConstants.SPACE).append(
@@ -3712,8 +3717,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					smsResult.setRemainingSmsCount(smsRemainingStatus);
 				} else {
 					smsResult.setStatus(0l);
-					smsResult.setTotalSmsSent(Long.parseLong(new Integer(
-							cadreList.size()).toString()));
+					smsResult.setTotalSmsSent(Long.parseLong(new Integer(smsCountNos).toString()));
 					smsResult.setRemainingSmsCount(remainingSMS);
 				}
 			}
