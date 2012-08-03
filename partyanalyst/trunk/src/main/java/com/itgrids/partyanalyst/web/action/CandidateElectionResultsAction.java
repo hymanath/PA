@@ -994,6 +994,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		{	
 			result = candidateDetailsService.deleteGallary(jObj.getLong("gallaryId"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("deletePartyGallary"))
+		{
+			result = candidateDetailsService.deletePartyGallary(jObj.getLong("gallaryId"));
+		}
 		else if(jObj.getString("task").equalsIgnoreCase("updateIndividualPhotoDetails"))
 		{	
 			FileVO fileVO = new FileVO();
