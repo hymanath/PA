@@ -95,6 +95,13 @@ table {
 #postedcomments ul li .commentimage img{width:40px;height:40px;vertical-align:middle;}
 .commentname{font-weight:bold;font-size:14px;color:#06ABEA;}
 .commentdate{color:#888;font-size:10px;}
+
+#userratingchangedDiv{
+   border:1px solid #d3d3d3;
+   height:80px;
+   width:630px;
+   margin-left:20px;
+ }
 </style>
 
 <script type="text/javascript">
@@ -866,7 +873,9 @@ function buildcomments(myResults){
 	str+='</ul>';
 	document.getElementById("postedcomments").innerHTML = str;
   }else{
-    document.getElementById("postedcomments").innerHTML = "<span style='margin-left:10px;'>No Comments Posted</span>";
+     <s:if test="completeProblemDetailsVO.userStatus == 'notlogged' " >
+       document.getElementById("postedcomments").innerHTML = "<span style='margin-left:10px;'>No Comments Posted</span>";
+     </s:if>
   }
   
 
@@ -1127,12 +1136,7 @@ function getNewActivityDetails(){
 			}
 		str+='	</div>';
 		}
-		if (result.problemRecentActivity[i].probClassification != null){
-		str+='	to '+result.problemRecentActivity[i].probClassification+'';
-		}
-		if(result.problemRecentActivity[i].problemStatus != null){
-		str+='   to '+result.problemRecentActivity[i].problemStatus+'';
-		}
+
 		str+=' <small class="label label-info pull-right">  On '+result.problemRecentActivity[i].updatedDate+' </small>';
         str+='</div>';
 		str+='</li>';
@@ -1581,12 +1585,7 @@ function showDeleteStatus(myResult)
 			</s:else>
 			</div>
 		</s:if>
-		<s:if test="%{#recentActivities.probClassification != null}" >
-			to <s:property value="probClassification"/>
-		</s:if>
-		<s:if test="%{#recentActivities.problemStatus != null}" >
-		   to <s:property value="problemStatus"/>
-		</s:if>
+		
 		 <small class="label label-info pull-right">  On <s:property value="updatedDate"/> </small>
         </div>
 		</li>
@@ -1604,7 +1603,7 @@ function showDeleteStatus(myResult)
       </div>
 <div id="userratingchangedDiv" >
     <s:if test="completeProblemDetailsVO.isAlreadyRated =='true' ">
-	<div class="pull-left" style="margin-left:150px;"> <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuser"></div></div>
+	<div class="pull-left" style="margin-left:9px;"> <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuser"></div></div>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	  $('#rateitbyuser').rateit('value',parseFloat(${completeProblemDetailsVO.ratingByyou}) );
@@ -1613,11 +1612,11 @@ function showDeleteStatus(myResult)
 	</script>
 	</s:if>
 	<s:if test="completeProblemDetailsVO.isAlreadyRated !='true' && completeProblemDetailsVO.userStatus != 'notlogged' ">
-     <div id="initialchangDiv" class="pull-left" style="margin-left:150px;"><div style="color: #06ABEA;">Are you facing the same Problem ? </div>
+     <div id="initialchangDiv" class="pull-left" style="margin-left:9px;"><div style="color: #06ABEA;">Are you facing the same Problem ? </div>
 	 <input type="range"  step="1" id="rateitbyuser" >
      <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false" style="max-width:0px;" data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5"></div>	
       </div>
-	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:150px;" >
+	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:9px;" >
 	    <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuserchange"></div>
 	  </div>
 	  <script type="text/javascript">
@@ -1627,7 +1626,7 @@ function showDeleteStatus(myResult)
 	   });
 	</script>
 	</s:if>
-	<div class="pull-right" style="margin-right:200px;"><div style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-left:30px;"></div> <div class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-left:30px;"></div></div>
+	<div class="pull-left" style="margin-left:30px;"><div style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-left:30px;"></div> <div class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-left:30px;"></div></div>
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
