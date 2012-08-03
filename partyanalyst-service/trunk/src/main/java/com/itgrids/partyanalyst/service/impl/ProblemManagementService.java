@@ -4455,8 +4455,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			ProblemProgress problemProgress) throws Exception {
 
 		if (log.isDebugEnabled())
-			log
-					.debug("Entered To Process Recent Activity Details and set to vo ..");
+			log.debug("Entered To Process Recent Activity Details and set to vo ..");
 
 		ProblemStatusDataVO problemStatusData = new ProblemStatusDataVO();
 
