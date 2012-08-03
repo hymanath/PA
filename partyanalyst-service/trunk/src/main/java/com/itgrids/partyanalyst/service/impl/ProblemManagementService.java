@@ -7258,7 +7258,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			problemProgress.setProblemActivity(problemActivity);
 			problemProgress.setUserProblem(userProblem);
 			problemProgress.setComment(null);
-			problemProgress.setVisibility(visibility);
+			problemProgress.setVisibility(userProblem.getVisibility());
 			Date currentDateTime=dateUtilService.getCurrentDateAndTime();
 			problemProgress.setInsertedTime(currentDateTime);
 			problemProgress.setUpdatedTime(currentDateTime);
