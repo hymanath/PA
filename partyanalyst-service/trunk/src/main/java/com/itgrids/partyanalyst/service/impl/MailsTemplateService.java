@@ -15,7 +15,7 @@ public class MailsTemplateService implements IMailsTemplateService{
 		String footer = "<div style='line-height: 1.8em;margin-left: 36px; margin-top: -26px; margin-right: 3px;'>" +
 				"<br>Thanks," +
 				"<br>Party Analyst Team<br>" +
-				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst</a><br>" +
+				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst.com</a><br>" +
 				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us dont end up in your junk folder.</p></div></div>";
 		return footer;
 	}
