@@ -1395,9 +1395,22 @@ function showDeleteStatus(myResult)
           <button class="btn btn-primary"><i class="icon-share icon-white"></i> Share</button>
           <button data-toggle="dropdown" class="btn dropdown-toggle btn-primary"><span class="caret"></span></button>
           <ul class="dropdown-menu pull-right">
-            <li><a href="#"><i class="icon-hand-right"></i> Facebook </a></li>
-			<li><a href="#"><i class="icon-hand-right"></i> Twitter </a></li>
-			<li><a href="#"><i class="icon-hand-right"></i> Google + </a></li>
+            <li><div style="padding-left:15px;"><a name="fb_share" type="button_count"  share_url="www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}">Share in Facebook</a></div></li>
+			<li><div style="padding-left:30px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/completeProblemDetailsAction.action?problemId=${completeProblemDetailsVO.problemId}">
+				Tweet</a></div>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+			</script> </li>
+			<li><div style="padding-left:30px;margin-top: 5px;">
+			<g:plusone size="medium"></g:plusone>
+
+			<script type="text/javascript">
+			 (function() {
+			  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+				 po.src = 'https://apis.google.com/js/plusone.js';
+				 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			 })();
+			</script>
+		</div></li>
 			<li class="divider"></li>            
           </ul>
          </div>
