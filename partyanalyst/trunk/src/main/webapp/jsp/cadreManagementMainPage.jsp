@@ -3330,13 +3330,25 @@ function fillDataForCadreLevel(results,jsObj)
 		var descVal = document.getElementById("descTextArea").value;
 		descVal = removeEnterStrokeForString(descVal);
         var errorMsg = document.getElementById("errorMsgDiv");
+
+		var stateEle = document.getElementById("cadreLevelState");
+		var districtEle = document.getElementById("cadreLevelDistrict"); 
+		var constituencyEle = document.getElementById("cadreLevelConstituency");
+		var mandalEle = document.getElementById("cadreLevelMandal");
+		var villageEle = document.getElementById("cadreLevelVillage");
+		var stateValue = stateEle.options[stateEle.selectedIndex].value;
+		var districtValue = districtEle.options[districtEle.selectedIndex].value;
+		var constituencyValue = constituencyEle.options[constituencyEle.selectedIndex].value;
+		var villageValue = villageEle.options[villageEle.selectedIndex].value;
+		var mandalValue = mandalEle.options[mandalEle.selectedIndex].value;
+		
 		 
 		//validation code
 		if(eventNameVal == '' ){
 			errorMsg.innerHTML = "Please enter event name";
 			return;
 		}
-		else if ( /[^A-Za-z\d\s]/.test(eventNameVal)) 
+		else if ( /[^A-Za-z\d\s]/.test(eventNameVal))
 		{
 		  errorMsg.innerHTML = " Event name should not allow special characters & numbers";
 		  return;
@@ -3346,28 +3358,61 @@ function fillDataForCadreLevel(results,jsObj)
 		  return;
 		}
 		
-	var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
-	locationLevelFieldval=loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].
-		text.toUpperCase();	
-		if(locationLevelFieldval =="SELECT LEVEL"){
-			errorMsg.innerHTML='Please select location level';
-		   }
+		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
+		var scopeId = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].value;
+
+		locationLevelFieldval = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].
+			text.toUpperCase();	
+
+		if(locationLevelFieldval == "SELECT LEVEL")
+		{
+				errorMsg.innerHTML='Please select location level';
+		}
 		
 		var locationValueElmt;
-		if(locationLevelFieldval == "STATE")
-			locationValueElmt = document.getElementById("cadreLevelState");
-		else if(locationLevelFieldval == "DISTRICT")
-			locationValueElmt = document.getElementById("cadreLevelDistrict");
-		else if(locationLevelFieldval == "CONSTITUENCY")
-			locationValueElmt = document.getElementById("cadreLevelConstituency");
-		else if(locationLevelFieldval == "MANDAL")
-			locationValueElmt = document.getElementById("cadreLevelMandal");
-		else if(locationLevelFieldval == "VILLAGE")
-			locationValueElmt = document.getElementById("cadreLevelVillage");
-
-		var locationValue = locationValueElmt.options[locationValueElmt.selectedIndex].value;
 		
+		if(scopeId >= 2 && stateValue == 0)
+		{			
+			errorMsg.innerHTML='Please select State.';
+			return;
+		}
+		else
+			locationValue = stateValue;
+			
+		if(scopeId >= 3 && districtValue == 0)
+		{
+			errorMsg.innerHTML='Please select District.';
+			return;
+		}
+		else
+			locationValue = districtValue;
+		
+		if(scopeId == 4 && constituencyValue == 0)
+		{
+			errorMsg.innerHTML='Please select Constituency.';
+			return;
+		}
+		else
+			locationValue = constituencyValue;
 
+		if(scopeId >= 5 && mandalValue == 0)
+		{
+			errorMsg.innerHTML='Please select Mandal.';
+			return;
+		}
+		else
+			locationValue = mandalValue;
+
+		if(scopeId >= 6 && villageValue == 0)
+		{
+			errorMsg.innerHTML='Please select Village.';
+			return;
+		}
+		else
+			locationValue = villageValue;
+		
+		//var locationValue = locationValueElmt.options[locationValueElmt.selectedIndex].value;
+		
 	    if(descVal == '')
 		{
 		  errorMsg.innerHTML = "Please enter description for event";
