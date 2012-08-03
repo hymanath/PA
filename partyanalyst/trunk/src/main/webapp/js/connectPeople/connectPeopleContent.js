@@ -106,7 +106,7 @@ connectDivId = divId;
 	}
 	loginUserId=userLoginId;
 
-	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#ffffff" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
+	bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
 
 	bodyStr+='</td>';
 	bodyStr+='</tr></table>';
@@ -398,7 +398,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	str += '<textarea id="connectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="38" style="background:none;"></textarea>';
 	str +='<div id="limitDiv">';
 	str +='<table style="width:100%;"><tr>';
-	str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars" style="margin-top: 4px;"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
 	str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
 	str +='</tr></table>';
 	str +='</div>';	
@@ -707,14 +707,14 @@ function showAllConnectedUsersInPanel(jsObj, results){
 	str	+= '</div>';
 	
 	str	+= '<div id="allConnectPeople_footer" style="display:none;font: 13px trebuchet MS;">';
-	str	+= '<table width="100%">';
+	str	+= '<table width="100%" style="margin-top: 9px;">';
 	str	+= '<tr>';	
 	str += '<td width="80%" style="color:#754815"> Do you want to connect to <span id="allConnectPeople_footer_span"></span> ?</td>';
 	str += '<td width="20%" align="right">';
-	str += '<div class="ConnectStatusButtonClass" style="width:140px;" onclick="connectUserSetPeople()">';
+	str += '<div class="ConnectStatusButtonClass" style="width: 144px;margin-bottom: 5px;" onclick="connectUserSetPeople()">';
 	str += '<table style="margin-top: 11px;">';
 	str += '<tr>';
-	str += '<td> Connect Now </td>';
+	str += '<td><span style="margin-right:5px">Connect Now </span></td>';
 	str += '<td><a style="margin: 0px 10px;" href="javascript:{}"><img style="border:none;" src="images/icons/accept.png"></img></a></td>';	
 	str += '</tr>';
 	str += '</table>';
@@ -725,16 +725,16 @@ function showAllConnectedUsersInPanel(jsObj, results){
 	str += '<td width="80%">';
 	str += '<div id="connectMessageDiv">';
 	str += '<div style="color:#595B3E">Add Custom Message</div>';
-	str += '<div><textarea style="background:white;" id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
+	str += '<div style="margin-top: 7px;"><textarea style="background:white;" id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
 	str +='	<div id="limitDiv">';
 	str +='	<table style="width:100%;"><tr>';
-	str +='	<td align="left" style="width:38%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str +='	<td align="left" style="width:38%;color:#4B4242;"><div id="remainChars" style="margin-top: 4px;"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
 	str +='	<td style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
 	str +='	</tr></table>';
 	str +='	</div>';	
 	str += '</td>';
 	str += '<td width="20%" align="right" valign="top">';
-	str += '<div class="ConnectStatusButtonClass" onclick="hideConfirmDiv()">';
+	str += '<div class="ConnectStatusButtonClass" onclick="hideConfirmDiv()" style="width: 144px;margin-bottom: 5px;">';
 	str += '<table>';
 	str += '<tr>';
 	str += '<td>Connect Later </td>';
@@ -837,14 +837,14 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	
 	str	+= '<div id="allConnectPeople_footer" style="display:none;font: 13px trebuchet MS;">';
 
-	str	+= '<table width="100%">';
+	str	+= '<table width="100%" style="margin-top: 9px;">';
 	str	+= '<tr>';	
 	str += '<td width="80%" style="color:#754815"> Do you want to connect to <span id="allConnectPeople_footer_span"></span> ?  <span id="searchAjaxImageSpan" style="display:none;margin-left: 294px; margin-top: -17px;clear: both;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span></td>';
 	str += '<td width="20%" align="right">';
-	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()">';
+	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()" style="width: 144px;margin-bottom: 5px;">';
 	str += '<table>';
 	str += '<tr>';
-	str += '<td> Connect Now </td>';
+	str += '<td><span style="margin-right:5px">Connect Now </span></td>';
 	str += '<td><a style="margin: 0px 10px;" href="javascript:{}"><img style="border:none;" src="images/icons/accept.png"></img></a></td>';	
 	str += '</tr>';
 	str += '</table>';
@@ -855,16 +855,16 @@ function showAllConnectedUsersInPanelOfDistrict(jsObj, results)
 	str += '<td width="80%">';
 	str += '<div id="connectMessageDiv">';
 	str += '<div style="color:#595B3E">Add Custom Message</div>';
-	str += '<div><textarea style="background:white;" id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
+	str += '<div style="margin-top: 7px;"><textarea style="background:white;" id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
 	str +='	<div id="limitDiv">';
 	str +='	<table style="width:100%;"><tr>';
-	str +='	<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str +='	<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars" style="margin-top: 4px;"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
 	str +='	<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
 	str +='	</tr></table>';
 	str +='	</div>';	
 	str += '</td>';
 	str += '<td width="20%" align="right" valign="top">';
-	str += '<div class="ConnectStatusButtonClass" onclick="hideConfirmDiv()">';
+	str += '<div class="ConnectStatusButtonClass" onclick="hideConfirmDiv()" style="width: 144px;margin-bottom: 5px;">';
 	str += '<table>';
 	str += '<tr>';
 	str += '<td>Connect Later </td>';
