@@ -791,7 +791,7 @@ function callAjax(jsObj,url)
 						    {
 							if(myResults != null && myResults != '' && myResults != 'null'){
 							   if(document.getElementById("rateitmainrating")!= null)
-							   $('#rateitmainrating').rateit('value',parseFloat(myResults) );
+							   $('#rateitmainrating').rateit('value',parseFloat(myResults.avgRating) );
 							    if(document.getElementById("rateitavgall")!= null){
 								 if(myResults.avgRating != null){
 							       $('#rateitavgall').rateit('value',parseFloat(myResults.avgRating) );
@@ -1385,20 +1385,7 @@ function showDeleteStatus(myResult)
 						</div>
 						<div class="rateit" id="rateitmainrating"></div>
         </div>
-		<script type="text/javascript">
-		<s:if test="completeProblemDetailsVO.rating == null " >
-	$(document).ready(function() {
-	  $("#rateitmainrating").rateit('value',0);
-	  $("#rateitmainrating").rateit('readonly',!$("rateitmainrating").rateit('readonly'));
-	  });
-	</s:if>
-	<s:else>
-	$(document).ready(function() {
-	  $("#rateitmainrating").rateit('value',parseFloat(${completeProblemDetailsVO.rating}));
-	  $("#rateitmainrating").rateit('readonly',!$("#rateitmainrating").rateit('readonly'));
-	  });
-	</s:else>
-		</script>
+		
         </s:if>
 		
 		  <div class="row m-t10">
@@ -1606,7 +1593,7 @@ function showDeleteStatus(myResult)
       </div>
 <div id="userratingchangedDiv" >
     <s:if test="completeProblemDetailsVO.isAlreadyRated =='true' ">
-	<div class="pull-left" style="margin-left:9px;"> <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuser"></div></div>
+	<div class="pull-left" style="margin-left:9px;"> <div style="color: #06ABEA;">Problem Rating By You </div><div class="rateit" id="rateitbyuser"></div></div>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	  $('#rateitbyuser').rateit('value',parseFloat(${completeProblemDetailsVO.ratingByyou}) );
@@ -1615,7 +1602,7 @@ function showDeleteStatus(myResult)
 	</script>
 	</s:if>
 	<s:if test="completeProblemDetailsVO.isAlreadyRated !='true' && completeProblemDetailsVO.userStatus != 'notlogged' ">
-     <div id="initialchangDiv" class="pull-left" style="margin-left:9px;"><div style="color: #06ABEA;">Are you facing the same Problem ? </div>
+     <div id="initialchangDiv" class="pull-left" style="margin-left:9px;"><div style="color: #06ABEA;">Are You Facing The Same Problem ? </div><div style="color: #06ABEA;">Rate It</div>
 	 <input type="range"  step="1" id="rateitbyuser" >
      <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false" style="max-width:0px;" data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5"></div>	
       </div>
@@ -1732,6 +1719,22 @@ $(".icon-star-empty").hover(
     );*/
 	
 	
+	$(document).ready(function() {
+	if(document.getElementById("rateitmainrating") != null){
+	if('${completeProblemDetailsVO.problemId}' == 'null' || '${completeProblemDetailsVO.problemId}' == ''){
+	    $("#rateitmainrating").rateit('value',0);
+	    $("#rateitmainrating").rateit('readonly',!$("rateitmainrating").rateit('readonly'));
+	  }
+	  else{
+	  $("#rateitmainrating").rateit('value',parseFloat(${completeProblemDetailsVO.rating}));
+	  $("#rateitmainrating").rateit('readonly',!$("#rateitmainrating").rateit('readonly'));
+	}
+	}
+	  });
+	
+	
+	
+	
  function saveRatingOfAProblem()
   {
     var problemId = '${completeProblemDetailsVO.problemId}';
@@ -1804,11 +1807,16 @@ function rateWiseCountOfAProblem()
 			});
   });
   $(document).ready(function(){
+	 if(document.getElementById("rateitavgall") != null)
+	    $("#rateitavgall").rateit('readonly',!$("#rateitavgall").rateit('readonly'));
+	 });
+  $(document).ready(function(){
   if(document.getElementById("rateitbyuser") != null){
      $('#rateitbyuser').rateit('step',1);
 	 $('#rateitbyuser').rateit('max', 5);
 	 }
 	 });
+
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.isProblemDel != 'true' ">
 <s:if test="completeProblemDetailsVO != null && completeProblemDetailsVO.noAccess != 'true' ">
 getAvgProblemRating();
