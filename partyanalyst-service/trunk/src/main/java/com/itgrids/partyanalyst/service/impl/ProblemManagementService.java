@@ -7572,9 +7572,10 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			List<CompleteProblemDetailsVO> completeProblemDetailsVOList = new ArrayList<CompleteProblemDetailsVO>();
 			Map<Integer,CompleteProblemDetailsVO> ratingMap = new HashMap<Integer,CompleteProblemDetailsVO>();
 			List<Object[]> result = problemRatingDAO.getRatingWiseCountOfAProblem(problemId);
+			int totalCount = 0;
 			if(result != null && result.size() >0)
 			{
-				int totalCount = 0;
+				
 				for(Object[] params : result)
 				{
 					CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
@@ -7583,6 +7584,7 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					totalCount = totalCount+ new Integer(params[1].toString());
 					ratingMap.put(((Integer)params[0]), completeProblemDetailsVO);
 				}
+			}
 				for(int i = 1;i < 6;i++){
 					if(ratingMap.get(new Integer(i)) == null){
 						CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
@@ -7592,13 +7594,15 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 						ratingMap.put(new Integer(i), completeProblemDetailsVO);
 					}else{
 						CompleteProblemDetailsVO completeProblemDetailsVO = ratingMap.get(new Integer(i));
-						  Integer rating = (new Integer(completeProblemDetailsVO.getTotalpeople())/totalCount)*100;
+						Float rating = 0.0f;
+						if(totalCount != 0)
+						  rating = (new Float(completeProblemDetailsVO.getTotalpeople())/totalCount)*100;
 						  completeProblemDetailsVO.setRating(rating.toString());
 					}
 				}
 				completeProblemDetailsVOList = new ArrayList<CompleteProblemDetailsVO>(ratingMap.values());
 				Collections.sort(completeProblemDetailsVOList,ProblemManagementService.completeProblemDetailsVOSort);
-			}
+			
 			return completeProblemDetailsVOList;
 		}catch (Exception e) {
 			e.printStackTrace();
