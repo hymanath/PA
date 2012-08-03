@@ -871,9 +871,11 @@ function buildcomments(myResults){
      str+='</li>';
 	 }
 	str+='</ul>';
+	if(document.getElementById("postedcomments") != null)
 	document.getElementById("postedcomments").innerHTML = str;
   }else{
      <s:if test="completeProblemDetailsVO.userStatus == 'notlogged' " >
+	  if(document.getElementById("postedcomments") != null)
        document.getElementById("postedcomments").innerHTML = "<span style='margin-left:10px;'>No Comments Posted</span>";
      </s:if>
   }
