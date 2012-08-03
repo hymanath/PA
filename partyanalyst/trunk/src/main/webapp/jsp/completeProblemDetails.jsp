@@ -96,16 +96,22 @@ table {
 .commentname{font-weight:bold;font-size:14px;color:#06ABEA;}
 .commentdate{color:#888;font-size:10px;}
 
-#userratingchangedDiv{
-   border:1px solid #d3d3d3;
-   height:80px;
-   width:630px;
-   margin-left:20px;
- }
+#userratingchangedDiv {
+    border: 1px solid #D3D3D3;
+    height: 109px;
+    margin-left: 20px;
+    width: 630px;
+    padding-top: 7px;
+}
+.fontalign{
+  font-family: verdana;font-size: 13px;
+}
+
 </style>
 
 <script type="text/javascript">
 var problemFilesArray = new Array();
+var ratingtrue = true;
 var cadreProblemDetails;
 <c:if test="${completeProblemDetailsVO.problemFiles != null}">
 	<c:forEach var="file" items="${completeProblemDetailsVO.problemFiles}">	
@@ -781,7 +787,9 @@ function callAjax(jsObj,url)
 							}
 							if(jsObj.task =="saveProblemRatingDetails")
 						    {
+							 ratingtrue = true;
 							getAvgProblemRating();
+							rateWiseCountOfAProblem();
 							document.getElementById("initialchangDiv").style.display = 'none';
 							document.getElementById("afterchangeDiv").style.display = 'block';
 							$('#rateitbyuserchange').rateit('value',jsObj.rating);
@@ -809,9 +817,22 @@ function callAjax(jsObj,url)
 								}
 							}
 						    }
-						   else if(jsObj.task =="saveProblemRatingDetails")
+						   else if(jsObj.task =="rateWiseCountOfAProblem")
 						   {
-							//getRateWiseCountOfAProblem(myResults);
+							  if(myResults != null){
+							   var color = new Array();						     
+								 color.push('progress-success');
+								 color.push('progress-info');
+								 color.push('progress-warning');
+								 color.push('progress-danger');
+								 color.push('progress-info');
+							     var str ='';
+								 for(var i in myResults){				 
+								 str+= '<div style="width:100%"><div class="pull-left">'+myResults[i].ratingGiven+' Star </div> <div class="progress pull-left '+color[i]+'" style="margin-bottom:3px;margin-left:10px;width:100px;"><div class="bar" style="width: '+myResults[i].rating+'%;"></div></div><div style="margin-left:10px;" class="pull-left">'+myResults[i].totalpeople+'</div></div>';
+								 }
+								   if(document.getElementById("individualcountrate") != null)
+								     document.getElementById("individualcountrate").innerHTML = str;
+							  }
 							
 						   }
 						   else if(jsObj.task =="getproblemcomments")
@@ -865,7 +886,7 @@ function buildcomments(myResults){
 	 if(myResults[i].profileImg != null)
 	   str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/'+myResults[i].profileImg+'" /> </div>';
 	 else
-	  str+='<div class="commentimage"><img alt="" src="http://placehold.it/45x45" > </div>';
+	  str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/human.jpg" /> </div>';
 	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span></div>';
 	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
@@ -1341,12 +1362,12 @@ function showDeleteStatus(myResult)
 			    </s:if> -->
 			 </div>
 			 
-          <a class="thumbnail" href="#" >
+          <a class="thumbnail" href="javascript:{}" >
              <s:if test="completeProblemDetailsVO.profileImg != null ">
                 <img alt="" width="130" height="120" src="pictures/profiles/${completeProblemDetailsVO.profileImg}">
 			 </s:if>
 			  <s:if test="completeProblemDetailsVO.profileImg == null ">
-                <img alt="" src="http://placehold.it/120x80">
+                <img alt="" width="130" height="120" src="pictures/profiles/human.jpg">
 			 </s:if>
 			 
           </a>
@@ -1593,7 +1614,7 @@ function showDeleteStatus(myResult)
       </div>
 <div id="userratingchangedDiv" >
     <s:if test="completeProblemDetailsVO.isAlreadyRated =='true' ">
-	<div class="pull-left" style="margin-left:9px;"> <div style="color: #06ABEA;">Problem Rating By You </div><div class="rateit" id="rateitbyuser"></div></div>
+	<div class="pull-left" style="margin-left:39px;"> <div class="fontalign" style="color: #06ABEA;">Problem Rating By You </div><div class="rateit" style="margin-top:5px;" id="rateitbyuser"></div></div>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	  $('#rateitbyuser').rateit('value',parseFloat(${completeProblemDetailsVO.ratingByyou}) );
@@ -1602,12 +1623,12 @@ function showDeleteStatus(myResult)
 	</script>
 	</s:if>
 	<s:if test="completeProblemDetailsVO.isAlreadyRated !='true' && completeProblemDetailsVO.userStatus != 'notlogged' ">
-     <div id="initialchangDiv" class="pull-left" style="margin-left:9px;"><div style="color: #06ABEA;">Are You Facing The Same Problem ? </div><div style="color: #06ABEA;">Rate It</div>
+     <div id="initialchangDiv" class="pull-left" style="margin-left:8px;"><div class="fontalign" style="color: #06ABEA;">Are You Facing The Same Problem ? </div><div class="fontalign" style="color: #06ABEA;">Rate It</div>
 	 <input type="range"  step="1" id="rateitbyuser" >
-     <div class="rateit" onclick="saveRatingOfAProblem()" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false" style="max-width:0px;" data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5"></div>	
+     <div class="rateit" onclick="saveRatingOfAProblem()" style="margin-top:5px;" id="ratingtest" data-rateit-backingfld="#rateitbyuser" data-rateit-resetable="false" style="max-width:0px;" data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5"></div>	
       </div>
-	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:9px;" >
-	    <div style="color: #06ABEA;">Problem Rating by you </div><div class="rateit" id="rateitbyuserchange"></div>
+	  <div id="afterchangeDiv" class="pull-left" style="display:none;margin-left:39px;" >
+	    <div class="fontalign" style="color: #06ABEA;">Problem Rating By You </div><div class="rateit" style="margin-top:5px;" id="rateitbyuserchange"></div>
 	  </div>
 	  <script type="text/javascript">
 
@@ -1616,7 +1637,8 @@ function showDeleteStatus(myResult)
 	   });
 	</script>
 	</s:if>
-	<div class="pull-left" style="margin-left:30px;"><div style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-left:30px;"></div> <div class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-left:30px;"></div></div>
+	<div class="pull-left" style="margin-left:40px;"><div class="fontalign" style="color: #06ABEA;" > Average Rating</div><div id="avgratingnumeric" style="margin-top:5px;margin-left:30px;"></div> <div style="margin-top:5px;" class="rateit" id="rateitavgall"></div><div id="avgratpeplcount" style="margin-top:5px;margin-left:30px;"></div></div>
+	<div class="pull-left" style="margin-left:49px;"><div style="width:181px;" id="individualcountrate"></div></div>
 </div>
 			<s:if test="completeProblemDetailsVO.userStatus != 'notlogged' " >
         <div class="span8">
@@ -1648,7 +1670,7 @@ function showDeleteStatus(myResult)
             <li>
 						<h5><a href="completeProblemDetailsAction.action?problemId=<s:property value='problemId'/>"><s:property value="problemTitle"/></a> </h5>
 						<div>
-							<div class="rateit" id="rateit<s:property value='problemId'/>"></div>
+							<div class="rateit" style="margin-top:5px;" id="rateit<s:property value='problemId'/>"></div>
 							<h6><s:property value="problemCompleteLoc"/></h6>
 						</div>
 			</li>
@@ -1737,6 +1759,8 @@ $(".icon-star-empty").hover(
 	
  function saveRatingOfAProblem()
   {
+    if(ratingtrue){
+	ratingtrue = false;
     var problemId = '${completeProblemDetailsVO.problemId}';
 	if(alltrim(problemId) != '' && alltrim(problemId).length > 0){
 	var jsObj = {
@@ -1751,7 +1775,7 @@ $(".icon-star-empty").hover(
 	 callAjax(jsObj,url);
 	}
   }
-  
+  }
   function getAvgProblemRating()
   {
 var problemId = '${completeProblemDetailsVO.problemId}';
