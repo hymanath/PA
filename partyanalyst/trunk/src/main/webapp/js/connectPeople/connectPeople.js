@@ -825,7 +825,7 @@ function uploadUserPic()
 
 function changeExistingPassword()
 {
-
+	
 $("#password_change_window").dialog({
 			resizable:false,
 			width: 600,
@@ -855,7 +855,7 @@ $("#password_change_window").dialog({
 		str += '	<td width="50%" align="left"><div id="password_window_errorMsg"></div></td>';
 		str += '	<td width="35%" align="right">';
 		str += '		<input id="changeButton" type="button" value="Change Password"></input>';
-		str += '		<input style="width:52px; text-align:center;" id="cancelButton" type="button" value="No"></input>';
+		str += '		<input id="cancelButtonID" type="button" value="No"></input>';
 		str += '	</td>';
 		str += '	</tr>';
 		str += '	</table>';	
@@ -863,21 +863,25 @@ $("#password_change_window").dialog({
 		elmt.innerHTML = str;
 
 		var oPushButton1 = new YAHOO.widget.Button("changeButton");  
-		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+		var oPushButton2 = new YAHOO.widget.Button("cancelButtonID");
 
 		oPushButton1.on("click",function(){
 			changePassword();
 		});
 
 		oPushButton2.on("click",function(){
-			$("#password_change_window").dialog("destroy");
+			cancel();
 		});
 	
 }
 	
+	function cancel()
+	{
+		$("#password_change_window").dialog("destroy");
+	}
 function changePassword()
 	{
-		
+	
 	var cpwd = document.getElementById("currentPwdId").value;
 	var npwd = document.getElementById("newPwdId").value;
 	var cfmpwd = document.getElementById("confirmPwdId").value;
