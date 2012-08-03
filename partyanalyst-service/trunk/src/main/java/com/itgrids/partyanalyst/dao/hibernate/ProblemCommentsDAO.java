@@ -18,7 +18,7 @@ public class ProblemCommentsDAO extends GenericDaoHibernate<ProblemComments,Long
 	}
 	public List<Long> getAllApprovedComments(Long problemId)
 	{
-		return getHibernateTemplate().find("select count(model.problemCommentsId) from ProblemComments model where model.isApproved ='"+IConstants.TRUE+"' and model.isDelete = null and model.problem.problemId = ?",problemId);
+		return getHibernateTemplate().find("select count(model.problemCommentsId) from ProblemComments model where model.isApproved ='"+IConstants.TRUE+"' and (model.isDelete = null or model.isDelete = '"+IConstants.FALSE+"') and model.problem.problemId = ?",problemId);
 	}
 	public List findUserApprovalStatusbetweendates(Date fromDate, Date toDate){
 		
