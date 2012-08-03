@@ -1623,7 +1623,7 @@ function showDeleteStatus(myResult)
 
 		<h3>Comments:</h3>
 		 <div><div>
-		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" class="pull-right btn btn-info">Post</a></div></div>
+		 <textarea class="textareaid" id="commenttext" style="width:100%;"></textarea></div><div><a href="javascript:{}" onclick="postCommentForProblem()" style="margin-top:10px;" class="pull-right btn btn-info">Post</a></div></div>
          <div id="postedcomments"></div>		
 		</div>
 		</s:if>
