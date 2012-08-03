@@ -1354,21 +1354,22 @@ function showDeleteStatus(myResult)
 </div>
 <div class="span7 subheader-problem">
       <h2 class="span5 pull-left">${completeProblemDetailsVO.problemTitle} </h2>
+<div id="errorMsgDivEle"></div>
 
 <c:if test="${completeProblemDetailsVO.isOwner && completeProblemDetailsVO.userStatus != 'NOT_LOGGED_IN'}">
-<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
+	<c:if test="${completeProblemDetailsVO.userStatus == 'PARTY_ANALYST_USER' || completeProblemDetailsVO.userStatus != 'BOTH'}">
 
-<div id="errorMsgDivEle"></div>
-<div style="width: 100px; margin-left: 333px; margin-top: 0px; padding-top: 0px;">
+
+	<div style="width: 100px; margin-left: 499px; margin-top: 12px; padding-top: 0px; margin-bottom: 0px;">
 	<a href="javascript:{}" onclick="deleteProblemDetails()" title="Click Here to Delete the Problem">
-		<img src="images/icons/delete.png" style="text-decoration: none; border: 0px none; margin: 0px 0px -47px -15px; padding-top: 0px;">
+		<img width="20px" height="20px;" style="text-decoration: none; border: 0px none; padding-top: 0px;margin-bottom: -2px" src="images/icons/delete.png">
 	</a>
 </div>
  </c:if>
 </c:if>
 
        <s:if test="completeProblemDetailsVO.isPublic == 'true' ">
-	   <div class="pull-right">
+	   <div class="pull-right" style="margin-left: 0px; margin-right: 47px; margin-top: -22px;">
         <div class="btn-group dropup inline" style="display:inline-block;width:100px;">
           <button class="btn btn-primary"><i class="icon-share icon-white"></i> Share</button>
           <button data-toggle="dropdown" class="btn dropdown-toggle btn-primary"><span class="caret"></span></button>
