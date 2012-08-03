@@ -406,7 +406,7 @@ var emailId = '${sessionScope.USER.email}';
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:270px;"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;margin-left:18px;margin-top:14px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
