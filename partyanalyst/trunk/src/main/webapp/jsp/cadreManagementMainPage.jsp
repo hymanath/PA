@@ -3316,7 +3316,10 @@ function fillDataForCadreLevel(results,jsObj)
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText_new").value;
 		var endDateVal = document.getElementById("endDateText_new").value;
-		
+		var startDateValArry = startDateVal.split("/");
+		var endDateValArry = endDateVal.split("/");
+		var startdate = new Date(startDateValArry[2], parseInt(startDateValArry[1])-1, startDateValArry[0]);
+		var enddate = new Date(endDateValArry[2], parseInt(endDateValArry[1])-1, endDateValArry[0]);
 		var startTimeHrs = document.getElementById("startTimeHrs");
 		var startTimeHrsVal = startTimeHrs.options[startTimeHrs.selectedIndex].text;
 		var startTimeMin = document.getElementById("startTimeMin");
@@ -3353,7 +3356,7 @@ function fillDataForCadreLevel(results,jsObj)
 		  errorMsg.innerHTML = " Event name should not allow special characters & numbers";
 		  return;
 		}
-		else if(startDateVal > endDateVal){
+		else if(startdate > enddate){
 		  errorMsg.innerHTML = "Please select A valid date for End date";
 		  return;
 		}
@@ -3371,47 +3374,42 @@ function fillDataForCadreLevel(results,jsObj)
 		
 		var locationValueElmt;
 		
-		if(scopeId >= 2 && stateValue == 0)
+		if(scopeId == 2 && stateValue == 0)
 		{			
 			errorMsg.innerHTML='Please select State.';
 			return;
 		}
-		else
-			locationValue = stateValue;
-			
-		if(scopeId >= 3 && districtValue == 0)
+		if(scopeId == 3 && districtValue == 0)
 		{
 			errorMsg.innerHTML='Please select District.';
 			return;
 		}
-		else
-			locationValue = districtValue;
-		
 		if(scopeId == 4 && constituencyValue == 0)
 		{
 			errorMsg.innerHTML='Please select Constituency.';
 			return;
 		}
-		else
-			locationValue = constituencyValue;
-
-		if(scopeId >= 5 && mandalValue == 0)
+		if(scopeId == 5 && mandalValue == 0)
 		{
 			errorMsg.innerHTML='Please select Mandal.';
 			return;
 		}
-		else
-			locationValue = mandalValue;
-
-		if(scopeId >= 6 && villageValue == 0)
+		if(scopeId == 6 && villageValue == 0)
 		{
 			errorMsg.innerHTML='Please select Village.';
 			return;
 		}
-		else
-			locationValue = villageValue;
 		
-		//var locationValue = locationValueElmt.options[locationValueElmt.selectedIndex].value;
+		if(scopeId == 2)
+			locationValue = stateValue;
+		else if(scopeId == 3)
+			locationValue = districtValue;
+		else if(scopeId == 4)
+			locationValue = constituencyValue;
+		else if(scopeId == 5)
+			locationValue = mandalValue;
+		else if(scopeId == 6)
+			locationValue = villageValue;
 		
 	    if(descVal == '')
 		{
