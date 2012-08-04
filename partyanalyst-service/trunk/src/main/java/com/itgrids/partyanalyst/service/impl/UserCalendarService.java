@@ -312,7 +312,7 @@ public class UserCalendarService implements IUserCalendarService {
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal1,impDate);
 				importantDatesVOs.add(importantDatesVO);
 			}
-			if((monthlyCal2.after(startCalendar)) && (monthlyCal2.before(endCalendar)) && monthlyCal2.before(dbEndDate) && monthlyCal2.after(dbStartDate)  ){
+			else if((monthlyCal2.after(startCalendar)) && (monthlyCal2.before(endCalendar)) && monthlyCal2.before(dbEndDate) && monthlyCal2.after(dbStartDate)  ){
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal2,impDate);
 				importantDatesVOs.add(importantDatesVO);
 			}
@@ -346,10 +346,12 @@ public class UserCalendarService implements IUserCalendarService {
 		else{
 			ImportantDatesVO importantDatesVO;
 			calendar.setTime(startDate);
-			importantDatesVO = createImportantDatesVOForUser(calendar,impDate);	
-			importantDatesVOs.add(importantDatesVO);
+			
 			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
 				importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
+				importantDatesVOs.add(importantDatesVO);
+			}else{
+				importantDatesVO = createImportantDatesVOForUser(calendar,impDate);	
 				importantDatesVOs.add(importantDatesVO);
 			}
 		}
