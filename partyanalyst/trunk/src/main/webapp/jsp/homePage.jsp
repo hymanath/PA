@@ -435,10 +435,8 @@ var pollStatus = [];
           <h1 class="news-title">Latest news &amp; Updates</h1>
           <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
          <marquee onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
-		 <font class="scrollDataStyle" color="blue">
-			<a href="candidateElectionResultsAction.action?candidateId=170603">Jagadish Shettar was sworn in as Karnataka chief minister on Thursday 12-july . </a>
-			<a href="candidateElectionResultsAction.action?candidateId=2157">Kodali Sri Venkateswara Rao(Nani) is going to join in ysrcp
-		 </font>
+		 <font class="scrollDataStyle" color="blue">Vice Presidential Elections 2012 : Polling will be held on : 07-08-2012 ( 10 A.M to 5 P.M ) and Counting At 6 P.M.  UPA selected Hamid Ansari and NDA selected Jaswanth Singh as their Candidates.
+       	</font>
          </marquee>
             <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
         </div>

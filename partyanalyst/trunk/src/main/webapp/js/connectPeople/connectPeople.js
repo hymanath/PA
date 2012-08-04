@@ -359,9 +359,7 @@ function buildConnectionsContentForUser()
 		
 		
 		
-		str += '<img height="50" width="55" src="/PartyAnalyst/pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></div>';
-		
-		//str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/pictures/profiles/human.jpg"></td>';
+		str += '<img height="50" width="55" src="pictures/profiles/'+arrData[i].id+'.jpg" onerror="setImage(this)" height="65" width="60"></div>';
 		str +='<div style="float:right;width:100px;height:30px;margin-left:5px;">';
 		str +='<span style="margin-bottom:5px;">'+arrData[i].candidateName+'</span>';
 		
@@ -417,7 +415,7 @@ function buildConnectionsContentForUser()
 }
 function setImage(img)
 {
-		img.src = "/PartyAnalyst/pictures/profiles/member.jpg";
+		img.src = "pictures/profiles/member.jpg";
 }
 function showMailPopup(id,name,type)
 {
