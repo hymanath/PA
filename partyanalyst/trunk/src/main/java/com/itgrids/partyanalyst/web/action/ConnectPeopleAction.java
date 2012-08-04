@@ -859,11 +859,13 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		 String filePath = "";
 		 
-		 if(sPath != null)
-			 filePath = sPath;
+		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		 
+		 if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "pictures" + pathSeperator + IConstants.PROFILE_PIC + pathSeperator;
 		 else
 			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
-		
+		 
 		BufferedImage image = null;
         try {
             
