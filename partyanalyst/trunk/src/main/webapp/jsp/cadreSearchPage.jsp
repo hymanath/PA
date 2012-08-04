@@ -349,7 +349,7 @@ function setCadreIdToProblem()
 					<th align="left"><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
 					<td align="left">
 						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)"  checked="checked" value="location"/> Cadre Location  
-						<input type="radio" name="searchbasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
+						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
 					</td>
 				</tr>
 
