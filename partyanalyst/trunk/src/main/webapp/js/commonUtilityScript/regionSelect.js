@@ -1485,7 +1485,12 @@ function buildRegionsSelectBoxes(jsObj,results)
 			REPORTLEVEL = results.regions[i].id;
 			firstValue = results.regions[i].name+'_'+results.regions[i].id;				
 		}
-	
+	    else if(results.regions[i].name == 'MANDAL/TEHSIL'){
+		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="MANDAL" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
+		}
+		else if(results.regions[i].name == 'ASSEMBLY CONSTITUENCY'){
+		  str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="CONSTITUENCY" onclick="populateLocations(this.id,\'onChange\')"/>'+results.regions[i].name+'';
+		}
 		else if(i == 10)
 			str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\'),getLocationHierarchies(results.states[0].id,\'districtsInState\',\'cadreSearch\',\'districtField_s\',\'cadreSearch\', \'null\')"/>'+results.regions[i].name+'';
 
