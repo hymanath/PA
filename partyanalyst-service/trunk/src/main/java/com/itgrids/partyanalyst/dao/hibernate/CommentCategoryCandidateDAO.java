@@ -298,7 +298,8 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		conditionQuery.append(" model.nomination.constituencyElection.constituency.name, ");
 		conditionQuery.append(" model.nomination.candidateResult.rank, ");
 		conditionQuery.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
-		conditionQuery.append(" model.nomination.constituencyElection.election.electionYear ");
+		conditionQuery.append(" model.nomination.constituencyElection.election.electionYear, ");
+		conditionQuery.append("model.commentData.isApproved ");
 		
 		conditionQuery.append(" from CommentCategoryCandidate model ");
 		return conditionQuery.toString();
@@ -324,7 +325,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		StringBuilder query = new StringBuilder();
 		query.append(getCommonDataForAllProblems());		
 		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
-		query.append(" and model.commentData.isApproved is null");	
+		//query.append(" and (model.commentData.isApproved ='true' and model.commentData.isApproved = 'false')");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setDate(0,fromDate);
