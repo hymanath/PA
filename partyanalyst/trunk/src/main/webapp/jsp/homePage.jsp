@@ -1800,7 +1800,7 @@ function showProblemDescriptionByProblemRefId(results)
 	}
 	else if(results != null)
 	{
-	problemDescDivEle.innerHTML = '<a href="problemCompleteInfoAction.action?problemHistoryId='+results.problemHistoryId+'">'+results.description+'</a>';
+	problemDescDivEle.innerHTML = '<a href="completeProblemDetailsAction.action?problemId='+results.problemHistoryId+'">'+results.description+'</a>';
 	}
 	
 }
