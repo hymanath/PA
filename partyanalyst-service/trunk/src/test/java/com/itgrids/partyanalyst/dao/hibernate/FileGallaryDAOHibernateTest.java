@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileGallary;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -254,10 +255,16 @@ System.out.println("i " +i);
 		}
 		
 	}*/
-	public void testGetAllRecordCountInGallary()
+	/*public void testGetAllRecordCountInGallary()
 	{
 		 List<Long> list = fileGallaryDAO.getAllRecordCountInGallary(1318L);
 		 System.out.println(list.get(0));
+		 
+	}*/
+	public void testGetHomePageNewsDetails()
+	{
+		 List<FileGallary> list = fileGallaryDAO.getHomePageNewsDetails(0,15);
+		 System.out.println(list.size());
 		 
 	}
 }
