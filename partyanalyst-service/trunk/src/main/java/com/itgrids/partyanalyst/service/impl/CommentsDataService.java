@@ -1179,6 +1179,7 @@ public class CommentsDataService implements ICommentsDataService {
 				
 				comment.setElectionType(params[9].toString());
 				comment.setElectionYear(params[10].toString());
+				comment.setStatus(params[11].toString());
 				
 				commentsList.add(comment);
 				
