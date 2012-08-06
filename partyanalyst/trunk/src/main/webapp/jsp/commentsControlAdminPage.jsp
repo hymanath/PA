@@ -165,6 +165,9 @@ function buildCommentsDatatable(commentsArray,divId)
 			key : "constituencyName"
 		},  {
 			key : "electionType"
+		},
+		{
+			key : "acceptorReject"
 		}]
 	};
 
@@ -209,7 +212,12 @@ function buildCommentsDatatable(commentsArray,divId)
 		label : "Election",
 		sortable: true
 		
-	} ];
+	} ,
+	{
+		key :"acceptorReject",
+			label : "Accept/Reject",
+			sortable : true
+	}];
 
     var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
@@ -283,7 +291,8 @@ function showNewPostedReasons(jsObj,results)
 					constituencyName:results[i].constituencyName,
 					electionType:results[i].electionType,
 					electionYear:results[i].electionYear,							
-					partyName:results[i].partyName,							
+					partyName:results[i].partyName,
+					acceptorReject : results[i].status,
 					rank:status
 				};
 		commentsArray.push(obj);
