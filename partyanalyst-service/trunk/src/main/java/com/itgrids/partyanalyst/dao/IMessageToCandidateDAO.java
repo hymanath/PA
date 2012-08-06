@@ -15,4 +15,6 @@ public interface IMessageToCandidateDAO extends GenericDao<MessageToCandidate, L
 	 public Integer controlMessages(Long id,String message, String isApproved);
 	 public List<Object[]> getUserMessages(Long candidateId,int startIndex,int resultsCount);
 	 public List<Long> getUserMessagesCount(Long candidateId);
+	 
+	 public Long getCandidateMessagesCount();
 }
