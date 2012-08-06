@@ -45,11 +45,11 @@
     padding: 32px 0 16px 21px;
     width: 244px;
 }
-.container {
+.popupcontainer {
     	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
     	background-color: #FFFFFF;
     	margin: 9px auto 10px;
-    	max-width: 800px;
+    	max-width: 780px;
     	padding: 10px;
 	}
 	.main-mbg {
@@ -412,7 +412,7 @@ function buildContentDetails()
 
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 		
@@ -427,7 +427,7 @@ function buildContentDetails()
 		}
 		
 		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="container" id="nextPartImage">';
+		str += '<div class="popupcontainer" id="nextPartImage" style="width:500px;text-align:center;">';
 		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></div>';
 		str += '<table><tr>';
 		str += '<td>';
@@ -467,7 +467,7 @@ function buildContentDetails()
 		
 		if(result.relatedGalleries[0].filesList.length >= 2){
 		str += '<td valign="top">';
-		str += '<div class="container" style="height:425px;overflow:auto;width:140px;">';
+		str += '<div class="popupcontainer" style="height:425px;overflow:auto;width:140px;">';
 		str += '<b><font color="blue">Other Videos</font></b>';
 		str += '<Table>';
 
@@ -499,7 +499,7 @@ function buildContentDetails()
 				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 			}
 			
-			str += '<td><div class="container" id="nextPartImage"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+			str += '<td><div class="popupcontainer" id="nextPartImage" style="width:700px;text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
 
 			if(i != result.relatedGalleries[0].filesList.length-1)
 			{
@@ -564,12 +564,12 @@ function buildContentDetails()
 		str += '<div class="main-title-sec">';
 		str += '<div class="main-mbg" style="width:850px;border-radius:0px 0px 0px 0px;">Other '+galType+' gallaries Of ${specialPageVO.heading}</div><div class="main-bbg"/></div>';
 		
-		str += '<div class="container" style="overflow:auto;width:880px;max-width:850px;">';
+		str += '<div class="popupcontainer" style="overflow:auto;width:880px;max-width:850px;">';
 		str += '<Table>';
 		
 		for(var i=0;i<result.otherGalleries.length;i++)
 		{
-			if(i%5 == 0)
+			if(i%4 == 0)
 				str += '<tr>';
 			
 			str += '<td width="20%" valign="top">';
@@ -591,7 +591,7 @@ function buildContentDetails()
 
 			str += '</td>';
 
-			if(i%5 == 4)
+			if(i%4 == 3)
 				str += '</tr>';
 		}
 		str += '</Table>';
@@ -632,7 +632,7 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
     if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
 	{
 	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'" />';
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle" style="max-width:780px;max-length:800px;" src="'+path+'" />';
 	  else
 	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
@@ -673,7 +673,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  if(document.getElementById("sourceChangeSpan") != null)
 	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
 	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
+	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" align="middle"  style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
 	  else
 	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
@@ -1100,7 +1100,7 @@ $(document).ready(function() {
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Please login to subscribe </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 
 function subscribeAlert()
@@ -1116,7 +1116,7 @@ function subscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had subscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 function unSubscribeAlert()
 {
@@ -1131,7 +1131,7 @@ function unSubscribeAlert()
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">You had Unsubscribed successfully </div></div>';		document.getElementById("logInDiv").innerHTML = str;
 }
 </script>
 </head>
