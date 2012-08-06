@@ -106,9 +106,27 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String referenceNo;
 	private Long userProblemId;
 	private Long visibility;
+	private Long candidateMsgCount =0l;
+	private Long partyMsgCount =0l;
 	
 	
 	
+	public Long getCandidateMsgCount() {
+		return candidateMsgCount;
+	}
+
+	public void setCandidateMsgCount(Long candidateMsgCount) {
+		this.candidateMsgCount = candidateMsgCount;
+	}
+
+	public Long getPartyMsgCount() {
+		return partyMsgCount;
+	}
+
+	public void setPartyMsgCount(Long partyMsgCount) {
+		this.partyMsgCount = partyMsgCount;
+	}
+
 	public Long getVisibility() {
 		return visibility;
 	}
