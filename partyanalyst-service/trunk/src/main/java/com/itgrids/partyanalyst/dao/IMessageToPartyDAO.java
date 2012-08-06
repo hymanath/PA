@@ -15,5 +15,7 @@ public interface IMessageToPartyDAO extends GenericDao<MessageToParty, Long>{
 	public List getAllPartyMessages(Date firstDate, Date secondDate,String selectstatus);
 	
     public Integer adminModifiedMessages(Long id,String message, String isApproved);
+    
+    public Long getPartyMessagesCount();
 
 }
