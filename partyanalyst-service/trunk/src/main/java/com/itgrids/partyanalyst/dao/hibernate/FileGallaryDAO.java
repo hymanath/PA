@@ -403,6 +403,13 @@ public class FileGallaryDAO extends GenericDaoHibernate<FileGallary, Long> imple
 		return query.list();
 	}
 	
+	public List<FileGallary> getHomePageNewsDetails(Integer startIndex , Integer maxResults ){
+		Query query = getSession().createQuery("select distinct model from FileGallary model where model.gallary.contentType.contentType = 'News Gallary' and model.gallary.isPrivate = 'false' " +
+				" and model.isPrivate = 'false' and model.isDelete = 'false'  and model.file.regionScopes.regionScopesId < 4 order by model.file.fileDate desc,model.updateddate desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResults);
+		return query.list();
+	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getNewsByGalleryId(List galleryIds){
 		 Query query = getSession().createQuery("SELECT model.file.fileId ,model.file.fileName,model.file.filePath," +
