@@ -30,6 +30,8 @@ import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMessageToCandidateDAO;
+import com.itgrids.partyanalyst.dao.IMessageToPartyDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedCadreDAO;
 import com.itgrids.partyanalyst.dao.IProblemAssignedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemCommentsDAO;
@@ -48,6 +50,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.hibernate.MessageToCandidateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemCommentsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemAssignedCadreDAO;
@@ -73,6 +76,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.MessageToCandidate;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAssignedCadre;
 import com.itgrids.partyanalyst.model.ProblemAssignedDepartment;
@@ -143,7 +147,26 @@ public class ProblemManagementReportService implements
 	
 	private IProblemCommentsDAO problemCommentsDAO;
 	private IProblemProgressDAO problemProgressDAO;
+	private IMessageToCandidateDAO messageToCandidateDAO;
+	private IMessageToPartyDAO messageToPartyDAO;
 	
+	public IMessageToPartyDAO getMessageToPartyDAO() {
+		return messageToPartyDAO;
+	}
+
+	public void setMessageToPartyDAO(IMessageToPartyDAO messageToPartyDAO) {
+		this.messageToPartyDAO = messageToPartyDAO;
+	}
+
+	public IMessageToCandidateDAO getMessageToCandidateDAO() {
+		return messageToCandidateDAO;
+	}
+
+	public void setMessageToCandidateDAO(
+			IMessageToCandidateDAO messageToCandidateDAO) {
+		this.messageToCandidateDAO = messageToCandidateDAO;
+	}
+
 	public IProblemProgressDAO getProblemProgressDAO() {
 		return problemProgressDAO;
 	}
@@ -3511,6 +3534,19 @@ public List<UserProblem> addAssignedCadreProblemsToMainList(List<UserProblem> ma
 	    		    problemBeanVO.setFeedBackCount(countOfNewlyFeedBack);
 	    		    
 	    		}
+	    		//count of messages of candidate
+	    		
+	    		Long candidateMsgCount = messageToCandidateDAO.getCandidateMessagesCount();
+	    		if(candidateMsgCount != null)
+	    		{
+	    			problemBeanVO.setCandidateMsgCount(candidateMsgCount);
+	    		}
+	    		Long partyMsgCount = messageToPartyDAO.getPartyMessagesCount();
+	    		if(partyMsgCount != null)
+	    		{
+	    			problemBeanVO.setPartyMsgCount(partyMsgCount);
+	    		}
+	    			
 	    	}catch(Exception e){
 	    		
 	    		 log.error("Exception Occured in getCountOfNewlyPostedProblemsByFreeUser() of problemManagementReportService "+e);
