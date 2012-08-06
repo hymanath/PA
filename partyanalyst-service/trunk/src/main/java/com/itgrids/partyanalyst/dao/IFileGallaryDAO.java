@@ -100,4 +100,6 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
     public List<Long> getAllRecordCountInGallary(Long gallaryId);
     
     public List<FileGallary> getFileGallaryByFileIdsListForNews(List<Long> fileIdsList);
+    
+    public List<FileGallary> getHomePageNewsDetails(Integer startIndex , Integer maxResults );
 }
