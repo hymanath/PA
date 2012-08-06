@@ -725,7 +725,10 @@
 		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"></property>
 		<property name="problemCommentsDAO" ref="problemCommentsDAO"></property>
 		<property name="problemFilesDAO" ref="problemFilesDAO"/>
-		<property name="problemProgressDAO" ref="problemProgressDAO"/>		
+		<property name="problemProgressDAO" ref="problemProgressDAO"/>
+		<property name="messageToCandidateDAO" ref="messageToCandidateDAO"/>
+		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
+
 	</bean>
 	
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
