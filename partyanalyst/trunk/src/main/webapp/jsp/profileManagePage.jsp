@@ -1018,19 +1018,20 @@ function hideCandidateVisibility(myResults)
 	//private gallaries
 	if(myResults.fileType == "true")
 	{
-		document.getElementById("vedioPublicRadioId").style.display ="block";
 		
-		 document.getElementById("vedioprivateRadioId").style.display ="block";
-	 document.getElementById("vedioPublicRadioId").checked = true;
+	
+	 document.getElementById("vedioprivateRadioId").style.display ="block";
+	 document.getElementById("vprivateRadioId").checked = true;
+	 document.getElementById("vedioPublicRadioId").style.display ="none";
 		
-
 		
 	}
 	//public gallaries
 else
 	{	
 		
-      document.getElementById("vedioprivateRadioId").style.display ="none";
+     
+	  document.getElementById("vedioprivateRadioId").style.display ="block";
 		
 		 document.getElementById("vedioPublicRadioId").style.display ="block";
 		  document.getElementById("vpublicRadioId").checked = true;
@@ -1043,11 +1044,10 @@ function hideCandidateNewsVisibility(myResults){
 	//private gallaries
 	if(myResults.fileType == "true")
 	{
-		document.getElementById("newsPublicRadioId").style.display ="block";
+		document.getElementById("newsPublicRadioId").style.display ="none";
 		
-		document.getElementById("newsPrivateRadioId").style.display
-			="block";
-		document.getElementById("publicRadioId").checked = true;
+		document.getElementById("newsPrivateRadioId").style.display="block";
+		document.getElementById("privateRadioId").checked = true;
 		
 		
 	}
@@ -1056,8 +1056,7 @@ function hideCandidateNewsVisibility(myResults){
 	{
 		document.getElementById("newsPublicRadioId").style.display ="block";
 		
-		document.getElementById("newsPrivateRadioId").style.display
-			="none";
+		document.getElementById("newsPrivateRadioId").style.display="block";
 		document.getElementById("publicRadioId").checked = true;
 		
 
@@ -1068,18 +1067,19 @@ function hideCandidatePhotoVisibility(myResults){
 	//private gallaries
 	if(myResults.fileType == "true")
 	{
-document.getElementById("photoPublicRadioId").style.display ="block";
-document.getElementById("photoPrivateRadioId").style.display = "block";
-document.getElementById("publicPhotoRadioId").checked = true;
+		document.getElementById("photoPublicRadioId").style.display ="none";
+
+		document.getElementById("photoPrivateRadioId").style.display = "block";
+		document.getElementById("privatePhotoRadioId").checked = true;
 	}
 
 	//public gallaries
 	else
 	{
-		document.getElementById("photoPublicRadioId").style.display ="block";
-	document.getElementById("photoPrivateRadioId").style.display = "none";
+	  document.getElementById("photoPrivateRadioId").style.display = "block";
 
-	document.getElementById("publicPhotoRadioId").checked = true;	
+	  document.getElementById("photoPublicRadioId").style.display ="block";
+	  document.getElementById("publicPhotoRadioId").checked = true;	
 
 
 	}
@@ -1106,13 +1106,13 @@ function uploadAFile()
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoBtnId');
-		var privatePhotoRadioId = document.getElementById('privatePhotoRadioId').checked;
+		/* var privatePhotoRadioId = document.getElementById('privatePhotoRadioId').checked;
 		if(privatePhotoRadioId == true)
 		document.getElementById('privatePhotoRadioId').checked = 'true';
 		if(privatePhotoRadioId == false)
 		{
 		enableRadioButton();
-		}
+		}*/
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
