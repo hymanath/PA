@@ -332,7 +332,7 @@ function assignCandidateToUser()
       document.getElementById("userErrorMessageDiv").innerHTML='<b><font color="red">Pleace Select A User</font></b>';
    }   
  }
-function getStates()
+function getStatesForAssignCanToUser()
  {
   var timeST = new Date().getTime();
   var jsObj =
@@ -500,7 +500,7 @@ function showAssemblyData()
    str+='   </tr>';
    str+=' <table>';
    document.getElementById("constituencySelectDiv").innerHTML=str;
-   getStates();
+   getStatesForAssignCanToUser();
    getAllConstituenciesInStateByType(2,1,"constituency");
  }
 function showParliamentData()
