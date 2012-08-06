@@ -954,11 +954,13 @@ function uploadAFile()
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
-		var photoprivateRadioId = document.getElementById('photoprivateRadioId').checked;
+
+		/* var photoprivateRadioId = document.getElementById('photoprivateRadioId').checked;
 		if(photoprivateRadioId == true)
 		document.getElementById('photoprivateRadioId').checked= 'true';
 		if(photoprivateRadioId == false)
-		document.getElementById('PhotopublicRadioId').checked= 'true';
+		document.getElementById('PhotopublicRadioId').checked= 'true';*/
+
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
@@ -3118,15 +3120,18 @@ function updatePhoto(fileId,fileGallaryId)
 		
 
 		  if(myResults.isPrivate == "true"){
-			  document.getElementById('vedioPublicDiv').style.display = 'block';
-			document.getElementById('vpublicRadioId').checked = true;
+
+			  document.getElementById('vedioPublicDiv').style.display = 'none';
+
 			document.getElementById('vedioPrivateDiv').style.display = 'block';
+			document.getElementById('vprivateRadioId').checked = true;
 		  }
 		  else
 		  {
 			document.getElementById('vedioPublicDiv').style.display = 'block';
 		   document.getElementById('vpublicRadioId').checked = true;
-		   document.getElementById('vedioPrivateDiv').style.display = 'none';
+
+		   document.getElementById('vedioPrivateDiv').style.display = 'block';
 		  }
 	  }
 
@@ -3135,20 +3140,18 @@ function updatePhoto(fileId,fileGallaryId)
 	  {
 		  if(myResults.isPrivate == "true")
 		  {
-			  document.getElementById('newsPublicRadioDiv').style.display = 'block';
-			  // document.getElementById('newsfontDiv').style.display = 'none';
-			document.getElementById('newsPublicRadioId').checked = true;
+			 document.getElementById('newsPublicRadioDiv').style.display = 'none';
+			 
 			document.getElementById('newsprivateRadioDiv').style.display = 'block';
+			document.getElementById('newsprivateRadioId').checked = true;
 		  }
 		  else
 		  {
-			    // document.getElementById('newsfontDiv').style.display = 'block';
-			  document.getElementById('newsPublicRadioDiv').style.display = 'block';
-			
-		   document.getElementById('newsprivateRadioDiv').style.display='none';
-		   document.getElementById('newsPublicRadioId').checked = true;
+			 document.getElementById('newsPublicRadioDiv').style.display = 'block';
+			document.getElementById('newsPublicRadioId').checked = true;
 		   
-
+		   document.getElementById('newsprivateRadioDiv').style.display='block';
+		   
 		  }
 	  }
 
@@ -3158,15 +3161,16 @@ function updatePhoto(fileId,fileGallaryId)
 		  
 		if(myResults.isPrivate == "true")
 		  {
-			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
-			document.getElementById('PhotopublicRadioId').checked = true;
+			 document.getElementById('photoPublicRadioDiv').style.display = 'none';
+
 			document.getElementById('photoPrivateRadioDiv').style.display = 'block';
+			document.getElementById('photoprivateRadioId').checked = true;
 		  }
 		  else
 		  {
 			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
 		   document.getElementById('PhotopublicRadioId').checked = true;
-		   document.getElementById('photoPrivateRadioDiv').style.display = 'none';
+		   document.getElementById('photoPrivateRadioDiv').style.display = 'block';
 
 		  }
 	  }
