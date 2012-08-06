@@ -65,5 +65,12 @@ public class MessageToCandidateDAO extends GenericDaoHibernate<MessageToCandidat
 	 {
 		 return getHibernateTemplate().find("select count(*) from MessageToCandidate model where model.candidate.candidateId=? and model.isApproved = 'true' and model.isDelete = 'false'and model.isPrivate = 'false' order by model.time desc ",candidateId);
 	 }
+	 @SuppressWarnings("unchecked")
+	 public Long getCandidateMessagesCount()
+	 {
+		 Query query = getSession().createQuery("select count(*) from MessageToCandidate model where model.isApproved = 'false' and model.isDelete = 'false' and model.isPrivate = 'false'");
+		 return (Long)query.uniqueResult();
+	 }
+	 
 	
 }
