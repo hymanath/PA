@@ -485,8 +485,8 @@ function showCreateGallery(selectedId,contentType,userOption,galSelectId)
 
 	str += '<tr><td><b><font color="#4B74C6">Description</font><b></td>';
 	str += '<td><textarea id="galDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="visibility" id="publicId" checked="true"><b><font color="#4B74C6" style="padding-left:5px;">Visible to Public Also</font></b></input></div>';
-	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="visibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">Make This Private</font></b></input></div>';
+	str += '<div style="margin-left:45px;"><input type="radio" value="public" name="gallaryVisibility" id="publicId" checked="true"><b><font color="#4B74C6" style="padding-left:5px;">Visible to Public Also</font></b></input></div>';
+	str += '<div style="margin-left:45px;margin-top:1px;"><input type="radio" value="private" name="gallaryVisibility" id="privateId"><b><font color="#4B74C6" style="padding-left:5px;">Make This Private</font></b></input></div>';
 	
 	str += '<table style="margin-left: auto;margin-right: auto;"><tr><td><input type="button" class="imageButton" style="height:24px;" value="Create Gallery" style="background-color:#57B731" onClick="createPopupGallery(\''+selectedId+'\',\''+contentType+'\',\''+userOption+'\',\''+galSelectId+'\')"></td>';
 	str+=  '<td><input type="button" class="imageButton" style="height:24px;" value="Cancel" onclick="clearDiv(\'galleryInnerPopupDiv\')" style="background-color:#CF4740"></td></tr></table>';
@@ -4107,11 +4107,13 @@ function uploadAFile()
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
-		var privateRadioId = document.getElementById('privateRadioId').checked;
+
+		/* var privateRadioId = document.getElementById('privateRadioId').checked;
 		if(privateRadioId == true)
 	document.getElementById('privateRadioId').checked = 'true';
 		if(privateRadioId == false)
-	document.getElementById('publicRadioId').checked = 'true';
+	document.getElementById('publicRadioId').checked = 'true';*/
+
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
