@@ -272,7 +272,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 			
 			<div id="dashBoardLeftlayoutDiv" style="background:#e2e2e2;text-align:center;">
 				<div id="humanImgDiv" style="height:auto;padding-bottom:20px;margin-left:auto;margin-right:auto;display:block;text-align:left;">
-				<img src="pictures/profiles/1.jpeg" style="margin-top: 28px; width: 117px;margin-bottom: 5px;height: 127px; margin-left: 18px;" />
+				<img src="pictures/profiles/${userId}.jpeg" style="margin-top: 28px; width: 158px;margin-bottom: 5px;height: 145px; margin-left: 2px;" />
 					<a href="javascript:{}" class="profileAnc" onclick="uploadUserPic()"><span><img src="images/icons/total_index_icons.png" /></span>Upload Photo</a>
 							<a href="javascript:{}" class="profileAnc"><span><img src="images/icons/view.png" /></span>View Profile</a>
 							
