@@ -2332,7 +2332,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2351,7 +2351,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+results.fileVOList[0].fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -2395,7 +2395,7 @@ function showFirstFourNewsRecords(results)
 	  str += '  </tr></table>';
 	  str +='</center></div>';
 	}
-	str += '<div id="facebookCommentsInNewsDiv" class="container" style="overflow:auto;width:600px;"></div>';
+	str += '<div id="facebookCommentsInNewsDiv" class="popupcontainer" style="overflow:auto;width:600px;"></div>';
 
 	document.getElementById("showNewsDiv").innerHTML=str;
 
@@ -2486,7 +2486,7 @@ function showFirstFourNewsRecords(results)
 	 }
 
 	 
-		str+='             <td><div  id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+		str+='             <td><div  id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 
 	 if(currentSize+1 <= (arraySize-1))
@@ -2505,7 +2505,7 @@ function showFirstFourNewsRecords(results)
 	 }
 	 
 	 
-	 str+='             <td><div id="newschangeDIV" class="container"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
+	 str+='             <td><div id="newschangeDIV" class="popupcontainer"><img alt="'+results.fileTitle1+'" src="'+fileVo.fileVOList[0].path+'" title="'+results.fileDescription1+'" style="max-width:780px;max-length:800px;"/></div></td>';
 	 
 	 
 	 if(initialCurrentSize+1 <= (initialArraySize-1))
@@ -4755,7 +4755,7 @@ function checkUserLoginStatus(divId)
 									overlay: { opacity: 0.5, background: 'black'},
 									
 							});
-		str+='<div class="container"><h4><div style="margin: 10px;color:ActiveCaption;">Only registered users can view this content.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
+		str+='<div class="popupcontainer"><h4><div style="margin: 10px;color:ActiveCaption;">Only registered users can view this content.</div></h4><h5 style="color:#000;display:inline;position:relative;top:0px;"><div style="margin: 10px;"> Already a member ,   Click here to <a style="color:red;" href="loginInputAction.action">Login</a></div><div style="margin-left:160px;">(OR)</div><div style="margin: 10px;margin-top:-20px;">Not a member, Click here for <a style="color: Red; width: 114px; height: 8px;" href="freeUserRegistration.action"> FREE REGISTRATION <span style="margin-bottom: 20px;"><img src="images/specialPage/freeUser.png"></span></a></div></h5></div>';
 		document.getElementById(divId).innerHTML = str;
 	
 }
