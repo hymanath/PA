@@ -250,7 +250,7 @@
 
 									<span class="fontStyle">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accept/Reject Recently Posted Messages For &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Candidate/Party
-										<span>:&nbsp;&nbsp;<a href='<s:url action="approveMessageAction"/>'  class="alinkstyle"><b>&nbsp;Posted Feedbacks :&nbsp;(${problemBeanVO.feedBackCount})</b></a>
+										<span>:&nbsp;&nbsp;<a href='<s:url action="approveMessageAction"/>'  class="alinkstyle"><b>&nbsp;Posted Feedbacks :&nbsp;(${problemBeanVO.candidateMsgCount})/(${problemBeanVO.partyMsgCount})</b></a>
 										</span>
 									</span>
 
