@@ -2661,7 +2661,7 @@ function buildCandidateElectionInfo()
 	str+='<strong>Lost in <s:property value="electionYear" /></strong> <s:property value="electionType" /> Election with <s:property value="votesPercentage" />% of votes gain for <s:property value="partyName" />  party in <s:property value="constituencyName"/> constituency</li></ul></s:if>';
 	
 	str+'</s:iterator>';
-		
+	if(electionInfoElmt != null)	
 	electionInfoElmt.innerHTML = str;
 }
 
