@@ -108,4 +108,6 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public String getCommonDataForAllProblems();
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getUsersBasedOnReasonIds(List<Long> reasonIds);
+	
+	public List getAllOpenedApprovedComments(Date fromDate, Date toDate,String status);
 }
