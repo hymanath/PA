@@ -90,6 +90,7 @@ public class CommentsControlAdminAction extends ActionSupport implements Servlet
 		String toDate = null;
 		String task = null;
 		String choice = null;
+		String status = null;
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -102,10 +103,11 @@ public class CommentsControlAdminAction extends ActionSupport implements Servlet
 		toDate = jObj.getString("toDate");
 		task = jObj.getString("task");
 		choice = jObj.getString("choice");
+		status = jObj.getString("status");
 		
 		if(task.equalsIgnoreCase("getAllNewPostedReasons") || task.equalsIgnoreCase("getAllNewPostedReasonsBetweenDates"))
 		{
-			candidateCommentsVO = commentsDataService.getAllComments(fromDate, toDate);
+			candidateCommentsVO = commentsDataService.getAllComments(fromDate, toDate,status);
 		}
 		
 		return Action.SUCCESS;
