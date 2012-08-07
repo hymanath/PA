@@ -69,7 +69,7 @@ public interface ICommentsDataService {
 	
 	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constElectionId);
 	
-	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate);
+	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate,String status);
 	
 	public List<CandidateCommentsVO> scrutinizePostedComments(List<Long> reasonIds, String actionType, String fromDate, String toDate);
 	
