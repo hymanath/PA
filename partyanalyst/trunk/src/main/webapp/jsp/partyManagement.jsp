@@ -498,7 +498,7 @@ document.getElementById("profileManagementMainOuterDiv6").style.display = 'none'
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
 				 showUploadVideoStatus(myResults);
-				 enableButton('uploadVideoBtnId');
+				
 			}
 			
      	}
@@ -951,6 +951,7 @@ var partyId=document.getElementById("partyId").value;
 }
 function uploadAFile()
 {
+	document.getElementById('uploadPhotoId');
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
@@ -978,7 +979,7 @@ function uploadAFile()
 }
 function uploadNews()
 {
-	
+	document.getElementById('uploadNewsBtnId');
 	if(validateNewsFileUpload())
 	{
 		disableButton('uploadNewsBtnId');
@@ -1003,6 +1004,17 @@ function uploadNews()
 		return;
 }
 	
+	function enableButton(id)
+{
+	document.getElementById(id).disabled  = false;
+}
+
+function disableButton(id)
+{
+
+	
+	document.getElementById(id).disabled  = true;
+}
 function validateFileUpload()
 {
 	var fileTitle = document.getElementById('photofileTitleId').value;
@@ -1966,7 +1978,7 @@ function  buildUploadNews()
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
 	str+='<input type="radio" style="margin-left:55px;" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str += '<table align="center" style="margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
+	str += '<table align="center" style="margin-left:auto;width:31%;margin-right:auto;margin-bottom:7px;"><tr><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Upload News" style="background-color:#57B731" onClick="uploadNews()"></td><td><input id="uploadNewsBtnId" type="button" class="imageButton" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');" style="background-color:#CF4740"></td></tr></table>';
 	str += '</form>';
 	str += '</fieldset>';
 	str+='</div>';
@@ -2337,11 +2349,13 @@ function showVideoGallaryCreateMsg(result)
 function showUploadVideoStatus(result)
 {
 	var errorDivEle = document.getElementById('fileSuccessDiv');
+	document.getElementById('uploadVideoBtnId');
 	var str = '';
 
 	if(result.resultCode == 0)
 	{
 		clearUploadVideoFields();
+		enableButton('uploadVideoBtnId');
 		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
 	}
 	else if(result.resultCode == 1) 
