@@ -1259,16 +1259,19 @@ public class CommentsDataService implements ICommentsDataService {
 	}
 	
 		
-	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate)
+	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate,String status)
 	{
-		List<CandidateCommentsVO> candidateComments = null;			
+		List<CandidateCommentsVO> candidateComments = null;	
+		List comments = new ArrayList();
 		try{
 			candidateComments = new ArrayList<CandidateCommentsVO>();
 			
 			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
 			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
-			List comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);			
-			
+			if(status.equalsIgnoreCase("All"))
+			comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);			
+			else
+			comments = commentCategoryCandidateDAO.getAllOpenedApprovedComments(firstDate,secondDate,status);
 			return extractCommentsDetailsFromList(comments);
 			
 		}catch(Exception e){				
