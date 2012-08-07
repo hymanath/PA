@@ -1098,13 +1098,13 @@ function showFreeUserProblemDetails(result)
 	<div id="errorDiv" style="margin-left: 720px; margin-top: 10px;"></div>
 	
 		<div style="margin-left: 120px;">
-			<table cellspacing="8" cellpadding="0" style="font-weight: bold; width: 95%;">
+			<table cellspacing="8" cellpadding="0" style="font-weight: bold; width: 80%;">
 			<tr>
-				<td>Problem Location</td>
-				<td style="padding-left: 8px; padding-right: 8px;">
+				<td style="width: 30%;">Problem Location</td>
+				<td style="width: 20%; padding: 6px;padding-left:25px;">
 					<input type="radio" value="" id="allProblems" name="problemOption" checked="true" onclick="showDiv('problemLocationDivId')" />&nbsp;All
 				</td>
-				<td style="margin-left: 0px; margin-right: 0px; padding-right: 24px; padding-left: 56px;">
+				<td style="margin-left: 0px; margin-right: 0px; padding-right: 24px; padding-left: 36px;">
 					<input type="radio" value="" id="probLocation" name="problemOption" onclick="showDiv('problemLocationDivId')" />&nbsp;Select Specific Location
 				</td>
 			</tr>
