@@ -273,7 +273,7 @@ function callAjax(jsObj,url){
 			else if(jsObj.task == "candiadteVideoGallariesForUplaod")
 			{
 				 showUploadVideoStatus(myResults);
-				 //enableButton('uploadVideoBtnId');
+				
 			}
 			
 	}
@@ -300,11 +300,13 @@ function deleteFile(fileTableId)
 function showUploadVideoStatus(result)
 {
 	var errorDivEle = document.getElementById('fileSuccessDiv');
+	var uploadVideoBtnId = document.getElementById('uploadVideoBtnId');
 	var str = '';
 
 	if(result.resultCode == 0)
 	{
 		clearUploadVideoFields();
+		enableButton('uploadVideoBtnId');
 		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
 	}
 	else if(result.resultCode == 1) 
@@ -1170,6 +1172,7 @@ function uploadVideoGallary(){
 	var pcheckboxIdElmt = document.getElementById('pcheckboxId');
 	var ccheckboxIdElmt =  document.getElementById('ccheckboxId');
 	var fileDate = document.getElementById("existingFromText").value;
+	var uploadVideoBtnId = document.getElementById("uploadVideoBtnId");
 
 	var spSelectId ='';
 	var SPGalleryId='';
@@ -1303,7 +1306,7 @@ function uploadVideoGallary(){
 
 	if(isPublic)
 		makeThis = 'public';
-	//disableButton('uploadVideoBtnId');
+	disableButton('uploadVideoBtnId');
 	var jsObj =
 		{ 
 			canGalleryId :canGalIdArray,
@@ -1384,7 +1387,16 @@ function clearFields()
 	
 }
 
+ function enableButton(id)
+{
+	document.getElementById(id).disabled  = false;
+}
 
+function disableButton(id)
+{
+	
+	document.getElementById(id).disabled  = true;
+}
 function showDateCal() {
 	var id = document.getElementById("existingFromText_Div");
 	if (dateCalendar)
@@ -1687,6 +1699,7 @@ function  buildUploadNews()
 }
 function uploadNews()
 {	
+	var uploadNewsBtnId =document.getElementById('uploadNewsBtnId');
 	if(validateNewsFileUpload())
 	{
 		disableButton('uploadNewsBtnId');
@@ -4104,6 +4117,7 @@ function getPhotoGallariesForUpload(contentType)
 function uploadAFile()
 {
 	
+	var uploadPhotoId = document.getElementById('uploadPhotoId');
 	if(validateFileUpload())
 	{
 		disableButton('uploadPhotoId');
