@@ -333,6 +333,27 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObject.setMaxResults(100);
 		return queryObject.list();
 	}
+	public List getAllOpenedApprovedComments(Date fromDate, Date toDate,String status)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(getCommonDataForAllProblems());		
+		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
+		
+		if(status.equals("Approved"))
+		{
+			query.append(" and model.commentData.isApproved ='true' ");
+		}
+		else 
+		{
+			query.append(" and model.commentData.isApproved ='false' ");	
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setDate(0,fromDate);
+		queryObject.setDate(1,toDate);
+		queryObject.setMaxResults(100);
+		return queryObject.list();
+	}
 	
 	/*
 	public List getPostedReasonsByFreeUserId(Long userId)
