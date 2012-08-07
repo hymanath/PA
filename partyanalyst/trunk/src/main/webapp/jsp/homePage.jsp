@@ -496,7 +496,7 @@ var pollStatus = [];
 			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
 			           New Video Added to <s:property value="candidateName"/> &nbsp;<s:property value="gallaryName"/> Video Gallary.</a>
 			        <div style="margin-left:5px;margin-top:6px;">
-			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"><span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
 			        </div>
 				  </td>
@@ -537,7 +537,7 @@ var pollStatus = [];
 					<s:if test="%{#photogallaryDetails.fileDate != '' && #photogallaryDetails.fileDate != null}" >
 					
 						<div style="margin-left:5px;margin-top:6px;">
-					   <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+					   <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"><span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
 					   </div>
 					 </s:if>
 				  </td>
@@ -564,7 +564,7 @@ var pollStatus = [];
 			        <h4 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h4>
 			           New News Added to <s:property value="candidateName"/> &nbsp;<s:property value="gallaryName"/> News Gallary.</a>
 			        <div style="margin-left:5px;margin-top:6px;">
-			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
+			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"><span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
 			        </div>
 				  </td>
