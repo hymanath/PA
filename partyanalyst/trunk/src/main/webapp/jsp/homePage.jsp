@@ -658,10 +658,10 @@ var pollStatus = [];
 			
 				<div style="margin-left: 9px; margin-bottom: 0px; margin-top: 15px;font-weight: bold;">
 				
-					To Quick View the Problem, Enter the Reference Id : <input type="text" id="problemReferenceId" size="10" style="width:137px;" />
+					To Quick View the Problem, Enter the Reference Id : <input type="text" id="problemReferenceId" size="10" style="width:130px;" />
 					
 					<input type="button" value="Search" onclick="getProblemReferenceId()" style=" background: #0063DC;color: #FFF; font-weight: bold;padding: 4px 5px 4px 5px;border-radius: 5px;cursor: pointer; border: medium;" />
-					<span id="searchAjaxImgSpan" style="margin-left: 515px; display: none; margin-top: -24px;"><img src="images/icons/search.gif"  width="18px" height="18px;"></img></span>
+					<span id="searchAjaxImgSpan" style="margin-left: 515px; display: none; margin-top: -24px;"><img src="images/icons/search.gif"  width="18px" height="18px;" style="margin-left: 35px;"></img></span>
 
 				</div>
 				<div id="problemErrorMsgDiv" style="margin-left: 50px;"></div>
