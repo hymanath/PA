@@ -3034,7 +3034,7 @@ function buildContentDetails()
 		}
 		
 		str += '<td valign="top" style="horizontal-align:center;">';
-		str += '<div class="container">';
+		str += '<div class="container" style="width:500px;">';
 		str += '<span id="nextPartImage"><iframe width="500" height="396" src="http://www.youtube.com/embed/'+pathStr+'" frameborder="0" allowfullscreen="true"></iframe></span>';
 		str += '<table><tr>';
 		str += '<td>';
@@ -3104,7 +3104,7 @@ function buildContentDetails()
 				str += '<td><a href="javascript:{}" title="Click here to View -  '+result.relatedGalleries[0].filesList[i-1].title+'" onclick="buildContentDetailsOfSelected('+result.relatedGalleries[0].filesList[i].contentId+','+result.relatedGalleries[0].filesList[i-1].contentId+')"><img src="images/icons/jQuery/previous.png" class="newsImage" /></a></td>';
 			}
 			
-			str += '<td><div class="container" id="nextPartImage"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
+			str += '<td><div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+result.relatedGalleries[0].filesList[i].title+'" title="'+result.relatedGalleries[0].filesList[i].description+'" style="max-width:780px;max-length:800px;" src="'+result.relatedGalleries[0].filesList[i].fileVOList[0].fileVOList[0].path+'" /></div></td>';
 
 			if(i != result.relatedGalleries[0].filesList.length-1)
 			{
@@ -3236,7 +3236,7 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
     if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
 	{
 	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'" />';
+	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+path+'"></div></img>';
 	  else
 	   var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
@@ -3277,7 +3277,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  if(document.getElementById("sourceChangeSpan") != null)
 	    document.getElementById("sourceChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].source+'';
 	  if(type != 'video')
-	    var str='<img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" />';
+	    var str='<div class="container" id="nextPartImage" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:780px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></div></img>';
 	  else
 	    var str='<iframe width="500" height="396" src="http://www.youtube.com/embed/'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" frameborder="0" allowfullscreen="true"></iframe>';
 	  document.getElementById("nextPartImage").innerHTML = str;
