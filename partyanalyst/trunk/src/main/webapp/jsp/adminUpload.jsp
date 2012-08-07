@@ -244,7 +244,7 @@
 									<!-- <h4 class="tdstyle">Accept/Reject Recently Posted Feedbacks&nbsp;:&nbsp;&nbsp;<a class="alinkstyle" href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp; Posted Feedbacks :&nbsp;(${problemBeanVO.feedBackCount})</b></a></h4>-->
 									<span class="fontStyle" style="margin-left: 26px;">
 										Accept/Reject Recently Posted Feedbacks<br>
-										<span style="margin-left:90px;">:&nbsp;&nbsp;<a href="/PartyAnalyst/feedbackAdminApprovalAction.action" class="alinkstyle"><b>&nbsp;Posted Feedbacks :&nbsp;(${problemBeanVO.feedBackCount})</b></a>
+										<span style="margin-left:90px;">:&nbsp;&nbsp;<a href="feedbackAdminApprovalAction.action" class="alinkstyle"><b>&nbsp;Posted Feedbacks :&nbsp;(${problemBeanVO.feedBackCount})</b></a>
 										</span>
 									</span><br>
 
