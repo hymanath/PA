@@ -68,7 +68,7 @@ public class MessageToCandidateDAO extends GenericDaoHibernate<MessageToCandidat
 	 @SuppressWarnings("unchecked")
 	 public Long getCandidateMessagesCount()
 	 {
-		 Query query = getSession().createQuery("select count(*) from MessageToCandidate model where model.isApproved = 'false' and model.isDelete = 'false' and model.isPrivate = 'false'");
+		 Query query = getSession().createQuery("select count(*) from MessageToCandidate model where model.isApproved = 'false' and model.isDelete = 'false' ");
 		 return (Long)query.uniqueResult();
 	 }
 	 
