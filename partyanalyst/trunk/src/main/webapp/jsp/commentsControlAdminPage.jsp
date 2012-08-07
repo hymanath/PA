@@ -278,8 +278,13 @@ function showNewPostedReasons(jsObj,results)
 	for(var i=0; i<results.length; i++)
 	{
 		var status = "Lost";
+		var acceptorRejectstatus;
 		if(results[i].rank == 1)
 			status = "Won"
+		var approvestatus ="Approved";
+		if(results[i].status == "false")
+			approvestatus = "Rejected"
+		
 		var obj={	
 					checkbox:"<input type='checkbox' name='commentsCheck' value='"+results[i].commentId+"_"+startDate+"_"+endDate+"'>",
 					candidateId:results[i].candidateId,
@@ -292,7 +297,7 @@ function showNewPostedReasons(jsObj,results)
 					electionType:results[i].electionType,
 					electionYear:results[i].electionYear,							
 					partyName:results[i].partyName,
-					acceptorReject : results[i].status,
+					acceptorReject :approvestatus,
 					rank:status
 				};
 		commentsArray.push(obj);
@@ -305,11 +310,14 @@ function getAllProblemsBetweenDates(task)
 {
 	var startDate = '';
 	var endDate = '';
-
+	var selectstatusEle = document.getElementById("select_status");
+	var selectstatus=selectstatusEle.options[selectstatusEle.selectedIndex].value;
+	
 	if(task == "getAllNewPostedReasons")
 	{
 		startDate = year+'/'+month+'/'+day;
 		endDate = year+'/'+month+'/'+day;
+		
 	}
 	else
 	{
@@ -331,7 +339,8 @@ function getAllProblemsBetweenDates(task)
 	{		
 			choice:selectedRadio,
 			fromDate:startDate,
-			toDate:endDate,					
+			toDate:endDate,	
+			status:selectstatus,	
 			task:task						
 	};
 		
@@ -398,6 +407,7 @@ function showAllNewPostedReasons()
 	str += '<div id="openedReasonsDateDiv" style="font-size:13px;font-weight:bold;">';
 	str += 'Showing all reasons posted today - '+day+'/'+month+'/'+year;
 	str += '<input type="button" class="buttonClass" value="Change" onclick="animateShowdiv(\'openedReasonsDateSelectDiv\')">';
+	str +='&nbsp;&nbsp;Select status : <select id="select_status" name="selectstatus" style="width:125px;"><option value="All">All</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select>';
 	str +'</div>';
 	str += '<div id="openedReasonsDateSelectDiv" style="font-size:13px;font-weight:bold;display:none;">';
 	str += '<table>';
