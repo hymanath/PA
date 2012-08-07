@@ -872,7 +872,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
             image = ImageIO.read(this.upload);
             String constiName[] = uploadContentType.split("/");
             //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-            
+            if(constiName[1].equalsIgnoreCase("jpeg") || !(constiName[1].equalsIgnoreCase("jpeg")))
+            	constiName[1]="jpeg";
+          
             String fileName = filePath+user.getRegistrationID()+"."+constiName[1];
             //String fileName = filePath+this.uploadFileName;
             String imageName =  user.getRegistrationID()+"."+constiName[1];
