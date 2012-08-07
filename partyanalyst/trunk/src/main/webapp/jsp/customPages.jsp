@@ -39,7 +39,7 @@
     margin-top: 15px;
     text-align: center;
     width: 205px;
-	margin-left: 200px;
+	margin-left: 214px;
 }
 .checkpagesDiv {
     font-size: 13px;
@@ -75,8 +75,7 @@
     color: #FFFFFF;
     cursor: pointer;
     font-weight: bold;
-    height: 30px;
-    width: 100px;
+    
 }
 .imgFieldset{
   border: 4px solid #567AAF;
@@ -184,16 +183,15 @@ function buildCustomPages()
 	str += '</tr>';
 	str += '</table>';
     str += '<div id = "clearDiv">' ;
-	str += '<fieldset class="imgFieldset" style="width:400px; height:208px; margin-left: 28px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px; height:233px; margin-left: 21px;">';
 	str += '<div id clearDiv>' ;
 	str += '<h2 align="center" style="margin-bottom:20px; color:#06ABEA;">Create A Custom page</h2>';
 	str += '<div id="gallaryCreateInnerDiv" ></div>';
-	str += '<table width="75%" style="margin-left:37px; margin-bottom:30px;"><tr><td><b><font color="#4B74C6">CustomPage Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="customNameId" size="20" maxlength="100"></td></tr>';
-
+	str += '<table width="75%" style="margin-left:37px; margin-bottom:30px;"><tr><td><b><font color="#4B74C6">CustomPage Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="customNameId" style ="width: 136px;"/></td></tr>';
 	str += '<tr><td><b><font color="#4B74C6">CustomPage Type</font><b></td>';
 	str += '<td><select  id="customTypeListId"  onchange="" style="width:147px;"><option value="0">Select CustomType</option></select></td></tr></table>';
 	
-	str += '<table style="margin-left:90px" ><tr><td style="padding-right: 11px"><input type="button" class="imageButton" value="Create"  onClick="createCustomPages(\'create\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'clearDiv\')"></td></tr></table>';
+	str += '<table style="margin-left:90px" ><tr><td style="padding-right: 11px"><input type="button" style=" width: 100px; height: 30px;" class="imageButton" value="Create"  onClick="createCustomPages(\'create\')"></td><td style="padding-right: 10px"><input type="button" style=" width: 100px; height: 30px;" class="imageButton" value="Cancel" onclick="clearDiv(\'clearDiv\')"></td></tr></table>';
     str += '<div id ="renderCreateUpdateDiv"> </div> ';
 	str += '</fieldset>';
 	str += '</div>' ;
@@ -220,16 +218,16 @@ function  buildUploadCustomPages()
 	str += '</tr>';
 	str += '</table>';
     str += '<div id = "clearDiv">' ;
-	str += '<fieldset class="imgFieldset" style="width:400px; height:208px; margin-left: 28px;">';
+	str += '<fieldset class="imgFieldset" style="width:400px; height:233px; margin-left: 21px;">';
 	str += '<div id clearDiv>' ;
 	str += '<h2 align="center" style="margin-bottom:20px; color:#06ABEA;">Update A Custom page</h2>';
 	str += '<div id="gallaryCreateInnerDiv" ></div>';
-	str += '<table width="75%" style="margin-left:37px; margin-bottom:30px;"><tr><td><b><font color="#4B74C6">CustomPage Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="customNameId" size="20" maxlength="100"></td></tr>';
+	str += '<table width="75%" style="margin-left:37px; margin-bottom:30px;"><tr><td><b><font color="#4B74C6">CustomPage Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="customNameId" style ="width: 136px;"/></td></tr>';
 
 	str += '<tr><td><b><font color="#4B74C6">CustomPage Type</font><b></td>';
 	str += '<td><select  id="customTypeListId"  onchange="" style="width:147px;"><option value="0">Select CustomType</option></select></td></tr></table>';
 	
-	str += '<table style="margin-left:90px; margin-bottom:15px;" ><tr><td style="padding-right: 11px"><input type="button" class="imageButton" value="Update"  onClick="updateCustomPages(\'update\')"></td><td style="padding-right: 10px"><input type="button" class="imageButton" value="Cancel" onclick="clearDiv(\'clearDiv\')"></td></tr></table>';
+	str += '<table style="margin-left:90px; margin-bottom:15px;" ><tr><td style="padding-right: 11px"><input type="button" style=" width: 100px; height: 30px;" class="imageButton" value="Update"  onClick="updateCustomPages(\'update\')"></td><td style="padding-right: 10px"><input type="button" style=" width: 100px; height: 30px;" class="imageButton" value="Cancel" onclick="clearDiv(\'clearDiv\')"></td></tr></table>';
     str += '<div id ="renderCreateUpdateDiv"> </div> ';
 	str += '<div id ="moreCustomTypeDiv" style="display:none;"> </div>'; 
 	str += '</fieldset>';
@@ -514,7 +512,7 @@ function renderCreateCustomPages(results,display)
 	  }
 	  else if(results.resultCode == 121) 
 	  {
-		str += '<font color="green"><b> This jsp already was pointed.</b>';
+		str += '<font color="green"><b> This jsp already Existed.</b>';
 	  }
 
 	}
