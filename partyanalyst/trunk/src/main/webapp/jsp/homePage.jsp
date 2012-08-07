@@ -494,7 +494,7 @@ var pollStatus = [];
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
 			        </s:if>
 			        <h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
-			           New Video Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> Video Gallary.</a>
+			           New Video Added to <s:property value="candidateName"/> &nbsp;<s:property value="gallaryName"/> Video Gallary.</a>
 			        <div style="margin-left:5px;margin-top:6px;">
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
@@ -533,7 +533,7 @@ var pollStatus = [];
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;">
 			        </s:if>
 					<h5 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h5>
-			           New Photo Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> Photo Gallary.</a>
+			           New Photo Added to <s:property value="candidateName"/>&nbsp; <s:property value="gallaryName"/> Photo Gallary.</a>
 					<s:if test="%{#photogallaryDetails.fileDate != '' && #photogallaryDetails.fileDate != null}" >
 					
 						<div style="margin-left:5px;margin-top:6px;">
@@ -562,7 +562,7 @@ var pollStatus = [];
 					  <a href='specialPageAction.action?specialPageId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>' style="color: #000000;font-family: verdana;font-size: 13px; line-height: 1.5em;">
 			        </s:if>
 			        <h4 style="color:#357EC7 !important;"><s:property value="fileTitle1"/></h4>
-			           New News Added to <s:property value="candidateName"/> <s:property value="gallaryName"/> News Gallary.</a>
+			           New News Added to <s:property value="candidateName"/> &nbsp;<s:property value="gallaryName"/> News Gallary.</a>
 			        <div style="margin-left:5px;margin-top:6px;">
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Date : <span style="color:#FF4500;"><s:property value="fileDate"/></font></span>&nbsp;
 			           <font style="font-weight:bold;font-size:12px;font-family:verdana;color:#000000;"> Source : </b><span style="color:#FF4500;"><s:property value="source"/></font></span>
