@@ -2779,6 +2779,9 @@ function fillDataForCadreLevel(results,jsObj)
 
 		cleanCadresInfoDiv(type);
 
+		document.getElementById('actionPlanText').value = '';
+		document.getElementById('actionTargetDateText').value = '';
+
 		var animElmt = document.getElementById(elmtId);
 		if(animElmt)
 			animElmt.style.display = 'none';
