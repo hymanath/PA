@@ -32,6 +32,10 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 	private Boolean cadreCreate = true;
 	private Boolean cadreUpdate = true;
 	private Boolean cadreDelete = true;
+	private String dateScope;
+	private String eventScope;
+	private String createDate;
+	private String createEvent;
 	
 	public Boolean getCadreView() {
 		return cadreView;
@@ -110,6 +114,38 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		this.cadreManagementVO = cadreManagementVO;
 	}
 
+	public String getDateScope() {
+		return dateScope;
+	}
+
+	public String getEventScope() {
+		return eventScope;
+	}
+
+	public void setEventScope(String eventScope) {
+		this.eventScope = eventScope;
+	}
+
+	public void setDateScope(String dateScope) {
+		this.dateScope = dateScope;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getCreateEvent() {
+		return createEvent;
+	}
+
+	public void setCreateEvent(String createEvent) {
+		this.createEvent = createEvent;
+	}
+
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Cadre Management Action ********");
@@ -122,6 +158,16 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
 			return ERROR;*/
+		
+		if(dateScope != null && dateScope.equalsIgnoreCase("createDate"))
+			createDate= "true";
+		else
+			createDate=  "false";
+		
+		if(eventScope != null && eventScope.equalsIgnoreCase("createEvent"))
+			createEvent = "true";
+		else
+			createEvent = "false";
 		
 		Long userID = user.getRegistrationID();
 		
