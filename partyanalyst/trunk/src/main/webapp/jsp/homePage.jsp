@@ -431,14 +431,14 @@ var pollStatus = [];
         
         <!--LATEST NEWS AND UPDATES SECTION START-->
         
-        <div class="latest-nu-sec">
+        <div class="latest-nu-sec" style="padding:4px 15px 0px;">
           <h1 class="news-title">Latest news &amp; Updates</h1>
-          <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" alt=""/></span>
-         <marquee onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
-		 <font class="scrollDataStyle" color="blue">Vice Presidential Elections 2012 : Polling will be held on : 07-08-2012 ( 10 A.M to 5 P.M ) and Counting At 6 P.M.  UPA selected Hamid Ansari and NDA selected Jaswanth Singh as their Candidates.
+          <div class="news-updates-scroll" style="line-height:19px;"> <span class="fleft"><img src="./images/new_homepage/blue-left-arrow.gif" style="margin-top:12px;" alt=""/></span>
+         <marquee style="margin:6px 5px;" onmouseover="this.stop()" onmouseout="this.start()"  direction="left" scrollamount="3">
+		 <font class="scrollDataStyle" color="blue">Hamid Ansari declared as winner in 2012 vice presidential elections. He secured 490 votes out of 728 valid votes. Jaswant Singh got 238 votes.
        	</font>
          </marquee>
-            <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" alt=""/></span> </div>
+            <span class="fright"><img	 src="./images/new_homepage/blue-right-arrow.gif" style="margin-top:12px;" alt=""/></span> </div>
         </div>
         
         <!--LATEST NEWS AND UPDATES SECTION END--> 
