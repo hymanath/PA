@@ -1374,8 +1374,9 @@ function buildNewImpDatePopup()
               constraintoviewport : true, 
 			  iframe :true,
 			  modal :true,
-			  x:250,
-			  y:1050,
+			  top: 384,
+			 left: 320,
+				
 			  hideaftersubmit:true,
 	          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
                           { text:"Cancel", handler:handleImpDateCancel } ]
@@ -1775,7 +1776,7 @@ function showNews(i)
 		str+= '<div id="impDatesDiv_body">';
 		str+= '	<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have '+results.userImpDates.length+' Imp date(s) scheduled today</span>';
 		str+= '	<span class="dashBoardLinks">';
-		str+= '		<a href="javascript:{}" title="Click Here To Create Important Date" onclick="buildNewImpDatePopup()" class="indexPageAnc"  style="margin-left: 61px;font-size: 14px;">Create</a>';
+		str+= '		<a href="cadreManagementAction.action?dateScope=createDate" title="Click Here To Create Important Date" onclick="" class="indexPageAnc"  style="margin-left: 61px;font-size: 14px;">Create</a>';
 		str+= '	</span>';
 		str+= '</div>';
 	 }
@@ -1892,7 +1893,7 @@ function buildUserImpEvents(results)
 		str+='<div id="impEventsDiv_body">';
 		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.userEvents.length+'  event(s) scheduled today</span>';
 		str+='	<span class="dashBoardLinks" >';
-		str+='		<a href="javascript:{}" title="Click Here To Create Important Events" class="indexPageAnc" onclick="buildNewEventPopup()" style="margin-left: 61px;font-size: 14px;">Create</a>';
+		str+='		<a href="cadreManagementAction.action?eventScope=createEvent" title="Click Here To Create Important Events" class="indexPageAnc" onclick="" style="margin-left: 61px;font-size: 14px;">Create</a>';
 		str+='	</span>';
 	}
 	str+='</div>';
