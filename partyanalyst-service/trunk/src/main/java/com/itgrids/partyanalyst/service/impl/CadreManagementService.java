@@ -4392,7 +4392,9 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				else 
 					andOrStr = " and ";
 				
-				Long castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
+				Long castCategory = 0L;
+				if(cadreInputVO.getCadreCasteCategory() != null)
+				    castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
 				
 				if(castCategory == 0)
 					castStr = " ";
@@ -4416,8 +4418,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					occStr = " ";
 				else
 					occStr = andOrStr+" model.occupation.occupationId = "+occCategory;
-				
-				socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
+				if(castStr.trim().length()>0 || eduStr.trim().length()>0 || occStr.trim().length()>0)
+				      socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
 				
 			}
 			
@@ -4445,7 +4447,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				while(st.hasMoreTokens())
 				{
 					String names = st.nextToken();
-					cadreNameStr += " model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
+					cadreNameStr += " model.firstName like '%"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
 					cadreNameStr += " or ";
 				}
 				
