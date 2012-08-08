@@ -134,7 +134,9 @@
 	var emptyArray = new Array();
 	var popupPanel;
 	var smsHidden = 1;
-	
+	var createNewDate = '${createDate}';
+	var createNewEvent = '${createEvent}'; 
+
 	function smsRenewalMessage()
 	{
 		var elmt = document.getElementById('smsErrorPopupDiv');
@@ -3373,6 +3375,7 @@ function fillDataForCadreLevel(results,jsObj)
 		if(locationLevelFieldval == "SELECT LEVEL")
 		{
 				errorMsg.innerHTML='Please select location level';
+				return;
 		}
 		
 		var locationValueElmt;
@@ -3975,7 +3978,10 @@ function fillDataForCadreLevel(results,jsObj)
 
 		initializeCadreManagement();
 
-		
+		if(createNewDate == "true")
+			buildNewImpDatePopup();
+		if(createNewEvent == "true")
+			buildNewEventPopup();
 	</script>
 
 	
