@@ -382,6 +382,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		partyCadreDetailsVO.setIsSocialStatus(jObj.getBoolean("socialStatus"));
 		partyCadreDetailsVO.setGenderSearchType(jObj.getString("gender"));
 		partyCadreDetailsVO.setBloodGroupId(jObj.getLong("bloodGroupId"));
+		partyCadreDetailsVO.setRadioButtonValue(jObj.getString("nameSearchTYpe"));
 		
 		if(jObj.getBoolean("socialStatus"))
 		{
