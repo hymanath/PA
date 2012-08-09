@@ -125,6 +125,23 @@ width:80px;
 .tdradiohead{
  width:90px;
 }
+.yui-skin-sam thead .yui-dt-sortable
+{
+background:#21B2ED;
+	color:#FFF;
+}
+
+#yui-dt0-th-edit
+{
+	background:#21B2ED;
+	color:#FFF;
+}
+#searchResult > table{border-collapse:collapse;
+border:1px solid #d3d3d3;cellspacing="50" cellpadding="50" ;}
+
+#searchResult > table col {border-right: 1px solid #d3d3d3;}
+#yui-dt1-th-edit, #yui-dt2-th-edit{background:#21B2ED;color:#fff;text-decoration:underline;}
+#yui-dt0-th-edit-liner{text-decoration:underline;}
 
 </style>
 
@@ -309,7 +326,7 @@ function buildAnnouncementDataTable(result)
 		    				{key:"toDate", label: "ToDate",sortable:true},
 							{key:"constituencyName", label: "Constituency", sortable: true},
 		    				{key:"type", label: "ElectionType",sortable:true},
-							{key:"edit", label: "Edit",formatter:YAHOO.widget.DataTable.edit}
+							{key:"edit", label: "<div style='background:#21B2ED;color:#FFF;margin: -15px -11px -18px;padding: 4px 25px 7px 27px; TEXT-decoration: underline;'>Edit</div>",formatter:YAHOO.widget.DataTable.edit}
 							
 		    	        ]; 
 	var AnnouncementResultDataSource = new YAHOO.util.DataSource(result); 
