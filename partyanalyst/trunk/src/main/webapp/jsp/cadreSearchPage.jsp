@@ -340,6 +340,9 @@ function setCadreIdToProblem()
 					<th style="width:210px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optinal)</th>
 					<td>
 						<input type="text" id="cadreNameText"/>
+						<input type="radio" value="StartingWith" checked="checked" name="nameBasedRadio">Starting With 
+						<input type="radio" value="ExactMatch" name="nameBasedRadio">Exact Match
+						<input type="radio" value="AnyWhereInName"  name="nameBasedRadio">Any Where In Name
 					</td>
 			    </tr>
 			</table>
