@@ -4299,6 +4299,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String name           = cadreInputVO.getCadreName().trim();
 			Long bloodGroupId 	  = cadreInputVO.getBloodGroupId();
 			String taskName 	  = cadreInputVO.getTaskName();
+			String radioButtonValue = cadreInputVO.getRadioButtonValue();
 			String SearchCriteria = new String();
 			
 			String cadreType      = new String();
@@ -4456,7 +4457,15 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				while(st.hasMoreTokens())
 				{
 					String names = st.nextToken();
-					cadreNameStr += " model.firstName like '%"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
+					if(radioButtonValue.equalsIgnoreCase(IConstants.ANY_WHERE_IN_NAME))
+					    cadreNameStr += " model.firstName like '%"+names+"%' or model.middleName like '%"+names+"%' or model.lastName like '%"+names+"%' ";
+					
+					else if(radioButtonValue.equalsIgnoreCase(IConstants.STARTING_WITH_NAME))
+						cadreNameStr += " model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
+					
+					else if(radioButtonValue.equalsIgnoreCase(IConstants.EXACT_MATCH_NAME))
+						cadreNameStr += " model.firstName like '"+names+"' or model.middleName like '"+names+"' or model.lastName like '"+names+"' ";	
+					
 					cadreNameStr += " or ";
 				}
 				
