@@ -1253,15 +1253,15 @@
 		</fieldset>
 		<c:if test="${windowTask == 'new'}">
 			<div style="text-align: center;">			
-				<s:submit  value="Register" cssClass="button"></s:submit>
-				<a href="cadreManagementAction.action" class="anchor">Go To Cadre Management Home Page</a>
-				<a href="cadreReportAction.action" class="anchor">Go To Cadre Details Page</a>			
+				<s:submit  value="Register" cssClass="button" style="background:#0066cc;"></s:submit>
+				<a href="cadreManagementAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Management Home Page</a>
+				<a href="cadreReportAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Details Page</a>			
 			</div>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
 			<div style="text-align: center;">
 				<s:submit  value="Update" cssClass="button"></s:submit>
-				<a href="cadreManagementAction.action" class="anchor">Go To Cadre Management Home Page</a>
+				<a href="cadreManagementAction.action" class="anchor" style="background:#0066cc;">Go To Cadre Management Home Page</a>
 				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
 			</div>
 		</c:if>	
