@@ -526,4 +526,10 @@ public interface IConstants {
 	public static final String BOTH ="BOTH";
 	
 	public static final int MAX_PROBLES = 8;
+	
+	public static final String STARTING_WITH_NAME ="StartingWith";
+	
+	public static final String EXACT_MATCH_NAME ="ExactMatch";
+	
+	public static final String ANY_WHERE_IN_NAME ="AnyWhereInName";
 }
