@@ -81,16 +81,6 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private String loginUserProfilePic;
 	private boolean hasProfileManagement = false;	
 	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
-	private Long userId;
-
-	
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
 
 	public void setJObj(JSONObject jObj) {
 		this.jObj = jObj;
@@ -291,8 +281,6 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 			System.out.print(user.getUserName());
         now = new Date(System.currentTimeMillis());
         
-        userId = user.getRegistrationID();
-
         /*mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1)).getConstituencies();
         mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1)).getConstituencies();*/
         
