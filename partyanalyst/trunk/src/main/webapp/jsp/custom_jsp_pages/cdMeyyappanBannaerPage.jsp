@@ -67,9 +67,9 @@ font-size:13px;
 
 </style>
 <div id="mainDiv">
-<div id="bannerDiv" style="margin-left: 8px;">
+<!--  <div id="bannerDiv" style="margin-left: 8px;">
 	<img style="align:center;width:985px;" src="images/specialPage/Tamilnadu_Congress_Banner.jpg" />
-</div>
+</div> -->
 	<div style="background:#FFF; border: 1px solid #5e5e5e; margin-top: 6px; border-radius: 2px 2px 2px 2px; margin-bottom: 3px; padding: 10px 10px 9px; width: 970px; margin-left: 4px;">
 	 <table>
 		  <tr>
