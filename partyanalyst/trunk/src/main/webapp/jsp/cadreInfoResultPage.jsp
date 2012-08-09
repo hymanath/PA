@@ -276,15 +276,15 @@ function buildCadreInfo(jsObj,results)
 	str += '	<table width="100%" class="cadreProfileInfoTable" border="0">';
 	str += '		<tr>';
 	str += '			<th style="width:125px">Land Line</th>';
-	str += '			<th>:</th>';
-	str += '			<td>'+results.telephone+'</td>';
+	str += '			<th>&nbsp:</th>';
+	str += '			<td style="width: 111px;">'+results.telephone+'</td>';
 	str += '			<th style="width:125px">Mobile</th>';
 	str += '			<th>:</th>';
 	str += '			<td>'+results.mobile+'</td>';
 	str += '		</tr>';
 	str += '		<tr>';
 	str += '			<th style="width:125px">Email</th>';
-	str += '			<th>:</th>';
+	str += '			<th>&nbsp:</th>';
 	str += '			<td colspan="4">'+results.email+'</td>';
 	str += '		</tr>';
 	str += '	</table>';
