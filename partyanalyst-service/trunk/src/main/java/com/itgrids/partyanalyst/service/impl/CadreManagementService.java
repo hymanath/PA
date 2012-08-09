@@ -4404,20 +4404,29 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				
 				Long eduCategory = 0L;
 				if( cadreInputVO.getCadreEducationQualification() != null)
-				 eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
+				    eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
 				
 				if(eduCategory == 0)
 					eduStr = " ";
-				else
-					eduStr = andOrStr+" model.education.eduQualificationId = "+eduCategory;
+				else{
+					if(castCategory == 0)
+					   eduStr = " model.education.eduQualificationId = "+eduCategory;
+					else 
+						eduStr = andOrStr+" model.education.eduQualificationId = "+eduCategory;
+						
+				}
 				Long occCategory=0L;
 				if(cadreInputVO.getCadreOccupation()!=null)
 				occCategory = cadreInputVO.getCadreOccupation().get(0).getCadreCategoryId();
 				
 				if(occCategory == 0)
 					occStr = " ";
-				else
-					occStr = andOrStr+" model.occupation.occupationId = "+occCategory;
+				else{
+					if(castCategory == 0 && eduCategory == 0)
+					     occStr = " model.occupation.occupationId = "+occCategory;
+					else 
+						 occStr = andOrStr+" model.occupation.occupationId = "+occCategory;
+				}
 				if(castStr.trim().length()>0 || eduStr.trim().length()>0 || occStr.trim().length()>0)
 				      socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
 				
