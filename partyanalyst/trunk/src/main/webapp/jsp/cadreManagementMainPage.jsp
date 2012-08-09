@@ -76,6 +76,32 @@
 	color: #E92B2B;
     font-weight: bold;
 			}
+#contenttable
+{
+	width : 980px;
+	margin-left:auto;
+	margin-right:auto;
+	background:#ffffff;
+
+}
+h2
+{
+	color: #669900;
+}
+#ImpdescTextArea,#ImpdescTextArea1
+{
+	background : #ffffff;
+}
+#cadreTeamsAccordianDiv
+{ 
+	font-size:12px;
+}
+#cadreDatesYUICalDiv table
+{
+	font-size:12px;
+	font-family:arial;
+}
+
 </style>
 	
 
@@ -1355,7 +1381,7 @@ function fillDataForCadreLevel(results,jsObj)
 				child.setAttribute('style','background-color:#EBF5FF;');
 
 			var str='';
-			str+='<table>';
+			str+='<table style="font-family:verdana;arial;san-serif;">';
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>'
 			str+='<td>'+cadreObj.regionCadres[i].val+' Level Cadres - '+cadreObj.regionCadres[i].id+'</td>';
@@ -1768,7 +1794,7 @@ function fillDataForCadreLevel(results,jsObj)
 		if(jsObj.taskType == "impEvent")
 		{
 				eventStr+='<td colspan="3">';
-				eventStr+='<textarea rows="5" cols="50" id="descTextArea" name="descTextArea">'+results.description+'</textarea>';
+				eventStr+='<textarea rows="5" cols="50" id="descTextArea" name="descTextArea" style="background:#ffffff;">'+results.description+'</textarea>';
 				eventStr+='<td>';
 			
 			
@@ -2231,9 +2257,9 @@ function fillDataForCadreLevel(results,jsObj)
 		}
 
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
-		str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
+		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+results.userEventsId+'\',\'\',\'impEvent\')">';
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
-		str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
+		str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+results[0].importantDateId+'\',\''+results[0].importantDateId+'\',\'impDate\')">';		
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
@@ -2539,7 +2565,7 @@ function fillDataForCadreLevel(results,jsObj)
 
 		eventStr+='<tr>';
 		eventStr+='<th>Description</th>';
-		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea" style="background:#ffffff;"></textarea></td>';
 		eventStr+='</tr>';
 		eventStr+='</table>';
 		
@@ -3471,10 +3497,10 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div class="hd">New Date</div> ';
 		eventStr+='<div class="bd">'; 
 		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
-		eventStr+='<table>';
+		eventStr+='<table width="100%">';
 		eventStr+='<tr>';
-		eventStr+='<th>Important Date Title</th>';
-		eventStr+='<td colspan="3"><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
+		eventStr+='<th><div style="width:142px;">Important Date Title</div></th>';
+		eventStr+='<td><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
@@ -3488,9 +3514,9 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<tr>';
 		eventStr+='<th>Description</th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
-		eventStr+='</tr>';		
+		eventStr+='</tr></table>';		
 
-		eventStr+='<tr>';
+		/*eventStr+='<tr>';
 		eventStr+='<th>Repeat Frequency</th>';
 		eventStr+='<td>';
 		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
@@ -3501,7 +3527,21 @@ function fillDataForCadreLevel(results,jsObj)
 		eventStr+='<div><input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')"/></div>';
 		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
-		eventStr+='</tr>';		
+		eventStr+='</tr>';	*/
+		
+		//eventStr+='<tr><td>';
+		eventStr+='<table width="100%">';
+		eventStr+='<th>Repeat Frequency</th>';
+		eventStr+='<td>';
+		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
+		eventStr+='<option value="No Repeat">No Repeat</option>';
+		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
+		eventStr+='<th>Repeat Until</th>';
+		eventStr+='<td>';
+		eventStr+='<input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')"/></div>';
+		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal">';
+		eventStr+='</td>';
+		//eventStr+='</td></tr>';
 
 		eventStr+='</table>';
 		eventStr+='</div>';
@@ -3682,9 +3722,9 @@ function fillDataForCadreLevel(results,jsObj)
 			}
 
 			if(type == "impEvents")
-			str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
+			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
 			else if(type == "impDates")
-			str+='<table onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
+			str+='<table style="font-family:arial;" onclick="showUnEditableSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 			str+='<td>'+eventsarr[i].title+'</td>';	
@@ -3818,7 +3858,7 @@ function fillDataForCadreLevel(results,jsObj)
 		</div>
 	</div>
 
-	<div id="CadreManagementHeaderMain">
+	<div id="CadreManagementHeaderMain" style="margin-left:auto;margin-right:auto;">
 		<DIV id="cadreMgmtDesc">
 			<UL>
 				<LI>Add cadre and manage cadre efficiently</LI>
@@ -3840,16 +3880,16 @@ function fillDataForCadreLevel(results,jsObj)
 	<div id="cadreSMSGroupsMainDiv">
 		
 		<div id="cadreGroupsMainDiv"  class="yui-skin-sam">
-			<div id="cadreGroupsHeadDiv" class=".yui-widget-hd">Upload Your Cadre</div>
-			<div id="cadreGroupsBodyDiv">Cadre Upload feature enables you to upload cadre details by submitting the Excel file containing cadres.</div>
+			<div id="cadreGroupsHeadDiv" style="font-size:12px;" class=".yui-widget-hd">Upload Your Cadre</div>
+			<div id="cadreGroupsBodyDiv" style="font-size:12px;font-family:verdana;">Cadre Upload feature enables you to upload cadre details by submitting the Excel file containing cadres.</div>
             <div id="cadreGroupsFooterDiv">
 			   <span><a href="genericModuleDataUpload.action" id="sendSMSAnc">Start Upload</a></span>
 			</div>
 		</div>
 		<div id="cadreSMSMainDiv">
-			<div id="cadreSMSHeadDiv">Cadre SMS</div>
-			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
-			<div id="cadreSMSFooterDiv">
+			<div id="cadreSMSHeadDiv" style="font-size:12px;">Cadre SMS</div>
+			<div id="cadreSMSBodyDiv" style="font-size:12px;font-family:verdana;">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
+			<div id="cadreSMSFooterDiv" style="font-size:12px;">
 				<span><a href="cadreRegisterPageAction.action?cadreId=0&windowTask=new" id="sendSMSAnc">Add Cadre</a></span>
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Search')">Cadre Search</a></span>
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Sms')">Cadre SMS</a></span>
@@ -3858,7 +3898,7 @@ function fillDataForCadreLevel(results,jsObj)
 	</div>
 	<div id="cadreDetailsMainDiv">
 		<div id="regionLevelCadreDiv">
-			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
+			<div id="regionLevelCadreDivHead" style="font-size:12px;">Region Level Cadres</div>
 			<div id="regionLevelCadreDivBody"></div>
 			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action" class="ancLink">Know your Cadre Strength areas</a></div>
 		</div>		
@@ -3874,7 +3914,7 @@ function fillDataForCadreLevel(results,jsObj)
 		<div id="cadreEventsDetailsDivMain">
 			<span class="impInfoSpan">
 				<a href="javascript:{}" onclick="subscribe()">
-					<span id="subscribePartyDates">
+					<span id="subscribePartyDates" style="color:#669900;font-weight:bold;">
 						<c:choose>
 							<c:when test="${sessionScope.USER.subscribePartyImpDate == 'ALL'}">
 								<c:out value="Unsubscribe Party Imp Dates" />
@@ -3898,7 +3938,7 @@ function fillDataForCadreLevel(results,jsObj)
 						<div id="cadreImpDatesDiv">
 							<div id="cadreImpDatesHeadDiv">
 								<span style="float: left;">Important Dates</span>
-								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewImpDatePopup()">Create New Date</a></span>							
+								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewImpDatePopup()" style="color:#669900;">Create New Date</a></span>							
 							</div>
 							<div id="cadreImpDatesBodyDiv"> </div>
 						</div>
@@ -3907,7 +3947,7 @@ function fillDataForCadreLevel(results,jsObj)
 						<div id="cadreImpEventsDiv">
 							<div id="cadreImpEventsHeadDiv">
 								<span style="float: left;">Important Events</span>
-								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewEventPopup()">Create New Event</a></span>
+								<span id="newEventSpan" ><a href="javascript:{}" onclick="buildNewEventPopup()" style="color:#669900;">Create New Event</a></span>
 							</div>
 							<div id="cadreImpEventsBodyDiv"> 
 								
