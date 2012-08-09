@@ -3543,6 +3543,8 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 			  FileVO fileVO;
 			  
 			  for(Object[] data : dataList){
+				  
+				 try{
 				 File file = (File)data[0];
 				 fileVO = new FileVO();
                  
@@ -3578,6 +3580,9 @@ public List<SelectOptionVO> getCandidatesOfAUser(Long userId)
 				 Collections.sort(fileVOSourceLanguageList,sourceSort);
 				 fileVO.setFileVOList(fileVOSourceLanguageList);
 				 retValue.add(fileVO);
+				 }catch (Exception e) {
+					 log.error("Exception Occured in convertDataToFileVO method ",e);
+				 }
 			 }
 			 
 			return retValue;
