@@ -1933,8 +1933,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	public String getUserProfileImageByUserId(Long userId)
 	{
 		String imageURL = userDAO.getUserProfileImageNameByUserId(userId);
-		if(imageURL == null)
-			imageURL = "";
+		if(imageURL == null || imageURL.trim().length() == 0)
+			imageURL = "human.jpg";
 		return imageURL;
 	}
 	

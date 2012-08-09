@@ -4388,48 +4388,74 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 			if(cadreInputVO.getIsSocialStatus() == true)
 			{
+				boolean socialStatusFlag = false;
+				boolean castCategoryFlag = false;
+				boolean eduCategoryFlag = false;
+				boolean occCategoryFlag = false;
+				
 				if(cadreInputVO.getIsOrSearch() == true)
 					andOrStr = " or ";
 				else 
 					andOrStr = " and ";
 				
-				Long castCategory = 0L;
-				if(cadreInputVO.getCadreCasteCategory() != null)
-				    castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
+				Long castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
 				
-				if(castCategory == 0)
+				if(castCategory == null || castCategory == 0)
 					castStr = " ";
 				else
+				{
 					castStr =" model.casteCategory.socialCategoryId = "+castCategory;
+					castCategoryFlag = true;
+					socialStatusFlag = true;
+				}
 				
 				
 				Long eduCategory = 0L;
 				if( cadreInputVO.getCadreEducationQualification() != null)
-				    eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
+				 eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
 				
 				if(eduCategory == 0)
 					eduStr = " ";
-				else{
-					if(castCategory == 0)
-					   eduStr = " model.education.eduQualificationId = "+eduCategory;
-					else 
-						eduStr = andOrStr+" model.education.eduQualificationId = "+eduCategory;
-						
+				else
+				{
+					eduStr = " model.education.eduQualificationId = "+eduCategory;
+					eduCategoryFlag = true;
+					socialStatusFlag = true;
 				}
+					
 				Long occCategory=0L;
 				if(cadreInputVO.getCadreOccupation()!=null)
 				occCategory = cadreInputVO.getCadreOccupation().get(0).getCadreCategoryId();
 				
 				if(occCategory == 0)
 					occStr = " ";
-				else{
-					if(castCategory == 0 && eduCategory == 0)
-					     occStr = " model.occupation.occupationId = "+occCategory;
-					else 
-						 occStr = andOrStr+" model.occupation.occupationId = "+occCategory;
+				else
+				{
+					occStr = " model.occupation.occupationId = "+occCategory;
+					occCategoryFlag = true;
+					socialStatusFlag = true;
 				}
-				if(castStr.trim().length()>0 || eduStr.trim().length()>0 || occStr.trim().length()>0)
-				      socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
+				
+				if(socialStatusFlag)
+				{
+					socStatus += " and (";
+					
+					if(castCategoryFlag)
+					{
+						socStatus += castStr + " " + andOrStr;
+					}
+					if(eduCategoryFlag)
+					{
+						socStatus += eduStr + " " + andOrStr;
+					}
+					if(occCategoryFlag)
+					{
+						socStatus += occStr + " " + andOrStr;
+					}
+					
+					socStatus = socStatus.substring(0,socStatus.length()-4);
+					socStatus +=" )";
+				}
 				
 			}
 			
