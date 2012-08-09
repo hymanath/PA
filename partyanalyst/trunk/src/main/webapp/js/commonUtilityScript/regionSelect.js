@@ -600,7 +600,12 @@ function getCadresResults(btnType)
 	var genderOption;
 	var bloodGroupEle = document.getElementById("bloodGroupId");
 	var bloodGroupId = bloodGroupEle.options[bloodGroupEle.selectedIndex].value;
-	
+	var nameSelectedRadioEle = document.getElementsByName("nameBasedRadio");
+	var nameSelectedRadioValue;
+	for(var i=0; i<nameSelectedRadioEle.length;i++){
+	   if(nameSelectedRadioEle[i].checked == true)
+	        nameSelectedRadioValue = nameSelectedRadioEle[i].value;
+    }
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
@@ -815,6 +820,7 @@ function getCadresResults(btnType)
 			bloodGroupId		: bloodGroupId,
 			taskType			: btnType,
 			senderName			: SENDERNAME,
+			nameSearchTYpe      : nameSelectedRadioValue,   
 			task				: taskName	
 		}
 	
