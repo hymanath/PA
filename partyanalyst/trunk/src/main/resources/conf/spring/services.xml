@@ -585,6 +585,7 @@
 		<property name="problemAssignedCadreDAO" ref="problemAssignedCadreDAO"/>
 		<property name="problemRatingDAO" ref="problemRatingDAO" />
 		<property name="commentDAO" ref="commentDAO" />
+		<property name="abusedCommentsDAO" ref="abusedCommentsDAO"/>
 		
    </bean>
    
