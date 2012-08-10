@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -80,6 +81,7 @@ import com.itgrids.partyanalyst.dao.IVisibilityDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
@@ -7681,4 +7683,71 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 
 			
 	}
+	public List<CompleteProblemDetailsVO> getProblemDetailsForUpdate(Long problemId)
+	{
+		log.debug("Entered into getProblemDetailsForUpdate() of ProblemManagementService()");
+		List<CompleteProblemDetailsVO> completeProblemDetails = new ArrayList<CompleteProblemDetailsVO>();
+		try
+		{
+		List<UserProblem> problemDetails = userProblemDAO.getProblemDeatilsByProblemId(problemId);
+		if(problemDetails !=null)
+		{
+		for(UserProblem params : problemDetails)
+		{
+			CompleteProblemDetailsVO completeProblemDetailsVO = new CompleteProblemDetailsVO();
+			completeProblemDetailsVO.setProblemTitle(params.getProblem().getTitle());
+			completeProblemDetailsVO.setProblemDesc(params.getProblem().getDescription());
+			completeProblemDetailsVO.setExistingFrom(params.getProblem().getExistingFrom().toString().replace("-", "/"));
+			
+			if(params.getProblem().getProblemType() != null && params.getProblem().getProblemType().getProblemTypeId() != null)
+			completeProblemDetailsVO.setProblemTypeId((Long)params.getProblem().getProblemType().getProblemTypeId());
+			if(params.getProblem().getProblemType() != null && params.getProblem().getProblemType().getProblemType() != null)
+			completeProblemDetailsVO.setProblemType(params.getProblem().getProblemType().getProblemType());
+			completeProblemDetails.add(completeProblemDetailsVO);
+		}
+		}
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			log.error("Exception occured in getProblemDetailsForUpdate() of problemManagement Service" +e);
+		}
+		return completeProblemDetails;
+		
+		
+	}
+	
+	public ResultStatus updateProblemDetails(Long problemId,List<CompleteProblemDetailsVO> completeProblemDetailsVO)
+	{
+		log.debug("Entered into updateProblemDetails of ProblemManagementService()");
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			for(CompleteProblemDetailsVO params:completeProblemDetailsVO)
+			{
+			String str_date=params.getExistingFrom();
+			DateFormat formatter ; 
+			Date date ; 
+			formatter = new SimpleDateFormat("yyyy/mm/dd");
+			date = (Date)formatter.parse(str_date);  
+			Problem problem = problemDAO.get(problemId);
+			problem.setTitle(params.getProblemTitle());
+			problem.setDescription(params.getProblemDesc());
+			problem.setExistingFrom(date);
+			if(params.getProblemTypeId() > 0)
+			problem.setProblemType(problemTypeDAO.get(new Long(params.getProblemTypeId())));
+			problemDAO.save(problem);
+
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+	     	}catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 log.error("Exception Occured in updateProfileDescription() method - "+e);
+			return resultStatus;
+		    }
+		}
+		
 }
