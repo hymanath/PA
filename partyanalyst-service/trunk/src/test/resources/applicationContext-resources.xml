@@ -285,6 +285,10 @@
 				<value>com.itgrids.partyanalyst.model.UserPartyRelation</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencySubscriptions</value>
 				<value>com.itgrids.partyanalyst.model.BloodGroup</value>
+				<value>com.itgrids.partyanalyst.model.CadreOnlineRegistration</value>
+				<value>com.itgrids.partyanalyst.model.UserCadreOnlineRegistration</value>
+				<value>com.itgrids.partyanalyst.model.CandidateCadreOnlineRegistration</value>
+				<value>com.itgrids.partyanalyst.model.PartyCadreOnlineRegistration</value>
 			</list>
 		</property>
 	</bean>
@@ -1503,15 +1507,32 @@
 	<bean id="abusedCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AbusedCommentsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="problemLikesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLikesDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
 	<bean id="problemRatingDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemRatingDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
 	<bean id="userPartyRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserPartyRelationDAO">
-	<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="cadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreOnlineRegistrationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCadreOnlineRegistrationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreOnlineRegistrationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateCadreOnlineRegistrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateCadreOnlineRegistrationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
