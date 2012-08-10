@@ -761,5 +761,21 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	   return Action.SUCCESS;
    }
 
+   public String saveAbusedCommentsToProblem()
+   {
+	   session = request.getSession();
+	   RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	   if(user == null)
+		   return ERROR;
+	   try
+	   {
+		 jObj = new JSONObject(getTask());
+	   }catch (Exception e) {
+		e.printStackTrace();
+	}
+	   
+	   resultStatus = problemManagementService.saveAbusedCommentsToProblem(jObj.getLong("commentId"),user.getRegistrationID());
+	   return Action.SUCCESS;
+   }
 
  }
