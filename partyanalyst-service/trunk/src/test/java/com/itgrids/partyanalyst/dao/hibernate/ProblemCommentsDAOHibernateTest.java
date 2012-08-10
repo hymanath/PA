@@ -56,8 +56,9 @@ public class ProblemCommentsDAOHibernateTest extends BaseDaoTestCase{
 	public void testGetAllProblemComments(){
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(3l);
-		List<Object[]> data = problemCommentsDAO.getAllProblemComments(1l,1l, userIds);
+		List<Object[]> data = problemCommentsDAO.getAllProblemComments(43l,1l, userIds);
 		System.out.println(data.size());
+		
 	}
 
 }
