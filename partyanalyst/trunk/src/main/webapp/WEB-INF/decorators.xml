@@ -137,6 +137,7 @@
 		<pattern>/abuseCommentaction*</pattern>
 		<pattern>/partyManagementAction*</pattern>
 		<pattern>/cadreManagementAction*</pattern>
+		<pattern>/cadreReportAction*</pattern>
 		
     </decorator>
 
