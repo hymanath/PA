@@ -981,7 +981,7 @@ function showProblemDetailsForUpdate(myresults)
 	for(i=0 ; i<myresults.length ; i++)
 	{
     str += '   <tr>';
-	str += '       <td class="tdWidth">Title<font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth">Problem<font class="requiredFont">*</font></td>';
 	str += '       <td><input type="text" id="problemTitleId" size="25" maxlength="100" value="'+myresults[i].problemTitle+'"></text></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
