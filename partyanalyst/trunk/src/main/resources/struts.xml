@@ -3529,5 +3529,15 @@
            		<param name="root">result</param>
         	</result>	
 		</action>
+		<action name="getProblemDetailsForUpdateAction" class="problemSearchAction" method="AjaxHandler">
+		<result type="json" name="success">
+         <param name="root">problemDetails</param>
+        	</result>	
+		</action>
+		<action name="updateProblemDetailsAction" class="problemSearchAction" method="AjaxHandler">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>	
+		</action>
 	</package>
 </struts>      
