@@ -76,7 +76,16 @@
 
 	<script type="text/javascript" src="js/cadreReport/cadreReport.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/cadreReport/cadreReport.css"></link>
-	
+	<style type="text/css">
+	#cadreReportMain{
+	margin-left:auto;
+	margin-right:auto;
+	width : 980px;
+	}
+	#contenttable{
+	 margin-top: 10px;
+	}
+	</style>
 
 	<script type="text/javascript">
 			
@@ -629,11 +638,11 @@
 		</div>
 		
 		<!-- Cadre Top Layout Div-->
-		<div id="cadreReportLayout_top">
+		<div id="cadreReportLayout_top" style=" margin-left: 315px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td><img border="none" src="images/icons/statePage/header_left.png"></td>
-					<td><div id="CadreReportHeading"> Cadre Details</div></td>
+					<td><div id="CadreReportHeading" style=" margin-top:1px;"> Cadre Details</div></td>
 					<td><img border="none" src="images/icons/statePage/header_right.png"></td>
 				</tr>
 			</table>
@@ -690,7 +699,7 @@
 					<div id="cadreInfoDivHead">									
 						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+								<td><img border="none" src="images/icons/cadreReport/bg_left.png" style= "margin-left: 36px;"></td>
 								<td><div class="cadreReportHeader"> <span class="reportHeaderSpan"> Cadre Availability </span></div></td>
 								<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
 							</tr>
@@ -706,14 +715,14 @@
 						<div id="zeroCadreInfoDivHead">			
 							<table border="0" cellpadding="0" cellspacing="0">
 								<tr>
-									<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+									<td><img border="none" src="images/icons/cadreReport/bg_left.png" style= "margin-left: 36px;"></td>
 									<td><div class="cadreReportHeader"><span class="reportHeaderSpan"> Non Available Region Cadres</span></div></td>
 									<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
 								</tr>
 							</table>							
 						</div>
 					
-					<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">				
+					<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px;font-family: verdana;">				
 						
 					</div>
 				</div>
@@ -722,13 +731,13 @@
 					<div id="cadreLevelInfoDivHead">
 						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+								<td><img border="none" src="images/icons/cadreReport/bg_left.png" style= "margin-left: 36px;"></td>
 								<td><div class="cadreReportHeader"> <span class="reportHeaderSpan">Cadre Details By Cadre Level </span></div></td>
 								<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
 							</tr>
 						</table>						
 					</div>
-					<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
+					<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px;font-family: verdana;">
 						
 					</div>
 				</div>					
