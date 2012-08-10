@@ -29,6 +29,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -81,7 +82,6 @@ import com.itgrids.partyanalyst.dao.IVisibilityDAO;
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.FileVO;
-import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AbusedComments;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -212,6 +213,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IProblemAssignedCadreDAO problemAssignedCadreDAO;
     private IProblemRatingDAO problemRatingDAO;
     private ICommentDAO commentDAO;
+    private IAbusedCommentsDAO abusedCommentsDAO; 
 	
 	public IProblemAssignedDepartmentDAO getProblemAssignedDepartmentDAO() {
 		return problemAssignedDepartmentDAO;
@@ -687,6 +689,14 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setCommentDAO(ICommentDAO commentDAO) {
 		this.commentDAO = commentDAO;
+	}
+
+	public IAbusedCommentsDAO getAbusedCommentsDAO() {
+		return abusedCommentsDAO;
+	}
+
+	public void setAbusedCommentsDAO(IAbusedCommentsDAO abusedCommentsDAO) {
+		this.abusedCommentsDAO = abusedCommentsDAO;
 	}
 
 	/**
@@ -7683,6 +7693,24 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 
 			
 	}
+	
+	/*public ResultStatus sendEmailToConnectedUsersAfterProblemApproval(ProblemBeanVO problemBeanVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		if(problemBeanVO == null)
+		{
+			log.error("Error Occured in deleteProblemDetails() Method in ProblemManagementService");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+		else if(problemBeanVO != null)
+		{
+			
+		}
+		return resultStatus;
+
+	}*/
+	
 	public List<CompleteProblemDetailsVO> getProblemDetailsForUpdate(Long problemId)
 	{
 		log.debug("Entered into getProblemDetailsForUpdate() of ProblemManagementService()");
@@ -7752,6 +7780,37 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			 log.error("Exception Occured in updateProfileDescription() method - "+e);
 			return resultStatus;
 		    }
+	}
+	
+	public ResultStatus saveAbusedCommentsToProblem(Long commentId, Long userId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		AbusedComments abusedComments = null;
+		try{
+			if(commentId == 0 || userId == 0)
+			{
+				log.error("Error Occured in saveAbusedCommentsToProblem()");
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+			if(commentId != 0 && userId != 0)
+			{
+				abusedComments = new AbusedComments();
+				abusedComments.setCommentId(commentId);
+				abusedComments.setUserId(userId);
+				abusedComments.setStatus(IConstants.NEW);
+				abusedComments.setIsDelete(IConstants.FALSE);
+				abusedComments.setTime(dateUtilService.getCurrentDateAndTime());
+				abusedCommentsDAO.save(abusedComments);
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in saveAbusedCommentsToProblem(), Exception - "+e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
 		}
 		
+	}
 }
