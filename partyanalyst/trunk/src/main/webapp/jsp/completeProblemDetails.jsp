@@ -1075,7 +1075,7 @@ function buildcomments(myResults){
 	   str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/'+myResults[i].profileImg+'" /> </div>';
 	 else
 	  str+='<div class="commentimage"><img  width="45" height="45" src="pictures/profiles/human.jpg" /> </div>';
-	 str +='<span><img width="20" height="20" src="images/icons/abused.jpg" style="margin-left: 350px;" onclick="saveAbusedCommentsToProblem('+myResults[i].commentId+')" alt="abused"/></span>';
+	 str +='<span><img width="20" height="20" src="images/icons/abused.jpg" style="margin-left: 350px;" onclick="saveAbusedCommentsToProblem('+myResults[i].commentId+')" title="Click Here to Abuse the Comments" /></span>';
 	 str+='<div><span class="commentname">'+myResults[i].firstName+' '+myResults[i].lastName+' </span><br><span class="commentdate">'+myResults[i].date+'</span></div>';
 	 str+='<p>'+myResults[i].comment+'</p>';
      str+='</li>';
