@@ -423,6 +423,8 @@ public class CompleteProblemDetailsService implements ICompleteProblemDetailsSer
 			userCommentsInfoVO.setUserId((Long)comment[3]);
 			userCommentsInfoVO.setDate(comment[4]!= null?dateFormat.format((Date)comment[4]):"");
 			userCommentsInfoVO.setProfileImg(comment[5]!= null?comment[5].toString():null);
+			userCommentsInfoVO.setCommentId(comment[6] !=null ?(Long)comment[6]:null);
+			
 			userCommentsInfoVOList.add(userCommentsInfoVO);
 		 }catch(Exception e){
 			 LOG.error("Exception rised in popolateDataToVo method while iterating and getting problem related files data ",e);
