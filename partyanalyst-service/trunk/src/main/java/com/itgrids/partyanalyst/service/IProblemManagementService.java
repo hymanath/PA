@@ -196,4 +196,8 @@ public String getProblemLocationString(ProblemCompleteLocation problemCompleteLo
 	
 	public String getIsUserRatedAProblem(Long userId, Long problemId);
 	
+	public List<CompleteProblemDetailsVO> getProblemDetailsForUpdate(Long problemId);
+	
+	public ResultStatus updateProblemDetails(Long problemId,List<CompleteProblemDetailsVO> completeProblemDetailsVO);
+	
 }
